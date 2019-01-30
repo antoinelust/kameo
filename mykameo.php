@@ -18,6 +18,38 @@ include 'include/activitylog.php';
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
 
+<script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", function(event) {
+        
+        var classname = document.getElementsByClassName('fleetmanager');
+        for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', hideResearch, false);
+            classname[i].addEventListener('click', get_bikes_listing, false);            
+        }
+        
+        var classname = document.getElementsByClassName('reservations');
+        for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', hideResearch, false);
+        }        
+        
+        var classname = document.getElementsByClassName('expandBikeDetails');
+        for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', test, false);
+        }        
+
+        
+
+    });
+    
+    
+    function test(element)
+    {
+        console.log(this);
+        console.log("coucou");
+    }
+</script>
+
+
 <?php
 if($connected){
     
@@ -291,7 +323,29 @@ if($connected){
             type: 'post',
             data: { "email": email},
             success: function(response){
-                echo "test";
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Référence</span><span class=\"en=inline\">Reference</span><span class=\"nl-inline\">Referentie</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th></tr></thead>";
+                    dest=dest.concat(temp);
+                    while (i < response.bikeNumber){
+                        
+                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" data-toggle=\"modal\" href=\"#\" onclick=\"test("+response.bike[i].frameNumber+")\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].modelFR+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+                        
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);
+                    document.getElementById('bikeDetails').innerHTML = dest;
+                    document.getElementById('BikesInCompany').innerHTML = response.bikeNumber;
+                    document.getElementById('kmsCompany').innerHTML = response.kmsTotal;
+                    displayLanguage();
+
+                }
             }
         })
     }
@@ -586,12 +640,12 @@ if($connected){
                                 <li class="reserver active fr"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>Réserver un vélo</a> </li>
                                 <li class="reserver active en"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>Book a bike</a> </li>
                                 <li class="reserver active nl"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>Boek een fiets</a> </li>
-                                <li class="reservations fr"><a href="#reservations" onclick="hideResearch()"><i class="fa fa-check-square-o"></i>Vos réservations</a> </li>
-                                <li class="reservations en"><a href="#reservations" onclick="hideResearch()"><i class="fa fa-check-square-o"></i>Your bookings</a> </li>
-                                <li class="reservations nl"><a href="#reservations" onclick="hideResearch()"><i class="fa fa-check-square-o"></i>Uw boekingen</a> </li>
-                                <li class="fleetmanager fr"><a href="#fleetmanager" onclick="hideResearch()"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
-                                <li class="Fleet manager en"><a href="#fleetmanager" onclick="hideResearch()"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
-                                <li class="Fleet manager nl"><a href="#fleetmanager" onclick="hideResearch()"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
+                                <li class="fr"><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>Vos réservations</a> </li>
+                                <li class="en"><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>Your bookings</a> </li>
+                                <li class="nl"><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>Uw boekingen</a> </li>
+                                <li class="fr hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
+                                <li class="en hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
+                                <li class="nl hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
                             </ul>
 
                             <div class="tabs-content">
@@ -725,7 +779,12 @@ if($connected){
                                     <script type="text/javascript">    
                                         loadClientConditions()
                                         .done(function(response){
-                                           constructBuildingForm(response.clientConditions.bookingDays, response.clientConditions.administrator, response.clientConditions.assistance);
+                                            constructBuildingForm(response.clientConditions.bookingDays, response.clientConditions.administrator, response.clientConditions.assistance);
+                                            
+                                            if (response.clientConditions.administrator == "Y"){
+                                                    $(".fleetmanager").removeClass("hidden");
+                                            }
+                                            
                                         });
                                     </script>
 
@@ -1207,9 +1266,10 @@ if($connected){
                                 
                                 <div class="tab-pane" id="fleetmanager">
 
-                                    <table class=\"table table-condensed\"><h4 class=\"fr-inline\">Statistiques</h4>
+                                    <table class="table table-condensed"><h4 class="fr">Statistiques</h4>
                                         <tbody>
-                                            Nombre de vélos en circulation:<a data-target="#BikesListing" data-toggle="modal" href="#" onclick="get_bikes_listing()"><span id="BikesInCompany">12</span></a>
+                                            Nombre de vélos en circulation:<a data-target="#BikesListing" data-toggle="modal" href="#"><span id="BikesInCompany"></span></a><br/>
+                                            Nombre de réservations effectuées depuis le 1er Janvier par les employés: <span id="kmsCompany"></span>.
                                         </tbody>
                                     </table>
                                 </div>
@@ -2294,9 +2354,9 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h3 class="fr">Résumé de votre commande</h2>
-						<h3 class="en">Resume</h2>
-						<h3 class="nl">Geresumeerd</h2>
+						<h3 class="fr">Résumé de votre commande</h3>
+						<h3 class="en">Resume</h3>
+						<h3 class="nl">Geresumeerd</h3>
 						
 						<div class="col-sm-10">
                         <h4><span class="fr"> Jour : </span></h4>
@@ -2414,6 +2474,85 @@ if($connected){
 
             </script>
 
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h3 class="fr">Référence du vélo :</h3>
+						<h3 class="en">Bike Reference:</h3>
+						<h3 class="nl">Bike Reference :</h3>
+                        <p span class="bikeReference"></p>
+						
+						<div class="col-sm-5">
+                            <h4><span class="fr"> Modèle : </span></h4>
+                            <h4><span class="en"> Model: </span></h4>
+                            <h4><span class="nl"> Model : </span></h4>
+                            <p span class="bikeModel"></p>
+
+                        </div>
+						<div class="col-sm-5">
+                            <h4><span class="fr"> Référence du cadre : </span></h4>
+                            <h4><span class="en"> Frame reference: </span></h4>
+                            <h4><span class="nl"> Frame reference: </span></h4>
+                            <p span class="frameReference"></p>
+
+                        </div>
+                        
+                        <div class="col-sm-10">
+						<h4>Informations relatives au contrat</h4>
+						</div>
+                        
+                        <div class="col-sm-5">
+                        <h4><span class="fr"> Type de contrat : </span></h4>
+                        <h4><span class="en"> Contract type: </span></h4>
+                        <h4><span class="nl"> Contract type : </span></h4>
+
+
+                       	<p><span class="contractType"></span></p> 
+                       	</div>
+
+                       <div class="col-sm-5">
+                        <h4><span class="fr" >Date de début :</span></h4>
+                        <h4><span class="en" >Start date:</span></h4>
+                        <h4><span class="nl" >Start date :</span></h4>
+
+                        <p><span class="startDateContract"></span></p>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <h4><span class="fr" >Date de fin :</span></h4>
+                            <h4><span class="en" >End date:</span></h4>
+                            <h4><span class="nl" >End date :</span></h4>
+                        <p><span class="endDateContract"></span></p>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <h4><span class="fr" >Référence pour assistance :</span></h4>
+                            <h4><span class="en" >Assistance reference:</span></h4>
+                            <h4><span class="nl" >Assistance reference :</span></h4>
+                        <p><span class="assistanceReference"></span></p>
+                        </div>
+
+                       <div class="col-sm-10">
+                        <h4>Votre vélo: </h4>
+                            <div class="col-md-4">
+                            <img src="" class="bikeImage" alt="image" />
+                            </div>  
+                        </div>    
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -2734,24 +2873,7 @@ if($connected){
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
             <div data-example-id="contextual-table" class="bs-example">
-                <table class="table table-condensed"><h4 class="fr-inline">Vos vélos:</h4><h4 class="en-inline">Your Bikes:</h4><h4 class="nl-inline">Jouw fietsen:</h4>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th><span class="fr-inline">Référence</span><span class="en=inline">Reference</span><span class="nl-inline">Referentie</span></th>
-                            <th><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th>
-                            <th><span class="fr-inline">Dates du contrat</span><span class="en-inline">Contract dates</span><span class="nl-inline">Contract data</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>test</th>
-                            <th>test</th>
-                            <th>test</th>
-                            <th>test</th>
-                        </tr>
-                    </tbody>
-                </table>
+                        <span id="bikeDetails"></span>
             </div>
             
 			<div class="fr" class="modal-footer">

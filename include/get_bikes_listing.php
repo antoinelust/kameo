@@ -18,13 +18,14 @@ if($email != NULL)
 	$timestamp_now=time();
 	
     include 'connexion.php';
-	$sql="SELECT * FROM customer_bikes cc, bike_models dd where COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.COMPANY GROUP BY COMPANY) AND cc.TYPE=dd.ID";
+	$sql="SELECT * FROM customer_bikes cc, bike_models dd where COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER GROUP BY COMPANY) AND cc.TYPE=dd.ID";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-	$result = mysqli_query($conn, $sql);        
+	
+    $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
 	$response['bikeNumber']=$length;
 
@@ -35,16 +36,37 @@ if($email != NULL)
 
     {
 
+        $response['response']="success";
 		$response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
 		$response['bike'][$i]['modelFR']=$row['MODEL_FR'];            
 		$response['bike'][$i]['modelEN']=$row['MODEL_EN'];            
 		$response['bike'][$i]['modelNL']=$row['MODEL_NL'];
 		$response['bike'][$i]['contractReference']=$row['CONTRACT_REFERENCE'];
+        if($row['LEASING']=="Y"){
+            $response['bike'][$i]['contractType']="leasing";
+            $response['bike'][$i]['contractDates']=$row['CONTRACT_START'].'-'.$row['CONTRACT_END'];
+        }else{
+            $response['bike'][$i]['contractType']="other";
+            $response['bike'][$i]['contractDates']="N/A";
+        }
                 
         $i++;
 
 	}
+    
+    include 'connexion.php';
+    $sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER GROUP BY COMPANY) and cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D'";
+    if ($conn->query($sql2) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
 	
+    $result2 = mysqli_query($conn, $sql2);        
+    $resultat2 = mysqli_fetch_assoc($result2);
+
+    $response['kmsTotal']=$resultat2['count(1)'];
+
 	echo json_encode($response);
     die;
 
