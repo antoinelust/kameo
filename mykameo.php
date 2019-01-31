@@ -30,22 +30,34 @@ include 'include/activitylog.php';
         var classname = document.getElementsByClassName('reservations');
         for (var i = 0; i < classname.length; i++) {
             classname[i].addEventListener('click', hideResearch, false);
-        }        
-        
-        var classname = document.getElementsByClassName('expandBikeDetails');
-        for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener('click', test, false);
-        }        
-
-        
-
+        }              
     });
     
     
-    function test(element)
+    function fillBikeDetails(element)
     {
-        console.log(this);
-        console.log("coucou");
+        var frameNumber=element;
+        $.ajax({
+                url: 'include/get_bike_details.php',
+                type: 'post',
+                data: { "frameNumber": frameNumber},
+                success: function(response){
+                    if (response.response == 'error') {
+                        console.log(response.message);
+                    } else{
+                        document.getElementsByClassName("bikeReference")[0].innerHTML=frameNumber;
+                        document.getElementsByClassName("bikeModel")[0].innerHTML=response.model;
+                        document.getElementsByClassName("frameReference")[0].innerHTML=response.frameReference;
+                        document.getElementsByClassName("contractType")[0].innerHTML=response.contractType;
+                        document.getElementsByClassName("startDateContract")[0].innerHTML=response.contractStart;
+                        document.getElementsByClassName("endDateContract")[0].innerHTML=response.contractEnd;
+                        document.getElementsByClassName("assistanceReference")[0].innerHTML=response.contractReference;    
+                        document.getElementsByClassName("bikeImage")[0].src="images_bikes/"+frameNumber+"_mini.jpg";
+
+                    }              
+
+                    }
+                })
     }
 </script>
 
@@ -333,7 +345,7 @@ if($connected){
                     dest=dest.concat(temp);
                     while (i < response.bikeNumber){
                         
-                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" data-toggle=\"modal\" href=\"#\" onclick=\"test("+response.bike[i].frameNumber+")\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].modelFR+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th></tr>";
+                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].modelFR+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th></tr>";
                         dest=dest.concat(temp);
                         i++;
                         
@@ -2479,8 +2491,30 @@ if($connected){
 </div>
 
 
+<div class="modal fade" id="BikesListing" tabindex="0" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="bikeDetails"></span>
+            </div>
+            
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-<div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="bikeDetailsFull" tabindex="0" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -2489,10 +2523,10 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h3 class="fr">Référence du vélo :</h3>
-						<h3 class="en">Bike Reference:</h3>
-						<h3 class="nl">Bike Reference :</h3>
-                        <p span class="bikeReference"></p>
+						<h3 class="fr-inline">Référence du vélo :</h3>
+						<h3 class="en-inline">Bike Reference:</h3>
+						<h3 class="nl-inline">Bike Reference :</h3>
+                        <p span class="bikeReference">coucou</p>
 						
 						<div class="col-sm-5">
                             <h4><span class="fr"> Modèle : </span></h4>
@@ -2866,28 +2900,6 @@ if($connected){
 	</div>
 </div>
 
-<div class="modal fade" id="BikesListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-            <div data-example-id="contextual-table" class="bs-example">
-                        <span id="bikeDetails"></span>
-            </div>
-            
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-			</div>
-		</div>
-	</div>
-</div>
 
 
 
