@@ -25,6 +25,7 @@ include 'include/activitylog.php';
         for (var i = 0; i < classname.length; i++) {
             classname[i].addEventListener('click', hideResearch, false);
             classname[i].addEventListener('click', get_bikes_listing, false);            
+            classname[i].addEventListener('click', function () { get_reservations_listing('', ''); }, false);            
         }
         
         var classname = document.getElementsByClassName('reservations');
@@ -59,6 +60,11 @@ include 'include/activitylog.php';
                     }
                 })
     }
+    
+    function fillReservationDetails(element)
+    {
+    }    
+    
 </script>
 
 
@@ -361,6 +367,39 @@ if($connected){
             }
         })
     }
+
+    function get_reservations_listing(timeStampStart, frameNumber) {
+        var email= "<?php echo $user; ?>";
+        $.ajax({
+            url: 'include/get_reservations_listing.php',
+            type: 'post',
+            data: { "email": email, "timeStampStart": timeStampStart, "frameNumber": frameNumber},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations:</h4><h4 class=\"en-inline\">Bookins:</h4><h4 class=\"nl-inline\">Boekingen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Date de début</span><span class=\"en-inline\">Start date</span><span class=\"nl-inline\">Start date</span></th><th><span class=\"fr-inline\">Date de fin</span><span class=\"en-inline\">End date</span><span class=\"nl-inline\">End date</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
+                    dest=dest.concat(temp);
+                    while (i < response.bookingNumber){
+                        
+                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th>"+response.booking[i].dateStart+"</th><th>"+response.booking[i].dateEnd+"</th><th>"+response.booking[i].user+"</th></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+                        
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);
+                    document.getElementById('ReservationsList').innerHTML = dest;
+                    displayLanguage();
+
+                }
+            }
+        })
+    }
+
         
     function getHistoricBookings() {
         var user= "<?php echo $user; ?>";
@@ -1281,7 +1320,7 @@ if($connected){
                                     <table class="table table-condensed"><h4 class="fr">Statistiques</h4>
                                         <tbody>
                                             Nombre de vélos en circulation:<a data-target="#BikesListing" data-toggle="modal" href="#"><span id="BikesInCompany"></span></a><br/>
-                                            Nombre de réservations effectuées depuis le 1er Janvier par les employés: <span id="kmsCompany"></span>.
+                                            Réservations effectuées depuis le 1er Janvier par les employés: <a data-target="#ReservationsListing" data-toggle="modal" href="#"><span id="kmsCompany"></span>.
                                         </tbody>
                                     </table>
                                 </div>
@@ -2491,7 +2530,7 @@ if($connected){
 </div>
 
 
-<div class="modal fade" id="BikesListing" tabindex="0" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="BikesListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -2514,7 +2553,30 @@ if($connected){
 	</div>
 </div>
 
-<div class="modal fade" id="bikeDetailsFull" tabindex="0" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="ReservationsListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="ReservationsList"></span>
+            </div>
+            
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -2587,10 +2649,19 @@ if($connected){
 					</div>
 				</div>
 			</div>
+            <div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+
 		</div>
 	</div>
 </div>
-
 
 
 <div class="modal fade" id="tellus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
