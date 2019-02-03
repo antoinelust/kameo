@@ -65,7 +65,7 @@ if($email != NULL)
     $result2 = mysqli_query($conn, $sql2);        
     $resultat2 = mysqli_fetch_assoc($result2);
 
-    $response['kmsTotal']=$resultat2['count(1)'];
+    $response['numberOfBookings']=$resultat2['count(1)'];
 
 	echo json_encode($response);
     die;

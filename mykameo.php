@@ -360,7 +360,7 @@ if($connected){
                     dest=dest.concat(temp);
                     document.getElementById('bikeDetails').innerHTML = dest;
                     document.getElementById('BikesInCompany').innerHTML = response.bikeNumber;
-                    document.getElementById('kmsCompany').innerHTML = response.kmsTotal;
+                    document.getElementById('numberOfBookings').innerHTML = response.numberOfBookings;
                     displayLanguage();
 
                 }
@@ -381,11 +381,11 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations:</h4><h4 class=\"en-inline\">Bookins:</h4><h4 class=\"nl-inline\">Boekingen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Date de début</span><span class=\"en-inline\">Start date</span><span class=\"nl-inline\">Start date</span></th><th><span class=\"fr-inline\">Date de fin</span><span class=\"en-inline\">End date</span><span class=\"nl-inline\">End date</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations:</h4><h4 class=\"en-inline\">Bookins:</h4><h4 class=\"nl-inline\">Boekingen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
                     while (i < response.bookingNumber){
                         
-                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th>"+response.booking[i].dateStart+"</th><th>"+response.booking[i].dateEnd+"</th><th>"+response.booking[i].user+"</th></tr>";
+                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
                         dest=dest.concat(temp);
                         i++;
                         
@@ -1320,7 +1320,7 @@ if($connected){
                                     <table class="table table-condensed"><h4 class="fr">Statistiques</h4>
                                         <tbody>
                                             Nombre de vélos en circulation:<a data-target="#BikesListing" data-toggle="modal" href="#"><span id="BikesInCompany"></span></a><br/>
-                                            Réservations effectuées depuis le 1er Janvier par les employés: <a data-target="#ReservationsListing" data-toggle="modal" href="#"><span id="kmsCompany"></span>.
+                                            Réservations effectuées depuis le 1er Janvier par les employés: <a data-target="#ReservationsListing" data-toggle="modal" href="#"><span id="numberOfBookings"></span></a>.
                                         </tbody>
                                     </table>
                                 </div>

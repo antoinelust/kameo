@@ -24,7 +24,7 @@ if($email != NULL)
 	$timestamp_now=time();
 	
     include 'connexion.php';
-	$sql="SELECT * FROM customer_bikes cc, reservations dd where cc.COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER GROUP BY COMPANY) AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart'";
+	$sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER GROUP BY COMPANY) AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.BUILDING_START=ee.BUILDING_CODE";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -44,8 +44,12 @@ if($email != NULL)
 
         $response['response']="success";
 		$response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-		$response['booking'][$i]['dateStart']=date('d/m/Y H:i', $row['DATE_START']);            
-		$response['booking'][$i]['dateEnd']=date('d/m/Y H:i',$row['DATE_END']);            
+		$response['booking'][$i]['dateStartFR']=date('d/m/Y H:i', $row['DATE_START']).' - '.$row['BUILDING_FR'];            
+		$response['booking'][$i]['dateStartEN']=date('d/m/Y H:i', $row['DATE_START']).' - '.$row['BUILDING_EN'];            
+		$response['booking'][$i]['dateStartNL']=date('d/m/Y H:i', $row['DATE_START']).' - '.$row['BUILDING_NL'];            
+		$response['booking'][$i]['dateEndFR']=date('d/m/Y H:i', $row['DATE_END']).' - '.$row['BUILDING_FR'];            
+		$response['booking'][$i]['dateEndEN']=date('d/m/Y H:i', $row['DATE_END']).' - '.$row['BUILDING_EN'];            
+		$response['booking'][$i]['dateEndNL']=date('d/m/Y H:i', $row['DATE_END']).' - '.$row['BUILDING_NL'];            
 		$response['booking'][$i]['user']=$row['EMAIL'];
         $i++;
 
