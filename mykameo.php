@@ -359,8 +359,8 @@ if($connected){
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);
                     document.getElementById('bikeDetails').innerHTML = dest;
-                    document.getElementById('BikesInCompany').innerHTML = response.bikeNumber;
-                    document.getElementById('numberOfBookings').innerHTML = response.numberOfBookings;
+                    //document.getElementById('BikesInCompany').innerHTML = response.bikeNumber;
+                    //document.getElementById('numberOfBookings').innerHTML = response.numberOfBookings;
                     displayLanguage();
 
                 }
@@ -381,7 +381,7 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations:</h4><h4 class=\"en-inline\">Bookins:</h4><h4 class=\"nl-inline\">Boekingen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
                     while (i < response.bookingNumber){
                         
@@ -1317,10 +1317,12 @@ if($connected){
                                 
                                 <div class="tab-pane" id="fleetmanager">
 
-                                    <table class="table table-condensed"><h4 class="fr">Statistiques</h4>
+                                    <table class="table table-condensed"><h4 class="fr">Fleet management</h4>
                                         <tbody>
-                                            Nombre de vélos en circulation:<a data-target="#BikesListing" data-toggle="modal" href="#"><span id="BikesInCompany"></span></a><br/>
-                                            Réservations effectuées depuis le 1er Janvier par les employés: <a data-target="#ReservationsListing" data-toggle="modal" href="#"><span id="numberOfBookings"></span></a>.
+                                            <!--Nombre de vélos en circulation:<a data-target="#BikesListing" data-toggle="modal" href="#"><span id="BikesInCompany"></span></a><br/>
+                                            Réservations effectuées depuis le 1er Janvier par les employés: <a data-target="#ReservationsListing" data-toggle="modal" href="#"><span id="numberOfBookings"></span></a>.-->
+                                            <a class="button small green button-3d rounded icon-right" data-target="#BikesListing" data-toggle="modal" href="#"><span class="fr">Gérer les vélos</span><span class="en">Manage the bikes</span><span class="nl">Manage the bikes</span></a><br />
+                                            <a class="button small green button-3d rounded icon-right" data-target="#ReservationsListing" data-toggle="modal" href="#"><span class="fr">Gérer les réservations de vélos partagés</span><span class="en">Manage the shared bikes bookings</span><span class="nl">Manage the shared bikes bookings</span></a>
                                         </tbody>
                                     </table>
                                 </div>
@@ -2559,6 +2561,17 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
+            
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown button
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="ReservationsList"></span>
             </div>
