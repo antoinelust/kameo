@@ -827,11 +827,10 @@ if($connected){
                                         </div>
                                     </form>
 
-                                    <script type="text/javascript">    
+                                    <script type="text/javascript"> 
                                         loadClientConditions()
                                         .done(function(response){
                                             constructBuildingForm(response.clientConditions.bookingDays, response.clientConditions.administrator, response.clientConditions.assistance);
-                                            
                                             if (response.clientConditions.administrator == "Y"){
                                                     $(".fleetmanager").removeClass("hidden");
                                             }
@@ -2571,6 +2570,21 @@ if($connected){
                 <a class="dropdown-item" href="#">Another action</a>
                 <a class="dropdown-item" href="#">Something else here</a>
               </div>
+             
+              <div class="col-md-6">
+              	<ul class="nav">
+                    <li class="dropdown" role="presentation"> <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> Dropdown Thib <span class="caret"></span> </a>
+                    	<ul role="menu" class="dropdown-menu">
+                        	<li><a href="#">Action</a> </li>
+                            <li><a href="#">Another action</a> </li>
+                            <li><a href="#">Something else here</a> </li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a> </li>
+                        </ul>
+                    </li>
+                 </ul>
+               </div>
+                           
             </div>
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="ReservationsList"></span>
