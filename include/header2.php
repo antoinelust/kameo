@@ -48,6 +48,10 @@
 	<!-- Template elements -->
 	<link href="css/theme-elements.css" rel="stylesheet">	
 	
+    <!-- DateTimePicker css -->
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+    
 <!-- Responsive classes -->
 	<link href="css/responsive.css" rel="stylesheet">
 

@@ -17,22 +17,29 @@ include 'include/activitylog.php';
 
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
+<script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+
+
 
 <script type="text/javascript">
-    window.addEventListener("DOMContentLoaded", function(event) {
         
-        var classname = document.getElementsByClassName('fleetmanager');
-        for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener('click', hideResearch, false);
-            classname[i].addEventListener('click', get_bikes_listing, false);            
-            classname[i].addEventListener('click', function () { get_reservations_listing('', ''); }, false);            
-        }
-        
-        var classname = document.getElementsByClassName('reservations');
-        for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener('click', hideResearch, false);
-        }              
-    });
+window.addEventListener("DOMContentLoaded", function(event) {
+
+    var classname = document.getElementsByClassName('fleetmanager');
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', hideResearch, false);
+        classname[i].addEventListener('click', get_bikes_listing, false);            
+        classname[i].addEventListener('click', function () { get_reservations_listing()}, false);            
+    }
+
+    var classname = document.getElementsByClassName('reservations');
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', hideResearch, false);
+    }              
+    
+    
+});
     
     
     function fillBikeDetails(element)
@@ -368,31 +375,61 @@ if($connected){
         })
     }
 
-    function get_reservations_listing(timeStampStart, frameNumber) {
+    function get_reservations_listing(){
         var email= "<?php echo $user; ?>";
+        
+        var frameNumber=document.getElementsByClassName('bikeSelection')[0].value;
+        console.log("coucou");
+
+        var date_start=new Date($(".form_date_start").data("datetimepicker").getDate());
+        var date_end=new Date($(".form_date_end").data("datetimepicker").getDate());
+        var timeStampStart=(date_start.valueOf()/1000);
+        var timeStampEnd=(date_end.valueOf()/1000);
+        
+        console.log(timeStampStart);
+        console.log(timeStampEnd);
+        
+        if(timeStampStart==''){
+            d = new Date(new Date().getFullYear(), 0, 1);
+            timeStampStart=+d;
+            timeStampStart=timeStampStart/1000;
+        }
+        if(timeStampEnd==''){
+            timeStampEnd=Date.now();
+            timeStampEnd=Math.round(timeStampEnd/1000);
+        }
         $.ajax({
             url: 'include/get_reservations_listing.php',
             type: 'post',
-            data: { "email": email, "timeStampStart": timeStampStart, "frameNumber": frameNumber},
+            data: { "email": email, "timeStampStart": timeStampStart, "frameNumber": frameNumber, "timeStampEnd": timeStampEnd},
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                    console.log("success");
                     var i=0;
                     var dest="";
+                    var dest2="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
+                    temp2="<li><a href=\"#\" value=\"all\">Tous les vélos</a></li><li class=\"divider\"></li>";
+                    dest2=dest2.concat(temp2);
                     while (i < response.bookingNumber){
                         
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
                         dest=dest.concat(temp);
+                        
+                        var temp2="<li><a href=\"#\" value=\""+response.booking[i].frameNumber+"\">"+response.booking[i].frameNumber+"</a></li>";
+                        dest2=dest2.concat(temp2);
                         i++;
                         
                     }
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);
                     document.getElementById('ReservationsList').innerHTML = dest;
+                    document.getElementsByClassName('bikeSelection')[0].innerHTML=dest2;
+
                     displayLanguage();
 
                 }
@@ -1322,10 +1359,11 @@ if($connected){
                                             Réservations effectuées depuis le 1er Janvier par les employés: <a data-target="#ReservationsListing" data-toggle="modal" href="#"><span id="numberOfBookings"></span></a>.-->
                                             <a class="button small green button-3d rounded icon-right" data-target="#BikesListing" data-toggle="modal" href="#"><span class="fr">Gérer les vélos</span><span class="en">Manage the bikes</span><span class="nl">Manage the bikes</span></a><br />
                                             <a class="button small green button-3d rounded icon-right" data-target="#ReservationsListing" data-toggle="modal" href="#"><span class="fr">Gérer les réservations de vélos partagés</span><span class="en">Manage the shared bikes bookings</span><span class="nl">Manage the shared bikes bookings</span></a>
+                                            
+
                                         </tbody>
                                     </table>
-                                </div>
-                                
+                                </div>                                            
                         </div>
                     </div>
 
@@ -2561,31 +2599,75 @@ if($connected){
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
             
+            
             <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-             
-              <div class="col-md-6">
+              <div class="col-md-2">
               	<ul class="nav">
-                    <li class="dropdown" role="presentation"> <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> Dropdown Thib <span class="caret"></span> </a>
-                    	<ul role="menu" class="dropdown-menu">
-                        	<li><a href="#">Action</a> </li>
-                            <li><a href="#">Another action</a> </li>
-                            <li><a href="#">Something else here</a> </li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a> </li>
+                    <li class="dropdown" role="presentation"> 
+                        <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle" id="bikeSelection"> Sélection de vélo <span class="caret"></span> </a>
+                        <ul role="menu" class="dropdown-menu bikeSelection">
                         </ul>
                     </li>
                  </ul>
                </div>
-                           
             </div>
+            
+			<div class="form-group">
+                <label for="dtp_input2" class="col-md-2 control-label">Date de début</label>
+                <div class="input-group date form_date_start col-md-5" data-date="01/01/2019" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="01/01/2019" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+				<input type="hidden" id="dtp_input2" value="" /><br/>
+            </div>
+
+			<div class="form-group">
+                <label for="dtp_input2" class="col-md-2 control-label">Date de fin</label>
+                <div class="input-group date form_date_end col-md-5" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+				<input type="hidden" id="dtp_input2" value="" /><br/>
+            </div>            
+
+            <script type="text/javascript">
+            
+            	$('.form_date_start').datetimepicker({
+                language:  'fr',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+                });
+                
+            	$('.form_date_end').datetimepicker({
+                language:  'fr',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+                });                
+                
+                $('#bikeSelection').change(function(){
+                    get_reservations_listing();
+                });
+                $('.form_date_start').change(function(){
+                    get_reservations_listing();
+                });
+                $('.form_date_end').change(function(){
+                    get_reservations_listing();
+                });                
+            </script>
+            
+            
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="ReservationsList"></span>
             </div>
