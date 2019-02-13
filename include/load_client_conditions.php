@@ -46,6 +46,7 @@ if($userID != NULL)
 	$response['text']="success";
 	$response['message']="";
     $response['clientConditions']['bookingDays']=$resultat['BOOKING_DAYS']; 
+    $response['clientConditions']['bookingLength']=$resultat['BOOKING_LENGTH']; 
     $response['clientConditions']['assistance']=$resultat['ASSISTANCE']; 
 
 

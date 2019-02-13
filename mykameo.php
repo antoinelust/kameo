@@ -23,7 +23,7 @@ include 'include/activitylog.php';
 
 
 <script type="text/javascript">
-        
+    
 window.addEventListener("DOMContentLoaded", function(event) {
 
     var classname = document.getElementsByClassName('fleetmanager');
@@ -38,8 +38,129 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
     }              
     
+    document.getElementById('search-bikes-form-intake-hour').addEventListener('click', function () { update_deposit_form()}, false);
     
 });
+    
+    function update_deposit_form(){
+        var hour=document.getElementById('search-bikes-form-intake-hour').value;
+        var day=document.getElementById('search-bikes-form-day').value;
+        var month=document.getElementById('search-bikes-form-month').value;
+        
+        var Hours=hour.split('h');
+        
+        var hour=Hours[0];
+        var minute=Hours[1];
+        var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
+        
+        loadClientConditions()
+        .done(function(response){
+            bookingLength=parseInt(response.clientConditions.bookingLength);
+            var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
+            console.log(dateEnd.getHours()+bookingLength);
+            dateEnd.setHours(dateEnd.getHours()+bookingLength);
+            
+            console.log(+dateStart);
+            console.log(+dateEnd);
+            
+            var dateTemp = dateStart;
+            
+            var currentDay=parseInt(day);
+            console.log(currentDay);
+            var currentMonth=parseInt(month);
+            var currentHour=hour;
+            var currentMinute=minute;
+            var Hours=[];
+            var Days=[];
+            var WeekDays=[];
+            var Months=[];
+            
+            Days.push(currentDay);
+            WeekDays.push(dateStart.getDay());
+            Months.push(currentMonth);
+
+            while(dateTemp<dateEnd){
+                
+                dateTemp.setMinutes(dateTemp.getMinutes()+15);
+                hours=dateTemp.getHours();
+                
+                if(dateTemp.getMinutes()=="0"){
+                    minutes="00";
+                }else{
+                    minutes=dateTemp.getMinutes();
+                }
+                var hourString=hours+'h'+minutes;
+                Hours.push(hourString);
+                
+                
+                if(currentDay != dateTemp.getDate() && dateTemp.getDay()!="0" && dateTemp.getDay()!="6"){
+                    currentDay=dateTemp.getDate();
+                    Days.push(currentDay);
+                    WeekDays.push(dateTemp.getDay());
+                }
+                
+                console.log(currentDay);
+                
+                if(currentMonth =! dateTemp.getMonth()){
+                    currentMonth=dateTemp.getMonth();
+                    Months.push(currentMonth);
+                }
+            }
+            console.log(Hours);
+            console.log(Days);
+            console.log(WeekDays);
+            console.log(Months);
+
+            // 1st step: days and month fileds
+
+            var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+            var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+
+
+            var startDate = new Date();    
+            var i=0;
+            var j=0;
+            var dest ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day\"  class=\"form-control\">";
+
+
+            while(i<Days.length){
+                var dayFR = daysFR[WeekDays[i]];
+                var dayEN = daysEN[WeekDays[i]];
+                var dayNL = daysNL[WeekDays[i]];
+                var bookingDay="<option value=\""+Days[i]+"\" class=\"form-control fr\">"+dayFR+" "+Days[i]+"</option><option value=\""+Days[i]+"\" class=\"form-control en\">"+dayEN+" "+Days[i]+"</option><option value=\""+Days[i]+"\" class=\"form-control nl\">"+dayNL+" "+Days[i]+"</option>";
+                i++;       
+                dest = dest.concat(bookingDay);
+            }
+            var bookingDay="</select>";
+            dest = dest.concat(bookingDay);
+            document.getElementById('booking_day_form_deposit').innerHTML=dest;
+
+
+            var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+            var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+
+            var dest ="<select name=\"search-bikes-form-month\" id=\"search-bikes-form-month-deposit\" class=\"form-control\">";
+    
+            var i=0;
+            console.log(Months.length);
+            while(i<Months.length){
+                var bookingMonth="<option value=\""+Months[i]+"\" class=\"form-control fr\">"+monthFR[Months[i]-1]+"</option><option value=\""+Months[i]-1+"\" class=\"form-control en\">"+monthEN[Months[i]-1]+"</option><option value=\""+Months[i]-1+"\" class=\"form-control nl\">"+monthNL[Months[i]-1]+"</option>";
+                dest = dest.concat(bookingMonth);
+                i++;
+            }
+            var bookingMonth="</select>";
+            dest = dest.concat(bookingMonth);
+
+            document.getElementById('booking_month_form_deposit').innerHTML=dest;
+            
+            displayLanguage();
+        
+        });
+
+        
+    }
     
     
     function fillBikeDetails(element)
@@ -122,8 +243,8 @@ if($connected){
 
     }
         // Goal of this function is to construct the reasearch fields 
-    function constructBuildingForm(daysToDisplay, administrator, assistance){
-
+    function constructBuildingForm(daysToDisplay, bookingLength, administrator, assistance){
+        
         
         if(assistance=="Y"){
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
@@ -139,10 +260,14 @@ if($connected){
         var i=0;
         var j=0;
         var dest ="<select id=\"search-bikes-form-day\" name=\"search-bikes-form-day\"  class=\"form-control\">";
+        var dest2 ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
 
         var tempDate = new Date();
         var month = [];
         month.push(tempDate.getMonth()+1);
+        
+        var tempDate2=tempDate;
+        bookingLength=parseInt(bookingLength);
 
         while(i<=daysToDisplay){
             var dayFR = daysFR[tempDate.getDay()];
@@ -155,6 +280,7 @@ if($connected){
                 var bookingDay="<option value=\""+tempDate.getDate()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+"</option><option value=\""+tempDate.getDate()+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+"</option><option value=\""+tempDate.getDate()+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+"</option>";
                 i++;       
                 dest = dest.concat(bookingDay);
+                dest2 = dest2.concat(bookingDay);
             }
             if(tempDate.getMonth() != month[j]){
                 j++;
@@ -165,7 +291,9 @@ if($connected){
         }
         var bookingDay="</select>";
         dest = dest.concat(bookingDay);
+        dest2 = dest2.concat(bookingDay);
         document.getElementById('booking_day_form').innerHTML=dest;
+        document.getElementById('booking_day_form_deposit').innerHTML=dest2;
 
 
         var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
@@ -173,16 +301,21 @@ if($connected){
         var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
         var dest ="<select name=\"search-bikes-form-month\" id=\"search-bikes-form-month\" class=\"form-control\">";
+        var dest2 = "<select name=\"search-bikes-form-month\" id=\"search-bikes-form-month-deposit\" class=\"form-control\">";
         for(i=0;month[i];i++){
             var MonthBase1=month[i];
             var MonthBase0=month[i]-1;
             var bookingMonth="<option value=\""+MonthBase1+"\" class=\"form-control fr\">"+monthFR[MonthBase0]+"</option><option value=\""+MonthBase1+"\" class=\"form-control en\">"+monthEN[MonthBase0]+"</option><option value=\""+MonthBase1+"\" class=\"form-control nl\">"+monthNL[MonthBase0]+"</option>";
             dest = dest.concat(bookingMonth);
+            dest2 = dest2.concat(bookingMonth);
 
         }
         var bookingMonth="</select>";
         dest = dest.concat(bookingMonth);
+        dest2 = dest2.concat(bookingMonth);
+
         document.getElementById('booking_month_form').innerHTML=dest;
+        document.getElementById('booking_month_form_deposit').innerHTML=dest2;
 
 
         // 2nd step: intake and deposit buildings
@@ -220,6 +353,7 @@ if($connected){
                     }
                     var tempBuilding="</select>";
                     dest = dest.concat(tempBuilding);
+                    document.getElementById('start_building_form').innerHTML=dest;
                     document.getElementById('start_building_form').innerHTML=dest;
 
                     var j=0;
@@ -377,10 +511,7 @@ if($connected){
 
     function get_reservations_listing(){
         var email= "<?php echo $user; ?>";
-        
-        var frameNumber=document.getElementsByClassName('bikeSelection')[0].value;
-        console.log("coucou");
-
+        var frameNumber='';
         var date_start=new Date($(".form_date_start").data("datetimepicker").getDate());
         var date_end=new Date($(".form_date_end").data("datetimepicker").getDate());
         var timeStampStart=(date_start.valueOf()/1000);
@@ -420,7 +551,7 @@ if($connected){
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
                         dest=dest.concat(temp);
                         
-                        var temp2="<li><a href=\"#\" value=\""+response.booking[i].frameNumber+"\">"+response.booking[i].frameNumber+"</a></li>";
+                        var temp2="<li><a href=\"#\" value=\""+response.booking[i].frameNumber+"\" class=\"bikeSelectionValue\">"+response.booking[i].frameNumber+"</a></li>";
                         dest2=dest2.concat(temp2);
                         i++;
                         
@@ -743,17 +874,12 @@ if($connected){
                                            <label for="booking_day_form" class="col-sm-12 fr">A quelle date voulez-vous prendre le vélo ?</label>
                                            <label for="booking_day_form" class="col-sm-12 en">When do you want to book a bike ?</label>
                                            <label for="booking_day_form" class="col-sm-12 nl">Wanneer wil je een fiets boeken?</label>                                      
-                                            <div class="form-group col-sm-5" id="booking_day_form"></div>                                                                         
+                                            <div class="form-group col-sm-4" id="booking_day_form"></div>                                                                         
 
-                                            <div class="form-group col-sm-5" id="booking_month_form"></div>                                                                         
+                                            <div class="form-group col-sm-4" id="booking_month_form"></div>                                                                         
 
 
-                                            <div class="form-group col-sm-5" id="start_building_form"></div>                                                                         
-                                            <div class="form-group col-sm-5" id="deposit_building_form"></div>                                                                         
-                                            <div class="form-group col-sm-5">                                       
-                                                 <label for="search-bikes-form-intake-hour" class="fr">À quelle heure voulez-vous prendre le vélo?</label>									     
-                                                 <label for="search-bikes-form-intake-hour" class="en">When do you want to take the bike?</label>									     
-                                                 <label for="search-bikes-form-intake-hour" class="nl">Wanneer wil je de fiets nemen?</label><span class="en"><br /></span>								     
+                                            <div class="form-group col-sm-4">                                       
                                                  <select id="search-bikes-form-intake-hour" name="search-bikes-form-intake-hour" class="form-control">
                                                     <option value="8h00">8h00</option>									       
                                                     <option value="8h15">8h15</option>									        
@@ -801,12 +927,13 @@ if($connected){
                                                     <option value="18h45">18h45</option>									    
                                                   </select>                                   
                                             </div>                                                                         
-                                            <div class="form-group col-sm-5">                                      
-                                                 <label for="search-bikes-form-deposit-hour" class="fr">À quelle heure voulez-vous rendre le vélo?</label>									  
-                                                 <label for="search-bikes-form-deposit-hour" class="en">When do you want to deposit the bike?</label>									  
-                                                 <label for="search-bikes-form-deposit-hour" class="nl">Wanneer wil je de fiets storten?</label>									  
-
-                                                 <select id="search-bikes-form-deposit-hour" name="search-bikes-form-deposit-hour" class="form-control">									           
+                                           <label for="booking_day_form_deposit" class="col-sm-12 fr">A quelle date voulez-vous rendre le vélo ?</label>
+                                           <label for="booking_day_form_deposit" class="col-sm-12 en">When do you want to deposit the bike?</label>
+                                           <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>                                      
+                                            <div class="form-group col-sm-4" id="booking_day_form_deposit"></div>                                                                         
+                                            <div class="form-group col-sm-4" id="booking_month_form_deposit"></div>      
+                                            <div class="form-group col-sm-4">                                       
+                                                <select id="search-bikes-form-deposit-hour" name="search-bikes-form-deposit-hour" class="form-control">									           
                                                     <option value="8h00">8h00</option>									       
                                                     <option value="8h15">8h15</option>									        
                                                     <option value="8h30">8h30</option>								
@@ -853,8 +980,11 @@ if($connected){
                                                     <option value="18h45">18h45</option>									      
                                                   </select>   
                                             </div>
-                                            <input type="text" class="hidden" id="search-bikes-form-frame-number" name="search-bikes-form-frame-number" value="<?php echo $row['FRAME_NUMBER'] ?>" />                               
-                                        </div> 
+
+                                            <div class="form-group col-sm-5" id="start_building_form"></div>                                                                         
+                                            <div class="form-group col-sm-5" id="deposit_building_form"></div>                                                                         
+                                        </div>
+                                        <input type="text" class="hidden" id="search-bikes-form-frame-number" name="search-bikes-form-frame-number" value="<?php echo $row['FRAME_NUMBER'] ?>" />                               
 
                                         <br />
                                         <div class="form-group col-sm-6">  
@@ -867,7 +997,7 @@ if($connected){
                                     <script type="text/javascript"> 
                                         loadClientConditions()
                                         .done(function(response){
-                                            constructBuildingForm(response.clientConditions.bookingDays, response.clientConditions.administrator, response.clientConditions.assistance);
+                                            constructBuildingForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance);
                                             if (response.clientConditions.administrator == "Y"){
                                                     $(".fleetmanager").removeClass("hidden");
                                             }
@@ -2604,7 +2734,7 @@ if($connected){
               <div class="col-md-2">
               	<ul class="nav">
                     <li class="dropdown" role="presentation"> 
-                        <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle" id="bikeSelection"> Sélection de vélo <span class="caret"></span> </a>
+                        <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> Sélection de vélo <span class="caret"></span> </a>
                         <ul role="menu" class="dropdown-menu bikeSelection">
                         </ul>
                     </li>
@@ -2656,7 +2786,8 @@ if($connected){
                 forceParse: 0
                 });                
                 
-                $('#bikeSelection').change(function(){
+                $('.bikeSelection').click(function(){
+                    console.log($(this).value);
                     get_reservations_listing();
                 });
                 $('.form_date_start').change(function(){
