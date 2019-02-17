@@ -38,9 +38,53 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
     }              
     
-    document.getElementById('search-bikes-form-intake-hour').addEventListener('click', function () { update_deposit_form()}, false);
+            
+    
+    
+    
+    
+document.getElementById('search-bikes-form-intake-hour').addEventListener('click', function () { update_deposit_form()}, false);
     
 });
+    
+    
+    function construct_form_for_bike_status_update(frameNumber){
+        var frameNumber=frameNumber;
+        $.ajax({
+                url: 'include/get_bike_details.php',
+                type: 'post',
+                data: { "frameNumber": frameNumber},
+                success: function(response){
+                    if (response.response == 'error') {
+                        console.log(response.message);
+                    } else{
+                        
+                        document.getElementsByClassName("bikeReference")[1].innerHTML=frameNumber;
+                        document.getElementsByClassName("bikeModel")[1].innerHTML=response.model;
+                        document.getElementsByClassName("frameReference")[1].innerHTML=response.frameReference;
+                        document.getElementsByClassName("contractType")[1].innerHTML=response.contractType;
+                        document.getElementsByClassName("startDateContract")[1].innerHTML=response.contractStart;
+                        document.getElementsByClassName("endDateContract")[1].innerHTML=response.contractEnd;
+                        document.getElementsByClassName("assistanceReference")[1].innerHTML=response.contractReference;    
+                        document.getElementsByClassName("bikeImage")[1].src="images_bikes/"+frameNumber+"_mini.jpg";
+                        if(response.status=="OK"){
+                            $("#bikeStatus").val('OK');
+                        }
+                        else{
+                            $("#bikeStatus").val('KO');
+                        }
+                        
+                        document.getElementById('widget-updateBikeStatus-form-frameNumber').value = frameNumber;
+
+
+                        console.log(document.getElementById("widget-updateBikeStatus-form-frameNumber").value);
+
+                    }              
+
+                    }
+                })
+        
+    }
     
     function update_deposit_form(){
         var hour=document.getElementById('search-bikes-form-intake-hour').value;
@@ -488,11 +532,11 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Référence</span><span class=\"en=inline\">Reference</span><span class=\"nl-inline\">Referentie</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Référence</span><span class=\"en=inline\">Reference</span><span class=\"nl-inline\">Referentie</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
                     while (i < response.bikeNumber){
                         
-                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].modelFR+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th></tr>";
+                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].modelFR+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th><th>"+response.bike[i].status+"</th><th><ins><a class=\"text-red updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></th></tr>";
                         dest=dest.concat(temp);
                         i++;
                         
@@ -503,6 +547,11 @@ if($connected){
                     //document.getElementById('BikesInCompany').innerHTML = response.bikeNumber;
                     //document.getElementById('numberOfBookings').innerHTML = response.numberOfBookings;
                     displayLanguage();
+                    
+                    var classname = document.getElementsByClassName('updateBikeStatus');
+                    for (var i = 0; i < classname.length; i++) {
+                        classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
+                    }  
 
                 }
             }
@@ -516,10 +565,7 @@ if($connected){
         var date_end=new Date($(".form_date_end").data("datetimepicker").getDate());
         var timeStampStart=(date_start.valueOf()/1000);
         var timeStampEnd=(date_end.valueOf()/1000);
-        
-        console.log(timeStampStart);
-        console.log(timeStampEnd);
-        
+                
         if(timeStampStart==''){
             d = new Date(new Date().getFullYear(), 0, 1);
             timeStampStart=+d;
@@ -538,7 +584,6 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
-                    console.log("success");
                     var i=0;
                     var dest="";
                     var dest2="";
@@ -2700,7 +2745,7 @@ if($connected){
 
 
 <div class="modal fade" id="BikesListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -2828,7 +2873,7 @@ if($connected){
 						<h3 class="fr-inline">Référence du vélo :</h3>
 						<h3 class="en-inline">Bike Reference:</h3>
 						<h3 class="nl-inline">Bike Reference :</h3>
-                        <p span class="bikeReference">coucou</p>
+                        <p span class="bikeReference"></p>
 						
 						<div class="col-sm-5">
                             <h4><span class="fr"> Modèle : </span></h4>
@@ -2903,6 +2948,143 @@ if($connected){
 	</div>
 </div>
 
+<div class="modal fade" id="updateBikeStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h3 class="fr-inline">Référence du vélo :</h3>
+						<h3 class="en-inline">Bike Reference:</h3>
+						<h3 class="nl-inline">Bike Reference :</h3>
+                        <p span class="bikeReference"></p>
+						
+						<div class="col-sm-5">
+                            <h4><span class="fr"> Modèle : </span></h4>
+                            <h4><span class="en"> Model: </span></h4>
+                            <h4><span class="nl"> Model : </span></h4>
+                            <p span class="bikeModel"></p>
+
+                        </div>
+						<div class="col-sm-5">
+                            <h4><span class="fr"> Référence du cadre : </span></h4>
+                            <h4><span class="en"> Frame reference: </span></h4>
+                            <h4><span class="nl"> Frame reference: </span></h4>
+                            <p span class="frameReference"></p>
+
+                        </div>
+                        
+                        <div class="col-sm-10">
+						<h4>Informations relatives au contrat</h4>
+						</div>
+                        
+                        <div class="col-sm-5">
+                        <h4><span class="fr"> Type de contrat : </span></h4>
+                        <h4><span class="en"> Contract type: </span></h4>
+                        <h4><span class="nl"> Contract type : </span></h4>
+
+
+                       	<p><span class="contractType"></span></p> 
+                       	</div>
+
+                       <div class="col-sm-5">
+                        <h4><span class="fr" >Date de début :</span></h4>
+                        <h4><span class="en" >Start date:</span></h4>
+                        <h4><span class="nl" >Start date :</span></h4>
+
+                        <p><span class="startDateContract"></span></p>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <h4><span class="fr" >Date de fin :</span></h4>
+                            <h4><span class="en" >End date:</span></h4>
+                            <h4><span class="nl" >End date :</span></h4>
+                        <p><span class="endDateContract"></span></p>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <h4><span class="fr" >Référence pour assistance :</span></h4>
+                            <h4><span class="en" >Assistance reference:</span></h4>
+                            <h4><span class="nl" >Assistance reference :</span></h4>
+                        <p><span class="assistanceReference"></span></p>
+                        </div>
+
+                       <div class="col-sm-10">
+                        <h4>Votre vélo: </h4>
+                            <div class="col-md-4">
+                            <img src="" class="bikeImage" alt="image" />
+                            </div>  
+                        </div>    
+					</div>
+                    
+                    <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
+                        
+                        <div class="col-sm-5">
+                                <h4><span class="fr" >Status :</span></h4>
+                                <h4><span class="en" >Status:</span></h4>
+                                <h4><span class="nl" >Status :</span></h4>
+                            <select title="Bike Status" class="selectpicker" id="bikeStatus" name="bikeStatus">
+                              <option value="OK">En état d'utilisation</option>
+                              <option value="KO">Cassé</option>
+                            </select>
+                            <input type="text" class="hidden" id="widget-updateBikeStatus-form-frameNumber" name="widget-updateBikeStatus-form-frameNumber"/>
+
+                        </div>
+                        <br/>
+                            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+                            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+                            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+                    </form>
+                    
+				</div>
+			</div>
+            <div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+    jQuery("#widget-updateBikeStatus-form").validate({
+
+        submitHandler: function(form) {
+            jQuery(form).ajaxSubmit({
+                success: function(text) {
+                    if (text.response == 'success') {
+                        $.notify({
+                            message: text.message
+                        }, {
+                            type: 'success'
+                        });
+                        get_bikes_listing();
+                        $('#updateBikeStatus').modal('toggle');
+
+                        
+
+                    } else {
+                        $.notify({
+                            message: text.message
+                        }, {
+                            type: 'danger'
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+</script>                    
 
 <div class="modal fade" id="tellus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">

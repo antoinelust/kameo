@@ -43,6 +43,7 @@ if($frameNumber != NULL)
         $response['contractStart']="N/A";
         $response['contractEnd']="N/A";
     }
+    $response['status']=$row['STATUS'];
     
 	echo json_encode($response);
     die;

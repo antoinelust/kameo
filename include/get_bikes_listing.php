@@ -49,6 +49,7 @@ if($email != NULL)
             $response['bike'][$i]['contractType']="other";
             $response['bike'][$i]['contractDates']="N/A";
         }
+        $response['bike'][$i]['status']=$row['STATUS'];
                 
         $i++;
 
