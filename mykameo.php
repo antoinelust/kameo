@@ -429,6 +429,12 @@ if($connected){
         
 
         while(i<=daysToDisplay){
+            if(tempDate.getHours()>=hourEndBooking){
+                tempDate.setHours(hourStartBooking);
+                tempDate.setMinutes(0);
+                tempDate.setDate(tempDate.getDate()+1);
+            }
+
             var dayFR = daysFR[tempDate.getDay()];
             var dayEN = daysEN[tempDate.getDay()];
             var dayNL = daysNL[tempDate.getDay()];
@@ -458,9 +464,14 @@ if($connected){
         var h = ((((minutes/105) + .5) | 0) + hours) % 24;
         
         var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
-        console.log(dateTemp.getHours());
         
         var dest="";
+        if(dateTemp.getHours()>=hourEndBooking){
+            dateTemp.setHours(hourStartBooking);
+            dateTemp.setMinutes(0);
+            dateTemp.setDate(dateTemp.getDate()+1);
+        }
+        console.log(dateTemp);
         while(dateTemp.getHours()<hourEndBooking){
             dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
             
