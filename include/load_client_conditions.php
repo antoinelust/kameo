@@ -48,7 +48,8 @@ if($userID != NULL)
     $response['clientConditions']['bookingDays']=$resultat['BOOKING_DAYS']; 
     $response['clientConditions']['bookingLength']=$resultat['BOOKING_LENGTH']; 
     $response['clientConditions']['assistance']=$resultat['ASSISTANCE']; 
-
+    $response['clientConditions']['hourStartBooking']=$resultat['HOUR_START_BOOKING'];
+    $response['clientConditions']['hourEndBooking']=$resultat['HOUR_END_BOOKING'];
 
 	
     

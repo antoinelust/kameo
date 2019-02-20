@@ -38,204 +38,319 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
     }              
     
-            
-    
-    
-    
-    
-document.getElementById('search-bikes-form-intake-hour').addEventListener('click', function () { update_deposit_form()}, false);
+document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_deposit_form()}, false);  
+document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);  
+document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
     
 });
     
     
-    function construct_form_for_bike_status_update(frameNumber){
-        var frameNumber=frameNumber;
-        $.ajax({
-                url: 'include/get_bike_details.php',
-                type: 'post',
-                data: { "frameNumber": frameNumber},
-                success: function(response){
-                    if (response.response == 'error') {
-                        console.log(response.message);
-                    } else{
-                        
-                        document.getElementsByClassName("bikeReference")[1].innerHTML=frameNumber;
-                        document.getElementsByClassName("bikeModel")[1].innerHTML=response.model;
-                        document.getElementsByClassName("frameReference")[1].innerHTML=response.frameReference;
-                        document.getElementsByClassName("contractType")[1].innerHTML=response.contractType;
-                        document.getElementsByClassName("startDateContract")[1].innerHTML=response.contractStart;
-                        document.getElementsByClassName("endDateContract")[1].innerHTML=response.contractEnd;
-                        document.getElementsByClassName("assistanceReference")[1].innerHTML=response.contractReference;    
-                        document.getElementsByClassName("bikeImage")[1].src="images_bikes/"+frameNumber+"_mini.jpg";
-                        if(response.status=="OK"){
-                            $("#bikeStatus").val('OK');
-                        }
-                        else{
-                            $("#bikeStatus").val('KO');
-                        }
-                        
-                        document.getElementById('widget-updateBikeStatus-form-frameNumber').value = frameNumber;
+function construct_form_for_bike_status_update(frameNumber){
+    var frameNumber=frameNumber;
+    $.ajax({
+            url: 'include/get_bike_details.php',
+            type: 'post',
+            data: { "frameNumber": frameNumber},
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                } else{
 
-
-                        console.log(document.getElementById("widget-updateBikeStatus-form-frameNumber").value);
-
-                    }              
-
+                    document.getElementsByClassName("bikeReference")[1].innerHTML=frameNumber;
+                    document.getElementsByClassName("bikeModel")[1].innerHTML=response.model;
+                    document.getElementsByClassName("frameReference")[1].innerHTML=response.frameReference;
+                    document.getElementsByClassName("contractType")[1].innerHTML=response.contractType;
+                    document.getElementsByClassName("startDateContract")[1].innerHTML=response.contractStart;
+                    document.getElementsByClassName("endDateContract")[1].innerHTML=response.contractEnd;
+                    document.getElementsByClassName("assistanceReference")[1].innerHTML=response.contractReference;    
+                    document.getElementsByClassName("bikeImage")[1].src="images_bikes/"+frameNumber+"_mini.jpg";
+                    if(response.status=="OK"){
+                        $("#bikeStatus").val('OK');
                     }
-                })
-        
-    }
-    
-    function update_deposit_form(){
-        var hour=document.getElementById('search-bikes-form-intake-hour').value;
-        var day=document.getElementById('search-bikes-form-day').value;
-        var month=document.getElementById('search-bikes-form-month').value;
-        
-        var Hours=hour.split('h');
-        
-        var hour=Hours[0];
-        var minute=Hours[1];
-        var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
-        
-        loadClientConditions()
-        .done(function(response){
-            bookingLength=parseInt(response.clientConditions.bookingLength);
-            var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
-            console.log(dateEnd.getHours()+bookingLength);
-            dateEnd.setHours(dateEnd.getHours()+bookingLength);
-            
-            console.log(+dateStart);
-            console.log(+dateEnd);
-            
-            var dateTemp = dateStart;
-            
-            var currentDay=parseInt(day);
-            console.log(currentDay);
-            var currentMonth=parseInt(month);
-            var currentHour=hour;
-            var currentMinute=minute;
-            var Hours=[];
-            var Days=[];
-            var WeekDays=[];
-            var Months=[];
-            
-            Days.push(currentDay);
-            WeekDays.push(dateStart.getDay());
-            Months.push(currentMonth);
+                    else{
+                        $("#bikeStatus").val('KO');
+                    }
 
-            while(dateTemp<dateEnd){
-                
-                dateTemp.setMinutes(dateTemp.getMinutes()+15);
-                hours=dateTemp.getHours();
-                
-                if(dateTemp.getMinutes()=="0"){
-                    minutes="00";
-                }else{
-                    minutes=dateTemp.getMinutes();
-                }
+                    document.getElementById('widget-updateBikeStatus-form-frameNumber').value = frameNumber;
+
+                }              
+
+            }
+    })
+}
+    
+    
+    
+    
+function update_deposit_form(){
+    var hour=document.getElementById('search-bikes-form-intake-hour').value;
+    var date=document.getElementById('search-bikes-form-day').value;
+    var Date1=date.split('-');
+    var day=Date1[0];
+    var month=(Date1[1]-1);
+    var Hours=hour.split('h');
+
+    var hour=Hours[0];
+    var minute=Hours[1];
+    
+
+    var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
+    var dateTemp = new Date(new Date().getFullYear(), month, day, hour, minute);
+    
+    loadClientConditions()
+    .done(function(response){
+        bookingLength=parseInt(response.clientConditions.bookingLength);
+        
+        var hour=document.getElementById('search-bikes-form-intake-hour').value;
+        var Hours1=hour.split('h');
+        var hour=Hours1[0];
+        var minute=Hours1[1];
+        var date=document.getElementById('search-bikes-form-day').value;
+        var Date1=date.split('-');
+        var day=Date1[0];
+        var month=(Date1[1]-1);
+        
+        
+        var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
+        dateEnd.setHours(dateEnd.getHours()+bookingLength);
+        
+        var currentDay=parseInt(day);
+        var currentMonth=parseInt(month);
+        var currentHour=hour;
+        var currentMinute=minute;
+        var Hours=[];
+        var Days=[];
+        var WeekDays=[];
+        var Months=[];
+
+        Days.push(currentDay);
+        WeekDays.push(dateStart.getDay());
+        Months.push(currentMonth);
+        while(dateTemp<dateEnd){
+            
+            hours=dateTemp.getHours();
+            
+            if(dateTemp.getMinutes()=="0"){
+                minutes="00";
+            }
+            else{
+                minutes=dateTemp.getMinutes();
+            }
+            if(hours>=response.clientConditions.hourStartBooking && hours<=response.clientConditions.hourEndBooking && dateTemp.getDay()==dateStart.getDay()){
                 var hourString=hours+'h'+minutes;
                 Hours.push(hourString);
-                
-                
-                if(currentDay != dateTemp.getDate() && dateTemp.getDay()!="0" && dateTemp.getDay()!="6"){
-                    currentDay=dateTemp.getDate();
-                    Days.push(currentDay);
-                    WeekDays.push(dateTemp.getDay());
-                }
-                
-                console.log(currentDay);
-                
-                if(currentMonth =! dateTemp.getMonth()){
-                    currentMonth=dateTemp.getMonth();
-                    Months.push(currentMonth);
-                }
             }
-            console.log(Hours);
-            console.log(Days);
-            console.log(WeekDays);
-            console.log(Months);
+            dateTemp.setMinutes(dateTemp.getMinutes()+15);
+        }
 
-            // 1st step: days and month fileds
+        if(dateTemp.getDate()>response.clientConditions.hourStartBooking){
+            var numberOfDays=(dateTemp.getDate()-currentDay+1);
+        } else{
+            var numberOfDays=(dateTemp.getDate()-currentDay);
+        }
+        
+        // 1st step: days and month fileds
+        
+        var hour=document.getElementById('search-bikes-form-intake-hour').value;
+        var date1=document.getElementById('search-bikes-form-day').value;
+        var Date1=date.split('-');
+        var day=Date1[0];
+        var month=(Date1[1]-1);
+        var Hours1=hour.split('h');
+        var hour=Hours1[0];
+        var minute=Hours1[1];
 
-            var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-            var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
 
-            var startDate = new Date();    
-            var i=0;
-            var j=0;
-            var dest ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day\"  class=\"form-control\">";
+        var tempDate = new Date(new Date().getFullYear(), month, day, hour, minute);    
+        var i=0;
+        var j=0;
+        var dest ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
 
 
-            while(i<Days.length){
-                var dayFR = daysFR[WeekDays[i]];
-                var dayEN = daysEN[WeekDays[i]];
-                var dayNL = daysNL[WeekDays[i]];
-                var bookingDay="<option value=\""+Days[i]+"\" class=\"form-control fr\">"+dayFR+" "+Days[i]+"</option><option value=\""+Days[i]+"\" class=\"form-control en\">"+dayEN+" "+Days[i]+"</option><option value=\""+Days[i]+"\" class=\"form-control nl\">"+dayNL+" "+Days[i]+"</option>";
-                i++;       
-                dest = dest.concat(bookingDay);
-            }
-            var bookingDay="</select>";
+        while(i<numberOfDays){
+            var dayFR = daysFR[tempDate.getDay()];
+            var dayEN = daysEN[tempDate.getDay()];
+            var dayNL = daysNL[tempDate.getDay()];
+            var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option>";
+            tempDate.setDate(tempDate.getDate()+1);
+
+            i++;       
             dest = dest.concat(bookingDay);
-            document.getElementById('booking_day_form_deposit').innerHTML=dest;
+        }
+        var bookingDay="</select>";
+        dest = dest.concat(bookingDay);
+        document.getElementById('booking_day_form_deposit').innerHTML=dest;
 
 
-            var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-            var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+        document.getElementById('search-bikes-form-day-deposit').addEventListener('click', function () { update_deposit_hour_form()}, false);
 
-            var dest ="<select name=\"search-bikes-form-month\" id=\"search-bikes-form-month-deposit\" class=\"form-control\">";
+
+
+        var dest ="<select name=\"search-bikes-form-deposit-hour\" id=\"search-bikes-form-deposit-hour\" class=\"form-control\">";
+
+        var i=0;
+        while(i<Hours.length){
+            var bookingHour="<option value=\""+Hours[i]+"\" class=\"form-control\">"+Hours[i]+"</option>";
+            dest = dest.concat(bookingHour);
+            i++;
+        }
+        var bookingHour="</select>";
+        document.getElementById('booking_hour_form_deposit').innerHTML=dest;
+
+
+    });
+
+
+
+}
     
-            var i=0;
-            console.log(Months.length);
-            while(i<Months.length){
-                var bookingMonth="<option value=\""+Months[i]+"\" class=\"form-control fr\">"+monthFR[Months[i]-1]+"</option><option value=\""+Months[i]-1+"\" class=\"form-control en\">"+monthEN[Months[i]-1]+"</option><option value=\""+Months[i]-1+"\" class=\"form-control nl\">"+monthNL[Months[i]-1]+"</option>";
-                dest = dest.concat(bookingMonth);
-                i++;
+function update_intake_hour_form(){
+    loadClientConditions()
+    .done(function(response){
+        var date1=document.getElementById('search-bikes-form-day').value;
+        var Date1=date1.split('-');
+        var day=Date1[0];
+        var currentDate=new Date();
+        
+        if(currentDate.getDate()==day){
+            var hours=currentDate.getHours();
+            var minutes=currentDate.getMinutes();
+
+            var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
+            var h = ((((minutes/105) + .5) | 0) + hours) % 24;
+
+            var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
+
+            }            
+            else{
+                var m = 0;
+                var h = response.clientConditions.hourStartBooking;
+                var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
+          }
+          
+        var dest="";
+          
+        while(dateTemp.getHours()<response.clientConditions.hourEndBooking){
+            dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
+
+            if(dateTemp.getMinutes()=="0"){
+                var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
+            }else{
+                var hourString=dateTemp.getHours()+"h"+dateTemp.getMinutes();
             }
-            var bookingMonth="</select>";
-            dest = dest.concat(bookingMonth);
 
-            document.getElementById('booking_month_form_deposit').innerHTML=dest;
+            var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
+            dest=dest.concat(tempString);
+        document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
+        document.getElementById('search-bikes-form-deposit-hour').innerHTML=dest;
+        }
+    });
+}
+          
+    
+function update_deposit_hour_form(){
+    var hour=document.getElementById('search-bikes-form-intake-hour').value;
+    var date1=document.getElementById('search-bikes-form-day').value;
+    var Date1=date1.split('-');
+    var day=Date1[0];
+    var month=Date1[1];
+    
+
+    var Hours1=hour.split('h');
+
+    var hour=Hours1[0];
+    var minute=Hours1[1];
+    var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
+
+    loadClientConditions()
+    .done(function(response){
+        bookingLength=parseInt(response.clientConditions.bookingLength);
+        var hour=document.getElementById('search-bikes-form-intake-hour').value;
+        var date1=document.getElementById('search-bikes-form-day').value;
+        var Date1=date1.split('-');
+        var day=Date1[0];
+        var month=Date1[1];
+        var Hours1=hour.split('h');
+        var hour=Hours1[0];
+        var minute=Hours1[1];
             
-            displayLanguage();
+        var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
+        dateEnd.setHours(dateEnd.getHours()+bookingLength);
+
+        var date1=document.getElementById('search-bikes-form-day-deposit').value;
+        var Date1=date1.split('-');
+        var day=Date1[0];
+        var month=Date1[1];
+        var currentDepositDate = new Date(new Date().getFullYear(), month, day, response.clientConditions.hourStartBooking, '00');
+        var dateTemp2 = new Date(new Date().getFullYear(), month, day, response.clientConditions.hourStartBooking, '00');
+                
+        var Hours=[];
         
-        });
-
+        while(dateTemp2<dateEnd){            
+            hours=dateTemp2.getHours();
+            if(dateTemp2.getMinutes()=="0"){
+                minutes="00";
+            }else{
+                minutes=dateTemp2.getMinutes();
+            }
+            if(hours>=response.clientConditions.hourStartBooking && hours<=response.clientConditions.hourEndBooking && dateTemp2.getDay()==currentDepositDate.getDay()){
+                var hourString=hours+'h'+minutes;
+                Hours.push(hourString);
+            }
+            dateTemp2.setMinutes(dateTemp2.getMinutes()+15);
+        }
         
-    }
-    
-    
-    function fillBikeDetails(element)
-    {
-        var frameNumber=element;
-        $.ajax({
-                url: 'include/get_bike_details.php',
-                type: 'post',
-                data: { "frameNumber": frameNumber},
-                success: function(response){
-                    if (response.response == 'error') {
-                        console.log(response.message);
-                    } else{
-                        document.getElementsByClassName("bikeReference")[0].innerHTML=frameNumber;
-                        document.getElementsByClassName("bikeModel")[0].innerHTML=response.model;
-                        document.getElementsByClassName("frameReference")[0].innerHTML=response.frameReference;
-                        document.getElementsByClassName("contractType")[0].innerHTML=response.contractType;
-                        document.getElementsByClassName("startDateContract")[0].innerHTML=response.contractStart;
-                        document.getElementsByClassName("endDateContract")[0].innerHTML=response.contractEnd;
-                        document.getElementsByClassName("assistanceReference")[0].innerHTML=response.contractReference;    
-                        document.getElementsByClassName("bikeImage")[0].src="images_bikes/"+frameNumber+"_mini.jpg";
 
-                    }              
+        var dest ="<select name=\"search-bikes-form-deposit-hour\" id=\"search-bikes-form-deposit-hour\" class=\"form-control\">";
 
-                    }
-                })
-    }
+        var i=0;
+        while(i<Hours.length){
+            var bookingHour="<option value=\""+Hours[i]+"\" class=\"form-control\">"+Hours[i]+"</option>";
+            dest = dest.concat(bookingHour);
+            i++;
+        }
+        var bookingHour="</select>";
+        document.getElementById('booking_hour_form_deposit').innerHTML=dest;
+    });
+}    
     
-    function fillReservationDetails(element)
-    {
-    }    
+    
+function fillBikeDetails(element)
+{
+    var frameNumber=element;
+    $.ajax({
+            url: 'include/get_bike_details.php',
+            type: 'post',
+            data: { "frameNumber": frameNumber},
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                } else{
+                    document.getElementsByClassName("bikeReference")[0].innerHTML=frameNumber;
+                    document.getElementsByClassName("bikeModel")[0].innerHTML=response.model;
+                    document.getElementsByClassName("frameReference")[0].innerHTML=response.frameReference;
+                    document.getElementsByClassName("contractType")[0].innerHTML=response.contractType;
+                    document.getElementsByClassName("startDateContract")[0].innerHTML=response.contractStart;
+                    document.getElementsByClassName("endDateContract")[0].innerHTML=response.contractEnd;
+                    document.getElementsByClassName("assistanceReference")[0].innerHTML=response.contractReference;    
+                    document.getElementsByClassName("bikeImage")[0].src="images_bikes/"+frameNumber+"_mini.jpg";
+
+                }              
+
+                }
+            })
+}
+
+function fillReservationDetails(element)
+{
+}    
     
 </script>
 
@@ -287,9 +402,8 @@ if($connected){
 
     }
         // Goal of this function is to construct the reasearch fields 
-    function constructBuildingForm(daysToDisplay, bookingLength, administrator, assistance){
-        
-        
+    function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartBooking, hourEndBooking){
+        console.log(hourEndBooking);
         if(assistance=="Y"){
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
         }
@@ -298,6 +412,9 @@ if($connected){
         var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
         var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
 
         var startDate = new Date();    
@@ -307,11 +424,9 @@ if($connected){
         var dest2 ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
 
         var tempDate = new Date();
-        var month = [];
-        month.push(tempDate.getMonth()+1);
-        
         var tempDate2=tempDate;
         bookingLength=parseInt(bookingLength);
+        
 
         while(i<=daysToDisplay){
             var dayFR = daysFR[tempDate.getDay()];
@@ -321,16 +436,11 @@ if($connected){
             } 
             else {
 
-                var bookingDay="<option value=\""+tempDate.getDate()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+"</option><option value=\""+tempDate.getDate()+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+"</option><option value=\""+tempDate.getDate()+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+"</option>";
+                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
                 i++;       
                 dest = dest.concat(bookingDay);
                 dest2 = dest2.concat(bookingDay);
             }
-            if(tempDate.getMonth() != month[j]){
-                j++;
-                month.push(tempDate.getMonth());
-            }
-
             tempDate.setDate(tempDate.getDate()+1);
         }
         var bookingDay="</select>";
@@ -338,28 +448,35 @@ if($connected){
         dest2 = dest2.concat(bookingDay);
         document.getElementById('booking_day_form').innerHTML=dest;
         document.getElementById('booking_day_form_deposit').innerHTML=dest2;
-
-
-        var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-        var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
-
-        var dest ="<select name=\"search-bikes-form-month\" id=\"search-bikes-form-month\" class=\"form-control\">";
-        var dest2 = "<select name=\"search-bikes-form-month\" id=\"search-bikes-form-month-deposit\" class=\"form-control\">";
-        for(i=0;month[i];i++){
-            var MonthBase1=month[i];
-            var MonthBase0=month[i]-1;
-            var bookingMonth="<option value=\""+MonthBase1+"\" class=\"form-control fr\">"+monthFR[MonthBase0]+"</option><option value=\""+MonthBase1+"\" class=\"form-control en\">"+monthEN[MonthBase0]+"</option><option value=\""+MonthBase1+"\" class=\"form-control nl\">"+monthNL[MonthBase0]+"</option>";
-            dest = dest.concat(bookingMonth);
-            dest2 = dest2.concat(bookingMonth);
-
+        
+        
+        var currentDate=new Date();
+        var hours=currentDate.getHours();
+        var minutes=currentDate.getMinutes();
+        
+        var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
+        var h = ((((minutes/105) + .5) | 0) + hours) % 24;
+        
+        var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
+        console.log(dateTemp.getHours());
+        
+        var dest="";
+        while(dateTemp.getHours()<hourEndBooking){
+            dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
+            
+            if(dateTemp.getMinutes()=="0"){
+                var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
+            }else{
+                var hourString=dateTemp.getHours()+"h"+dateTemp.getMinutes();
+            }
+            
+            var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
+            dest=dest.concat(tempString);
         }
-        var bookingMonth="</select>";
-        dest = dest.concat(bookingMonth);
-        dest2 = dest2.concat(bookingMonth);
+        document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
+        document.getElementById('search-bikes-form-deposit-hour').innerHTML=dest;
 
-        document.getElementById('booking_month_form').innerHTML=dest;
-        document.getElementById('booking_month_form_deposit').innerHTML=dest2;
+        
 
 
         // 2nd step: intake and deposit buildings
@@ -921,9 +1038,6 @@ if($connected){
                                            <label for="booking_day_form" class="col-sm-12 nl">Wanneer wil je een fiets boeken?</label>                                      
                                             <div class="form-group col-sm-4" id="booking_day_form"></div>                                                                         
 
-                                            <div class="form-group col-sm-4" id="booking_month_form"></div>                                                                         
-
-
                                             <div class="form-group col-sm-4">                                       
                                                  <select id="search-bikes-form-intake-hour" name="search-bikes-form-intake-hour" class="form-control">
                                                     <option value="8h00">8h00</option>									       
@@ -976,8 +1090,7 @@ if($connected){
                                            <label for="booking_day_form_deposit" class="col-sm-12 en">When do you want to deposit the bike?</label>
                                            <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>                                      
                                             <div class="form-group col-sm-4" id="booking_day_form_deposit"></div>                                                                         
-                                            <div class="form-group col-sm-4" id="booking_month_form_deposit"></div>      
-                                            <div class="form-group col-sm-4">                                       
+                                            <div class="form-group col-sm-4" id="booking_hour_form_deposit">                                       
                                                 <select id="search-bikes-form-deposit-hour" name="search-bikes-form-deposit-hour" class="form-control">									           
                                                     <option value="8h00">8h00</option>									       
                                                     <option value="8h15">8h15</option>									        
@@ -1042,7 +1155,8 @@ if($connected){
                                     <script type="text/javascript"> 
                                         loadClientConditions()
                                         .done(function(response){
-                                            constructBuildingForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance);
+                                            console.log(response.clientConditions.hourEndBooking);
+                                            constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartBooking, response.clientConditions.hourEndBooking);
                                             if (response.clientConditions.administrator == "Y"){
                                                     $(".fleetmanager").removeClass("hidden");
                                             }
@@ -1249,10 +1363,17 @@ if($connected){
                                                             document.getElementById('velos').innerHTML = dest;
 
                                                             //modification du pop-up de réservation avec les informations de réservation
-
-                                                            document.getElementById('daySpan').innerHTML = document.getElementById("search-bikes-form-day").value;
-                                                            document.getElementById('monthSpan').innerHTML = document.getElementById("search-bikes-form-month").value;
-                                                            document.getElementById('yearSpan').innerHTML = "18";
+                                                            $date=document.getElementById("search-bikes-form-day").value;
+                                                            $dayAndMonth=$date.split("-");
+                                                            document.getElementById('daySpan').innerHTML = $dayAndMonth[0];
+                                                            document.getElementById('monthSpan').innerHTML = $dayAndMonth[1];
+                                                            document.getElementById('yearSpan').innerHTML = "19";
+                                                            
+                                                            $date=document.getElementById("search-bikes-form-day-deposit").value;
+                                                            $dayAndMonth=$date.split("-");
+                                                            document.getElementById('dayDepositSpan').innerHTML = $dayAndMonth[0];
+                                                            document.getElementById('monthDepositSpan').innerHTML = $dayAndMonth[1];
+                                                            document.getElementById('yearDepositSpan').innerHTML = "19";
                                                             document.getElementById('hourStartSpan').innerHTML = document.getElementById("search-bikes-form-intake-hour").value
                                                             document.getElementById('hourEndSpan').innerHTML = document.getElementById("search-bikes-form-deposit-hour").value
                                                             document.getElementById('startBuildingSpan').innerHTML = document.getElementById('search-bikes-form-intake-building').options[document.getElementById('search-bikes-form-intake-building').selectedIndex].text;
@@ -1282,7 +1403,8 @@ if($connected){
                                                 });
                                             }
                                         });
-                                    </script>                            
+                                    </script>         
+                                    
                                     <script type="text/javascript">
                                         function bookBike(bikeNumber)
                                         {
@@ -2622,7 +2744,11 @@ if($connected){
 						<h3 class="fr">Résumé de votre commande</h3>
 						<h3 class="en">Resume</h3>
 						<h3 class="nl">Geresumeerd</h3>
-						
+                        
+                        <div class="col-sm-10">
+						<h4>Prise en charge du vélo</h4>
+						</div>					
+                        
 						<div class="col-sm-10">
                         <h4><span class="fr"> Jour : </span></h4>
                         <h4><span class="en"> Start : </span></h4>
@@ -2635,17 +2761,15 @@ if($connected){
                         <span id="yearSpan"></span></p> 
                         </div>
                         
-                        <div class="col-sm-10">
-						<h4>Prise en charge du vélo</h4>
-						</div>
+
                         
                         <div class="col-sm-5">
-                        <h4><span class="fr"> Heure : </span></h4>
-                        <h4><span class="en"> at : </span></h4>
-                        <h4><span class="nl"> at : </span></h4>
+                            <h4><span class="fr"> Heure : </span></h4>
+                            <h4><span class="en"> at : </span></h4>
+                            <h4><span class="nl"> at : </span></h4>
 
 
-                       	<p><span id="hourStartSpan"></span></p> 
+                            <p><span id="hourStartSpan"></span></p> 
                        	</div>
 
                        <div class="col-sm-5">
@@ -2661,7 +2785,17 @@ if($connected){
 						<div class="col-sm-10">
 						<h4>Remise du vélo</h4>
 						</div>
-						
+				        <div class="col-sm-10">
+                            <h4><span class="fr"> Jour : </span></h4>
+                            <h4><span class="en"> Start : </span></h4>
+                            <h4><span class="nl"> Start : </span></h4>
+
+                            <p><span id="dayDepositSpan"></span>
+                            /
+                            <span id="monthDepositSpan"></span> 
+                            /
+                            <span id="yearDepositSpan"></span></p> 
+                        </div>
 						<div class="col-sm-5">
                         <h4><span class="fr">Heure : </span></h4>
                         <h4><span class="en">Bike deposit : </span></h4>
@@ -2832,7 +2966,6 @@ if($connected){
                 });                
                 
                 $('.bikeSelection').click(function(){
-                    console.log($(this).value);
                     get_reservations_listing();
                 });
                 $('.form_date_start').change(function(){

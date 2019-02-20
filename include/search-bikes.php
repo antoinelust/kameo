@@ -13,27 +13,36 @@ if(!isset($_SESSION))
 include 'globalfunctions.php';
 
 $frame_number=$_POST['search-bikes-form-frame-number'];
-$day=$_POST['search-bikes-form-day'];
-$month=$_POST['search-bikes-form-month'];
+$date=$_POST['search-bikes-form-day'];
+
+$intake_hour=$_POST['search-bikes-form-intake-hour'];
+
 $intake_building=$_POST['search-bikes-form-intake-building'];
-$intake_time=$_POST['search-bikes-form-intake-hour'];
+$dayAndMonth=explode("-", $date);
+$day_intake=$dayAndMonth[0];
+$month_intake=$dayAndMonth[1];
+
+$date=$_POST['search-bikes-form-day-deposit'];
+$deposit_hour=$_POST['search-bikes-form-deposit-hour'];
 $deposit_building=$_POST['search-bikes-form-deposit-building'];
-$deposit_time=$_POST['search-bikes-form-deposit-hour'];
+$dayAndMonth=explode("-", $date);
+$day_deposit=$dayAndMonth[0];
+$month_deposit=$dayAndMonth[1];
 
 
-
-$x = explode('h', $intake_time);
+$x = explode('h', $intake_hour);
 
 $intake_hour=$x[0];
 $intake_minute=$x[1];
 
-$x = explode('h', $deposit_time);
+$x = explode('h', $deposit_hour);
 $deposit_hour=$x[0];
 $deposit_minute=$x[1];
 
-$timestamp_start_booking=mktime($intake_hour, $intake_minute, 0, $month, $day, 2019);
-$timestamp_end_booking=mktime($deposit_hour, $deposit_minute, 0, $month, $day, 2019);
+$timestamp_start_booking=mktime($intake_hour, $intake_minute, 0, $month_intake, $day_intake, 2019);
+$timestamp_end_booking=mktime($deposit_hour, $deposit_minute, 0, $month_deposit, $day_deposit, 2019);
 //gérer le error handling de mktime !
+
 
 
 
@@ -56,6 +65,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
     include 'connexion.php';
     $sql= "select aa.FRAME_NUMBER from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER like '$frame_number%' and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START>='$timestamp_start_booking' and bb.DATE_START<='$timestamp_end_booking') OR (bb.DATE_START<='$timestamp_start_booking' and bb.DATE_END>'$timestamp_start_booking'))) group by FRAME_NUMBER";    
 
+    
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
