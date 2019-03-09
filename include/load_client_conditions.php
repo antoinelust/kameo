@@ -10,7 +10,6 @@ if(!isset($_SESSION))
 
 include 'globalfunctions.php';
 
-//test pour julien
 
 $userID=$_POST['userID'];
 
