@@ -732,10 +732,7 @@ if($connected){
             timeStampEnd=Date.now();
             timeStampEnd=Math.round(timeStampEnd/1000);
         }
-        console.log(email);
-        console.log(timeStampStart);
-        console.log(frameNumber);
-        console.log(timeStampEnd);
+
         $.ajax({
             url: 'include/get_reservations_listing.php',
             type: 'post',
