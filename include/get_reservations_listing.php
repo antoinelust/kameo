@@ -14,6 +14,7 @@ $dateStart=isset( $_POST['timeStampStart'] ) ? $_POST['timeStampStart'] : NULL;
 $dateEnd=isset( $_POST['timeStampEnd'] ) ? $_POST['timeStampEnd'] : NULL;
 $frameNumber=isset( $_POST['frameNumber'] ) ? $_POST['frameNumber'] : NULL;
 
+
 $response=array();
 
 if($email != NULL && $dateStart != NULL && $dateEnd != NULL)
@@ -22,7 +23,9 @@ if($email != NULL && $dateStart != NULL && $dateEnd != NULL)
 	$timestamp_now=time();
 	
     include 'connexion.php';
-	$sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER GROUP BY COMPANY) AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE";
+	$sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select COMPANY from customer_referential where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE";
+    
+    
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);

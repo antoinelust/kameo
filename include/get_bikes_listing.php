@@ -18,7 +18,7 @@ if($email != NULL)
 	$timestamp_now=time();
 	
     include 'connexion.php';
-	$sql="SELECT * FROM customer_bikes cc, bike_models dd where COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER GROUP BY COMPANY) AND cc.TYPE=dd.ID";
+	$sql="SELECT * FROM customer_bikes cc, bike_models dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') AND cc.TYPE=dd.ID";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -57,7 +57,7 @@ if($email != NULL)
     
     include 'connexion.php';
     $timestamp=mktime(0, 0, 0, 1, 1, date("Y"));
-    $sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential aa, customer_bikes bb where aa.EMAIL='$email' and aa.FRAME_NUMBER=bb.FRAME_NUMBER GROUP BY COMPANY) and cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$timestamp'";
+    $sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') and cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$timestamp'";
     if ($conn->query($sql2) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
