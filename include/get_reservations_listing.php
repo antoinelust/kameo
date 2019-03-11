@@ -23,7 +23,7 @@ if($email != NULL && $dateStart != NULL && $dateEnd != NULL)
 	$timestamp_now=time();
 	
     include 'connexion.php';
-	$sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select COMPANY from customer_referential where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE";
+	$sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE";
     
     
     if ($conn->query($sql) === FALSE) {

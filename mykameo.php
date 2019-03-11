@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
         classname[i].addEventListener('click', get_bikes_listing, false);
         classname[i].addEventListener('click', get_users_listing, false);
-        classname[i].addEventListener('click', function () { get_reservations_listing()}, false);            
+        classname[i].addEventListener('click', function () { get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);            
     }
 
     var classname = document.getElementsByClassName('reservations');
@@ -738,13 +738,12 @@ if($connected){
         })
     }
 
-    function get_reservations_listing(){
+    function get_reservations_listing(bike, date_start, date_end){
         var email= "<?php echo $user; ?>";
         var frameNumber='';
-        var date_start=new Date($(".form_date_start").data("datetimepicker").getDate());
-        var date_end=new Date($(".form_date_end").data("datetimepicker").getDate());
         var timeStampStart=(date_start.valueOf()/1000);
         var timeStampEnd=(date_end.valueOf()/1000);
+        console.log("vélo"+bike.text());
                 
         if(timeStampStart==''){
             d = new Date(new Date().getFullYear(), 0, 1);
@@ -1744,7 +1743,7 @@ if($connected){
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
 											          <div class="icon" data-animation="pulse infinite"> <a href="#"><i class="fa fa-calendar-plus-o"></i></a> </div>
-											          <div class="counter" style="color:#3cb395"> <span data-speed="1500" data-refresh-interval="4" data-to="82" data-from="0" data-seperator="true"></span> </div>
+											          <div class="counter" style="color:#3cb395"> <span data-speed="1" data-refresh-interval="4" data-to="82" data-from="0" data-seperator="true"></span> </div>
 											          <p>Nombre de réservations sur le mois</p>
 											        </div>
 											     </div>
@@ -3094,13 +3093,13 @@ if($connected){
                 });                
                 
                 $('.bikeSelection').click(function(){
-                    get_reservations_listing();
+                    get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });
                 $('.form_date_start').change(function(){
-                    get_reservations_listing();
+                    get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });
                 $('.form_date_end').change(function(){
-                    get_reservations_listing();
+                    get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });                
             </script>
             
