@@ -29,7 +29,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
     var classname = document.getElementsByClassName('fleetmanager');
     for (var i = 0; i < classname.length; i++) {
         classname[i].addEventListener('click', hideResearch, false);
-        classname[i].addEventListener('click', get_bikes_listing, false);            
+        classname[i].addEventListener('click', get_bikes_listing, false);
+        classname[i].addEventListener('click', get_users_listing, false);
         classname[i].addEventListener('click', function () { get_reservations_listing()}, false);            
     }
 
@@ -689,7 +690,7 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Référence</span><span class=\"en=inline\">Reference</span><span class=\"nl-inline\">Referentie</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Referentie</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
                     while (i < response.bikeNumber){
                         
@@ -701,8 +702,7 @@ if($connected){
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);
                     document.getElementById('bikeDetails').innerHTML = dest;
-                    //document.getElementById('BikesInCompany').innerHTML = response.bikeNumber;
-                    //document.getElementById('numberOfBookings').innerHTML = response.numberOfBookings;
+                    document.getElementById('counterBike').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
                     displayLanguage();
                     
                     var classname = document.getElementsByClassName('updateBikeStatus');
@@ -710,6 +710,29 @@ if($connected){
                         classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
                     }  
 
+                }
+            }
+        })
+    }
+        
+    function get_users_listing(){
+        var email= "<?php echo $user; ?>";
+        $.ajax({
+            url: 'include/get_users_listing.php',
+            type: 'post',
+            data: { "email": email},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.usersNumber){
+                        
+                        console.log(response.user[i].name);
+                        i++;
+                    }
+                    document.getElementById('counterUsers').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.usersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.usersNumber+"</span>";
                 }
             }
         })
@@ -1704,8 +1727,8 @@ if($connected){
 										     <div class="row">
 										     	<div class="col-md-4">
 											        <div class="icon-box medium fancy">
-											          <div class="icon bold" data-animation="pulse infinite"> <a href="#"><i class="fa fa-bicycle"></i></a> </div>
-											          <div class="counter bold" style="color:#3cb395"> <span data-speed="3500" data-refresh-interval="4" data-to="17" data-from="0" data-seperator="true"></span> </div>
+											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#BikesListing" href="#" ><i class="fa fa-bicycle"></i></a> </div>
+											          <div class="counter bold" id="counterBike" style="color:#3cb395"></div>
 											          <p>Nombre de vélos</p>
 											        </div>
 											     </div>
@@ -1713,7 +1736,7 @@ if($connected){
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
 											          <div class="icon" data-animation="pulse infinite"> <a href="#"><i class="fa fa-child"></i></a> </div>
-											          <div class="counter bold" style="color:#3cb395"> <span data-speed="3500" data-refresh-interval="4" data-to="73" data-from="0" data-seperator="true"></span> </div>
+											          <div class="counter bold" id="counterUsers" style="color:#3cb395"></div>
 											          <p>Nombre d'utilisateurs</p>
 											        </div>
 											     </div> 
