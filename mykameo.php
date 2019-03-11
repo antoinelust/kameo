@@ -732,7 +732,6 @@ if($connected){
             timeStampEnd=Date.now();
             timeStampEnd=Math.round(timeStampEnd/1000);
         }
-
         $.ajax({
             url: 'include/get_reservations_listing.php',
             type: 'post',
@@ -1065,9 +1064,9 @@ if($connected){
                                 <li class="fr"><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>Vos réservations</a> </li>
                                 <li class="en"><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>Your bookings</a> </li>
                                 <li class="nl"><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>Uw boekingen</a> </li>
-                                <li class="fr hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
-                                <li class="en hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
-                                <li class="nl hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-check-square-o"></i>Fleet manager</a> </li>
+                                <li class="fr hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
+                                <li class="en hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
+                                <li class="nl hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
                             </ul>
 
                             <div class="tabs-content">
@@ -1077,9 +1076,9 @@ if($connected){
                                            <label for="booking_day_form" class="col-sm-12 fr">A quelle date voulez-vous prendre le vélo ?</label>
                                            <label for="booking_day_form" class="col-sm-12 en">When do you want to book a bike ?</label>
                                            <label for="booking_day_form" class="col-sm-12 nl">Wanneer wil je een fiets boeken?</label>                                      
-                                            <div class="form-group col-sm-4" id="booking_day_form"></div>                                                                         
+                                            <div class="form-group col-sm-5" id="booking_day_form"></div>                                                                         
 
-                                            <div class="form-group col-sm-4">                                       
+                                            <div class="form-group col-sm-5">                                       
                                                  <select id="search-bikes-form-intake-hour" name="search-bikes-form-intake-hour" class="form-control">
                                                     <option value="8h00">8h00</option>									       
                                                     <option value="8h15">8h15</option>									        
@@ -1130,8 +1129,8 @@ if($connected){
                                            <label for="booking_day_form_deposit" class="col-sm-12 fr">A quelle date voulez-vous rendre le vélo ?</label>
                                            <label for="booking_day_form_deposit" class="col-sm-12 en">When do you want to deposit the bike?</label>
                                            <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>                                      
-                                            <div class="form-group col-sm-4" id="booking_day_form_deposit"></div>                                                                         
-                                            <div class="form-group col-sm-4" id="booking_hour_form_deposit">                                       
+                                            <div class="form-group col-sm-5" id="booking_day_form_deposit"></div>                                                                         
+                                            <div class="form-group col-sm-5" id="booking_hour_form_deposit">                                       
                                                 <select id="search-bikes-form-deposit-hour" name="search-bikes-form-deposit-hour" class="form-control">									           
                                                     <option value="8h00">8h00</option>									       
                                                     <option value="8h15">8h15</option>									        
@@ -1698,7 +1697,67 @@ if($connected){
                                             <a class="button small green button-3d rounded icon-right" data-target="#BikesListing" data-toggle="modal" href="#"><span class="fr">Gérer les vélos</span><span class="en">Manage the bikes</span><span class="nl">Manage the bikes</span></a><br />
                                             <a class="button small green button-3d rounded icon-right" data-target="#ReservationsListing" data-toggle="modal" href="#"><span class="fr">Gérer les réservations de vélos partagés</span><span class="en">Manage the shared bikes bookings</span><span class="nl">Manage the shared bikes bookings</span></a>
                                             
-
+                                            <div class="separator"></div>
+                                            
+                                            <h4 class="fr">Votre flotte</h4>
+										     
+										     <div class="row">
+										     	<div class="col-md-4">
+											        <div class="icon-box medium fancy">
+											          <div class="icon bold" data-animation="pulse infinite"> <a href="#"><i class="fa fa-bicycle"></i></a> </div>
+											          <div class="counter bold" style="color:#3cb395"> <span data-speed="3500" data-refresh-interval="4" data-to="17" data-from="0" data-seperator="true"></span> </div>
+											          <p>Nombre de vélos</p>
+											        </div>
+											     </div>
+											      
+											     <div class="col-md-4">
+											        <div class="icon-box medium fancy">
+											          <div class="icon" data-animation="pulse infinite"> <a href="#"><i class="fa fa-child"></i></a> </div>
+											          <div class="counter bold" style="color:#3cb395"> <span data-speed="3500" data-refresh-interval="4" data-to="73" data-from="0" data-seperator="true"></span> </div>
+											          <p>Nombre d'utilisateurs</p>
+											        </div>
+											     </div> 
+											     
+											     <div class="col-md-4">
+											        <div class="icon-box medium fancy">
+											          <div class="icon" data-animation="pulse infinite"> <a href="#"><i class="fa fa-calendar-plus-o"></i></a> </div>
+											          <div class="counter" style="color:#3cb395"> <span data-speed="1500" data-refresh-interval="4" data-to="82" data-from="0" data-seperator="true"></span> </div>
+											          <p>Nombre de réservations sur le mois</p>
+											        </div>
+											     </div>
+											      
+										     </div>
+										     
+										      <div class="row">
+										      <div class="col-md-12">
+										        <div class="progress-bar-container radius title-up color">
+										          <div class="progress-bar" data-percent="173" data-delay="100" data-type="%">
+										            <div class="progress-title">Évolution par rapport au mois précédent (quand c'est en positif)</div>
+										          </div>
+										        </div>
+										      </div>
+										      </div>
+										      
+										      <div class="row">
+										      <div class="col-md-12">
+										        <div class="progress-bar-container radius title-up color-sun-flower">
+										          <div class="progress-bar" data-percent="86" data-delay="100" data-type="%">
+										            <div class="progress-title">Évolution par rapport au mois précédent (quand c'est en négatif mais quand même bien)</div>
+										          </div>
+										        </div>
+										      </div>
+										      </div>
+										      
+										      <div class="row">
+										      <div class="col-md-12">
+										        <div class="progress-bar-container radius title-up color-pomegranate">
+										          <div class="progress-bar" data-percent="26" data-delay="100" data-type="%">
+										            <div class="progress-title">Évolution par rapport au mois précédent (quand c'est fort en négatif)</div>
+										          </div>
+										        </div>
+										      </div>
+										      </div>
+										      
                                         </tbody>
                                     </table>
                                 </div>                                            
@@ -2951,7 +3010,7 @@ if($connected){
             
             
             <div class="dropdown">
-              <div class="col-md-2">
+              <div class="col-md-3">
               	<ul class="nav">
                     <li class="dropdown" role="presentation"> 
                         <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> Sélection de vélo <span class="caret"></span> </a>
@@ -2961,26 +3020,31 @@ if($connected){
                  </ul>
                </div>
             </div>
+            <div class="separator"></div>
             
+            <div class="col-md-5">
 			<div class="form-group">
-                <label for="dtp_input2" class="col-md-2 control-label">Date de début</label>
-                <div class="input-group date form_date_start col-md-5" data-date="01/01/2019" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                <label for="dtp_input2" class="control-label">Date de début</label>
+                <div class="input-group date form_date_start col-md-12" data-date="01/01/2019" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                     <input class="form-control" size="16" type="text" value="01/01/2019" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
 				<input type="hidden" id="dtp_input2" value="" /><br/>
             </div>
+            </div>
 
+			<div class="col-md-5">
 			<div class="form-group">
-                <label for="dtp_input2" class="col-md-2 control-label">Date de fin</label>
-                <div class="input-group date form_date_end col-md-5" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                <label for="dtp_input2" class="control-label">Date de fin</label>
+                <div class="input-group date form_date_end col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                     <input class="form-control" size="16" type="text" value="" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
 				<input type="hidden" id="dtp_input2" value="" /><br/>
-            </div>            
+            </div>  
+            </div>          
 
             <script type="text/javascript">
             
@@ -3036,7 +3100,7 @@ if($connected){
 </div>
 
 <div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -3065,7 +3129,7 @@ if($connected){
                         </div>
                         
                         <div class="col-sm-10">
-						<h4>Informations relatives au contrat</h4>
+						<h4 class="text-green">Informations relatives au contrat</h4>
 						</div>
                         
                         <div class="col-sm-5">
@@ -3152,7 +3216,7 @@ if($connected){
                         </div>
                         
                         <div class="col-sm-10">
-						<h4>Informations relatives au contrat</h4>
+						<h4 class="text-green">Informations relatives au contrat</h4>
 						</div>
                         
                         <div class="col-sm-5">
@@ -3208,13 +3272,15 @@ if($connected){
 
                         </div>
                         <br/>
-                            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                     </form>
                     
 				</div>
 			</div>
+			
+            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+            
             <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
