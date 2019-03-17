@@ -40,7 +40,8 @@ if($email != NULL)
         $response['response']="success";
 		$response['user'][$i]['name']=$row['NOM'];
 		$response['user'][$i]['firstName']=$row['PRENOM'];            
-		$response['bike'][$i]['email']=$row['EMAIL'];                            
+		$response['user'][$i]['email']=$row['EMAIL'];  
+        $response['user'][$i]['staann']=$row['STAANN'];
         $i++;
 
 	}

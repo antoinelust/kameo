@@ -12,8 +12,7 @@ include 'globalfunctions.php';
 $email=$_POST['email'];
 $dateStart=isset( $_POST['timeStampStart'] ) ? $_POST['timeStampStart'] : NULL;
 $dateEnd=isset( $_POST['timeStampEnd'] ) ? $_POST['timeStampEnd'] : NULL;
-$frameNumber=isset( $_POST['frameNumber'] ) ? $_POST['frameNumber'] : NULL;
-
+$bikeValue=isset( $_POST['bikeValue'] ) ? $_POST['bikeValue'] : NULL;
 
 $response=array();
 
@@ -23,7 +22,13 @@ if($email != NULL && $dateStart != NULL && $dateEnd != NULL)
 	$timestamp_now=time();
 	
     include 'connexion.php';
-	$sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE";
+    
+    if($bikeValue=="all")
+    {
+        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE";
+    } else {
+        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where dd.FRAME_NUMBER='$bikeValue' and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE";
+    }
     
     
     if ($conn->query($sql) === FALSE) {

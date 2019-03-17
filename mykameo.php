@@ -31,7 +31,9 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
         classname[i].addEventListener('click', get_bikes_listing, false);
         classname[i].addEventListener('click', get_users_listing, false);
-        classname[i].addEventListener('click', function () { get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);            
+        classname[i].addEventListener('click', function () { get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);  
+        classname[i].addEventListener('click', initialize_booking_counter, false);
+
     }
 
     var classname = document.getElementsByClassName('reservations');
@@ -692,18 +694,34 @@ if($connected){
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Referentie</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
+                    
+                    var dest2="";
+                    temp2="<li><a href=\"#\" value=\"all\">Tous les vélos</a></li><li class=\"divider\"></li>";
+                    dest2=dest2.concat(temp2);
+
+                    
                     while (i < response.bikeNumber){
                         
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].modelFR+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th><th>"+response.bike[i].status+"</th><th><ins><a class=\"text-red updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></th></tr>";
                         dest=dest.concat(temp);
-                        i++;
+
+                        var temp2="<li><a href=\"#\" value=\""+response.bike[i].frameNumber+"\" class=\"bikeSelectionValue\">"+response.bike[i].frameNumber+"</a></li>";
+                        dest2=dest2.concat(temp2);
                         
+                        i++;
+
                     }
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);
                     document.getElementById('bikeDetails').innerHTML = dest;
+                    document.getElementsByClassName('bikeSelection')[0].innerHTML=dest2;
+
                     document.getElementById('counterBike').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
                     displayLanguage();
+                    
+                    $('.bikeSelectionValue').click(function(){
+                        get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+                    });
                     
                     var classname = document.getElementsByClassName('updateBikeStatus');
                     for (var i = 0; i < classname.length; i++) {
@@ -727,12 +745,23 @@ if($connected){
                 }
                 if(response.response == 'success'){
                     var i=0;
+                    var dest="";
+                    if(response.user[i].staann=='D'){
+                        var status="Inactif";
+                    }else{
+                        var status="Actif";
+                    }
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th></tr></thead>";
+                    dest=dest.concat(temp);                    
+                    
                     while (i < response.usersNumber){
-                        
-                        console.log(response.user[i].name);
+                        var temp="<tr><th>"+response.user[i].name+"</th><th>"+response.user[i].firstName+"</th><th>"+response.user[i].email+"</th><th>"+status+"</th></tr>";
+                        dest=dest.concat(temp);
+
                         i++;
                     }
                     document.getElementById('counterUsers').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.usersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.usersNumber+"</span>";
+                    document.getElementById('usersList').innerHTML = dest;
                 }
             }
         })
@@ -743,8 +772,13 @@ if($connected){
         var frameNumber='';
         var timeStampStart=(date_start.valueOf()/1000);
         var timeStampEnd=(date_end.valueOf()/1000);
-        console.log("vélo"+bike.text());
-                
+        
+        if(bike.val()==""){
+            var bikeValue="all";
+        } else {
+            var bikeValue=bike.val();
+        }
+       
         if(timeStampStart==''){
             d = new Date(new Date().getFullYear(), 0, 1);
             timeStampStart=+d;
@@ -752,12 +786,13 @@ if($connected){
         }
         if(timeStampEnd==''){
             timeStampEnd=Date.now();
-            timeStampEnd=Math.round(timeStampEnd/1000);
+            timeSt
+            ampEnd=Math.round(timeStampEnd/1000);
         }
         $.ajax({
             url: 'include/get_reservations_listing.php',
             type: 'post',
-            data: { "email": email, "timeStampStart": timeStampStart, "frameNumber": frameNumber, "timeStampEnd": timeStampEnd},
+            data: { "email": email, "bikeValue": bikeValue, "timeStampStart": timeStampStart, "frameNumber": frameNumber, "timeStampEnd": timeStampEnd},
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
@@ -765,29 +800,98 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var dest2="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
-                    temp2="<li><a href=\"#\" value=\"all\">Tous les vélos</a></li><li class=\"divider\"></li>";
-                    dest2=dest2.concat(temp2);
                     while (i < response.bookingNumber){
                         
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
                         dest=dest.concat(temp);
                         
-                        var temp2="<li><a href=\"#\" value=\""+response.booking[i].frameNumber+"\" class=\"bikeSelectionValue\">"+response.booking[i].frameNumber+"</a></li>";
-                        dest2=dest2.concat(temp2);
                         i++;
                         
                     }
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);
                     document.getElementById('ReservationsList').innerHTML = dest;
-                    document.getElementsByClassName('bikeSelection')[0].innerHTML=dest2;
 
                     displayLanguage();
 
                 }
+            }
+        })
+    }
+        
+        
+        
+        
+    function initialize_booking_counter(){
+        var email= "<?php echo $user; ?>";
+        
+        var date_start=new Date();
+        var date_end=new Date();
+        
+        date_end.setMonth(date_end.getMonth()-1);
+        var timeStampStart=(date_start.valueOf()/1000);
+        var timeStampEnd=(date_end.valueOf()/1000);
+        var bikeValue="all"; 
+       
+
+        $.ajax({
+            url: 'include/get_reservations_listing.php',
+            type: 'post',
+            data: { "email": email, "bikeValue": bikeValue, "timeStampStart": timeStampStart, "timeStampEnd": timeStampEnd},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    document.getElementById('counterBookings').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bookingNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bookingNumber+"</span>";
+                    var counter1=response.bookingNumber;
+                    
+                    
+                }
+                
+                date_start.setMonth(date_start.getMonth()-1);
+                date_end.setMonth(date_end.getMonth()-1);
+                var timeStampStart=(date_start.valueOf()/1000);
+                var timeStampEnd=(date_end.valueOf()/1000);
+                
+                $.ajax({
+                url: 'include/get_reservations_listing.php',
+                type: 'post',
+                data: { "email": email, "bikeValue": bikeValue, "timeStampStart": timeStampStart, "timeStampEnd": timeStampEnd},
+                success: function(response){
+                    if(response.response == 'error') {
+                        console.log(response.message);
+                    }
+                    if(response.response == 'success'){
+                        var counter2=response.bookingNumber;
+
+                        
+                        if(counter2==0 && counter1>0){
+                            var evolution=99999;
+                        }
+                        if(counter2==0 && counter1==0){
+                            var evolution=0;
+                        }else{
+                            var evolution=(counter1-counter2)/counter2;
+                        }
+                        
+                        
+                        
+                        if(evolution >0.1){
+                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"100\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
+                        }
+                        else if(evolution >= 0){                    
+                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-sun-flower\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"100\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
+                        }else{
+                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-red \"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"100\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";                    
+                        }               
+
+
+                    }
+                }
+                })                
             }
         })
     }
@@ -1734,7 +1838,7 @@ if($connected){
 											      
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
-											          <div class="icon" data-animation="pulse infinite"> <a href="#"><i class="fa fa-child"></i></a> </div>
+											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#usersListing" href="#" ><i class="fa fa-users"></i></a> </div>
 											          <div class="counter bold" id="counterUsers" style="color:#3cb395"></div>
 											          <p>Nombre d'utilisateurs</p>
 											        </div>
@@ -1742,44 +1846,17 @@ if($connected){
 											     
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
-											          <div class="icon" data-animation="pulse infinite"> <a href="#"><i class="fa fa-calendar-plus-o"></i></a> </div>
-											          <div class="counter" style="color:#3cb395"> <span data-speed="1" data-refresh-interval="4" data-to="82" data-from="0" data-seperator="true"></span> </div>
+											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#ReservationsListing" href="#" ><i class="fa fa-calendar-plus-o"></i></a> </div>
+											          <div class="counter bold" id="counterBookings" style="color:#3cb395"></div>
 											          <p>Nombre de réservations sur le mois</p>
 											        </div>
 											     </div>
-											      
 										     </div>
 										     
 										      <div class="row">
-										      <div class="col-md-12">
-										        <div class="progress-bar-container radius title-up color">
-										          <div class="progress-bar" data-percent="173" data-delay="100" data-type="%">
-										            <div class="progress-title">Évolution par rapport au mois précédent (quand c'est en positif)</div>
-										          </div>
-										        </div>
+										      <div class="col-md-12" id="progress-bar-bookings">
 										      </div>
-										      </div>
-										      
-										      <div class="row">
-										      <div class="col-md-12">
-										        <div class="progress-bar-container radius title-up color-sun-flower">
-										          <div class="progress-bar" data-percent="86" data-delay="100" data-type="%">
-										            <div class="progress-title">Évolution par rapport au mois précédent (quand c'est en négatif mais quand même bien)</div>
-										          </div>
-										        </div>
-										      </div>
-										      </div>
-										      
-										      <div class="row">
-										      <div class="col-md-12">
-										        <div class="progress-bar-container radius title-up color-pomegranate">
-										          <div class="progress-bar" data-percent="26" data-delay="100" data-type="%">
-										            <div class="progress-title">Évolution par rapport au mois précédent (quand c'est fort en négatif)</div>
-										          </div>
-										        </div>
-										      </div>
-										      </div>
-										      
+										      </div>										      
                                         </tbody>
                                     </table>
                                 </div>                                            
@@ -3023,6 +3100,29 @@ if($connected){
 	</div>
 </div>
 
+<div class="modal fade" id="usersListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="usersList"></span>
+            </div>
+            
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" id="ReservationsListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -3092,9 +3192,7 @@ if($connected){
                 forceParse: 0
                 });                
                 
-                $('.bikeSelection').click(function(){
-                    get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
-                });
+
                 $('.form_date_start').change(function(){
                     get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });
@@ -3120,6 +3218,7 @@ if($connected){
 		</div>
 	</div>
 </div>
+
 
 <div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
