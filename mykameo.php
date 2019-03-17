@@ -3393,14 +3393,15 @@ if($connected){
 
                         </div>
                         <br/>
+                                    <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+
                     </form>
                     
 				</div>
 			</div>
 			
-            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
             
             <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
@@ -3418,10 +3419,10 @@ if($connected){
 <script type="text/javascript">
 
     jQuery("#widget-updateBikeStatus-form").validate({
-
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
                 success: function(text) {
+                    
                     if (text.response == 'success') {
                         $.notify({
                             message: text.message
