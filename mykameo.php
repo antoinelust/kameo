@@ -879,13 +879,14 @@ if($connected){
                         
                         
                         
+                        
                         if(evolution >0.1){
-                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"100\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
+                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
                         }
                         else if(evolution >= 0){                    
-                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-sun-flower\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"100\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
+                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-sun-flower\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
                         }else{
-                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-red \"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"100\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";                    
+                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-red \"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";                    
                         }               
 
 
@@ -3393,10 +3394,11 @@ if($connected){
 
                         </div>
                         <br/>
-                                    <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-
+                    <div class="col-sm-12">    
+                    <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+            		<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+            		<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+					</div>
                     </form>
                     
 				</div>
