@@ -37,9 +37,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 	include 'connexion.php';
     
     $timestamp= time();
-    $sql= "INSERT INTO reservations (USR_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIl, STAANN) VALUES (new_booking', '$frameNumber', '$timestampStart', '$buildingStart', '$timestampEnd', '$buildingEnd', '$user', '')";
+    $sql= "INSERT INTO reservations (USR_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', '$frameNumber', '$timestampStart', '$buildingStart', '$timestampEnd', '$buildingEnd', '$user', '')";
 
-    
+
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);

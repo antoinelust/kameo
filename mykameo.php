@@ -143,7 +143,7 @@ function update_deposit_form(){
             else{
                 minutes=dateTemp.getMinutes();
             }
-            if(hours>=response.clientConditions.hourStartBooking && hours<response.clientConditions.hourEndBooking && dateTemp.getDay()==dateStart.getDay()){
+            if(hours>=response.clientConditions.hourStartIntakeBooking && hours<response.clientConditions.hourEndIntakeBooking && dateTemp.getDay()==dateStart.getDay()){
                 var hourString=hours+'h'+minutes;
                 Hours.push(hourString);
             }
@@ -230,13 +230,13 @@ function update_intake_hour_form(){
             }            
             else{
                 var m = 0;
-                var h = response.clientConditions.hourStartBooking;
+                var h = response.clientConditions.hourStartIntakeBooking;
                 var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
           }
           
         var dest="";
           
-        while(dateTemp.getHours()<response.clientConditions.hourEndBooking){
+        while(dateTemp.getHours()<response.clientConditions.hourEndIntakeBooking){
             if(dateTemp.getMinutes()=="0"){
                 var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
             }else{
@@ -294,10 +294,16 @@ function update_deposit_hour_form(){
         var Date1=date1.split('-');
         var day=Date1[0];
         var month=Date1[1];
-        if( dateStart.getDate()!=day){
-            var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartBooking, '00');
-            var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartBooking, '00');
+        console.log(dateStart.getDate());
+        console.log(day);
+        console.log(typeof hour);
+        console.log(typeof response.clientConditions.hourStartDepositBooking);
+        if( dateStart.getDate()!=day || (parseInt(hour) < parseInt(response.clientConditions.hourStartDepositBooking))){
+            console.log("coucou1");
+            var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
+            var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
         }else{
+            console.log("coucou2");
             var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, hour, minute);
             var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, hour, minute);
         }
@@ -310,18 +316,18 @@ function update_deposit_hour_form(){
             }else{
                 minutes=dateTemp2.getMinutes();
             }
-            if(hours>=response.clientConditions.hourStartBooking && hours<response.clientConditions.hourEndBooking && dateTemp2.getDay()==currentDepositDate.getDay()){
+            if(hours>=response.clientConditions.hourStartDepositBooking && hours<response.clientConditions.hourEndDepositBooking && dateTemp2.getDay()==currentDepositDate.getDay()){
                 var hourString=hours+'h'+minutes;
                 Hours.push(hourString);
             }
             dateTemp2.setMinutes(dateTemp2.getMinutes()+15);
         }
                 
-        var hourBeforeLast=(response.clientConditions.hourEndBooking-1)+'h45';
+        var hourBeforeLast=(response.clientConditions.hourEndDepositBooking-1)+'h45';
         var hourInArray=Hours[Hours.length-1];
         
         if(hourBeforeLast==hourInArray){
-            Hours.push(response.clientConditions.hourEndBooking+'h00');
+            Hours.push(response.clientConditions.hourEndDepositBooking+'h00');
         }
         
         
@@ -419,7 +425,7 @@ if($connected){
 
     }
         // Goal of this function is to construct the reasearch fields 
-    function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartBooking, hourEndBooking){
+    function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking){
         if(assistance=="Y"){
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
         }
@@ -445,8 +451,8 @@ if($connected){
         
 
         while(i<=daysToDisplay){
-            if(tempDate.getHours()>=hourEndBooking){
-                tempDate.setHours(hourStartBooking);
+            if(tempDate.getHours()>=hourEndDepositBooking){
+                tempDate.setHours(hourStartIntakeBooking);
                 tempDate.setMinutes(0);
                 tempDate.setDate(tempDate.getDate()+1);
             }
@@ -475,7 +481,7 @@ if($connected){
         var currentDate=new Date();
         
         if(currentDate.getDay()=="0" || currentDate.getDay()=="6"){
-            var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), hourStartBooking, "00");
+            var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), hourStartIntakeBooking, "00");
         }else{
             var hours=currentDate.getHours();
             var minutes=currentDate.getMinutes();
@@ -488,12 +494,12 @@ if($connected){
         
         
         var dest="";
-        if(dateTemp.getHours()>=hourEndBooking){
-            dateTemp.setHours(hourStartBooking);
+        if(dateTemp.getHours()>=hourEndDepositBooking){
+            dateTemp.setHours(hourStartIntakeBooking);
             dateTemp.setMinutes(0);
             dateTemp.setDate(dateTemp.getDate()+1);
         }
-        while(dateTemp.getHours()<hourEndBooking){
+        while(dateTemp.getHours()<hourEndIntakeBooking){
             
             if(dateTemp.getMinutes()=="0"){
                 var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
@@ -1322,8 +1328,8 @@ if($connected){
                                     <script type="text/javascript"> 
                                         loadClientConditions()
                                         .done(function(response){
-
-                                            constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartBooking, response.clientConditions.hourEndBooking);
+                                            
+                                            constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartIntakeBooking, response.clientConditions.hourEndIntakeBooking, response.clientConditions.hourStartDepositBooking, response.clientConditions.hourEndDepositBooking);
                                             if (response.clientConditions.administrator == "Y"){
                                                     $(".fleetmanager").removeClass("hidden");
                                             }

@@ -48,8 +48,10 @@ if($userID != NULL)
     $response['clientConditions']['bookingDays']=$resultat['BOOKING_DAYS']; 
     $response['clientConditions']['bookingLength']=$resultat['BOOKING_LENGTH']; 
     $response['clientConditions']['assistance']=$resultat['ASSISTANCE']; 
-    $response['clientConditions']['hourStartBooking']=$resultat['HOUR_START_BOOKING'];
-    $response['clientConditions']['hourEndBooking']=$resultat['HOUR_END_BOOKING'];
+    $response['clientConditions']['hourStartIntakeBooking']=$resultat['HOUR_START_INTAKE_BOOKING'];
+    $response['clientConditions']['hourEndIntakeBooking']=$resultat['HOUR_END_INTAKE_BOOKING'];
+    $response['clientConditions']['hourStartDepositBooking']=$resultat['HOUR_START_DEPOSIT_BOOKING'];
+    $response['clientConditions']['hourEndDepositBooking']=$resultat['HOUR_END_DEPOSIT_BOOKING'];
     $response['clientConditions']['locking']=$resultat['LOCKING'];
 
 	
