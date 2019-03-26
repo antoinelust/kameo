@@ -32,7 +32,7 @@ if($userID != NULL)
     $response['clientConditions']['administrator']=$resultat['ADMINISTRATOR'];   
 
     
-    $sql="select * from conditions where FRAME_NUMBER like '$frameNumber%'";
+    $sql="select * from conditions where FRAME_NUMBER = '$frameNumber'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -50,6 +50,7 @@ if($userID != NULL)
     $response['clientConditions']['assistance']=$resultat['ASSISTANCE']; 
     $response['clientConditions']['hourStartBooking']=$resultat['HOUR_START_BOOKING'];
     $response['clientConditions']['hourEndBooking']=$resultat['HOUR_END_BOOKING'];
+    $response['clientConditions']['locking']=$resultat['LOCKING'];
 
 	
     

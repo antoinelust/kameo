@@ -29,7 +29,7 @@ if( $userFrameNumber!=NULL ) {
     if($length == "0")
     {
         //message d'erreur à créer
-        errorMessage(ES0015);
+        errorMessage("ES0015");
     }
     else{
         $i=0;

@@ -17,6 +17,14 @@ if($bookingID != NULL)
 {		
     include 'connexion.php';
     $sql= "update reservations set STAANN='D' where ID='$bookingID'";
+   	if ($conn->query($sql) === FALSE) {
+
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	} 
+    
+    $sql= "update locking_code set STAANN='D', VALID='N' where ID_reservation='$bookingID'";
 
    	if ($conn->query($sql) === FALSE) {
 

@@ -1546,6 +1546,27 @@ if($connected){
                                                             document.getElementById('startBuildingSpan').innerHTML = document.getElementById('search-bikes-form-intake-building').options[document.getElementById('search-bikes-form-intake-building').selectedIndex].text;
 
                                                             document.getElementById('endBuildingSpan').innerHTML = document.getElementById('search-bikes-form-deposit-building').options[document.getElementById('search-bikes-form-deposit-building').selectedIndex].text;
+                                                            
+                                                            loadClientConditions()
+                                                            .done(function(response){
+                                                                if(response.clientConditions.locking=="Y")
+                                                                {
+                                                                    var i;
+                                                                    var temp="";
+                                                                    for(i=0; i<4; i++){
+                                                                        temp=temp.concat(Math.floor(Math.random() * 10).toString());
+                                                                    }
+                                                                    document.getElementById('lockingCodeDiv').style.display="block";
+                                                                    document.getElementById('lockingCode').innerHTML=temp;
+                                                                    document.getElementById('widget-new-booking-locking-code').value = temp;
+
+                                                                    
+                                                                }else{
+                                                                    document.getElementById('lockingCodeDiv').style.display="none";
+                                                                    document.getElementById('widget-new-booking-locking-code').value = "";
+                                                                }
+                                                            });
+
 
                                                             document.getElementById('widget-new-booking-timestamp-start').value = text.timestampStartBooking;       
                                                             document.getElementById('widget-new-booking-timestamp-end').value = text.timestampEndBooking;
@@ -3012,6 +3033,14 @@ if($connected){
                         <p><span id="endBuildingSpan"></span></p>
                         </div>
 
+						<div class="col-sm-12" id="lockingCodeDiv">
+                            <h4><span class="fr" >Code de réservation :</span></h4>
+                            <h4><span class="en" >Locking code</span></h4>
+                            <h4><span class="nl" >Locking code</span></h4>
+
+                            <p><span id="lockingCode"></span></p>
+                        </div>                        
+                        
                        <div class="col-sm-10">
                         <h4>Votre vélo: </h4>
                             <div class="col-md-4">
@@ -3026,6 +3055,7 @@ if($connected){
                             <input id="widget-new-booking-building-end" name="widget-new-booking-building-end" type="hidden">
                             <input id="widget-new-booking-frame-number" name="widget-new-booking-frame-number" type="hidden">
                             <input id="widget-new-booking-mail-customer" name="widget-new-booking-mail-customer" type="hidden" value="<?php echo $user; ?>">
+                            <input id="widget-new-booking-locking-code" name="widget-new-booking-locking-code" type="hidden">
 
                             <br>
                             <div class="text-left form-group">
