@@ -99,7 +99,8 @@ if($user != NULL)
         
         
 		$response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-		$response['booking'][$i]['day']= date('d/m/Y',$row['DATE_START']);            
+		$response['booking'][$i]['dayStart']= date('d/m/Y',$row['DATE_START']);            
+		$response['booking'][$i]['dayEnd']= date('d/m/Y',$row['DATE_END']);            
 		$response['booking'][$i]['hour_start']= date('H:i',$row['DATE_START']);            
 		$response['booking'][$i]['hour_end']=date('H:i',$row['DATE_END']);
 		$response['booking'][$i]['building_start']=$row['BUILDING_START'];

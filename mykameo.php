@@ -265,10 +265,6 @@ function update_deposit_hour_form(){
         var Date1=date1.split('-');
         var day=Date1[0];
         var month=Date1[1];
-        console.log(dateStart.getDate());
-        console.log(day);
-        console.log(hour);
-        console.log(response.clientConditions.hourStartDepositBooking);
         if( dateStart.getDate()!=day || (parseInt(hour) < parseInt(response.clientConditions.hourStartDepositBooking))){
             var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
             var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
@@ -278,8 +274,6 @@ function update_deposit_hour_form(){
         }
                 
         var Hours=[];
-        console.log(dateTemp2);
-        console.log(dateEnd);
         while(dateTemp2<=dateEnd){
             hours=dateTemp2.getHours();
             if(dateTemp2.getMinutes()=="0"){
@@ -438,26 +432,13 @@ if($connected){
             else{
 
             } 
-
-            
-            if((tempDate.getDay()=="1" && parseInt(mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(sundayDeposit))){
-                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
-                       
-                dest2 = dest2.concat(bookingDay);
-            }            
-            else{
-
-            } 
-            
-            
+   
             i++;
             tempDate.setDate(tempDate.getDate()+1);
         }
         var bookingDay="</select>";
         dest = dest.concat(bookingDay);
-        dest2 = dest2.concat(bookingDay);
         document.getElementById('booking_day_form').innerHTML=dest;
-        document.getElementById('booking_day_form_deposit').innerHTML=dest2;
             
         
         var currentDate=new Date();
@@ -502,8 +483,6 @@ if($connected){
 
         
         document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
-        document.getElementById('search-bikes-form-deposit-hour').innerHTML=dest;
-
         
 
 
@@ -582,6 +561,7 @@ if($connected){
             type: 'post',
             data: { "bookingID": bookingID},
             success: function(response){
+                console.log(response);
                 var name = response.clientBefore.name;
                 var surname = response.clientBefore.surname;
                 var phone = response.clientBefore.phone;
@@ -930,12 +910,13 @@ if($connected){
                 //Booking futurs
 
                 var dest="";
-                var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th>Date</th><th><span class=\"fr-inline\">Départ</span><span class=\"en\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
+                var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><span class=\"fr-inline\">Départ</span><span class=\"en\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
                 dest = dest.concat(tempFutureBookings);
                 var length = parseInt(response.future_bookings)+parseInt(response.previous_bookings);
                 while (i < length)
                 {
-                    var day=response.booking[i].day;
+                    var dayStart=response.booking[i].dayStart;
+                    var dayEnd=response.booking[i].dayEnd;
                     var hour_start=response.booking[i].hour_start;
                     var hour_end=response.booking[i].hour_end;
                     var building_start_fr = response.booking[i].building_start_fr;
@@ -948,7 +929,7 @@ if($connected){
                     var booking_id=response.booking[i].bookingID;
                     var annulation=response.booking[i].annulation;
 
-                    var tempFutureBookings ="<tr><td>"+day+"</td><td>"+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+                    var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
                     if(annulation){
                         var tempAnnulation = "<td><a class=\"button small red rounded effect\" onclick=\"cancelBooking("+booking_id+")\"><i class=\"fa fa-times\"></i><span>annuler</span></a></td></td></tr>";
                         tempFutureBookings = tempFutureBookings.concat(tempAnnulation);
@@ -1246,52 +1227,6 @@ if($connected){
                                            <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>                                      
                                             <div class="form-group col-sm-5" id="booking_day_form_deposit"></div>                                                                         
                                             <div class="form-group col-sm-5" id="booking_hour_form_deposit">                                       
-                                                <select id="search-bikes-form-deposit-hour" name="search-bikes-form-deposit-hour" class="form-control">									           
-                                                    <option value="8h00">8h00</option>									       
-                                                    <option value="8h15">8h15</option>									        
-                                                    <option value="8h30">8h30</option>								
-                                                    <option value="8h45">8h45</option>
-                                                    <option value="9h00">9h00</option>									       
-                                                    <option value="9h15">9h15</option>									        
-                                                    <option value="9h30">9h30</option>								
-                                                    <option value="9h45">9h45</option>
-                                                    <option value="10h00">10h00</option>									       
-                                                    <option value="10h15">10h15</option>									        
-                                                    <option value="10h30">10h30</option>								
-                                                    <option value="10h45">10h45</option>
-                                                    <option value="11h00">11h00</option>									       
-                                                    <option value="11h15">11h15</option>									        
-                                                    <option value="11h30">11h30</option>								
-                                                    <option value="11h45">11h45</option>
-                                                    <option value="12h00">12h00</option>									       
-                                                    <option value="12h15">12h15</option>									        
-                                                    <option value="12h30">12h30</option>								
-                                                    <option value="12h45">12h45</option>
-                                                    <option value="13h00">13h00</option>									       
-                                                    <option value="13h15">13h15</option>									        
-                                                    <option value="13h30">13h30</option>								
-                                                    <option value="13h45">13h45</option>
-                                                    <option value="14h00">14h00</option>									       
-                                                    <option value="14h15">14h15</option>									        
-                                                    <option value="14h30">14h30</option>								
-                                                    <option value="14h45">14h45</option>
-                                                    <option value="15h00">15h00</option>									       
-                                                    <option value="15h15">15h15</option>									        
-                                                    <option value="15h30">15h30</option>								
-                                                    <option value="15h45">15h45</option>
-                                                    <option value="16h00">16h00</option>									       
-                                                    <option value="16h15">16h15</option>									        
-                                                    <option value="16h30">16h30</option>								
-                                                    <option value="16h45">16h45</option>
-                                                    <option value="17h00">17h00</option>									       
-                                                    <option value="17h15">17h15</option>									        
-                                                    <option value="17h30">17h30</option>								
-                                                    <option value="17h45">17h45</option>
-                                                    <option value="18h00">18h00</option>									       
-                                                    <option value="18h15">18h15</option>									        
-                                                    <option value="18h30">18h30</option>								
-                                                    <option value="18h45">18h45</option>									      
-                                                  </select>   
                                             </div>
 
                                             <div class="form-group col-sm-5" id="start_building_form"></div>                                                                         

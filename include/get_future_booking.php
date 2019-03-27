@@ -32,7 +32,7 @@ if($bookingID != NULL)
     
     
     include 'connexion.php';
-	$sql="select * from reservations where DATE_START < '$dateStart' and FRAME_NUMBER = '$frameNumber' ORDER BY DATE_START DESC LIMIT 1";
+	$sql="select * from reservations where DATE_START < '$dateStart' and FRAME_NUMBER = '$frameNumber' and STAANN != 'D' ORDER BY DATE_START DESC LIMIT 1";
 	
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -63,7 +63,7 @@ if($bookingID != NULL)
     $response['clientBefore']['mail']=$resultat['EMAIL'];
 
     include 'connexion.php';
-	$sql="select * from reservations where DATE_START > '$dateStart' and FRAME_NUMBER = '$frameNumber' ORDER BY DATE_START LIMIT 1";
+	$sql="select * from reservations where DATE_START > '$dateStart' and FRAME_NUMBER = '$frameNumber' and STAANN != 'D' ORDER BY DATE_START LIMIT 1";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
