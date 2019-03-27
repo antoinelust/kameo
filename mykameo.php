@@ -121,38 +121,9 @@ function update_deposit_form(){
         
         var currentDate = new Date(new Date().getFullYear(), month, day, hour, minute);
         
-        var currentDay=parseInt(day);
-        var currentMonth=parseInt(month);
-        var currentHour=hour;
-        var currentMinute=minute;
-        var Hours=[];
-        var Days=[];
-        var WeekDays=[];
-        var Months=[];
-
-        Days.push(currentDay);
-        WeekDays.push(dateStart.getDay());
-        Months.push(currentMonth);
-        while(dateTemp<dateEnd){
-            
-            hours=dateTemp.getHours();
-            
-            if(dateTemp.getMinutes()=="0"){
-                minutes="00";
-            }
-            else{
-                minutes=dateTemp.getMinutes();
-            }
-            if(hours>=response.clientConditions.hourStartIntakeBooking && hours<response.clientConditions.hourEndIntakeBooking && dateTemp.getDay()==dateStart.getDay()){
-                var hourString=hours+'h'+minutes;
-                Hours.push(hourString);
-            }
-            dateTemp.setMinutes(dateTemp.getMinutes()+15);
-        }
         
         
-        
-        var numberOfDays=Math.round((dateTemp-currentDate)/(1000*60*60*24));
+        var numberOfDays=Math.round((dateEnd-currentDate)/(1000*60*60*24));
         
         
         // 1st step: days and month fileds
@@ -185,7 +156,7 @@ function update_deposit_form(){
         }
         
         while(i<=numberOfDays){
-            if(tempDate.getDay()!="0" && tempDate.getDay()!="6"){
+            if((tempDate.getDay()=="1" && parseInt(response.clientConditions.mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(response.clientConditions.tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(response.clientConditions.wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(response.clientConditions.thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(response.clientConditions.fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(response.clientConditions.saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(response.clientConditions.sundayDeposit))){
                 var dayFR = daysFR[tempDate.getDay()];
                 var dayEN = daysEN[tempDate.getDay()];
                 var dayNL = daysNL[tempDate.getDay()];
@@ -296,19 +267,19 @@ function update_deposit_hour_form(){
         var month=Date1[1];
         console.log(dateStart.getDate());
         console.log(day);
-        console.log(typeof hour);
-        console.log(typeof response.clientConditions.hourStartDepositBooking);
+        console.log(hour);
+        console.log(response.clientConditions.hourStartDepositBooking);
         if( dateStart.getDate()!=day || (parseInt(hour) < parseInt(response.clientConditions.hourStartDepositBooking))){
-            console.log("coucou1");
             var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
             var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
         }else{
-            console.log("coucou2");
             var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, hour, minute);
             var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, hour, minute);
         }
                 
         var Hours=[];
+        console.log(dateTemp2);
+        console.log(dateEnd);
         while(dateTemp2<=dateEnd){
             hours=dateTemp2.getHours();
             if(dateTemp2.getMinutes()=="0"){
@@ -424,8 +395,8 @@ if($connected){
         getHistoricBookings();
 
     }
-        // Goal of this function is to construct the reasearch fields 
-    function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking){
+    // Goal of this function is to construct the reasearch fields 
+    function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking, mondayIntake, tuesdayIntake, wednesdayIntake, thursdayIntake, fridayIntake, saturdayIntake, sundayIntake, mondayDeposit, tuesdayDeposit, wednesdayDeposit, thursdayDeposit, fridayDeposit, saturdayDeposit, sundayDeposit){
         if(assistance=="Y"){
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
         }
@@ -449,7 +420,6 @@ if($connected){
         var tempDate2=tempDate;
         bookingLength=parseInt(bookingLength);
         
-
         while(i<=daysToDisplay){
             if(tempDate.getHours()>=hourEndDepositBooking){
                 tempDate.setHours(hourStartIntakeBooking);
@@ -460,15 +430,27 @@ if($connected){
             var dayFR = daysFR[tempDate.getDay()];
             var dayEN = daysEN[tempDate.getDay()];
             var dayNL = daysNL[tempDate.getDay()];
-            if(tempDate.getDay()=="0" || tempDate.getDay()=="6"){
-            } 
-            else {
-
+            if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
                 var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
-                i++;       
+                       
                 dest = dest.concat(bookingDay);
+            }            
+            else{
+
+            } 
+
+            
+            if((tempDate.getDay()=="1" && parseInt(mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(sundayDeposit))){
+                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
+                       
                 dest2 = dest2.concat(bookingDay);
-            }
+            }            
+            else{
+
+            } 
+            
+            
+            i++;
             tempDate.setDate(tempDate.getDate()+1);
         }
         var bookingDay="</select>";
@@ -476,7 +458,7 @@ if($connected){
         dest2 = dest2.concat(bookingDay);
         document.getElementById('booking_day_form').innerHTML=dest;
         document.getElementById('booking_day_form_deposit').innerHTML=dest2;
-        
+            
         
         var currentDate=new Date();
         
@@ -1329,7 +1311,7 @@ if($connected){
                                         loadClientConditions()
                                         .done(function(response){
                                             
-                                            constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartIntakeBooking, response.clientConditions.hourEndIntakeBooking, response.clientConditions.hourStartDepositBooking, response.clientConditions.hourEndDepositBooking);
+                                            constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartIntakeBooking, response.clientConditions.hourEndIntakeBooking, response.clientConditions.hourStartDepositBooking, response.clientConditions.hourEndDepositBooking, response.clientConditions.mondayIntake, response.clientConditions.tuesdayIntake, response.clientConditions.wednesdayIntake, response.clientConditions.thursdayIntake, response.clientConditions.fridayIntake, response.clientConditions.saturdayIntake, response.clientConditions.sundayIntake, response.clientConditions.mondayDeposit, response.clientConditions.tuesdayDeposit, response.clientConditions.wednesdayDeposit, response.clientConditions.thursdayDeposit, response.clientConditions.fridayDeposit, response.clientConditions.saturdayDeposit, response.clientConditions.sundayDeposit);
                                             if (response.clientConditions.administrator == "Y"){
                                                     $(".fleetmanager").removeClass("hidden");
                                             }

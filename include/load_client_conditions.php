@@ -53,6 +53,20 @@ if($userID != NULL)
     $response['clientConditions']['hourStartDepositBooking']=$resultat['HOUR_START_DEPOSIT_BOOKING'];
     $response['clientConditions']['hourEndDepositBooking']=$resultat['HOUR_END_DEPOSIT_BOOKING'];
     $response['clientConditions']['locking']=$resultat['LOCKING'];
+    $response['clientConditions']['mondayIntake']=$resultat['MONDAY_INTAKE'];
+    $response['clientConditions']['tuesdayIntake']=$resultat['TUESDAY_INTAKE'];
+    $response['clientConditions']['wednedayIntake']=$resultat['WEDNESDAY_INTAKE'];
+    $response['clientConditions']['thursdayIntake']=$resultat['THURSDAY_INTAKE'];
+    $response['clientConditions']['fridayIntake']=$resultat['FRIDAY_INTAKE'];
+    $response['clientConditions']['saturdayIntake']=$resultat['SATURDAY_INTAKE'];
+    $response['clientConditions']['su,dayIntake']=$resultat['SUNDAY_INTAKE'];
+    $response['clientConditions']['mondayDeposit']=$resultat['MONDAY_DEPOSIT'];
+    $response['clientConditions']['tuesdayDeposit']=$resultat['TUESDAY_DEPOSIT'];
+    $response['clientConditions']['wednesdayDeposit']=$resultat['WEDNESDAY_DEPOSIT'];
+    $response['clientConditions']['thursdayDeposit']=$resultat['THURSDAY_DEPOSIT'];
+    $response['clientConditions']['fridayDeposit']=$resultat['FRIDAY_DEPOSIT'];
+    $response['clientConditions']['saturdayDeposit']=$resultat['SATURDAY_DEPOSIT'];
+    $response['clientConditions']['sundayDeposit']=$resultat['SUNDAY_DEPOSIT'];
 
 	
     
