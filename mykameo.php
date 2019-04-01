@@ -1163,6 +1163,9 @@ if($connected){
                                 <li class="fr hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
                                 <li class="en hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
                                 <li class="nl hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
+                                <li class="fr"><a href="#routes" class="routes"><i class="fa fa-road"></i>Itinéraires</a> </li>
+                                <li class="en"><a href="#routes" class="routes"><i class="fa fa-road"></i>Roads</a> </li>
+                                <li class="nl"><a href="#routes" class="routes"><i class="fa fa-road"></i>Routes</a> </li>
                             </ul>
 
                             <div class="tabs-content">
@@ -1425,6 +1428,7 @@ if($connected){
                                                                 buildingStart=text.buildingStart;
                                                                 timestampEnd=text.timestampEndBooking;
                                                                 buildingEnd=text.buildingEnd;
+                                                                console.log(text.timestampStartBooking);
 
                                                                 var bikeFrameNumber=text.bike[i].frameNumber;
                                                                 var bikeType=text.bike[i].typeDescription;
@@ -1490,7 +1494,11 @@ if($connected){
                                                                 }
                                                             });
 
-
+                                                            console.log(typeof text.dateStart.date);
+                                                            console.log(text.dateStart.date);
+                                                            console.log(text.dateEnd.date);
+                                                            document.getElementById('widget-new-booking-date-start').value = text.dateStart.date;       
+                                                            document.getElementById('widget-new-booking-date-end').value = text.dateEnd.date;       
                                                             document.getElementById('widget-new-booking-timestamp-start').value = text.timestampStartBooking;       
                                                             document.getElementById('widget-new-booking-timestamp-end').value = text.timestampEndBooking;
                                                             document.getElementById('widget-new-booking-building-start').value = document.getElementById("search-bikes-form-intake-building").value;;
@@ -1758,6 +1766,49 @@ if($connected){
 
                                 </div>
                                 
+                                 <div class="tab-pane" id="routes">
+
+                                    <h4 class="fr">Itinéraires conseillés</h4>
+                                    <p>Nous avons créé pour vous quelques itinéraires agréables pour vous rendre au travail.</p>
+                                    <div class="separator"></div>
+                                    
+                                    <h5>Place du XX-Août - CHU Sart-Tilman</h5>
+                                    <div class="visible-md visible-lg visible-sm">
+                                    <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9725042/embed/fr/4d797178424b307264565857544b58755a6955334d6172376b6a434f45314154723253704b6a50515834303d3a3a0c5f9b347e3f087700118732ba812fb7" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    
+                                    <div class="visible-xs">
+                                    <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9725042/embed/fr/4d797178424b307264565857544b58755a6955334d6172376b6a434f45314154723253704b6a50515834303d3a3a0c5f9b347e3f087700118732ba812fb7" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
+                                    
+                                    <div class="separator"></div>
+                                    
+                                    <h5>Embourg - CHU Sart-Tilman</h5>
+                                    <div class="visible-md visible-lg visible-sm">
+                                    <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9733246/embed/fr/537333576a65315635515657574578527375722b54564147524e61644a6b6c51666d34705a4677666f70733d3a3a30ca4562f0a633da7b53a0ba8bd2c6aa" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    
+                                    <div class="visible-xs">
+                                    <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9733246/embed/fr/537333576a65315635515657574578527375722b54564147524e61644a6b6c51666d34705a4677666f70733d3a3a30ca4562f0a633da7b53a0ba8bd2c6aa" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
+                                    
+                                    <div class="separator"></div>
+                                    
+                                    <h5>Esneux - CHU Sart-Tilman</h5>
+                                    <div class="visible-md visible-lg visible-sm">
+                                    <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9733176/embed/fr/786d4c57563377754e4f7131376630595674427a49544b385038702f73513274323956536e732b4c37374d3d3a3a2a1c2e0c4b78d238839ef9bd4487f60a" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    
+                                    <div class="visible-xs">
+                                    <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9733176/embed/fr/786d4c57563377754e4f7131376630595674427a49544b385038702f73513274323956536e732b4c37374d3d3a3a2a1c2e0c4b78d238839ef9bd4487f60a" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
+                                    
+
+                                </div>
+                                
                                 
                                 <div class="tab-pane" id="fleetmanager">
 
@@ -1797,6 +1848,19 @@ if($connected){
 											        </div>
 											     </div>
 										     </div>
+										     
+										     <div class="col-md-12">
+										     	<div class="col-md-4">
+										     	<p>Évolution du nombre de réservations rapport au mois précédent:<br>
+										     	<strong class="text-green">78 %</strong></p>
+										     	</div>
+										     	<div class="col-md-8">
+												     <div class="progress-bar-container radius color">
+												          <div class="progress-bar" data-percent="78" data-delay="100" data-type="%">
+												          </div>
+												</div>
+										      </div>
+										      </div>
 										     
 										      <div class="row">
 										      <div class="col-md-12" id="progress-bar-bookings">
@@ -2979,6 +3043,8 @@ if($connected){
                             <input id="widget-new-booking-frame-number" name="widget-new-booking-frame-number" type="hidden">
                             <input id="widget-new-booking-mail-customer" name="widget-new-booking-mail-customer" type="hidden" value="<?php echo $user; ?>">
                             <input id="widget-new-booking-locking-code" name="widget-new-booking-locking-code" type="hidden">
+                            <input id="widget-new-booking-date-start" name="widget-new-booking-date-start" type="hidden">
+                            <input id="widget-new-booking-date-end" name="widget-new-booking-date-end" type="hidden">
 
                             <br>
                             <div class="text-left form-group">

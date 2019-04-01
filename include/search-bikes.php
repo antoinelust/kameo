@@ -39,8 +39,17 @@ $x = explode('h', $deposit_hour);
 $deposit_hour=$x[0];
 $deposit_minute=$x[1];
 
+$dateStart=new DateTime();
+$dateStart->setDate(2019, $month_intake, $day_intake);
+$dateStart->setTime($intake_hour, $intake_minute);
+
+$dateEnd=new DateTime();
+$dateEnd->setDate(2019, $month_deposit, $day_deposit);
+$dateEnd->setTime($deposit_hour, $deposit_minute);
+
 $timestamp_start_booking=mktime($intake_hour, $intake_minute, 0, $month_intake, $day_intake, 2019);
 $timestamp_end_booking=mktime($deposit_hour, $deposit_minute, 0, $month_deposit, $day_deposit, 2019);
+
 //gérer le error handling de mktime !
 
 
@@ -80,7 +89,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
     }
     
     $bike=array();
-    $response=array('response'=>'success', 'timestampStartBooking' => $timestamp_start_booking, 'timestampEndBooking' => $timestamp_end_booking, 'buildingStart' => $intake_building, 'buildingEnd' => $deposit_building);
+    $response=array('response'=>'success', 'timestampStartBooking' => $timestamp_start_booking, 'timestampEndBooking' => $timestamp_end_booking, 'buildingStart' => $intake_building, 'buildingEnd' => $deposit_building, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd);
     $length=0;
     while($row = mysqli_fetch_array($result))
     {
