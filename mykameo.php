@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 session_start();
 include 'include/header2.php';
 // checkAccess();
@@ -341,8 +342,6 @@ function fillReservationDetails(element)
 }    
     
 </script>
-
-
 <?php
 if($connected){
     
@@ -4049,5 +4048,8 @@ if($connected){
 </script>
 
 </body>
+<?php
+ob_end_flush();
+?>
 
 </html>
