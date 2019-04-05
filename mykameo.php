@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 session_start();
 include 'include/header2.php';
 // checkAccess();
@@ -341,8 +342,6 @@ function fillReservationDetails(element)
 }    
     
 </script>
-
-
 <?php
 if($connected){
     
@@ -798,11 +797,12 @@ if($connected){
         var date_start=new Date();
         var date_end=new Date();
         
-        date_end.setMonth(date_end.getMonth()-1);
-        var timeStampStart=(date_start.valueOf()/1000);
-        var timeStampEnd=(date_end.valueOf()/1000);
+        date_start.setMonth(date_start.getMonth()-1);
+        var timeStampStart=Math.round(date_start.valueOf()/1000);
+        var timeStampEnd=Math.round(date_end.valueOf()/1000);
         var bikeValue="all"; 
-       
+
+
 
         $.ajax({
             url: 'include/get_reservations_listing.php',
@@ -813,6 +813,7 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                    console.log(response.sql);
                     document.getElementById('counterBookings').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bookingNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bookingNumber+"</span>";
                     var counter1=response.bookingNumber;
                     
@@ -842,22 +843,32 @@ if($connected){
                         if(counter2==0 && counter1==0){
                             var evolution=0;
                         }else{
-                            var evolution=(counter1-counter2)/counter2;
+                            var evolution=Math.round((counter1-counter2)/counter2*100);
                         }
-                        
-                        
-                        
-                        
-                        if(evolution >0.1){
-                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
-                        }
-                        else if(evolution >= 0){                    
-                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-sun-flower\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
-                        }else{
-                            document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-red \"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";                    
-                        }               
 
-
+                        
+                        //if(evolution >0.1){
+                        evolution=10;
+                            var temp="\
+                            <div class=\'col-md-4\">\
+                                <p>Évolution du nombre de réservations rapport au mois précédent:<br>\
+                                <strong class=\"text-green\">"+evolution+" %</strong></p>\
+                                </div>\
+                                <div class=\"col-md-8\">\
+                                     <div class=\"progress-bar-container radius color\">\
+                                          <div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"100\" data-type=\"%\">\
+                                          </div>\
+                                </div>\
+                            </div>";
+                        console.log(temp);
+                        document.getElementById('progress-bar-bookings').innerHTML=temp;
+                        console.log(document.getElementById('progress-bar-bookings').innerHTML);
+                        //}
+                        //else if(evolution >= 0){                    
+                        //    document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-sun-flower\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" //data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
+                        //}else{
+                        //    document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-red \"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";                    
+                        //}               
                     }
                 }
                 })                
@@ -877,7 +888,7 @@ if($connected){
                 var i=0;
                 var dest="";
 
-                var tempHistoricBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations précédentes:</h4><h4 class=\"en-inline\">Previous Bookings:</h4><h4 class=\"nl-inline\">Vorige reservaties:</h4><thead><tr><th>Date</th><th><span class=\"fr-inline\">Départ</span><span class=\"en\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
+                var tempHistoricBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations précédentes:</h4><h4 class=\"en-inline\">Previous Bookings:</h4><h4 class=\"nl-inline\">Vorige reservaties:</h4><thead><tr><th>Date</th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
 
 
                 dest = dest.concat(tempHistoricBookings);
@@ -910,7 +921,7 @@ if($connected){
                 //Booking futurs
 
                 var dest="";
-                var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><span class=\"fr-inline\">Départ</span><span class=\"en\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
+                var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
                 dest = dest.concat(tempFutureBookings);
                 var length = parseInt(response.future_bookings)+parseInt(response.previous_bookings);
                 while (i < length)
@@ -1428,7 +1439,6 @@ if($connected){
                                                                 buildingStart=text.buildingStart;
                                                                 timestampEnd=text.timestampEndBooking;
                                                                 buildingEnd=text.buildingEnd;
-                                                                console.log(text.timestampStartBooking);
 
                                                                 var bikeFrameNumber=text.bike[i].frameNumber;
                                                                 var bikeType=text.bike[i].typeDescription;
@@ -1494,9 +1504,6 @@ if($connected){
                                                                 }
                                                             });
 
-                                                            console.log(typeof text.dateStart.date);
-                                                            console.log(text.dateStart.date);
-                                                            console.log(text.dateEnd.date);
                                                             document.getElementById('widget-new-booking-date-start').value = text.dateStart.date;       
                                                             document.getElementById('widget-new-booking-date-end').value = text.dateEnd.date;       
                                                             document.getElementById('widget-new-booking-timestamp-start').value = text.timestampStartBooking;       
@@ -1842,30 +1849,17 @@ if($connected){
 											     
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
-											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#ReservationsListing" href="#" ><i class="fa fa-calendar-plus-o"></i></a> </div>
+											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#ReservationsListing" href="#"><i class="fa fa-calendar-plus-o"></i></a> </div>
 											          <div class="counter bold" id="counterBookings" style="color:#3cb395"></div>
-											          <p>Nombre de réservations sur le mois</p>
+											          <p>Nombre de réservations sur le mois passé</p>
 											        </div>
 											     </div>
 										     </div>
 										     
-										     <div class="col-md-12">
-										     	<div class="col-md-4">
-										     	<p>Évolution du nombre de réservations rapport au mois précédent:<br>
-										     	<strong class="text-green">78 %</strong></p>
-										     	</div>
-										     	<div class="col-md-8">
-												     <div class="progress-bar-container radius color">
-												          <div class="progress-bar" data-percent="78" data-delay="100" data-type="%">
-												          </div>
-												</div>
-										      </div>
-										      </div>
+
 										     
-										      <div class="row">
 										      <div class="col-md-12" id="progress-bar-bookings">
 										      </div>
-										      </div>										      
                                         </tbody>
                                     </table>
                                 </div>                                            
@@ -3167,8 +3161,8 @@ if($connected){
             <div class="col-md-5">
 			<div class="form-group">
                 <label for="dtp_input2" class="control-label">Date de début</label>
-                <div class="input-group date form_date_start col-md-12" data-date="01/01/2019" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                    <input class="form-control" size="16" type="text" value="01/01/2019" readonly>
+                <div class="input-group date form_date_start col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
@@ -4049,5 +4043,8 @@ if($connected){
 </script>
 
 </body>
+<?php
+ob_end_flush();
+?>
 
 </html>
