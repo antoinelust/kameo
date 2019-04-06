@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
         classname[i].addEventListener('click', get_bikes_listing, false);
         classname[i].addEventListener('click', get_users_listing, false);
-        classname[i].addEventListener('click', function () { get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);  
+        classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);  
         classname[i].addEventListener('click', initialize_booking_counter, false);
 
     }
@@ -40,13 +40,25 @@ window.addEventListener("DOMContentLoaded", function(event) {
     var classname = document.getElementsByClassName('reservations');
     for (var i = 0; i < classname.length; i++) {
         classname[i].addEventListener('click', hideResearch, false);
+        
     }              
     
 document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
-    
+document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);           
+
 });
     
+function reservation_listing(){
+    get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+    $('#ReservationsListing').modal('toggle');
+                                                       
+}
     
+function test(e){
+    document.getElementsByClassName('bikeSelectionText')[0].innerHTML=e;
+    get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+
+}
 function construct_form_for_bike_status_update(frameNumber){
     var frameNumber=frameNumber;
     $.ajax({
@@ -664,16 +676,15 @@ if($connected){
                     dest=dest.concat(temp);
                     
                     var dest2="";
-                    temp2="<li><a href=\"#\" value=\"all\">Tous les vélos</a></li><li class=\"divider\"></li>";
+                    temp2="<li><a href=\"#\" onclick=\"test('Sélection de vélo')\">Tous les vélos</a></li><li class=\"divider\"></li>";
                     dest2=dest2.concat(temp2);
 
                     
                     while (i < response.bikeNumber){
-                        
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].modelFR+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th><th>"+response.bike[i].status+"</th><th><ins><a class=\"text-red updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></th></tr>";
                         dest=dest.concat(temp);
 
-                        var temp2="<li><a href=\"#\" value=\""+response.bike[i].frameNumber+"\" class=\"bikeSelectionValue\">"+response.bike[i].frameNumber+"</a></li>";
+                        var temp2="<li><a href=\"#\" onclick=\"test('"+response.bike[i].frameNumber+"')\">"+response.bike[i].frameNumber+"</a></li>";
                         dest2=dest2.concat(temp2);
                         
                         i++;
@@ -686,10 +697,6 @@ if($connected){
 
                     document.getElementById('counterBike').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
                     displayLanguage();
-                    
-                    $('.bikeSelectionValue').click(function(){
-                        get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
-                    });
                     
                     var classname = document.getElementsByClassName('updateBikeStatus');
                     for (var i = 0; i < classname.length; i++) {
@@ -736,17 +743,18 @@ if($connected){
     }
 
     function get_reservations_listing(bike, date_start, date_end){
+
         var email= "<?php echo $user; ?>";
         var frameNumber='';
         var timeStampStart=(date_start.valueOf()/1000);
         var timeStampEnd=(date_end.valueOf()/1000);
-        
-        if(bike.val()==""){
+        console.log(bike);
+        if((typeof bike == "undefined") || bike == "" || bike=="Sélection de vélo"){
             var bikeValue="all";
         } else {
-            var bikeValue=bike.val();
+            var bikeValue=bike;
         }
-       
+        console.log(bikeValue);
         if(timeStampStart==''){
             d = new Date(new Date().getFullYear(), 0, 1);
             timeStampStart=+d;
@@ -770,6 +778,8 @@ if($connected){
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
+                    console.log(response.sql);
+                    console.log(response.bookingNumber);
                     while (i < response.bookingNumber){
                         
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
@@ -787,6 +797,7 @@ if($connected){
                 }
             }
         })
+
     }
         
         
@@ -814,7 +825,6 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
-                    console.log(response.sql);
                     document.getElementById('counterBookings').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bookingNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bookingNumber+"</span>";
                     var counter1=response.bookingNumber;
                     
@@ -861,9 +871,7 @@ if($connected){
                                           </div>\
                                 </div>\
                             </div>";
-                        console.log(temp);
                         document.getElementById('progress-bar-bookings').innerHTML=temp;
-                        console.log(document.getElementById('progress-bar-bookings').innerHTML);
                         //}
                         //else if(evolution >= 0){                    
                         //    document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-sun-flower\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" //data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
@@ -1850,7 +1858,7 @@ if($connected){
 											     
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
-											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#ReservationsListing" href="#"><i class="fa fa-calendar-plus-o"></i></a> </div>
+											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" href="#"><i class="fa fa-calendar-plus-o reservationlisting"></i></a></div>
 											          <div class="counter bold" id="counterBookings" style="color:#3cb395"></div>
 											          <p>Nombre de réservations sur le mois passé</p>
 											        </div>
@@ -3150,7 +3158,7 @@ if($connected){
               <div class="col-md-3">
               	<ul class="nav">
                     <li class="dropdown" role="presentation"> 
-                        <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> Sélection de vélo <span class="caret"></span> </a>
+                        <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> <span class="bikeSelectionText">Sélection de vélo</span><span class="caret"></span> </a>
                         <ul role="menu" class="dropdown-menu bikeSelection">
                         </ul>
                     </li>
@@ -3209,10 +3217,10 @@ if($connected){
                 
 
                 $('.form_date_start').change(function(){
-                    get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+                    get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });
                 $('.form_date_end').change(function(){
-                    get_reservations_listing($(".bikeSelection"), new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+                    get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });                
             </script>
             
