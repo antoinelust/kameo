@@ -748,13 +748,11 @@ if($connected){
         var frameNumber='';
         var timeStampStart=(date_start.valueOf()/1000);
         var timeStampEnd=(date_end.valueOf()/1000);
-        console.log(bike);
         if((typeof bike == "undefined") || bike == "" || bike=="Sélection de vélo"){
             var bikeValue="all";
         } else {
             var bikeValue=bike;
         }
-        console.log(bikeValue);
         if(timeStampStart==''){
             d = new Date(new Date().getFullYear(), 0, 1);
             timeStampStart=+d;
@@ -778,8 +776,6 @@ if($connected){
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
-                    console.log(response.sql);
-                    console.log(response.bookingNumber);
                     while (i < response.bookingNumber){
                         
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
@@ -1828,16 +1824,9 @@ if($connected){
                                 
                                 <div class="tab-pane" id="fleetmanager">
 
-                                    <table class="table table-condensed"><h4 class="fr">Fleet management</h4>
                                         <tbody>
-                                            <!--Nombre de vélos en circulation:<a data-target="#BikesListing" data-toggle="modal" href="#"><span id="BikesInCompany"></span></a><br/>
-                                            Réservations effectuées depuis le 1er Janvier par les employés: <a data-target="#ReservationsListing" data-toggle="modal" href="#"><span id="numberOfBookings"></span></a>.-->
-                                            <a class="button small green button-3d rounded icon-right" data-target="#BikesListing" data-toggle="modal" href="#"><span class="fr">Gérer les vélos</span><span class="en">Manage the bikes</span><span class="nl">Manage the bikes</span></a><br />
-                                            <a class="button small green button-3d rounded icon-right" data-target="#ReservationsListing" data-toggle="modal" href="#"><span class="fr">Gérer les réservations de vélos partagés</span><span class="en">Manage the shared bikes bookings</span><span class="nl">Manage the shared bikes bookings</span></a>
-                                            
-                                            <div class="separator"></div>
-                                            
-                                            <h4 class="fr">Votre flotte</h4>
+                                        
+                                            <h4 class="fr">Votre flotte</h4><br/><br />
 										     
 										     <div class="row">
 										     	<div class="col-md-4">
