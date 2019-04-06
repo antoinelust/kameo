@@ -42,8 +42,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
     }              
     
-document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_deposit_form()}, false);  
-document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);  
 document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
     
 });
@@ -229,6 +227,7 @@ function update_intake_hour_form(){
         document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
         document.getElementById('search-bikes-form-deposit-hour').innerHTML=dest;
 
+        update_deposit_form();
     });
 }
           
@@ -438,6 +437,8 @@ if($connected){
         var bookingDay="</select>";
         dest = dest.concat(bookingDay);
         document.getElementById('booking_day_form').innerHTML=dest;
+        
+        document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);  
             
         
         var currentDate=new Date();
