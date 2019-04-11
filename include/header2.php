@@ -86,7 +86,7 @@
 	<div class="wrapper">
 	
 	<!-- TOPBAR -->
-	
+	<!--
 		<div id="topbar" class="topbar-dark">
 			<div class="container">
 				<div class="row">
@@ -101,6 +101,8 @@
 				</div>
 			</div>
 		</div>
+
+-->
 		
 		<!-- END: TOPBAR -->
 
