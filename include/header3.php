@@ -118,7 +118,7 @@
 					</h1>
 					<h1>
 					<div id="logo" class="right">
-						<a href="#"><img src="images/deliveroo/deliveroo_small.png" alt="KAMEO Bikes Logo">
+						<a href="deliveroo.php"><img src="images/deliveroo/deliveroo_logo.png" alt="KAMEO Bikes Logo">
 						</a>
 					</div>
 					</h1>
