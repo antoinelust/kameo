@@ -882,6 +882,10 @@ if($connected){
     }
 
         
+    function initializeEntretien2(frameNumber){
+        console.log(frameNumber);
+        console.log("coucou");
+    }
     function getHistoricBookings() {
         var user= "<?php echo $user; ?>";
         var langue= "<?php echo $_SESSION['langue']; ?>";
@@ -893,7 +897,7 @@ if($connected){
                 var i=0;
                 var dest="";
 
-                var tempHistoricBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations précédentes:</h4><h4 class=\"en-inline\">Previous Bookings:</h4><h4 class=\"nl-inline\">Vorige reservaties:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
+                var tempHistoricBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations précédentes:</h4><h4 class=\"en-inline\">Previous Bookings:</h4><h4 class=\"nl-inline\">Vorige reservaties:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th></th></tr></thead><tbody>";
 
 
                 dest = dest.concat(tempHistoricBookings);
@@ -912,12 +916,14 @@ if($connected){
                     var frame_number=response.booking[i].frameNumber;
 
 
-                    var tempHistoricBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td></tr>";
+                    var tempHistoricBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small red-dark button-3d rounded icon-right\" onclick=\"initializeEntretien2()\"><span class=\"fr-inline\">Entretien</span><span class=\"en-inline\">Maintenance</span><span class=\"nl-inline\">Maintenance</span></a></td></tr>";
 
                     dest = dest.concat(tempHistoricBookings);
                     i++;
 
                 }
+                
+                
                 var tempHistoricBookings="</tbody></table>";
                 dest = dest.concat(tempHistoricBookings);
 
@@ -3895,6 +3901,12 @@ if($connected){
 						<form id="widget-entretien-form" action="include/entretien-form.php" role="form" method="post">
                                 
                                 <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="widget-entretien-form-message"  class="fr">Numéro de cadre</label>
+                                        <label for="widget-entretien-form-message"  class="en">Frame Number</label>
+                                        <label for="widget-entretien-form-message"  class="nl">Frame Numer</label>
+                                        <input type="text" id="widget-entretien-form-frame-number" name="widget-entretien-form-frame-number" class="form-control required" />
+                                    </div>                                    
                                     <div class="form-group col-sm-12">
                                         <label for="widget-entretien-form-bikePart"  class="fr">Pièce présentant un problème</label>
 										<label for="widget-entretien-form-bikePart"  class="en">Subject</label>

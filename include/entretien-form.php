@@ -1,10 +1,11 @@
 <?php
-session_start();
-include 'globalfunctions.php';
-
 session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
+
+session_start();
+include 'globalfunctions.php';
+
 
 
 // Form Fields
@@ -74,11 +75,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 	$mail->AddAddress('julien.jamardebolse@gmail.com', 'Julien Jamar De Bolsee');
 	$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
 
-
 	$firstName=$row["PRENOM"];
 	$name=$row["NOM"];
 	$phone=$row["PHONE"];
-	$frameNumber=$row["FRAME_NUMBER"];	
+    $frameNumber=$_POST['widget-entretien-form-frame-number'];
 	$bikePart = $_POST["widget-entretien-form-bikePart"];	
 	$message = $_POST["widget-entretien-form-message"];
 	

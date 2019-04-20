@@ -29,7 +29,7 @@ include 'include/header3.php';
 						<br>Laat ons uw gegevens achter, wij nemen zo spoedig mogelijk contact met u op.</p>
 						
                         <div class="m-t-30">
-                            <form id="widget-contact-form" action="include/order-form.php" role="form" method="post">
+                            <form id="widget-contact-form" action="include/order-form-deliveroo.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                         <label for="name" id="fr">Nom</label>
@@ -56,43 +56,60 @@ include 'include/header3.php';
 										<label for="phone"  id="nl">Telefoonnumber</label>
                                         <input type="phone" aria-required="true" name="widget-contact-form-phone" class="form-control required phone" placeholder="+32">
                                     </div>
-                                    <div class="form-group col-sm-6">
-                                        <label for="widget-contact-form-velo">Choix du vélo</label>
-											<select name="widget-contact-form-velo" id="widget-contact-form-velo">
-									           <option value="Conway200">Conway ets 200 SE</option>
-									           <option value="Conway300">Conway ets 300</option>
-									           <option value="VictoriaESpecial">Victoria e special 10.7</option>
-									       </select>
-                                    </div>
+                                    <?php if(isset($_GET["selection"])){
+                                        if($_GET["selection"]=="1"){ ?>
+                                            <div class="form-group col-sm-6">
+                                                <label for="widget-contact-form-velo">Choix du vélo</label>
+                                                    <select name="widget-contact-form-velo" id="widget-contact-form-velo">
+                                                       <option value="Conway200" selected>Conway ets 200 SE</option>
+                                                       <option value="Conway300">Conway ets 300</option>
+                                                       <option value="VictoriaESpecial">Victoria e special 10.7</option>
+                                                   </select>
+                                            </div>
+                                            
+                                        <?php } else if($_GET["selection"]=="2"){ ?>
+                                            <div class="form-group col-sm-6">
+                                                <label for="widget-contact-form-velo">Choix du vélo</label>
+                                                    <select name="widget-contact-form-velo" id="widget-contact-form-velo">
+                                                       <option value="Conway200">Conway ets 200 SE</option>
+                                                       <option value="Conway300" selected>Conway ets 300</option>
+                                                       <option value="VictoriaESpecial">Victoria e special 10.7</option>
+                                                   </select>
+                                            </div>                                            
+                                        <?php } else if ($_GET["selection"]=="3"){ ?>
+                                            <div class="form-group col-sm-6">
+                                                <label for="widget-contact-form-velo">Choix du vélo</label>
+                                                    <select name="widget-contact-form-velo" id="widget-contact-form-velo">
+                                                       <option value="Conway200">Conway ets 200 SE</option>
+                                                       <option value="Conway300">Conway ets 300</option>
+                                                       <option value="VictoriaESpecial" selected>Victoria e special 10.7</option>
+                                                   </select>
+                                            </div>                                        
+                                        <?php }
+    
+                                    } else{
+                                    ?>
+                                        <div class="form-group col-sm-6">
+                                            <label for="widget-contact-form-velo">Choix du vélo</label>
+                                                <select name="widget-contact-form-velo" id="widget-contact-form-velo">
+                                                   <option value="Conway200">Conway ets 200 SE</option>
+                                                   <option value="Conway300">Conway ets 300</option>
+                                                   <option value="VictoriaESpecial">Victoria e special 10.7</option>
+                                               </select>
+                                        </div>
+                                    <?php
+                                    } ?>
+
                                    	 <div class="form-group col-sm-6">
                                         <label for="widget-contact-form-type">Type d'achat?</label>
 											<select name="widget-contact-form-type" id="widget-contact-form-type">
 									           <option value="Achat">Achat direct</option>
-									           <option value="Leasing">Leasing</option>
+									           <option value="Leasing">Leasing (36 mois)</option>
 									           <option value="Location">Location</option>
 									       </select>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <label for="widget-contact-form-duree">Durée de la location</label>
-											<select name="widget-contact-form-duree" id="widget-contact-form-duree">
-									           <option value="1">1 mois</option>
-									           <option value="2">2 mois</option>
-									           <option value="3">3 mois</option>
-									           <option value="4">4 mois</option>
-									           <option value="5">5 mois</option>
-									       </select>
-                                    </div>
-                                    
+                                    </div>                                    
                                     
                                 </div>
-                                <!--
-                                <div class="form-group">
-                                    <label for="message"  id="fr">Message</label>
-									<label for="message"  id="en">Message</label>
-									<label for="message"  id="nl">Bericht</label>
-                                    <textarea type="text" name="widget-contact-form-message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
-                                </div>
-                                -->
                                 
                                 <div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
                                 
@@ -111,7 +128,7 @@ include 'include/header3.php';
                                             success: function(text) {
                                                 if (text.response == 'success') {
                                                     $.notify({
-                                                        message: "Nous avons <strong>bien</strong> reçu votre message et nous reviendrons vers vous dès que possible."
+                                                        message: "Nous avons bien reçu votre demande de commande, nous reviendrons vers vous dès que possible."
                                                     }, {
                                                         type: 'success'
                                                     });

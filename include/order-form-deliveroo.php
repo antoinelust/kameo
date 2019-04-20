@@ -6,36 +6,32 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
+
 require_once('php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 
 
-
 // Form Fields
-$name = $_POST["widget-contact-form-name"];
-$firstName = $_POST["widget-contact-form-firstName"];
-
-
-$email = $_POST["widget-contact-form-email"];
+$name = isset($_POST["widget-contact-form-name"]) ? $_POST["widget-contact-form-name"] : null;
+$firstName = isset($_POST["widget-contact-form-firstName"]) ? $_POST["widget-contact-form-firstName"] : null;
+$email = isset($_POST["widget-contact-form-email"]) ? $_POST["widget-contact-form-email"] : null;
 $phone = isset($_POST["widget-contact-form-phone"]) ? $_POST["widget-contact-form-phone"] : null;
-$subject = isset($_POST["widget-contact-form-subject"]) ? $_POST["widget-contact-form-subject"] : 'Nouveau message - Commande';
-$message = $_POST["widget-contact-form-message"];
+$bike = isset($_POST["widget-contact-form-velo"]) ? $_POST["widget-contact-form-velo"] : null;
+$type = isset($_POST["widget-contact-form-type"]) ? $_POST["widget-contact-form-type"] : null;
 $antispam = $_POST['widget-contact-form-antispam'];
 $captcha = strlen($_POST['g-recaptcha-response']);
 
 
 $length = strlen($phone);
 if ($length<8 or $length>12) {
-	errorMessage(ES0004);
+	errorMessage("ES0004");
 }
 
 if($captcha == 0){
-    errorMessage(ES0020);
+    //errorMessage("ES0020");
 }
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
-    
- if($email != '' && $message != '') {
+if( $_SERVER['REQUEST_METHOD'] == 'POST' && $name != null && $firstName != null  && $email != null && $bike != null && $type != null && isset($antispam)) {
             
                 //If you don't receive the email, enable and configure these parameters below: 
      
@@ -51,37 +47,34 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
                 $mail->CharSet = 'UTF-8';
      			
 				//$mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
-				$mail->AddAddress('thibaut.mativa@gmail.com', 'Thibaut Mativa');
+				//$mail->AddAddress('thibaut.mativa@gmail.com', 'Thibaut Mativa');
 				//$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-				//$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+				$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
 				//$mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
 
                 $mail->From = $email;
                 $mail->FromName = $firstName.' '.$name;
                 $mail->AddReplyTo($email, $name);
-                $mail->Subject = $subject;
+                $mail->Subject = 'Commande d\'un nouveau vélo pour Deliveroo';
           
                 $name = isset($name) ? "Nom: $name<br><br>" : '';
 				$firstName = isset($firstName) ? "Prenom: $firstName<br><br>" : '';
                 $email = isset($email) ? "Email: $email<br><br>" : '';
                 $phone = isset($phone) ? "Phone: $phone<br><br>" : '';
-                $message = isset($message) ? "Message: $message <br><br>" : '';
+                $bike = isset($bike) ? "Velo: $bike <br><br>" : '';
+                $type = isset($type) ? "Type de financement: $type <br><br>" : '';
 
-                $mail->Body = $name . $firstName . $email . $phone . $message;
+                $mail->Body = $name . $firstName . $email . $phone . $bike . $type;
      
                          
         if(!$mail->Send()) {
 		   $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
-            
 		}else {
            $response = array ('response'=>'success');  
         }
      echo json_encode($response);
 
 } else {
-	$response = array ('response'=>'error');     
-	echo json_encode($response);
-}
-    
+    errorMessage("ESOO25");
 }
 ?>

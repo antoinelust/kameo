@@ -82,6 +82,11 @@ include 'include/header2.php';
                                                         type: 'success'
                                                     });
                                                     $(form)[0].reset();
+                                                    
+                                                    gtag('event', 'send', {
+                                                      'event_category': 'mail',
+                                                      'event_label': 'contact.php'
+                                                    });
 
                                                 } else {
                                                     $.notify({

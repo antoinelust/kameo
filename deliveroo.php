@@ -54,9 +54,9 @@ include 'include/header3.php';
                      <br>
                      
 					<div class="col-md-8">
-					<a class="button green button-3d rounded effect icon-left fr" href="deliveroo_commander.php"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
-					<a class="button green button-3d rounded effect icon-left en" href="deliveroo_commander.php"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
-					<a class="button green button-3d rounded effect icon-left nl" href="deliveroo_commander.php"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left fr" href="deliveroo_commander.php?selection=1"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left en" href="deliveroo_commander.php?selection=1"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left nl" href="deliveroo_commander.php?selection=1"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
 					</div>
 					
 				</div>
@@ -88,9 +88,9 @@ include 'include/header3.php';
                      <br>
                      <br>
 					<div class="col-md-8">
-					<a class="button green button-3d rounded effect icon-left fr" href="#"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
-					<a class="button green button-3d rounded effect icon-left en" href="#"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
-					<a class="button green button-3d rounded effect icon-left nl" href="#"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left fr" href="deliveroo_commander.php?selection=2"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left en" href="deliveroo_commander.php?selection=2"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left nl" href="deliveroo_commander.php?selection=2"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
 					</div>
 					
 				</div>
@@ -119,9 +119,9 @@ include 'include/header3.php';
                      <br>
                      <br>
 					<div class="col-md-8">
-					<a class="button green button-3d rounded effect icon-left fr" href="#"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
-					<a class="button green button-3d rounded effect icon-left en" href="#"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
-					<a class="button green button-3d rounded effect icon-left nl" href="#"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left fr" href="deliveroo_commander.php?selection=3"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left en" href="deliveroo_commander.php?selection=3"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
+					<a class="button green button-3d rounded effect icon-left nl" href="deliveroo_commander.php?selection=3"><span><i class="fa fa-shopping-cart"></i>Commander</span></a>
 					</div>
 					
 				</div>
