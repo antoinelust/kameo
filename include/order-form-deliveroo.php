@@ -48,7 +48,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $name != null && $firstName != null 
      			
 				//$mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
 				//$mail->AddAddress('thibaut.mativa@gmail.com', 'Thibaut Mativa');
-				//$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
+				$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
 				$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
 				//$mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
 

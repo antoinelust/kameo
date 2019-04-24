@@ -34,7 +34,7 @@ while($row = mysqli_fetch_array($result))
 {
     $internalReference=$row['INTERNAL_REFERENCE'];
     $currentDate=date('Y-m-d');
-    $sql_dateStart="select min(CONTRACT_START), COMPANY from customer_bikes where CONTRACT_START<'$currentDate' and CONTRACT_END>'$currentDate' group by company";
+    $sql_dateStart="select min(CONTRACT_START), COMPANY from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' group by company";
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
@@ -46,9 +46,8 @@ while($row = mysqli_fetch_array($result))
         $resultat_dateStart = mysqli_fetch_assoc($result_dateStart);
         $firstDay=substr($resultat_dateStart['min(CONTRACT_START)'], 8, 2);
         $today=substr($currentDate, 8 ,2);
-
-        if($today==$firstDay)
-        {
+        //if($today==$firstDay)
+        //{
             $file = __DIR__.'/temp/company.txt';
             $myfile = fopen($file, "w")  or die("Unable to open file!");
             fwrite($myfile, $internalReference);
@@ -78,7 +77,7 @@ while($row = mysqli_fetch_array($result))
             }              
 
 
-            $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT from companies where INTERNAL_REFERENCE='$COMPANY'";
+            $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT from companies where INTERNAL_REFERENCE='$internalReference'";
             if ($conn->query($sql3) === FALSE) {
                 echo $conn->error;
                 die;
@@ -101,7 +100,7 @@ while($row = mysqli_fetch_array($result))
             $mail->From = 'julien.jamar@kameobikes.com';
             $mail->FromName = 'Julien Jamar';
             $mail->AddReplyTo('julien.jamar@kameobikes.com', 'Julien Jamar');
-            $mail->Subject = 'Kameo Bikes - Facture de '.$monthFR[(date('n')-1)].' '.date('Y');
+            $mail->Subject = 'Kameo Bikes - '. $internalReference .' - Facture de '.$monthFR[(date('n')-1)].' '.date('Y');
 
             $temp=$monthFR[(date('n')-1)].' '.date('Y');
             $message="Bonjour,<br><br>
@@ -114,7 +113,7 @@ while($row = mysqli_fetch_array($result))
             L'équipe Kameo Bikes";
 
             $file_to_attach = __DIR__ .$path;
-            $FileName = $company.$monthFR[(date('n')-1)].date('Y').'.pdf';
+            $FileName = $internalReference.$monthFR[(date('n')-1)].date('Y').'.pdf';
 
             $mail->AddAttachment( $file_to_attach , $FileName );
 
@@ -129,7 +128,7 @@ while($row = mysqli_fetch_array($result))
 
 
 
-        }            
+        //}            
     }
 
 }

@@ -16,16 +16,20 @@ include 'include/header3.php';
 						<h2 class="nl">BEVELEN</h2>
                         </div>
                         
-                        <p class="fr">Vous voulez commander un vélo? 
-                        <br><strong class="text-green">Félicitations!</strong>
-                        <br>Laissez nous vos coordonnées, nous reviendrons vers vous dès que possible.</p>
+                        <p class="fr">Vous voulez profiter du partenariat entre Deliveroo et Kameo Bikes ? Vous voulez être plus rapide pour vos prochaines courses ?
+                        <br>N'attendez plus et commandez un nouveau vélo ! Complétez le formulaire ci-dessous et nous vous reviendrons très rapidement.
+                        <br><br>
+                            <strong>Kameo Bikes</strong> vous propose 3 type d'offre:</p>
+                            <ul>
+                                <li>Achat du vélo</li>
+                                <li>Leasing sur une durée de 36 mois. Nous incluons dans le prix des entretiens régulier ainsi qu'une assurance contre le vol et la casse</li>
+                                <li>Location sur une durée variable. Vou avez plus de flexibilité sur la durée du contrat que dans le cas du leasing, les entretiens réguliers ainsi que l'assurance sont toujours compris !</li>
+                            </ul>
                         
 						<p class="en">Want to order a bike?
-						<br><strong class="text-green">Congratulations!</strong>
 						<br>Leave us your details, we will get back to you as soon as possible.</p>
 						
 						<p class="nl">Wilt u een fiets bestellen?
-						<br><strong class="text-green">Gefeliciteerd!</strong>
 						<br>Laat ons uw gegevens achter, wij nemen zo spoedig mogelijk contact met u op.</p>
 						
                         <div class="m-t-30">

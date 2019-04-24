@@ -11,16 +11,21 @@ include 'include/header3.php';
 		<div class="row">	
 					
 				<div class="heading heading text-left m-b-20">
-					<h2 class="fr">Catalogue</h2>
-					<h2 class="en">Catalog</h2>
-					<h2 class="nl">Catalogus</h2>
+					<h2 class="fr">Kameo Bikes</h2>
+					<h2 class="en">Kameo Bikes</h2>
+					<h2 class="nl">Kameo Bikes</h2>
 				</div>
 				<br>
             
-				<p class="fr">KAMEO Bikes se met un point d'honneur à fournir des vélos de qualité. C'est pourquoi nous ne travaillons qu'avec des partenaires sérieux, qui proposent des produits à la hauteur de vos attentes. Veuillez trouver ci-dessous la liste de nos partenaires.</p>
-				<p class="en">KAMEO Bikes focuses on high quality bikes. That's why we only work with premium suppliers implanted in Europe. Please find here below the list of such.</p>
-				<p class="nl">KAMEO Bikes richt zich op fietsen van hoge kwaliteit. Dat is de reden waarom wij alleen werken met premium leveranciers geïmplanteerd in Europa. Hieronder vindt u de lijst met dergelijke.</p>
-            
+                        <p class="fr">Vous voulez profiter du partenariat entre Deliveroo et Kameo Bikes ? Vous voulez être plus rapide pour vos prochaines courses ?
+                        <br>N'attendez plus et commandez un nouveau vélo ! Complétez le formulaire ci-dessous et nous vous reviendrons très rapidement.
+                        <br><br>
+                            <strong>Kameo Bikes</strong> vous propose 3 type d'offre:</p>
+                            <ul>
+                                <li>Achat du vélo</li>
+                                <li>Leasing sur une durée de 36 mois. Nous incluons dans le prix des entretiens régulier ainsi qu'une assurance contre le vol et la casse</li>
+                                <li>Location sur une durée variable. Vou avez plus de flexibilité sur la durée du contrat que dans le cas du leasing, les entretiens réguliers ainsi que l'assurance sont toujours compris !</li>
+                            </ul>            
             	<!--
 				<p class="fr">KAMEO Bikes propose également un grand nombre d'accessoires pour compléter votre solution de mobilité.<br /><a class="button small green button-3d rounded effect icon-left" href="accessoire.php"><span><i class="fa fa-eye"></i>Découvrez le catalogue d'accessoires</span></a></p>
 				<p class="en">KAMEO Bikes also offers a wide range of accessories to complete your mobility solution.<br /><a class="button small green button-3d rounded effect icon-left" href="accessoire.php"><span><i class="fa fa-eye"></i>Discover our accessories catalogue</span></a></p>

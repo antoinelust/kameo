@@ -119,10 +119,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 	        <tbody>';
             $test2='';
 
+            $monthAfter=clone $currentDate;
+            $monthAfter->add(new DateInterval("P1M"));
+            $monthAfterString=$monthAfter->format('Y-m-d');
 
             
             include 'include/connexion.php';
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<'$currentDateString' and CONTRACT_END>'$currentDateString'";
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and CONTRACT_END>='$monthAfterString'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -141,15 +144,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));
                 
-                $monthBefore=clone $currentDate;
-                $monthBefore->sub(new DateInterval("P1M"));
 
                 $dateStart = new DateTime();
-                $dateStart->setDate($contractStart->format('Y'), $monthBefore->format('m'), $contractStart->format('d'));
+                $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
                 
                 $dateEnd = new DateTime();
-                $dateEnd->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
-                
+                $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
                 
                 $difference=$dateStart->diff($contractStart);
 
