@@ -247,7 +247,8 @@ echo $test1.$test2.$test3;
 
 include 'include/connexion.php';
 $today=date('Y-m-d');
-$sql= "INSERT INTO factures (ID, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE) VALUES ('$newID', '$company', '$today', round($total,2), round($totalTVAIncluded,2), '$reference')";
+$fileName=$company.$monthFR[(date('n')-1)].date('Y').'.pdf';
+$sql= "INSERT INTO factures (ID, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME) VALUES ('$newID', '$company', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName')";
 
 
 if ($conn->query($sql) === FALSE) {

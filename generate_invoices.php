@@ -33,6 +33,7 @@ $i=0;
 while($row = mysqli_fetch_array($result))
 {
     $internalReference=$row['INTERNAL_REFERENCE'];
+    $companyName=$row['COMPANY_NAME'];
     $currentDate=date('Y-m-d');
     $sql_dateStart="select min(CONTRACT_START), COMPANY from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' group by company";
     if ($conn->query($sql_dateStart) === FALSE) {
@@ -46,8 +47,8 @@ while($row = mysqli_fetch_array($result))
         $resultat_dateStart = mysqli_fetch_assoc($result_dateStart);
         $firstDay=substr($resultat_dateStart['min(CONTRACT_START)'], 8, 2);
         $today=substr($currentDate, 8 ,2);
-        //if($today==$firstDay)
-        //{
+        if($today==$firstDay)
+        {
             $file = __DIR__.'/temp/company.txt';
             $myfile = fopen($file, "w")  or die("Unable to open file!");
             fwrite($myfile, $internalReference);
@@ -65,7 +66,7 @@ while($row = mysqli_fetch_array($result))
                 $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
                 $html2pdf->pdf->SetDisplayMode('fullpage');
                 $html2pdf->writeHTML($content);
-                $path='/factures/'.$company.$monthFR[(date('n')-1)].date('Y').'.pdf';
+                $path='/factures/'.$internalReference.$monthFR[(date('n')-1)].date('Y').'.pdf';
                 $html2pdf->Output(__DIR__ . $path, 'F');
 
                 //$html2pdf->output('example01.pdf');
@@ -100,7 +101,7 @@ while($row = mysqli_fetch_array($result))
             $mail->From = 'julien.jamar@kameobikes.com';
             $mail->FromName = 'Julien Jamar';
             $mail->AddReplyTo('julien.jamar@kameobikes.com', 'Julien Jamar');
-            $mail->Subject = 'Kameo Bikes - '. $internalReference .' - Facture de '.$monthFR[(date('n')-1)].' '.date('Y');
+            $mail->Subject = 'Kameo Bikes - '. $companyName .' - Facture de '.$monthFR[(date('n')-1)].' '.date('Y');
 
             $temp=$monthFR[(date('n')-1)].' '.date('Y');
             $message="Bonjour,<br><br>
@@ -126,9 +127,7 @@ while($row = mysqli_fetch_array($result))
                echo 'mail envoyé';
             }
 
-
-
-        //}            
+        }            
     }
 
 }
