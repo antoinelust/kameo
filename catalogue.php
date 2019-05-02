@@ -15,13 +15,12 @@ include 'include/header2.php';
                         </div>
                         
                         <div class="m-t-30">
-                            <form id="widget-contact-form" action="include/contact-form.php" role="form" method="post">
                                 <div class="row">
                                 
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-marque">Marque</label>
-											<select name="widget-contact-form-marque" id="widget-contact-form-marque">
-									           <option value="Toutes">Toutes nos marques</option>
+											<select class="portfolio" name="widget-contact-form-marque" id="widget-bike-brand">
+									           <option value="*">Toutes nos marques</option>
 									           <option value="Conway">Conway</option>
 									           <option value="Orbea">Orbea</option>
 									           <option value="Bzen">Bzen</option>
@@ -32,11 +31,11 @@ include 'include/header2.php';
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-utilisation">Utilisation</label>
-											<select name="widget-contact-form-utilisation" id="widget-contact-form-utilisation">
-									           <option value="Tous">Tous types d'utilisation</option>
-									           <option value="Villeetchemin">Ville et chemin</option>
+											<select class="portfolio" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
+									           <option value="*">Tous types d'utilisation</option>
+									           <option value="ville et chemin">Ville et chemin</option>
 									           <option value="Ville">Ville</option>
-									           <option value="Toutchemin">Tout chemin</option>
+									           <option value="Tout chemin">Tout chemin</option>
 									           <option value="Pliant">Pliant</option>
 									           <option value="Speedpedelec">Speedpedelec</option>
 									       </select>
@@ -44,43 +43,46 @@ include 'include/header2.php';
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-cadre">Type de cadre</label>
-											<select name="widget-contact-form-cadre" id="widget-contact-form-cadre">
-									           <option value="Tous">Tous types de cadre</option>
-									           <option value="Mixte">Mixte</option>
-									           <option value="Femme">Femme</option>
-									           <option value="Homme">Homme</option>
+											<select class="portfolio" name="widget-contact-form-cadre" id="widget-bike-frame-type">
+									           <option value="*">Tous types de cadre</option>
+									           <option value="M">Mixte</option>
+									           <option value="F">Femme</option>
+									           <option value="H">Homme</option>
 									       </select>
                                     </div>
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-electrique">Assistance électrique</label>
-											<select name="widget-contact-form-electrique" id="widget-contact-form-electrique">
-									           <option value="Oui">Oui</option>
-									           <option value="Non">Non</option>
+											<select class="portfolio" name="widget-contact-form-electrique" id="widget-bike-electric">
+                                                <option value="*">Tous</option>
+									            <option value="Y">Oui</option>
+									            <option value="N">Non</option>
 									       </select>
                                     </div>
                                     
                                     <div class="form-group col-sm-12">
-                                        <label for="widget-contact-form-prix">Prix Leasing (HTVA)</label>
-											<select name="widget-contact-form-prix" id="widget-contact-form-prix">
-									           <option value="-50"> -50€</option>
-									           <option value="50-75">50€ - 75€</option>
-									           <option value="75-100" selected>75€ - 100€</option>
-									           <option value="100-125">100€ - 125€</option>
-									           <option value="125-150">125€ - 150€</option>
-									           <option value="+150"> +150€</option>
+                                        <label for="widget-contact-form-prix">Prix Achat (HTVA)</label>
+											<select class="portfolio" name="widget-contact-form-prix" id="widget-bike-price">
+                                                <option value="*" selected>Tous les prix</option>
+                                                <option value="-1000"> -1000€</option>
+                                                <option value="between-1000-2000">1000 - 2000 €</option>
+                                                <option value="between-2000-3000">2000 - 3000 € </option>
+                                                <option value="between-3000-4000">3000 - 4000€</option>
+                                                <option value="between-4000-5000">4000 - 5000 €</option>
+                                                <option value="+5000"> +5000€</option>
 									       </select>
                                     </div>
 									
 										                                     
                                 
-                                <input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-contact-form-antispam" value="" />
-                                <button  id="fr" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-search"></i>&nbsp;Rechercher</button>
                                 </div>
-                            </form>
                            </div>
                    
                     </div>
+                    
+                    
+                    
+                    
                     <div class="col-md-8">
                     	<div class="heading heading text-left m-b-20">
                         <h2 class="fr">Nos vélos</h2>
@@ -88,7 +90,8 @@ include 'include/header2.php';
                         
                         <!-- Portfolio Items -->
 				        <div id="isotope" class="isotope portfolio-items" data-isotope-item-space="2" data-isotope-mode="masonry" data-isotope-col="3" data-isotope-item=".portfolio-item">
-				            <div class="portfolio-item">
+                            <div id="bikeCatalog"></div>
+				            <!--<div class="portfolio-item">
 				                <div class="portfolio-image effect social-links">
 				                    <img src="catalogue/ets200se_Mixte_mini.jpg" alt="">
 				                    <div class="image-box-content">
@@ -143,7 +146,7 @@ include 'include/header2.php';
 				                <div class="portfolio-date">
 				                    <p class="small"><i class="fa fa-eur"></i>78</p>
 				                </div>
-				            </div>
+				            </div>-->
 				
 				            
 				
@@ -156,6 +159,91 @@ include 'include/header2.php';
         </section>
         <!-- END: CONTENT -->
         
+
+        <script type="text/javascript">
+
+            function loadPortfolio(){
+                document.getElementById('bikeCatalog').innerHTML="";
+                var utilisation=document.getElementById('widget-bike-utilisation').value;
+                var frameType=document.getElementById('widget-bike-frame-type').value;
+                var e=document.getElementById('widget-bike-price');
+                var price=e.options[e.selectedIndex].value;
+                console.log(price);
+                var brand=document.getElementById('widget-bike-brand').options[document.getElementById('widget-bike-brand').selectedIndex].value;
+                var e=document.getElementById('widget-bike-electric');
+                var electric = e.options[e.selectedIndex].value;
+
+                console.log(electric);
+
+                $.ajax({
+                    url: 'include/load_portfolio.php',
+                    type: 'post',
+                    data: { "frameType": frameType, "utilisation": utilisation, "price": price, "brand": brand, "electric": electric},
+                    success: function(response){
+                        console.log(response);
+                        if (response.response == 'error') {
+                            $.notify({
+                                message: response.message
+                            }, {
+                                type: 'danger'
+                            });
+                        }
+                        if(response.response == 'success'){
+                            var i=0;
+                            var dest="";
+                            if(response.bikeNumber=="0"){
+                                dest="<p>Aucun vélo ne correspond à votre sélection</p>";
+                            }
+                            while(i<response.bikeNumber){
+                                if(response.bike[i].frameType.toLowerCase()=="h"){
+                                    var frameType = "Homme";
+                                } else if(response.bike[i].frameType.toLowerCase()=="m"){
+                                    var frameType = "Mixte";
+                                } else if(response.bike[i].frameType.toLowerCase()=="f"){
+                                    var frameType = "Femme";
+                                } else{
+                                    var frameType = "undefined";
+                                }
+                                var temp="\
+                                <div class=\"portfolio-item\">\
+                                    <div class=\"portfolio-image effect social-links\">\
+                                        <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+".jpg\" alt=\"\">\
+                                        <div class=\"image-box-content\">\
+                                            <p>\
+                                                <a href=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+".jpg\" data-lightbox-type=\"image\" title=\""+response.bike[i].brand+" "+response.bike[i].model+" "+frameType+" \"><i class=\"fa fa-expand\"></i></a>\
+                                                <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"?model="+response.bike[i].model.toLowerCase()+"?frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
+                                            </p>\
+                                        </div>\
+                                    </div>\
+                                    <div class=\"portfolio-description\">\
+                                        <h4 class=\"title\">"+response.bike[i].brand+"</h4>\
+                                        <p>"+response.bike[i].model+" "+frameType+"</p>\
+                                    </div>\
+                                    <div class=\"portfolio-date\">\
+                                        <p class=\"small\">Achat : <i class=\"fa fa-eur\"></i>"+response.bike[i].price+"</p>\
+                                        <p class=\"small\">Leasing : <i class=\"fa fa-eur\"></i>"+response.bike[i].leasingPrice+"</p>\
+                                    </div>\
+                                </div>";
+                                dest=dest.concat(temp);                                            
+                                i++;
+                            }
+                            console.log(dest);
+                            document.getElementById('bikeCatalog').innerHTML = dest;
+                        }
+
+                    }
+                });  
+            }
+
+            loadPortfolio();
+
+                var classname = document.getElementsByClassName('portfolio');
+                for (var i = 0; i < classname.length; i++) {
+                    classname[i].addEventListener('change', loadPortfolio, false);
+                }
+
+        </script>
+
        
   
         

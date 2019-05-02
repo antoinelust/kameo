@@ -1,5 +1,19 @@
 <?php 
 include 'include/header2.php';
+
+$brand=$_GET['brand'];
+$model=$_GET['model'];
+$frameType=$_GET['frameType'];
+include 'include/connexion.php';
+$sql="SELECT *  FROM bike_catalog WHERE UPPER(BRAND)='UPPER($brand)' AND UPPER(MODEL)='UPPER($model)' AND UPPER(FRAME_TYPE)='UPPER($frameType)'";
+
+if ($conn->query($sql) === FALSE) {
+    echo $conn->error;
+}
+$result = mysqli_query($conn, $sql);        
+$row = mysqli_fetch_assoc($result);
+
+
 ?>
 
 		
@@ -11,7 +25,7 @@ include 'include/header2.php';
                 <div class="row">
                     <div class="col-md-6">
                         
-                        <img src="catalogue/ets200se_Mixte.jpg" class="img-responsive img-rounded" alt="">
+                        <img src="images_bikes/<?php echo $brand.'_'.$model.'_'.$frameType; ?>.jpg" class="img-responsive img-rounded" alt="">
                         <br>
                         <dl class="dl">
 							<dt>Caractéristiques techniques</dt>
@@ -22,80 +36,144 @@ include 'include/header2.php';
                     </div>
                     <div class="col-md-6">
                     	<div class="heading heading text-left m-b-20">
-                        <h2 class="fr">Conway ets 200 se</h2>
+                        <h2 class="fr"><?php echo $brand.' '.$model; ?></h2>
                         </div>
                         
                         <dl class="dl col-md-6">
 							<dt>Utilisation</dt>
-							<dd>Ville et chemin</dd>
+							<dd><?php echo $row['utilisation']; ?></dd>
 							<br>
 							<dt>Type de cadre</dt>
-							<dd>Mixte</dd>
+							<dd><?php if($row['FRAME_TYPE']=="H"){echo "Homme";} else if($row['FRAME_TYPE']=="M"){echo "Mixte";}else if($row['FRAME_TYPE']=="F"){echo "Femme";}else{echo "undefined";} ?></dd>
 						</dl>
 						
 						<dl class="dl col-md-6">
 							<dt>Assistance électrique</dt>
-							<dd>Oui</dd>
+							<dd><?php if($row['electric']=="Y"){echo "Oui";} else if($row['electric']=="N"){echo "Non";}else{echo "undefined";} ?></dd>
 							<br>
 							<dt>Type de cadre</dt>
 							<dd>Mixte</dd>
 						</dl>
 						
 						<div class="col-md-12">
-						<h3>Prix : <b class="text-green">78€</b> <small>htva</small></h3>
+						<h3>Prix Achat (HTVA): <b class="text-green"><?php echo $row['PRICE_HTVA']; ?></b> <small>HTVA</small></h3>
+						<h3>Prix Achat (TVAC): <b class="text-green"><?php echo $row['PRICE_HTVA']*1.21; ?></b> <small>TVAC</small></h3>
+                        <?php
+                            $priceTemp=($row['PRICE_HTVA']/1.21+3*100+4*200);
+        
+                            // Calculation of coefficiant for leasing price
+
+                            if($priceTemp<2500){
+                                $coefficient=3.289;
+                            }elseif ($priceTemp<=5000){
+                                $coefficient=3.056;
+                            }elseif ($priceTemp<=12500){
+                                $coefficient=2.965;
+                            }elseif ($priceTemp<=25000){
+                                $coefficient=2.921;
+                            }elseif ($priceTemp<=75000){
+                                $coefficient=2.898;
+                            }else{
+                                errorMessage(ES0012);
+                            }
+
+                            // Calculation of leasing price based on coefficient and retail price
+
+                            $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
+                        ?>
+                            
+                            <h3>Prix Leasing (HTVA): <b class="text-green"><?php echo $leasingPrice; ?></b> <small>TVAC</small></h3>
+
+                            
 						</div>
                         
                         <div class="col-md-12">
-                        <p>Le prix comprend un entretien annuel, une assurance P-vélo, bla bla bla </p>
+                            <p>L'option leasing sur 36 mois comprend les services suivants:</p>
+                            <ul>
+                                <li>Assurance P-Vélo contre le vol et la casse</li>
+                                <li>4 entretiens sur les 36 mois de la durée de vie du vélo</li>
+                            </ul>
                         </div>
                         
                         <div class="separator"></div>
                         
                         <div class="m-t-30">
-                            <form id="widget-contact-form" action="include/order-form.php" role="form" method="post">
+                            <form id="widget-offer" action="include/offer-form.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
-                                        <label for="name" id="fr">Nom</label>
-										<label for="name" id="en">Name</label>
-										<label for="name" id="nl">Naam</label>
-                                        <input type="text" aria-required="true" name="widget-contact-form-name" class="form-control required name">
+                                        <label for="name" class="fr">Nom</label>
+										<label for="name" class="en">Name</label>
+										<label for="name" class="nl">Naam</label>
+                                        <input type="text" aria-required="true" name="widget-offer-name" class="form-control required name">
                                     </div>
                                      <div class="form-group col-sm-6">
-                                        <label for="firstName" id="fr">Prénom</label>
-										<label for="firstName" id="en">First Name</label>
-										<label for="firstName" id="nl">Voornaam</label>
-                                        <input type="text" aria-required="true" name="widget-contact-form-firstName" class="form-control required name">
+                                        <label for="firstName" class="fr">Prénom</label>
+										<label for="firstName" class="en">First Name</label>
+										<label for="firstName" class="nl">Voornaam</label>
+                                        <input type="text" aria-required="true" name="widget-offer-firstName" class="form-control required name">
 
 										</div>
                                     <div class="form-group col-sm-6">
-                                        <label for="email"  id="fr">Email</label>
-										<label for="email"  id="en">Email</label>
-										<label for="email"  id="nl">Email</label>
-                                        <input type="email" aria-required="true" name="widget-contact-form-email" class="form-control required email">
+                                        <label for="email"  class="fr">Email</label>
+										<label for="email"  class="en">Email</label>
+										<label for="email"  class="nl">Email</label>
+                                        <input type="email" aria-required="true" name="widget-offer-email" class="form-control required email">
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="phone"  id="fr">Numéro de téléphone</label>
-										<label for="phone"  id="en">Phone number</label>
-										<label for="phone"  id="nl">Telefoonnumber</label>
-                                        <input type="phone" aria-required="true" name="widget-contact-form-phone" class="form-control required phone" placeholder="+32">
+                                        <label for="phone"  class="fr">Numéro de téléphone</label>
+										<label for="phone"  class="en">Phone number</label>
+										<label for="phone"  class="nl">Telefoonnumber</label>
+                                        <input type="phone" aria-required="true" name="widget-offer-phone" class="form-control required phone" placeholder="+32">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="widget-offer-leasing">Type d'acquisition</label>
+											<select name="widget-offer-leasing">
+                                                <option value="achat">Achat</option>
+                                                <option value="leasing">Leasing</option>
+									       </select>
                                     </div>
                                     
                                     
                                 </div>
-                                <!--
-                                <div class="form-group">
-                                    <label for="message"  id="fr">Message</label>
-									<label for="message"  id="en">Message</label>
-									<label for="message"  id="nl">Bericht</label>
-                                    <textarea type="text" name="widget-contact-form-message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
-                                </div>
-                                -->
                                 
-                                <div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
-                                
-                                <input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-contact-form-antispam" value="" />
-                                <button  id="fr" class="button green button-3d rounded effect" type="submit" id="form-submit"></i>Demander une offre</button>
+                                <input type="text" class="hidden" id="widget-offer-brand" name="widget-offer-brand" value="<?php echo $brand; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-model" value="<?php echo $model; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-antispam" name="widget-offer-antispam" value="" />
+                                <button  id="fr" class="button green button-3d rounded effect" type="submit" id="form-submit">Demander une offre</button>
                             </form>   
+                            <script type="text/javascript">
+                                jQuery("#widget-offer").validate({
+                                    submitHandler: function(form) {
+
+                                        jQuery(form).ajaxSubmit({
+                                            success: function(text) {
+                                                if (text.response == 'success') {
+                                                    $.notify({
+                                                        message: "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible."
+                                                    }, {
+                                                        type: 'success'
+                                                    });
+                                                    $(form)[0].reset();
+                                                    
+                                                    gtag('event', 'send', {
+                                                      'event_category': 'mail',
+                                                      'event_label': 'offre.php'
+                                                    });
+
+                                                } else {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'danger'
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            </script>
+
                             </div>
                         
                     </div>
