@@ -14,13 +14,13 @@ $mail = new PHPMailer();
 // Form Fields
 $name = $_POST["widget-offer-name"];
 $firstName = $_POST["widget-offer-firstName"];
-
-
 $email = $_POST["widget-offer-email"];
+$brand = $_POST["widget-offer-brand"];
+$model = $_POST["widget-offer-model"];
+$frameType = $_POST['widget-offer-frame-type'];
 $phone = isset($_POST["widget-offer-phone"]) ? $_POST["widget-offer-phone"] : null;
 $subject = "Demande de commande pour le vélo ".$brand." ".$model." par ".$firstName." ".$name;
-$message = $_POST["widget-offer-message"];
-$velo = $_POST["widget-offer-brand"].' '.$POST["widget-offer-model"];
+$velo = $_POST["widget-offer-brand"].' '.$_POST["widget-offer-model"].' '.$_POST["widget-offer-frame-type"];
 $leasing = $_POST["widget-offer-leasing"];
 $antispam = $_POST['widget-offer-antispam'];
 
@@ -32,14 +32,14 @@ if ($length<8 or $length>12) {
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
     
- if($email != '' && $phone != '' && $velo != '' && leasing != '') {
+ if($email != '' && $phone != '' && $velo != '' && $leasing != '') {
             
      
      	        $mail->IsHTML(true);                                    // Set email format to HTML
                 $mail->CharSet = 'UTF-8';
      			
 				//$mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
-				//$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
+				$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
 				$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
 				//$mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
 
@@ -52,8 +52,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 				$firstName = isset($firstName) ? "Prenom: $firstName<br><br>" : '';
                 $email = isset($email) ? "Email: $email<br><br>" : '';
                 $phone = isset($phone) ? "Phone: $phone<br><br>" : '';
-                $velo = isset($message) ? "Vélo: $velo <br><br>" : '';
-                $leasing = isset($message) ? "Solution de financement demandée: $leasing <br><br>" : '';
+                $velo = isset($velo) ? "Vélo: $velo <br><br>" : '';
+                $leasing = isset($leasing) ? "Solution de financement demandée: $leasing <br><br>" : '';
 
                 $mail->Body = $name . $firstName . $email . $phone . $velo . $leasing;
      

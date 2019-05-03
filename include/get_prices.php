@@ -14,7 +14,7 @@ include 'globalfunctions.php';
 $retailPrice = $_POST["retailPrice"];
 //$retailPrice=100;
 
-$priceTemp=($retailPrice/1.21+3*75+4*100);
+$priceTemp=($retailPrice/1.21+3*75+4*100+4*100);
 
 
 // Calculation of coefficiant for leasing price
@@ -38,7 +38,7 @@ if($priceTemp<2500){
 $response['retailPrice']=$retailPrice;
 $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
 $response['leasingPrice']=$leasingPrice;
-$rentingPrice=round(($priceTemp)*($coefficient)*1.15/100);
+$rentingPrice=round(($priceTemp)*($coefficient)*1.5/100);
 $response['rentingPrice']=$rentingPrice;
 
 $response['HTVARetailPrice']=round($retailPrice/1.21);

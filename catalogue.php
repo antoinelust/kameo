@@ -207,11 +207,11 @@ include 'include/header2.php';
                                 var temp="\
                                 <div class=\"portfolio-item\">\
                                     <div class=\"portfolio-image effect social-links\">\
-                                        <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+".jpg\" alt=\"\">\
+                                        <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"\">\
                                         <div class=\"image-box-content\">\
                                             <p>\
                                                 <a href=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+".jpg\" data-lightbox-type=\"image\" title=\""+response.bike[i].brand+" "+response.bike[i].model+" "+frameType+" \"><i class=\"fa fa-expand\"></i></a>\
-                                                <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"?model="+response.bike[i].model.toLowerCase()+"?frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
+                                                <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
                                             </p>\
                                         </div>\
                                     </div>\

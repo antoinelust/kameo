@@ -5,7 +5,11 @@ $brand=$_GET['brand'];
 $model=$_GET['model'];
 $frameType=$_GET['frameType'];
 include 'include/connexion.php';
-$sql="SELECT *  FROM bike_catalog WHERE UPPER(BRAND)='UPPER($brand)' AND UPPER(MODEL)='UPPER($model)' AND UPPER(FRAME_TYPE)='UPPER($frameType)'";
+$brandUPPER=strtoupper($brand);
+$modelUPPER=strtoupper($model);
+$frameTypeUPPER=strtoupper($frameType);
+
+$sql="SELECT *  FROM bike_catalog WHERE UPPER(BRAND)='$brandUPPER' AND UPPER(MODEL)='$modelUPPER' AND UPPER(FRAME_TYPE)='$frameTypeUPPER'";
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
@@ -25,7 +29,7 @@ $row = mysqli_fetch_assoc($result);
                 <div class="row">
                     <div class="col-md-6">
                         
-                        <img src="images_bikes/<?php echo $brand.'_'.$model.'_'.$frameType; ?>.jpg" class="img-responsive img-rounded" alt="">
+                        <img src="images_bikes/<?php echo $brand.'_'.str_replace(' ', '-', $model).'_'.$frameType; ?>.jpg" class="img-responsive img-rounded" alt="">
                         <br>
                         <dl class="dl">
 							<dt>Caractéristiques techniques</dt>
@@ -41,7 +45,7 @@ $row = mysqli_fetch_assoc($result);
                         
                         <dl class="dl col-md-6">
 							<dt>Utilisation</dt>
-							<dd><?php echo $row['utilisation']; ?></dd>
+							<dd><?php echo $row['UTILISATION']; ?></dd>
 							<br>
 							<dt>Type de cadre</dt>
 							<dd><?php if($row['FRAME_TYPE']=="H"){echo "Homme";} else if($row['FRAME_TYPE']=="M"){echo "Mixte";}else if($row['FRAME_TYPE']=="F"){echo "Femme";}else{echo "undefined";} ?></dd>
@@ -49,15 +53,15 @@ $row = mysqli_fetch_assoc($result);
 						
 						<dl class="dl col-md-6">
 							<dt>Assistance électrique</dt>
-							<dd><?php if($row['electric']=="Y"){echo "Oui";} else if($row['electric']=="N"){echo "Non";}else{echo "undefined";} ?></dd>
+							<dd><?php if($row['ELECTRIC']=="Y"){echo "Oui";} else if($row['ELECTRIC']=="N"){echo "Non";}else{echo "undefined";} ?></dd>
 							<br>
 							<dt>Type de cadre</dt>
 							<dd>Mixte</dd>
 						</dl>
 						
 						<div class="col-md-12">
-						<h3>Prix Achat (HTVA): <b class="text-green"><?php echo $row['PRICE_HTVA']; ?></b> <small>HTVA</small></h3>
-						<h3>Prix Achat (TVAC): <b class="text-green"><?php echo $row['PRICE_HTVA']*1.21; ?></b> <small>TVAC</small></h3>
+						<h3>Prix Achat (HTVA): <b class="text-green"><?php echo $row['PRICE_HTVA']; ?></b> <small>€</small></h3>
+						<h3>Prix Achat (TVAC): <b class="text-green"><?php echo $row['PRICE_HTVA']*1.21; ?></b> <small>€</small></h3>
                         <?php
                             $priceTemp=($row['PRICE_HTVA']/1.21+3*100+4*200);
         
@@ -82,7 +86,7 @@ $row = mysqli_fetch_assoc($result);
                             $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
                         ?>
                             
-                            <h3>Prix Leasing (HTVA): <b class="text-green"><?php echo $leasingPrice; ?></b> <small>TVAC</small></h3>
+                            <h3>Prix Leasing (HTVA): <b class="text-green"><?php echo $leasingPrice; ?></b> <small>€/mois HTVA</small></h3>
 
                             
 						</div>
@@ -98,7 +102,7 @@ $row = mysqli_fetch_assoc($result);
                         <div class="separator"></div>
                         
                         <div class="m-t-30">
-                            <form id="widget-offer" action="include/offer-form.php" role="form" method="post">
+                            <form id="widget-offer" action="include/offer_form.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                         <label for="name" class="fr">Nom</label>
@@ -138,13 +142,14 @@ $row = mysqli_fetch_assoc($result);
                                 
                                 <input type="text" class="hidden" id="widget-offer-brand" name="widget-offer-brand" value="<?php echo $brand; ?>" />
                                 <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-model" value="<?php echo $model; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-frame-type" value="<?php echo $frameType; ?>" />
                                 <input type="text" class="hidden" id="widget-offer-antispam" name="widget-offer-antispam" value="" />
                                 <button  id="fr" class="button green button-3d rounded effect" type="submit" id="form-submit">Demander une offre</button>
                             </form>   
                             <script type="text/javascript">
                                 jQuery("#widget-offer").validate({
                                     submitHandler: function(form) {
-
+                                        console.log("test");
                                         jQuery(form).ajaxSubmit({
                                             success: function(text) {
                                                 if (text.response == 'success') {
