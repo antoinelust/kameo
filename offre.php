@@ -33,7 +33,7 @@ $row = mysqli_fetch_assoc($result);
                         <br>
                         <dl class="dl">
 							<dt>Caractéristiques techniques</dt>
-							<dd>Voir le <ins><a href="https://www.conway-bikes.de/modell/ets-200-se/" target="_blank">site de la marque</a></ins>.</dd>
+							<dd>Voir le <ins><a href="<?php echo $row['LINK']; ?>" target="_blank">site de la marque</a></ins>.</dd>
 						</dl>
                         
                                           
@@ -149,7 +149,6 @@ $row = mysqli_fetch_assoc($result);
                             <script type="text/javascript">
                                 jQuery("#widget-offer").validate({
                                     submitHandler: function(form) {
-                                        console.log("test");
                                         jQuery(form).ajaxSubmit({
                                             success: function(text) {
                                                 if (text.response == 'success') {
