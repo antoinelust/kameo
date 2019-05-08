@@ -64,12 +64,11 @@ include 'include/header2.php';
                                         <label for="widget-contact-form-prix">Prix Achat (HTVA)</label>
 											<select class="portfolio" name="widget-contact-form-prix" id="widget-bike-price">
                                                 <option data-filter="*" value="*" selected>Tous les prix</option>
-                                                <option data-filter="-1000"> -1000€</option>
-                                                <option data-filter="between-1000-2000">1000 - 2000 €</option>
-                                                <option data-filter="between-2000-3000">2000 - 3000 € </option>
-                                                <option data-filter="between-3000-4000">3000 - 4000€</option>
-                                                <option data-filter="between-4000-5000">4000 - 5000 €</option>
-                                                <option data-filter="+5000"> +5000€</option>
+                                                <option data-filter=".2000"> Moins de 2000€</option>
+                                                <option data-filter=".between-2000-3000">2000 - 3000 € </option>
+                                                <option data-filter=".between-3000-4000">3000 - 4000€</option>
+                                                <option data-filter=".between-4000-5000">4000 - 5000 €</option>
+                                                <option data-filter=".5000"> Plus de 5000€</option>
 									       </select>
                                     </div>
 									
@@ -201,8 +200,20 @@ include 'include/header2.php';
                                 } else{
                                     var frameType = "undefined";
                                 }
+                                
+                                if(response.bike[i].price<="2000"){
+                                    var price="2000";
+                                }else if(response.bike[i].price<="3000"){
+                                    var price="between-2000-3000";
+                                }else if(response.bike[i].price<="4000"){
+                                    var price="between-3000-4000";
+                                }else if(response.bike[i].price<="5000"){
+                                    var price="between-4000-5000";
+                                }else{
+                                    var price="5000";
+                                }
                                 var temp="\
-                                <div class=\"portfolio-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+"\" \">\
+                                <div class=\"portfolio-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
                                     <div class=\"portfolio-image effect social-links\">\
                                         <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"\">\
                                         <div class=\"image-box-content\">\
@@ -213,12 +224,10 @@ include 'include/header2.php';
                                         </div>\
                                     </div>\
                                     <div class=\"portfolio-description\">\
-                                        <h4 class=\"title\">"+response.bike[i].brand+"</h4>\
-                                        <p>"+response.bike[i].model+" "+frameType+"</p>\
-                                    </div>\
-                                    <div class=\"portfolio-date\">\
-                                        <p class=\"small\">Achat : <i class=\"fa fa-eur\"></i>"+response.bike[i].price+"</p>\
-                                        <p class=\"small\">Leasing : <i class=\"fa fa-eur\"></i>"+response.bike[i].leasingPrice+"</p>\
+                                        <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
+                                        <p>"+response.bike[i].model+" "+frameType+"\
+                                        <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
+                                        <br><b class=\"text-green\">Leasing :"+response.bike[i].leasingPrice+" €/mois</b></p>\
                                     </div>\
                                 </div>";
                                 dest=dest.concat(temp);                                            
