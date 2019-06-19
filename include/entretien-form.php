@@ -78,6 +78,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 	$firstName=$row["PRENOM"];
 	$name=$row["NOM"];
 	$phone=$row["PHONE"];
+     
     $frameNumber=$_POST['widget-entretien-form-frame-number'];
 	$bikePart = $_POST["widget-entretien-form-bikePart"];	
 	$message = $_POST["widget-entretien-form-message"];

@@ -752,6 +752,7 @@ if($connected){
                     }
                     document.getElementById('counterUsers').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.usersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.usersNumber+"</span>";
                     document.getElementById('usersList').innerHTML = dest;
+                    displayLanguage();
                                         
                 }
             }
@@ -3393,7 +3394,6 @@ if($connected){
 												});
                                                 $('#usersListing').modal('toggle');
                                                 get_users_listing();
-                                                displayLanguage();
 												$('#addUser').modal('toggle');
 
 											} else {
@@ -3482,7 +3482,6 @@ if($connected){
 												});
                                                 $('#usersListing').modal('toggle');
                                                 get_users_listing();
-                                                displayLanguage();
 												$('#deleteUser').modal('toggle');
 
 											} else {
@@ -3569,7 +3568,6 @@ if($connected){
                                                 $('#reactivateUser').modal('toggle');
                                                 
                                                 get_users_listing();
-                                                displayLanguage();
 
 											} else {
 												$.notify({
@@ -3661,7 +3659,6 @@ if($connected){
 												});
                                                 
                                                 get_users_listing();
-                                                displayLanguage();
                                                 $('#updateUserInformation').modal('toggle');
                                                 $('#usersListing').modal('toggle');
 
@@ -4557,7 +4554,7 @@ if($connected){
                                                         type: 'success'
                                                     });
 													$('#entretien2').modal('toggle');
-													$('#assistance').modal('toggle');
+													//$('#assistance').modal('toggle');
 
                                                 } else {
                                                     $.notify({
