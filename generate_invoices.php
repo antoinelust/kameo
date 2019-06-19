@@ -27,7 +27,6 @@ if ($conn->query($sql) === FALSE) {
 }
 
 $result = mysqli_query($conn, $sql);     
-$length = $result->num_rows;
 $i=0;
 
 while($row = mysqli_fetch_array($result))
@@ -35,19 +34,26 @@ while($row = mysqli_fetch_array($result))
     $internalReference=$row['INTERNAL_REFERENCE'];
     $companyName=$row['COMPANY_NAME'];
     $currentDate=date('Y-m-d');
-    $sql_dateStart="select min(CONTRACT_START), COMPANY from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' group by company";
+    $sql_dateStart="select min(CONTRACT_START), COMPANY from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference'";
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
     }
     $result_dateStart = mysqli_query($conn, $sql_dateStart);   
     $length=$result_dateStart->num_rows;
-    if($length > 0)
+    $resultat_dateStart = mysqli_fetch_assoc($result_dateStart);
+
+    if($resultat_dateStart['min(CONTRACT_START)'])
     {
-        $resultat_dateStart = mysqli_fetch_assoc($result_dateStart);
         $firstDay=substr($resultat_dateStart['min(CONTRACT_START)'], 8, 2);
         $today=substr($currentDate, 8 ,2);
-        if($today==$firstDay)
+        /*echo "<p>Company : ".$companyName;
+        echo "<br> First Day : ".$firstDay;
+        echo "<br> Today : ".$today;
+        echo "<br> Start of contract : ".$resultat_dateStart['min(CONTRACT_START)'];
+        echo "<br /> --------- </p>";*/
+        //if($today==$firstDay)
+        if($internalReference=="EPS" && $today==$firstDay)
         {
             $file = __DIR__.'/temp/company.txt';
             $myfile = fopen($file, "w")  or die("Unable to open file!");

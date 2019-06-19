@@ -47,8 +47,8 @@ if($user != NULL)
 		$response['booking'][$i]['building_end']=$row['BUILDING_END'];
 		$response['booking'][$i]['time']="past";       
         
-        $building_code=$row['BUILDING_START'];        
-        $sql2="select * from building_access where BUILDING_CODE='$building_code'";
+        $buildingReference=$row['BUILDING_START'];        
+        $sql2="select * from building_access where BUILDING_REFERENCE='$buildingReference'";
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -60,8 +60,8 @@ if($user != NULL)
         $response['booking'][$i]['building_start_en']=$resultat2['BUILDING_EN'];
         $response['booking'][$i]['building_start_nl']=$resultat2['BUILDING_NL'];
         
-        $building_code=$row['BUILDING_END'];        
-        $sql2="select * from building_access where BUILDING_CODE='$building_code'";
+        $buildingReference=$row['BUILDING_END'];        
+        $sql2="select * from building_access where BUILDING_REFERENCE='$buildingReference'";
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -110,8 +110,8 @@ if($user != NULL)
 		$response['booking'][$i]['time']="future";
         $response['booking'][$i]['bookingID']=$row['ID'];
         
-        $building_code=$row['BUILDING_START'];        
-        $sql2="select * from building_access where BUILDING_CODE='$building_code'";
+        $buildingReference=$row['BUILDING_START'];        
+        $sql2="select * from building_access where BUILDING_REFERENCE='$buildingReference'";
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -123,8 +123,8 @@ if($user != NULL)
         $response['booking'][$i]['building_start_en']=$resultat2['BUILDING_EN'];
         $response['booking'][$i]['building_start_nl']=$resultat2['BUILDING_NL'];
         
-        $building_code=$row['BUILDING_END'];        
-        $sql2="select * from building_access where BUILDING_CODE='$building_code'";
+        $buildingReference=$row['BUILDING_END'];        
+        $sql2="select * from building_access where BUILDING_REFERENCE='$buildingReference'";
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -135,36 +135,39 @@ if($user != NULL)
         $response['booking'][$i]['building_end_fr']=$resultat2['BUILDING_FR'];
         $response['booking'][$i]['building_end_en']=$resultat2['BUILDING_EN'];
         $response['booking'][$i]['building_end_nl']=$resultat2['BUILDING_NL'];
-        
-        
+
         $dateEnd=$row['DATE_END'];
         $sql3="select * from reservations where FRAME_NUMBER='$frameNumber' and DATE_START>'$dateEnd' and STAANN!='D' ORDER BY DATE_START LIMIT 1";
+        
         if ($conn->query($sql3) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
+
+
         $result3 = mysqli_query($conn, $sql3); 
         $length3 = $result3->num_rows;
+
         if ($length3 == 0){
             $response['booking'][$i]['annulation']=true;
         }
         else{
             $resultat3 = mysqli_fetch_assoc($result3);
-            $buildingStartNext=$resultat3['BUILING_START'];
-            $buildingEndNext=$resultat3['BUILING_END'];
+            $buildingStartNext=$resultat3['BUILDING_START'];
+            $buildingEndNext=$resultat3['BUILDING_END'];
             if ($buildingStartNext==$buildingStart && $buildingEndNext==$buildingEnd){
                 $response['booking'][$i]['annulation']=true;
             } else{
                 $response['booking'][$i]['annulation']=false;
             }
         }     
-        
 
         
         $i++;
 	}
 	
+    $response['response']="success";
 	echo json_encode($response);
     die;
 

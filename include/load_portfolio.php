@@ -8,11 +8,19 @@ include 'globalfunctions.php';
 
 
 try{
-    $frameType=$_POST['frameType'];
+    /*$frameType=$_POST['frameType'];
     $utilisation=$_POST['utilisation'];
     $price=$_POST['price'];
     $brand=$_POST['brand'];
     $electric=$_POST['electric'];
+    */
+    
+    $frameType="*";
+    $utilisation="*";
+    $price="*";
+    $brand="*";
+    $electric="*";
+
 
     $response=array();
 
@@ -45,6 +53,7 @@ try{
                 $sql=$sql." AND PRICE_HTVA='".$price."'";
             }
         }
+        $sql=$sql." ORDER BY BRAND";
         if($brand!="*"){
             $sql=$sql." AND UPPER(BRAND)='".strtoupper($brand)."'";
         }
@@ -80,7 +89,7 @@ try{
             $response['bike'][$i]['electric']=$row['ELECTRIC'];
 
             $price=$row['PRICE_HTVA'];
-            $priceTemp=($price/1.21+3*100+4*200);
+            $priceTemp=($price+3*75+4*100+4*100);
 
             // Calculation of coefficiant for leasing price
 
@@ -97,12 +106,13 @@ try{
             }else{
                 errorMessage(ES0012);
             }
-
-            // Calculation of leasing price based on coefficient and retail price
-
+            
             $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
+
             $response['bike'][$i]['leasingPrice']=$leasingPrice;
             $response['bike'][$i]['price']=$price;
+            $response['bike'][$i]['url']=$row['LINK'];
+            
             $i++;
 
         }
@@ -119,6 +129,9 @@ try{
 }  catch (Exception $e) {
     $response['response']="error";
     $response['message']=$e->getMessage();
+    echo json_encode($response);
+    die;
+
 }
 
 ?>

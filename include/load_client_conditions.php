@@ -11,13 +11,13 @@ if(!isset($_SESSION))
 include 'globalfunctions.php';
 
 
-$userID=$_POST['userID'];
+$email=$_POST['email'];
 
-if($userID != NULL)
+if($email != NULL)
 {
 	
     include 'connexion.php';
-	$sql="select * from customer_referential where EMAIL = '$userID'";
+	$sql="select * from customer_referential where EMAIL = '$email'";
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -26,25 +26,27 @@ if($userID != NULL)
     }
 	$result = mysqli_query($conn, $sql); 
     $resultat = mysqli_fetch_assoc($result);
-    
-    $frameNumber=$resultat['FRAME_NUMBER'];
-    $company=substr($frameNumber,0,3);
-    $response['clientConditions']['administrator']=$resultat['ADMINISTRATOR'];   
+    $conn->close();   
 
+    $company=$resultat['COMPANY'];
+    $response['clientConditions']['administrator']=$resultat['ADMINISTRATOR'];       
     
-    $sql="select * from conditions where FRAME_NUMBER = '$frameNumber'";
+    include 'connexion.php';
+	$sql="select * from conditions where COMPANY = '$company'";
+
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
-	}
-	
+    }
 	$result = mysqli_query($conn, $sql); 
-    $resultat = mysqli_fetch_assoc($result);    
+    $resultat = mysqli_fetch_assoc($result);
+    $conn->close();   
+    
+ 
 
     //vérifier nom du champ SQL
-	$response['text']="success";
-	$response['message']="";
+	$response['response']="success";
     $response['clientConditions']['bookingDays']=$resultat['BOOKING_DAYS']; 
     $response['clientConditions']['bookingLength']=$resultat['BOOKING_LENGTH']; 
     $response['clientConditions']['assistance']=$resultat['ASSISTANCE']; 
@@ -55,7 +57,7 @@ if($userID != NULL)
     $response['clientConditions']['locking']=$resultat['LOCKING'];
     $response['clientConditions']['mondayIntake']=$resultat['MONDAY_INTAKE'];
     $response['clientConditions']['tuesdayIntake']=$resultat['TUESDAY_INTAKE'];
-    $response['clientConditions']['wednedayIntake']=$resultat['WEDNESDAY_INTAKE'];
+    $response['clientConditions']['wednesdayIntake']=$resultat['WEDNESDAY_INTAKE'];
     $response['clientConditions']['thursdayIntake']=$resultat['THURSDAY_INTAKE'];
     $response['clientConditions']['fridayIntake']=$resultat['FRIDAY_INTAKE'];
     $response['clientConditions']['saturdayIntake']=$resultat['SATURDAY_INTAKE'];

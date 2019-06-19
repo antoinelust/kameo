@@ -17,6 +17,24 @@ $newID=$resultat_reference['max(ID)'];
 $newID=strval($newID+1);
 
 
+include 'include/connexion.php';
+$sql="select * from companies wher INTERNAL_REFERENCE='$company'";
+if ($conn->query($ql) === FALSE) {
+    echo $conn->error;
+    die;
+}
+$result = mysqli_query($conn, $sql);   
+$resultat = mysqli_fetch_assoc($result);
+
+$companyName=$resultat['COMPANY_NAME'];
+$street=$resultat['STREET'];
+$zip=$resultat['ZIP_CODE'];
+$town=$resultat['TOWN'];
+$vat=$resultat['VAT_NUMBER'];
+$email=$resultat['EMAIL_CONTACT'];
+$nom=$resultat['NOM_CONTACT'];
+$prenom=$resultat['PRENOM_CONTACT'];
+
 $length=strlen($newID);
 $i=(3-$length);
 $reference=$newID;
@@ -41,7 +59,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
         <table style="width: 100%; border: solid 1px black;">
             <tr>
                 <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
-                <td style="text-align: center;    width: 34%">Facture Sia Partners</td>
+                <td style="text-align: center;    width: 34%">Facture '.$companyName.'</td>
                 <td style="text-align: right;    width: 33%">'.date('d/m/Y').'</td>
             </tr>
         </table>

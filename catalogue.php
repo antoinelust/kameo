@@ -19,32 +19,35 @@ include 'include/header2.php';
                                 
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-marque">Marque</label>
-											<select class="portfolio" name="widget-contact-form-marque" id="widget-bike-brand">
-									           <option data-filter="*" value="*">Toutes nos marques</option>
+											<select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
+									           <option data-filter="" value="*">Toutes nos marques</option>
 									           <option data-filter=".conway" value="Conway">Conway</option>
 									           <option data-filter=".orbea">Orbea</option>
 									           <option data-filter=".bzen">Bzen</option>
 									           <option data-filter=".ahooga">Ahooga</option>
 									           <option data-filter=".stevens">Stevens</option>
+									           <option data-filter=".douze">Douze</option>
+									           <option data-filter=".hnf">HNF Nicolai</option>
 									       </select>
                                     </div>
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-utilisation">Utilisation</label>
-											<select class="portfolio" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
-									           <option data-filter="*" value="*">Tous types d'utilisation</option>
+											<select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
+									           <option data-filter="" value="*">Tous types d'utilisation</option>
 									           <option data-filter=".villeetchemin">Ville et chemin</option>
 									           <option data-filter=".ville">Ville</option>
 									           <option data-filter=".toutchemin">Tout chemin</option>
 									           <option data-filter=".pliant">Pliant</option>
 									           <option data-filter=".speedpedelec">Speedpedelec</option>
+									           <option data-filter=".cargo">Cargo</option>
 									       </select>
                                     </div>
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-cadre">Type de cadre</label>
-											<select class="portfolio" name="widget-contact-form-cadre" id="widget-bike-frame-type">
-									           <option data-filter="*" value="*">Tous types de cadre</option>
+											<select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
+									           <option data-filter="" value="*">Tous types de cadre</option>
 									           <option data-filter=".m" value="M">Mixte</option>
 									           <option data-filter=".f" value="F">Femme</option>
 									           <option data-filter=".h" value="H">Homme</option>
@@ -53,8 +56,8 @@ include 'include/header2.php';
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-electrique">Assistance électrique</label>
-											<select class="portfolio" name="widget-contact-form-electrique" id="widget-bike-electric">
-                                                <option data-filter="*" value="*">Tous</option>
+											<select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
+                                                <option data-filter= "" value="*">Tous</option>
 									            <option data-filter=".y">Oui</option>
 									            <option data-filter=".n">Non</option>
 									       </select>
@@ -62,8 +65,8 @@ include 'include/header2.php';
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-prix">Prix Achat (HTVA)</label>
-											<select class="portfolio" name="widget-contact-form-prix" id="widget-bike-price">
-                                                <option data-filter="*" value="*" selected>Tous les prix</option>
+											<select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
+                                                <option data-filter="" value="*" selected>Tous les prix</option>
                                                 <option data-filter=".2000"> Moins de 2000€</option>
                                                 <option data-filter=".between-2000-3000">2000 - 3000 € </option>
                                                 <option data-filter=".between-3000-4000">3000 - 4000€</option>
@@ -89,64 +92,7 @@ include 'include/header2.php';
                         
                         <!-- Portfolio Items -->
 				        <div id="isotope" class="isotope portfolio-items" data-isotope-item-space="2" data-isotope-mode="masonry" data-isotope-col="3" data-isotope-item=".portfolio-item">
-                            <div id="bikeCatalog" class="grid"></div>
-				            <!--<div class="portfolio-item">
-				                <div class="portfolio-image effect social-links">
-				                    <img src="catalogue/ets200se_Mixte_mini.jpg" alt="">
-				                    <div class="image-box-content">
-				                        <p>
-				                            <a href="catalogue/ets200se_Mixte.jpg" data-lightbox-type="image" title="Conway ets 200 se - Cadre Mixte"><i class="fa fa-expand"></i></a>
-				                            <a href="offre.php"><i class="fa fa-link"></i></a>
-				                        </p>
-				                    </div>
-				                </div>
-				                <div class="portfolio-description">
-				                    <h4 class="title">Conway</h4>
-				                    <p>ets 200 se - Mixte</p>
-				                </div>
-				                <div class="portfolio-date">
-				                    <p class="small"><i class="fa fa-eur"></i>78</p>
-				                </div>
-				            </div>
-				            
-				            <div class="portfolio-item">
-				                <div class="portfolio-image effect social-links">
-				                    <img src="catalogue/ets200se_Femme_mini.jpg" alt="">
-				                    <div class="image-box-content">
-				                        <p>
-				                            <a href="catalogue/ets200se_Femme.jpg" data-lightbox-type="image" title="Conway ets 200 se - Cadre Femme"><i class="fa fa-expand"></i></a>
-				                            <a href="offre.php"><i class="fa fa-link"></i></a>
-				                        </p>
-				                    </div>
-				                </div>
-				                <div class="portfolio-description">
-				                    <h4 class="title">Conway</h4>
-				                    <p>ets 200 se - Femme</p>
-				                </div>
-				                <div class="portfolio-date">
-				                    <p class="small"><i class="fa fa-eur"></i>78</p>
-				                </div>
-				            </div>
-				            
-				            <div class="portfolio-item">
-				                <div class="portfolio-image effect social-links">
-				                    <img src="catalogue/ets200se_Homme_mini.jpg" alt="">
-				                    <div class="image-box-content">
-				                        <p>
-				                            <a href="catalogue/ets200se_Homme.jpg" data-lightbox-type="image" title="Conway ets 200 se - Cadre Homme"><i class="fa fa-expand"></i></a>
-				                            <a href="offre.php"><i class="fa fa-link"></i></a>
-				                        </p>
-				                    </div>
-				                </div>
-				                <div class="portfolio-description">
-				                    <h4 class="title">Conway</h4>
-				                    <p>ets 200 se - Homme</p>
-				                </div>
-				                <div class="portfolio-date">
-				                    <p class="small"><i class="fa fa-eur"></i>78</p>
-				                </div>
-				            </div>-->
-				
+                            <div id="bikeCatalog" class="grid"></div>		
 				            
 				
 				        </div>
@@ -157,10 +103,26 @@ include 'include/header2.php';
             </div>
         </section>
         <!-- END: CONTENT -->
-        
+        <div class="modal fade" id="bikePicture" tabindex="-1" role="modal" aria-labelledby="modal-label-3" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 id="bikePicturetitle" class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb20">
+                            <img id="bikePictureImage" class="img-responsive img-rounded" alt="" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-b" type="button">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script type="text/javascript">
-
             function loadPortfolio(){
                 document.getElementById('bikeCatalog').innerHTML="";
                 var utilisation=document.getElementById('widget-bike-utilisation').value;
@@ -170,8 +132,6 @@ include 'include/header2.php';
                 var brand=document.getElementById('widget-bike-brand').options[document.getElementById('widget-bike-brand').selectedIndex].value;
                 var e=document.getElementById('widget-bike-electric');
                 var electric = e.options[e.selectedIndex].value;
-
-
                 $.ajax({
                     url: 'include/load_portfolio.php',
                     type: 'post',
@@ -201,24 +161,25 @@ include 'include/header2.php';
                                     var frameType = "undefined";
                                 }
                                 
-                                if(response.bike[i].price<="2000"){
+                                if(parseInt(response.bike[i].price)<="2000"){
                                     var price="2000";
-                                }else if(response.bike[i].price<="3000"){
+                                }else if(parseInt(response.bike[i].price)<="3000"){
                                     var price="between-2000-3000";
-                                }else if(response.bike[i].price<="4000"){
+                                }else if(parseInt(response.bike[i].price)<="4000"){
                                     var price="between-3000-4000";
-                                }else if(response.bike[i].price<="5000"){
+                                }else if(parseInt(response.bike[i].price)<="5000"){
                                     var price="between-4000-5000";
                                 }else{
                                     var price="5000";
                                 }
+                                
                                 var temp="\
                                 <div class=\"portfolio-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
                                     <div class=\"portfolio-image effect social-links\">\
                                         <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"\">\
                                         <div class=\"image-box-content\">\
                                             <p>\
-                                                <a href=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+".jpg\" data-lightbox-type=\"image\" title=\""+response.bike[i].brand+" "+response.bike[i].model+" "+frameType+" \"><i class=\"fa fa-expand\"></i></a>\
+                                                <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
                                                 <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
                                             </p>\
                                         </div>\
@@ -226,6 +187,7 @@ include 'include/header2.php';
                                     <div class=\"portfolio-description\">\
                                         <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
                                         <p>"+response.bike[i].model+" "+frameType+"\
+                                        <br>"+response.bike[i].utilisation+"\
                                         <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
                                         <br><b class=\"text-green\">Leasing :"+response.bike[i].leasingPrice+" €/mois</b></p>\
                                     </div>\
@@ -238,20 +200,25 @@ include 'include/header2.php';
                             var $grid = $('.grid').isotope({
                             });
 
-                            console.log($grid);
                             var filters = {};
-
-
-                            $('.portfolio').on('change', function() {
-                                var filterValue = $( this ).children("option:selected").attr('data-filter');
-                                filterValue=filterValue;
-                                console.log(filterValue);
-                                console.log($grid);
+                            
+                            $('.portfolio').on( 'change', function(event) {
+                                var $cible = $( event.currentTarget );
+                                var filterGroup = $cible.attr('data-filter-group');
+                                filters[ filterGroup ] = $( this ).children("option:selected").attr('data-filter');
+                                var filterValue = concatValues( filters );
                                 $grid.isotope({ filter: filterValue });
                             });
+                            
+                            function concatValues( obj ) {
+                              var value = '';
+                              for ( var prop in obj ) {
+                                value += obj[ prop ];
+                              }
+                              return value;
+                            }
 
                         }
-
                     }
                 });
                                 
@@ -259,15 +226,20 @@ include 'include/header2.php';
                 for (var i = 0; i < classname.length; i++) {
                     //classname[i].addEventListener('change', loadPortfolio, false);
                 }
-
             }
-
             loadPortfolio();
+            
+            function updateBikePicture(brand, model, frameType)
+            {
 
+                document.getElementById('bikePicturetitle').innerHTML=brand+" "+model;
+                document.getElementById('bikePictureImage').src="images_bikes/"+brand.toLowerCase()+"_"+model.toLowerCase().replace(/ /g, '-')+"_"+frameType.toLowerCase()+".jpg";
+                
+            }
         </script>
 
-       
-  
+    
+
         
 		<!-- FOOTER -->
 	<footer class="background-dark text-grey" id="footer">
@@ -314,3 +286,4 @@ include 'include/header2.php';
 </body>
 
 </html>
+

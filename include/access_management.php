@@ -29,6 +29,10 @@ if($row["PASSWORD"]==NULL)
 	errorMessage("ES0006");
 }
 
+if($row["STAANN"]=="D"){
+    errorMessage("ES0029");
+}
+
 if (password_verify($UserPassword, $row["PASSWORD"])) { 
 	$_SESSION['userID']=$userID;
 	$_SESSION['UserPassword']=$UserPassword;

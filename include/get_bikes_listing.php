@@ -38,9 +38,7 @@ if($email != NULL)
 
         $response['response']="success";
 		$response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-		$response['bike'][$i]['modelFR']=$row['MODEL_FR'];            
-		$response['bike'][$i]['modelEN']=$row['MODEL_EN'];            
-		$response['bike'][$i]['modelNL']=$row['MODEL_NL'];
+		$response['bike'][$i]['model']=$row['MODEL'];            
 		$response['bike'][$i]['contractReference']=$row['CONTRACT_REFERENCE'];
         if($row['LEASING']=="Y"){
             $response['bike'][$i]['contractType']="leasing";

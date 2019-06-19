@@ -11,35 +11,47 @@ if(!isset($_SESSION))
 
 include 'globalfunctions.php';
 
-$userFrameNumber=$_POST['userFrameNumber'];
+$email=$_POST['email'];
 
-if( $userFrameNumber!=NULL ) {
+if( $email!=NULL ) {
     include 'connexion.php';
-    $sql= "select * from building_access where BUILDING_REFERENCE like '$userFrameNumber%'";
-
-   if ($conn->query($sql) === FALSE) {
+    $sql= "select * from customer_building_access where EMAIL = '$email'";
+    if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-
     $result = mysqli_query($conn, $sql);     
     $length = $result->num_rows;
+    $conn->close();   
 
     if($length == "0")
     {
         //message d'erreur à créer
-        errorMessage("ES0015");
+        errorMessage("ES0026");
     }
     else{
         $i=0;
+        $response['response']="success";
         $response['buildingNumber']=$length;
         while($row = mysqli_fetch_array($result)){
             $i++;
             $response['building'][$i]['building_code']=$row['BUILDING_CODE'];
-            $response['building'][$i]['fr']=$row['BUILDING_FR'];
-            $response['building'][$i]['en']=$row['BUILDING_EN'];
-            $response['building'][$i]['nl']=$row['BUILDING_NL'];
+            $buildingReference=$row['BUILDING_CODE'];
+
+            include 'connexion.php';
+            $sql2= "select * from building_access where BUILDING_REFERENCE = '$buildingReference'";
+            if ($conn->query($sql2) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result2 = mysqli_query($conn, $sql2);   
+            $resultat = mysqli_fetch_assoc($result2);
+            $conn->close();
+            $response['building'][$i]['fr']=$resultat['BUILDING_FR'];
+            $response['building'][$i]['en']=$resultat['BUILDING_EN'];
+            $response['building'][$i]['nl']=$resultat['BUILDING_NL'];
         }
         echo json_encode($response);
         die;

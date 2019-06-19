@@ -55,16 +55,18 @@ $row = mysqli_fetch_assoc($result);
 							<dt>Assistance électrique</dt>
 							<dd><?php if($row['ELECTRIC']=="Y"){echo "Oui";} else if($row['ELECTRIC']=="N"){echo "Non";}else{echo "undefined";} ?></dd>
 							<br>
-							<dt>Type de cadre</dt>
-							<dd>Mixte</dd>
 						</dl>
 						
 						<div class="col-md-12">
+						<!--
 						<h3>Prix Achat (HTVA): <b class="text-green"><?php echo $row['PRICE_HTVA']; ?></b> <small>€</small></h3>
 						<h3>Prix Achat (TVAC): <b class="text-green"><?php echo $row['PRICE_HTVA']*1.21; ?></b> <small>€</small></h3>
+						-->
                         <?php
-                            $priceTemp=($row['PRICE_HTVA']/1.21+3*100+4*200);
         
+                            $priceTemp=($row['PRICE_HTVA']+3*75+4*100+4*100);
+
+
                             // Calculation of coefficiant for leasing price
 
                             if($priceTemp<2500){
@@ -86,8 +88,45 @@ $row = mysqli_fetch_assoc($result);
                             $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
                         ?>
                             
-                            <h3>Prix Leasing (HTVA): <b class="text-green"><?php echo $leasingPrice; ?></b> <small>€/mois HTVA</small></h3>
+                            <!--<h3>Prix Leasing (HTVA): <b class="text-green"><?php echo $leasingPrice; ?></b> <small>€/mois HTVA</small></h3>-->
 
+                        
+                        <!-- Pricing Table Colored -->
+						    <div class="row">
+						      <div class="pricing-table col-no-margin">
+						        <div class="col-md-4 col-sm-4 col-xs-4">
+						          <div class="plan">
+						            <div class="plan-header">
+						              <h4>Prix Achat (HTVA)</h4>
+						              <h2 class="text-green"><sup>€</sup><?php echo $row['PRICE_HTVA']; ?></h2>
+						            </div>
+						          </div>
+						        </div>
+						        
+						        <div class="col-md-4 col-sm-4 col-xs-4">
+						          <div class="plan">
+						            <div class="plan-header">
+						              <h4>Prix Achat (TVAC)</h4>
+						              <h2 class="text-green"><sup>€</sup><?php echo round($row['PRICE_HTVA']*1.21); ?></h2>
+						            </div>
+						          </div>
+						        </div>
+						        
+						        <div class="col-md-4 col-sm-4 col-xs-4">
+						          <div class="plan">
+						            <div class="plan-header">
+						              <h4>Prix Leasing (HTVA)</h4>
+						              <h2 class="text-green"><sup>€</sup><?php echo $leasingPrice; ?><span><small>/mois</small></span></h2>
+						              
+						            </div>
+						          </div>
+						        </div>
+						        
+						      </div>
+						    </div>
+						    <!-- END: Pricing Table Colored --> 
+                        
+                        
                             
 						</div>
                         
@@ -95,7 +134,7 @@ $row = mysqli_fetch_assoc($result);
                             <p>L'option leasing sur 36 mois comprend les services suivants:</p>
                             <ul>
                                 <li>Assurance P-Vélo contre le vol et la casse</li>
-                                <li>4 entretiens sur les 36 mois de la durée de vie du vélo</li>
+                                <li>4 entretiens sur les 36 mois de la durée de vie du leasing</li>
                             </ul>
                         </div>
                         
@@ -149,6 +188,7 @@ $row = mysqli_fetch_assoc($result);
                             <script type="text/javascript">
                                 jQuery("#widget-offer").validate({
                                     submitHandler: function(form) {
+                                        console.log("test");
                                         jQuery(form).ajaxSubmit({
                                             success: function(text) {
                                                 if (text.response == 'success') {

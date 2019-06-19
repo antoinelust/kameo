@@ -31,8 +31,6 @@ if($newPasswordSwitch=="true"){
         $new_password_hash = password_hash($newPassword, PASSWORD_BCRYPT);        
     }
 }
-
-
      
 
 

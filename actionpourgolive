@@ -1,0 +1,70 @@
+1/Executer les commandes suivantes (modification de structure de table):
+update building_access aa, reservations bb set bb.BUILDING_START=aa.BUILDING_REFERENCE where aa.BUILDING_CODE=bb.BUILDING_START;
+update building_access aa, reservations bb set bb.BUILDING_END=aa.BUILDING_REFERENCE where aa.BUILDING_CODE=bb.BUILDING_END;
+ALTER TABLE `customer_referential` CHANGE `CREATION` `HEU_MAJ` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `customer_referential` ADD `USR_MAJ` VARCHAR(15) NOT NULL AFTER `HEU_MAJ`;
+ALTER TABLE `customer_bikes` ADD `USR_MAJ` VARCHAR(15) NOT NULL;
+ALTER TABLE `customer_bikes` ADD `HEU_MAJ` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `USR_MAJ`;
+ALTER TABLE building_access DROP FOREIGN KEY BUILDING_CODE ; 
+ALTER TABLE ``building_access`` DROP INDEX ``BUILDING_CODE``;
+ALTER TABLE `building_access` ADD `COMPANY` VARCHAR(15) NOT NULL AFTER `ADDRESS`;
+ALTER TABLE `reservations` ADD `TYPE` VARCHAR(15) NOT NULL AFTER `EMAIL`;
+ALTER TABLE `conditions` CHANGE `FRAME_NUMBER` `COMPANY` VARCHAR(14) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `customer_bikes` CHANGE `COMPANY` `COMPANY` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `customer_referential` CHANGE `COMPANY` `COMPANY` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+
+
+
+Load bike_building_access.sql
+Load customer_bike_access.sql
+load customer_building_access.sql
+
+
+UPDATE customer_referential SET COMPANY="VEN" where FRAME_NUMBER like 'VEN%';
+UPDATE customer_referential SET COMPANY="CHU" where FRAME_NUMBER like 'CHU%';
+UPDATE customer_referential SET COMPANY="IDEA" where FRAME_NUMBER like 'IDE%';
+UPDATE customer_referential SET COMPANY="IDEA" where COMPNAY like 'IDE%';
+UPDATE customer_referential SET COMPANY="CITYDEV" where FRAME_NUMBER like 'CIT%';
+UPDATE customer_referential SET COMPANY="AED" where FRAME_NUMBER like 'AED%';
+
+UPDATE customer_bikes SET COMPANY="VEN" where FRAME_NUMBER like 'VEN%';
+UPDATE customer_bikes SET COMPANY="CHU" where FRAME_NUMBER like 'CHU%';
+UPDATE customer_bikes SET COMPANY="IDEA" where FRAME_NUMBER like 'IDE%';
+UPDATE customer_bikes SET COMPANY="IDEA" where COMPANY='IDE';
+UPDATE customer_bikes SET COMPANY="CITYDEV" where FRAME_NUMBER like 'CIT%';
+UPDATE customer_bikes SET COMPANY="AED" where FRAME_NUMBER like 'AED%';
+
+UPDATE building_access SET COMPANY="VEN" where BUILDING_REFERENCE like 'VEN%';
+UPDATE building_access SET COMPANY="CHU" where BUILDING_REFERENCE like 'CHU%';
+UPDATE building_access SET COMPANY="IDEA" where BUILDING_REFERENCE like 'IDE%';
+UPDATE building_access SET COMPANY="IDEA" where COMPANY like 'IDE%';
+UPDATE building_access SET COMPANY="CITYDEV" where BUILDING_REFERENCE like 'CIT%';
+UPDATE building_access SET COMPANY="AED" where BUILDING_REFERENCE like 'AED%';
+
+
+
+Mettre à jour les conditions clients
+
+UPDATE `conditions` SET `FRAME_NUMBER` = 'IDEA' WHERE `conditions`.`FRAME_NUMBER` = 'IDE';
+
+
+INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'SM0008', 'Utilisateur ajouté', 'User added', 'User added'), (NULL, 'SM0009', 'L\'utilisateur a été désactivé', 'User deactivated', 'User deactivated');
+INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'SM0010', 'L\'utilisateur a été ré-activé', 'User has been reactivated', 'User has been reactivated');
+
+
+
+
+2/
+Rajouter messages d'erreur
+
+
+3/ Vérifier que tous les utilisateurs sont bien répertoriés pour la bonne entreprise
+4/ vérifier pareil pour les vélos
+5/ vérifier pareil pour les bâtiments
+6/ Executer les commandes suivantes(modification de contenu de table)
+INSERT INTO bike_building_access (USR_MAJ, BIKE_NUMBER, BUILDING_CODE, STAANN) select 'mykameo', bb.FRAME_NUMBER, aa.BUILDING_REFERENCE, '' FROM customer_bikes bb, building_access aa where bb.COMPANY=aa.COMPANY and aa.COMPANY!='' and not exists (select 1 from bike_building_access cc where cc.BIKE_NUMBER=bb.FRAME_NUMBER and cc.BUILDING_CODE=aa.BUILDING_REFERENCE);
+INSERT INTO  customer_bike_access (USR_MAJ, BIKE_NUMBER, EMAIL, TYPE, STAANN) select 'mykameo',  bb.FRAME_NUMBER, aa.EMAIL, 'partage', '' FROM customer_referential aa, customer_bikes bb where aa.COMPANY=bb.COMPANY and aa.COMPANY!='' and not exists (select 1 from customer_bike_access cc where cc.BIKE_NUMBER=bb.FRAME_NUMBER and cc.email=aa.EMAIL);
+INSERT INTO  customer_building_access (USR_MAJ, EMAIL, BUILDING_CODE, STAANN) select 'mykameo', aa.EMAIL, bb.BUILDING_REFERENCE, '' from customer_referential aa, building_access bb where aa.COMPANY=bb.COMPANY and aa.COMPANY!='' and not exists (select 1 from customer_building_access cc where cc.EMAIL=aa.EMAIL and cc.BUILDING_CODE=bb.BUILDING_REFERENCE);
+UPDATE reservations aa, building_access bb set aa.BUILDING_START=bb.BUILDING_REFERENCE where aa.BUILDING_START=bb.BUILDING_CODE;
+UPDATE reservations aa, building_access bb set aa.BUILDING_END=bb.BUILDING_REFERENCE where aa.BUILDING_END=bb.BUILDING_CODE;

@@ -11,10 +11,10 @@ if(!isset($_SESSION))
 
 include 'globalfunctions.php';
 
-$building_code=$_POST['buildingCode'];
+$buildingReference=$_POST['buildingReference'];
 
 include 'connexion.php';
-$sql="SELECT * FROM building_access WHERE BUILDING_CODE='$building_code'";
+$sql="SELECT * FROM building_access WHERE BUILDING_REFERENCE='$buildingReference'";
 if ($conn->query($sql) === FALSE) {
 
 	$response = array ('response'=>'error', 'message'=> $conn->error);

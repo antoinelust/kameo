@@ -4,6 +4,10 @@ if(!isset($_SESSION))
     session_start(); 
 } 
 
+if(!isset($_SESSION['langue'])){
+    $_SESSION['langue']="fr";
+}
+
 function errorMessage($MSGNUM) {
     include 'connexion.php';
 	$sql = "SELECT * FROM error_messages where MSGNUM='$MSGNUM' ";

@@ -18,7 +18,7 @@ if($email != NULL)
 	$timestamp_now=time();
 	
     include 'connexion.php';
-	$sql="SELECT * FROM customer_referential dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email')";
+	$sql="SELECT * FROM customer_referential dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') ORDER BY NOM";
     
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

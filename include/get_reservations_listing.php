@@ -16,7 +16,7 @@ $bikeValue=isset( $_POST['bikeValue'] ) ? $_POST['bikeValue'] : NULL;
 
 $response=array();
 
-if($email != NULL && $dateStart != NULL && $dateEnd != NULL)
+if($email != NULL && $dateStart != NULL && $dateEnd != NULL && $bikeValue != NULL)
 {
 
 	$timestamp_now=time();
@@ -25,11 +25,10 @@ if($email != NULL && $dateStart != NULL && $dateEnd != NULL)
     
     if($bikeValue=="all")
     {
-        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE ORDER BY DATE_START";
+        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_REFERENCE ORDER BY DATE_START";
     } else {
-        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.FRAME_NUMBER='$bikeValue' and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_CODE ORDER BY DATE_START";
+        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.FRAME_NUMBER='$bikeValue' and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_REFERENCE=ee.BUILDING_CODE ORDER BY DATE_START";
     }
-    
     
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -68,7 +67,12 @@ if($email != NULL && $dateStart != NULL && $dateEnd != NULL)
 }
 else
 {
-	errorMessage("ES0006");
+    if($email==NULL){
+        errorMessage("ES0006");    
+    }else{
+        errorMessage("ES0012");
+    }
+	
 }
 
 ?>
