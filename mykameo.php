@@ -25,6 +25,7 @@ include 'include/activitylog.php';
 
 <script type="text/javascript">
     
+    
 window.addEventListener("DOMContentLoaded", function(event) {
 
     var classname = document.getElementsByClassName('fleetmanager');
@@ -45,7 +46,14 @@ window.addEventListener("DOMContentLoaded", function(event) {
     
     
 document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
-document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);           
+document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);   
+    
+var tempDate=new Date();
+$(".form_date_end").data("datetimepicker").setDate(tempDate);
+tempDate.setMonth(tempDate.getMonth()-1);
+    console.log(tempDate);
+$(".form_date_start").data("datetimepicker").setDate(tempDate);
+
 
 });
     
@@ -57,7 +65,7 @@ function reservation_listing(){
                                                        
 }
     
-function test(e){
+function bikeFilter(e){
     document.getElementsByClassName('bikeSelectionText')[0].innerHTML=e;
     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
 
@@ -366,6 +374,32 @@ function fillBikeDetails(element)
 
 function fillReservationDetails(element)
 {
+    var reservationID=element;
+    $.ajax({
+            url: 'include/get_reservation_details.php',
+            type: 'post',
+            data: { "reservationID": reservationID},
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                } else{
+                    document.getElementsByClassName("reservationNumber")[0].innerHTML=reservationID;
+                    document.getElementsByClassName("reservationStartDate")[0].innerHTML=response.reservationStartDate;
+                    document.getElementsByClassName("reservationEndDate")[0].innerHTML=response.reservationEndDate;
+                    document.getElementsByClassName("reservationStartBuilding")[0].innerHTML=response.reservationStartBuilding;
+                    document.getElementsByClassName("reservationEndBuilding")[0].innerHTML=response.reservationEndBuilding;
+                    document.getElementsByClassName("reservationBikeNumber")[0].innerHTML=response.reservationBikeNumber;                    
+                    document.getElementsByClassName("reservationBikeImage")[0].src="images_bikes/"+response.reservationBikeNumber+"_mini.jpg";
+                    
+                    document.getElementById('updateReservationdiv').innerHTML="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#updateReservation\" onclick=\"initializeUpdateReservation('"+reservationID+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Modifier</span><span class=\"en-inline\">Update</span></a>";
+                    document.getElementById('deleteReservationdiv').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteReservation\" onclick=\"initializeDeleteReservation('"+reservationID+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Supprimer</span><span class=\"en-inline\">Delete</span></a>";
+                    
+                    displayLanguage();
+                }              
+
+                }
+            })
+    
 }    
     
 </script>
@@ -686,11 +720,11 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Referentie</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
                     
                     var dest2="";
-                    temp2="<li><a href=\"#\" onclick=\"test('Sélection de vélo')\">Tous les vélos</a></li><li class=\"divider\"></li>";
+                    temp2="<li><a href=\"#\" onclick=\"bikeFilter('Sélection de vélo')\">Tous les vélos</a></li><li class=\"divider\"></li>";
                     dest2=dest2.concat(temp2);
 
                     
@@ -698,7 +732,7 @@ if($connected){
                         var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].model+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th><th>"+response.bike[i].status+"</th><th><ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
                         dest=dest.concat(temp);
 
-                        var temp2="<li><a href=\"#\" onclick=\"test('"+response.bike[i].frameNumber+"')\">"+response.bike[i].frameNumber+"</a></li>";
+                        var temp2="<li><a href=\"#\" onclick=\"bikeFilter('"+response.bike[i].frameNumber+"')\">"+response.bike[i].frameNumber+"</a></li>";
                         dest2=dest2.concat(temp2);
                         
                         i++;
@@ -925,6 +959,29 @@ if($connected){
         
     }
         
+    function initializeDeleteReservation(reservationID){
+        
+        $.ajax({
+            url: 'include/get_reservation_details.php',
+            type: 'post',
+            data: { "reservationID": reservationID},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    document.getElementById('widget-deleteReservation-form-start').value = response.reservationStartBuilding+" le "+response.reservationStartDate;
+                    document.getElementById('widget-deleteReservation-form-end').value = response.reservationEndBuilding+" le "+response.reservationEndDate;
+                    document.getElementById('widget-deleteReservation-form-user').value = response.reservationUser;
+                }   
+                
+            }
+        })
+        $('#reservationDetails').modal('toggle');
+        
+    }
+        
+        
     function initializeReactivateUser(email){
         
         $.ajax({
@@ -980,11 +1037,11 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th>Réf.</th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
                     while (i < response.bookingNumber){
                         
-                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
+                        var temp="<tr><th><a data-target=\"#reservationDetails\" name=\""+response.booking[i].reservationID+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillReservationDetails(this.name)\">"+response.booking[i].reservationID+"</a></th><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
                         dest=dest.concat(temp);
                         
                         i++;
@@ -3513,6 +3570,9 @@ if($connected){
 	</div>
 </div>
 
+
+
+
 <div class="modal fade" id="reactivateUser" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -3797,6 +3857,7 @@ if($connected){
                     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });
                 $('.form_date_end').change(function(){
+
                     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
                 });                
             </script>
@@ -3818,6 +3879,7 @@ if($connected){
 		</div>
 	</div>
 </div>
+
 
 
 <div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -3906,6 +3968,169 @@ if($connected){
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="reservationDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h3 class="fr-inline">Référence de transaction :</h3>
+						<h3 class="en-inline">Booking reference:</h3>
+						<h3 class="nl-inline">Booking reference:</h3>
+                        <h3 span class="reservationNumber fr-inline"></h3>
+						<br><br>                        
+						<div class="col-sm-3">
+                            <h4><span class="fr"> Date de début: </span></h4>
+                            <h4><span class="en"> Start date: </span></h4>
+                            <h4><span class="nl"> Start date: </span></h4>
+                            <p span class="reservationStartDate"></p>
+                        </div>
+                        
+						<div class="col-sm-3">
+                            <h4><span class="fr"> Date de fin : </span></h4>
+                            <h4><span class="en"> End date: </span></h4>
+                            <h4><span class="nl"> End date: </span></h4>
+                            <p span class="reservationEndDate"></p>
+                        </div>
+                        
+						<div class="col-sm-3">
+                            <h4><span class="fr"> Bâtiment de départ: </span></h4>
+                            <h4><span class="en"> Start building: </span></h4>
+                            <h4><span class="nl"> Start building: </span></h4>
+                            <p span class="reservationStartBuilding"></p>
+                        </div>
+						<div class="col-sm-3">
+                            <h4><span class="fr"> Bâtiment d'arrivée: </span></h4>
+                            <h4><span class="en"> End building: </span></h4>
+                            <h4><span class="nl"> End building: </span></h4>
+                            <p span class="reservationEndBuilding"></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">        
+						<div class="col-sm-3">
+                            <h4><span class="fr"> Vélo: </span></h4>
+                            <h4><span class="en"> Bike: </span></h4>
+                            <h4><span class="nl"> Bike: </span></h4>
+                            <p span class="reservationBikeNumber"></p>
+                        </div>
+                           
+                        <div class="col-sm-4">
+                            <img src="" class="reservationBikeImage" alt="image" />
+                        </div>           
+					</div>
+                    <div id="updateReservationdiv"></div>
+                    <div id="deleteReservationdiv"></div>
+
+				</div>
+			</div>
+            <div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="deleteReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr">Supprimer une réservation</h4>
+						
+						<form id="widget-deleteReservation-form" action="include/delete-reservation.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                                <label for="widget-deleteReservation-form-start"  class="fr">Début :</label>
+                                <label for="widget-deleteReservation-form-start"  class="en">Start: </label>
+                                <label for="widget-deleteReservation-form-start"  class="nl">Start: </label>
+                                <input type="text" id="widget-deleteReservation-form-start" readonly="readonly" name="widget-deleteReservation-form-start" class="form-control required">
+
+                                <label for="widget-deleteReservation-form-end"  class="fr">Fin :</label>
+                                <label for="widget-deleteReservation-form-end"  class="en">End:</label>
+                                <label for="widget-deleteReservation-form-end"  class="nl">End:</label>
+                                <input type="text" id="widget-deleteReservation-form-end" readonly="readonly" name="widget-deleteReservation-form-end" class="form-control required">
+
+
+                                <label for="widget-deleteReservation-form-user"  class="fr">Utilisateur :</label>
+                                <label for="widget-deleteReservation-form-user"  class="en">User:</label>
+                                <label for="widget-deleteReservation-form-user"  class="nl">User:</label>
+                                <input type="text" id="widget-deleteReservation-form-user" readonly="readonly" name="widget-deleteReservation-form-user" class="form-control">
+                                <input type="text" id="widget-deleteReservation-form-requestor" name="widget-deleteReservation-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
+
+
+                            </div>
+                            <h4>Confirmation de suppression</h4>
+                            <label for="widget-deleteReservation-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
+                            <input type="text" id="widget-deleteReservation-form-confirmation" name="widget-deleteReservation-form-confirmation" class="form-control">
+                            
+
+							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+                            
+						</form>
+						<script type="text/javascript">							
+							jQuery("#widget-deleteReservation-form").validate({
+								submitHandler: function(form) {
+
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                //$('#usersListing').modal('toggle');
+                                                get_reservations_listing();
+												$('#deleteReservation').modal('toggle');
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>                 					
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 
 <div class="modal fade" id="updateBikeStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">

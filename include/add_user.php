@@ -34,7 +34,7 @@ $result = mysqli_query($conn, $sql);
 $resultat = mysqli_fetch_assoc($result);
 
 $company=$resultat['COMPANY'];
-$password_unencrypted="test";
+$password_unencrypted=uniqid();
 $pass=password_hash($password_unencrypted, PASSWORD_DEFAULT);
 
 

@@ -25,9 +25,9 @@ if($email != NULL && $dateStart != NULL && $dateEnd != NULL && $bikeValue != NUL
     
     if($bikeValue=="all")
     {
-        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_REFERENCE ORDER BY DATE_START";
+        $sql="SELECT dd.ID, dd.FRAME_NUMBER, ee.BUILDING_FR, ee.BUILDING_EN, ee.BUILDING_NL, dd.EMAIL, dd.DATE_START, dd.DATE_END FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_REFERENCE ORDER BY DATE_START";
     } else {
-        $sql="SELECT * FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.FRAME_NUMBER='$bikeValue' and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_REFERENCE=ee.BUILDING_CODE ORDER BY DATE_START";
+        $sql="SELECT dd.ID, dd.FRAME_NUMBER, ee.BUILDING_FR, ee.BUILDING_EN, ee.BUILDING_NL, dd.EMAIL, dd.DATE_START, dd.DATE_END FROM customer_bikes cc, reservations dd, building_access ee where cc.COMPANY=(select ff.COMPANY from customer_referential ff where EMAIL='$email') AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.FRAME_NUMBER='$bikeValue' and dd.STAANN!='D' and dd.DATE_START>'$dateStart' and dd.DATE_END<'$dateEnd' and dd.BUILDING_START=ee.BUILDING_REFERENCE ORDER BY DATE_START";
     }
     
     if ($conn->query($sql) === FALSE) {
@@ -49,6 +49,7 @@ if($email != NULL && $dateStart != NULL && $dateEnd != NULL && $bikeValue != NUL
 
     {
 
+        $response['booking'][$i]['reservationID']=$row['ID'];
 		$response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];
 		$response['booking'][$i]['dateStartFR']=date('d/m/Y H:i', $row['DATE_START']).' - '.$row['BUILDING_FR'];            
 		$response['booking'][$i]['dateStartEN']=date('d/m/Y H:i', $row['DATE_START']).' - '.$row['BUILDING_EN'];            
