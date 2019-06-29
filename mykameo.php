@@ -389,9 +389,10 @@ function fillReservationDetails(element)
                     document.getElementsByClassName("reservationStartBuilding")[0].innerHTML=response.reservationStartBuilding;
                     document.getElementsByClassName("reservationEndBuilding")[0].innerHTML=response.reservationEndBuilding;
                     document.getElementsByClassName("reservationBikeNumber")[0].innerHTML=response.reservationBikeNumber;                    
+                    document.getElementsByClassName("reservationEmail")[0].innerHTML=response.reservationEmail;                    
                     document.getElementsByClassName("reservationBikeImage")[0].src="images_bikes/"+response.reservationBikeNumber+"_mini.jpg";
                     
-                    document.getElementById('updateReservationdiv').innerHTML="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#updateReservation\" onclick=\"initializeUpdateReservation('"+reservationID+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Modifier</span><span class=\"en-inline\">Update</span></a>";
+                    //document.getElementById('updateReservationdiv').innerHTML="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#updateReservation\" onclick=\"initializeUpdateReservation('"+reservationID+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Modifier</span><span class=\"en-inline\">Update</span></a>";
                     document.getElementById('deleteReservationdiv').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteReservation\" onclick=\"initializeDeleteReservation('"+reservationID+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Supprimer</span><span class=\"en-inline\">Delete</span></a>";
                     
                     displayLanguage();
@@ -770,7 +771,7 @@ if($connected){
                     var i=0;
                     var dest="";
 
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#addUser\" data-toggle=\"modal\" onclick=\"get_building_listing_create_user()\" href=\"#\"><span class=\"fr-inline\">Ajouter un utilisateur</span><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addUser\" data-toggle=\"modal\" onclick=\"get_building_listing_create_user()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un utilisateur</span><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th><th></th></tr></thead>";
                     dest=dest.concat(temp);                    
                                         
                     while (i < response.usersNumber){
@@ -972,7 +973,9 @@ if($connected){
                 if(response.response == 'success'){
                     document.getElementById('widget-deleteReservation-form-start').value = response.reservationStartBuilding+" le "+response.reservationStartDate;
                     document.getElementById('widget-deleteReservation-form-end').value = response.reservationEndBuilding+" le "+response.reservationEndDate;
-                    document.getElementById('widget-deleteReservation-form-user').value = response.reservationUser;
+                    document.getElementById('widget-deleteReservation-form-user').value = response.reservationEmail;
+                    document.getElementById('widget-deleteReservation-form-ID').value = reservationID;
+                    
                 }   
                 
             }
@@ -980,6 +983,29 @@ if($connected){
         $('#reservationDetails').modal('toggle');
         
     }
+        
+    function initializeUpdateReservation(reservationID){
+        
+        $.ajax({
+            url: 'include/get_reservation_details.php',
+            type: 'post',
+            data: { "reservationID": reservationID},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    document.getElementById('widget-updateReservation-form-start').value = response.reservationStartBuilding+" le "+response.reservationStartDate;
+                    document.getElementById('widget-updateReservation-form-end').value = response.reservationEndBuilding+" le "+response.reservationEndDate;
+                    document.getElementById('widget-updateReservation-form-user').value = response.reservationEmail;
+                    document.getElementById('widget-updateReservation-form-ID').value = reservationID;
+                }   
+                
+            }
+        })
+        $('#reservationDetails').modal('toggle');
+        
+    }        
         
         
     function initializeReactivateUser(email){
@@ -1006,7 +1032,9 @@ if($connected){
         
 
     function get_reservations_listing(bike, date_start, date_end){
-
+        console.log(bike);
+        console.log(date_start);
+        console.log(date_end);
         var email= "<?php echo $user; ?>";
         var frameNumber='';
         var timeStampStart=(date_start.valueOf()/1000);
@@ -1037,7 +1065,7 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th>Réf.</th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Depart</span><span class=\"nl-inline\">Depart</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline text-green\">Réf.</span></th><th><span class=\"fr-inline text-green\">Vélo</span><span class=\"en-inline text-green\">Bike</span><span class=\"nl-inline text-green\">Bike</span></th><th><span class=\"fr-inline text-green\">Départ</span><span class=\"en-inline text-green\">Depart</span><span class=\"nl-inline text-green\">Depart</span></th><th><span class=\"fr-inline text-green\">Fin</span><span class=\"en-inline text-green\">End</span><span class=\"nl-inline text-green\">End</span></th><th><span class=\"fr-inline text-green\">Utilisateur</span><span class=\"en-inline text-green\">User</span><span class=\"nl-inline text-green\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
                     while (i < response.bookingNumber){
                         
@@ -1275,7 +1303,6 @@ if($connected){
     }
 
     function get_meteo(timestamp, address){
-        console.log(address);
         return $.ajax({
             url: 'include/meteo.php',
             type: 'post',
@@ -3402,27 +3429,32 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="fr">Ajouter un utilisateur</h4>
+						<h4 class="fr text-green">Ajouter un utilisateur</h4>
 						
 						<form id="widget-addUser-form" action="include/add_user.php" role="form" method="post">
                             
                             <div class="form-group col-sm-12">
+                            	<div class="col-sm-6">
                                 <label for="widget-addUser-form-firstname"  class="fr">Prénom</label>
                                 <label for="widget-addUser-form-firstname"  class="en">Firstname</label>
                                 <label for="widget-addUser-form-firstname"  class="nl">Voornaam</label>
                                 <input type="text" id="widget-addUser-form-firstname" name="widget-addUser-form-firstname" class="form-control required">
-
+                                </div>
+								
+								<div class="col-sm-6">
                                 <label for="widget-addUser-form-name"  class="fr">Nom</label>
                                 <label for="widget-addUser-form-name"  class="en">Name</label>
                                 <label for="widget-addUser-form-name"  class="nl">Achternaam</label>
                                 <input type="text" id="widget-addUser-form-name" name="widget-addUser-form-name" class="form-control required">
-
-
+								</div>
+								
+								<div class="col-sm-6">
                                 <label for="widget-addUser-form-mail"  class="fr">E-mail</label>
                                 <label for="widget-addUser-form-mail"  class="en">E-mail</label>
                                 <label for="widget-addUser-form-mail"  class="nl">E-mail</label>
                                 <input type="text" id="widget-addUser-form-mail" name="widget-addUser-form-mail" class="form-control mail required">
                                 <input type="text" id="widget-addUser-form-requestor" name="widget-addUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
+                                </div>
 
 
                             </div>
@@ -3670,30 +3702,37 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="fr">Mise à jour des informations</h4>
+						<h4 class="fr text-green">Mise à jour des informations</h4>
 						
 						<form id="widget-updateUser-form" action="include/updateUserInformation.php" role="form" method="post">
                             
                             <div class="form-group col-sm-12">
+                            	<div class="col-sm-6">
                                 <label for="widget-updateUser-form-firstname"  class="fr">Prénom</label>
                                 <label for="widget-updateUser-form-firstname"  class="en">Firstname</label>
                                 <label for="widget-updateUser-form-firstname"  class="nl">Voornaam</label>
                                 <input type="text" id="widget-updateUser-form-firstname" name="widget-updateUser-form-firstname" class="form-control required">
-
+                                </div>
+                                
+								<div class="col-sm-6">
                                 <label for="widget-updateUser-form-name"  class="fr">Nom</label>
                                 <label for="widget-updateUser-form-name"  class="en">Name</label>
                                 <label for="widget-updateUser-form-name"  class="nl">Achternaam</label>
                                 <input type="text" id="widget-updateUser-form-name" name="widget-updateUser-form-name" class="form-control required">
+                                </div>
 
-
+								<div class="col-sm-6">
                                 <label for="widget-updateUser-form-mail"  class="fr">E-mail</label>
                                 <label for="widget-updateUser-form-mail"  class="en">E-mail</label>
                                 <label for="widget-updateUser-form-mail"  class="nl">E-mail</label>
                                 <input type="text" id="widget-updateUser-form-mail" name="widget-updateUser-form-mail" readonly="readonly" class="form-control">
                                 <input type="text" id="widget-updateUser-form-requestor" name="widget-updateUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
+                                </div>
                                 
+                                <div class="col-sm-6">
                                 <label for="widget-updateUser-form-status"  class="fr">Status</label>                                
                                 <input type="text" id="widget-updateUser-form-status" name="widget-updateUser-form-status" readonly="readonly" class="form-control">
+                                </div>
 
                             </div>
                             <div class="form-group col-sm-12" id="buildingUpdateUser"></div>
@@ -3790,6 +3829,7 @@ if($connected){
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
             
+            <h4 class="fr text-green">Vue sur les réservations</h4>
             
             <div class="dropdown">
               <div class="col-md-3">
@@ -3891,10 +3931,11 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h3 class="fr-inline">Référence du vélo :</h3>
-						<h3 class="en-inline">Bike Reference:</h3>
-						<h3 class="nl-inline">Bike Reference :</h3>
+						<h4 class="fr-inline text-green">Référence du vélo :</h4>
+						<h4 class="en-inline text-green">Bike Reference:</h4>
+						<h4 class="nl-inline text-green">Bike Reference :</h4>
                         <p span class="bikeReference"></p>
+                    </div>
 						
 						<div class="col-sm-5">
                             <h4><span class="fr"> Modèle : </span></h4>
@@ -3954,8 +3995,7 @@ if($connected){
                         </div>    
 					</div>
 				</div>
-			</div>
-            <div class="fr" class="modal-footer">
+			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
 			<div class="en" class="modal-footer">
@@ -3978,32 +4018,32 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h3 class="fr-inline">Référence de transaction :</h3>
-						<h3 class="en-inline">Booking reference:</h3>
-						<h3 class="nl-inline">Booking reference:</h3>
-                        <h3 span class="reservationNumber fr-inline"></h3>
+						<h4 class="fr-inline text-green">Référence de transaction :</h4>
+						<h4 class="en-inline text-green">Booking reference:</h4>
+						<h4 class="nl-inline text-green">Booking reference:</h4>
+                        <h4 span class="reservationNumber fr-inline"></h4>
 						<br><br>                        
-						<div class="col-sm-3">
+						<div class="col-sm-6">
                             <h4><span class="fr"> Date de début: </span></h4>
                             <h4><span class="en"> Start date: </span></h4>
                             <h4><span class="nl"> Start date: </span></h4>
                             <p span class="reservationStartDate"></p>
                         </div>
                         
-						<div class="col-sm-3">
+						<div class="col-sm-6">
                             <h4><span class="fr"> Date de fin : </span></h4>
                             <h4><span class="en"> End date: </span></h4>
                             <h4><span class="nl"> End date: </span></h4>
                             <p span class="reservationEndDate"></p>
                         </div>
                         
-						<div class="col-sm-3">
+						<div class="col-sm-6">
                             <h4><span class="fr"> Bâtiment de départ: </span></h4>
                             <h4><span class="en"> Start building: </span></h4>
                             <h4><span class="nl"> Start building: </span></h4>
                             <p span class="reservationStartBuilding"></p>
                         </div>
-						<div class="col-sm-3">
+						<div class="col-sm-6">
                             <h4><span class="fr"> Bâtiment d'arrivée: </span></h4>
                             <h4><span class="en"> End building: </span></h4>
                             <h4><span class="nl"> End building: </span></h4>
@@ -4011,12 +4051,18 @@ if($connected){
                         </div>
                     </div>
                     <div class="col-sm-12">        
-						<div class="col-sm-3">
+						<div class="col-sm-6">
                             <h4><span class="fr"> Vélo: </span></h4>
                             <h4><span class="en"> Bike: </span></h4>
                             <h4><span class="nl"> Bike: </span></h4>
                             <p span class="reservationBikeNumber"></p>
                         </div>
+						<div class="col-sm-6">
+                            <h4><span class="fr"> Utilisateur: </span></h4>
+                            <h4><span class="en"> User: </span></h4>
+                            <h4><span class="nl"> User: </span></h4>
+                            <p span class="reservationEmail"></p>
+                        </div>                        
                            
                         <div class="col-sm-4">
                             <img src="" class="reservationBikeImage" alt="image" />
@@ -4051,34 +4097,38 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="fr">Supprimer une réservation</h4>
+						<h4 class="fr text-green">Supprimer une réservation</h4>
 						
 						<form id="widget-deleteReservation-form" action="include/delete-reservation.php" role="form" method="post">
                             
                             <div class="form-group col-sm-12">
+                            	<div class="col-sm-6">
                                 <label for="widget-deleteReservation-form-start"  class="fr">Début :</label>
                                 <label for="widget-deleteReservation-form-start"  class="en">Start: </label>
                                 <label for="widget-deleteReservation-form-start"  class="nl">Start: </label>
                                 <input type="text" id="widget-deleteReservation-form-start" readonly="readonly" name="widget-deleteReservation-form-start" class="form-control required">
-
+                                </div>
+								
+								<div class="col-sm-6">
                                 <label for="widget-deleteReservation-form-end"  class="fr">Fin :</label>
                                 <label for="widget-deleteReservation-form-end"  class="en">End:</label>
                                 <label for="widget-deleteReservation-form-end"  class="nl">End:</label>
                                 <input type="text" id="widget-deleteReservation-form-end" readonly="readonly" name="widget-deleteReservation-form-end" class="form-control required">
+                                </div>
 
-
+								<div class="col-sm-6">
                                 <label for="widget-deleteReservation-form-user"  class="fr">Utilisateur :</label>
                                 <label for="widget-deleteReservation-form-user"  class="en">User:</label>
                                 <label for="widget-deleteReservation-form-user"  class="nl">User:</label>
                                 <input type="text" id="widget-deleteReservation-form-user" readonly="readonly" name="widget-deleteReservation-form-user" class="form-control">
                                 <input type="text" id="widget-deleteReservation-form-requestor" name="widget-deleteReservation-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
-
-
+                                <input type="text" id="widget-deleteReservation-form-ID" name="widget-deleteReservation-form-ID" class="form-control hidden">
+                                </div>
                             </div>
                             <h4>Confirmation de suppression</h4>
-                            <label for="widget-deleteReservation-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
-                            <input type="text" id="widget-deleteReservation-form-confirmation" name="widget-deleteReservation-form-confirmation" class="form-control">
                             
+                            <label for="widget-deleteReservation-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
+                            <input type="text" id="widget-deleteReservation-form-confirmation" name="widget-deleteReservation-form-confirmation" class="form-control">                            
 
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
@@ -4098,8 +4148,101 @@ if($connected){
 													type: 'success'
 												});
                                                 //$('#usersListing').modal('toggle');
-                                                get_reservations_listing();
+                                                get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
 												$('#deleteReservation').modal('toggle');
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>                 					
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="updateReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green">Supprimer une réservation</h4>
+						
+						<form id="widget-updateReservation-form" action="include/update-reservation.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                            	<div class="col-sm-6">
+                                <label for="widget-updateReservation-form-start"  class="fr">Début :</label>
+                                <label for="widget-updateReservation-form-start"  class="en">Start: </label>
+                                <label for="widget-updateReservation-form-start"  class="nl">Start: </label>
+                                <input type="text" id="widget-updateReservation-form-start" name="widget-updateReservation-form-start" class="form-control required">
+                                </div>
+								
+								<div class="col-sm-6">
+                                <label for="widget-updateReservation-form-end"  class="fr">Fin :</label>
+                                <label for="widget-updateReservation-form-end"  class="en">End:</label>
+                                <label for="widget-updateReservation-form-end"  class="nl">End:</label>
+                                <input type="text" id="widget-updateReservation-form-end" name="widget-updateReservation-form-end" class="form-control required">
+                                </div>
+
+								<div class="col-sm-6">
+                                <label for="widget-updateReservation-form-user"  class="fr">Utilisateur :</label>
+                                <label for="widget-updateReservation-form-user"  class="en">User:</label>
+                                <label for="widget-updateReservation-form-user"  class="nl">User:</label>
+                                <input type="text" id="widget-updateReservation-form-user" readonly="readonly" name="widget-updateReservation-form-user" class="form-control">
+                                <input type="text" id="widget-updateReservation-form-requestor" name="widget-updateReservation-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" id="widget-updateReservation-form-ID" name="widget-updateReservation-form-ID" class="form-control hidden">
+                                </div>
+                            </div>
+                            <h4>Confirmation de suppression</h4>
+                            
+                            <label for="widget-updateReservation-form-confirmation" class="fr">Veuillez écrire "update" afin de confirmer la suppression</label>
+                            <input type="text" id="widget-updateReservation-form-confirmation" name="widget-updateReservation-form-confirmation" class="form-control">                            
+
+							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+                            
+						</form>
+						<script type="text/javascript">							
+							jQuery("#widget-updateReservation-form").validate({
+								submitHandler: function(form) {
+
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                //$('#usersListing').modal('toggle');
+                                                get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+												$('#updateReservation').modal('toggle');
 
 											} else {
 												$.notify({
@@ -4143,9 +4286,9 @@ if($connected){
                         <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
 
                         <div class="col-sm-12">
-                            <h3 class="fr-inline">Référence du vélo :</h3>
-                            <h3 class="en-inline">Bike Reference:</h3>
-                            <h3 class="nl-inline">Bike Reference :</h3>
+                            <h4 class="fr-inline">Référence du vélo :</h4>
+                            <h4 class="en-inline">Bike Reference:</h4>
+                            <h4 class="nl-inline">Bike Reference :</h4>
                             <p span class="bikeReference"></p>
 
                             <div class="col-sm-5">
@@ -4198,9 +4341,9 @@ if($connected){
                             <p><span class="assistanceReference"></span></p>
                             </div>
 
-                            <div class="col-sm-10">
-                                <h4>Votre vélo: </h4>
+                            <div class="col-sm-12">
                                 <div class="col-md-4">
+                                <h4>Votre vélo: </h4>
                                     <img src="" class="bikeImage" alt="image" />
                                 </div>  
                                 <div class="col-md-4">

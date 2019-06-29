@@ -35,7 +35,6 @@ if($user != NULL)
     
     $i=0;
     while($row = mysqli_fetch_array($result))
-
     {
 
         $response['booking'][$i]['dayStart']= date('d/m/Y',$row['DATE_START']);            

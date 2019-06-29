@@ -15,7 +15,7 @@ $email=$_POST['email'];
 
 if( $email!=NULL ) {
     include 'connexion.php';
-    $sql= "select * from customer_building_access where EMAIL = '$email'";
+    $sql= "select * from customer_building_access where EMAIL = '$email' and STAANN != 'D'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
