@@ -78,7 +78,7 @@ if($user != NULL)
 	//2nd part : get all the records in the future
 
     include 'connexion.php';
-	$sql="select * from reservations where EMAIL = '$user' and DATE_START > '$timestamp_now' and STAANN!='D' order by DATE_START LIMIT 5";
+	$sql="select * from reservations where EMAIL = '$user' and DATE_END > '$timestamp_now' and STAANN!='D' order by DATE_START LIMIT 5";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -108,6 +108,7 @@ if($user != NULL)
 		$response['booking'][$i]['time']="past";
 		$response['booking'][$i]['time']="future";
         $response['booking'][$i]['bookingID']=$row['ID'];
+        $ID=$row['ID'];
         
         $buildingReference=$row['BUILDING_START'];        
         $sql2="select * from building_access where BUILDING_REFERENCE='$buildingReference'";
@@ -160,7 +161,7 @@ if($user != NULL)
             } else{
                 $response['booking'][$i]['annulation']=false;
             }
-        }     
+        }            
 
         
         $i++;

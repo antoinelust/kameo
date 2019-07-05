@@ -1,6 +1,7 @@
 <?php 
 
 $company = file_get_contents(__DIR__.'/temp/company.txt');
+$billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
 $currentDate = new DateTime('now');
 $currentDateString = date('Y-m-d');
 
@@ -18,8 +19,8 @@ $newID=strval($newID+1);
 
 
 include 'include/connexion.php';
-$sql="select * from companies wher INTERNAL_REFERENCE='$company'";
-if ($conn->query($ql) === FALSE) {
+$sql="select * from companies where INTERNAL_REFERENCE='$company'";
+if ($conn->query($sql) === FALSE) {
     echo $conn->error;
     die;
 }
@@ -96,13 +97,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
         <td style="width: 50%">
 				<img class="img-responsive" src="'.__DIR__.'/images/'.$company.'.jpg" alt="">
 				
-				<p>Sia Partners</p>
+				<p>'.$companyName.'</p>
 				
-				<p>Avenue Henri Jasparlaan, 128
-				<br>B-1060 Bruxelles
+				<p>'.$street.'
+				<br>'.$zip.' '.$town.'
 				<br>Belgium</p>
 				
-				<p>TVA/VAT : BE0878.103.386</p>
+				<p>TVA/VAT : '.$vat.'</p>
 				
 				<p>Référence client : '.$company.'</p>
         </td>
@@ -143,7 +144,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             
             include 'include/connexion.php';
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and CONTRACT_END>='$monthAfterString'";
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and CONTRACT_END>='$monthAfterString' and BILLING_GROUP='$billingGroup'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -265,8 +266,8 @@ echo $test1.$test2.$test3;
 
 include 'include/connexion.php';
 $today=date('Y-m-d');
-$fileName=$company.$monthFR[(date('n')-1)].date('Y').'.pdf';
-$sql= "INSERT INTO factures (ID, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME) VALUES ('$newID', '$company', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName')";
+$fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$billingGroup.'.pdf';
+$sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID) VALUES ('$newID', 'facture.php', '$company', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0')";
 
 
 if ($conn->query($sql) === FALSE) {

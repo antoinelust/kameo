@@ -51,7 +51,6 @@ document.getElementsByClassName('reservationlisting')[0].addEventListener('click
 var tempDate=new Date();
 $(".form_date_end").data("datetimepicker").setDate(tempDate);
 tempDate.setMonth(tempDate.getMonth()-1);
-    console.log(tempDate);
 $(".form_date_start").data("datetimepicker").setDate(tempDate);
 
 
@@ -623,53 +622,79 @@ if($connected){
             type: 'post',
             data: { "bookingID": bookingID},
             success: function(response){
-                var name = response.clientBefore.name;
-                var surname = response.clientBefore.surname;
-                var phone = response.clientBefore.phone;
-                var mail = response.clientBefore.mail;
-                var depositDay = response.clientBefore.depositDay;
-                var depositHour = response.clientBefore.depositHour;
+                if(response.response=="success"){
+                    var name = response.clientBefore.name;
+                    var surname = response.clientBefore.surname;
+                    var phone = response.clientBefore.phone;
+                    var mail = response.clientBefore.mail;
+                    var depositDay = response.clientBefore.depositDay;
+                    var depositHour = response.clientBefore.depositHour;
+                    var code=response.booking.code
+                    var ID=response.booking.ID
 
-                if(langue=="nl"){
-                    var dest="<li class=\"nl\">Naam: "+name+" "+surname+"</li><li class=\"nl\">Telefoonnummer:"+phone+"</li><li class=\"nl\">Mail: "+mail+"</li><li class=\"nl\">Stort fiets op "+depositDay+" om "+depositHour+"</li>";
-                } else if (langue == "en"){
-                    var dest="<li class=\"en\">Name: "+name+" "+surname+"</li><li class=\"en\">Phone Number:"+phone+"</li><li class=\"en\">Mail: "+mail+"</li><li class=\"en\">Returns bike on" +depositDay+" at "+depositHour+"</li>";
-                } else {
-                    var dest="<li class=\"fr\">Nom et prénom: "+name+" "+surname+"</li><li class=\"fr\">Numéro de téléphone: "+phone+"</li><li class=\"fr\">Adresse mail: "+mail+"</li><li class=\"fr\">Dépose le vélo le "+depositDay+" à "+depositHour+"</li>";
-                }
 
-                document.getElementById('futureBookingBefore').innerHTML = dest;
-
-                var name = response.clientAfter.name;
-                var surname = response.clientAfter.surname;
-                var phone = response.clientAfter.phone;
-                var mail = response.clientAfter.mail;
-                var intakeDay = response.clientAfter.intakeDay;
-                var intakeHour = response.clientAfter.intakeHour;
-
-                if(typeof response.clientAfter.name == 'undefined' || response.clientAfter.name==''){
                     if(langue=="nl"){
-                        var dest="Niemand.";
+                        var dest="<li class=\"nl\">Naam: "+name+" "+surname+"</li><li class=\"nl\">Telefoonnummer:"+phone+"</li><li class=\"nl\">Mail: "+mail+"</li><li class=\"nl\">Stort fiets op "+depositDay+" om "+depositHour+"</li>";
+                    } else if (langue == "en"){
+                        var dest="<li class=\"en\">Name: "+name+" "+surname+"</li><li class=\"en\">Phone Number:"+phone+"</li><li class=\"en\">Mail: "+mail+"</li><li class=\"en\">Returns bike on" +depositDay+" at "+depositHour+"</li>";
+                    } else {
+                        var dest="<li class=\"fr\">Nom et prénom: "+name+" "+surname+"</li><li class=\"fr\">Numéro de téléphone: "+phone+"</li><li class=\"fr\">Adresse mail: "+mail+"</li><li class=\"fr\">Dépose le vélo le "+depositDay+" à "+depositHour+"</li>";
                     }
-                    else if (langue=="en"){
-                            var dest="Nobody.";
-                    } else{
-                            var dest="Personne.";
-                    }                 
-                }       
-                else{
-                    if(langue=="nl"){
-                        var dest="<li>Naam: "+name+" "+surname+"</li><li>Telefoonnummer:"+phone+"</li><li>Mail: "+mail+"</li><li>Neem de fiets mee"+intakeDay+" om "+intakeHour+"</li>";
-                    }
-                    else if (langue=="en"){
-                            var dest="<li>Name: "+name+" "+surname+"</li><li>Phone Number:"+phone+"</li><li>Mail: "+mail+"</li><li>Will take bike on"+intakeDay+" at "+intakeHour+"</li>";
-                    } else{
-                            var dest="<li>Nom et prénom: "+name+" "+surname+"</li><li>Numéro de téléphone:"+phone+"</li><li>Adresse mail: "+mail+"</li><li>Reprendra le vélo le "+intakeDay+" à "+intakeHour+"</li>";
-                    } 
-                }
+                    document.getElementById('futureBookingBefore').innerHTML = dest;
 
-                document.getElementById('futureBookingAfter').innerHTML = dest;
-               $('#futureBooking').modal('toggle');
+                    temp="<li class=\"fr\">Numéro de réservation : "+ID+"</li>";
+                    dest=temp;
+                    if(code){
+                        if(code.length==3){
+                            code="0"+code;
+                        }else if(code.length==2){
+                            code="00"+code;
+                        }else if(code.length==1){
+                            code="000"+length;
+                        }
+                        temp="<li class=\"fr\">Code : "+code+"</li>";
+                        dest=dest.concat(temp);
+                    }
+                    console.log(response);
+                    dest=dest.concat("<li class=\"fr\">Début : "+response.booking.intakeDay+"-"+response.booking.intakeHour+" au bâtiment "+response.booking.buildingStart+"</li>")
+                    dest=dest.concat("<li class=\"fr\">Fin : "+response.booking.depositDay+"-"+response.booking.depositHour+" au bâtiment "+response.booking.buildingEnd+"</li>")
+                    document.getElementById('bookingInformation').innerHTML=dest;
+
+
+                    var name = response.clientAfter.name;
+                    var surname = response.clientAfter.surname;
+                    var phone = response.clientAfter.phone;
+                    var mail = response.clientAfter.mail;
+                    var intakeDay = response.clientAfter.intakeDay;
+                    var intakeHour = response.clientAfter.intakeHour;
+
+                    if(typeof response.clientAfter.name == 'undefined' || response.clientAfter.name==''){
+                        if(langue=="nl"){
+                            var dest="Niemand.";
+                        }
+                        else if (langue=="en"){
+                                var dest="Nobody.";
+                        } else{
+                                var dest="Personne.";
+                        }                 
+                    }       
+                    else{
+                        if(langue=="nl"){
+                            var dest="<li>Naam: "+name+" "+surname+"</li><li>Telefoonnummer:"+phone+"</li><li>Mail: "+mail+"</li><li>Neem de fiets mee"+intakeDay+" om "+intakeHour+"</li>";
+                        }
+                        else if (langue=="en"){
+                                var dest="<li>Name: "+name+" "+surname+"</li><li>Phone Number:"+phone+"</li><li>Mail: "+mail+"</li><li>Will take bike on"+intakeDay+" at "+intakeHour+"</li>";
+                        } else{
+                                var dest="<li>Nom et prénom: "+name+" "+surname+"</li><li>Numéro de téléphone:"+phone+"</li><li>Adresse mail: "+mail+"</li><li>Reprendra le vélo le "+intakeDay+" à "+intakeHour+"</li>";
+                        } 
+                    }
+
+                    document.getElementById('futureBookingAfter').innerHTML = dest;
+                   $('#futureBooking').modal('toggle');
+
+                }else{
+                    console.log(response.message);
+                }
 
             }
         });
@@ -721,7 +746,7 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Vos vélos:</h4><h4 class=\"en-inline\">Your Bikes:</h4><h4 class=\"nl-inline\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
                     
                     var dest2="";
@@ -1032,9 +1057,6 @@ if($connected){
         
 
     function get_reservations_listing(bike, date_start, date_end){
-        console.log(bike);
-        console.log(date_start);
-        console.log(date_end);
         var email= "<?php echo $user; ?>";
         var frameNumber='';
         var timeStampStart=(date_start.valueOf()/1000);
@@ -1240,6 +1262,7 @@ if($connected){
                         var booking_id=response.booking[i].bookingID;
                         var annulation=response.booking[i].annulation;
 
+                        
                         var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
                         if(annulation){
                             var tempAnnulation = "<td><a class=\"button small red rounded effect\" onclick=\"cancelBooking("+booking_id+")\"><i class=\"fa fa-times\"></i><span>annuler</span></a></td></td></tr>";
@@ -1249,6 +1272,7 @@ if($connected){
                             tempFutureBookings = tempFutureBookings.concat(tempAnnulation);
                         }
                         dest = dest.concat(tempFutureBookings);
+                    
                         i++;
 
                     }
@@ -1606,8 +1630,8 @@ if($connected){
                                                             var travel_time_bike;
                                                             var travel_time_car;
 
-                                                            get_address_building(text.buildingStart)
-                                                                .done(function(response){
+                                                            get_address_building(text.buildingStart)                                                
+                                                                .done(function(response){                                                                    
                                                                     addressStart=response.address;
                                                                     buildingStartFr=response.building_fr;
                                                                     buildingStartEn=response.building_en;
@@ -1668,7 +1692,6 @@ if($connected){
                                                                         document.getElementById("meteoHour4").innerHTML=hours+"h"+minutes;
                                                                         get_meteo(text.timestampStartBooking, addressStart)
                                                                         .done(function(response){
-                                                                            
                                                                             if(response.response=="success")
                                                                             {
                                                                                 var find = '-';
@@ -2170,6 +2193,8 @@ if($connected){
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-sm-12">
+                                            <h4 class="fr">Informations relatives à la réservation</h4>
+                                                <span id="bookingInformation"></span>
                                             <h4 class="fr">Personne avant vous:</h4>
                                             <h4 class="nl">Persoon voor jou:</h4>
                                             <h4 class="en">Person before you:</h4>
@@ -4286,9 +4311,9 @@ if($connected){
                         <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
 
                         <div class="col-sm-12">
-                            <h4 class="fr-inline">Référence du vélo :</h4>
-                            <h4 class="en-inline">Bike Reference:</h4>
-                            <h4 class="nl-inline">Bike Reference :</h4>
+                            <h4 class="fr-inline text-green">Référence du vélo :</h4>
+                            <h4 class="en-inline text-green">Bike Reference:</h4>
+                            <h4 class="nl-inline text-green">Bike Reference :</h4>
                             <p span class="bikeReference"></p>
 
                             <div class="col-sm-5">
@@ -4341,12 +4366,11 @@ if($connected){
                             <p><span class="assistanceReference"></span></p>
                             </div>
 
-                            <div class="col-sm-12">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                 <h4>Votre vélo: </h4>
                                     <img src="" class="bikeImage" alt="image" />
                                 </div>  
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <h4><span class="fr" >Status :</span></h4>
                                     <h4><span class="en" >Status:</span></h4>
                                     <h4><span class="nl" >Status :</span></h4>
@@ -4355,11 +4379,12 @@ if($connected){
                                       <option value="KO">Cassé</option>
                                     </select>
                                 </div>
+                                 <div class="col-md-6">
                                 <input type="text" class="hidden" id="widget-updateBikeStatus-form-frameNumber" name="widget-updateBikeStatus-form-frameNumber"/>
                                 <h4><span class="fr" >Accès aux bâtiments :</span></h4>
-                                <div id="bikeBuildingAccess"></div>                                                
+                                <div id="bikeBuildingAccess"></div>    
+                                </div>                                            
                             </div>
-                        </div>
 
                         <div class="col-sm-12">    
                         <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
@@ -4966,7 +4991,6 @@ if($connected){
         }else{
             $('#widget-entretien-form-frame-number').prop('readonly', true);
         }
-        console.log(frameNumber);
 		document.getElementById('widget-entretien-form-frame-number').value=frameNumber;
 		document.getElementById('widget-entretien-form-message').value="";
 		document.getElementById('widget-entretien-form-message-attachment').value="";

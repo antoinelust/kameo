@@ -55,7 +55,8 @@ if($connected){
     $response['icon']=$json_a['currently']['icon'];
     $response['precipProbability']=($json_a['currently']['precipProbability'] * 100);
     $response['windSpeed']=$json_a['currently']['windSpeed'];
-
+    echo json_encode($response);
+    die;    
 
 
 }else{

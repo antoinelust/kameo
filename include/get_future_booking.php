@@ -17,18 +17,46 @@ if($bookingID != NULL)
 {
 		
     include 'connexion.php';
-	$sql="select * from reservations where ID = '$bookingID'";
+	$sql="select aa.ID, aa.DATE_START, aa.DATE_END, aa.FRAME_NUMBER, bb.BUILDING_FR as 'building_start', cc.BUILDING_FR as 'building_end' from reservations aa, building_access bb, building_access cc where aa.ID = '$bookingID' and aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE";
+
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
+    
+
 	$result = mysqli_query($conn, $sql); 
     $resultat = mysqli_fetch_assoc($result);
     
     $dateStart = $resultat['DATE_START'];
-    $IDClient = $resultat['ID'];
 	$frameNumber = $resultat['FRAME_NUMBER'];
+    $response['booking']['ID']=$bookingID;
+    $response['booking']['intakeHour']=date('H:i',$resultat['DATE_START']);
+    $response['booking']['intakeDay']=date('d/m/Y',$resultat['DATE_START']);
+	$response['booking']['depositHour']= date('H:i',$resultat['DATE_END']); 
+    $response['booking']['depositDay']= date('d/m/Y',$resultat['DATE_END']);            
+    $response['booking']['buildingStart']= $resultat['building_start'];            
+    $response['booking']['buildingEnd']= $resultat['building_end'];            
+    
+
+    $sql="select * from locking_code where ID_reservation='$bookingID'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+
+    $result = mysqli_query($conn, $sql); 
+    $length = $result->num_rows;
+    $resultat = mysqli_fetch_assoc($result);
+
+    if ($length == 0){
+        $response['booking']['code']=false;
+    }
+    else{
+        $response['booking']['code']=$resultat['CODE'];
+    }
     
     
     include 'connexion.php';
@@ -103,9 +131,7 @@ if($bookingID != NULL)
 			$response['clientAfter']['mail']=$resultat['EMAIL'];
 		}
 	}
-	
-	
-
+    $response['response']="success";       
 	echo json_encode($response);
     die;
 

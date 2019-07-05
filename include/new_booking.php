@@ -38,7 +38,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 	}
 	$result = mysqli_query($conn, $sql);     
     $length = $result->num_rows;
-	
+
+    
+    
 	 if($length == 0){
         errorMessage("ES0019");
     }
@@ -72,8 +74,25 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
         $result = mysqli_query($conn, $sql);  
         $resultat = mysqli_fetch_assoc($result);    
         $ID = $resultat['ID'];
-        $sql= "INSERT INTO locking_code (ID_reservation, DATE_BEGIN, DATE_END, BUILDING_START, CODE, VALID) VALUES ('$ID','$dateStart', '$dateEnd', '$buildingStart', '$lockingcode', 'Y')";
         
+        include 'connexion.php';
+
+        $sql= "select * from building_access where BUILDING_REFERENCE = '$buildingStart'";
+        
+        error_log($sql, 3, "mes-erreurs.log");
+
+        
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);  
+        $resultat = mysqli_fetch_assoc($result);  
+        $building=$resultat['BUILDING_CODE'];
+
+        
+        $sql= "INSERT INTO locking_code (ID_reservation, USR_MAJ, DATE_BEGIN, DATE_END, BUILDING_START, CODE, VALID) VALUES ('$ID', 'new_booking.php', '$dateStart', '$dateEnd', '$building', '$lockingcode', 'Y')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

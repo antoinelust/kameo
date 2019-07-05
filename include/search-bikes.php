@@ -58,7 +58,7 @@ $timestamp_end_booking=mktime($deposit_hour, $deposit_minute, 0, $month_deposit,
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestamp_start_booking != NULL && $deposit_building != NULL && $timestamp_end_booking != NULL ) {
 
     include 'connexion.php';
-    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and cc.COMPANY=bb.COMPANY and bb.FRAME_NUMBER=aa.BIKE_NUMBER and aa.BUILDING_CODE='$deposit_building'";    
+    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS='OK' and cc.COMPANY=bb.COMPANY and bb.FRAME_NUMBER=aa.BIKE_NUMBER and aa.BUILDING_CODE='$deposit_building'";    
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -85,7 +85,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
     }
 
     include 'connexion.php';
-    $sql= "select aa.FRAME_NUMBER from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER in (select BIKE_NUMBER from customer_bike_access where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START>='$timestamp_start_booking' and bb.DATE_START<='$timestamp_end_booking') OR (bb.DATE_START<='$timestamp_start_booking' and bb.DATE_END>'$timestamp_start_booking'))) group by FRAME_NUMBER";
+    $sql= "select aa.FRAME_NUMBER from reservations aa, customer_bikes cc where aa.FRAME_NUMBER=cc.FRAME_NUMBER and cc.STATUS='OK' and aa.STAANN!='D' and aa.FRAME_NUMBER in (select BIKE_NUMBER from customer_bike_access where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START>='$timestamp_start_booking' and bb.DATE_START<='$timestamp_end_booking') OR (bb.DATE_START<='$timestamp_start_booking' and bb.DATE_END>'$timestamp_start_booking'))) group by FRAME_NUMBER";
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -93,6 +93,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 	}
     $result = mysqli_query($conn, $sql);     
     $length = $result->num_rows;
+    
     if($length == 0){
         errorMessage("ES0015");
     }

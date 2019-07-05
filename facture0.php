@@ -3,8 +3,8 @@
         <table style="width: 100%; border: solid 1px black;">
             <tr>
                 <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
-                <td style="text-align: center;    width: 34%">Facture Sia Partners</td>
-                <td style="text-align: right;    width: 33%">22/01/2019</td>
+                <td style="text-align: center;    width: 34%">Facture EPSYLON</td>
+                <td style="text-align: right;    width: 33%">29/06/2019</td>
             </tr>
         </table>
     </page_header>
@@ -22,7 +22,7 @@
     <tr>
         <td style="width: 50%">
         
-                <img class="img-responsive" src="/home/kameobiknq/www/test/images/logo-dark.png" alt="">
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
 				
 				<p>KAMEO Bikes sprl</p>
 				
@@ -33,22 +33,22 @@
 				<p>TVA/VAT : BE0681.879.712
 				<br>BE38 0689 0775 9672</p>
 				
-				<p>Liège, le 22/01/2019</p>
+				<p>Liège, le 29/06/2019</p>
 
         
         </td>
         <td style="width: 50%">
-				<img class="img-responsive" src="/home/kameobiknq/www/test/images/SIA.jpg" alt="">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
 				
-				<p>Sia Partners</p>
+				<p>EPSYLON</p>
 				
-				<p>Avenue Henri Jasparlaan, 128
-				<br>B-1060 Bruxelles
+				<p>Avenue de Boetendael 34
+				<br>1180 Uccle
 				<br>Belgium</p>
 				
-				<p>TVA/VAT : BE0878.103.386</p>
+				<p>TVA/VAT : BE0553.749.343</p>
 				
-				<p>Référence client : SIA</p>
+				<p>Référence client : EPS</p>
         </td>
     
     </tr>
@@ -59,8 +59,8 @@
 
         </td>
         <td>
-            <h4 style="color: #C72C28">Référence : 000/0119/01593</h4>
-			<p>Janvier 2019</p>
+            <h4 style="color: #C72C28">Référence : 000/0619/11561</h4>
+			<p>Juin 2019</p>
 
         </td>
     </tr>
@@ -80,46 +80,32 @@
 	        </thead>
 	        <tbody><tr>
                     <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
-                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">BROMPTON NOIR 6V - CADRE: 1805290289</td>
-                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">57.5 € / mois HTVA</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527028</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du 21-12-2018 au 21-01-2019</td>
+                    <td style="color: grey">Période du 15-06-2019 au 15-07-2019</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img class="img-responsive" src="/home/kameobiknq/www/test/images_bikes/1BAECK_mini.jpg" alt=""></td>
-                    <td>Période 6/36</td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-005_mini.jpg" alt=""></td>
+                    <td>Période 2/36</td>
                 </tr><tr>
                     <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2</td>
-                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">ORBEA GAIN D40 M NAR-NEG - CADRE: 01180078576</td>
-                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">80 € / mois HTVA</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW181053374</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du 23-12-2018 au 23-01-2019</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><img class="img-responsive" src="/home/kameobiknq/www/test/images_bikes/1COUCKE_mini.jpg" alt=""></td>
-                    <td>Période 5/36</td>
-                </tr><tr>
-                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">3</td>
-                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">ORBEA GAIN D40 M NAR-NEG - CADRE: 01170171595</td>
-                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">74.99 € / mois HTVA</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="color: grey">Période du 21-12-2018 au 21-01-2019</td>
+                    <td style="color: grey">Période du 15-06-2019 au 15-07-2019</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img class="img-responsive" src="/home/kameobiknq/www/test/images_bikes/1LANGE_mini.jpg" alt=""></td>
-                    <td>Période 6/36</td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-006_mini.jpg" alt=""></td>
+                    <td>Période 2/36</td>
                 </tr></tbody>
 	      </table>
 
@@ -132,15 +118,15 @@
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
                <td style="background-color: white" witdth="100"></td>
-               <td style="background-color: white"><p> Total HTVA: 212.49 €/mois<br>+TVA: 44.62 /mois </p></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
             </tr>
             <tr>
-                <td height="35">212.49 €/mois</td>
+                <td height="35">172 €/mois</td>
                 <td>21%</td>
-                <td>44.62 €/mois</td>
-                <td>257.11 €/mois</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
                 <td style="background-color: white" width="100"></td>
-                <td style="background-color: white"> Total TVAC : <strong>257.11 €/mois</strong></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
             </tr>
         </tbody>
     </table>
@@ -154,7 +140,7 @@
                     <td width="200" height="35"><strong>Délai de paiement</strong></td>
                 </tr>
                 <tr>
-                    <td height="35"><strong>000/0119/01593</strong></td>
+                    <td height="35"><strong>000/0619/11561</strong></td>
                     <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
                 </tr>
             </tbody>

@@ -15,10 +15,10 @@
     # ignore connexion.php files that contain information to connect to db
     *connexion.php
     *mp4
+    factures/
     $ git status
     [...]
     # Untracked files:
     [...]
     #       Documentation/foo.html
     [...]
-
