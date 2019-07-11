@@ -472,14 +472,12 @@ if($connected){
         var tempDate = new Date();
         var tempDate2=tempDate;
         bookingLength=parseInt(bookingLength);
-        
         while(i<=daysToDisplay){
             if(tempDate.getHours()>=hourEndDepositBooking){
                 tempDate.setHours(hourStartIntakeBooking);
                 tempDate.setMinutes(0);
                 tempDate.setDate(tempDate.getDate()+1);
             }
-
             var dayFR = daysFR[tempDate.getDay()];
             var dayEN = daysEN[tempDate.getDay()];
             var dayNL = daysNL[tempDate.getDay()];
@@ -524,7 +522,6 @@ if($connected){
             dateTemp.setDate(dateTemp.getDate()+1);
         }
         while(dateTemp.getHours()<hourEndIntakeBooking){
-            
             if(dateTemp.getMinutes()=="0"){
                 var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
             }else{
@@ -1243,7 +1240,12 @@ if($connected){
                     //Booking futurs
 
                     var dest="";
-                    var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
+                    console.log(response.booking.codePresence);
+                    if(response.booking.codePresence==false){
+                        var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
+                    } else{
+                        var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th>Code</th></tr></thead><tbody>";
+                    }                   
                     dest = dest.concat(tempFutureBookings);
                     var length = parseInt(response.future_bookings)+parseInt(response.previous_bookings);
                     while (i < length)
@@ -1262,8 +1264,12 @@ if($connected){
                         var booking_id=response.booking[i].bookingID;
                         var annulation=response.booking[i].annulation;
 
-                        
-                        var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+                        if(response.booking.codePresence==false){
+                            var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+                        }else{
+                            var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td>"+response.booking[i].codeValue+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+
+                        }
                         if(annulation){
                             var tempAnnulation = "<td><a class=\"button small red rounded effect\" onclick=\"cancelBooking("+booking_id+")\"><i class=\"fa fa-times\"></i><span>annuler</span></a></td></td></tr>";
                             tempFutureBookings = tempFutureBookings.concat(tempAnnulation);
@@ -3511,6 +3517,7 @@ if($connected){
 												$('#addUser').modal('toggle');
 
 											} else {
+                                                console.log(response);
 												$.notify({
 													message: response.message
 												}, {

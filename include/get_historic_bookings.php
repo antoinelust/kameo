@@ -88,7 +88,7 @@ if($user != NULL)
     $length = $result->num_rows;
     
 	$response['future_bookings']=$length;
-    
+    $response['booking']['codePresence']=false;
     while($row = mysqli_fetch_array($result))
     {
 
@@ -162,8 +162,30 @@ if($user != NULL)
                 $response['booking'][$i]['annulation']=false;
             }
         }            
-
         
+        $sql4="select * from locking_code where ID_reservation='$ID'";
+        
+        if ($conn->query($sql4) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+
+
+        $result4 = mysqli_query($conn, $sql4); 
+        $length4 = $result4->num_rows;
+
+        if ($length4 == 0){
+            $response['booking'][$i]['code']=false;
+            $response['booking'][$i]['codeValue']="";
+            
+        }
+        else{
+            $resultat4 = mysqli_fetch_assoc($result4);
+            $response['booking'][$i]['code']=true; 
+            $response['booking']['codePresence']=true;
+            $response['booking'][$i]['codeValue']=$resultat4['CODE'];
+        }            
         $i++;
 	}
 	

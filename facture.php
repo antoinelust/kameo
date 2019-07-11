@@ -2,7 +2,9 @@
 
 $company = file_get_contents(__DIR__.'/temp/company.txt');
 $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
-$currentDate = new DateTime('now');
+
+    
+    $currentDate = new DateTime('now');
 $currentDateString = date('Y-m-d');
 
 
