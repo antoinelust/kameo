@@ -8,13 +8,8 @@ include 'globalfunctions.php';
 
 
 try{
-    /*$frameType=$_POST['frameType'];
-    $utilisation=$_POST['utilisation'];
-    $price=$_POST['price'];
-    $brand=$_POST['brand'];
-    $electric=$_POST['electric'];
-    */
-    
+
+    $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
     $frameType="*";
     $utilisation="*";
     $price="*";
@@ -29,8 +24,12 @@ try{
 
 
         include 'connexion.php';
-        $sql="SELECT *  FROM bike_catalog WHERE STOCK > 0";
+        $sql="SELECT *  FROM bike_catalog WHERE 1";
 
+        if($ID != NULL){
+            $sql=$sql." AND ID='".$ID."'";
+        }
+        
         if($frameType!="*"){
             $sql=$sql." AND FRAME_TYPE='".$frameType."'";
         }
@@ -82,11 +81,13 @@ try{
 
         while($row = mysqli_fetch_array($result))
         {
+            $response['bike'][$i]['ID']=$row['ID'];
             $response['bike'][$i]['brand']=$row['BRAND'];
             $response['bike'][$i]['model']=$row['MODEL'];            
             $response['bike'][$i]['frameType']=$row['FRAME_TYPE'];            
             $response['bike'][$i]['utilisation']=$row['UTILISATION'];
             $response['bike'][$i]['electric']=$row['ELECTRIC'];
+            $response['bike'][$i]['stock']=$row['STOCK'];
 
             $price=$row['PRICE_HTVA'];
             $priceTemp=($price+3*75+4*100+4*100);

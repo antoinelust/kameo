@@ -185,6 +185,7 @@ if($user != NULL)
             $response['booking'][$i]['code']=true; 
             $response['booking']['codePresence']=true;
             $response['booking'][$i]['codeValue']=$resultat4['CODE'];
+                
         }            
         $i++;
 	}

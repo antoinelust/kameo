@@ -2,9 +2,8 @@
 
 $company = file_get_contents(__DIR__.'/temp/company.txt');
 $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
-
     
-    $currentDate = new DateTime('now');
+$currentDate = new DateTime('now');
 $currentDateString = date('Y-m-d');
 
 
@@ -269,8 +268,7 @@ echo $test1.$test2.$test3;
 include 'include/connexion.php';
 $today=date('Y-m-d');
 $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$billingGroup.'.pdf';
-$sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID) VALUES ('$newID', 'facture.php', '$company', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0')";
-
+$sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, TYPE) VALUES ('$newID', 'facture.php', '$company', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', 'leasing')";
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;

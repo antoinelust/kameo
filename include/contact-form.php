@@ -34,7 +34,7 @@ if($captcha == 0){
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
     
- if($email != '' && $message != '') {
+ if($email != '') {
             
                 //If you don't receive the email, enable and configure these parameters below: 
      

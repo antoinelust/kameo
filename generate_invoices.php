@@ -34,7 +34,7 @@ while($row = mysqli_fetch_array($result))
     $internalReference=$row['INTERNAL_REFERENCE'];
     $companyName=$row['COMPANY_NAME'];
     $currentDate=date('Y-m-d');
-    $sql_dateStart="select min(CONTRACT_START), COMPANY, BILLING_GROUP from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference' GROUP BY COMPANY, BILLING_GROUP";
+    $sql_dateStart="select min(CONTRACT_START), COMPANY, BILLING_GROUP from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference' and LEASING='Y' GROUP BY COMPANY, BILLING_GROUP";
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
@@ -135,9 +135,9 @@ while($row = mysqli_fetch_array($result))
                 }
             
                 $file = __DIR__.'/temp/company.txt';
-                unlink($file);
+                //unlink($file);
                 $file = __DIR__.'/temp/billingGroup.txt';
-                unlink($file);
+                //unlink($file);
 
             
 
