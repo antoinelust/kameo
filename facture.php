@@ -163,7 +163,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));
-                
 
                 $dateStart = new DateTime();
                 $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
@@ -172,7 +171,8 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
                 
                 $difference=$dateStart->diff($contractStart);
-
+                
+                $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
                 
                 $test2.='<tr>
                     <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
@@ -187,7 +187,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 <tr>
                     <td></td>
                     <td><img class="img-responsive" src="'.__DIR__.'/images_bikes/'.$row2['FRAME_NUMBER'].'_mini.jpg" alt=""></td>
-                    <td>Période '.($difference->format('%m')+1).'/36</td>
+                    <td>Période '.($monthDifference).'/36</td>
                 </tr>';
 
             }

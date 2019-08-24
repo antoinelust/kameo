@@ -2796,6 +2796,8 @@ if($connected){
 											          <p>Nombre de vélos</p>
 											        </div>
 											     </div>
+											     
+											     <div class="seperator seperator-small visible-xs"><br/><br/></div>
 											      
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
@@ -2804,6 +2806,8 @@ if($connected){
 											          <p>Nombre d'utilisateurs</p>
 											        </div>
 											     </div> 
+											     
+											     <div class="seperator seperator-small visible-xs"><br/><br/></div>
 											     
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
@@ -2828,6 +2832,8 @@ if($connected){
 											          <p>Modifiez les réglages</p>
 											        </div>
 											     </div>
+											     
+											    <div class="seperator seperator-small visible-xs"><br/><br/></div>
 
 										     	<div class="col-md-4">
 											        <div class="icon-box medium fancy">
@@ -2836,6 +2842,8 @@ if($connected){
 											          <p>Gérer les clients</p>
 											        </div>
 											     </div>
+											     
+											     <div class="seperator seperator-small visible-xs"><br/><br/></div>
                                                  
 										     	<div class="col-md-4">
 											        <div class="icon-box medium fancy">
@@ -4820,7 +4828,15 @@ if($connected){
                                 <label for="widget-addBill-form-communication"  class="nl">Communication</label>
                                 <input type="text" class="widget-addBill-form-communication" name="widget-addBill-form-communication" class="form-control required">
 								</div>                                     
-                                <div class="col-sm-6">
+								
+								<div class="col-sm-6">
+                                <label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
+                                <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
+                                <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
+                                <input type="text" class="widget-addBill-form-datelimite" name="widget-addBill-form-datelimite" class="form-control required">
+								</div>                                     
+								
+                                <div class="col-sm-12">
                                 </div>                                
                                 <div class="form-group col-sm-6">
 									<label for="widget-addBill-form-file"  class="fr">Facture</label>
@@ -6155,6 +6171,13 @@ if($connected){
                                 <h4><span class="nl"> Payed on:  </span></h4>
                                 <input type="date" class="billingPaidDate" name="widget-updateBillingStatus-form-billingPaid" />
                             </div>
+                            
+                            <div class="col-sm-5">
+                                <h4><span class="fr"> Date limite de paiement : </span></h4>
+                                <h4><span class="en"> Date limite de paiement : </span></h4>
+                                <h4><span class="nl"> Date limite de paiement :  </span></h4>
+                                <input type="date" class="billingPaidDate" name="widget-updateBillingStatus-form-billingPaid" />
+                            </div>
 
 
                         </div>
@@ -6229,7 +6252,7 @@ if($connected){
                             <p class="bikeCatalogID"></p>
                             <input type="text" class="bikeCatalogID2 hidden" name="widget-updateCatalog-form-ID"/>
 
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> Marque : </span></h4>
                                 <h4><span class="en"> Brand: </span></h4>
                                 <h4><span class="nl"> Brand : </span></h4>
@@ -6244,14 +6267,14 @@ if($connected){
                                 </select>
 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> Modèle : </span></h4>
                                 <h4><span class="en"> Model: </span></h4>
                                 <h4><span class="nl"> Model: </span></h4>
                                 <input type="text" class="bikeCatalogModel" name="widget-updateCatalog-form-model" />
 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> Type de cadre : </span></h4>
                                 <h4><span class="en"> Frame type: </span></h4>
                                 <h4><span class="nl"> Frame type: </span></h4>
@@ -6262,7 +6285,7 @@ if($connected){
                                 </select>
                                 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> Utilisation : </span></h4>
                                 <h4><span class="en"> Utilisation: </span></h4>
                                 <h4><span class="nl"> Utilisation: </span></h4>
@@ -6276,7 +6299,7 @@ if($connected){
                                 </select>
                                 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> Vélo électrique ? </span></h4>
                                 <h4><span class="en"> Electric bike? </span></h4>
                                 <h4><span class="nl"> Electric bike? </span></h4>
@@ -6286,19 +6309,19 @@ if($connected){
                                 </select>
                                 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> Prix : </span></h4>
                                 <h4><span class="en"> Price: </span></h4>
                                 <h4><span class="nl"> Price: </span></h4>
                                 <input type="text" class="bikeCatalogPrice" name="widget-updateCatalog-form-price" />
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> En stock ? </span></h4>
                                 <h4><span class="en"> Sotck? </span></h4>
                                 <h4><span class="nl"> Stock? </span></h4>
                                 <input type="text" class="bikeCatalogStock" name="widget-updateCatalog-form-stock" />
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-5 form-group">
                                 <h4><span class="fr"> Lien vers le site : </span></h4>
                                 <h4><span class="en"> Vendor link : </span></h4>
                                 <h4><span class="nl"> Vendor link</span></h4>
@@ -6308,7 +6331,7 @@ if($connected){
                         </div>
                         <img src="" class="bikeCatalogImage" alt="image" height="200" />
                             
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-12">
                             <label for="widget-updateCatalog-form-file"  class="fr">Modifier la photo (ne rien uploader si ok)</label>
                             <label for="widget-updateCatalog-form-file"  class="en">Modify the picture (don't do anything if already ok)</label>
                             <label for="widget-updateCatalog-form-file"  class="nl">Modify the picture (don't do anything if already ok)</label>
@@ -6320,9 +6343,9 @@ if($connected){
                         <input type="text" name="widget-updateCatalog-form-user" value="<?php echo $user; ?>" class="hidden"/>
 
                         <div class="col-sm-12">    
-                            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+                            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
+                            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+                            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
                         </div>
                     </form>                        
 				</div>

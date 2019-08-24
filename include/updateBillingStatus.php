@@ -11,9 +11,9 @@ include 'globalfunctions.php';
 
 $IDBilling=isset($_POST['widget-updateBillingStatus-form-billingReference']) ? date($_POST['widget-updateBillingStatus-form-billingReference']) : "0";
 $billingSent=isset($_POST['widget-updateBillingStatus-form-billingSent']) ? "1" : "0";
-$billingSentDate=isset($_POST['widget-updateBillingStatus-form-billingSentDate']) ? date($_POST['widget-updateBillingStatus-form-billingSentDate']) : "0";
+$billingSentDate=isset($_POST['widget-updateBillingStatus-form-billingSentDate']) ? date($_POST['widget-updateBillingStatus-form-billingSentDate']) : "";
 $billingPaid=isset($_POST['widget-updateBillingStatus-form-billingPaid']) ? "1" : "0";
-$billingPaidDate=isset($_POST['widget-updateBillingStatus-form-billingPaidDate']) ? date($_POST['widget-updateBillingStatus-form-billingPaidDate']) : "0";
+$billingPaidDate=isset($_POST['widget-updateBillingStatus-form-billingPaidDate']) ? date($_POST['widget-updateBillingStatus-form-billingPaidDate']) : "";
 
 $response=array();
 
