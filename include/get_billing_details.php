@@ -40,6 +40,7 @@ if($ID != NULL)
     $response['bill']['sentDate']=$row['FACTURE_SENT_DATE'];
     $response['bill']['paid']=$row['FACTURE_PAID'];
     $response['bill']['paidDate']=$row['FACTURE_PAID_DATE'];
+    $response['bill']['paidLimitDate']=$row['FACTURE_LIMIT_PAID_DATE'];
     $response['bill']['fileName']=$row['FILE_NAME'];
     
     

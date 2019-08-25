@@ -23,6 +23,7 @@ $billingSent=isset($_POST['widget-addBill-form-sent']) ? "1" : "0";
 $billingSentDate=isset($_POST['widget-addBill-form-sendingDate']) ? date($_POST['widget-addBill-form-sendingDate']) : "0";
 $billingPaid=isset($_POST['widget-addBill-form-paid']) ? "1" : "0";
 $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST['widget-addBill-form-paymentDate']) : "0";
+$billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
 $communication=$_POST['widget-addBill-form-communication'];
 
 if(isset($_FILES['widget-addBill-form-file']))
@@ -94,7 +95,7 @@ if($company=="other"){
 }
 
 include 'connexion.php';
-$sql= "INSERT INTO  factures (USR_MAJ, HEU_MAJ, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE) VALUES ('$email', CURRENT_TIMESTAMP, '$company', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fileName', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type')";
+$sql= "INSERT INTO  factures (USR_MAJ, HEU_MAJ, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$email', CURRENT_TIMESTAMP, '$company', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fileName', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', '$billingLimitPaidDate')";
 
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);

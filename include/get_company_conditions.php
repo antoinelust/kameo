@@ -29,6 +29,13 @@ if($email != NULL)
     $conn->close();   
 
     $company=$resultat['COMPANY'];
+    if($company!='KAMEO'){
+        $response['update']=false;
+    } else{
+        $response['update']=true;
+    }
+    
+    
     $response['companyConditions']['administrator']=$resultat['ADMINISTRATOR'];       
     include 'connexion.php';
 	$sql="select * from conditions where COMPANY = '$company'";

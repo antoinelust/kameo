@@ -73,6 +73,7 @@ if($email != NULL)
         $response['bill'][$i]['sentDate']=$row['FACTURE_SENT_DATE'];
         $response['bill'][$i]['paid']=$row['FACTURE_PAID'];
         $response['bill'][$i]['paidDate']=$row['FACTURE_PAID_DATE'];
+        $response['bill'][$i]['limitPaidDate']=$row['FACTURE_LIMIT_PAID_DATE'];
         $response['bill'][$i]['fileName']=$row['FILE_NAME'];
         $response['bill'][$i]['communication']=$row['COMMUNICATION_STRUCTUREE'];
         $i++;

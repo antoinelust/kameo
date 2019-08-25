@@ -153,6 +153,12 @@ function construct_form_for_billing_status_update(ID){
                     }else{
                         document.getElementsByClassName("billingPaidDate")[0].value="";                        
                     }
+                    if(response.bill.paidLimitDate){
+                        document.getElementsByClassName("billingPaidLimitDate")[0].value=response.bill.paidDate.substring(0,10);                        
+                    }else{
+                        document.getElementsByClassName("billingPaidLimitDate")[0].value="";                        
+                    }                    
+                    
                     document.getElementsByClassName("billingAmountHTVA")[0].value=response.bill.amountHTVA;
                     document.getElementsByClassName("billingAmountTVAINC")[0].value=response.bill.amountTVAC;
                     if(response.bill.sent=="1"){
@@ -955,6 +961,13 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                    console.log(response.update);
+                    if(response.update){
+                        document.getElementById('clientManagement').classList.remove("hidden");
+                        document.getElementById('portfolioManagement').classList.remove("hidden");
+                    }
+                    
+                    
                     document.getElementsByClassName('companyConditionsDaysInAdvance')[0].value = response.companyConditions.bookingDays;
                     document.getElementsByClassName('companyConditionsBookingLength')[0].value = response.companyConditions.bookingLength;
                     
@@ -1142,8 +1155,8 @@ if($connected){
                     document.getElementsByClassName('widget-addBill-form-amountTVAC')[0].value = "";
                     document.getElementsByClassName('widget-addBill-form-sendingDate')[0].value = "";
                     document.getElementsByClassName('widget-addBill-form-paymentDate')[0].value = "";
-                    document.getElementsByClassName('widget-addBill-form-companyOther')[0].style.visibility = "hidden"
-                    document.getElementsByClassName('widget-addBill-form-companyOther')[1].style.visibility = "hidden"                    
+                    document.getElementsByClassName('widget-addBill-form-companyOther')[0].style.visibility = "hidden";
+                    document.getElementsByClassName('widget-addBill-form-companyOther')[1].style.visibility = "hidden";                    
                     
                 }
             }
@@ -1748,12 +1761,12 @@ if($connected){
                         document.getElementsByClassName('companyBillSelection')[0].hidden=false;
                         document.getElementsByClassName('companyBillSelection')[1].hidden=false;
                         
-                        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Aperçu</span><span class=\"en-inline\">File</span><span class=\"nl-inline\">File</span></th></tr></thead>";
+                        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th></tr></thead>";
                     }else{
                         document.getElementsByClassName('companyBillSelection')[0].hidden=true;
                         document.getElementsByClassName('companyBillSelection')[1].hidden=true;
                         
-                        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><tbody><thead><tr></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Aperçu</span><span class=\"en-inline\">File</span><span class=\"nl-inline\">File</span></th></tr></thead>";
+                        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><tbody><thead><tr></th><th>ID</th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th></tr></thead>";
 
                     }
                     dest=dest.concat(temp);
@@ -1805,8 +1818,15 @@ if($connected){
                         }else{
                             var paid="Y";
                         } 
+                        if(response.bill[i].fileName){
+                            var temp="<tr><th><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].ID+"</a></th>";
+                        }
+                        else{
+                            var temp="<tr><th><a href=\"#\" class=\"text-red\">"+response.bill[i].ID+"</a></th>";
+                        }
+                        dest=dest.concat(temp);
                         if(response.update){
-                            var temp="<tr><th>"+response.bill[i].company+"</a></th>";
+                            var temp="<th>"+response.bill[i].company+"</a></th>";
                             dest=dest.concat(temp);
                         }
                         var temp="<th>"+response.bill[i].date.substr(0,10)+"</th><th>"+response.bill[i].amountHTVA+" €</th><th>"+response.bill[i].communication+"</th>";
@@ -1826,14 +1846,12 @@ if($connected){
                         }
                         dest=dest.concat(temp);
                         
-                        if(response.bill[i].fileName){
-                            var temp="<th><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">lien</a></th>";
+                        if(response.bill[i].limitPaidDate){
+                            temp="<th>"+response.bill[i].limitPaidDate.substr(0,10)+"</th>";
                         }else{
-                            var temp="<th><a href=\"#\" class=\"text-red\">N/A</a></th>";
+                            temp="<th class=\"text-red\">N/A</th>";   
                         }
                         dest=dest.concat(temp);
-                        
-                        
                         
                         if(response.update){
                             temp="<th><ins><a class=\"text-green updateBillingStatus\" data-target=\"#updateBillingStatus\" name=\""+response.bill[i].ID+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></th>";
@@ -2835,7 +2853,7 @@ if($connected){
 											     
 											    <div class="seperator seperator-small visible-xs"><br/><br/></div>
 
-										     	<div class="col-md-4">
+										     	<div class="col-md-4 hidden" id="clientManagement">
 											        <div class="icon-box medium fancy">
 											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#companyListing" href="#" ><i class="fa fa-users"></i></a> </div>
 											          <div class="counter bold" style="color:#3cb395"></div>
@@ -2845,7 +2863,7 @@ if($connected){
 											     
 											     <div class="seperator seperator-small visible-xs"><br/><br/></div>
                                                  
-										     	<div class="col-md-4">
+										     	<div class="col-md-4 hidden" id="portfolioManagement">
 											        <div class="icon-box medium fancy">
 											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#portfolioManager" href="#" class="portfolioManagerClick"><i class="fa fa-book"></i></a> </div>
 											          <div class="counter bold" style="color:#3cb395"></div>
@@ -4833,7 +4851,7 @@ if($connected){
                                 <label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
                                 <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
                                 <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
-                                <input type="text" class="widget-addBill-form-datelimite" name="widget-addBill-form-datelimite" class="form-control required">
+                                <input type="date" class="widget-addBill-form-datelimite" name="widget-addBill-form-datelimite" class="form-control required">
 								</div>                                     
 								
                                 <div class="col-sm-12">
@@ -5343,10 +5361,10 @@ if($connected){
 													type: 'success'
 												});
                                                 
-                                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");; 
-                                                document.getElementsByClassName("updateClientInformation")[0].classList.remove("hidden");;                             
-                                                document.getElementById("sendButtonClientDetails").classList.add("hidden");; 
-                                                document.getElementById("clientBikes").classList.remove("hidden");; 
+                                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+                                                document.getElementsByClassName("updateClientInformation")[0].classList.remove("hidden");                           
+                                                document.getElementById("sendButtonClientDetails").classList.add("hidden");
+                                                document.getElementById("clientBikes").classList.remove("hidden");
                                                 document.getElementById("clientBuildings").classList.remove("hidden");
                                                 var classname = document.getElementsByClassName('updateClientInformation');
                                                 for (var i = 0; i < classname.length; i++) {
@@ -6169,14 +6187,14 @@ if($connected){
                                 <h4><span class="fr"> Date de paiement : </span></h4>
                                 <h4><span class="en"> Payed on: </span></h4>
                                 <h4><span class="nl"> Payed on:  </span></h4>
-                                <input type="date" class="billingPaidDate" name="widget-updateBillingStatus-form-billingPaid" />
+                                <input type="date" class="billingPaidDate" name="widget-updateBillingStatus-form-billingPaidDate" />
                             </div>
                             
                             <div class="col-sm-5">
                                 <h4><span class="fr"> Date limite de paiement : </span></h4>
                                 <h4><span class="en"> Date limite de paiement : </span></h4>
                                 <h4><span class="nl"> Date limite de paiement :  </span></h4>
-                                <input type="date" class="billingPaidDate" name="widget-updateBillingStatus-form-billingPaid" />
+                                <input type="date" class="billingPaidLimitDate" name="widget-updateBillingStatus-form-billingLimitPaidDate" />
                             </div>
 
 

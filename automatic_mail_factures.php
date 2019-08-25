@@ -7,9 +7,11 @@ include 'include/header2.php';
 include 'include/connexion.php';
 $sql="SELECT substr(DATE, 1, 7) as 'MOIS', SUM(AMOUNT_HTVA) as 'SOMME' FROM `factures` group by substr(DATE, 1, 7)";
 $sql2 = "SELECT * FROM factures WHERE  FACTURE_SENT = '0'";
-$sql3 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0'";
+$sql3 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
+$sql7 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND FACTURE_LIMIT_PAID_DATE	> CURDATE()";
 $sql4 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '0'";
-$sql5 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0'";
+$sql5 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
+$sql6 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' and FACTURE_LIMIT_PAID_DATE	> CURDATE()";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
@@ -31,6 +33,13 @@ if ($conn->query($sql3) === FALSE) {
 }
 $result3 = mysqli_query($conn, $sql3);
 
+if ($conn->query($sql7) === FALSE) {
+    $response7 = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response3);
+    die;
+}
+$result7 = mysqli_query($conn, $sql7);
+
 if ($conn->query($sql4) === FALSE) {
     $response4 = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response4);
@@ -45,6 +54,13 @@ if ($conn->query($sql5) === FALSE) {
 }
 $result5 = mysqli_query($conn, $sql5);
 
+if ($conn->query($sql6) === FALSE) {
+    $response6 = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response5);
+    die;
+}
+$result6 = mysqli_query($conn, $sql6);
+
 
 require_once('include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
@@ -53,9 +69,9 @@ $mail->IsHTML(true);
 $mail->CharSet = 'UTF-8';
 
 $mail->AddAddress("antoine.lust@kameobikes.com");
-$mail->AddAddress("julien.jamar@kameobikes.com");
-$mail->AddAddress("thibaut.mativa@kameobikes.com");
-$mail->AddAddress("pierre-yves.adant@kameobikes.com");
+//$mail->AddAddress("julien.jamar@kameobikes.com");
+//$mail->AddAddress("thibaut.mativa@kameobikes.com");
+//$mail->AddAddress("pierre-yves.adant@kameobikes.com");
 
 $mail->From = "info@kameobikes.com";
 $mail->FromName = "Kameo Bikes";
@@ -642,10 +658,10 @@ $body=$body.$dest."<br /><br /><h3>Factures à envoyer à nos clients</h3>
 <br>";
 
 $dest="";
-$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th class=\"tableResume\">Lien</th></tr>";
+$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">ID</th><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th class=\"tableResume\">Lien</th></tr>";
 $dest=$temp;
 while($row = mysqli_fetch_array($result2)){
-    $temp="<tr class=\"tableResume\"><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
     $dest=$dest.$temp;
 }
 
@@ -657,17 +673,17 @@ $resultat4 = mysqli_fetch_assoc($result4);
 $dest=$dest."<p>Valeur totale des factures non envoyées: ".round($resultat4['SOMME'])." € </p>";
 
 
-$body=$body.$dest."<br /><br /><h3>Factures pas encore payées par nos clients</h3>
+$body=$body.$dest."<br /><br /><h3>Factures en retard de paiement</h3>
 
 <p>Veuillez trouver ci-dessous la liste des factures qui n'ont pas encore été payées par nos clients :<br>
 <br>";
 
 $dest="";
-$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th class=\"tableResume\">Lien</th></tr>";
+$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">ID</th><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th>Date Limite de paiement</th><th class=\"tableResume\">Lien</th></tr>";
 $dest=$temp;
 while($row = mysqli_fetch_array($result3))
 {
-    $temp="<tr class=\"tableResume\"><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\">".substr($row['FACTURE_LIMIT_PAID_DATE'],0,10)."</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
     $dest=$dest.$temp;
 }
 
@@ -675,8 +691,27 @@ $dest=$dest."</table>";
 
 $resultat5 = mysqli_fetch_assoc($result5);
 
-$dest=$dest."<p>Valeur totale des factures non payées: ".round($resultat5['SOMME'])." €</p>";
+$dest=$dest."<p>Valeur totale des factures en retard de paiement: ".round($resultat5['SOMME'])." €</p>";
 
+$body=$body.$dest."<br /><br /><h3>Factures non payées mais pas en retard de paiement</h3>
+
+<p>Veuillez trouver ci-dessous la liste des factures qui n'ont pas encore été payées par nos clients :<br>
+<br>";
+
+$dest="";
+$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">ID</th><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th>Date Limite de paiement</th><th class=\"tableResume\">Lien</th></tr>";
+$dest=$temp;
+while($row = mysqli_fetch_array($result7))
+{
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\">".substr($row['FACTURE_LIMIT_PAID_DATE'],0,10)."</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $dest=$dest.$temp;
+}
+
+$dest=$dest."</table>";
+
+$resultat6 = mysqli_fetch_assoc($result6);
+
+$dest=$dest."<p>Valeur totale des factures non payées mais pas en retard de paiement: ".round($resultat6['SOMME'])." €</p>";
 
 
 $body=$body.$dest;
