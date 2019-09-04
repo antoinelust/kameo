@@ -268,7 +268,7 @@ echo $test1.$test2.$test3;
 include 'include/connexion.php';
 $today=date('Y-m-d');
 $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$billingGroup.'.pdf';
-$sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, TYPE) VALUES ('$newID', 'facture.php', '$company', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', 'leasing')";
+$sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, TYPE) VALUES ('$newID', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', 'leasing')";
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;

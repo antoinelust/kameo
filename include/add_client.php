@@ -26,6 +26,8 @@ $contactFirstMail=$_POST['widget-addClient-form-contactFirstMail'];
 $contactLastName=$_POST['widget-addClient-form-contactLastName'];
 $originator=$_POST['widget-addClient-form-email'];
 
+$dossier = '../images/';
+
 
 if(isset($_FILES['widget-addClient-form-picture'])){
     $extensions = array('.jpg');
@@ -45,7 +47,6 @@ if(isset($_FILES['widget-addClient-form-picture'])){
 
     //upload of Bike picture
 
-    $dossier = '../images/';
 
 
 

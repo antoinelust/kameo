@@ -5,7 +5,7 @@ include 'include/header2.php';
 
 
 include 'include/connexion.php';
-$sql="SELECT substr(DATE, 1, 7) as 'MOIS', SUM(AMOUNT_HTVA) as 'SOMME' FROM `factures` group by substr(DATE, 1, 7)";
+$sql="SELECT substr(DATE, 1, 7) as 'MOIS', SUM(CASE WHEN AMOUNT_HTVA > 0 THEN AMOUNT_HTVA ELSE 0 END) AS 'SUM1', SUM(CASE WHEN AMOUNT_HTVA < 0 THEN AMOUNT_HTVA ELSE 0 END) AS 'SUM2', SUM(AMOUNT_HTVA) AS 'SUM3' from factures GROUP BY Substr(DATE, 1, 7)";
 $sql2 = "SELECT * FROM factures WHERE  FACTURE_SENT = '0'";
 $sql3 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
 $sql7 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND FACTURE_LIMIT_PAID_DATE	> CURDATE()";
@@ -69,9 +69,9 @@ $mail->IsHTML(true);
 $mail->CharSet = 'UTF-8';
 
 $mail->AddAddress("antoine.lust@kameobikes.com");
-//$mail->AddAddress("julien.jamar@kameobikes.com");
-//$mail->AddAddress("thibaut.mativa@kameobikes.com");
-//$mail->AddAddress("pierre-yves.adant@kameobikes.com");
+$mail->AddAddress("julien.jamar@kameobikes.com");
+$mail->AddAddress("thibaut.mativa@kameobikes.com");
+$mail->AddAddress("pierre-yves.adant@kameobikes.com");
 
 $mail->From = "info@kameobikes.com";
 $mail->FromName = "Kameo Bikes";
@@ -643,11 +643,17 @@ $body = "<!doctype html>
 <p>Veuillez trouver ci-dessous un résumé des factures émises depuis le début de l'année:<br>
 <br>";
 
-$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Mois</th><th class=\"tableResume\">Somme</th></tr>";
+$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Mois</th><th class=\"tableResume\">Factures IN</th><th class=\"tableResume\">Factures OUT</th><th class=\"tableResume\">Total</th></tr>";
 $dest=$temp;
 while($row = mysqli_fetch_array($result))
 {
-    $temp="<tr class=\"tableResume\"><td class=\"tableResume\">".$row['MOIS']."</td><td class=\"tableResume\">".round($row['SOMME'])." €</td></tr>";
+    $temp="<tr class=\"tableResume\"><td class=\"tableResume\">".$row['MOIS']."</td><td class=\"tableResume\"><font color=\"green\">".round($row['SUM1'])." €</font></td><td class=\"tableResume\"><font color=\"red\">".round($row['SUM2'])." €</td>";
+    $dest=$dest.$temp;
+    if($row['SUM3']>0){
+        $temp="<td class=\"tableResume\"><font color=\"green\">".round($row['SUM3'])." €</td></tr>";
+    }else{
+        $temp="<td class=\"tableResume\"><font color=\"red\">".round($row['SUM3'])." €</td></tr>";
+    }
     $dest=$dest.$temp;
 }
 

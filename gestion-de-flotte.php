@@ -2,6 +2,24 @@
 include 'include/header2.php';
 ?>
 		
+<script type="text/javascript">
+window.addEventListener("DOMContentLoaded", function(event) {
+    
+    $.ajax({
+            url: 'include/get_statistics.php',
+            type: 'post',
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                }else{
+                    document.getElementById('bookingCounter').innerHTML = "<span data-speed=\"3500\" data-refresh-interval=\"50\" data-to=\""+response.bookings+"\" data-from=\"0\" data-seperator=\"true\"></span>";
+                }              
+
+            }
+    })
+});
+                    
+</script>
 <!-- SECTION -->
 <section>
     <div class="container portfolio">
@@ -11,9 +29,35 @@ include 'include/header2.php';
             <h2 class="en">Fleet managment</h2>
             <h2 class="nl">Vloot beheer</h2>
         </div>
+    </div>
 
+	<div class="jumbotron jumbotron-center jumbotron-fullwidth background-colored text-light">
+	  <div class="container">
+	    <h3>Pas le temps pour vous occuper de vos vélos?
+	    Difficile d'assurer le suivi de votre flotte?
+	    Envie de quantifier votre utilisation?</h3>
+	    <p>Notre système intégré et modulable le fait pour vous. Composé d'une plateforme automatisée couplée à des bornes sécurisées, il vous assure un feedback et contrôle sur votre mobilité.</p>
+	    
+	    
+	    <div class="col-md-6">
+			<h2 class="text-white text-center fr"><a href="gestion-de-flotte.php">MyKAMEO</a></h2>
+			<a href="#section1" class="scroll-to"><img src="images/plateforme.png"  alt="MyKAMEO"></a>
+		</div>
+		<div class="separator visible-sm visible-xs"></div>
+		<div class="col-md-6">
+			<h2 class="text-white text-center fr"><a href="gestion-de-flotte.php">MyBORNE</a></h2>
+			<a href="#section2" class="scroll-to"><img src="images/myborne.png"  alt="MyBORNE"></a>
+		</div>
+      
+	 </div>
+	</div>
+
+	<div class="container portfolio" id="section1">
+	
+	<h3 class="fr">MyKAMEO</h3>
+	
         <p class="fr text-dark">
-            La plateforme MyKAMEO permet d'établir un lien direct entre les employés et KAMEO Bikes. Qu'il s'agisse d'une réservation de vélo, d'une demande d'entretien ou encore de l'encodage des trajets parcourus, elle est facilement utilisable par les employés et paramétrable par les fleets managers.<br />
+            La plateforme MyKAMEO permet d'établir un lien direct entre les employés et KAMEO Bikes. Qu'il s'agisse d'une réservation de vélo, d'une demande d'entretien ou encore de l'encodage des trajets parcourus, elle est facilement utilisable par les employés et paramétrable par les fleets managers.<br /><br>
             La plateforme offre différentes solutions en fonction de vos besoins:</p>
             <ul class="fr text-dark">
                 <li>Vous optez pour un vélo personnel mis à disposition par KAMEO Bikes et vous utilisez la plateforme pour les entretiens et l'assurance</li>
@@ -22,7 +66,7 @@ include 'include/header2.php';
             </ul>
             <br>
         <p class="en text-dark">
-            The MyKameo IT solution offers a direct connection between employees and KAMEO Bikes. With this plateform, you can easily book a shared bike, ask for a maintenance or encode all you rides. It is useable by employees but also configurables by fleet managers.<br />    
+            The MyKameo IT solution offers a direct connection between employees and KAMEO Bikes. With this plateform, you can easily book a shared bike, ask for a maintenance or encode all you rides. It is useable by employees but also configurables by fleet managers.<br />   <br> 
             The platform offers different kind of solution, depending of your needs:</p>
             <ul class="en text-dark">
                 <li>You bought or leased a bike via your company to KAMEO Bikes and you use the platform for maintenance and assurance</li>
@@ -31,7 +75,7 @@ include 'include/header2.php';
             </ul>
             <br>
         <p class="nl text-dark">
-            De MyKameo IT-oplossing biedt een directe verbinding tussen werknemers en KAMEO Bikes. Met deze plateform kunt u eenvoudig een gedeelde fiets boeken, een onderhoud aanvragen of alles coderen wat u doet. Het is bruikbaar voor werknemers, maar ook configureerbaar door fleetmanagers.<br />
+            De MyKameo IT-oplossing biedt een directe verbinding tussen werknemers en KAMEO Bikes. Met deze plateform kunt u eenvoudig een gedeelde fiets boeken, een onderhoud aanvragen of alles coderen wat u doet. Het is bruikbaar voor werknemers, maar ook configureerbaar door fleetmanagers.<br /><br>
             Het platform biedt verschillende soorten oplossingen, afhankelijk van uw behoeften:</p>
              <ul class="nl text-dark">
                  <li> U kocht of huurde een fiets via uw bedrijf naar KAMEO Bikes en u gebruikt het platform voor onderhoud en verzekering </li>
@@ -39,6 +83,19 @@ include 'include/header2.php';
                  <li> U bent vlootmanager en wilt statistieken hebben over het gebruik van fiets binnen uw bedrijf </li>
              </ul>
              <br>
+             
+             
+		
+		<div class="col-md-6">
+        <div class="icon-box medium fancy">
+          <div class="icon" data-animation="wobble infinite"> <a href="#"><i class="fa fa-bicycle"></i></a> </div>
+          <div id="bookingCounter" class="counter bold"></div>
+          <p>Nombre de réservations faites depuis notre plateforme</p>
+        </div>
+      </div>
+      
+		
+		<div class="separator"></div>
 
         <!--Portfolio Filter-->
         <!--
@@ -84,7 +141,7 @@ include 'include/header2.php';
 				    <h3 class="fr">Réservation d'un vélo</h3>
 				    <h3 class="en">Book a bike</h3>
 				    <h3 class="nl">Boek een fiets</h3>
-				    <p class="fr">Réservez un vélo mis à disposition par votre entreprise.<br /><br /><br/></p>
+				    <p class="fr">Réservez un vélo mis à disposition par votre entreprise.<br /><br /></p>
 				    <p class="en">Book a shared bike from your company.<br/><br/><br/></p>
 				    <p class="nl">Boek een gedeelde fiets van uw bedrijf.<br/><br/><br/></p>
 				</div>
@@ -110,7 +167,7 @@ include 'include/header2.php';
 				    <h3 class="fr">Accès privé</h3>
 				    <h3 class="en">Secured access</h3>
 				    <h3 class="nl">Beveiligde toegang</h3>
-				    <p class="fr">Plateforme sécurisée via login et mot de passe.<br/><br/><br/></p>
+				    <p class="fr">Plateforme sécurisée via login et mot de passe.<br/><br/></p>
 				    <p class="en">Secure platform with login and password.<br/><br/><br/></p>
 				    <p class="nl">Beveiligd platform met login en wachtwoord.<br/><br/><br/></p>
 				</div>
@@ -136,7 +193,7 @@ include 'include/header2.php';
 				    <h3 class="fr">Météo</h3>
 				    <h3 class="en">Weather</h3>
 				    <h3 class="nl">Weer</h3>
-				    <p class="fr">Accès direct à la météo pour votre prochain trajet.<br/><br/><br/></p>
+				    <p class="fr">Accès direct à la météo pour votre prochain trajet.<br/><br/></p>
 				    <p class="en">Direct access to weather forecast for your next ride.<br/><br/><br/></p>
 				    <p class="nl">Directe toegang tot weersvoorspelling voor uw volgende rit.<br/><br/><br/></p>
 				</div>
@@ -187,47 +244,76 @@ include 'include/header2.php';
         
         <!-- END: Portfolio Items -->
 
+		<div class="separator" id="section2"></div>
+		<h3 class="fr">MyBORNE</h3>
+	
+        <p class="fr text-dark">
+        	La Borne développé par KAMEO Bikes permet de sécuriser toutes les clés de vos véhicules, quels qu'ils soient.<br>
+        	Simple d'utilisation, elle deviendra un objet indispensable à votre gestion de flotte!
+        </p>
+        
+        <div class="col-md-6">
+        <img src="images/Borne_Web_Out.jpg" class="img-responsive img-rounded" alt="Borne extérieur">
+        </div>
+        
+        <div class="col-md-6">
+        <img src="images/Borne_Web_In.jpg" class="img-responsive img-rounded" alt="Borne extérieur">
+        </div>
+        <div class="separator"></div>
+        <!--jumbotron pattern -->
+   		 <div class="jumbotron jumbotron-border">
+      		<h3>En savoir plus</h3>
+      		<p>Télécharger le pdf reprenant une explication détaillée de nos modules et du fonctionnement de la borne</p>
+      		<a class="button large color button-3d rounded effect icon-left text-light" href="docs/MyKameo_VeloPartage.pdf" target="_blank"><span><i class="fa fa-download"></i>Télécharger</span></a> </div>
+    <!--END: jumbotron pattern --> 
 
     </div>
 
-    <hr class="space">
-
+<div class="jumbotron jumbotron-center jumbotron-fullwidth background-colored text-light">
+	  <div class="container">
+	    <h3>Besoin d'un complément d'information?</h3>
+	    <p>N'hésitez pas à nous contacter si vous voulez en savoir plus sur nos solutions.</p>
+	    <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-paper-plane-o"></i>Contactez-nous!</span></a> </div>
+	</div>
 </section>
 
 
 
 
 		
-		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-					<br>BE 0681.879.712 
-					<br>+32 498 72 75 46 </div>
-					<br>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				<!--
-				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-				-->
-				<br>
-				<br>
+			<!-- FOOTER -->
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	           
+					<div class="copyright-text text-center"><a href="newsletter.php" class="text-green text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
 				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+								</ul>
+					</div>
+					
+					<br>
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+			<!-- END: FOOTER -->
 
 
 	</div>

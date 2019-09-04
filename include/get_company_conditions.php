@@ -75,7 +75,8 @@ if($email != NULL)
     $response['companyConditions']['fridayDeposit']=$resultat['FRIDAY_DEPOSIT'];
     $response['companyConditions']['saturdayDeposit']=$resultat['SATURDAY_DEPOSIT'];
     $response['companyConditions']['sundayDeposit']=$resultat['SUNDAY_DEPOSIT'];
-
+    $response['companyConditions']['maxBookingsPerYear']=$resultat['MAX_BOOKINGS_YEAR'];
+    $response['companyConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
 	
     
 	echo json_encode($response);

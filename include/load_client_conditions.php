@@ -61,7 +61,7 @@ if($email != NULL)
     $response['clientConditions']['thursdayIntake']=$resultat['THURSDAY_INTAKE'];
     $response['clientConditions']['fridayIntake']=$resultat['FRIDAY_INTAKE'];
     $response['clientConditions']['saturdayIntake']=$resultat['SATURDAY_INTAKE'];
-    $response['clientConditions']['su,dayIntake']=$resultat['SUNDAY_INTAKE'];
+    $response['clientConditions']['sundayIntake']=$resultat['SUNDAY_INTAKE'];
     $response['clientConditions']['mondayDeposit']=$resultat['MONDAY_DEPOSIT'];
     $response['clientConditions']['tuesdayDeposit']=$resultat['TUESDAY_DEPOSIT'];
     $response['clientConditions']['wednesdayDeposit']=$resultat['WEDNESDAY_DEPOSIT'];
@@ -69,6 +69,8 @@ if($email != NULL)
     $response['clientConditions']['fridayDeposit']=$resultat['FRIDAY_DEPOSIT'];
     $response['clientConditions']['saturdayDeposit']=$resultat['SATURDAY_DEPOSIT'];
     $response['clientConditions']['sundayDeposit']=$resultat['SUNDAY_DEPOSIT'];
+    $response['clientConditions']['maxBookingsPerYear']=$resultat['MAX_BOOKINGS_YEAR'];
+    $response['clientConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
 
 	
     

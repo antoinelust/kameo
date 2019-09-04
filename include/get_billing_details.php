@@ -32,6 +32,8 @@ if($ID != NULL)
 
     $response['response']="success";
     $response['bill']['company']=$row['COMPANY'];
+    $response['bill']['beneficiaryCompany']=$row['BENEFICIARY_COMPANY'];
+    $response['bill']['communication']=$row['COMMUNICATION_STRUCTUREE'];
     $response['bill']['ID']=$row['ID'];
     $response['bill']['date']=$row['DATE'];            
     $response['bill']['amountHTVA']=$row['AMOUNT_HTVA'];

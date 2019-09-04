@@ -25,6 +25,12 @@ $month_intake=$dayAndMonth[1];
 $date=$_POST['search-bikes-form-day-deposit'];
 $deposit_hour=$_POST['search-bikes-form-deposit-hour'];
 $deposit_building=$_POST['search-bikes-form-deposit-building'];
+
+
+$maxBookingsPerYear=$_POST['search-bikes-form-maxBookingPerYear'];
+$maxBookingsPerMonth=$_POST['search-bikes-form-maxBookingPerMonth'];
+
+
 $dayAndMonth=explode("-", $date);
 $day_deposit=$dayAndMonth[0];
 $month_deposit=$dayAndMonth[1];
@@ -57,7 +63,40 @@ $timestamp_end_booking=mktime($deposit_hour, $deposit_minute, 0, $month_deposit,
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestamp_start_booking != NULL && $deposit_building != NULL && $timestamp_end_booking != NULL ) {
 
-    include 'connexion.php';
+
+    include 'connexion.php';    
+    $date1stJanuary=strtotime(date('Y-01-01'));
+    $sql="select * from reservations where DATE_START>'$date1stJanuary' and EMAIL='$email' and STAANN != 'D'";
+    
+   	if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}    
+    $result = mysqli_query($conn, $sql);     
+    $length = $result->num_rows;    
+    if($length>$maxBookingsPerYear && $maxBookingsPerYear!='9999'){
+        errorMessage("ES0043");
+    }
+        
+        
+        
+    $date1stOfMonth=strtotime(date('Y-m-01'));
+    $sql="select * from reservations where DATE_START>'$date1stOfMonth' and EMAIL='$email' and STAANN != 'D'";
+   	if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+    $result = mysqli_query($conn, $sql);     
+    $length = $result->num_rows;    
+    
+    if($length>$maxBookingsPerMonth && $maxBookingsPerMonth != '9999'){
+        errorMessage("ES0044");
+    }
+        
+
+    
     $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS='OK' and cc.COMPANY=bb.COMPANY and bb.FRAME_NUMBER=aa.BIKE_NUMBER and aa.BUILDING_CODE='$deposit_building'";    
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

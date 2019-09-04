@@ -11,44 +11,55 @@ include 'globalfunctions.php';
 
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : NULL;
+$admin=isset($_POST['admin']) ? $_POST['admin'] : NULL;
 
 $response=array();
-if($company==NULL){
-    if($email != NULL){
-        include 'connexion.php';
-        $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
+
+if($admin!="Y"){
+    if($company==NULL){
+        if($email != NULL){
+            include 'connexion.php';
+            $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result = mysqli_query($conn, $sql);    
+            if($result->num_rows=='0'){
+                errorMessage("ES0039");
+            }        
+            $resultat = mysqli_fetch_assoc($result);        
+            $company=$resultat['COMPANY'];
+            $conn->close();   
+
+            include 'connexion.php';
+            $sql="SELECT * FROM customer_bikes cc, bike_models dd where COMPANY='$company' AND cc.TYPE=dd.ID";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            
+
+        }else{
+            errorMessage("ES0038");
         }
-        $result = mysqli_query($conn, $sql);    
-        if($result->num_rows=='0'){
-            errorMessage("ES0039");
-        }        
-        $resultat = mysqli_fetch_assoc($result);        
-        $company=$resultat['COMPANY'];
-        $conn->close();   
-        
-    }else{
-        errorMessage("ES0038");
     }
-}
 
-$timestamp_now=time();
-
-include 'connexion.php';
-$sql="SELECT * FROM customer_bikes cc, bike_models dd where COMPANY='$company' AND cc.TYPE=dd.ID";
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
-}
+}else{
+    include 'connexion.php';
+    $sql="SELECT * FROM customer_bikes";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+}   
 
 $result = mysqli_query($conn, $sql);        
 $length = $result->num_rows;
 $response['bikeNumber']=$length;
-
 
 
 $i=0;
@@ -59,10 +70,11 @@ while($row = mysqli_fetch_array($result))
     $response['response']="success";
     $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
     $response['bike'][$i]['model']=$row['MODEL'];            
+    $response['bike'][$i]['company']=$row['COMPANY'];            
     $response['bike'][$i]['contractReference']=$row['CONTRACT_REFERENCE'];
     if($row['LEASING']=="Y"){
         $response['bike'][$i]['contractType']="leasing";
-        $response['bike'][$i]['contractDates']=$row['CONTRACT_START'].'-'.$row['CONTRACT_END'];
+        $response['bike'][$i]['contractDates']=$row['CONTRACT_START'].'->'.$row['CONTRACT_END'];
     }else{
         $response['bike'][$i]['contractType']="other";
         $response['bike'][$i]['contractDates']="N/A";

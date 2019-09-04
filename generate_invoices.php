@@ -135,9 +135,9 @@ while($row = mysqli_fetch_array($result))
                 }
             
                 $file = __DIR__.'/temp/company.txt';
-                //unlink($file);
+                unlink($file);
                 $file = __DIR__.'/temp/billingGroup.txt';
-                //unlink($file);
+                unlink($file);
 
             
 

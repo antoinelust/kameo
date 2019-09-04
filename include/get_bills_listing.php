@@ -12,6 +12,7 @@ include 'globalfunctions.php';
 $email=$_POST['email'];
 $sent=isset($_POST['sent']) ? $_POST['sent']: null;
 $paid=isset($_POST['paid']) ? $_POST['paid']: null;
+$direction=isset($_POST['direction']) ? $_POST['direction']: null;
 $company2=$_POST['company'];
 $response=array();
 
@@ -42,7 +43,7 @@ if($email != NULL)
         if($company2!="Choix de la société"){
     	   $sql="select * from factures WHERE COMPANY ='$company2'";
         }else{
-    	   $sql="select * from factures WHERE 1";
+    	   $sql="select * from factures WHERE 1 ";
         } 
     }
     if($paid!='*'){
@@ -51,7 +52,16 @@ if($email != NULL)
     if($sent!='*'){
         $sql=$sql." AND FACTURE_SENT='$sent'";
     }
-    $sql=$sql." ORDER BY ID DESC";
+    if($direction!='*'){
+        if($direction=="IN"){
+            $sql=$sql." AND AMOUNT_HTVA>0";
+        }else if($direction=="OUT"){
+            $sql=$sql." AND AMOUNT_HTVA<0";
+        }
+    }
+    $sql=$sql." ORDER BY DATE DESC";
+
+    
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
     $response['response']="success";
@@ -65,6 +75,7 @@ if($email != NULL)
     {
 
 		$response['bill'][$i]['company']=$row['COMPANY'];
+		$response['bill'][$i]['beneficiaryCompany']=$row['BENEFICIARY_COMPANY'];
 		$response['bill'][$i]['ID']=$row['ID'];
 		$response['bill'][$i]['date']=$row['DATE'];            
 		$response['bill'][$i]['amountHTVA']=$row['AMOUNT_HTVA'];

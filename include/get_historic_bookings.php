@@ -21,6 +21,42 @@ if($user != NULL)
 	
 	//vérifier pour les champs
     include 'connexion.php';
+    
+    $date1stJanuary=strtotime(date('Y-01-01'));
+    $sql="select * from reservations where DATE_START>'$date1stJanuary' and EMAIL='$user' and STAANN != 'D'";
+    
+   	if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}    
+    $result = mysqli_query($conn, $sql);     
+    $response['maxBookingsPerYear']= $result->num_rows;            
+        
+        
+    $date1stOfMonth=strtotime(date('Y-m-01'));
+    $sql="select * from reservations where DATE_START>'$date1stOfMonth' and EMAIL='$user' and STAANN != 'D'";
+   	if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+    $result = mysqli_query($conn, $sql);     
+    $response['maxBookingsPerMonth']= $result->num_rows;            
+    
+    $sql="SELECT * from conditions where COMPANY=(select COMPANY from customer_referential where EMAIL='$user')";
+   	if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+    $result = mysqli_query($conn, $sql);     
+    $resultat = mysqli_fetch_assoc($result);
+    $response['maxBookingsPerYearCondition']= $resultat['MAX_BOOKINGS_YEAR'];            
+    $response['maxBookingsPerMonthCondition']= $resultat['MAX_BOOKINGS_MONTH'];
+    
+    
+    
 	$sql="select * from reservations where EMAIL = '$user' and DATE_END < '$timestamp_now' and STAANN!='D' order by DATE_START DESC LIMIT 5";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

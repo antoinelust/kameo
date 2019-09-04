@@ -17,7 +17,7 @@ $response=array();
 if($company==NULL){
     if($email != NULL){
         include 'connexion.php';
-        $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email')";
+        $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
