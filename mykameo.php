@@ -134,7 +134,6 @@ function construct_form_for_bike_status_update(frameNumber){
 
 function construct_form_for_bike_status_updateAdmin(frameNumber){
     var frameNumber=frameNumber;
-    console.log(frameNumber);
     $.ajax({
             url: 'include/get_bike_details.php',
             type: 'post',
@@ -143,21 +142,34 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                 if (response.response == 'error') {
                     console.log(response.message);
                 } else{
-                    $('input[name=widget-updateBikeStatusAdmin-form-bikeReference]').val(response.frameNumber);
+                    $('input[name=widget-updateBikeStatusAdmin-form-bikeNumber]').val(response.frameNumber);
+                    $('input[name=widget-addActionBike-form-bikeNumber]').val(response.frameNumber);
                     $('input[name=widget-updateBikeStatusAdmin-form-model]').val(response.model);
-                    $('input[name=frameReference]').val(response.frameReference);
-                    document.getElementsByClassName("widget-updateBikeStatusAdmin-form-frameReference")[1].innerHTML=response.frameReference;
-                    document.getElementsByClassName("contractType")[1].innerHTML=response.contractType;
-                    document.getElementsByClassName("startDateContract")[1].innerHTML=response.contractStart;
-                    document.getElementsByClassName("endDateContract")[1].innerHTML=response.contractEnd;
-                    document.getElementsByClassName("assistanceReference")[1].innerHTML=response.contractReference;    
-                    document.getElementsByClassName("bikeImage")[1].src="images_bikes/"+frameNumber+"_mini.jpg";
+                    $('input[name=widget-updateBikeStatusAdmin-form-size]').val(response.size);
+                    $('input[name=widget-updateBikeStatusAdmin-form-frameReference]').val(response.frameReference);
+                    $('input[name=widget-updateBikeStatusAdmin-form-contractType]').val(response.contractType);
+                    $('input[name=widget-updateBikeStatusAdmin-form-contractStart]').val(response.contractStart);
+                    $('input[name=widget-updateBikeStatusAdmin-form-contractEnd]').val(response.contractEnd);
+                    $('input[name=widget-updateBikeStatusAdmin-form-assistanceReference]').val(response.contractReference);
+                    $('input[name=widget-updateBikeStatusAdmin-form-company]').val(response.company);
+                    if(response.leasing="Y"){
+                        $('input[name=widget-updateBikeStatusAdmin-form-billing]').prop("checked", true);
+                    }else{
+                        $('input[name=widget-updateBikeStatusAdmin-form-billing]').prop("checked", true);
+                    }
+                    $('input[name=widget-updateBikeStatusAdmin-form-billingPrice]').val(response.price);
+                    $('input[name=widget-updateBikeStatusAdmin-form-billingGroup]').val(response.billingGroup);
+                    
+                    
+                    
+                    
+                    document.getElementsByClassName("bikeImageAdmin")[0].src="images_bikes/"+frameNumber+"_mini.jpg";
                     
                     if(response.status=="OK"){
-                        $("#bikeStatus").val('OK');
+                        $('input[name=widget-updateBikeStatusAdmin-form-bikeStatus]').val('OK');
                     }
                     else{
-                        $("#bikeStatus").val('KO');
+                        $('input[name=widget-updateBikeStatusAdmin-form-bikeStatus]').val('KO');
                     }
                     i=0;
                     var dest="";
@@ -181,6 +193,48 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
 
             }
     })
+    
+    $.ajax({
+            url: 'include/action_bike_management.php',
+            type: 'post',
+            data: { "readActionBike-action": "read", "readActionBike-bikeNumber": frameNumber, "readActionBike-user": "<?php echo $user; ?>"},
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                } else{
+                    
+                    var i=0;
+                    var dest="<table class=\"table table-condensed\"><a class=\"button small green button-3d rounded icon-right addActionBikeButton\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Public ?</span><span class=\"en-inline\">Public ?</span><span class=\"nl-inline\">Public ?</span></th></tr></thead> ";
+                    while(i<response.actionNumber){
+                        if(response.action[i].public=="1"){
+                            var public="Yes";
+                        }else{
+                            var public="No";
+                        }
+                        var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].description+"</td><td>"+public+"</td></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+                    }
+                    dest=dest.concat("</tbody></table>");
+                    $('#action_bike_log').html(dest);
+                    displayLanguage();
+
+                    document.getElementsByClassName("addActionBikeButton")[0].addEventListener('click', function(){ 
+                            $("label[for='widget-addActionBike-form-date']").removeClass("hidden");
+                            $('input[name=widget-addActionBike-form-date]').removeClass("hidden");
+                            $("label[for='widget-addActionBike-form-description']").removeClass("hidden");    
+                            $('input[name=widget-addActionBike-form-description]').removeClass("hidden");
+                            $("label[for='widget-addActionBike-form-public']").removeClass("hidden");                                
+                            $('input[name=widget-addActionBike-form-public]').removeClass("hidden");
+                            $('.addActionConfirmButton').removeClass("hidden");
+
+                    });
+
+                }              
+
+            }
+    })
+    
 }
     
     
@@ -194,47 +248,51 @@ function construct_form_for_billing_status_update(ID){
                 if (response.response == 'error') {
                     console.log(response.message);
                 } else{
-                    document.getElementsByClassName("billingReference")[0].value=ID;
-                    document.getElementsByClassName("billingCompany")[0].value=response.bill.company;
-                    document.getElementsByClassName("beneficiaryBillingCompany")[0].value=response.bill.beneficiaryCompany;
-                    document.getElementsByClassName("billingCommunication")[0].value=response.bill.communication;
-                    document.getElementsByClassName("billingDate")[0].value=response.bill.date.substring(0,10);
-                    if(response.bill.sentDate){
-                        document.getElementsByClassName("billingSentDate")[0].value=response.bill.sentDate.substring(0,10);
-                    }else{
-                        document.getElementsByClassName("billingSentDate")[0].value="";
-                    }
-                    if(response.bill.paidDate){
-                        document.getElementsByClassName("billingPaidDate")[0].value=response.bill.paidDate.substring(0,10);                        
-                    }else{
-                        document.getElementsByClassName("billingPaidDate")[0].value="";                        
-                    }
-                    if(response.bill.paidLimitDate){
-                        document.getElementsByClassName("billingPaidLimitDate")[0].value=response.bill.paidLimitDate.substring(0,10);                        
-                    }else{
-                        document.getElementsByClassName("billingPaidLimitDate")[0].value="";                        
-                    }                    
-                    
-                    document.getElementsByClassName("billingAmountHTVA")[0].value=response.bill.amountHTVA;
-                    document.getElementsByClassName("billingAmountTVAINC")[0].value=response.bill.amountTVAC;
-                    
+                    $('input[name=widget-updateBillingStatus-form-billingReference]').val(ID);
+                    $('input[name=widget-updateBillingStatus-form-billingCompany]').val(response.bill.company);
+                    $('input[name=widget-updateBillingStatus-form-beneficiaryBillingCompany]').val(response.bill.beneficiaryCompany);
+                    $('input[name=widget-updateBillingStatus-form-type]').val(response.bill.type);
+                    $('input[name=widget-updateBillingStatus-form-communication]').val(response.bill.communication);
+                    $('input[name=widget-updateBillingStatus-form-date]').val(response.bill.date.substring(0,10));
+                    $('input[name=widget-updateBillingStatus-form-amountHTVA]').val(response.bill.amountHTVA);
+                    $('input[name=widget-updateBillingStatus-form-amountTVAC]').val(response.bill.amountTVAC);
                     if(response.bill.amountHTVA == response.bill.amountTVAC){
-                        document.getElementsByClassName("billingAmountTVA")[0].checked=false;
+                        $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', false);
                     }else{
-                        document.getElementsByClassName("billingAmountTVA")[0].checked=true;
+                        $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', true);
                     }
+                    
+                    
                     if(response.bill.sent=="1"){
-                            document.getElementsByClassName("billingSent")[0].checked = true;
-
+                        $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', true);
                     }else{
-                            document.getElementsByClassName("billingSent")[0].checked = false;
-                    }
-                    if(response.bill.paid=="1"){
-                            document.getElementsByClassName("billingPaid")[0].checked = true;
-
-                    }else{
-                            document.getElementsByClassName("billingPaid")[0].checked = false;
+                        $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', false);
                     }                    
+                    if(response.bill.sentDate){
+                        $('input[name=widget-updateBillingStatus-form-sendingDate]').val(response.bill.sentDate.substring(0,10));                        
+                    }else{
+                        $('input[name=widget-updateBillingStatus-form-sendingDate]').val('');                        
+                    }
+                    
+                    if(response.bill.paid=="1"){
+                        $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', true);
+                    }else{
+                        $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', false);
+                    }                                        
+                    if(response.bill.paidDate){
+                        $('input[name=widget-updateBillingStatus-form-paymentDate]').val(response.bill.paidDate.substring(0,10));                        
+                    }else{
+                        $('input[name=widget-updateBillingStatus-form-paymentDate]').val('');                        
+                    }
+                    
+                    
+                    if(response.bill.paidLimitDate){
+                        $('input[name=widget-updateBillingStatus-form-datelimite]').val(response.bill.paidLimitDate.substring(0,10));                        
+                    }else{
+                        $('input[name=widget-updateBillingStatus-form-datelimite]').val('');                        
+                    }     
+                    
+                    
 
                 }              
 
@@ -558,6 +616,34 @@ function fillBikeDetails(element)
 
                 }
             })
+    
+    $.ajax({
+            url: 'include/action_bike_management.php',
+            type: 'post',
+            data: { "readActionBike-action": "read", "readActionBike-bikeNumber": frameNumber, "readActionBike-user": "<?php echo $user; ?>"},
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                } else{
+                    
+                    var i=0;
+                    var dest="<table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th></tr></thead> ";
+                    while(i<response.actionNumber){
+                        if(response.action[i].public=="1"){
+                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].description+"</td></tr>";
+                            dest=dest.concat(temp);
+                        }
+                        i++;
+
+                    }
+                    dest=dest.concat("</tbody></table>");
+                    $('#action_bike_log_user').html(dest);
+                    displayLanguage();
+
+                }              
+
+            }
+    })
 }
 
 function fillReservationDetails(element)
@@ -4992,7 +5078,7 @@ if($connected){
                                     <label for="widget-addBill-form-company"  class="fr">Beneficiaire</label>
                                     <label for="widget-addBill-form-company"  class="en">Beneficiaire</label>
                                     <label for="widget-addBill-form-company"  class="nl">Beneficiaire</label>
-                                    <input type="text" id="widget-addBill-form-company3" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
+                                    <input type="text" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
                                 </div> 
                                 
                                 <div class="col-md-6">
@@ -5131,20 +5217,20 @@ if($connected){
                             if(valueSelect=='other'){
                                 document.getElementsByClassName('widget-addBill-form-companyOther')[0].style.visibility = "visible";
                                 document.getElementsByClassName('widget-addBill-form-companyOther')[1].style.visibility = "visible";
-                                document.getElementById('widget-addBill-form-company3').readOnly = true;
-                                document.getElementById('widget-addBill-form-company3').value='KAMEO';
+                                $('input[name=widget-addBill-form-beneficiaryCompany]').attr('readonly', true);
+                                $('input[name=widget-addBill-form-beneficiaryCompany]').val('KAMEO');
 
                                 console.log(document.getElementsByClassName('widget-addBill-form-companyOther')[1]);
                             }else if(valueSelect=='KAMEO'){
-                                document.getElementById('widget-addBill-form-company3').readOnly = false;
-                                document.getElementById('widget-addBill-form-company3').value='';
+                                $('input[name=widget-addBill-form-beneficiaryCompany]').attr('readonly', false);
+                                $('input[name=widget-addBill-form-beneficiaryCompany]').val('');
                                 
                             }
                             else{
                                 document.getElementsByClassName('widget-addBill-form-companyOther')[0].style.visibility = "hidden";
                                 document.getElementsByClassName('widget-addBill-form-companyOther')[1].style.visibility = "hidden";
-                                document.getElementById('widget-addBill-form-company3').disabled=true;
-                                document.getElementById('widget-addBill-form-company3').value='KAMEO';
+                                $('input[name=widget-addBill-form-beneficiaryCompany]').attr('readonly', true);
+                                $('input[name=widget-addBill-form-beneficiaryCompany]').val('KAMEO');
                                 
                                 
                             }
@@ -5448,64 +5534,69 @@ if($connected){
                         <p span class="bikeReference"></p>
                     </div>
 						
-						<div class="col-sm-5">
-                            <h4><span class="fr"> Modèle : </span></h4>
-                            <h4><span class="en"> Model: </span></h4>
-                            <h4><span class="nl"> Model : </span></h4>
-                            <p span class="bikeModel"></p>
+                    <div class="col-sm-5">
+                        <h4><span class="fr"> Modèle : </span></h4>
+                        <h4><span class="en"> Model: </span></h4>
+                        <h4><span class="nl"> Model : </span></h4>
+                        <p span class="bikeModel"></p>
 
-                        </div>
-						<div class="col-sm-5">
-                            <h4><span class="fr"> Référence du cadre : </span></h4>
-                            <h4><span class="en"> Frame reference: </span></h4>
-                            <h4><span class="nl"> Frame reference: </span></h4>
-                            <p span class="frameReference"></p>
+                    </div>
+                    <div class="col-sm-5">
+                        <h4><span class="fr"> Référence du cadre : </span></h4>
+                        <h4><span class="en"> Frame reference: </span></h4>
+                        <h4><span class="nl"> Frame reference: </span></h4>
+                        <p span class="frameReference"></p>
 
-                        </div>
-                        
-                        <div class="col-sm-10">
-						<h4 class="text-green">Informations relatives au contrat</h4>
-						</div>
-                        
-                        <div class="col-sm-5">
-                        <h4><span class="fr"> Type de contrat : </span></h4>
-                        <h4><span class="en"> Contract type: </span></h4>
-                        <h4><span class="nl"> Contract type : </span></h4>
+                    </div>
+
+                    <div class="col-sm-10">
+                    <h4 class="text-green">Informations relatives au contrat</h4>
+                    </div>
+
+                    <div class="col-sm-5">
+                    <h4><span class="fr"> Type de contrat : </span></h4>
+                    <h4><span class="en"> Contract type: </span></h4>
+                    <h4><span class="nl"> Contract type : </span></h4>
 
 
-                       	<p><span class="contractType"></span></p> 
-                       	</div>
+                    <p><span class="contractType"></span></p> 
+                    </div>
 
-                       <div class="col-sm-5">
-                        <h4><span class="fr" >Date de début :</span></h4>
-                        <h4><span class="en" >Start date:</span></h4>
-                        <h4><span class="nl" >Start date :</span></h4>
+                   <div class="col-sm-5">
+                    <h4><span class="fr" >Date de début :</span></h4>
+                    <h4><span class="en" >Start date:</span></h4>
+                    <h4><span class="nl" >Start date :</span></h4>
 
-                        <p><span class="startDateContract"></span></p>
-                        </div>
+                    <p><span class="startDateContract"></span></p>
+                    </div>
 
-                        <div class="col-sm-5">
-                            <h4><span class="fr" >Date de fin :</span></h4>
-                            <h4><span class="en" >End date:</span></h4>
-                            <h4><span class="nl" >End date :</span></h4>
-                        <p><span class="endDateContract"></span></p>
-                        </div>
+                    <div class="col-sm-5">
+                        <h4><span class="fr" >Date de fin :</span></h4>
+                        <h4><span class="en" >End date:</span></h4>
+                        <h4><span class="nl" >End date :</span></h4>
+                    <p><span class="endDateContract"></span></p>
+                    </div>
 
-                        <div class="col-sm-5">
-                            <h4><span class="fr" >Référence pour assistance :</span></h4>
-                            <h4><span class="en" >Assistance reference:</span></h4>
-                            <h4><span class="nl" >Assistance reference :</span></h4>
-                        <p><span class="assistanceReference"></span></p>
-                        </div>
+                    <div class="col-sm-5">
+                        <h4><span class="fr" >Référence pour assistance :</span></h4>
+                        <h4><span class="en" >Assistance reference:</span></h4>
+                        <h4><span class="nl" >Assistance reference :</span></h4>
+                    <p><span class="assistanceReference"></span></p>
+                    </div>
 
-                       <div class="col-sm-10">
-                        <h4>Votre vélo: </h4>
-                            <div class="col-md-4">
-                            <img src="" class="bikeImage" alt="image" />
-                            </div>  
-                        </div>    
-					</div>
+                   <div class="col-sm-10">
+                    <h4>Votre vélo: </h4>
+                        <div class="col-md-4">
+                        <img src="" class="bikeImage" alt="image" />
+                        </div>  
+                    </div>  
+                    <div class="separator"></div>
+                    <h4 class="fr text-green">Historique du vélo</h4>
+                    <span id="action_bike_log_user">
+                    </span>
+                    
 				</div>
+            </div>
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -6384,95 +6475,219 @@ if($connected){
 			</div>
 			<div class="modal-body">
 				<div class="row">
-                        <form id="widget-updateBikeStatusAdmin-form" action="include/updateBikeStatus.php" role="form" method="post">
-
-                            <div class="col-sm-12">
+					<div class="col-sm-12">
+						
+						<form id="widget-updateBikeStatusAdmin-form" action="include/update_bike.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                                <h4 class="fr text-green">Modifier un vélo</h4>
+                            	
+                                <div class="col-sm-3">
+                                    <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="fr">Numéro de vélo</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="en">Bike Number</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="nl">Bike Number</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-bikeNumber" readonly="readonly" class="form-control required">
+                                </div>
                                 
-                                <div class="col-sm-5">
-                                    <label for="widget-updateBikeStatusAdmin-form-bikeReference" class="fr"> Référence : </label>
-                                    <label for="widget-updateBikeStatusAdmin-form-bikeReference" class="en"> Reference: </label>
-                                    <label for="widget-updateBikeStatusAdmin-form-bikeReference" class="nl"> Reference: </label>
-                                    <input type="text" class="bikeModelAdmin" name="widget-updateBikeStatusAdmin-form-bikeReference" readonly="readonly"/>
+                                <div class="col-sm-3">
+                                    <label for="widget-updateBikeStatusAdmin-form-model"  class="fr">Modèle</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-model"  class="en">Model</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-model"  class="nl">Model</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-model" class="form-control required">
+								</div>
+
+								<div class="col-sm-3">
+                                    <label for="widget-updateBikeStatusAdmin-form-size"  class="fr">Taille</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-size"  class="en">Size</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-size"  class="nl">Size</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-size" class="form-control required">
+                                </div>
+                                
+								<div class="col-sm-3">
+                                    <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="fr">Référence de cadre</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="en">Frame reference</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="nl">Frame reference</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-frameReference" class="form-control required">
+                                </div>         
+                                
+                                <div class="separator"></div>
+                                
+                                <h4 class="fr text-green">Informations relatives au contrat</h4>
+
+								<div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="fr">Début de contrat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="en">Contract start</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="nl">Contract start</label>
+                                    <input type="date" name="widget-updateBikeStatusAdmin-form-contractStart" class="form-control">
+                                </div>
+                                
+								<div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="fr">Fin de contrat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="en">Contract End</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="nl">Contract End</label>
+                                    <input type="date" name="widget-updateBikeStatusAdmin-form-contractEnd" class="form-control">
+                                </div>
+                                
+								<div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="fr">Référence de contrat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="en">Contract Reference</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="nl">Contract Reference</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-assistanceReference" class="form-control">
+                                </div>                                
+            
+                                <div class="separator"></div>
+
+                                <h4 class="fr text-green">Informations relatives à la facturation</h4>
+								<div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-company"  class="fr">Client actuel</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-company"  class="en">Current customer</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-company"  class="nl">Current customer</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-company" class="form-control required">
+                                </div>    
+                                
+								<div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-billing"  class="fr">Facturation automatique ?</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billing"  class="en">Automatic billing ?</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billing"  class="nl">Automatic billing ?</label>
+                                    <input type="checkbox" name="widget-updateBikeStatusAdmin-form-billing" class="form-control">
+                                </div>                                                                                                
+                                    
+								<div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="fr">Montant de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="en">Montant de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="nl">Montant de facturation</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-billingPrice" class="form-control required">
+                                </div>       
+                                
+								<div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="fr">Groupe de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="en">Groupe de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="nl">Groupe de facturation</label>
+                                    <input type="number" name="widget-updateBikeStatusAdmin-form-billingGroup" class="form-control required">
+                                </div>                                         
+                                <div class="col-sm-12"></div>
+                                <div class="col-sm-6">
+                                    <label for="bikeImageAdmin"  class="fr">Image actuelle:</label>
+                                    <label for="bikeImageAdmin"  class="en">Current picture (jpg)</label>
+                                    <label for="bikeImageAdmin"  class="nl">Current picture(jpg)</label>
+                                    <img class="bikeImageAdmin" name="bikeImageAdmin"/>
                                 </div>
 
-                                <div class="col-sm-5">
-                                    <label for="widget-updateBikeStatusAdmin-form-model" class="fr"> Modèle : </label>
-                                    <label for="widget-updateBikeStatusAdmin-form-model" class="en"> Model: </label>
-                                    <label for="widget-updateBikeStatusAdmin-form-model" class="nl"> Model: </label>
-                                    <input type="text" class="bikeModelAdmin" name="widget-updateBikeStatusAdmin-form-model" />
+                                <div class="col-sm-6">
+                                    <label for="widget-updateBikeStatusAdmin-form-picture"  class="fr">Nouvelle image:</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-picture"  class="en">new picture (jpg)</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-picture"  class="nl">New picture(jpg)</label>
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                    <input type=file size=40 name="widget-updateBikeStatusAdmin-form-picture">
+                                </div>      
+                                <input type="text" name="widget-updateBikeStatusAdmin-form-user" class="form-control hidden" value="<?php echo $user; ?>">
+                                <div class="col-sm-12">
+                                    <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Mettre à jour</button>
+                                    <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Update</button>
+                                    <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Update</button> 
                                 </div>
-                                <div class="col-sm-5">
-                                    <label for="widget-updateBikeStatusAdmin-form-frameReference" class="fr"> Référence du cadre : </label>
-                                    <label for="widget-updateBikeStatusAdmin-form-frameReference" class="en"> Frame reference: </label>
-                                    <label for="widget-updateBikeStatusAdmin-form-frameReference" class="nl"> Frame reference: </label>
-                                    <input type="text" class="bikeModelAdmin" name="widget-updateBikeStatusAdmin-form-frameReference"/>
+                                    
+                            </div>
+				        </form>
+                            
+                        <div class="separator"></div>
+                            
+                        <h4 class="fr text-green">Actions prises sur le vélo</h4>
+                            
+						<form id="widget-addActionBike-form" action="include/action_bike_management.php" role="form" method="post">
+                            <input type="text" name="widget-addActionBike-form-bikeNumber" class="form-control required hidden">
+                            <input type="text" name="widget-addActionBike-form-user" class="form-control required hidden" value="<?php echo $user; ?>">
+                            <input type="text" name="widget-addActionBike-form-action" class="form-control required hidden" value="add">
+                            <div class="col-sm-12">
+                                <div class="col-sm-3">
+                                    <label for="widget-addActionBike-form-date" class="hidden">Date</label>
+                                    <input type="date" name="widget-addActionBike-form-date" class="form-control required hidden">
                                 </div>
-
-                                <div class="col-sm-10">
-                                <h4 class="text-green">Informations relatives au contrat</h4>
+                                <div class="col-sm-6">
+                                    <label for="widget-addActionBike-form-description" class="hidden">Description</label>
+                                    <input type="text" name="widget-addActionBike-form-description" class="form-control required hidden">
                                 </div>
-
-                                <div class="col-sm-5">
-                                <h4><span class="fr"> Type de contrat : </span></h4>
-                                <h4><span class="en"> Contract type: </span></h4>
-                                <h4><span class="nl"> Contract type : </span></h4>
-
-
-                                <p><span class="contractType"></span></p> 
+                                <div class="col-sm-2">    
+                                    <label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
+                                    <input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">                            
                                 </div>
-
-                               <div class="col-sm-5">
-                                   <label for="widget-updateBikeStatusAdmin-form-contratStart" class="fr" >Date de début :</label>
-                                   <label for="widget-updateBikeStatusAdmin-form-contratStart" class="en" >Start date:</label>
-                                   <label for="widget-updateBikeStatusAdmin-form-contratStart" class="nl" >Start date :</label>
-                                    <input type="date" class="startDateContractAdmin" name="widget-updateBikeStatusAdmin-form-contratStart" />
+                                <div class="col-sm-1">
+                                    <button  class="fr button small green button-3d rounded icon-left hidden addActionConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
                                 </div>
+                                
+                                
+                            </div>
+                        </form>
 
-                               <div class="col-sm-5">
-                                   <label for="widget-updateBikeStatusAdmin-form-contratEnd" class="fr" >Date de fin :</label>
-                                   <label for="widget-updateBikeStatusAdmin-form-contratEnd" class="en" >End date:</label>
-                                   <label for="widget-updateBikeStatusAdmin-form-contratEnd" class="nl" >End date :</label>
-                                    <input type="date" class="endDateContractAdmin" name="widget-updateBikeStatusAdmin-form-contratEnd" />
-                                </div>
+                        <span id="action_bike_log"></span>
 
-                               <div class="col-sm-5">
-                                   <label for="widget-updateBikeStatusAdmin-form-assistanceReference" class="fr" >Référence pour assistance :</label>
-                                   <label for="widget-updateBikeStatusAdmin-form-assistanceReference" class="en" >Assistance reference:</label>
-                                   <label for="widget-updateBikeStatusAdmin-form-assistanceReference" class="nl" >Assistance reference:</label>
-                                    <input type="text" class="assistanceReferenceAdmin" name="widget-updateBikeStatusAdmin-form-assistanceReference" />
-                                </div>
+                    </div>
+                            
+                        
+                    <script type="text/javascript">			
+                        
+                        
+                        jQuery("#widget-updateBikeStatusAdmin-form").validate({
+                            submitHandler: function(form) {
 
-                                    <div class="col-md-12">
-                                    <h4>Vélo: </h4>
-                                        <img src="" class="bikeImageAdmin" alt="image" />
-                                    </div>  
-                                    <div class="col-md-6">
-                                        <label for="widget-updateBikeStatusAdmin-form-status" class="fr" >Statut :</span></h4>
-                                        <label for="widget-updateBikeStatusAdmin-form-status" class="fr" >Status :</span></h4>
-                                        <label for="widget-updateBikeStatusAdmin-form-status" class="fr" >Status :</span></h4>
-                                        <select title="Bike Status" class="selectpicker" id="bikeStatusAdmin" name="widget-updateBikeStatusAdmin-form-status">
-                                          <option value="OK">En état d'utilisation</option>
-                                          <option value="KO">Cassé</option>
-                                        </select>
-                                    </div>
-                                     <div class="col-md-6">
-                                    <input type="text" class="hidden" id="widget-updateBikeStatus-form-frameNumber" name="widget-updateBikeStatus-form-frameNumber"/>
-                                    <h4><span class="fr" >Accès aux bâtiments :</span></h4>
-                                    <div id="bikeBuildingAccess"></div>    
-                                    </div>                                            
-                                </div>
+                                jQuery(form).ajaxSubmit({
+                                    success: function(response) {
+                                        if (response.response == 'success') {
+                                            $.notify({
+                                                message: response.message
+                                            }, {
+                                                type: 'success'
+                                            });
+                                            document.getElementById('widget-updateBikeStatusAdmin-form').reset();
+                                            $('#updateBikeStatusAdmin').modal('toggle');
 
-                                <div class="col-sm-12">    
-                                    <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                                    <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                                    <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                                </div>
-                        </form>                        
+                                        } else {
+                                            $.notify({
+                                                message: response.message
+                                            }, {
+                                                type: 'danger'
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        });          
+                        
+                        jQuery("#widget-addActionBike-form").validate({
+                            submitHandler: function(form) {
+
+                                jQuery(form).ajaxSubmit({
+                                    success: function(response) {
+                                        if (response.response == 'success') {
+                                            $.notify({
+                                                message: response.message
+                                            }, {
+                                                type: 'success'
+                                            });
+                                            $("label[for='widget-addActionBike-form-date']").addClass("hidden");
+                                            $('input[name=widget-addActionBike-form-date]').addClass("hidden");
+                                            $("label[for='widget-addActionBike-form-description']").addClass("hidden");    
+                                            $('input[name=widget-addActionBike-form-description]').addClass("hidden");
+                                            $("label[for='widget-addActionBike-form-public']").addClass("hidden");                                
+                                            $('input[name=widget-addActionBike-form-public]').addClass("hidden");
+                                            $('.addActionConfirmButton').addClass("hidden");
+                                            construct_form_for_bike_status_updateAdmin($('input[name=widget-addActionBike-form-bikeNumber]').val());
+
+                                        } else {
+                                            $.notify({
+                                                message: response.message
+                                            }, {
+                                                type: 'danger'
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        });                        
+                    </script>                 					
 				</div>
 			</div>
-			
-            
-            <div class="fr" class="modal-footer">
+			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
 			<div class="en" class="modal-footer">
@@ -6481,39 +6696,9 @@ if($connected){
 			<div class="nl" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
 			</div>
-
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-
-    jQuery("#widget-updateBikeStatus-form").validate({
-        submitHandler: function(form) {
-            jQuery(form).ajaxSubmit({
-                success: function(response) {
-                                        
-                    if (response.response == 'success') {
-                        $.notify({
-                            message: response.message
-                        }, {
-                            type: 'success'
-                        });
-                        get_bikes_listing();
-                        $('#updateBikeStatus').modal('toggle');
-
-                    } else {
-                        $.notify({
-                            message: response.message
-                        }, {
-                            type: 'danger'
-                        });
-                    }
-                }
-            });
-        }
-    });
-
-</script>                    
 
 
 <div class="modal fade" id="updateBillingStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -6527,122 +6712,130 @@ if($connected){
                         <form id="widget-updateBillingStatus-form" action="include/updateBillingStatus.php" role="form" method="post">
 
                         <div class="form-group col-md-12">
-							
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-company"  class="fr">Originateur</label>
-                                    <label for="widget-addBill-form-company"  class="en">Originateur</label>
-                                    <label for="widget-addBill-form-company"  class="nl">Originateur</label>
-                                    <span class="widget-addBill-form-company "></span>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires</label>
-                                    <input type="text" class="widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-company"  class="fr">Beneficiaire</label>
-                                    <label for="widget-addBill-form-company"  class="en">Beneficiaire</label>
-                                    <label for="widget-addBill-form-company"  class="nl">Beneficiaire</label>
-                                    <input type="text" id="widget-addBill-form-company3" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
-                                </div> 
-                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-type" class="widget-addBill-form-type">Type de facture</label>
-                                    <select name="widget-addBill-form-type">
-                                        <option value="leasing">Leasing</option>
-                                        <option value="achat">Achat</option>
-                                        <option value="accessoire">Accessoire</option>
-                                        <option value="autre">Autre</option>                                
-                                    </select>
-                                </div> 
-                                
-                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
-                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-date"  class="fr">Date</label>
-                                    <label for="widget-addBill-form-date"  class="en">Date</label>
-                                    <label for="widget-addBill-form-date"  class="nl">Date</label>
-                                    <input type="date" class="widget-addBill-form-date form-control required" name="widget-addBill-form-date">
-                                </div>
-                                
-                                <div class="separator"></div>
-                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-amountHTVA"  class="fr">Montant (HTVA)</label>
-                                    <label for="widget-addBill-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
-                                    <label for="widget-addBill-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
-                                    <input type="text" class="widget-addBill-form-amountHTVA form-control required" name="widget-addBill-form-amountHTVA">
-								</div>
-								
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-VAT" class="fr">TVA ? </label>
-                                    <label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
-                                    <label for="widget-addBill-form-VAT" class="en">TVA ? </label>
-                                    <input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
-                                </div>  
-                                
-                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
-                                                          
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
-                                    <label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
-                                    <label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
-                                    <input type="text" class="widget-addBill-form-amountTVAC form-control required" name="widget-addBill-form-amountTVAC" readonly="readonly">
-								</div> 
-								
-								<div class="separator"></div>
-								
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-sent"  class="fr">Envoyée ?</label>
-                                    <label for="widget-addBill-form-sent"  class="en">Sent ?</label>
-                                    <label for="widget-addBill-form-sent"  class="nl">Sent ?</label>
-                                    <input type="checkbox" value="widget-addBill-form-sent" >
-								</div> 
-								              
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-sendingDate"  class="fr">Date d'envoi</label>
-                                    <label for="widget-addBill-form-sendingDate"  class="en">Sending date </label>
-                                    <label for="widget-addBill-form-sendingDate"  class="nl">Sending date</label>
-                                    <input type="date" class="widget-addBill-form-sendingDate form-control" name="widget-addBill-form-sendingDate">
-								</div>   
-                        
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-paid"  class="fr">Payée ?</label>
-                                    <label for="widget-addBill-form-paid"  class="en">Paid ?</label>
-                                    <label for="widget-addBill-form-paid"  class="nl">Paid ?</label>
-                                    <input type="checkbox" value="widget-addBill-form-paid" >
-								</div>  
-                                                                
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-paymentDate"  class="fr">Date de paiement</label>
-                                    <label for="widget-addBill-form-paymentDate"  class="en">Payment date </label>
-                                    <label for="widget-addBill-form-paymentDate"  class="nl">Payment date</label>
-                                    <input type="date" class="widget-addBill-form-paymentDate form-control " name="widget-addBill-form-paymentDate" >
-								</div>     
-                                
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-communication"  class="fr">Communication</label>
-                                    <label for="widget-addBill-form-communication"  class="en">Communication </label>
-                                    <label for="widget-addBill-form-communication"  class="nl">Communication</label>
-                                    <input type="text" class="widget-addBill-form-communication form-control required" name="widget-addBill-form-communication">
-								</div>                                     
-								
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
-                                    <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
-                                    <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
-                                    <input type="date" class="widget-addBill-form-datelimite form-control required" name="widget-addBill-form-datelimite">
-								</div> 
-							
-							</div>
+                            
+                            <h4 class="text-green">Informations sur la facture</h4>  
+                            
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-billingReference"  class="fr">ID</label>
+                                <label for="widget-updateBillingStatus-form-billingReference"  class="en">ID</label>
+                                <label for="widget-updateBillingStatus-form-billingReference"  class="nl">ID</label>
+                                <input type="text" class="form-control required" readonly="readonly" name="widget-updateBillingStatus-form-billingReference">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-billingCompany"  class="fr">Originateur</label>
+                                <label for="widget-updateBillingStatus-form-billingCompany"  class="en">Originateur</label>
+                                <label for="widget-updateBillingStatus-form-billingCompany"  class="nl">Originateur</label>
+                                <input type="text" class="form-control required" name="widget-updateBillingStatus-form-billingCompany">
+                            </div>                            
+
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany"  class="fr">Beneficiaire</label>
+                                <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany"  class="en">Beneficiaire</label>
+                                <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany"  class="nl">Beneficiaire</label>
+                                <input type="text" name="widget-updateBillingStatus-form-beneficiaryBillingCompany" class="form-control required">
+                            </div> 
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-type" class="widget-updateBillingStatus-form-type">Type de facture</label>
+                                <select name="widget-updateBillingStatus-form-type">
+                                    <option value="leasing">Leasing</option>
+                                    <option value="achat">Achat</option>
+                                    <option value="accessoire">Accessoire</option>
+                                    <option value="autre">Autre</option>                                
+                                </select>
+                            </div> 
+
+                            <div class="col-md-12"></div><!-- Pour mettre "COMMUNICATON" à la ligne -->
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-communication"  class="fr">Communication</label>
+                                <label for="widget-updateBillingStatus-form-communication"  class="en">Communication </label>
+                                <label for="widget-updateBillingStatus-form-communication"  class="nl">Communication</label>
+                                <input type="text" class="form-control required" name="widget-updateBillingStatus-form-communication">
+                            </div>                                   
+
+                            <div class="separator"></div>
+
+                            <h4 class="text-green">Informations sur les montants</h4>
+                            
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-amountHTVA"  class="fr">Montant (HTVA)</label>
+                                <label for="widget-updateBillingStatus-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
+                                <label for="widget-updateBillingStatus-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
+                                <input type="text" class="form-control required" name="widget-updateBillingStatus-form-amountHTVA">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-VAT" class="fr">TVA ? </label>
+                                <label for="widget-updateBillingStatus-form-VAT" class="nl">TVA ?</label>
+                                <label for="widget-updateBillingStatus-form-VAT" class="en">TVA ? </label>
+                                <input type="checkbox" class="form-control" name="widget-updateBillingStatus-form-VAT" />
+                            </div>  
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-amountTVAC"  class="fr">Montant (TVAC)</label>
+                                <label for="widget-updateBillingStatus-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
+                                <label for="widget-updateBillingStatus-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
+                                <input type="text" class="form-control required" name="widget-updateBillingStatus-form-amountTVAC" readonly="readonly">
+                            </div> 
+
+                            <div class="separator"></div>
+
+
+                            <h4 class="text-green">Informations sur les dates</h4>
+
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-date"  class="fr">Date</label>
+                                <label for="widget-updateBillingStatus-form-date"  class="en">Date</label>
+                                <label for="widget-updateBillingStatus-form-date"  class="nl">Date</label>
+                                <input type="date" class="widget-updateBillingStatus-form-date form-control required" name="widget-updateBillingStatus-form-date">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-datelimite"  class="fr">Date limite de paiement</label>
+                                <label for="widget-updateBillingStatus-form-datelimite"  class="en">Date limite de paiement </label>
+                                <label for="widget-updateBillingStatus-form-datelimite"  class="nl">Date limite de paiement</label>
+                                <input type="date" class="form-control required" name="widget-updateBillingStatus-form-datelimite">
+                            </div>                             
+                            <div class="col-md-12"></div><!-- Pour mettre "Envoyée" à la ligne -->
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-sent"  class="fr">Envoyée ?</label>
+                                <label for="widget-updateBillingStatus-form-sent"  class="en">Sent ?</label>
+                                <label for="widget-updateBillingStatus-form-sent"  class="nl">Sent ?</label>
+                                <input type="checkbox" class='form-control' name="widget-updateBillingStatus-form-sent" >
+                            </div> 
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-sendingDate"  class="fr">Date d'envoi</label>
+                                <label for="widget-updateBillingStatus-form-sendingDate"  class="en">Sending date </label>
+                                <label for="widget-updateBillingStatus-form-sendingDate"  class="nl">Sending date</label>
+                                <input type="date" class='form-control'  name="widget-updateBillingStatus-form-sendingDate">
+                            </div>          
+                            <div class="col-md-12"></div><!-- Pour mettre "Payée" à la ligne -->
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-paid"  class="fr">Payée ?</label>
+                                <label for="widget-updateBillingStatus-form-paid"  class="en">Paid ?</label>
+                                <label for="widget-updateBillingStatus-form-paid"  class="nl">Paid ?</label>
+                                <input type="checkbox" class='form-control'  name="widget-updateBillingStatus-form-paid" >
+                            </div>  
+
+                            <div class="col-md-3">
+                                <label for="widget-updateBillingStatus-form-paymentDate"  class="fr">Date de paiement</label>
+                                <label for="widget-updateBillingStatus-form-paymentDate"  class="en">Payment date </label>
+                                <label for="widget-updateBillingStatus-form-paymentDate"  class="nl">Payment date</label>
+                                <input type="date" class='form-control'  name="widget-updateBillingStatus-form-paymentDate" >
+                            </div>     
+
+				        </div>
                         
                         <input type="text" name="widget-updateBillingStatus-form-user" value="<?php echo $user; ?>" class="hidden"/>
 
                         <div class="col-sm-12">    
-                        <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                        <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                        <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+                            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+                            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+                            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                         </div>
                     </form>                        
 				</div>
@@ -6663,18 +6856,18 @@ if($connected){
 	</div>
 </div>
 <script type="text/javascript">
-    $('.billingAmountTVA').change(function(){
+    $('input[name=widget-updateBillingStatus-form-VAT]').change(function(){
         if($('input[name=widget-updateBillingStatus-form-VAT]').is(':checked')){
-            $('input[name=widget-updateBillingStatus-form-billingAmountTVAINC]').val((1.21*$('input[name=widget-updateBillingStatus-form-billingAmountHTVA]').val()).toFixed(2));
+            $('input[name=widget-updateBillingStatus-form-amountTVAC]').val((1.21*$('input[name=widget-updateBillingStatus-form-amountHTVA]').val()).toFixed(2));
         }else{
-            $('input[name=widget-updateBillingStatus-form-billingAmountTVAINC]').val($('input[name=widget-updateBillingStatus-form-billingAmountHTVA]').val());
+            $('input[name=widget-updateBillingStatus-form-amountTVAC]').val($('input[name=widget-updateBillingStatus-form-amountHTVA]').val());
         }
       });    
-    $('.billingAmountHTVA').change(function(){
+    $('input[name=widget-updateBillingStatus-form-amountHTVA]').change(function(){
         if($('input[name=widget-updateBillingStatus-form-VAT]').is(':checked')){
-            $('input[name=widget-updateBillingStatus-form-billingAmountTVAINC]').val((1.21*$('input[name=widget-updateBillingStatus-form-billingAmountHTVA]').val()).toFixed(2));
+            $('input[name=widget-updateBillingStatus-form-amountTVAC]').val((1.21*$('input[name=widget-updateBillingStatus-form-amountHTVA]').val()).toFixed(2));
         }else{
-            $('input[name=widget-updateBillingStatus-form-billingAmountTVAINC]').val($('input[name=widget-updateBillingStatus-form-billingAmountHTVA]').val());
+            $('input[name=widget-updateBillingStatus-form-amountTVAC]').val($('input[name=widget-updateBillingStatus-form-amountHTVA]').val());
         }
       });
     jQuery("#widget-updateBillingStatus-form").validate({

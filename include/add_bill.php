@@ -27,11 +27,18 @@ $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST[
 $billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
 $communication=$_POST['widget-addBill-form-communication'];
 
+
 if($amountHTVA<0 && $company!="KAMEO"){
     errorMessage("ES0045");
 }
+if($amountHTVA>0 && $company=="KAMEO"){
+    errorMessage("ES0047");
+}
 if($amountHTVA<0 && $beneficiaryCompany=="KAMEO"){
     errorMessage("ES0046");
+}
+if($amountHTVA>0 && $beneficiaryCompany!="KAMEO"){
+    errorMessage("ES0048");
 }
 
 

@@ -60,14 +60,13 @@ if($admin!="Y"){
 $result = mysqli_query($conn, $sql);        
 $length = $result->num_rows;
 $response['bikeNumber']=$length;
-
+$response['response']="success";
 
 $i=0;
 while($row = mysqli_fetch_array($result))
 
 {
 
-    $response['response']="success";
     $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
     $response['bike'][$i]['model']=$row['MODEL'];            
     $response['bike'][$i]['company']=$row['COMPANY'];            

@@ -31,9 +31,14 @@ if($frameNumber != NULL)
 
 
     $response['response']="success";
+    $response['frameNumber']=$frameNumber;
     $response['model']=$row['MODEL'];
     $response['contractReference']=$row['CONTRACT_REFERENCE'];            
     $response['frameReference']=$row['FRAME_REFERENCE'];            
+    $response['company']=$row['COMPANY'];            
+    $response['size']=$row['SIZE'];            
+    $response['price']=$row['LEASING_PRICE'];            
+    $response['billingGroup']=$row['BILLING_GROUP'];            
     if($row['LEASING']=="Y"){
         $response['contractType']="leasing";
         $response['contractStart']=$row['CONTRACT_START'];
