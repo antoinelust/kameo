@@ -4973,27 +4973,29 @@ if($connected){
 						
 						<form id="widget-addBill-form" action="include/add_bill.php" role="form" method="post">
                             
-                            <div class="form-group col-sm-12">
-                            	<div class="col-sm-3">
+                            
+                            <div class="form-group col-md-12">
+							
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-company"  class="fr">Originateur</label>
                                     <label for="widget-addBill-form-company"  class="en">Originateur</label>
                                     <label for="widget-addBill-form-company"  class="nl">Originateur</label>
                                     <span class="widget-addBill-form-company "></span>
                                 </div>
-                            	<div class="col-sm-3">
+                                
+                                <div class="col-md-6">
                                     <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires</label>
                                     <input type="text" class="widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
-                                </div>                                
+                                </div>
                                 
-                            	<div class="col-sm-3">
+                                <div class="col-md-6">
                                     <label for="widget-addBill-form-company"  class="fr">Beneficiaire</label>
                                     <label for="widget-addBill-form-company"  class="en">Beneficiaire</label>
                                     <label for="widget-addBill-form-company"  class="nl">Beneficiaire</label>
                                     <input type="text" id="widget-addBill-form-company3" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
-                                </div>
+                                </div> 
                                 
-                                                                
-                            	<div class="col-sm-3">
+                                <div class="col-md-6">
                                     <label for="widget-addBill-form-type" class="widget-addBill-form-type">Type de facture</label>
                                     <select name="widget-addBill-form-type">
                                         <option value="leasing">Leasing</option>
@@ -5003,80 +5005,86 @@ if($connected){
                                     </select>
                                 </div> 
                                 
+                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
                                 
-                            	<div class="col-sm-3">
+                                <div class="col-md-6">
                                     <label for="widget-addBill-form-date"  class="fr">Date</label>
                                     <label for="widget-addBill-form-date"  class="en">Date</label>
                                     <label for="widget-addBill-form-date"  class="nl">Date</label>
                                     <input type="date" class="widget-addBill-form-date form-control required" name="widget-addBill-form-date">
-                                </div>   
+                                </div>
                                 
-								<div class="col-sm-12"></div>
+                                <div class="separator"></div>
                                 
-								<div class="col-sm-3">
+                                <div class="col-md-6">
                                     <label for="widget-addBill-form-amountHTVA"  class="fr">Montant (HTVA)</label>
                                     <label for="widget-addBill-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
                                     <label for="widget-addBill-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
                                     <input type="text" class="widget-addBill-form-amountHTVA form-control required" name="widget-addBill-form-amountHTVA">
 								</div>
-                                <div class="col-sm-1">
+								
+                                <div class="col-md-6">
                                     <label for="widget-addBill-form-VAT" class="fr">TVA ? </label>
                                     <label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
                                     <label for="widget-addBill-form-VAT" class="en">TVA ? </label>
                                     <input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
-                                </div>                            
-								<div class="col-sm-3">
+                                </div>  
+                                
+                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
+                                                          
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
                                     <label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
                                     <label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
                                     <input type="text" class="widget-addBill-form-amountTVAC form-control required" name="widget-addBill-form-amountTVAC" readonly="readonly">
-								</div>  
-                                
-                                <div class="col-sm-12"></div>        								
-                                
-                                <div class="col-sm-6">
+								</div> 
+								
+								<div class="separator"></div>
+								
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-sent"  class="fr">Envoyée ?</label>
                                     <label for="widget-addBill-form-sent"  class="en">Sent ?</label>
                                     <label for="widget-addBill-form-sent"  class="nl">Sent ?</label>
                                     <input type="checkbox" value="widget-addBill-form-sent" >
-								</div>               
-								<div class="col-sm-6">
+								</div> 
+								              
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-sendingDate"  class="fr">Date d'envoi</label>
                                     <label for="widget-addBill-form-sendingDate"  class="en">Sending date </label>
                                     <label for="widget-addBill-form-sendingDate"  class="nl">Sending date</label>
                                     <input type="date" class="widget-addBill-form-sendingDate form-control" name="widget-addBill-form-sendingDate">
 								</div>   
                         
-								<div class="col-sm-6">
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-paid"  class="fr">Payée ?</label>
                                     <label for="widget-addBill-form-paid"  class="en">Paid ?</label>
                                     <label for="widget-addBill-form-paid"  class="nl">Paid ?</label>
                                     <input type="checkbox" value="widget-addBill-form-paid" >
 								</div>  
                                                                 
-								<div class="col-sm-6">
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-paymentDate"  class="fr">Date de paiement</label>
                                     <label for="widget-addBill-form-paymentDate"  class="en">Payment date </label>
                                     <label for="widget-addBill-form-paymentDate"  class="nl">Payment date</label>
                                     <input type="date" class="widget-addBill-form-paymentDate form-control " name="widget-addBill-form-paymentDate" >
 								</div>     
                                 
-								<div class="col-sm-6">
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-communication"  class="fr">Communication</label>
                                     <label for="widget-addBill-form-communication"  class="en">Communication </label>
                                     <label for="widget-addBill-form-communication"  class="nl">Communication</label>
                                     <input type="text" class="widget-addBill-form-communication form-control required" name="widget-addBill-form-communication">
 								</div>                                     
 								
-								<div class="col-sm-6">
+								<div class="col-md-6">
                                     <label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
                                     <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
                                     <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
                                     <input type="date" class="widget-addBill-form-datelimite form-control required" name="widget-addBill-form-datelimite">
-								</div>                                     
-								
-                                <div class="col-sm-12">
-                                </div>                                
+								</div> 
+							
+							</div>
+                                                       
                                 <div class="form-group col-sm-6">
 									<label for="widget-addBill-form-file"  class="fr">Facture</label>
 									<label for="widget-addBill-form-file"  class="en">Bill</label>
@@ -6518,92 +6526,117 @@ if($connected){
 				<div class="row">
                         <form id="widget-updateBillingStatus-form" action="include/updateBillingStatus.php" role="form" method="post">
 
-                        <div class="col-sm-12">
-                            <label for="fr-inline text-green" class="fr">Référence de la facture :</label>
-                            <label for="en-inline text-green" class="nl">Billing Reference:</label>
-                            <label for="nl-inline text-green" class="en">Billing Reference :</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control required billingReference" name="widget-updateBillingStatus-form-billingReference" readonly='readonly'/>
-                            </div>
-                            <div class="col-sm-12"></div>
-                            
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-billingCompany" class="fr">Originateur: </label>
-                                <label for="widget-updateBillingStatus-form-billingCompany" class="en">Originateur: </label>
-                                <label for="widget-updateBillingStatus-form-billingCompany" class="nl">Originateur: </label>
-                                <input type="text" class="form-control required billingCompany" name="widget-updateBillingStatus-form-billingCompany"/>
-                            </div>                            
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany" class="fr">Bénéficiaire: </label>
-                                <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany" class="en">Bénéficiaire: </label>
-                                <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany" class="nl">Bénéficiaire : </label>
-                                <input type="text" class="form-control required beneficiaryBillingCompany" name="widget-updateBillingStatus-form-beneficiaryBillingCompany"/>
-                            </div>
-                            
-                            <div class="col-sm-3">
-                                <label for="widget-updateBillingStatus-form-billingdate" class="fr">Date de génération : </label>
-                                <label for="widget-updateBillingStatus-form-billingdate" class="en">Generation date: </label>
-                                <label for="widget-updateBillingStatus-form-billingdate" class="nl">Generation date: </label>
-                                <input type="date" class="form-control required billingDate" name="widget-updateBillingStatus-form-billingdate"/>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="widget-updateBillingStatus-form-billingAmountHTVA" class="fr">Montant (HTVA) : </label>
-                                <label for="widget-updateBillingStatus-form-billingAmountHTVA" class="en">Amount (TVA ex.): </label>
-                                <label for="widget-updateBillingStatus-form-billingAmountHTVA" class="nl">Amount (TVA ex.): </label>
-                                <input type="text" class="form-control required billingAmountHTVA" name="widget-updateBillingStatus-form-billingAmountHTVA"/>
-                            </div>
-                            <div class="col-sm-1">
-                                <label for="widget-updateBillingStatus-form-VAT" class="fr">TVA ? </label>
-                                <label for="widget-updateBillingStatus-form-VAT" class="nl">TVA ?</label>
-                                <label for="widget-updateBillingStatus-form-VAT" class="en">TVA ? </label>
-                                <input type="checkbox" class="billingAmountTVA" name="widget-updateBillingStatus-form-VAT" />
-                            </div>                            
-                            <div class="col-sm-3">
-                                <label for="widget-updateBillingStatus-form-billingAmountTVAINC" class="fr">Montant (TVA inc.) : </label>
-                                <label for="widget-updateBillingStatus-form-billingAmountTVAINC" class="nl">Amount (VAT inc.) : </label>
-                                <label for="widget-updateBillingStatus-form-billingAmountTVAINC" class="en">Amount (VAT inc.): </label>
-                                <input type="text" class="form-control required billingAmountTVAINC required form-control" name="widget-updateBillingStatus-form-billingAmountTVAINC" readonly='readonly'/>
-                            </div>
-                            <div class="col-sm-12"></div>
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-billingSent" class="fr">Facture envoyée ? </label>
-                                <label for="widget-updateBillingStatus-form-billingSent" class="nl">Bill sent ?</label>
-                                <label for="widget-updateBillingStatus-form-billingSent" class="en">Bill sent ? </label>
-                                <input type="checkbox" class="billingSent" name="widget-updateBillingStatus-form-billingSent" value="widget-updateBillingStatus-form-billingSent"/>
-                            </div>
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-billingSentDate" class="fr">Date d'envoi :</label>
-                                <label for="widget-updateBillingStatus-form-billingSentDate" class="nl">Send date : </label>
-                                <label for="widget-updateBillingStatus-form-billingSentDate" class="en">Send date:  </label>
-                                <input type="date" class="billingSentDate" name="widget-updateBillingStatus-form-billingSentDate" />
-                            </div>
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-billingPaid" class="fr">Facture payée ?</label>
-                                <label for="widget-updateBillingStatus-form-billingPaid" class="nl">Bill paid ?</label>
-                                <label for="widget-updateBillingStatus-form-billingPaid" class="en">Bill paid ?</label>
-                                <input type="checkbox" class="billingPaid" name="widget-updateBillingStatus-form-billingPaid"/>
-                            </div>
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-billingPaidDate" class="fr">Date de paiement :</label>
-                                <label for="widget-updateBillingStatus-form-billingPaidDate" class="en">Payed on:</label>
-                                <label for="widget-updateBillingStatus-form-billingPaidDate" class="nl">Payed on:</label>
-                                <input type="date" class="billingPaidDate" name="widget-updateBillingStatus-form-billingPaidDate" />
-                            </div>
-                            
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-billingLimitPaidDate" class="fr">Date limite de paiement : </label>
-                                <label for="widget-updateBillingStatus-form-billingLimitPaidDate" class="nl">Date limite de paiement :</label>
-                                <label for="widget-updateBillingStatus-form-billingLimitPaidDate" class="en">Date limite de paiement :</label>
-                                <input type="date" class="billingPaidLimitDate" name="widget-updateBillingStatus-form-billingLimitPaidDate" />
-                            </div>
-
-                            <div class="col-sm-5">
-                                <label for="widget-updateBillingStatus-form-communication" class="fr">Communication: </label>
-                                <label for="widget-updateBillingStatus-form-communication" class="en">Communication: </label>
-                                <label for="widget-updateBillingStatus-form-communication" class="nl">Communication: </label>
-                                <input type="text" class="billingCommunication" name="widget-updateBillingStatus-form-communication" />
-                            </div>
-                        </div>
+                        <div class="form-group col-md-12">
+							
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-company"  class="fr">Originateur</label>
+                                    <label for="widget-addBill-form-company"  class="en">Originateur</label>
+                                    <label for="widget-addBill-form-company"  class="nl">Originateur</label>
+                                    <span class="widget-addBill-form-company "></span>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires</label>
+                                    <input type="text" class="widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="widget-addBill-form-company"  class="fr">Beneficiaire</label>
+                                    <label for="widget-addBill-form-company"  class="en">Beneficiaire</label>
+                                    <label for="widget-addBill-form-company"  class="nl">Beneficiaire</label>
+                                    <input type="text" id="widget-addBill-form-company3" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
+                                </div> 
+                                
+                                <div class="col-md-6">
+                                    <label for="widget-addBill-form-type" class="widget-addBill-form-type">Type de facture</label>
+                                    <select name="widget-addBill-form-type">
+                                        <option value="leasing">Leasing</option>
+                                        <option value="achat">Achat</option>
+                                        <option value="accessoire">Accessoire</option>
+                                        <option value="autre">Autre</option>                                
+                                    </select>
+                                </div> 
+                                
+                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
+                                
+                                <div class="col-md-6">
+                                    <label for="widget-addBill-form-date"  class="fr">Date</label>
+                                    <label for="widget-addBill-form-date"  class="en">Date</label>
+                                    <label for="widget-addBill-form-date"  class="nl">Date</label>
+                                    <input type="date" class="widget-addBill-form-date form-control required" name="widget-addBill-form-date">
+                                </div>
+                                
+                                <div class="separator"></div>
+                                
+                                <div class="col-md-6">
+                                    <label for="widget-addBill-form-amountHTVA"  class="fr">Montant (HTVA)</label>
+                                    <label for="widget-addBill-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
+                                    <label for="widget-addBill-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
+                                    <input type="text" class="widget-addBill-form-amountHTVA form-control required" name="widget-addBill-form-amountHTVA">
+								</div>
+								
+                                <div class="col-md-6">
+                                    <label for="widget-addBill-form-VAT" class="fr">TVA ? </label>
+                                    <label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
+                                    <label for="widget-addBill-form-VAT" class="en">TVA ? </label>
+                                    <input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
+                                </div>  
+                                
+                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
+                                                          
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
+                                    <label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
+                                    <label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
+                                    <input type="text" class="widget-addBill-form-amountTVAC form-control required" name="widget-addBill-form-amountTVAC" readonly="readonly">
+								</div> 
+								
+								<div class="separator"></div>
+								
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-sent"  class="fr">Envoyée ?</label>
+                                    <label for="widget-addBill-form-sent"  class="en">Sent ?</label>
+                                    <label for="widget-addBill-form-sent"  class="nl">Sent ?</label>
+                                    <input type="checkbox" value="widget-addBill-form-sent" >
+								</div> 
+								              
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-sendingDate"  class="fr">Date d'envoi</label>
+                                    <label for="widget-addBill-form-sendingDate"  class="en">Sending date </label>
+                                    <label for="widget-addBill-form-sendingDate"  class="nl">Sending date</label>
+                                    <input type="date" class="widget-addBill-form-sendingDate form-control" name="widget-addBill-form-sendingDate">
+								</div>   
+                        
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-paid"  class="fr">Payée ?</label>
+                                    <label for="widget-addBill-form-paid"  class="en">Paid ?</label>
+                                    <label for="widget-addBill-form-paid"  class="nl">Paid ?</label>
+                                    <input type="checkbox" value="widget-addBill-form-paid" >
+								</div>  
+                                                                
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-paymentDate"  class="fr">Date de paiement</label>
+                                    <label for="widget-addBill-form-paymentDate"  class="en">Payment date </label>
+                                    <label for="widget-addBill-form-paymentDate"  class="nl">Payment date</label>
+                                    <input type="date" class="widget-addBill-form-paymentDate form-control " name="widget-addBill-form-paymentDate" >
+								</div>     
+                                
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-communication"  class="fr">Communication</label>
+                                    <label for="widget-addBill-form-communication"  class="en">Communication </label>
+                                    <label for="widget-addBill-form-communication"  class="nl">Communication</label>
+                                    <input type="text" class="widget-addBill-form-communication form-control required" name="widget-addBill-form-communication">
+								</div>                                     
+								
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
+                                    <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
+                                    <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
+                                    <input type="date" class="widget-addBill-form-datelimite form-control required" name="widget-addBill-form-datelimite">
+								</div> 
+							
+							</div>
+                        
                         <input type="text" name="widget-updateBillingStatus-form-user" value="<?php echo $user; ?>" class="hidden"/>
 
                         <div class="col-sm-12">    

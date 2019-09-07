@@ -89,22 +89,13 @@ if($billingPaid =="1" && $billingPaidDate == "0")
     errorMessage("ES0032");
 }
     
-if($billingSentDate==""){
-    $billingSentDate="NULL";
-}else{
-    $billingSentDate="'".$billingSentDate."'";
-}
-if($billingPaidDate==""){
-    $billingPaidDate="NULL";
-}else{
-    $billingPaidDate="'".$billingPaidDate."'";
-}
+
 if($company=="other"){
     $company=$companyOther;
 }
 
 include 'connexion.php';
-$sql= "INSERT INTO  factures (USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fileName', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', '$billingLimitPaidDate')";
+$sql= "INSERT INTO  factures (USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fileName', '$billingSent', '$billingSentDate', '$billingPaid', '$billingPaidDate', '$type', '$billingLimitPaidDate')";
 
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
