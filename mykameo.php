@@ -337,8 +337,7 @@ function initializeUpdatePortfolioBike(ID){
                 if (response.response == 'error') {
                     console.log(response.message);
                 } else{
-                    document.getElementsByClassName('bikeCatalogID')[0].innerHTML=response.bike[0].ID;
-                    document.getElementsByClassName('bikeCatalogID2')[0].value=response.bike[0].ID;
+                    $('input[name=widget-updateCatalog-form-ID]').val(response.bike[0].ID);
                     document.getElementsByClassName('bikeCatalogBrand')[0].value=response.bike[0].brand;
                     document.getElementsByClassName('bikeCatalogModel')[0].value=response.bike[0].model;
                     document.getElementsByClassName('bikeCatalogFrame')[0].value=response.bike[0].frameType;
@@ -6904,111 +6903,116 @@ if($connected){
 			</div>
 			<div class="modal-body">
 				<div class="row">
-                        <form id="widget-updateCatalog-form" action="include/update_catalog_bike.php" role="form" method="post">
-
-                        <div class="col-sm-12">
-                            <h4 class="fr-inline text-green">ID :</h4>
-                            <h4 class="en-inline text-green">ID:</h4>
-                            <h4 class="nl-inline text-green">ID :</h4>
-                            <p class="bikeCatalogID"></p>
-                            <input type="text" class="bikeCatalogID2 hidden" name="widget-updateCatalog-form-ID"/>
-
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> Marque : </span></h4>
-                                <h4><span class="en"> Brand: </span></h4>
-                                <h4><span class="nl"> Brand : </span></h4>
-                                <select class="bikeCatalogBrand" name="widget-updateCatalog-form-brand">
-                                           <option value="Ahooga">Ahooga</option>
-								           <option value="Bzen">Bzen</option>
-								           <option value="Conway">Conway</option>
-								           <option value="Douze Cycle">Douze Cycle</option>
-								           <option value="HNF Nicolai">HNF Nicolai</option>
-								           <option value="Orbea">Orbea</option>
-								           <option value="Stevens">Stevens</option>
-                                </select>
-
-                            </div>
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> Modèle : </span></h4>
-                                <h4><span class="en"> Model: </span></h4>
-                                <h4><span class="nl"> Model: </span></h4>
-                                <input type="text" class="bikeCatalogModel" name="widget-updateCatalog-form-model" />
-
-                            </div>
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> Type de cadre : </span></h4>
-                                <h4><span class="en"> Frame type: </span></h4>
-                                <h4><span class="nl"> Frame type: </span></h4>
-                                <select class="bikeCatalogFrame" name="widget-updateCatalog-form-frame">
-                                           <option value="F">Femme</option>
-								           <option value="H">Homme</option>
-								           <option value="M">Mixte</option>
-                                </select>
+					<div class="col-sm-12">
+						
+						<form id="widget-updateCatalog-form" action="include/update_catalog_bike.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
                                 
-                            </div>
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> Utilisation : </span></h4>
-                                <h4><span class="en"> Utilisation: </span></h4>
-                                <h4><span class="nl"> Utilisation: </span></h4>
-                                <select class="bikeCatalogUtilisation" name="widget-updateCatalog-form-utilisation">
-                                           <option value="Tout chemin">Tout chemin</option>
-								           <option value="Ville et chemin">Ville et chemin</option>
-								           <option value="Pliant">Pliant</option>
-								           <option value="Ville">Vile</option>
-								           <option value="Cargo">Cargo</option>
-								           <option value="Speedpedelec">Speedpedelec</option>
-                                </select>
+                                <h4 class="fr text-green">Modifier un vélo</h4>
                                 
-                            </div>
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> Vélo électrique ? </span></h4>
-                                <h4><span class="en"> Electric bike? </span></h4>
-                                <h4><span class="nl"> Electric bike? </span></h4>
-                                <select class="bikeCatalogElectric" name="widget-updateCatalog-form-electric">
-                                           <option value="Y">Y</option>
-								           <option value="N">N</option>
-                                </select>
-                                
-                            </div>
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> Prix : </span></h4>
-                                <h4><span class="en"> Price: </span></h4>
-                                <h4><span class="nl"> Price: </span></h4>
-                                <input type="text" class="bikeCatalogPrice" name="widget-updateCatalog-form-price" />
-                            </div>
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> En stock ? </span></h4>
-                                <h4><span class="en"> Sotck? </span></h4>
-                                <h4><span class="nl"> Stock? </span></h4>
-                                <input type="text" class="bikeCatalogStock" name="widget-updateCatalog-form-stock" />
-                            </div>
-                            <div class="col-sm-5 form-group">
-                                <h4><span class="fr"> Lien vers le site : </span></h4>
-                                <h4><span class="en"> Vendor link : </span></h4>
-                                <h4><span class="nl"> Vendor link</span></h4>
-                                <input type="text" class="bikeCatalogLink" name="widget-updateCatalog-form-link" />
-                            </div>
-                            
-                        </div>
-                        <img src="" class="bikeCatalogImage" alt="image" height="200" />
-                            
-                        <div class="form-group col-sm-12">
-                            <label for="widget-updateCatalog-form-file"  class="fr">Modifier la photo (ne rien uploader si ok)</label>
-                            <label for="widget-updateCatalog-form-file"  class="en">Modify the picture (don't do anything if already ok)</label>
-                            <label for="widget-updateCatalog-form-file"  class="nl">Modify the picture (don't do anything if already ok)</label>
-                            <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                            <input type=file size=40 id="widget-updateCatalog-form-file" name="widget-updateCatalog-form-file">
-                        </div>  
-                            
-                            
-                        <input type="text" name="widget-updateCatalog-form-user" value="<?php echo $user; ?>" class="hidden"/>
+                                <div class="col-sm-3">
+                                    <label for="widget-updateCatalog-form-ID">ID :</label>
+                                    <input type="text" readonly="readonly" class="form-control" name="widget-updateCatalog-form-ID"/>
+                                </div>
 
-                        <div class="col-sm-12">    
-                            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
-                            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
-                            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
-                        </div>
-                    </form>                        
+                                <div class="col-sm-5">
+                                    <label for="widget-updateCatalog-form-brand" class="fr"> Marque : </label>
+                                    <label for="widget-updateCatalog-form-brand" class="en"> Brand : </label>
+                                    <label for="widget-updateCatalog-form-brand" class="nl"> Brand : </label>
+                                    <select class="bikeCatalogBrand" name="widget-updateCatalog-form-brand">
+                                               <option value="Ahooga">Ahooga</option>
+                                               <option value="Bzen">Bzen</option>
+                                               <option value="Conway">Conway</option>
+                                               <option value="Douze Cycle">Douze Cycle</option>
+                                               <option value="HNF Nicolai">HNF Nicolai</option>
+                                               <option value="Orbea">Orbea</option>
+                                               <option value="Stevens">Stevens</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-5">
+                                    <label for="widget-updateCatalog-form-model" class="fr"> Modèle : </label>
+                                    <label for="widget-updateCatalog-form-model" class="en"> Model : </label>
+                                    <label for="widget-updateCatalog-form-model" class="nl"> Model : </label>
+                                    <input type="text" class="form-control required bikeCatalogModel" name="widget-updateCatalog-form-model" />
+
+                                </div>
+                                <div class="col-sm-5">
+                                    <h4><span class="fr"> Type de cadre : </span></h4>
+                                    <h4><span class="en"> Frame type: </span></h4>
+                                    <h4><span class="nl"> Frame type: </span></h4>
+                                    <select class="form-control  required bikeCatalogFrame" name="widget-updateCatalog-form-frame">
+                                               <option value="F">Femme</option>
+                                               <option value="H">Homme</option>
+                                               <option value="M">Mixte</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-5">
+                                    <h4><span class="fr"> Utilisation : </span></h4>
+                                    <h4><span class="en"> Utilisation: </span></h4>
+                                    <h4><span class="nl"> Utilisation: </span></h4>
+                                    <select class="form-control bikeCatalogUtilisation" name="widget-updateCatalog-form-utilisation">
+                                               <option value="Tout chemin">Tout chemin</option>
+                                               <option value="Ville et chemin">Ville et chemin</option>
+                                               <option value="Pliant">Pliant</option>
+                                               <option value="Ville">Vile</option>
+                                               <option value="Cargo">Cargo</option>
+                                               <option value="Speedpedelec">Speedpedelec</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-5">
+                                    <h4><span class="fr"> Vélo électrique ? </span></h4>
+                                    <h4><span class="en"> Electric bike? </span></h4>
+                                    <h4><span class="nl"> Electric bike? </span></h4>
+                                    <select class="form-control  required bikeCatalogElectric" name="widget-updateCatalog-form-electric">
+                                               <option value="Y">Y</option>
+                                               <option value="N">N</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-5">
+                                    <h4><span class="fr"> Prix : </span></h4>
+                                    <h4><span class="en"> Price: </span></h4>
+                                    <h4><span class="nl"> Price: </span></h4>
+                                    <input type="text" class="form-control  required bikeCatalogPrice" name="widget-updateCatalog-form-price" />
+                                </div>
+                                <div class="col-sm-5">
+                                    <h4><span class="fr"> En stock ? </span></h4>
+                                    <h4><span class="en"> Sotck? </span></h4>
+                                    <h4><span class="nl"> Stock? </span></h4>
+                                    <input type="text" class="form-control required  bikeCatalogStock" name="widget-updateCatalog-form-stock" />
+                                </div>
+                                <div class="col-sm-5">
+                                    <h4><span class="fr"> Lien vers le site : </span></h4>
+                                    <h4><span class="en"> Vendor link : </span></h4>
+                                    <h4><span class="nl"> Vendor link</span></h4>
+                                    <input type="text" class="form-control  required bikeCatalogLink" name="widget-updateCatalog-form-link" />
+                                </div>
+
+                            </div>
+                            <img src="" class="bikeCatalogImage" alt="image" height="200" />
+
+                            <div class="col-sm-12">
+                                <label for="widget-updateCatalog-form-file"  class="fr">Modifier la photo (ne rien uploader si ok)</label>
+                                <label for="widget-updateCatalog-form-file"  class="en">Modify the picture (don't do anything if already ok)</label>
+                                <label for="widget-updateCatalog-form-file"  class="nl">Modify the picture (don't do anything if already ok)</label>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                <input type=file size=40 class="form-control" id="widget-updateCatalog-form-file" name="widget-updateCatalog-form-file">
+                            </div>  
+
+
+                            <input type="text" name="widget-updateCatalog-form-user" value="<?php echo $user; ?>" class="hidden"/>
+
+                            <div class="col-sm-12">    
+                                <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
+                                <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+                            </div>
+                        </form>  
+                    </div>
 				</div>
 			</div>
 			
@@ -7073,7 +7077,7 @@ if($connected){
                                 <h4><span class="fr"> Marque : </span></h4>
                                 <h4><span class="en"> Brand: </span></h4>
                                 <h4><span class="nl"> Brand : </span></h4>
-                                <select class="bikeCatalogBrand required" name="widget-addCatalog-form-brand">
+                                <select class="bikeCatalogBrand form-control required" name="widget-addCatalog-form-brand">
                                            <option value="Ahooga">Ahooga</option>
 								           <option value="Bzen">Bzen</option>
 								           <option value="Conway">Conway</option>
@@ -7088,14 +7092,14 @@ if($connected){
                                 <h4><span class="fr"> Modèle : </span></h4>
                                 <h4><span class="en"> Model: </span></h4>
                                 <h4><span class="nl"> Model: </span></h4>
-                                <input type="text" class="bikeCatalogModel required" name="widget-addCatalog-form-model" />
+                                <input type="text" class="bikeCatalogModel form-control required" name="widget-addCatalog-form-model" />
 
                             </div>
                             <div class="col-sm-5">
                                 <h4><span class="fr"> Type de cadre : </span></h4>
                                 <h4><span class="en"> Frame type: </span></h4>
                                 <h4><span class="nl"> Frame type: </span></h4>
-                                <select class="bikeCatalogFrame required" name="widget-addCatalog-form-frame">
+                                <select class="bikeCatalogFrame form-control required" name="widget-addCatalog-form-frame">
                                            <option value="F">Femme</option>
 								           <option value="H">Homme</option>
 								           <option value="M">Mixte</option>
@@ -7106,7 +7110,7 @@ if($connected){
                                 <h4><span class="fr"> Utilisation : </span></h4>
                                 <h4><span class="en"> Utilisation: </span></h4>
                                 <h4><span class="nl"> Utilisation: </span></h4>
-                                <select class="bikeCatalogUtilisation required" name="widget-addCatalog-form-utilisation">
+                                <select class="bikeCatalogUtilisation form-control required" name="widget-addCatalog-form-utilisation">
                                            <option value="Tout chemin">Tout chemin</option>
 								           <option value="Ville et chemin">Ville et chemin</option>
 								           <option value="Pliant">Pliant</option>
@@ -7120,7 +7124,7 @@ if($connected){
                                 <h4><span class="fr"> Vélo électrique ? </span></h4>
                                 <h4><span class="en"> Electric bike? </span></h4>
                                 <h4><span class="nl"> Electric bike? </span></h4>
-                                <select class="bikeCatalogElectric required" name="widget-addCatalog-form-electric">
+                                <select class="bikeCatalogElectric form-control required" name="widget-addCatalog-form-electric">
                                            <option value="Y">Y</option>
 								           <option value="N">N</option>
                                 </select>
@@ -7130,19 +7134,19 @@ if($connected){
                                 <h4><span class="fr"> Prix : </span></h4>
                                 <h4><span class="en"> Price: </span></h4>
                                 <h4><span class="nl"> Price: </span></h4>
-                                <input type="text" class="bikeCatalogPrice required" name="widget-addCatalog-form-price" />
+                                <input type="text" class="bikeCatalogPrice form-control required" name="widget-addCatalog-form-price" />
                             </div>
                             <div class="col-sm-5">
                                 <h4><span class="fr"> En stock ? </span></h4>
                                 <h4><span class="en"> Sotck? </span></h4>
                                 <h4><span class="nl"> Stock? </span></h4>
-                                <input type="text" class="bikeCatalogStock required" name="widget-addCatalog-form-stock" />
+                                <input type="text" class="bikeCatalogStock form-control required" name="widget-addCatalog-form-stock" />
                             </div>
                             <div class="col-sm-5">
                                 <h4><span class="fr"> Lien vers le site : </span></h4>
                                 <h4><span class="en"> Vendor link : </span></h4>
                                 <h4><span class="nl"> Vendor link</span></h4>
-                                <input type="text" class="bikeCatalogLink required" name="widget-addCatalog-form-link" />
+                                <input type="text" class="bikeCatalogLink form-control required" name="widget-addCatalog-form-link" />
                             </div>
                             
                         </div>                            
@@ -7151,7 +7155,7 @@ if($connected){
                             <label for="widget-addCatalog-form-file"  class="en">Picture</label>
                             <label for="widget-addCatalog-form-file"  class="nl">Picture</label>
                             <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                            <input type=file size=40 class="required" id="widget-addCatalog-form-file" name="widget-addCatalog-form-file">
+                            <input type=file size=40 class="form-control required" id="widget-addCatalog-form-file" name="widget-addCatalog-form-file">
                         </div>  
                             
                             
