@@ -63,7 +63,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 
         $sql= "select ID from reservations where FRAME_NUMBER = '$frameNumber' and EMAIL = '$user' and DATE_START = '$dateStart' and DATE_END = '$dateEnd' and STAANN != 'D' ";
         
-        error_log($sql, 3, "mes-erreurs.log");
+        //error_log($sql, 3, "mes-erreurs.log");
 
         
         if ($conn->query($sql) === FALSE) {
@@ -79,7 +79,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 
         $sql= "select * from building_access where BUILDING_REFERENCE = '$buildingStart'";
         
-        error_log($sql, 3, "mes-erreurs.log");
+        //error_log($sql, 3, "mes-erreurs.log");
 
         
         if ($conn->query($sql) === FALSE) {
