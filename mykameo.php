@@ -291,9 +291,24 @@ function construct_form_for_billing_status_update(ID){
                     }else{
                         $('input[name=widget-updateBillingStatus-form-datelimite]').val('');                        
                     }     
+                    if(response.bill.file != '' ){
+                        $('.widget-updateBillingStatus-form-currentFile').attr("href", "factures/"+response.bill.file);    
+                        $('.widget-updateBillingStatus-form-currentFile').unbind('click');                              
+                    }else{
+                        $('.widget-updateBillingStatus-form-currentFile').click(function(e) {
+                            e.preventDefault();                        
+                            $.notify({
+                                message: "No file available for that bill"
+                            }, {
+                                type: 'danger'
+                            });                            
+                        });         
+                    }
+                    $('input[name=widget-updateBillingStatus-form-currentFile]').val(response.bill.file);    
+                    console.log(ID);
+                    $("#widget-deleteBillingStatus-form input[name=reference]").val(ID);
                     
                     
-
                 }              
 
             }
@@ -2228,10 +2243,55 @@ if($connected){
                     }                      
                     
                     displayLanguage();
-                    $('#companyDetails').modal('toggle');                                    
+                    $('#companyDetails').modal('toggle');                         
                 }
             }
         })
+        
+        $.ajax({
+                url: 'include/action_company.php',
+                type: 'get',
+                data: { "company": company, "user": email},
+                success: function(response){
+                    if (response.response == 'error') {
+                        console.log(response.message);
+                    } else{
+
+                        var i=0;
+                        var dest="<table class=\"table table-condensed\"><a class=\"button small green button-3d rounded icon-right addActionCompanyButton\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Rappel ?</span><span class=\"en-inline\">Reminder ?</span><span class=\"nl-inline\">Reminder ?</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th></tr></thead> ";
+                        while(i<response.actionNumber){
+                            if(!(response.action[i].date_reminder)){
+                                $date_reminder="N/A"
+                            }else{
+                                $date_reminder=response.action[i].date_reminder.substring(0,10);
+                            }
+                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].description+"</td><td>"+response.action[i].status+"</td><td>"+$date_reminder+"</td></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+                        dest=dest.concat("</tbody></table>");
+                        $('#action_company_log').html(dest);
+                        $('#widget-addActionCompany-form input[name=company]').val(company);
+
+                        displayLanguage();
+
+                        document.getElementsByClassName("addActionCompanyButton")[0].addEventListener('click', function(){ 
+                                $('#widget-addActionCompany-form label[for=status]').removeClass("hidden");
+                                $('#widget-addActionCompany-form label[for=date]').removeClass("hidden");
+                                $('#widget-addActionCompany-form label[for=description]').removeClass("hidden");
+                                $('#widget-addActionCompany-form label[for=date_reminder]').removeClass("hidden");
+                                $('#widget-addActionCompany-form input[name=date]').removeClass("hidden");
+                                $('#widget-addActionCompany-form input[name=description]').removeClass("hidden");
+                                $('#widget-addActionCompany-form input[name=date_reminder]').removeClass("hidden");
+                                $('#widget-addActionCompany-form select[name=status]').removeClass("hidden");
+                                $('.addActionCompanyConfirmButton').removeClass("hidden");
+
+                        });
+
+                    }              
+
+                }
+        })        
     }        
 
         
@@ -5060,6 +5120,7 @@ if($connected){
                             
                             
                             <div class="form-group col-md-12">
+                                <h4 class="fr text-green">Informations générales</h4>
 							
 								<div class="col-md-6">
                                     <label for="widget-addBill-form-company"  class="fr">Originateur</label>
@@ -5067,19 +5128,18 @@ if($connected){
                                     <label for="widget-addBill-form-company"  class="nl">Originateur</label>
                                     <span class="widget-addBill-form-company "></span>
                                 </div>
-                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires</label>
-                                    <input type="text" class="widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
-                                </div>
-                                
+                                                                
                                 <div class="col-md-6">
                                     <label for="widget-addBill-form-company"  class="fr">Beneficiaire</label>
                                     <label for="widget-addBill-form-company"  class="en">Beneficiaire</label>
                                     <label for="widget-addBill-form-company"  class="nl">Beneficiaire</label>
                                     <input type="text" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
                                 </div> 
-                                
+                                <div class="col-sm-6">
+                                    <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires</label>
+                                    <input type="text" class="form-control widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
+                                </div>
+                                                                
                                 <div class="col-md-6">
                                     <label for="widget-addBill-form-type" class="widget-addBill-form-type">Type de facture</label>
                                     <select name="widget-addBill-form-type">
@@ -5090,34 +5150,23 @@ if($connected){
                                     </select>
                                 </div> 
                                 
-                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
-                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-date"  class="fr">Date</label>
-                                    <label for="widget-addBill-form-date"  class="en">Date</label>
-                                    <label for="widget-addBill-form-date"  class="nl">Date</label>
-                                    <input type="date" class="widget-addBill-form-date form-control required" name="widget-addBill-form-date">
-                                </div>
-                                
                                 <div class="separator"></div>
-                                
-                                <div class="col-md-6">
+                                <h4 class="fr text-green">Informations sur les montants</h4>
+                                <div class="col-md-4">
                                     <label for="widget-addBill-form-amountHTVA"  class="fr">Montant (HTVA)</label>
                                     <label for="widget-addBill-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
                                     <label for="widget-addBill-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
                                     <input type="text" class="widget-addBill-form-amountHTVA form-control required" name="widget-addBill-form-amountHTVA">
 								</div>
 								
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="widget-addBill-form-VAT" class="fr">TVA ? </label>
                                     <label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
                                     <label for="widget-addBill-form-VAT" class="en">TVA ? </label>
                                     <input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
                                 </div>  
-                                
-                                <div class="col-md-12"></div><!-- Pour mettre "DATE" à la ligne -->
-                                                          
-								<div class="col-md-6">
+                                                                                          
+								<div class="col-md-4">
                                     <label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
                                     <label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
                                     <label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
@@ -5125,12 +5174,27 @@ if($connected){
 								</div> 
 								
 								<div class="separator"></div>
-								
+                                <h4 class="fr text-green">Informations sur les dates</h4>
+
+                                <div class="col-md-6">
+                                    <label for="widget-addBill-form-date"  class="fr">Date</label>
+                                    <label for="widget-addBill-form-date"  class="en">Date</label>
+                                    <label for="widget-addBill-form-date"  class="nl">Date</label>
+                                    <input type="date" class="widget-addBill-form-date form-control required" name="widget-addBill-form-date">
+                                </div>
+
+								<div class="col-md-6">
+                                    <label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
+                                    <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
+                                    <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
+                                    <input type="date" class="widget-addBill-form-datelimite form-control required" name="widget-addBill-form-datelimite">
+								</div> 
+                                
 								<div class="col-md-6">
                                     <label for="widget-addBill-form-sent"  class="fr">Envoyée ?</label>
                                     <label for="widget-addBill-form-sent"  class="en">Sent ?</label>
                                     <label for="widget-addBill-form-sent"  class="nl">Sent ?</label>
-                                    <input type="checkbox" value="widget-addBill-form-sent" >
+                                    <input type="checkbox" name="widget-addBill-form-sent" >
 								</div> 
 								              
 								<div class="col-md-6">
@@ -5144,7 +5208,7 @@ if($connected){
                                     <label for="widget-addBill-form-paid"  class="fr">Payée ?</label>
                                     <label for="widget-addBill-form-paid"  class="en">Paid ?</label>
                                     <label for="widget-addBill-form-paid"  class="nl">Paid ?</label>
-                                    <input type="checkbox" value="widget-addBill-form-paid" >
+                                    <input type="checkbox" name="widget-addBill-form-paid" >
 								</div>  
                                                                 
 								<div class="col-md-6">
@@ -5160,13 +5224,7 @@ if($connected){
                                     <label for="widget-addBill-form-communication"  class="nl">Communication</label>
                                     <input type="text" class="widget-addBill-form-communication form-control required" name="widget-addBill-form-communication">
 								</div>                                     
-								
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
-                                    <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
-                                    <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
-                                    <input type="date" class="widget-addBill-form-datelimite form-control required" name="widget-addBill-form-datelimite">
-								</div> 
+
 							
 							</div>
                                                        
@@ -5177,8 +5235,8 @@ if($connected){
 									<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                		<input type=file size=40 id="widget-addBill-form-file" name="widget-addBill-form-file">
                                 </div>  
-                                <input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user; ?>" hidden>                                
-                            </div>     
+                                <input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user; ?>" hidden>   
+                            <div class="separator"></div>
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>                            
@@ -5198,6 +5256,7 @@ if($connected){
                                                 $('#billingListing').modal('toggle');
                                                 get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
 												$('#addBill').modal('toggle');
+                                                document.getElementById('widget-addBill-form').reset();                                                
 
 											} else {
 												$.notify({
@@ -5234,15 +5293,15 @@ if($connected){
                                 
                             }
                         });  
-                        $('input[name=billingAmountTVA]').change(function(){
-                            if($('input[name=billingAmountTVA]').is(':checked')){
+                        $('input[name=widget-addBill-form-amountHTVA]').change(function(){
+                            if($('input[name=widget-addBill-form-VAT]').is(':checked')){
                                 $('input[name=widget-addBill-form-amountTVAC]').val((1.21*$('input[name=widget-addBill-form-amountHTVA]').val()).toFixed(2));
                             }else{
                                 $('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
                             }
                           });    
                         $('.widget-addBill-form-VAT').change(function(){
-                            if($('input[name=billingAmountTVA]').is(':checked')){
+                            if($('input[name=widget-addBill-form-VAT]').is(':checked')){
                                 $('input[name=widget-addBill-form-amountTVAC]').val((1.21*$('input[name=widget-addBill-form-amountHTVA]').val()).toFixed(2));
                             }else{
                                 $('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
@@ -5487,13 +5546,7 @@ if($connected){
                 $('.form_date_end').change(function(){
 
                     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
-                });   
-                $('.widget-addBill-form-amountHTVA').change(function(){
-                    var amountHTVA=parseFloat(this.value);
-                    var amountTVAC=amountHTVA*1.21;
-                    document.getElementsByClassName('widget-addBill-form-amountTVAC')[0].value=amountTVAC;
-                 });      
-                    
+                });                       
                 
                 
             </script>
@@ -5619,7 +5672,7 @@ if($connected){
 			<div class="modal-body">                
                     <div class="row">
                         <form id="widget-companyDetails-form" action="include/update_client.php" role="form" method="post">
-                        	<div class="clo-sm-12 form-group">
+                        	<div class="col-sm-12 form-group">
                         
 	                            <div class="col-sm-12">
 	                                <h4 class="text-green">Informations générales</h4>
@@ -5692,11 +5745,11 @@ if($connected){
 	                		</div>
                             
                         
-                    </form>
+                        </form>
+
                         <script type="text/javascript">
 							jQuery("#widget-companyDetails-form").validate({
-								submitHandler: function(form) {
-
+								submitHandler: function(form){
 									jQuery(form).ajaxSubmit({
 										success: function(response) {
 											if (response.response == 'success') {
@@ -5762,6 +5815,82 @@ if($connected){
                     <div class="col-sm-12" id="clientBuildings">
                         <h4 class="text-green">Bâtiments:</h4>
                         <p><span id="companyBuildings"></span></p>
+                    </div>
+                        
+                    <div class="col-sm-12">
+                        <h4 class="text-green">Historique et actions</h4>
+						<form id="widget-addActionCompany-form" action="include/action_company.php" role="form" method="post">
+                            <div class="col-sm-12 form-group">
+                                <input type="text" name="company" class="form-control required hidden">
+                                <input type="text" name="user" class="form-control required hidden" value="<?php echo $user; ?>">
+                                
+                                <div class="col-sm-3">  
+                                    <label for="status" class="hidden">Status</label>                                    
+                                    <select title="Status" class="selectpicker hidden" name="status">
+                                      <option value="TO DO">To do</option>
+                                      <option value="DONE">Done</option>            
+                                    </select>                                    
+                                </div>                                
+                                <div class="col-sm-3">
+                                    <label for="date" class="hidden">Date</label>
+                                    <input type="date" name="date" class="form-control required hidden">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="date_reminder" class="hidden">Rappel ?</label>
+                                    <input type="date" name="date_reminder" class="form-control hidden">
+                                </div>                                
+                                <div class="col-sm-7">
+                                    <label for="description" class="hidden">Description</label>
+                                    <input type="text" name="description" class="form-control required hidden">
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <button  class="fr button small green button-3d rounded icon-left hidden addActionCompanyConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
+                                </div>                                                            
+                            </div>
+                        </form>
+                                                
+                        <script type="text/javascript">                            
+                            jQuery("#widget-addActionCompany-form").validate({
+                                submitHandler: function(form) {
+                                    jQuery(form).ajaxSubmit({
+                                        success: function(response) {
+                                            if (response.response == 'success') {
+                                                $.notify({
+                                                    message: response.message
+                                                }, {
+                                                    type: 'success'
+                                                });
+                                                $('#widget-addActionCompany-form label[for=status]').addClass("hidden");
+                                                $('#widget-addActionCompany-form label[for=date]').addClass("hidden");
+                                                $('#widget-addActionCompany-form label[for=description]').addClass("hidden");
+                                                $('#widget-addActionCompany-form label[for=date_reminder]').addClass("hidden");
+                                                $('#widget-addActionCompany-form input[name=date]').addClass("hidden");
+                                                $('#widget-addActionCompany-form input[name=description]').addClass("hidden");
+                                                $('#widget-addActionCompany-form input[name=date_reminder]').addClass("hidden");
+                                                $('#widget-addActionCompany-form select[name=status]').addClass("hidden");
+                                                $('.addActionCompanyConfirmButton').addClass("hidden");
+                                                get_company_details($('#widget-addActionCompany-form input[name=company]').val()); 
+                                                $('#widget-addActionCompany-form input[name=date]').val('');
+                                                $('#widget-addActionCompany-form input[name=description]').val('');
+                                                $('#widget-addActionCompany-form input[name=date_reminder]').val('');
+                                                $('#widget-addActionCompany-form input[name=status]').val('TO DO');
+                                                
+                                                
+                                            } else {
+                                                $.notify({
+                                                    message: response.message
+                                                }, {
+                                                    type: 'danger'
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                        </script>
+                        <span id="action_company_log"></span>
+                        
                     </div>
 
                 </div>
@@ -6708,7 +6837,7 @@ if($connected){
 			</div>
 			<div class="modal-body">
 				<div class="row">
-                        <form id="widget-updateBillingStatus-form" action="include/updateBillingStatus.php" role="form" method="post">
+                    <form id="widget-updateBillingStatus-form" action="include/updateBillingStatus.php" role="form" method="post">
 
                         <div class="form-group col-md-12">
                             
@@ -6781,62 +6910,93 @@ if($connected){
 
                             <div class="separator"></div>
 
+                            <div class="col-md-6">
+                            
+                                <h4 class="text-green">Informations sur les dates</h4>
 
-                            <h4 class="text-green">Informations sur les dates</h4>
 
+                                <div class="col-md-6">
+                                    <label for="widget-updateBillingStatus-form-date"  class="fr">Date</label>
+                                    <label for="widget-updateBillingStatus-form-date"  class="en">Date</label>
+                                    <label for="widget-updateBillingStatus-form-date"  class="nl">Date</label>
+                                    <input type="date" class="widget-updateBillingStatus-form-date form-control required" name="widget-updateBillingStatus-form-date">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="widget-updateBillingStatus-form-datelimite"  class="fr">Date limite de paiement</label>
+                                    <label for="widget-updateBillingStatus-form-datelimite"  class="en">Date limite de paiement </label>
+                                    <label for="widget-updateBillingStatus-form-datelimite"  class="nl">Date limite de paiement</label>
+                                    <input type="date" class="form-control required" name="widget-updateBillingStatus-form-datelimite">
+                                </div>                             
+                                <div class="col-md-12"></div><!-- Pour mettre "Envoyée" à la ligne -->
 
-                            <div class="col-md-3">
-                                <label for="widget-updateBillingStatus-form-date"  class="fr">Date</label>
-                                <label for="widget-updateBillingStatus-form-date"  class="en">Date</label>
-                                <label for="widget-updateBillingStatus-form-date"  class="nl">Date</label>
-                                <input type="date" class="widget-updateBillingStatus-form-date form-control required" name="widget-updateBillingStatus-form-date">
+                                <div class="col-md-6">
+                                    <label for="widget-updateBillingStatus-form-sent"  class="fr">Envoyée ?</label>
+                                    <label for="widget-updateBillingStatus-form-sent"  class="en">Sent ?</label>
+                                    <label for="widget-updateBillingStatus-form-sent"  class="nl">Sent ?</label>
+                                    <input type="checkbox" class='form-control' name="widget-updateBillingStatus-form-sent" >
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <label for="widget-updateBillingStatus-form-sendingDate"  class="fr">Date d'envoi</label>
+                                    <label for="widget-updateBillingStatus-form-sendingDate"  class="en">Sending date </label>
+                                    <label for="widget-updateBillingStatus-form-sendingDate"  class="nl">Sending date</label>
+                                    <input type="date" class='form-control'  name="widget-updateBillingStatus-form-sendingDate">
+                                </div>          
+                                <div class="col-md-12"></div><!-- Pour mettre "Payée" à la ligne -->
+                                <div class="col-md-6">
+                                    <label for="widget-updateBillingStatus-form-paid"  class="fr">Payée ?</label>
+                                    <label for="widget-updateBillingStatus-form-paid"  class="en">Paid ?</label>
+                                    <label for="widget-updateBillingStatus-form-paid"  class="nl">Paid ?</label>
+                                    <input type="checkbox" class='form-control'  name="widget-updateBillingStatus-form-paid" >
+                                </div>  
+
+                                <div class="col-md-6">
+                                    <label for="widget-updateBillingStatus-form-paymentDate"  class="fr">Date de paiement</label>
+                                    <label for="widget-updateBillingStatus-form-paymentDate"  class="en">Payment date </label>
+                                    <label for="widget-updateBillingStatus-form-paymentDate"  class="nl">Payment date</label>
+                                    <input type="date" class='form-control'  name="widget-updateBillingStatus-form-paymentDate" >
+                                </div>                                  
                             </div>
-                            <div class="col-md-3">
-                                <label for="widget-updateBillingStatus-form-datelimite"  class="fr">Date limite de paiement</label>
-                                <label for="widget-updateBillingStatus-form-datelimite"  class="en">Date limite de paiement </label>
-                                <label for="widget-updateBillingStatus-form-datelimite"  class="nl">Date limite de paiement</label>
-                                <input type="date" class="form-control required" name="widget-updateBillingStatus-form-datelimite">
-                            </div>                             
-                            <div class="col-md-12"></div><!-- Pour mettre "Envoyée" à la ligne -->
-
-                            <div class="col-md-3">
-                                <label for="widget-updateBillingStatus-form-sent"  class="fr">Envoyée ?</label>
-                                <label for="widget-updateBillingStatus-form-sent"  class="en">Sent ?</label>
-                                <label for="widget-updateBillingStatus-form-sent"  class="nl">Sent ?</label>
-                                <input type="checkbox" class='form-control' name="widget-updateBillingStatus-form-sent" >
-                            </div> 
-
-                            <div class="col-md-3">
-                                <label for="widget-updateBillingStatus-form-sendingDate"  class="fr">Date d'envoi</label>
-                                <label for="widget-updateBillingStatus-form-sendingDate"  class="en">Sending date </label>
-                                <label for="widget-updateBillingStatus-form-sendingDate"  class="nl">Sending date</label>
-                                <input type="date" class='form-control'  name="widget-updateBillingStatus-form-sendingDate">
-                            </div>          
-                            <div class="col-md-12"></div><!-- Pour mettre "Payée" à la ligne -->
-                            <div class="col-md-3">
-                                <label for="widget-updateBillingStatus-form-paid"  class="fr">Payée ?</label>
-                                <label for="widget-updateBillingStatus-form-paid"  class="en">Paid ?</label>
-                                <label for="widget-updateBillingStatus-form-paid"  class="nl">Paid ?</label>
-                                <input type="checkbox" class='form-control'  name="widget-updateBillingStatus-form-paid" >
-                            </div>  
-
-                            <div class="col-md-3">
-                                <label for="widget-updateBillingStatus-form-paymentDate"  class="fr">Date de paiement</label>
-                                <label for="widget-updateBillingStatus-form-paymentDate"  class="en">Payment date </label>
-                                <label for="widget-updateBillingStatus-form-paymentDate"  class="nl">Payment date</label>
-                                <input type="date" class='form-control'  name="widget-updateBillingStatus-form-paymentDate" >
-                            </div>     
+                            <div class="col-md-6">
+                                <h4 class="text-green">Informations sur le fichier</h4>
+                                <div class="col-md-12">
+                                    <a href="#" class="widget-updateBillingStatus-form-currentFile" target="_blank"><img src="images/pdf.jpg" /></a>
+                                    <input type="text" name="widget-updateBillingStatus-form-currentFile" class="hidden"/>
+                                </div>
+                                
+                            
+                                <div class="col-md-12">
+                                    <label for="widget-updateBikeStatusAdmin-form-file"  class="fr">Modifier la facture (pdf):</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-file"  class="en">Modify the bill (pdf):</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-file"  class="nl">Modify the bill (pdf):</label>
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                    <input type=file size=40 name="widget-updateBikeStatusAdmin-form-file">
+                                </div>      
+                                
+                            </div>
 
 				        </div>
                         
-                        <input type="text" name="widget-updateBillingStatus-form-user" value="<?php echo $user; ?>" class="hidden"/>
+                        <input type="text" name="widget-updateBillingStatus-form-user" value="<?php echo $user; ?>" class="hidden">
 
                         <div class="col-sm-12">    
                             <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
                             <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
                             <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                         </div>
-                    </form>                        
+                    </form>
+                    <form id="widget-deleteBillingStatus-form" action="include/updateBillingStatus.php" role="form" method="post">
+                        <div class="col-sm-12">
+                            <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
+                            <input type="text" name="action" value="delete" class="hidden">
+                            <input type="text" class="hidden" readonly="readonly" name="reference">
+                            <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer</button>
+                            <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
+                            <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
+                        </div>
+                    </form>
+                    
+                    
 				</div>
 			</div>
 			
@@ -6874,6 +7034,7 @@ if($connected){
             jQuery(form).ajaxSubmit({
                 success: function(response) {
                     if (response.response == 'success') {
+                        document.getElementById('widget-updateBillingStatus-form').reset();                        
                         $.notify({
                             message: response.message
                         }, {
@@ -6892,6 +7053,33 @@ if($connected){
             });
         }
     });
+    
+    jQuery("#widget-deleteBillingStatus-form").validate({
+        submitHandler: function(form) {
+            jQuery(form).ajaxSubmit({
+                success: function(response) {
+                    console.log(response);
+                    if (response.response == 'success') {
+                        document.getElementById('widget-deleteBillingStatus-form').reset();                        
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'success'
+                        });
+                        $('#updateBillingStatus').modal('toggle');
+                        get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
+                    } else {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'danger'
+                        });
+                    }
+                }
+            });
+        }
+    });
+    
 
 </script>                    
 

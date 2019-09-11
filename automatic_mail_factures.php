@@ -667,7 +667,7 @@ $dest="";
 $temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">ID</th><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th class=\"tableResume\">Lien</th></tr>";
 $dest=$temp;
 while($row = mysqli_fetch_array($result2)){
-    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"www.kameobikes.com/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
     $dest=$dest.$temp;
 }
 
@@ -689,7 +689,7 @@ $temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableRe
 $dest=$temp;
 while($row = mysqli_fetch_array($result3))
 {
-    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\">".substr($row['FACTURE_LIMIT_PAID_DATE'],0,10)."</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\">".substr($row['FACTURE_LIMIT_PAID_DATE'],0,10)."</td><td class=\"tableResume\"><a href=\"https://www.kameobikes.com/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
     $dest=$dest.$temp;
 }
 
@@ -709,7 +709,7 @@ $temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableRe
 $dest=$temp;
 while($row = mysqli_fetch_array($result7))
 {
-    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\">".substr($row['FACTURE_LIMIT_PAID_DATE'],0,10)."</td><td class=\"tableResume\"><a href=\"".$_SERVER['HTTP_HOST']."/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\">".substr($row['FACTURE_LIMIT_PAID_DATE'],0,10)."</td><td class=\"tableResume\"><a href=\"https://www.kameobikes.com/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
     $dest=$dest.$temp;
 }
 

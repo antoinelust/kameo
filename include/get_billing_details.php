@@ -44,6 +44,7 @@ if($ID != NULL)
     $response['bill']['paidDate']=$row['FACTURE_PAID_DATE'];
     $response['bill']['paidLimitDate']=$row['FACTURE_LIMIT_PAID_DATE'];
     $response['bill']['type']=$row['TYPE'];
+    $response['bill']['file']=$row['FILE_NAME'];
     
     
 	echo json_encode($response);

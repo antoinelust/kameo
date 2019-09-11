@@ -42,13 +42,25 @@ if($amountHTVA>0 && $beneficiaryCompany!="KAMEO"){
 }
 
 
+if($billingSent =="1" && $billingSentDate == null)
+{
+    errorMessage("ES0031");
+}
+
+if($billingPaid =="1" && $billingPaidDate == null)
+{
+    errorMessage("ES0032");
+}
+
+
+
 if(isset($_FILES['widget-addBill-form-file']))
 { 
     $dossier = '../factures/';
 
     $extensions = array('.pdf');
     $extension = strrchr($_FILES['widget-addBill-form-file']['name'], '.');
-    $fileName=$_FILES['widget-addBill-form-file']['name'];    
+    $fileName=substr($date, 0, 10)."_".$company."_".$communication;    
     
     if(!in_array($extension, $extensions))
     {
@@ -102,7 +114,27 @@ if($company=="other"){
 }
 
 include 'connexion.php';
-$sql= "INSERT INTO  factures (USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fileName', '$billingSent', '$billingSentDate', '$billingPaid', '$billingPaidDate', '$type', '$billingLimitPaidDate')";
+
+if($billingSentDate!=NULL){
+    $billingSentDate="'".$billingSentDate."'";
+}else{
+    $billingSentDate='NULL';
+}       
+
+if($billingPaidDate!=NULL){
+    $billingPaidDate="'".$billingPaidDate."'";
+}else{
+    $billingPaidDate='NULL';
+}    
+
+if($billingPaidDate!=NULL){
+    $billingLimitPaidDate="'".$billingLimitPaidDate."'";
+}else{
+    $billingLimitPaidDate='NULL';
+}      
+
+
+$sql= "INSERT INTO  factures (USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
 
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
