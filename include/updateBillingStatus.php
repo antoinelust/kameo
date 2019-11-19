@@ -41,6 +41,12 @@ if($action=="delete"){
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
+        }            
+        $sql="DELETE FROM factures_details where FACTURE_ID='$reference'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
         }       
         $conn->close();        
         
@@ -64,6 +70,7 @@ if($action=="delete"){
     $billingLimitPaidDate=isset($_POST['widget-updateBillingStatus-form-datelimite']) ? date($_POST['widget-updateBillingStatus-form-datelimite']) : "";
     $user=$_POST['widget-updateBillingStatus-form-user'];
     $communication=$_POST['widget-updateBillingStatus-form-communication'];    
+    $accountingSent=isset($_POST['accounting']) ? "1" : "0";
     
     
     if(isset($_FILES['widget-updateBikeStatusAdmin-form-file'])){
@@ -168,7 +175,7 @@ if($action=="delete"){
             $billingLimitPaidDate='NULL';
         }      
 
-        $sql="update factures set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', COMPANY='$originator', BENEFICIARY_COMPANY='$beneficiary', DATE='$date', AMOUNT_HTVA='$amountHTVA', AMOUNT_TVAINC='$amountTVA', FACTURE_SENT='$billingSent', FACTURE_SENT_DATE=$billingSentDate, FACTURE_PAID='$billingPaid', FACTURE_PAID_DATE=$billingPaidDate, FACTURE_LIMIT_PAID_DATE=$billingLimitPaidDate, COMMUNICATION_STRUCTUREE='$communication'  where ID='$IDBilling'";
+        $sql="update factures set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', COMPANY='$originator', BENEFICIARY_COMPANY='$beneficiary', DATE='$date', AMOUNT_HTVA='$amountHTVA', AMOUNT_TVAINC='$amountTVA', FACTURE_SENT='$billingSent', FACTURE_SENT_DATE=$billingSentDate, FACTURE_PAID='$billingPaid', FACTURE_PAID_DATE=$billingPaidDate, FACTURE_LIMIT_PAID_DATE=$billingLimitPaidDate, COMMUNICATION_STRUCTUREE='$communication', FACTURE_SENT_ACCOUNTING='$accountingSent'  where ID='$IDBilling'";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

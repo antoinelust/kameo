@@ -13,15 +13,24 @@ include 'globalfunctions.php';
 $model=$_POST['widget-addBike-form-model'];
 $frameNumber=$_POST['widget-addBike-form-frameNumber'];
 $size=$_POST['widget-addBike-form-size'];
-$contractStart=$_POST['widget-addBike-form-contractStart'];
-$contractEnd=$_POST['widget-addBike-form-contractEnd'];
+$buyingPrice=$_POST['widget-addBike-form-price'];
+$buyingDate=$_POST['widget-addBike-form-buyingDate'];
+$contractStart=isset($_POST['widget-addBike-form-contractStart']) ? $_POST['widget-addBike-form-contractStart'] : NULL;
+$contractEnd=isset($_POST['widget-addBike-form-contractEnd']) ? $_POST['widget-addBike-form-contractEnd'] : NULL;
+
 $contractReference=$_POST['widget-addBike-form-contractReference'];
 $frameReference=$_POST['widget-addBike-form-frameReference'];
 $billingPrice=$_POST['widget-addBike-form-billingPrice'];
 $billingGroup=$_POST['widget-addBike-form-billingGroup'];
 $user=$_POST['widget-addBike-form-user'];
 $company=$_POST['widget-addBike-form-company'];
-$buildingInitialization=$_POST['widget-addBike-form-firstBuilding'];
+$buildingInitialization=isset($_POST['widget-addBike-form-firstBuilding']) ? $_POST['widget-addBike-form-firstBuilding'] : NULL;
+
+if($buildingInitialization == NULL){
+    errorMessage("ES0042");
+}
+
+
 
 $extensions = array('.jpg');
 $extension = strrchr($_FILES['widget-addBike-form-picture']['name'], '.');
@@ -64,7 +73,7 @@ $img = resize_image($dossier . $frameNumber.$extension, 100, 100);
 imagejpeg($img, $dossier. $frameNumber."_mini".$extension);
 
 
-if($model != NULL && $frameNumber != NULL && $size != NULL && $contractStart != NULL && $contractEnd != NULL && $contractReference != NULL && $frameReference != NULL && $billingPrice != NULL && $billingGroup != NULL && $user != NULL && $company != NULL && $buildingInitialization != NULL){
+if($model != NULL && $frameNumber != NULL && $size != NULL && $frameReference != NULL && $user != NULL && $company != NULL && $buildingInitialization != NULL){
     include 'connexion.php';
     $sql="select * from customer_bikes where FRAME_NUMBER='$frameNumber'";
 
@@ -98,7 +107,25 @@ if($model != NULL && $frameNumber != NULL && $size != NULL && $contractStart != 
         $automaticBilling="N";
     }
 
-    $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_START, CONTRACT_END, CONTRACT_REFERENCE, COMPANY, MODEL, FRAME_REFERENCE, LEASING, LEASING_PRICE, STATUS, BILLING_GROUP) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$size', '$contractStart', '$contractEnd', '$contractReference', '$company', '$model', '$frameReference', '$automaticBilling', '$billingPrice', 'OK', '$billingGroup')";
+    if($contractStart!=NULL){
+        $contractStart="'".$contractStart."'";
+    }else{
+        $contractStart='NULL';
+    }    
+    if($contractEnd!=NULL){
+        $contractEnd="'".$contractEnd."'";
+    }else{
+        $contractEnd='NULL';
+    }        
+
+    
+    if($billingPrice!=NULL){
+        $billingPrice="'".$billingPrice."'";
+    }else{
+        $billingPrice='NULL';
+    }        
+    
+    $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_START, CONTRACT_END, CONTRACT_REFERENCE, COMPANY, MODEL, FRAME_REFERENCE, LEASING, LEASING_PRICE, STATUS, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$size', $contractStart, $contractEnd, '$contractReference', '$company', '$model', '$frameReference', '$automaticBilling', $billingPrice, 'OK', '$billingGroup', '$buyingPrice', '$buyingDate')";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -106,7 +133,7 @@ if($model != NULL && $frameNumber != NULL && $size != NULL && $contractStart != 
         die;   
     }
 
-    $sql= "INSERT INTO  reservations (USR_MAJ, HEU_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIL, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$buildingInitialization', '0', '$buildingInitialization', '$user', '')";
+    $sql= "INSERT INTO  reservations (USR_MAJ, HEU_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIL, STATUS, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$buildingInitialization', '0', '$buildingInitialization', '$user', 'Closed','')";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);

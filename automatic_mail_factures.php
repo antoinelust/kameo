@@ -6,12 +6,14 @@ include 'include/header2.php';
 
 include 'include/connexion.php';
 $sql="SELECT substr(DATE, 1, 7) as 'MOIS', SUM(CASE WHEN AMOUNT_HTVA > 0 THEN AMOUNT_HTVA ELSE 0 END) AS 'SUM1', SUM(CASE WHEN AMOUNT_HTVA < 0 THEN AMOUNT_HTVA ELSE 0 END) AS 'SUM2', SUM(AMOUNT_HTVA) AS 'SUM3' from factures GROUP BY Substr(DATE, 1, 7)";
-$sql2 = "SELECT * FROM factures WHERE  FACTURE_SENT = '0'";
-$sql3 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
-$sql7 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND FACTURE_LIMIT_PAID_DATE	> CURDATE()";
-$sql4 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '0'";
-$sql5 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
-$sql6 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' and FACTURE_LIMIT_PAID_DATE	> CURDATE()";
+$sql2 = "SELECT * FROM factures WHERE  FACTURE_SENT = '0' AND AMOUNT_HTVA>0";
+$sql3 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND AMOUNT_HTVA>0 AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
+$sql7 = "SELECT * FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND AMOUNT_HTVA>0 AND FACTURE_LIMIT_PAID_DATE	> CURDATE()";
+$sql4 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '0' AND AMOUNT_HTVA>0";
+$sql5 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND AMOUNT_HTVA>0 AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
+$sql6 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND AMOUNT_HTVA>0 and FACTURE_LIMIT_PAID_DATE	> CURDATE()";
+$sql8 = "SELECT * FROM factures WHERE FACTURE_PAID='0' AND AMOUNT_HTVA<0";
+
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
@@ -60,6 +62,13 @@ if ($conn->query($sql6) === FALSE) {
     die;
 }
 $result6 = mysqli_query($conn, $sql6);
+
+if ($conn->query($sql8) === FALSE) {
+    $response6 = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response5);
+    die;
+}
+$result8 = mysqli_query($conn, $sql8);
 
 
 require_once('include/php-mailer/PHPMailerAutoload.php');
@@ -721,6 +730,24 @@ $dest=$dest."<p>Valeur totale des factures non payées mais pas en retard de pai
 
 
 $body=$body.$dest;
+
+$body=$body."<br /><br /><h3>Factures à payer</h3>
+
+<p>Veuillez trouver ci-dessous la liste des factures que nous devons payer :<br>
+<br>";
+
+$dest="";
+$temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">ID</th><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th class=\"tableResume\">Lien</th></tr>";
+$dest=$temp;
+while($row = mysqli_fetch_array($result8)){
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"www.kameobikes.com/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $dest=$dest.$temp;
+}
+
+$dest=$dest."</table>";
+
+$body=$body.$dest;
+
 
 $body=$body."</table><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnButtonBlock\" style=\"min-width:100%;\">
 </table><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnTextBlock\" style=\"min-width:100%;\">

@@ -5,6 +5,20 @@ use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 ob_start();
+
+
+if(isset($_GET['company'])){
+    $company=$_GET['company'];
+}
+
+if(isset($_GET['date'])){
+    $date=$_GET['date'];
+}else{
+    $date=null;
+}
+
+
+
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
 
 
@@ -19,22 +33,25 @@ function requireToVar($file){
 include 'include/globalfunctions.php';
 
 include 'include/connexion.php';
-$sql= "select * from companies where STAANN!='D'";
+$sql= "select COMPANY, BILLING_GROUP from customer_bikes WHERE LEASING='Y'";
 
+if(isset($company)){
+    $sql=$sql."AND COMPANY='$company'";
+}
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
     die;
 }
-
+$sql=$sql." GROUP BY COMPANY, BILLING_GROUP";
 $result = mysqli_query($conn, $sql);     
 $i=0;
 
 while($row = mysqli_fetch_array($result))
 {
-    $internalReference=$row['INTERNAL_REFERENCE'];
-    $companyName=$row['COMPANY_NAME'];
+    $internalReference=$row['COMPANY'];
     $currentDate=date('Y-m-d');
-    $sql_dateStart="select min(CONTRACT_START), COMPANY, BILLING_GROUP from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference' and LEASING='Y' GROUP BY COMPANY, BILLING_GROUP";
+    $billingGroup=$row['BILLING_GROUP'];
+    $sql_dateStart="select min(CONTRACT_START), COMPANY, BILLING_GROUP from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference' and LEASING='Y' and BILLING_GROUP='$billingGroup'";
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
@@ -42,16 +59,28 @@ while($row = mysqli_fetch_array($result))
     $result_dateStart = mysqli_query($conn, $sql_dateStart);   
     $length=$result_dateStart->num_rows;
     while($resultat_dateStart = mysqli_fetch_array($result_dateStart)){
+        if (ob_get_contents()) ob_end_clean();        
         ob_start();
-
         $billingGroup=$resultat_dateStart['BILLING_GROUP'];
         
         if($resultat_dateStart['min(CONTRACT_START)'])
         {
             $firstDay=substr($resultat_dateStart['min(CONTRACT_START)'], 8, 2);
             $today=substr($currentDate, 8 ,2);
-            if($today==$firstDay)
+            
+
+            if($today==$firstDay || $firstDay==$date)
             {
+                
+                $sql_companyDetails="select COMPANY_NAME from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
+                if ($conn->query($sql_companyDetails) === FALSE) {
+                    echo $conn->error;
+                    die;
+                }
+                $result_companyDetails = mysqli_query($conn, $sql_companyDetails);   
+                $resultat_companyDetails = mysqli_fetch_assoc($result_companyDetails);
+                $companyName=$resultat_companyDetails['COMPANY_NAME'];
+                
                 $file = __DIR__.'/temp/company.txt';
                 $myfile = fopen($file, "w")  or die("Unable to open file!");
                 fwrite($myfile, $internalReference);
@@ -85,7 +114,7 @@ while($row = mysqli_fetch_array($result))
                 }              
 
 
-                $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT from companies where INTERNAL_REFERENCE='$internalReference'";
+                $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
                 if ($conn->query($sql3) === FALSE) {
                     echo $conn->error;
                     die;
@@ -105,7 +134,7 @@ while($row = mysqli_fetch_array($result))
 
                 $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
 
-                $mail->From = 'julien.jamar@kameobikes.com';
+                $mail->From = 'info@kameobikes.com';
                 $mail->FromName = 'Julien Jamar';
                 $mail->AddReplyTo('julien.jamar@kameobikes.com', 'Julien Jamar');
                 $mail->Subject = 'Kameo Bikes - '. $companyName .' - Facture de '.$monthFR[(date('n')-1)].' '.date('Y');
@@ -126,18 +155,21 @@ while($row = mysqli_fetch_array($result))
                 $mail->AddAttachment( $file_to_attach , $FileName );
 
                 $mail->Body = $message;
+                if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                                if(!$mail->Send()) {
+                                   echo error_get_last()['message'];  
 
-                if(!$mail->Send()) {
-                   echo error_get_last()['message'];  
-
-                }else {
-                   echo 'mail envoyé';
+                                }else {
+                                   echo 'mail envoyé';
+                                }    
+                }else{
+                    echo '<br>Société '.$companyName.'<br><strong>environnement localhost, mail non envoyé</strong><br>';
                 }
-            
+
                 $file = __DIR__.'/temp/company.txt';
                 unlink($file);
                 $file = __DIR__.'/temp/billingGroup.txt';
-                unlink($file);
+                unlink($file); 
 
             
 

@@ -18,7 +18,7 @@ $response=array();
 if($admin!="Y"){
     if($company==NULL){
         if($email != NULL){
-            include 'connexion.php';
+            include 'connexion.php';            
             $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -30,23 +30,19 @@ if($admin!="Y"){
                 errorMessage("ES0039");
             }        
             $resultat = mysqli_fetch_assoc($result);        
-            $company=$resultat['COMPANY'];
-            $conn->close();   
-
-            include 'connexion.php';
-            $sql="SELECT * FROM customer_bikes cc, bike_models dd where COMPANY='$company' AND cc.TYPE=dd.ID";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            
+            $company=$resultat['COMPANY'];            
 
         }else{
             errorMessage("ES0038");
         }
     }
-
+    include 'connexion.php';
+    $sql="SELECT * FROM customer_bikes where COMPANY='$company'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }              
 }else{
     include 'connexion.php';
     $sql="SELECT * FROM customer_bikes";
@@ -56,11 +52,13 @@ if($admin!="Y"){
         die;
     }
 }   
+include 'connexion.php';
 
 $result = mysqli_query($conn, $sql);        
 $length = $result->num_rows;
 $response['bikeNumber']=$length;
 $response['response']="success";
+$response['sql']=$sql;
 
 $i=0;
 while($row = mysqli_fetch_array($result))

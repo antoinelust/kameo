@@ -6,10 +6,22 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
+
 $response=array();
 
 include 'connexion.php';
 $sql="SELECT * from companies";
+
+
+$type=isset($_POST['type']) ? $_POST['type'] : NULL;
+
+
+if($type!="*" && $type != NULL){
+    $sql=$sql." WHERE TYPE='$type'";
+}
+
+$sql=$sql." ORDER BY COMPANY_NAME";
+
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
@@ -22,6 +34,7 @@ $response['response']="success";
 while($row = mysqli_fetch_array($result)){
     $response['company'][$i]['companyName']=$row['COMPANY_NAME'];
     $response['company'][$i]['internalReference']=$row['INTERNAL_REFERENCE'];
+    $response['company'][$i]['type']=$row['TYPE'];
     $internalReference=$row['INTERNAL_REFERENCE'];
     $sql2="SELECT * FROM customer_bikes WHERE COMPANY='$internalReference'";
     if ($conn->query($sql2) === FALSE) {
@@ -33,6 +46,10 @@ while($row = mysqli_fetch_array($result)){
     $response['company'][$i]['companyBikeNumber'] = $result2->num_rows;
     $bikeAccessStatus="OK";
     $customerBuildingStatus="OK";
+    
+    if($response['company'][$i]['companyBikeNumber']==0){
+        $bikeAccessStatus="KO";
+    }
     while($row2 = mysqli_fetch_array($result2)){
         $bikeReference=$row2['FRAME_NUMBER'];
         $sql3="SELECT * from customer_bike_access where BIKE_NUMBER='$bikeReference' and STAANN!='D'";

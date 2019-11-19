@@ -34,6 +34,12 @@ if($email != NULL)
     $response['user']['firstName']=$resultat['PRENOM'];            
     $response['user']['email']=$resultat['EMAIL'];  
     $response['user']['staann']=$resultat['STAANN'];
+    if($resultat['ADMINISTRATOR']==''){
+        $response['user']['administrator']='N';
+    }else{
+        $response['user']['administrator']=$resultat['ADMINISTRATOR'];    
+    }
+    
     $company=$resultat['COMPANY'];
 
     

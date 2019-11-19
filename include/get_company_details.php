@@ -36,8 +36,26 @@ if($company != NULL)
     $response['companyTown']=$resultat['TOWN'];
     $response['companyVAT']=$resultat['VAT_NUMBER'];
     $response['emailContact']=$resultat['EMAIL_CONTACT'];
+    $response['type']=$resultat['TYPE'];
     $response['firstNameContact']=$resultat['PRENOM_CONTACT'];
     $response['lastNameContact']=$resultat['NOM_CONTACT'];
+    $response['phone']=$resultat['CONTACT_PHONE'];
+    
+    include 'connexion.php';
+	$sql="SELECT * FROM conditions dd where COMPANY='$company'";
+    
+    if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+	
+    $result = mysqli_query($conn, $sql);        
+    $resultat = mysqli_fetch_assoc($result);
+    $conn->close();   
+    
+    $response['assistance']=$resultat['ASSISTANCE'];
+    $response['locking']=$resultat['LOCKING'];
 
     include 'connexion.php';
 	$sql="SELECT * FROM customer_bikes dd where COMPANY='$company'";
@@ -47,8 +65,10 @@ if($company != NULL)
 		echo json_encode($response);
 		die;
 	}
-	
-    $result = mysqli_query($conn, $sql);    
+    $result = mysqli_query($conn, $sql);   
+    
+    $response['bikeNumber']=$result->num_rows;      
+    
     $i=0;
     while($row = mysqli_fetch_array($result)){
         $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
@@ -86,6 +106,7 @@ if($company != NULL)
 	}
 	
     $result = mysqli_query($conn, $sql);    
+    $response['buildingNumber']=$result->num_rows;    
     $i=0;
     while($row = mysqli_fetch_array($result)){
         $response['building'][$i]['buildingReference']=$row['BUILDING_REFERENCE'];
@@ -97,6 +118,25 @@ if($company != NULL)
         
     }
     $response['buildingNumber']=$i;
+
+	$sql="SELECT * FROM customer_referential dd where COMPANY='$company'";
+    
+    if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+	
+    $result = mysqli_query($conn, $sql);    
+    $i=0;
+    while($row = mysqli_fetch_array($result)){
+        $response['user'][$i]['name']=$row['NOM'];
+        $response['user'][$i]['firstName']=$row['PRENOM'];
+        $response['user'][$i]['email']=$row['EMAIL'];
+        $i++;
+        
+    }
+    $response['userNumber']=$i;
 
     
 	echo json_encode($response);

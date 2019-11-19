@@ -20,12 +20,21 @@ $newID=strval($newID+1);
 
 
 include 'include/connexion.php';
-$sql="select * from companies where INTERNAL_REFERENCE='$company'";
+$sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
     die;
 }
 $result = mysqli_query($conn, $sql);   
+$length = $result->num_rows;
+if($length=='0'){
+    $sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='1'";
+    if ($conn->query($sql) === FALSE) {
+        echo $conn->error;
+        die;
+    }
+}
+
 $resultat = mysqli_fetch_assoc($result);
 
 $companyName=$resultat['COMPANY_NAME'];
@@ -145,30 +154,44 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             
             include 'include/connexion.php';
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and CONTRACT_END>='$monthAfterString' and BILLING_GROUP='$billingGroup'";
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and CONTRACT_END>='$monthAfterString' and BILLING_GROUP='$billingGroup' and LEASING='Y'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
             }
             $result2 = mysqli_query($conn, $sql2);   
             $length = $result2->num_rows;
+            $conn->close();
+
             
             $i=0;
             $total=0;
 
             while($row2 = mysqli_fetch_array($result2)){
-                $i+=1;
-                $total+=$row2['LEASING_PRICE'];
-                
                 
                 $contractStart= new DateTime();
-                $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));
-
+                $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));                
+                
                 $dateStart = new DateTime();
                 $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
                 
                 $dateEnd = new DateTime();
                 $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
+                $temp1=$dateStart->format('d-m-Y');                
+                $temp2=$dateEnd->format('d-m-Y');                
+                $comment='Période du '.$temp1.' au '.$temp2;
+                $leasingPrice=$row2['LEASING_PRICE'];
+                $leasingPriceTVAC=1.21*$row2['LEASING_PRICE'];
+                $frameNumber=$row2['FRAME_NUMBER'];
+                $bikeID=$row2['ID'];
+                include 'include/connexion.php';
+                $sql="INSERT INTO factures_details (FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('$newID', '$bikeID','$frameNumber', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
+                if ($conn->query($sql) === FALSE) {
+                    echo $conn->error;
+                } 
+                $conn->close();
+                
+
                 
                 $difference=$dateStart->diff($contractStart);
                 
@@ -189,6 +212,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <td><img class="img-responsive" src="'.__DIR__.'/images_bikes/'.$row2['FRAME_NUMBER'].'_mini.jpg" alt=""></td>
                     <td>Période '.($monthDifference).'/36</td>
                 </tr>';
+                
+                $i+=1;
+                $total+=$row2['LEASING_PRICE'];
+                
+                
 
             }
 
@@ -266,6 +294,8 @@ echo $test1.$test2.$test3;
 
 
 include 'include/connexion.php';
+
+
 $today=date('Y-m-d');
 $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$billingGroup.'.pdf';
 $sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, TYPE) VALUES ('$newID', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', 'leasing')";

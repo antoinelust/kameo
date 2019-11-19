@@ -12,6 +12,8 @@ include 'globalfunctions.php';
 $email=$_POST['widget-updateUser-form-mail'];
 $name=$_POST['widget-updateUser-form-name'];
 $firstName=$_POST['widget-updateUser-form-firstname'];
+$fleetManager=isset($_POST['fleetManager']) ? "Y" : "N";
+
 
 $response=array();
 
@@ -54,6 +56,18 @@ if($email != NULL)
         }
         $conn->close();          
     }    
+    
+    if($fleetManager!=$resultat['ADMINISTRATOR']){
+        include 'connexion.php';
+        $sql="UPDATE customer_referential set ADMINISTRATOR='$fleetManager' where EMAIL = '$email'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $conn->close();          
+    }
 
     foreach($_POST as $name => $value){
 

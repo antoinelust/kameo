@@ -3,8 +3,8 @@
         <table style="width: 100%; border: solid 1px black;">
             <tr>
                 <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
-                <td style="text-align: center;    width: 34%">Facture IN FINE GRAPHIC DESIGN SPRL </td>
-                <td style="text-align: right;    width: 33%">21/08/2019</td>
+                <td style="text-align: center;    width: 34%">Facture Antoine Soille</td>
+                <td style="text-align: right;    width: 33%">16/10/2019</td>
             </tr>
         </table>
     </page_header>
@@ -22,7 +22,7 @@
     <tr>
         <td style="width: 50%">
         
-                <img class="img-responsive" src="/home/kameobiknq/www/images/logo-dark.png" alt="">
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
 				
 				<p>KAMEO Bikes sprl</p>
 				
@@ -33,22 +33,22 @@
 				<p>TVA/VAT : BE0681.879.712
 				<br>BE38 0689 0775 9672</p>
 				
-				<p>Liège, le 21/08/2019</p>
+				<p>Liège, le 16/10/2019</p>
 
         
         </td>
         <td style="width: 50%">
-				<img class="img-responsive" src="/home/kameobiknq/www/images/INF.jpg" alt="">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/SOI.jpg" alt="">
 				
-				<p>IN FINE GRAPHIC DESIGN SPRL </p>
+				<p>Antoine Soille</p>
 				
-				<p>Quai du Barbou,  8A 
-				<br>4020 Liège
+				<p>
+				<br> 
 				<br>Belgium</p>
 				
-				<p>TVA/VAT : BE 0475 026 915</p>
+				<p>TVA/VAT : </p>
 				
-				<p>Référence client : INF</p>
+				<p>Référence client : SOI</p>
         </td>
     
     </tr>
@@ -59,8 +59,8 @@
 
         </td>
         <td>
-            <h4 style="color: #C72C28">Référence : 000/0819/09022</h4>
-			<p>Août 2019</p>
+            <h4 style="color: #C72C28">Référence : 000/1019/11209</h4>
+			<p>Octobre 2019</p>
 
         </td>
     </tr>
@@ -79,19 +79,19 @@
 	          </tr>
 	        </thead>
 	        <tbody><tr>
-                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
-                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo Orbea Gain F10 - CADRE: INF-101</td>
-                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">82 € / mois HTVA</td>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 400 - CADRE: D8G08951</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86.78 € / mois HTVA</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du 21-08-2019 au 21-09-2019</td>
+                    <td style="color: grey">Période du 12-10-2019 au 12-11-2019</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/INF-101_mini.jpg" alt=""></td>
-                    <td>Période 2/36</td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/1SOILLE_mini.jpg" alt=""></td>
+                    <td>Période 8/36</td>
                 </tr></tbody>
 	      </table>
 
@@ -104,15 +104,15 @@
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
                <td style="background-color: white" witdth="100"></td>
-               <td style="background-color: white"><p> Total HTVA: 82 €/mois<br>+TVA: 17.22 /mois </p></td>
+               <td style="background-color: white"><p> Total HTVA: 86.78 €/mois<br>+TVA: 18.22 /mois </p></td>
             </tr>
             <tr>
-                <td height="35">82 €/mois</td>
+                <td height="35">86.78 €/mois</td>
                 <td>21%</td>
-                <td>17.22 €/mois</td>
-                <td>99.22 €/mois</td>
+                <td>18.22 €/mois</td>
+                <td>105 €/mois</td>
                 <td style="background-color: white" width="100"></td>
-                <td style="background-color: white"> Total TVAC : <strong>99.22 €/mois</strong></td>
+                <td style="background-color: white"> Total TVAC : <strong>105 €/mois</strong></td>
             </tr>
         </tbody>
     </table>
@@ -126,7 +126,7 @@
                     <td width="200" height="35"><strong>Délai de paiement</strong></td>
                 </tr>
                 <tr>
-                    <td height="35"><strong>000/0819/09022</strong></td>
+                    <td height="35"><strong>000/1019/11209</strong></td>
                     <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
                 </tr>
             </tbody>

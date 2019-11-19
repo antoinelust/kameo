@@ -87,11 +87,24 @@ if($email != NULL)
         $response['bill'][$i]['limitPaidDate']=$row['FACTURE_LIMIT_PAID_DATE'];
         $response['bill'][$i]['fileName']=$row['FILE_NAME'];
         $response['bill'][$i]['communication']=$row['COMMUNICATION_STRUCTUREE'];
+        $response['bill'][$i]['communicationSentAccounting']=$row['FACTURE_SENT_ACCOUNTING'];
         $i++;
 
 	}
+    include 'connexion.php'; 
     
-	echo json_encode($response);
+    if($company!='KAMEO'){
+        $sql="select * from factures where COMPANY='$company'";
+    }else{
+        $sql="select * from factures where FACTURE_PAID='0'";
+    }
+    
+    $result = mysqli_query($conn, $sql);        
+    $length = $result->num_rows;
+	$response['billNumberNotPaid']=$length;
+    
+    
+    echo json_encode($response);
     die;
 
 }

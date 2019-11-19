@@ -8,9 +8,11 @@ include 'globalfunctions.php';
 
 
 
-
+$user=$_POST['user'];
 $frameNumber=$_POST['widget-updateBikeStatus-form-frameNumber'];
-$model=$_POST['widget-updateBikeStatus-form-model'];
+
+
+$model=$_POST['model'];
 $status=$_POST['bikeStatus'];
 
 $response=array();
@@ -19,21 +21,21 @@ if($frameNumber != NULL && $status != NULL)
 {
 
     include 'connexion.php';
-	$sql="select * from customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
+    $sql="select * from customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
     if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
-	$result = mysqli_query($conn, $sql); 
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql); 
     $resultat = mysqli_fetch_assoc($result);    
-	$conn->close();
-    
+    $conn->close();
+
     $company=$resultat['COMPANY'];
-    
+
     if($status!=$resultat['STATUS']){
         include 'connexion.php';
-        $sql="update customer_bikes set STATUS = '$status', USR_MAJ = 'mykameo', HEU_MAJ = CURRENT_TIMESTAMP WHERE FRAME_NUMBER = '$frameNumber'";
+        $sql="update customer_bikes set STATUS = '$status', USR_MAJ = '$user', HEU_MAJ = CURRENT_TIMESTAMP WHERE FRAME_NUMBER = '$frameNumber'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -44,7 +46,7 @@ if($frameNumber != NULL && $status != NULL)
 
     if($model!=$resultat['MODEL']){
         include 'connexion.php';
-        $sql="update customer_bikes set MODEL = '$model', USR_MAJ = 'mykameo', HEU_MAJ = CURRENT_TIMESTAMP WHERE FRAME_NUMBER = '$frameNumber'";
+        $sql="update customer_bikes set MODEL = '$model', USR_MAJ = '$user', HEU_MAJ = CURRENT_TIMESTAMP WHERE FRAME_NUMBER = '$frameNumber'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -52,8 +54,8 @@ if($frameNumber != NULL && $status != NULL)
         }
         $conn->close();     
     }    
-    
-    
+
+
     foreach($_POST as $name => $value){
 
         if($name=="buildingAccess"){   
@@ -68,13 +70,13 @@ if($frameNumber != NULL && $status != NULL)
                 $result = mysqli_query($conn, $sql);        
                 $length = $result->num_rows;
                 $conn->close(); 
-                
 
-                
-                
+
+
+
                 if($length==0){
                     include 'connexion.php';
-                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, BIKE_NUMBER, BUILDING_CODE, STAANN) VALUES ('mykameo','$frameNumber', '$valueInArray', '')";
+                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, BIKE_NUMBER, BUILDING_CODE, STAANN) VALUES ('$user','$frameNumber', '$valueInArray', '')";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -82,7 +84,7 @@ if($frameNumber != NULL && $status != NULL)
                     }
                     $conn->close();   
                 }           
-                
+
                 include 'connexion.php';
                 $sql= "SELECT * FROM bike_building_access WHERE BIKE_NUMBER='$frameNumber' and BUILDING_CODE='$valueInArray' and STAANN='D'";
                 if ($conn->query($sql) === FALSE) {
@@ -93,7 +95,7 @@ if($frameNumber != NULL && $status != NULL)
                 $result = mysqli_query($conn, $sql);        
                 $length = $result->num_rows;
                 $conn->close();   
-                
+
                 if($length==1){
                     include 'connexion.php';
                     $sql= "UPDATE  bike_building_access set STAANN='' WHERE BIKE_NUMBER='$frameNumber' and BUILDING_CODE='$valueInArray'";
@@ -105,14 +107,14 @@ if($frameNumber != NULL && $status != NULL)
                     $conn->close();
                 }                                
 
-                
+
             }
         }
     }
-    
+
     if(!isset(($_POST['buildingAccess']))){
         include 'connexion.php';
-        $sql="update bike_building_access set STAANN='D', USR_MAJ='mykameo', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_NUMBER = '$frameNumber'";
+        $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_NUMBER = '$frameNumber'";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -155,7 +157,7 @@ if($frameNumber != NULL && $status != NULL)
                 $conn->close();  
                 if($length==1){
                     include 'connexion.php';
-                    $sql="update bike_building_access set STAANN='D', USR_MAJ='mykameo', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_NUMBER = '$frameNumber' and BUILDING_CODE='$building'";
+                    $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_NUMBER = '$frameNumber' and BUILDING_CODE='$building'";
 
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -168,16 +170,15 @@ if($frameNumber != NULL && $status != NULL)
             }
 
         }                    
-        
-        
+
+
     }    
-    
+
     successMessage("SM0003");
 
 }
 else
 {
-	errorMessage("ES0012");
+    errorMessage("ES0012");
 }
-
 ?>

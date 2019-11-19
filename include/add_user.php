@@ -14,39 +14,69 @@ global $requestor;
 global $email;
 global $password_unencrypted;
 
-
-$email=$_POST['widget-addUser-form-mail'];
-$name=$_POST['widget-addUser-form-name'];
-$firstName=$_POST['widget-addUser-form-firstname'];
-$requestor=$_POST['widget-addUser-form-requestor'];
+$generatePassword=isset($_POST['generatePassword']) ? $_POST['generatePassword'] : NULL;
+$fleetManager=isset($_POST['fleetManager']) ? "Y" : "N";
 
 
 
-include 'connexion.php';
-$sql="select * from customer_referential where EMAIL='$requestor'";
 
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response);
-    die;
+
+if(!isset($_POST['firstName']) || !isset($_POST['name']) || ((!isset($_POST['mail'])) && !isset($_POST['company']))){
+
+    errorMessage("ES0012");
 }
-$result = mysqli_query($conn, $sql);
-$resultat = mysqli_fetch_assoc($result);
-
-$company=$resultat['COMPANY'];
-$password_unencrypted=uniqid();
-$pass=password_hash($password_unencrypted, PASSWORD_DEFAULT);
 
 
+
+if(!isset($_POST['company']) || $_POST['company']==''){
+    $email=$_POST['mail'];
+    $name=$_POST['name'];
+    $firstName=$_POST['firstName'];
+    $requestor=$_POST['requestor'];
+    
+    include 'connexion.php';
+    $sql="select * from customer_referential where EMAIL='$requestor'";
+
+    if ($conn->query($sql) === FALSE) {
+    }
+    
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+
+    $company=$resultat['COMPANY'];
+    
+}else if(isset($_POST['mail'])){
+    $email=$_POST['mail'];
+    $name=$_POST['name'];
+    $firstName=$_POST['firstName'];
+    $company=$_POST['company'];
+    $requestor=$_POST['requestor'];  
+}else{
+
+    errorMessage("ES0012");
+}
+
+if($generatePassword){
+    $password_unencrypted=uniqid();
+    $pass=password_hash($password_unencrypted, PASSWORD_DEFAULT);
+}else if(isset($_POST['password'])){
+    $pass=password_hash($_POST['password'], PASSWORD_DEFAULT);
+}else{
+    
+    errorMessage("ES0012");
+}
+
+    
 
 include 'connexion.php';
-$sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN) VALUES ('mykameo', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', '', '0', '', '', '', '0', '', '$company', '$email', '$pass', 'N', '')";
+$sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', '', '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '')";
+
 
 if ($conn->query($sql) === FALSE) {
     if($conn->errno=="1062"){
         errorMessage("ES0030");
     }else{
-        $response = array ('response'=>'error', 'message'=> $conn->errno);
+        $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;   
     }
@@ -85,6 +115,7 @@ foreach($_POST as $name => $value){
 }
 writeMail();
 
+
 successMessage("SM0008");
 
 
@@ -99,6 +130,8 @@ function writeMail(){
 
     $mail->IsHTML(true);
     $mail->CharSet = 'UTF-8';
+
+
     
     if(substr($_SERVER[REQUEST_URI], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
         $mail->AddAddress($email);

@@ -48,7 +48,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 	include 'connexion.php';
     
     $timestamp= time();
-    $sql= "INSERT INTO reservations (USR_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', '$frameNumber', '$dateStart', '$buildingStart', '$dateEnd', '$buildingEnd', '$user', '')";
+    $sql= "INSERT INTO reservations (USR_MAJ, STATUS, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$frameNumber', '$dateStart', '$buildingStart', '$dateEnd', '$buildingEnd', '$user', '')";
 
 
    	if ($conn->query($sql) === FALSE) {
@@ -98,6 +98,14 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
             echo json_encode($response);
             die;
         } 
+        
+        $sql= "UPDATE reservations SET STATUS='Open' where ID='$ID'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }         
+        
         $conn->close();
 
     }

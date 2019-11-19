@@ -44,8 +44,30 @@ if($ID != NULL)
     $response['bill']['paidDate']=$row['FACTURE_PAID_DATE'];
     $response['bill']['paidLimitDate']=$row['FACTURE_LIMIT_PAID_DATE'];
     $response['bill']['type']=$row['TYPE'];
+    $response['bill']['communicationSentAccounting']=$row['FACTURE_SENT_ACCOUNTING'];    
     $response['bill']['file']=$row['FILE_NAME'];
     
+    include 'connexion.php';
+	$sql="SELECT *  FROM factures_details WHERE FACTURE_ID = '$ID'";
+    if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+	
+    $result = mysqli_query($conn, $sql);  
+    $length = $result->num_rows;
+    
+	$response['billDetailsNumber']=$length;
+    
+    $i=0;
+    while($row = mysqli_fetch_array($result)){
+        $response['bill']['billDetails'][$i]['frameNumber']=$row['FRAME_NUMBER'];
+        $response['bill']['billDetails'][$i]['comments']=$row['COMMENTS'];
+        $response['bill']['billDetails'][$i]['amountHTVA']=$row['AMOUNT_HTVA'];
+        $response['bill']['billDetails'][$i]['amountTVAC']=$row['AMOUNT_TVAC'];
+        $i++;
+    }
     
 	echo json_encode($response);
     die;
