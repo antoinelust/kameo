@@ -38,6 +38,7 @@ if($frameNumber != NULL)
     $response['frameReference']=$row['FRAME_REFERENCE'];            
     $response['company']=$row['COMPANY'];            
     $response['size']=$row['SIZE'];            
+    $response['leasing']=$row['LEASING'];            
     $response['leasingPrice']=$row['LEASING_PRICE'];            
     $response['bikePrice']=$row['BIKE_PRICE'];            
     $response['buyingDate']=$row['BIKE_BUYING_DATE'];            

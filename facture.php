@@ -19,6 +19,11 @@ $newID=$resultat_reference['max(ID)'];
 $newID=strval($newID+1);
 
 
+$today=date('Y-m-d');
+$OneMonthAfter=new DateTime();
+$OneMonthAfter->add(new DateInterval("P1M"));
+$OneMonthAfterString=$OneMonthAfter->format('Y-m-d');
+
 include 'include/connexion.php';
 $sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
 if ($conn->query($sql) === FALSE) {
@@ -293,12 +298,26 @@ echo $test1.$test2.$test3;
 
 
 
-include 'include/connexion.php';
 
 
-$today=date('Y-m-d');
 $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$billingGroup.'.pdf';
-$sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, TYPE) VALUES ('$newID', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', 'leasing')";
+
+include 'include/connexion.php';
+$sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
+if ($conn->query($sql3) === FALSE) {
+    echo $conn->error;
+    die;
+}
+$result3 = mysqli_query($conn, $sql3);   
+$resultat3 = mysqli_fetch_assoc($result3);
+
+if($resultat3['BILLS_SENDING'] == "Y" && resultat3['EMAIL_CONTACT_BILLING'] != "" && resultat3['LASTNAME_CONTACT_BILLING'] != ""){
+    $sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE) VALUES ('$newID', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$OneMonthAfterString','leasing')";
+}else{
+    $sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '1', '0', '$OneMonthAfterString','leasing', '$today')";
+}
+
+include 'include/connexion.php';
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;

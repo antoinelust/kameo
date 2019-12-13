@@ -91,17 +91,71 @@ if($email != NULL)
         $i++;
 
 	}
-    include 'connexion.php'; 
     
-    if($company!='KAMEO'){
-        $sql="select * from factures where COMPANY='$company'";
+    include 'connexion.php';     
+    if($company=='KAMEO'){
+        $sql="select * from factures";
     }else{
-        $sql="select * from factures where FACTURE_PAID='0'";
+        $sql="select * from factures WHERE COMPANY='$company'";
     }
     
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
-	$response['billNumberNotPaid']=$length;
+    $response['billNumberTotal']=$length;
+    
+    include 'connexion.php';         
+    if($company=='KAMEO'){
+        $sql="select * from factures where AMOUNT_HTVA>0";
+    }else{
+        $sql="select * from factures WHERE AMOUNT_HTVA>0 AND COMPANY='$company'";
+    }
+    
+    $result = mysqli_query($conn, $sql);        
+    $length = $result->num_rows;
+    $response['billINNumber']=$length;
+    
+    include 'connexion.php';             
+    if($company=='KAMEO'){
+        $sql="select * from factures where AMOUNT_HTVA<0";
+    }else{
+        $sql="select * from factures WHERE AMOUNT_HTVA<0 AND COMPANY='$company'";
+    }
+    $result = mysqli_query($conn, $sql);        
+    $length = $result->num_rows;
+    $response['billOUTNumber']=$length;
+    
+    include 'connexion.php'; 
+    if($company=='KAMEO'){
+        $sql="select * from factures where AMOUNT_HTVA>0 AND FACTURE_SENT='0'";
+    }else{
+        $sql="select * from factures WHERE AMOUNT_HTVA<0 AND FACTURE_SENT='0' AND COMPANY='$company'";
+    }
+    
+    $result = mysqli_query($conn, $sql);        
+    $length = $result->num_rows;
+    $response['billINNumberNotSent']=$length;
+    
+    include 'connexion.php'; 
+    if($company=='KAMEO'){
+        $sql="select * from factures where AMOUNT_HTVA<0 AND FACTURE_PAID='0'";
+    }else{
+        $sql="select * from factures WHERE AMOUNT_HTVA<0 AND FACTURE_PAID='0' AND COMPANY='$company'";
+    }
+    $result = mysqli_query($conn, $sql);        
+    $length = $result->num_rows;
+    $response['billOUTNumberNotPaid']=$length;
+    
+    include 'connexion.php';
+    if($company=='KAMEO'){
+        $sql="select * from factures where AMOUNT_HTVA>0 AND FACTURE_PAID='0' AND FACTURE_SENT='1'";
+    }else{
+        $sql="select * from factures WHERE AMOUNT_HTVA>0 AND FACTURE_PAID='0' AND FACTURE_SENT='1' AND COMPANY='$company'";
+    }
+
+    $result = mysqli_query($conn, $sql);        
+    $length = $result->num_rows;
+    $response['billINNumberNotPaid']=$length;
+    
     
     
     echo json_encode($response);

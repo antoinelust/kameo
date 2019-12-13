@@ -87,3 +87,8 @@ supprimer condition sur locking_bike
 UPDATE locking_bikes aa, building_access bb set aa.BUILDING=bb.BUILDING_REFERENCE where aa.BUILDING=bb.BUILDING_CODE
 
 
+---------
+
+ALTER TABLE `company_actions` ADD `TITLE` TEXT NOT NULL AFTER `DATE_REMINDER`;
+UPDATE company_actions SET TITLE=DESCRIPTION;
+UPDATE company_actions SET DESCRIPTION='';

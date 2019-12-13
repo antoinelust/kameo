@@ -19,7 +19,7 @@ include 'include/header2.php';
 							<h2 class="text-white text-center fr"><a href="vente-leasing-location.php">Vente, Leasing et Location</a></h2>
 							<h2 class="text-white text-center en"><a href="vente-leasing-location.php">Sell, Lease and Renting</a></h2>
 					        <h2 class="text-white text-center nl"><a href="vente-leasing-location.php">Verkoop, Leasing en Huren</a></h2>
-					        <a href="vente-leasing-location.php"><img src="images/flotte.png" class="center img-responsive" alt="Vente, Leasin, Location de vélos"></a>
+					        <a href="vente-leasing-location.php"><img src="images/flotte.png" class="center img-responsive" alt="Vente, Leasin, Location de vélos" data-animation="shake infinite"></a>
 						</div>
 						<div class="separator visible-sm visible-xs"></div>
 						<div class="col-md-4">
@@ -27,7 +27,7 @@ include 'include/header2.php';
 					        <h2 class="text-white text-center en"><a href="maintenance-assurance.php">Maintain and Insurance</a></h2>
 					        <h2 class="text-white text-center nl"><a href="maintenance-assurance.php">Onderhouden en Verzekering</a></h2>
 											<br class="hidden-xs hidden-sm">
-							<a href="entretien-assurance.php"><img src="images/entretien.png" class="center img-responsive" alt="Entretien, Assurance de vélos"></a>
+							<a href="maintenance-assurance.php"><img src="images/entretien.png" class="center img-responsive" alt="Entretien, Assurance de vélos" data-animation="rotateIn infinite"></a>
 						</div>
 						<div class="separator visible-sm visible-xs"></div>
 						<div class="col-md-4">
@@ -36,7 +36,7 @@ include 'include/header2.php';
 							<h2 class="text-white text-center nl"><a href="gestion-de-flotte.php">Vloot beheer</a></h2>
 							<br class="hidden-xs hidden-sm">
 											<br class="hidden-xs hidden-sm">
-							<a href="gestion-de-flotte.php"><img src="images/plateforme.png" class="center img-responsive" alt="Gestion de flotte de vélos"></a>
+							<a href="gestion-de-flotte.php"><img src="images/plateforme.png" class="center img-responsive" alt="Gestion de flotte de vélos" data-animation="bounce infinite"></a>
 						</div>
 						</div>
 				</div>
@@ -57,7 +57,124 @@ include 'include/header2.php';
 </video>
 <br>
 
-<div class="separator"></div>
+<section>
+			<div class="container">
+				<!--Portfolio Carousel -->
+				<div class="heading heading text-left m-b-20">
+		        	<h2 class="fr">Nos vélos "Coups de cœur"</h2>
+		        </div>
+				<div class="carousel" data-lightbox-type="gallery">
+				
+				
+					<div class="portfolio-item">
+						<div class="portfolio-image effect social-links">
+							<img src="images/catalogue/Orbea_Gain.jpg" alt="">
+							<div class="image-box-content">
+								<p>
+									<a href="images/catalogue/Orbea_Gain.jpg" data-lightbox-type="image" title="Orbea Gain - le vélo électrique urbain au look sportif."><i class="fa fa-expand"></i></a>
+									<a href="velos.php"><i class="fa fa-link"></i></a>
+								</p>
+							</div>
+						</div>
+						<div class="">
+							<h4 class="title">ORBEA Gain</h4>
+							<p>Il sera l'arme de choix du travailleur sportif voulant arriver au travail en vélo sans forcer.</p>
+							<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																	  - Son look sportif<br>
+																	  - La batterie intégrée (difficile de voir qu'il est électrique)<br> 
+																	  - Son poids maitrisé </p>
+							<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																	  - Position sportive, ne s'adapte pas à tout le monde</p>
+							<p>
+						</div>
+					</div>
+					
+					<div class="portfolio-item">
+						<div class="portfolio-image effect social-links">
+							<img src="images/catalogue/Conway_ETrekking.jpg" alt="">
+							<div class="image-box-content">
+								<p>
+									<a href="images/catalogue/Conway_ETrekking.jpg" data-lightbox-type="image" title="Conway E Trekking - un vélo électrique de ville qui s'adapte à tout le monde."><i class="fa fa-expand"></i></a>
+									<a href="velos.php"><i class="fa fa-link"></i></a>
+								</p>
+							</div>
+						</div>
+						<div class="">
+							<h4 class="title">CONWAY E Trekking</h4>
+							<p>Un vélo électrique de ville qui s'adapte à tout le monde.</p>
+							<br>
+							<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																	  - Le moteur Bosch performance ( le plus puissant de la marque )<br>
+																	  - Cadre Homme, Dame ou Mixte <br> 
+																	  - Les équipements d'origine complets </p>
+							<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																	  - Le design trop sobre (à notre goût)</p>
+							<p>
+						</div>
+					</div>
+					
+					<div class="portfolio-item">
+						<div class="portfolio-image effect social-links">
+							<img src="images/catalogue/Ahooga_Pliant.jpg" alt="">
+							<div class="image-box-content">
+								<p>
+									<a href="images/catalogue/Ahooga_Pliant.jpg" data-lightbox-type="image" title="Ahooga pliant - combiner train + vélo ou voiture + vélo, voilà votre monture pour les derniers kms"><i class="fa fa-expand"></i></a>
+									<a href="velos.php"><i class="fa fa-link"></i></a>
+								</p>
+							</div>
+						</div>
+						<div class="">
+							<h4 class="title">AHOOGA Pliant</h4>
+							<p>Combiner train + vélo ou voiture + vélo, voilà votre monture pour les derniers kilomètres</p>
+							<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																	  - Le design belge et intelligent<br>
+																	  - Le confort de conduite<br> 
+																	  - La possibilité de l'avoir en vélo traditionnel ou électrique</p>
+							<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																	  - Ne convient pas pour de longues distances</p>
+							<p>
+						</div>
+					</div>
+					
+					<div class="portfolio-item">
+						<div class="portfolio-image effect social-links">
+							<img src="images/catalogue/Victoria_Eurban.jpg" alt="">
+							<div class="image-box-content">
+								<p>
+									<a href="images/catalogue/Victoria_Eurban.jpg" data-lightbox-type="image" title="Vitcoria E Urban - Un vélo à tout épreuve pour la ville qui vous procurera un sentiment de sécurité"><i class="fa fa-expand"></i></a>
+									<a href="velos.php"><i class="fa fa-link"></i></a>
+								</p>
+							</div>
+						</div>
+						<div class="">
+							<h4 class="title">VICTORIA E Urban</h4>
+							<p>Un vélo à toute épreuve pour la ville qui vous procurera un sentiment de sécurité</p>
+							<br>
+							<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																	  - Les pneus anticrevaison et confortables<br>
+																	  - Transmission par courroie et moteur puissant <br> 
+																	  - Position relevée agréable </p>
+							<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																	  - Le poids du vélo si vous devez le porter</p>
+							<p>
+						</div>
+					</div>
+
+					
+
+				</div>
+				</div>
+	</section>
+				<!--Portfolio Carousel -->
+				
+	
+	<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark text-light">
+	  <div class="container">
+	    <h3>Envie d'en voir plus?</h3>
+	    <p>Retrouvez une plus grande partie des vélos que nous avons sélectionné pour vous.</p>
+	    <a class="button large green button-3d effect icon-left" href="catalogue.php"><span><i class="fa fa-bicycle"></i>Suite du catalogue</span></a> </div>
+	</div>
+				
 
 <section id="section5" class="">
 	<div class="container">
@@ -67,9 +184,13 @@ include 'include/header2.php';
         	<h2 class="nl">Onze klanten:</h2>
         </div>
         
-        <ul class="grid grid-3-columns">
+        <ul class="grid grid-5-columns">
 				<li>
 					<img src="images/siapartners.jpg" alt="client vélo électrique Bruxelles - SiaPartners">
+				</li>
+				
+				<li>
+					<img src="images/DEDALE.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
 				</li>
 				
 				<li>
@@ -77,7 +198,43 @@ include 'include/header2.php';
 				</li>
 				
 				<li>
+					<img src="images/ATRADIUS.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
+				</li>
+				
+				<li>
 					<img src="images/venturelab.jpg" alt="client vélo électrique Liège - Venturelab">
+				</li>
+				
+				<li>
+					<img src="images/chu.jpg" alt="client vélo électrique Liège - CHU Liège">
+				</li>
+				
+				<li>
+					<img src="images/AGC.jpg" alt="client vélo électrique Liège - AGC">
+				</li>
+				
+				<li>
+					<img src="images/Epsylon.jpg" alt="client vélo électrique Liège - Epsylon">
+				</li>
+				
+				<li>
+					<img src="images/IDEA.jpg" alt="client vélo électrique Liège - IDEA">
+				</li>
+				
+				<li>
+					<img src="images/Galler.jpg" alt="client vélo électrique Liège - Galler">
+				</li>
+				
+				<li>
+					<img src="images/CIE.jpg" alt="client vélo électrique Liège - CIE">
+				</li>
+				
+				<li>
+					<img src="images/RAYON9.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
+				</li>
+				
+				<li>
+					<img src="images/Kartell.jpg" alt="client vélo électrique Liège - Kartell+">
 				</li>
 		</ul>
         
@@ -130,6 +287,7 @@ include 'include/header2.php';
 
                                         jQuery(form).ajaxSubmit({
                                             success: function(text) {
+                                                console.log(text);
                                                 if (text.response == 'success') {
                                                     $.notify({
                                                         message: text.message
@@ -159,36 +317,43 @@ include 'include/header2.php';
 		
 
 
-		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-					<br>BE 0681.879.712 
-					<br>+32 498 72 75 46 </div>
-					<br>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				<!--
-				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-				-->
-				<br>
-				<br>
+				<!-- FOOTER -->
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	           
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
 				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									
+									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+								</ul>
+					</div>
+					
+					<div class="copyright-text text-center"><!--<a href="blog.php" class="text-green text-bold">Le blog</a> | --><a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					
+					<br>
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+			<!-- END: FOOTER -->
 
 	</div>
 	<!-- END: WRAPPER -->

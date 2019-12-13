@@ -33,14 +33,15 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', hideResearch, false);
         classname[i].addEventListener('click', get_bikes_listing, false);
         classname[i].addEventListener('click', get_users_listing, false);
-        classname[i].addEventListener('click', get_company_conditions, false);
+        classname[i].addEventListener('click', get_company_conditions(), false);
+        classname[i].addEventListener('click', list_condition, false);
         
         classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);  
         classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*')}, false);   
         classname[i].addEventListener('click', function () { get_company_listing('*')}, false);   
         classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);   
         classname[i].addEventListener('click', function () { list_bikes_admin()}, false);   
-        classname[i].addEventListener('click', function () { list_tasks()}, false);   
+        classname[i].addEventListener('click', function () { list_tasks('*',$('.taskOwnerSelection').val())}, false);   
         classname[i].addEventListener('click', initialize_booking_counter, false);
 
     }
@@ -57,7 +58,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
     document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);   
     document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false); 
     document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false); 
-    document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks()}, false); 
+    document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val())}, false); 
+    document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false); 
     
 
     var tempDate=new Date();
@@ -78,6 +80,10 @@ function reservation_listing(){
 function bikeFilter(e){
     document.getElementsByClassName('bikeSelectionText')[0].innerHTML=e;
     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+
+}    
+function taskFilter(e){
+    list_tasks('*', $('.taskOwnerSelection').val());
 
 }
 
@@ -167,12 +173,13 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                     $('input[name=widget-updateBikeStatusAdmin-form-assistanceReference]').val(response.contractReference);
                     company=response.company;
                     
-                    if(response.leasing="Y"){
+                    if(response.leasing=="Y"){
                         $('input[name=widget-updateBikeStatusAdmin-form-billing]').prop("checked", true);
                     }else{
-                        $('input[name=widget-updateBikeStatusAdmin-form-billing]').prop("checked", true);
+                        $('input[name=widget-updateBikeStatusAdmin-form-billing]').prop("checked", false);
                     }
                     $('input[name=widget-updateBikeStatusAdmin-form-billingPrice]').val(response.leasingPrice);
+                    
                     $('input[name=widget-updateBikeStatusAdmin-form-billingGroup]').val(response.billingGroup);
 
                     
@@ -386,29 +393,53 @@ function construct_form_for_action_update(id){
             }
         })
     
-    
-    $.ajax({
-            url: 'include/action_company.php',
-            type: 'get',
-            data: { "id": id},
-            success: function(response){
-                if (response.response == 'error') {
-                    console.log(response.message);
-                } else{
-                    document.getElementById('widget-updateAction-form').reset();            
-                    $('#widget-updateAction-form input[name=id]').val(response.action.id);
-                    $('#widget-updateAction-form input[name=date]').val(response.action.date.substr(0,10));
-                    $('#widget-updateAction-form input[name=description]').val(response.action.description);
-                    if(response.action.date_reminder != null){
-                        $('#widget-updateAction-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
-                    }
-                    $('#widget-updateAction-form input[name=company]').val(response.action.company);
-                    $('#widget-updateAction-form select[name=status]').val(response.action.status);
-                }              
+        $('#widget-updateAction-form select[name=owner]')
+            .find('option')
+            .remove()
+            .end()
+        ;
 
+        $.ajax({
+            url: 'include/get_kameobikes_members.php',
+            type: 'get',
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.membersNumber){
+                        $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");    
+                        i++;
+                    }                    
+                }
             }
-    })
-    
+        }).done(function(){
+            $.ajax({
+                url: 'include/action_company.php',
+                type: 'get',
+                data: { "id": id},
+                success: function(response){
+                    if (response.response == 'error') {
+                        console.log(response.message);
+                    } else{
+                        document.getElementById('widget-updateAction-form').reset();            
+                        $('#widget-updateAction-form input[name=id]').val(response.action.id);
+                        $('#widget-updateAction-form input[name=date]').val(response.action.date.substr(0,10));
+                        $('#widget-updateAction-form textarea[name=description]').val(response.action.description);
+                        $('#widget-updateAction-form input[name=title]').val(response.action.title);
+                        if(response.action.date_reminder != null){
+                            $('#widget-updateAction-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
+                        }
+                        $('#widget-updateAction-form select[name=company]').val(response.action.company);
+                        $('#widget-updateAction-form select[name=status]').val(response.action.status);
+                        $('#widget-updateAction-form select[name=owner]').val(response.action.owner);
+                    }              
+
+                }
+            })
+
+        })
 }
     
     
@@ -499,7 +530,6 @@ function construct_form_for_billing_status_update(ID){
                     dest=dest.concat(temp);
                 }
                 dest=dest.concat("</tbody><table>");
-                console.log(dest);
                 document.getElementById('billingDetails').innerHTML=dest;
                 displayLanguage();
 
@@ -1307,12 +1337,15 @@ if($connected){
         })
     }
         
-    function list_tasks(status) {
+    function list_tasks(status, owner2) {
         var email= "<?php echo $user; ?>";
+        if(!owner2){
+            owner2=email;
+        }
         $.ajax({
             url: 'include/action_company.php',
             type: 'get',
-            data: { "company": '*', "status": status},
+            data: { "company": '*', "status": status, "owner":owner2},
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
@@ -1320,26 +1353,63 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions:</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions</span></a><div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions:</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addTask\" data-toggle=\"modal\" onclick=\"create_task()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
                     dest=dest.concat(temp);                
                     while (i < response.actionNumber){
                         
                         if(response.action[i].date_reminder!=null){
-                            $date_reminder=response.action[i].date_reminder.substr(0,10);
+                            var date_reminder=response.action[i].date_reminder.substr(0,10);
                         }else{
-                            $date_reminder="N/A";
+                            var date_reminder="N/A";
                         }
+                        
+                        var status=response.action[i].status;
+                        var ownerSpan=response.action[i].ownerFirstName+" "+response.action[i].ownerName;
+
                         if(response.action[i].late && response.action[i].status=='TO DO'){
-                            $date_reminder="<span class='text-red'>"+$date_reminder+"</span>";
+                            date_reminder="<span class='text-red'>"+date_reminder+"</span>";
+                            status="<span class='text-red'>"+status+"</span>";
+                            owner="<span class='text-red'>"+ownerSpan+"</span>";
+                        }else if(response.action[i].status=='DONE'){
+                            date_reminder="<span class='text-green'>"+date_reminder+"</span>";                            
+                            status="<span class='text-green'>"+status+"</span>";
+                            owner="<span class='text-green'>"+ownerSpan+"</span>";
+                        }else if(status='TO DO'){
+                            date_reminder="<span class='text-orange'>"+date_reminder+"</span>";                            
+                            status="<span class='text-orange'>"+status+"</span>";
+                            owner="<span class='text-orange'>"+ownerSpan+"</span>";
                         }
-                        var temp="<tr><th>"+response.action[i].id+"</th><th>"+response.action[i].company+"</th><th>"+response.action[i].date.substr(0,10)+"</th><th>"+response.action[i].description+"</th><th>"+$date_reminder+"</th><th>"+response.action[i].status+"</th><th><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
+                        
+                        
+                        var temp="<tr><th>"+response.action[i].id+"</th><th>"+response.action[i].company+"</th><th>"+response.action[i].date.substr(0,10)+"</th><th>"+response.action[i].title+"</th><th>"+date_reminder+"</th><th>"+status+"</th><th>"+ownerSpan+"</th><th><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
                         dest=dest.concat(temp);
                         i++;
 
                     }
                     var temp="</tobdy></table>";
-                    dest=dest.concat(temp);
+                    dest=dest.concat(temp);                 
                     document.getElementById('tasksListingSpan').innerHTML = dest;
+                    $('.taskOwnerSelection')
+                        .find('option')
+                        .remove()
+                        .end()
+                    ;
+                    $('.taskOwnerSelection').append("<option value='*'>Tous<br>");    
+
+                    var i=0;
+                    while (i < response.ownerNumber){
+                        $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");    
+                        i++;
+
+                    }
+                    
+                    if(owner2){
+                        $('.taskOwnerSelection').val(owner2);
+                    }else{
+                        $('.taskOwnerSelection').val('*');
+                    }
+                    
+                    
                     document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
                     
                     displayLanguage();    
@@ -1391,25 +1461,70 @@ if($connected){
             }
         })
     }        
-
+   
         
+
     function confirm_add_user(){
         
         document.getElementById('confirmAddUser').innerHTML="<p><strong>Attention</strong>, la création d'un compte entraînera l'envoi d'un mail vers la personne en question.<br>\
         Veuillez confirmer que les informations mentionées précédemment sont correctes.</p><button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Confirmer</button>";
-    }
+    }        
         
-    function get_company_conditions(){
+    function list_condition(){
+        var email= "<?php echo $user; ?>";
+        $.ajax({
+            url: 'include/get_conditions_listing.php',
+            type: 'get',
+            data: { "email": email},
+            success: function(response){                
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Groupes de condition :</h4><h4 class=\"en-inline\">Condition groups:</h4><h4 class=\"nl-inline\">Condition groups:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#companyConditions\" data-toggle=\"modal\" onclick=\"create_condition()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un groupe de conditions</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Nombre d'utilisateurs</span><span class=\"en-inline\">Groupe size</span><span class=\"nl-inline\">Group size</span></th><th></th></tr></thead>";
+                    dest=dest.concat(temp);                    
+                                        
+                    while (i < response.conditionNumber){
+                        
+                        if(response.condition[i].name=="generic"){
+                            var temp="<tr><th>Conditions génériques</th>";
+                        }
+                        else{
+                            var temp="<tr><th>"+response.condition[i].name+"</th>";
+                        }
+                        dest=dest.concat(temp);
+                        var temp="<th>"+response.condition[i].length+"</th><th><a  data-target=\"#companyConditions\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"get_company_conditions('"+response.condition[i].id+"')\">Mettre à jour</a></th></tr>";
+                        dest=dest.concat(temp);
+
+                        i++;
+                    }
+                    document.getElementById('spanConditionListing').innerHTML = dest;
+                    displayLanguage();
+                                        
+                }
+            }
+        })
+        
+    }
+
+        
+    function get_company_conditions(id){
+        var emailArray;
         var email= "<?php echo $user; ?>";
         $.ajax({
             url: 'include/get_company_conditions.php',
             type: 'post',
-            data: { "email": email},
+            data: { "email": email, "id": id},
+            
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                    $('#widget-updateCompanyConditions-form input[name=action]').val("update");
+                    
                     if(response.update){
                         
                         var classname = document.getElementsByClassName('kameo');
@@ -1424,111 +1539,252 @@ if($connected){
                     }
                     
                     
-                    document.getElementsByClassName('companyConditionsDaysInAdvance')[0].value = response.companyConditions.bookingDays;
-                    document.getElementsByClassName('companyConditionsBookingLength')[0].value = response.companyConditions.bookingLength;
-                    document.getElementsByClassName('companyConditionsBookingsPerYear')[0].value = response.companyConditions.maxBookingsPerYear;
-                    document.getElementsByClassName('companyConditionsBookingsPerMonth')[0].value = response.companyConditions.maxBookingsPerMonth;
-                    document.getElementsByClassName('companyConditionsStartIntakeBooking')[0].value = response.companyConditions.hourStartIntakeBooking;
-                    document.getElementsByClassName('companyConditionsEndIntakeBooking')[0].value = response.companyConditions.hourEndIntakeBooking;
-                    document.getElementsByClassName('companyConditionsStartDepositBooking')[0].value = response.companyConditions.hourStartDepositBooking;
-                    document.getElementsByClassName('companyConditionsEndDepositBooking')[0].value = response.companyConditions.hourEndDepositBooking;
+                    $('#widget-updateCompanyConditions-form input[name=id]').val(id);
+                    if(response.companyConditions.name=="generic"){
+                        $('#widget-updateCompanyConditions-form input[name=name]').val("Conditions génériques");
+                        $('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', true);
+                        
+                    }else{
+                        $('#widget-updateCompanyConditions-form input[name=name]').val(response.companyConditions.name);
+                        $('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', false);
+                        
+                    }
+                    $('#widget-updateCompanyConditions-form input[name=daysInAdvance]').val(response.companyConditions.bookingDays);
+                    $('#widget-updateCompanyConditions-form input[name=bookingLength]').val(response.companyConditions.bookingLength);
+                    $('#widget-updateCompanyConditions-form input[name=bookingsPerYear]').val(response.companyConditions.maxBookingsPerYear);
+                    $('#widget-updateCompanyConditions-form input[name=bookingsPerMonth]').val(response.companyConditions.maxBookingsPerMonth);
+                    $('#widget-updateCompanyConditions-form input[name=startIntakeBooking]').val(response.companyConditions.hourStartIntakeBooking);
+                    $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val(response.companyConditions.hourEndIntakeBooking);
+                    $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val(response.companyConditions.hourStartDepositBooking);
+                    $('#widget-updateCompanyConditions-form input[name=endDepositBooking]').val(response.companyConditions.hourEndDepositBooking);
+                    
+                    
                     var dest="";
                     if(response.companyConditions.mondayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingMonday\" checked value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" checked value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingMonday\" value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";   
+                        temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";   
                     }
                     dest=dest.concat(temp);
                     
                     if(response.companyConditions.tuesdayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingTuesday\" checked value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" checked value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingTuesday\" value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";                        
+                        temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";                        
                     }
                         dest=dest.concat(temp);
                     if(response.companyConditions.wednesdayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingWednesday\" checked value=\""+response.companyConditions.wednesdayIntake+"\">Mercredi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingWednesday\" checked value=\""+response.companyConditions.wednesdayIntake+"\">Mercredi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingWednesday\" value=\""+response.companyConditions.wednesdayIntake+"\">Mercredi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingWednesday\" value=\""+response.companyConditions.wednesdayIntake+"\">Mercredi<br>";
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.thursdayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingThursday\" checked value=\""+response.companyConditions.thursdayIntake+"\">Jeudi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingThursday\" checked value=\""+response.companyConditions.thursdayIntake+"\">Jeudi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingThursday\" value=\""+response.companyConditions.thursdayIntake+"\">Jeudi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingThursday\" value=\""+response.companyConditions.thursdayIntake+"\">Jeudi<br>";
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.fridayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingFriday\" checked value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";                    
+                        temp="<input type=\"checkbox\" name=\"intakeBookingFriday\" checked value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";                    
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingFriday\"  value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";                    
+                        temp="<input type=\"checkbox\" name=\"intakeBookingFriday\"  value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";                    
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.saturdayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingSaturday\" checked value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" checked value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingSaturday\" value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
                     }            
                     dest=dest.concat(temp);
                     if(response.companyConditions.sundayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingSunday\" checked value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" checked value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsIntakeBookingSunday\" value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
+                        temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
                     }                    
                     dest=dest.concat(temp);
-                    document.getElementsByClassName('companyConditionsIntakeBookingDays')[0].innerHTML = dest;
+                    document.getElementsByClassName('intakeBookingDays')[0].innerHTML = dest;
                     
                     var dest="";
                     if(response.companyConditions.mondayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingMonday\" checked value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingMonday\" checked value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";    
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingMonday\" value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";
+                        temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";
                     }
                     dest=dest.concat(temp);                    
                     if(response.companyConditions.tuesdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingTuesday\" checked value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" checked value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";    
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingTuesday\" value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";
+                        temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.wednesdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingWednesday\" checked value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" checked value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";    
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingWednesday\" value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";
+                        temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";
                     }                                    
                     dest=dest.concat(temp);
                     if(response.companyConditions.thursdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingThursday\" checked value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";                        
+                        temp="<input type=\"checkbox\" name=\"depositBookingThursday\" checked value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";                        
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingThursday\" value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";                        
+                        temp="<input type=\"checkbox\" name=\"depositBookingThursday\" value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";                        
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.fridayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingFriday\" checked value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingFriday\" checked value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";    
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingFriday\" value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingFriday\" value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";    
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.saturdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingSaturday\" checked value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" checked value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";    
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingSaturday\" value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";
+                        temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";
                     }                
                     dest=dest.concat(temp);
                     if(response.companyConditions.sundayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingSunday\" checked value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingSunday\" checked value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";    
                     }else{
-                        temp="<input type=\"checkbox\" name=\"companyConditionsDepositBookingSunday\" value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingSunday\" value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";    
                     }                
                     dest=dest.concat(temp);
                     
-                    document.getElementsByClassName('companyConditionsDepositBookingDays')[0].innerHTML = dest;
+                    if(response.userAccessNumber==0){
+                        emailArray=[];
+                    }else{
+                        emailArray=response.companyConditions.email;
+                    }
+                    $.ajax({
+                        url: 'include/get_company_details.php',
+                        type: 'post',
+                        data: { "email": email},
+                        success: function(response){
+                            if(response.response == 'error') {
+                                console.log(response.message);
+                            }
+                            if(response.response == 'success'){
+                                var i=0;
+                                var dest="";
+                                while (i < response.userNumber){
+                                    if(emailArray.includes(response.user[i].email)){
+                                        temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" checked value=\""+response.user[i].email+"\"> "+response.user[i].firstName+" "+response.user[i].name+"</div>";
+                                    }else{
+                                        temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\"> "+response.user[i].firstName+" "+response.user[i].name+"</div>";
+                                    }
+                                    dest=dest.concat(temp);
+                                    i++;
+
+                                }
+                                document.getElementById('groupConditionUsers').innerHTML = dest;
+                            }
+                        }
+                    })    
                     
+                    document.getElementsByClassName('depositBookingDays')[0].innerHTML = dest;
 
                                         
                 }
             }
         })
+    }
+        
+        
+    function create_condition(){
+        var email= "<?php echo $user; ?>";
+        $('#widget-updateCompanyConditions-form input[name=name]').val("");
+        $('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', false);
+        
+        $('#widget-updateCompanyConditions-form input[name=daysInAdvance]').val("");
+        $('#widget-updateCompanyConditions-form input[name=bookingLength]').val("");
+        $('#widget-updateCompanyConditions-form input[name=bookingsPerYear]').val("");
+        $('#widget-updateCompanyConditions-form input[name=bookingsPerMonth]').val("");
+        $('#widget-updateCompanyConditions-form input[name=startIntakeBooking]').val("");
+        $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val("");
+        $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val("");
+        $('#widget-updateCompanyConditions-form input[name=endDepositBooking]').val("");
+        
+        var temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\"\">Lundi<br><input type=\"checkbox\" name=\"depositBookingTuesday\" value=\"\">Mardi<br><input type=\"checkbox\" name=\"depositBookingWednesday\" value=\"\">Mercredi<br><input type=\"checkbox\" name=\"depositBookingThursday\" value=\"\">Jeudi<br><input type=\"checkbox\" name=\"depositBookingFriday\" value=\"\">Vendredi<br><input type=\"checkbox\" name=\"depositBookingSaturday\" value=\"\">Samedi<br><input type=\"checkbox\" name=\"depositBookingSunday\" value=\"\">Dimanche<br>";    
+        document.getElementsByClassName('intakeBookingDays')[0].innerHTML = temp;
+        document.getElementsByClassName('depositBookingDays')[0].innerHTML = temp;
+        $('#widget-updateCompanyConditions-form input[name=action]').val("create");
+        
+        
+        $.ajax({
+            url: 'include/get_company_details.php',
+            type: 'post',
+            data: { "email": email},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="";
+                    while (i < response.userNumber){
+                        temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\"> "+response.user[i].firstName+" "+response.user[i].name+"</div>";
+                        dest=dest.concat(temp);
+                        i++;
+                        
+                    }
+                    document.getElementById('groupConditionUsers').innerHTML = dest;
+            
+                    
+                    
+                }
+            }
+        })
+        
+        
+    }
+        
+    function create_task(){
+        $('#widget-addTask-form select[name=owner]')
+            .find('option')
+            .remove()
+            .end()
+        ;
+
+        $.ajax({
+            url: 'include/get_kameobikes_members.php',
+            type: 'get',
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.membersNumber){
+                        $('#widget-addTask-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");    
+                        i++;
+                    }                    
+                }
+            }
+        })
+        
+        
+        $('#widget-addTask-form select[name=company]')
+            .find('option')
+            .remove()
+            .end()
+        ;
+
+        return $.ajax({
+            url: 'include/get_companies_listing.php',
+            type: 'get',
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.companiesNumber){
+                        $('#widget-addTask-form select[name=company]').append("<option value="+response.company[i].internalReference+">"+response.company[i].companyName+"<br>");    
+                        i++;
+                    }                    
+                }
+            }
+        })
+        
     }
         
         
@@ -2239,16 +2495,20 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures</span></a>  <a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '0', '0', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture non envoyées</span></a><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture envoyées non payées</span></a><br/>";
+                    if(response.update){
+                        var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures ("+response.billNumberTotal+")</span></a><br/>";
+                    }else{
+                        var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures("+response.billNumberTotal+")</span></a>  <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures non payées ("+response.billINNumberNotPaid+")</span></a><br/>";
+                    }
                     dest=dest.concat(temp);
                     
                     if(response.update){
-                        var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture IN</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture OUT</span></a><br/>";
+                        var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises ("+response.billINNumber+")</span></a> <a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '0', '0', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises non envoyées ("+response.billINNumberNotSent+")</span></a><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture émises envoyées mais non payées ("+response.billINNumberNotPaid+")</span></a><br /><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues ("+response.billOUTNumber+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '0', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues non-payées  ("+response.billOUTNumberNotPaid+")</span></a><br/>";
                         dest=dest.concat(temp);
                         document.getElementsByClassName('companyBillSelection')[0].hidden=false;
                         document.getElementsByClassName('companyBillSelection')[1].hidden=false;
                         
-                        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><tbody><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th></tr></thead>";
+                        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><tbody><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead>";
                     }else{
                         document.getElementsByClassName('companyBillSelection')[0].hidden=true;
                         document.getElementsByClassName('companyBillSelection')[1].hidden=true;
@@ -2374,7 +2634,7 @@ if($connected){
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);
                     document.getElementById('billsListing').innerHTML = dest;
-                    document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.billNumberNotPaid+"\" data-from=\"0\" data-seperator=\"true\">"+response.billNumberNotPaid+"</span>";
+                    document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"\" data-from=\"0\" data-seperator=\"true\">"+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"</span>";
                     
                     var classname = document.getElementsByClassName('updateBillingStatus');
                     for (var i = 0; i < classname.length; i++) {
@@ -2398,11 +2658,12 @@ if($connected){
                 }
                 if(response.response == 'success'){
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><br/><tbody><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><br/><tbody><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead>";
                     dest=dest.concat(temp);
                     var i=0;
+
                     while (i < response.companiesNumber){
-                        temp="<tr><th><a href=\"#\" class=\"internalReferenceCompany\" name=\""+response.company[i].internalReference+"\">"+response.company[i].internalReference+"</a></th><th>"+response.company[i].companyName+"</th><th>"+response.company[i].companyBikeNumber+"</th>";
+                        temp="<tr><th><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.company[i].ID+"\">"+response.company[i].internalReference+"</a></th><th>"+response.company[i].companyName+"</th><th>"+response.company[i].companyBikeNumber+"</th>";
                         dest=dest.concat(temp);
                         
                         if(response.company[i].bikeAccessStatus=="OK"){
@@ -2449,17 +2710,19 @@ if($connected){
         })
     }        
 
-    function get_company_details(company) {
+    function get_company_details(ID) {
         var email= "<?php echo $user; ?>";
+        var internalReference;
         $.ajax({
             url: 'include/get_company_details.php',
             type: 'post',
-            data: {"company": company},
+            data: {"ID": ID},
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                    $('#widget-companyDetails-form input[name=ID]').val(response.ID);
                     document.getElementById('companyName').value = response.companyName;
                     document.getElementById('companyStreet').value = response.companyStreet;
                     document.getElementById('companyZIPCode').value = response.companyZIPCode;
@@ -2468,9 +2731,25 @@ if($connected){
                     document.getElementById('emailContact').value = response.emailContact;
                     document.getElementById('firstNameContact').value = response.firstNameContact;
                     document.getElementById('lastNameContact').value = response.lastNameContact;
-                    document.getElementById('widget_companyDetails_internalReference').value=company;
+                    document.getElementById('widget_companyDetails_internalReference').value=response.internalReference;
+                    internalReference=response.internalReference;
                     $('#widget-companyDetails-form select[name=type]').val(response.type);
                     $('#widget-companyDetails-form input[name=phone]').val(response.phone);
+                    $('#widget-companyDetails-form input[name=email_billing]').val(response.emailContactBilling);
+                    $('#widget-companyDetails-form input[name=firstNameContactBilling]').val(response.firstNameContactBilling);
+                    $('#widget-companyDetails-form input[name=lastNameContactBilling]').val(response.lastNameContactBilling);
+                    $('#widget-companyDetails-form input[name=phoneBilling]').val(response.phoneContactBilling);
+                    
+                    if(response.automaticBilling=="Y"){
+                        $('#widget-companyDetails-form input[name=billing]').prop( "checked", true );
+                    }else{
+                        $('#widget-companyDetails-form input[name=billing]').prop( "checked", false );
+                    }                    
+                    if(response.automaticStatistics=="Y"){
+                        $('#widget-companyDetails-form input[name=statistiques]').prop( "checked", true );
+                    }else{
+                        $('#widget-companyDetails-form input[name=statistiques]').prop( "checked", false );
+                    }
                     if(response.assistance=='Y'){
                         $("#widget-companyDetails-form input[name=assistance]").prop( "checked", true );
                     }else{
@@ -2484,7 +2763,7 @@ if($connected){
                     
                     
                     var i=0;
-                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right\" onclick=\"add_bike('"+company+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead>";
+                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right\" onclick=\"add_bike('"+response.ID+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead>";
                     var dest="";
                     dest=dest.concat(temp);
                     while(i<response.bikeNumber){
@@ -2501,7 +2780,7 @@ if($connected){
                             var temp="<span class=\"text-red\">Non-défini</span>";
                             dest=dest.concat(temp);
                         }
-                        dest=dest.concat("</th><th><ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>");
+                        dest=dest.concat("</th><th><ins><a class=\"text-green text-green updateBikeStatusAdmin\" data-target=\"#updateBikeStatusAdmin\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>");
                         i++;
                     }
                     dest=dest.concat("</tbody></table>");
@@ -2515,7 +2794,7 @@ if($connected){
                     }                      
                     
                     var i=0;
-                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBuilding\" data-toggle=\"modal\" onclick=\"add_building('"+company+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un bâtiment</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th scope=\"col\"><span class=\"fr-inline\">Adresse</span><span class=\"en-inline\">Address</span><span class=\"nl-inline\">Address</span></th></tr></thead>";
+                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBuilding\" data-toggle=\"modal\" onclick=\"add_building('"+response.internalReference+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un bâtiment</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th scope=\"col\"><span class=\"fr-inline\">Adresse</span><span class=\"en-inline\">Address</span><span class=\"nl-inline\">Address</span></th></tr></thead>";
                     var dest="";
                     dest=dest.concat(temp);
                     while(i<response.buildingNumber){
@@ -2526,6 +2805,49 @@ if($connected){
                     dest=dest.concat("</tbody></table>");
                     document.getElementById('companyBuildings').innerHTML = dest;
 
+                    
+                    var i=0;
+                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right offerManagement\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th></th></tr></thead>";
+                    var dest="";
+                    dest=dest.concat(temp);
+                    console.log(response);
+                    while(i<response.bikeContracts){
+                        var temp="<tr><td>"+response.offer[i].id+"</td><td>Signé</td><td>"+response.offer[i].description+"</td><td>"+response.offer[i].probability+"</td><td>"+response.offer[i].amount+"</td><td>"+response.offer[i].start.substr(0,10)+"</td><td>"+response.offer[i].end.substr(0,10)+"</td><td></td></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+                    }
+                                        
+                    while(i<(response.offerNumber + response.bikeContracts)){
+                        
+                        if(!response.offer[i].date){
+                            var date="?";
+                        }else{
+                            var date=response.offer[i].date.substr(0,10);
+                        }
+                        if(!response.offer[i].start){
+                            var start="?";
+                        }else{
+                            var start=response.offer[i].start.substr(0,10);
+                        }
+                        if(!response.offer[i].end){
+                            var end="?";
+                        }else{
+                            var end=response.offer[i].end.substr(0,10);
+                        }
+                        
+                        
+                        var temp="<tr><td>"+response.offer[i].id+"</td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+"</td><td>"+response.offer[i].amount+"</td><td>"+start+"</td><td>"+end+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateOffer\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+                    }
+                    dest=dest.concat("</tbody></table>");
+                    document.getElementById('companyContracts').innerHTML = dest;
+
+                    
+                    $(".offerManagement").click(function() {
+                        $('#widget-offerManagement-form input[name=company]').val(internalReference);
+                    });
+                    
                     
                     //Ajouter un utilisateur
                     
@@ -2543,12 +2865,12 @@ if($connected){
                     
                     
                     $('.addUser').click(function(){          
-                        $('#widget-addUser-form input[name=company]').val(company);
+                        $('#widget-addUser-form input[name=company]').val(response.internalReference);
 
                     $.ajax({
                         url: 'include/get_building_listing.php',
                         type: 'post',
-                        data: { "company": company},
+                        data: { "company": response.internalReference},
                         success: function(response){
                             if(response.response == 'error') {
                                 console.log(response.message);
@@ -2600,78 +2922,101 @@ if($connected){
                     
                     });                        
                     
-                    displayLanguage();
-                    $('#companyDetails').modal('toggle');
-                    
+                    displayLanguage();                    
                 }
             }
-        })
-        
-        $.ajax({
+        }).done(function(){
+            $.ajax({
                 url: 'include/action_company.php',
                 type: 'get',
-                data: { "company": company, "user": email},
+                data: { "company": internalReference, "user": email},
                 success: function(response){
                     if (response.response == 'error') {
+                        console.log(email);
                         console.log(response.message);
                     } else{
 
                         var i=0;
-                        var dest="<table class=\"table table-condensed\"><a class=\"button small green button-3d rounded icon-right addActionCompanyButton\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Rappel ?</span><span class=\"en-inline\">Reminder ?</span><span class=\"nl-inline\">Reminder ?</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
+                        
+                        
+                        var dest="<table class=\"table table-condensed\"><a href=\"#\" data-target=\"#addTask\" data-toggle=\"modal\" class=\"button small green button-3d rounded icon-right\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Owner</span><span class=\"en-inline\">Owner</span><span class=\"nl-inline\">Owner</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
                         while(i<response.actionNumber){
                             if(!(response.action[i].date_reminder)){
                                 $date_reminder="N/A"
                             }else{
                                 $date_reminder=response.action[i].date_reminder.substring(0,10);
                             }
-                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].description+"</td><td>"+$date_reminder+"</td><td>"+response.action[i].status+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].title+"</td><td>"+response.action[i].ownerFirstName+" "+response.action[i].ownerName+"</td><td>"+response.action[i].status+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                             dest=dest.concat(temp);
                             i++;
                         }
                         dest=dest.concat("</tbody></table>");
                         $('#action_company_log').html(dest);
-                        $('#widget-addActionCompany-form input[name=company]').val(company);
+                        
+                        create_task()
+                        .done(function(response){
+                            $('#widget-addTask-form select[name=company]').val(internalReference);
+                        })
 
                         displayLanguage();
-
-                        document.getElementsByClassName("addActionCompanyButton")[0].addEventListener('click', function(){ 
-                            $('#widget-addActionCompany-form label[for=status]').removeClass("hidden");
-                            $('#widget-addActionCompany-form label[for=date]').removeClass("hidden");
-                            $('#widget-addActionCompany-form label[for=description]').removeClass("hidden");
-                            $('#widget-addActionCompany-form label[for=date_reminder]').removeClass("hidden");
-                            $('#widget-addActionCompany-form input[name=date]').removeClass("hidden");
-                            $('#widget-addActionCompany-form input[name=description]').removeClass("hidden");
-                            $('#widget-addActionCompany-form input[name=date_reminder]').removeClass("hidden");
-                            $('#widget-addActionCompany-form select[name=status]').removeClass("hidden");
-                            $('.addActionCompanyConfirmButton').removeClass("hidden");
-                        });
 
                         var classname = document.getElementsByClassName('updateAction');
                         for (var i = 0; i < classname.length; i++) {
                             classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
                         }  
-                    
+                        list_kameobikes_member();                    
                         
                         
                     }              
 
                 }
-        })        
+            })
+        })
     }        
-
         
-    function add_bike(company){
+    function list_kameobikes_member(){
+        $('#widget-addActionCompany-form select[name=owner]')
+            .find('option')
+            .remove()
+            .end()
+        ;
+
+        $.ajax({
+            url: 'include/get_kameobikes_members.php',
+            type: 'get',
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.membersNumber){
+                        $('#widget-addActionCompany-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");    
+                        i++;
+                    }
+                    $('#widget-addActionCompany-form select[name=owner]').val('julien.jamar@kameobikes.com');
+                    
+                }
+            }
+        })
+    }      
+        
+    function add_bike(ID){
+        
+        var buildingNumber;
+        var company;
         
         $.ajax({
             url: 'include/get_company_details.php',
             type: 'post',
-            data: { "company": company},
+            data: { "ID": ID},
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
                     buildingNumber=response.buildingNumber;
+                    company=response.internalReference;
                     if(buildingNumber==0){
                         $.notify({
                             message: "Veuillez d'abord définir au moins un bâtiment"
@@ -2682,7 +3027,6 @@ if($connected){
                 }
             }
         }).done(function(){
-        
             if(buildingNumber>0){
                 $.ajax({
                     url: 'include/get_building_listing.php',
@@ -2787,8 +3131,7 @@ if($connected){
         })        
         document.getElementById('widget-addBuilding-form-company').value = company;
         
-    }
-        
+    }        
         
 
     function deconnexion(){
@@ -3537,9 +3880,9 @@ if($connected){
 										     <div class="row">
 										     	<div class="col-md-4">
 											        <div class="icon-box medium fancy">
-											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#companyConditions" href="#" ><i class="fa fa-cog"></i></a> </div>
+											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#conditionListing" href="#" ><i class="fa fa-cog"></i></a> </div>
 											          <div class="counter bold" style="color:#3cb395"></div>
-											          <p>Modifiez les réglages</p>
+											          <p>Modifier les réglages</p>
 											        </div>
 											     </div>											                                                  
                                             </div>  
@@ -5222,6 +5565,15 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
+            
+            <div class="col-md-3">
+                <label for="taskOwnerSelection">Filtrer sur Owner</label>
+                <select class="taskOwnerSelection" name="taskOwnerSelection">
+                </select>
+            </div> 
+            
+            <div class="separator"></div>
+            
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="tasksListingSpan"></span>
             </div>
@@ -5239,6 +5591,33 @@ if($connected){
 	</div>
 </div>
 
+<div class="modal fade" id="conditionListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+            
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="spanConditionListing"></span>
+            </div>
+            
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
 <div class="modal fade" id="companyConditions" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -5251,70 +5630,86 @@ if($connected){
                         <h4 class="fr-inline text-green">Modifier les réglages des réservations :</h4>
                         <h4 class="en-inline text-green">Modify booking settings:</h4>
                         <h4 class="nl-inline text-green">Modify booking settings :</h4><br>
-						<form id="widget-updateCompanyConditions-form" action="include/updateCompanyConditions.php" role="form" method="post">
+						<form id="widget-updateCompanyConditions-form" class="form-inline" action="include/updateCompanyConditions.php" role="form" method="post">
+
+                            
+
+                            <span class="fr-inline"> <strong>Nom du groupe : </strong></span>
+                            <span class="en-inline"> Group name: </span>
+                            <span class="nl-inline"> Group name: </span>
+                            <input type="test" name="name" class="form-control required" style="width: 20em;"><br/><br/>
                             <span class="fr-inline"> Durée maximale avant prochaine réservation (jours) : </span>
                             <span class="en-inline"> Maximum delay before next booking (days): </span>
                             <span class="nl-inline"> Maximum delay before next booking (days): </span>
-                            <input type="number" class="companyConditionsDaysInAdvance" name="companyConditionsDaysInAdvance" style="width: 4em;"><br/><br/>
+                            <input type="number" class="form-control required" name="daysInAdvance" style="width: 7em;"><br/><br/>
                             <span class="fr-inline"> Durée maximale d'une réservation (heures) : </span>
                             <span class="en-inline"> Maximal duration of a booking (hours): </span>
                             <span class="nl-inline"> Maximal duration of a booking (hours): </span>
-                            <input type="number" class="companyConditionsBookingLength" name="companyConditionsBookingLength" style="width: 4em;"><br/><br/>
+                            <input type="number" class="form-control required" name="bookingLength" style="width: 7em;"><br/><br/>
                             <span class="fr-inline"> Nombre maximum de réservations par an (9999 pour illimité): </span>
                             <span class="en-inline"> Maximal number of bookings per year: </span>
                             <span class="nl-inline"> Maximal number of bookings per year </span>
-                            <input type="number" class="companyConditionsBookingsPerYear" name="companyConditionsBookingsPerYear" max="9999" style="width: 4em;"><br/><br/>
+                            <input type="number" class="form-control required" name="bookingsPerYear" max="9999" style="width: 7em;"><br/><br/>
                             <span class="fr-inline"> Nombre maximum de réservations par mois (9999 pour illimité): </span>
                             <span class="en-inline"> Maximal number of bookings per month: </span>
                             <span class="nl-inline"> Maximal number of bookings per month </span>
-                            <input type="number" class="companyConditionsBookingsPerMonth" name="companyConditionsBookingsPerMonth" max="9999" style="width: 4em;"><br/><br/>
+                            <input type="number" class="form-control required" name="bookingsPerMonth" max="9999" style="width: 7em;"><br/><br/>
 
-                            <div class="col-sm-6">
-                                <h4>Réglagles de début de réservation</h4>
+                            <div class="col-sm-6 jumbotron jumbotron-border">
+                                <h4>Réglages de début de réservation</h4>
                                 <div class="col-sm-12">
                                     <p><span class="fr-inline"> Première heure possible pour prendre un vélo : </span>
                                     <span class="en-inline"> First possible hour to take a bike: </span>
                                     <span class="nl-inline"> First possible hour to take a bike: </span>
-                                    <input type="number" class="companyConditionsStartIntakeBooking" name="companyConditionsStartIntakeBooking" max="23" style="width: 4em;">
+                                    <input type="number" class="form-control required" name="startIntakeBooking" max="23" style="width: 7em;">
                                     <p>
                                 </div>
                                 <div class="col-sm-12">
                                     <p><span class="fr-inline"> Dernière heure possible afin de prendre un vélo : </span>
                                     <span class="en-inline"> Last possible hour to take a bike: </span>
                                     <span class="nl-inline"> Last possible hour to take a bike: </span>
-                                    <input type="number" class="companyConditionsEndIntakeBooking" name="companyConditionsEndIntakeBooking" max="23" style="width: 4em;">
+                                    <input type="number" class="form-control required" name="endIntakeBooking" max="23" style="width: 7em;">
                                     </p>
                                 </div>
                                 <div class="col-sm-12">
                                     <h5>Début de réservation possible aux jours suivants:</h5>                                    
-                                    <span class="companyConditionsIntakeBookingDays"></span>
+                                    <span class="intakeBookingDays"></span>
                                 </div>
                             </div>
                             <div class="col-sm-6 jumbotron jumbotron-border">
-                                <h4>Réglagles de fin de réservation</h4>                            
+                                <h4>Réglages de fin de réservation</h4>                            
                                 <div class="col-sm-12">
                                     <p><span class="fr-inline"> Première heure possible pour rendre un vélo : </span>
                                     <span class="en-inline"> First possible hour to deposit a bike: </span>
                                     <span class="nl-inline"> First possible hour to deposit a bike: </span>
-                                    <input type="number" class="companyConditionsStartDepositBooking" name="companyConditionsStartDepositBooking" max="23" style="width: 4em;">
+                                    <input type="number" class="form-control required" name="startDepositBooking" max="23" style="width: 7em;">
                                     <p>
                                 </div>
                                 <div class="col-sm-12">
                                     <p><span class="fr-inline"> Dernière heure possible afin de rendre un vélo : </span>
                                     <span class="en-inline"> Last possible hour to deposit a bike: </span>
                                     <span class="nl-inline"> Last possible hour to deposit a bike: </span>
-                                    <input type="number" class="companyConditionsEndDepositBooking" name="companyConditionsEndDepositBooking" max="23" style="width: 4em;">
+                                    <input type="number" class="form-control required" name="endDepositBooking" max="23" style="width: 7em;">
                                     </p>
                                 </div>
                                 <div class="col-sm-12">                 
                                     <h5>Fin de réservation possible aux jours suivants:</h5>
-                                    <span class="companyConditionsDepositBookingDays"></span>
-                                </div>
+                                    <span class="depositBookingDays"></span>
+                                </div>                                
                             </div>
+                            
+                            <div class="col-sm-12">
+                                <h4>Accès des utilisateurs à ce groupe de conditions</h4>
+                                <p class="text-red">Attention, attribuer un utilisateur à ce groupe supprimera automatiquement son appartenance à un autre groupe</p>
+                                <span id="groupConditionUsers"></span>
+                            </div>
+                            
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Besparen</button>
-                            <input type="text" name="companyConditionsEmail" value="<?php echo $user; ?>" hidden>
+                            <input type="text" name="email" value="<?php echo $user; ?>" hidden>
+                            <input type="text" name="id" value="" hidden>
+                            <input type="text" name="action" hidden>
                         </form>
 						<script type="text/javascript">							
 							jQuery("#widget-updateCompanyConditions-form").validate({
@@ -5327,7 +5722,8 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-												$('#companyConditions').modal('toggle');                                                
+												$('#companyConditions').modal('toggle'); 
+                                                list_condition();
                                                 
 											} else {
 												$.notify({
@@ -5358,6 +5754,9 @@ if($connected){
 		</div>
 	</div>
 </div>
+
+
+
 
 <div class="modal fade" id="companyListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
 	<div class="modal-dialog modal-lg">
@@ -5443,6 +5842,7 @@ if($connected){
 		</div>
 	</div>
 </div>
+
 
 
 
@@ -5689,6 +6089,8 @@ if($connected){
 		</div>
 	</div>
 </div>
+
+
 <div class="modal fade" id="addClient" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -5732,6 +6134,8 @@ if($connected){
                                     <select title="Type" class="form-control selectpicker" name="type">
                                       <option value="CLIENT">Client</option>
                                       <option value="PROSPECT" selected>Prospect</option>            
+                                      <option value="ANCIEN PROSPECT" selected>Ancien prospect</option>            
+                                      <option value="ANCIEN CLIENT">Ancien client</option>            
                                     </select>                                    
                                 </div>                                 
                                 <div class="col-sm-6">
@@ -6138,41 +6542,88 @@ if($connected){
                                     <select title="Type" class="form-control selectpicker updateClientInformationSelect" disabled name="type">
                                       <option value="CLIENT">Client</option>
                                       <option value="PROSPECT">Prospect</option>            
+                                      <option value="ANCIEN PROSPECT">Ancien Prospect</option>            
+                                      <option value="ANCIEN CLIENT">Ancien Client</option>            
                                     </select>                                    	
 	                            </div>
-                                
+                                <div class="separator"></div>
 	
 	                            <div class="col-sm-12">
 	                                <h4 class="text-green">Informations relatives au contact</h4>
 	                            </div>
 	
-	                            <div class="col-sm-3">
+	                            <div class="col-md-3">
 	                            <label class="fr"> Email : </label>
 	                            <label class="en"> Email: </label>
 	                            <label class="nl"> Email : </label>
 	                                <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
 	                            </div>
 	
-	                           <div class="col-sm-3">
+	                           <div class="col-md-3">
 	                            <label class="fr" >Nom :</label>
 	                            <label class="en" >Last Name:</label>
 	                            <label class="nl" >Last Name:</label>
 	                                <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
 	                            </div>
 	
-	                            <div class="col-sm-3">
+	                            <div class="col-md-3">
 	                                <label class="fr" >Prénom :</label>
 	                                <label class="en" >First Name:</label>
 	                                <label class="nl" >First Name :</label>
 	                                <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
 	                            </div>
 	
-	                            <div class="col-sm-3">
+	                            <div class="col-md-3">
 	                                <label class="fr" >Téléphone :</label>
 	                                <label class="en" >Phone:</label>
 	                                <label class="nl" >Phone :</label>
 	                                <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
 	                            </div>
+								<div class="col-md-4">
+                                    <label for="statistiques">Envoyer le rapport de statistiques ?</label>                                    
+                                    <input type="checkbox" name="statistiques" class="form-control" readonly="true"/>
+                                </div>
+                                
+                                
+                                <div class="separator"></div>
+	
+	                            <div class="col-sm-12">
+	                                <h4 class="text-green">Informations relatives à la facturation</h4>
+	                            </div>
+	
+	                            <div class="col-md-3">
+                                    <label for="email_billing" class="fr"> Email : </label>
+                                    <label for="email_billing" class="en"> Email: </label>
+                                    <label for="email_billing" class="nl"> Email : </label>
+	                                <input type="text" class="form-control" name="email_billing" value="" readonly="true"/>
+	                            </div>
+	
+	                           <div class="col-md-3">
+                                    <label for="lastNameContactBilling" class="fr" >Nom :</label>
+                                    <label for="lastNameContactBilling" class="en" >Last Name:</label>
+                                    <label for="lastNameContactBilling" class="nl" >Last Name:</label>
+	                                <input type="text" class="form-control" name="lastNameContactBilling" value="" readonly="true"/>
+	                            </div>
+	
+	                            <div class="col-md-3">
+	                                <label for="firstNameContactBilling" class="fr" >Prénom :</label>
+	                                <label for="firstNameContactBilling" class="en" >First Name:</label>
+	                                <label for="firstNameContactBilling" class="nl" >First Name :</label>
+	                                <input type="text" class="form-control" name="firstNameContactBilling" value="" readonly="true"/>
+	                            </div>
+	
+	                            <div class="col-md-3">
+	                                <label for="phoneBilling" class="fr" >Téléphone :</label>
+	                                <label for="phoneBilling" class="en" >Phone:</label>
+	                                <label for="phoneBilling" class="nl" >Phone :</label>
+	                                <input type="text" class="form-control" name="phoneBilling" value="" readonly="true"/>
+	                            </div>
+								<div class="col-sm-4">
+                                    <label for="billing">Envoyer les factures automatiquement ?</label>                                    
+                                    <input type="checkbox" name="billing" class="form-control" readonly="true"/>
+                                </div>
+                                
+                                <div class="separator"></div>
                                 
 	                            <div class="col-sm-12">
 	                                <h4 class="text-green">Options</h4>
@@ -6190,7 +6641,8 @@ if($connected){
                                 
                                 
 	                            <input type="text" id="widget_companyDetails_requestor" name="widget_companyDetails_requestor" class="form-control hidden" value="<?php echo $user; ?>">
-	                            <input type="text" id="widget_companyDetails_internalReference" name="widget_companyDetails_internalReference" class="form-control hidden" value="<?php echo $user; ?>">
+	                            <input type="text" name="ID" class="form-control hidden">
+	                            <input type="text" id="widget_companyDetails_internalReference" name="widget_companyDetails_internalReference" class="form-control hidden">
 	                            
 	                            <div class="col-sm-12">
 	                                <button  class="button small green button-3d rounded icon-left hidden" id="sendButtonClientDetails" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>         
@@ -6217,10 +6669,8 @@ if($connected){
                                                 document.getElementById("sendButtonClientDetails").classList.add("hidden"); 
                                                 document.getElementById("clientBikes").classList.remove("hidden");
                                                 document.getElementById("clientBuildings").classList.remove("hidden");
+                                                document.getElementById("clientContratcs").classList.remove("hidden");
                                                 var classname = document.getElementsByClassName('updateClientInformation');
-                                                /*for (var i = 0; i < classname.length; i++) {
-                                                    classname[i].readOnly=true;
-                                                } */
                                                 $('#widget-companyDetails-form input').attr("readonly", true);
                                                 $('#widget-companyDetails-form select').prop( "disabled", true );
                                                 
@@ -6240,10 +6690,11 @@ if($connected){
 
                             
                             document.getElementsByClassName('updateClientInformationButton')[0].addEventListener('click', function(){ 
-                                document.getElementById("sendButtonClientDetails").classList.remove("hidden");; 
-                                document.getElementById("clientBikes").classList.add("hidden");; 
-                                document.getElementById("clientBuildings").classList.add("hidden");; 
-                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.remove("hidden");; 
+                                document.getElementById("sendButtonClientDetails").classList.remove("hidden");
+                                document.getElementById("clientBikes").classList.add("hidden");
+                                document.getElementById("clientBuildings").classList.add("hidden"); 
+                                document.getElementById("clientContracts").classList.add("hidden"); 
+                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.remove("hidden");
                                 document.getElementsByClassName("updateClientInformationButton")[0].classList.add("hidden");
                                 $('#widget-companyDetails-form input').attr("readonly", false);
                                 $('#widget-companyDetails-form select').removeAttr("disabled");
@@ -6251,10 +6702,11 @@ if($connected){
                                 
                             }); 
                             document.getElementsByClassName('cancelUpdateClientInformation')[0].addEventListener('click', function(){ 
-                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");; 
-                                document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");;                             
-                                document.getElementById("sendButtonClientDetails").classList.add("hidden");; 
-                                document.getElementById("clientBikes").classList.remove("hidden");; 
+                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+                                document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
+                                document.getElementById("sendButtonClientDetails").classList.add("hidden");
+                                document.getElementById("clientBikes").classList.remove("hidden");
+                                document.getElementById("clientContratcs").classList.remove("hidden");
                                 document.getElementById("clientBuildings").classList.remove("hidden");
                                 $('#widget-companyDetails-form input').attr("readonly", true);
                                 $('#widget-companyDetails-form select').prop( "disabled", true );
@@ -6272,6 +6724,10 @@ if($connected){
                         <h4 class="text-green">Bâtiments:</h4>
                         <p><span id="companyBuildings"></span></p>
                     </div>
+                    <div class="col-sm-12" id="clientContratcs">
+                        <h4 class="text-green">Contrats et Offres :</h4>
+                        <p><span id="companyContracts"></span></p>
+                    </div>
                         
                     <div class="col-sm-12">
                         <h4 class="text-green">Historique et actions</h4>
@@ -6280,13 +6736,21 @@ if($connected){
                                 <input type="text" name="company" class="form-control required hidden">
                                 <input type="text" name="user" class="form-control required hidden" value="<?php echo $user; ?>">
                                 
+                                
+                                <div class="col-sm-3">  
+                                    <label for="status" class="hidden">Owner</label>  
+                                    <select title="owner" class="selectpicker hidden" name="owner">
+                                    </select>                                    
+                                </div>   
+                                
                                 <div class="col-sm-3">  
                                     <label for="status" class="hidden">Status</label>                                    
                                     <select title="Status" class="selectpicker hidden" name="status">
                                       <option value="TO DO">To do</option>
                                       <option value="DONE">Done</option>            
                                     </select>                                    
-                                </div>                                
+                                </div>   
+                                
                                 <div class="col-sm-3">
                                     <label for="date" class="hidden">Date</label>
                                     <input type="date" name="date" class="form-control required hidden">
@@ -6327,14 +6791,14 @@ if($connected){
                                                 $('#widget-addActionCompany-form input[name=description]').addClass("hidden");
                                                 $('#widget-addActionCompany-form input[name=date_reminder]').addClass("hidden");
                                                 $('#widget-addActionCompany-form select[name=status]').addClass("hidden");
+                                                $('#widget-addActionCompany-form select[name=owner]').addClass("hidden");
                                                 $('.addActionCompanyConfirmButton').addClass("hidden");
                                                 $('#widget-addActionCompany-form input[name=date]').val('');
                                                 $('#widget-addActionCompany-form input[name=description]').val('');
                                                 $('#widget-addActionCompany-form input[name=date_reminder]').val('');
                                                 $('#widget-addActionCompany-form input[name=status]').val('TO DO');   
-                                                get_company_details($('#widget-addActionCompany-form input[name=company]').val());                                                 
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
                                                 document.getElementById('widget-addActionCompany-form').reset();
-                                                $('#companyDetails').modal('toggle');
 
                                             } else {
                                                 $.notify({
@@ -6493,6 +6957,124 @@ if($connected){
     })
 </script>
 
+<div class="modal fade" id="addTask" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green">Ajouter une action</h4>
+						
+						<form id="widget-addTask-form" action="include/action_company.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                                <div class="col-md-4">  
+                                    <label for="owner">Owner</label>  
+                                    <select title="owner" class="selectpicker" name="owner">
+                                    </select>                                    
+                                </div>   
+
+                                <div class="col-md-4">
+                                    <label for="status">Statut :</label>
+                                    <select title="Status" class="selectpicker" name="status">
+                                      <option value="TO DO">To do</option>
+                                      <option value="DONE">Done</option>            
+                                    </select>                                    
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="status"  class="fr">Société</label>
+                                    <label for="status"  class="en">Company</label>
+                                    <label for="status"  class="nl">Company</label>
+                                    <select title="company" class="selectpicker" name="company">
+                                    </select>                                    
+                                </div>								
+
+                                <div class="col-md-5">
+                                    <label for="date"  class="fr">Date</label>
+                                    <label for="date"  class="en">Date</label>
+                                    <label for="date"  class="nl">Date</label>
+                                    <input type="date" name="date" class="form-control required">                                    
+                                </div>								
+                                <div class="col-md-5">
+                                    <label for="reminder"  class="fr">Rappel ?</label>
+                                    <label for="reminder"  class="en">Reminder ?</label>
+                                    <label for="reminder"  class="nl">Reminder ?</label>
+                                    <input type="date" name="date_reminder" class="form-control ">                                    
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <label for="reminder"  class="fr">Titre</label>
+                                    <label for="reminder"  class="en">Title</label>
+                                    <label for="reminder"  class="nl">Title</label>
+                                    <input type="text" name="title" class="form-control ">                                    
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="reminder"  class="fr">Description</label>
+                                    <label for="reminder"  class="en">Description</label>
+                                    <label for="reminder"  class="nl">Description</label>
+                                    <textarea class="form-control" rows="5" name="description"></textarea>                                    
+                                </div>
+
+                                <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control hidden" value="create">
+	                            <div class="col-sm-12">
+	                                <button  class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>         
+	                            </div>                          
+
+                            </div>
+                            
+						</form>
+						<script type="text/javascript">							
+							jQuery("#widget-addTask-form").validate({
+								submitHandler: function(form) {
+
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                list_tasks('*', $('.taskOwnerSelection').val());
+												$('#addTask').modal('toggle');
+                                                document.getElementById('widget-addTask-form').reset();
+                                                
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>                 					
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" id="addBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -6641,10 +7223,9 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                get_company_details(document.getElementById('widget_companyDetails_internalReference').value);                           
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
                                                 document.getElementById('widget-addBike-form').reset();
 												$('#addBike').modal('toggle');
-												$('#companyDetails').modal('toggle');
                                                 
 											} else {
                                                 console.log(response.message);
@@ -6757,10 +7338,9 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                get_company_details(document.getElementById('widget_companyDetails_internalReference').value);                           
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
                                                 document.getElementById('widget-addBuilding-form').reset();
 												$('#addBuilding').modal('toggle');
-												$('#companyDetails').modal('toggle');
                                                 
                                                 
 											} else {
@@ -6774,6 +7354,138 @@ if($connected){
 									});
 								}
 							});
+
+						</script>                 					
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="offerManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						
+						<form id="widget--form" action="include/offer_management.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                                <h4 class="fr text-green">Ajouter une offre</h4>
+                                
+								<div class="col-sm-12">
+                                    <label for="title"  class="fr">Titre</label>
+                                    <label for="title"  class="en">Title</label>
+                                    <label for="title"  class="nl">Title</label>
+                                    <input type="text" name="title" class="form-control required">
+								</div>
+								<div class="col-sm-12">
+                                    <label for="description"  class="fr">Description</label>
+                                    <label for="description"  class="en">Description</label>
+                                    <label for="description"  class="nl">Description</label>
+                                    <textarea class="form-control" rows="5" name="description"></textarea>                                    
+								</div>
+                                
+								<div class="col-sm-4">
+                                    <label for="type"  class="fr">Type</label>
+                                    <label for="type"  class="en">Type</label>
+                                    <label for="type"  class="nl">Type</label>
+                                    <select name="type" class="form-control required">
+                                        <option value="leasing">Leasing</option>
+                                        <option value="achat">achat</option>
+                                    </select>
+                                </div>
+                                
+                            	<div class="col-sm-4">
+                                    <label for="probability"  class="fr">Chance de réussite</label>
+                                    <label for="probability"  class="en">Chance de réussite</label>
+                                    <label for="probability"  class="nl">chance de réussite</label>
+                                    <input type="number" min="0" max="100" name="probability" class="form-control">
+                                </div>
+								
+								<div class="col-sm-4">
+                                    <label for="amount"  class="fr">Montant</label>
+                                    <label for="amount"  class="en">Montant</label>
+                                    <label for="amount"  class="nl">Montant</label>
+                                    <input type="number" min="0" name="amount" class="form-control">
+                                </div>
+
+								<div class="col-sm-4">
+                                    <label for="date"  class="fr">Date de signature</label>
+                                    <label for="date"  class="en">Date de signature</label>
+                                    <label for="date"  class="nl">Date de signature</label>
+                                    <input type="date" name="date" class="form-control">
+                                </div>
+								<div class="col-sm-4">
+                                    <label for="start"  class="fr">Date de début</label>
+                                    <label for="start"  class="en">Date de début</label>
+                                    <label for="start"  class="nl">Date de début</label>
+                                    <input type="date" name="start" class="form-control">
+                                </div>
+								<div class="col-sm-4">
+                                    <label for="end"  class="fr">Date de fin</label>
+                                    <label for="end"  class="en">Date de fin</label>
+                                    <label for="end"  class="nl">Date de fin</label>
+                                    <input type="date" name="end" class="form-control">
+                                </div>
+                                
+                                <div class="col-sm-12"></div>
+                                <br>
+                            
+                                <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control required hidden" value="add">
+                                <input type="text" name="company" class="form-control required hidden">
+                                
+                                <div class="separator"></div>
+                                <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+                                <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
+                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button> 
+                            </div>
+                            
+						</form>
+						<script type="text/javascript">							
+							jQuery("#widget-offerManagement-form").validate({
+								submitHandler: function(form) {
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
+                                                document.getElementById('widget-offerManagement-form').reset();
+												$('#offerManagement').modal('toggle');
+                                                
+                                                
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+                            
+
 
 						</script>                 					
 					</div>
@@ -7806,6 +8518,12 @@ if($connected){
                                 </div>
 
                                 <div class="col-sm-5">
+                                    <label for="owner"> Owner : </label>
+                                    <select title="Société" class="selectpicker" name="owner">
+                                    </select>
+                                </div>
+                                
+                                <div class="col-sm-5">
                                     <label for="company" class="fr"> Société : </label>
                                     <label for="company" class="en"> Société : </label>
                                     <label for="company" class="nl"> Société : </label>
@@ -7824,8 +8542,13 @@ if($connected){
                                 </div>
                                 
                                 <div class="col-sm-12">
+                                    <label for="title">Titre :</label>
+                                    <input type="text" class="form-control required" name="title" />                                    
+
+                                </div>
+                                <div class="col-sm-12">
                                     <label for="description">Description :</label>
-                                    <input type="text" class="form-control required" name="description" />                                    
+                                    <textarea class="form-control" rows="5" name="description"></textarea>
 
                                 </div>
                                 <div class="col-sm-5">
@@ -7875,7 +8598,7 @@ if($connected){
                         }, {
                             type: 'success'
                         });
-                        list_tasks();
+                        list_tasks('*', $('.taskOwnerSelection').val());
                         document.getElementById('widget-updateAction-form').reset();
                         $('#updateAction').modal('toggle');
                         

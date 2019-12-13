@@ -3,131 +3,24 @@ include 'include/header2.php';
 require_once('include/php-mailer/PHPMailerAutoload.php');
 
 ?>
-    <!-- CONTENT -->
-    <section class="content">
-        <div class="container">
-            <div class="row">		   
 
-                <!-- post content -->
-                <div class="post-content float-right col-md-9">
-                    <div class="col-md-12">
-                    	<div class="heading heading text-left m-b-20">
-                        <h2>Informations sur les vélos</h2>
-                        </div>
-                        <p>Informations sur le script d'inventaire des vélos</p>
-                        
-                        <div class="progress">
-                          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
-                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                            40% Complete (success)
-                          </div>
-                        </div>
-						
-                        <div class="m-t-30">
-                            <?php
-                            echo "------------------<br />";
-                            echo "Début du script: ".date("H:m:s")."<br>";
-                            echo "------------------<br />";
-                            $temp=date("Y-m-d");
+<?php
+$currentMonth=date('n');
+$currentYear=date('y');
+
+if($currentMonth==1){
+    $monthBefore=12;
+    $yearBefore=$currentYear-1;
+}else{
+    $monthBefore=$currentMonth-1;
+    $yearBefore=$currentYear;
+}
+
+$timestampStart=mktime(0, 0, 0, $monthBefore, 1, $yearBefore);
+$timestampEnd=mktime(0, 0, 0, $currentMonth, 1, $currentYear);
 
 
-
-                            $mail = new PHPMailer();
-
-                            $mail->IsHTML(true);
-                            $mail->CharSet = 'UTF-8';
-
-                            if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                                $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-                                $mail->AddAddress("thibaut.mativa@kameobikes.com");
-                                $mail->AddAddress("pierre-yves.adant@kameobikes.com");
-                            }else{
-                                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                            }
-                            $mail->From = "info@kameobikes.com";
-                            $mail->FromName = "Kameo Bikes";
-
-                            $mail->AddReplyTo("info@kameobikes.com");
-                            $mail->Subject = "Mail automatique - Aperçu des vélos";
-                           
-                            include 'include/connexion.php';
-                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID)/BIKE_PRICE*100 AS 'RETURN_BIKE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY, aa.BIKE_PRICE, aa.BIKE_BUYING_DATE FROM customer_bikes aa WHERE BIKE_PRICE IS NOT NULL GROUP BY aa.ID ORDER BY RETURN_BIKE DESC
-";
-
-                            if ($conn->query($sql) === FALSE) {
-                                $response = array ('response'=>'error', 'message'=> $conn->error);
-                                echo json_encode($response);
-                                die;
-                            }
-                            $result = mysqli_query($conn, $sql);     
-
-                            $part2="<br><h3>Inventaire des vélos, prix d'achat du vélo défini :</h3>";
-
-                            $part2=$part2."<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Société</th><th class=\"tableResume\">Identification</th><th class=\"tableResume\">Modèle</th><th class=\"tableResume\">Date d'achat</th><th class=\"tableResume\">Prix d'achat</th><th>Valeur actuelle</th><th class=\"tableResume\">Rentrées totales</th><th class=\"tableResume\">Rentabilité</th></tr>";
-                            
-                            $sumBuyingPrice=0;
-                            $sumBuyingPriceNow=0;
-                            $dateTimeNow=new DateTime("now");
-                            
-                            $total=0;
-
-                            while($row = mysqli_fetch_array($result))
-                            {
-                                $id=$row['ID'];
-                                $company=$row['COMPANY'];
-                                $frameNumber=$row['FRAME_NUMBER'];
-                                $model=$row['MODEL'];
-                                $return=$row['RETURN_BIKE'];
-                                $date_buy=$row['BIKE_BUYING_DATE'];
-                                $dateTimeBike=new DateTime($date_buy);
-                                $difference=date_diff($dateTimeBike, $dateTimeNow);
-                                $price=$row['BIKE_PRICE'];
-                                if($difference->format('%a')<3*365){
-                                    $actualPrice=-0.85*$difference->format('%a')*$price/(3*365)+$price;
-                                }else{
-                                    $actualPrice=0.15*$price;
-                                }
-                                $sumBuyingPrice=$sumBuyingPrice+$price;
-                                $sumBuyingPriceNow=$sumBuyingPriceNow+($actualPrice);
-                                $invoice=$row['INVOICE'];
-                                $total=$total+$invoice;
-                                $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$company."</td><td class=\"tableResume\">".$frameNumber."</td><td class=\"tableResume\">".$model."</td><td class=\"tableResume\">".$date_buy."</td><td class=\"tableResume\">".$price." €</td><td class=\"tableResume\">".round($actualPrice)." €</td><td class=\"tableResume\">".round($invoice)." €</td><td class=\"tableResume\"><div class=\"progress-bar progress-bar-success progress-bar-striped active\" role=\"progressbar\" aria-valuenow=\"".$return."\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:".$return."%\">".round($return)."%</div></td></tr>";
-                                
-
-                            }
-                            
-                            $part2=$part2."</table><br><ul><li>Valeur des vélos à l'achat: ".round($sumBuyingPrice)." €</li><li>Valeur des vélos actualisée: ".round($sumBuyingPriceNow)." €</li><li>Valeur totale de facturation pour ces vélos : ".round($total)." €</li></ul><div class=\"separator\"></div>";
-                            $part2=$part2."<br><br><h3>Inventaire des vélos, prix d'achat du vélo non défini :</h3>";
-
-                            include 'include/connexion.php';
-                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY FROM customer_bikes aa WHERE BIKE_PRICE IS NULL GROUP BY aa.ID";
-
-                            if ($conn->query($sql) === FALSE) {
-                                $response = array ('response'=>'error', 'message'=> $conn->error);
-                                echo json_encode($response);
-                                die;
-                            }
-                            $result = mysqli_query($conn, $sql);     
-
-
-                            $part2=$part2."<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Société</th><th class=\"tableResume\">Identification</th><th class=\"tableResume\">Modèle</th><th class=\"tableResume\">Rentrées totales</th></tr>";
-
-                            while($row = mysqli_fetch_array($result))
-                            {
-                                $id=$row['ID'];
-                                $company=$row['COMPANY'];
-                                $frameNumber=$row['FRAME_NUMBER'];
-                                $model=$row['MODEL'];
-                                $invoice=$row['INVOICE'];
-                                $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$company."</td><td class=\"tableResume\">".$frameNumber."</td><td class=\"tableResume\">".$model."</td><td class=\"tableResume\">".round($invoice)." €</td></tr>";
-
-                            }
-                            $part2=$part2."</table>";
-                            echo $part2;
-
-
-                            $part1 = "<!doctype html>
+$part1 = "<!doctype html>
                             <html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">
                                 <head>
                                     <meta charset=\"UTF-8\">
@@ -614,7 +507,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
 
                             }</style></head>
                                 <body>
-                                    <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Bikes Overview</span><!--<![endif]-->
+                                    <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Statistiques d'utilisation</span><!--<![endif]-->
                                     <!--*|END:IF|*-->
                                     <center>
                                         <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\">
@@ -685,9 +578,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
 
                                                     <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                                                        <h3>Informations sur les vélos</h3>
-
-                            <p>Veuillez trouver ci-dessous un résumé des différents vélos détenues par la société.<br>
+                                                        <h3>Statistiques d'utilisation entre le 1/".$monthBefore."/".$yearBefore." et le 1/".date('n')."/".date('y')."</h3>
                             <br>";
 
 
@@ -977,18 +868,205 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                     </center>
                                 </body>
                             </html>";
+?>
 
-                            $mail->Body = $part1.$part2.$part3;
-                            if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                                            if(!$mail->Send()) {
-                                               echo error_get_last()['message'];  
+ <!-- CONTENT -->
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                    	<div class="heading heading text-left m-b-20">
+                        <h2>Statistiques - Overview</h2>
+                        </div>
+                        <p>Informations sur l'utilisation des vélos</p>
+						
+                        <div class="m-t-30">
+                            <?php
+                            echo "------------------<br />";
+                            echo "Début du script: ".date("H:m:s")."<br>";
+                            echo "------------------<br />";
+                            $temp=date("Y-m-d");
 
-                                            }else {
-                                               echo 'mail envoyé';
-                                            }    
-                            }else{
-                                echo '<br><strong>environnement localhost, mail non envoyé</strong><br>';
+
+                           
+                            include 'include/connexion.php';
+                            $sql= "select * from companies WHERE STAANN != 'D'";
+
+                            if ($conn->query($sql) === FALSE) {
+                                $response = array ('response'=>'error', 'message'=> $conn->error);
+                                echo json_encode($response);
+                                die;
                             }
+                            $result = mysqli_query($conn, $sql);     
+
+                            $part2="<h3>Résumé par société :</h3>";
+
+                            while($row = mysqli_fetch_array($result))
+                            {
+                                $company=$row['INTERNAL_REFERENCE'];
+                                $companyName=$row['COMPANY_NAME'];
+                                include 'include/connexion.php';
+                                $sql2= "SELECT aa.NOM, aa.PRENOM, aa.EMAIL, COUNT(1) AS COUNT, SUM(DATE_END-DATE_START) AS LENGTH FROM customer_referential aa, reservations bb WHERE aa.COMPANY='$company' and aa.EMAIL = bb.EMAIL and bb.STAANN != 'D' and DATE_START>'$timestampStart' and DATE_END<'$timestampEnd' GROUP BY aa.EMAIL ORDER BY COUNT DESC";
+                                                                
+                                if ($conn->query($sql2) === FALSE) {
+                                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                                    echo json_encode($response);
+                                    die;
+                                }
+                                $result2 = mysqli_query($conn, $sql2); 
+                                
+                                if($result2->num_rows > 0){
+                                    
+                                    $part2=$part2."<br/><br/><br/><h4>".$company." - ".$companyName."</h4><br/>";
+                                    
+                                    $part2=$part2."<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Nom</th><th class=\"tableResume\">EMAIL</th><th class=\"tableResume\">Nombre de réservations</th><th class=\"tableResume\">Heures de réservation</th></tr>";
+                                    $part4="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Nom</th><th class=\"tableResume\">EMAIL</th><th class=\"tableResume\">Nombre de réservations</th><th class=\"tableResume\">Heures de réservation</th></tr>";
+                    
+
+                                    while($row2 = mysqli_fetch_array($result2))
+                                    {
+                                        $name=$row2['NOM'];
+                                        $firstName=$row2['PRENOM'];
+                                        $email=$row2['EMAIL'];
+                                        $somme=$row2['COUNT'];
+                                        $numberOfHours=$row2['LENGTH']/3600;
+
+                                        $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$firstName." ".$name."</td><td class=\"tableResume\">".$email."</td><td class=\"tableResume\">".$somme."</td><td class=\"tableResume\">".$numberOfHours."</td></tr>";
+                                        $part4=$part4."<tr class=\"tableResume\"><td class=\"tableResume\">".$firstName." ".$name."</td><td class=\"tableResume\">".$email."</td><td class=\"tableResume\">".$somme."</td><td class=\"tableResume\">".$numberOfHours."</td></tr>";
+
+                                    }
+                                    $part2=$part2."</table><div class=\"separator\"></div><br/><br/>";
+                                    $part4=$part4."</table><div class=\"separator\"></div><br/><br/>";
+                                    
+                                    include 'include/connexion.php';                                
+                                    $sql3="select aa.FRAME_NUMBER, aa.MODEL, count(*) AS COUNT, SUM(DATE_END-DATE_START) AS LENGTH from customer_bikes aa, reservations bb where aa.company = '$company' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and DATE_START>'$timestampStart' and DATE_END<'$timestampEnd' and bb.STAANN != 'D' group by aa.FRAME_NUMBER";
+                                    if ($conn->query($sql2) === FALSE) {
+                                        $response = array ('response'=>'error', 'message'=> $conn->error);
+                                        echo json_encode($response);
+                                        die;
+                                    }
+                                    $result3 = mysqli_query($conn, $sql3); 
+
+
+                                    $part2=$part2."<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Numéro de vélo</th><th class=\"tableResume\">Modèle</th><th class=\"tableResume\">Nombre de réservations</th><th class=\"tableResume\">Heures de réservation</th></tr>";
+                                    $part4=$part4."<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Numéro de vélo</th><th class=\"tableResume\">Modèle</th><th class=\"tableResume\">Nombre de réservations</th><th class=\"tableResume\">Heures de réservation</th></tr>";
+
+                                    while($row3 = mysqli_fetch_array($result3))
+                                    {
+                                        $frameNumber=$row3['FRAME_NUMBER'];
+                                        $modele=$row3['MODEL'];
+                                        $somme=$row3['COUNT'];
+                                        $numberOfHours=$row3['LENGTH']/3600;
+
+                                        $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$frameNumber."</td><td class=\"tableResume\">".$modele."</td><td class=\"tableResume\">".$somme."</td> <td class=\"tableResume\">".$numberOfHours."</td></tr>";
+                                        $part4=$part4."<tr class=\"tableResume\"><td class=\"tableResume\">".$frameNumber."</td><td class=\"tableResume\">".$modele."</td><td class=\"tableResume\">".$somme."</td> <td class=\"tableResume\">".$numberOfHours."</td></tr>";
+
+                                    }
+                                    $part2=$part2."</table><div class=\"separator\"></div><br/><br/>";
+                                    $part4=$part4."</table><div class=\"separator\"></div><br/><br/>";
+                                    
+
+                                    $month=date('n');
+                                    $currentYear=date('y');
+                                    $part4=$part4."<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Mois</th><th class=\"tableResume\">Nombre de réservations</th></tr>";
+                                    $part2=$part2."<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">Mois</th><th class=\"tableResume\">Nombre de réservations</th></tr>";
+                                    
+                                    while($month>1){
+                                        $month=$month-1;
+                                        $timestampStart2=mktime(0, 0, 0, $month, 1, $yearBefore);
+                                        $timestampEnd2=mktime(0, 0, 0, $month+1, 1, $currentYear);
+                                        $sql4= "SELECT * FROM customer_referential aa, reservations bb WHERE aa.COMPANY='$company' and aa.EMAIL = bb.EMAIL and bb.STAANN != 'D' and DATE_START>'$timestampStart2' and DATE_END<'$timestampEnd2'";
+
+                                        if ($conn->query($sql4) === FALSE) {
+                                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                                            echo json_encode($response);
+                                            die;
+                                        }
+                                        $result4 = mysqli_query($conn, $sql4); 
+                                        $part4=$part4."<tr class=\"tableResume\"><td class=\"tableResume\">".date("F", $timestampStart2)." ".date("Y")."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
+                                        $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".date("F", $timestampStart2)." ".date("Y")."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
+                                        
+                                        
+                                    }
+                                    $part2=$part2."</table><div class=\"separator\"></div><br/><br/>";
+                                    $part4=$part4."</table><div class=\"separator\"></div><br/><br/>";
+                                    
+                                    include 'include/connexion.php';                                
+                                    $sql5="select * from companies WHERE INTERNAL_REFERENCE='$company'";
+                                    if ($conn->query($sql5) === FALSE) {
+                                        $response = array ('response'=>'error', 'message'=> $conn->error);
+                                        echo json_encode($response);
+                                        die;
+                                    }
+                                    $result5 = mysqli_query($conn, $sql5); 
+                                    $resultat5 = mysqli_fetch_assoc($result5);
+                                    $conn->close();   
+
+
+
+                                    
+
+                                    $mail = new PHPMailer();
+                                    $mail->Body = $part1.$part4.$part3;
+                                    $mail->IsHTML(true);
+                                    $mail->CharSet = 'UTF-8';
+                                    if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost" && $resultat5['AUTOMATIC_STATISTICS']=="Y" && $resultat5['EMAIL_CONTACT']!="" &&  $resultat5['NOM_CONTACT']!="" &&  $resultat5['PRENOM_CONTACT']!=""){
+                                        $mail->AddAddress(resultat3['EMAIL_CONTACT'], resultat3['NOM_CONTACT']." ".resultat3['PRENOM_CONTACT']);
+                                        $mail->AddBCC("antoine.lust@kameobikes.com", "Antoine Lust");
+                                        $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");
+                                    }else{
+                                        $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                                        $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
+                                    }
+
+                                    $mail->From = "info@kameobikes.com";
+                                    $mail->FromName = "Kameo Bikes";
+
+                                    $mail->AddReplyTo("info@kameobikes.com");
+                                    $mail->Subject = "Mail automatique - Statistiques d'utilisation - ".$companyName;
+
+                                    
+                                    if(!$mail->Send()) {
+                                        echo "<strong>ERREUR</strong> : ".$mail->ErrorInfo;
+                                    }else{
+                                        echo "Mail envoyé !";
+                                    } 
+                                    
+                                    
+                                }
+
+                    
+            
+                                
+
+                            }
+                            echo $part2;
+
+                            $mail = new PHPMailer();
+                            $mail->IsHTML(true);
+                            $mail->CharSet = 'UTF-8';
+                            if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                                $mail->AddAddress("antoine.lust@kameobikes.com");
+                                //$mail->AddAddress("julien.jamar@kameobikes.com");
+                                //$mail->AddAddress("pierre-yves.adant@kameobikes.com");
+                                //$mail->AddAddress("thibaut.mativa@kameobikes.com");
+                            }else {
+                                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                            }
+
+                            $mail->From = "info@kameobikes.com";
+                            $mail->FromName = "Kameo Bikes";
+
+                            $mail->AddReplyTo("info@kameobikes.com");
+                            $mail->Subject = "Mail automatique - Statistiques d'utilisation";
+
+                           
+                            $mail->Body = $part1.$part2.$part3;
+                            if(!$mail->Send()) {
+                                echo "<strong>ERREUR</strong> : ".$mail->ErrorInfo;
+                            }else{
+                                echo "Mail envoyé !";
+                            } 
 
                             $conn->close();
 
@@ -1001,35 +1079,35 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- END: CONTENT -->
+        </section>
+        <!-- END: CONTENT -->
         
 
-<!-- FOOTER -->
-<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"> &copy; 2019 KAMEO Bikes</div>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				
-				<br>
-				<br>
-				
+		<!-- FOOTER -->
+    <footer class="background-dark text-grey" id="footer">
+        <div class="footer-content">
+            <div class="container">
+
+            <br><br>
+
+                <div class="row text-center">
+                    <div class="copyright-text text-center"> &copy; 2019 KAMEO Bikes</div>
+                    <div class="social-icons center">
+                                <ul>
+                                    <li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+
+                                    <li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                                </ul>
+                    </div>
+                    <div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a></div>
+
+                    <br>
+                    <br>
+
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 		<!-- END: FOOTER -->
 	<!-- END: WRAPPER -->
 

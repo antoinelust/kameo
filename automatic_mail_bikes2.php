@@ -17,8 +17,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                         <p>Informations sur le script d'inventaire des vélos</p>
                         
                         <div class="progress">
-                          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
-                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
                             40% Complete (success)
                           </div>
                         </div>
@@ -37,14 +36,11 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                             $mail->IsHTML(true);
                             $mail->CharSet = 'UTF-8';
 
-                            if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                                $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-                                $mail->AddAddress("thibaut.mativa@kameobikes.com");
-                                $mail->AddAddress("pierre-yves.adant@kameobikes.com");
-                            }else{
-                                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                            }
+                            //$mail->AddAddress("antoine.lust@kameobikes.com");
+                            //$mail->AddAddress("julien.jamar@kameobikes.com");
+                            //$mail->AddAddress("pierre-yves.adant@kameobikes.com");
+                            $mail->AddAddress("thibaut.mativa@kameobikes.com");
+
                             $mail->From = "info@kameobikes.com";
                             $mail->FromName = "Kameo Bikes";
 
@@ -52,8 +48,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                             $mail->Subject = "Mail automatique - Aperçu des vélos";
                            
                             include 'include/connexion.php';
-                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID)/BIKE_PRICE*100 AS 'RETURN_BIKE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY, aa.BIKE_PRICE, aa.BIKE_BUYING_DATE FROM customer_bikes aa WHERE BIKE_PRICE IS NOT NULL GROUP BY aa.ID ORDER BY RETURN_BIKE DESC
-";
+                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID)/BIKE_PRICE*100 AS 'RETURN', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY, aa.BIKE_PRICE, aa.BIKE_BUYING_DATE FROM customer_bikes aa WHERE BIKE_PRICE IS NOT NULL GROUP BY aa.ID";
 
                             if ($conn->query($sql) === FALSE) {
                                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -69,8 +64,6 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                             $sumBuyingPrice=0;
                             $sumBuyingPriceNow=0;
                             $dateTimeNow=new DateTime("now");
-                            
-                            $total=0;
 
                             while($row = mysqli_fetch_array($result))
                             {
@@ -78,7 +71,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                 $company=$row['COMPANY'];
                                 $frameNumber=$row['FRAME_NUMBER'];
                                 $model=$row['MODEL'];
-                                $return=$row['RETURN_BIKE'];
+                                $return=$row['RETURN'];
                                 $date_buy=$row['BIKE_BUYING_DATE'];
                                 $dateTimeBike=new DateTime($date_buy);
                                 $difference=date_diff($dateTimeBike, $dateTimeNow);
@@ -91,13 +84,12 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                 $sumBuyingPrice=$sumBuyingPrice+$price;
                                 $sumBuyingPriceNow=$sumBuyingPriceNow+($actualPrice);
                                 $invoice=$row['INVOICE'];
-                                $total=$total+$invoice;
-                                $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$company."</td><td class=\"tableResume\">".$frameNumber."</td><td class=\"tableResume\">".$model."</td><td class=\"tableResume\">".$date_buy."</td><td class=\"tableResume\">".$price." €</td><td class=\"tableResume\">".round($actualPrice)." €</td><td class=\"tableResume\">".round($invoice)." €</td><td class=\"tableResume\"><div class=\"progress-bar progress-bar-success progress-bar-striped active\" role=\"progressbar\" aria-valuenow=\"".$return."\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:".$return."%\">".round($return)."%</div></td></tr>";
-                                
+                                $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$company."</td><td class=\"tableResume\">".$frameNumber."</td><td class=\"tableResume\">".$model."</td><td class=\"tableResume\">".$date_buy."</td><td class=\"tableResume\">".$price." €</td><td>".round($actualPrice)." €</td><td class=\"tableResume\">".round($invoice)." €</td><td class=\"tableResume\"><div class=\"progress-bar progress-bar-success progress-bar-striped active\" role=\"progressbar\" aria-valuenow=\"".$return."\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:".$return."%\">".round($return)."%</div></td></tr>";
+                                //-0.85*$difference->format('%R%a')*$price/(3*365)+$price
 
                             }
                             
-                            $part2=$part2."</table><br><ul><li>Valeur des vélos à l'achat: ".round($sumBuyingPrice)." €</li><li>Valeur des vélos actualisée: ".round($sumBuyingPriceNow)." €</li><li>Valeur totale de facturation pour ces vélos : ".round($total)." €</li></ul><div class=\"separator\"></div>";
+                            $part2=$part2."</table><br><ul><li>Valeur des vélos à l'achat: ".round($sumBuyingPrice)." €</li><li>Valeur des vélos actualisée: ".round($sumBuyingPriceNow)." €</li></ul><div class=\"separator\"></div>";
                             $part2=$part2."<br><br><h3>Inventaire des vélos, prix d'achat du vélo non défini :</h3>";
 
                             include 'include/connexion.php';
@@ -133,6 +125,9 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                     <meta charset=\"UTF-8\">
                                     <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
                                     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+                                    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css\">
+ 									<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>
+ 									<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js\"></script>
                                     <title>Kameo Bikes - Billing Overview</title>
 
                                 <style type=\"text/css\">

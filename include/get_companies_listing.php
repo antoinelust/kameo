@@ -32,6 +32,7 @@ $response['companiesNumber'] = $result->num_rows;
 $i=0;
 $response['response']="success";
 while($row = mysqli_fetch_array($result)){
+    $response['company'][$i]['ID']=$row['ID'];
     $response['company'][$i]['companyName']=$row['COMPANY_NAME'];
     $response['company'][$i]['internalReference']=$row['INTERNAL_REFERENCE'];
     $response['company'][$i]['type']=$row['TYPE'];

@@ -11,7 +11,10 @@ if(!isset($_SESSION))
 include 'globalfunctions.php';
 
 
-$email=$_POST['email'];
+
+$email=isset($_POST['email']) ? $_POST['email'] : NULL;
+$id=isset($_POST['id']) ? $_POST['id'] : NULL;
+
 
 if($email != NULL)
 {
@@ -38,7 +41,12 @@ if($email != NULL)
     
     $response['companyConditions']['administrator']=$resultat['ADMINISTRATOR'];       
     include 'connexion.php';
-	$sql="select * from conditions where COMPANY = '$company'";
+    
+    if($id){
+        $sql="select * from conditions where ID='$id'";
+    }else{
+        $sql="select * from conditions where COMPANY = '$company'";
+    }
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -53,6 +61,8 @@ if($email != NULL)
 
     //vérifier nom du champ SQL
 	$response['response']="success";
+    $name=$resultat['NAME'];
+    $response['companyConditions']['name']=$resultat['NAME']; 
     $response['companyConditions']['bookingDays']=$resultat['BOOKING_DAYS']; 
     $response['companyConditions']['bookingLength']=$resultat['BOOKING_LENGTH']; 
     $response['companyConditions']['assistance']=$resultat['ASSISTANCE']; 
@@ -79,6 +89,38 @@ if($email != NULL)
     $response['companyConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
 	
     
+    include 'connexion.php';
+    
+    if($name=="generic"){
+        if($id){
+            $sql="select * from customer_referential aa where COMPANY='$company' AND STAANN != 'D' and not exists (select 1 from specific_conditions bb where bb.EMAIL=aa.EMAIL and bb.COMPANY=aa.COMPANY and bb.STAANN != 'D')";
+        }else{
+            $sql="select * from customer_referential aa where COMPANY='$company' AND STAANN != 'D' and not exists (select 1 from specific_conditions bb where bb.EMAIL=aa.EMAIL and bb.COMPANY=aa.COMPANY and bb.STAANN != 'D')";
+        }
+    }else{
+        if($id){
+            $sql="select * from specific_conditions where CONDITION_REFERENCE='$id' AND STAANN != 'D'";
+        }else{
+            $sql="select * from specific_conditions where COMPANY='$company' AND STAANN != 'D'";
+        }
+    }
+    
+    if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+    }
+	$result = mysqli_query($conn, $sql); 
+    $conn->close();   
+    $response['userAccessNumber']=$result->num_rows;
+
+    $i=0;
+    while($row = mysqli_fetch_array($result))
+    {
+        $response['companyConditions']['email'][$i]=$row['EMAIL'];
+        $i++;
+    }
+
 	echo json_encode($response);
     die;
 

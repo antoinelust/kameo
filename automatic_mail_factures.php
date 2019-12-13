@@ -13,6 +13,7 @@ $sql4 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '0
 $sql5 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND AMOUNT_HTVA>0 AND (FACTURE_LIMIT_PAID_DATE < CURDATE() OR ISNULL(FACTURE_LIMIT_PAID_DATE))";
 $sql6 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE  FACTURE_SENT = '1' AND FACTURE_PAID='0' AND AMOUNT_HTVA>0 and FACTURE_LIMIT_PAID_DATE	> CURDATE()";
 $sql8 = "SELECT * FROM factures WHERE FACTURE_PAID='0' AND AMOUNT_HTVA<0";
+$sql9 = "SELECT SUM(AMOUNT_HTVA) as SOMME FROM factures WHERE FACTURE_PAID='0' AND AMOUNT_HTVA<0";
 
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -58,17 +59,25 @@ $result5 = mysqli_query($conn, $sql5);
 
 if ($conn->query($sql6) === FALSE) {
     $response6 = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response5);
+    echo json_encode($response6);
     die;
 }
 $result6 = mysqli_query($conn, $sql6);
 
 if ($conn->query($sql8) === FALSE) {
-    $response6 = array ('response'=>'error', 'message'=> $conn->error);
-    echo json_encode($response5);
+    $response8 = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response8);
     die;
 }
 $result8 = mysqli_query($conn, $sql8);
+
+
+if ($conn->query($sql9) === FALSE) {
+    $response9 = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response9);
+    die;
+}
+$result9 = mysqli_query($conn, $sql9);
 
 
 require_once('include/php-mailer/PHPMailerAutoload.php');
@@ -745,6 +754,11 @@ while($row = mysqli_fetch_array($result8)){
 }
 
 $dest=$dest."</table>";
+
+$resultat9 = mysqli_fetch_assoc($result9);
+
+$dest=$dest."<p>Valeur totale des factures à payer: ".round($resultat9['SOMME'])." €</p>";
+
 
 $body=$body.$dest;
 

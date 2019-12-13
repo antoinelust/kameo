@@ -29,11 +29,10 @@ if($email != NULL)
     $conn->close();   
 
     $company=$resultat['COMPANY'];
-    $response['clientConditions']['administrator']=$resultat['ADMINISTRATOR'];       
+    $response['clientConditions']['administrator']=$resultat['ADMINISTRATOR'];  
     
     include 'connexion.php';
-	$sql="select * from conditions where COMPANY = '$company'";
-
+	$sql="select * from specific_conditions where COMPANY = '$company' AND EMAIL='$email' AND STAANN != 'D'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -41,7 +40,37 @@ if($email != NULL)
     }
 	$result = mysqli_query($conn, $sql); 
     $resultat = mysqli_fetch_assoc($result);
+    $length = $result->num_rows;    
     $conn->close();   
+    
+    if($length==0){
+        include 'connexion.php';
+        $sql="select * from conditions where COMPANY = '$company'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql); 
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();   
+    }else{
+        
+        $conditionReference=$resultat['CONDITION_REFERENCE'];
+        include 'connexion.php';
+        $sql="select * from conditions where ID = '$conditionReference'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql); 
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();   
+    }
+    
     
  
 

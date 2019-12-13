@@ -7,6 +7,8 @@ header('Content-type: application/json');
 
 
 //corresponds to the request for the mail, to have the link for reseting the mail
+
+
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['widget-update-form-email'])) {
 
 			
@@ -37,10 +39,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['widget-update-form-ema
 
 			writeMail();
 			logLostPassword();
-			successMessage(SM0001);
+			successMessage('SM0001');
 		}
 		else{
-			errorMessage(ES0012);
+			errorMessage('ES0012');
 		}
 }
 
@@ -98,11 +100,11 @@ elseif( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['widget-lostPasswor
 	}
 	$conn->close();
 	
-	successMessage(SM0002);
+	successMessage('SM0002');
 }
 else
 {
-	errorMessage(ES0012);
+	errorMessage('ES0012');
 }
 
 
@@ -125,17 +127,24 @@ function writeMail(){
 	$mail->Subject = $subject;
 	
 	$body = "Veuillez trouvez ci-dessous le lien afin de pouvoir réinitialiser votre mot de passe. <br /> Veuillez copier-coller le lien ci-dessous dans votre barre d'adresse : ";
-	//vérifier comme définir un paramètre GET
-	$link = 'http://www.kameobikes.com/test/index.php?hash='. $hash;
+    if(substr($_SERVER[REQUEST_URI], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+       $link = 'http://www.kameobikes.com/index.php?hash='. $hash;
+    }else if(substr($_SERVER[REQUEST_URI], 1, 4) == "test"){
+       $link = 'http://www.kameobikes.com/index.php?hash='. $hash;
+    }else{
+        $link='';
+    }
+    
 	$mail->Body = $body . $link;
     
 
-    
-	if(!$mail->Send()) {
-		$response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
-		echo json_encode($response);
-		die;
-	}
+    if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+        if(!$mail->Send()) {
+            $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
+            echo json_encode($response);
+            die;
+        }
+    }
 
 }
 

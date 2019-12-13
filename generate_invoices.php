@@ -85,7 +85,7 @@ while($row = mysqli_fetch_array($result))
                 $myfile = fopen($file, "w")  or die("Unable to open file!");
                 fwrite($myfile, $internalReference);
                 fclose($myfile);
-            
+                
                 $file = __DIR__.'/temp/billingGroup.txt';
                 $myfile = fopen($file, "w")  or die("Unable to open file!");
                 fwrite($myfile, $billingGroup);
@@ -93,28 +93,30 @@ while($row = mysqli_fetch_array($result))
 
                 $test=requireToVar(__DIR__.'/facture.php');
                 $file = 'facture'.$i.'.php';
-                $myfile = fopen($file, "w")  or die("Unable to open file!");
+                $myfile = fopen(__DIR__.'/'.$file, "w")  or die("Unable to open file!");
                 fwrite($myfile, $test);
                 fclose($myfile);
 
-                try {
-                    include dirname(__FILE__).'/'.$file;
-                    $content = ob_get_clean();
-                    $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
-                    $html2pdf->pdf->SetDisplayMode('fullpage');
-                    $html2pdf->writeHTML($content);
-                    $path='/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$internalReference.'_'.$billingGroup.'.pdf';;
-                    $html2pdf->Output(__DIR__ . $path, 'F');
+                if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                    try {
+                        include dirname(__FILE__).'/'.$file;
+                        $content = ob_get_clean();
+                        $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
+                        $html2pdf->pdf->SetDisplayMode('fullpage');
+                        $html2pdf->writeHTML($content);
+                        $path='/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$internalReference.'_'.$billingGroup.'.pdf';;
+                        $html2pdf->Output(__DIR__ . $path, 'F');
 
 
-                } catch (Html2PdfException $e) {
-                    $html2pdf->clean();
-                    $formatter = new ExceptionFormatter($e);
-                    echo $formatter->getHtmlMessage();
-                }              
+                    } catch (Html2PdfException $e) {
+                        $html2pdf->clean();
+                        $formatter = new ExceptionFormatter($e);
+                        echo $formatter->getHtmlMessage();
+                    }  
+                }
 
-
-                $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
+                include 'include/connexion.php';
+                $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
                 if ($conn->query($sql3) === FALSE) {
                     echo $conn->error;
                     die;
@@ -124,19 +126,21 @@ while($row = mysqli_fetch_array($result))
 
 
                 $emailContact=$resultat3['EMAIL_CONTACT'];
+                $emailContactBilling=$resultat3['EMAIL_CONTACT_BILLING'];
                 $nameContact=$resultat3['NOM_CONTACT'];
                 $firstnameContact=$resultat3['PRENOM_CONTACT'];
+                $firstNameContactBilling=$resultat3['FIRSTNAME_CONTACT_BILLING'];
+                $lastNameContactBilling=$resultat3['LASTNAME_CONTACT_BILLING'];
 
                 require_once('include/php-mailer/PHPMailerAutoload.php');
                 $mail = new PHPMailer();
                 $mail->IsHTML(true);                                    // Set email format to HTML
                 $mail->CharSet = 'UTF-8';
 
-                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
 
                 $mail->From = 'info@kameobikes.com';
-                $mail->FromName = 'Julien Jamar';
-                $mail->AddReplyTo('julien.jamar@kameobikes.com', 'Julien Jamar');
+                $mail->FromName = 'Information Kameo Bikes';
+                $mail->AddReplyTo('info@kameobikes.com', 'Information Kameo Bikes');
                 $mail->Subject = 'Kameo Bikes - '. $companyName .' - Facture de '.$monthFR[(date('n')-1)].' '.date('Y');
 
                 $temp=$monthFR[(date('n')-1)].' '.date('Y');
@@ -152,16 +156,37 @@ while($row = mysqli_fetch_array($result))
                 $file_to_attach = __DIR__ .$path;
                 $FileName = date('Y').'.'.date('m').'.'.date('d').'_'.$internalReference.'_'.$billingGroup.'.pdf';
 
-                $mail->AddAttachment( $file_to_attach , $FileName );
+                if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                    $mail->AddAttachment( $file_to_attach , $FileName );
+                }
 
                 $mail->Body = $message;
-                if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                                if(!$mail->Send()) {
-                                   echo error_get_last()['message'];  
+                if(substr($_SERVER[REQUEST_URI], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                    
+                    if($resultat3['BILLS_SENDING'] == "Y" && $emailContactBilling != "" && $lastNameContactBilling != ""){
+                        $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
+                        $mail->AddBCC("antoine.lust@kameobikes.com", "Antoine Lust");
+                        $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");
+                        
+                    }else{
+                        $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                    }
+                    
+                    if(!$mail->Send()) {
+                       echo error_get_last()['message'];  
 
-                                }else {
-                                   echo 'mail envoyé';
-                                }    
+                    }else {
+                       echo 'mail envoyé';
+                    }    
+                }else if(substr($_SERVER[REQUEST_URI], 1, 4) == "test"){
+                    $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                    
+                    if(!$mail->Send()) {
+                       echo error_get_last()['message'];  
+
+                    }else {
+                       echo 'mail envoyé';
+                    }    
                 }else{
                     echo '<br>Société '.$companyName.'<br><strong>environnement localhost, mail non envoyé</strong><br>';
                 }
@@ -171,12 +196,16 @@ while($row = mysqli_fetch_array($result))
                 $file = __DIR__.'/temp/billingGroup.txt';
                 unlink($file); 
 
+                $file = __DIR__.'/facture'.$i.'.php';;
+                unlink($file); 
+
             
 
 
             }            
         }
         if (ob_get_contents()) ob_end_clean();
+        
     }
 }
 
