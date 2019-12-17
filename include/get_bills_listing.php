@@ -128,7 +128,7 @@ if($email != NULL)
     if($company=='KAMEO'){
         $sql="select * from factures where AMOUNT_HTVA>0 AND FACTURE_SENT='0'";
     }else{
-        $sql="select * from factures WHERE AMOUNT_HTVA<0 AND FACTURE_SENT='0' AND COMPANY='$company'";
+        $sql="select * from factures WHERE AMOUNT_HTVA>0 AND FACTURE_SENT='0' AND COMPANY='$company'";
     }
     
     $result = mysqli_query($conn, $sql);        

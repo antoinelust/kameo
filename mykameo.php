@@ -20,10 +20,12 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/language.js"></script>
 <script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./node_modules/chart.js/dist/Chart.js" charset="UTF-8"></script>
 
 
 
 <script type="text/javascript">
+var color=Chart.helpers.color;
     
     
 window.addEventListener("DOMContentLoaded", function(event) {
@@ -41,7 +43,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', function () { get_company_listing('*')}, false);   
         classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);   
         classname[i].addEventListener('click', function () { list_bikes_admin()}, false);   
-        classname[i].addEventListener('click', function () { list_tasks('*',$('.taskOwnerSelection').val())}, false);   
+        classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);   
+        classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);   
         classname[i].addEventListener('click', initialize_booking_counter, false);
 
     }
@@ -58,8 +61,13 @@ window.addEventListener("DOMContentLoaded", function(event) {
     document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);   
     document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false); 
     document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false); 
-    document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val())}, false); 
+    document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+}, false); 
+    document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false); 
     document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false); 
+    document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+    document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false); 
+    document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
     
 
     var tempDate=new Date();
@@ -83,7 +91,7 @@ function bikeFilter(e){
 
 }    
 function taskFilter(e){
-    list_tasks('*', $('.taskOwnerSelection').val());
+    list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 
 }
 
@@ -92,6 +100,92 @@ function billFilter(e){
     get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
 
 }    
+    
+function generateTasksGraphic(company, owner, numberOfDays){
+    $.ajax({
+        url: 'include/action_company.php',
+        type: 'get',
+        data: { "action": "graphic", "company": company, "owner": owner, "numberOfDays": numberOfDays},
+        success: function(response){
+            if (response.response == 'error') {
+                console.log(response.message);
+            } else{
+                
+                
+                
+                var ctx = document.getElementById('myChart2').getContext('2d');
+                ctx.innerHTML="";
+                
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Actions totales',
+                            borderColor: 'rgba(44, 132, 109, 0.5)',
+                            backgroundColor:'rgba(44, 132, 109, 0)',
+                            data: response.arrayTotalTasks
+                        },{
+                            label: 'Prises de contact',
+                            borderColor: 'rgba(145, 145, 145, 0.5)',
+                            backgroundColor:'rgba(145, 145, 145, 0)',
+                            data: response.arrayContacts
+                        },{
+                            label: 'Rappels',
+                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            backgroundColor:'rgba(60, 179, 149, 0)',
+                            data: response.arrayReminder
+                        },{
+                            label: 'Planification de rendez-vous',
+                            borderColor: 'rgba(176, 0, 0, 0.5)',
+                            backgroundColor:'rgba(176, 0, 0, 0)',
+                            data: response.arrayRDVPlan
+                        },{
+                            label: 'Rendez-vous',
+                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            backgroundColor:'rgba(60, 179, 149, 0)',
+                            data: response.arrayRDV
+                        },{
+                            label: 'Offres',
+                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            backgroundColor:'rgba(60, 179, 149, 0)',
+                            data: response.arrayOffers
+                        },{
+                            label: 'Livraisons vélo',
+                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            backgroundColor:'rgba(60, 179, 149, 0)',
+                            data: response.arrayDelivery
+                        },{
+                            label: 'Autre',
+                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            backgroundColor:'rgba(60, 179, 149, 0)',
+                            data: response.arrayOther
+                        }],
+                    labels: response.arrayDates
+
+                    },
+
+                    options: {
+                        scales: {
+                            xAxes:[{
+                                ticks:{
+                                    max: "2020-12-19"
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+                myChart.update();
+
+            }              
+
+        }
+    })
+}
     
 function construct_form_for_bike_status_update(frameNumber){
     var frameNumber=frameNumber;
@@ -425,6 +519,7 @@ function construct_form_for_action_update(id){
                     } else{
                         document.getElementById('widget-updateAction-form').reset();            
                         $('#widget-updateAction-form input[name=id]').val(response.action.id);
+                        $('#widget-updateAction-form select[name=type]').val(response.action.type);
                         $('#widget-updateAction-form input[name=date]').val(response.action.date.substr(0,10));
                         $('#widget-updateAction-form textarea[name=description]').val(response.action.description);
                         $('#widget-updateAction-form input[name=title]').val(response.action.title);
@@ -1337,7 +1432,7 @@ if($connected){
         })
     }
         
-    function list_tasks(status, owner2) {
+    function list_tasks(status, owner2, numberOfResults) {
         var email= "<?php echo $user; ?>";
         if(!owner2){
             owner2=email;
@@ -1345,7 +1440,7 @@ if($connected){
         $.ajax({
             url: 'include/action_company.php',
             type: 'get',
-            data: { "company": '*', "status": status, "owner":owner2},
+            data: { "company": '*', "status": status, "owner":owner2, "numberOfResults": numberOfResults},
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
@@ -1353,7 +1448,7 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions:</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addTask\" data-toggle=\"modal\" onclick=\"create_task()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions:</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addTask\" data-toggle=\"modal\" onclick=\"create_task()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
                     dest=dest.concat(temp);                
                     while (i < response.actionNumber){
                         
@@ -1381,7 +1476,7 @@ if($connected){
                         }
                         
                         
-                        var temp="<tr><th>"+response.action[i].id+"</th><th>"+response.action[i].company+"</th><th>"+response.action[i].date.substr(0,10)+"</th><th>"+response.action[i].title+"</th><th>"+date_reminder+"</th><th>"+status+"</th><th>"+ownerSpan+"</th><th><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
+                        var temp="<tr><th>"+response.action[i].id+"</th><th>"+response.action[i].company+"</th><th>"+response.action[i].date.substr(0,10)+"</th><th>"+response.action[i].type+"<th>"+response.action[i].title+"</th><th>"+date_reminder+"</th><th>"+status+"</th><th>"+ownerSpan+"</th><th><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
                         dest=dest.concat(temp);
                         i++;
 
@@ -1409,6 +1504,23 @@ if($connected){
                         $('.taskOwnerSelection').val('*');
                     }
                     
+                    $('.taskOwnerSelection2')
+                        .find('option')
+                        .remove()
+                        .end()
+                    ;
+                    $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");    
+
+                    var i=0;
+                    while (i < response.ownerNumber){
+                        $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");    
+                        i++;
+
+                    }
+                    
+                    $('.taskOwnerSelection2').val('*');
+
+                    
                     
                     document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
                     
@@ -1423,6 +1535,234 @@ if($connected){
                 }
             }
         })
+    }
+        
+    function list_contracts_offers(company) {
+        
+        
+        $.ajax({
+            url: 'include/offer_management.php',
+            type: 'get',
+            data: { "company": company, action: "retrieve"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats:</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
+                    dest=dest.concat(temp);    
+                    while (i < response.contractsNumber){
+                        if(response.contract[i].start!=null){
+                            var contract_start=response.contract[i].start.substr(0,10);
+                        }else{
+                            var contract_start="N/A";
+                        }
+                        if(response.contract[i].end!=null){
+                            var contract_end=response.contract[i].end.substr(0,10);
+                        }else{
+                            var contract_end="N/A";
+                        }
+                        
+                        var temp="<tr><th>"+response.contract[i].company+"</th><th>"+response.contract[i].description+"</th><th>"+Math.round(response.contract[i].amount)+" €/mois</th><th>"+contract_start+"</th><th>"+contract_end+"</th></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);     
+                    
+                    var temp="<p>Valeur actuelle des contrat en cours : <strong>"+Math.round(response.sumContractsCurrent)+" €/mois</strong></p>";
+                    dest=dest.concat(temp);     
+                    
+                    document.getElementById('contractsListingSpan').innerHTML = dest;
+                    
+                    
+                    
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Offres:</h4><h4 class=\"en-inline text-green\">Offers:</h4><h4 class=\"nl-inline text-green\">Offers:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Probabilité</th><th></th></tr></thead>";
+                    dest=dest.concat(temp); 
+                    while (i < response.offersNumber){
+                        if(response.offer[i].start!=null){
+                            var offer_start=response.offer[i].start.substr(0,10);
+                        }else{
+                            var offer_start="N/A";
+                        }
+                        if(response.offer[i].end!=null){
+                            var offer_end=response.offer[i].end.substr(0,10);
+                        }else{
+                            var offer_end="N/A";
+                        }
+                        
+                        if(response.offer[i].type=="leasing"){
+                            var amount=Math.round(response.offer[i].amount)+ "€/mois";
+                        }else{
+                            var amount=Math.round(response.offer[i].amount)+ "€";
+                        }                        
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><th>"+response.offer[i].company+"</th><th>"+response.offer[i].title+"</th><th>"+amount+" </th><th>"+offer_start+"</th><th>"+offer_end+"</th><th>"+response.offer[i].probability+" %</th><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        
+                        
+                        dest=dest.concat(temp);                        
+                        i++;
+
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);                         
+                    document.getElementById('offersListingSpan').innerHTML = dest;
+                    
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Coûts:</h4><h4 class=\"en-inline text-green\">Costs:</h4><h4 class=\"nl-inline text-green\">Costs:</h4><br/><br/><a class=\"button small green button-3d rounded icon-right addCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un coût</span></a><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Type</th><th></th></tr></thead>";
+                    dest=dest.concat(temp); 
+                    while (i < response.costsNumber){
+                        if(response.cost[i].start!=null){
+                            var cost_start=response.cost[i].start.substr(0,10);
+                        }else{
+                            var cost="N/A";
+                        }
+                        if(response.cost[i].end!=null){
+                            var cost_end=response.cost[i].end.substr(0,10);
+                        }else{
+                            var cost_end="N/A";
+                        }
+                        
+                        if(response.cost[i].type=="monthly"){
+                            var amount=Math.round(response.cost[i].amount)+ "€/mois";
+                        }else{
+                            var amount=Math.round(response.cost[i].amount)+ "€";
+                        }                        
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" name=\""+response.cost[i].id+"\">"+response.cost[i].id+"</a></td><th>"+response.cost[i].title+"</th><th>"+amount+" </th><th>"+cost_start+"</th><th>"+cost_end+"</th><td><ins><a class=\"text-green costsManagement updateCost\" data-target=\"#costsManagement\" name=\""+response.cost[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        
+                        
+                        dest=dest.concat(temp);                        
+                        i++;
+
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);                         
+                    document.getElementById('costsListingSpan').innerHTML = dest;
+                    
+                    $(".retrieveOffer").click(function() {
+                        retrieve_offer(this.name, "retrieve");
+                        $('.offerManagementTitle').text("Consulter une offre");
+                        $('.offerManagementSendButton').addClass("hidden");
+                        
+                    });                    
+                    $(".updateOffer").click(function() {
+                        retrieve_offer(this.name, "update");
+                        $('.offerManagementTitle').text("Mettre à jour une offre");
+                        $('.offerManagementSendButton').removeClass("hidden");
+                        $('.offerManagementSendButton').text("Mettre à jour")                        
+                        
+                    });                    
+                    
+                    
+                    $(".addCost").click(function() {
+                        $('#widget-costsManagement-form input').attr("readonly", false);                            
+                        $('#widget-costsManagement-form textarea').attr("readonly", false);                            
+                        $('#widget-costsManagement-form select').attr("readonly", false);                                                    
+                        $('.costManagementTitle').text("Ajouter un coût");
+                        $('.costManagementSendButton').removeClass("hidden");
+                        document.getElementById('widget-costsManagement-form').reset(); 
+                        $('.costManagementSendButton').text("Ajouter")
+                        
+                    });                    
+                    $(".retrieveCost").click(function() {
+                        retrieve_cost(this.name, "retrieve");
+                        $('.costManagementTitle').text("Consulter un coût");
+                        $('.costManagementSendButton').addClass("hidden");
+                    });                    
+                    $(".updateCost").click(function() {
+                        retrieve_cost(this.name, "update");
+                        $('.costManagementTitle').text("Mettre à jour un coût");
+                        
+                        $('.costManagementSendButton').removeClass("hidden");
+                        $('.costManagementSendButton').text("Mettre à jour")
+                        
+                    });                    
+                    
+                    
+                    displayLanguage();    
+                    
+                }
+            }
+        })
+        
+        
+        
+
+        
+        $.ajax({
+            url: 'include/offer_management.php',
+            type: 'get',
+            data: { "graphics": "Y", action: "retrieve"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var threeYearsFromNow = new Date();
+                    threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
+                    var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
+                    console.log(maxXAxis);
+                    
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            datasets: [{
+                                label: 'Contrats signés',
+                                borderColor: 'rgba(44, 132, 109, 0.5)',
+                                backgroundColor:'rgba(44, 132, 109, 0)',
+                                data: response.arrayContracts
+                            },{
+                                label: 'Offres',
+                                borderColor: 'rgba(145, 145, 145, 0.5)',
+                                backgroundColor:'rgba(145, 145, 145, 0)',
+                                data: response.arrayOffers
+                            },{
+                                label: 'Chiffre d\'affaire',
+                                borderColor: 'rgba(60, 179, 149, 0.5)',
+                                backgroundColor:'rgba(60, 179, 149, 0)',
+                                data: response.totalIN
+                            },{
+                                label: 'Frais',
+                                borderColor: 'rgba(176, 0, 0, 0.5)',
+                                backgroundColor:'rgba(176, 0, 0, 0)',
+                                data: response.arrayCosts
+                            },{
+                                label: 'Cash flow',
+                                borderColor: 'rgba(60, 179, 149, 0.5)',
+                                backgroundColor:'rgba(60, 179, 149, 0.5)',
+                                data: response.arrayFreeCashFlow
+                            }],
+                        labels: response.arrayDates
+
+                        },
+
+                        options: {
+                            scales: {
+                                xAxes:[{
+                                    ticks:{
+                                        max: "2020-12-19"
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                }
+            }
+        })
+        
+        
     }
         
     function get_users_listing(){
@@ -1536,6 +1876,7 @@ if($connected){
                         document.getElementById('portfolioManagement').classList.remove("hidden");
                         document.getElementById('bikeManagement').classList.remove("hidden");
                         document.getElementById('taskManagement').classList.remove("hidden");
+                        document.getElementById('cashFlowManagement').classList.remove("hidden");
                     }
                     
                     
@@ -2503,7 +2844,7 @@ if($connected){
                     dest=dest.concat(temp);
                     
                     if(response.update){
-                        var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises ("+response.billINNumber+")</span></a> <a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '0', '0', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises non envoyées ("+response.billINNumberNotSent+")</span></a><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture émises envoyées mais non payées ("+response.billINNumberNotPaid+")</span></a><br /><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues ("+response.billOUTNumber+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '0', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues non-payées  ("+response.billOUTNumberNotPaid+")</span></a><br/>";
+                        var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises ("+response.billINNumber+")</span></a> <a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '0', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises non envoyées ("+response.billINNumberNotSent+")</span></a><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture émises envoyées mais non payées ("+response.billINNumberNotPaid+")</span></a><br /><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues ("+response.billOUTNumber+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '0', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues non-payées  ("+response.billOUTNumberNotPaid+")</span></a><br/>";
                         dest=dest.concat(temp);
                         document.getElementsByClassName('companyBillSelection')[0].hidden=false;
                         document.getElementsByClassName('companyBillSelection')[1].hidden=false;
@@ -2693,7 +3034,8 @@ if($connected){
 
                     document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.companiesNumber+"</span>";
                     
-                    
+                    document.getElementById('cashFlowSpan').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+Math.round(response.sumContractsCurrent)+"\" data-from=\"0\" data-seperator=\"true\">"+Math.round(response.sumContractsCurrent)+"</span>";
+
                     
                     var classname = document.getElementsByClassName('internalReferenceCompany');
                     for (var i = 0; i < classname.length; i++) {
@@ -2710,6 +3052,141 @@ if($connected){
         })
     }        
 
+    function retrieve_offer(ID, action){
+        $.ajax({
+            url: 'include/offer_management.php',
+            type: 'get',
+            data: {"ID": ID, "action": "retrieve"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    
+                    if(action=="retrieve"){
+                        $('#widget-offerManagement-form input').attr("readonly", true);                            
+                        $('#widget-offerManagement-form textarea').attr("readonly", true);                            
+                        $('#widget-offerManagement-form select').attr("readonly", true);                            
+                    }else{
+                        $('#widget-offerManagement-form input').attr("readonly", false);                            
+                        $('#widget-offerManagement-form textarea').attr("readonly", false);                            
+                        $('#widget-offerManagement-form select').attr("readonly", false);                            
+                        
+                    }
+    
+                    
+                    $('#widget-offerManagement-form input[name=title]').val(response.title);
+                    $('#widget-offerManagement-form textarea[name=description]').val(response.description);
+                    $('#widget-offerManagement-form select[name=type]').val(response.type);
+                    
+                    
+                    if($("#widget-offerManagement-form select[name=type]").val()=="achat"){
+                        $("#widget-offerManagement-form input[name=start]").attr("readonly", true);
+                        $("#widget-offerManagement-form input[name=end]").attr("readonly", true);
+                        $("#widget-offerManagement-form input[name=start]").val("");
+                        $("#widget-offerManagement-form input[name=end]").val("");
+
+                    }else{
+                        if(action!="retrieve"){
+                            $("#widget-offerManagement-form input[name=start]").attr("readonly", false);
+                            $("#widget-offerManagement-form input[name=end]").attr("readonly", false);
+                        }
+
+                        if(response.date){
+                            $('#widget-offerManagement-form input[name=date]').val(response.date.substring(0,10));
+                        }
+                        if(response.start){
+                            $('#widget-offerManagement-form input[name=start]').val(response.start.substring(0,10));
+                        }
+                        if(response.end){
+                            $('#widget-offerManagement-form input[name=end]').val(response.end.substring(0,10));
+                        }
+                    }
+
+                    $('#widget-offerManagement-form input[name=margin]').val(response.margin);
+                    $('#widget-offerManagement-form input[name=probability]').val(response.probability);
+                    $('#widget-offerManagement-form input[name=company]').val(response.company);
+                    $('#widget-offerManagement-form input[name=action]').val("update");
+                    $('#widget-offerManagement-form input[name=ID]').val(ID);
+                    if(response.amount){
+                        $('#widget-offerManagement-form input[name=amount]').val(response.amount);
+                    }
+                    console.log(response);
+                    
+                }
+            }
+        })
+
+    }
+    function retrieve_cost(ID, action){
+        $.ajax({
+            url: 'include/costs_management.php',
+            type: 'get',
+            data: {"ID": ID, "action": "retrieve"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    console.log(response);
+                    if(action=="retrieve"){
+                        $('#widget-costsManagement-form input').attr("readonly", true);                            
+                        $('#widget-costsManagement-form textarea').attr("readonly", true);                            
+                        $('#widget-costsManagement-form select').attr("readonly", true);                            
+                    }else{
+                        $('#widget-costsManagement-form input').attr("readonly", false);                            
+                        $('#widget-costsManagement-form textarea').attr("readonly", false);                            
+                        $('#widget-costsManagement-form select').attr("readonly", false);                            
+                        
+                    }
+    
+                    
+                    $('#widget-costsManagement-form input[name=title]').val(response.title);
+                    $('#widget-costsManagement-form textarea[name=description]').val(response.description);
+                    $('#widget-costsManagement-form select[name=type]').val(response.type);
+                    
+                    if(response.start){
+                        $('#widget-costsManagement-form input[name=start]').val(response.start.substring(0,10));
+                    }
+
+                    if($("#widget-costsManagement-form select[name=type]").val()=="one-shot"){
+                        $("#widget-costsManagement-form input[name=end]").attr("readonly", true);
+                        $("#widget-costsManagement-form input[name=end]").val("");
+                        
+
+                    }else{
+                        if(action!="retrieve"){
+                            $("#widget-costsManagement-form input[name=start]").attr("readonly", false);
+                            $("#widget-costsManagement-form input[name=end]").attr("readonly", false);
+                        }
+
+                        if(response.end){
+                            $('#widget-costsManagement-form input[name=end]').val(response.end.substring(0,10));
+                        }
+                    }
+
+                    $('#widget-costsManagement-form input[name=action]').val("update");
+                    $('#widget-costsManagement-form input[name=ID]').val(ID);
+                    if(response.amount){
+                        $('#widget-costsManagement-form input[name=amount]').val(response.amount);
+                    }
+                    console.log(response);
+                    
+                }
+            }
+        })
+
+    }
+        
+    function add_offer(company){
+        console.log(company);
+        $('#widget-offerManagement-form select[name=type]').val("leasing");                            
+        $('#widget-offerManagement-form input[name=company]').val(company);                            
+        $('#widget-offerManagement-form input').attr("readonly", false);                            
+        $('#widget-offerManagement-form textarea').attr("readonly", false);                            
+        $('#widget-offerManagement-form select').attr("readonly", false);                               
+    }
+        
     function get_company_details(ID) {
         var email= "<?php echo $user; ?>";
         var internalReference;
@@ -2807,12 +3284,36 @@ if($connected){
 
                     
                     var i=0;
-                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right offerManagement\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th></th></tr></thead>";
+                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right offerManagement addOffer\" name=\""+internalReference+"\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th></th></tr></thead>";
                     var dest="";
                     dest=dest.concat(temp);
-                    console.log(response);
                     while(i<response.bikeContracts){
-                        var temp="<tr><td>"+response.offer[i].id+"</td><td>Signé</td><td>"+response.offer[i].description+"</td><td>"+response.offer[i].probability+"</td><td>"+response.offer[i].amount+"</td><td>"+response.offer[i].start.substr(0,10)+"</td><td>"+response.offer[i].end.substr(0,10)+"</td><td></td></tr>";
+                        if(response.offer[i].description){
+                            var description=response.offer[i].description;
+                        }else{
+                            var description="N/A";
+                        }
+                        if(response.offer[i].probability){
+                            var probability=response.offer[i].probability;
+                        }else{
+                            var probability="N/A";
+                        }
+                        if(response.offer[i].amount){
+                            var amount=response.offer[i].amount;
+                        }else{
+                            var amount="N/A";
+                        }
+                        if(response.offer[i].start){
+                            var start=response.offer[i].start.substr(0,10);
+                        }else{
+                            var start="N/A";
+                        }
+                        if(response.offer[i].description){
+                            var end=response.offer[i].end.substr(0,10);
+                        }else{
+                            var end="N/A";
+                        }
+                        var temp="<tr><td>"+response.offer[i].id+"</td><td>Signé</td><td>"+description+"</td><td>"+probability+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td></td></tr>";
                         dest=dest.concat(temp);
                         i++;
                     }
@@ -2835,18 +3336,35 @@ if($connected){
                             var end=response.offer[i].end.substr(0,10);
                         }
                         
+                        if(response.offer[i].type=="leasing"){
+                            var amount = response.offer[i].amount+" €/mois";
+                        }else{
+                            var amount = response.offer[i].amount+" €";
+                        }
                         
-                        var temp="<tr><td>"+response.offer[i].id+"</td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+"</td><td>"+response.offer[i].amount+"</td><td>"+start+"</td><td>"+end+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateOffer\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         dest=dest.concat(temp);
                         i++;
                     }
                     dest=dest.concat("</tbody></table>");
                     document.getElementById('companyContracts').innerHTML = dest;
 
+                    $(".retrieveOffer").click(function() {
+                        retrieve_offer(this.name, "retrieve");
+                    });                    
                     
-                    $(".offerManagement").click(function() {
-                        $('#widget-offerManagement-form input[name=company]').val(internalReference);
+                    $(".updateOffer").click(function() {
+                        retrieve_offer(this.name, "update");
                     });
+                    $(".addOffer").click(function() {
+                        add_offer(this.name);
+                        $('.offerManagementSendButton').removeClass("hidden");
+                        $('.offerManagementSendButton').text("Ajouter")                        
+                        
+                    });
+                    
+                    
                     
                     
                     //Ajouter un utilisateur
@@ -2932,21 +3450,20 @@ if($connected){
                 data: { "company": internalReference, "user": email},
                 success: function(response){
                     if (response.response == 'error') {
-                        console.log(email);
                         console.log(response.message);
                     } else{
 
                         var i=0;
                         
                         
-                        var dest="<table class=\"table table-condensed\"><a href=\"#\" data-target=\"#addTask\" data-toggle=\"modal\" class=\"button small green button-3d rounded icon-right\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Owner</span><span class=\"en-inline\">Owner</span><span class=\"nl-inline\">Owner</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
+                        var dest="<table class=\"table table-condensed\"><a href=\"#\" data-target=\"#addTask\" data-toggle=\"modal\" class=\"button small green button-3d rounded icon-right\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Owner</span><span class=\"en-inline\">Owner</span><span class=\"nl-inline\">Owner</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
                         while(i<response.actionNumber){
                             if(!(response.action[i].date_reminder)){
                                 $date_reminder="N/A"
                             }else{
                                 $date_reminder=response.action[i].date_reminder.substring(0,10);
                             }
-                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].title+"</td><td>"+response.action[i].ownerFirstName+" "+response.action[i].ownerName+"</td><td>"+response.action[i].status+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].type+"</td><td>"+response.action[i].title+"</td><td>"+response.action[i].ownerFirstName+" "+response.action[i].ownerName+"</td><td>"+response.action[i].status+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                             dest=dest.concat(temp);
                             i++;
                         }
@@ -3933,6 +4450,16 @@ if($connected){
                                                         </div>
 											             <div class="counter bold" id="counterTasks" style="color:#3cb395"></div>
 											             <p>Gérer les Actions</p>
+											        </div>
+											     </div>
+
+										     	<div class="col-md-4 hidden" id="cashFlowManagement">
+											         <div class="icon-box medium fancy">
+											             <div class="icon bold" data-animation="pulse infinite">
+                                                             <a data-toggle="modal" data-target="#offersListing" href="#" class="offerManagerClick"><i class="fa fa-money"></i></a> 
+                                                        </div>     
+											             <div class="counter bold" id="cashFlowSpan" style="color:#3cb395"></div>
+											             <p>Vue sur le cash-flow</p>
 											        </div>
 											     </div>
                                             </div>
@@ -5570,6 +6097,14 @@ if($connected){
                 <label for="taskOwnerSelection">Filtrer sur Owner</label>
                 <select class="taskOwnerSelection" name="taskOwnerSelection">
                 </select>
+            </div>            
+            <div class="col-md-3">
+                <label for="tasksListing_number">Nombre de résultats</label>
+                <select class="form-control required tasksListing_number" name="tasksListing_number">
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
             </div> 
             
             <div class="separator"></div>
@@ -5577,6 +6112,75 @@ if($connected){
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="tasksListingSpan"></span>
             </div>
+            
+            <div class="separator"></div>
+            <div class="col-md-3">
+                <label for="taskOwnerSelection2">Filtrer sur Owner</label>
+                <select class="taskOwnerSelection2" name="taskOwnerSelection2">
+                </select>
+            </div>            
+
+            <div class="col-md-3">
+                <label for="numberOfDays">Nombre de jours</label>
+                <input type="text" class="numberOfDays form-control required" name="numberOfDays" value="30">
+            </div> 
+            <canvas id="myChart2" width="400" height="300"></canvas>
+
+            
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="tasksListingGraphic"></span>
+            </div>
+            
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="offersListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+            
+            <!--<div class="col-md-3">
+                <label for="companySelection">Filtrer sur la société</label>
+                <select class="companySelection" name="companySelection">
+                </select>
+            </div> 
+            
+            <div class="separator"></div>
+            -->
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="contractsListingSpan"></span>
+            </div>
+            
+            <div class="separator"></div>
+            
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="offersListingSpan"></span>
+            </div>
+            
+            <div class="separator"></div>
+            
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="costsListingSpan"></span>
+            </div>
+            
+            <div class="separator"></div>
+            <h4 class="text-green">Graphique :</h4>
+            
+            
+            <canvas id="myChart" width="400" height="300"></canvas>
+            
             
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
@@ -6669,7 +7273,8 @@ if($connected){
                                                 document.getElementById("sendButtonClientDetails").classList.add("hidden"); 
                                                 document.getElementById("clientBikes").classList.remove("hidden");
                                                 document.getElementById("clientBuildings").classList.remove("hidden");
-                                                document.getElementById("clientContratcs").classList.remove("hidden");
+                                                document.getElementById("clientContracts").classList.remove("hidden");
+                                                
                                                 var classname = document.getElementsByClassName('updateClientInformation');
                                                 $('#widget-companyDetails-form input').attr("readonly", true);
                                                 $('#widget-companyDetails-form select').prop( "disabled", true );
@@ -6706,7 +7311,7 @@ if($connected){
                                 document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
                                 document.getElementById("sendButtonClientDetails").classList.add("hidden");
                                 document.getElementById("clientBikes").classList.remove("hidden");
-                                document.getElementById("clientContratcs").classList.remove("hidden");
+                                document.getElementById("clientContracts").classList.remove("hidden");
                                 document.getElementById("clientBuildings").classList.remove("hidden");
                                 $('#widget-companyDetails-form input').attr("readonly", true);
                                 $('#widget-companyDetails-form select').prop( "disabled", true );
@@ -6724,94 +7329,13 @@ if($connected){
                         <h4 class="text-green">Bâtiments:</h4>
                         <p><span id="companyBuildings"></span></p>
                     </div>
-                    <div class="col-sm-12" id="clientContratcs">
+                    <div class="col-sm-12" id="clientContracts">
                         <h4 class="text-green">Contrats et Offres :</h4>
                         <p><span id="companyContracts"></span></p>
                     </div>
                         
                     <div class="col-sm-12">
                         <h4 class="text-green">Historique et actions</h4>
-						<form id="widget-addActionCompany-form" action="include/action_company.php" role="form" method="post">
-                            <div class="col-sm-12 form-group">
-                                <input type="text" name="company" class="form-control required hidden">
-                                <input type="text" name="user" class="form-control required hidden" value="<?php echo $user; ?>">
-                                
-                                
-                                <div class="col-sm-3">  
-                                    <label for="status" class="hidden">Owner</label>  
-                                    <select title="owner" class="selectpicker hidden" name="owner">
-                                    </select>                                    
-                                </div>   
-                                
-                                <div class="col-sm-3">  
-                                    <label for="status" class="hidden">Status</label>                                    
-                                    <select title="Status" class="selectpicker hidden" name="status">
-                                      <option value="TO DO">To do</option>
-                                      <option value="DONE">Done</option>            
-                                    </select>                                    
-                                </div>   
-                                
-                                <div class="col-sm-3">
-                                    <label for="date" class="hidden">Date</label>
-                                    <input type="date" name="date" class="form-control required hidden">
-                                </div>
-                                <div class="col-sm-3">
-                                    <label for="date_reminder" class="hidden">Rappel ?</label>
-                                    <input type="date" name="date_reminder" class="form-control hidden">
-                                </div>                                
-                                <div class="col-sm-7">
-                                    <label for="description" class="hidden">Description</label>
-                                    <input type="text" name="description" class="form-control required hidden">
-                                </div>
-                                <input type="text" name="action" class=" required hidden" value="create">
-                                
-                                <div class="col-sm-1">
-                                    <button  class="fr button small green button-3d rounded icon-left hidden addActionCompanyConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
-                                </div>                                                            
-                            </div>
-                        </form>
-
-                        
-                        <script type="text/javascript">                            
-                            jQuery("#widget-addActionCompany-form").validate({
-                                submitHandler: function(form) {
-                                    jQuery(form).ajaxSubmit({
-                                        success: function(response) {
-                                            if (response.response == 'success') {
-                                                $.notify({
-                                                    message: response.message
-                                                }, {
-                                                    type: 'success'
-                                                });
-                                                $('#widget-addActionCompany-form label[for=status]').addClass("hidden");
-                                                $('#widget-addActionCompany-form label[for=date]').addClass("hidden");
-                                                $('#widget-addActionCompany-form label[for=description]').addClass("hidden");
-                                                $('#widget-addActionCompany-form label[for=date_reminder]').addClass("hidden");
-                                                $('#widget-addActionCompany-form input[name=date]').addClass("hidden");
-                                                $('#widget-addActionCompany-form input[name=description]').addClass("hidden");
-                                                $('#widget-addActionCompany-form input[name=date_reminder]').addClass("hidden");
-                                                $('#widget-addActionCompany-form select[name=status]').addClass("hidden");
-                                                $('#widget-addActionCompany-form select[name=owner]').addClass("hidden");
-                                                $('.addActionCompanyConfirmButton').addClass("hidden");
-                                                $('#widget-addActionCompany-form input[name=date]').val('');
-                                                $('#widget-addActionCompany-form input[name=description]').val('');
-                                                $('#widget-addActionCompany-form input[name=date_reminder]').val('');
-                                                $('#widget-addActionCompany-form input[name=status]').val('TO DO');   
-                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
-                                                document.getElementById('widget-addActionCompany-form').reset();
-
-                                            } else {
-                                                $.notify({
-                                                    message: response.message
-                                                }, {
-                                                    type: 'danger'
-                                                });
-                                            }
-                                        }
-                                    });
-                                }
-                            })
-                        </script>
                         <span id="action_company_log"></span>
                         
                     </div>
@@ -6971,53 +7495,77 @@ if($connected){
 						<form id="widget-addTask-form" action="include/action_company.php" role="form" method="post">
                             
                             <div class="form-group col-sm-12">
-                                <div class="col-md-4">  
-                                    <label for="owner">Owner</label>  
-                                    <select title="owner" class="selectpicker" name="owner">
-                                    </select>                                    
-                                </div>   
+                                <div class="col-md-12">
 
-                                <div class="col-md-4">
-                                    <label for="status">Statut :</label>
-                                    <select title="Status" class="selectpicker" name="status">
-                                      <option value="TO DO">To do</option>
-                                      <option value="DONE">Done</option>            
-                                    </select>                                    
+                                    <div class="col-md-4">  
+                                        <label for="owner">Owner</label>  
+                                        <select title="owner" class="selectpicker form-conrol required" name="owner">
+                                        </select>                                    
+                                    </div>   
+
+                                    <div class="col-md-4">
+                                        <label for="status">Statut :</label>
+                                        <select title="Status" class="selectpicker form-control required" name="status">
+                                          <option value="TO DO">To do</option>
+                                          <option value="DONE">Done</option>            
+                                        </select>                                    
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="company"  class="fr">Société</label>
+                                        <label for="company"  class="en">Company</label>
+                                        <label for="company"  class="nl">Company</label>
+                                        <select title="company" class="selectpicker form-control required" name="company">
+                                        </select>                                    
+                                    </div>		
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label for="type"  class="fr">Type</label>
+                                        <label for="type"  class="en">Type</label>
+                                        <label for="type"  class="nl">Type</label>
+                                        <select title="type" class="selectpicker form-control required" name="type">
+                                          <option value="contact">Prise de contact</option>
+                                          <option value="rappel">Rappel</option>            
+                                          <option value="plan rdv">Planification de rendez-vous</option>            
+                                          <option value="rdv">Rendez-vous</option>            
+                                          <option value="offre">Formulation d'une offre</option>            
+                                          <option value="delivery">Livraison vélo</option>            
+                                          <option value="other">Autre</option>            
+                                        </select>                                    
+                                        
+                                    </div>								
+                                    <div class="col-md-4">
+                                        <label for="date"  class="fr">Date</label>
+                                        <label for="date"  class="en">Date</label>
+                                        <label for="date"  class="nl">Date</label>
+                                        <input type="date" name="date" class="form-control required">                                    
+                                    </div>								
+                                    <div class="col-md-4">
+                                        <label for="reminder"  class="fr">Rappel ?</label>
+                                        <label for="reminder"  class="en">Reminder ?</label>
+                                        <label for="reminder"  class="nl">Reminder ?</label>
+                                        <input type="date" name="date_reminder" class="form-control ">                                    
+                                    </div>                                
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="status"  class="fr">Société</label>
-                                    <label for="status"  class="en">Company</label>
-                                    <label for="status"  class="nl">Company</label>
-                                    <select title="company" class="selectpicker" name="company">
-                                    </select>                                    
-                                </div>								
 
-                                <div class="col-md-5">
-                                    <label for="date"  class="fr">Date</label>
-                                    <label for="date"  class="en">Date</label>
-                                    <label for="date"  class="nl">Date</label>
-                                    <input type="date" name="date" class="form-control required">                                    
-                                </div>								
-                                <div class="col-md-5">
-                                    <label for="reminder"  class="fr">Rappel ?</label>
-                                    <label for="reminder"  class="en">Reminder ?</label>
-                                    <label for="reminder"  class="nl">Reminder ?</label>
-                                    <input type="date" name="date_reminder" class="form-control ">                                    
-                                </div>
+                                <div class="col-md-12">
+                                    
+                                    <div class="col-md-12">
+                                        <label for="reminder"  class="fr">Titre</label>
+                                        <label for="reminder"  class="en">Title</label>
+                                        <label for="reminder"  class="nl">Title</label>
+                                        <input type="text" name="title" class="form-control ">                                    
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="reminder"  class="fr">Description</label>
+                                        <label for="reminder"  class="en">Description</label>
+                                        <label for="reminder"  class="nl">Description</label>
+                                        <textarea class="form-control" rows="5" name="description"></textarea>                                    
+                                    </div>
                                 
-                                <div class="col-md-12">
-                                    <label for="reminder"  class="fr">Titre</label>
-                                    <label for="reminder"  class="en">Title</label>
-                                    <label for="reminder"  class="nl">Title</label>
-                                    <input type="text" name="title" class="form-control ">                                    
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="reminder"  class="fr">Description</label>
-                                    <label for="reminder"  class="en">Description</label>
-                                    <label for="reminder"  class="nl">Description</label>
-                                    <textarea class="form-control" rows="5" name="description"></textarea>                                    
                                 </div>
 
                                 <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
@@ -7032,7 +7580,6 @@ if($connected){
 						<script type="text/javascript">							
 							jQuery("#widget-addTask-form").validate({
 								submitHandler: function(form) {
-
 									jQuery(form).ajaxSubmit({
 										success: function(response) {
 											if (response.response == 'success') {
@@ -7041,7 +7588,7 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                list_tasks('*', $('.taskOwnerSelection').val());
+                                                list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 												$('#addTask').modal('toggle');
                                                 document.getElementById('widget-addTask-form').reset();
                                                 
@@ -7382,78 +7929,91 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						
-						<form id="widget--form" action="include/offer_management.php" role="form" method="post">
+						<form id="widget-offerManagement-form" action="include/offer_management.php" role="form" method="post">
                             
                             <div class="form-group col-sm-12">
                                 <h4 class="fr text-green">Ajouter une offre</h4>
+                                <div class="col-sm-12">
+                                    
+                                    <div class="col-sm-12">
+                                        <label for="title"  class="fr">Titre</label>
+                                        <label for="title"  class="en">Title</label>
+                                        <label for="title"  class="nl">Title</label>
+                                        <input type="text" name="title" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label for="description"  class="fr">Description</label>
+                                        <label for="description"  class="en">Description</label>
+                                        <label for="description"  class="nl">Description</label>
+                                        <textarea class="form-control required" rows="5" name="description"></textarea>                                    
+                                    </div>
                                 
-								<div class="col-sm-12">
-                                    <label for="title"  class="fr">Titre</label>
-                                    <label for="title"  class="en">Title</label>
-                                    <label for="title"  class="nl">Title</label>
-                                    <input type="text" name="title" class="form-control required">
-								</div>
-								<div class="col-sm-12">
-                                    <label for="description"  class="fr">Description</label>
-                                    <label for="description"  class="en">Description</label>
-                                    <label for="description"  class="nl">Description</label>
-                                    <textarea class="form-control" rows="5" name="description"></textarea>                                    
-								</div>
-                                
-								<div class="col-sm-4">
-                                    <label for="type"  class="fr">Type</label>
-                                    <label for="type"  class="en">Type</label>
-                                    <label for="type"  class="nl">Type</label>
-                                    <select name="type" class="form-control required">
-                                        <option value="leasing">Leasing</option>
-                                        <option value="achat">achat</option>
-                                    </select>
                                 </div>
                                 
-                            	<div class="col-sm-4">
-                                    <label for="probability"  class="fr">Chance de réussite</label>
-                                    <label for="probability"  class="en">Chance de réussite</label>
-                                    <label for="probability"  class="nl">chance de réussite</label>
-                                    <input type="number" min="0" max="100" name="probability" class="form-control">
-                                </div>
-								
-								<div class="col-sm-4">
-                                    <label for="amount"  class="fr">Montant</label>
-                                    <label for="amount"  class="en">Montant</label>
-                                    <label for="amount"  class="nl">Montant</label>
-                                    <input type="number" min="0" name="amount" class="form-control">
-                                </div>
+                                <div class="col-sm-12">
+									<div class="col-sm-3">
+	                                    <label for="type"  class="fr">Type</label>
+	                                    <label for="type"  class="en">Type</label>
+	                                    <label for="type"  class="nl">Type</label>
+	                                    <select name="type" class="form-control required">
+	                                        <option value="leasing">Leasing</option>
+	                                        <option value="achat">achat</option>
+	                                    </select>
+	                                </div>
+	                                
+	                            	<div class="col-sm-3">
+	                                    <label for="probability"  class="fr">Chance de réussite</label>
+	                                    <label for="probability"  class="en">Chance de réussite</label>
+	                                    <label for="probability"  class="nl">chance de réussite</label>
+	                                    <input type="number" min="0" max="100" name="probability" class="form-control required">
+	                                </div>
+									
+									<div class="col-sm-3">
+	                                    <label for="amount"  class="fr">Montant</label>
+	                                    <label for="amount"  class="en">Montant</label>
+	                                    <label for="amount"  class="nl">Montant</label>
+	                                    <input type="number" min="0" name="amount" class="form-control required">
+	                                </div>
+	
+									<div class="col-sm-3">
+	                                    <label for="margin"  class="fr">Marge</label>
+	                                    <label for="margin"  class="en">Marge</label>
+	                                    <label for="margin"  class="nl">Marge</label>
+	                                    <input type="number" min="0" name="margin" class="form-control">
+	                                </div>
+	                            </div>
 
-								<div class="col-sm-4">
-                                    <label for="date"  class="fr">Date de signature</label>
-                                    <label for="date"  class="en">Date de signature</label>
-                                    <label for="date"  class="nl">Date de signature</label>
-                                    <input type="date" name="date" class="form-control">
-                                </div>
-								<div class="col-sm-4">
-                                    <label for="start"  class="fr">Date de début</label>
-                                    <label for="start"  class="en">Date de début</label>
-                                    <label for="start"  class="nl">Date de début</label>
-                                    <input type="date" name="start" class="form-control">
-                                </div>
-								<div class="col-sm-4">
-                                    <label for="end"  class="fr">Date de fin</label>
-                                    <label for="end"  class="en">Date de fin</label>
-                                    <label for="end"  class="nl">Date de fin</label>
-                                    <input type="date" name="end" class="form-control">
-                                </div>
-                                
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+	                                    <label for="date"  class="fr">Date de signature</label>
+	                                    <label for="date"  class="en">Date de signature</label>
+	                                    <label for="date"  class="nl">Date de signature</label>
+	                                    <input type="date" name="date" class="form-control">
+	                                </div>
+									<div class="col-sm-4">
+	                                    <label for="start"  class="fr">Date de début</label>
+	                                    <label for="start"  class="en">Date de début</label>
+	                                    <label for="start"  class="nl">Date de début</label>
+	                                    <input type="date" name="start" class="form-control">
+	                                </div>
+									<div class="col-sm-4">
+	                                    <label for="end"  class="fr">Date de fin</label>
+	                                    <label for="end"  class="en">Date de fin</label>
+	                                    <label for="end"  class="nl">Date de fin</label>
+	                                    <input type="date" name="end" class="form-control">
+	                                </div>
+								</div>
+								                                
                                 <div class="col-sm-12"></div>
                                 <br>
                             
                                 <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user; ?>">
                                 <input type="text" name="action" class="form-control required hidden" value="add">
+                                <input type="text" name="ID" class="hidden">
                                 <input type="text" name="company" class="form-control required hidden">
                                 
                                 <div class="separator"></div>
-                                <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
-                                <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
-                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button> 
+                                <button  class="fr button small green button-3d rounded icon-left offerManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
                             </div>
                             
 						</form>
@@ -7468,7 +8028,7 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
+                                                list_contracts_offers('*');                           
                                                 document.getElementById('widget-offerManagement-form').reset();
 												$('#offerManagement').modal('toggle');
                                                 
@@ -7484,6 +8044,156 @@ if($connected){
 									});
 								}
 							});
+                            
+                            $("#widget-offerManagement-form select[name=type]").change(function() {
+                                if($("#widget-offerManagement-form select[name=type]").val()=="achat"){
+                                    $("#widget-offerManagement-form input[name=start]").val("");
+                                    $("#widget-offerManagement-form input[name=end]").val("");
+                                    $("#widget-offerManagement-form input[name=start]").attr("readonly", true);
+                                    $("#widget-offerManagement-form input[name=end]").attr("readonly", true);
+                                    
+                                }
+                                if($("#widget-offerManagement-form select[name=type]").val()=="leasing"){
+                                    $("#widget-offerManagement-form input[name=start]").attr("readonly", false);
+                                    $("#widget-offerManagement-form input[name=end]").attr("readonly", false);
+                                    
+                                }
+                            });                  
+                            
+                            
+
+
+						</script>                 					
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="costsManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						
+						<form id="widget-costsManagement-form" action="include/costs_management.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                                <h4 class="fr text-green costManagementTitle">Ajouter un frais</h4>
+                                
+								<div class="col-sm-12">
+                                    <label for="title"  class="fr">Titre</label>
+                                    <label for="title"  class="en">Title</label>
+                                    <label for="title"  class="nl">Title</label>
+                                    <input type="text" name="title" class="form-control required">
+								</div>
+								<div class="col-sm-12">
+                                    <label for="description"  class="fr">Description</label>
+                                    <label for="description"  class="en">Description</label>
+                                    <label for="description"  class="nl">Description</label>
+                                    <textarea class="form-control required" rows="5" name="description"></textarea>                                    
+								</div>
+                                
+                                <div class="col-sm-12">
+									<div class="col-sm-3">
+	                                    <label for="type"  class="fr">Type</label>
+	                                    <label for="type"  class="en">Type</label>
+	                                    <label for="type"  class="nl">Type</label>
+	                                    <select name="type" class="form-control required">
+	                                        <option value="monthly">Coût mensuel</option>
+	                                        <option value="one-shot">Coût ponctuel</option>
+	                                    </select>
+	                                </div>
+									
+									<div class="col-sm-3">
+	                                    <label for="amount"  class="fr">Montant</label>
+	                                    <label for="amount"  class="en">Montant</label>
+	                                    <label for="amount"  class="nl">Montant</label>
+	                                    <input type="number" min="0" name="amount" class="form-control required">
+	                                </div>
+	
+	                            </div>
+
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+	                                    <label for="start"  class="fr">Date de début</label>
+	                                    <label for="start"  class="en">Date de début</label>
+	                                    <label for="start"  class="nl">Date de début</label>
+	                                    <input type="date" name="start" class="form-control required">
+	                                </div>
+									<div class="col-sm-4">
+	                                    <label for="end"  class="fr">Date de fin</label>
+	                                    <label for="end"  class="en">Date de fin</label>
+	                                    <label for="end"  class="nl">Date de fin</label>
+	                                    <input type="date" name="end" class="form-control">
+	                                </div>
+								</div>
+								                                
+                                <div class="col-sm-12"></div>
+                                <br>
+                            
+                                <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control required hidden" value="add">
+                                <input type="text" name="ID" class="hidden">
+                                
+                                <div class="separator"></div>
+                                <button  class="fr button small green button-3d rounded icon-left costManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+                            </div>
+                            
+						</form>
+						<script type="text/javascript">							
+							jQuery("#widget-costsManagement-form").validate({
+								submitHandler: function(form) {
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                list_contracts_offers('*');                           
+                                                document.getElementById('widget-costsManagement-form').reset();
+												$('#costsManagement').modal('toggle');
+                                                
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+                            
+                            $("#widget-costsManagement-form select[name=type]").change(function() {
+                                console.log($("#widget-costsManagement-form select[name=type]").val());
+                                if($("#widget-costsManagement-form select[name=type]").val()=="one-shot"){
+                                    $("#widget-costsManagement-form input[name=end]").val("");
+                                    $("#widget-costsManagement-form input[name=end]").attr("readonly", true);
+                                    
+                                }
+                                if($("#widget-costsManagement-form select[name=type]").val()=="monthly"){
+                                    $("#widget-costsManagement-form input[name=end]").attr("readonly", false);
+                                }
+                            });                  
+                            
                             
 
 
@@ -8512,55 +9222,75 @@ if($connected){
                                 
                                 <h4 class="fr text-green">Modifier une action</h4>
                                 
-                                <div class="col-sm-3">
-                                    <label for="id">ID :</label>
-                                    <input type="text" readonly="readonly" class="form-control required" name="id" readonly="true"/>
-                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label for="id">ID :</label>
+                                        <input type="text" readonly="readonly" class="form-control required" name="id" readonly="true"/>
+                                    </div>
 
-                                <div class="col-sm-5">
-                                    <label for="owner"> Owner : </label>
-                                    <select title="Société" class="selectpicker" name="owner">
-                                    </select>
-                                </div>
-                                
-                                <div class="col-sm-5">
-                                    <label for="company" class="fr"> Société : </label>
-                                    <label for="company" class="en"> Société : </label>
-                                    <label for="company" class="nl"> Société : </label>
-                                    <select title="Société" class="selectpicker" name="company">
-                                    </select>
+                                    <div class="col-sm-4">
+                                        <label for="owner"> Owner : </label>
+                                        <select title="Société" class="selectpicker" name="owner">
+                                        </select>
+                                    </div>
 
-                                </div>
-                                <div class="col-sm-5">
-                                    <label for="date">Date :</label>
-                                    <input type="date" class="form-control required" name="date" />
-
-                                </div>
-                                <div class="col-sm-5">
-                                    <label for="date_reminder">Rappel :</label>
-                                    <input type="date" class="form-control" name="date_reminder" />
+                                    <div class="col-sm-4">
+                                        <label for="company" class="fr"> Société : </label>
+                                        <label for="company" class="en"> Société : </label>
+                                        <label for="company" class="nl"> Société : </label>
+                                        <select title="Société" class="selectpicker" name="company">
+                                        </select>
+                                    </div>
                                 </div>
                                 
                                 <div class="col-sm-12">
-                                    <label for="title">Titre :</label>
-                                    <input type="text" class="form-control required" name="title" />                                    
+                                    <div class="col-sm-4">
+                                        <label for="type" class="fr"> Type : </label>
+                                        <label for="type" class="en"> Type : </label>
+                                        <label for="type" class="nl"> Type : </label>                                        
+                                        <select title="type" class="selectpicker form-control required" name="type">
+                                          <option value="contact">Prise de contact</option>
+                                          <option value="rappel">Rappel</option>            
+                                          <option value="plan rdv">Planification de rendez-vous</option>            
+                                          <option value="rdv">Rendez-vous</option>            
+                                          <option value="offre">Formulation d'une offre</option>            
+                                          <option value="delivery">Livraison vélo</option>            
+                                          <option value="other">Autre</option>            
+                                        </select>                                    
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="date">Date :</label>
+                                        <input type="date" class="form-control required" name="date" />
 
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="date_reminder">Rappel :</label>
+                                        <input type="date" class="form-control" name="date_reminder" />
+                                    </div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <label for="description">Description :</label>
-                                    <textarea class="form-control" rows="5" name="description"></textarea>
+                                    <div class="col-sm-12">
+                                        <label for="title">Titre :</label>
+                                        <input type="text" class="form-control required" name="title" />                                    
 
-                                </div>
-                                <div class="col-sm-5">
-                                    <label for="status">Statut :</label>
-                                    <select title="Status" class="selectpicker" name="status">
-                                      <option value="TO DO">To do</option>
-                                      <option value="DONE">Done</option>            
-                                    </select>                                    
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label for="description">Description :</label>
+                                        <textarea class="form-control" rows="5" name="description"></textarea>
+
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <label for="status">Statut :</label>
+                                        <select title="Status" class="selectpicker" name="status">
+                                          <option value="TO DO">To do</option>
+                                          <option value="DONE">Done</option>            
+                                        </select>                                    
+                                    </div>
+                                
                                 </div>
                             </div>
 
-                            <input type="text" name="user" value="<?php echo $user; ?>" class="hidden"/>
+                            <input type="text" name="requestor" value="<?php echo $user; ?>" class="hidden"/>
                             <input type="text" name="action" value="update" class="hidden"/>
 
                             <div class="col-sm-12">    
@@ -8598,7 +9328,7 @@ if($connected){
                         }, {
                             type: 'success'
                         });
-                        list_tasks('*', $('.taskOwnerSelection').val());
+                        list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
                         document.getElementById('widget-updateAction-form').reset();
                         $('#updateAction').modal('toggle');
                         

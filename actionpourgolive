@@ -92,3 +92,11 @@ UPDATE locking_bikes aa, building_access bb set aa.BUILDING=bb.BUILDING_REFERENC
 ALTER TABLE `company_actions` ADD `TITLE` TEXT NOT NULL AFTER `DATE_REMINDER`;
 UPDATE company_actions SET TITLE=DESCRIPTION;
 UPDATE company_actions SET DESCRIPTION='';
+
+-------------------
+
+ALTER TABLE `company_actions` ADD `TYPE` VARCHAR(150) NOT NULL AFTER `ID`;
+UPDATE company_actions SET type='other';
+
+
+

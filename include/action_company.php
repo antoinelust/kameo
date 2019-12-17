@@ -5,28 +5,173 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
-$id = isset($_POST["id"]) ? $_POST["id"] : NULL;
-$action = isset($_POST["action"]) ? $_POST["action"] : NULL;
-$company = isset($_POST["company"]) ? $_POST["company"] : NULL;
-$user = isset($_POST["user"]) ? $_POST["user"] : NULL;
-$title=isset($_POST["title"]) ? addslashes($_POST["title"]) : NULL;
-$description=isset($_POST["description"]) ? addslashes($_POST["description"]) : NULL;
-$date=isset($_POST["date"]) ? date($_POST["date"]) : NULL;
-$date_reminder=isset($_POST["date_reminder"]) ? date($_POST["date_reminder"]) : NULL;
-$status=isset($_POST["status"]) ? $_POST["status"] : NULL;
-$owner=isset($_POST["owner"]) ? $_POST["owner"] : NULL;
-if($date_reminder==''){
-    $date_reminder='NULL';
-}else{
-    $date_reminder="'".$date_reminder."'";
-}
 
 
-if(isset($_GET["company"])){
+
+
+
+$action=isset($_GET["action"]) ? $_GET["action"] : NULL;
+$owner=isset($_GET["owner"]) ? $_GET["owner"] : NULL;
+
+if($action=="graphic"){
+    $company = isset($_GET["company"]) ? $_GET["company"] : NULL;
+    $owner = isset($_GET["owner"]) ? $_GET["owner"] : NULL;
+    $numberOfDays = isset($_GET["numberOfDays"]) ? $_GET["numberOfDays"] : NULL;
+    $intervalStop="P".$numberOfDays."D";
+    
+    $date_start = new DateTime("NOW"); 
+    $date_start->sub(new DateInterval($intervalStop));
+    
+    $date_end = new DateTime("NOW");       
+    $date_end->add(new DateInterval('P1D'));
+    $date_end->sub(new DateInterval($intervalStop));
+    
+    $arrayTotalTasks=array();
+    $arrayContacts=array();
+    $arrayReminder=array();
+    $arrayRDVPlan=array();
+    $arrayRDV=array();
+    $arrayOffers=array();
+    $arrayDelivery=array();
+    $arrayOther=array();
+    $arrayDates=array();
+    
+    $date_now=new DateTime("NOW");
+    
+    while($date_start<=$date_now){
+        
+        $date_start_string=$date_start->format('Y-m-d');
+        $date_end_string=$date_end->format('Y-m-d');
+        
+        include 'connexion.php';
+        $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions WHERE DATE>='$date_start_string' AND DATE<'$date_end_string'";
+        
+        if($owner!='*' && $owner != ''){
+            $sql=$sql. "AND OWNER='$owner'";
+        }
+        
+        
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);     
+        $resultat = mysqli_fetch_assoc($result);
+        array_push($arrayTotalTasks, $resultat['SUM']); 
+        $conn->close();
+
+        
+        
+        
+        include 'connexion.php';
+        $sql="SELECT TYPE, COUNT(1) AS 'SUM' FROM company_actions WHERE DATE>='$date_start_string' AND DATE<'$date_end_string' ";
+        if($owner!='*' && $owner != ''){
+            $sql=$sql. "AND OWNER='$owner'";
+        }
+        
+        $sql=$sql." GROUP BY TYPE";
+        
+        
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);    
+        $conn->close();
+        
+        $presenceTotalTasks=0;
+        $presenceContacts=0;
+        $presenceReminder=0;
+        $presenceRDVPlan=0;
+        $presenceRDV=0;
+        $presenceOffers=0;
+        $presenceDelivery=0;
+        $presenceOther=0;
+        
+        while($row = mysqli_fetch_array($result))
+        {
+            
+            if($row['TYPE']=="contact"){
+                $presenceContacts=1;
+                array_push($arrayContacts, $row['SUM']); 
+            }
+            if($row['TYPE']=="rappel"){
+                $presenceReminder=1;
+                array_push($arrayReminder, $row['SUM']); 
+            }
+            if($row['TYPE']=="plan rdv"){
+                $presenceRDVPlan=1;
+                array_push($arrayRDVPlan, $row['SUM']); 
+            }
+            if($row['TYPE']=="rdv"){
+                $presenceRDV=1;
+                array_push($arrayRDV, $row['SUM']); 
+            }
+            if($row['TYPE']=="offre"){
+                $presenceOffers=1;
+                array_push($arrayOffers, $row['SUM']); 
+            }
+            if($row['TYPE']=="delivery"){
+                $presenceDelivery=1;
+                array_push($arrayDelivery, $row['SUM']); 
+            }
+            if($row['TYPE']=="other"){
+                $presenceOther=1;
+                array_push($arrayOther, $row['SUM']); 
+            }
+            
+        }
+        
+        if($presenceContacts==0){
+            array_push($arrayContacts, "0"); 
+        }        
+        if($presenceReminder==0){
+            array_push($arrayReminder, "0"); 
+        }        
+        if($presenceRDVPlan==0){
+            array_push($arrayRDVPlan, "0"); 
+        }        
+        if($presenceRDV==0){
+            array_push($arrayRDV, "0"); 
+        }        
+        if($presenceOffers==0){
+            array_push($arrayOffers, "0"); 
+        }        
+        if($presenceDelivery==0){
+            array_push($arrayDelivery, "0"); 
+        }        
+        if($presenceOther==0){
+            array_push($arrayOther, "0"); 
+        }
+        
+        array_push($arrayDates, $date_start_string); 
+            
+        
+        $date_start->add(new DateInterval('P1D'));
+        $date_end->add(new DateInterval('P1D'));
+    }    
+          
+    $response['response']="success";
+    $response['arrayTotalTasks']=$arrayTotalTasks;
+    $response['arrayContacts']=$arrayContacts;
+    $response['arrayReminder']=$arrayReminder;
+    $response['arrayRDVPlan']=$arrayRDVPlan;
+    $response['arrayRDV']=$arrayRDV;
+    $response['arrayOffers']=$arrayOffers;
+    $response['arrayDelivery']=$arrayDelivery;
+    $response['arrayOther']=$arrayOther;
+    $response['arrayDates']=$arrayDates;
+    echo json_encode($response);
+    die;    
+          
+}else if(isset($_GET["company"])){
     $company = isset($_GET["company"]) ? $_GET["company"] : NULL;
     $status = isset($_GET["status"]) ? $_GET["status"] : NULL;
     $user = isset($_GET["user"]) ? $_GET["user"] : NULL;
     $owner = isset($_GET["owner"]) ? $_GET["owner"] : NULL;
+    $tasksListing_number=isset($_GET["numberOfResults"]) ? $_GET["numberOfResults"] : NULL;
     
     include 'connexion.php';
     if($company=="*"){
@@ -34,7 +179,6 @@ if(isset($_GET["company"])){
     }else{
         $sql="SELECT * FROM company_actions WHERE COMPANY='$company'";
     }
-    
 
     if($status=="TO DO"){
         $sql=$sql." AND STATUS='TO DO'";
@@ -46,8 +190,11 @@ if(isset($_GET["company"])){
         $sql=$sql." AND OWNER='$owner'";
     }        
     
-    $sql=$sql." ORDER BY ID DESC";
-
+    if($tasksListing_number){
+        $sql=$sql." ORDER BY ID DESC LIMIT $tasksListing_number";
+    }else{
+        $sql=$sql." ORDER BY ID DESC";
+    }
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -69,6 +216,7 @@ if(isset($_GET["company"])){
         $response['action'][$i]['title']=$row['TITLE'];
         $response['action'][$i]['description']=$row['DESCRIPTION'];
         $response['action'][$i]['company']=$row['COMPANY'];
+        $response['action'][$i]['type']=$row['TYPE'];
         $response['action'][$i]['date_reminder']=$row['DATE_REMINDER'];
         $response['action'][$i]['status']=$row['STATUS'];
         $response['action'][$i]['owner']=$row['OWNER'];
@@ -175,6 +323,10 @@ if(isset($_GET["company"])){
     
     echo json_encode($response);
     die;    
+    
+    
+    
+    
 
     
 }else if(isset($_GET['id'])){
@@ -193,6 +345,7 @@ if(isset($_GET["company"])){
     $response['sql']=$sql;
     $response['action']['id']=$resultat['ID'];
     $response['action']['date']=$resultat['DATE'];
+    $response['action']['type']=$resultat['TYPE'];
     $response['action']['title']=$resultat['TITLE'];
     $response['action']['description']=$resultat['DESCRIPTION'];
     $response['action']['company']=$resultat['COMPANY'];
@@ -202,13 +355,30 @@ if(isset($_GET["company"])){
     echo json_encode($response);
     die;    
 
-} 
-
-else if(isset($_POST["company"])){
-
+} else if(isset($_POST["company"])){
+    
+    $id = isset($_POST["id"]) ? $_POST["id"] : NULL;
+    $action = isset($_POST["action"]) ? $_POST["action"] : NULL;
+    $company = isset($_POST["company"]) ? $_POST["company"] : NULL;
+    $type = isset($_POST["type"]) ? $_POST["type"] : NULL;
+    $user = isset($_POST["requestor"]) ? $_POST["requestor"] : NULL;
+    $title=isset($_POST["title"]) ? addslashes($_POST["title"]) : NULL;
+    $description=isset($_POST["description"]) ? addslashes($_POST["description"]) : NULL;
+    $date=isset($_POST["date"]) ? date($_POST["date"]) : NULL;
+    $date_reminder=isset($_POST["date_reminder"]) ? date($_POST["date_reminder"]) : NULL;
+    $status=isset($_POST["status"]) ? $_POST["status"] : NULL;
+    $owner=isset($_POST["owner"]) ? $_POST["owner"] : NULL;
+    if($date_reminder==''){
+        $date_reminder='NULL';
+    }else{
+        $date_reminder="'".$date_reminder."'";
+    }
+    
+    
     if($action=="create"){
+        
         include 'connexion.php';
-        $sql= "INSERT INTO  company_actions (USR_MAJ, HEU_MAJ, COMPANY, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES ('$user', CURRENT_TIMESTAMP, '$company', '$date', $date_reminder, '$title','$description', '$status', '$owner')";
+        $sql= "INSERT INTO  company_actions (USR_MAJ, HEU_MAJ, COMPANY, TYPE, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES ('$user', CURRENT_TIMESTAMP, '$company', '$type', '$date', $date_reminder, '$title','$description', '$status', '$owner')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -222,7 +392,7 @@ else if(isset($_POST["company"])){
     }else if($action=="update"){
         
         include 'connexion.php';
-        $sql= "UPDATE  company_actions SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, COMPANY='$company', DATE='$date', DATE_REMINDER=$date_reminder, TITLE='$title', DESCRIPTION='$description', STATUS='$status', OWNER='$owner' WHERE ID='$id'";
+        $sql= "UPDATE  company_actions SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, TYPE='$type', COMPANY='$company', DATE='$date', DATE_REMINDER=$date_reminder, TITLE='$title', DESCRIPTION='$description', STATUS='$status', OWNER='$owner' WHERE ID='$id'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

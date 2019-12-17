@@ -59,7 +59,6 @@ while($row = mysqli_fetch_array($result))
     $response['condition'][$i]['name']=$name;    
     
     include 'connexion.php';
-    
     if($name!='generic'){
         $sql="SELECT * FROM specific_conditions where CONDITION_REFERENCE='$id' AND COMPANY='$company' and STAANN != 'D'";        
     }else{

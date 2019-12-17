@@ -103,6 +103,20 @@ while($row = mysqli_fetch_array($result)){
     
     
 
+include 'connexion.php';
+$sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE LEASING='Y' AND CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$result = mysqli_query($conn, $sql);        
+$resultat = mysqli_fetch_assoc($result);
+$conn->close();  
+
+$response['sumContractsCurrent']=$resultat['PRICE'];
+
 
 echo json_encode($response);
 die;

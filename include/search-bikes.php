@@ -75,7 +75,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 	}    
     $result = mysqli_query($conn, $sql);     
     $length = $result->num_rows;    
-    if($length>$maxBookingsPerYear && $maxBookingsPerYear!='9999'){
+    if($length>=$maxBookingsPerYear && $maxBookingsPerYear!='9999'){
         errorMessage("ES0043");
     }
         
@@ -88,10 +88,14 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 		echo json_encode($response);
 		die;
 	}
-    $result = mysqli_query($conn, $sql);     
-    $length = $result->num_rows;    
     
-    if($length>$maxBookingsPerMonth && $maxBookingsPerMonth != '9999'){
+    
+    
+    $result = mysqli_query($conn, $sql);     
+    $length = $result->num_rows; 
+    
+
+    if($length>=$maxBookingsPerMonth && $maxBookingsPerMonth != '9999'){
         errorMessage("ES0044");
     }
         

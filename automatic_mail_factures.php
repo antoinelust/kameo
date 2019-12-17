@@ -86,10 +86,15 @@ $mail = new PHPMailer();
 $mail->IsHTML(true);
 $mail->CharSet = 'UTF-8';
 
-$mail->AddAddress("antoine.lust@kameobikes.com");
-$mail->AddAddress("julien.jamar@kameobikes.com");
-$mail->AddAddress("thibaut.mativa@kameobikes.com");
-$mail->AddAddress("pierre-yves.adant@kameobikes.com");
+
+if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+    $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+    $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
+    $mail->AddAddress("thibaut.mativa@kameobikes.com");
+    $mail->AddAddress("pierre-yves.adant@kameobikes.com");
+}else{
+    $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+}
 
 $mail->From = "info@kameobikes.com";
 $mail->FromName = "Kameo Bikes";
@@ -749,7 +754,7 @@ $dest="";
 $temp="<table style=\"width:100%\" class=\"tableResume\"><tr><th class=\"tableResume\">ID</th><th class=\"tableResume\">Société</th><th class=\"tableResume\">Date</th><th class=\"tableResume\">Montant (HTVA)</th><th class=\"tableResume\">Lien</th></tr>";
 $dest=$temp;
 while($row = mysqli_fetch_array($result8)){
-    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"www.kameobikes.com/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
+    $temp="<tr class=\"tableResume\"><td class=\tableResume\">".$row['ID']."</td><td class=\"tableResume\">".$row['BENEFICIARY_COMPANY']."</td><td class=\"tableResume\">".substr($row['DATE'],0,10)."</td><td class=\"tableResume\">".$row['AMOUNT_HTVA']." €</td><td class=\"tableResume\"><a href=\"www.kameobikes.com/factures/".$row['FILE_NAME']."\">Lien</a></td></tr>";
     $dest=$dest.$temp;
 }
 
