@@ -51,7 +51,7 @@ while($row = mysqli_fetch_array($result))
     $internalReference=$row['COMPANY'];
     $currentDate=date('Y-m-d');
     $billingGroup=$row['BILLING_GROUP'];
-    $sql_dateStart="select min(CONTRACT_START), COMPANY, BILLING_GROUP from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference' and LEASING='Y' and BILLING_GROUP='$billingGroup'";
+    $sql_dateStart="select min(CONTRACT_START), COMPANY, BILLING_GROUP from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference' and AUTOMATIC_BILLING='Y' and BILLING_GROUP='$billingGroup'";
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
@@ -166,8 +166,7 @@ while($row = mysqli_fetch_array($result))
                     if($resultat3['BILLS_SENDING'] == "Y" && $emailContactBilling != "" && $lastNameContactBilling != ""){
                         $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
                         $mail->AddBCC("antoine.lust@kameobikes.com", "Antoine Lust");
-                        $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");
-                        
+                        $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");                        
                     }else{
                         $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
                     }

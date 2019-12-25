@@ -46,6 +46,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);   
         classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);   
         classname[i].addEventListener('click', initialize_booking_counter, false);
+        classname[i].addEventListener('click', function () { generateCompaniesGraphic()}, false);   
+        classname[i].addEventListener('click', function () { list_boxes("*")}, false);   
 
     }
 
@@ -102,6 +104,8 @@ function billFilter(e){
 }    
     
 function generateTasksGraphic(company, owner, numberOfDays){
+        
+    
     $.ajax({
         url: 'include/action_company.php',
         type: 'get',
@@ -111,54 +115,66 @@ function generateTasksGraphic(company, owner, numberOfDays){
                 console.log(response.message);
             } else{
                 
-                
-                
                 var ctx = document.getElementById('myChart2').getContext('2d');
-                ctx.innerHTML="";
-                
-                var myChart = new Chart(ctx, {
+                myChart2 && myChart2.destroy();
+                var myChart2 = new Chart(ctx, {
                     type: 'line',
                     data: {
                         datasets: [{
                             label: 'Actions totales',
-                            borderColor: 'rgba(44, 132, 109, 0.5)',
-                            backgroundColor:'rgba(44, 132, 109, 0)',
-                            data: response.arrayTotalTasks
+                            fillColor: "rgba(151,187,205,1)",
+                            strokeColor: "rgba(151,187,205,1)",
+                            highlightFill: "rgba(151,187,205,1)",
+                            highlightStroke: "rgba(151,187,205,1)",
+                            data: response.arrayTotalTasks                        
                         },{
                             label: 'Prises de contact',
-                            borderColor: 'rgba(145, 145, 145, 0.5)',
+                            borderColor: 'rgba(60, 137, 207, 255)',
                             backgroundColor:'rgba(145, 145, 145, 0)',
-                            data: response.arrayContacts
+                            data: response.arrayContacts,
+                            hidden:true
                         },{
                             label: 'Rappels',
-                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            borderColor: 'rgba(223, 109, 130, 2)',
                             backgroundColor:'rgba(60, 179, 149, 0)',
-                            data: response.arrayReminder
+                            data: response.arrayReminder,
+                            hidden: true
                         },{
                             label: 'Planification de rendez-vous',
-                            borderColor: 'rgba(176, 0, 0, 0.5)',
+                            borderColor: 'rgba(175, 223, 223, 2)',
                             backgroundColor:'rgba(176, 0, 0, 0)',
-                            data: response.arrayRDVPlan
+                            data: response.arrayRDVPlan,
+                            hidden: true
                         },{
                             label: 'Rendez-vous',
-                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            borderColor: 'rgba(120, 91, 232, 2)',
                             backgroundColor:'rgba(60, 179, 149, 0)',
-                            data: response.arrayRDV
+                            data: response.arrayRDV,
+                            hidden: true
                         },{
                             label: 'Offres',
-                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            borderColor: 'rgba(226, 211, 139, 2)',
                             backgroundColor:'rgba(60, 179, 149, 0)',
-                            data: response.arrayOffers
+                            data: response.arrayOffers,
+                            hidden: true
+                        },{
+                            label: 'Signature de contrat',
+                            borderColor: 'rgba(226, 211, 139, 2)',
+                            backgroundColor:'rgba(60, 179, 149, 0)',
+                            data: response.arrayOffersSigned,
+                            hidden: true
                         },{
                             label: 'Livraisons vélo',
-                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            borderColor: 'rgba(235, 149, 97, 2)',
                             backgroundColor:'rgba(60, 179, 149, 0)',
-                            data: response.arrayDelivery
+                            data: response.arrayDelivery,
+                            hidden: true
                         },{
                             label: 'Autre',
-                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            borderColor: 'rgba(60, 179, 149, 2)',
                             backgroundColor:'rgba(60, 179, 149, 0)',
-                            data: response.arrayOther
+                            data: response.arrayOther,
+                            hidden: true
                         }],
                     labels: response.arrayDates
 
@@ -166,23 +182,112 @@ function generateTasksGraphic(company, owner, numberOfDays){
 
                     options: {
                         scales: {
-                            xAxes:[{
-                                ticks:{
-                                    max: "2020-12-19"
-                                }
-                            }],
                             yAxes: [{
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    stacked: true
+
                                 }
                             }]
+                        },
+                        elements: {
+                            line: {
+                                tension: 0
+                            }
                         }
-                    }
+                        
+                    }                      
+
                 });
-                myChart.update();
+                if(response.presenceContacts=="1"){
+                    myChart2.data.datasets[1].hidden=false;
+                }
+                if(response.presenceReminder=="1"){
+                    myChart2.data.datasets[2].hidden=false;
+                }
+                if(response.presenceRDVPlan=="1"){
+                    myChart2.data.datasets[3].hidden=false;
+                }
+                if(response.presenceRDV=="1"){
+                    myChart2.data.datasets[4].hidden=false;
+                }
+                if(response.presenceOffers=="1"){
+                    myChart2.data.datasets[5].hidden=false;
+                }
+                if(response.presenceOffersSigned=="1"){
+                    myChart2.data.datasets[6].hidden=false;
+                }
+                if(response.presenceDelivery=="1"){
+                    myChart2.data.datasets[7].hidden=false;
+                }
+                if(response.presenceOther=="1"){
+                    myChart2.data.datasets[8].hidden=false;
+                }
+                myChart2.update();
 
             }              
 
+        }
+    })
+    
+    
+    
+}
+    
+function generateCompaniesGraphic(){
+    $.ajax({
+        url: 'include/get_companies_listing.php',
+        type: 'get',
+        data: { "action": "graphic", "numberOfDays": "30"},
+        success: function(response){
+            if (response.response == 'error') {
+                console.log(response.message);
+            } else{
+                
+                var ctx = document.getElementById('myChart3').getContext('2d');
+                myChart3 && myChart3.destroy();
+                
+                var presets=window.chartColors;
+
+                var myChart3 = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Entreprises en contact',
+                            borderColor: "blue",
+                            backgroundColor: "blue",
+                            data: response.companiesContact
+                        },{
+                            label: 'Entreprises sous offre',
+                            borderColor: "green",
+                            backgroundColor: "green",
+                            data: response.companiesOffer
+                        },{
+                            label: 'Entreprises sous offre signée',
+                            borderColor: "red",
+                            backgroundColor: "red",
+                            data: response.companiesOfferSigned
+                        }],
+                        labels:response.dates
+                    },
+
+
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                stacked: true,
+                                beginAtZero: true
+                            }]
+                        },
+                        elements: {
+                            line: {
+                                tension: 0
+                            }
+                        }
+                    }
+                });
+                myChart3.update();
+            }
         }
     })
 }
@@ -243,7 +348,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
     document.getElementById('bikeUserAccessAdmin').innerHTML = "";
     $('input[name=widget-updateBikeStatusAdmin-form-bikeNumberOriginel]').val(frameNumber);
     $('input[name=widget-updateBikeStatusAdmin-form-bikeNumber]').val(frameNumber);
-    
+    console.log(frameNumber);
     $.ajax({
             url: 'include/get_bike_details.php',
             type: 'post',
@@ -253,8 +358,6 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                     console.log(response.message);
                 } else{
                     $('#widget-updateBikeAccess-form input[name=frameNumber]').val(response.frameNumber);
-                    
-                    
                     $('input[name=widget-addActionBike-form-bikeNumber]').val(response.frameNumber);
                     $('input[name=widget-updateBikeStatusAdmin-form-model]').val(response.model);
                     $('input[name=widget-updateBikeStatusAdmin-form-size]').val(response.size);
@@ -287,32 +390,48 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                     }
                     i=0;
                     var dest="";
-                    while(i<response.buildingNumber){
-                        if(response.building[i].access==true){
-                            temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
-                        }
-                        else if(response.building[i].access==false){
-                            temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
-                        }  
+                    if(response.buildingNumber==0){
+                        temp="<div class=\"col-sm-12 fr\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
+                        temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
+                        temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
                         dest=dest.concat(temp);                        
-                        i++;
+
+                    }else{
+                        while(i<response.buildingNumber){
+                            if(response.building[i].access==true){
+                                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
+                            }
+                            else{
+                                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
+                            } 
+                            dest=dest.concat(temp);                        
+                            i++;
+                        }
                     }
                     
                     document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
                     
                     i=0;
                     var dest="";
-                    while(i<response.userNumber){
-                        if(response.user[i].access==true){
-                            temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-                        }
-                        else if(response.user[i].access==false){
-                            temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-                        }  
-                        dest=dest.concat(temp);                        
-                        i++;
-                    }
                     
+                    if(response.userNumber==0){
+                        temp="<div class=\"col-sm-12 fr\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
+                        temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
+                        temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
+                        dest=dest.concat(temp);                        
+
+                    }else{                        
+                        while(i<response.userNumber){
+                            if(response.user[i].access==true){
+                                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
+                            }
+                            else if(response.user[i].access==false){
+                                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
+                            }  
+                            dest=dest.concat(temp);                              
+                            i++;
+                        }
+                    }
                     document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
                     
 
@@ -346,7 +465,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                     var i=0;
                     while (i < response.companiesNumber){
                         $('#widget-updateBikeAccess-form select[name=company]').append("<option value="+response.company[i].internalReference+">"+response.company[i].companyName+"<br>");    
-                        $('#widget-updateBikeStatusAdmin-form select[name=widget-updateBikeStatusAdmin-form-company]').append("<option value="+response.company[i].internalReference+">"+response.company[i].companyName+"<br>");    
+                        $('#widget-updateBikeStatusAdmin-form select[name=widget-updateBikeStatusAdmin-form-company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");    
                         i++;
                     }
                     $('#widget-updateBikeAccess-form input[name=company]').val(company);
@@ -1353,7 +1472,7 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract dates</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
                     
                     var dest2="";
@@ -1361,8 +1480,9 @@ if($connected){
                     dest2=dest2.concat(temp2);
 
                     
-                    while (i < response.bikeNumber){
-                        var temp="<tr><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].model+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th><th>"+response.bike[i].status+"</th><th><ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
+                    while (i < response.bikeNumber){                        
+                        
+                        var temp="<tr><td><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].contractType+"</td><td>"+response.bike[i].contractDates+"</td><td>"+response.bike[i].status+"</td><td><ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         dest=dest.concat(temp);
 
                         var temp2="<li><a href=\"#\" onclick=\"bikeFilter('"+response.bike[i].frameNumber+"')\">"+response.bike[i].frameNumber+"</a></li>";
@@ -1403,11 +1523,52 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vélos:</h4><h4 class=\"en-inline text-green\">Bikes:</h4><h4 class=\"nl-inline text-green\">Fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">COmpany</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Dates du contrat</span><span class=\"en-inline\">Contract dates</span><span class=\"nl-inline\">Contract data</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vélos:</h4><h4 class=\"en-inline text-green\">Bikes:</h4><h4 class=\"nl-inline text-green\">Fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">COmpany</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Début contrat</span><span class=\"en-inline\">Contract Start</span><span class=\"nl-inline\">Contract Start</span></th><th><span class=\"fr-inline\">Fin contrat</span><span class=\"en-inline\">Contract End</span><span class=\"nl-inline\">Contract End</span></th><th>Facturation</th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);                
                     
                     while (i < response.bikeNumber){
-                        var temp="<tr><th>"+response.bike[i].company+"</th><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></th><th>"+response.bike[i].model+"</th><th>"+response.bike[i].contractType+"</th><th>"+response.bike[i].contractDates+"</th><th>"+response.bike[i].status+"</th><th><ins><a class=\"text-green updateBikeStatusAdmin\" data-target=\"#updateBikeStatusAdmin\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
+                        
+
+                        if(response.bike[i].automatic_billing==null || response.bike[i].automatic_billing=="N"){
+                            automatic_billing="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
+                        }else{
+                            automatic_billing="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
+                        }                        
+                        
+                        if(response.bike[i].status==null || response.bike[i].status=="KO"){
+                            status="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
+                        }else{
+                            status="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
+                        }  
+                        
+                        
+                        if(response.bike[i].contractStart==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
+                            start="<span class=\"text-red\">N/A</span>";
+                        }else if(response.bike[i].contractStart!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
+                            start="<span class=\"text-green\">"+response.bike[i].contractStart.substr(0,10)+"</span>";
+                        }else if(response.bike[i].contractStart==null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
+                            start="<span class=\"text-green\">N/A</span>";
+                        }else if(response.bike[i].contractStart!=null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
+                            start="<span class=\"text-red\">"+response.bike[i].contractStart.substr(0,10)+"</span>";
+                        }else{
+                            start="<span class=\"text-red\">ERROR</span>";
+                        }
+                        
+                        
+                        
+                        if(response.bike[i].contractEnd==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
+                            end="<span class=\"text-red\">N/A</span>";
+                        }else if(response.bike[i].contractEnd!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
+                            end="<span class=\"text-green\">"+response.bike[i].contractEnd.substr(0,10)+"</span>";
+                        }else if(response.bike[i].contractEnd==null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
+                            end="<span class=\"text-green\">N/A</span>";
+                        }else if(response.bike[i].contractEnd!=null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
+                            end="<span class=\"text-red\">"+response.bike[i].contractEnd.substr(0,10)+"</span>";
+                        }else{
+                            start="<span class=\"text-red\">ERROR</span>";
+                        }
+                        
+                        var temp="<tr><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td><ins><a class=\"text-green updateBikeStatusAdmin\" data-target=\"#updateBikeStatusAdmin\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         dest=dest.concat(temp);
                         i++;
 
@@ -1420,13 +1581,97 @@ if($connected){
                     
                     displayLanguage();
                     
-                    var classname = document.getElementsByClassName('updateBikeStatusAdmin');
-                    for (var i = 0; i < classname.length; i++) {
-                        classname[i].addEventListener('click', function() {construct_form_for_bike_status_updateAdmin(this.name)}, false);
-                    }  
-                    
+                    $(".updateBikeStatusAdmin").click(function() {
+                        construct_form_for_bike_status_updateAdmin(this.name)
+                    });                    
                    
 
+                }
+            }
+        })
+    }
+    function list_boxes(company) {
+
+        $.ajax({
+            url: 'include/box_management.php',
+            type: 'get',
+            data: {"action": "list", "company": company},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="<a class=\"button small green button-3d rounded icon-right addBox\" name=\""+company+"\" data-target=\"#boxManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une borne</span></a>";
+                    if(response.boxesNumber>0){
+                        var temp="<table class=\"table\"><tbody><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th>Début de contrat</th><th>Fin de contrat</th><th></th></tr></thead>";
+                        dest=dest.concat(temp);                    
+
+                        while (i < response.boxesNumber){
+
+                            if(response.box[i].automatic_billing==null || response.box[i].automatic_billing=="N"){
+                                automatic_billing="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
+                            }else{
+                                automatic_billing="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
+                            }                        
+
+                            if(response.box[i].amount==null){
+                                amount="0 €/mois";
+                            }else{
+                                amount=response.box[i].amount+" €/mois";
+                            }
+                            
+                            if(response.box[i].start!=null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
+                                start="<span class=\"text-green\">"+response.box[i].start.substr(0,10)+"</span>";
+                            }else if (response.box[i].start == null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
+                                start="<span class=\"text-red\">N/A</span>";
+                            }else if(response.box[i].start == null && (response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST')){
+                                start="<span class=\"text-green\">N/A</span>";
+                            }else if(response.box[i].start != null && (response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST')){
+                                start="<span class=\"text-red\">"+response.box[i].start.substr(0,10)+"</span>";
+                            }else{
+                                start="<span class=\"text-red\">ERROR</span>";
+                            }
+                            
+                            if(response.box[i].end && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
+                                end="<span class=\"text-green\">"+response.box[i].end.substr(0,10)+"</span>";
+                            }else if (response.box[i].end == null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
+                                end="<span class=\"text-red\">N/A</span>";
+                            }else if(response.box[i].end == null && (response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST')){
+                                end="<span class=\"text-green\">N/A</span>";
+                            }else if(response.box[i].end != null && (response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST')){
+                                end="<span class=\"text-red\">"+response.box[i].end.substr(0,10)+"</span>";
+                            }else{
+                                end="<span class=\"text-red\">ERROR</span>";
+                            }
+                            
+                            
+                            temp="<tr><td><a href=\"#\" class=\"text-green retrieveBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">"+response.box[i].id+"</a></td><td>"+response.box[i].company+"</td><td>"+response.box[i].reference+"</td><td>"+response.box[i].model+"</td><td>"+automatic_billing+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td><a href=\"#\" class=\"text-green updateBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">Mettre à jour </a></th></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+                        
+                        var temp="</tbody></table>";
+                        dest=dest.concat(temp);                    
+                    }
+                    if(company=="*"){
+                        document.getElementById('counterBoxes').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.boxesNumberTotal+"\" data-from=\"0\" data-seperator=\"true\">"+response.boxesNumberTotal+"</span>";
+                    }
+
+
+                    
+                    $('#boxesListingSpan').html(dest);         
+                    $('.addBox').click(function(){
+                        add_box(this.name);
+                    });
+                    $('.updateBox').click(function(){
+                        update_box(this.name);
+                    });
+                    $('.retrieveBox').click(function(){
+                        retrieve_box(this.name);
+                    });
+                                        
+                    
                 }
             }
         })
@@ -1448,7 +1693,7 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions:</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addTask\" data-toggle=\"modal\" onclick=\"create_task()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions :</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right addTask\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
                     dest=dest.concat(temp);                
                     while (i < response.actionNumber){
                         
@@ -1475,8 +1720,26 @@ if($connected){
                             owner="<span class='text-orange'>"+ownerSpan+"</span>";
                         }
                         
+                        if(response.action[i].type=="other"){
+                            type="Autre";
+                        }else if(response.action[i].type=="offer"){
+                            type="Offre";
+                        }else if(response.action[i].type=="offreSigned"){
+                            type="Offre Signée";
+                        }else if(response.action[i].type=="rdv"){
+                            type="Rendez-vous";
+                        }else if(response.action[i].type=="rdv plan"){
+                            type="Planification rdv";
+                        }else if(response.action[i].type=="contact"){
+                            type="Contact";
+                        }else if(response.action[i].type=="rappel"){
+                            type="Rappel";
+                        }else{
+                            type=response.action[i].type;
+                        }
                         
-                        var temp="<tr><th>"+response.action[i].id+"</th><th>"+response.action[i].company+"</th><th>"+response.action[i].date.substr(0,10)+"</th><th>"+response.action[i].type+"<th>"+response.action[i].title+"</th><th>"+date_reminder+"</th><th>"+status+"</th><th>"+ownerSpan+"</th><th><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>";
+                        
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td>"+response.action[i].date.substr(0,10)+"</td><td>"+type+"<td>"+response.action[i].title+"</td><td>"+date_reminder+"</td><td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         dest=dest.concat(temp);
                         i++;
 
@@ -1484,6 +1747,26 @@ if($connected){
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);                 
                     document.getElementById('tasksListingSpan').innerHTML = dest;
+                    
+                    
+                    $(".retrieveTask").click(function() {
+                        retrieve_task(this.name, "retrieve");
+                        $('.taskManagementSendButton').addClass("hidden");
+
+
+                    });                    
+
+                    $(".updateTask").click(function() {
+                        update_task(this.name, "update");
+                    });
+                    $(".addTask").click(function() {
+                        add_task(this.name);
+                        $('.taskManagementSendButton').removeClass("hidden");
+                        $('.taskManagementSendButton').text("Ajouter")                        
+
+                    });
+                    
+                    
                     $('.taskOwnerSelection')
                         .find('option')
                         .remove()
@@ -1520,7 +1803,19 @@ if($connected){
                     
                     $('.taskOwnerSelection2').val('*');
 
-                    
+                    $('#widget-taskManagement-form select[name=owner]')
+                        .find('option')
+                        .remove()
+                        .end()
+                    ;
+                    $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");    
+
+                    var i=0;
+                    while (i < response.ownerNumber){
+                        $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");    
+                        i++;
+
+                    }
                     
                     document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
                     
@@ -1531,7 +1826,31 @@ if($connected){
                         classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
                     }  
                     
+                    $.ajax({
+                        url: 'include/get_companies_listing.php',
+                        type: 'post',
+                        data: {type: "*"},
+                        success: function(response){
+                            if(response.response == 'error') {
+                                console.log(response.message);
+                            }
+                            if(response.response == 'success'){
+                                $('#widget-taskManagement-form select[name=company]')
+                                    .find('option')
+                                    .remove()
+                                    .end()
+                                ;
+                                var i=0;
+                                while (i < response.companiesNumber){
+                                    $('#widget-taskManagement-form select[name=company]').append("<option value="+response.company[i].internalReference+">"+response.company[i].companyName+"<br>");    
+                                    i++;
 
+                                }
+                            }
+                        }
+                    })
+                    
+                    
                 }
             }
         })
@@ -1551,21 +1870,21 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats:</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats signés :</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
                     dest=dest.concat(temp);    
                     while (i < response.contractsNumber){
                         if(response.contract[i].start!=null){
                             var contract_start=response.contract[i].start.substr(0,10);
                         }else{
-                            var contract_start="N/A";
+                            var contract_start="<span class=\"text-red\">N/A</span>";
                         }
                         if(response.contract[i].end!=null){
                             var contract_end=response.contract[i].end.substr(0,10);
                         }else{
-                            var contract_end="N/A";
+                            var contract_end="<span class=\"text-red\">N/A</span>";
                         }
                         
-                        var temp="<tr><th>"+response.contract[i].company+"</th><th>"+response.contract[i].description+"</th><th>"+Math.round(response.contract[i].amount)+" €/mois</th><th>"+contract_start+"</th><th>"+contract_end+"</th></tr>";
+                        var temp="<tr><td>"+response.contract[i].company+"</td><td>"+response.contract[i].description+"</td><td>"+Math.round(response.contract[i].amount)+" €/mois</td><td>"+contract_start+"</td><td>"+contract_end+"</td></tr>";
                         dest=dest.concat(temp);
                         i++;
 
@@ -1582,26 +1901,44 @@ if($connected){
                     
                     var i=0;
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Offres:</h4><h4 class=\"en-inline text-green\">Offers:</h4><h4 class=\"nl-inline text-green\">Offers:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Probabilité</th><th></th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Offres en cours :</h4><h4 class=\"en-inline text-green\">Offers:</h4><h4 class=\"nl-inline text-green\">Offers:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Probabilité</th><th></th></tr></thead>";
                     dest=dest.concat(temp); 
                     while (i < response.offersNumber){
                         if(response.offer[i].start!=null){
                             var offer_start=response.offer[i].start.substr(0,10);
                         }else{
-                            var offer_start="N/A";
+                            var offer_start="<span class=\"text-red\">N/A</span>";
                         }
                         if(response.offer[i].end!=null){
                             var offer_end=response.offer[i].end.substr(0,10);
                         }else{
-                            var offer_end="N/A";
+                            var offer_end="<span class=\"text-red\">N/A</span>";
                         }
                         
                         if(response.offer[i].type=="leasing"){
                             var amount=Math.round(response.offer[i].amount)+ "€/mois";
                         }else{
                             var amount=Math.round(response.offer[i].amount)+ "€";
-                        }                        
-                        var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><th>"+response.offer[i].company+"</th><th>"+response.offer[i].title+"</th><th>"+amount+" </th><th>"+offer_start+"</th><th>"+offer_end+"</th><th>"+response.offer[i].probability+" %</th><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        }        
+                        
+                        if(response.offer[i].amount==0){
+                            var amount="<span class=\"text-red\">"+amount+"</span>";
+                        }
+                        
+                        if(response.offer[i].type=="leasing"){
+                            var type="Leasing";
+                        }else if(response.offer[i].type=="achat"){
+                            var type="Achat";
+                        }
+                        
+                        if(response.offer[i].probability==0 || response.offer[i].probability==0){
+                            var probability="<span class=\"text-red\">"+response.offer[i].probability+" %</span>";
+                        }else{
+                            var probability="<span>"+response.offer[i].probability+" %</span>";
+                        }
+
+                        
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+response.offer[i].company+"</td><td>"+type+"</td><td>"+response.offer[i].title+"</td><td>"+amount+" </td><td>"+offer_start+"</td><td>"+offer_end+"</td><td>"+probability+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         
                         
                         dest=dest.concat(temp);                        
@@ -1633,7 +1970,7 @@ if($connected){
                         }else{
                             var amount=Math.round(response.cost[i].amount)+ "€";
                         }                        
-                        var temp="<tr><td><a href=\"#\" class=\"retrieveCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" name=\""+response.cost[i].id+"\">"+response.cost[i].id+"</a></td><th>"+response.cost[i].title+"</th><th>"+amount+" </th><th>"+cost_start+"</th><th>"+cost_end+"</th><td><ins><a class=\"text-green costsManagement updateCost\" data-target=\"#costsManagement\" name=\""+response.cost[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" name=\""+response.cost[i].id+"\">"+response.cost[i].id+"</a></td><td>"+response.cost[i].title+"</td><td>"+amount+" </td><td>"+cost_start+"</td><td>"+cost_end+"</td><td><ins><a class=\"text-green costsManagement updateCost\" data-target=\"#costsManagement\" name=\""+response.cost[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         
                         
                         dest=dest.concat(temp);                        
@@ -1706,7 +2043,6 @@ if($connected){
                     var threeYearsFromNow = new Date();
                     threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
                     var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
-                    console.log(maxXAxis);
                     
                     var ctx = document.getElementById('myChart').getContext('2d');
                     var myChart = new Chart(ctx, {
@@ -1754,7 +2090,13 @@ if($connected){
                                         beginAtZero: true
                                     }
                                 }]
+                            },
+                            elements: {
+                                line: {
+                                    tension: 0
+                                }
                             }
+                            
                         }
                     });
 
@@ -1875,7 +2217,8 @@ if($connected){
                         document.getElementById('clientManagement').classList.remove("hidden");
                         document.getElementById('portfolioManagement').classList.remove("hidden");
                         document.getElementById('bikeManagement').classList.remove("hidden");
-                        document.getElementById('taskManagement').classList.remove("hidden");
+                        document.getElementById('boxesManagement').classList.remove("hidden");
+                        document.getElementById('tasksManagement').classList.remove("hidden");
                         document.getElementById('cashFlowManagement').classList.remove("hidden");
                     }
                     
@@ -2075,56 +2418,6 @@ if($connected){
             }
         })
         
-        
-    }
-        
-    function create_task(){
-        $('#widget-addTask-form select[name=owner]')
-            .find('option')
-            .remove()
-            .end()
-        ;
-
-        $.ajax({
-            url: 'include/get_kameobikes_members.php',
-            type: 'get',
-            success: function(response){
-                if(response.response == 'error') {
-                    console.log(response.message);
-                }
-                if(response.response == 'success'){
-                    var i=0;
-                    while (i < response.membersNumber){
-                        $('#widget-addTask-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");    
-                        i++;
-                    }                    
-                }
-            }
-        })
-        
-        
-        $('#widget-addTask-form select[name=company]')
-            .find('option')
-            .remove()
-            .end()
-        ;
-
-        return $.ajax({
-            url: 'include/get_companies_listing.php',
-            type: 'get',
-            success: function(response){
-                if(response.response == 'error') {
-                    console.log(response.message);
-                }
-                if(response.response == 'success'){
-                    var i=0;
-                    while (i < response.companiesNumber){
-                        $('#widget-addTask-form select[name=company]').append("<option value="+response.company[i].internalReference+">"+response.company[i].companyName+"<br>");    
-                        i++;
-                    }                    
-                }
-            }
-        })
         
     }
         
@@ -3078,8 +3371,13 @@ if($connected){
                     $('#widget-offerManagement-form input[name=title]').val(response.title);
                     $('#widget-offerManagement-form textarea[name=description]').val(response.description);
                     $('#widget-offerManagement-form select[name=type]').val(response.type);
-                    
-                    
+                    $('#widget-offerManagement-form select[name=status]').val(response.status);
+                    $('#widget-offerManagement-form input[name=margin]').val(response.margin);
+                    $('#widget-offerManagement-form input[name=probability]').val(response.probability);
+                    $('#widget-offerManagement-form input[name=company]').val(response.company);
+                    $('#widget-offerManagement-form input[name=action]').val(action);
+                    $('#widget-offerManagement-form input[name=ID]').val(ID);
+
                     if($("#widget-offerManagement-form select[name=type]").val()=="achat"){
                         $("#widget-offerManagement-form input[name=start]").attr("readonly", true);
                         $("#widget-offerManagement-form input[name=end]").attr("readonly", true);
@@ -3094,25 +3392,61 @@ if($connected){
 
                         if(response.date){
                             $('#widget-offerManagement-form input[name=date]').val(response.date.substring(0,10));
+                        }else{
+                            $('#widget-offerManagement-form input[name=date]').val("");
                         }
                         if(response.start){
                             $('#widget-offerManagement-form input[name=start]').val(response.start.substring(0,10));
+                        }else{
+                            $('#widget-offerManagement-form input[name=start]').val("");
                         }
                         if(response.end){
                             $('#widget-offerManagement-form input[name=end]').val(response.end.substring(0,10));
+                        }else{
+                            $('#widget-offerManagement-form input[name=end]').val("");
                         }
                     }
 
-                    $('#widget-offerManagement-form input[name=margin]').val(response.margin);
-                    $('#widget-offerManagement-form input[name=probability]').val(response.probability);
-                    $('#widget-offerManagement-form input[name=company]').val(response.company);
-                    $('#widget-offerManagement-form input[name=action]').val("update");
-                    $('#widget-offerManagement-form input[name=ID]').val(ID);
                     if(response.amount){
                         $('#widget-offerManagement-form input[name=amount]').val(response.amount);
                     }
-                    console.log(response);
                     
+                }
+            }
+        })
+
+    }
+
+    function retrieve_task(ID, action){
+        $.ajax({
+            url: 'include/action_company.php',
+            type: 'get',
+            data: {"id": ID, "action": action},
+            success: function(response){
+
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    if(action=="retrieve"){
+                        $('#widget-taskManagement-form input').attr("readonly", true);                            
+                        $('#widget-taskManagement-form textarea').attr("readonly", true);                            
+                        $('#widget-taskManagement-form select').attr("readonly", true);                            
+                    }else{
+                        $('#widget-taskManagement-form input').attr("readonly", false);                            
+                        $('#widget-taskManagement-form textarea').attr("readonly", false);                            
+                        $('#widget-taskManagement-form select').attr("readonly", false);                            
+                        
+                    }
+    
+                    
+                    $('#widget-taskManagement-form input[name=title]').val(response.action.title);
+                    $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
+                    $('#widget-taskManagement-form select[name=company]').val(response.action.company);
+                    $('#widget-taskManagement-form textarea[name=description]').val(response.action.description);
+                    $('#widget-taskManagement-form select[name=type]').val(response.action.type);
+                    $('#widget-offerTask-form select[name=company]').val(response.action.company);
+                    $('.taskManagementTitle').text("Informations");
                 }
             }
         })
@@ -3128,7 +3462,6 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
-                    console.log(response);
                     if(action=="retrieve"){
                         $('#widget-costsManagement-form input').attr("readonly", true);                            
                         $('#widget-costsManagement-form textarea').attr("readonly", true);                            
@@ -3170,7 +3503,6 @@ if($connected){
                     if(response.amount){
                         $('#widget-costsManagement-form input[name=amount]').val(response.amount);
                     }
-                    console.log(response);
                     
                 }
             }
@@ -3179,15 +3511,28 @@ if($connected){
     }
         
     function add_offer(company){
-        console.log(company);
         $('#widget-offerManagement-form select[name=type]').val("leasing");                            
         $('#widget-offerManagement-form input[name=company]').val(company);                            
+        $('#widget-offerManagement-form input[name=action]').val("add");                            
         $('#widget-offerManagement-form input').attr("readonly", false);                            
         $('#widget-offerManagement-form textarea').attr("readonly", false);                            
-        $('#widget-offerManagement-form select').attr("readonly", false);                               
+        $('#widget-offerManagement-form select').attr("readonly", false);   
+        document.getElementById('widget-offerManagement-form').reset();                                                
+        
+    }
+    function add_task(company){
+        document.getElementById('widget-taskManagement-form').reset();
+        $('#widget-taskManagement-form select[name=company]').val(company);                            
+        $('#widget-taskManagement-form select[name=type]').val("contact");                            
+        $('#widget-taskManagement-form input').attr("readonly", false);                            
+        $('#widget-taskManagement-form textarea').attr("readonly", false);                            
+        $('#widget-taskManagement-form select').attr("readonly", false);   
+        $('.taskManagementTitle').text("Ajouter une action");
+        
     }
         
     function get_company_details(ID) {
+                
         var email= "<?php echo $user; ?>";
         var internalReference;
         $.ajax({
@@ -3199,6 +3544,8 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                    get_company_boxes(response.internalReference);
+                    
                     $('#widget-companyDetails-form input[name=ID]').val(response.ID);
                     document.getElementById('companyName').value = response.companyName;
                     document.getElementById('companyStreet').value = response.companyStreet;
@@ -3240,114 +3587,136 @@ if($connected){
                     
                     
                     var i=0;
-                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right\" onclick=\"add_bike('"+response.ID+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead>";
-                    var dest="";
-                    dest=dest.concat(temp);
-                    while(i<response.bikeNumber){
-                        var temp="<tr><th scope=\"row\">"+response.bike[i].frameNumber+"</th><th>"+response.bike[i].model+"</th><th>"+response.bike[i].facturation+"</th><th>"+response.bike[i].leasingPrice+"</th><th>";
+                    var dest="<a class=\"button small green button-3d rounded icon-right\" onclick=\"add_bike('"+response.ID+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a>";
+                    if(response.bikeNumber>0){
+                        var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead>";
                         dest=dest.concat(temp);
+                        while(i<response.bikeNumber){
+                            var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].facturation+"</td><td>"+response.bike[i].leasingPrice+"</td><td>";
+                            dest=dest.concat(temp);
 
-                        var j=0;
-                        while(j<response.bike[i].buildingNumber){
-                            var temp=response.bike[i].building[j].buildingCode+"<br/>"
-                            dest=dest.concat(temp);
-                            j++;
+                            var j=0;
+                            while(j<response.bike[i].buildingNumber){
+                                var temp=response.bike[i].building[j].buildingCode+"<br/>"
+                                dest=dest.concat(temp);
+                                j++;
+                            }
+                            if(response.bike[i].buildingNumber==0){
+                                var temp="<span class=\"text-red\">Non-défini</span>";
+                                dest=dest.concat(temp);
+                            }
+                            dest=dest.concat("</td><td><ins><a class=\"text-green text-green updateBikeStatusAdmin\" data-target=\"#updateBikeStatusAdmin\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
+                            i++;
                         }
-                        if(response.bike[i].buildingNumber==0){
-                            var temp="<span class=\"text-red\">Non-défini</span>";
-                            dest=dest.concat(temp);
-                        }
-                        dest=dest.concat("</th><th><ins><a class=\"text-green text-green updateBikeStatusAdmin\" data-target=\"#updateBikeStatusAdmin\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></th></tr>");
-                        i++;
+                        dest=dest.concat("</tbody></table>");                                  
                     }
-                    dest=dest.concat("</tbody></table>");
+                    
                     document.getElementById('companyBikes').innerHTML = dest;
                     
+                    
+                    $('.updateBikeStatusAdmin').click(function(){
+                        construct_form_for_bike_status_updateAdmin(this.name);
+                    });
+                    
+
                     //Ajouter un bâtiment
+                    var dest="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBuilding\" data-toggle=\"modal\" onclick=\"add_building('"+response.internalReference+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un bâtiment</span></a>";
                     
-                    var classname = document.getElementsByClassName('updateBikeStatus');
-                    for (var i = 0; i < classname.length; i++) {
-                        classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
-                    }                      
-                    
-                    var i=0;
-                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBuilding\" data-toggle=\"modal\" onclick=\"add_building('"+response.internalReference+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un bâtiment</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th scope=\"col\"><span class=\"fr-inline\">Adresse</span><span class=\"en-inline\">Address</span><span class=\"nl-inline\">Address</span></th></tr></thead>";
-                    var dest="";
-                    dest=dest.concat(temp);
-                    while(i<response.buildingNumber){
-                        var temp="<tr><th scope=\"row\">"+response.building[i].buildingReference+"</th><th>"+response.building[i].buildingFR+"</th><th>"+response.building[i].address+"</th></tr>";
+                    if(response.buildingNumber>0){
+                        var i=0;
+                        var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th scope=\"col\"><span class=\"fr-inline\">Adresse</span><span class=\"en-inline\">Address</span><span class=\"nl-inline\">Address</span></th></tr></thead>";
                         dest=dest.concat(temp);
-                        i++;
+                        while(i<response.buildingNumber){
+                            var temp="<tr><td scope=\"row\">"+response.building[i].buildingReference+"</td><td>"+response.building[i].buildingFR+"</td><td>"+response.building[i].address+"</td></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+                        dest=dest.concat("</tbody></table>");
                     }
-                    dest=dest.concat("</tbody></table>");
+                    
                     document.getElementById('companyBuildings').innerHTML = dest;
 
                     
-                    var i=0;
-                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right offerManagement addOffer\" name=\""+internalReference+"\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th></th></tr></thead>";
-                    var dest="";
-                    dest=dest.concat(temp);
-                    while(i<response.bikeContracts){
-                        if(response.offer[i].description){
-                            var description=response.offer[i].description;
-                        }else{
-                            var description="N/A";
-                        }
-                        if(response.offer[i].probability){
-                            var probability=response.offer[i].probability;
-                        }else{
-                            var probability="N/A";
-                        }
-                        if(response.offer[i].amount){
-                            var amount=response.offer[i].amount;
-                        }else{
-                            var amount="N/A";
-                        }
-                        if(response.offer[i].start){
-                            var start=response.offer[i].start.substr(0,10);
-                        }else{
-                            var start="N/A";
-                        }
-                        if(response.offer[i].description){
-                            var end=response.offer[i].end.substr(0,10);
-                        }else{
-                            var end="N/A";
-                        }
-                        var temp="<tr><td>"+response.offer[i].id+"</td><td>Signé</td><td>"+description+"</td><td>"+probability+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td></td></tr>";
+                    //Ajouter une offre
+                    
+                    var dest="<a class=\"button small green button-3d rounded icon-right offerManagement addOffer\" name=\""+internalReference+"\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a>";
+                    if((response.offerNumber + response.bikeContracts)>0){
+                        var i=0;
+                        var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>";
                         dest=dest.concat(temp);
-                        i++;
+                        while(i<response.bikeContracts){
+                            if(response.offer[i].description){
+                                var description=response.offer[i].description;
+                            }else{
+                                var description="N/A";
+                            }
+                            if(response.offer[i].probability){
+                                var probability=response.offer[i].probability;
+                            }else{
+                                var probability="N/A";
+                            }
+                            if(response.offer[i].amount){
+                                var amount=response.offer[i].amount;
+                            }else{
+                                var amount="N/A";
+                            }
+                            if(response.offer[i].start){
+                                var start=response.offer[i].start.substr(0,10);
+                            }else{
+                                var start="N/A";
+                            }
+                            if(response.offer[i].end){
+                                var end=response.offer[i].end.substr(0,10);
+                            }else{
+                                var end="N/A";
+                            }
+                            if(response.offer[i].status){
+                                var status=response.offer[i].status;
+                            }else{
+                                var status="N/A";
+                            }
+
+                            var temp="<tr><td>"+response.offer[i].id+"</td><td>Signé</td><td>"+description+"</td><td>"+probability+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td></td></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+
+                        while(i<(response.offerNumber + response.bikeContracts)){
+
+                            if(!response.offer[i].date){
+                                var date="?";
+                            }else{
+                                var date=response.offer[i].date.substr(0,10);
+                            }
+                            if(!response.offer[i].start){
+                                var start="?";
+                            }else{
+                                var start=response.offer[i].start.substr(0,10);
+                            }
+                            if(!response.offer[i].end){
+                                var end="?";
+                            }else{
+                                var end=response.offer[i].end.substr(0,10);
+                            }
+
+                            if(response.offer[i].type=="leasing"){
+                                var amount = response.offer[i].amount+" €/mois";
+                            }else{
+                                var amount = response.offer[i].amount+" €";
+                            }
+                            if(response.offer[i].status){
+                                var status=response.offer[i].status;
+                            }else{
+                                var status="N/A";
+                            }
+
+
+                            var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+                        dest=dest.concat("</tbody></table>");
                     }
-                                        
-                    while(i<(response.offerNumber + response.bikeContracts)){
-                        
-                        if(!response.offer[i].date){
-                            var date="?";
-                        }else{
-                            var date=response.offer[i].date.substr(0,10);
-                        }
-                        if(!response.offer[i].start){
-                            var start="?";
-                        }else{
-                            var start=response.offer[i].start.substr(0,10);
-                        }
-                        if(!response.offer[i].end){
-                            var end="?";
-                        }else{
-                            var end=response.offer[i].end.substr(0,10);
-                        }
-                        
-                        if(response.offer[i].type=="leasing"){
-                            var amount = response.offer[i].amount+" €/mois";
-                        }else{
-                            var amount = response.offer[i].amount+" €";
-                        }
-                        
-                        
-                        var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-                        dest=dest.concat(temp);
-                        i++;
-                    }
-                    dest=dest.concat("</tbody></table>");
                     document.getElementById('companyContracts').innerHTML = dest;
 
                     $(".retrieveOffer").click(function() {
@@ -3368,23 +3737,27 @@ if($connected){
                     
                     
                     //Ajouter un utilisateur
-                    
-                    var i=0;
-                    var temp="<table class=\"table\"><a class=\"button small green button-3d rounded icon-right addUser\" data-target=\"#addUser\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un Utilisateur</span></a><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Name</span></th><th scope=\"col\"><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">First Name</span><span class=\"nl-inline\">First Name</span></th><th scope=\"col\"><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-Mail</span><span class=\"nl-inline\">E-Mail</span></th></tr></thead>";
-                    var dest="";
-                    dest=dest.concat(temp);
-                    while(i<response.userNumber){
-                        var temp="<tr><th scope=\"row\">"+response.user[i].name+"</th><th>"+response.user[i].firstName+"</th><th>"+response.user[i].email+"</th></tr>";
+                    var dest="<a class=\"button small green button-3d rounded icon-right addUser\" data-target=\"#addUser\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un Utilisateur</span></a>";
+                    if(response.userNumber>0){
+                        var i=0;
+                        var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Name</span></th><th scope=\"col\"><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">First Name</span><span class=\"nl-inline\">First Name</span></th><th scope=\"col\"><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-Mail</span><span class=\"nl-inline\">E-Mail</span></th></tr></thead>";
                         dest=dest.concat(temp);
-                        i++;
+                        while(i<response.userNumber){
+                            var temp="<tr><td scope=\"row\">"+response.user[i].name+"</td><td>"+response.user[i].firstName+"</td><td>"+response.user[i].email+"</td></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+                        dest=dest.concat("</tbody></table>");
                     }
-                    dest=dest.concat("</tbody></table>");
                     document.getElementById('companyUsers').innerHTML = dest;
                     
                     
                     $('.addUser').click(function(){          
                         $('#widget-addUser-form input[name=company]').val(response.internalReference);
 
+                        
+                        
+                        
                     $.ajax({
                         url: 'include/get_building_listing.php',
                         type: 'post',
@@ -3453,27 +3826,48 @@ if($connected){
                         console.log(response.message);
                     } else{
 
-                        var i=0;
                         
+                        var dest="<a href=\"#\" data-target=\"#taskManagement\" name=\""+internalReference+"\" data-toggle=\"modal\" class=\"button small green button-3d rounded icon-right addTask\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a>";
                         
-                        var dest="<table class=\"table table-condensed\"><a href=\"#\" data-target=\"#addTask\" data-toggle=\"modal\" class=\"button small green button-3d rounded icon-right\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Owner</span><span class=\"en-inline\">Owner</span><span class=\"nl-inline\">Owner</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
-                        while(i<response.actionNumber){
-                            if(!(response.action[i].date_reminder)){
-                                $date_reminder="N/A"
-                            }else{
-                                $date_reminder=response.action[i].date_reminder.substring(0,10);
-                            }
-                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].type+"</td><td>"+response.action[i].title+"</td><td>"+response.action[i].ownerFirstName+" "+response.action[i].ownerName+"</td><td>"+response.action[i].status+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        if(response.actionNumber>0){
+                            var i=0;
+                            var temp="<table class=\"table table-condensed\"><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Owner</span><span class=\"en-inline\">Owner</span><span class=\"nl-inline\">Owner</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
                             dest=dest.concat(temp);
-                            i++;
+                            while(i<response.actionNumber){
+                                if(!(response.action[i].date_reminder)){
+                                    $date_reminder="N/A"
+                                }else{
+                                    $date_reminder=response.action[i].date_reminder.substring(0,10);
+                                }
+                                var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].type+"</td><td>"+response.action[i].title+"</td><td>"+response.action[i].ownerFirstName+" "+response.action[i].ownerName+"</td><td>"+response.action[i].status+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                                dest=dest.concat(temp);
+                                i++;
+                            }
+                            dest=dest.concat("</tbody></table>");
                         }
-                        dest=dest.concat("</tbody></table>");
+                        
                         $('#action_company_log').html(dest);
                         
-                        create_task()
-                        .done(function(response){
-                            $('#widget-addTask-form select[name=company]').val(internalReference);
-                        })
+                        
+
+                        $(".retrieveTask").click(function() {
+                            retrieve_task(this.name, "retrieve");
+                            $('.taskManagementSendButton').addClass("hidden");
+                            
+                            
+                        });                    
+
+                        $(".updateTask").click(function() {
+                            update_task(this.name, "update");
+                        });
+                        $(".addTask").click(function() {
+                            add_task(this.name);
+                            $('.taskManagementSendButton').removeClass("hidden");
+                            $('.taskManagementSendButton').text("Ajouter")                        
+
+                        });
+
+                        
 
                         displayLanguage();
 
@@ -3597,12 +3991,205 @@ if($connected){
                 document.getElementById('widget-addBike-form-company').value = company;
                 $('#addBike').modal('toggle');
 
-        }        
-    })
-
+            }        
+        })
+    }        
         
+        
+    function add_box(company){
+        document.getElementById('widget-addBox-form').reset();
+        $('#widget-addBox-form input').attr("readonly", false);                            
+        $('#widget-addBox-form textarea').attr("readonly", false);                            
+        $('#widget-addBox-form select').attr("readonly", false);                                                    
+        
+        $('#widget-addBox-form input[name=action]').val("add");
+        $('#widget-addBox-form-title').text("Ajouter une borne");
+        
+        
+        $('#widget-addBox-form-send').text("Ajouter");
+        $('#widget-addBox-form-send').removeClass("hidden");
+        
+        $('#widget-addBox-form select[name=company]')
+            .find('option')
+            .remove()
+            .end()
+        ;        
+
+        $.ajax({
+            url: 'include/get_companies_listing.php',
+            type: 'post',
+            data: {type: "*"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.companiesNumber){
+                        $('#widget-addBox-form select[name=company]').append("<option value="+response.company[i].internalReference+">"+response.company[i].companyName+"<br>");    
+                        i++;
+                    }
+                    console.log(company);
+                    $('#widget-addBox-form select[name=company]').val(company);
+
+                    
+                }
+            }
+        })
     }
         
+        
+    function update_box(id){
+        retrieve_box(id);
+        $('#widget-addBox-form-send').removeClass("hidden");
+        
+        $('#widget-addBox-form input').attr("readonly", false);                            
+        $('#widget-addBox-form textarea').attr("readonly", false);                            
+        $('#widget-addBox-form select').attr("readonly", false);                                                    
+        $('#widget-addBox-form input[name=action]').val("update");                                                    
+        
+        
+        $('#widget-addBox-form input[name=action]').val("update");
+        $('#widget-addBox-form-title').text("Modifier une borne");
+        $('#widget-addBox-form-send').text("Modifier");
+        
+        $('#widget-addBox-form select[name=company]')
+            .find('option')
+            .remove()
+            .end()
+        ;        
+
+    }
+        
+        
+    function retrieve_box(id){
+        $('#widget-addBox-form-title').text("Informations de la borne");
+        $('#widget-addBox-form-send').addClass("hidden");
+        $('#widget-addBox-form input').attr("readonly", true);                            
+        $('#widget-addBox-form textarea').attr("readonly", true);                            
+        $('#widget-addBox-form select').attr("readonly", true);       
+        console.log(id);
+        
+        
+        $.ajax({
+            url: 'include/get_companies_listing.php',
+            type: 'post',
+            data: {type: "*"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.companiesNumber){
+                        $('#widget-addBox-form select[name=company]').append("<option value="+response.company[i].internalReference+">"+response.company[i].companyName+"<br>");    
+                        i++;
+                    }
+                }
+            }
+        }).done(function(){
+            
+            $.ajax({
+                url: 'include/box_management.php',
+                type: 'get',
+                data: {"action": "retrieve", "id": id},
+                success: function(response){
+                    if(response.response == 'error') {
+                        console.log(response.message);
+                    }
+                    if(response.response == 'success'){     
+                        $('#widget-addBox-form input[name=id]').val(response.id);
+                        $('#widget-addBox-form input[name=reference]').val(response.reference);
+                        $('#widget-addBox-form select[name=boxModel]').val(response.model);
+                        $('#widget-addBox-form select[name=company]').val(response.company);
+                        $('#widget-addBox-form input[name=amount]').val(response.amount);
+                        $('#widget-addBox-form input[name=billingGroup]').val(response.billing_group);
+                        if(response.start){
+                            $('#widget-addBox-form input[name=contractStart]').val(response.start.substr(0,10));
+                        }else{
+                            $('#widget-addBox-form input[name=contractStart]').val("");
+                        }
+                        if(response.end){
+                            $('#widget-addBox-form input[name=contractEnd]').val(response.end.substr(0,10));
+                        }else{
+                            $('#widget-addBox-form input[name=contractEnd]').val("");
+                        }
+
+                        if(response.automatic_billing=="Y"){
+                            $('#widget-addBox-form input[name=billing]').prop("checked", true);
+                        }else{
+                            $('#widget-addBox-form input[name=billing]').prop("checked", false);
+                        }
+
+                    }
+                }
+            })            
+        })
+    }
+
+    function get_company_boxes(company){
+        
+        
+        $.ajax({
+            url: 'include/box_management.php',
+            type: 'get',
+            data: {"action": "list", "company": company},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="<a class=\"button small green button-3d rounded icon-right addBox\" name=\""+company+"\" data-target=\"#boxManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une borne</span></a>";
+                    if(response.boxesNumber>0){
+                        var temp="<table class=\"table\"><tbody><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th></th></tr></thead>";
+                        dest=dest.concat(temp);                    
+
+                        while (i < response.boxesNumber){
+
+                            if(response.box[i].automatic_billing==null || response.box[i].automatic_billing=="N"){
+                                automatic_billing='N';
+                            }else{
+                                automatic_billing='Y';
+                            }                        
+
+                            if(response.box[i].amount==null){
+                                amount="0 €/mois";
+                            }else{
+                                amount=response.box[i].amount+" €/mois";
+                            }
+
+                            temp="<tr><td><a href=\"#\" class=\"text-green retrieveBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">"+response.box[i].id+"</a></td><td>"+response.box[i].reference+"</td><td>"+response.box[i].model+"</td><td>"+automatic_billing+"</td><td>"+amount+"</td><td><a href=\"#\" class=\"text-green updateBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">Mettre à jour </a></th></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+
+                        var temp="</tbody></table>";
+                        dest=dest.concat(temp);                    
+                    }
+
+                    
+                    $('#companyBoxes').html(dest);         
+                    $('.addBox').click(function(){
+                        add_box(this.name);
+                    });
+                    $('.updateBox').click(function(){
+                        update_box(this.name);
+                    });
+                    $('.retrieveBox').click(function(){
+                        retrieve_box(this.name);
+                    });
+                                        
+                    
+                }
+            }
+        })
+        
+        
+        
+    }
+
+
     function add_building(company){
             $.ajax({
             url: 'include/get_bikes_listing.php',
@@ -4442,8 +5029,17 @@ if($connected){
 											     </div>
 											     <br/><br/>
 											    <div class="col-md-12"><br/><br/></div>
+											    <div class="seperator seperator-small visible-xs"><br/><br/></div>
 
-										     	<div class="col-md-4 hidden" id="taskManagement">
+										     	<div class="col-md-4 hidden" id="boxesManagement">
+											         <div class="icon-box medium fancy">
+											             <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#boxesListing" href="#" class="boxManagerClick"><i class="fa fa-cube"></i></a></div>
+											             <div class="counter bold" id="counterBoxes" style="color:#3cb395"></div>
+											             <p>Gérer les Bornes</p>
+											        </div>
+											     </div>
+
+                                                 <div class="col-md-4 hidden" id="tasksManagement">
 											         <div class="icon-box medium fancy">
 											             <div class="icon bold" data-animation="pulse infinite">
                                                              <a data-toggle="modal" data-target="#tasksListing" href="#" class="tasksManagerClick"><i class="fa fa-tasks"></i></a> 
@@ -6086,6 +6682,29 @@ if($connected){
 	</div>
 </div>
 
+<div class="modal fade" id="boxesListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="boxesListingSpan"></span>
+            </div>
+            
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" id="tasksListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -6114,6 +6733,7 @@ if($connected){
             </div>
             
             <div class="separator"></div>
+            <h4 class="text-green">Statistiques sur les tâches :</h4>
             <div class="col-md-3">
                 <label for="taskOwnerSelection2">Filtrer sur Owner</label>
                 <select class="taskOwnerSelection2" name="taskOwnerSelection2">
@@ -6124,12 +6744,8 @@ if($connected){
                 <label for="numberOfDays">Nombre de jours</label>
                 <input type="text" class="numberOfDays form-control required" name="numberOfDays" value="30">
             </div> 
-            <canvas id="myChart2" width="400" height="300"></canvas>
 
-            
-            <div data-example-id="contextual-table" class="bs-example">
-                        <span id="tasksListingGraphic"></span>
-            </div>
+            <canvas id="myChart2" width="400" height="300"></canvas>
             
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
@@ -6162,7 +6778,7 @@ if($connected){
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="contractsListingSpan"></span>
             </div>
-            
+
             <div class="separator"></div>
             
             <div data-example-id="contextual-table" class="bs-example">
@@ -6372,8 +6988,12 @@ if($connected){
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="companyListingSpan"></span>
             </div>
+            <div class="separator">            </div>
             
-			<div class="fr" class="modal-footer">
+            <h4 class="text-green">Statistiques sur le nombre de clients : </h4>
+            <canvas id="myChart3" style="display: block; width: 800px; height: 400px;" width="800" height="400" class="chartjs-render-monitor"></canvas>
+
+            <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
 			<div class="en" class="modal-footer">
@@ -7319,25 +7939,31 @@ if($connected){
                       
                             }); 
                         </script>
-
+                        
                     <div class="col-sm-12" id="clientBikes">
-                        <h4 class="text-green">Vélos:</h4>
+                        <h4 class="text-green">Vélos :</h4>
                         <p><span id="companyBikes"></span></p>
                     </div>
-
-                    <div class="col-sm-12" id="clientBuildings">
-                        <h4 class="text-green">Bâtiments:</h4>
-                        <p><span id="companyBuildings"></span></p>
+                        
+                    <div class="col-sm-12" id="clientBoxes">
+                        <h4 class="text-green">Bornes :</h4>
+                        <p><span id="companyBoxes"></span></p>
                     </div>
+
                     <div class="col-sm-12" id="clientContracts">
                         <h4 class="text-green">Contrats et Offres :</h4>
                         <p><span id="companyContracts"></span></p>
                     </div>
                         
                     <div class="col-sm-12">
-                        <h4 class="text-green">Historique et actions</h4>
+                        <h4 class="text-green">Historique et actions :</h4>
                         <span id="action_company_log"></span>
                         
+                    </div>
+
+                    <div class="col-sm-12" id="clientBuildings">
+                        <h4 class="text-green">Bâtiments:</h4>
+                        <p><span id="companyBuildings"></span></p>
                     </div>
                         
                     <div class="col-sm-12" id="clientusers">
@@ -7481,7 +8107,7 @@ if($connected){
     })
 </script>
 
-<div class="modal fade" id="addTask" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+<div class="modal fade" id="taskManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -7490,16 +8116,16 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="fr text-green">Ajouter une action</h4>
+						<h4 class="fr text-green taskManagementTitle">Ajouter une action</h4>
 						
-						<form id="widget-addTask-form" action="include/action_company.php" role="form" method="post">
+						<form id="widget-taskManagement-form" action="include/action_company.php" role="form" method="post">
                             
                             <div class="form-group col-sm-12">
                                 <div class="col-md-12">
 
                                     <div class="col-md-4">  
                                         <label for="owner">Owner</label>  
-                                        <select title="owner" class="selectpicker form-conrol required" name="owner">
+                                        <select title="owner" class="form-control required" name="owner">
                                         </select>                                    
                                     </div>   
 
@@ -7530,6 +8156,7 @@ if($connected){
                                           <option value="plan rdv">Planification de rendez-vous</option>            
                                           <option value="rdv">Rendez-vous</option>            
                                           <option value="offre">Formulation d'une offre</option>            
+                                          <option value="offreSigned">Offre signée</option>            
                                           <option value="delivery">Livraison vélo</option>            
                                           <option value="other">Autre</option>            
                                         </select>                                    
@@ -7571,14 +8198,14 @@ if($connected){
                                 <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
                                 <input type="text" name="action" class="form-control hidden" value="create">
 	                            <div class="col-sm-12">
-	                                <button  class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>         
+	                                <button  class="button small green button-3d rounded icon-left taskManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>         
 	                            </div>                          
 
                             </div>
                             
 						</form>
 						<script type="text/javascript">							
-							jQuery("#widget-addTask-form").validate({
+							jQuery("#widget-taskManagement-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
 										success: function(response) {
@@ -7589,8 +8216,8 @@ if($connected){
 													type: 'success'
 												});
                                                 list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
-												$('#addTask').modal('toggle');
-                                                document.getElementById('widget-addTask-form').reset();
+												$('#taskManagement').modal('toggle');
+                                                document.getElementById('widget-taskManagement-form').reset();
                                                 
 
 											} else {
@@ -7807,6 +8434,151 @@ if($connected){
 	</div>
 </div>
 
+<div class="modal fade" id="boxManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						
+						<form id="widget-addBox-form" action="include/box_management.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                                <h4 class="fr text-green" id="widget-addBox-form-title">Ajouter une borne</h4>
+                                
+                                
+								<div class="col-sm-4">
+                                    <label for="reference"  class="fr">Référence</label>
+                                    <label for="reference"  class="en">Reference</label>
+                                    <label for="reference"  class="nl">Reference</label>
+                                    <input type="text"  name="reference" class="form-control">
+                                </div>
+                                
+                                
+								<div class="col-sm-4">
+                                    <label for="widget-addBike-form-model"  class="fr">Modèle</label>
+                                    <label for="widget-addBike-form-model"  class="en">Model</label>
+                                    <label for="widget-addBike-form-model"  class="nl">Model</label>
+                                    <select name="boxModel" class="form-control required">
+                                        <option value="5keys" />Box 5 clés<br/>
+                                        <option value="10keys" />Box 10 clés<br/>
+                                        <option value="20keys" />Box 20 clés<br/>
+                                    </select>
+								</div>
+                                
+                                
+                                <div class="separator"></div>
+                                <h4 class="fr text-green">Informations relatives au contrat</h4>
+
+                                <div class="col-sm-4">
+                                    <label for="company"  class="fr">Client actuel</label>
+                                    <label for="company"  class="en">Current customer</label>
+                                    <label for="company"  class="nl">Current customer</label>
+                                    <select name="company" class="form-control required">
+                                    </select>
+                                </div>    
+                                
+                                
+								<div class="col-sm-4">
+                                    <label for="contractStart"  class="fr">Début de contrat</label>
+                                    <label for="contractStart"  class="en">Contract start</label>
+                                    <label for="contractStart"  class="nl">Contract start</label>
+                                    <input type="date"  name="contractStart" class="form-control">
+                                </div>
+								<div class="col-sm-4">
+                                    <label for="contractEnd"  class="fr">Fin de contrat</label>
+                                    <label for="contractEnd"  class="en">Contract End</label>
+                                    <label for="contractEnd"  class="nl">Contract End</label>
+                                    <input type="date" name="contractEnd" class="form-control">
+                                </div>
+                                <div class="separator"></div>
+                                
+                                <h4 class="fr text-green">Informations relatives à la facturation</h4>
+                                
+								<div class="col-sm-4">
+                                    <label for="billing"  class="fr">Facturation automatique ?</label>
+                                    <label for="billing"  class="en">Automatic billing ?</label>
+                                    <label for="billing"  class="nl">Automatic billing ?</label>
+                                    <label><input type="checkbox" name="billing" class="form-control">Oui</label>
+                                </div>                                                                                                
+                                    
+								<div class="col-sm-4">
+                                    <label for="amount"  class="fr">Montant (par mois)</label>
+                                    <label for="amount"  class="en">Amount per month</label>
+                                    <label for="amount"  class="nl">Amount per month</label>
+                                    <input type="number" min='0' name="amount" class="form-control">
+                                </div>       
+                                
+								<div class="col-sm-4">
+                                    <label for="billingGroup"  class="fr">Groupe de facturation</label>
+                                    <label for="billingGroup"  class="en">Groupe de facturation</label>
+                                    <label for="billingGroup"  class="nl">Groupe de facturation</label>
+                                    <input type="number" min="1" max="10" name="billingGroup" class="form-control required" value="1">
+                                </div>
+                
+                                    
+                                <input type="text" name="id" class="form-control hidden">
+                                <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control hidden">
+
+                            </div>
+                            
+                            
+                            <button  id="widget-addBox-form-send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+                            
+						</form>
+						<script type="text/javascript">							
+							jQuery("#widget-addBox-form").validate({
+								submitHandler: function(form) {
+
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
+                                                document.getElementById('widget-addBox-form').reset();
+												$('#boxManagement').modal('toggle');
+                                                
+											} else {
+                                                console.log(response.message);
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+                            
+                            
+                            
+						</script>                 					
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="modal fade" id="addBuilding" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
@@ -7932,7 +8704,7 @@ if($connected){
 						<form id="widget-offerManagement-form" action="include/offer_management.php" role="form" method="post">
                             
                             <div class="form-group col-sm-12">
-                                <h4 class="fr text-green">Ajouter une offre</h4>
+                                <h4 class="fr text-green offerManagementTitle">Ajouter une offre</h4>
                                 <div class="col-sm-12">
                                     
                                     <div class="col-sm-12">
@@ -7958,6 +8730,16 @@ if($connected){
 	                                    <select name="type" class="form-control required">
 	                                        <option value="leasing">Leasing</option>
 	                                        <option value="achat">achat</option>
+	                                    </select>
+	                                </div>
+									<div class="col-sm-3">
+	                                    <label for="status"  class="fr">Status</label>
+	                                    <label for="status"  class="en">Status</label>
+	                                    <label for="status"  class="nl">Status</label>
+	                                    <select name="status" class="form-control required">
+	                                        <option value="ongoing">En cours</option>
+	                                        <option value="done">Signé</option>
+	                                        <option value="lost">Perdu</option>
 	                                    </select>
 	                                </div>
 	                                
@@ -8630,140 +9412,143 @@ if($connected){
 					<div class="col-sm-12">
 						
 						<form id="widget-updateBikeStatusAdmin-form" action="include/update_bike.php" role="form" method="post">
+                            <div class="col-sm-12 border">
                             
-                            <h4 class="fr text-green">Informations génériques</h4>
+                                <h4 class="fr text-green">Informations génériques</h4>
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="fr">Numéro de vélo</label>
-                                <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="en">Bike Number</label>
-                                <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="nl">Bike Number</label>
-                                <input type="text" name="widget-updateBikeStatusAdmin-form-bikeNumberOriginel" class="form-control required hidden">
-                                <input type="text" name="widget-updateBikeStatusAdmin-form-bikeNumber" class="form-control required">
-                            </div>
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="fr">Numéro de vélo</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="en">Bike Number</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-bikeNumber"  class="nl">Bike Number</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-bikeNumberOriginel" class="form-control required hidden">
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-bikeNumber" class="form-control required">
+                                </div>
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-model"  class="fr">Modèle</label>
-                                <label for="widget-updateBikeStatusAdmin-form-model"  class="en">Model</label>
-                                <label for="widget-updateBikeStatusAdmin-form-model"  class="nl">Model</label>
-                                <input type="text" name="widget-updateBikeStatusAdmin-form-model" class="form-control required">
-                            </div>
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-model"  class="fr">Modèle</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-model"  class="en">Model</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-model"  class="nl">Model</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-model" class="form-control required">
+                                </div>
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-size"  class="fr">Taille</label>
-                                <label for="widget-updateBikeStatusAdmin-form-size"  class="en">Size</label>
-                                <label for="widget-updateBikeStatusAdmin-form-size"  class="nl">Size</label>
-                                <input type="text" name="widget-updateBikeStatusAdmin-form-size" class="form-control required">
-                            </div>
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-size"  class="fr">Taille</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-size"  class="en">Size</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-size"  class="nl">Size</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-size" class="form-control required">
+                                </div>
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="fr">Référence de cadre</label>
-                                <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="en">Frame reference</label>
-                                <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="nl">Frame reference</label>
-                                <input type="text" name="widget-updateBikeStatusAdmin-form-frameReference" class="form-control required">
-                            </div>                 
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="fr">Référence de cadre</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="en">Frame reference</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-frameReference"  class="nl">Frame reference</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-frameReference" class="form-control required">
+                                </div>                 
 
-                            <div class="separator"></div>
+                                <div class="separator"></div>
 
 
-                            <h4 class="fr text-green">Informations liées à l'achat du vélo</h4>                                
+                                <h4 class="fr text-green">Informations liées à l'achat du vélo</h4>                                
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-price"  class="fr">Prix d'achat</label>
-                                <label for="widget-updateBikeStatusAdmin-form-price"  class="en">Price</label>
-                                <label for="widget-updateBikeStatusAdmin-form-price"  class="nl">Price</label>
-                                <input type="number" name="widget-updateBikeStatusAdmin-form-price" class="form-control required">
-                            </div>         
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-price"  class="fr">Prix d'achat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-price"  class="en">Price</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-price"  class="nl">Price</label>
+                                    <input type="number" name="widget-updateBikeStatusAdmin-form-price" class="form-control required">
+                                </div>         
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-buyingDate"  class="fr">Date d'achat</label>
-                                <label for="widget-updateBikeStatusAdmin-form-buyingDate"  class="en">Buying date</label>
-                                <label for="widget-updateBikeStatusAdmin-form-buyingDate"  class="nl">Buying date</label>
-                                <input type="date" name="widget-updateBikeStatusAdmin-form-buyingDate" class="form-control">
-                            </div>         
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-buyingDate"  class="fr">Date d'achat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-buyingDate"  class="en">Buying date</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-buyingDate"  class="nl">Buying date</label>
+                                    <input type="date" name="widget-updateBikeStatusAdmin-form-buyingDate" class="form-control">
+                                </div>         
 
-                            <div class="separator"></div>
+                                <div class="separator"></div>
 
-                            <h4 class="fr text-green">Informations relatives au contrat</h4>
+                                <h4 class="fr text-green">Informations relatives au contrat</h4>
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="fr">Début de contrat</label>
-                                <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="en">Contract start</label>
-                                <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="nl">Contract start</label>
-                                <input type="date" name="widget-updateBikeStatusAdmin-form-contractStart" class="form-control">
-                            </div>
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="fr">Début de contrat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="en">Contract start</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractStart"  class="nl">Contract start</label>
+                                    <input type="date" name="widget-updateBikeStatusAdmin-form-contractStart" class="form-control">
+                                </div>
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="fr">Fin de contrat</label>
-                                <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="en">Contract End</label>
-                                <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="nl">Contract End</label>
-                                <input type="date" name="widget-updateBikeStatusAdmin-form-contractEnd" class="form-control">
-                            </div>
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="fr">Fin de contrat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="en">Contract End</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-contractEnd"  class="nl">Contract End</label>
+                                    <input type="date" name="widget-updateBikeStatusAdmin-form-contractEnd" class="form-control">
+                                </div>
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="fr">Référence de contrat</label>
-                                <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="en">Contract Reference</label>
-                                <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="nl">Contract Reference</label>
-                                <input type="text" name="widget-updateBikeStatusAdmin-form-assistanceReference" class="form-control">
-                            </div>                                
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="fr">Référence de contrat</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="en">Contract Reference</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-assistanceReference"  class="nl">Contract Reference</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-assistanceReference" class="form-control">
+                                </div>                                
 
-                            <div class="separator"></div>
+                                <div class="separator"></div>
 
-                            <h4 class="fr text-green">Informations relatives à la facturation</h4>
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-company"  class="fr">Client actuel</label>
-                                <label for="widget-updateBikeStatusAdmin-form-company"  class="en">Current customer</label>
-                                <label for="widget-updateBikeStatusAdmin-form-company"  class="nl">Current customer</label>
-                                <select name="widget-updateBikeStatusAdmin-form-company" title="company" class="selectpicker modifyCompanyAdmin" onclick="updateAccessAdmin(this)">
-                                </select>
-                            </div>    
+                                <h4 class="fr text-green">Informations relatives à la facturation</h4>
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-company"  class="fr">Client actuel</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-company"  class="en">Current customer</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-company"  class="nl">Current customer</label>
+                                    <select name="widget-updateBikeStatusAdmin-form-company" title="company" class="selectpicker modifyCompanyAdmin" onclick="updateAccessAdmin(this)">
+                                    </select>
+                                </div>    
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-billing"  class="fr">Facturation automatique ?</label>
-                                <label for="widget-updateBikeStatusAdmin-form-billing"  class="en">Automatic billing ?</label>
-                                <label for="widget-updateBikeStatusAdmin-form-billing"  class="nl">Automatic billing ?</label>
-                                <input type="checkbox" name="widget-updateBikeStatusAdmin-form-billing" class="form-control">
-                            </div>                                                                                                
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-billing"  class="fr">Facturation automatique ?</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billing"  class="en">Automatic billing ?</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billing"  class="nl">Automatic billing ?</label>
+                                    <input type="checkbox" name="widget-updateBikeStatusAdmin-form-billing" class="form-control">
+                                </div>                                                                                                
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="fr">Montant de facturation</label>
-                                <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="en">Montant de facturation</label>
-                                <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="nl">Montant de facturation</label>
-                                <input type="text" name="widget-updateBikeStatusAdmin-form-billingPrice" class="form-control required">
-                            </div>       
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="fr">Montant de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="en">Montant de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingPrice"  class="nl">Montant de facturation</label>
+                                    <input type="text" name="widget-updateBikeStatusAdmin-form-billingPrice" class="form-control required">
+                                </div>       
 
-                            <div class="col-sm-4">
-                                <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="fr">Groupe de facturation</label>
-                                <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="en">Groupe de facturation</label>
-                                <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="nl">Groupe de facturation</label>
-                                <input type="number" name="widget-updateBikeStatusAdmin-form-billingGroup" class="form-control required">
-                            </div>                                         
-                            <div class="col-sm-12"></div>
-                            <div class="col-sm-6">
-                                <label for="bikeImageAdmin"  class="fr">Image actuelle:</label>
-                                <label for="bikeImageAdmin"  class="en">Current picture (jpg)</label>
-                                <label for="bikeImageAdmin"  class="nl">Current picture(jpg)</label>
-                                <img class="bikeImageAdmin" name="bikeImageAdmin"/>
-                            </div>
+                                <div class="col-sm-4">
+                                    <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="fr">Groupe de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="en">Groupe de facturation</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-billingGroup"  class="nl">Groupe de facturation</label>
+                                    <input type="number" name="widget-updateBikeStatusAdmin-form-billingGroup" class="form-control required">
+                                </div>                                         
+                                <div class="col-sm-12"></div>
+                                <div class="col-sm-6">
+                                    <label for="bikeImageAdmin"  class="fr">Image actuelle:</label>
+                                    <label for="bikeImageAdmin"  class="en">Current picture (jpg)</label>
+                                    <label for="bikeImageAdmin"  class="nl">Current picture(jpg)</label>
+                                    <img class="bikeImageAdmin" name="bikeImageAdmin"/>
+                                </div>
 
-                            <div class="col-sm-6">
-                                <label for="widget-updateBikeStatusAdmin-form-picture"  class="fr">Nouvelle image:</label>
-                                <label for="widget-updateBikeStatusAdmin-form-picture"  class="en">new picture (jpg)</label>
-                                <label for="widget-updateBikeStatusAdmin-form-picture"  class="nl">New picture(jpg)</label>
-                                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                                <input type=file size=40 name="widget-updateBikeStatusAdmin-form-picture">
-                            </div>      
-                            <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
-                            <input type="text" name="action" class="form-control hidden" value="update">                                    
-                            <div class="separator"></div>
+                                <div class="col-sm-6">
+                                    <label for="widget-updateBikeStatusAdmin-form-picture"  class="fr">Nouvelle image:</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-picture"  class="en">new picture (jpg)</label>
+                                    <label for="widget-updateBikeStatusAdmin-form-picture"  class="nl">New picture(jpg)</label>
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                    <input type=file size=40 name="widget-updateBikeStatusAdmin-form-picture">
+                                </div>      
+                                <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control hidden" value="update">                                    
+                                <div class="separator"></div>
+
+                                <h4 class="fr text-green">Accès aux bâtiments</h4>
+                                <div id="bikeBuildingAccessAdmin"></div> 
+
+                                <div class="separator"></div>
+
+
+                                <h4 class="fr text-green">Accès des utilisateurs</h4>
+                                <div id="bikeUserAccessAdmin"></div> 
                             
-                            <h4 class="fr text-green">Accès aux bâtiments</h4>
-                            <div id="bikeBuildingAccessAdmin"></div> 
-                            
-                            <div class="separator"></div>
-                            
-                            
-                            <h4 class="fr text-green">Accès des utilisateurs</h4>
-                            <div id="bikeUserAccessAdmin"></div> 
+                            </div>
 
                             <div class="col-sm-12">
                                 <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Mettre à jour</button>
@@ -8776,43 +9561,48 @@ if($connected){
                             
                         <div class="separator"></div>
                             
-                        <h4 class="fr text-green">Actions prises sur le vélo</h4>
+                        <div class="col-sm-12">
                             
-						<form id="widget-addActionBike-form" action="include/action_bike_management.php" role="form" method="post">
-                            <input type="text" name="widget-addActionBike-form-bikeNumber" class="form-control required hidden">
-                            <input type="text" name="widget-addActionBike-form-user" class="form-control required hidden" value="<?php echo $user; ?>">
-                            <input type="text" name="widget-addActionBike-form-action" class="form-control required hidden" value="add">
-                            <div class="col-sm-12">
-                                <div class="col-sm-3">
-                                    <label for="widget-addActionBike-form-date" class="hidden">Date</label>
-                                    <input type="date" name="widget-addActionBike-form-date" class="form-control required hidden">
+                            <h4 class="fr text-green">Actions prises sur le vélo</h4>
+                            
+                            
+                            <form id="widget-addActionBike-form" action="include/action_bike_management.php" role="form" method="post">
+                                <input type="text" name="widget-addActionBike-form-bikeNumber" class="form-control required hidden">
+                                <input type="text" name="widget-addActionBike-form-user" class="form-control required hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="widget-addActionBike-form-action" class="form-control required hidden" value="add">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-3">
+                                        <label for="widget-addActionBike-form-date" class="hidden">Date</label>
+                                        <input type="date" name="widget-addActionBike-form-date" class="form-control required hidden">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="widget-addActionBike-form-description" class="hidden">Description</label>
+                                        <input type="text" name="widget-addActionBike-form-description" class="form-control required hidden">
+                                    </div>
+                                    <div class="col-sm-2">    
+                                        <label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
+                                        <input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">                            
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button  class="fr button small green button-3d rounded icon-left hidden addActionConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label for="widget-addActionBike-form-description" class="hidden">Description</label>
-                                    <input type="text" name="widget-addActionBike-form-description" class="form-control required hidden">
-                                </div>
-                                <div class="col-sm-2">    
-                                    <label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
-                                    <input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">                            
-                                </div>
-                                <div class="col-sm-1">
-                                    <button  class="fr button small green button-3d rounded icon-left hidden addActionConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </form>
-                        
-                        <span id="action_bike_log"></span>
+                            </form>
 
-                        <form  id="widget-deleteBike-form" action="include/update_bike.php" role="form" method="post">
-                            <div class="col-sm-12">
-                                <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
-                                <input type="text" name="action" value="delete" class="hidden">
-                                <input type="text" class="hidden widget-deleteBike-form" readonly="readonly" name="frameNumber">
-                                <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer</button>
-                                <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
-                                <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
-                            </div>
-                        </form>                        
+                            <span id="action_bike_log"></span>
+
+                            <form  id="widget-deleteBike-form" action="include/update_bike.php" role="form" method="post">
+                                <div class="col-sm-12">
+                                    <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
+                                    <input type="text" name="action" value="delete" class="hidden">
+                                    <input type="text" class="hidden widget-deleteBike-form" readonly="readonly" name="frameNumber">
+                                    <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer le vélo</button>
+                                    <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
+                                    <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
+                                </div>
+                            </form>                        
+                        </div>
+                            
 
                     </div>
                             
@@ -9254,6 +10044,7 @@ if($connected){
                                           <option value="plan rdv">Planification de rendez-vous</option>            
                                           <option value="rdv">Rendez-vous</option>            
                                           <option value="offre">Formulation d'une offre</option>            
+                                          <option value="offreSigned">Offre signée</option>            
                                           <option value="delivery">Livraison vélo</option>            
                                           <option value="other">Autre</option>            
                                         </select>                                    

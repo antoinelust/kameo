@@ -16,7 +16,7 @@ if($action=="delete"){
 
     if($user != NULL && $frameNumber != NULL){
         include 'connexion.php';
-        $sql="DELETE FROM customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
+        $sql="UPDATE customer_bikes SET STAANN = 'D' WHERE FRAME_NUMBER = '$frameNumber'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -190,7 +190,8 @@ if($action=="update"){
             echo json_encode($response);
             die;
         }
-
+        
+        
         $conn->close();
 
     }

@@ -15,6 +15,7 @@ if(isset($_POST['action']))
     $company = isset($_POST["company"]) ? $_POST["company"] : NULL;
     $title = isset($_POST["title"]) ? addslashes($_POST["title"]) : NULL;
     $description = isset($_POST["description"]) ? addslashes($_POST["description"]) : NULL;
+    $status = isset($_POST["status"]) ? addslashes($_POST["status"]) : NULL;
     $type = isset($_POST["type"]) ? $_POST["type"] : NULL;
     $probability = isset($_POST["probability"]) ? $_POST["probability"] : NULL;
     $amount = isset($_POST["amount"]) ? $_POST["amount"] : NULL;
@@ -44,7 +45,9 @@ if(isset($_POST['action']))
     if(isset($_POST["action"])){
         if($_POST["action"]=="add"){
             include 'connexion.php';
-            $sql="INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, STAANN) VALUES (CURRENT_TIMESTAMP, '$requestor', '$title', '$description', '$probability', '$type', '$amount', '$margin', $date, $start, $end, '$company', '')";
+            $sql="INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, STAANN) VALUES (CURRENT_TIMESTAMP, '$requestor', '$title', '$description', '$status', '$probability', '$type', '$amount', '$margin', $date, $start, $end, '$company', '')";
+            
+            
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -58,7 +61,7 @@ if(isset($_POST['action']))
         }else if($_POST["action"]=="update"){
             
             include 'connexion.php';
-            $sql="UPDATE offers SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$requestor', TITRE='$title', DESCRIPTION='$description', PROBABILITY='$probability', MARGIN='$margin', AMOUNT='$amount', DATE=$date, START=$start, END=$end WHERE ID='$id'";
+            $sql="UPDATE offers SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$requestor', TITRE='$title', DESCRIPTION='$description', STATUS='$status', PROBABILITY='$probability', MARGIN='$margin', AMOUNT='$amount', DATE=$date, START=$start, END=$end WHERE ID='$id'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -112,12 +115,11 @@ if(isset($_POST['action']))
             $arrayIN=array();
             $i=0;
             while(($date_start->format('Y-m-d'))<=$date_end){
-                $date_start->add(new DateInterval('P10D'));
                 
                 $date_start_string=$date_start->format('Y-m-d');
                 
                 include 'connexion.php';
-                $sql="SELECT SUM(LEASING_PRICE) AS 'PRICE' FROM customer_bikes WHERE CONTRACT_START <= '$date_start_string' AND CONTRACT_END >= '$date_start_string'";
+                $sql="SELECT SUM(LEASING_PRICE) AS 'PRICE' FROM customer_bikes WHERE CONTRACT_START <= '$date_start_string' AND CONTRACT_END >= '$date_start_string' AND STAANN != 'D'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -125,10 +127,27 @@ if(isset($_POST['action']))
                 }
                 $result = mysqli_query($conn, $sql);        
                 $resultat = mysqli_fetch_assoc($result);
-                array_push($arrayContracts, round($resultat['PRICE'])); 
-                $prixContrat=round($resultat['PRICE']);
-                
                 $conn->close();
+                
+                $contractAmountTemp=$resultat['PRICE'];
+                
+                
+                include 'connexion.php';
+                $sql="SELECT SUM(AMOUNT) AS 'PRICE' FROM boxes WHERE START <= '$date_start_string' AND END >= '$date_start_string' AND STAANN != 'D'";
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+                $result = mysqli_query($conn, $sql);        
+                $resultat = mysqli_fetch_assoc($result);
+                $conn->close();
+                
+                $contractAmountTemp=$contractAmountTemp+$resultat['PRICE'];
+                
+                
+                
+                array_push($arrayContracts, round($contractAmountTemp)); 
                 
                 include 'connexion.php';
                 $sql="SELECT SUM(AMOUNT) AS 'PRICE' FROM costs WHERE START <= '$date_start_string' AND END >= '$date_start_string'";
@@ -146,7 +165,7 @@ if(isset($_POST['action']))
                 
                 
                 include 'connexion.php';
-                $sql="SELECT AMOUNT, PROBABILITY FROM offers WHERE START != '' AND END != '' AND TYPE = 'leasing' AND START <= '$date_start_string' AND END >= '$date_start_string'";
+                $sql="SELECT AMOUNT, PROBABILITY FROM offers WHERE START != '' AND END != '' AND TYPE = 'leasing' AND STATUS='ongoing' AND START <= '$date_start_string' AND END >= '$date_start_string'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -160,9 +179,10 @@ if(isset($_POST['action']))
                 
                 array_push($arrayOffers, $amount);
                 array_push($arrayDates, $date_start->format('Y-m-d'));                
-                array_push($arrayIN, ($amount + $prixContrat));                
-                array_push($arrayFreeCashFlow, ($amount + $prixContrat - $costs ));                
-                
+                array_push($arrayIN, round($amount + $contractAmountTemp));                
+                array_push($arrayFreeCashFlow, round($amount + $contractAmountTemp - $costs ));                
+                $date_start->add(new DateInterval('P10D'));
+
                 $conn->close();                  
                 $i++;
                 
@@ -212,7 +232,7 @@ if(isset($_POST['action']))
                 $response['date']=$resultat['DATE'];
                 $response['start']=$resultat['START'];
                 $response['end']=$resultat['END'];
-
+                $response['status']=$resultat['STATUS'];
                 echo json_encode($response);
                 die;                
 
@@ -221,7 +241,7 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT COMPANY, CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes WHERE LEASING='Y'";
+                $sql="SELECT COMPANY, CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes WHERE STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -244,16 +264,55 @@ if(isset($_POST['action']))
 
                     $response['response']="success";
                     $response['contract'][$i]['company']=$row['COMPANY'];
-                    $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélos en leasing";
+                    if($row['BIKE_NUMBER']>1){
+                        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélos en leasing";
+                    }else{
+                        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélo en leasing";
+                    }
                     $response['contract'][$i]['amount']=$row['PRICE'];
                     $response['contract'][$i]['start']=$row['CONTRACT_START'];
                     $response['contract'][$i]['end']=$row['CONTRACT_END'];
                     $i++;
                 }
+                
+                include 'connexion.php';
+                $sql="SELECT COMPANY, START, END, SUM(AMOUNT) as 'PRICE', COUNT(1) AS 'BOXES_NUMBER' FROM boxes WHERE STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+                if($company!="*"){
+                    $sql=$sql." AND COMPANY='$company'";
+                }
+                $sql=$sql." GROUP BY COMPANY, START, END";
+
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+
+
+                $result = mysqli_query($conn, $sql);        
+                $conn->close();  
+
+                $response['contractsNumber'] = $response['contractsNumber'] + $result->num_rows;
+                
+                while($row = mysqli_fetch_array($result))
+                {
+
+                    $response['response']="success";
+                    $response['contract'][$i]['company']=$row['COMPANY'];
+                    if($row['BOXES_NUMBER']>1){
+                        $response['contract'][$i]['description']=$row['BOXES_NUMBER']." bornes en leasing";
+                    }else{
+                        $response['contract'][$i]['description']=$row['BOXES_NUMBER']." borne en leasing";
+                    }
+                    $response['contract'][$i]['amount']=$row['PRICE'];
+                    $response['contract'][$i]['start']=$row['START'];
+                    $response['contract'][$i]['end']=$row['END'];
+                    $i++;
+                }
 
 
                 include 'connexion.php';
-                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE LEASING='Y' AND CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
+                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -268,10 +327,27 @@ if(isset($_POST['action']))
                 $conn->close();  
 
                 $response['sumContractsCurrent']=$resultat['PRICE'];
+                
+                include 'connexion.php';
+                $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+                if($company!="*"){
+                    $sql=$sql." AND COMPANY='$company'";
+                }
+
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+                $result = mysqli_query($conn, $sql);        
+                $resultat = mysqli_fetch_assoc($result);
+                $conn->close();  
+
+                $response['sumContractsCurrent']=$response['sumContractsCurrent']+$resultat['PRICE'];
 
 
                 include 'connexion.php';
-                $sql="SELECT * FROM offers WHERE STAANN != 'D'";
+                $sql="SELECT * FROM offers WHERE STATUS='ongoing' AND STAANN != 'D'";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -299,6 +375,7 @@ if(isset($_POST['action']))
                     $response['offer'][$i]['start']=$row['START'];
                     $response['offer'][$i]['end']=$row['END'];
                     $response['offer'][$i]['margin']=$row['MARGIN'];
+                    $response['offer'][$i]['status']=$row['STATUS'];
                     $i++;
                 }
 

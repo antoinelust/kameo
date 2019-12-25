@@ -159,7 +159,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             
             include 'include/connexion.php';
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and CONTRACT_END>='$monthAfterString' and BILLING_GROUP='$billingGroup' and LEASING='Y'";
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and CONTRACT_END>='$monthAfterString' and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -223,6 +223,71 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 
 
+            }
+
+            include 'include/connexion.php';
+            $sql2="select * from boxes where COMPANY='$company' and START<='$currentDateString' and END>='$monthAfterString' and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
+            if ($conn->query($sql2) === FALSE) {
+                echo $conn->error;
+                die;
+            }
+            $result2 = mysqli_query($conn, $sql2);   
+            $length = $result2->num_rows;
+            $conn->close();
+
+            
+            while($row2 = mysqli_fetch_array($result2)){
+                
+                $contractStart= new DateTime();
+                $contractStart->setDate(substr($row2['START'], 0, 4), substr($row2['START'],5,2), substr($row2['START'], 8,2));      
+                
+                $contractEnd= new DateTime();
+                $contractEnd->setDate(substr($row2['END'], 0, 4), substr($row2['END'],5,2), substr($row2['END'], 8,2));                
+                
+                $dateStart = new DateTime();
+                $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
+                
+                $dateEnd = new DateTime();
+                $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
+                $temp1=$dateStart->format('d-m-Y');                
+                $temp2=$dateEnd->format('d-m-Y');                
+                $comment='Période du '.$temp1.' au '.$temp2;
+                $leasingPrice=$row2['AMOUNT'];
+                $leasingPriceTVAC=1.21*$row2['AMOUNT'];
+                $reference=$row2['REFERENCE'];
+                $boxID=$row2['ID'];
+                include 'include/connexion.php';
+                $sql="INSERT INTO factures_details (FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('$newID', '$boxID','$reference', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
+                if ($conn->query($sql) === FALSE) {
+                    echo $conn->error;
+                } 
+                $conn->close();
+                
+
+                
+                $difference=$dateStart->diff($contractStart);
+                
+                $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
+                $lengthLeasing=(($contractEnd->diff($contractStart))->format('%y'))*12+(($contractEnd->diff($contractStart))->format('%m'))+1
+                
+                $test2.='<tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$row2['MODEL'].' - REFERENCE: '.$row2['REFERENCE'].'</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['AMOUNT'],2).' € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateEnd->format('d-m-Y').'</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="'.__DIR__.'/images_bikes/'.$row2['MODEL'].'_mini.png" alt=""></td>
+                    <td>Période '.($monthDifference).'/'.($$lengthLeasing).'</td>
+                </tr>';
+                
+                $i+=1;
+                $total+=$row2['AMOUNT'];
             }
 
             $tva=($total*0.21);

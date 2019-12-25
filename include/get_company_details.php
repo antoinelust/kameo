@@ -212,6 +212,7 @@ if($ID != NULL)
         $response['offer'][$i]['date']=$row['DATE'];
         $response['offer'][$i]['start']=$row['START'];
         $response['offer'][$i]['end']=$row['START'];
+        $response['offer'][$i]['status']=$row['STATUS'];
         $i++;
     }
 

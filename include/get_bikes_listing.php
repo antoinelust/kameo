@@ -37,7 +37,7 @@ if($admin!="Y"){
         }
     }
     include 'connexion.php';
-    $sql="SELECT * FROM customer_bikes where COMPANY='$company'";
+    $sql="SELECT * FROM customer_bikes where COMPANY='$company' AND STAANN != 'D'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -45,7 +45,7 @@ if($admin!="Y"){
     }              
 }else{
     include 'connexion.php';
-    $sql="SELECT * FROM customer_bikes";
+    $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -69,13 +69,14 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['model']=$row['MODEL'];            
     $response['bike'][$i]['company']=$row['COMPANY'];            
     $response['bike'][$i]['contractReference']=$row['CONTRACT_REFERENCE'];
+    $response['bike'][$i]['automatic_billing']=$row['LEASING'];
     if($row['LEASING']=="Y"){
         $response['bike'][$i]['contractType']="leasing";
-        $response['bike'][$i]['contractDates']=$row['CONTRACT_START'].'->'.$row['CONTRACT_END'];
     }else{
         $response['bike'][$i]['contractType']="other";
-        $response['bike'][$i]['contractDates']="N/A";
     }
+    $response['bike'][$i]['contractStart']=$row['CONTRACT_START'];
+    $response['bike'][$i]['contractEnd']=$row['CONTRACT_END'];
     $response['bike'][$i]['status']=$row['STATUS'];
 
     $i++;
@@ -84,7 +85,7 @@ while($row = mysqli_fetch_array($result))
 
 include 'connexion.php';
 $timestamp=mktime(0, 0, 0, 1, 1, date("Y"));
-$sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') and cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START>'$timestamp'";
+$sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') and cc.FRAME_NUMBER=dd.FRAME_NUMBER and cc.STAANN != 'D' and dd.STAANN!='D' and dd.DATE_START>'$timestamp'";
 if ($conn->query($sql2) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);

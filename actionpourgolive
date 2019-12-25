@@ -95,8 +95,9 @@ UPDATE company_actions SET DESCRIPTION='';
 
 -------------------
 
-ALTER TABLE `company_actions` ADD `TYPE` VARCHAR(150) NOT NULL AFTER `ID`;
-UPDATE company_actions SET type='other';
+ALTER TABLE `offers` ADD `STATUS` VARCHAR(150) NOT NULL AFTER `COMPANY`;
+UPDATE offers SET STATUS='ongoing'
 
 
+ALTER TABLE `customer_bikes` CHANGE `LEASING` `AUTOMATIC_BILLING` VARCHAR(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 

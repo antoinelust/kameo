@@ -9,51 +9,140 @@ include 'globalfunctions.php';
 
 $response=array();
 
-include 'connexion.php';
-$sql="SELECT * from companies";
+$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 
-
-$type=isset($_POST['type']) ? $_POST['type'] : NULL;
-
-
-if($type!="*" && $type != NULL){
-    $sql=$sql." WHERE TYPE='$type'";
-}
-
-$sql=$sql." ORDER BY COMPANY_NAME";
-
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
+if($action=="graphic"){
+    $numberOfDays=isset($_GET['numberOfDays']) ? $_GET['numberOfDays'] : NULL;
+    
+    
+    $intervalStop="P".$numberOfDays."D";
+    
+    $date_start = new DateTime("NOW"); 
+    $date_start->sub(new DateInterval($intervalStop));
+    $date_start_string=$date_start->format('Y-m-d');
+    $date_now=new DateTime("NOW");
+    $date_nom_string=$date_now->format('Y-m-d');
+    
+    $companiesContact=array();
+    $companiesOffer=array();
+    $companiesOfferSigned=array();
+    $dates=array();
+    while($date_start<=$date_now){
+        
+        $date_start_string=$date_start->format('Y-m-d');
+        
+        
+        include 'connexion.php';
+        $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<='$date_start_string' AND TYPE = 'contact' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND( bb.TYPE='offre' OR bb.TYPE='offreSigned' OR bb.TYPE='delivery')) ";
+        
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);    
+        $resultat = mysqli_fetch_assoc($result);        
+        $conn->close();
+        array_push($companiesContact, $resultat['SUM']); 
+        
+        include 'connexion.php';
+        $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<='$date_start_string' AND TYPE = 'offre' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND( bb.TYPE='offreSigned' OR bb.TYPE='delivery')) ";
+        
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);    
+        $resultat = mysqli_fetch_assoc($result);        
+        $conn->close();
+        array_push($companiesOffer, $resultat['SUM']); 
+        
+        include 'connexion.php';
+        $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<='$date_start_string' AND TYPE = 'offreSigned' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND bb.TYPE='delivery') ";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);    
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();
+        array_push($companiesOfferSigned, $resultat['SUM']); 
+        
+        
+        array_push($dates, $date_start_string);
+        $date_start->add(new DateInterval('P1D'));
+    }
+    
+    $response['response']="success";
+    $response['dates']=$dates;
+    $response['companiesContact']=$companiesContact;
+    $response['companiesOffer']=$companiesOffer;
+    $response['companiesOfferSigned']=$companiesOfferSigned;
     echo json_encode($response);
     die;
-}
-$result = mysqli_query($conn, $sql);        
-$response['companiesNumber'] = $result->num_rows;
-$i=0;
-$response['response']="success";
-while($row = mysqli_fetch_array($result)){
-    $response['company'][$i]['ID']=$row['ID'];
-    $response['company'][$i]['companyName']=$row['COMPANY_NAME'];
-    $response['company'][$i]['internalReference']=$row['INTERNAL_REFERENCE'];
-    $response['company'][$i]['type']=$row['TYPE'];
-    $internalReference=$row['INTERNAL_REFERENCE'];
-    $sql2="SELECT * FROM customer_bikes WHERE COMPANY='$internalReference'";
-    if ($conn->query($sql2) === FALSE) {
+    
+}else{
+    include 'connexion.php';
+    $sql="SELECT * from companies";
+
+
+    $type=isset($_POST['type']) ? $_POST['type'] : NULL;    
+    if($type!="*" && $type != NULL){
+        $sql=$sql." WHERE TYPE='$type'";
+    }
+
+    $sql=$sql." ORDER BY COMPANY_NAME";
+
+    if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;
     }
-    $result2 = mysqli_query($conn, $sql2);        
-    $response['company'][$i]['companyBikeNumber'] = $result2->num_rows;
-    $bikeAccessStatus="OK";
-    $customerBuildingStatus="OK";
-    
-    if($response['company'][$i]['companyBikeNumber']==0){
-        $bikeAccessStatus="KO";
-    }
-    while($row2 = mysqli_fetch_array($result2)){
-        $bikeReference=$row2['FRAME_NUMBER'];
-        $sql3="SELECT * from customer_bike_access where BIKE_NUMBER='$bikeReference' and STAANN!='D'";
+    $result = mysqli_query($conn, $sql);        
+    $response['companiesNumber'] = $result->num_rows;
+    $i=0;
+    $response['response']="success";
+
+
+
+
+    while($row = mysqli_fetch_array($result)){
+        $response['company'][$i]['ID']=$row['ID'];
+        $response['company'][$i]['companyName']=$row['COMPANY_NAME'];
+        $response['company'][$i]['internalReference']=$row['INTERNAL_REFERENCE'];
+        $response['company'][$i]['type']=$row['TYPE'];
+        $internalReference=$row['INTERNAL_REFERENCE'];
+        $sql2="SELECT * FROM customer_bikes WHERE COMPANY='$internalReference'";
+        if ($conn->query($sql2) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result2 = mysqli_query($conn, $sql2);        
+        $response['company'][$i]['companyBikeNumber'] = $result2->num_rows;
+        $bikeAccessStatus="OK";
+        $customerBuildingStatus="OK";
+
+        if($response['company'][$i]['companyBikeNumber']==0){
+            $bikeAccessStatus="OK";
+        }
+        while($row2 = mysqli_fetch_array($result2)){
+            $bikeReference=$row2['FRAME_NUMBER'];
+            $sql3="SELECT * from customer_bike_access where BIKE_NUMBER='$bikeReference' and STAANN!='D'";
+            if ($conn->query($sql3) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result3 = mysqli_query($conn, $sql3);     
+            if($result3->num_rows=='0'){
+                $bikeAccessStatus="KO";
+            }
+        }
+
+        $sql3="SELECT * from customer_building_access where EMAIL in (select EMAIL from customer_referential where COMPANY='$internalReference') and BUILDING_CODE in (select BUILDING_REFERENCE FROM building_access where COMPANY='$internalReference')";
         if ($conn->query($sql3) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -61,65 +150,58 @@ while($row = mysqli_fetch_array($result)){
         }
         $result3 = mysqli_query($conn, $sql3);     
         if($result3->num_rows=='0'){
-            $bikeAccessStatus="KO";
-        }
-    }
-    
-    $sql3="SELECT * from customer_building_access where EMAIL in (select EMAIL from customer_referential where COMPANY='$internalReference') and BUILDING_CODE in (select BUILDING_REFERENCE FROM building_access where COMPANY='$internalReference')";
-    if ($conn->query($sql3) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result3 = mysqli_query($conn, $sql3);     
-    if($result3->num_rows=='0'){
-        $customerBuildingStatus="KO";
-    }else{
-        $sql4="SELECT * from building_access where COMPANY='$internalReference'";
-        if ($conn->query($sql4) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result4 = mysqli_query($conn, $sql4);     
-        while($row4 = mysqli_fetch_array($result4)){
-            $buildingReference=$row4['BUILDING_REFERENCE'];
-            $sql5="SELECT * from customer_building_access where BUILDING_CODE='$buildingReference' and STAANN!='D'";
-            if ($conn->query($sql5) === FALSE) {
+            $customerBuildingStatus="OK";
+        }else{
+            $sql4="SELECT * from building_access where COMPANY='$internalReference'";
+            if ($conn->query($sql4) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
                 die;
             }
-            $result5 = mysqli_query($conn, $sql5);     
-            if($result5->num_rows=='0'){
-                $customerBuildingStatus="KO";
+            $result4 = mysqli_query($conn, $sql4);     
+            while($row4 = mysqli_fetch_array($result4)){
+                $buildingReference=$row4['BUILDING_REFERENCE'];
+                $sql5="SELECT * from customer_building_access where BUILDING_CODE='$buildingReference' and STAANN!='D'";
+                if ($conn->query($sql5) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+                $result5 = mysqli_query($conn, $sql5);     
+                if($result5->num_rows=='0'){
+                    $customerBuildingStatus="KO";
+                }
             }
         }
+        $response['company'][$i]['bikeAccessStatus'] = $bikeAccessStatus;
+        $response['company'][$i]['customerBuildingAccess'] = $customerBuildingStatus;
+        $i++;
     }
-    $response['company'][$i]['bikeAccessStatus'] = $bikeAccessStatus;
-    $response['company'][$i]['customerBuildingAccess'] = $customerBuildingStatus;
-    $i++;
-}
-    
-    
 
-include 'connexion.php';
-$sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE LEASING='Y' AND CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
 
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
+
+    include 'connexion.php';
+    $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE LEASING='Y' AND CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
+
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);        
+    $resultat = mysqli_fetch_assoc($result);
+    $conn->close();  
+
+    $response['sumContractsCurrent']=$resultat['PRICE'];
+
+
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);        
-$resultat = mysqli_fetch_assoc($result);
-$conn->close();  
-
-$response['sumContractsCurrent']=$resultat['PRICE'];
 
 
-echo json_encode($response);
-die;
+
+
 
 
 

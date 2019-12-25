@@ -125,7 +125,7 @@ if($model != NULL && $frameNumber != NULL && $size != NULL && $frameReference !=
         $billingPrice='NULL';
     }        
     
-    $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_START, CONTRACT_END, CONTRACT_REFERENCE, COMPANY, MODEL, FRAME_REFERENCE, LEASING, LEASING_PRICE, STATUS, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$size', $contractStart, $contractEnd, '$contractReference', '$company', '$model', '$frameReference', '$automaticBilling', $billingPrice, 'OK', '$billingGroup', '$buyingPrice', '$buyingDate')";
+    $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_START, CONTRACT_END, CONTRACT_REFERENCE, COMPANY, MODEL, FRAME_REFERENCE, LEASING, LEASING_PRICE, STATUS, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$size', $contractStart, $contractEnd, '$contractReference', '$company', '$model', '$frameReference', '$automaticBilling', $billingPrice, 'OK', '$billingGroup', '$buyingPrice', '$buyingDate', '')";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
