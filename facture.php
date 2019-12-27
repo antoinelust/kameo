@@ -190,7 +190,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $frameNumber=$row2['FRAME_NUMBER'];
                 $bikeID=$row2['ID'];
                 include 'include/connexion.php';
-                $sql="INSERT INTO factures_details (FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('$newID', '$bikeID','$frameNumber', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
+                $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID','$frameNumber', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
                 if ($conn->query($sql) === FALSE) {
                     echo $conn->error;
                 } 
@@ -227,6 +227,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             include 'include/connexion.php';
             $sql2="select * from boxes where COMPANY='$company' and START<='$currentDateString' and END>='$monthAfterString' and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
+            echo "sql2 ".$sql2;
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -257,7 +258,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $reference=$row2['REFERENCE'];
                 $boxID=$row2['ID'];
                 include 'include/connexion.php';
-                $sql="INSERT INTO factures_details (FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('$newID', '$boxID','$reference', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
+                $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID','$reference', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
                 if ($conn->query($sql) === FALSE) {
                     echo $conn->error;
                 } 
@@ -268,7 +269,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $difference=$dateStart->diff($contractStart);
                 
                 $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
-                $lengthLeasing=(($contractEnd->diff($contractStart))->format('%y'))*12+(($contractEnd->diff($contractStart))->format('%m'))+1
+                $lengthLeasing=(($contractEnd->diff($contractStart))->format('%y'))*12+(($contractEnd->diff($contractStart))->format('%m'))+1;
                 
                 $test2.='<tr>
                     <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
@@ -368,7 +369,7 @@ echo $test1.$test2.$test3;
 $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$billingGroup.'.pdf';
 
 include 'include/connexion.php';
-$sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
+$sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
 if ($conn->query($sql3) === FALSE) {
     echo $conn->error;
     die;

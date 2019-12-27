@@ -94,7 +94,7 @@ if(isset($_POST['action']))
 
             
             include "connexion.php";
-            $sql="select MAX(CONTRACT_END) as 'DATE_END' from customer_bikes WHERE LEASING='Y'";
+            $sql="select MAX(CONTRACT_END) as 'DATE_END' from customer_bikes WHERE AUTOMATIC_BILLING='Y'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);

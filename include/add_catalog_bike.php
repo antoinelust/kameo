@@ -12,6 +12,7 @@ $model = $_POST["widget-addCatalog-form-model"];
 $frameType = $_POST["widget-addCatalog-form-frame"];
 $utilisation = $_POST["widget-addCatalog-form-utilisation"];
 $electric = $_POST["widget-addCatalog-form-electric"];
+$buyingPrice = $_POST["buyPrice"];
 $price = $_POST["widget-addCatalog-form-price"];
 $stock = $_POST["widget-addCatalog-form-stock"];
 $link = $_POST["widget-addCatalog-form-link"];
@@ -63,7 +64,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
  
     include 'connexion.php';
      
-	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, PRICE_HTVA, STOCK, LINK) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$price', '$stock', '$link')";
+	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, LINK) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$link')";
      
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

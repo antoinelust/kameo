@@ -94,10 +94,10 @@ UPDATE company_actions SET TITLE=DESCRIPTION;
 UPDATE company_actions SET DESCRIPTION='';
 
 -------------------
-
-ALTER TABLE `offers` ADD `STATUS` VARCHAR(150) NOT NULL AFTER `COMPANY`;
-UPDATE offers SET STATUS='ongoing'
+UPDATE bike_catalog SET UTILISATION="Ville et chemin" WHERE UTILISATION='ville et chemin'
 
 
-ALTER TABLE `customer_bikes` CHANGE `LEASING` `AUTOMATIC_BILLING` VARCHAR(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+ALTER TABLE `customer_bikes` ADD `CONTRACT_TYPE` VARCHAR(150) NOT NULL AFTER `SIZE`;
+UPDATE customer_bikes SET CONTRACT_TYPE='leasing'
 

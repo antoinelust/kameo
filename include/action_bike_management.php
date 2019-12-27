@@ -8,7 +8,7 @@ include 'globalfunctions.php';
 
 if(isset($_POST["widget-addActionBike-form-action"])){
     $action = isset($_POST["widget-addActionBike-form-action"]) ? $_POST["widget-addActionBike-form-action"] : NULL;
-    $bikeNumber = isset($_POST["widget-addActionBike-form-bikeNumber"]) ? $_POST["widget-addActionBike-form-bikeNumber"] : NULL;
+    $bikeNumber = isset($_POST["bikeNumber"]) ? $_POST["bikeNumber"] : NULL;
     $date = isset($_POST["widget-addActionBike-form-date"]) ? date($_POST["widget-addActionBike-form-date"]) : NULL;
     $description = $_POST["widget-addActionBike-form-description"];
     $public = isset($_POST["widget-addActionBike-form-public"]) ? "1" : "0";

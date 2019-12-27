@@ -42,7 +42,7 @@ if($admin!="Y"){
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;
-    }              
+    }           
 }else{
     include 'connexion.php';
     $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
@@ -59,6 +59,7 @@ $length = $result->num_rows;
 $response['bikeNumber']=$length;
 $response['response']="success";
 $response['sql']=$sql;
+$conn->close();
 
 $i=0;
 while($row = mysqli_fetch_array($result))
@@ -68,17 +69,35 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
     $response['bike'][$i]['model']=$row['MODEL'];            
     $response['bike'][$i]['company']=$row['COMPANY'];            
-    $response['bike'][$i]['contractReference']=$row['CONTRACT_REFERENCE'];
-    $response['bike'][$i]['automatic_billing']=$row['LEASING'];
-    if($row['LEASING']=="Y"){
-        $response['bike'][$i]['contractType']="leasing";
-    }else{
-        $response['bike'][$i]['contractType']="other";
-    }
+    $response['bike'][$i]['automatic_billing']=$row['AUTOMATIC_BILLING'];
+    $response['bike'][$i]['contractType']=$row['CONTRACT_TYPE'];
     $response['bike'][$i]['contractStart']=$row['CONTRACT_START'];
+    $response['bike'][$i]['leasingPrice']=$row['LEASING_PRICE'];
     $response['bike'][$i]['contractEnd']=$row['CONTRACT_END'];
     $response['bike'][$i]['status']=$row['STATUS'];
+    
+    if($row['TYPE']){
+        $type=$row['TYPE'];
+        include 'connexion.php';
+        $sql2="select * from bike_catalog WHERE ID='$type'";
+        if ($conn->query($sql2) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
 
+        $result2 = mysqli_query($conn, $sql2);        
+        $resultat2 = mysqli_fetch_assoc($result2);
+        $conn->close();
+        $response['bike'][$i]['brand']=$resultat2['BRAND'];            
+        $response['bike'][$i]['modelBike']=$resultat2['MODEL'];            
+        $response['bike'][$i]['frameType']=$resultat2['FRAME_TYPE'];            
+        
+    }else{
+        $response['bike'][$i]['brand']=null;            
+        $response['bike'][$i]['modelBike']=null;            
+    }
+    
     $i++;
 
 }

@@ -33,7 +33,7 @@ function requireToVar($file){
 include 'include/globalfunctions.php';
 
 include 'include/connexion.php';
-$sql= "select COMPANY, BILLING_GROUP from customer_bikes WHERE LEASING='Y'";
+$sql= "select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y'";
 
 if(isset($company)){
     $sql=$sql."AND COMPANY='$company'";
@@ -43,8 +43,12 @@ if ($conn->query($sql) === FALSE) {
     die;
 }
 $sql=$sql." GROUP BY COMPANY, BILLING_GROUP";
+
 $result = mysqli_query($conn, $sql);     
 $i=0;
+
+echo "coucoucoucoouccou";
+
 
 while($row = mysqli_fetch_array($result))
 {
@@ -62,7 +66,7 @@ while($row = mysqli_fetch_array($result))
         if (ob_get_contents()) ob_end_clean();        
         ob_start();
         $billingGroup=$resultat_dateStart['BILLING_GROUP'];
-        
+                
         if($resultat_dateStart['min(CONTRACT_START)'])
         {
             $firstDay=substr($resultat_dateStart['min(CONTRACT_START)'], 8, 2);
@@ -97,7 +101,7 @@ while($row = mysqli_fetch_array($result))
                 fwrite($myfile, $test);
                 fclose($myfile);
 
-                if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                //if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
                     try {
                         include dirname(__FILE__).'/'.$file;
                         $content = ob_get_clean();
@@ -113,7 +117,7 @@ while($row = mysqli_fetch_array($result))
                         $formatter = new ExceptionFormatter($e);
                         echo $formatter->getHtmlMessage();
                     }  
-                }
+                //}
 
                 include 'include/connexion.php';
                 $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
@@ -161,7 +165,7 @@ while($row = mysqli_fetch_array($result))
                 }
 
                 $mail->Body = $message;
-                if(substr($_SERVER[REQUEST_URI], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
                     
                     if($resultat3['BILLS_SENDING'] == "Y" && $emailContactBilling != "" && $lastNameContactBilling != ""){
                         $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
@@ -177,7 +181,7 @@ while($row = mysqli_fetch_array($result))
                     }else {
                        echo 'mail envoyé';
                     }    
-                }else if(substr($_SERVER[REQUEST_URI], 1, 4) == "test"){
+                }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
                     $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
                     
                     if(!$mail->Send()) {

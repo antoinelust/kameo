@@ -117,8 +117,10 @@ if($ID != NULL)
         $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
         $frameNumber=$row['FRAME_NUMBER'];
         $response['bike'][$i]['model']=$row['MODEL'];
-        $response['bike'][$i]['facturation']=$row['LEASING'];
+        $response['bike'][$i]['facturation']=$row['AUTOMATIC_BILLING'];
         $response['bike'][$i]['leasingPrice']=$row['LEASING_PRICE']; 
+        $response['bike'][$i]['contractStart']=$row['CONTRACT_START']; 
+        $response['bike'][$i]['contractEnd']=$row['CONTRACT_END']; 
         
         $sql2="SELECT * FROM bike_building_access dd where BIKE_NUMBER='$frameNumber'";
 
@@ -164,7 +166,7 @@ if($ID != NULL)
     ///////////////////
     
     include 'connexion.php';
-    $sql="SELECT CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) as 'BIKE_NUMBER' FROM `customer_bikes` WHERE COMPANY = '$company' AND LEASING='Y' GROUP BY CONTRACT_START, CONTRACT_END";
+    $sql="SELECT CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) as 'BIKE_NUMBER' FROM `customer_bikes` WHERE COMPANY = '$company' AND AUTOMATIC_BILLING='Y' GROUP BY CONTRACT_START, CONTRACT_END";
     
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

@@ -13,6 +13,7 @@ $model = $_POST["widget-updateCatalog-form-model"];
 $frameType = $_POST["widget-updateCatalog-form-frame"];
 $utilisation = $_POST["widget-updateCatalog-form-utilisation"];
 $electric = $_POST["widget-updateCatalog-form-electric"];
+$buyPrice = $_POST["buyPrice"];
 $price = $_POST["widget-updateCatalog-form-price"];
 $stock = $_POST["widget-updateCatalog-form-stock"];
 $link = $_POST["widget-updateCatalog-form-link"];
@@ -81,7 +82,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
  if($ID != '' && $brand != '' && $model != '' && $frameType != '' && $utilisation != '' && $electric != '' && $price != '' && $stock != '') {
  
      
-	$sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', PRICE_HTVA='$price', STOCK='$stock', LINK='$link' WHERE ID='$ID'";
+	$sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', LINK='$link' WHERE ID='$ID'";
      
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

@@ -50,6 +50,7 @@ if($action=="update"){
     $model=$_POST['widget-updateBikeStatusAdmin-form-model'];
     $size=isset($_POST['widget-updateBikeStatusAdmin-form-size']) ? $_POST['widget-updateBikeStatusAdmin-form-size'] : NULL;
     $frameReference=isset($_POST['widget-updateBikeStatusAdmin-form-frameReference']) ? $_POST['widget-updateBikeStatusAdmin-form-frameReference'] : NULL;
+    $brand=isset($_POST['brand']) ? $_POST['brand'] : NULL;
     $price=isset($_POST['widget-updateBikeStatusAdmin-form-price']) ? $_POST['widget-updateBikeStatusAdmin-form-price'] : '0';
     $buyingDate=isset($_POST['widget-updateBikeStatusAdmin-form-buyingDate']) ? $_POST['widget-updateBikeStatusAdmin-form-buyingDate'] : NULL;
     $company=isset($_POST['widget-updateBikeStatusAdmin-form-company']) ? $_POST['widget-updateBikeStatusAdmin-form-company'] : NULL;
@@ -182,8 +183,16 @@ if($action=="update"){
             $buyingDate="'".$buyingDate."'";
         }else{
             $buyingDate='NULL';
+        }         
+        
+        if($brand!=NULL){
+            $brand="'".$brand."'";
+        }else{
+            $brand='NULL';
         }        
-        $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', SIZE='$size', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, CONTRACT_REFERENCE='$assistanceReference', COMPANY='$company', FRAME_REFERENCE='$frameReference', LEASING='$billing', LEASING_PRICE='$billingPrice', BILLING_GROUP='$billingGroup', BIKE_PRICE='$price', BIKE_BUYING_DATE=$buyingDate where FRAME_NUMBER = '$frameNumber'";
+        
+        
+        $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND=$brand, MODEL='$model', SIZE='$size', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, CONTRACT_REFERENCE='$assistanceReference', COMPANY='$company', FRAME_REFERENCE='$frameReference', AUTOMATIC_BILLING='$billing', LEASING_PRICE='$billingPrice', BILLING_GROUP='$billingGroup', BIKE_PRICE='$price', BIKE_BUYING_DATE=$buyingDate where FRAME_NUMBER = '$frameNumber'";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

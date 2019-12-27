@@ -181,7 +181,7 @@ if($action=="graphic"){
 
 
     include 'connexion.php';
-    $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE LEASING='Y' AND CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
+    $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE AUTOMATIC_BILLING='Y' AND CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
