@@ -70,11 +70,13 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['model']=$row['MODEL'];            
     $response['bike'][$i]['company']=$row['COMPANY'];            
     $response['bike'][$i]['automatic_billing']=$row['AUTOMATIC_BILLING'];
+    $response['bike'][$i]['billingType']=$row['BILLING_TYPE'];
     $response['bike'][$i]['contractType']=$row['CONTRACT_TYPE'];
     $response['bike'][$i]['contractStart']=$row['CONTRACT_START'];
     $response['bike'][$i]['leasingPrice']=$row['LEASING_PRICE'];
     $response['bike'][$i]['contractEnd']=$row['CONTRACT_END'];
     $response['bike'][$i]['status']=$row['STATUS'];
+    $response['bike'][$i]['insurance']=$row['INSURANCE'];
     
     if($row['TYPE']){
         $type=$row['TYPE'];

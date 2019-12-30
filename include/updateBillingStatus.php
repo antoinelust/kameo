@@ -73,10 +73,10 @@ if($action=="delete"){
     $accountingSent=isset($_POST['accounting']) ? "1" : "0";
     
     
-    if(isset($_FILES['widget-updateBikeStatusAdmin-form-file'])){
+    if(isset($_FILES['widget-updateBillingStatus-form-file'])){
 
         $extensions = array('.pdf');
-        $extension = strrchr($_FILES['widget-updateBikeStatusAdmin-form-file']['name'], '.');
+        $extension = strrchr($_FILES['widget-updateBillingStatus-form-file']['name'], '.');
         if(!in_array($extension, $extensions))
         {
               errorMessage("ES0034");
@@ -84,7 +84,7 @@ if($action=="delete"){
 
 
         $taille_maxi = 6291456;
-        $taille = filesize($_FILES['widget-updateBikeStatusAdmin-form-file']['tmp_name']);
+        $taille = filesize($_FILES['widget-updateBillingStatus-form-file']['tmp_name']);
         if($taille>$taille_maxi)
         {
               errorMessage("ES0023");
@@ -103,7 +103,7 @@ if($action=="delete"){
         
         $fichier=substr($date, 0, 10)."_".$originator."_".$communication.".pdf";    
 
-        if(move_uploaded_file($_FILES['widget-updateBikeStatusAdmin-form-file']['tmp_name'], $dossier.$fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+        if(move_uploaded_file($_FILES['widget-updateBillingStatus-form-file']['tmp_name'], $dossier.$fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
         {        }
         else
         {

@@ -55,7 +55,7 @@ try{
                         $sql=$sql." AND PRICE_HTVA='".$price."'";
                     }
                 }
-                $sql=$sql." ORDER BY BRAND";
+                $sql=$sql." ORDER BY BRAND, MODEL";
                 if($brand!="*"){
                     $sql=$sql." AND UPPER(BRAND)='".strtoupper($brand)."'";
                 }

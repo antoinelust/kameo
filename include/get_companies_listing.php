@@ -13,24 +13,26 @@ $action=isset($_GET['action']) ? $_GET['action'] : NULL;
 
 if($action=="graphic"){
     $numberOfDays=isset($_GET['numberOfDays']) ? $_GET['numberOfDays'] : NULL;
+    $dateStartInput=isset($_GET['dateStart']) ? $_GET['dateStart'] : NULL;
+    $dateEndInput=isset($_GET['dateEnd']) ? $_GET['dateEnd'] : NULL;
     
     
     $intervalStop="P".$numberOfDays."D";
     
-    $date_start = new DateTime("NOW"); 
-    $date_start->sub(new DateInterval($intervalStop));
+    $date_start = new DateTime($dateStartInput); 
     $date_start_string=$date_start->format('Y-m-d');
-    $date_now=new DateTime("NOW");
-    $date_nom_string=$date_now->format('Y-m-d');
     
+    $date_end= new DateTime($dateEndInput);
+    
+    
+    $date_now=new DateTime("NOW");
     $companiesContact=array();
     $companiesOffer=array();
     $companiesOfferSigned=array();
     $dates=array();
-    while($date_start<=$date_now){
+    while($date_start<=$date_end){
         
         $date_start_string=$date_start->format('Y-m-d');
-        
         
         include 'connexion.php';
         $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<='$date_start_string' AND TYPE = 'contact' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND( bb.TYPE='offre' OR bb.TYPE='offreSigned' OR bb.TYPE='delivery')) ";
@@ -72,7 +74,7 @@ if($action=="graphic"){
         
         
         array_push($dates, $date_start_string);
-        $date_start->add(new DateInterval('P1D'));
+        $date_start->add(new DateInterval('P10D'));
     }
     
     $response['response']="success";
@@ -86,6 +88,7 @@ if($action=="graphic"){
 }else{
     include 'connexion.php';
     $sql="SELECT * from companies";
+    $company=isset($_POST['company']) ? $_POST['company'] : "*";
 
 
     $type=isset($_POST['type']) ? $_POST['type'] : NULL;    
@@ -181,7 +184,7 @@ if($action=="graphic"){
 
 
     include 'connexion.php';
-    $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE AUTOMATIC_BILLING='Y' AND CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
+    $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -194,6 +197,22 @@ if($action=="graphic"){
 
     $response['sumContractsCurrent']=$resultat['PRICE'];
 
+    include 'connexion.php';
+    $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+    if($company!="*"){
+        $sql=$sql." AND COMPANY='$company'";
+    }
+
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);        
+    $resultat = mysqli_fetch_assoc($result);
+    $conn->close();  
+
+    $response['sumContractsCurrent']=$response['sumContractsCurrent']+$resultat['PRICE'];
 
     echo json_encode($response);
     die;

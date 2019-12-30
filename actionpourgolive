@@ -94,10 +94,13 @@ UPDATE company_actions SET TITLE=DESCRIPTION;
 UPDATE company_actions SET DESCRIPTION='';
 
 -------------------
-UPDATE bike_catalog SET UTILISATION="Ville et chemin" WHERE UTILISATION='ville et chemin'
 
 
+ALTER TABLE `customer_bikes` ADD `BILLING_TYPE` VARCHAR(150) NOT NULL AFTER `AUTOMATIC_BILLING`;
+UPDATE customer_bikes SET BILLING_TYPE='monthly'
 
-ALTER TABLE `customer_bikes` ADD `CONTRACT_TYPE` VARCHAR(150) NOT NULL AFTER `SIZE`;
-UPDATE customer_bikes SET CONTRACT_TYPE='leasing'
+
+ALTER TABLE `customer_bikes` ADD `INSURANCE` VARCHAR(1) NOT NULL AFTER `STATUS`;
+UPDATE customer_bikes SET INSURANCE='N'
+
 

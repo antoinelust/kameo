@@ -52,7 +52,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                             $mail->Subject = "Mail automatique - Aperçu des vélos";
                            
                             include 'include/connexion.php';
-                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID)/BIKE_PRICE*100 AS 'RETURN_BIKE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY, aa.BIKE_PRICE, aa.BIKE_BUYING_DATE FROM customer_bikes aa WHERE BIKE_PRICE IS NOT NULL GROUP BY aa.ID ORDER BY RETURN_BIKE DESC
+                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID)/BIKE_PRICE*100 AS 'RETURN_BIKE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY, aa.BIKE_PRICE, aa.BIKE_BUYING_DATE FROM customer_bikes aa WHERE BIKE_PRICE IS NOT NULL AND STATUS != 'test' GROUP BY aa.ID ORDER BY RETURN_BIKE DESC
 ";
 
                             if ($conn->query($sql) === FALSE) {
@@ -101,7 +101,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                             $part2=$part2."<br><br><h3>Inventaire des vélos, prix d'achat du vélo non défini :</h3>";
 
                             include 'include/connexion.php';
-                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY FROM customer_bikes aa WHERE BIKE_PRICE IS NULL GROUP BY aa.ID";
+                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY FROM customer_bikes aa WHERE BIKE_PRICE IS NULL AND STATUS != 'test' GROUP BY aa.ID";
 
                             if ($conn->query($sql) === FALSE) {
                                 $response = array ('response'=>'error', 'message'=> $conn->error);

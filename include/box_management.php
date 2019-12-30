@@ -68,6 +68,10 @@ if(isset($_POST['action']))
 
         include 'connexion.php';
         $sql="UPDATE boxes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', REFERENCE='$reference', MODEL='$boxModel', COMPANY='$company', START=$contractStart, END=$contractEnd, AMOUNT=$amount, BILLING_GROUP='$billingGroup', AUTOMATIC_BILLING='$automaticBilling' WHERE ID='$id'";        
+            $response = array ('response'=>'error', 'message'=> $sql);
+            echo json_encode($response);
+            die;
+        
         
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
