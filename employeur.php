@@ -2,136 +2,235 @@
 include 'include/header3.php';
 ?>
 
-<div id="partage"></div>
+<div class="col-md-12">  		
+	<div id="tabs-05c" class="tabs color tabs radius">
+		<ul id="mainTab" class="tabs-navigation">
+			<li class="reserver active col-md-6 text-center"><a href="#partage"><i class="fa fa-users"></i>Vélo Partagé</a> </li>
+			<li class="reserver col-md-6 text-center"><a href="#personnel"><i class="fa fa-user"></i>Vélo Personnel</a> </li>
+		</ul>
 
-<!-- TOP PAGE -->
-<section class="box-fancy section-fullwidth text-light no-padding">
-	<div class="row">
-		<div class="col-md-6 text-center" style="background-color: #3cb395">
-			<a class="button green button-3d effect fill-vertica scroll-to" href="#partage"><span><i class="fa fa-users"></i>  VÉLO PARTAGÉ  </span></a>
-			</span>
-		</div>
-
-		<div class="col-md-6 text-center" style="background-color: #1D9377">
-			<a class="button green button-3d effect fill-vertica scroll-to" href="#personel"><span><i class="fa fa-user"></i>  VÉLO PERSONNEL  </span></a>
-			</span>
-		</div>
-	</div>
-</section>
-<!-- END: TOP PAGE -->
-
-<!-- SECTION SOLUTIONS -->
-<section class="p-b-0 background-green">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<!-- <hr class="space"> -->
-				<h1 class="text-light">KAMEO Bikes,<br>
-				URBAN MOBILITY SOLUTIONS<br>				FOR BUSINESSES</h1>
-				<p class="lead"><strong class="text-light">KAMEO Bikes</strong>  offre des<br>					- <mark>Solutions :</mark> Nous ne fournissons pas uniquement le vélo, les services liés ou la plateforme de gestion mais bien l’ensemble ;<br>					- <mark>De mobilité urbaine :</mark> l’objectif de la solution est de simplifier et rendre plus efficace les déplacements en milieu urbain (dans le sens de proximité) ;<br>					- <mark>Pour entreprises :</mark> La cible et l’expertise de KAMEO sont les entreprises.<br></p>
-			</div>
-			<div class="col-md-4">
-				<img src="images/Solution.png" class="img-responsive img-rounded" alt="">
-			</div>
-			<hr class="space">
+		<div class="tabs-content">
+			<div class="tab-pane active" id="partage">
+			<!-- SECTION SOLUTIONS -->
+			<section class="p-b-0 background-green">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-light">KAMEO Bikes,<br>
+							URBAN MOBILITY SOLUTIONS<br>							FOR BUSINESSES</h1>
+							<p class="lead text-light"><strong class="text-light">KAMEO Bikes</strong>  offre des<br>								- <mark>Solutions :</mark> Nous ne fournissons pas uniquement le vélo, les services liés ou la plateforme de gestion mais bien l’ensemble ;<br>								- <mark>De mobilité urbaine :</mark> l’objectif de la solution est de simplifier et rendre plus efficace les déplacements en milieu urbain (dans le sens de proximité) ;<br>								- <mark>Pour entreprises :</mark> La cible et l’expertise de KAMEO sont les entreprises.<br></p>
+						</div>
+						<div class="col-md-4">
+							<img src="images/Solution.png" class="img-responsive img-rounded" alt="">
+						</div>
+						<hr class="space">
+						
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION SOLUTIONS -->
 			
+			<!-- SECTION PROCESS -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<img src="images/process.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+						<div class="col-md-4">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">COMMENT ON PROCÈDE</h1>
+							<p><strong class="text-green">Vous restez concentré sur votre activité, on se charge de tout!</strong><br>							Nous réfléchissons à vos besoins réels pour votre flotte. Nous vous proposons des vélos électriques adaptés et vous établissons la meilleure offre de prix. <br>							Après des essais dans votre entreprise, nous vous livrons vos vélos, animons une formation de sécurité, donnons les accès uniques à vos employés sur notre plateforme et installons la borne sécurisée. <br>							Le moindre problème peut être déclaré dans l’espace Fleet Manager de MyKAMEO et nous pouvons intervenir pour régler ce problème au sein même de votre société.</p>			 
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION PROCESS -->
+			
+			<!-- SECTION FLOTTE -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">CHOIX DE LA FLOTTE DE VÉLO</h1>
+							<p>KAMEO Bikes vous propose une large gamme de vélos. Nous avons particulièrement des vélos adaptés aux vélos partagés.</p>
+							<p>Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
+							<p>Tous les vélos que nous proposons sont à assistance électrique, pour un plus grand confort lors des déplacements de vos collaborateurs. Ils sont équipés de garde-bous, phares, porte bagage. Mais nous pouvons y ajouters différentes options telles que des sacoches. De plus, les vélos peuvent être brandés avec le logo de votre entreprise.</p>			 
+						</div>
+						<div class="col-md-6">
+							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION FLOTTE -->
+			
+			<!-- SECTION GESTION FLOTTE -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">GESTION DE LA FLOTTE</h1>
+							<p class="">Gérer une flotte de vélos partagés demande de l’organisation et du temps ! MyKAMEO a été développé pour permettre à nos clients de profiter de leurs vélos sans devoir s’en soucier.</p>										<p class="">La plateforme MyKAMEO est une solution IT de gestion qui permet à chaque utilisateur de se connecter sur un espace sécurisé, de réserver un vélo de la flotte partagée de l’entreprise et de donner du feedback quant à l’état et l’utilisation de celui-ci. Elle permet également au Fleet Manager de contrôler la flotte, les réservations et de paramétrer l’ensemble. Des statistiques mensuelles sur l’utilisation des vélos et leur état lui sont envoyées automatiquement afin de pouvoir suivre facilement l’évolution du projet vélo !</p>										<p class="">La demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>			 
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION GESTION FLOTTE -->
+			
+			<!-- SECTION MAINTENANCE -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
+							<p>La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>							C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>										<p>Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>			 
+						</div>
+						<div class="col-md-4">
+							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="">
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION MAINTENANCE -->
+			
+			<!-- SECTION CALL TO ACTION CONTACT -->
+			<section class="p-b-0 background-green">
+				<div class="container">
+					<div class="row text-center">
+						<h1 class="text-light">NOUS RENCONTRER</h1>
+						<p class="text-dark">Envie de pédaler avec nous?<br>						Contactez-nous, nous viendrons vous présenter nos offres.</p>
+						<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-eye"></i>Nous contacter</span></a>
+					</div>
+				</div>
+				<hr class="space">
+			</section>
+			<!-- END: SECTION CALL TO ACTION CONTACT -->
+			</div>
+			<div class="tab-pane active" id="personnel">
+			
+			<!-- SECTION SOLUTIONS PERSONNEL -->
+			<section class="p-b-0 background-green">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-light">Contracter un leasing vélo<br>							via l'entreprise qui vous emploie.</h1>
+							<p class="lead text-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae arcu eu lorem consequat laoreet non eget libero. Etiam et consectetur lectus, a varius ligula. Sed quis tincidunt turpis, et pharetra urna. Etiam dignissim, eros quis maximus pellentesque, erat elit scelerisque urna, volutpat egestas felis lorem at diam. Etiam ornare elementum quam, at faucibus ligula faucibus sed. Phasellus euismod massa vitae mi condimentum posuere. Mauris aliquet, magna eget rutrum ultricies, urna augue porttitor sapien, sed condimentum felis leo eget elit. Etiam orci nibh, aliquam a malesuada id, laoreet nec mi. Proin fermentum augue sed dui aliquet, at elementum elit feugiat. Nam scelerisque vestibulum nulla. Nullam lorem felis, hendrerit vitae lacinia id, imperdiet eu justo.<br>						Fusce posuere ex erat. Nunc tempus, dui id gravida commodo, nulla lorem malesuada ex, ut pulvinar metus nisi at arcu. Interdum et nec ultrices urna dictum. Fusce in imperdiet justo. Aliquam vel est turpis.</p>
+							<!-- <strong class="text-light">KAMEO Bikes</strong>  offre des<br>								- <mark>Solutions :</mark> Nous ne fournissons pas uniquement le vélo, les services liés ou la plateforme de gestion mais bien l’ensemble ;<br>								- <mark>De mobilité urbaine :</mark> l’objectif de la solution est de simplifier et rendre plus efficace les déplacements en milieu urbain (dans le sens de proximité) ;<br>								- <mark>Pour entreprises :</mark> La cible et l’expertise de KAMEO sont les entreprises.<br></p>-->
+						</div>
+						<div class="col-md-4">
+							<img src="images/Solution.png" class="img-responsive img-rounded" alt="">
+						</div>
+						<hr class="space">
+						
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION SOLUTIONS PERSONNEL -->
+			
+			<!-- SECTION PROCESS PERSONNEL -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<img src="images/process.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+						<div class="col-md-4">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">COMMENT ON PROCÈDE</h1>
+							<p><strong class="text-green">Vous restez concentré sur votre activité, on se charge de tout!</strong><br>							Nous réfléchissons à vos besoins réels pour vos collaborateurs. Nous leur proposons des vélos électriques adaptés et nous leur proposons des essais au sein de l'entreprise.<br>
+							Après ces essais, ils auront la possibilité de passer commande pour leur propre vélo. Ils pourront également commander des accessoires tels que des sacoches, casques, vêtements, ...<br>
+							Nous livrons les vélos sur le site de l'entreprise et donnerons les accès à la plateforme MyKAMEO, depuis laquelle ils retrouveront toutes les informations relatives à leur contrat. Ils auront également la possibilité de nous contacter via cette plateforme en cas de problème.</p>			 
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION PROCESS PERSONNEL-->
+			
+			<!-- SECTION VELO PERSONNE -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">CHOIX DU VÉLO</h1>
+							<p>KAMEO Bikes vous propose une large gamme de vélos.</p>
+							<p>Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
+							<p>Tous les vélos que nous proposons sont à assistance électrique, pour un plus grand confort lors des déplacements de vos collaborateurs. Ils sont équipés de garde-bous, phares, porte bagage. Mais nous pouvons y ajouters différentes options telles que des sacoches. De plus, les vélos peuvent être brandés avec le logo de votre entreprise.</p>			 
+						</div>
+						<div class="col-md-6">
+							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION VELO PERSONNEL -->
+			
+			<!-- SECTION LEASING VELO -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">LEASING VELO</h1>
+							<p class="">KAMEO Bikes propose à vos collaborateurs des vélos sous forme de <strong class="text-green">leasing</strong>.</p>
+							<p>Dans le montant du leasing sont compris: le vélo, l'assurance P-Vélo et la maintenance sur le site de l'entreprise.</p>
+							<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus sur le leasing vélo</span></a>			 
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION LEASING VELO -->
+			
+			<!-- SECTION MAINTENANCE PERSONNEL -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
+							<p>La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>							C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>										<p>Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>			 
+						</div>
+						<div class="col-md-4">
+							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="">
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION MAINTENANCE PERSONNEL -->
+			
+			<!-- SECTION CALL TO ACTION CONTACT -->
+			<section class="p-b-0 background-green">
+				<div class="container">
+					<div class="row text-center">
+						<h1 class="text-light">DEMANDEZ UN RENDEZ-VOUS</h1>
+						<p class="text-dark">Envie de pédaler avec nous?<br>						Contactez-nous, nous viendrons vous rencontrer dans votre entreprise.</p>
+						<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-eye"></i>Nous contacter</span></a>
+					</div>
+				</div>
+				<hr class="space">
+			</section>
+			<!-- END: SECTION CALL TO ACTION CONTACT -->
+			</div>
 		</div>
 	</div>
-</section>
-<!-- END: SECTION SOLUTIONS -->
-
-
-
-<!-- SECTION GESTION FLOTTE -->
-<section class="p-b-0">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<!-- <hr class="space"> -->
-				<h1 class="text-green">OFFRE DE PRIX</h1>
-				<p>Dés vélos, un accès à MYKAMEO, une borne connectée, une assurance  et des accessoires. <br>				Retrouvez ici différentes propositions «types» pour vous aider à mieux comprendre notre solution.</p>
-				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>Achat ou Leasing</span></a>
-			</div>
-			<div class="col-md-8">
-			</div>
-		</div>
-	</div>
-</section>
-<!-- END: SECTION GESTION FLOTTE -->
+</div>
 
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
 				
-				
-<!-- SECTION CLIENTS -->
-<section class="p-b-0">
-	<div class="container">
-		<h1 class="text-green">ILS NOUS FONT CONFIANCE</h1>
-        
-        <ul class="grid grid-5-columns">
-				
-				<li>
-					<img src="images/afelio.jpg" alt="client vélo électrique Bruxelles - Afelio">
-				</li>
-				<li>
-					<img src="images/spi.jpg" alt="client vélo électrique Bruxelles - SPI">
-				</li>
-				<li>
-					<img src="images/siapartners.jpg" alt="client vélo électrique Bruxelles - SiaPartners">
-				</li>
-				
-				<li>
-					<img src="images/DEDALE.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
-				</li>
-				
-				<li>
-					<img src="images/deliveroo.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
-				</li>
-				
-				<li>
-					<img src="images/ATRADIUS.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
-				</li>
-				
-				<li>
-					<img src="images/venturelab.jpg" alt="client vélo électrique Liège - Venturelab">
-				</li>
-				
-				<li>
-					<img src="images/chu.jpg" alt="client vélo électrique Liège - CHU Liège">
-				</li>
-				
-				<li>
-					<img src="images/AGC.jpg" alt="client vélo électrique Liège - AGC">
-				</li>
-				
-				<li>
-					<img src="images/Epsylon.jpg" alt="client vélo électrique Liège - Epsylon">
-				</li>
-				
-				<li>
-					<img src="images/IDEA.jpg" alt="client vélo électrique Liège - IDEA">
-				</li>
-				
-				<li>
-					<img src="images/Galler.jpg" alt="client vélo électrique Liège - Galler">
-				</li>
-				
-				<li>
-					<img src="images/CIE.jpg" alt="client vélo électrique Liège - CIE">
-				</li>
-				
-				<li>
-					<img src="images/RAYON9.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
-				</li>
-				
-				<li>
-					<img src="images/Kartell.jpg" alt="client vélo électrique Liège - Kartell+">
-				</li>
-		</ul>
-        
-	</div>
-</section>
-<!-- END: SECTION CLIENTS -->
+
 		
 	<div class="modal fade" id="newPassword" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">

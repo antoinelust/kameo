@@ -113,7 +113,7 @@
 					<!--LOGO-->
 					<h1>
 					<div id="logo">
-						<a href="index.php"><img src="images/logo.png" alt="KAMEO Bikes Logo">
+						<a href="index2.php"><img src="images/logo.png" alt="KAMEO Bikes Logo">
 						</a>
 					</div>
 					</h1>
@@ -132,17 +132,17 @@
 						<div class="container">
 							<nav id="mainMenu" class="main-menu mega-menu">
 								<ul class="main-menu nav nav-pills">
-									<li class="fr"><a href="index.php">Accueil</a></li>
-									<li class="en"><a href="index.php">Home</a></li>
-									<li class="nl"><a href="index.php">Home</a></li>
+									<li class="fr"><a href="index2.php">Accueil</a></li>
+									<li class="en"><a href="index2.php">Home</a></li>
+									<li class="nl"><a href="index2.php">Home</a></li>
 									
-									<li class="fr"><a href="index.php">Leasing Vélo</a></li>
-									<li class="en"><a href="index.php">Bike Leasing</a></li>
-									<li class="nl"><a href="index.php">Bike Leasing</a></li>
+									<li class="fr"><a href="vente-leasing-location.php">Leasing Vélo</a></li>
+									<li class="en"><a href="vente-leasing-location.php">Bike Leasing</a></li>
+									<li class="nl"><a href="vente-leasing-location.php">Bike Leasing</a></li>
 									
-									<li class="fr"><a href="index.php">Achat Vélo</a></li>
-									<li class="en"><a href="index.php">Bike Purchase</a></li>
-									<li class="nl"><a href="index.php">fiets aankoop</a></li>
+									<li class="fr"><a href="catalogue.php">Achat Vélo</a></li>
+									<li class="en"><a href="catalogue.php">Bike Purchase</a></li>
+									<li class="nl"><a href="catalogue.php">fiets aankoop</a></li>
 									
 									<li class="fr"><a href="contact.php">Contact</a></li>
 									<li class="en"><a href="contact.php">Contact</a></li>
