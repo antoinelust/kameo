@@ -133,7 +133,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                     <meta charset=\"UTF-8\">
                                     <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
                                     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-                                    <title>Kameo Bikes - Billing Overview</title>
+                                    <title>Kameo Bikes - Aperçu des vélos </title>
 
                                 <style type=\"text/css\">
                                     p{
