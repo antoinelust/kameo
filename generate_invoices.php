@@ -33,29 +33,30 @@ function requireToVar($file){
 include 'include/globalfunctions.php';
 
 include 'include/connexion.php';
-$sql= "select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y'";
+$sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";
 
 if(isset($company)){
-    $sql=$sql."AND COMPANY='$company'";
+    $sql=$sql." WHERE COMPANY='$company'";
 }
+
+echo $sql;
+
+
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
     die;
 }
-$sql=$sql." GROUP BY COMPANY, BILLING_GROUP";
+
 
 $result = mysqli_query($conn, $sql);     
 $i=0;
-
-echo "coucoucoucoouccou";
-
 
 while($row = mysqli_fetch_array($result))
 {
     $internalReference=$row['COMPANY'];
     $currentDate=date('Y-m-d');
     $billingGroup=$row['BILLING_GROUP'];
-    $sql_dateStart="select min(CONTRACT_START), COMPANY, BILLING_GROUP from customer_bikes where CONTRACT_START<='$currentDate' and CONTRACT_END>'$currentDate' and COMPANY='$internalReference' and AUTOMATIC_BILLING='Y' and BILLING_GROUP='$billingGroup'";
+    $sql_dateStart="SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$currentDate' and aa.CONTRACT_END>'$currentDate' and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$currentDate' and aa.START>'$currentDate' and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup')) AS T1 WHERE start is NOT NULL";
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
@@ -67,9 +68,9 @@ while($row = mysqli_fetch_array($result))
         ob_start();
         $billingGroup=$resultat_dateStart['BILLING_GROUP'];
                 
-        if($resultat_dateStart['min(CONTRACT_START)'])
+        if($resultat_dateStart['start'])
         {
-            $firstDay=substr($resultat_dateStart['min(CONTRACT_START)'], 8, 2);
+            $firstDay=substr($resultat_dateStart['start'], 8, 2);
             $today=substr($currentDate, 8 ,2);
             
 

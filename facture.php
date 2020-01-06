@@ -227,7 +227,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             include 'include/connexion.php';
             $sql2="select * from boxes where COMPANY='$company' and START<='$currentDateString' and END>='$monthAfterString' and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
-            echo "sql2 ".$sql2;
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -255,10 +254,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $comment='Période du '.$temp1.' au '.$temp2;
                 $leasingPrice=$row2['AMOUNT'];
                 $leasingPriceTVAC=1.21*$row2['AMOUNT'];
-                $reference=$row2['REFERENCE'];
+                $reference2=$row2['REFERENCE'];
                 $boxID=$row2['ID'];
                 include 'include/connexion.php';
-                $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID','$reference', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
+                $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID','$reference2', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
                 if ($conn->query($sql) === FALSE) {
                     echo $conn->error;
                 } 
@@ -269,7 +268,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $difference=$dateStart->diff($contractStart);
                 
                 $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
-                $lengthLeasing=(($contractEnd->diff($contractStart))->format('%y'))*12+(($contractEnd->diff($contractStart))->format('%m'))+1;
+                $lengthLeasing=(($contractEnd->diff($contractStart))->format('%y'))*12+(($contractEnd->diff($contractStart))->format('%m'));
                 
                 $test2.='<tr>
                     <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
@@ -284,7 +283,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 <tr>
                     <td></td>
                     <td><img class="img-responsive" src="'.__DIR__.'/images_bikes/'.$row2['MODEL'].'_mini.png" alt=""></td>
-                    <td>Période '.($monthDifference).'/'.($$lengthLeasing).'</td>
+                    <td>Période '.($monthDifference).'/'.($lengthLeasing).'</td>
                 </tr>';
                 
                 $i+=1;
@@ -377,7 +376,7 @@ if ($conn->query($sql3) === FALSE) {
 $result3 = mysqli_query($conn, $sql3);   
 $resultat3 = mysqli_fetch_assoc($result3);
 
-if($resultat3['BILLS_SENDING'] == "Y" && resultat3['EMAIL_CONTACT_BILLING'] != "" && resultat3['LASTNAME_CONTACT_BILLING'] != ""){
+if($resultat3['BILLS_SENDING'] == "Y" && $resultat3['EMAIL_CONTACT_BILLING'] != "" && $resultat3['LASTNAME_CONTACT_BILLING'] != ""){
     $sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE) VALUES ('$newID', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$OneMonthAfterString','leasing')";
 }else{
     $sql= "INSERT INTO factures (ID, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '1', '0', '$OneMonthAfterString','leasing', '$today')";

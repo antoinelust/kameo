@@ -940,10 +940,12 @@ function initializeUpdatePortfolioBike(ID){
                     console.log(response.message);
                 } else{
                     $('input[name=widget-updateCatalog-form-ID]').val(response.ID);
+                    $('#widget-deletePortfolioBike-form [name=id]').val(response.ID);
+
+                    
                     document.getElementsByClassName('bikeCatalogBrand')[0].value=response.brand;
                     document.getElementsByClassName('bikeCatalogModel')[0].value=response.model;
                     document.getElementsByClassName('bikeCatalogFrame')[0].value=response.frameType;
-                    console.log(response.utilisation);
                     document.getElementsByClassName('bikeCatalogUtilisation')[0].value=response.utilisation;
                     document.getElementsByClassName('bikeCatalogElectric')[0].value=response.electric;
                     $('#widget-updateCatalog-form input[name=buyPrice]').val(response.buyingPrice);
@@ -951,6 +953,7 @@ function initializeUpdatePortfolioBike(ID){
                     document.getElementsByClassName('bikeCatalogStock')[0].value=response.stock;
                     document.getElementsByClassName('bikeCatalogLink')[0].value=response.url;
                     document.getElementsByClassName("bikeCatalogImage")[0].src="images_bikes/"+response.brand.toLowerCase()+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
+                    document.getElementsByClassName("bikeCatalogImageMini")[0].src="images_bikes/"+response.brand.toLowerCase()+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+"_mini.jpg";
                 }              
 
             }
@@ -2700,8 +2703,8 @@ if($connected){
                     document.getElementsByClassName('widget-addBill-form-amountTVAC')[0].value = "";
                     document.getElementsByClassName('widget-addBill-form-sendingDate')[0].value = "";
                     document.getElementsByClassName('widget-addBill-form-paymentDate')[0].value = "";
-                    document.getElementsByClassName('widget-addBill-form-companyOther')[0].style.visibility = "hidden";
-                    document.getElementsByClassName('widget-addBill-form-companyOther')[1].style.visibility = "hidden";                    
+                    $('.widget-addBill-form-companyOther').addClass("hidden");
+                    $('.IDAddBill').removeClass('hidden');
                     
                 }
             }
@@ -3327,6 +3330,9 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                    
+                    $('#widget-addBill-form input[name=ID]').val(response.IDMaxBillingOut);
+                    
                     var i=0;
                     var dest="";
                     if(response.update){
@@ -7436,42 +7442,65 @@ if($connected){
                             <div class="form-group col-md-12">
                                 <h4 class="fr text-green">Informations générales</h4>
 							
-                                                                
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-beneficiaryCompany"  class="fr">Beneficiaire</label>
-                                    <label for="widget-addBill-form-beneficiaryCompany"  class="en">Beneficiaire</label>
-                                    <label for="widget-addBill-form-beneficiaryCompany"  class="nl">Beneficiaire</label>
-                                    <input type="text" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
-                                </div> 
-                                <div class="col-md-12"></div>
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-company"  class="fr">Originateur</label>
-                                    <label for="widget-addBill-form-company"  class="en">Originateur</label>
-                                    <label for="widget-addBill-form-company"  class="nl">Originateur</label>
-                                    <span class="widget-addBill-form-company" name="widget-addBill-form-company"></span>
+                                               
+                                <div class="col-md-12">
+                                    <div class="col-md-4 IDAddBill hidden">
+                                        <label for="ID"  class="fr">ID</label>
+                                        <label for="ID"  class="en">ID</label>
+                                        <label for="ID"  class="nl">ID</label>
+                                        <input type="number" name="ID" class="form-control" readonly='readonly'>
+                                    </div> 
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label for="widget-addBill-form-company"  class="fr">Originateur</label>
+                                        <label for="widget-addBill-form-company"  class="en">Originateur</label>
+                                        <label for="widget-addBill-form-company"  class="nl">Originateur</label>
+                                        <span class="widget-addBill-form-company" name="widget-addBill-form-company"></span>
+                                    </div>
+                                    
+                                    
+                                    <div class="col-md-4">
+                                        <label for="widget-addBill-form-beneficiaryCompany"  class="fr">Beneficiaire</label>
+                                        <label for="widget-addBill-form-beneficiaryCompany"  class="en">Beneficiaire</label>
+                                        <label for="widget-addBill-form-beneficiaryCompany"  class="nl">Beneficiaire</label>
+                                        <input type="text" name="widget-addBill-form-beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
+                                    </div> 
+                                    <div class="col-md-4">
+                                        <label for="type">Type de facture</label>
+                                        <select name="type">
+                                            <option value="leasing">Leasing</option>
+                                            <option value="achat">Achat</option>
+                                            <option value="accessoire">Accessoire</option>
+                                            <option value="autre">Autre</option>                                
+                                        </select>    
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="col-md-4 widget-addBill-form-companyOther">
+                                        <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires (Origi.)</label>
+                                        <input type="text" class="form-control widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4 typeOther">
+                                        <label for="typeOther" class="hidden">Informations complémentaires (type)</label>
+                                        <input type="text" class="form-control hidden" name="typeOther">
+                                    </div>
+                                    
                                 </div>
                                 
                                 
-                                <div class="col-md-6">
-                                    <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires (benef.)</label>
-                                    <input type="text" class="form-control widget-addBill-form-companyOther" name="widget-addBill-form-companyOther">
-                                </div>
-                                <div class="col-md-12"></div>
+                                <div class="col-md-12">
                                 
-                                                                
-                                <div class="col-md-6">
-                                    <label for="type">Type de facture</label>
-                                    <select name="type">
-                                        <option value="leasing">Leasing</option>
-                                        <option value="achat">Achat</option>
-                                        <option value="accessoire">Accessoire</option>
-                                        <option value="autre">Autre</option>                                
-                                    </select>
-                                </div> 
+                                    <div class="col-md-6">
+                                        <label for="widget-addBill-form-communication"  class="fr">Communication</label>
+                                        <label for="widget-addBill-form-communication"  class="en">Communication </label>
+                                        <label for="widget-addBill-form-communication"  class="nl">Communication</label>
+                                        <input type="text" class="widget-addBill-form-communication form-control" name="widget-addBill-form-communication">
+                                    </div>                                     
                                 
-                                <div class="col-sm-6">
-                                    <label for="typeOther" class="hidden">Informations complémentaires (type)</label>
-                                    <input type="text" class="form-control hidden" name="typeOther">
                                 </div>
                                 
                                 
@@ -7543,13 +7572,6 @@ if($connected){
                                     <input type="date" class="widget-addBill-form-paymentDate form-control " name="widget-addBill-form-paymentDate" >
 								</div>     
                                 
-								<div class="col-md-6">
-                                    <label for="widget-addBill-form-communication"  class="fr">Communication</label>
-                                    <label for="widget-addBill-form-communication"  class="en">Communication </label>
-                                    <label for="widget-addBill-form-communication"  class="nl">Communication</label>
-                                    <input type="text" class="widget-addBill-form-communication form-control" name="widget-addBill-form-communication">
-								</div>                                     
-
 							
 							</div>
                                                        
@@ -7598,12 +7620,10 @@ if($connected){
                                 var e = document.getElementsByClassName('widget-addBill-form-company2')[0];
                                 var valueSelect = e.options[e.selectedIndex].value;
                                 if(valueSelect=='other'){
-                                    document.getElementsByClassName('widget-addBill-form-companyOther')[0].style.visibility = "visible";
-                                    document.getElementsByClassName('widget-addBill-form-companyOther')[1].style.visibility = "visible";
+                                    $('.widget-addBill-form-companyOther').removeClass("hidden");
                                     $('input[name=widget-addBill-form-beneficiaryCompany]').attr('readonly', true);
                                     $('input[name=widget-addBill-form-beneficiaryCompany]').val('KAMEO');
 
-                                    console.log(document.getElementsByClassName('widget-addBill-form-companyOther')[1]);
                                 }else if(valueSelect=='KAMEO'){
                                     $('input[name=widget-addBill-form-beneficiaryCompany]').attr('readonly', false);
                                     $('input[name=widget-addBill-form-beneficiaryCompany]').val('');
@@ -7611,16 +7631,24 @@ if($connected){
                                 }
 
                                 else{
-                                    document.getElementsByClassName('widget-addBill-form-companyOther')[0].style.visibility = "hidden";
-                                    document.getElementsByClassName('widget-addBill-form-companyOther')[1].style.visibility = "hidden";
+                                    $('.widget-addBill-form-companyOther').addClass("hidden");
                                     $('input[name=widget-addBill-form-beneficiaryCompany]').attr('readonly', true);
                                     $('input[name=widget-addBill-form-beneficiaryCompany]').val('KAMEO');
 
 
                                 }
                             });  
+                            
+                            $('#widget-addBill-form input[name=widget-addBill-form-beneficiaryCompany]').change(function(){
+                                
+                                if($('#widget-addBill-form input[name=widget-addBill-form-beneficiaryCompany]').val()=='KAMEO'){
+                                    $('.IDAddBill').removeClass("hidden");
+                                }else{
+                                    $('.IDAddBill').addClass("hidden");
+                                }
+                            });  
+                            
                             $('#widget-addBill-form select[name=type]').change(function(){
-                                console.log($('#widget-addBill-form select[name=type]').val());
                                 if($('#widget-addBill-form select[name=type]').val()=="autre"){
                                     $('#widget-addBill-form input[name=typeOther]').removeClass("hidden");
                                     $('#widget-addBill-form input[name=typeOther]').addClass("required");
@@ -9064,7 +9092,6 @@ if($connected){
                                                 document.getElementById('widget-boxManagement-form').reset();
 												$('#boxManagement').modal('toggle');
 											} else {
-                                                console.log(response.message);
 												$.notify({
 													message: response.message
 												}, {
@@ -10342,107 +10369,137 @@ if($connected){
                             <div class="form-group col-sm-12">
                                 
                                 <h4 class="fr text-green">Modifier un vélo</h4>
+                                <div class="col-sm-12">
+
+                                    <div class="col-sm-4">
+                                        <label for="widget-updateCatalog-form-ID">ID :</label>
+                                        <input type="text" readonly="readonly" class="form-control" name="widget-updateCatalog-form-ID"/>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <label for="widget-updateCatalog-form-brand" class="fr"> Marque : </label>
+                                        <label for="widget-updateCatalog-form-brand" class="en"> Brand : </label>
+                                        <label for="widget-updateCatalog-form-brand" class="nl"> Brand : </label>
+                                        <select class="bikeCatalogBrand" name="widget-updateCatalog-form-brand">
+                                                   <option value="Ahooga">Ahooga</option>
+                                                   <option value="Bzen">Bzen</option>
+                                                   <option value="Conway">Conway</option>
+                                                   <option value="Douze Cycle">Douze Cycle</option>
+                                                   <option value="HNF Nicolai">HNF Nicolai</option>
+                                                   <option value="Orbea">Orbea</option>
+                                                   <option value="Stevens">Stevens</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="widget-updateCatalog-form-model" class="fr"> Modèle : </label>
+                                        <label for="widget-updateCatalog-form-model" class="en"> Model : </label>
+                                        <label for="widget-updateCatalog-form-model" class="nl"> Model : </label>
+                                        <input type="text" class="form-control required bikeCatalogModel" name="widget-updateCatalog-form-model" />
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
                                 
-                                <div class="col-sm-3">
-                                    <label for="widget-updateCatalog-form-ID">ID :</label>
-                                    <input type="text" readonly="readonly" class="form-control" name="widget-updateCatalog-form-ID"/>
-                                </div>
+                                    <div class="col-sm-4">
+                                        <h4><span class="fr"> Type de cadre : </span></h4>
+                                        <h4><span class="en"> Frame type: </span></h4>
+                                        <h4><span class="nl"> Frame type: </span></h4>
+                                        <select class="form-control  required bikeCatalogFrame" name="widget-updateCatalog-form-frame">
+                                                   <option value="F">Femme</option>
+                                                   <option value="H">Homme</option>
+                                                   <option value="M">Mixte</option>
+                                        </select>
 
-                                <div class="col-sm-5">
-                                    <label for="widget-updateCatalog-form-brand" class="fr"> Marque : </label>
-                                    <label for="widget-updateCatalog-form-brand" class="en"> Brand : </label>
-                                    <label for="widget-updateCatalog-form-brand" class="nl"> Brand : </label>
-                                    <select class="bikeCatalogBrand" name="widget-updateCatalog-form-brand">
-                                               <option value="Ahooga">Ahooga</option>
-                                               <option value="Bzen">Bzen</option>
-                                               <option value="Conway">Conway</option>
-                                               <option value="Douze Cycle">Douze Cycle</option>
-                                               <option value="HNF Nicolai">HNF Nicolai</option>
-                                               <option value="Orbea">Orbea</option>
-                                               <option value="Stevens">Stevens</option>
-                                    </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4><span class="fr"> Utilisation : </span></h4>
+                                        <h4><span class="en"> Utilisation: </span></h4>
+                                        <h4><span class="nl"> Utilisation: </span></h4>
+                                        <select class="form-control bikeCatalogUtilisation" name="widget-updateCatalog-form-utilisation">
+                                           <option value="Tout chemin">Tout chemin</option>
+                                           <option value="Ville et chemin">Ville et chemin</option>
+                                           <option value="Pliant">Pliant</option>
+                                           <option value="Ville">Vile</option>
+                                           <option value="Cargo">Cargo</option>
+                                           <option value="Speedpedelec">Speedpedelec</option>
+                                        </select>
 
-                                </div>
-                                <div class="col-sm-5">
-                                    <label for="widget-updateCatalog-form-model" class="fr"> Modèle : </label>
-                                    <label for="widget-updateCatalog-form-model" class="en"> Model : </label>
-                                    <label for="widget-updateCatalog-form-model" class="nl"> Model : </label>
-                                    <input type="text" class="form-control required bikeCatalogModel" name="widget-updateCatalog-form-model" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4><span class="fr"> Vélo électrique ? </span></h4>
+                                        <h4><span class="en"> Electric bike? </span></h4>
+                                        <h4><span class="nl"> Electric bike? </span></h4>
+                                        <select class="form-control  required bikeCatalogElectric" name="widget-updateCatalog-form-electric">
+                                                   <option value="Y">Y</option>
+                                                   <option value="N">N</option>
+                                        </select>
 
+                                    </div>
                                 </div>
-                                <div class="col-sm-5">
-                                    <h4><span class="fr"> Type de cadre : </span></h4>
-                                    <h4><span class="en"> Frame type: </span></h4>
-                                    <h4><span class="nl"> Frame type: </span></h4>
-                                    <select class="form-control  required bikeCatalogFrame" name="widget-updateCatalog-form-frame">
-                                               <option value="F">Femme</option>
-                                               <option value="H">Homme</option>
-                                               <option value="M">Mixte</option>
-                                    </select>
+                                <div class="col-sm-12">
 
+                                    <div class="col-sm-4">
+                                        <label for="buyPrice" class="fr"> Prix  d'achat :</label>
+                                        <label for="buyPrice" class="en"> Buy price :</label>
+                                        <label for="buyPrice" class="nl"> Buy price :</label>
+                                        <input type="text" class="form-control  required" name="buyPrice" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4><span class="fr"> Prix  de vente: </span></h4>
+                                        <h4><span class="en"> Selling Price: </span></h4>
+                                        <h4><span class="nl"> Selling Price: </span></h4>
+                                        <input type="text" class="form-control  required bikeCatalogPrice" name="widget-updateCatalog-form-price" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4><span class="fr"> En stock ? </span></h4>
+                                        <h4><span class="en"> Sotck? </span></h4>
+                                        <h4><span class="nl"> Stock? </span></h4>
+                                        <input type="text" class="form-control required  bikeCatalogStock" name="widget-updateCatalog-form-stock" />
+                                    </div>
                                 </div>
-                                <div class="col-sm-5">
-                                    <h4><span class="fr"> Utilisation : </span></h4>
-                                    <h4><span class="en"> Utilisation: </span></h4>
-                                    <h4><span class="nl"> Utilisation: </span></h4>
-                                    <select class="form-control bikeCatalogUtilisation" name="widget-updateCatalog-form-utilisation">
-                                       <option value="Tout chemin">Tout chemin</option>
-                                       <option value="Ville et chemin">Ville et chemin</option>
-                                       <option value="Pliant">Pliant</option>
-                                       <option value="Ville">Vile</option>
-                                       <option value="Cargo">Cargo</option>
-                                       <option value="Speedpedelec">Speedpedelec</option>
-                                    </select>
-
-                                </div>
-                                <div class="col-sm-5">
-                                    <h4><span class="fr"> Vélo électrique ? </span></h4>
-                                    <h4><span class="en"> Electric bike? </span></h4>
-                                    <h4><span class="nl"> Electric bike? </span></h4>
-                                    <select class="form-control  required bikeCatalogElectric" name="widget-updateCatalog-form-electric">
-                                               <option value="Y">Y</option>
-                                               <option value="N">N</option>
-                                    </select>
-
-                                </div>
-                                <div class="col-sm-5">
-                                    <label for="buyPrice" class="fr"> Prix  d'achat :</label>
-                                    <label for="buyPrice" class="en"> Buy price :</label>
-                                    <label for="buyPrice" class="nl"> Buy price :</label>
-                                    <input type="text" class="form-control  required" name="buyPrice" />
-                                </div>
-                                <div class="col-sm-5">
-                                    <h4><span class="fr"> Prix  de vente: </span></h4>
-                                    <h4><span class="en"> Selling Price: </span></h4>
-                                    <h4><span class="nl"> Selling Price: </span></h4>
-                                    <input type="text" class="form-control  required bikeCatalogPrice" name="widget-updateCatalog-form-price" />
-                                </div>
-                                <div class="col-sm-5">
-                                    <h4><span class="fr"> En stock ? </span></h4>
-                                    <h4><span class="en"> Sotck? </span></h4>
-                                    <h4><span class="nl"> Stock? </span></h4>
-                                    <input type="text" class="form-control required  bikeCatalogStock" name="widget-updateCatalog-form-stock" />
-                                </div>
-                                <div class="col-sm-5">
-                                    <h4><span class="fr"> Lien vers le site : </span></h4>
-                                    <h4><span class="en"> Vendor link : </span></h4>
-                                    <h4><span class="nl"> Vendor link</span></h4>
-                                    <input type="text" class="form-control  required bikeCatalogLink" name="widget-updateCatalog-form-link" />
+                                <div class="col-sm-12">
+                                    <div class="col-sm-5">
+                                        <h4><span class="fr"> Lien vers le site : </span></h4>
+                                        <h4><span class="en"> Vendor link : </span></h4>
+                                        <h4><span class="nl"> Vendor link</span></h4>
+                                        <input type="text" class="form-control  required bikeCatalogLink" name="widget-updateCatalog-form-link" />
+                                    </div>
                                 </div>
 
                             </div>
-                            <img src="" class="bikeCatalogImage" alt="image" height="200" />
-
+                            <h4 class="text-green">Image en taille normale</h4>
+                            
                             <div class="col-sm-12">
-                                <label for="widget-updateCatalog-form-file"  class="fr">Modifier la photo (ne rien uploader si ok)</label>
-                                <label for="widget-updateCatalog-form-file"  class="en">Modify the picture (don't do anything if already ok)</label>
-                                <label for="widget-updateCatalog-form-file"  class="nl">Modify the picture (don't do anything if already ok)</label>
-                                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                                <input type=file size=40 class="form-control" id="widget-updateCatalog-form-file" name="widget-updateCatalog-form-file">
-                            </div>  
+                            
+
+                                <img src="" class="bikeCatalogImage" alt="image" height="200" />
+
+                                <div class="col-sm-6">
+                                    <label for="widget-updateCatalog-form-file"  class="fr">Modifier la photo (ne rien uploader si ok)</label>
+                                    <label for="widget-updateCatalog-form-file"  class="en">Modify the picture (don't do anything if already ok)</label>
+                                    <label for="widget-updateCatalog-form-file"  class="nl">Modify the picture (don't do anything if already ok)</label>
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                    <input type=file size=40 class="form-control" id="widget-updateCatalog-form-file" name="widget-updateCatalog-form-file">
+                                </div>  
+                            </div>
+                            
+                            <div class="col-sm-12">
+                            
+                                <h4 class="text-green">Image en taille réduite</h4>
+                                    <img src="" class="bikeCatalogImageMini" alt="image" height="200" />
+                                <div class="col-sm-6">
+                                    <label for="widget-updateCatalog-form-file"  class="fr">Modifier la photo mini (ne rien uploader si ok)</label>
+                                    <label for="widget-updateCatalog-form-file"  class="en">Modify the mini picture (don't do anything if already ok)</label>
+                                    <label for="widget-updateCatalog-form-file"  class="nl">Modify the mini picture (don't do anything if already ok)</label>
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                    <input type=file size=40 class="form-control" id="widget-updateCatalogMini-form-file" name="widget-updateCatalogMini-form-file">
+                                </div>  
+                            </div>
 
 
                             <input type="text" name="widget-updateCatalog-form-user" value="<?php echo $user; ?>" class="hidden"/>
+                            <input type="text" name="action" value="update" class="hidden"/>
 
                             <div class="col-sm-12">    
                                 <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
@@ -10450,6 +10507,18 @@ if($connected){
                                 <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
                             </div>
                         </form>  
+                        
+                        <form id="widget-deletePortfolioBike-form" action="include/update_catalog_bike.php" role="form" method="post">
+                            <div class="col-sm-12">
+                                <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
+                                <input type="text" name="action" value="delete" class="hidden">
+                                <input type="text" class="hidden" readonly="readonly" name="id">
+                                <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer</button>
+                                <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
+                                <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
+                            </div>
+                        </form>
+                        
                     </div>
 				</div>
 			</div>
@@ -10496,6 +10565,33 @@ if($connected){
             });
         }
     });
+    
+    jQuery("#widget-deletePortfolioBike-form").validate({
+        submitHandler: function(form) {
+            jQuery(form).ajaxSubmit({
+                success: function(response) {
+                                        
+                    if (response.response == 'success') {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'success'
+                        });
+                        listPortfolioBikes();
+                        document.getElementById('widget-updateCatalog-form').reset();
+                        $('#updatePortfolioBike').modal('toggle');                                                
+
+                    } else {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'danger'
+                        });
+                    }
+                }
+            });
+        }
+    });
 
 </script>        
 
@@ -10508,10 +10604,13 @@ if($connected){
 			</div>
 			<div class="modal-body">
 				<div class="row">
-                        <form id="widget-addCatalog-form" action="include/add_catalog_bike.php" role="form" method="post">
+                    
+                    
+                    <h4 class="text-green">Ajouter un vélo au catalogue</h4>
+                    <form id="widget-addCatalog-form" action="include/add_catalog_bike.php" role="form" method="post">
 
                         <div class="col-sm-12">
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <h4><span class="fr"> Marque : </span></h4>
                                 <h4><span class="en"> Brand: </span></h4>
                                 <h4><span class="nl"> Brand : </span></h4>
@@ -10526,14 +10625,14 @@ if($connected){
                                 </select>
 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <h4><span class="fr"> Modèle : </span></h4>
                                 <h4><span class="en"> Model: </span></h4>
                                 <h4><span class="nl"> Model: </span></h4>
                                 <input type="text" class="bikeCatalogModel form-control required" name="widget-addCatalog-form-model" />
 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <h4><span class="fr"> Type de cadre : </span></h4>
                                 <h4><span class="en"> Frame type: </span></h4>
                                 <h4><span class="nl"> Frame type: </span></h4>
@@ -10544,7 +10643,10 @@ if($connected){
                                 </select>
                                 
                             </div>
-                            <div class="col-sm-5">
+                        </div>
+                        <div class="col-sm-12">
+                            
+                            <div class="col-sm-4">
                                 <h4><span class="fr"> Utilisation : </span></h4>
                                 <h4><span class="en"> Utilisation: </span></h4>
                                 <h4><span class="nl"> Utilisation: </span></h4>
@@ -10558,7 +10660,7 @@ if($connected){
                                 </select>
                                 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <h4><span class="fr"> Vélo électrique ? </span></h4>
                                 <h4><span class="en"> Electric bike? </span></h4>
                                 <h4><span class="nl"> Electric bike? </span></h4>
@@ -10568,29 +10670,31 @@ if($connected){
                                 </select>
                                 
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
+                                <h4><span class="fr"> Lien vers le site : </span></h4>
+                                <h4><span class="en"> Vendor link : </span></h4>
+                                <h4><span class="nl"> Vendor link</span></h4>
+                                <input type="text" class="bikeCatalogLink form-control required" name="widget-addCatalog-form-link" />
+                            </div>
+                        </div>                            
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
                                 <label for="buyPrice" class="fr">Prix d'achat</label>
                                 <label for="buyPrice" class="nl">Buying price</label>
                                 <label for="buyPrice" class="en">Buying price</label>
                                 <input type="text" class="form-control required" name="buyPrice" />
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <h4><span class="fr"> Prix : </span></h4>
                                 <h4><span class="en"> Price: </span></h4>
                                 <h4><span class="nl"> Price: </span></h4>
                                 <input type="text" class="bikeCatalogPrice form-control required" name="widget-addCatalog-form-price" />
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <h4><span class="fr"> En stock ? </span></h4>
                                 <h4><span class="en"> Sotck? </span></h4>
                                 <h4><span class="nl"> Stock? </span></h4>
                                 <input type="text" class="bikeCatalogStock form-control required" name="widget-addCatalog-form-stock" />
-                            </div>
-                            <div class="col-sm-5">
-                                <h4><span class="fr"> Lien vers le site : </span></h4>
-                                <h4><span class="en"> Vendor link : </span></h4>
-                                <h4><span class="nl"> Vendor link</span></h4>
-                                <input type="text" class="bikeCatalogLink form-control required" name="widget-addCatalog-form-link" />
                             </div>
                             
                         </div>                            
@@ -10601,6 +10705,16 @@ if($connected){
                             <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                             <input type=file size=40 class="form-control required" id="widget-addCatalog-form-file" name="widget-addCatalog-form-file">
                         </div>  
+
+                        <div class="col-sm-6">
+                            <label for="widget-addCatalog-form-file"  class="fr">Photo mini</label>
+                            <label for="widget-addCatalog-form-file"  class="en">Mini picture</label>
+                            <label for="widget-addCatalog-form-file"  class="nl">Mini picture</label>
+                            <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                            <input type=file size=40 class="form-control required" id="widget-addCatalogMini-form-file" name="widget-addCatalogMini-form-file">
+                        </div>  
+
+                            
                             
                             
                         <input type="text" name="widget-addCatalog-form-user" value="<?php echo $user; ?>" class="hidden" />

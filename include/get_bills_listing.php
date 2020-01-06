@@ -62,7 +62,10 @@ if($email != NULL)
     $sql=$sql." ORDER BY DATE DESC";
 
     
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);   
+    $conn->close();
+
+    
     $length = $result->num_rows;
     $response['response']="success";
 	$response['billNumber']=$length;
@@ -102,6 +105,8 @@ if($email != NULL)
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
     $response['billNumberTotal']=$length;
+    $conn->close();
+
     
     include 'connexion.php';         
     if($company=='KAMEO'){
@@ -113,6 +118,8 @@ if($email != NULL)
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
     $response['billINNumber']=$length;
+    $conn->close();
+
     
     include 'connexion.php';             
     if($company=='KAMEO'){
@@ -123,6 +130,8 @@ if($email != NULL)
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
     $response['billOUTNumber']=$length;
+    $conn->close();
+
     
     include 'connexion.php'; 
     if($company=='KAMEO'){
@@ -134,6 +143,8 @@ if($email != NULL)
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
     $response['billINNumberNotSent']=$length;
+    $conn->close();
+
     
     include 'connexion.php'; 
     if($company=='KAMEO'){
@@ -144,7 +155,8 @@ if($email != NULL)
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
     $response['billOUTNumberNotPaid']=$length;
-    
+    $conn->close();
+
     include 'connexion.php';
     if($company=='KAMEO'){
         $sql="select * from factures where AMOUNT_HTVA>0 AND FACTURE_PAID='0' AND FACTURE_SENT='1'";
@@ -155,6 +167,24 @@ if($email != NULL)
     $result = mysqli_query($conn, $sql);        
     $length = $result->num_rows;
     $response['billINNumberNotPaid']=$length;
+    $conn->close();
+
+    
+    include 'connexion.php';
+    $sql="select MAX(ID_OUT_BILL) as MAX from factures";
+    if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+    }
+	$result = mysqli_query($conn, $sql); 
+    $resultat = mysqli_fetch_assoc($result);
+    $conn->close();
+
+    $response['IDMaxBillingOut']=$resultat['MAX'];
+    
+    
+    
     
     
     

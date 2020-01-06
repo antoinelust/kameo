@@ -17,7 +17,7 @@ $price = $_POST["widget-addCatalog-form-price"];
 $stock = $_POST["widget-addCatalog-form-stock"];
 $link = $_POST["widget-addCatalog-form-link"];
 
-if(isset($_FILES['widget-addCatalog-form-file'])){
+if(isset($_FILES['widget-addCatalog-form-file']) && isset($_FILES['widget-addCatalogMini-form-file'])){
     
     $extensions = array('.jpg');
     $extension = strrchr($_FILES['widget-addCatalog-form-file']['name'], '.');
@@ -48,11 +48,46 @@ if(isset($_FILES['widget-addCatalog-form-file'])){
      else
      {
           errorMessage("ES0024");
+     }    
+    $extension = strrchr($_FILES['widget-addCatalogMini-form-file']['name'], '.');
+    if(!in_array($extension, $extensions))
+    {
+          errorMessage("ES0041");
+    }
+
+
+    $taille_maxi = 6291456;
+    $taille = filesize($_FILES['widget-addCatalogMini-form-file']['tmp_name']);
+    if($taille>$taille_maxi)
+    {
+          errorMessage("ES0023");
+    }
+
+    //upload of Bike picture
+
+    $dossier = '../images_bikes/';
+
+    $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
+
+     if(move_uploaded_file($_FILES['widget-addCatalogMini-form-file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+     {
+        $upload=true;
+        $path= $dossier . $fichier;
+     }
+     else
+     {
+          errorMessage("ES0024");
      }
 
-    $img = resize_image($dossier . $fichier, 200, 200);
+    
+    
+    
+    
+    /*$img = resize_image($dossier . $fichier, 200, 200);
     $fichierMini = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
-    imagejpeg($img, $dossier . $fichierMini);
+    imagejpeg($img, $dossier . $fichierMini);*/
+    
+    
 }else{
 	errorMessage("ES0025");
 }

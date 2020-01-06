@@ -22,6 +22,7 @@ $typeOther=isset($_POST['typeOther']) ? $_POST['typeOther'] : NULL;
 $amountHTVA=$_POST['widget-addBill-form-amountHTVA'];
 $amountTVAC=$_POST['widget-addBill-form-amountTVAC'];
 $billingSent=isset($_POST['widget-addBill-form-sent']) ? "1" : "0";
+$ID=isset($_POST['ID']) ?$_POST['ID'] :  NULL;
 $billingSentDate=isset($_POST['widget-addBill-form-sendingDate']) ? date($_POST['widget-addBill-form-sendingDate']) : "0";
 $billingPaid=isset($_POST['widget-addBill-form-paid']) ? "1" : "0";
 $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST['widget-addBill-form-paymentDate']) : "0";
@@ -83,6 +84,10 @@ if(isset($_FILES['widget-addBill-form-file']))
     }else{
         $fileName=substr($date, 0, 10)."_".$company."_".$newID;
     }
+    
+    if($ID && $beneficiaryCompany=='KAMEO'){
+        $fileName=$fileName."_facture_".$ID;
+    }
         
     if(!in_array($extension, $extensions))
     {
@@ -110,7 +115,7 @@ if(isset($_FILES['widget-addBill-form-file']))
      }
      else
      {
-          errorMessage(ES0024);
+          errorMessage("ES0024");
      }
     
     
