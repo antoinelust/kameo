@@ -136,13 +136,13 @@
 									<li class="en"><a href="index2.php">Home</a></li>
 									<li class="nl"><a href="index2.php">Home</a></li>
 									
-									<li class="fr"><a href="vente-leasing-location.php">Leasing Vélo</a></li>
-									<li class="en"><a href="vente-leasing-location.php">Bike Leasing</a></li>
-									<li class="nl"><a href="vente-leasing-location.php">Bike Leasing</a></li>
+									<li class="fr"><a href="leasing.php">Leasing Vélo</a></li>
+									<li class="en"><a href="leasing.php">Bike Leasing</a></li>
+									<li class="nl"><a href="leasing.php">Bike Leasing</a></li>
 									
-									<li class="fr"><a href="catalogue.php">Achat Vélo</a></li>
-									<li class="en"><a href="catalogue.php">Bike Purchase</a></li>
-									<li class="nl"><a href="catalogue.php">fiets aankoop</a></li>
+									<li class="fr"><a href="achat.php">Achat Vélo</a></li>
+									<li class="en"><a href="achat.php">Bike Purchase</a></li>
+									<li class="nl"><a href="achat.php">fiets aankoop</a></li>
 									
 									<li class="fr"><a href="contact.php">Contact</a></li>
 									<li class="en"><a href="contact.php">Contact</a></li>

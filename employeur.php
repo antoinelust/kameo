@@ -62,6 +62,115 @@ include 'include/header3.php';
 						<div class="col-md-6">
 							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
 						</div>
+						
+						<!-- SELECTION -->
+						<div class="col-md-12">
+						<h3 class="text-green">NOTRE SELECTION DE VÉLOS PARTAGÉS</h3>
+							<div class="carousel" data-lightbox-type="gallery">
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images/catalogue/Orbea_Gain.jpg" alt="">
+										<div class="image-box-content">
+											<p>
+												<a href="images/catalogue/Orbea_Gain.jpg" data-lightbox-type="image" title="Orbea Gain - le vélo électrique urbain au look sportif."><i class="fa fa-expand"></i></a>
+												<a href="velos.php"><i class="fa fa-link"></i></a>
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">ORBEA Gain</h4>
+										<p>Il sera l'arme de choix du travailleur sportif voulant arriver au travail en vélo sans forcer.</p>
+										<!--
+										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																				  - Son look sportif<br>
+																				  - La batterie intégrée (difficile de voir qu'il est électrique)<br> 
+																				  - Son poids maitrisé </p>
+										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																				  - Position sportive, ne s'adapte pas à tout le monde</p>
+										<p> -->
+									</div>
+								</div>
+								
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images/catalogue/Conway_ETrekking.jpg" alt="">
+										<div class="image-box-content">
+											<p>
+												<a href="images/catalogue/Conway_ETrekking.jpg" data-lightbox-type="image" title="Conway E Trekking - un vélo électrique de ville qui s'adapte à tout le monde."><i class="fa fa-expand"></i></a>
+												<a href="velos.php"><i class="fa fa-link"></i></a>
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">CONWAY E Trekking</h4>
+										<p>Un vélo électrique de ville qui s'adapte à tout le monde.</p>
+										<!--
+										<br>
+										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																				  - Le moteur Bosch performance ( le plus puissant de la marque )<br>
+																				  - Cadre Homme, Dame ou Mixte <br> 
+																				  - Les équipements d'origine complets </p>
+										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																				  - Le design trop sobre (à notre goût)</p>
+										<p>
+										-->
+									</div>
+								</div>
+								
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images/catalogue/Ahooga_Pliant.jpg" alt="">
+										<div class="image-box-content">
+											<p>
+												<a href="images/catalogue/Ahooga_Pliant.jpg" data-lightbox-type="image" title="Ahooga pliant - combiner train + vélo ou voiture + vélo, voilà votre monture pour les derniers kms"><i class="fa fa-expand"></i></a>
+												<a href="velos.php"><i class="fa fa-link"></i></a>
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">AHOOGA Pliant</h4>
+										<p>Combiner train + vélo ou voiture + vélo, voilà votre monture pour les derniers kilomètres</p>
+										<!--
+										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																				  - Le design belge et intelligent<br>
+																				  - Le confort de conduite<br> 
+																				  - La possibilité de l'avoir en vélo traditionnel ou électrique</p>
+										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																				  - Ne convient pas pour de longues distances</p>
+										<p>
+										-->
+									</div>
+								</div>
+								
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images/catalogue/Victoria_Eurban.jpg" alt="">
+										<div class="image-box-content">
+											<p>
+												<a href="images/catalogue/Victoria_Eurban.jpg" data-lightbox-type="image" title="Vitcoria E Urban - Un vélo à tout épreuve pour la ville qui vous procurera un sentiment de sécurité"><i class="fa fa-expand"></i></a>
+												<a href="velos.php"><i class="fa fa-link"></i></a>
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">VICTORIA E Urban</h4>
+										<p>Un vélo à toute épreuve pour la ville qui vous procurera un sentiment de sécurité</p>
+										<!--
+										<br>
+										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
+																				  - Les pneus anticrevaison et confortables<br>
+																				  - Transmission par courroie et moteur puissant <br> 
+																				  - Position relevée agréable </p>
+										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
+																				  - Le poids du vélo si vous devez le porter</p>
+										<p>
+										-->
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- END : SELECTION -->
+						
 					</div>
 				</div>
 			</section>
@@ -114,7 +223,8 @@ include 'include/header3.php';
 			</section>
 			<!-- END: SECTION CALL TO ACTION CONTACT -->
 			</div>
-			<div class="tab-pane active" id="personnel">
+			
+			<div class="tab-pane" id="personnel">
 			
 			<!-- SECTION SOLUTIONS PERSONNEL -->
 			<section class="p-b-0 background-green">
