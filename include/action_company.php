@@ -373,7 +373,7 @@ if($action=="graphic"){
     
     
     include 'connexion.php';
-    $sql="SELECT OWNER from company_actions GROUP BY OWNER";
+    $sql="SELECT * from customer_referential WHERE COMPANY='KAMEO' and STAANN != 'D'";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -384,19 +384,9 @@ if($action=="graphic"){
     $response['ownerNumber']=$length;
     $i=0;
     while($row = mysqli_fetch_array($result)){
-        $response['owner'][$i]['email']=$row['OWNER'];
-        include 'connexion.php';
-        $owner=$row['OWNER'];
-        $sql2="SELECT * from customer_referential WHERE EMAIL='$owner'";
-        $result2 = mysqli_query($conn, $sql2);
-        if ($conn->query($sql2) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $resultat2 = mysqli_fetch_assoc($result2);
-        $response['owner'][$i]['name']=$resultat2['NOM'];
-        $response['owner'][$i]['firstName']=$resultat2['PRENOM'];
+        $response['owner'][$i]['email']=$row['EMAIL'];
+        $response['owner'][$i]['name']=$resultat['NOM'];
+        $response['owner'][$i]['firstName']=$resultat['PRENOM'];
         $i++;
         
     }

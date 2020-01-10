@@ -7800,9 +7800,8 @@ if($connected){
                                     <label for="phone"  class="nl">Phone</label>
                                     <input type="text" class="form-control" name="phone" class="form-control">
 								</div>             
-                                <div class="separator"></div>
                                 <h4 class="fr text-green addClientTechnicalUser hidden">Données techniques pour le premier utilisateur</h4>
-                                
+                                <div class="separator"></div>
 								<div class="col-md-3">
                                     <label for="$firstNameInitialisation"  class="hidden addClientTechnicalUser fr">Prénom</label>
                                     <label for="firstNameInitialisation"  class="en hidden addClientTechnicalUser">First name</label>
