@@ -45,7 +45,7 @@ include 'include/header2.php';
 		<div class="jumbotron">
       		<h3>Documentation</h3>
       		<p>Nous avons conçu un document explicatif de nos activités. Téléchargez-le et diffusez-le autour de vous à souhait!</p>
-      		<a class="button large black-light button-3d rounded effect icon-left" href="www.kameobikes.com/docs/KAMEO_Description.pdf" download="KAMEO_Description.pdf"><span><i class="fa fa-download"></i>Télécharger</span></a>
+      		<a class="button large black-light button-3d rounded effect icon-left" href="./docs/KAMEO_Description.pdf" download="KAMEO_Description.pdf"><span><i class="fa fa-download"></i>Télécharger</span></a>
 		</div>
     </div>      
 </section>
