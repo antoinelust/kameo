@@ -42,6 +42,11 @@ include 'include/header2.php';
 				</div>
 			</div>
         </div>
+		<div class="jumbotron">
+      		<h3>Documentation</h3>
+      		<p>Nous avons conçu un document explicatif de nos activités. Téléchargez-le et diffusez-le autour de vous à souhait!</p>
+      		<a class="button large black-light button-3d rounded effect icon-left" href="www.kameobikes.com/docs/KAMEO_Description.pdf" download="KAMEO_Description.pdf"><span><i class="fa fa-download"></i>Télécharger</span></a>
+		</div>
     </div>      
 </section>
 
@@ -49,7 +54,10 @@ include 'include/header2.php';
 <script type="text/javascript" src="js/language.js"></script>
 
 <!-- END: SECTION IMAGE FULLSCREEN -->
-<br>
+
+		
+	
+
 <video class="img-responsive" style="display:block; margin: 0 auto;" width="768" height="432" controls poster="images/kameo.png" preload="none">
 	<source src="images/kameo.mp4">
 	<source src="images/kameo.webm"> 
