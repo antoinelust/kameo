@@ -26,7 +26,7 @@ include 'include/header3.php';
 		<div class="col-md-6 text-center" style="background-color: #1D9377">
 			<h2>JE SUIS UN EMPLOYÉ</h2>
 			<span class="">KAMEO Bikes vous fournit en vélos mais aussi en accessoires.<br>
-			<a class="button green button-3d effect fill-vertical" href="employe.php"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
+			<a class="button green button-3d effect fill-vertical" href="achat.php"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			</span>
 		</div>
 	</div>
@@ -40,7 +40,11 @@ include 'include/header3.php';
 			<div class="col-md-8">
 				<!-- <hr class="space"> -->
 				<h1 class="text-green">LA VISION DE KAMEO</h1>
-				<p class="lead"><strong class="text-green">KAMEO Bikes</strong> est une entreprise active dans la mobilité urbaine qui propose, aux entreprises, des solutions complètes de mobilité basées sur le vélo. Nous sommes convaincus que le vélo est le mode de transport urbain de demain mais, surtout d’aujourd’hui, et nous travaillons tous les jours pour le démontrer à nos clients.</p>				<p class="lead"><strong class="text-green">NOS SOLUTIONS</strong> s’appuient sur 3 pôles interdépendants que sont des <strong class="text-green">CYCLES DE QUALITÉ</strong>, une <strong class="text-green">MAINTENANCE CONTINUE</strong> et une <strong class="text-green">GESTION CONNECTÉE</strong> des interactions. La maitrise de ses 3 axes nous permet de garantir une expérience cyclable de qualité, quelles que soient les circonstances.</p>				<p class="lead">Avec KAMEO Bikes, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, elles sont toujours en mouvement.</p>
+				<p class="lead"><strong class="text-green">KAMEO Bikes</strong> est une entreprise active dans la mobilité urbaine qui propose, aux entreprises, des solutions complètes de mobilité basées sur le vélo. Nous sommes convaincus que le vélo est le mode de transport urbain de demain mais, surtout d’aujourd’hui, et nous travaillons tous les jours pour le démontrer à nos clients.</p>
+
+				<p class="lead"><strong class="text-green">NOS SOLUTIONS</strong> s’appuient sur 3 pôles interdépendants que sont des <strong class="text-green">CYCLES DE QUALITÉ</strong>, une <strong class="text-green">MAINTENANCE CONTINUE</strong> et une <strong class="text-green">GESTION CONNECTÉE</strong> des interactions. La maitrise de ses 3 axes nous permet de garantir une expérience cyclable de qualité, quelles que soient les circonstances.</p>
+
+				<p class="lead">Avec KAMEO Bikes, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, elles sont toujours en mouvement.</p>
 				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			</div>
 			<div class="col-md-4 hidden-xs hidden-sm"> <img alt="" src="images/VisionKameo.jpg"> </div>
@@ -79,7 +83,10 @@ include 'include/header3.php';
 			<div class="col-md-8">
 				<!-- <hr class="space"> -->
 				<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-				<p class="">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>				<p class="">Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.</p>
+				<p class="">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. 
+C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>
+
+				<p class="">Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.</p>
 				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			</div>
 		</div>
@@ -94,7 +101,11 @@ include 'include/header3.php';
 			<div class="col-md-8">
 				<!-- <hr class="space"> -->
 				<h1 class="text-green">GESTION DE FLOTTE</h1>
-				<p class="">Gérer une flotte de vélos partagés demande de l’organisation et du temps ! MyKAMEO a été développé pour permettre à nos clients de profiter de leurs vélos sans devoir s’en soucier.</p>				<p class="">La plateforme MyKAMEO est une solution IT de gestion qui permet à chaque utilisateur de se connecter sur un espace sécurisé, de réserver un vélo de la flotte partagée de l’entreprise et de donner du feedback quant à l’état et l’utilisation de celui-ci. Elle permet également au Fleet Manager de contrôler la flotte, les réservations et de paramétrer l’ensemble. Des statistiques mensuelles sur l’utilisation des vélos et leur état lui sont envoyées automatiquement afin de pouvoir suivre facilement l’évolution du projet vélo !</p>				<p class="">La demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>
+				<p class="">Gérer une flotte de vélos partagés demande de l’organisation et du temps ! MyKAMEO a été développé pour permettre à nos clients de profiter de leurs vélos sans devoir s’en soucier.</p>
+
+				<p class="">La plateforme MyKAMEO est une solution IT de gestion qui permet à chaque utilisateur de se connecter sur un espace sécurisé, de réserver un vélo de la flotte partagée de l’entreprise et de donner du feedback quant à l’état et l’utilisation de celui-ci. Elle permet également au Fleet Manager de contrôler la flotte, les réservations et de paramétrer l’ensemble. Des statistiques mensuelles sur l’utilisation des vélos et leur état lui sont envoyées automatiquement afin de pouvoir suivre facilement l’évolution du projet vélo !</p>
+
+				<p class="">La demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>
 				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			</div>
 			<div class="col-md-4 hidden-xs hidden-sm"> <img alt="" src="images/Borne.jpg"> </div>

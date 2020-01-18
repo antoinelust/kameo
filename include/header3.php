@@ -144,9 +144,9 @@
 									<li class="en"><a href="achat.php">Bike Purchase</a></li>
 									<li class="nl"><a href="achat.php">fiets aankoop</a></li>
 									
-									<li class="fr"><a href="contact.php">Contact</a></li>
-									<li class="en"><a href="contact.php">Contact</a></li>
-									<li class="nl"><a href="contact.php">Contact</a></li>
+									<li class="fr"><a href="contact2.php">Contact</a></li>
+									<li class="en"><a href="contact2.php">Contact</a></li>
+									<li class="nl"><a href="contact2.php">Contact</a></li>
 									
 									<!--
 									
