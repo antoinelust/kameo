@@ -467,59 +467,51 @@ include 'include/header2.php';
     
     <!--End: Square icons-->
 	
-	<!--
-<section class="background-dark">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8"> </div>
-			<div class="col-md-4 text-center text-light">
-				<p class="lead fr">Expérimentez ces avantages par vous-mêmes!</p>
-				<p class="lead en">Experiment those benefits by yourself!</p>
-				<p class="lead nl">Experimenteer die voordelen zelf!</p>
-				<a class="button large green button-3d rounded icon-left fr" href="essai.php"><span><i class="fa fa-bicycle"></i>Essayez</span></a>
-				<a class="button large green button-3d rounded icon-left en" href="essai.php"><span><i class="fa fa-bicycle"></i>Try me</span></a>
-				<a class="button large green button-3d rounded icon-left nl" href="essai.php"><span><i class="fa fa-bicycle"></i>Testrit</span></a>
-				<a class="button large black-light button-3d rounded icon-left fr" href="contact.php"><span><i class="fa fa-send"></i>Contactez-nous</span></a>
-				<a class="button large black-light button-3d rounded icon-left en" href="contact.php"><span><i class="fa fa-send"></i>Talk to us</span></a>
-				<a class="button large black-light button-3d rounded icon-left nl" href="contact.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a>
-		</div>
-	</div>
-</section>	
-	-->
+ <div class="jumbotron jumbotron-center jumbotron-fullwidth background-colored text-light">
+	  <div class="container">
+	    <h3>Besoin d'un complément d'information?</h3>
+	    <p>N'hésitez pas à nous contacter si vous voulez en savoir plus sur nos solutions.</p>
+	    <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-paper-plane-o"></i>Contactez-nous!</span></a> </div>
+	</div>	
 
 
 
 		
-		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-					<br>BE 0681.879.712 
-					<br>+32 498 72 75 46 </div>
-					<br>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				<!--
-				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-				-->
-				<br>
-				<br>
+				<!-- FOOTER -->
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	           
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
 				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									
+									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+								</ul>
+					</div>
+					
+					<br>
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+			<!-- END: FOOTER -->
 
 
 	</div>

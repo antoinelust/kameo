@@ -13,9 +13,11 @@
     *.[oa]
     $ cat Documentation/.gitignore
     # ignore connexion.php files that contain information to connect to db
-    *connexion.php
-    *mp4
-    factures/
+    !/include/connexion.php
+    !/factures/
+    !/images_bikes/*
+    !/images/*
+     !/video/*
     $ git status
     [...]
     # Untracked files:

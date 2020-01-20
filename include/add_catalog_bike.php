@@ -6,21 +6,23 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-$user = $_POST["widget-addCatalog-form-user"];
-$brand = $_POST["widget-addCatalog-form-brand"];
-$model = $_POST["widget-addCatalog-form-model"];
-$frameType = $_POST["widget-addCatalog-form-frame"];
-$utilisation = $_POST["widget-addCatalog-form-utilisation"];
-$electric = $_POST["widget-addCatalog-form-electric"];
+$user = $_POST["user"];
+$brand = $_POST["brand"];
+$model = $_POST["model"];
+$frameType = $_POST["frame"];
+$utilisation = $_POST["utilisation"];
+$electric = $_POST["electric"];
 $buyingPrice = $_POST["buyPrice"];
-$price = $_POST["widget-addCatalog-form-price"];
-$stock = $_POST["widget-addCatalog-form-stock"];
-$link = $_POST["widget-addCatalog-form-link"];
+$price = $_POST["price"];
+$stock = $_POST["stock"];
+$link = $_POST["link"];
+$display=isset($_POST['display']) ? "Y" : "N";
 
-if(isset($_FILES['widget-addCatalog-form-file']) && isset($_FILES['widget-addCatalogMini-form-file'])){
+
+if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
     
     $extensions = array('.jpg');
-    $extension = strrchr($_FILES['widget-addCatalog-form-file']['name'], '.');
+    $extension = strrchr($_FILES['file']['name'], '.');
     if(!in_array($extension, $extensions))
     {
           errorMessage("ES0041");
@@ -28,7 +30,7 @@ if(isset($_FILES['widget-addCatalog-form-file']) && isset($_FILES['widget-addCat
 
 
     $taille_maxi = 6291456;
-    $taille = filesize($_FILES['widget-addCatalog-form-file']['tmp_name']);
+    $taille = filesize($_FILES['file']['tmp_name']);
     if($taille>$taille_maxi)
     {
           errorMessage("ES0023");
@@ -40,7 +42,7 @@ if(isset($_FILES['widget-addCatalog-form-file']) && isset($_FILES['widget-addCat
 
     $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
 
-     if(move_uploaded_file($_FILES['widget-addCatalog-form-file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+     if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
      {
         $upload=true;
         $path= $dossier . $fichier;
@@ -49,7 +51,7 @@ if(isset($_FILES['widget-addCatalog-form-file']) && isset($_FILES['widget-addCat
      {
           errorMessage("ES0024");
      }    
-    $extension = strrchr($_FILES['widget-addCatalogMini-form-file']['name'], '.');
+    $extension = strrchr($_FILES['fileMini']['name'], '.');
     if(!in_array($extension, $extensions))
     {
           errorMessage("ES0041");
@@ -57,7 +59,7 @@ if(isset($_FILES['widget-addCatalog-form-file']) && isset($_FILES['widget-addCat
 
 
     $taille_maxi = 6291456;
-    $taille = filesize($_FILES['widget-addCatalogMini-form-file']['tmp_name']);
+    $taille = filesize($_FILES['fileMini']['tmp_name']);
     if($taille>$taille_maxi)
     {
           errorMessage("ES0023");
@@ -69,7 +71,7 @@ if(isset($_FILES['widget-addCatalog-form-file']) && isset($_FILES['widget-addCat
 
     $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
 
-     if(move_uploaded_file($_FILES['widget-addCatalogMini-form-file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+     if(move_uploaded_file($_FILES['fileMini']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
      {
         $upload=true;
         $path= $dossier . $fichier;
@@ -99,7 +101,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
  
     include 'connexion.php';
      
-	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, LINK) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$link')";
+	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '')";
      
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

@@ -19,8 +19,11 @@ $buildingEnd=$_POST['widget-new-booking-building-end'];
 $lockingcode=$_POST['widget-new-booking-locking-code'];
 
 $temp=new DateTime($_POST['widget-new-booking-date-start']);
-$temp->sub(new DateInterval('PT15M'));
 $dateStart=strtotime($temp->format('Y-m-d H:i'));
+
+$temp->sub(new DateInterval('PT15M'));
+$dateStart2=strtotime($temp->format('Y-m-d H:i'));
+
 
 $temp=new DateTime($_POST['widget-new-booking-date-end']);
 $dateEnd=strtotime($temp->format('Y-m-d H:i'));
@@ -30,7 +33,9 @@ $dateEnd=strtotime($temp->format('Y-m-d H:i'));
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
-    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END > '$dateStart' and bb.DATE_END < '$dateEnd') OR (bb.DATE_START>'$dateStart' and bb.DATE_START<'$dateEnd')))";
+    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END > '$dateStart' and bb.DATE_END < '$dateEnd') OR (bb.DATE_START>'$dateStart' and bb.DATE_START<'$dateEnd')))";    
+    
+    
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -92,7 +97,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
         $building=$resultat['BUILDING_CODE'];
 
         
-        $sql= "INSERT INTO locking_code (ID_reservation, USR_MAJ, DATE_BEGIN, DATE_END, BUILDING_START, CODE, VALID) VALUES ('$ID', 'new_booking.php', '$dateStart', '$dateEnd', '$building', '$lockingcode', 'Y')";
+        $sql= "INSERT INTO locking_code (ID_reservation, USR_MAJ, DATE_BEGIN, DATE_END, BUILDING_START, CODE, VALID) VALUES ('$ID', 'new_booking.php', '$dateStart2', '$dateEnd', '$building', '$lockingcode', 'Y')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

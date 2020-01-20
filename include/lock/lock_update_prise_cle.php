@@ -1,36 +1,43 @@
 <?php
-include 'connexion2.php';
+include '../connexion.php';
 
-try
-{
-	$bdd = new PDO('mysql:host='.$servername.';dbname='.$dbname.';charset=utf8', $username, $password);
+$building=$_GET['building'];
+$emplacement=$_GET['emplacement'];
+$code=$_GET['code'];
+
+
+$sql="SELECT ID_reservation from locking_code WHERE BUILDING_START = '$building' AND CODE = '$code'";
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
+$result = mysqli_query($conn, $sql);  
+$resultat = mysqli_fetch_assoc($result);  
+$conn->close();
+
+$reservationID=$resultat['ID_reservation'];
+
+
+include '../connexion.php';
+$sql="UPDATE locking_bikes SET MOVING='Y', PLACE_IN_BUILDING='-1', RESERVATION_ID='$reservationID' WHERE BUILDING = '$building' AND PLACE_IN_BUILDING = '$emplacement'";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
+$result = mysqli_query($conn, $sql);  
+$conn->close();
 
-
-
-$reponse = $bdd->query('SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE LIKE '.$_GET['code'].';');
-
-while ($donnees = $reponse->fetch())
-{
-	$ID_booking=$donnees['ID_reservation'];
-    $reponse = $bdd->query('UPDATE locking_bikes SET RESERVATION_ID = \''.$ID_booking.'\' WHERE BUILDING LIKE \''.$_GET['building'].'\' AND PLACE_IN_BUILDING = '.$_GET['emplacement'].';');
+include '../connexion.php';
+$sql="UPDATE locking_code SET VALID='N' WHERE BUILDING_START = '$building' AND CODE = '$code'";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
+$result = mysqli_query($conn, $sql);  
+$conn->close();
 
-
-
-$reponse = $bdd->query('UPDATE locking_bikes SET MOVING = \'Y\', PLACE_IN_BUILDING = -1 WHERE BUILDING LIKE \''.$_GET['building'].'\' AND PLACE_IN_BUILDING = '.$_GET['emplacement'].';');
-
-$reponse = $bdd->query('UPDATE locking_code SET VALID = \'N\' WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = '.$_GET['code'].';');
-
-
-
-
-
-//print_r($bdd->errorInfo());
-
-$reponse->closeCursor();
 ?>

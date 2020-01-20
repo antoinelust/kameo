@@ -1,34 +1,40 @@
 <?php
-include 'connexion2.php';
 
-try
-{
-	$bdd = new PDO('mysql:host='.$servername.';dbname='.$dbname.';charset=utf8', $username, $password);
+
+$building=$_GET['building'];
+$frame_number=$_GET['frame_number'];
+$emplacement=$_GET['emplacement'];
+
+include '../connexion.php';
+$sql="SELECT RESERVATION_ID from locking_bikes WHERE BUILDING = '$building' AND FRAME_NUMBER = '$frame_number'";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
+$result = mysqli_query($conn, $sql);  
+$resultat = mysqli_fetch_assoc($result);  
+$conn->close();
+
+$reservationID=$resultat['RESERVATION_ID'];
+
+include '../connexion.php';
+$sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='mykameo', STATUS='Closed' WHERE ID='$reservationID'";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
+$result = mysqli_query($conn, $sql);  
+$conn->close();
 
-$reponse = $bdd->query('SELECT RESERVATION_ID FROM locking_bikes WHERE BUILDING LIKE \''.$_GET['building'].'\' AND FRAME_NUMBER = \''.$_GET['frame_number'].'\';');
-
-//print_r($bdd->errorInfo());
-
-while ($donnees = $reponse->fetch())
-{
-	$ID_booking=$donnees['RESERVATION_ID'];
-    $reponse = $bdd->query('UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=\'mykameo\', STATUS = \'Closed\' WHERE ID LIKE \''.$ID_booking.'\';');
+include '../connexion.php';
+$sql="UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='mykameo', MOVING='N', PLACE_IN_BUILDING='$emplacement', BUILDING='$building' WHERE FRAME_NUMBER='$frame_number'";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
-
-
-
-$temp=new DateTime();
-$dateNow=strtotime($temp->format('Y-m-d H:i'));
-
-
-$reponse = $bdd->query('UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=\'mykameo\', MOVING = \'N\', PLACE_IN_BUILDING = '.$_GET['emplacement'].', BUILDING = \''.$_GET['building'].'\' WHERE FRAME_NUMBER LIKE \''.$_GET['frame_number'].'\';');
-
-//print_r($bdd->errorInfo());
-
-$reponse->closeCursor();
+$result = mysqli_query($conn, $sql);  
+$conn->close();
 ?>

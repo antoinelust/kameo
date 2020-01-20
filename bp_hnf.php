@@ -46,7 +46,7 @@ include 'include/header2.php';
 
 				</div>
 				
-				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les articles</a>
+				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les Bons Plans</a>
 
 			</div>
 		</div>
@@ -66,7 +66,7 @@ include 'include/header2.php';
 					<div class="col-sm-12">
 						<h4 class="text-green">Ce vélo vous intéresse?</h4>
 						<p>Envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat HNF_XD2 homme&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
-						<p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p>
+						<!-- <p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p> -->
 					</div>
 				</div>
 			</div>
@@ -95,6 +95,8 @@ include 'include/header2.php';
                 <div class="social-icons center">
 							<ul>
 								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+								
+								<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 								
 								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 							</ul>

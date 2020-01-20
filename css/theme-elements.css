@@ -7195,6 +7195,11 @@ Responsive utilities
 .product .product-new {
     background: #00c0e9;
 }
+
+.product .product-sale-off-red {
+    background: #d6284b;
+}
+
 .product .product-hot {
     background: #d6284b;
 }
@@ -7205,6 +7210,21 @@ Responsive utilities
     width: auto;
 }
 .product .product-sale-off {
+    border-radius: 12px 0 0;
+    bottom: 0px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    height: 42px;
+    line-height: 42px;
+    position: absolute;
+    right: 0px;
+    text-align: center;
+    text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.14);
+    width: 88px;
+    z-index: 5;
+}
+.product .product-sale-off-red {
     border-radius: 12px 0 0;
     bottom: 0px;
     color: #ffffff;
