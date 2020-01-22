@@ -3,10 +3,10 @@ session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
 include 'globalfunctions.php';
 
@@ -34,9 +34,9 @@ if($priceTemp<2500){
 }
 
 // Calculation of leasing price based on coefficient and retail price
-    
+
 $response['retailPrice']=$retailPrice;
-$leasingPrice=round(($priceTemp)*($coefficient)/100); 	
+$leasingPrice=round(($priceTemp)*($coefficient)/100);
 $response['leasingPrice']=$leasingPrice;
 $rentingPrice=round(($priceTemp)*($coefficient)*1.5/100);
 $response['rentingPrice']=$rentingPrice;

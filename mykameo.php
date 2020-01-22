@@ -9460,101 +9460,328 @@ if($connected){
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
             </div>
             <div class="modal-body">
-                <div class="row">
+                <div class="row templateBike">
                     <div class="col-sm-4">
-                      <h4 class="fr text-green">Nombre de vélos</h4>
-                      <h4 class="en text-green">Bike number</h4>
-                      <h4 class="nl text-green">Nombre de vélos</h4>
+                      <h4 class="fr text-green">Nombre de vélos: </h4>
+                      <h4 class="en text-green">Bike number: </h4>
+                      <h4 class="nl text-green">Nombre de vélos: </h4>
                       <i class="fa fa-bicycle"></i> <span class="bikeNumber">0</span>
                       <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
                       <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
                     </div>
-                    <div class="col-sm-12 bikeNumberTable">
+                    <div class="col-sm-12 bikeNumberTable hideAt0">
                       <div class="col-sm-2 bLabel">
 
                       </div>
-                      <div class="col-sm-3 bBrand">
-                        <label for="bBrand" class="fr">Marque</span>
+                      <div class="col-sm-2 bBrand">
+                        <label for="bBrand" class="fr">MARQUE - MODÈLE</span>
                       </div>
-                      <div class="col-sm-3 bModel">
-                        <label for="bModel" class="fr">Modèle</span>
+                      <div class="col-sm-2 pAchat">
+                        <label for="pAchat" class="fr">PRIX ACHAT CONSTRUCTEUR</span>
+                      </div>
+                      <div class="col-sm-2 pVenteHTVA">
+                        <label for="pVenteHTVA" class="fr">PRIX VENTE HTVA</span>
+                      </div>
+                      <div class="col-sm-2 leasing">
+                        <label for="leasing" class="fr">LEASING</span>
+                      </div>
+                      <div class="col-sm-2 marge">
+                        <label for="marge" class="fr">MARGE</span>
+                      </div>
+                    </div>
+                </div>
+                <div class="row templateBoxes">
+                    <div class="col-sm-4">
+                      <h4 class="fr text-green">Nombre de boxe: </h4>
+                      <h4 class="en text-green">Boxes number: </h4>
+                      <h4 class="nl text-green">Nombre de boxes: </h4>
+                      <i class="fa fa-bicycle"></i> <span class="boxesNumber">0</span>
+                      <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                      <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+                    </div>
+                    <div class="col-sm-12 boxesNumberTable hideAt0">
+                      <div class="col-sm-2 boxLabel">
+
+                      </div>
+                      <div class="col-sm-2 boxModel">
+                        <label for="bBrand" class="fr">BOX</span>
+                      </div>
+                      <div class="col-sm-2 boxProdPrice">
+                        <label for="pAchat" class="fr">PRIX PRODUCTION</span>
+                      </div>
+                      <div class="col-sm-2 boxInstallationPrice">
+                        <label for="pVenteHTVA" class="fr">PLACEMENT HTVA</span>
+                      </div>
+                      <div class="col-sm-2 boxLocationPrice">
+                        <label for="leasing" class="fr">LOCATION MENSUELLE</span>
+                      </div>
+                      <div class="col-sm-2 boxMarge">
+                        <label for="marge" class="fr">MARGE</span>
+                      </div>
+                    </div>
+                </div>
+                <div class="row templateOtherCosts">
+                    <div class="col-sm-4">
+                      <h4 class="fr text-green">Autres couts: </h4>
+                      <h4 class="en text-green">Other costs: </h4>
+                      <h4 class="nl text-green">Autres couts: </h4>
+                      <i class="fa fa-bicycle"></i> <span class="boxesNumber">0</span>
+                      <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                      <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+                    </div>
+                    <div class="col-sm-12 otherCostsTable hideAt0">
+                      <div class="col-sm-2 otherCostsLabel">
+
+                      </div>
+                      <div class="col-sm-6 OtherCostsIntitule">
+                        <label for="bBrand" class="fr">FRAIS AUTRES</span>
+                      </div>
+                      <div class="col-sm-4 boxProdPrice">
+                        <label for="pAchat" class="fr">PRIX HTVA</span>
                       </div>
                     </div>
                 </div>
             </div>
             <script type="text/javascript">
+            //AJAX
 
-            //requete ajax récupérant la liste des vélos par marque
+            //liste des vélos
             function get_all_bikes() {
               return  $.ajax({
-                    url: 'include/get_bikes_catalog.php',
-                    type: 'post',
-                    data: {},
-                    success: function(response){
-                        if(response.response == 'error') {
-                            console.log(response.message);
-                        }
-                      }
-                    });
-                }
+                  url: 'include/get_bikes_catalog.php',
+                  type: 'post',
+                  data: {},
+                  success: function(response){
+                    if(response.response == 'error') {
+                        console.log(response.message);
+                    }
+                  }
+                });
+              }
+
+              //récuperation du prix de leasing en fct du prix HTVA
+              function get_leasing_price(retailPrice){
+                return  $.ajax({
+                  url: 'include/get_prices.php',
+                  method: 'post',
+                  data: {'retailPrice' : retailPrice},
+                  success: function(response){
+                    if(response.response == 'error') {
+                        console.log(response.message);
+                    }
+                  }
+                });
+              }
+
+              //liste des boxes
+              function get_all_boxes() {
+                return  $.ajax({
+                  url: 'include/get_boxes_catalog.php',
+                  type: 'post',
+                  data: {},
+                  success: function(response){
+                    if(response.response == 'error') {
+                      console.log(response.message);
+                    }
+                  }
+                });
+              }
+
+
+              //FIN AJAX
 
               //création des variables
+              var bikes = [];
               get_all_bikes().done(function(response){
-                var plus = $("#template").find('.glyphicon-plus');
-                var minus = $("#template").find('.glyphicon-minus');
+                var plus = $(".templateBike").find('.glyphicon-plus');
+                var minus = $(".templateBike").find('.glyphicon-minus');
+                //tableau bikes avec tout les champs
+
+                var bikeModels = "<option hidden disabled selected value></option>";
+
                 for(var i = 0; i < response.bikeNumber; i++){
-                  console.log(response.bike[i].id);
+                  bikes[i]=response.bike[i];
                 }
-
-
-
+                //tri du tableau par marques
+                bikes.sort(compare);
 
               //gestion du moins au lancement de la page
-              checkMinus();
+              checkMinus('.templateBike','.bikeNumber');
+
+              //generation des Options
+
+              //velo
+              //autres ajouts
+
+              for (var i = 0; i < bikes.length; i++) {
+                var elec = "";
+                if(bikes[i].electric == 'Y'){
+                  elec = ' - Elec';
+                }
+                bikeModels += '<option value="' + bikes[i].id + '">' + bikes[i].brand + ' - ' + bikes[i].model + ' - ' + bikes[i].frameType + elec + '</option>';
+              }
 
               //a chaque modification du nombre de vélo
-
               //ajout
-              $('.glyphicon-plus').on("click",function(){
+              $('.templateBike .glyphicon-plus').on("click",function(){
                 var bikeNumber = $("#template").find('.bikeNumber').html()*1+1;
                 $('#template').find('.bikeNumber').html(bikeNumber);
 
 
                 //creation du div contenant
-                $('#template').find('.row').append('<div class="col-sm-12 bikeNumberTable'+(bikeNumber)+'"><div class="col-sm-2 bLabel"></div><div class="col-sm-3 bBrand"></div><div class="col-sm-3 bModel"></div></div>');
+                $('#template').find('.templateBike').append('<div class="col-sm-12 bikeNumberTable'+(bikeNumber)+' bikeRow"><div class="col-sm-2 bLabel"></div><div class="col-sm-2 bBrand"></div><div class="col-sm-2 pAchat"></div><div class="col-sm-2 pVenteHTVA"></div><div class="col-sm-2 leasing"></div><div class="col-sm-2 marge"></div></div>');
 
                 //label selon la langue
                 $('#template').find('.bikeNumberTable'+(bikeNumber)+'>.bLabel').append('<label class="fr">Vélo '+ bikeNumber +'</label>');
                 /*$('#template').find('.bikeNumberTable'+bikeNumber+'>.bLabel').append('<span class="en">Bike '+ bikeNumber +'</span>');
                 $('#template').find('.bikeNumberTable'+bikeNumber+'>.bLabel').append('<span class="nl">Vélo '+ bikeNumber +'</span>');*/
 
-                //autres ajouts
-                /*$('#template').find('.bikeNumberTable'+(bikeNumber)+'>.bBrand').append('<select name="bBrand'+ (bikeNumber) +'"></select>');
-                $('#template').find('.bikeNumberTable'+(bikeNumber)+'>.bModel').append('<select name="bModel'+ (bikeNumber) +'"></select>');*/
-                checkMinus();
+                $('#template').find('.bikeNumberTable'+(bikeNumber)+'>.bBrand').append('<select name="bBrand" class="select'+bikeNumber+'" class="form-control required">'+bikeModels+'</select>');
+
+
+                //gestion du select du velo
+                $('.templateBike select').on('change',function(){
+
+                  var that ='.'+ $(this).attr('class');
+                  var id =$(that).val();
+                  var pAchat = bikes[id].buyingPrice + '€ ';
+                  var pVenteHTVA = bikes[id].priceHTVA + '€ ';
+                  var marge = (bikes[id].priceHTVA - bikes[id].buyingPrice).toFixed(2) + '€';
+                  get_leasing_price(bikes[id].priceHTVA).done(function(response){
+
+                    //recuperation du prix leasing
+
+
+
+                    //gestion de prix null
+                    if (bikes[id].buyingPrice == null) {
+                      pAchat = 'non renseigné';
+                      marge = 'non calculable';
+                    }
+                    $(that).parents('.bikeRow').find('.pAchat').html(pAchat);
+                    $(that).parents('.bikeRow').find('.pVenteHTVA').html(pVenteHTVA);
+                    $(that).parents('.bikeRow').find('.marge').html(marge);
+                    $(that).parents('.bikeRow').find('.leasing').html(response.leasingPrice + '€');
+                  });
+                });
+                checkMinus('.templateBike','.bikeNumber');
               });
 
               //retrait
-              $('.glyphicon-minus').on("click",function(){
+              $('.templateBike .glyphicon-minus').on("click",function(){
                 var bikeNumber = $("#template").find('.bikeNumber').html();
                 if(bikeNumber > 0){
                   $('#template').find('.bikeNumber').html(bikeNumber*1 - 1);
                   $('#template').find('.bikeNumberTable'+bikeNumber).slideUp().remove();
                 }
-                checkMinus();
-              });
+                checkMinus('.templateBike','.bikeNumber');
               });
 
+
+            });
+
+
+            //boxes
+            var boxes = [];
+            get_all_boxes().done(function(response){
+              //variables
+
+              for(var i = 0; i < response.boxesNumber; i++){
+                boxes[i]=response.boxes[i];
+              }
+
+              //gestion bouton moins
+              checkMinus('.templateBoxes','.boxesNumber');
+
+              //ajout
+              $('.templateBoxes .glyphicon-plus').on("click",function(){
+                //gestion boxNumber
+                var boxesNumber = $("#template").find('.boxesNumber').html()*1+1;
+                $('#template').find('.boxesNumber').html(boxesNumber);
+
+                //boxModels
+                var boxesModels = "<option hidden disabled selected value></option>";
+                for (var i = 0; i < boxes.length; i++) {
+                  boxesModels += '<option value="'+boxes[i].id+'">'+boxes[i].model+'</option>';
+                }
+
+
+
+
+                //creation du div contenant
+                $('#template').find('.templateBoxes').append('<div class="col-sm-12 boxesNumberTable'+(boxesNumber)+' boxRow"><div class="col-sm-2 boxLabel"></div><div class="col-sm-2 boxModel"></div><div class="col-sm-2 boxProdPrice"></div><div class="col-sm-2 boxInstallationPrice"></div><div class="col-sm-2 boxLocationPrice"></div><div class="col-sm-2 boxMarge"></div></div>');
+
+                //label selon la langue
+                $('#template').find('.boxesNumberTable'+(boxesNumber)+'>.boxLabel').append('<label class="fr">Box '+ boxesNumber +'</label>');
+
+                //select boxModel
+                $('#template').find('.boxesNumberTable'+(boxesNumber)+'>.boxModel').append('<select name="boxModels" class="select'+boxesNumber+'" class="form-control required">'+boxesModels+'</select>');
+
+                //gestion du select de la box
+                $('.templateBoxes select').on('change',function(){
+
+                  var that ='.'+ $('.templateBoxes select').attr('class');
+                  var boxId =$(that).val();
+                  console.log(boxId + ' ' + boxes);
+                  var productionPrice = boxes[boxId].productionPrice + '€ ';
+                  var installationPrice = boxes[boxId].installationPrice + '€ ';
+                  var locationPrice = boxes[boxId].locationPrice + '€ ';
+                  var marge = (boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 + (boxes[boxId].locationPrice*36)).toFixed(2) + '€';
+
+                  $(that).parents('.boxRow').find('.boxProdPrice').html(productionPrice);
+                  $(that).parents('.boxRow').find('.boxInstallationPrice').html(installationPrice);
+                  $(that).parents('.boxRow').find('.boxMarge').html(marge);
+                  $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice);
+
+                });
+                checkMinus('.templateBoxes','.boxesNumber');
+              });
+
+
+              //retrait
+              $('.templateBoxes .glyphicon-minus').on("click",function(){
+                var boxesNumber = $("#template").find('.boxesNumber').html();
+                if(boxesNumber > 0){
+                  $('#template').find('.boxesNumber').html(boxesNumber*1 - 1);
+                  $('#template').find('.boxesNumberTable'+boxesNumber).slideUp().remove();
+                }
+                checkMinus('.templateBoxes','.boxesNumber');
+              });
+            });
+
+            //autres couts possibles
+
+
+
               //gestion du bouton moins et du tableau
-              function checkMinus(){
-                if ($('#template').find('.bikeNumber').html() == '0') {
-                  $('#template').find('.glyphicon-minus').fadeOut();
-                  $('#template').find('.bikeNumberTable').hide();
+              function checkMinus(select, valueLocation){
+                if ($(select).find(valueLocation).html() == '0') {
+                  $(select).find('.glyphicon-minus').fadeOut();
+                  $(select).find('.hideAt0').hide();
                 }else{
-                  $('#template').find('.glyphicon-minus').fadeIn();
-                  $('#template').find('.bikeNumberTable').show();
+                  $(select).find('.glyphicon-minus').fadeIn();
+                  $(select).find('.hideAt0').show();
                 }
               }
+
+              //tri de tableau d'objets via une propriété string_calendar
+              function compare(a, b) {
+                // Use toUpperCase() to ignore character casing
+                const varA = a.brand.toUpperCase();
+                const varB = b.brand.toUpperCase();
+
+                let comparison = 0;
+                if (varA > varB) {
+                  comparison = 1;
+                } else if (varA < varB) {
+                  comparison = -1;
+                }
+                return comparison;
+              }
+
+
+              //gestion des boxes
+
 
 
             </script>
