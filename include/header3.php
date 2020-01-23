@@ -31,7 +31,7 @@
 	
 	
 	<link rel="shortcut icon" href="images/favicon.png">
-	<title>KAMEO Bikes | Mobilité urbaine pour entreprises</title>
+	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>
 
 	<!-- Bootstrap Core CSS -->
 	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -136,13 +136,21 @@
 									<li class="en"><a href="index2.php">Home</a></li>
 									<li class="nl"><a href="index2.php">Home</a></li>
 									
+									<li class="fr"><a href="velo-partage.php">Vélo partagé</a></li>
+									<li class="en"><a href="velo-partage.php">Shared bike</a></li>
+									<li class="nl"><a href="velo-partage.php">Gedeelde fiets</a></li>
+									
+									<li class="fr"><a href="velo-personnel.php">Vélo personnel</a></li>
+									<li class="en"><a href="velo-personnel.php">Personal bike</a></li>
+									<li class="nl"><a href="velo-personnel.php">Persoonlijke fiets</a></li>
+									
 									<li class="fr"><a href="leasing.php">Leasing Vélo</a></li>
 									<li class="en"><a href="leasing.php">Bike Leasing</a></li>
 									<li class="nl"><a href="leasing.php">Bike Leasing</a></li>
 									
-									<li class="fr"><a href="achat.php">Achat Vélo</a></li>
-									<li class="en"><a href="achat.php">Bike Purchase</a></li>
-									<li class="nl"><a href="achat.php">fiets aankoop</a></li>
+									<li class="fr"><a href="achat.php">Catalogue</a></li>
+									<li class="en"><a href="achat.php">Catalog</a></li>
+									<li class="nl"><a href="achat.php">Catalogus</a></li>
 									
 									<li class="fr"><a href="contact2.php">Contact</a></li>
 									<li class="en"><a href="contact2.php">Contact</a></li>
