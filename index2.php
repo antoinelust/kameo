@@ -41,19 +41,20 @@ include 'include/header3.php';
 				<h2 class="modal-title" id="modal-label">Je suis un employeur et je recherche</h2>
 			</div>
 			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-6">
+				<div class="row text-center">
+					<div class="col-md-12">
 						<h4 class="text-green">Des vélos partagés</h4>
 						<p>Je souhaite mettre à disposition de mes employés une flotte de vélos.</p>
 						<a class="button green button-3d effect fill-vertical" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
 					</div>
-					<div class="col-md-6">
+					<div class="separator"></div>
+					<div class="col-md-12">
 						<h4 class="text-green">Des vélos personnels</h4>
 						<p>Je souhaite proposer à mes employés d'acheter un vélo via mon entreprise.</p>
 						<a class="button green button-3d effect fill-vertical" href="velo-personnel.php"><span><i class="fa fa-user"></i>En savoir plus</span></a>
 					</div>
 					<div class="separator"></div>
-					<div class="col-md-12 text-center">
+					<div class="col-md-12">
 						<h4 class="text-red">Un système de gestion de flotte</h4>
 						<p>Je dispose déjà de vélos ou de véhicules mais j'aimerais optimiser leur utilisation avec un système simple et fluide.</p>
 						<a class="button red button-3d effect fill-vertical" href="velo-personnel.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>

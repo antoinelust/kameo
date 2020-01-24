@@ -57,9 +57,24 @@ include 'include/header3.php';
 							<p>Tous les vélos que nous proposons sont à assistance électrique, pour un plus grand confort lors des déplacements de vos collaborateurs. Ils sont équipés de garde-bous, phares, porte bagage. Mais nous pouvons y ajouters différentes options telles que des sacoches. De plus, les vélos peuvent être brandés avec le logo de votre entreprise.</p>
 			 
 						</div>
+						<!--
 						<div class="col-md-6">
-							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
-						</div>
+							<div class="carousel" data-carousel-col="1">
+	                        	<img alt="image" src="images/Flotte_BZen.jpg">
+	                        	<img alt="image" src="images/Flotte_BZen.jpg">
+	                    	</div>
+	                    </div>
+	                    -->
+	                    
+	                    <div class="col-md-6">
+		                    <div id="slider">
+								<div id="slider-carousel">
+				                	<img alt="image" src="images/Flotte_BZen.jpg" class="slider-content">
+				                	<img alt="image" src="images/Flotte_BZen2.jpg" class="slider-content">
+				                	<img alt="image" src="images/Flotte_BZen3.jpg" class="slider-content">
+		                    	</div>
+		                    </div>
+	                    </div>
 					</div>
 				</div>
 			</section>
