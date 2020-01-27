@@ -9,6 +9,8 @@
     #       src/internal.o
     [...]
     $ cat .git/info/exclude
+    *html2pdfTest.php
+    *html2pdfTestContent.php
     # ignore objects and archives, anywhere in the tree.
     *.[oa]
     $ cat Documentation/.gitignore
@@ -24,3 +26,9 @@
     [...]
     #       Documentation/foo.html
     [...]
+
+  test.pdf
+
+html2pdfTest.php
+
+html2pdfTestContent.php
