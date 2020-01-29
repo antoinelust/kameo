@@ -32,6 +32,7 @@ include 'include/activitylog.php';
 
 <script type="text/javascript">
 var color=Chart.helpers.color;
+var companyId;
 
 
 window.addEventListener("DOMContentLoaded", function(event) {
@@ -3783,7 +3784,7 @@ if($connected){
         }
         if(response.response == 'success'){
           get_company_boxes(response.internalReference);
-
+          companyId = response.ID;
           $('#widget-companyDetails-form input[name=ID]').val(response.ID);
           document.getElementById('companyName').value = response.companyName;
           document.getElementById('companyStreet').value = response.companyStreet;
@@ -9467,6 +9468,7 @@ if($connected){
               </div>
               <div class="modal-body">
                 <form role="form" class="isLeasing" id="templateForm" action="include/offer_template.php" method="post" role="form" novalidate="novalidate">
+                  <input type="hidden" name="companyIdTemplate" id ="companyIdTemplate" value="" />
                   <div class="row buyOrLeasing">
                     <div class="col-sm-4">
                       <h4 class="fr text-green">Général: </h4>
@@ -9481,6 +9483,7 @@ if($connected){
                         <select name="buyOrLeasing" id="buyOrLeasingSelect" class="form-control required" aria-required="true">
                           <option value="leasing" selected>Leasing</option>
                           <option value="buy">Achat</option>
+                          <option value="both"> Achat et leasing</option>
                         </select>
                         <!--<input type="checkbox" class="leasingCheck form-control" name="isLeasing" value="leasing" checked />-->
                       </div>
@@ -9635,7 +9638,7 @@ if($connected){
                     <div class="col-sm-4">
                       <h4 class="fr text-green">Autres: </h4>
                       <h4 class="en text-green">Others: </h4>
-                      <h4 class="nl text-green">Autres: </h4>
+                      <h4 class="nl text-green">Others: </h4>
                     </div>
                     <div class="col-sm-12 othersButtons">
                       <i class="fa fa-eur"></i> <span class="othersNumber">0</span><input type="hidden" id="othersNumber" name="othersNumber" value="0" />
@@ -9657,11 +9660,30 @@ if($connected){
                       </tbody>
                     </table>
                   </div>
-                  <div class="separator"></div>
+                  <div class="separator"></div><div class="separator"></div>
+                  <div class="row templateTableauRecap">
+                    <div class="col-sm-4">
+                      <h4 class="fr text-green">Tableau récapitulatif: </h4>
+                      <h4 class="en text-green">Summary table: </h4>
+                      <h4 class="nl text-green">Summary table: </h4>
+                    </div>
+                    <div class="col-sm-12">
+                      <button type="button" id="generateTableRecap" class="fr button small green button-3d rounded icon-left">Générer / Actualiser</button>
+                    </div>
+                    <table class="table table-condensed tableFixed summaryTable" style="display:none">
+                      <thead>
+                        <th><label for="recapLabel fr">Item</label></th>
+                        <th><label for="recapPrice fr">Prix de vente</label></th>
+                        <th><label for="recapLeasing fr">Leasing/location (au mois)</label></th>
+                      </thead>
+                      <tbody></tbody>
+                      <tfoot></tfoot>
+                    </table>
+                    <div class="separator"></div><div class="separator"></div>
+                  </div>
                   <button type="submit" class="fr button small green button-3d rounded icon-left">Générer PDF</button>
                 </form>
               </div>
-
               <script src="js/template-offre.js"></script>
 
               <div class="modal-footer">

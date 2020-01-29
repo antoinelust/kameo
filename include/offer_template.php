@@ -1,6 +1,7 @@
 <?php
 
   //récupération des données du $_POST (pré boucle)
+  $companyId = isset($_POST["companyIdTemplate"]) ? $_POST["companyIdTemplate"] : NULL;
   $buyOrLeasing = isset($_POST["buyOrLeasing"]) ? $_POST["buyOrLeasing"] : NULL;
   $leasingDuration = isset($_POST["leasingDuration"]) ? $_POST["leasingDuration"] : NULL;
   $numberMaintenance = isset($_POST["numberMaintenance"]) ? $_POST["numberMaintenance"] : NULL;
@@ -17,7 +18,7 @@
   $others = $othersNumber > 0 ? getOthers($othersNumber) : NULL;
 
   //creation de la response
-
+  $response['companyId'] = $companyId;
   $response['buyOrLeasing'] = $buyOrLeasing;
   $response['leasingDuration'] = $leasingDuration;
   $response['numberMaintenance'] = $numberMaintenance;
