@@ -31,7 +31,7 @@
 	
 	
 	<link rel="shortcut icon" href="images/favicon.png">
-	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>
+	<title>KAMEO Bikes | Mobilité urbaine pour entreprises</title>
 
 	<!-- Bootstrap Core CSS -->
 	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -87,12 +87,11 @@
 	
 	<!-- TOPBAR -->
 	
-		<div id="topbar" class="topbar-colored dark">
+		<div id="topbar" class="topbar-dark">
 			<div class="container">
 				<div class="row">
-					<div class="">
-						<ul class="top-menu right">
-							<a class="button small red-dark button-3d full-rounded" href="#"><span>MyKAMEO</span></a>
+					<div class="col-sm-6">
+						<ul class="top-menu">
 							<li><a href="#" onClick="setFr()">Fr</a></li>
 							<li><a href="#" onClick="setNl()">Nl</a></li>
 							<li><a href="#" onClick="setEn()">En</a></li>
@@ -113,7 +112,13 @@
 					<!--LOGO-->
 					<h1>
 					<div id="logo">
-						<a href="index2.php"><img src="images/logo.png" alt="KAMEO Bikes Logo">
+						<a href="index.php"><img src="images/logo.png" alt="KAMEO Bikes Logo">
+						</a>
+					</div>
+					</h1>
+					<h1>
+					<div id="logo" class="right">
+						<a href="deliveroo.php"><img src="images/deliveroo/deliveroo_logo.png" alt="KAMEO Bikes Logo">
 						</a>
 					</div>
 					</h1>
@@ -128,66 +133,12 @@
 					<!--END: MOBILE MENU -->
 
 					<!--NAVIGATION-->
-					<div class="navbar-collapse collapse main-menu-collapse navigation-wrap">
-						<div class="container">
-							<nav id="mainMenu" class="main-menu mega-menu">
-								<ul class="main-menu nav nav-pills">
-									<li class="fr"><a href="index2.php">Accueil</a></li>
-									<li class="en"><a href="index2.php">Home</a></li>
-									<li class="nl"><a href="index2.php">Home</a></li>
-									
-									<li class="fr"><a href="velo-partage.php">Vélo partagé</a></li>
-									<li class="en"><a href="velo-partage.php">Shared bike</a></li>
-									<li class="nl"><a href="velo-partage.php">Gedeelde fiets</a></li>
-									
-									<li class="fr"><a href="velo-personnel.php">Vélo personnel</a></li>
-									<li class="en"><a href="velo-personnel.php">Personal bike</a></li>
-									<li class="nl"><a href="velo-personnel.php">Persoonlijke fiets</a></li>
-									
-									<li class="fr"><a href="leasing.php">Leasing Vélo</a></li>
-									<li class="en"><a href="leasing.php">Bike Leasing</a></li>
-									<li class="nl"><a href="leasing.php">Bike Leasing</a></li>
-									
-									<li class="fr"><a href="achat.php">Catalogue</a></li>
-									<li class="en"><a href="achat.php">Catalog</a></li>
-									<li class="nl"><a href="achat.php">Catalogus</a></li>
-									
-									<li class="fr"><a href="contact2.php">Contact</a></li>
-									<li class="en"><a href="contact2.php">Contact</a></li>
-									<li class="nl"><a href="contact2.php">Contact</a></li>
-									
-									<!--
-									
-									<?php 
-									//$_SESSION['login']="false";
-                                    $login = isset($_POST['login']) ? $_POST['login'] : "false";
-                                    $userID = isset($_POST['userID']) ? $_POST['userID'] : NULL;
-
-                                    
-									if ($login=="true" && $userID=NULL)
-									{?>
-									<li><a class="text-red" href="mykameo.php"><span>My Kameo</span></a></li>
-									<?php
-									}
-									else
-									{
-									?>
-									<li><a class="text-red" data-target="#mykameo" data-toggle="modal" href="#"><span>My Kameo</span></a></li>										
-									<?php
-									}
-									?>
-									
-									-->
-									
-								</ul>
-							</nav>
-						</div>
-					</div>
 					<!--END: NAVIGATION-->
 				</div>
 			</div>
 		</header>
-		<!-- END: HEADER -->		
+		<!-- END: HEADER -->
+		
 
 
 

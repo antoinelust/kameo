@@ -24,6 +24,10 @@ $month_intake=$dayAndMonth[1];
 $year_intake=$dayAndMonth[2];
 
 
+
+
+
+
 $date=$_POST['search-bikes-form-day-deposit'];
 $deposit_hour=$_POST['search-bikes-form-deposit-hour'];
 $deposit_building=$_POST['search-bikes-form-deposit-building'];
@@ -38,11 +42,21 @@ $day_deposit=$dayAndMonth[0];
 $month_deposit=$dayAndMonth[1];
 $year_deposit=$dayAndMonth[2];
 
+        
 
 $x = explode('h', $intake_hour);
 
 $intake_hour=$x[0];
 $intake_minute=$x[1];
+
+
+if($intake_minute=='0'){
+    $intake_hour_2=$intake_hour-1;
+    $intake_minute_2=45;
+}else{
+    $intake_minute_2=0;
+    $intake_hour_2=$intake_hour;
+}
 
 $x = explode('h', $deposit_hour);
 $deposit_hour=$x[0];
@@ -57,6 +71,8 @@ $dateEnd->setDate($year_deposit, $month_deposit, $day_deposit);
 $dateEnd->setTime($deposit_hour, $deposit_minute);
 
 $timestamp_start_booking=mktime($intake_hour, $intake_minute, 0, $month_intake, $day_intake, $year_intake);
+$timestamp_start_booking_2=mktime($intake_hour_2, $intake_minute_2, 0, $month_intake, $day_intake, $year_intake);
+
 $timestamp_end_booking=mktime($deposit_hour, $deposit_minute, 0, $month_deposit, $day_deposit, $year_deposit);
 
 
@@ -119,7 +135,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
         errorMessage("ES0027");
     }
     
-        
     if ($timestamp_start_booking<time()){
         errorMessage("ES0016");
     }
@@ -133,7 +148,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
     }
 
     include 'connexion.php';
-    $sql= "select aa.FRAME_NUMBER from reservations aa, customer_bikes cc where aa.FRAME_NUMBER=cc.FRAME_NUMBER and cc.STATUS!='KO' and aa.STAANN!='D' and aa.FRAME_NUMBER in (select BIKE_NUMBER from customer_bike_access where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START>='$timestamp_start_booking' and bb.DATE_START<='$timestamp_end_booking') OR (bb.DATE_START<='$timestamp_start_booking' and bb.DATE_END>'$timestamp_start_booking'))) group by FRAME_NUMBER";
+    $sql= "select aa.FRAME_NUMBER from reservations aa, customer_bikes cc where aa.FRAME_NUMBER=cc.FRAME_NUMBER and cc.STATUS!='KO' and aa.STAANN!='D' and aa.FRAME_NUMBER in (select BIKE_NUMBER from customer_bike_access where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START>='$timestamp_start_booking_2' and bb.DATE_START<='$timestamp_end_booking') OR (bb.DATE_START<='$timestamp_start_booking_2' and bb.DATE_END>'$timestamp_start_booking'))) group by FRAME_NUMBER";
+    
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
