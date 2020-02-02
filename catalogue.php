@@ -151,50 +151,54 @@ include 'include/header2.php';
                                 dest="<p>Aucun vélo ne correspond à votre sélection</p>";
                             }
                             while(i<response.bikeNumber){
-                                if(response.bike[i].frameType.toLowerCase()=="h"){
-                                    var frameType = "Homme";
-                                } else if(response.bike[i].frameType.toLowerCase()=="m"){
-                                    var frameType = "Mixte";
-                                } else if(response.bike[i].frameType.toLowerCase()=="f"){
-                                    var frameType = "Femme";
-                                } else{
-                                    var frameType = "undefined";
-                                }
-                                
-                                if(parseInt(response.bike[i].price)<="2000"){
-                                    var price="2000";
-                                }else if(parseInt(response.bike[i].price)<="3000"){
-                                    var price="between-2000-3000";
-                                }else if(parseInt(response.bike[i].price)<="4000"){
-                                    var price="between-3000-4000";
-                                }else if(parseInt(response.bike[i].price)<="5000"){
-                                    var price="between-4000-5000";
-                                }else{
-                                    var price="5000";
-                                }
-                                
-                                var temp="\
-                                <div class=\"portfolio-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
-                                    <div class=\"portfolio-image effect social-links\">\
-                                        <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+".jpg\" alt=\"\">\
-                                        <div class=\"image-box-content\">\
-                                            <p>\
-                                                <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
-                                                <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
-                                            </p>\
+                                if(response.bike[i].display=='Y'){
+                                    if(response.bike[i].frameType.toLowerCase()=="h"){
+                                        var frameType = "Homme";
+                                    } else if(response.bike[i].frameType.toLowerCase()=="m"){
+                                        var frameType = "Mixte";
+                                    } else if(response.bike[i].frameType.toLowerCase()=="f"){
+                                        var frameType = "Femme";
+                                    } else{
+                                        var frameType = "undefined";
+                                    }
+
+                                    if(parseInt(response.bike[i].price)<="2000"){
+                                        var price="2000";
+                                    }else if(parseInt(response.bike[i].price)<="3000"){
+                                        var price="between-2000-3000";
+                                    }else if(parseInt(response.bike[i].price)<="4000"){
+                                        var price="between-3000-4000";
+                                    }else if(parseInt(response.bike[i].price)<="5000"){
+                                        var price="between-4000-5000";
+                                    }else{
+                                        var price="5000";
+                                    }
+
+                                    var temp="\
+                                    <div class=\"portfolio-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
+                                        <div class=\"portfolio-image effect social-links\">\
+                                            <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"\">\
+                                            <div class=\"image-box-content\">\
+                                                <p>\
+                                                    <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
+                                                    <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
+                                                </p>\
+                                            </div>\
                                         </div>\
-                                    </div>\
-                                    <div class=\"portfolio-description\">\
-                                        <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
-                                        <p>"+response.bike[i].model+" "+frameType+"\
-                                        <br>"+response.bike[i].utilisation+"\
-                                        <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
-                                        <br><b class=\"text-green\">Leasing :"+response.bike[i].leasingPrice+" €/mois</b></p>\
-                                    </div>\
-                                </div>";
-                                dest=dest.concat(temp);                                            
+                                        <div class=\"portfolio-description\">\
+                                            <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
+                                            <p>"+response.bike[i].model+" "+frameType+"\
+                                            <br>"+response.bike[i].utilisation+"\
+                                            <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
+                                            <br><b class=\"text-green\">Leasing :"+response.bike[i].leasingPrice+" €/mois</b></p>\
+                                        </div>\
+                                    </div>";
+                                    dest=dest.concat(temp);                                            
+                                }
                                 i++;
+                                
                             }
+                            
                             document.getElementById('bikeCatalog').innerHTML = dest;
                             
                             var $grid = $('.grid').isotope({

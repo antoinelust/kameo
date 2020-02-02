@@ -13,10 +13,8 @@ include 'include/header2.php';
 				<div class="col-md-5">
 					<div class="product-image">
 						<div class="carousel" data-carousel-col="1" data-lightbox-type="gallery">
-							<img alt="Shop product image!" src="images_bikes/bonsplans/hnf_xd2_h1.jpg">
-							<img alt="Shop product image!" src="images_bikes/bonsplans/hnf_xd2_h2.jpg">
-							<img alt="Shop product image!" src="images_bikes/bonsplans/hnf_xd2_h3.jpg">
-							<img alt="Shop product image!" src="images_bikes/bonsplans/hnf_xd2_h4.jpg">
+							<img alt="Shop product image!" src="images_bikes/bonsplans/ahooga_folding1.jpg">
+							<img alt="Shop product image!" src="images_bikes/bonsplans/ahooga_folding2.jpg">
 
 						</div>
 					</div>
@@ -25,20 +23,20 @@ include 'include/header2.php';
 
 				<div class="col-md-7">
 					<div class="product-description">
-						<div class="product-category">Réf. : HNF_XD2</div>
+						<div class="product-category">Réf. : AH-165</div>
 						<div class="product-title">
-							<h3><a href="#">HNF Nicolai</a></h3>
-							<p>XD2</p>
-							<p><strong>Cadre Homme - Taille M</strong></p>
-							<p><strong>Kilomètres parcourus : 202 km</strong></p>
+							<h3><a href="#">Ahooga</a></h3>
+							<p>Folding Bike</p>
+							<p><strong>Cadre mixte - Taille unique</strong></p>
+							<!--<p><strong>Kilomètres parcourus : inconnu</strong></p>-->
 						</div>
-						<div class="product-price"><ins class="text-green">3800€</ins>
+						<div class="product-price"><ins class="text-green">1650€</ins>
 						</div>
 						
 
 						<div class="seperator m-b-10"></div>
 						<h4>Caractéristiques techniques</H4>
-						<p>Voir le <a href="https://www.hnf-nicolai.com/ebike/xd-2-urban-e-bike-2/" target="_blank">site de la marque</a>.</p>
+						<p>Voir le <a href="https://ahooga.bike/folding-bike/" target="_blank">site de la marque</a>.</p>
 						
 					<div class="m-t-20">
 						<a class="button color button-3d rounded effect icon-left text-light" data-target="#acheter" data-toggle="modal" href="#"><span><i class="fa fa-shopping-cart"></i> Acheter</span></a>
@@ -46,7 +44,7 @@ include 'include/header2.php';
 
 				</div>
 				
-				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les Bons Plans</a>
+					<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les Bons Plans</a>
 
 			</div>
 		</div>
@@ -65,7 +63,7 @@ include 'include/header2.php';
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="text-green">Ce vélo vous intéresse?</h4>
-						<p>Envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat HNF_XD2 homme&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
+						<p>Envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat AH-165 mixte&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
 						<!-- <p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p> -->
 					</div>
 				</div>

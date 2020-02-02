@@ -1,0 +1,2 @@
+ALTER TABLE `bike_catalog` ADD `DISPLAY` VARCHAR(1) NOT NULL AFTER `STOCK`;
+UPDATE bike_catalog set DISPLAY='Y';

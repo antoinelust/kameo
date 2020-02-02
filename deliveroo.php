@@ -143,40 +143,102 @@ include 'include/header3.php';
     </div>
     </div>
     <!--End: Square icons-->
+    
+    <div class="container">
+		<div class="row">	
+					
+				<div class="heading heading text-left m-b-20">
+					<h2 class="fr">FAQ</h2>
+				</div>
+				
+				<div class="col-md-6">
+					<div class="accordion toggle fancy radius clean">
+						<div class="ac-item">
+							<h5 class="ac-title text-green"><i class="fa fa-question-circle"></i>Qu'est ce qu'un leasing KAMEO?</h5>
+							<div class="ac-content" style="display: none;"><p>Le leasing proposé par KAMEO Bikes est assez simple: tous les mois vous payez le montant équivalent au vélo choisi. Et ce, sur une durée de 3 ans.</p>
+				<p>À la fin de cette période de 3 ans, vous avez la possibilité de racheter votre vélo (voir dans l'offre la valeur de rachat du leasing) ou de retourner votre vélo à KAMEO Bikes.</p>
+							</div>
+						</div>
+						
+						<div class="ac-item">
+							<h5 class="ac-title text-green"><i class="fa fa-question-circle"></i>Que se passe-t-il si mon vélo est endommagé?</h5>
+							<div class="ac-content" style="display: none;"><p>KAMEO Bikes travaille avec un partenaire pour assurer les vélos, AEDES.</p>
+							<p>Cette assurance reprend entre autre:</p>
+								<ul>
+									<li>Un service de dépannage 7j/7 24h/24. Si la réparation n’est pas possible sur place, votre vélo et vous êtes reconduits à domicile ou vers votre destination finale.</li>
+									<li>Une couverture contre le vol et le vandalisme sans franchise</li>
+								</ul>
+							</div>
+						</div>
+						
+						<div class="ac-item">
+							<h5 class="ac-title text-green"><i class="fa fa-question-circle"></i>Proposez-vous des entretiens pour mon vélo?</h5>
+							<div class="ac-content" style="display: none;"><p>OUI !</p>
+							<p>Votre vélo est votre outil de travail, il doit toujours être en état pour vous permettre de travailler dans les meilleurs conditions possibles. C'est pourquoi nous proposons des entretiens.</p>
+							<p>Dans le cas d'un leasing vélo ou d'une location, ces entretiens sont inclus.</p>
+							<p>Dans le cas d'un achat, nous intervenons à la demande et où vous le désirez (c'est nous qui nous déplaçons jusqu'à vous).</p>
+							</div>
+						</div>
+						
+						<div class="ac-item">
+							<h5 class="ac-title text-green"><i class="fa fa-question-circle"></i>Je souhaite un autre modèle de vélo, est ce possible?</h5>
+							<div class="ac-content" style="display: none;"><p>Réponse</p>
+							</div>
+						</div>
+						
+						<div class="ac-item">
+							<h5 class="ac-title text-green"><i class="fa fa-question-circle"></i>Proposez-vous des accessoires?</h5>
+							<div class="ac-content" style="display: none;"><p>OUI !</p>
+							<p>Retrouvez sur <a href="https://www.kameobikes.com/accessoire.php" target="_blank">cette page</a> les accessoires que nous proposons.</p>
+							<p>Si vous ne trouvez pas ce que vous cherchez, <a href="https://www.kameobikes.com/contact.php" target="_blank">contactez-nous</a> , nous trouverons votre accessoire.</p>
+							</div>
+						</div>
+						
+						
+						
+					</div>
+				</div>
+		</div>
+	</div>
 
 
 
 		
-		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-					<br>BE 0681.879.712 
-					<br>+32 498 72 75 46 </div>
-					<br>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				<!--
-				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-				-->
-				<br>
-				<br>
+				<!-- FOOTER -->
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	           
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
 				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									
+									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+								</ul>
+					</div>
+					
+					<br>
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+			<!-- END: FOOTER -->
 
 
 	</div>

@@ -17,6 +17,23 @@ if(isset($_GET['date'])){
     $date=null;
 }
 
+if(isset($_GET['meonth'])){
+    $month=$_GET['month'];
+}else{
+    $month=null;
+}
+
+if(isset($_GET['year'])){
+    $year=$_GET['year'];
+}else{
+    $year=null;
+}
+if(isset($_GET['simulation'])){
+    $simulation=$_GET['simulation'];
+}else{
+    $simulation=null;
+}
+
 
 
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
@@ -39,8 +56,6 @@ if(isset($company)){
     $sql=$sql." WHERE COMPANY='$company'";
 }
 
-echo $sql;
-
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
@@ -56,7 +71,7 @@ while($row = mysqli_fetch_array($result))
     $internalReference=$row['COMPANY'];
     $currentDate=date('Y-m-d');
     $billingGroup=$row['BILLING_GROUP'];
-    $sql_dateStart="SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$currentDate' and aa.CONTRACT_END>'$currentDate' and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$currentDate' and aa.START>'$currentDate' and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup')) AS T1 WHERE start is NOT NULL";
+    $sql_dateStart="SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$currentDate' and (aa.CONTRACT_END>'$currentDate' or aa.CONTRACT_END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$currentDate' and (aa.END>'$currentDate' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup')) AS T1 WHERE start is NOT NULL";
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
@@ -72,6 +87,7 @@ while($row = mysqli_fetch_array($result))
         {
             $firstDay=substr($resultat_dateStart['start'], 8, 2);
             $today=substr($currentDate, 8 ,2);
+            
             
 
             if($today==$firstDay || $firstDay==$date)
@@ -96,29 +112,65 @@ while($row = mysqli_fetch_array($result))
                 fwrite($myfile, $billingGroup);
                 fclose($myfile);            
 
+                if($date){
+                    $file = __DIR__.'/temp/date.txt';
+                    $myfile = fopen($file, "w")  or die("Unable to open file!");
+                    fwrite($myfile, $date);
+                    fclose($myfile);            
+                }
+                if($month){
+                    $file = __DIR__.'/temp/month.txt';
+                    $myfile = fopen($file, "w")  or die("Unable to open file!");
+                    fwrite($myfile, $month);
+                    fclose($myfile);            
+                }
+                if($year){
+                    $file = __DIR__.'/temp/year.txt';
+                    $myfile = fopen($file, "w")  or die("Unable to open file!");
+                    fwrite($myfile, $year);
+                    fclose($myfile);            
+                }
+                if($simulation){
+                    $file = __DIR__.'/temp/simulation.txt';
+                    $myfile = fopen($file, "w")  or die("Unable to open file!");
+                    fwrite($myfile, $simulation);
+                    fclose($myfile);            
+                }
+                
+                
+                
                 $test=requireToVar(__DIR__.'/facture.php');
                 $file = 'facture'.$i.'.php';
                 $myfile = fopen(__DIR__.'/'.$file, "w")  or die("Unable to open file!");
                 fwrite($myfile, $test);
                 fclose($myfile);
-
-                //if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                    try {
-                        include dirname(__FILE__).'/'.$file;
-                        $content = ob_get_clean();
-                        $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
-                        $html2pdf->pdf->SetDisplayMode('fullpage');
-                        $html2pdf->writeHTML($content);
-                        $path='/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$internalReference.'_'.$billingGroup.'.pdf';;
-                        $html2pdf->Output(__DIR__ . $path, 'F');
-
-
-                    } catch (Html2PdfException $e) {
-                        $html2pdf->clean();
-                        $formatter = new ExceptionFormatter($e);
-                        echo $formatter->getHtmlMessage();
-                    }  
-                //}
+                
+                include 'include/connexion.php';
+                $sql_reference="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
+                if ($conn->query($sql_reference) === FALSE) {
+                    echo $conn->error;
+                    die;
+                }
+                $result_reference = mysqli_query($conn, $sql_reference);   
+                $resultat_reference = mysqli_fetch_assoc($result_reference);
+                $newID=$resultat_reference['MAX_TOTAL'];
+                $newIDOUT=$resultat_reference['MAX_OUT'];
+                
+                
+                
+                try {
+                    include dirname(__FILE__).'/'.$file;
+                    $content = ob_get_clean();
+                    $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
+                    $html2pdf->pdf->SetDisplayMode('fullpage');
+                    $html2pdf->writeHTML($content);
+                    $path='/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$internalReference.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
+                    $html2pdf->Output(__DIR__ . $path, 'F');
+                } catch (Html2PdfException $e) {
+                    $html2pdf->clean();
+                    $formatter = new ExceptionFormatter($e);
+                    echo $formatter->getHtmlMessage();
+                }  
 
                 include 'include/connexion.php';
                 $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
@@ -164,14 +216,16 @@ while($row = mysqli_fetch_array($result))
                 if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
                     $mail->AddAttachment( $file_to_attach , $FileName );
                 }
-
                 $mail->Body = $message;
                 if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                    
-                    if($resultat3['BILLS_SENDING'] == "Y" && $emailContactBilling != "" && $lastNameContactBilling != ""){
-                        $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
-                        $mail->AddBCC("antoine.lust@kameobikes.com", "Antoine Lust");
-                        $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");                        
+                    if(!$simulation || $simulation=='N'){
+                        if($resultat3['BILLS_SENDING'] == "Y" && $emailContactBilling != "" && $lastNameContactBilling != ""){
+                            $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
+                            $mail->AddBCC("antoine.lust@kameobikes.com", "Antoine Lust");
+                            $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");                        
+                        }else{
+                            $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                        }
                     }else{
                         $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
                     }
@@ -196,15 +250,35 @@ while($row = mysqli_fetch_array($result))
                 }
 
                 $file = __DIR__.'/temp/company.txt';
-                unlink($file);
+                if ((file_exists($file))){
+                    unlink($file);
+                }
                 $file = __DIR__.'/temp/billingGroup.txt';
-                unlink($file); 
+                if ((file_exists($file))){
+                    unlink($file);
+                }
+                
+                $file = __DIR__.'/temp/date.txt';
+                if ((file_exists($file))){
+                    unlink($file);
+                }
+                $file = __DIR__.'/temp/month.txt';
+                if ((file_exists($file))){
+                    unlink($file);
+                }
+                $file = __DIR__.'/temp/year.txt';
+                if ((file_exists($file))){
+                    unlink($file);
+                }
+                $file = __DIR__.'/temp/simulation.txt';
+                if ((file_exists($file))){
+                    unlink($file);
+                }
 
                 $file = __DIR__.'/facture'.$i.'.php';;
-                unlink($file); 
-
-            
-
+                if ((file_exists($file))){
+                    unlink($file);
+                }
 
             }            
         }
