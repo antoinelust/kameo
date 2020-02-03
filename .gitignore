@@ -16,9 +16,14 @@
     *connexion.php
     *mp4
     factures/
+    images
+    images_bikes
     $ git status
     [...]
     # Untracked files:
     [...]
     #       Documentation/foo.html
     [...]
+    test.pdf
+    html2pdfTest.php
+    html2pdfTestContent.php
