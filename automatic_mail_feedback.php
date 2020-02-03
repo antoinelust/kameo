@@ -21,9 +21,10 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                 echo "------------------<br />";
 
                                 $date_day=mktime(0, 0, 0, intval(date('m')), intval(getDate()), intval(date('Y')));
+                                $dateNow=time();
                                                                 
                                 include 'include/connexion.php';
-                                $sql= "SELECT aa.ID as 'ID', bb.COMPANY as 'COMPANY', aa.DATE_START as 'DATE_START', aa.FRAME_NUMBER as 'FRAME_NUMBER', aa.EMAIL as 'EMAIL' FROM reservations aa, customer_referential bb where aa.DATE_END>'$date_day' and aa.email=bb.email and not exists (select 1 from feedbacks cc where aa.ID=cc.ID_RESERVATION)";
+                                $sql= "SELECT aa.ID as 'ID', bb.COMPANY as 'COMPANY', aa.DATE_START as 'DATE_START', aa.FRAME_NUMBER as 'FRAME_NUMBER', aa.EMAIL as 'EMAIL' FROM reservations aa, customer_referential bb where aa.DATE_END>'$date_day' and aa.DATE_END<'$dateNow' and aa.email=bb.email and not exists (select 1 from feedbacks cc where aa.ID=cc.ID_RESERVATION)";
 
                                 if ($conn->query($sql) === FALSE) {
                                     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -43,6 +44,16 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                     $frame_number=$row['FRAME_NUMBER'];
                                     $email=$row['EMAIL'];
                                     $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$id."</td><td class=\"tableResume\">".$company."</td><td class=\"tableResume\">".$frame_number."</td><td class=\"tableResume\">".$dateStart."</td><td class=\"tableResume\">".$email."</td></tr>";
+                                    
+                                    include 'connexion.php';
+                                    $sql2="INSERT INTO feedbacks (HEU_MAJ, USR_MAJ, BIKE_NUMBER, ID_RESERVATION, NOTE, COMMENT, ENTRETIEN, STATUS) VALUES (CURRENT_TIMESTAMP, 'mykameo', $frameNumber, $id, '5', 'TBC', '0', 'SENT')";
+                                    if ($conn->query($sql2) === FALSE) {
+                                        $response = array ('response'=>'error', 'message'=> $conn->error);
+                                        echo json_encode($response);
+                                        die;
+                                    }
+                                    $conn->close();
+                                    
 
 
                                 }

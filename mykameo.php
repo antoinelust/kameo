@@ -104,7 +104,7 @@ function initiatizeFeedback(id){
     $.ajax({
         url: 'include/feedback_management.php',
         type: 'get',
-        data: {"action": "retrieveFeedback", "ID": id},
+        data: {"action": "retrieveBooking", "ID": id},
         success: function(response){
         
             if(response.response == 'error') {

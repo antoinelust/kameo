@@ -148,7 +148,7 @@ if(isset($_GET['action'])){
         $user = isset($_POST["user"]) ? $_POST["user"] : NULL;
         $bike = isset($_POST["bike"]) ? $_POST["bike"] : NULL;
         include 'connexion.php';
-        $sql="select * from feedbacks WHERE ID_RESERVATION='$ID'";
+        $sql="select * from feedbacks WHERE ID_RESERVATION='$ID' and STATUS='DONE'";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -172,7 +172,7 @@ if(isset($_GET['action'])){
         
         
         include 'connexion.php';
-        $sql="INSERT INTO feedbacks (USR_MAJ, HEU_MAJ, BIKE_NUMBER, ID_RESERVATION, NOTE, COMMENT, ENTRETIEN) VALUES ('$user', CURRENT_TIMESTAMP, '$bike', '$ID', '$note', $comment, '$entretien')";
+        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_NUMBER='$bike', ID_RESERVATION='$ID', NOTE='$note', COMMENT='$comment', ENTRETIEN='$entretien'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
