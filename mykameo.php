@@ -32,7 +32,14 @@ include 'include/activitylog.php';
 
 <script type="text/javascript">
 var color=Chart.helpers.color;
+
+//id de la compagnie selectionnée si il y en a une sélectionnée
 var companyId;
+
+//varibles des charts chartJS
+var myChart;
+var myChart2;
+var myChart3;
 
 
 window.addEventListener("DOMContentLoaded", function(event) {
@@ -171,7 +178,6 @@ function billFilter(e){
   get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
 
 }
-
 function generateTasksGraphic(company, owner, numberOfDays){
 
 
@@ -185,8 +191,11 @@ function generateTasksGraphic(company, owner, numberOfDays){
       } else{
 
         var ctx = document.getElementById('myChart2').getContext('2d');
-        myChart2 && myChart2.destroy();
-        var myChart2 = new Chart(ctx, {
+        if (myChart2 != undefined) {
+          myChart2.destroy();
+        }
+
+        myChart2 = new Chart(ctx, {
           type: 'line',
           data: {
             datasets: [{
@@ -319,11 +328,13 @@ function generateCompaniesGraphic(dateStart, dateEnd){
       } else{
 
         var ctx = document.getElementById('myChart3').getContext('2d');
-        myChart3 && myChart3.destroy();
+        if (myChart3 != undefined) {
+          myChart3.destroy();
+        }
 
         var presets=window.chartColors;
 
-        var myChart3 = new Chart(ctx, {
+        myChart3 = new Chart(ctx, {
           type: 'line',
           data: {
             datasets: [{
@@ -2255,7 +2266,10 @@ if($connected){
           var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
 
           var ctx = document.getElementById('myChart').getContext('2d');
-          var myChart = new Chart(ctx, {
+          if (myChart != undefined) {
+            myChart.destroy();
+          }
+          myChart = new Chart(ctx, {
             type: 'line',
             data: {
               datasets: [{
@@ -8199,33 +8213,38 @@ if($connected){
                       <div class="col-sm-12">
                         <h4 class="text-green">Informations relatives au contact</h4>
                       </div>
-
-                      <div class="col-md-3">
-                        <label class="fr"> Email : </label>
-                        <label class="en"> Email: </label>
-                        <label class="nl"> Email : </label>
-                        <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
+                      <div class="col-sm-12 contactAddButtons">
+                        <button class="addContact button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                        <label for="addContact">Ajouter un contact</label>
                       </div>
+                      <div class="clientContactZone">
+                          <div class="col-md-3">
+                            <label class="fr"> Email : </label>
+                            <label class="en"> Email: </label>
+                            <label class="nl"> Email : </label>
+                            <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="fr" >Nom :</label>
+                            <label class="en" >Last Name:</label>
+                            <label class="nl" >Last Name:</label>
+                            <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
+                          </div>
 
-                      <div class="col-md-3">
-                        <label class="fr" >Nom :</label>
-                        <label class="en" >Last Name:</label>
-                        <label class="nl" >Last Name:</label>
-                        <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
-                      </div>
+                          <div class="col-md-3">
+                            <label class="fr" >Prénom :</label>
+                            <label class="en" >First Name:</label>
+                            <label class="nl" >First Name :</label>
+                            <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
+                          </div>
 
-                      <div class="col-md-3">
-                        <label class="fr" >Prénom :</label>
-                        <label class="en" >First Name:</label>
-                        <label class="nl" >First Name :</label>
-                        <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
-                      </div>
-
-                      <div class="col-md-3">
-                        <label class="fr" >Téléphone :</label>
-                        <label class="en" >Phone:</label>
-                        <label class="nl" >Phone :</label>
-                        <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
+                          <div class="col-md-3">
+                            <label class="fr" >Téléphone :</label>
+                            <label class="en" >Phone:</label>
+                            <label class="nl" >Phone :</label>
+                            <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
+                          </div>
+                          <div class="separator" style="padding-top:20px;width:60%"></div>
                       </div>
                       <div class="col-md-4">
                         <label for="statistiques">Envoyer le rapport de statistiques ?</label>
@@ -8362,6 +8381,60 @@ if($connected){
 
 
                   });
+
+                  //ajouter un contact
+                  $('.addContact')[0].addEventListener('click', function(){
+                    var content = "";
+                    content +=`
+                    <div class="contactAddIteration">
+                      <div class="col-sm-12">
+                        <label for="contact">Ajout de contact</label>
+                        <button class="removeContact button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+                      </div>
+                      <div class="col-md-3">
+                        <label for="email_billing" class="fr"> Email : </label>
+                        <input type="text" class="form-control emailContact" placeholder="email" />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="fr" >Nom :</label>
+                        <input type="text" class="form-control lastNameContact" placeholder="nom" />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="fr" >Prénom :</label>
+                        <input type="text" class="form-control firstNameContact" placeholder="prenom" />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="fr" >Téléphone :</label>
+                        <input type="text" class="form-control phoneContact" placeholder="téléphone" />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="fr" >Fonction :</label>
+                        <input type="text" class="form-control functionContact" placeholder="Fonction" />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="fr" >Recevoir les statistiques d'utilisation des vélos :</label>
+                        <input type="checkbox" class="form-control bikeStatsContact" value="true" />
+                      </div>
+                      <div class="col-sm-12" style="margin-top:20px;">
+                        <button class="button small green button-3d rounded icon-right addBikeAdmin">
+                        <span class="fr-inline" style="display: inline;">
+                        <i class="fa fa-plus"></i> Ajouter le contact</span></button>
+                      </div>
+                      <div class="separator"></div>
+                    </div>
+
+                    `;
+                    $('.clientContactZone').append(content);
+                  });
+                  $(document).ready(function(){
+                    $('body').on('click', '.removeContact', function(){
+                      $(this).parents('.contactAddIteration').fadeOut('600',function(){
+                        $(this).remove();
+                      });
+                      //$(this).parents('.contactAddIteration').hide();
+                    });
+                  });
+
                   </script>
 
                   <div class="col-sm-12" id="clientBikes">

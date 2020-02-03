@@ -23,3 +23,11 @@ CREATE TABLE `kameobiknq`.`accessories_catalog` ( `ID` INT(3) NOT NULL AUTO_INCR
 /*Creation de la clé étrangère reliant accessories a accessories_categories*/
 ALTER TABLE accessories_catalog
 ADD FOREIGN KEY (ACCESSORIES_CATEGORIES) REFERENCES accessories_categories(ID);
+
+/*==========COMPANIES_CONTACT==========*/
+
+/*Création de la table companies_contact*/
+CREATE TABLE `kameobiknq`.`companies_contact` ( `ID` INT(3) NOT NULL , `NOM` VARCHAR(250) NOT NULL , `PRENOM` VARCHAR(250) NOT NULL , `EMAIL` VARCHAR(250) NOT NULL , `PHONE` VARCHAR(15) NULL , `ID_COMPANY` INT NOT NULL ) ENGINE = MyISAM;
+/*Ajout de la clé étrangère reliant la compagnie et le contact*/
+ALTER TABLE companies_contact
+ADD FOREIGN KEY (ID_COMPANY) REFERENCES companies(ID);
