@@ -42,6 +42,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*')}, false);   
         classname[i].addEventListener('click', function () { get_company_listing('*')}, false);   
         classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);   
+        classname[i].addEventListener('click', function () { list_feedbacks()}, false);           
         classname[i].addEventListener('click', function () { list_bikes_admin()}, false);   
         classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);   
         classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);   
@@ -77,6 +78,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
     document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 }, false); 
     document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false); 
+    document.getElementsByClassName('feedbackManagementClick')[0].addEventListener('click', function() { list_feedbacks()}, false); 
     document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false); 
     document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
     document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false); 
@@ -87,10 +89,255 @@ window.addEventListener("DOMContentLoaded", function(event) {
     $(".form_date_end").data("datetimepicker").setDate(tempDate);
     tempDate.setMonth(tempDate.getMonth()-1);
     $(".form_date_start").data("datetimepicker").setDate(tempDate);        
+    
+    <?php
+    if(isset($_GET['feedback'])){
+    ?>
+        initiatizeFeedback(<?php echo $_GET['feedback']; ?>);
+    <?php
+    }
+    ?>
 
 });
     
+function initiatizeFeedback(id){
+    $.ajax({
+        url: 'include/feedback_management.php',
+        type: 'get',
+        data: {"action": "retrieveFeedback", "ID": id},
+        success: function(response){
+        
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                var unix_timestamp = response.start
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                var unix_timestamp = response.end
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                $('.feedbackManagementTitle').html("Ajouter un feedback");
+                $('#feedbackManagement input[name=bike]').val(response.bikeNumber);
+                $('#feedbackManagement input[name=startDate]').val(formattedTimeStart);
+                $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
+                $('#feedbackManagement input[name=ID]').val(response.ID);
+                $('#feedbackManagement input[name=utilisateur]').val(response.email);
+                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeNumber+"_mini.jpg";
+                $('#feedbackManagement select[name=note]').attr("readonly", false);                            
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", false);    
+                $('.feedbackManagementSendButton').removeClass('hidden');
+                
+                $('#feedbackManagement').modal('toggle');
+            }
+        }
+    });
+}
    
+function list_feedbacks() {
+    $.ajax({
+        url: 'include/feedback_management.php',
+        type: 'get',
+        data: {action: "list"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                
+                document.getElementById('counterFeedbacks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.feedbacksNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.feedbacksNumber+"</span>";
+                
+                
+                var i=0;
+                var dest="";
+                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien ? </span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th></tr></thead>";
+                dest=dest.concat(temp);    
+                while (i < response.feedbacksNumber){
+                    var unix_timestamp = response.feedback[i].start;
+                    // Create a new JavaScript Date object based on the timestamp
+                    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                    var date = new Date(unix_timestamp * 1000);
+                    //day from the timestamp
+                    var day = date.getDate();
+                    //month from the timestamp
+                    var month = date.getMonth();
+                    //year from the timestamp
+                    var year = date.getFullYear();
+                    // Hours part from the timestamp
+                    var hours = date.getHours();
+                    // Minutes part from the timestamp
+                    var minutes = "0" + date.getMinutes();
+                    // Seconds part from the timestamp
+                    var seconds = "0" + date.getSeconds();
+
+                    // Will display time in 10:30:23 format
+                    var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    
+                    var unix_timestamp = response.feedback[i].end;
+                    // Create a new JavaScript Date object based on the timestamp
+                    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                    var date = new Date(unix_timestamp * 1000);
+                    //day from the timestamp
+                    var day = date.getDate();
+                    //month from the timestamp
+                    var month = date.getMonth();
+                    //year from the timestamp
+                    var year = date.getFullYear();
+                    // Hours part from the timestamp
+                    var hours = date.getHours();
+                    // Minutes part from the timestamp
+                    var minutes = "0" + date.getMinutes();
+                    // Seconds part from the timestamp
+                    var seconds = "0" + date.getSeconds();
+
+                    // Will display time in 10:30:23 format
+                    var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    
+                    if(response.feedback[i].entretien==null || response.feedback[i].entretien=="0"){
+                        entretien="<span class=\"text-red\">OUI</span>";
+                    }else{
+                        entretien="<span class=\"text-green\">Non</span>";
+                    }                        
+
+                    
+                    
+                    var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+formattedTimeStart+"</td><td>"+formattedTimeEnd+"</td><td>"+response.feedback[i].note+"</td><td>"+response.feedback[i].comment.substr(0,20)+"</td><td>"+entretien+"</td><td>"+response.feedback[i].email+"</td></tr>";
+                    dest=dest.concat(temp);
+                    i++;
+
+                }
+                var temp="</tobdy></table>";
+                dest=dest.concat(temp);     
+
+                document.getElementById('feedbacksListingSpan').innerHTML = dest;
+                $('.retrieveFeedback').click(function(){
+                    retrieve_feedback(this.name);
+                });
+                
+            }
+
+            displayLanguage();    
+        }
+    })
+}
+
+function retrieve_feedback(ID) {
+    $.ajax({
+        url: 'include/feedback_management.php',
+        type: 'get',
+        data: {"action": "retrieveFeedback", "ID": ID},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                
+                var unix_timestamp = response.start
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                var unix_timestamp = response.end
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+                $('.feedbackManagementTitle').html("Consulter un feedback");
+                $('#feedbackManagement input[name=bike]').val(response.bike);
+                $('#feedbackManagement input[name=startDate]').val(formattedTimeStart);
+                $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
+                $('#feedbackManagement input[name=ID]').val(response.ID);
+                $('#feedbackManagement input[name=utilisateur]').val(response.email);
+                $('#feedbackManagement textarea[name=comment]').val(response.comment);
+                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bike+"_mini.jpg";
+                
+                $('#feedbackManagement select[name=note]').attr("readonly", true);                            
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", true);    
+                
+                if(response.entretien=="1"){
+                    $('#feedbackManagement input[name=entretien]').prop("checked", true);
+                }else{
+                    $('#feedbackManagement input[name=entretien]').prop("checked", false);
+                }
+                
+                $('.feedbackManagementSendButton').addClass('hidden');
+                                
+            }
+
+            displayLanguage();    
+        }
+    })
+}
+
+    
+    
 function initializeFields(){
 
     $('#widget-bikeManagement-form select[name=company]')
@@ -2058,6 +2305,8 @@ if($connected){
         })
     }
         
+        
+    
     function list_contracts_offers(company) {
         $.ajax({
             url: 'include/offer_management.php',
@@ -2420,6 +2669,7 @@ if($connected){
                         document.getElementById('boxesManagement').classList.remove("hidden");
                         document.getElementById('tasksManagement').classList.remove("hidden");
                         document.getElementById('cashFlowManagement').classList.remove("hidden");
+                        document.getElementById('feedbacksManagement').classList.remove("hidden");
                     }
                     
                     
@@ -5370,6 +5620,15 @@ if($connected){
 											             <p>Vue sur le cash-flow</p>
 											        </div>
 											     </div>
+										     	<div class="col-md-4 hidden" id="feedbacksManagement">
+											         <div class="icon-box medium fancy">
+											             <div class="icon bold" data-animation="pulse infinite">
+                                                             <a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagementClick"><i class="fa fa-comments"></i></a> 
+                                                        </div>     
+											             <div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
+											             <p>Vue sur les feedbacks</p>
+											        </div>
+											     </div>
                                             </div>
                                             
                                              
@@ -7119,6 +7378,32 @@ if($connected){
 	</div>
 </div>
 
+<div class="modal fade" id="feedbacksListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+            
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="feedbacksListingSpan"></span>
+            </div>
+
+            <div class="separator"></div>
+                        
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" id="conditionListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -8627,6 +8912,142 @@ if($connected){
                                                 list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 												$('#taskManagement').modal('toggle');
                                                 document.getElementById('widget-taskManagement-form').reset();
+                                                
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>                 					
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="feedbackManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green feedbackManagementTitle">Ajouter un feedback</h4>
+						
+						<form id="widget-feedbackManagement-form" action="include/feedback_management.php" role="form" method="post">
+                            
+                            <div class="form-group col-sm-12">
+                                <div class="col-md-12">
+
+                                    <div class="col-md-4">  
+                                        <label for="utilisateur">ID</label>  
+                                        <input type='int' title="ID" class="form-control required" name="ID" readonly='readonly'>
+                                    </div>   
+                                    <div class="col-md-4">  
+                                        <label for="utilisateur">Utilisateur</label>  
+                                        <input type="text" title="utilisateur" class="form-control required" name="utilisateur" readonly='readonly'>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label for="bike"  class="fr">Vélo</label>
+                                        <label for="bike"  class="en">Bike</label>
+                                        <label for="bike"  class="nl">Bike</label>
+                                        <input type="text" name="bike" class="form-control" readonly='readonly'>                                    
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label for="StartDate"  class="fr">Date de début</label>
+                                        <label for="StartDate"  class="en">Start date</label>
+                                        <label for="StartDate"  class="nl">Start date</label>
+                                        <input type="text" name="startDate" class="form-control" readonly='readonly'>
+                                    </div>								
+                                    <div class="col-md-4">
+                                        <label for="endDate"  class="fr">Date de Fin</label>
+                                        <label for="endDate"  class="en">End date</label>
+                                        <label for="endDate"  class="nl">End date</label>
+                                        <input type="text" name="endDate" class="form-control" readonly='readonly'>
+                                    </div>								
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    
+                                    <img class="feedbackBikeImage" alt="image vélo" />
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label for="note"  class="fr">Note</label>
+                                        <label for="note"  class="en">Note</label>
+                                        <label for="note"  class="nl">Note</label>
+                                        <select class="form-control" name="note">
+                                            <option value="5">5/5</option>
+                                            <option value="4">4/5</option>
+                                            <option value="3">3/5</option>
+                                            <option value="2">2/5</option>
+                                            <option value="1">1/5</option>
+                                        </select>                                    
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="entretien"  class="fr">Besoin d'entretien ?</label>
+                                        <label for="entretien"  class="en">Need of maintenance ?</label>
+                                        <label for="entretien"  class="nl">Need of maintenance ?</label>
+                                        <label><input type="checkbox" name="entretien" class="form-control">Oui</label>
+                                    </div>                                                                                                
+                                    
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <label for="comment"  class="fr">Commentaire</label>
+                                        <label for="comment"  class="en">Comment</label>
+                                        <label for="comment"  class="nl">Comment</label>
+                                        <textarea class="form-control" rows="5" name="comment"></textarea>                                    
+                                    </div>
+                                </div>
+
+                                <input type="text" name="action" class="form-control hidden" value="add">
+                                <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+	                            <div class="col-sm-12">
+	                                <button  class="button small green button-3d rounded icon-left feedbackManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>         
+	                            </div>                          
+
+                            </div>
+                            
+						</form>
+						<script type="text/javascript">							
+							jQuery("#widget-feedbackManagement-form").validate({
+								submitHandler: function(form) {
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+												$('#feedbackManagement').modal('toggle');
+                                                document.getElementById('widget-feedbackManagement-form').reset();
                                                 
 
 											} else {
