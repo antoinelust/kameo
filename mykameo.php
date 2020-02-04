@@ -1,4 +1,4 @@
-<?php 
+<?php
 ob_start();
 session_start();
 include 'include/header2.php';
@@ -21,13 +21,30 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
 <script type="text/javascript" src="./node_modules/chart.js/dist/Chart.js" charset="UTF-8"></script>
-
+<style media="screen">
+.tableFixed {
+  table-layout: fixed;
+}
+.separator-small{
+  padding-top:20px;
+  width:60%;
+  opacity: 0.5;
+}
+</style>
 
 
 <script type="text/javascript">
 var color=Chart.helpers.color;
-    
-    
+
+//id de la compagnie selectionn�e si il y en a une s�lectionn�e
+var companyId;
+
+//varibles des charts chartJS
+var myChart;
+var myChart2;
+var myChart3;
+
+
 window.addEventListener("DOMContentLoaded", function(event) {
 
     var classname = document.getElementsByClassName('fleetmanager');
@@ -37,59 +54,59 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', get_users_listing, false);
         classname[i].addEventListener('click', get_company_conditions(), false);
         classname[i].addEventListener('click', list_condition, false);
-        
-        classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);  
-        classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*')}, false);   
-        classname[i].addEventListener('click', function () { get_company_listing('*')}, false);   
-        classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);   
-        classname[i].addEventListener('click', function () { list_feedbacks()}, false);           
-        classname[i].addEventListener('click', function () { list_bikes_admin()}, false);   
-        classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);   
-        classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);   
-        classname[i].addEventListener('click', initialize_booking_counter, false);
-        
 
-        
+        classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
+        classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*')}, false);
+        classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
+        classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
+        classname[i].addEventListener('click', function () { list_feedbacks()}, false);
+        classname[i].addEventListener('click', function () { list_bikes_admin()}, false);
+        classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);
+        classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+        classname[i].addEventListener('click', initialize_booking_counter, false);
+
+
+
         var tempDate=new Date();
         $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
         tempDate.setMonth(tempDate.getMonth()-6);
-        $(".form_date_start_client").data("datetimepicker").setDate(tempDate);        
-        
-        classname[i].addEventListener('click', function () { generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate())}, false);   
-        
-        
-        classname[i].addEventListener('click', function () { list_boxes("*")}, false);   
-        classname[i].addEventListener('click', function () { initializeFields()}, false);   
+        $(".form_date_start_client").data("datetimepicker").setDate(tempDate);
+
+        classname[i].addEventListener('click', function () { generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate())}, false);
+
+
+        classname[i].addEventListener('click', function () { list_boxes("*")}, false);
+        classname[i].addEventListener('click', function () { initializeFields()}, false);
 
     }
 
     var classname = document.getElementsByClassName('reservations');
     for (var i = 0; i < classname.length; i++) {
         classname[i].addEventListener('click', hideResearch, false);
-        
-    }              
-    
-    
-    
+
+    }
+
+
+
     document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
-    document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);   
-    document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false); 
-    document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false); 
+    document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
+    document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
+    document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false);
     document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
-}, false); 
-    document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false); 
-    document.getElementsByClassName('feedbackManagementClick')[0].addEventListener('click', function() { list_feedbacks()}, false); 
-    document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false); 
+}, false);
+    document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
+    document.getElementsByClassName('feedbackManagementClick')[0].addEventListener('click', function() { list_feedbacks()}, false);
+    document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
     document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-    document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false); 
+    document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false);
     document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-    
+
 
     var tempDate=new Date();
     $(".form_date_end").data("datetimepicker").setDate(tempDate);
     tempDate.setMonth(tempDate.getMonth()-1);
-    $(".form_date_start").data("datetimepicker").setDate(tempDate);        
-    
+    $(".form_date_start").data("datetimepicker").setDate(tempDate);
+
     <?php
     if(isset($_GET['feedback'])){
     ?>
@@ -99,14 +116,14 @@ window.addEventListener("DOMContentLoaded", function(event) {
     ?>
 
 });
-    
+
 function initiatizeFeedback(id){
     $.ajax({
         url: 'include/feedback_management.php',
         type: 'get',
         data: {"action": "retrieveBooking", "ID": id},
         success: function(response){
-        
+
             if(response.response == 'error') {
                 console.log(response.message);
             }
@@ -160,16 +177,16 @@ function initiatizeFeedback(id){
                 $('#feedbackManagement input[name=ID]').val(response.ID);
                 $('#feedbackManagement input[name=utilisateur]').val(response.email);
                 document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeNumber+"_mini.jpg";
-                $('#feedbackManagement select[name=note]').attr("readonly", false);                            
-                $('#feedbackManagement textarea[name=comment]').attr("readonly", false);    
+                $('#feedbackManagement select[name=note]').attr("readonly", false);
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", false);
                 $('.feedbackManagementSendButton').removeClass('hidden');
-                
+
                 $('#feedbackManagement').modal('toggle');
             }
         }
     });
 }
-   
+
 function list_feedbacks() {
     $.ajax({
         url: 'include/feedback_management.php',
@@ -180,14 +197,14 @@ function list_feedbacks() {
                 console.log(response.message);
             }
             if(response.response == 'success'){
-                
+
                 document.getElementById('counterFeedbacks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.feedbacksNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.feedbacksNumber+"</span>";
-                
-                
+
+
                 var i=0;
                 var dest="";
                 var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien ? </span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th></tr></thead>";
-                dest=dest.concat(temp);    
+                dest=dest.concat(temp);
                 while (i < response.feedbacksNumber){
                     var unix_timestamp = response.feedback[i].start;
                     // Create a new JavaScript Date object based on the timestamp
@@ -208,7 +225,7 @@ function list_feedbacks() {
 
                     // Will display time in 10:30:23 format
                     var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                    
+
                     var unix_timestamp = response.feedback[i].end;
                     // Create a new JavaScript Date object based on the timestamp
                     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
@@ -228,31 +245,31 @@ function list_feedbacks() {
 
                     // Will display time in 10:30:23 format
                     var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                    
+
                     if(response.feedback[i].entretien==null || response.feedback[i].entretien=="0"){
                         entretien="<span class=\"text-red\">OUI</span>";
                     }else{
                         entretien="<span class=\"text-green\">Non</span>";
-                    }                        
+                    }
 
-                    
-                    
+
+
                     var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+formattedTimeStart+"</td><td>"+formattedTimeEnd+"</td><td>"+response.feedback[i].note+"</td><td>"+response.feedback[i].comment.substr(0,20)+"</td><td>"+entretien+"</td><td>"+response.feedback[i].email+"</td></tr>";
                     dest=dest.concat(temp);
                     i++;
 
                 }
                 var temp="</tobdy></table>";
-                dest=dest.concat(temp);     
+                dest=dest.concat(temp);
 
                 document.getElementById('feedbacksListingSpan').innerHTML = dest;
                 $('.retrieveFeedback').click(function(){
                     retrieve_feedback(this.name);
                 });
-                
+
             }
 
-            displayLanguage();    
+            displayLanguage();
         }
     })
 }
@@ -267,7 +284,7 @@ function retrieve_feedback(ID) {
                 console.log(response.message);
             }
             if(response.response == 'success'){
-                
+
                 var unix_timestamp = response.start
                 // Create a new JavaScript Date object based on the timestamp
                 // multiplied by 1000 so that the argument is in milliseconds, not seconds.
@@ -317,27 +334,27 @@ function retrieve_feedback(ID) {
                 $('#feedbackManagement input[name=utilisateur]').val(response.email);
                 $('#feedbackManagement textarea[name=comment]').val(response.comment);
                 document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bike+"_mini.jpg";
-                
-                $('#feedbackManagement select[name=note]').attr("readonly", true);                            
-                $('#feedbackManagement textarea[name=comment]').attr("readonly", true);    
-                
+
+                $('#feedbackManagement select[name=note]').attr("readonly", true);
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", true);
+
                 if(response.entretien=="1"){
                     $('#feedbackManagement input[name=entretien]').prop("checked", true);
                 }else{
                     $('#feedbackManagement input[name=entretien]').prop("checked", false);
                 }
-                
+
                 $('.feedbackManagementSendButton').addClass('hidden');
-                                
+
             }
 
-            displayLanguage();    
+            displayLanguage();
         }
     })
 }
 
-    
-    
+
+
 function initializeFields(){
 
     $('#widget-bikeManagement-form select[name=company]')
@@ -351,7 +368,7 @@ function initializeFields(){
         .remove()
         .end()
     ;
-    
+
     $('#widget-taskManagement-form select[name=company]')
         .find('option')
         .remove()
@@ -361,9 +378,9 @@ function initializeFields(){
         .find('option')
         .remove()
         .end()
-    ;        
+    ;
 
-    
+
     $.ajax({
         url: 'include/get_companies_listing.php',
         type: 'post',
@@ -375,10 +392,10 @@ function initializeFields(){
             if(response.response == 'success'){
                 var i=0;
                 while (i < response.companiesNumber){
-                    $('#widget-bikeManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");  
-                    $('#widget-updateAction-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>"); 
-                    $('#widget-taskManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");    
-                    $('#widget-boxManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");    
+                    $('#widget-bikeManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
+                    $('#widget-updateAction-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
+                    $('#widget-taskManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
+                    $('#widget-boxManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
                     i++;
                 }
 
@@ -392,14 +409,14 @@ function initializeFields(){
 function reservation_listing(){
     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
     $('#ReservationsListing').modal('toggle');
-                                                       
+
 }
-    
+
 function bikeFilter(e){
     document.getElementsByClassName('bikeSelectionText')[0].innerHTML=e;
     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
 
-}    
+}
 function taskFilter(e){
     list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 
@@ -409,11 +426,11 @@ function billFilter(e){
     document.getElementsByClassName('billSelectionText')[0].innerHTML=e;
     get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
 
-}    
-    
+}
+
 function generateTasksGraphic(company, owner, numberOfDays){
-        
-    
+
+
     $.ajax({
         url: 'include/action_company.php',
         type: 'get',
@@ -422,10 +439,13 @@ function generateTasksGraphic(company, owner, numberOfDays){
             if (response.response == 'error') {
                 console.log(response.message);
             } else{
-                
+
+
                 var ctx = document.getElementById('myChart2').getContext('2d');
-                myChart2 && myChart2.destroy();
-                var myChart2 = new Chart(ctx, {
+                if (myChart2 != undefined) {
+                  myChart2.destroy();
+                }
+                myChart2 = new Chart(ctx, {
                     type: 'line',
                     data: {
                         datasets: [{
@@ -434,7 +454,7 @@ function generateTasksGraphic(company, owner, numberOfDays){
                             strokeColor: "rgba(151,187,205,1)",
                             highlightFill: "rgba(151,187,205,1)",
                             highlightStroke: "rgba(151,187,205,1)",
-                            data: response.arrayTotalTasks                        
+                            data: response.arrayTotalTasks
                         },{
                             label: 'Prises de contact',
                             borderColor: 'rgba(60, 137, 207, 255)',
@@ -503,8 +523,8 @@ function generateTasksGraphic(company, owner, numberOfDays){
                                 tension: 0
                             }
                         }
-                        
-                    }                      
+
+                    }
 
                 });
                 if(response.presenceContacts=="1"){
@@ -533,21 +553,21 @@ function generateTasksGraphic(company, owner, numberOfDays){
                 }
                 myChart2.update();
 
-            }              
+            }
 
         }
     })
-    
-    
-    
+
+
+
 }
-    
+
 function generateCompaniesGraphic(dateStart, dateEnd){
-    
-    
+
+
     dateStartString=dateStart.getFullYear()+"-"+("0" + (dateStart.getMonth() + 1)).slice(-2)+"-"+("0" + dateStart.getDate()).slice(-2);
     dateEndString=dateEnd.getFullYear()+"-"+("0" + (dateEnd.getMonth() + 1)).slice(-2)+"-"+("0" + dateEnd.getDate()).slice(-2);
-    
+
     $.ajax({
         url: 'include/get_companies_listing.php',
         type: 'get',
@@ -556,10 +576,12 @@ function generateCompaniesGraphic(dateStart, dateEnd){
             if (response.response == 'error') {
                 console.log(response.message);
             } else{
-                
+
                 var ctx = document.getElementById('myChart3').getContext('2d');
-                myChart3 && myChart3.destroy();
-                
+                if (myChart3 != undefined) {
+                  myChart3.destroy();
+                }
+
                 var presets=window.chartColors;
 
                 var myChart3 = new Chart(ctx, {
@@ -604,10 +626,10 @@ function generateCompaniesGraphic(dateStart, dateEnd){
         }
     })
 }
-    
+
 function construct_form_for_bike_status_update(frameNumber){
     var frameNumber=frameNumber;
-    
+
     $.ajax({
             url: 'include/get_bike_details.php',
             type: 'post',
@@ -623,7 +645,7 @@ function construct_form_for_bike_status_update(frameNumber){
                     document.getElementsByClassName("startDateContract")[1].innerHTML=response.contractStart;
                     document.getElementsByClassName("endDateContract")[1].innerHTML=response.contractEnd;
                     document.getElementsByClassName("bikeImage")[1].src="images_bikes/"+frameNumber+"_mini.jpg";
-                    
+
                     $("#bikeStatus").val(response.status);
                     i=0;
                     var dest="";
@@ -635,35 +657,35 @@ function construct_form_for_bike_status_update(frameNumber){
                         else if(response.building[i].access==false){
                             temp="<input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"<br>";
 
-                        }  
-                        dest=dest.concat(temp);                        
+                        }
+                        dest=dest.concat(temp);
                         i++;
                     }
-                    
+
                     document.getElementById('widget-updateBikeStatus-form-frameNumber').value = frameNumber;
                     document.getElementById('bikeBuildingAccess').innerHTML = dest;
-                    
-                }              
+
+                }
 
             }
     })
 }
 
 function construct_form_for_bike_status_updateAdmin(frameNumber){
-    
+
     var company;
     var frameNumber=frameNumber;
-    
+
     $('#widget-addActionBike-form input[name=bikeNumber]').val(frameNumber);
-    $('.bikeActions').removeClass('hidden');        
+    $('.bikeActions').removeClass('hidden');
     $('#widget-bikeManagement-form input[name=action]').val("update");
     $('#widget-bikeManagement-form select[name=portfolioID]')
         .find('option')
         .remove()
         .end()
     ;
-    $('#widget-bikeManagement-form select[name=portfolioID]').unbind();   
-    
+    $('#widget-bikeManagement-form select[name=portfolioID]').unbind();
+
     $.ajax({
             url: 'include/load_portfolio.php',
             type: 'get',
@@ -674,7 +696,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                 } else{
                     var i=0;
                     while(i<response.bikeNumber){
-                        $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+response.bike[i].ID+">"+response.bike[i].brand+" - "+response.bike[i].model+" - "+response.bike[i].frameType+"<br>");    
+                        $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+response.bike[i].ID+">"+response.bike[i].brand+" - "+response.bike[i].model+" - "+response.bike[i].frameType+"<br>");
                         i++;
                     }
                 }
@@ -726,14 +748,14 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                         }else{
                             $('#widget-bikeManagement-form input[name=billing]').prop("checked", false);
                         }
-                        
+
                         if(response.insurance=="Y"){
                             $('#widget-bikeManagement-form input[name=insurance]').prop("checked", true);
                         }else{
                             $('#widget-bikeManagement-form input[name=insurance]').prop("checked", false);
                         }
-                        
-                        
+
+
                         $('#widget-bikeManagement-form input[name=billingPrice]').val(response.leasingPrice);
 
                         $('#widget-bikeManagement-form input[name=billingGroup]').val(response.billingGroup);
@@ -753,7 +775,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
                             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
                             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
-                            dest=dest.concat(temp);                        
+                            dest=dest.concat(temp);
 
                         }else{
                             while(i<response.buildingNumber){
@@ -762,8 +784,8 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                                 }
                                 else{
                                     temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
-                                } 
-                                dest=dest.concat(temp);                        
+                                }
+                                dest=dest.concat(temp);
                                 i++;
                             }
                         }
@@ -777,17 +799,17 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
                             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
                             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
-                            dest=dest.concat(temp);                        
+                            dest=dest.concat(temp);
 
-                        }else{                        
+                        }else{
                             while(i<response.userNumber){
                                 if(response.user[i].access==true){
                                     temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
                                 }
                                 else if(response.user[i].access==false){
                                     temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-                                }  
-                                dest=dest.concat(temp);                              
+                                }
+                                dest=dest.concat(temp);
                                 i++;
                             }
                         }
@@ -797,7 +819,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                         $('#widget-bikeManagement-form select[name=company]').change(function(){
                             updateAccessAdmin($('#widget-bikeManagement-form input[name=frameNumber]').val(), $('#widget-bikeManagement-form select[name=company]').val());
                         });
-                    }              
+                    }
 
                 }
         }).done(function(response){
@@ -829,24 +851,24 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
 
                         displayLanguage();
 
-                        document.getElementsByClassName("addActionBikeButton")[0].addEventListener('click', function(){ 
+                        document.getElementsByClassName("addActionBikeButton")[0].addEventListener('click', function(){
                             $("label[for='widget-addActionBike-form-date']").removeClass("hidden");
                             $('input[name=widget-addActionBike-form-date]').removeClass("hidden");
-                            $("label[for='widget-addActionBike-form-description']").removeClass("hidden");    
+                            $("label[for='widget-addActionBike-form-description']").removeClass("hidden");
                             $('input[name=widget-addActionBike-form-description]').removeClass("hidden");
-                            $("label[for='widget-addActionBike-form-public']").removeClass("hidden");                                
+                            $("label[for='widget-addActionBike-form-public']").removeClass("hidden");
                             $('input[name=widget-addActionBike-form-public]').removeClass("hidden");
                             $('.addActionConfirmButton').removeClass("hidden");
                         });
 
-                    }              
+                    }
 
                 }
             })
         })
     })
 }
-    
+
 function construct_form_for_bike_access_updateAdmin(frameNumber, company){
     if(frameNumber){
         $.ajax({
@@ -860,31 +882,31 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
                         i=0;
                         var dest="";
                         var dest2="<label for=\"firstBuilding\">Bâtiment pour initialisation</label><select name=\"firstBuilding\">";
-                        
+
                         if(response.buildingNumber==0){
                             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
                             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
                             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
-                            dest=dest.concat(temp);                        
+                            dest=dest.concat(temp);
 
                         }else{
                             while(i<response.buildingNumber){
                                 temp2="<option value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"</option>";
-                                dest2=dest2.concat(temp2);                                                                
-                                
+                                dest2=dest2.concat(temp2);
+
                                 if(response.building[i].access==true){
                                     temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
                                 }
                                 else if(response.building[i].access==false){
                                     temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
-                                }  
-                                dest=dest.concat(temp);                        
+                                }
+                                dest=dest.concat(temp);
                                 i++;
                             }
                         }
                         dest2=dest2.concat("</select>");
                         document.getElementById('addBike_firstBuilding').innerHTML = dest2;
-                        
+
                         document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
                         i=0;
                         var dest="";
@@ -892,7 +914,7 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
                             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
                             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
                             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
-                            dest=dest.concat(temp);                        
+                            dest=dest.concat(temp);
                         }else{
                             while(i<response.userNumber){
                                 if(response.user[i].access==true){
@@ -900,8 +922,8 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
                                 }
                                 else if(response.user[i].access==false){
                                     temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-                                }  
-                                dest=dest.concat(temp);                        
+                                }
+                                dest=dest.concat(temp);
                                 i++;
                             }
                         }
@@ -910,7 +932,7 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
                         displayLanguage();
 
 
-                    }              
+                    }
 
                 }
         })
@@ -926,35 +948,35 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
                         i=0;
                         var dest="";
                         var dest2="<label for=\"firstBuilding\">Bâtiment pour initialisation</label><select name=\"firstBuilding\">";
-                        
+
                         if(response.buildingNumber==0){
                             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
                             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
                             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
-                            dest=dest.concat(temp);                        
+                            dest=dest.concat(temp);
 
                         }else{
                             while(i<response.buildingNumber){
                                 temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"</div>";
-                                dest=dest.concat(temp);  
+                                dest=dest.concat(temp);
                                 temp2="<option value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"</option>";
-                                dest2=dest2.concat(temp2);                                                                
-                                
-                                
+                                dest2=dest2.concat(temp2);
+
+
                                 i++;
                             }
                         }
                         document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
                         dest2=dest2.concat("</select>");
                         document.getElementById('addBike_firstBuilding').innerHTML = dest2;
-                        
-                        
-                        
+
+
+
                     }
                 }
         });
-        
-        
+
+
         $.ajax({
                 url: 'include/get_users_listing.php',
                 type: 'post',
@@ -963,27 +985,27 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
                     if (response.response == 'error') {
                         console.log(response.message);
                     } else{
-                        
+
                         i=0;
                         var dest="";
                         if(response.usersNumber==0){
                             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
                             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
                             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
-                            dest=dest.concat(temp);                        
+                            dest=dest.concat(temp);
 
                         }else{
-                            
+
                             while(i<response.usersNumber){
-                                
+
                                 temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-                                dest=dest.concat(temp);                        
+                                dest=dest.concat(temp);
                                 i++;
                             }
                         }
 
                         document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
-                        
+
                     }
                 }
         });
@@ -991,15 +1013,15 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
     }
 
 }
-    
+
 function updateAccessAdmin(frame_number, company){
     construct_form_for_bike_access_updateAdmin(frame_number, company);
 }
-    
+
 function construct_form_for_action_update(id){
-    
-    
-    
+
+
+
         $('#widget-updateAction-form select[name=owner]')
             .find('option')
             .remove()
@@ -1016,9 +1038,9 @@ function construct_form_for_action_update(id){
                 if(response.response == 'success'){
                     var i=0;
                     while (i < response.membersNumber){
-                        $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");    
+                        $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
                         i++;
-                    }                    
+                    }
                 }
             }
         }).done(function(){
@@ -1030,7 +1052,7 @@ function construct_form_for_action_update(id){
                     if (response.response == 'error') {
                         console.log(response.message);
                     } else{
-                        document.getElementById('widget-updateAction-form').reset();            
+                        document.getElementById('widget-updateAction-form').reset();
                         $('#widget-updateAction-form input[name=id]').val(response.action.id);
                         $('#widget-updateAction-form select[name=type]').val(response.action.type);
                         $('#widget-updateAction-form input[name=date]').val(response.action.date.substr(0,10));
@@ -1042,16 +1064,16 @@ function construct_form_for_action_update(id){
                         $('#widget-updateAction-form select[name=company]').val(response.action.company);
                         $('#widget-updateAction-form select[name=status]').val(response.action.status);
                         $('#widget-updateAction-form select[name=owner]').val(response.action.owner);
-                    }              
+                    }
 
                 }
             })
 
         })
 }
-    
-    
-    
+
+
+
 function construct_form_for_billing_status_update(ID){
     $.ajax({
         url: 'include/get_billing_details.php',
@@ -1080,52 +1102,52 @@ function construct_form_for_billing_status_update(ID){
                     $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', true);
                 }else{
                     $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', false);
-                }                    
+                }
                 if(response.bill.sentDate){
-                    $('input[name=widget-updateBillingStatus-form-sendingDate]').val(response.bill.sentDate.substring(0,10));                        
+                    $('input[name=widget-updateBillingStatus-form-sendingDate]').val(response.bill.sentDate.substring(0,10));
                 }else{
-                    $('input[name=widget-updateBillingStatus-form-sendingDate]').val('');                        
+                    $('input[name=widget-updateBillingStatus-form-sendingDate]').val('');
                 }
 
                 if(response.bill.paid=="1"){
                     $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', true);
                 }else{
                     $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', false);
-                }                                        
+                }
                 if(response.bill.paidDate){
-                    $('input[name=widget-updateBillingStatus-form-paymentDate]').val(response.bill.paidDate.substring(0,10));                        
+                    $('input[name=widget-updateBillingStatus-form-paymentDate]').val(response.bill.paidDate.substring(0,10));
                 }else{
-                    $('input[name=widget-updateBillingStatus-form-paymentDate]').val('');                        
+                    $('input[name=widget-updateBillingStatus-form-paymentDate]').val('');
                 }
 
 
                 if(response.bill.paidLimitDate){
-                    $('input[name=widget-updateBillingStatus-form-datelimite]').val(response.bill.paidLimitDate.substring(0,10));                        
+                    $('input[name=widget-updateBillingStatus-form-datelimite]').val(response.bill.paidLimitDate.substring(0,10));
                 }else{
-                    $('input[name=widget-updateBillingStatus-form-datelimite]').val('');                        
-                }     
+                    $('input[name=widget-updateBillingStatus-form-datelimite]').val('');
+                }
                 if(response.bill.file != '' ){
-                    $('.widget-updateBillingStatus-form-currentFile').attr("href", "factures/"+response.bill.file);    
-                    $('.widget-updateBillingStatus-form-currentFile').unbind('click');                              
+                    $('.widget-updateBillingStatus-form-currentFile').attr("href", "factures/"+response.bill.file);
+                    $('.widget-updateBillingStatus-form-currentFile').unbind('click');
                 }else{
                     $('.widget-updateBillingStatus-form-currentFile').click(function(e) {
-                        e.preventDefault();                        
+                        e.preventDefault();
                         $.notify({
                             message: "No file available for that bill"
                         }, {
                             type: 'danger'
-                        });                            
-                    });         
+                        });
+                    });
                 }
 
                 if(response.bill.communicationSentAccounting=="1"){
                     $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', true);
                 }else{
                     $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', false);
-                }                                        
+                }
 
 
-                $('input[name=widget-updateBillingStatus-form-currentFile]').val(response.bill.file);    
+                $('input[name=widget-updateBillingStatus-form-currentFile]').val(response.bill.file);
                 $("#widget-deleteBillingStatus-form input[name=reference]").val(ID);
 
 
@@ -1142,11 +1164,11 @@ function construct_form_for_billing_status_update(ID){
                 displayLanguage();
 
             }
-        }              
+        }
     })
 }
-    
-    
+
+
 function listPortfolioBikes(){
     $.ajax({
             url: 'include/load_portfolio.php',
@@ -1160,7 +1182,7 @@ function listPortfolioBikes(){
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vélos du catalogue:</h4><h4 class=\"en-inline text-green\">Portfolio bikes:</h4><h4 class=\"nl-inline text-green\">Portfolio bikes:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addPortfolioBike\" data-toggle=\"modal\" onclick=\"initializeCreatePortfolioBike()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Marque</span><span class=\"en-inline\">Brand</span><span class=\"nl-inline\">Brand</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Utilisation</span><span class=\"en-inline\">Use</span><span class=\"nl-inline\">Use</span></th><th><span class=\"fr-inline\">Electrique ?</span><span class=\"en-inline\">Electric</span><span class=\"nl-inline\">Electric</span></th><th><span class=\"fr-inline\">Cadre</span><span class=\"en-inline\">Frame</span><span class=\"nl-inline\">Frame</span></th><th><span class=\"fr-inline\">Prix</span><span class=\"en-inline\">Price</span><span class=\"nl-inline\">Price</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
-                    
+
                     while(i<response.bikeNumber){
                         var temp="<tr><th>"+response.bike[i].ID+"</th><th>"+response.bike[i].brand+"</th><th>"+response.bike[i].model+"</th><th>"+response.bike[i].utilisation+"</th><th>"+response.bike[i].electric+"</th><th>"+response.bike[i].frameType+"</th><th>"+response.bike[i].price+"</th><th><a href=\"#\" class=\"text-green updatePortfolioClick\" onclick=\"initializeUpdatePortfolioBike('"+response.bike[i].ID+"')\" data-target=\"#updatePortfolioBike\" data-toggle=\"modal\">Mettre à jour </a></th></tr>";
                         dest=dest.concat(temp);
@@ -1168,14 +1190,14 @@ function listPortfolioBikes(){
                     }
                     document.getElementById('portfolioBikesListing').innerHTML=dest;
                     document.getElementById('counterBikePortfolio').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
-                    
+
                     displayLanguage();
 
-                }              
+                }
 
             }
     })
-}    
+}
 
 function initializeUpdatePortfolioBike(ID){
     $.ajax({
@@ -1186,46 +1208,46 @@ function initializeUpdatePortfolioBike(ID){
                 if (response.response == 'error') {
                     console.log(response.message);
                 } else{
-                    $('#widget-updateCatalog-form input[name=ID]').val(response.ID);                    
-                    
+                    $('#widget-updateCatalog-form input[name=ID]').val(response.ID);
+
                     $('#widget-deletePortfolioBike-form [name=id]').val(response.ID);
 
-                    console.log(response.brand);    
-                    $('#widget-updateCatalog-form select[name=brand]').val(response.brand);                    
-                    $('#widget-updateCatalog-form input[name=model]').val(response.model);                    
-                    $('#widget-updateCatalog-form select[name=frame]').val(response.frameType);                    
-                    $('#widget-updateCatalog-form select[name=utilisation]').val(response.utilisation);                    
-                    $('#widget-updateCatalog-form select[name=electric]').val(response.electric);                    
-                    
-                    $('#widget-updateCatalog-form input[name=electric]').val(response.electric);                    
+                    console.log(response.brand);
+                    $('#widget-updateCatalog-form select[name=brand]').val(response.brand);
+                    $('#widget-updateCatalog-form input[name=model]').val(response.model);
+                    $('#widget-updateCatalog-form select[name=frame]').val(response.frameType);
+                    $('#widget-updateCatalog-form select[name=utilisation]').val(response.utilisation);
+                    $('#widget-updateCatalog-form select[name=electric]').val(response.electric);
+
+                    $('#widget-updateCatalog-form input[name=electric]').val(response.electric);
                     $('#widget-updateCatalog-form input[name=buyPrice]').val(response.buyingPrice);
                     $('#widget-updateCatalog-form input[name=price]').val(response.portfolioPrice);
-                    
+
                     $('#widget-updateCatalog-form input[name=stock]').val(response.stock);
                     $('#widget-updateCatalog-form input[name=link]').val(response.url);
-                    
+
                     document.getElementsByClassName("bikeCatalogImage")[0].src="images_bikes/"+response.brand.toLowerCase()+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
                     document.getElementsByClassName("bikeCatalogImageMini")[0].src="images_bikes/"+response.brand.toLowerCase()+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+"_mini.jpg";
                     $('#widget-updateCatalog-form input[name=file]').val('');
                     $('#widget-updateCatalog-form input[name=fileMini]').val('');
-                    
+
                     if(response.display=='Y'){
                         $('#widget-updateCatalog-form input[name=display]').prop("checked", true);
                     }else{
                         $('#widget-updateCatalog-form input[name=display]').prop("checked", false);
-                    }                    
-                }              
+                    }
+                }
 
             }
     })
-    
+
 }
- 
+
 function initializeCreatePortfolioBike(){
-    document.getElementById('widget-addCatalog-form').reset();     
-}        
-    
-    
+    document.getElementById('widget-addCatalog-form').reset();
+}
+
+
 function update_deposit_form(){
     var hour=document.getElementById('search-bikes-form-intake-hour').value;
     var date=document.getElementById('search-bikes-form-day').value;
@@ -1236,17 +1258,17 @@ function update_deposit_form(){
 
     var hour=Hours[0];
     var minute=Hours[1];
-    
+
 
     var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
-    
-    
+
+
     var dateTemp = new Date(new Date().getFullYear(), month, day, hour, minute);
-    
+
     loadClientConditions()
     .done(function(response){
         bookingLength=parseInt(response.clientConditions.bookingLength);
-        
+
         var hour=document.getElementById('search-bikes-form-intake-hour').value;
         var Hours1=hour.split('h');
         var hour=Hours1[0];
@@ -1255,20 +1277,20 @@ function update_deposit_form(){
         var Date1=date.split('-');
         var day=Date1[0];
         var month=(Date1[1]-1);
-        
-        
+
+
         var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
         dateEnd.setHours(dateEnd.getHours()+bookingLength);
-        
+
         var currentDate = new Date(new Date().getFullYear(), month, day, hour, minute);
-        
-        
-        
+
+
+
         var numberOfDays=Math.round((dateEnd-currentDate)/(1000*60*60*24));
-        
-        
+
+
         // 1st step: days and month fileds
-        
+
         var hour=document.getElementById('search-bikes-form-intake-hour').value;
         var date1=document.getElementById('search-bikes-form-day').value;
         var Date1=date.split('-');
@@ -1286,12 +1308,12 @@ function update_deposit_form(){
         var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
 
-        var tempDate = new Date(new Date().getFullYear(), month, day, hour, minute);    
+        var tempDate = new Date(new Date().getFullYear(), month, day, hour, minute);
         var i=0;
         var j=0;
         var dest ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
 
-        
+
         while(i<=numberOfDays){
             if((tempDate.getDay()=="1" && parseInt(response.clientConditions.mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(response.clientConditions.tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(response.clientConditions.wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(response.clientConditions.thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(response.clientConditions.fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(response.clientConditions.saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(response.clientConditions.sundayDeposit))){
                 var dayFR = daysFR[tempDate.getDay()];
@@ -1300,9 +1322,9 @@ function update_deposit_form(){
                 var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option>";
                 dest = dest.concat(bookingDay);
             }
-            tempDate.setDate(tempDate.getDate()+1);    
-            i++;       
-            
+            tempDate.setDate(tempDate.getDate()+1);
+            i++;
+
         }
         var bookingDay="</select>";
         dest = dest.concat(bookingDay);
@@ -1317,7 +1339,7 @@ function update_deposit_form(){
 
 
 }
-    
+
 function update_intake_hour_form(){
     loadClientConditions()
     .done(function(response){
@@ -1325,7 +1347,7 @@ function update_intake_hour_form(){
         var Date1=date1.split('-');
         var day=Date1[0];
         var currentDate=new Date();
-                
+
         if(currentDate.getDate()==day){
             var hours=currentDate.getHours();
             var minutes=currentDate.getMinutes();
@@ -1334,16 +1356,16 @@ function update_intake_hour_form(){
             var h = ((((minutes/105) + .5) | 0) + hours) % 24;
 
             var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
-            
-        }            
+
+        }
         else{
             var m = 0;
             var h = response.clientConditions.hourStartIntakeBooking;
             var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
         }
-          
+
         var dest="";
-          
+
         while(dateTemp.getHours()<response.clientConditions.hourEndIntakeBooking){
             if(dateTemp.getMinutes()=="0"){
                 var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
@@ -1356,26 +1378,26 @@ function update_intake_hour_form(){
             var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
             dest=dest.concat(tempString);
         }
-        
+
         var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
         var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
         dest=dest.concat(tempString);
 
-        
+
         document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
 
         update_deposit_form();
     });
 }
-          
-    
+
+
 function update_deposit_hour_form(){
     var hour=document.getElementById('search-bikes-form-intake-hour').value;
     var date1=document.getElementById('search-bikes-form-day').value;
     var Date1=date1.split('-');
     var day=Date1[0];
     var month=Date1[1];
-    
+
 
     var Hours1=hour.split('h');
 
@@ -1394,7 +1416,7 @@ function update_deposit_hour_form(){
         var Hours1=hour.split('h');
         var hour=Hours1[0];
         var minute=Hours1[1];
-            
+
         var dateEnd = new Date(new Date().getFullYear(), month-1, day, hour, minute);
         dateEnd.setHours(dateEnd.getHours()+bookingLength);
 
@@ -1402,7 +1424,7 @@ function update_deposit_hour_form(){
         var Date1=date1.split('-');
         var day=Date1[0];
         var month=Date1[1];
-        
+
         if( dateStart.getDate()!=day || (parseInt(hour) < parseInt(response.clientConditions.hourStartDepositBooking))){
             var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
             var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, response.clientConditions.hourStartDepositBooking, '00');
@@ -1410,7 +1432,7 @@ function update_deposit_hour_form(){
             var currentDepositDate = new Date(new Date().getFullYear(), month-1, day, hour, minute);
             var dateTemp2 = new Date(new Date().getFullYear(), month-1, day, hour, minute);
         }
-                
+
         var Hours=[];
         while(dateTemp2<=dateEnd){
             hours=dateTemp2.getHours();
@@ -1425,15 +1447,15 @@ function update_deposit_hour_form(){
             }
             dateTemp2.setMinutes(dateTemp2.getMinutes()+15);
         }
-                
+
         var hourBeforeLast=(response.clientConditions.hourEndDepositBooking-1)+'h45';
         var hourInArray=Hours[Hours.length-1];
-        
+
         if(hourBeforeLast==hourInArray){
             Hours.push(response.clientConditions.hourEndDepositBooking+'h00');
         }
-        
-        
+
+
         var dest ="<select name=\"search-bikes-form-deposit-hour\" id=\"search-bikes-form-deposit-hour\" class=\"form-control\">";
 
         var i=0;
@@ -1445,9 +1467,9 @@ function update_deposit_hour_form(){
         var bookingHour="</select>";
         document.getElementById('booking_hour_form_deposit').innerHTML=dest;
     });
-}    
-    
-    
+}
+
+
 function fillBikeDetails(element)
 {
     var frameNumber=element;
@@ -1467,11 +1489,11 @@ function fillBikeDetails(element)
                     document.getElementsByClassName("endDateContract")[0].innerHTML=response.contractEnd;
                     document.getElementsByClassName("bikeImage")[0].src="images_bikes/"+frameNumber+"_mini.jpg";
 
-                }              
+                }
 
                 }
             })
-    
+
     $.ajax({
             url: 'include/action_bike_management.php',
             type: 'post',
@@ -1480,7 +1502,7 @@ function fillBikeDetails(element)
                 if (response.response == 'error') {
                     console.log(response.message);
                 } else{
-                    
+
                     var i=0;
                     var dest="<table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th></tr></thead> ";
                     while(i<response.actionNumber){
@@ -1495,7 +1517,7 @@ function fillBikeDetails(element)
                     $('#action_bike_log_user').html(dest);
                     displayLanguage();
 
-                }              
+                }
 
             }
     })
@@ -1517,26 +1539,26 @@ function fillReservationDetails(element)
                     document.getElementsByClassName("reservationEndDate")[0].innerHTML=response.reservationEndDate;
                     document.getElementsByClassName("reservationStartBuilding")[0].innerHTML=response.reservationStartBuilding;
                     document.getElementsByClassName("reservationEndBuilding")[0].innerHTML=response.reservationEndBuilding;
-                    document.getElementsByClassName("reservationBikeNumber")[0].innerHTML=response.reservationBikeNumber;                    
-                    document.getElementsByClassName("reservationEmail")[0].innerHTML=response.reservationEmail;                    
+                    document.getElementsByClassName("reservationBikeNumber")[0].innerHTML=response.reservationBikeNumber;
+                    document.getElementsByClassName("reservationEmail")[0].innerHTML=response.reservationEmail;
                     document.getElementsByClassName("reservationBikeImage")[0].src="images_bikes/"+response.reservationBikeNumber+"_mini.jpg";
-                    
+
                     //document.getElementById('updateReservationdiv').innerHTML="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#updateReservation\" onclick=\"initializeUpdateReservation('"+reservationID+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Modifier</span><span class=\"en-inline\">Update</span></a>";
                     document.getElementById('deleteReservationdiv').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteReservation\" onclick=\"initializeDeleteReservation('"+reservationID+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Supprimer</span><span class=\"en-inline\">Delete</span></a>";
-                    
+
                     displayLanguage();
-                }              
+                }
 
                 }
             })
-    
-}    
-    
+
+}
+
 </script>
 <?php
 if($connected){
-    
-    include 'include/connexion.php';	
+
+    include 'include/connexion.php';
     $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.TYPE from customer_referential aa, customer_bike_access bb where aa.EMAIL='$user' and aa.EMAIL=bb.EMAIL LIMIT 1";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
@@ -1545,7 +1567,7 @@ if($connected){
     }
     else{
         $company=false;
-    }    
+    }
     $conn->close();
     ?>
 
@@ -1565,20 +1587,20 @@ if($connected){
                 success: function(response){
                     if (response.response == 'error') {
                         console.log(response.message);
-                    }                    
+                    }
                 }
                 })
-    }    
+    }
 
     // Goal of this function is to delete the block with result of research
     function hideResearch(){
-        document.getElementById('velos').innerHTML = ""; 
-        document.getElementById("velos").style.display = "none";	
+        document.getElementById('velos').innerHTML = "";
+        document.getElementById("velos").style.display = "none";
         document.getElementById("travel_information").style.display = "none";
         getHistoricBookings();
 
     }
-    // Goal of this function is to construct the reasearch fields 
+    // Goal of this function is to construct the reasearch fields
     function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking, mondayIntake, tuesdayIntake, wednesdayIntake, thursdayIntake, fridayIntake, saturdayIntake, sundayIntake, mondayDeposit, tuesdayDeposit, wednesdayDeposit, thursdayDeposit, fridayDeposit, saturdayDeposit, sundayDeposit, maxBookingsPerYear, maxBookingsPerMonth){
         if(assistance=="Y"){
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
@@ -1593,7 +1615,7 @@ if($connected){
         var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
 
-        var startDate = new Date();    
+        var startDate = new Date();
         var i=0;
         var j=0;
         var dest ="<select id=\"search-bikes-form-day\" name=\"search-bikes-form-day\"  class=\"form-control\">";
@@ -1613,23 +1635,23 @@ if($connected){
             var dayNL = daysNL[tempDate.getDay()];
             if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
                 var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
-                       
+
                 dest = dest.concat(bookingDay);
-            }            
+            }
             else{
 
-            } 
-   
+            }
+
             i++;
             tempDate.setDate(tempDate.getDate()+1);
         }
         var bookingDay="</select>";
         dest = dest.concat(bookingDay);
         document.getElementById('booking_day_form').innerHTML=dest;
-        
-        document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);  
-            
-        
+
+        document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);
+
+
         var currentDate=new Date();
 
         var hours=currentDate.getHours();
@@ -1638,10 +1660,10 @@ if($connected){
         var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
         var h = ((((minutes/105) + .5) | 0) + hours) % 24;
 
-        var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);            
-    
-        
-        
+        var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
+
+
+
         var dest="";
         if(dateTemp.getHours()>=hourEndDepositBooking){
             dateTemp.setHours(hourStartIntakeBooking);
@@ -1654,21 +1676,21 @@ if($connected){
             }else{
                 var hourString=dateTemp.getHours()+"h"+dateTemp.getMinutes();
             }
-            
+
             dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
 
-            
+
             var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
             dest=dest.concat(tempString);
         }
-        
-        var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();            
+
+        var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
         var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
         dest=dest.concat(tempString);
 
-        
+
         document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
-        
+
 
 
         // 2nd step: intake and deposit buildings
@@ -1690,7 +1712,7 @@ if($connected){
                     dest=tempBuilding;
                 } else{
                     var dest="";
-                    var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";        
+                    var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";
                     dest = dest.concat(tempBuilding);
                     while (i < response.buildingNumber){
                         i++;
@@ -1709,7 +1731,7 @@ if($connected){
 
                     var j=0;
                     var dest="";
-                    var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";        
+                    var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";
                     dest = dest.concat(tempBuilding);
 
                     while (j < response.buildingNumber){
@@ -1726,14 +1748,14 @@ if($connected){
                     }
                     dest = dest.concat(tempBuilding);
                 }
-                document.getElementById('deposit_building_form').innerHTML=dest;  
-                document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;  
-                document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;  
+                document.getElementById('deposit_building_form').innerHTML=dest;
+                document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
+                document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
                 displayLanguage();
             }
         });
-        
-        
+
+
         update_deposit_form();
     }
 
@@ -1799,8 +1821,8 @@ if($connected){
                                 var dest="Nobody.";
                         } else{
                                 var dest="Personne.";
-                        }                 
-                    }       
+                        }
+                    }
                     else{
                         if(langue=="nl"){
                             var dest="<li>Naam: "+name+" "+surname+"</li><li>Telefoonnummer:"+phone+"</li><li>Mail: "+mail+"</li><li>Neem de fiets mee"+intakeDay+" om "+intakeHour+"</li>";
@@ -1809,7 +1831,7 @@ if($connected){
                                 var dest="<li>Name: "+name+" "+surname+"</li><li>Phone Number:"+phone+"</li><li>Mail: "+mail+"</li><li>Will take bike on"+intakeDay+" at "+intakeHour+"</li>";
                         } else{
                                 var dest="<li>Nom et prénom: "+name+" "+surname+"</li><li>Numéro de téléphone:"+phone+"</li><li>Adresse mail: "+mail+"</li><li>Reprendra le vélo le "+intakeDay+" à "+intakeHour+"</li>";
-                        } 
+                        }
                     }
 
                     document.getElementById('futureBookingAfter').innerHTML = dest;
@@ -1848,13 +1870,13 @@ if($connected){
                         message: text.message
                     }, {
                         type: text.response
-                    });  
+                    });
                     getHistoricBookings();
                 }
 
             }
         });
-    }    
+    }
 
     function get_bikes_listing() {
         var email= "<?php echo $user; ?>";
@@ -1871,14 +1893,14 @@ if($connected){
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Début du contrat</span><span class=\"en-inline\">Contract start</span><span class=\"nl-inline\">Contract start</span></th><th><span class=\"fr-inline\">Fin du contrat</span><span class=\"en-inline\">Contract End</span><span class=\"nl-inline\">Contract End</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
                     dest=dest.concat(temp);
-                    
+
                     var dest2="";
                     temp2="<li><a href=\"#\" onclick=\"bikeFilter('Sélection de vélo')\">Tous les vélos</a></li><li class=\"divider\"></li>";
                     dest2=dest2.concat(temp2);
 
-                    
-                    while (i < response.bikeNumber){                        
-                        
+
+                    while (i < response.bikeNumber){
+
                         if(response.bike[i].contractStart){
                             var contractStart=response.bike[i].contractStart.substr(0,10);
                         }else{
@@ -1889,22 +1911,22 @@ if($connected){
                         }else{
                             var contractEnd="N/A";
                         }
-                        
-                        
-                        
+
+
+
                         if(response.bike[i].status==null || response.bike[i].status=="KO"){
                             status="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                         }else{
                             status="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                        }  
-                        
-                        
+                        }
+
+
                         var temp="<tr><td><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].contractType+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+status+"</td><td><ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         dest=dest.concat(temp);
 
                         var temp2="<li><a href=\"#\" onclick=\"bikeFilter('"+response.bike[i].frameNumber+"')\">"+response.bike[i].frameNumber+"</a></li>";
                         dest2=dest2.concat(temp2);
-                        
+
                         i++;
 
                     }
@@ -1915,13 +1937,13 @@ if($connected){
 
                     document.getElementById('counterBike').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
                     displayLanguage();
-                    
+
                     var classname = document.getElementsByClassName('updateBikeStatus');
                     for (var i = 0; i < classname.length; i++) {
                         classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
-                    }  
-                    
-                   
+                    }
+
+
 
                 }
             }
@@ -1941,24 +1963,24 @@ if($connected){
                     var i=0;
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vélos:</h4><br/><a class=\"button small green button-3d rounded icon-right addBikeAdmin\" data-target=\"#bikeManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><br/><h4 class=\"en-inline text-green\">Bikes:</h4><h4 class=\"nl-inline text-green\">Fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Marque - Modèle</span><span class=\"en-inline\">Brand - Model</span><span class=\"nl-inline\">Brand - Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Début contrat</span><span class=\"en-inline\">Contract Start</span><span class=\"nl-inline\">Contract Start</span></th><th><span class=\"fr-inline\">Fin contrat</span><span class=\"en-inline\">Contract End</span><span class=\"nl-inline\">Contract End</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th>Facturation</th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th>Assurance ?</th><th></th></tr></thead>";
-                    dest=dest.concat(temp);                
-                    
+                    dest=dest.concat(temp);
+
                     while (i < response.bikeNumber){
-                        
+
 
                         if(response.bike[i].automatic_billing==null || response.bike[i].automatic_billing=="N"){
                             automatic_billing="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                         }else{
                             automatic_billing="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                        }                        
-                        
+                        }
+
                         if(response.bike[i].status==null || response.bike[i].status=="KO"){
                             status="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                         }else{
                             status="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                        }  
-                        
-                        
+                        }
+
+
                         if(response.bike[i].contractStart==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
                             start="<span class=\"text-red\">N/A</span>";
                         }else if(response.bike[i].contractStart!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
@@ -1970,9 +1992,9 @@ if($connected){
                         }else{
                             start="<span class=\"text-red\">ERROR</span>";
                         }
-                        
-                        
-                        
+
+
+
                         if(response.bike[i].contractEnd==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
                             end="<span class=\"text-red\">N/A</span>";
                         }else if(response.bike[i].contractEnd!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
@@ -1984,19 +2006,19 @@ if($connected){
                         }else{
                             start="<span class=\"text-red\">ERROR</span>";
                         }
-                        
+
                         if(response.bike[i].brand==null){
                             var brandAndModel="<span class=\"text-red\">N/A</span>";
                         }else{
                             var brandAndModel="<span class=\"\">"+response.bike[i].brand+" - "+response.bike[i].modelBike+" - "+response.bike[i].frameType+"</span>";
-                        }                        
+                        }
                         if(response.bike[i].insurance=="Y"){
                             insurance="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
                         }else{
                             insurance="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                         }
-                        
-                        
+
+
                         if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'renting' || response.bike[i].contractType=='leasing') && response.bike[i].billingType != 'paid'){
                             var leasingPrice="<span class=\"text-red\">0</span>";
                         }else if((response.bike[i].leasingPrice!=null && response.bike[i].leasingPrice!=0) && (response.bike[i].contractType== 'renting' || response.bike[i].contractType=='leasing')){
@@ -2008,14 +2030,14 @@ if($connected){
                         }else{
                             var leasingPrice="<span class=\"text-red\">ERROR</span>";
                         }
-                        
-                        
+
+
                         if((response.bike[i].contractType=="stock" && response.bike[i].company != 'KAMEO') || ((response.bike[i].contractType=="leasing" || response.bike[i].contractType=="renting") && response.bike[i].company=="KAMEO")){
                             var contractType="<span class=\"text-red\">"+response.bike[i].contractType+"</span>";
                         }else{
                             var contractType="<span class=\"text-green\">"+response.bike[i].contractType+"</span>";
                         }
-                        
+
                         var temp="<tr><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"retrieveBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td><ins><a class=\"text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         dest=dest.concat(temp);
                         i++;
@@ -2026,9 +2048,9 @@ if($connected){
                     document.getElementById('bikeDetailsAdmin').innerHTML = dest;
 
                     document.getElementById('counterBikeAdmin').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
-                    
+
                     displayLanguage();
-                    
+
                     $(".updateBikeAdmin").click(function() {
                         construct_form_for_bike_status_updateAdmin(this.name);
                         $('#widget-bikeManagement-form input').attr('readonly', false);
@@ -2036,9 +2058,9 @@ if($connected){
                         $('.bikeManagementTitle').html('Modifier un vélo');
                         $('.bikeManagementSend').removeClass('hidden');
                         $('.bikeManagementSend').html('<i class="fa fa-plus"></i>Modifier');
-                        
-                    });                    
-                   
+
+                    });
+
 
                     $(".retrieveBikeAdmin").click(function() {
                         construct_form_for_bike_status_updateAdmin(this.name);
@@ -2046,8 +2068,8 @@ if($connected){
                         $('#widget-bikeManagement-form select').attr('readonly', true);
                         $('.bikeManagementTitle').html('Consulter un vélo');
                         $('.bikeManagementSend').addClass('hidden');
-                    });                    
-                    
+                    });
+
                     $('.addBikeAdmin').click(function(){
                         add_bike();
                         $('#widget-bikeManagement-form input').attr('readonly', false);
@@ -2055,10 +2077,10 @@ if($connected){
                         $('.bikeManagementTitle').html('Ajouter un vélo');
                         $('.bikeManagementSend').removeClass('hidden');
                         $('.bikeManagementSend').html('<i class="fa fa-plus"></i>Ajouter');
-                        
+
                     });
-                    
-                   
+
+
 
                 }
             }
@@ -2078,7 +2100,7 @@ if($connected){
                     var dest="<a class=\"button small green button-3d rounded icon-right addBox\" name=\""+company+"\" data-target=\"#boxManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une borne</span></a>";
                     if(response.boxesNumber>0){
                         var temp="<table class=\"table\"><tbody><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th>Début de contrat</th><th>Fin de contrat</th><th></th></tr></thead>";
-                        dest=dest.concat(temp);                    
+                        dest=dest.concat(temp);
 
                         while (i < response.boxesNumber){
 
@@ -2086,14 +2108,14 @@ if($connected){
                                 automatic_billing="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                             }else{
                                 automatic_billing="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                            }                        
+                            }
 
                             if(response.box[i].amount==null){
                                 amount="0 €/mois";
                             }else{
                                 amount=response.box[i].amount+" €/mois";
                             }
-                            
+
                             if(response.box[i].start!=null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
                                 start="<span class=\"text-green\">"+response.box[i].start.substr(0,10)+"</span>";
                             }else if (response.box[i].start == null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
@@ -2105,8 +2127,8 @@ if($connected){
                             }else{
                                 start="<span class=\"text-red\">ERROR</span>";
                             }
-                            
-                                                        
+
+
                             if(response.box[i].end && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
                                 end="<span class=\"text-green\">"+response.box[i].end.substr(0,10)+"</span>";
                             }else if (response.box[i].end == null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
@@ -2118,23 +2140,23 @@ if($connected){
                             }else{
                                 end="<span class=\"text-red\">ERROR</span>";
                             }
-                            
-                            
+
+
                             temp="<tr><td><a href=\"#\" class=\"text-green retrieveBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">"+response.box[i].id+"</a></td><td>"+response.box[i].company+"</td><td>"+response.box[i].reference+"</td><td>"+response.box[i].model+"</td><td>"+automatic_billing+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td><a href=\"#\" class=\"text-green updateBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">Mettre à jour </a></th></tr>";
                             dest=dest.concat(temp);
                             i++;
                         }
-                        
+
                         var temp="</tbody></table>";
-                        dest=dest.concat(temp);                    
+                        dest=dest.concat(temp);
                     }
                     if(company=="*"){
                         document.getElementById('counterBoxes').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.boxesNumberTotal+"\" data-from=\"0\" data-seperator=\"true\">"+response.boxesNumberTotal+"</span>";
                     }
 
 
-                    
-                    $('#boxesListingSpan').html(dest);         
+
+                    $('#boxesListingSpan').html(dest);
                     $('.addBox').click(function(){
                         add_box(this.name);
                     });
@@ -2144,13 +2166,13 @@ if($connected){
                     $('.retrieveBox').click(function(){
                         retrieve_box(this.name);
                     });
-                                        
-                    
+
+
                 }
             }
         })
     }
-        
+
     function list_tasks(status, owner2, numberOfResults) {
         var email= "<?php echo $user; ?>";
         if(!owner2){
@@ -2168,15 +2190,15 @@ if($connected){
                     var i=0;
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions :</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right addTask\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
-                    dest=dest.concat(temp);                
+                    dest=dest.concat(temp);
                     while (i < response.actionNumber){
-                        
+
                         if(response.action[i].date_reminder!=null){
                             var date_reminder=response.action[i].date_reminder.substr(0,10);
                         }else{
                             var date_reminder="N/A";
                         }
-                        
+
                         var status=response.action[i].status;
                         var ownerSpan=response.action[i].ownerFirstName+" "+response.action[i].ownerName;
 
@@ -2185,15 +2207,15 @@ if($connected){
                             status="<span class='text-red'>"+status+"</span>";
                             owner="<span class='text-red'>"+ownerSpan+"</span>";
                         }else if(response.action[i].status=='DONE'){
-                            date_reminder="<span class='text-green'>"+date_reminder+"</span>";                            
+                            date_reminder="<span class='text-green'>"+date_reminder+"</span>";
                             status="<span class='text-green'>"+status+"</span>";
                             owner="<span class='text-green'>"+ownerSpan+"</span>";
                         }else if(status='TO DO'){
-                            date_reminder="<span class='text-orange'>"+date_reminder+"</span>";                            
+                            date_reminder="<span class='text-orange'>"+date_reminder+"</span>";
                             status="<span class='text-orange'>"+status+"</span>";
                             owner="<span class='text-orange'>"+ownerSpan+"</span>";
                         }
-                        
+
                         if(response.action[i].type=="other"){
                             type="Autre";
                         }else if(response.action[i].type=="offer"){
@@ -2211,24 +2233,24 @@ if($connected){
                         }else{
                             type=response.action[i].type;
                         }
-                        
-                        
+
+
                         var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td>"+response.action[i].date.substr(0,10)+"</td><td>"+type+"<td>"+response.action[i].title+"</td><td>"+date_reminder+"</td><td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                         dest=dest.concat(temp);
                         i++;
 
                     }
                     var temp="</tobdy></table>";
-                    dest=dest.concat(temp);                 
+                    dest=dest.concat(temp);
                     document.getElementById('tasksListingSpan').innerHTML = dest;
-                    
-                    
+
+
                     $(".retrieveTask").click(function() {
                         retrieve_task(this.name, "retrieve");
                         $('.taskManagementSendButton').addClass("hidden");
 
 
-                    });                    
+                    });
 
                     $(".updateTask").click(function() {
                         update_task(this.name, "update");
@@ -2236,45 +2258,45 @@ if($connected){
                     $(".addTask").click(function() {
                         add_task(this.name);
                         $('.taskManagementSendButton').removeClass("hidden");
-                        $('.taskManagementSendButton').text("Ajouter")                        
+                        $('.taskManagementSendButton').text("Ajouter")
 
                     });
-                    
-                    
+
+
                     $('.taskOwnerSelection')
                         .find('option')
                         .remove()
                         .end()
                     ;
-                    $('.taskOwnerSelection').append("<option value='*'>Tous<br>");    
+                    $('.taskOwnerSelection').append("<option value='*'>Tous<br>");
 
                     var i=0;
                     while (i < response.ownerNumber){
-                        $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");    
+                        $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
                         i++;
 
                     }
-                    
+
                     if(owner2){
                         $('.taskOwnerSelection').val(owner2);
                     }else{
                         $('.taskOwnerSelection').val('*');
                     }
-                    
+
                     $('.taskOwnerSelection2')
                         .find('option')
                         .remove()
                         .end()
                     ;
-                    $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");    
+                    $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");
 
                     var i=0;
                     while (i < response.ownerNumber){
-                        $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");    
+                        $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
                         i++;
 
                     }
-                    
+
                     $('.taskOwnerSelection2').val('*');
 
                     $('#widget-taskManagement-form select[name=owner]')
@@ -2282,31 +2304,31 @@ if($connected){
                         .remove()
                         .end()
                     ;
-                    $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");    
+                    $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");
 
                     var i=0;
                     while (i < response.ownerNumber){
-                        $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");    
+                        $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
                         i++;
 
                     }
-                    
+
                     document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
-                    
-                    displayLanguage();    
-                    
+
+                    displayLanguage();
+
                     var classname = document.getElementsByClassName('updateAction');
                     for (var i = 0; i < classname.length; i++) {
                         classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
-                    }                                      
-                    
+                    }
+
                 }
             }
         })
     }
-        
-        
-    
+
+
+
     function list_contracts_offers(company) {
         $.ajax({
             url: 'include/offer_management.php',
@@ -2320,7 +2342,7 @@ if($connected){
                     var i=0;
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats signés :</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
-                    dest=dest.concat(temp);    
+                    dest=dest.concat(temp);
                     while (i < response.contractsNumber){
                         if(response.contract[i].start!=null){
                             var contract_start=response.contract[i].start.substr(0,10);
@@ -2332,26 +2354,26 @@ if($connected){
                         }else{
                             var contract_end="<span class=\"text-red\">N/A</span>";
                         }
-                        
+
                         var temp="<tr><td>"+response.contract[i].company+"</td><td>"+response.contract[i].description+"</td><td>"+Math.round(response.contract[i].amount)+" €/mois</td><td>"+contract_start+"</td><td>"+contract_end+"</td></tr>";
                         dest=dest.concat(temp);
                         i++;
 
                     }
                     var temp="</tobdy></table>";
-                    dest=dest.concat(temp);     
-                    
+                    dest=dest.concat(temp);
+
                     var temp="<p>Valeur actuelle des contrat en cours : <strong>"+Math.round(response.sumContractsCurrent)+" €/mois</strong></p>";
-                    dest=dest.concat(temp);     
-                    
+                    dest=dest.concat(temp);
+
                     document.getElementById('contractsListingSpan').innerHTML = dest;
-                    
-                    
-                    
+
+
+
                     var i=0;
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Offres en cours :</h4><h4 class=\"en-inline text-green\">Offers:</h4><h4 class=\"nl-inline text-green\">Offers:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Probabilité</th><th></th></tr></thead>";
-                    dest=dest.concat(temp); 
+                    dest=dest.concat(temp);
                     while (i < response.offersNumber){
                         if(response.offer[i].start!=null){
                             var offer_start=response.offer[i].start.substr(0,10);
@@ -2363,45 +2385,45 @@ if($connected){
                         }else{
                             var offer_end="<span class=\"text-red\">N/A</span>";
                         }
-                        
+
                         if(response.offer[i].type=="leasing"){
                             var amount=Math.round(response.offer[i].amount)+ "€/mois";
                         }else{
                             var amount=Math.round(response.offer[i].amount)+ "€";
-                        }        
-                        
+                        }
+
                         if(response.offer[i].amount==0){
                             var amount="<span class=\"text-red\">"+amount+"</span>";
                         }
-                        
+
                         if(response.offer[i].type=="leasing"){
                             var type="Leasing";
                         }else if(response.offer[i].type=="achat"){
                             var type="Achat";
                         }
-                        
+
                         if(response.offer[i].probability==0 || response.offer[i].probability==0){
                             var probability="<span class=\"text-red\">"+response.offer[i].probability+" %</span>";
                         }else{
                             var probability="<span>"+response.offer[i].probability+" %</span>";
                         }
 
-                        
+
                         var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+response.offer[i].company+"</td><td>"+type+"</td><td>"+response.offer[i].title+"</td><td>"+amount+" </td><td>"+offer_start+"</td><td>"+offer_end+"</td><td>"+probability+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-                        
-                        
-                        dest=dest.concat(temp);                        
+
+
+                        dest=dest.concat(temp);
                         i++;
 
                     }
                     var temp="</tobdy></table>";
-                    dest=dest.concat(temp);                         
+                    dest=dest.concat(temp);
                     document.getElementById('offersListingSpan').innerHTML = dest;
-                    
+
                     var i=0;
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Coûts:</h4><h4 class=\"en-inline text-green\">Costs:</h4><h4 class=\"nl-inline text-green\">Costs:</h4><br/><br/><a class=\"button small green button-3d rounded icon-right addCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un coût</span></a><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Type</th><th></th></tr></thead>";
-                    dest=dest.concat(temp); 
+                    dest=dest.concat(temp);
                     while (i < response.costsNumber){
                         if(response.cost[i].start!=null){
                             var cost_start=response.cost[i].start.substr(0,10);
@@ -2413,73 +2435,73 @@ if($connected){
                         }else{
                             var cost_end="N/A";
                         }
-                        
+
                         if(response.cost[i].type=="monthly"){
                             var amount=Math.round(response.cost[i].amount)+ "€/mois";
                         }else{
                             var amount=Math.round(response.cost[i].amount)+ "€";
-                        }                        
+                        }
                         var temp="<tr><td><a href=\"#\" class=\"retrieveCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" name=\""+response.cost[i].id+"\">"+response.cost[i].id+"</a></td><td>"+response.cost[i].title+"</td><td>"+amount+" </td><td>"+cost_start+"</td><td>"+cost_end+"</td><td><ins><a class=\"text-green costsManagement updateCost\" data-target=\"#costsManagement\" name=\""+response.cost[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-                        
-                        
-                        dest=dest.concat(temp);                        
+
+
+                        dest=dest.concat(temp);
                         i++;
 
                     }
                     var temp="</tobdy></table>";
-                    dest=dest.concat(temp);                         
+                    dest=dest.concat(temp);
                     document.getElementById('costsListingSpan').innerHTML = dest;
-                    
+
                     $(".retrieveOffer").click(function() {
                         retrieve_offer(this.name, "retrieve");
                         $('.offerManagementTitle').text("Consulter une offre");
                         $('.offerManagementSendButton').addClass("hidden");
-                        
-                    });                    
+
+                    });
                     $(".updateOffer").click(function() {
                         retrieve_offer(this.name, "update");
                         $('.offerManagementTitle').text("Mettre à jour une offre");
                         $('.offerManagementSendButton').removeClass("hidden");
-                        $('.offerManagementSendButton').text("Mettre à jour")                        
-                        
-                    });                    
-                    
-                    
+                        $('.offerManagementSendButton').text("Mettre à jour")
+
+                    });
+
+
                     $(".addCost").click(function() {
-                        $('#widget-costsManagement-form input').attr("readonly", false);                            
-                        $('#widget-costsManagement-form textarea').attr("readonly", false);                            
-                        $('#widget-costsManagement-form select').attr("readonly", false);                                                    
+                        $('#widget-costsManagement-form input').attr("readonly", false);
+                        $('#widget-costsManagement-form textarea').attr("readonly", false);
+                        $('#widget-costsManagement-form select').attr("readonly", false);
                         $('.costManagementTitle').text("Ajouter un coût");
                         $('.costManagementSendButton').removeClass("hidden");
-                        document.getElementById('widget-costsManagement-form').reset(); 
+                        document.getElementById('widget-costsManagement-form').reset();
                         $('.costManagementSendButton').text("Ajouter")
-                        
-                    });                    
+
+                    });
                     $(".retrieveCost").click(function() {
                         retrieve_cost(this.name, "retrieve");
                         $('.costManagementTitle').text("Consulter un coût");
                         $('.costManagementSendButton').addClass("hidden");
-                    });                    
+                    });
                     $(".updateCost").click(function() {
                         retrieve_cost(this.name, "update");
                         $('.costManagementTitle').text("Mettre à jour un coût");
-                        
+
                         $('.costManagementSendButton').removeClass("hidden");
                         $('.costManagementSendButton').text("Mettre à jour")
-                        
-                    });                    
-                    
-                    
-                    displayLanguage();    
-                    
+
+                    });
+
+
+                    displayLanguage();
+
                 }
             }
         })
-        
-        
-        
 
-        
+
+
+
+
         $.ajax({
             url: 'include/offer_management.php',
             type: 'get',
@@ -2492,8 +2514,11 @@ if($connected){
                     var threeYearsFromNow = new Date();
                     threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
                     var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
-                    
+
                     var ctx = document.getElementById('myChart').getContext('2d');
+                    if (myChart != undefined) {
+                      myChart.destroy();
+                    }
                     var myChart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -2545,17 +2570,17 @@ if($connected){
                                     tension: 0
                                 }
                             }
-                            
+
                         }
                     });
 
                 }
             }
         })
-        
-        
+
+
     }
-        
+
     function get_users_listing(){
         var email= "<?php echo $user; ?>";
         $.ajax({
@@ -2571,8 +2596,8 @@ if($connected){
                     var dest="";
 
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addUser\" data-toggle=\"modal\" onclick=\"create_user()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un utilisateur</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th><th></th></tr></thead>";
-                    dest=dest.concat(temp);                    
-                                        
+                    dest=dest.concat(temp);
+
                     while (i < response.usersNumber){
                         if(response.user[i].staann=='D'){
                             var status="<span class=\"text-red\">Inactif</span>";
@@ -2587,27 +2612,27 @@ if($connected){
                     document.getElementById('counterUsers').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.usersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.usersNumber+"</span>";
                     document.getElementById('usersList').innerHTML = dest;
                     displayLanguage();
-                                        
+
                 }
             }
         })
-    }        
-   
-        
+    }
+
+
 
     function confirm_add_user(){
-        
+
         document.getElementById('confirmAddUser').innerHTML="<p><strong>Attention</strong>, la création d'un compte entraînera l'envoi d'un mail vers la personne en question.<br>\
         Veuillez confirmer que les informations mentionées précédemment sont correctes.</p><button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Confirmer</button>";
-    }        
-        
+    }
+
     function list_condition(){
         var email= "<?php echo $user; ?>";
         $.ajax({
             url: 'include/get_conditions_listing.php',
             type: 'get',
             data: { "email": email},
-            success: function(response){                
+            success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
@@ -2615,10 +2640,10 @@ if($connected){
                     var i=0;
                     var dest="";
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Groupes de condition :</h4><h4 class=\"en-inline\">Condition groups:</h4><h4 class=\"nl-inline\">Condition groups:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#companyConditions\" data-toggle=\"modal\" onclick=\"create_condition()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un groupe de conditions</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Nombre d'utilisateurs</span><span class=\"en-inline\">Groupe size</span><span class=\"nl-inline\">Group size</span></th><th></th></tr></thead>";
-                    dest=dest.concat(temp);                    
-                                        
+                    dest=dest.concat(temp);
+
                     while (i < response.conditionNumber){
-                        
+
                         if(response.condition[i].name=="generic"){
                             var temp="<tr><th>Conditions génériques</th>";
                         }
@@ -2633,14 +2658,14 @@ if($connected){
                     }
                     document.getElementById('spanConditionListing').innerHTML = dest;
                     displayLanguage();
-                                        
+
                 }
             }
         })
-        
+
     }
 
-        
+
     function get_company_conditions(id){
         var emailArray;
         var email= "<?php echo $user; ?>";
@@ -2648,21 +2673,21 @@ if($connected){
             url: 'include/get_company_conditions.php',
             type: 'post',
             data: { "email": email, "id": id},
-            
+
             success: function(response){
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
                     $('#widget-updateCompanyConditions-form input[name=action]').val("update");
-                    
+
                     if(response.update){
-                        
+
                         var classname = document.getElementsByClassName('kameo');
                         for (var i = 0; i < classname.length; i++) {
                             classname[i].classList.remove("hidden");
                         }
-                        
+
                         document.getElementById('clientManagement').classList.remove("hidden");
                         document.getElementById('portfolioManagement').classList.remove("hidden");
                         document.getElementById('bikesManagement').classList.remove("hidden");
@@ -2671,17 +2696,17 @@ if($connected){
                         document.getElementById('cashFlowManagement').classList.remove("hidden");
                         document.getElementById('feedbacksManagement').classList.remove("hidden");
                     }
-                    
-                    
+
+
                     $('#widget-updateCompanyConditions-form input[name=id]').val(id);
                     if(response.companyConditions.name=="generic"){
                         $('#widget-updateCompanyConditions-form input[name=name]').val("Conditions génériques");
                         $('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', true);
-                        
+
                     }else{
                         $('#widget-updateCompanyConditions-form input[name=name]').val(response.companyConditions.name);
                         $('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', false);
-                        
+
                     }
                     $('#widget-updateCompanyConditions-form input[name=daysInAdvance]').val(response.companyConditions.bookingDays);
                     $('#widget-updateCompanyConditions-form input[name=bookingLength]').val(response.companyConditions.bookingLength);
@@ -2691,20 +2716,20 @@ if($connected){
                     $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val(response.companyConditions.hourEndIntakeBooking);
                     $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val(response.companyConditions.hourStartDepositBooking);
                     $('#widget-updateCompanyConditions-form input[name=endDepositBooking]').val(response.companyConditions.hourEndDepositBooking);
-                    
-                    
+
+
                     var dest="";
                     if(response.companyConditions.mondayIntake==1){
                         temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" checked value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";   
+                        temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";
                     }
                     dest=dest.concat(temp);
-                    
+
                     if(response.companyConditions.tuesdayIntake==1){
                         temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" checked value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";                        
+                        temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";
                     }
                         dest=dest.concat(temp);
                     if(response.companyConditions.wednesdayIntake==1){
@@ -2720,69 +2745,69 @@ if($connected){
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.fridayIntake==1){
-                        temp="<input type=\"checkbox\" name=\"intakeBookingFriday\" checked value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";                    
+                        temp="<input type=\"checkbox\" name=\"intakeBookingFriday\" checked value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"intakeBookingFriday\"  value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";                    
+                        temp="<input type=\"checkbox\" name=\"intakeBookingFriday\"  value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.saturdayIntake==1){
                         temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" checked value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
                     }else{
                         temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
-                    }            
+                    }
                     dest=dest.concat(temp);
                     if(response.companyConditions.sundayIntake==1){
                         temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" checked value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
                     }else{
                         temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
-                    }                    
+                    }
                     dest=dest.concat(temp);
                     document.getElementsByClassName('intakeBookingDays')[0].innerHTML = dest;
-                    
+
                     var dest="";
                     if(response.companyConditions.mondayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"depositBookingMonday\" checked value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingMonday\" checked value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";
                     }else{
                         temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";
                     }
-                    dest=dest.concat(temp);                    
+                    dest=dest.concat(temp);
                     if(response.companyConditions.tuesdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" checked value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" checked value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";
                     }else{
                         temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.wednesdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" checked value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" checked value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";
                     }else{
                         temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";
-                    }                                    
+                    }
                     dest=dest.concat(temp);
                     if(response.companyConditions.thursdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"depositBookingThursday\" checked value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";                        
+                        temp="<input type=\"checkbox\" name=\"depositBookingThursday\" checked value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"depositBookingThursday\" value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";                        
+                        temp="<input type=\"checkbox\" name=\"depositBookingThursday\" value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.fridayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"depositBookingFriday\" checked value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingFriday\" checked value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"depositBookingFriday\" value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingFriday\" value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";
                     }
                     dest=dest.concat(temp);
                     if(response.companyConditions.saturdayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" checked value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" checked value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";
                     }else{
                         temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";
-                    }                
+                    }
                     dest=dest.concat(temp);
                     if(response.companyConditions.sundayDeposit==1){
-                        temp="<input type=\"checkbox\" name=\"depositBookingSunday\" checked value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";    
+                        temp="<input type=\"checkbox\" name=\"depositBookingSunday\" checked value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";
                     }else{
-                        temp="<input type=\"checkbox\" name=\"depositBookingSunday\" value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";    
-                    }                
+                        temp="<input type=\"checkbox\" name=\"depositBookingSunday\" value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";
+                    }
                     dest=dest.concat(temp);
-                    
+
                     if(response.userAccessNumber==0){
                         emailArray=[];
                     }else{
@@ -2812,22 +2837,22 @@ if($connected){
                                 document.getElementById('groupConditionUsers').innerHTML = dest;
                             }
                         }
-                    })    
-                    
+                    })
+
                     document.getElementsByClassName('depositBookingDays')[0].innerHTML = dest;
 
-                                        
+
                 }
             }
         })
     }
-        
-        
+
+
     function create_condition(){
         var email= "<?php echo $user; ?>";
         $('#widget-updateCompanyConditions-form input[name=name]').val("");
         $('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', false);
-        
+
         $('#widget-updateCompanyConditions-form input[name=daysInAdvance]').val("");
         $('#widget-updateCompanyConditions-form input[name=bookingLength]').val("");
         $('#widget-updateCompanyConditions-form input[name=bookingsPerYear]').val("");
@@ -2836,13 +2861,13 @@ if($connected){
         $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val("");
         $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val("");
         $('#widget-updateCompanyConditions-form input[name=endDepositBooking]').val("");
-        
-        var temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\"\">Lundi<br><input type=\"checkbox\" name=\"depositBookingTuesday\" value=\"\">Mardi<br><input type=\"checkbox\" name=\"depositBookingWednesday\" value=\"\">Mercredi<br><input type=\"checkbox\" name=\"depositBookingThursday\" value=\"\">Jeudi<br><input type=\"checkbox\" name=\"depositBookingFriday\" value=\"\">Vendredi<br><input type=\"checkbox\" name=\"depositBookingSaturday\" value=\"\">Samedi<br><input type=\"checkbox\" name=\"depositBookingSunday\" value=\"\">Dimanche<br>";    
+
+        var temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\"\">Lundi<br><input type=\"checkbox\" name=\"depositBookingTuesday\" value=\"\">Mardi<br><input type=\"checkbox\" name=\"depositBookingWednesday\" value=\"\">Mercredi<br><input type=\"checkbox\" name=\"depositBookingThursday\" value=\"\">Jeudi<br><input type=\"checkbox\" name=\"depositBookingFriday\" value=\"\">Vendredi<br><input type=\"checkbox\" name=\"depositBookingSaturday\" value=\"\">Samedi<br><input type=\"checkbox\" name=\"depositBookingSunday\" value=\"\">Dimanche<br>";
         document.getElementsByClassName('intakeBookingDays')[0].innerHTML = temp;
         document.getElementsByClassName('depositBookingDays')[0].innerHTML = temp;
         $('#widget-updateCompanyConditions-form input[name=action]').val("create");
-        
-        
+
+
         $.ajax({
             url: 'include/get_company_details.php',
             type: 'post',
@@ -2858,20 +2883,20 @@ if($connected){
                         temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\"> "+response.user[i].firstName+" "+response.user[i].name+"</div>";
                         dest=dest.concat(temp);
                         i++;
-                        
+
                     }
                     document.getElementById('groupConditionUsers').innerHTML = dest;
-            
-                    
-                    
+
+
+
                 }
             }
         })
-        
-        
+
+
     }
-        
-        
+
+
     function create_user(){
         var email= "<?php echo $user; ?>";
         $.ajax({
@@ -2889,7 +2914,7 @@ if($connected){
                         temp="<input type=\"checkbox\" name=\"buildingAccess[]\" checked value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"<br>";
                         dest=dest.concat(temp);
                         i++;
-                        
+
                     }
                     document.getElementById('buildingCreateUser').innerHTML = dest;
 
@@ -2924,7 +2949,7 @@ if($connected){
             }
         })
     }
-        
+
     function create_bill(){
         $.ajax({
             url: 'include/get_companies_listing.php',
@@ -2941,7 +2966,7 @@ if($connected){
                         temp="<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>";
                         dest=dest.concat(temp);
                         i++;
-                        
+
                     }
                     dest=dest.concat("<option value=\"other\">Autre</option></select>");
                     document.getElementsByClassName('widget-addBill-form-company')[0].innerHTML = dest;
@@ -2953,13 +2978,13 @@ if($connected){
                     $('.widget-addBill-form-companyOther').addClass("hidden");
                     $('.IDAddBill').removeClass('hidden');
                     $('.IDAddBillOut').removeClass('hidden');
-                    
+
                 }
             }
         })
     }
 
-        
+
     function update_user_information(email){
         $.ajax({
             url: 'include/get_user_details.php',
@@ -2985,8 +3010,8 @@ if($connected){
                         document.getElementById('updateUserSendButton').innerHTML="";
                         document.getElementById('deleteUserButton').innerHTML=dest;
 
-                        
-                        
+
+
                     }else{
                         $('#widget-updateUser-form-firstname').prop('readonly', false);
                         $('#widget-updateUser-form-name').prop('readonly', false);
@@ -2995,7 +3020,7 @@ if($connected){
                         }else{
                             $("#widget-updateUser-form input[name=fleetManager]").prop( "checked", false );
                         }
-                        
+
                         document.getElementById('widget-updateUser-form-status').value = "Actif";
                         var i=0;
                         var dest="<h4>Accès aux bâtiments</h4>";
@@ -3007,10 +3032,10 @@ if($connected){
                             else if(response.building[i].access==false){
                                 temp="<input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"<br>";
 
-                            }  
-                            dest=dest.concat(temp);                        
+                            }
+                            dest=dest.concat(temp);
                             i++;
-                        }                
+                        }
                         document.getElementById('buildingUpdateUser').innerHTML = dest;
 
                         var i=0;
@@ -3024,10 +3049,10 @@ if($connected){
                             else if(response.bike[i].access==false){
                                 temp="<input type=\"checkbox\" name=\"bikeAccess[]\" value=\""+response.bike[i].bikeCode+"\">"+response.bike[i].bikeCode+" "+response.bike[i].model+"<br>";
 
-                            }  
-                            dest=dest.concat(temp);                        
+                            }
+                            dest=dest.concat(temp);
                             i++;
-                        }                
+                        }
                         document.getElementById('bikeUpdateUser').innerHTML = dest;
 
                         var dest="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteUser\" onclick=\"initializeDeleteUser('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Supprimer</span><span class=\"en-inline\">Delete</span></a>";
@@ -3037,19 +3062,19 @@ if($connected){
 
                     }
                 }
-                
-                
+
+
                 $('#usersListing').modal('toggle');
                 displayLanguage();
-                
 
-                
+
+
             }
         })
     }
-        
+
     function initializeDeleteUser(email){
-        
+
         $.ajax({
             url: 'include/get_user_details.php',
             type: 'post',
@@ -3062,16 +3087,16 @@ if($connected){
                     document.getElementById('widget-deleteUser-form-firstname').value = response.user.firstName;
                     document.getElementById('widget-deleteUser-form-name').value = response.user.name;
                     document.getElementById('widget-deleteUser-form-mail').value = response.user.email;
-                }   
-                
+                }
+
             }
         })
         $('#updateUserInformation').modal('toggle');
-        
+
     }
-        
+
     function initializeDeleteReservation(reservationID){
-        
+
         $.ajax({
             url: 'include/get_reservation_details.php',
             type: 'post',
@@ -3085,17 +3110,17 @@ if($connected){
                     document.getElementById('widget-deleteReservation-form-end').value = response.reservationEndBuilding+" le "+response.reservationEndDate;
                     document.getElementById('widget-deleteReservation-form-user').value = response.reservationEmail;
                     document.getElementById('widget-deleteReservation-form-ID').value = reservationID;
-                    
-                }   
-                
+
+                }
+
             }
         })
         $('#reservationDetails').modal('toggle');
-        
+
     }
-        
+
     function initializeUpdateReservation(reservationID){
-        
+
         $.ajax({
             url: 'include/get_reservation_details.php',
             type: 'post',
@@ -3109,17 +3134,17 @@ if($connected){
                     document.getElementById('widget-updateReservation-form-end').value = response.reservationEndBuilding+" le "+response.reservationEndDate;
                     document.getElementById('widget-updateReservation-form-user').value = response.reservationEmail;
                     document.getElementById('widget-updateReservation-form-ID').value = reservationID;
-                }   
-                
+                }
+
             }
         })
         $('#reservationDetails').modal('toggle');
-        
-    }        
-        
-        
+
+    }
+
+
     function initializeReactivateUser(email){
-        
+
         $.ajax({
             url: 'include/get_user_details.php',
             type: 'post',
@@ -3132,14 +3157,14 @@ if($connected){
                     document.getElementById('widget-reactivateUser-form-firstname').value = response.user.firstName;
                     document.getElementById('widget-reactivateUser-form-name').value = response.user.name;
                     document.getElementById('widget-reactivateUser-form-mail').value = response.user.email;
-                }   
-                
+                }
+
             }
         })
         $('#updateUserInformation').modal('toggle');
-        
+
     }
-        
+
 
     function get_reservations_listing(bike, date_start, date_end){
         var email= "<?php echo $user; ?>";
@@ -3175,12 +3200,12 @@ if($connected){
                     var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline\"></div><tbody><thead><tr><th><span class=\"fr-inline text-green\">Réf.</span></th><th><span class=\"fr-inline text-green\">Vélo</span><span class=\"en-inline text-green\">Bike</span><span class=\"nl-inline text-green\">Bike</span></th><th><span class=\"fr-inline text-green\">Départ</span><span class=\"en-inline text-green\">Depart</span><span class=\"nl-inline text-green\">Depart</span></th><th><span class=\"fr-inline text-green\">Fin</span><span class=\"en-inline text-green\">End</span><span class=\"nl-inline text-green\">End</span></th><th><span class=\"fr-inline text-green\">Utilisateur</span><span class=\"en-inline text-green\">User</span><span class=\"nl-inline text-green\">User</span></th></tr></thead>";
                     dest=dest.concat(temp);
                     while (i < response.bookingNumber){
-                        
+
                         var temp="<tr><th><a data-target=\"#reservationDetails\" name=\""+response.booking[i].reservationID+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillReservationDetails(this.name)\">"+response.booking[i].reservationID+"</a></th><th><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></th><th class=\"fr-cell\">"+response.booking[i].dateStartFR+"</th><th class=\"en-cell\">"+response.booking[i].dateStartEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateStartNL+"</th><th class=\"fr-cell\">"+response.booking[i].dateEndFR+"</th><th class=\"en-cell\">"+response.booking[i].dateEndEN+"</th><th class=\"nl-cell\">"+response.booking[i].dateEndNL+"</th><th>"+response.booking[i].user+"</th></tr>";
                         dest=dest.concat(temp);
-                        
+
                         i++;
-                        
+
                     }
                     var temp="</tobdy></table>";
                     dest=dest.concat(temp);
@@ -3193,20 +3218,20 @@ if($connected){
         })
 
     }
-        
-        
-        
-        
+
+
+
+
     function initialize_booking_counter(){
         var email= "<?php echo $user; ?>";
-        
+
         var date_start=new Date();
         var date_end=new Date();
-        
+
         date_start.setMonth(date_start.getMonth()-1);
         var timeStampStart=Math.round(date_start.valueOf()/1000);
         var timeStampEnd=Math.round(date_end.valueOf()/1000);
-        var bikeValue="all"; 
+        var bikeValue="all";
 
 
 
@@ -3221,15 +3246,15 @@ if($connected){
                 if(response.response == 'success'){
                     document.getElementById('counterBookings').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bookingNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bookingNumber+"</span>";
                     var counter1=response.bookingNumber;
-                    
-                    
+
+
                 }
-                
+
                 date_start.setMonth(date_start.getMonth()-1);
                 date_end.setMonth(date_end.getMonth()-1);
                 var timeStampStart=(date_start.valueOf()/1000);
                 var timeStampEnd=(date_end.valueOf()/1000);
-                
+
                 $.ajax({
                 url: 'include/get_reservations_listing.php',
                 type: 'post',
@@ -3241,7 +3266,7 @@ if($connected){
                     if(response.response == 'success'){
                         var counter2=response.bookingNumber;
 
-                        
+
                         if(counter2==0 && counter1>0){
                             var evolution=99999;
                         }
@@ -3251,7 +3276,7 @@ if($connected){
                             var evolution=Math.round((counter1-counter2)/counter2*100);
                         }
 
-                        
+
                         //if(evolution >0.1){
                         evolution=10;
                             var temp="\
@@ -3267,19 +3292,19 @@ if($connected){
                             </div>";
                         document.getElementById('progress-bar-bookings').innerHTML=temp;
                         //}
-                        //else if(evolution >= 0){                    
+                        //else if(evolution >= 0){
                         //    document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-sun-flower\"><div class=\"progress-bar\" data-percent=\""+evolution+"\" //data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
                         //}else{
-                        //    document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-red \"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";                    
-                        //}               
+                        //    document.getElementById('progress-bar-bookings').innerHTML="<div class=\"progress-bar-container radius title-up color-red \"><div class=\"progress-bar\" data-percent=\""+evolution+"\" data-delay=\"200\" data-type=\"%\"><div class=\"progress-title fr\">Évolution du nombre de réservations rapport au mois précédent</div></div></div>";
+                        //}
                     }
                 }
-                })                
+                })
             }
         })
     }
 
-        
+
     function getHistoricBookings() {
         var user= "<?php echo $user; ?>";
         var langue= "<?php echo $_SESSION['langue']; ?>";
@@ -3294,7 +3319,7 @@ if($connected){
 
                     var tempHistoricBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations précédentes:</h4><h4 class=\"en-inline\">Previous Bookings:</h4><h4 class=\"nl-inline\">Vorige reservaties:</h4>";
                     dest=dest.concat(tempHistoricBookings);
-                    
+
                     var tempHistoricBookings="<ul><li>Depuis le début de l'année : "+response.maxBookingsPerYear+" réservations";
                     dest = dest.concat(tempHistoricBookings);
 
@@ -3305,21 +3330,21 @@ if($connected){
                     }
                     dest = dest.concat(tempHistoricBookings);
 
-                    
+
                     if(response.maxBookingsPerMonthCondition != '9999'){
                         var tempHistoricBookings=" (maximum "+response.maxBookingsPerMonthCondition+")</li></ul>";
                     }else{
                         var tempHistoricBookings="</li></ul>";
                     }
-                    
+
                     dest = dest.concat(tempHistoricBookings);
-                    
-                    
-                    
-                    
+
+
+
+
                     var tempHistoricBookings="<thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th></th></tr></thead><tbody>";
                     dest = dest.concat(tempHistoricBookings);
-                    
+
                     while (i < response.previous_bookings)
                     {
                         var dayStart=response.booking[i].dayStart;
@@ -3356,7 +3381,7 @@ if($connected){
                         var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
                     } else{
                         var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th>Code</th></tr></thead><tbody>";
-                    }                   
+                    }
                     dest = dest.concat(tempFutureBookings);
                     var length = parseInt(response.future_bookings)+parseInt(response.previous_bookings);
                     while (i < length)
@@ -3398,7 +3423,7 @@ if($connected){
                             tempFutureBookings = tempFutureBookings.concat(tempAnnulation);
                         }
                         dest = dest.concat(tempFutureBookings);
-                    
+
                         i++;
 
                     }
@@ -3426,26 +3451,26 @@ if($connected){
     }
 
     function get_address_domicile(){
-        <?php include 'include/connexion.php';	
+        <?php include 'include/connexion.php';
         $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY from customer_referential aa where aa.EMAIL='$user'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         $conn->close();?>
 
-        addressDomicile="<?php 
+        addressDomicile="<?php
         $address=$row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'];
         echo $address;?>";
         return addressDomicile;
     }
 
     function get_address_travail(){
-        <?php include 'include/connexion.php';	
+        <?php include 'include/connexion.php';
         $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY from customer_referential aa where aa.EMAIL='$user'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         $conn->close();?>
 
-        addressTravail="<?php 
+        addressTravail="<?php
         $address=$row['WORK_ADRESS'].", ".$row['WORK_POSTAL_CODE'].", ".$row['WORK_CITY'];
         echo $address;?>";
         return addressTravail;
@@ -3527,7 +3552,7 @@ if($connected){
 
         return image;
 
-    }	
+    }
 
 
     function clickBikeDay(e){
@@ -3548,7 +3573,7 @@ if($connected){
                         console.log(text.message);
                     }
                 }
-            });         
+            });
         }
         else{
             e.classList.add("green");
@@ -3563,10 +3588,10 @@ if($connected){
                         console.log(text.message);
                     }
                 }
-            }); 
+            });
         }
     }
-        
+
     function get_bills_listing(company, sent, paid, direction) {
         var email= "<?php echo $user; ?>";
         $.ajax({
@@ -3578,12 +3603,12 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
-                    
+
                     $('#widget-addBill-form input[name=ID_OUT]').val(parseInt(response.IDMaxBillingOut) +1);
                     $('#widget-addBill-form input[name=ID]').val(parseInt(response.IDMaxBilling) +1);
                     $('#widget-addBill-form input[name=communication]').val(response.communication);
                     $('#widget-addBill-form input[name=communicationHidden]').val(response.communication);
-                    
+
                     var i=0;
                     var dest="";
                     if(response.update){
@@ -3592,23 +3617,23 @@ if($connected){
                         var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures("+response.billNumberTotal+")</span></a>  <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures non payées ("+response.billINNumberNotPaid+")</span></a><br/>";
                     }
                     dest=dest.concat(temp);
-                    
+
                     if(response.update){
                         var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises ("+response.billINNumber+")</span></a> <a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '0', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises non envoyées ("+response.billINNumberNotSent+")</span></a><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture émises envoyées mais non payées ("+response.billINNumberNotPaid+")</span></a><br /><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues ("+response.billOUTNumber+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '0', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues non-payées  ("+response.billOUTNumberNotPaid+")</span></a><br/>";
                         dest=dest.concat(temp);
                         document.getElementsByClassName('companyBillSelection')[0].hidden=false;
                         document.getElementsByClassName('companyBillSelection')[1].hidden=false;
-                        
+
                         var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><tbody><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead>";
                     }else{
                         document.getElementsByClassName('companyBillSelection')[0].hidden=true;
                         document.getElementsByClassName('companyBillSelection')[1].hidden=true;
-                        
+
                         var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><tbody><thead><tr></th><th>ID</th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th></tr></thead>";
 
                     }
                     dest=dest.concat(temp);
-                
+
                     if(response.update){
                         $.ajax({
                             url: 'include/get_companies_listing.php',
@@ -3622,7 +3647,7 @@ if($connected){
                                     var i=0;
                                     var dest2="";
                                     temp2="<li><a href=\"#\" onclick=\"billFilter('Choix de la société')\">Toutes les sociétés</a></li><li class=\"divider\"></li>";
-                                    dest2=dest2.concat(temp2);                                    
+                                    dest2=dest2.concat(temp2);
                                     while (i < response.companiesNumber){
                                         var temp2="<li><a href=\"#\" onclick=\"billFilter('"+response.company[i].internalReference+"')\">"+response.company[i].companyName+"</a></li>";
                                         dest2=dest2.concat(temp2);
@@ -3633,55 +3658,55 @@ if($connected){
 
                                 }
                             }
-                        })                        
+                        })
                     }
                     while (i < response.billNumber){
                         if(response.bill[i].sentDate==null){
                             var sendDate="N/A";
                         }else{
                             var sendDate=response.bill[i].sentDate.substr(0,10);
-                        }                           
+                        }
                         if(response.bill[i].paidDate==null){
                             var paidDate="N/A";
                         }else{
                             var paidDate=response.bill[i].paidDate.substr(0,10);
-                        }        
+                        }
                         if(response.bill[i].sent=="0"){
                             var sent="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                         }else{
                             var sent="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                        }                                     
+                        }
                         if(response.bill[i].paid=="0"){
                             var paid="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                         }else{
                             var paid="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                        } 
-                        
+                        }
+
                         if(response.bill[i].limitPaidDate && response.bill[i].paid=="0"){
                             var dateNow=new Date();
                             var dateLimit=new Date(response.bill[i].limitPaidDate);
-                            
+
                               let month = String(dateLimit.getMonth() + 1);
                               let day = String(dateLimit.getDate());
                               let year = String(dateLimit.getFullYear());
 
                               if (month.length < 2) month = '0' + month;
                               if (day.length < 2) day = '0' + day;
-                            
-                            
+
+
                             if(dateNow>dateLimit){
                                 var paidLimit="<span class=\"text-red\">"+day+"/"+month+"/"+year.substr(2,2)+"</span>";
                             }else{
                                 var paidLimit="<span>"+day+"/"+month+"/"+year.substr(2,2)+"</span>";
                             }
                         }else if(response.bill[i].paid=="0"){
-                            var paidLimit="<span class=\"text-red\">N/A</span>";   
+                            var paidLimit="<span class=\"text-red\">N/A</span>";
                         }else{
                             var paidLimit="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
                         }
-                        
-                        
-                        
+
+
+
                         if(response.update && response.bill[i].amountHTVA>0){
                             var temp="<tr><th class=\"text-green\">IN</th>";
                         }else if(response.update && response.bill[i].amountHTVA<0){
@@ -3690,7 +3715,7 @@ if($connected){
                             var temp="<tr>";
                         }
                         dest=dest.concat(temp);
-                                    
+
                         if(response.bill[i].fileName){
                             var temp="<th><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].ID+"</a></th>";
                         }
@@ -3706,25 +3731,25 @@ if($connected){
                             dest=dest.concat(temp);
                         }
                         var temp="<th>"+response.bill[i].date.substr(0,10)+"</th><th>"+Math.round(response.bill[i].amountHTVA)+" €</th><th>"+response.bill[i].communication+"</th>";
-                        dest=dest.concat(temp);                        
-                        
+                        dest=dest.concat(temp);
+
                         if(sent=="Y"){
-                            var temp="<th class=\"text-green\">"+sendDate+"</th>";    
+                            var temp="<th class=\"text-green\">"+sendDate+"</th>";
                         }else{
-                            var temp="<th class=\"text-red\">"+sent+"</th>";    
+                            var temp="<th class=\"text-red\">"+sent+"</th>";
                         }
                         dest=dest.concat(temp);
-                        
+
                         if(paid=="Y"){
                             var temp="<th class=\"text-green\">"+paidDate+"</th>";
                         }else{
-                            var temp="<th class=\"text-red\">"+paid+"</th>";    
+                            var temp="<th class=\"text-red\">"+paid+"</th>";
                         }
                         dest=dest.concat(temp);
-                        
-                        
+
+
                         dest=dest.concat("<th>"+paidLimit+"</th>");
-                        
+
 
                         if(response.update){
                             if(response.bill[i].communicationSentAccounting=="1"){
@@ -3734,12 +3759,12 @@ if($connected){
                             }
                             dest=dest.concat(temp);
                         }
-                        
+
                         if(response.update){
                             temp="<th><ins><a class=\"text-green updateBillingStatus\" data-target=\"#updateBillingStatus\" name=\""+response.bill[i].ID+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></th>";
                             dest=dest.concat(temp);
                         }
-                        
+
                         dest=dest.concat("</tr>");
                         i++;
 
@@ -3748,7 +3773,7 @@ if($connected){
                     dest=dest.concat(temp);
                     document.getElementById('billsListing').innerHTML = dest;
                     document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"\" data-from=\"0\" data-seperator=\"true\">"+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"</span>";
-                    
+
                     var classname = document.getElementsByClassName('updateBillingStatus');
                     for (var i = 0; i < classname.length; i++) {
                         classname[i].addEventListener('click', function() {construct_form_for_billing_status_update(this.name)}, false);
@@ -3758,9 +3783,9 @@ if($connected){
                 }
             }
         })
-    }        
+    }
     function get_company_listing(type) {
-        
+
         var email= "<?php echo $user; ?>";
         $.ajax({
             url: 'include/get_companies_listing.php',
@@ -3779,7 +3804,7 @@ if($connected){
                     while (i < response.companiesNumber){
                         temp="<tr><th><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.company[i].ID+"\">"+response.company[i].internalReference+"</a></th><th>"+response.company[i].companyName+"</th><th>"+response.company[i].companyBikeNumber+"</th>";
                         dest=dest.concat(temp);
-                        
+
                         if(response.company[i].bikeAccessStatus=="OK"){
                             var temp="<th class=\"text-green\">"+response.company[i].bikeAccessStatus+"</th>";
                         }else{
@@ -3792,9 +3817,9 @@ if($connected){
                             var temp="<th class=\"text-red\">"+response.company[i].customerBuildingAccess+"</th>";
                         }
                         dest=dest.concat(temp);
-                        
+
                         dest=dest.concat("<th>"+response.company[i].type+"</th>");
-                        
+
                         var temp="</tr>";
                         dest=dest.concat(temp);
                         i++;
@@ -3806,10 +3831,10 @@ if($connected){
 
 
                     document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.companiesNumber+"</span>";
-                    
+
                     document.getElementById('cashFlowSpan').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+Math.round(response.sumContractsCurrent)+"\" data-from=\"0\" data-seperator=\"true\">"+Math.round(response.sumContractsCurrent)+"</span>";
 
-                    
+
                     var classname = document.getElementsByClassName('internalReferenceCompany');
                     for (var i = 0; i < classname.length; i++) {
                         classname[i].addEventListener('click', function() {get_company_details(this.name)}, false);
@@ -3823,7 +3848,7 @@ if($connected){
                 }
             }
         })
-    }        
+    }
 
     function retrieve_offer(ID, action){
         $.ajax({
@@ -3835,19 +3860,19 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
-                    
+
                     if(action=="retrieve"){
-                        $('#widget-offerManagement-form input').attr("readonly", true);                            
-                        $('#widget-offerManagement-form textarea').attr("readonly", true);                            
-                        $('#widget-offerManagement-form select').attr("readonly", true);                            
+                        $('#widget-offerManagement-form input').attr("readonly", true);
+                        $('#widget-offerManagement-form textarea').attr("readonly", true);
+                        $('#widget-offerManagement-form select').attr("readonly", true);
                     }else{
-                        $('#widget-offerManagement-form input').attr("readonly", false);                            
-                        $('#widget-offerManagement-form textarea').attr("readonly", false);                            
-                        $('#widget-offerManagement-form select').attr("readonly", false);                            
-                        
+                        $('#widget-offerManagement-form input').attr("readonly", false);
+                        $('#widget-offerManagement-form textarea').attr("readonly", false);
+                        $('#widget-offerManagement-form select').attr("readonly", false);
+
                     }
-    
-                    
+
+
                     $('#widget-offerManagement-form input[name=title]').val(response.title);
                     $('#widget-offerManagement-form textarea[name=description]').val(response.description);
                     $('#widget-offerManagement-form select[name=type]').val(response.type);
@@ -3890,7 +3915,7 @@ if($connected){
                     if(response.amount){
                         $('#widget-offerManagement-form input[name=amount]').val(response.amount);
                     }
-                    
+
                 }
             }
         })
@@ -3909,17 +3934,17 @@ if($connected){
                 }
                 if(response.response == 'success'){
                     if(action=="retrieve"){
-                        $('#widget-taskManagement-form input').attr("readonly", true);                            
-                        $('#widget-taskManagement-form textarea').attr("readonly", true);                            
-                        $('#widget-taskManagement-form select').attr("readonly", true);                            
+                        $('#widget-taskManagement-form input').attr("readonly", true);
+                        $('#widget-taskManagement-form textarea').attr("readonly", true);
+                        $('#widget-taskManagement-form select').attr("readonly", true);
                     }else{
-                        $('#widget-taskManagement-form input').attr("readonly", false);                            
-                        $('#widget-taskManagement-form textarea').attr("readonly", false);                            
-                        $('#widget-taskManagement-form select').attr("readonly", false);                            
-                        
+                        $('#widget-taskManagement-form input').attr("readonly", false);
+                        $('#widget-taskManagement-form textarea').attr("readonly", false);
+                        $('#widget-taskManagement-form select').attr("readonly", false);
+
                     }
-    
-                    
+
+
                     $('#widget-taskManagement-form input[name=title]').val(response.action.title);
                     $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
                     $('#widget-taskManagement-form select[name=company]').val(response.action.company);
@@ -3943,21 +3968,21 @@ if($connected){
                 }
                 if(response.response == 'success'){
                     if(action=="retrieve"){
-                        $('#widget-costsManagement-form input').attr("readonly", true);                            
-                        $('#widget-costsManagement-form textarea').attr("readonly", true);                            
-                        $('#widget-costsManagement-form select').attr("readonly", true);                            
+                        $('#widget-costsManagement-form input').attr("readonly", true);
+                        $('#widget-costsManagement-form textarea').attr("readonly", true);
+                        $('#widget-costsManagement-form select').attr("readonly", true);
                     }else{
-                        $('#widget-costsManagement-form input').attr("readonly", false);                            
-                        $('#widget-costsManagement-form textarea').attr("readonly", false);                            
-                        $('#widget-costsManagement-form select').attr("readonly", false);                            
-                        
+                        $('#widget-costsManagement-form input').attr("readonly", false);
+                        $('#widget-costsManagement-form textarea').attr("readonly", false);
+                        $('#widget-costsManagement-form select').attr("readonly", false);
+
                     }
-    
-                    
+
+
                     $('#widget-costsManagement-form input[name=title]').val(response.title);
                     $('#widget-costsManagement-form textarea[name=description]').val(response.description);
                     $('#widget-costsManagement-form select[name=type]').val(response.type);
-                    
+
                     if(response.start){
                         $('#widget-costsManagement-form input[name=start]').val(response.start.substring(0,10));
                     }
@@ -3965,7 +3990,7 @@ if($connected){
                     if($("#widget-costsManagement-form select[name=type]").val()=="one-shot"){
                         $("#widget-costsManagement-form input[name=end]").attr("readonly", true);
                         $("#widget-costsManagement-form input[name=end]").val("");
-                        
+
 
                     }else{
                         if(action!="retrieve"){
@@ -3983,34 +4008,34 @@ if($connected){
                     if(response.amount){
                         $('#widget-costsManagement-form input[name=amount]').val(response.amount);
                     }
-                    
+
                 }
             }
         })
 
     }
-        
+
     function add_offer(company){
-        $('#widget-offerManagement-form select[name=type]').val("leasing");                            
-        $('#widget-offerManagement-form input[name=company]').val(company);                            
-        $('#widget-offerManagement-form input[name=action]').val("add");                            
-        $('#widget-offerManagement-form input').attr("readonly", false);                            
-        $('#widget-offerManagement-form textarea').attr("readonly", false);                            
-        $('#widget-offerManagement-form select').attr("readonly", false);   
-        document.getElementById('widget-offerManagement-form').reset();                                                
-        
+        $('#widget-offerManagement-form select[name=type]').val("leasing");
+        $('#widget-offerManagement-form input[name=company]').val(company);
+        $('#widget-offerManagement-form input[name=action]').val("add");
+        $('#widget-offerManagement-form input').attr("readonly", false);
+        $('#widget-offerManagement-form textarea').attr("readonly", false);
+        $('#widget-offerManagement-form select').attr("readonly", false);
+        document.getElementById('widget-offerManagement-form').reset();
+
     }
     function add_task(company){
         document.getElementById('widget-taskManagement-form').reset();
-        $('#widget-taskManagement-form select[name=company]').val(company);                            
-        $('#widget-taskManagement-form select[name=type]').val("contact");                            
-        $('#widget-taskManagement-form input').attr("readonly", false);                            
-        $('#widget-taskManagement-form textarea').attr("readonly", false);                            
-        $('#widget-taskManagement-form select').attr("readonly", false);   
+        $('#widget-taskManagement-form select[name=company]').val(company);
+        $('#widget-taskManagement-form select[name=type]').val("contact");
+        $('#widget-taskManagement-form input').attr("readonly", false);
+        $('#widget-taskManagement-form textarea').attr("readonly", false);
+        $('#widget-taskManagement-form select').attr("readonly", false);
         $('.taskManagementTitle').text("Ajouter une action");
-        
+
     }
-        
+
     function get_company_details(ID) {
         var email= "<?php echo $user; ?>";
         var internalReference;
@@ -4024,7 +4049,7 @@ if($connected){
                 }
                 if(response.response == 'success'){
                     get_company_boxes(response.internalReference);
-                    
+
                     $('#widget-companyDetails-form input[name=ID]').val(response.ID);
                     document.getElementById('companyName').value = response.companyName;
                     document.getElementById('companyStreet').value = response.companyStreet;
@@ -4042,12 +4067,12 @@ if($connected){
                     $('#widget-companyDetails-form input[name=firstNameContactBilling]').val(response.firstNameContactBilling);
                     $('#widget-companyDetails-form input[name=lastNameContactBilling]').val(response.lastNameContactBilling);
                     $('#widget-companyDetails-form input[name=phoneBilling]').val(response.phoneContactBilling);
-                    
+
                     if(response.automaticBilling=="Y"){
                         $('#widget-companyDetails-form input[name=billing]').prop( "checked", true );
                     }else{
                         $('#widget-companyDetails-form input[name=billing]').prop( "checked", false );
-                    }                    
+                    }
                     if(response.automaticStatistics=="Y"){
                         $('#widget-companyDetails-form input[name=statistiques]').prop( "checked", true );
                     }else{
@@ -4062,16 +4087,16 @@ if($connected){
                         $("#widget-companyDetails-form input[name=locking]").prop( "checked", true );
                     }else{
                         $("#widget-companyDetails-form input[name=locking]").prop( "checked", false );
-                    }                                        
-                    
-                    
+                    }
+
+
                     var i=0;
                     var dest="<a class=\"button small green button-3d rounded icon-right addBikeAdmin\" data-target=\"#bikeManagement\" data-toggle=\"modal\" href=\"#\" name=\""+response.ID+"\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a>";
                     if(response.bikeNumber>0){
                         var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead>";
                         dest=dest.concat(temp);
                         while(i<response.bikeNumber){
-                            
+
                             if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart != null){
                                 var contractStart="<span>"+response.bike[i].contractStart.substr(0,10)+"</span>";
                             }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart == null){
@@ -4094,8 +4119,8 @@ if($connected){
                             }else{
                                 var contractEnd="<span class=\"text-red\">ERROR</span>";
                             }
-                            
-                            
+
+
                             var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].facturation+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+response.bike[i].leasingPrice+"</td><td>";
                             dest=dest.concat(temp);
 
@@ -4112,12 +4137,12 @@ if($connected){
                             dest=dest.concat("</td><td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
                             i++;
                         }
-                        dest=dest.concat("</tbody></table>");                                  
+                        dest=dest.concat("</tbody></table>");
                     }
-                    
+
                     document.getElementById('companyBikes').innerHTML = dest;
-                    
-                    
+
+
                     $('.updateBikeAdmin').click(function(){
                         construct_form_for_bike_status_updateAdmin(this.name);
                         $('#widget-bikeManagement-form input').attr('readonly', false);
@@ -4125,7 +4150,7 @@ if($connected){
                         $('.bikeManagementTitle').html('Modifier un vélo');
                         $('.bikeManagementSend').removeClass('hidden');
                     });
-                    
+
                     $('.addBikeAdmin').click(function(){
                         add_bike(this.name);
                         $('#widget-bikeManagement-form input').attr('readonly', false);
@@ -4133,11 +4158,11 @@ if($connected){
                         $('.bikeManagementTitle').html('Ajouter un vélo');
                         $('.bikeManagementSend').removeClass('hidden');
                     });
-                    
+
 
                     //Ajouter un bâtiment
                     var dest="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBuilding\" data-toggle=\"modal\" onclick=\"add_building('"+response.internalReference+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un bâtiment</span></a>";
-                    
+
                     if(response.buildingNumber>0){
                         var i=0;
                         var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th scope=\"col\"><span class=\"fr-inline\">Adresse</span><span class=\"en-inline\">Address</span><span class=\"nl-inline\">Address</span></th></tr></thead>";
@@ -4149,13 +4174,14 @@ if($connected){
                         }
                         dest=dest.concat("</tbody></table>");
                     }
-                    
+
                     document.getElementById('companyBuildings').innerHTML = dest;
 
-                    
+
                     //Ajouter une offre
-                    
+
                     var dest="<a class=\"button small green button-3d rounded icon-right offerManagement addOffer\" name=\""+internalReference+"\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a>";
+                    dest+="<a class=\"button small green button-3d rounded icon-right offerManagement getTemplate\" name=\""+internalReference+"\" data-target=\"#template\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Template Offre</span></a>";
                     if((response.offerNumber + response.bikeContracts)>0){
                         var i=0;
                         var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>";
@@ -4237,21 +4263,21 @@ if($connected){
 
                     $(".retrieveOffer").click(function() {
                         retrieve_offer(this.name, "retrieve");
-                    });                    
-                    
+                    });
+
                     $(".updateOffer").click(function() {
                         retrieve_offer(this.name, "update");
                     });
                     $(".addOffer").click(function() {
                         add_offer(this.name);
                         $('.offerManagementSendButton').removeClass("hidden");
-                        $('.offerManagementSendButton').text("Ajouter")                        
-                        
+                        $('.offerManagementSendButton').text("Ajouter")
+
                     });
-                    
-                    
-                    
-                    
+
+
+
+
                     //Ajouter un utilisateur
                     var dest="<a class=\"button small green button-3d rounded icon-right addUser\" data-target=\"#addUser\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un Utilisateur</span></a>";
                     if(response.userNumber>0){
@@ -4266,14 +4292,14 @@ if($connected){
                         dest=dest.concat("</tbody></table>");
                     }
                     document.getElementById('companyUsers').innerHTML = dest;
-                    
-                    
-                    $('.addUser').click(function(){          
+
+
+                    $('.addUser').click(function(){
                         $('#widget-addUser-form input[name=company]').val(response.internalReference);
 
-                        
+
                     var company=response.internalReference;
-                        
+
                     $.ajax({
                         url: 'include/get_building_listing.php',
                         type: 'post',
@@ -4322,14 +4348,14 @@ if($connected){
                                 })
                             }
                         }
-                    })                        
-                    
-                    
-                    
-                    
-                    });                        
-                    
-                    displayLanguage();                    
+                    })
+
+
+
+
+                    });
+
+                    displayLanguage();
                 }
             }
         }).done(function(){
@@ -4342,9 +4368,9 @@ if($connected){
                         console.log(response.message);
                     } else{
 
-                        
+
                         var dest="<a href=\"#\" data-target=\"#taskManagement\" name=\""+internalReference+"\" data-toggle=\"modal\" class=\"button small green button-3d rounded icon-right addTask\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a>";
-                        
+
                         if(response.actionNumber>0){
                             var i=0;
                             var temp="<table class=\"table table-condensed\"><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Owner</span><span class=\"en-inline\">Owner</span><span class=\"nl-inline\">Owner</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
@@ -4361,17 +4387,17 @@ if($connected){
                             }
                             dest=dest.concat("</tbody></table>");
                         }
-                        
+
                         $('#action_company_log').html(dest);
-                        
-                        
+
+
 
                         $(".retrieveTask").click(function() {
                             retrieve_task(this.name, "retrieve");
                             $('.taskManagementSendButton').addClass("hidden");
-                            
-                            
-                        });                    
+
+
+                        });
 
                         $(".updateTask").click(function() {
                             update_task(this.name, "update");
@@ -4379,28 +4405,28 @@ if($connected){
                         $(".addTask").click(function() {
                             add_task(this.name);
                             $('.taskManagementSendButton').removeClass("hidden");
-                            $('.taskManagementSendButton').text("Ajouter")                        
+                            $('.taskManagementSendButton').text("Ajouter")
 
                         });
 
-                        
+
 
                         displayLanguage();
 
                         var classname = document.getElementsByClassName('updateAction');
                         for (var i = 0; i < classname.length; i++) {
                             classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
-                        }  
-                        list_kameobikes_member();                    
-                        
-                        
-                    }              
+                        }
+                        list_kameobikes_member();
+
+
+                    }
 
                 }
             })
         })
-    }        
-        
+    }
+
     function list_kameobikes_member(){
         $('#widget-addActionCompany-form select[name=owner]')
             .find('option')
@@ -4418,22 +4444,22 @@ if($connected){
                 if(response.response == 'success'){
                     var i=0;
                     while (i < response.membersNumber){
-                        $('#widget-addActionCompany-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");    
+                        $('#widget-addActionCompany-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
                         i++;
                     }
                     $('#widget-addActionCompany-form select[name=owner]').val('julien.jamar@kameobikes.com');
-                    
+
                 }
             }
         })
-    }      
-        
+    }
+
     function add_bike(ID){
-        $('.bikeManagementPicture').addClass('hidden');        
-        $('.bikeActions').addClass('hidden');        
+        $('.bikeManagementPicture').addClass('hidden');
+        $('.bikeActions').addClass('hidden');
         document.getElementById('addBike_firstBuilding').innerHTML = "";
         document.getElementById('widget-bikeManagement-form').reset();
-        
+
         $('#widget-bikeManagement-form input[name=action]').val("add");
         $('#widget-bikeManagement-form select[name=contractType]').val("");
         $('#widget-bikeManagement-form select[name=billingType]').val("monthly");
@@ -4442,7 +4468,7 @@ if($connected){
             .remove()
             .end()
         ;
-        
+
         $.ajax({
                 url: 'include/load_portfolio.php',
                 type: 'get',
@@ -4453,15 +4479,15 @@ if($connected){
                     } else{
                         var i=0;
                         while(i<response.bikeNumber){
-                            $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+response.bike[i].ID+">"+response.bike[i].brand+" - "+response.bike[i].model+" - "+response.bike[i].frameType+"<br>");    
+                            $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+response.bike[i].ID+">"+response.bike[i].brand+" - "+response.bike[i].model+" - "+response.bike[i].frameType+"<br>");
                             i++;
                         }
                         $('#widget-bikeManagement-form select[name=portfolioID]').val("");
-                        
+
                     }
                 }
         })
-        
+
         $('#widget-bikeManagement-form select[name=portfolioID]').change(function(){
             $.ajax({
                 url: 'include/load_portfolio.php',
@@ -4475,15 +4501,15 @@ if($connected){
                     }
                 }
             })
-        });                        
-        
-        
+        });
+
+
         $('#widget-bikeManagement-form select[name=company]').val("");
-        
-        
+
+
         var buildingNumber;
         var company;
-        
+
         if(ID){
             $.ajax({
                 url: 'include/get_company_details.php',
@@ -4540,7 +4566,7 @@ if($connected){
                     url: 'include/get_users_listing.php',
                     type: 'post',
                     data: { "company": company},
-                    success: function(response){                        
+                    success: function(response){
                         if(response.response == 'error') {
                             console.log(response.message);
                         }
@@ -4558,61 +4584,61 @@ if($connected){
                     }
                 })
                 $('#widget-bikeManagement-form select[name=company]').val(company);
-                
-                
-                
 
-            })            
+
+
+
+            })
         }
         $('#widget-bikeManagement-form select[name=company]').change(function(){
             updateAccessAdmin($('#widget-bikeManagement-form input[name=frameNumber]').val(), $('#widget-bikeManagement-form select[name=company]').val());
         });
-        
-        
+
+
     }
-        
-        
+
+
     function add_box(company){
         document.getElementById('widget-boxManagement-form').reset();
-        $('#widget-boxManagement-form input').attr("readonly", false);                            
-        $('#widget-boxManagement-form textarea').attr("readonly", false);                            
-        $('#widget-boxManagement-form select').attr("readonly", false);                                                    
-        
+        $('#widget-boxManagement-form input').attr("readonly", false);
+        $('#widget-boxManagement-form textarea').attr("readonly", false);
+        $('#widget-boxManagement-form select').attr("readonly", false);
+
         $('#widget-boxManagement-form input[name=action]').val("add");
         $('#widget-boxManagement-form-title').text("Ajouter une borne");
-        
-        
+
+
         $('#widget-boxManagement-form-send').text("Ajouter");
         $('#widget-boxManagement-form-send').removeClass("hidden");
         $('#widget-boxManagement-form select[name=company]').val(company);
-        
+
     }
-        
-        
+
+
     function update_box(id){
         retrieve_box(id);
         $('#widget-boxManagement-form-send').removeClass("hidden");
-        
-        $('#widget-boxManagement-form input').attr("readonly", false);                            
-        $('#widget-boxManagement-form textarea').attr("readonly", false);                            
-        $('#widget-boxManagement-form select').attr("readonly", false);                                                    
-        $('#widget-boxManagement-form input[name=action]').val("update");                                                    
-        
-        
+
+        $('#widget-boxManagement-form input').attr("readonly", false);
+        $('#widget-boxManagement-form textarea').attr("readonly", false);
+        $('#widget-boxManagement-form select').attr("readonly", false);
+        $('#widget-boxManagement-form input[name=action]').val("update");
+
+
         $('#widget-boxManagement-form input[name=action]').val("update");
         $('#widget-boxManagement-form-title').text("Modifier une borne");
         $('#widget-boxManagement-form-send').text("Modifier");
 
     }
-        
-        
+
+
     function retrieve_box(id){
         $('#widget-boxManagement-form-title').text("Informations de la borne");
         $('#widget-boxManagement-form-send').addClass("hidden");
-        $('#widget-boxManagement-form input').attr("readonly", true);                            
-        $('#widget-boxManagement-form textarea').attr("readonly", true);                            
-        $('#widget-boxManagement-form select').attr("readonly", true);       
-            
+        $('#widget-boxManagement-form input').attr("readonly", true);
+        $('#widget-boxManagement-form textarea').attr("readonly", true);
+        $('#widget-boxManagement-form select').attr("readonly", true);
+
         $.ajax({
             url: 'include/box_management.php',
             type: 'get',
@@ -4621,7 +4647,7 @@ if($connected){
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
-                if(response.response == 'success'){     
+                if(response.response == 'success'){
                     $('#widget-boxManagement-form input[name=id]').val(response.id);
                     $('#widget-boxManagement-form input[name=reference]').val(response.reference);
                     $('#widget-boxManagement-form select[name=boxModel]').val(response.model);
@@ -4647,12 +4673,12 @@ if($connected){
 
                 }
             }
-        })            
+        })
     }
 
     function get_company_boxes(company){
-        
-        
+
+
         $.ajax({
             url: 'include/box_management.php',
             type: 'get',
@@ -4666,7 +4692,7 @@ if($connected){
                     var dest="<a class=\"button small green button-3d rounded icon-right addBox\" name=\""+company+"\" data-target=\"#boxManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une borne</span></a>";
                     if(response.boxesNumber>0){
                         var temp="<table class=\"table\"><tbody><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th></th></tr></thead>";
-                        dest=dest.concat(temp);                    
+                        dest=dest.concat(temp);
 
                         while (i < response.boxesNumber){
 
@@ -4674,7 +4700,7 @@ if($connected){
                                 automatic_billing='N';
                             }else{
                                 automatic_billing='Y';
-                            }                        
+                            }
 
                             if(response.box[i].amount==null){
                                 amount="0 €/mois";
@@ -4682,8 +4708,8 @@ if($connected){
                                 amount=response.box[i].amount+" €/mois";
                             }
 
-                            
-                            
+
+
                             if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].start != null){
                                 var start="<span>"+response.box[i].start.substr(0,10)+"</span>";
                             }else if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].start == null){
@@ -4706,24 +4732,24 @@ if($connected){
                             }else{
                                 var end="<span class=\"text-red\">ERROR</span>";
                             }
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+
+
+
+
+
+
+
                             temp="<tr><td><a href=\"#\" class=\"text-green retrieveBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">"+response.box[i].id+"</a></td><td>"+response.box[i].reference+"</td><td>"+response.box[i].model+"</td><td>"+automatic_billing+"</td><td>"+start+"</td><td>"+end+"</td><td>"+amount+"</td><td><a href=\"#\" class=\"text-green updateBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">Mettre à jour </a></th></tr>";
                             dest=dest.concat(temp);
                             i++;
                         }
 
                         var temp="</tbody></table>";
-                        dest=dest.concat(temp);                    
+                        dest=dest.concat(temp);
                     }
 
-                    
-                    $('#companyBoxes').html(dest);         
+
+                    $('#companyBoxes').html(dest);
                     $('.addBox').click(function(){
                         add_box(this.name);
                     });
@@ -4733,14 +4759,14 @@ if($connected){
                     $('.retrieveBox').click(function(){
                         retrieve_box(this.name);
                     });
-                                        
-                    
+
+
                 }
             }
         })
-        
-        
-        
+
+
+
     }
 
 
@@ -4765,7 +4791,7 @@ if($connected){
                     document.getElementById('addBuilding_bikeListing').innerHTML = dest;
                 }
             }
-        })  
+        })
         $.ajax({
             url: 'include/get_users_listing.php',
             type: 'post',
@@ -4786,11 +4812,11 @@ if($connected){
                     document.getElementById('addBuilding_usersListing').innerHTML = dest;
                 }
             }
-        })        
+        })
         document.getElementById('widget-addBuilding-form-company').value = company;
-        
-    }        
-        
+
+    }
+
 
     function deconnexion(){
         <?php $_SESSION['login']="false"; ?>
@@ -4801,7 +4827,7 @@ if($connected){
     <!-- CONTENT -->
     <section class="content">
         <div class="container">
-            <div class="row">		   
+            <div class="row">
 
 
                 <!-- post content -->
@@ -4813,8 +4839,8 @@ if($connected){
                                 <h2>MY KAMEO</h2>
                             </div>
                             <br />
-                            <div class="col-md-12"> 
-                                
+                            <div class="col-md-12">
+
                             <span id="assistanceSpan"></span>
 
                             <?php if(!$company){
@@ -4826,9 +4852,9 @@ if($connected){
                             <span class="nl-inline">Mijn kalender</span>
                             </a>
                             <?php
-                            }       
+                            }
                             ?>
-                            </div>	                        
+                            </div>
                             <br>
                             <?php
                             if ($company){
@@ -4840,7 +4866,7 @@ if($connected){
                    <form action="#" method="post">
                    </form>
 
-                    <div class="col-md-12">  		
+                    <div class="col-md-12">
                         <div id="tabs-05c" class="tabs color tabs radius">
                             <ul id="mainTab" class="tabs-navigation">
                                 <li class="reserver active fr"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>Réserver un vélo</a> </li>
@@ -4859,95 +4885,95 @@ if($connected){
 
                             <div class="tabs-content">
                                 <div class="tab-pane active" id="reserver">
-                                    <form id="search-bikes-form" action="include/search-bikes.php" method="post">                    
-                                        <div class="form-group">  
+                                    <form id="search-bikes-form" action="include/search-bikes.php" method="post">
+                                        <div class="form-group">
                                            <label for="booking_day_form" class="col-sm-12 fr">A quelle date voulez-vous prendre le vélo ?</label>
                                            <label for="booking_day_form" class="col-sm-12 en">When do you want to book a bike ?</label>
-                                           <label for="booking_day_form" class="col-sm-12 nl">Wanneer wil je een fiets boeken?</label>                                      
-                                            <div class="form-group col-sm-5" id="booking_day_form"></div>                                                                         
+                                           <label for="booking_day_form" class="col-sm-12 nl">Wanneer wil je een fiets boeken?</label>
+                                            <div class="form-group col-sm-5" id="booking_day_form"></div>
 
-                                            <div class="form-group col-sm-5">                                       
+                                            <div class="form-group col-sm-5">
                                                  <select id="search-bikes-form-intake-hour" name="search-bikes-form-intake-hour" class="form-control">
-                                                    <option value="8h00">8h00</option>									       
-                                                    <option value="8h15">8h15</option>									        
-                                                    <option value="8h30">8h30</option>								
+                                                    <option value="8h00">8h00</option>
+                                                    <option value="8h15">8h15</option>
+                                                    <option value="8h30">8h30</option>
                                                     <option value="8h45">8h45</option>
-                                                    <option value="9h00">9h00</option>									       
-                                                    <option value="9h15">9h15</option>									        
-                                                    <option value="9h30">9h30</option>								
+                                                    <option value="9h00">9h00</option>
+                                                    <option value="9h15">9h15</option>
+                                                    <option value="9h30">9h30</option>
                                                     <option value="9h45">9h45</option>
-                                                    <option value="10h00">10h00</option>									       
-                                                    <option value="10h15">10h15</option>									        
-                                                    <option value="10h30">10h30</option>								
+                                                    <option value="10h00">10h00</option>
+                                                    <option value="10h15">10h15</option>
+                                                    <option value="10h30">10h30</option>
                                                     <option value="10h45">10h45</option>
-                                                    <option value="11h00">11h00</option>									       
-                                                    <option value="11h15">11h15</option>									        
-                                                    <option value="11h30">11h30</option>								
+                                                    <option value="11h00">11h00</option>
+                                                    <option value="11h15">11h15</option>
+                                                    <option value="11h30">11h30</option>
                                                     <option value="11h45">11h45</option>
-                                                    <option value="12h00">12h00</option>									       
-                                                    <option value="12h15">12h15</option>									        
-                                                    <option value="12h30">12h30</option>								
+                                                    <option value="12h00">12h00</option>
+                                                    <option value="12h15">12h15</option>
+                                                    <option value="12h30">12h30</option>
                                                     <option value="12h45">12h45</option>
-                                                    <option value="13h00">13h00</option>									       
-                                                    <option value="13h15">13h15</option>									        
-                                                    <option value="13h30">13h30</option>								
+                                                    <option value="13h00">13h00</option>
+                                                    <option value="13h15">13h15</option>
+                                                    <option value="13h30">13h30</option>
                                                     <option value="13h45">13h45</option>
-                                                    <option value="14h00">14h00</option>									       
-                                                    <option value="14h15">14h15</option>									        
-                                                    <option value="14h30">14h30</option>								
+                                                    <option value="14h00">14h00</option>
+                                                    <option value="14h15">14h15</option>
+                                                    <option value="14h30">14h30</option>
                                                     <option value="14h45">14h45</option>
-                                                    <option value="15h00">15h00</option>									       
-                                                    <option value="15h15">15h15</option>									        
-                                                    <option value="15h30">15h30</option>								
+                                                    <option value="15h00">15h00</option>
+                                                    <option value="15h15">15h15</option>
+                                                    <option value="15h30">15h30</option>
                                                     <option value="15h45">15h45</option>
-                                                    <option value="16h00">16h00</option>									       
-                                                    <option value="16h15">16h15</option>									        
-                                                    <option value="16h30">16h30</option>								
+                                                    <option value="16h00">16h00</option>
+                                                    <option value="16h15">16h15</option>
+                                                    <option value="16h30">16h30</option>
                                                     <option value="16h45">16h45</option>
-                                                    <option value="17h00">17h00</option>									       
-                                                    <option value="17h15">17h15</option>									        
-                                                    <option value="17h30">17h30</option>								
+                                                    <option value="17h00">17h00</option>
+                                                    <option value="17h15">17h15</option>
+                                                    <option value="17h30">17h30</option>
                                                     <option value="17h45">17h45</option>
-                                                    <option value="18h00">18h00</option>									       
-                                                    <option value="18h15">18h15</option>									        
-                                                    <option value="18h30">18h30</option>								
-                                                    <option value="18h45">18h45</option>									    
-                                                  </select>                                   
-                                            </div>                                                                         
+                                                    <option value="18h00">18h00</option>
+                                                    <option value="18h15">18h15</option>
+                                                    <option value="18h30">18h30</option>
+                                                    <option value="18h45">18h45</option>
+                                                  </select>
+                                            </div>
                                            <label for="booking_day_form_deposit" class="col-sm-12 fr">A quelle date voulez-vous rendre le vélo ?</label>
                                            <label for="booking_day_form_deposit" class="col-sm-12 en">When do you want to deposit the bike?</label>
-                                           <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>                                      
-                                            <div class="form-group col-sm-5" id="booking_day_form_deposit"></div>                                                                         
-                                            <div class="form-group col-sm-5" id="booking_hour_form_deposit">                                       
+                                           <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>
+                                            <div class="form-group col-sm-5" id="booking_day_form_deposit"></div>
+                                            <div class="form-group col-sm-5" id="booking_hour_form_deposit">
                                             </div>
 
-                                            <div class="form-group col-sm-5" id="start_building_form"></div>                                                                         
-                                            <div class="form-group col-sm-5" id="deposit_building_form"></div>                                                                         
+                                            <div class="form-group col-sm-5" id="start_building_form"></div>
+                                            <div class="form-group col-sm-5" id="deposit_building_form"></div>
                                         </div>
-                                        <input type="text" class="hidden" id="search-bikes-form-email" name="search-bikes-form-email" value="<?php echo $user; ?>" />                               
-                                        <input type="text" class="hidden" id="search-bikes-form-maxBookingPerYear" name="search-bikes-form-maxBookingPerYear" />                               
-                                        <input type="text" class="hidden" id="search-bikes-form-maxBookingPerMonth" name="search-bikes-form-maxBookingPerMonth"/>                               
+                                        <input type="text" class="hidden" id="search-bikes-form-email" name="search-bikes-form-email" value="<?php echo $user; ?>" />
+                                        <input type="text" class="hidden" id="search-bikes-form-maxBookingPerYear" name="search-bikes-form-maxBookingPerYear" />
+                                        <input type="text" class="hidden" id="search-bikes-form-maxBookingPerMonth" name="search-bikes-form-maxBookingPerMonth"/>
 
                                         <br />
-                                        <div class="form-group col-sm-6">  
+                                        <div class="form-group col-sm-6">
                                             <button class="button effect fill fr" type="submit">Rechercher</button>
                                             <button class="button effect fill en" type="submit">Search</button>
                                             <button class="button effect fill nl" type="submit">Zoeken</button>
                                         </div>
                                     </form>
 
-                                    <script type="text/javascript"> 
+                                    <script type="text/javascript">
                                         loadClientConditions()
                                         .done(function(response){
                                             constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartIntakeBooking, response.clientConditions.hourEndIntakeBooking, response.clientConditions.hourStartDepositBooking, response.clientConditions.hourEndDepositBooking, response.clientConditions.mondayIntake, response.clientConditions.tuesdayIntake, response.clientConditions.wednesdayIntake, response.clientConditions.thursdayIntake, response.clientConditions.fridayIntake, response.clientConditions.saturdayIntake, response.clientConditions.sundayIntake, response.clientConditions.mondayDeposit, response.clientConditions.tuesdayDeposit, response.clientConditions.wednesdayDeposit, response.clientConditions.thursdayDeposit, response.clientConditions.fridayDeposit, response.clientConditions.saturdayDeposit, response.clientConditions.sundayDeposit, response.clientConditions.maxBookingsPerYear, response.clientConditions.maxBookingsPerMonth);
                                             if (response.clientConditions.administrator == "Y"){
                                                     $(".fleetmanager").removeClass("hidden");
                                             }
-                                            
+
                                         });
                                     </script>
 
-                                    <script type="text/javascript">         
+                                    <script type="text/javascript">
                                         jQuery("#search-bikes-form").validate({
                                             submitHandler: function(form) {
                                                 jQuery(form).ajaxSubmit({
@@ -4961,16 +4987,16 @@ if($connected){
                                                             });
                                                             document.getElementById('velos').innerHTML = "";
                                                             document.getElementById("travel_information").style.display = "none";
-                                                            document.getElementById("velos").style.display = "none";															
+                                                            document.getElementById("velos").style.display = "none";
 
 
 
-                                                        } else {				
+                                                        } else {
                                                             var loaded1=false;
                                                             var loaded2=false;
                                                             $("body").addClass("loading");
                                                             document.getElementById("travel_information").style.display = "none";
-                                                            document.getElementById("velos").style.display = "none";															
+                                                            document.getElementById("velos").style.display = "none";
 
 
                                                             var successMessage=text.message;
@@ -4981,44 +5007,44 @@ if($connected){
                                                             var windSpeed;
                                                             var travel_time_bike;
                                                             var travel_time_car;
-                                                            
-                                                            get_address_building(text.buildingStart)                                                
-                                                                .done(function(response){                                                                    
+
+                                                            get_address_building(text.buildingStart)
+                                                                .done(function(response){
                                                                     addressStart=response.address;
                                                                     buildingStartFr=response.building_fr;
                                                                     buildingStartEn=response.building_en;
                                                                     buildingStartNl=response.building_nl;
                                                                     get_address_building(text.buildingEnd)
-                                                                    .done(function(response){	
+                                                                    .done(function(response){
                                                                         addressEnd=response.address;
                                                                         buildingEndFr=response.building_fr;
                                                                         buildingEndEn=response.building_en;
                                                                         buildingEndNl=response.building_nl;
 
-                                                                        document.getElementById("meteoStart1FR").innerHTML=buildingStartFr;			
-                                                                        document.getElementById("meteoStart2FR").innerHTML=buildingStartFr;			
-                                                                        document.getElementById("meteoStart3FR").innerHTML=buildingStartFr;			
-                                                                        document.getElementById("meteoStart4FR").innerHTML=buildingStartFr;			
-                                                                        document.getElementById("meteoStart1EN").innerHTML=buildingStartEn;			
-                                                                        document.getElementById("meteoStart2EN").innerHTML=buildingStartEn;			
-                                                                        document.getElementById("meteoStart3EN").innerHTML=buildingStartEn;			
-                                                                        document.getElementById("meteoStart4EN").innerHTML=buildingStartEn;			
-                                                                        document.getElementById("meteoStart1NL").innerHTML=buildingStartNl;			
-                                                                        document.getElementById("meteoStart2NL").innerHTML=buildingStartNl;			
-                                                                        document.getElementById("meteoStart3NL").innerHTML=buildingStartNl;			
-                                                                        document.getElementById("meteoStart4NL").innerHTML=buildingStartNl;			
-                                                                        document.getElementById("meteoEnd1FR").innerHTML=buildingEndFr;			
-                                                                        document.getElementById("meteoEnd2FR").innerHTML=buildingEndFr;			
-                                                                        document.getElementById("meteoEnd3FR").innerHTML=buildingEndFr;			
-                                                                        document.getElementById("meteoEnd4FR").innerHTML=buildingEndFr;			
-                                                                        document.getElementById("meteoEnd1EN").innerHTML=buildingEndEn;			
-                                                                        document.getElementById("meteoEnd2EN").innerHTML=buildingEndEn;			
-                                                                        document.getElementById("meteoEnd3EN").innerHTML=buildingEndEn;			
-                                                                        document.getElementById("meteoEnd4EN").innerHTML=buildingEndEn;			
-                                                                        document.getElementById("meteoEnd1NL").innerHTML=buildingEndNl;			
-                                                                        document.getElementById("meteoEnd2NL").innerHTML=buildingEndNl;			
-                                                                        document.getElementById("meteoEnd3NL").innerHTML=buildingEndNl;			
-                                                                        document.getElementById("meteoEnd4NL").innerHTML=buildingEndNl;	
+                                                                        document.getElementById("meteoStart1FR").innerHTML=buildingStartFr;
+                                                                        document.getElementById("meteoStart2FR").innerHTML=buildingStartFr;
+                                                                        document.getElementById("meteoStart3FR").innerHTML=buildingStartFr;
+                                                                        document.getElementById("meteoStart4FR").innerHTML=buildingStartFr;
+                                                                        document.getElementById("meteoStart1EN").innerHTML=buildingStartEn;
+                                                                        document.getElementById("meteoStart2EN").innerHTML=buildingStartEn;
+                                                                        document.getElementById("meteoStart3EN").innerHTML=buildingStartEn;
+                                                                        document.getElementById("meteoStart4EN").innerHTML=buildingStartEn;
+                                                                        document.getElementById("meteoStart1NL").innerHTML=buildingStartNl;
+                                                                        document.getElementById("meteoStart2NL").innerHTML=buildingStartNl;
+                                                                        document.getElementById("meteoStart3NL").innerHTML=buildingStartNl;
+                                                                        document.getElementById("meteoStart4NL").innerHTML=buildingStartNl;
+                                                                        document.getElementById("meteoEnd1FR").innerHTML=buildingEndFr;
+                                                                        document.getElementById("meteoEnd2FR").innerHTML=buildingEndFr;
+                                                                        document.getElementById("meteoEnd3FR").innerHTML=buildingEndFr;
+                                                                        document.getElementById("meteoEnd4FR").innerHTML=buildingEndFr;
+                                                                        document.getElementById("meteoEnd1EN").innerHTML=buildingEndEn;
+                                                                        document.getElementById("meteoEnd2EN").innerHTML=buildingEndEn;
+                                                                        document.getElementById("meteoEnd3EN").innerHTML=buildingEndEn;
+                                                                        document.getElementById("meteoEnd4EN").innerHTML=buildingEndEn;
+                                                                        document.getElementById("meteoEnd1NL").innerHTML=buildingEndNl;
+                                                                        document.getElementById("meteoEnd2NL").innerHTML=buildingEndNl;
+                                                                        document.getElementById("meteoEnd3NL").innerHTML=buildingEndNl;
+                                                                        document.getElementById("meteoEnd4NL").innerHTML=buildingEndNl;
 
                                                                         date= new Date(text.timestampStartBooking * 1000);
 
@@ -5054,19 +5080,19 @@ if($connected){
                                                                                 precipitation=response.precipProbability;
                                                                                 windSpeed=response.windSpeed;
 
-                                                                                document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";			
+                                                                                document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";
                                                                                 document.getElementById('temperature_widget1').innerHTML = Math.round(temperature)+" °C";
                                                                                 document.getElementById('precipitation_widget1').innerHTML = Math.round(precipitation)+" %";
                                                                                 document.getElementById('wind_widget1').innerHTML = windSpeed+" m/s";
-                                                                                document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";			
+                                                                                document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";
                                                                                 document.getElementById('temperature_widget2').innerHTML = Math.round(temperature)+" °C";
                                                                                 document.getElementById('precipitation_widget2').innerHTML = Math.round(precipitation)+" %";
                                                                                 document.getElementById('wind_widget2').innerHTML = windSpeed+" m/s";
-                                                                                document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";			
+                                                                                document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";
                                                                                 document.getElementById('temperature_widget3').innerHTML = Math.round(temperature)+" °C";
                                                                                 document.getElementById('precipitation_widget3').innerHTML = Math.round(precipitation)+" %";
                                                                                 document.getElementById('wind_widget3').innerHTML = windSpeed+" m/s";
-                                                                                document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";			
+                                                                                document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
                                                                                 document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
                                                                                 document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
                                                                                 document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
@@ -5087,15 +5113,15 @@ if($connected){
                                                                                     document.getElementById('bike_duration_widget4').innerHTML = travel_time_bike+" min";
                                                                                     document.getElementById('car_duration_widget4').innerHTML = travel_time_car+" min";
                                                                                     get_kameo_score(weather, precipitation, temperature, windSpeed, travel_time_bike, travel_time_car);
-                                                                                    loaded1=true;															
+                                                                                    loaded1=true;
                                                                                     if (loaded2){
                                                                                         $.notify({
                                                                                             message: successMessage
                                                                                         }, {
                                                                                             type: 'success'
-                                                                                        }); 
+                                                                                        });
                                                                                         document.getElementById("travel_information").style.display = "block";
-                                                                                        document.getElementById("velos").style.display = "block";	
+                                                                                        document.getElementById("velos").style.display = "block";
                                                                                         $("body").removeClass("loading");
 
                                                                                     }
@@ -5118,14 +5144,14 @@ if($connected){
 
                                                                 var bikeFrameNumber=text.bike[i].frameNumber;
                                                                 var bikeType=text.bike[i].typeDescription;
-                                                                
+
                                                                 if(text.bike[i].brand && text.bike[i].model && text.bike[i].size){
                                                                     var title= "Marque : "+text.bike[i].brand+" <br/>Modèle : "+text.bike[i].model+" <br/>Taille : "+text.bike[i].size;
                                                                 }else{
                                                                     var title=bikeFrameNumber;
                                                                 }
-                                                                                                                                
-                                                                
+
+
                                                                 var codeVeloTemporaire ="<div class=\"col-md-4\">\
                                                                     <div class=\"featured-box\">\
                                                                         <div class=\"effect social-links\"> <img src=\"images_bikes/"+bikeFrameNumber+".jpg\" alt=\"image\" />\
@@ -5156,7 +5182,7 @@ if($connected){
                                                             document.getElementById('daySpan').innerHTML = $dayAndMonth[0];
                                                             document.getElementById('monthSpan').innerHTML = $dayAndMonth[1];
                                                             document.getElementById('yearSpan').innerHTML = $dayAndMonth[2];
-                                                            
+
                                                             $date=document.getElementById("search-bikes-form-day-deposit").value;
                                                             $dayAndMonth=$date.split("-");
                                                             document.getElementById('dayDepositSpan').innerHTML = $dayAndMonth[0];
@@ -5167,7 +5193,7 @@ if($connected){
                                                             document.getElementById('startBuildingSpan').innerHTML = document.getElementById('search-bikes-form-intake-building').options[document.getElementById('search-bikes-form-intake-building').selectedIndex].text;
 
                                                             document.getElementById('endBuildingSpan').innerHTML = document.getElementById('search-bikes-form-deposit-building').options[document.getElementById('search-bikes-form-deposit-building').selectedIndex].text;
-                                                            
+
                                                             loadClientConditions()
                                                             .done(function(response){
                                                                 if(response.clientConditions.locking=="Y")
@@ -5181,20 +5207,20 @@ if($connected){
                                                                     document.getElementById('lockingCode').innerHTML=temp;
                                                                     document.getElementById('widget-new-booking-locking-code').value = temp;
 
-                                                                    
+
                                                                 }else{
                                                                     document.getElementById('lockingCodeDiv').style.display="none";
                                                                     document.getElementById('widget-new-booking-locking-code').value = "";
                                                                 }
                                                             });
 
-                                                            document.getElementById('widget-new-booking-date-start').value = text.dateStart.date;       
-                                                            document.getElementById('widget-new-booking-date-end').value = text.dateEnd.date;       
-                                                            document.getElementById('widget-new-booking-timestamp-start').value = text.timestampStartBooking;       
+                                                            document.getElementById('widget-new-booking-date-start').value = text.dateStart.date;
+                                                            document.getElementById('widget-new-booking-date-end').value = text.dateEnd.date;
+                                                            document.getElementById('widget-new-booking-timestamp-start').value = text.timestampStartBooking;
                                                             document.getElementById('widget-new-booking-timestamp-end').value = text.timestampEndBooking;
                                                             document.getElementById('widget-new-booking-building-start').value = document.getElementById("search-bikes-form-intake-building").value;;
                                                             document.getElementById('widget-new-booking-building-end').value = document.getElementById("search-bikes-form-deposit-building").value;
-                                                        
+
                                                             loaded2=true;
                                                             if (loaded1)
                                                             {
@@ -5202,9 +5228,9 @@ if($connected){
                                                                     message: successMessage
                                                                 }, {
                                                                     type: 'success'
-                                                                }); 
+                                                                });
                                                                 document.getElementById("travel_information").style.display = "block";
-                                                                document.getElementById("velos").style.display = "block";	
+                                                                document.getElementById("velos").style.display = "block";
                                                                 $("body").removeClass("loading");
                                                             }
 
@@ -5213,8 +5239,8 @@ if($connected){
                                                 });
                                             }
                                         });
-                                    </script>         
-                                    
+                                    </script>
+
                                     <script type="text/javascript">
                                         function bookBike(bikeNumber)
                                         {
@@ -5226,7 +5252,7 @@ if($connected){
 
 
                                     <div id="travel_information" style="display:none">
-                                        <!-- Pour un écran large -->							
+                                        <!-- Pour un écran large -->
                                         <div class="visible-lg">
                                             <div class="col-lg-12 backgroundgreen">
                                                 <p class="text-white down">
@@ -5234,26 +5260,26 @@ if($connected){
                                                     <span class="text-white fr-inline" id="meteoStart1FR"></span>
                                                     <span class="text-white en-inline" id="meteoStart1EN"></span>
                                                     <span class="text-white nl-inline" id="meteoStart1NL"></span>
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>										
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
                                                     <span class="text-white fr-inline" id="meteoEnd1FR"></span>
                                                     <span class="text-white en-inline" id="meteoEnd1EN"></span>
                                                     <span class="text-white nl-inline" id="meteoEnd1NL"></span>
 
-                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>									
+                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
                                                     <span class="text-white" id="meteoDate1"></span>
 
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>							
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
                                                     <span class="text-white" id="meteoHour1"></span>
-                                                </p> 										
+                                                </p>
                                             </div>
                                         </div>
 
                                         <div class="visible-lg">
-                                            <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                            <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                     <div class="col-lg-3">
                                                         <img id="logo_meteo1" alt="image" class="centerimg" />
-                                                    </div>     
+                                                    </div>
 
                                                     <div class="col-lg-3">
                                                         <ul>
@@ -5285,26 +5311,26 @@ if($connected){
                                                     <span class="text-white fr-inline" id="meteoStart2FR"></span>
                                                     <span class="text-white en-inline" id="meteoStart2EN"></span>
                                                     <span class="text-white nl-inline" id="meteoStart2NL"></span>
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>										
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
                                                     <span class="text-white fr-inline" id="meteoEnd2FR"></span>
                                                     <span class="text-white en-inline" id="meteoEnd2EN"></span>
                                                     <span class="text-white nl-inline" id="meteoEnd2NL"></span>
 
-                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>									
+                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
                                                     <span class="text-white" id="meteoDate2"></span>
 
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>										
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
                                                     <span class="text-white" id="meteoHour2"></span>
-                                                </p> 																			
+                                                </p>
                                             </div>
                                         </div>
 
                                         <div class="visible-md">
-                                            <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                            <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                     <div class="col-md-3">
                                                         <img id="logo_meteo2" alt="image" class="centerimg" />
-                                                    </div>     
+                                                    </div>
 
                                                     <div class="col-md-3">
                                                         <ul>
@@ -5336,26 +5362,26 @@ if($connected){
                                                     <span class="text-white fr-inline" id="meteoStart3FR"></span>
                                                     <span class="text-white en-inline" id="meteoStart3EN"></span>
                                                     <span class="text-white nl-inline" id="meteoStart3NL"></span>
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>										
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
                                                     <span class="text-white fr-inline" id="meteoEnd3FR"></span>
                                                     <span class="text-white en-inline" id="meteoEnd3EN"></span>
                                                     <span class="text-white nl-inline" id="meteoEnd3NL"></span>
 
-                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>									
+                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
                                                     <span class="text-white" id="meteoDate3"></span>
 
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>										
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
                                                     <span class="text-white" id="meteoHour3"></span>
-                                                </p> 																				
+                                                </p>
                                             </div>
                                         </div>
 
                                         <div class="visible-sm">
-                                            <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                            <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                     <div class="col-sm-12">
                                                         <img id="logo_meteo3" alt="image" class="centerimg" />
-                                                    </div>     
+                                                    </div>
 
                                                     <div class="seperator"></div>
 
@@ -5381,7 +5407,7 @@ if($connected){
                                                         <img id="score_kameo3" alt="image" class="centerimg" />
                                                     </div>
                                             </div>
-                                        </div>	
+                                        </div>
 
                                         <!-- Pour un smartphone -->
                                         <div class="visible-xs">
@@ -5391,27 +5417,27 @@ if($connected){
                                                     <span class="text-white fr-inline" id="meteoStart4FR"></span>
                                                     <span class="text-white en-inline" id="meteoStart4EN"></span>
                                                     <span class="text-white nl-inline" id="meteoStart4NL"></span>
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>										
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
                                                     <span class="text-white fr-inline" id="meteoEnd4FR"></span>
                                                     <span class="text-white en-inline" id="meteoEnd4EN"></span>
                                                     <span class="text-white nl-inline" id="meteoEnd4NL"></span>
 
-                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>									
+                                                    <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
                                                     <span class="text-white" id="meteoDate4"></span>
 
 
-                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>										
+                                                    <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
                                                     <span class="text-white" id="meteoHour4"></span>
-                                                </p> 																				
+                                                </p>
                                             </div>
                                         </div>
 
                                         <div class="visible-xs">
-                                            <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                            <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                     <div class="col-xs-12">
                                                         <img id="logo_meteo4" alt="image" class="centerimg" />
-                                                    </div>     
+                                                    </div>
 
                                                     <div class="seperator"></div>
 
@@ -5444,7 +5470,7 @@ if($connected){
                                 </div>
 
                                 <div class="tab-pane" id="reservations">
-                                    
+
                                     <div data-example-id="contextual-table" class="bs-example">
                                       <span id="historicBookings"></span>
                                     </div>
@@ -5456,57 +5482,57 @@ if($connected){
                                     </div>
 
                                 </div>
-                                
+
                                  <div class="tab-pane" id="routes">
 
                                     <h4 class="fr">Itinéraires conseillés</h4>
                                     <p>Nous avons créé pour vous quelques itinéraires agréables pour vous rendre au travail.</p>
                                     <div class="separator"></div>
-                                    
+
                                     <h5>Place du XX-Août - CHU Sart-Tilman</h5>
                                     <div class="visible-md visible-lg visible-sm">
                                     <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9725042/embed/fr/4d797178424b307264565857544b58755a6955334d6172376b6a434f45314154723253704b6a50515834303d3a3a0c5f9b347e3f087700118732ba812fb7" frameborder="0" allowfullscreen></iframe>
                                     </div>
-                                    
+
                                     <div class="visible-xs">
                                     <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9725042/embed/fr/4d797178424b307264565857544b58755a6955334d6172376b6a434f45314154723253704b6a50515834303d3a3a0c5f9b347e3f087700118732ba812fb7" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                     <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
-                                    
+
                                     <div class="separator"></div>
-                                    
+
                                     <h5>Embourg - CHU Sart-Tilman</h5>
                                     <div class="visible-md visible-lg visible-sm">
                                     <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9733246/embed/fr/537333576a65315635515657574578527375722b54564147524e61644a6b6c51666d34705a4677666f70733d3a3a30ca4562f0a633da7b53a0ba8bd2c6aa" frameborder="0" allowfullscreen></iframe>
                                     </div>
-                                    
+
                                     <div class="visible-xs">
                                     <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9733246/embed/fr/537333576a65315635515657574578527375722b54564147524e61644a6b6c51666d34705a4677666f70733d3a3a30ca4562f0a633da7b53a0ba8bd2c6aa" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                     <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
-                                    
+
                                     <div class="separator"></div>
-                                    
+
                                     <h5>Esneux - CHU Sart-Tilman</h5>
                                     <div class="visible-md visible-lg visible-sm">
                                     <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9733176/embed/fr/786d4c57563377754e4f7131376630595674427a49544b385038702f73513274323956536e732b4c37374d3d3a3a2a1c2e0c4b78d238839ef9bd4487f60a" frameborder="0" allowfullscreen></iframe>
                                     </div>
-                                    
+
                                     <div class="visible-xs">
                                     <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9733176/embed/fr/786d4c57563377754e4f7131376630595674427a49544b385038702f73513274323956536e732b4c37374d3d3a3a2a1c2e0c4b78d238839ef9bd4487f60a" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                     <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
-                                    
+
 
                                 </div>
-                                
-                                
+
+
                                 <div class="tab-pane" id="fleetmanager">
 
                                         <tbody>
-                                        
+
                                             <h4 class="fr">Votre flotte</h4><br/><br />
-										     
+
 										     <div class="row">
 										     	<div class="col-md-4">
 											        <div class="icon-box medium fancy">
@@ -5515,19 +5541,19 @@ if($connected){
 											          <p>Nombre de vélos</p>
 											        </div>
 											     </div>
-											     
+
 											     <div class="seperator seperator-small visible-xs"><br/><br/></div>
-											      
+
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
 											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#usersListing" href="#" ><i class="fa fa-users"></i></a> </div>
 											          <div class="counter bold" id="counterUsers" style="color:#3cb395"></div>
 											          <p>Nombre d'utilisateurs</p>
 											        </div>
-											     </div> 
-											     
+											     </div>
+
 											     <div class="seperator seperator-small visible-xs"><br/><br/></div>
-											     
+
 											     <div class="col-md-4">
 											        <div class="icon-box medium fancy">
 											          <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" href="#"><i class="fa fa-calendar-plus-o reservationlisting"></i></a></div>
@@ -5537,12 +5563,12 @@ if($connected){
 											     </div>
 										     </div>
 
-											<div class="separator"></div> 
-										     
+											<div class="separator"></div>
+
                                             <h4 class="fr">Réglages</h4>
                                             <h4 class="en">Settings</h4>
                                             <h4 class="en">Settings</h4><br/><br />
-										     
+
 										     <div class="row">
 										     	<div class="col-md-4">
 											        <div class="icon-box medium fancy">
@@ -5550,11 +5576,11 @@ if($connected){
 											          <div class="counter bold" style="color:#3cb395"></div>
 											          <p>Modifier les réglages</p>
 											        </div>
-											     </div>											                                                  
-                                            </div>  
+											     </div>
+                                            </div>
 
-											<div class="separator"></div> 
-										     
+											<div class="separator"></div>
+
                                             <h4 class="fr hidden kameo">Administration Kameo</h4>
                                             <h4 class="en hidden kameo">Kameo administration</h4>
                                             <h4 class="en hidden kameo">Kameo administration</h4><br/><br />
@@ -5566,10 +5592,10 @@ if($connected){
 											          <p>Gérer les clients</p>
 											        </div>
 											     </div>
-                                                 
-											     
-                                                 
-											     
+
+
+
+
 											    <div class="seperator seperator-small visible-xs"><br/><br/></div>
 
 										     	<div class="col-md-4 hidden" id="portfolioManagement">
@@ -5579,7 +5605,7 @@ if($connected){
 											          <p>Gérer le catalogue</p>
 											        </div>
 											     </div>
-											     
+
 											    <div class="seperator seperator-small visible-xs"><br/><br/></div>
 
 										     	<div class="col-md-4 hidden" id="bikesManagement">
@@ -5604,7 +5630,7 @@ if($connected){
                                                  <div class="col-md-4 hidden" id="tasksManagement">
 											         <div class="icon-box medium fancy">
 											             <div class="icon bold" data-animation="pulse infinite">
-                                                             <a data-toggle="modal" data-target="#tasksListing" href="#" class="tasksManagerClick"><i class="fa fa-tasks"></i></a> 
+                                                             <a data-toggle="modal" data-target="#tasksListing" href="#" class="tasksManagerClick"><i class="fa fa-tasks"></i></a>
                                                         </div>
 											             <div class="counter bold" id="counterTasks" style="color:#3cb395"></div>
 											             <p>Gérer les Actions</p>
@@ -5614,8 +5640,8 @@ if($connected){
 										     	<div class="col-md-4 hidden" id="cashFlowManagement">
 											         <div class="icon-box medium fancy">
 											             <div class="icon bold" data-animation="pulse infinite">
-                                                             <a data-toggle="modal" data-target="#offersListing" href="#" class="offerManagerClick"><i class="fa fa-money"></i></a> 
-                                                        </div>     
+                                                             <a data-toggle="modal" data-target="#offersListing" href="#" class="offerManagerClick"><i class="fa fa-money"></i></a>
+                                                        </div>
 											             <div class="counter bold" id="cashFlowSpan" style="color:#3cb395"></div>
 											             <p>Vue sur le cash-flow</p>
 											        </div>
@@ -5623,21 +5649,21 @@ if($connected){
 										     	<div class="col-md-4 hidden" id="feedbacksManagement">
 											         <div class="icon-box medium fancy">
 											             <div class="icon bold" data-animation="pulse infinite">
-                                                             <a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagementClick"><i class="fa fa-comments"></i></a> 
-                                                        </div>     
+                                                             <a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagementClick"><i class="fa fa-comments"></i></a>
+                                                        </div>
 											             <div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
 											             <p>Vue sur les feedbacks</p>
 											        </div>
 											     </div>
                                             </div>
-                                            
-                                             
+
+
                                             <div class="separator hidden kameo"></div>
-                                            
+
                                             <h4 class="fr">Factures</h4>
                                             <h4 class="en">Billing</h4>
                                             <h4 class="en">Billing</h4><br/><br />
-										     
+
 										     <div class="row">
 										     	<div class="col-md-4">
 											        <div class="icon-box medium fancy">
@@ -5646,14 +5672,14 @@ if($connected){
 											          <p>Aperçu des factures</p>
 											        </div>
 											     </div>
-										     </div>                                            
-                                            
+										     </div>
 
-										     
+
+
 										      <div class="col-md-12" id="progress-bar-bookings">
 										      </div>
                                         </tbody>
-                                </div>                                            
+                                </div>
                         </div>
                     </div>
 
@@ -5744,10 +5770,10 @@ if($connected){
 
                                 include 'include/connexion.php';
                                 $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY,
-                                bb.CONTRACT_REFERENCE, bb.CONTRACT_START, bb.CONTRACT_END, cc.MODEL_FR \"bike_Model_FR\", cc.MODEL_EN \"bike_Model_EN\", cc.MODEL_NL \"bike_Model_NL\" 
+                                bb.CONTRACT_REFERENCE, bb.CONTRACT_START, bb.CONTRACT_END, cc.MODEL_FR \"bike_Model_FR\", cc.MODEL_EN \"bike_Model_EN\", cc.MODEL_NL \"bike_Model_NL\"
                                 from customer_referential aa, customer_bikes bb, bike_models cc
                                 where aa.EMAIL='$user' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.TYPE=cc.ID";
-                                
+
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
                                 $contractNumber=$row['CONTRACT_REFERENCE'];
@@ -5757,7 +5783,7 @@ if($connected){
                                 ?>
 
                                 <div id="travel_information_2" style="display: none;">
-                                    <!-- Pour un écran large -->							
+                                    <!-- Pour un écran large -->
                                     <div class="visible-lg">
                                         <div class="col-lg-12 backgroundgreen down">
                                             <p class="text-white down">
@@ -5770,16 +5796,16 @@ if($connected){
                                             <span class="nl-inline text-white"> om </span>
                                             <span class="text-white" id="meteoHour1"></span>
 
-                                            </p> 
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-lg">
-                                        <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <div class="col-lg-3">
                                                     <img id="logo_meteo1" alt="image" class="centerimg" />
-                                                </div>     
+                                                </div>
 
                                                 <div class="col-lg-3">
                                                     <ul>
@@ -5817,16 +5843,16 @@ if($connected){
                                             <span class="en-inline text-white"> at </span>
                                             <span class="nl-inline text-white"> om </span>
                                             <span class="text-white" id="meteoHour2"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-md">
-                                        <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <div class="col-md-3">
                                                     <img id="logo_meteo2" alt="image" class="centerimg" />
-                                                </div>     
+                                                </div>
 
                                                 <div class="col-md-3">
                                                     <ul>
@@ -5862,16 +5888,16 @@ if($connected){
                                             <span class="en-inline text-white"> at </span>
                                             <span class="nl-inline text-white"> om </span>
                                             <span class="text-white" id="meteoHour3"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-sm">
-                                        <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <div class="col-sm-12">
                                                     <img id="logo_meteo3" alt="image" class="centerimg" />
-                                                </div>     
+                                                </div>
 
                                                 <div class="seperator"></div>
 
@@ -5897,7 +5923,7 @@ if($connected){
                                                     <img id="score_kameo3" alt="image" class="centerimg" />
                                                 </div>
                                         </div>
-                                    </div>	
+                                    </div>
 
                                     <!-- Pour un smartphone -->
                                     <div class="visible-xs">
@@ -5911,15 +5937,15 @@ if($connected){
                                             <span class="en-inline text-white"> at </span>
                                             <span class="nl-inline text-white"> om </span>
                                             <span class="text-white" id="meteoHour4"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
-                                    </div>								
+                                    </div>
                                     <div class="visible-xs">
-                                        <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <div class="col-xs-12">
                                                     <img id="logo_meteo4" alt="image" class="centerimg" />
-                                                </div>     
+                                                </div>
 
                                                 <div class="seperator"></div>
 
@@ -5947,11 +5973,11 @@ if($connected){
                                                     <img id="score_kameo4" alt="image" class="centerimg" />
                                                 </div>
                                         </div>
-                                    </div>								
+                                    </div>
                                 </div>
 
                                 <div id="travel_information_2_error" style="display: none;">
-                                    <!-- Pour un écran large -->							
+                                    <!-- Pour un écran large -->
                                     <div class="visible-lg">
                                         <div class="col-lg-12 backgroundgreen down">
                                             <p class="text-white down">
@@ -5959,12 +5985,12 @@ if($connected){
                                             <span class="en-inline text-white">Your trip home - work at </span>
                                             <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
                                             <span class="text-white" id="meteoHour1"></span>
-                                            </p> 
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-lg">
-                                        <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">ERROR</h2>
                                                 <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
@@ -5984,12 +6010,12 @@ if($connected){
                                             <span class="en-inline">Your trip home - work at </span>
                                             <span class="nl-inline">Uw reis naar huis - werk bij </span>
                                             <span id="meteoHour2"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-md">
-                                        <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">ERROR</h2>
                                                 <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
@@ -6007,12 +6033,12 @@ if($connected){
                                             <span class="en-inline text-white">Your trip home - work at </span>
                                             <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
                                             <span class="text-white" id="meteoHour3"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-sm">
-                                        <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">ERROR</h2>
                                                 <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
@@ -6020,7 +6046,7 @@ if($connected){
                                                 <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
 
                                         </div>
-                                    </div>	
+                                    </div>
 
                                     <!-- Pour un smartphone -->
                                     <div class="visible-xs">
@@ -6030,11 +6056,11 @@ if($connected){
                                             <span class="en-inline text-white">Your trip home - work at </span>
                                             <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
                                             <span class="text-white" id="meteoHour4"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
-                                    </div>								
+                                    </div>
                                     <div class="visible-xs">
-                                        <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">ERROR</h2>
                                                 <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
@@ -6042,11 +6068,11 @@ if($connected){
                                                 <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
 
                                         </div>
-                                    </div>								
+                                    </div>
                                 </div>
 
                                 <div id="travel_information_2_loading" style="display: block;">
-                                    <!-- Pour un écran large -->							
+                                    <!-- Pour un écran large -->
                                     <div class="visible-lg">
                                         <div class="col-lg-12 backgroundgreen down">
                                             <p class="text-white down">
@@ -6054,12 +6080,12 @@ if($connected){
                                             <span class="en-inline text-white">Your trip home - work at </span>
                                             <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
                                             <span class="text-white" id="meteoHour1"></span>
-                                            </p> 
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-lg">
-                                        <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">LOADING</h2>
                                                 <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
@@ -6079,12 +6105,12 @@ if($connected){
                                             <span class="en-inline">Your trip home - work at </span>
                                             <span class="nl-inline">Uw reis naar huis - werk bij </span>
                                             <span id="meteoHour2"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-md">
-                                        <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">LOADING</h2>
                                                 <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
@@ -6102,12 +6128,12 @@ if($connected){
                                             <span class="en-inline text-white">Your trip home - work at </span>
                                             <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
                                             <span class="text-white" id="meteoHour3"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="visible-sm">
-                                        <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">LOADING</h2>
                                                 <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
@@ -6115,7 +6141,7 @@ if($connected){
                                                 <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
 
                                         </div>
-                                    </div>	
+                                    </div>
 
                                     <!-- Pour un smartphone -->
                                     <div class="visible-xs">
@@ -6125,11 +6151,11 @@ if($connected){
                                             <span class="en-inline text-white">Your trip home - work at </span>
                                             <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
                                             <span class="text-white" id="meteoHour4"></span>
-                                            </p> 									
+                                            </p>
                                         </div>
-                                    </div>								
+                                    </div>
                                     <div class="visible-xs">
-                                        <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;"> 
+                                        <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                                                 <h2 class="text-white text-center">LOADING</h2>
                                                 <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
@@ -6137,7 +6163,7 @@ if($connected){
                                                 <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
 
                                         </div>
-                                    </div>								
+                                    </div>
                                 </div>
 
 
@@ -6147,7 +6173,7 @@ if($connected){
                                 <div class="table-responsive">
                                   <table class="table table-striped">
                                     <caption class="fr"> Descriptif de votre vélo </caption>
-                                    <caption class="en"> Description of your bike </caption>						
+                                    <caption class="en"> Description of your bike </caption>
                                     <caption class="nl"> Beschrijving van je fiets </caption>
                                     <tbody>
                                       <tr>
@@ -6163,13 +6189,13 @@ if($connected){
                                         <td class="en">Start date of contract</td>
                                         <td class="nl">Startdatum van het contract</td>
                                         <td><?php echo $row["CONTRACT_START"]; ?></td>
-                                      </tr>								  
+                                      </tr>
                                       <tr>
                                         <td class="fr">Date de fin de contrat</td>
                                         <td class="en">End date of contract</td>
                                         <td class="nl">Einddatum van het contract</td>
                                         <td><?php echo $row["CONTRACT_END"]; ?></td>
-                                      </tr>			  
+                                      </tr>
 
 
                                     </tbody>
@@ -6215,19 +6241,19 @@ if($connected){
                                             precipitation=response.precipProbability;
                                             windSpeed=response.windSpeed;
 
-                                            document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";			
+                                            document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";
                                             document.getElementById('temperature_widget1').innerHTML = Math.round(temperature)+" °C";
                                             document.getElementById('precipitation_widget1').innerHTML = precipitation+" %";
                                             document.getElementById('wind_widget1').innerHTML = Math.round(windSpeed*3.6)+" km/h";
-                                            document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";			
+                                            document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";
                                             document.getElementById('temperature_widget2').innerHTML = Math.round(temperature)+" °C";
                                             document.getElementById('precipitation_widget2').innerHTML = precipitation+" %";
                                             document.getElementById('wind_widget2').innerHTML = Math.round(windSpeed*3.6)+" km/h";
-                                            document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";			
+                                            document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";
                                             document.getElementById('temperature_widget3').innerHTML = Math.round(temperature)+" °C";
                                             document.getElementById('precipitation_widget3').innerHTML = precipitation+" %";
                                             document.getElementById('wind_widget3').innerHTML = Math.round(windSpeed*3.6)+" km/h";
-                                            document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";			
+                                            document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
                                             document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
                                             document.getElementById('precipitation_widget4').innerHTML = precipitation+" %";
                                             document.getElementById('wind_widget4').innerHTML = Math.round(windSpeed*3.6)+" km/h";
@@ -6246,20 +6272,20 @@ if($connected){
                                                 document.getElementById('walking_duration_widget4').innerHTML = response.duration_walking+" min";
                                                 document.getElementById('bike_duration_widget4').innerHTML = response.duration_bike+" min";
                                                 document.getElementById('car_duration_widget4').innerHTML = response.duration_car+" min";
-                                                var img1= new Image();										
+                                                var img1= new Image();
                                                 var image=get_kameo_score(weather, precipitation, temperature, windSpeed, response.duration_bike, response.duration_car);
                                                 img1.onload = function() {
                                                     kameo_score_loaded=true;
-                                                    document.getElementById("travel_information_2").style.display = "block";	
-                                                    document.getElementById("travel_information_2_loading").style.display = "none";	
-                                                    document.getElementById("travel_information_2_error").style.display = "none";	
-                                                };	
-                                                img1.onerror = function() {
-                                                    document.getElementById("travel_information_2").style.display = "none";	
-                                                    document.getElementById("travel_information_2_loading").style.display = "none";	
-                                                    document.getElementById("travel_information_2_error").style.display = "block";	
+                                                    document.getElementById("travel_information_2").style.display = "block";
+                                                    document.getElementById("travel_information_2_loading").style.display = "none";
+                                                    document.getElementById("travel_information_2_error").style.display = "none";
                                                 };
-                                                img1.src=image;	
+                                                img1.onerror = function() {
+                                                    document.getElementById("travel_information_2").style.display = "none";
+                                                    document.getElementById("travel_information_2_loading").style.display = "none";
+                                                    document.getElementById("travel_information_2_error").style.display = "block";
+                                                };
+                                                img1.src=image;
 
                                             });
                                         } else{
@@ -6334,9 +6360,9 @@ if($connected){
                                 </li>
                             <?php
                             } ?>
-                            
+
                             <?php if($row["ADRESS"]!=''){
-                            ?>                            
+                            ?>
                                 <li class="fr">Adresse du domicile
                                     <small><?php echo $row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'] ?></small>
                                 </li>
@@ -6344,18 +6370,18 @@ if($connected){
                                 <li class="en">Home adress
                                     <small><?php echo $row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'] ?></small>
                                 </li>
-                            
+
                                 <li class="nl">Adress
                                     <small><?php echo $row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'] ?></small>
-                                </li>                            
+                                </li>
                             <?php
                             } ?>
-                            
-                            
+
+
 
                             <?php if($row["WORK_ADRESS"]!=''){
-                            ?>  
-                            
+                            ?>
+
                                 <li class="fr">Lieu de travail
                                     <small><?php echo $row['WORK_ADRESS'].", ".$row['WORK_POSTAL_CODE'].", ".$row['WORK_CITY'] ?></small>
                                 </li>
@@ -6367,19 +6393,19 @@ if($connected){
                                 <li class="nl">Werk adress
                                     <small><?php echo $row['WORK_ADRESS'].", ".$row['WORK_POSTAL_CODE'].", ".$row['WORK_CITY'] ?></small>
                                 </li>
-                            
+
                             <?php
-                            } ?>                            
+                            } ?>
 
                             <li class="fr">Mot de passe
                                 <small>********</small>
-                            </li>			
+                            </li>
                             <li class="en">Password
                                 <small>********</small>
-                            </li>			
+                            </li>
                             <li class="nl">Wachtwoord
                                 <small>********</small>
-                            </li>									
+                            </li>
 
                         </ul>
                         <a class="button small green button-3d rounded icon-left" data-target="#update" data-toggle="modal" href="#" onclick="initializeUpdate()">
@@ -6442,7 +6468,7 @@ if($connected){
                                             }
                                         })
                                     }
-                                });          
+                                });
 
                             </script>
                             <div class="modal fade" id="calendrier" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -6454,12 +6480,12 @@ if($connected){
                                         <div class="modal-body">
                                             <div class="row">
 
-                                                <h4>Mes trajets "maison - boulot" à vélo </h4>	        	
+                                                <h4>Mes trajets "maison - boulot" à vélo </h4>
                                                 <div id="my_calendar_header" class="pager pager-modern text-center">
                                                 </div><br>
 
                                                 <div id="my_calendar_body" class="container">
-                                                </div>	
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="fr" class="modal-footer">
@@ -6474,7 +6500,7 @@ if($connected){
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <script type="text/javascript">
                                     function construct_calendar_header(month){
                                     var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
@@ -6488,7 +6514,7 @@ if($connected){
                                     var string_header_calendar="";
 
                                     if (month+3 > new Date().getMonth()){
-                                        var temp="<a class=\"pager-prev\" href=\"#\" onclick=construct_calendar_header("+(month-1)+")><span><i class=\"fa fa-chevron-left\"></i>"+monthFR[month-1]+"</span></a>"; 
+                                        var temp="<a class=\"pager-prev\" href=\"#\" onclick=construct_calendar_header("+(month-1)+")><span><i class=\"fa fa-chevron-left\"></i>"+monthFR[month-1]+"</span></a>";
                                         string_header_calendar=string_header_calendar.concat(temp);
 
                                     }
@@ -6510,7 +6536,7 @@ if($connected){
                                 function construct_calendar_body(month){
                                     var daysFR=['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
                                     var daysEN=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                                    var daysNL=['Zon', 'Maa', 'Din', 'Woe', 'Don', 'Vri', 'Zat'];    
+                                    var daysNL=['Zon', 'Maa', 'Din', 'Woe', 'Don', 'Vri', 'Zat'];
                                     var year= new Date().getFullYear();
                                     var date_start=new Date(year, month, 1);
                                     var date_end= new Date(date_start);
@@ -6582,12 +6608,12 @@ if($connected){
                                                 }
 
                                                 /*if day already selected, we display it as such*/
-                                                else if (Days.includes(date_temp.getDate()))  
+                                                else if (Days.includes(date_temp.getDate()))
                                                 {
                                                     var body_string="<div class=\"col-md-1 button small green\"  style=\"margin-right: 8px\" id=\""+[date_temp.getFullYear(), month, (date_temp.getDate()>9 ? '' : '0') + date_temp.getDate()].join('')+"\" onclick=\"clickBikeDay(this)\">"+daysFR[date_temp.getDay()]+" <b>"+date_temp.getDate()+"</b> <i class=\"fa fa-bicycle\"></i> </div>";
                                                 }
                                                 else{
-                                                    var body_string="<div class=\"col-md-1 button small\"  style=\"margin-right: 8px\" id=\""+[date_temp.getFullYear(), month, (date_temp.getDate()>9 ? '' : '0') + date_temp.getDate()].join('')+"\" onclick=\"clickBikeDay(this)\">"+daysFR[date_temp.getDay()]+" <b>"+date_temp.getDate()+"</b> </div>";            
+                                                    var body_string="<div class=\"col-md-1 button small\"  style=\"margin-right: 8px\" id=\""+[date_temp.getFullYear(), month, (date_temp.getDate()>9 ? '' : '0') + date_temp.getDate()].join('')+"\" onclick=\"clickBikeDay(this)\">"+daysFR[date_temp.getDay()]+" <b>"+date_temp.getDate()+"</b> </div>";
                                                 }
                                                 string_calendar=string_calendar.concat(body_string);
                                                 string_calendar=string_calendar.concat(end_string);
@@ -6598,9 +6624,9 @@ if($connected){
                                             if(date_temp.getDay!=0){
                                                 string_calendar=string_calendar.concat("</div>");
                                             }
-                                            document.getElementById("my_calendar_body").innerHTML=string_calendar;            
+                                            document.getElementById("my_calendar_body").innerHTML=string_calendar;
                                         }
-                                    });          
+                                    });
                                 }
                             construct_calendar_header(new Date().getMonth());
                             </script>
@@ -6614,7 +6640,7 @@ if($connected){
                         <br>
                         <a href="#" title="Pdf">Bike policy</a>
                         <br><br>
-                        <a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Manuel d\'utilisation" class="fr">Manuel d'utilisation</a>                        
+                        <a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Manuel d\'utilisation" class="fr">Manuel d'utilisation</a>
                         <br>
                         <a class="button small green button-3d rounded icon-left" data-target="#tellus" data-toggle="modal" href="#" onclick="initializeTellUs()">
                             <span class="fr">Partagez vos impressions</span>
@@ -6626,7 +6652,7 @@ if($connected){
                             <span class="fr">Déconnexion</span>
                             <span class="en">Disconnect</span>
                             <span class="nl">Loskoppelen</span>
-                        </a>					
+                        </a>
                     </div>
                     <!--end: widget blog articles-->
                 </div>
@@ -6638,15 +6664,15 @@ if($connected){
     </section>
     <!-- END: SECTION -->
 
-    <?php    
+    <?php
 }else{
-    
+
 ?>
 
     <!-- CONTENT -->
     <section class="content">
         <div class="container">
-            <div class="row">		   
+            <div class="row">
 
 
                 <!-- post content -->
@@ -6659,7 +6685,7 @@ if($connected){
                                 <h2 class="en">Log-in to MyKameo</h2>
                                 <h2 class="nl">Log in op MyKameo</h2>
 
-                                
+
                                 <form id="re-connexion" class="form-transparent-grey" action="include/access_management.php" role="form" method="post">
                                     <div class="form-group">
                                         <label class="sr-only fr">Adresse mail</label>
@@ -6693,7 +6719,17 @@ if($connected){
                                             jQuery(form).ajaxSubmit({
                                                 success: function(text) {
                                                     if (text.response == 'success') {
-                                                    window.location.href = "mykameo.php";
+                                                        <?php
+                                                            if(isset($_GET['feedback'])){
+                                                                ?>
+                                                                    window.location.href = "mykameo.php"+<?php echo "feedback=".$_GET['feedback']; ?>;
+                                                                <?php
+                                                            }else{
+                                                                ?>
+                                                                    window.location.href = "mykameo.php";
+                                                                <?php
+                                                            }
+                                                            ?>
                                                     } else {
                                                         $.notify({
                                                             message: text.message
@@ -6735,11 +6771,11 @@ if($connected){
 						<h3 class="fr">Résumé de votre commande</h3>
 						<h3 class="en">Resume</h3>
 						<h3 class="nl">Geresumeerd</h3>
-                        
+
                         <div class="col-sm-10">
 						<h4>Prise en charge du vélo</h4>
-						</div>					
-                        
+						</div>
+
 						<div class="col-sm-4">
                         <h4><span class="fr"> Jour : </span></h4>
                         <h4><span class="en"> Start : </span></h4>
@@ -6747,20 +6783,20 @@ if($connected){
 
                         <p><span id="daySpan"></span>
                         /
-                        <span id="monthSpan"></span> 
+                        <span id="monthSpan"></span>
                         /
-                        <span id="yearSpan"></span></p> 
+                        <span id="yearSpan"></span></p>
                         </div>
-                        
 
-                        
+
+
                         <div class="col-sm-4">
                             <h4><span class="fr"> Heure : </span></h4>
                             <h4><span class="en"> at : </span></h4>
                             <h4><span class="nl"> at : </span></h4>
 
 
-                            <p><span id="hourStartSpan"></span></p> 
+                            <p><span id="hourStartSpan"></span></p>
                        	</div>
 
                        <div class="col-sm-4">
@@ -6770,9 +6806,9 @@ if($connected){
 
                         <p><span id="startBuildingSpan"></span></p>
                         </div>
-                        
-                        
-						
+
+
+
 						<div class="col-sm-10">
 						<h4>Remise du vélo</h4>
 						</div>
@@ -6783,17 +6819,17 @@ if($connected){
 
                             <p><span id="dayDepositSpan"></span>
                             /
-                            <span id="monthDepositSpan"></span> 
+                            <span id="monthDepositSpan"></span>
                             /
-                            <span id="yearDepositSpan"></span></p> 
+                            <span id="yearDepositSpan"></span></p>
                         </div>
 						<div class="col-sm-4">
                         <h4><span class="fr">Heure : </span></h4>
                         <h4><span class="en">Bike deposit : </span></h4>
-                        <h4><span class="nl">Bike deposit : </span></h4>                            
+                        <h4><span class="nl">Bike deposit : </span></h4>
 
                         <p><span id="hourEndSpan"></span></p>
-                        </div> 
+                        </div>
 
 						<div class="col-sm-4">
                         <h4><span class="fr" >Lieu :</span></h4>
@@ -6809,17 +6845,17 @@ if($connected){
                             <h4><span class="nl" >Locking code</span></h4>
 
                             <p><span id="lockingCode"></span></p>
-                        </div>                        
-                        
+                        </div>
+
                        <div class="col-sm-10">
                         <h4>Votre vélo: </h4>
                             <div class="col-md-4">
                             <img src="" id="resumeBikeImage" alt="image" />
-                            </div>  
-                        </div>    
+                            </div>
+                        </div>
                         <form id="widget-new-booking" class="form-transparent-grey" action="include/new_booking.php" role="form" method="post">
                             <!--
-                            <label for="widget-new-booking=trip-type">Type de voyage</label>              
+                            <label for="widget-new-booking=trip-type">Type de voyage</label>
                             <select title="trip type" class="selectpicker" id="widget-new-booking=trip-type" name="widget-new-booking=trip-type">
                               <option value="domiciletravail">Trajet domicile-travail</option>
                               <option value="mission">Déplacement pour travail</option>
@@ -6833,7 +6869,7 @@ if($connected){
 
                             <p id="text-eligibility-prime" class="fr text-green">Ce trajet est éligible pour le paiement de prime écologique. Les informations liées à votre trajet vous seront demandées à l'étape suivante.</p>-->
                             <input id="widget-new-booking-timestamp-start" name="widget-new-booking-timestamp-start" type="hidden">
-                            <input id="widget-new-booking-timestamp-end" name="widget-new-booking-timestamp-end" type="hidden">                            
+                            <input id="widget-new-booking-timestamp-end" name="widget-new-booking-timestamp-end" type="hidden">
                             <input id="widget-new-booking-building-start" name="widget-new-booking-building-start" type="hidden">
                             <input id="widget-new-booking-building-end" name="widget-new-booking-building-end" type="hidden">
                             <input id="widget-new-booking-frame-number" name="widget-new-booking-frame-number" type="hidden">
@@ -6868,9 +6904,9 @@ if($connected){
                                     });
                                     $('#resume').modal('toggle');
                                     document.getElementById('velos').innerHTML= "";
-									document.getElementById("velos").style.display = "none";	
+									document.getElementById("velos").style.display = "none";
 									document.getElementById("travel_information").style.display = "none";
-									
+
                                     window.scrollTo(0, 0);
                                     getHistoricBookings();
 
@@ -6901,7 +6937,7 @@ if($connected){
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="usersList"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -6929,9 +6965,9 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr">Supprimer un utilisateur</h4>
-						
+
 						<form id="widget-deleteUser-form" action="include/delete-user.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <label for="widget-deleteUser-form-firstname"  class="fr">Prénom</label>
                                 <label for="widget-deleteUser-form-firstname"  class="en">Firstname</label>
@@ -6955,14 +6991,14 @@ if($connected){
                             <h4>Confirmation de suppression</h4>
                             <label for="widget-deleteUser-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
                             <input type="text" id="widget-deleteUser-form-confirmation" name="widget-deleteUser-form-confirmation" class="form-control">
-                            
+
 
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-deleteUser-form").validate({
 								submitHandler: function(form) {
 
@@ -6990,7 +7026,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -7020,9 +7056,9 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr">Réactiver un utilisateur</h4>
-						
+
 						<form id="widget-reactivateUser-form" action="include/reactivate-user.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <label for="widget-reactivateUser-form-firstname"  class="fr">Prénom</label>
                                 <label for="widget-reactivateUser-form-firstname"  class="en">Firstname</label>
@@ -7042,14 +7078,14 @@ if($connected){
                                 <input type="text" id="widget-reactivateUser-form-requestor" name="widget-reactivateUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
 
 
-                            </div>                            
+                            </div>
 
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Confirmer</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Confirm</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Confirm</button>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-reactivateUser-form").validate({
 								submitHandler: function(form) {
 
@@ -7063,7 +7099,7 @@ if($connected){
 												});
                                                 $('#usersListing').modal('toggle');
                                                 $('#reactivateUser').modal('toggle');
-                                                
+
                                                 get_users_listing();
 
 											} else {
@@ -7078,7 +7114,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -7108,9 +7144,9 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Mise à jour des informations</h4>
-						
+
 						<form id="widget-updateUser-form" action="include/updateUserInformation.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                             	<div class="col-sm-6">
                                 <label for="widget-updateUser-form-firstname"  class="fr">Prénom</label>
@@ -7118,7 +7154,7 @@ if($connected){
                                 <label for="widget-updateUser-form-firstname"  class="nl">Voornaam</label>
                                 <input type="text" id="widget-updateUser-form-firstname" name="widget-updateUser-form-firstname" class="form-control required">
                                 </div>
-                                
+
 								<div class="col-sm-6">
                                 <label for="widget-updateUser-form-name"  class="fr">Nom</label>
                                 <label for="widget-updateUser-form-name"  class="en">Name</label>
@@ -7133,27 +7169,27 @@ if($connected){
                                 <input type="text" id="widget-updateUser-form-mail" name="widget-updateUser-form-mail" readonly="readonly" class="form-control">
                                 <input type="text" id="widget-updateUser-form-requestor" name="widget-updateUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
                                 </div>
-                                
+
                                 <div class="col-sm-6">
-                                <label for="widget-updateUser-form-status"  class="fr">Status</label>                                
+                                <label for="widget-updateUser-form-status"  class="fr">Status</label>
                                 <input type="text" id="widget-updateUser-form-status" name="widget-updateUser-form-status" readonly="readonly" class="form-control">
                                 </div>
 
 								<div class="col-md-4">
-                                    <label for="fleetManager">Fleet manager</label>                                    
+                                    <label for="fleetManager">Fleet manager</label>
                                     <input type="checkbox" name="fleetManager" class="form-control">
-                                </div>                                
-                                
+                                </div>
+
                             </div>
                             <div class="form-group col-sm-12" id="buildingUpdateUser"></div>
-                            
+
                             <div class="form-group col-sm-12" id="bikeUpdateUser"></div>
-                            <div id="updateUserSendButton"></div>                        
+                            <div id="updateUserSendButton"></div>
 
 
 						</form>
                         <div id="deleteUserButton"></div>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-updateUser-form").validate({
 
 								submitHandler: function(form) {
@@ -7166,7 +7202,7 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                
+
                                                 get_users_listing();
                                                 $('#updateUserInformation').modal('toggle');
                                                 $('#usersListing').modal('toggle');
@@ -7183,7 +7219,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -7212,7 +7248,7 @@ if($connected){
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="bikeDetails"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7235,7 +7271,7 @@ if($connected){
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="bikeDetailsAdmin"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7258,7 +7294,7 @@ if($connected){
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="boxesListingSpan"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7278,12 +7314,12 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-            
+
             <div class="col-md-3">
                 <label for="taskOwnerSelection">Filtrer sur Owner</label>
                 <select class="taskOwnerSelection" name="taskOwnerSelection">
                 </select>
-            </div>            
+            </div>
             <div class="col-md-3">
                 <label for="tasksListing_number">Nombre de résultats</label>
                 <select class="form-control required tasksListing_number" name="tasksListing_number">
@@ -7291,29 +7327,29 @@ if($connected){
                     <option value="20">20</option>
                     <option value="50">50</option>
                 </select>
-            </div> 
-            
+            </div>
+
             <div class="separator"></div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="tasksListingSpan"></span>
             </div>
-            
+
             <div class="separator"></div>
             <h4 class="text-green">Statistiques sur les tâches :</h4>
             <div class="col-md-3">
                 <label for="taskOwnerSelection2">Filtrer sur Owner</label>
                 <select class="taskOwnerSelection2" name="taskOwnerSelection2">
                 </select>
-            </div>            
+            </div>
 
             <div class="col-md-3">
                 <label for="numberOfDays">Nombre de jours</label>
                 <input type="text" class="numberOfDays form-control required" name="numberOfDays" value="30">
-            </div> 
+            </div>
 
             <canvas id="myChart2" width="400" height="300"></canvas>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7333,13 +7369,13 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-            
+
             <!--<div class="col-md-3">
                 <label for="companySelection">Filtrer sur la société</label>
                 <select class="companySelection" name="companySelection">
                 </select>
-            </div> 
-            
+            </div>
+
             <div class="separator"></div>
             -->
             <div data-example-id="contextual-table" class="bs-example">
@@ -7347,24 +7383,24 @@ if($connected){
             </div>
 
             <div class="separator"></div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="offersListingSpan"></span>
             </div>
-            
+
             <div class="separator"></div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="costsListingSpan"></span>
             </div>
-            
+
             <div class="separator"></div>
             <h4 class="text-green">Graphique :</h4>
-            
-            
+
+
             <canvas id="myChart" width="400" height="300"></canvas>
-            
-            
+
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7384,13 +7420,13 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="feedbacksListingSpan"></span>
             </div>
 
             <div class="separator"></div>
-                        
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7410,11 +7446,11 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="spanConditionListing"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7445,7 +7481,7 @@ if($connected){
                         <h4 class="nl-inline text-green">Modify booking settings :</h4><br>
 						<form id="widget-updateCompanyConditions-form" class="form-inline" action="include/updateCompanyConditions.php" role="form" method="post">
 
-                            
+
 
                             <span class="fr-inline"> <strong>Nom du groupe : </strong></span>
                             <span class="en-inline"> Group name: </span>
@@ -7485,12 +7521,12 @@ if($connected){
                                     </p>
                                 </div>
                                 <div class="col-sm-12">
-                                    <h5>Début de réservation possible aux jours suivants:</h5>                                    
+                                    <h5>Début de réservation possible aux jours suivants:</h5>
                                     <span class="intakeBookingDays"></span>
                                 </div>
                             </div>
                             <div class="col-sm-6 jumbotron jumbotron-border">
-                                <h4>Réglages de fin de réservation</h4>                            
+                                <h4>Réglages de fin de réservation</h4>
                                 <div class="col-sm-12">
                                     <p><span class="fr-inline"> Première heure possible pour rendre un vélo : </span>
                                     <span class="en-inline"> First possible hour to deposit a bike: </span>
@@ -7505,18 +7541,18 @@ if($connected){
                                     <input type="number" class="form-control required" name="endDepositBooking" max="23" style="width: 7em;">
                                     </p>
                                 </div>
-                                <div class="col-sm-12">                 
+                                <div class="col-sm-12">
                                     <h5>Fin de réservation possible aux jours suivants:</h5>
                                     <span class="depositBookingDays"></span>
-                                </div>                                
+                                </div>
                             </div>
-                            
+
                             <div class="col-sm-12">
                                 <h4>Accès des utilisateurs à ce groupe de conditions</h4>
                                 <p class="text-red">Attention, attribuer un utilisateur à ce groupe supprimera automatiquement son appartenance à un autre groupe</p>
                                 <span id="groupConditionUsers"></span>
                             </div>
-                            
+
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Besparen</button>
@@ -7524,20 +7560,20 @@ if($connected){
                             <input type="text" name="id" value="" hidden>
                             <input type="text" name="action" hidden>
                         </form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-updateCompanyConditions-form").validate({
 								submitHandler: function(form){
 									jQuery(form).ajaxSubmit({
 										success: function(response) {
-											if (response.response == 'success') {                                            
+											if (response.response == 'success') {
 												$.notify({
 													message: response.message
 												}, {
 													type: 'success'
 												});
-												$('#companyConditions').modal('toggle'); 
+												$('#companyConditions').modal('toggle');
                                                 list_condition();
-                                                
+
 											} else {
 												$.notify({
 													message: response.message
@@ -7550,8 +7586,8 @@ if($connected){
 								}
 							});
 
-						</script>                 					
-                        
+						</script>
+
                     </div>
                 </div>
             </div>
@@ -7577,12 +7613,12 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="companyListingSpan"></span>
             </div>
             <div class="separator">            </div>
-            
+
             <h4 class="text-green">Statistiques sur le nombre de clients : </h4>
             <div class="col-sm-3">
                 <div class="form-group">
@@ -7605,11 +7641,11 @@ if($connected){
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                     <input type="hidden" id="dtp_input4" value="" /><br/>
-                </div>  
-            </div>          
-            
-            
-            
+                </div>
+            </div>
+
+
+
             <canvas id="myChart3" style="display: block; width: 800px; height: 400px;" width="800" height="400" class="chartjs-render-monitor"></canvas>
 
             <div class="fr" class="modal-footer">
@@ -7647,19 +7683,19 @@ if($connected){
     startView: 2,
     minView: 2,
     forceParse: 0
-    });                
+    });
 
 
-    
+
     $('.form_date_start_client').change(function(){
         generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
     });
     $('.form_date_end_client').change(function(){
         generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-    });                       
+    });
 
-</script>    
-    
+</script>
+
 
 
 <div class="modal fade" id="portfolioManager" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
@@ -7668,11 +7704,11 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="portfolioBikesListing"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7696,7 +7732,7 @@ if($connected){
             <div class="dropdown companyBillSelection">
               <div class="col-md-3">
               	<ul class="nav">
-                    <li class="dropdown" role="presentation"> 
+                    <li class="dropdown" role="presentation">
                         <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> <span class="billSelectionText">Choix de la société</span><span class="caret"></span> </a>
                         <ul role="menu" class="dropdown-menu billSelection">
                         </ul>
@@ -7705,11 +7741,11 @@ if($connected){
                </div>
             </div>
             <div class="separator companyBillSelection"></div>
-            
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="billsListing"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -7737,29 +7773,29 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Ajouter une facture</h4>
-						
+
 						<form id="widget-addBill-form" action="include/add_bill.php" role="form" method="post">
-                            
-                            
+
+
                             <div class="form-group col-md-12">
                                 <h4 class="fr text-green">Informations générales</h4>
-							
-                                               
+
+
                                 <div class="col-md-12">
                                     <div class="col-md-4 IDAddBill hidden">
                                         <label for="ID"  class="fr">ID</label>
                                         <label for="ID"  class="en">ID</label>
                                         <label for="ID"  class="nl">ID</label>
                                         <input type="number" name="ID" class="form-control" readonly='readonly'>
-                                    </div> 
+                                    </div>
                                     <div class="col-md-4 IDAddBillOut hidden">
                                         <label for="ID_OUT"  class="fr">ID OUT</label>
                                         <label for="ID_OUT"  class="en">ID OUT</label>
                                         <label for="ID_OUT"  class="nl">ID OUT</label>
                                         <input type="number" name="ID_OUT" class="form-control" readonly='readonly'>
-                                    </div> 
+                                    </div>
                                 </div>
-                                
+
                                 <div class="col-md-12">
                                     <div class="col-md-4">
                                         <label for="widget-addBill-form-company"  class="fr">Originateur</label>
@@ -7767,25 +7803,25 @@ if($connected){
                                         <label for="widget-addBill-form-company"  class="nl">Originateur</label>
                                         <span class="widget-addBill-form-company" name="widget-addBill-form-company"></span>
                                     </div>
-                                    
-                                    
+
+
                                     <div class="col-md-4">
                                         <label for="beneficiaryCompany"  class="fr">Beneficiaire</label>
                                         <label for="beneficiaryCompany"  class="en">Beneficiaire</label>
                                         <label for="beneficiaryCompany"  class="nl">Beneficiaire</label>
                                         <input type="text" name="beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
-                                    </div> 
+                                    </div>
                                     <div class="col-md-4">
                                         <label for="type">Type de facture</label>
                                         <select name="type">
                                             <option value="leasing">Leasing</option>
                                             <option value="achat">Achat</option>
                                             <option value="accessoire">Accessoire</option>
-                                            <option value="autre">Autre</option>                                
-                                        </select>    
+                                            <option value="autre">Autre</option>
+                                        </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-12">
                                     <div class="col-md-4 widget-addBill-form-companyOther">
                                         <label for="widget-addBill-form-companyOther" class="widget-addBill-form-companyOther">Informations complémentaires (Origi.)</label>
@@ -7796,22 +7832,22 @@ if($connected){
                                         <label for="typeOther" class="hidden">Informations complémentaires (type)</label>
                                         <input type="text" class="form-control hidden" name="typeOther">
                                     </div>
-                                    
+
                                 </div>
-                                
-                                
+
+
                                 <div class="col-md-12">
-                                
+
                                     <div class="col-md-4">
                                         <label for="communication"  class="fr">Communication</label>
                                         <label for="communication"  class="en">Communication </label>
                                         <label for="communication"  class="nl">Communication</label>
                                         <input type="text" name="communication" class="form-control" readonly='readonly'>
-                                    </div>                                     
-                                
+                                    </div>
+
                                 </div>
-                                
-                                
+
+
                                 <div class="separator"></div>
                                 <h4 class="fr text-green">Informations sur les montants</h4>
                                 <div class="col-md-12">
@@ -7827,16 +7863,16 @@ if($connected){
                                         <label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
                                         <label for="widget-addBill-form-VAT" class="en">TVA ? </label>
                                         <input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
-                                    </div>  
+                                    </div>
 
                                     <div class="col-md-4">
                                         <label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
                                         <label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
                                         <label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
                                         <input type="text" class="widget-addBill-form-amountTVAC form-control required" name="widget-addBill-form-amountTVAC" readonly="readonly">
-                                    </div> 
+                                    </div>
                                 </div>
-								
+
 								<div class="separator"></div>
                                 <h4 class="fr text-green">Informations sur les dates</h4>
                                 <div class="col-md-12">
@@ -7852,7 +7888,7 @@ if($connected){
                                         <label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
                                         <label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
                                         <input type="date" class="widget-addBill-form-datelimite form-control required" name="widget-addBill-form-datelimite">
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-6">
@@ -7860,14 +7896,14 @@ if($connected){
                                         <label for="widget-addBill-form-sent"  class="en">Sent ?</label>
                                         <label for="widget-addBill-form-sent"  class="nl">Sent ?</label>
                                         <input type="checkbox" name="widget-addBill-form-sent" >
-                                    </div> 
+                                    </div>
 
                                     <div class="col-md-6">
                                         <label for="widget-addBill-form-sendingDate"  class="fr">Date d'envoi</label>
                                         <label for="widget-addBill-form-sendingDate"  class="en">Sending date </label>
                                         <label for="widget-addBill-form-sendingDate"  class="nl">Sending date</label>
                                         <input type="date" class="widget-addBill-form-sendingDate form-control" name="widget-addBill-form-sendingDate">
-                                    </div>  
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-6">
@@ -7875,7 +7911,7 @@ if($connected){
                                         <label for="widget-addBill-form-paid"  class="en">Paid ?</label>
                                         <label for="widget-addBill-form-paid"  class="nl">Paid ?</label>
                                         <input type="checkbox" name="widget-addBill-form-paid" >
-                                    </div>  
+                                    </div>
 
                                     <div class="col-md-6">
                                         <label for="widget-addBill-form-paymentDate"  class="fr">Date de paiement</label>
@@ -7891,24 +7927,24 @@ if($connected){
                                         <label for="widget-addBill-form-file"  class="nl">Bill</label>
                                         <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                         <input type=file size=40 id="widget-addBill-form-file" class="form-control required" name="widget-addBill-form-file">
-                                    </div>  
+                                    </div>
                                 </div>
 							</div>
                             <input type="text" name="communicationHidden" class="hidden">
-                            <input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user; ?>" hidden>   
+                            <input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user; ?>" hidden>
                             <div class="separator"></div>
                             <div class="col-md-12">
                                 <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
                                 <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
-                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>                            
+                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
                             </div>
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-addBill-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
 										success: function(response) {
-                                            
+
 											if (response.response == 'success') {
 												$.notify({
 													message: response.message
@@ -7917,7 +7953,7 @@ if($connected){
 												});
                                                 get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
 												$('#addBill').modal('toggle');
-                                                document.getElementById('widget-addBill-form').reset();                                                
+                                                document.getElementById('widget-addBill-form').reset();
 
 											} else {
 												$.notify({
@@ -7934,18 +7970,18 @@ if($connected){
                                 var e = document.getElementsByClassName('widget-addBill-form-company2')[0];
                                 var valueSelect = e.options[e.selectedIndex].value;
                                 $('#widget-addBill-form input[name=communication]').attr('readonly', true);
-                                
+
                                 if(valueSelect=='other'){
                                     $('.widget-addBill-form-companyOther').removeClass("hidden");
-                                    $('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());                                    
+                                    $('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());
                                     $('input[name=beneficiaryCompany]').attr('readonly', true);
                                     $('input[name=beneficiaryCompany]').val('KAMEO');
-                                    
+
 
                                 }else if(valueSelect=='KAMEO'){
                                     $('input[name=beneficiaryCompany]').attr('readonly', false);
                                     $('input[name=beneficiaryCompany]').val('');
-                                                                        
+
                                     $('#widget-addBill-form input[name=communication]').attr('readonly', false);
                                     $('#widget-addBill-form input[name=communication]').val('');
 
@@ -7958,12 +7994,12 @@ if($connected){
                                     $('input[name=beneficiaryCompany]').val('KAMEO');
                                     $('.IDAddBill').removeClass("hidden");
                                     $('.IDAddBillOut').removeClass("hidden");
-                                    
+
 
 
                                 }
-                            });  
-                            
+                            });
+
                             $('#widget-addBill-form input[name=beneficiaryCompany]').change(function(){
                                 if($('#widget-addBill-form input[name=beneficiaryCompany]').val()=='KAMEO'){
                                     $('.IDAddBill').removeClass("hidden");
@@ -7972,8 +8008,8 @@ if($connected){
                                     $('.IDAddBill').addClass("hidden");
                                     $('.IDAddBillOut').addClass("hidden");
                                 }
-                            });  
-                            
+                            });
+
                             $('#widget-addBill-form select[name=type]').change(function(){
                                 if($('#widget-addBill-form select[name=type]').val()=="autre"){
                                     $('#widget-addBill-form input[name=typeOther]').removeClass("hidden");
@@ -7991,15 +8027,15 @@ if($connected){
                                 }else{
                                     $('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
                                 }
-                              });    
+                              });
                             $('.widget-addBill-form-VAT').change(function(){
                                 if($('input[name=widget-addBill-form-VAT]').is(':checked')){
                                     $('input[name=widget-addBill-form-amountTVAC]').val((1.21*$('input[name=widget-addBill-form-amountHTVA]').val()).toFixed(2));
                                 }else{
                                     $('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
                                 }
-                              });                            
-						</script>                 					
+                              });
+						</script>
 					</div>
 				</div>
 			</div>
@@ -8027,105 +8063,105 @@ if($connected){
 				<div class="row">
 					<div class="col-md-12">
 						<h4 class="fr text-green">Ajouter un client</h4>
-						
+
 						<form id="widget-addClient-form" action="include/add_client.php" role="form" method="post">
-                            
+
                             <div class="form-group">
-                                
+
                                     <h4 class="fr text-green">Description</h4>
-                                
+
                             	<div class="col-md-4">
                                     <label for="internalReference"  class="fr">Référence interne</label>
                                     <label for="internalReference"  class="en">Référence interne</label>
                                     <label for="internalReference"  class="nl">Référence interne</label>
                                     <input type="text" class="form-control" name="internalReference">
                                 </div>
-                                                                
+
                             	<div class="col-md-4">
                                     <label for="description"  class="fr">Nom de la société</label>
                                     <label for="description"  class="en">Company name</label>
                                     <label for="description"  class="nl">Company name</label>
                                     <input type="text" class="form-control" name="description" class="form-control required">
-                                </div> 
+                                </div>
                             	<div class="col-md-4">
                                     <label for="VAT"  class="fr">Numéro de TVA</label>
                                     <label for="VAT"  class="en">VAT Number</label>
                                     <label for="VAT"  class="nl">VAT Number</label>
                                     <input type="text" class="form-control required" name="VAT" class="form-control required">
-                                </div> 
+                                </div>
                             	<div class="col-md-4">
                                     <label for="type"  class="fr">Type</label>
                                     <label for="type"  class="en">Type</label>
                                     <label for="type"  class="nl">Type</label>
                                     <select title="Type" class="form-control selectpicker" name="type">
                                       <option value="CLIENT">Client</option>
-                                      <option value="PROSPECT" selected>Prospect</option>            
-                                      <option value="ANCIEN PROSPECT" selected>Ancien prospect</option>            
-                                      <option value="ANCIEN CLIENT">Ancien client</option>            
-                                    </select>                                    
-                                </div>                                 
+                                      <option value="PROSPECT" selected>Prospect</option>
+                                      <option value="ANCIEN PROSPECT" selected>Ancien prospect</option>
+                                      <option value="ANCIEN CLIENT">Ancien client</option>
+                                    </select>
+                                </div>
                                 <div class="col-sm-6">
                                     <label for="picture"  class="fr">Logo de la société (.jpg)</label>
                                     <label for="picture"  class="en">Company image (jpg)</label>
                                     <label for="picture"  class="nl">Company image(jpg)</label>
                                     <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                     <input type=file size=40 class="form-control" name="picture">
-                                </div>                                    
-                                
-                                
+                                </div>
+
+
                                 <div class="separator"></div>
                                     <h4 class="fr text-green">Adresse</h4>
-                                
-                                
+
+
 								<div class="col-sm-4">
                                 <label for="street"  class="fr">Rue:</label>
                                 <label for="street"  class="en">Street: </label>
                                 <label for="street"  class="nl">Street</label>
                                 <input type="text" class="form-control" name="street" class="form-control required">
-								</div>   
-                                
+								</div>
+
 								<div class="col-sm-4">
                                     <label for="zipCode"  class="fr">Code Postal</label>
                                     <label for="zipCode"  class="en">ZIP Code </label>
                                     <label for="zipCode"  class="nl">ZIP Code</label>
                                     <input type="text" class="form-control" name="zipCode" class="form-control required">
-								</div>     
-                                
+								</div>
+
 								<div class="col-sm-4">
                                     <label for="city"  class="fr">Ville</label>
                                     <label for="city"  class="en">City</label>
                                     <label for="city"  class="nl">City</label>
                                     <input type="text" class="form-control" name="city" class="form-control required">
-								</div>              
-                                
+								</div>
+
                                 <div class="separator"></div>
                                 <h4 class="fr text-green">Personne de Contact</h4>
-                                
+
 								<div class="col-md-3">
                                     <label for="contactMail"  class="fr">E-Mail</label>
                                     <label for="contactMail"  class="en">EMAIL</label>
                                     <label for="contactMail"  class="nl">EMAIL</label>
                                     <input type="text" class="form-control" name="contactMail" class="form-control required">
-								</div>                     
-                                
+								</div>
+
 								<div class="col-md-3">
                                     <label for="contactFirstMail"  class="fr">Prénom</label>
                                     <label for="contactFirstMail"  class="en">First Name</label>
                                     <label for="contactFirstMail"  class="nl">First Name</label>
                                     <input type="text" class="form-control" name="contactFirstName" class="form-control required">
-								</div>                                     
+								</div>
 								<div class="col-md-3">
                                     <label for="contactLastName"  class="fr">Nom de Famille</label>
                                     <label for="contactLastName"  class="en">Last Name</label>
                                     <label for="contactLastName"  class="nl">Last Name</label>
                                     <input type="text" class="form-control" name="contactLastName" class="form-control required">
-								</div>             
+								</div>
                                 <div class="col-md-3">
                                     <label for="phone"  class="fr">Téléphone</label>
                                     <label for="phone"  class="en">Phone</label>
                                     <label for="phone"  class="nl">Phone</label>
                                     <input type="text" class="form-control" name="phone" class="form-control">
-								</div>             
+								</div>
                                 <h4 class="fr text-green addClientTechnicalUser hidden">Données techniques pour le premier utilisateur</h4>
                                 <div class="separator"></div>
 								<div class="col-md-3">
@@ -8133,62 +8169,62 @@ if($connected){
                                     <label for="firstNameInitialisation"  class="en hidden addClientTechnicalUser">First name</label>
                                     <label for="firstNameInitialisation"  class="nl hidden addClientTechnicalUser">First name</label>
                                     <input type="text" class="form-control addClientTechnicalUser hidden" name="firstNameInitialisation" class="form-control required">
-								</div>           
-                                
+								</div>
+
 								<div class="col-md-3">
                                     <label for="nameInitialisation"  class="fr addClientTechnicalUser hidden">Nom</label>
                                     <label for="nameInitialisation"  class="en addClientTechnicalUser hidden">Name</label>
                                     <label for="nameInitialisation"  class="nl addClientTechnicalUser hidden">Name</label>
                                     <input type="text" class="form-control  addClientTechnicalUser hidden" name="nameInitialisation" class="form-control required">
-								</div>           
-                                
+								</div>
+
 								<div class="col-md-3">
                                     <label for="mailInitialisation"  class="fr addClientTechnicalUser hidden">Mail</label>
                                     <label for="mailInitialisation"  class="en addClientTechnicalUser hidden">Mail</label>
                                     <label for="mailInitialisation"  class="nl addClientTechnicalUser hidden">Mail</label>
                                     <input type="text" class="form-control addClientTechnicalUser hidden" name="mailInitialisation" class="form-control required">
-								</div>           
+								</div>
 
 								<div class="col-md-3">
                                     <label for="passwordInitialisation"  class="fr addClientTechnicalUser hidden">Mot de passe</label>
                                     <label for="passwordInitialisation"  class="en addClientTechnicalUser hidden">Mot de passe</label>
                                     <label for="passwordInitialisation"  class="nl addClientTechnicalUser hidden">Mot de passe</label>
                                     <input type="password" autocomplete="off" class="form-control addClientTechnicalUser hidden" name="passwordInitialisation" class="form-control required">
-								</div>                                                     
-                                
-                                <input type="text" class="form-control hidden" name="email" class="form-control required" value="<?php echo $user; ?>" hidden>
-                                
+								</div>
 
-                            </div>     
+                                <input type="text" class="form-control hidden" name="email" class="form-control required" value="<?php echo $user; ?>" hidden>
+
+
+                            </div>
                             <div class="separator"></div>
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
-							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>                            
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
 						</form>
-						<script type="text/javascript">				
-                            
+						<script type="text/javascript">
+
                             $('#widget-addClient-form select[name=type]').change(function(){
                                 if($('#widget-addClient-form select[name=type]').val()=="CLIENT"){
                                     $('.addClientTechnicalUser').removeClass("hidden");
-                                }else{                                                                 
+                                }else{
                                     $('.addClientTechnicalUser').addClass("hidden");
                                 }
                             });
-                            
+
 							jQuery("#widget-addClient-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
 										success: function(response) {
-                                            
+
 											if (response.response == 'success') {
 												$.notify({
 													message: response.message
 												}, {
 													type: 'success'
 												});
-                                                get_company_listing('*');    
+                                                get_company_listing('*');
                                                 document.getElementById('widget-addClient-form').reset();
-												$('#addClient').modal('toggle');                                                
+												$('#addClient').modal('toggle');
 											} else {
 												$.notify({
 													message: response.message
@@ -8200,7 +8236,7 @@ if($connected){
 									});
 								}
 							});
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -8224,13 +8260,13 @@ if($connected){
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-            
+
             <h4 class="fr text-green">Vue sur les réservations</h4>
-            
+
             <div class="dropdown">
               <div class="col-md-3">
               	<ul class="nav">
-                    <li class="dropdown" role="presentation"> 
+                    <li class="dropdown" role="presentation">
                         <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> <span class="bikeSelectionText">Sélection de vélo</span><span class="caret"></span> </a>
                         <ul role="menu" class="dropdown-menu bikeSelection">
                         </ul>
@@ -8239,7 +8275,7 @@ if($connected){
                </div>
             </div>
             <div class="separator"></div>
-            
+
             <div class="col-md-5">
 			<div class="form-group">
                 <label for="dtp_input2" class="control-label">Date de début</label>
@@ -8261,11 +8297,11 @@ if($connected){
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
 				<input type="hidden" id="dtp_input2" value="" /><br/>
-            </div>  
-            </div>          
+            </div>
+            </div>
 
             <script type="text/javascript">
-            
+
             	$('.form_date_start').datetimepicker({
                 language:  'fr',
                 weekStart: 1,
@@ -8276,7 +8312,7 @@ if($connected){
                 minView: 2,
                 forceParse: 0
                 });
-                
+
             	$('.form_date_end').datetimepicker({
                 language:  'fr',
                 weekStart: 1,
@@ -8286,8 +8322,8 @@ if($connected){
                 startView: 2,
                 minView: 2,
                 forceParse: 0
-                });                
-                
+                });
+
 
                 $('.form_date_start').change(function(){
                     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
@@ -8295,16 +8331,16 @@ if($connected){
                 $('.form_date_end').change(function(){
 
                     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
-                });                       
-                
-                
+                });
+
+
             </script>
-            
-            
+
+
             <div data-example-id="contextual-table" class="bs-example">
                         <span id="ReservationsList"></span>
             </div>
-            
+
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -8334,7 +8370,7 @@ if($connected){
 						<h4 class="nl-inline text-green">Bike Reference :</h4>
                         <p span class="bikeReference"></p>
                     </div>
-						
+
                     <div class="col-sm-5">
                         <h4><span class="fr"> Modèle : </span></h4>
                         <h4><span class="en"> Model: </span></h4>
@@ -8360,7 +8396,7 @@ if($connected){
                     <h4><span class="nl"> Contract type : </span></h4>
 
 
-                    <p><span class="contractType"></span></p> 
+                    <p><span class="contractType"></span></p>
                     </div>
 
                    <div class="col-sm-4">
@@ -8382,13 +8418,13 @@ if($connected){
                     <h4>Votre vélo: </h4>
                         <div class="col-md-4">
                         <img src="" class="bikeImage" alt="image" />
-                        </div>  
-                    </div>  
+                        </div>
+                    </div>
                     <div class="separator"></div>
                     <h4 class="fr text-green">Historique du vélo</h4>
                     <span id="action_bike_log_user">
                     </span>
-                    
+
 				</div>
             </div>
 			<div class="fr" class="modal-footer">
@@ -8406,280 +8442,290 @@ if($connected){
 </div>
 
 <div class="modal fade" id="companyDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-			<div class="modal-body">                
-                    <div class="row">
-                        <form id="widget-companyDetails-form" action="include/update_client.php" role="form" method="post">
-                        	<div class="col-sm-12 form-group">
-                        
-	                            <div class="col-sm-12">
-	                                <h4 class="text-green">Informations générales</h4>
-	                                <a href="#" class="text-red updateClientInformationButton">Update</a>                                
-	                                <a href="#" class="text-red cancelUpdateClientInformation hidden">Cancel update</a>                                
-	                            </div>
-	                            <div class="col-sm-12">
-	                                <label class="fr">Nom de la société :</label>
-	                                <label class="en">Company Name:</label>
-	                                <label class="nl">Company Name :</label>
-	                                <input type="text" id="companyName" class="form-control updateClientInformation" name="widget_companyDetails_companyName" value="" readonly="true"/>
-	                            </div>
-	
-	                            <div class="col-sm-4">
-	                                <label class="fr"> Rue : </label>
-	                                <label class="en"> Street: </label>
-	                                <label class="nl"> Street : </label>
-	                                <input type="text" id="companyStreet" class="form-control updateClientInformation" name="widget_companyDetails_companyStreet" value="" readonly="true"/>
-	                            </div>
-	                            <div class="col-sm-4">
-	                                <label class="fr"> Code postal : </label>
-	                                <label class="en"> Zip Code: </label>
-	                                <label class="nl"> Zip Code: </label>
-	                                <input type="text" id="companyZIPCode" class="form-control updateClientInformation" name="widget_companyDetails_companyZIPCode" value="" readonly="true"/>
-	                            </div>
-	                            <div class="col-sm-4">
-	                                <label class="fr"> Ville: </label>
-	                                <label class="en"> Town: </label>
-	                                <label class="nl"> Town : </label>
-	                                <input type="text" id="companyTown" class="form-control updateClientInformation" name="widget_companyDetails_companyTown" value="" readonly="true"/>
-	                            </div>
-	                            <div class="col-sm-5">
-	                                <label class="fr"> Numéro TVA : </label>
-	                                <label class="en"> VAT Number: </label>
-	                                <label class="nl"> VAT Number: </label>
-	                                <input type="text" id="companyVAT" class="form-control updateClientInformation" name="widget_companyDetails_companyVAT" value="" readonly="true"/>
-	
-	                            </div>
-	                            <div class="col-sm-5">
-	                                <label class="fr"> Type : </label>
-	                                <label class="en"> Type: </label>
-	                                <label class="nl"> Type : </label>
-                                    <select title="Type" class="form-control selectpicker updateClientInformationSelect" disabled name="type">
-                                      <option value="CLIENT">Client</option>
-                                      <option value="PROSPECT">Prospect</option>            
-                                      <option value="ANCIEN PROSPECT">Ancien Prospect</option>            
-                                      <option value="ANCIEN CLIENT">Ancien Client</option>            
-                                    </select>                                    	
-	                            </div>
-                                <div class="separator"></div>
-	
-	                            <div class="col-sm-12">
-	                                <h4 class="text-green">Informations relatives au contact</h4>
-	                            </div>
-	
-	                            <div class="col-md-3">
-	                            <label class="fr"> Email : </label>
-	                            <label class="en"> Email: </label>
-	                            <label class="nl"> Email : </label>
-	                                <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
-	                            </div>
-	
-	                           <div class="col-md-3">
-	                            <label class="fr" >Nom :</label>
-	                            <label class="en" >Last Name:</label>
-	                            <label class="nl" >Last Name:</label>
-	                                <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
-	                            </div>
-	
-	                            <div class="col-md-3">
-	                                <label class="fr" >Prénom :</label>
-	                                <label class="en" >First Name:</label>
-	                                <label class="nl" >First Name :</label>
-	                                <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
-	                            </div>
-	
-	                            <div class="col-md-3">
-	                                <label class="fr" >Téléphone :</label>
-	                                <label class="en" >Phone:</label>
-	                                <label class="nl" >Phone :</label>
-	                                <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
-	                            </div>
-								<div class="col-md-4">
-                                    <label for="statistiques">Envoyer le rapport de statistiques ?</label>                                    
-                                    <input type="checkbox" name="statistiques" class="form-control" readonly="true"/>
-                                </div>
-                                
-                                
-                                <div class="separator"></div>
-	
-	                            <div class="col-sm-12">
-	                                <h4 class="text-green">Informations relatives à la facturation</h4>
-	                            </div>
-	
-	                            <div class="col-md-3">
-                                    <label for="email_billing" class="fr"> Email : </label>
-                                    <label for="email_billing" class="en"> Email: </label>
-                                    <label for="email_billing" class="nl"> Email : </label>
-	                                <input type="text" class="form-control" name="email_billing" value="" readonly="true"/>
-	                            </div>
-	
-	                           <div class="col-md-3">
-                                    <label for="lastNameContactBilling" class="fr" >Nom :</label>
-                                    <label for="lastNameContactBilling" class="en" >Last Name:</label>
-                                    <label for="lastNameContactBilling" class="nl" >Last Name:</label>
-	                                <input type="text" class="form-control" name="lastNameContactBilling" value="" readonly="true"/>
-	                            </div>
-	
-	                            <div class="col-md-3">
-	                                <label for="firstNameContactBilling" class="fr" >Prénom :</label>
-	                                <label for="firstNameContactBilling" class="en" >First Name:</label>
-	                                <label for="firstNameContactBilling" class="nl" >First Name :</label>
-	                                <input type="text" class="form-control" name="firstNameContactBilling" value="" readonly="true"/>
-	                            </div>
-	
-	                            <div class="col-md-3">
-	                                <label for="phoneBilling" class="fr" >Téléphone :</label>
-	                                <label for="phoneBilling" class="en" >Phone:</label>
-	                                <label for="phoneBilling" class="nl" >Phone :</label>
-	                                <input type="text" class="form-control" name="phoneBilling" value="" readonly="true"/>
-	                            </div>
-								<div class="col-sm-4">
-                                    <label for="billing">Envoyer les factures automatiquement ?</label>                                    
-                                    <input type="checkbox" name="billing" class="form-control" readonly="true"/>
-                                </div>
-                                
-                                <div class="separator"></div>
-                                
-	                            <div class="col-sm-12">
-	                                <h4 class="text-green">Options</h4>
-	                            </div>                                
-                                
-                                <div class="col-sm-4">
-                                    <label for="assistance">Assistance</label>                                    
-                                    <input type="checkbox" name="assistance" class="form-control" readonly="true"/>
-                                </div>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form id="widget-companyDetails-form" action="include/update_client.php" role="form" method="post">
+            <div class="col-sm-12 form-group">
 
-								<div class="col-sm-4">
-                                    <label for="locking">Locking</label>                                    
-                                    <input type="checkbox" name="locking" class="form-control" readonly="true"/>
-                                </div>
-                                
-                                
-	                            <input type="text" id="widget_companyDetails_requestor" name="widget_companyDetails_requestor" class="form-control hidden" value="<?php echo $user; ?>">
-	                            <input type="text" name="ID" class="form-control hidden">
-	                            <input type="text" id="widget_companyDetails_internalReference" name="widget_companyDetails_internalReference" class="form-control hidden">
-	                            
-	                            <div class="col-sm-12">
-	                                <button  class="button small green button-3d rounded icon-left hidden" id="sendButtonClientDetails" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>         
-	                            </div>
-	                		</div>
-                            
-                        
-                        </form>
+              <div class="col-sm-12">
+                <h4 class="text-green">Informations g�n�rales</h4>
+                <a href="#" class="text-red updateClientInformationButton">Update</a>
+                <a href="#" class="text-red cancelUpdateClientInformation hidden">Cancel update</a>
+              </div>
+              <div class="col-sm-12">
+                <label class="fr">Nom de la soci�t� :</label>
+                <label class="en">Company Name:</label>
+                <label class="nl">Company Name :</label>
+                <input type="text" id="companyName" class="form-control updateClientInformation" name="widget_companyDetails_companyName" value="" readonly="true"/>
+              </div>
 
-                        <script type="text/javascript">
-							jQuery("#widget-companyDetails-form").validate({
-								submitHandler: function(form){
-									jQuery(form).ajaxSubmit({
-										success: function(response) {
-											if (response.response == 'success') {
-												$.notify({
-													message: response.message
-												}, {
-													type: 'success'
-												});
-                                                
-                                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
-                                                document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");                           
-                                                document.getElementById("sendButtonClientDetails").classList.add("hidden"); 
-                                                document.getElementById("clientBikes").classList.remove("hidden");
-                                                document.getElementById("clientBuildings").classList.remove("hidden");
-                                                document.getElementById("clientContracts").classList.remove("hidden");
-                                                
-                                                var classname = document.getElementsByClassName('updateClientInformation');
-                                                $('#widget-companyDetails-form input').attr("readonly", true);
-                                                $('#widget-companyDetails-form select').prop( "disabled", true );
-                                                
-                                                
-                                                
-											} else {
-												$.notify({
-													message: response.message
-												}, {
-													type: 'danger'
-												});
-											}
-										}
-									});
-								}
-							});
+              <div class="col-sm-4">
+                <label class="fr"> Rue : </label>
+                <label class="en"> Street: </label>
+                <label class="nl"> Street : </label>
+                <input type="text" id="companyStreet" class="form-control updateClientInformation" name="widget_companyDetails_companyStreet" value="" readonly="true"/>
+              </div>
+              <div class="col-sm-4">
+                <label class="fr"> Code postal : </label>
+                <label class="en"> Zip Code: </label>
+                <label class="nl"> Zip Code: </label>
+                <input type="text" id="companyZIPCode" class="form-control updateClientInformation" name="widget_companyDetails_companyZIPCode" value="" readonly="true"/>
+              </div>
+              <div class="col-sm-4">
+                <label class="fr"> Ville: </label>
+                <label class="en"> Town: </label>
+                <label class="nl"> Town : </label>
+                <input type="text" id="companyTown" class="form-control updateClientInformation" name="widget_companyDetails_companyTown" value="" readonly="true"/>
+              </div>
+              <div class="col-sm-5">
+                <label class="fr"> Num�ro TVA : </label>
+                <label class="en"> VAT Number: </label>
+                <label class="nl"> VAT Number: </label>
+                <input type="text" id="companyVAT" class="form-control updateClientInformation" name="widget_companyDetails_companyVAT" value="" readonly="true"/>
 
-                            
-                            document.getElementsByClassName('updateClientInformationButton')[0].addEventListener('click', function(){ 
-                                document.getElementById("sendButtonClientDetails").classList.remove("hidden");
-                                document.getElementById("clientBikes").classList.add("hidden");
-                                document.getElementById("clientBuildings").classList.add("hidden"); 
-                                document.getElementById("clientContracts").classList.add("hidden"); 
-                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.remove("hidden");
-                                document.getElementsByClassName("updateClientInformationButton")[0].classList.add("hidden");
-                                $('#widget-companyDetails-form input').attr("readonly", false);
-                                $('#widget-companyDetails-form select').removeAttr("disabled");
+              </div>
+              <div class="col-sm-5">
+                <label class="fr"> Type : </label>
+                <label class="en"> Type: </label>
+                <label class="nl"> Type : </label>
+                <select title="Type" class="form-control selectpicker updateClientInformationSelect" disabled name="type">
+                  <option value="CLIENT">Client</option>
+                  <option value="PROSPECT">Prospect</option>
+                  <option value="ANCIEN PROSPECT">Ancien Prospect</option>
+                  <option value="ANCIEN CLIENT">Ancien Client</option>
+                </select>
+              </div>
+              <div class="separator"></div>
 
-                                
-                            }); 
-                            document.getElementsByClassName('cancelUpdateClientInformation')[0].addEventListener('click', function(){ 
-                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
-                                document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
-                                document.getElementById("sendButtonClientDetails").classList.add("hidden");
-                                document.getElementById("clientBikes").classList.remove("hidden");
-                                document.getElementById("clientContracts").classList.remove("hidden");
-                                document.getElementById("clientBuildings").classList.remove("hidden");
-                                $('#widget-companyDetails-form input').attr("readonly", true);
-                                $('#widget-companyDetails-form select').prop( "disabled", true );
+              <div class="col-sm-12">
+                <h4 class="text-green">Informations relatives au contact</h4>
+              </div>
+              <div class="col-sm-12 contactAddButtons">
+                <button class="addContact button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                <label for="addContact">Ajouter un contact</label>
+              </div>
+              <div class="clientContactZone">
+                  <div class="col-md-3">
+                    <label class="fr"> Email : </label>
+                    <label class="en"> Email: </label>
+                    <label class="nl"> Email : </label>
+                    <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="fr" >Nom :</label>
+                    <label class="en" >Last Name:</label>
+                    <label class="nl" >Last Name:</label>
+                    <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
+                  </div>
 
-                      
-                            }); 
-                        </script>
-                        
-                    <div class="col-sm-12" id="clientBikes">
-                        <h4 class="text-green">Vélos :</h4>
-                        <p><span id="companyBikes"></span></p>
-                    </div>
-                        
-                    <div class="col-sm-12" id="clientBoxes">
-                        <h4 class="text-green">Bornes :</h4>
-                        <p><span id="companyBoxes"></span></p>
-                    </div>
+                  <div class="col-md-3">
+                    <label class="fr" >Pr�nom :</label>
+                    <label class="en" >First Name:</label>
+                    <label class="nl" >First Name :</label>
+                    <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
+                  </div>
 
-                    <div class="col-sm-12" id="clientContracts">
-                        <h4 class="text-green">Contrats et Offres :</h4>
-                        <p><span id="companyContracts"></span></p>
-                    </div>
-                        
-                    <div class="col-sm-12">
-                        <h4 class="text-green">Historique et actions :</h4>
-                        <span id="action_company_log"></span>
-                        
-                    </div>
+                  <div class="col-md-3">
+                    <label class="fr" >T�l�phone :</label>
+                    <label class="en" >Phone:</label>
+                    <label class="nl" >Phone :</label>
+                    <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
+                  </div>
+                  <div class="separator separator-small"></div>
+              </div>
+              <div class="col-md-3"></div>
+              <div class="col-md-6" style="text-align:center; margin-bottom:20px;">
+                <label for="statistiques">Envoyer le rapport de statistiques ?</label>
+                <input type="checkbox" name="statistiques" class="form-control" readonly="true"/>
+              </div>
 
-                    <div class="col-sm-12" id="clientBuildings">
-                        <h4 class="text-green">Bâtiments:</h4>
-                        <p><span id="companyBuildings"></span></p>
-                    </div>
-                        
-                    <div class="col-sm-12" id="clientusers">
-                        <h4 class="text-green">Utilisateurs:</h4>
-                        <span id="companyUsers"></span>
-                    </div>
 
-                </div>
-                    
+              <div class="separator"></div>
+
+              <div class="col-sm-12">
+                <h4 class="text-green">Informations relatives � la facturation</h4>
+              </div>
+
+              <div class="col-md-3">
+                <label for="email_billing" class="fr"> Email : </label>
+                <label for="email_billing" class="en"> Email: </label>
+                <label for="email_billing" class="nl"> Email : </label>
+                <input type="text" class="form-control" name="email_billing" value="" readonly="true"/>
+              </div>
+
+              <div class="col-md-3">
+                <label for="lastNameContactBilling" class="fr" >Nom :</label>
+                <label for="lastNameContactBilling" class="en" >Last Name:</label>
+                <label for="lastNameContactBilling" class="nl" >Last Name:</label>
+                <input type="text" class="form-control" name="lastNameContactBilling" value="" readonly="true"/>
+              </div>
+
+              <div class="col-md-3">
+                <label for="firstNameContactBilling" class="fr" >Pr�nom :</label>
+                <label for="firstNameContactBilling" class="en" >First Name:</label>
+                <label for="firstNameContactBilling" class="nl" >First Name :</label>
+                <input type="text" class="form-control" name="firstNameContactBilling" value="" readonly="true"/>
+              </div>
+
+              <div class="col-md-3">
+                <label for="phoneBilling" class="fr" >T�l�phone :</label>
+                <label for="phoneBilling" class="en" >Phone:</label>
+                <label for="phoneBilling" class="nl" >Phone :</label>
+                <input type="text" class="form-control" name="phoneBilling" value="" readonly="true"/>
+              </div>
+              <div class="col-sm-4">
+                <label for="billing">Envoyer les factures automatiquement ?</label>
+                <input type="checkbox" name="billing" class="form-control" readonly="true"/>
+              </div>
+
+              <div class="separator"></div>
+
+              <div class="col-sm-12">
+                <h4 class="text-green">Options</h4>
+              </div>
+
+              <div class="col-sm-4">
+                <label for="assistance">Assistance</label>
+                <input type="checkbox" name="assistance" class="form-control" readonly="true"/>
+              </div>
+
+              <div class="col-sm-4">
+                <label for="locking">Locking</label>
+                <input type="checkbox" name="locking" class="form-control" readonly="true"/>
+              </div>
+
+
+              <input type="text" id="widget_companyDetails_requestor" name="widget_companyDetails_requestor" class="form-control hidden" value="<?php echo $user; ?>">
+              <input type="text" name="ID" class="form-control hidden">
+              <input type="text" id="widget_companyDetails_internalReference" name="widget_companyDetails_internalReference" class="form-control hidden">
+
+              <div class="col-sm-12">
+                <button  class="button small green button-3d rounded icon-left hidden" id="sendButtonClientDetails" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+              </div>
             </div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-			</div>
 
-		</div>
-	</div>
+
+          </form>
+
+          <script type="text/javascript">
+          jQuery("#widget-companyDetails-form").validate({
+            submitHandler: function(form){
+              jQuery(form).ajaxSubmit({
+                success: function(response) {
+                  if (response.response == 'success') {
+                    $.notify({
+                      message: response.message
+                    }, {
+                      type: 'success'
+                    });
+
+                    document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+                    document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
+                    document.getElementById("sendButtonClientDetails").classList.add("hidden");
+                    document.getElementById("clientBikes").classList.remove("hidden");
+                    document.getElementById("clientBuildings").classList.remove("hidden");
+                    document.getElementById("clientContracts").classList.remove("hidden");
+
+                    var classname = document.getElementsByClassName('updateClientInformation');
+                    $('#widget-companyDetails-form input').attr("readonly", true);
+                    $('#widget-companyDetails-form select').prop( "disabled", true );
+
+
+
+                  } else {
+                    $.notify({
+                      message: response.message
+                    }, {
+                      type: 'danger'
+                    });
+                  }
+                }
+              });
+            }
+          });
+
+
+          document.getElementsByClassName('updateClientInformationButton')[0].addEventListener('click', function(){
+            document.getElementById("sendButtonClientDetails").classList.remove("hidden");
+            document.getElementById("clientBikes").classList.add("hidden");
+            document.getElementById("clientBuildings").classList.add("hidden");
+            document.getElementById("clientContracts").classList.add("hidden");
+            document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.remove("hidden");
+            document.getElementsByClassName("updateClientInformationButton")[0].classList.add("hidden");
+            $('#widget-companyDetails-form input').attr("readonly", false);
+            $('#widget-companyDetails-form select').removeAttr("disabled");
+
+
+          });
+          document.getElementsByClassName('cancelUpdateClientInformation')[0].addEventListener('click', function(){
+            document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+            document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
+            document.getElementById("sendButtonClientDetails").classList.add("hidden");
+            document.getElementById("clientBikes").classList.remove("hidden");
+            document.getElementById("clientContracts").classList.remove("hidden");
+            document.getElementById("clientBuildings").classList.remove("hidden");
+            $('#widget-companyDetails-form input').attr("readonly", true);
+            $('#widget-companyDetails-form select').prop( "disabled", true );
+
+
+          });
+
+          </script>
+          <script type="text/javascript" src="js/add_company_contact.js">
+
+          </script>
+
+          <div class="col-sm-12" id="clientBikes">
+            <h4 class="text-green">V�los :</h4>
+            <p><span id="companyBikes"></span></p>
+          </div>
+
+          <div class="col-sm-12" id="clientBoxes">
+            <h4 class="text-green">Bornes :</h4>
+            <p><span id="companyBoxes"></span></p>
+          </div>
+
+          <div class="col-sm-12" id="clientContracts">
+            <h4 class="text-green">Contrats et Offres :</h4>
+            <p><span id="companyContracts"></span></p>
+          </div>
+
+          <div class="col-sm-12">
+            <h4 class="text-green">Historique et actions :</h4>
+            <span id="action_company_log"></span>
+
+          </div>
+
+          <div class="col-sm-12" id="clientBuildings">
+            <h4 class="text-green">B�timents:</h4>
+            <p><span id="companyBuildings"></span></p>
+          </div>
+
+          <div class="col-sm-12" id="clientusers">
+            <h4 class="text-green">Utilisateurs:</h4>
+            <span id="companyUsers"></span>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 
@@ -8693,9 +8739,9 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Ajouter un utilisateur</h4>
-						
+
 						<form id="widget-addUser-form" action="include/add_user.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                             	<div class="col-md-4">
                                 <label for="firstname"  class="fr">Prénom</label>
@@ -8703,32 +8749,32 @@ if($connected){
                                 <label for="firstname"  class="nl">Voornaam</label>
                                 <input type="text" name="firstName" class="form-control required">
                                 </div>
-								
+
 								<div class="col-md-4">
                                 <label for="name"  class="fr">Nom</label>
                                 <label for="name"  class="en">Name</label>
                                 <label for="name"  class="nl">Achternaam</label>
                                 <input type="text" name="name" class="form-control required">
 								</div>
-								
+
 								<div class="col-md-4">
                                     <label for="mail"  class="fr">E-mail</label>
                                     <label for="mail"  class="en">E-mail</label>
                                     <label for="mail"  class="nl">E-mail</label>
-                                    <input type="text" name="mail" class="form-control mail required">                                    
-                                </div>								
+                                    <input type="text" name="mail" class="form-control mail required">
+                                </div>
 								<div class="col-md-4">
-                                    <label for="generatePassword"  class="fr">Genérer un password automatiquement</label>                                    
+                                    <label for="generatePassword"  class="fr">Genérer un password automatiquement</label>
                                     <input type="checkbox" name="generatePassword" class="form-control" checked>
                                 </div>
                                 <div class="col-md-8">
                                     <label for="password"  class="fr hidden">Password</label>
                                     <label for="password"  class="en hidden">Password</label>
                                     <label for="password"  class="nl hidden">Password</label>
-                                    <input type="text" name="password" class="form-control required hidden">                                    
+                                    <input type="text" name="password" class="form-control required hidden">
                                 </div>
 								<div class="col-md-4">
-                                    <label for="fleetManager">Fleet manager</label>                                    
+                                    <label for="fleetManager">Fleet manager</label>
                                     <input type="checkbox" name="fleetManager" class="form-control">
                                 </div>
                                 <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
@@ -8737,16 +8783,16 @@ if($connected){
                             </div>
                             <h4>Accès aux bâtiments</h4>
                             <div class="form-group col-sm-12" id="buildingCreateUser"></div>
-                            
+
                             <h4>Accès aux vélos</h4>
                             <div class="form-group col-sm-12" id="bikeCreateUser"></div>
 
                             <div id="confirmAddUser">
 
                             </div>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-addUser-form").validate({
 								submitHandler: function(form) {
 
@@ -8773,7 +8819,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -8811,24 +8857,24 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green taskManagementTitle">Ajouter une action</h4>
-						
+
 						<form id="widget-taskManagement-form" action="include/action_company.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <div class="col-md-12">
 
-                                    <div class="col-md-4">  
-                                        <label for="owner">Owner</label>  
+                                    <div class="col-md-4">
+                                        <label for="owner">Owner</label>
                                         <select title="owner" class="form-control required" name="owner">
-                                        </select>                                    
-                                    </div>   
+                                        </select>
+                                    </div>
 
                                     <div class="col-md-4">
                                         <label for="status">Statut :</label>
                                         <select title="Status" class="selectpicker form-control required" name="status">
                                           <option value="TO DO">To do</option>
-                                          <option value="DONE">Done</option>            
-                                        </select>                                    
+                                          <option value="DONE">Done</option>
+                                        </select>
                                     </div>
 
                                     <div class="col-md-4">
@@ -8836,8 +8882,8 @@ if($connected){
                                         <label for="company"  class="en">Company</label>
                                         <label for="company"  class="nl">Company</label>
                                         <select title="company" class="selectpicker form-control required" name="company">
-                                        </select>                                    
-                                    </div>		
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-4">
@@ -8846,59 +8892,59 @@ if($connected){
                                         <label for="type"  class="nl">Type</label>
                                         <select title="type" class="selectpicker form-control required" name="type">
                                           <option value="contact">Prise de contact</option>
-                                          <option value="rappel">Rappel</option>            
-                                          <option value="plan rdv">Planification de rendez-vous</option>            
-                                          <option value="rdv">Rendez-vous</option>            
-                                          <option value="offre">Formulation d'une offre</option>            
-                                          <option value="offreSigned">Offre signée</option>            
-                                          <option value="delivery">Livraison vélo</option>            
-                                          <option value="other">Autre</option>            
-                                        </select>                                    
-                                        
-                                    </div>								
+                                          <option value="rappel">Rappel</option>
+                                          <option value="plan rdv">Planification de rendez-vous</option>
+                                          <option value="rdv">Rendez-vous</option>
+                                          <option value="offre">Formulation d'une offre</option>
+                                          <option value="offreSigned">Offre signée</option>
+                                          <option value="delivery">Livraison vélo</option>
+                                          <option value="other">Autre</option>
+                                        </select>
+
+                                    </div>
                                     <div class="col-md-4">
                                         <label for="date"  class="fr">Date</label>
                                         <label for="date"  class="en">Date</label>
                                         <label for="date"  class="nl">Date</label>
-                                        <input type="date" name="date" class="form-control required">                                    
-                                    </div>								
+                                        <input type="date" name="date" class="form-control required">
+                                    </div>
                                     <div class="col-md-4">
                                         <label for="reminder"  class="fr">Rappel ?</label>
                                         <label for="reminder"  class="en">Reminder ?</label>
                                         <label for="reminder"  class="nl">Reminder ?</label>
-                                        <input type="date" name="date_reminder" class="form-control ">                                    
-                                    </div>                                
+                                        <input type="date" name="date_reminder" class="form-control ">
+                                    </div>
                                 </div>
 
 
                                 <div class="col-md-12">
-                                    
+
                                     <div class="col-md-12">
                                         <label for="reminder"  class="fr">Titre</label>
                                         <label for="reminder"  class="en">Title</label>
                                         <label for="reminder"  class="nl">Title</label>
-                                        <input type="text" name="title" class="form-control ">                                    
+                                        <input type="text" name="title" class="form-control ">
                                     </div>
 
                                     <div class="col-md-12">
                                         <label for="reminder"  class="fr">Description</label>
                                         <label for="reminder"  class="en">Description</label>
                                         <label for="reminder"  class="nl">Description</label>
-                                        <textarea class="form-control" rows="5" name="description"></textarea>                                    
+                                        <textarea class="form-control" rows="5" name="description"></textarea>
                                     </div>
-                                
+
                                 </div>
 
                                 <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
                                 <input type="text" name="action" class="form-control hidden" value="create">
 	                            <div class="col-sm-12">
-	                                <button  class="button small green button-3d rounded icon-left taskManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>         
-	                            </div>                          
+	                                <button  class="button small green button-3d rounded icon-left taskManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
+	                            </div>
 
                             </div>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-taskManagement-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
@@ -8912,7 +8958,7 @@ if($connected){
                                                 list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 												$('#taskManagement').modal('toggle');
                                                 document.getElementById('widget-taskManagement-form').reset();
-                                                
+
 
 											} else {
 												$.notify({
@@ -8926,7 +8972,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -8954,18 +9000,18 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green feedbackManagementTitle">Ajouter un feedback</h4>
-						
+
 						<form id="widget-feedbackManagement-form" action="include/feedback_management.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <div class="col-md-12">
 
-                                    <div class="col-md-4">  
-                                        <label for="utilisateur">ID</label>  
+                                    <div class="col-md-4">
+                                        <label for="utilisateur">ID</label>
                                         <input type='int' title="ID" class="form-control required" name="ID" readonly='readonly'>
-                                    </div>   
-                                    <div class="col-md-4">  
-                                        <label for="utilisateur">Utilisateur</label>  
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="utilisateur">Utilisateur</label>
                                         <input type="text" title="utilisateur" class="form-control required" name="utilisateur" readonly='readonly'>
                                     </div>
                                 </div>
@@ -8974,26 +9020,26 @@ if($connected){
                                         <label for="bike"  class="fr">Vélo</label>
                                         <label for="bike"  class="en">Bike</label>
                                         <label for="bike"  class="nl">Bike</label>
-                                        <input type="text" name="bike" class="form-control" readonly='readonly'>                                    
+                                        <input type="text" name="bike" class="form-control" readonly='readonly'>
                                     </div>
-                                    
+
                                     <div class="col-md-4">
                                         <label for="StartDate"  class="fr">Date de début</label>
                                         <label for="StartDate"  class="en">Start date</label>
                                         <label for="StartDate"  class="nl">Start date</label>
                                         <input type="text" name="startDate" class="form-control" readonly='readonly'>
-                                    </div>								
+                                    </div>
                                     <div class="col-md-4">
                                         <label for="endDate"  class="fr">Date de Fin</label>
                                         <label for="endDate"  class="en">End date</label>
                                         <label for="endDate"  class="nl">End date</label>
                                         <input type="text" name="endDate" class="form-control" readonly='readonly'>
-                                    </div>								
+                                    </div>
                                 </div>
 
 
                                 <div class="col-md-12">
-                                    
+
                                     <img class="feedbackBikeImage" alt="image vélo" />
                                 </div>
                                 <div class="col-md-12">
@@ -9007,35 +9053,35 @@ if($connected){
                                             <option value="3">3/5</option>
                                             <option value="2">2/5</option>
                                             <option value="1">1/5</option>
-                                        </select>                                    
+                                        </select>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 feedbackEntretien hidden">
                                         <label for="entretien"  class="fr">Besoin d'entretien ?</label>
                                         <label for="entretien"  class="en">Need of maintenance ?</label>
                                         <label for="entretien"  class="nl">Need of maintenance ?</label>
                                         <label><input type="checkbox" name="entretien" class="form-control">Oui</label>
-                                    </div>                                                                                                
-                                    
+                                    </div>
+
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
                                         <label for="comment"  class="fr">Commentaire</label>
                                         <label for="comment"  class="en">Comment</label>
                                         <label for="comment"  class="nl">Comment</label>
-                                        <textarea class="form-control" rows="5" name="comment"></textarea>                                    
+                                        <textarea class="form-control" rows="5" name="comment"></textarea>
                                     </div>
                                 </div>
 
                                 <input type="text" name="action" class="form-control hidden" value="add">
                                 <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
 	                            <div class="col-sm-12">
-	                                <button  class="button small green button-3d rounded icon-left feedbackManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>         
-	                            </div>                          
+	                                <button  class="button small green button-3d rounded icon-left feedbackManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
+	                            </div>
 
                             </div>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-feedbackManagement-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
@@ -9048,7 +9094,7 @@ if($connected){
 												});
 												$('#feedbackManagement').modal('toggle');
                                                 document.getElementById('widget-feedbackManagement-form').reset();
-                                                
+
 
 											} else {
 												$.notify({
@@ -9062,7 +9108,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -9079,6 +9125,19 @@ if($connected){
 	</div>
 </div>
 
+<script type="text/javascript">
+    $('#widget-feedbackManagement-form select[name=note]').change(function() {
+        if($('#widget-feedbackManagement-form select[name=note]').val()=="5"){
+            $('#widget-feedbackManagement-form input[name=entretien]').prop("checked", false);
+            $('.feedbackEntretien').addClass("hidden");
+        }
+        else{
+            $('.feedbackEntretien').removeClass("hidden");
+        }
+    });
+
+</script>
+
 <div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -9088,9 +9147,9 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<form id="widget-bikeManagement-form" action="include/bike_management.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <h4 class="fr text-green bikeManagementTitle">Ajouter un vélo</h4>
                                 <div class="col-sm-12">
@@ -9100,9 +9159,9 @@ if($connected){
                                         <label for="portfolioID"  class="en">Marque - Modèle</label>
                                         <label for="portfolioID"  class="nl">Marque - Modèle</label>
                                         <select name="portfolioID" class="form-control required"></select>
-                                        
-                                    </div>      
-                                    
+
+                                    </div>
+
                                     <div class="col-sm-4">
                                         <label for="size"  class="fr">Taille</label>
                                         <label for="size"  class="en">Size</label>
@@ -9115,7 +9174,7 @@ if($connected){
                                         <label for="company"  class="nl">Company</label>
                                         <select name="company" class="form-control required"></select>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="col-sm-4">
@@ -9123,13 +9182,13 @@ if($connected){
                                         <label for="model"  class="en">Bike name for client</label>
                                         <label for="model"  class="nl">Bike name for client</label>
                                         <input type="text" name="model" class="form-control required">
-                                        
-                                    </div>                                    
+
+                                    </div>
                                     <div class="col-sm-4">
                                         <label for="frameNumber"  class="fr">Numéro d'identification</label>
                                         <label for="frameNumber"  class="en">Identification number</label>
                                         <label for="frameNumber"  class="nl">Identification number</label>
-                                        <input type="text" name="frameNumberOriginel" class="form-control required hidden">                                        
+                                        <input type="text" name="frameNumberOriginel" class="form-control required hidden">
                                         <input type="text" name="frameNumber" class="form-control required">
                                     </div>
                                     <div class="col-sm-4">
@@ -9137,8 +9196,8 @@ if($connected){
                                         <label for="frameReference"  class="en">Frame reference</label>
                                         <label for="frameReference"  class="nl">Frame reference</label>
                                         <input type="text" name="frameReference" class="form-control required">
-                                    </div>                     
-                                    
+                                    </div>
+
                                 </div>
                                 <div class="col-sm-12">
 
@@ -9147,24 +9206,24 @@ if($connected){
                                         <label for="picture"  class="en">Current Image</label>
                                         <label for="picture"  class="nl">Current Image</label>
                                         <img id='bikeManagementPicture' alt="image">
-                                    </div>    
+                                    </div>
                                     <div class="col-sm-4">
                                         <label for="picture"  class="fr">Photo du vélo (.jpg)</label>
                                         <label for="picture"  class="en">Bike picture (jpg)</label>
                                         <label for="picture"  class="nl">Bike picture(jpg)</label>
                                         <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                         <input type=file size=40 name="picture" class="form-control">
-                                    </div>                                                                                                            
-                                    
+                                    </div>
+
                                 </div>
-                                    
-                                    
-                                
-                                
+
+
+
+
                                 <div class="separator"></div>
-                                
+
                                 <div class="col-sm-12">
-                                    <h4 class="fr text-green">Informations sur l'achat du vélo</h4>                                    
+                                    <h4 class="fr text-green">Informations sur l'achat du vélo</h4>
                                     <div class="col-sm-5">
                                         <label for="price"  class="fr">Prix d'achat</label>
                                         <label for="price"  class="en">Buying price</label>
@@ -9181,11 +9240,11 @@ if($connected){
                                         <input type="date" name="buyingDate" class="form-control required">
                                     </div>
                                 </div>
-                                
+
                                 <div class="separator"></div>
                                 <div class="col-sm-12">
                                     <h4 class="fr text-green">Informations relatives au contrat</h4>
-                                    
+
                                     <div class="col-sm-4">
                                         <label for="contractType"  class="fr">Type de contrat</label>
                                         <label for="contractType"  class="en">Contract type</label>
@@ -9208,22 +9267,22 @@ if($connected){
                                         <label for="contractEnd"  class="en">Contract End</label>
                                         <label for="contractEnd"  class="nl">Contract End</label>
                                         <input type="date" name="contractEnd" class="form-control">
-                                    </div>                                                        
-                                </div>                                
+                                    </div>
+                                </div>
                                 <div class="col-sm-12">
                                     <div class="col-sm-4">
                                         <label for="insurance"  class="fr">Assurance ?</label>
                                         <label for="insurance"  class="en">Insurance ?</label>
                                         <label for="insurance"  class="nl">Insurance ?</label>
                                         <label><input type="checkbox"name="insurance" class="form-control">Oui</label>
-                                    </div>                                                                                                
-                        
+                                    </div>
+
                                 </div>
                                 <div class="separator"></div>
-                                
+
                                 <div class="col-sm-12">
                                     <h4 class="fr text-green">Informations relatives à la facturation</h4>
-                                    
+
                                     <div class="col-sm-4">
                                         <label for="billingType"  class="fr">Type de facturation</label>
                                         <label for="billingType"  class="en">Billing type</label>
@@ -9233,25 +9292,25 @@ if($connected){
                                             <option value="annuelle">Annuelle </option>
                                             <option value="paid">Déjà payé</option>
                                         </select>
-                                    </div>                                                                                                
+                                    </div>
 
-                                    <div class="col-sm-4">                                        
+                                    <div class="col-sm-4">
                                         <label for="billingPrice"  class="fr">Montant de facturation</label>
                                         <label for="billingPrice"  class="en">Montant de facturation</label>
                                         <label for="billingPrice"  class="nl">Montant de facturation</label>
-                                        
+
                                         <div class="input-group">
                                             <span class="input-group-addon">€/mois</span>
                                             <input type="float" name="billingPrice" class="form-control">
                                         </div>
-                                    </div>       
+                                    </div>
 
                                     <div class="col-sm-4">
                                         <label for="billingGroup"  class="fr">Groupe de facturation</label>
                                         <label for="billingGroup"  class="en">Groupe de facturation</label>
                                         <label for="billingGroup"  class="nl">Groupe de facturation</label>
                                         <input type="text" name="billingGroup" class="form-control required">
-                                    </div>     
+                                    </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="col-sm-4">
@@ -9259,14 +9318,14 @@ if($connected){
                                         <label for="billing"  class="en">Automatic billing ?</label>
                                         <label for="billing"  class="nl">Automatic billing ?</label>
                                         <label><input type="checkbox"name="billing" class="form-control">Oui</label>
-                                    </div>                                                                                                
+                                    </div>
 
-                                    
+
                                 </div>
                                 <div class="form-group col-sm-4" id="addBike_firstBuilding"></div>
                                 <div class="form-group col-sm-12" id="addBike_buildingListing"></div>
 
-                                    
+
                                 <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
                                 <input type="text" name="action" class="form-control hidden">
 
@@ -9275,24 +9334,24 @@ if($connected){
 
                                 <div class="col-sm-12"><h4>Accès des utilisateurs à ce vélo</h4></div>
                                 <div class="form-group col-sm-12" id="bikeUserAccessAdmin"></div>
-                                
+
                             </div>
                             <div class="col-sm-12">
-                                <button  class="fr button small green button-3d rounded icon-left bikeManagementSend" type="submit"><i class="fa fa-plus"></i>Ajouter</button>                            
+                                <button  class="fr button small green button-3d rounded icon-left bikeManagementSend" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
                             </div>
-                                                        
-                            
+
+
 						</form>
-                    
-                    
-                            
+
+
+
                         <div class="separator bikeActions"></div>
-                            
+
                         <div class="col-sm-12">
-                            
+
                             <h4 class="fr text-green">Actions prises sur le vélo</h4>
-                            
-                            
+
+
                             <form id="widget-addActionBike-form" action="include/action_bike_management.php" role="form" method="post">
                                 <input type="text" name="bikeNumber" class="form-control required hidden">
                                 <input type="text" name="widget-addActionBike-form-user" class="form-control required hidden" value="<?php echo $user; ?>">
@@ -9306,9 +9365,9 @@ if($connected){
                                         <label for="widget-addActionBike-form-description" class="hidden">Description</label>
                                         <input type="text" name="widget-addActionBike-form-description" class="form-control required hidden">
                                     </div>
-                                    <div class="col-sm-2">    
+                                    <div class="col-sm-2">
                                         <label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
-                                        <input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">                            
+                                        <input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">
                                     </div>
                                     <div class="col-sm-1">
                                         <button  class="fr button small green button-3d rounded icon-left hidden addActionConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
@@ -9319,7 +9378,7 @@ if($connected){
                             <span id="action_bike_log"></span>
 
                         </div>
-                        <div class="right">                        
+                        <div class="right">
                             <form  id="widget-deleteBike-form" action="include/bike_management.php" role="form" method="post">
                                 <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
                                 <input type="text" name="action" value="delete" class="hidden">
@@ -9327,7 +9386,7 @@ if($connected){
                                 <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer le vélo</button>
                                 <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
                                 <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
-                            </form>                        
+                            </form>
                         </div>
 
 
@@ -9340,10 +9399,10 @@ if($connected){
                         <div class="nl" class="modal-footer">
                             <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
                         </div>
-                    
-                    
-                    
-						<script type="text/javascript">							
+
+
+
+						<script type="text/javascript">
 							jQuery("#widget-bikeManagement-form").validate({
 								submitHandler: function(form) {
 
@@ -9355,12 +9414,12 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());
                                                 document.getElementById('widget-bikeManagement-form').reset();
 												$('#bikeManagement').modal('toggle');
-                                                list_bikes_admin();                                            
-                                                
-                                                
+                                                list_bikes_admin();
+
+
 											} else {
 												$.notify({
 													message: response.message
@@ -9386,9 +9445,9 @@ if($connected){
                                                 });
                                                 $("label[for='widget-addActionBike-form-date']").addClass("hidden");
                                                 $('input[name=widget-addActionBike-form-date]').addClass("hidden");
-                                                $("label[for='widget-addActionBike-form-description']").addClass("hidden");    
+                                                $("label[for='widget-addActionBike-form-description']").addClass("hidden");
                                                 $('input[name=widget-addActionBike-form-description]').addClass("hidden");
-                                                $("label[for='widget-addActionBike-form-public']").addClass("hidden");                                
+                                                $("label[for='widget-addActionBike-form-public']").addClass("hidden");
                                                 $('input[name=widget-addActionBike-form-public]').addClass("hidden");
                                                 $('.addActionConfirmButton').addClass("hidden");
                                                 construct_form_for_bike_status_updateAdmin($('#widget-addActionBike-form input[name=bikeNumber]').val());
@@ -9403,8 +9462,8 @@ if($connected){
                                         }
                                     });
                                 }
-                            });                         
-                            
+                            });
+
                             jQuery("#widget-deleteBike-form").validate({
                                 submitHandler: function(form) {
 
@@ -9417,7 +9476,7 @@ if($connected){
                                                     type: 'success'
                                                 });
                                                 document.getElementById('widget-bikeManagement-form').reset();
-                                                list_bikes_admin();                                            
+                                                list_bikes_admin();
                                                 $('#bikeManagement').modal('toggle');
                                             } else {
                                                 $.notify({
@@ -9429,13 +9488,13 @@ if($connected){
                                         }
                                     });
                                 }
-                            });                        
-                            
-                            
-						</script>                 					
+                            });
+
+
+						</script>
 					</div>
 				</div>
-			</div>                        
+			</div>
 		</div>
 	</div>
 </div>
@@ -9449,21 +9508,21 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<form id="widget-boxManagement-form" action="include/box_management.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <h4 class="fr text-green" id="widget-boxManagement-form-title">Ajouter une borne</h4>
-                                
-                                
+
+
 								<div class="col-sm-4">
                                     <label for="reference"  class="fr">Référence</label>
                                     <label for="reference"  class="en">Reference</label>
                                     <label for="reference"  class="nl">Reference</label>
                                     <input type="text"  name="reference" class="form-control">
                                 </div>
-                                
-                                
+
+
 								<div class="col-sm-4">
                                     <label for="boxModel"  class="fr">Modèle</label>
                                     <label for="boxModel"  class="en">Model</label>
@@ -9474,8 +9533,8 @@ if($connected){
                                         <option value="20keys" />Box 20 clés<br/>
                                     </select>
 								</div>
-                                
-                                
+
+
                                 <div class="separator"></div>
                                 <h4 class="fr text-green">Informations relatives au contrat</h4>
 
@@ -9485,9 +9544,9 @@ if($connected){
                                     <label for="company"  class="nl">Current customer</label>
                                     <select name="company" class="form-control required">
                                     </select>
-                                </div>    
-                                
-                                
+                                </div>
+
+
 								<div class="col-sm-4">
                                     <label for="contractStart"  class="fr">Début de contrat</label>
                                     <label for="contractStart"  class="en">Contract start</label>
@@ -9501,42 +9560,42 @@ if($connected){
                                     <input type="date" name="contractEnd" class="form-control">
                                 </div>
                                 <div class="separator"></div>
-                                
+
                                 <h4 class="fr text-green">Informations relatives à la facturation</h4>
-                                
+
 								<div class="col-sm-4">
                                     <label for="billing"  class="fr">Facturation automatique ?</label>
                                     <label for="billing"  class="en">Automatic billing ?</label>
                                     <label for="billing"  class="nl">Automatic billing ?</label>
                                     <label><input type="checkbox" name="billing" class="form-control">Oui</label>
-                                </div>                                                                                                
-                                    
+                                </div>
+
 								<div class="col-sm-4">
                                     <label for="amount"  class="fr">Montant (par mois)</label>
                                     <label for="amount"  class="en">Amount per month</label>
                                     <label for="amount"  class="nl">Amount per month</label>
                                     <input type="number" min='0' name="amount" class="form-control">
-                                </div>       
-                                
+                                </div>
+
 								<div class="col-sm-4">
                                     <label for="billingGroup"  class="fr">Groupe de facturation</label>
                                     <label for="billingGroup"  class="en">Groupe de facturation</label>
                                     <label for="billingGroup"  class="nl">Groupe de facturation</label>
                                     <input type="number" min="1" max="10" name="billingGroup" class="form-control required" value="1">
                                 </div>
-                
-                                    
+
+
                                 <input type="text" name="id" class="form-control hidden">
                                 <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
                                 <input type="text" name="action" class="form-control hidden">
 
                             </div>
-                            
-                            
+
+
                             <button  id="widget-boxManagement-form-send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-boxManagement-form").validate({
 								submitHandler: function(form) {
 
@@ -9548,7 +9607,7 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());
                                                 document.getElementById('widget-boxManagement-form').reset();
 												$('#boxManagement').modal('toggle');
 											} else {
@@ -9563,10 +9622,10 @@ if($connected){
 								}
 							});
 
-                            
-                            
-                            
-						</script>                 					
+
+
+
+						</script>
 					</div>
 				</div>
 			</div>
@@ -9593,26 +9652,26 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<form id="widget-addBuilding-form" action="include/add_building.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <h4 class="fr text-green">Ajouter un bâtiment</h4>
-                                
+
 								<div class="col-sm-4">
                                     <label for="widget-addBuilding-form-model"  class="fr">Référence du bâtiment</label>
                                     <label for="widget-addBuilding-form-model"  class="en">Building reference</label>
                                     <label for="widget-addBuilding-form-model"  class="nl">Building reference</label>
                                     <input type="text" id="widget-addBuilding-form-reference" name="widget-addBuilding-form-reference" class="form-control required">
 								</div>
-                                
+
                             	<div class="col-sm-12">
                                     <label for="widget-addBuilding-form-descriptionFr"  class="fr">Description en français</label>
                                     <label for="widget-addBuilding-form-descriptionFr"  class="en">French description</label>
                                     <label for="widget-addBuilding-form-descriptionFr"  class="nl">French description</label>
                                     <input type="text" id="widget-addBuilding-form-descriptionFr" name="widget-addBuilding-form-descriptionFr" class="form-control required">
                                 </div>
-								
+
 								<div class="col-sm-12">
                                     <label for="widget-addBuilding-form-descriptionEn"  class="fr">Description en anglais</label>
                                     <label for="widget-addBuilding-form-descriptionEn"  class="en">English description</label>
@@ -9632,25 +9691,25 @@ if($connected){
                                     <label for="widget-addBuilding-form-adress"  class="nl">Adresse</label>
                                     <input type="text" id="widget-addBuilding-form-adress" name="widget-addBuilding-form-adress" class="form-control required">
                                 </div>
-                            
+
                                 <input type="text" id="widget-addBuilding-form-requestor" name="widget-addBuilding-form-requestor" class="form-control required hidden" value="<?php echo $user; ?>">
                                 <input type="text" id="widget-addBuilding-form-company" name="widget-addBuilding-form-company" class="form-control required hidden">
-                                
+
                                 <div class="separator"></div>
-                                
+
                                 <div class="col-sm-12"><h4>Accès des vélos à ce bâtiment</h4></div>
                                 <span id="addBuilding_bikeListing"></span>
 
                                 <div class="col-sm-12"><h4>Accès des utilisateurs à ce bâtiment</h4></div>
                                 <span id="addBuilding_usersListing"></span>
-                                
+
                                 <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
                                 <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
-                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button> 
+                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
                             </div>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-addBuilding-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
@@ -9661,11 +9720,11 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());                           
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());
                                                 document.getElementById('widget-addBuilding-form').reset();
 												$('#addBuilding').modal('toggle');
-                                                
-                                                
+
+
 											} else {
 												$.notify({
 													message: response.message
@@ -9678,7 +9737,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -9704,13 +9763,13 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<form id="widget-offerManagement-form" action="include/offer_management.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <h4 class="fr text-green offerManagementTitle">Ajouter une offre</h4>
                                 <div class="col-sm-12">
-                                    
+
                                     <div class="col-sm-12">
                                         <label for="title"  class="fr">Titre</label>
                                         <label for="title"  class="en">Title</label>
@@ -9721,11 +9780,11 @@ if($connected){
                                         <label for="description"  class="fr">Description</label>
                                         <label for="description"  class="en">Description</label>
                                         <label for="description"  class="nl">Description</label>
-                                        <textarea class="form-control required" rows="5" name="description"></textarea>                                    
+                                        <textarea class="form-control required" rows="5" name="description"></textarea>
                                     </div>
-                                
+
                                 </div>
-                                
+
                                 <div class="col-sm-12">
 									<div class="col-sm-3">
 	                                    <label for="type"  class="fr">Type</label>
@@ -9746,21 +9805,21 @@ if($connected){
 	                                        <option value="lost">Perdu</option>
 	                                    </select>
 	                                </div>
-	                                
+
 	                            	<div class="col-sm-3">
 	                                    <label for="probability"  class="fr">Chance de réussite</label>
 	                                    <label for="probability"  class="en">Chance de réussite</label>
 	                                    <label for="probability"  class="nl">chance de réussite</label>
 	                                    <input type="number" min="0" max="100" name="probability" class="form-control required">
 	                                </div>
-									
+
 									<div class="col-sm-3">
 	                                    <label for="amount"  class="fr">Montant</label>
 	                                    <label for="amount"  class="en">Montant</label>
 	                                    <label for="amount"  class="nl">Montant</label>
 	                                    <input type="number" min="0" name="amount" class="form-control required">
 	                                </div>
-	
+
 									<div class="col-sm-3">
 	                                    <label for="margin"  class="fr">Marge</label>
 	                                    <label for="margin"  class="en">Marge</label>
@@ -9789,21 +9848,21 @@ if($connected){
 	                                    <input type="date" name="end" class="form-control">
 	                                </div>
 								</div>
-								                                
+
                                 <div class="col-sm-12"></div>
                                 <br>
-                            
+
                                 <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user; ?>">
                                 <input type="text" name="action" class="form-control required hidden" value="add">
                                 <input type="text" name="ID" class="hidden">
                                 <input type="text" name="company" class="form-control required hidden">
-                                
+
                                 <div class="separator"></div>
                                 <button  class="fr button small green button-3d rounded icon-left offerManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
                             </div>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-offerManagement-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
@@ -9814,11 +9873,11 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                list_contracts_offers('*');                           
+                                                list_contracts_offers('*');
                                                 document.getElementById('widget-offerManagement-form').reset();
 												$('#offerManagement').modal('toggle');
-                                                
-                                                
+
+
 											} else {
 												$.notify({
 													message: response.message
@@ -9830,26 +9889,26 @@ if($connected){
 									});
 								}
 							});
-                            
+
                             $("#widget-offerManagement-form select[name=type]").change(function() {
                                 if($("#widget-offerManagement-form select[name=type]").val()=="achat"){
                                     $("#widget-offerManagement-form input[name=start]").val("");
                                     $("#widget-offerManagement-form input[name=end]").val("");
                                     $("#widget-offerManagement-form input[name=start]").attr("readonly", true);
                                     $("#widget-offerManagement-form input[name=end]").attr("readonly", true);
-                                    
+
                                 }
                                 if($("#widget-offerManagement-form select[name=type]").val()=="leasing"){
                                     $("#widget-offerManagement-form input[name=start]").attr("readonly", false);
                                     $("#widget-offerManagement-form input[name=end]").attr("readonly", false);
-                                    
+
                                 }
-                            });                  
-                            
-                            
+                            });
 
 
-						</script>                 					
+
+
+						</script>
 					</div>
 				</div>
 			</div>
@@ -9865,6 +9924,242 @@ if($connected){
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="template" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">�</button>
+      </div>
+      <div class="modal-body">
+        <form class="isLeasing" id="templateForm" action="include/offer_template.php" method="post" role="form" novalidate="novalidate">
+          <input type="hidden" name="companyIdTemplate" id ="companyIdTemplate" value="" />
+          <div class="row buyOrLeasing">
+            <div class="col-sm-4">
+              <h4 class="fr text-green">G�n�ral: </h4>
+              <h4 class="en text-green">General: </h4>
+              <h4 class="nl text-green">General: </h4>
+            </div>
+            <div class="col-sm-12">
+              <div class="col-sm-3 form-group">
+                <label for="leasingCheck" class="fr">Leasing</label>
+                <label for="leasingCheck" class="en">Leasing</label>
+                <label for="leasingCheck" class="nl">Leasing</label>
+                <select name="buyOrLeasing" id="buyOrLeasingSelect" class="form-control required" aria-required="true">
+                  <option value="leasing" selected>Leasing</option>
+                  <option value="buy">Achat</option>
+                  <option value="both"> Achat et leasing</option>
+                </select>
+                <!--<input type="checkbox" class="leasingCheck form-control" name="isLeasing" value="leasing" checked />-->
+              </div>
+              <div class="col-sm-4 form-group leasingSpecific">
+                <label for="leasingDuration" class="fr">Dur�e leasing (mois)</label>
+                <label for="leasingDuration" class="en">Leasing duration (months)</label>
+                <label for="leasingDuration" class="nl">Dur�e leasing (mois)</label>
+                <input type="number" name="leasingDuration" class="leasingDuration form-control required" aria-required="true" value="36" min="1">
+              </div>
+              <div class="col-sm-3 form-group leasingSpecific">
+                <label for="numberMaintenance" class="fr">Entretiens par an</label>
+                <label for="numberMaintenance" class="en">Maintenance per year</label>
+                <label for="numberMaintenance" class="nl">Entretiens par an</label>
+                <input type="number" name="numberMaintenance" class="numberMaintenance form-control required" aria-required="true" value="1" min="0">
+              </div>
+              <div class="col-sm-2 form-group">
+                <label for="assuranceCheck" class="fr">Assurance</label>
+                <label for="assuranceCheck" class="en">Assurance</label>
+                <label for="assuranceCheck" class="nl">Assurance</label>
+                <input type="checkbox" class="assuranceCheck form-control" name="assurance" value="true" checked />
+              </div>
+            </div>
+          </div>
+          <div class="separator"></div>
+          <div class="row templateBike">
+            <div class="col-sm-4">
+              <h4 class="fr text-green">Nombre de v�los: </h4>
+              <h4 class="en text-green">Bike number: </h4>
+              <h4 class="nl text-green">Nombre de v�los: </h4>
+            </div>
+            <div class="col-sm-12">
+              <i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span><input type="hidden" id="bikesNumber" name="bikesNumber" value="0" />
+              <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+              <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+            </div>
+            <table class="table table-condensed tableFixed bikeNumberTable hideAt0">
+              <thead>
+                <tr>
+                  <th class="bLabel"></th>
+                  <th class="bikeBrandModel">
+                    <label for="bikeBrandModel" class="fr">MARQUE - MOD�LE</label>
+                    <label for="bikeBrandModel" class="en">BRAND - MODEL</label>
+                    <label for="bikeBrandModel" class="nl">MARQUE - MOD�LE</label>
+                  </th>
+                  <th class="bikepAchat">
+                    <label for="pAchat" class="fr">PRIX ACHAT</label>
+                    <label for="pAchat" class="en">BUTING PRICE</label>
+                    <label for="pAchat" class="nl">PRIX ACHAT</label>
+                  </th>
+                  <th class="bikepVenteHTVA" style="display:none">
+                    <label for="pVenteHTVA" class="fr">PRIX VENTE HTVA</label>
+                    <label for="pVenteHTVA" class="en">SELLING PRICE EXEPT VAT</label>
+                    <label for="pVenteHTVA" class="nl">PRIX VENTE HTVA</label>
+                  </th>
+                  <th class="bikeLeasing">
+                    <label for="leasing" class="fr">LEASING</label>
+                    <label for="leasing" class="en">LEASING</label>
+                    <label for="leasing" class="nl">LEASING</label>
+                  </th>
+                  <th class="bikeMarge">
+                    <label for="marge" class="fr">MARGE</label>
+                    <label for="marge" class="en">PROFIT</label>
+                    <label for="marge" class="nl">MARGE</label>
+                  </th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="separator"></div>
+          <div class="row templateBoxes">
+            <div class="col-sm-4">
+              <h4 class="fr text-green">Nombre de boxes: </h4>
+              <h4 class="en text-green">Boxes number: </h4>
+              <h4 class="nl text-green">Nombre de boxes: </h4>
+            </div>
+            <div class="col-sm-12">
+              <i class="fa fa-archive"></i> <span class="boxesNumber">0</span><input type="hidden" id="boxesNumber" name="boxesNumber" value="0" />
+              <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+              <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+            </div>
+            <table class="table table-condensed tableFixed  boxesNumberTable hideAt0">
+              <thead>
+                <tr>
+                  <th class="boxLabel">
+                  </th>
+                  <th class="boxModel">
+                    <label for="boxModel" class="fr">BOX</label>
+                    <label for="boxModel" class="en">BOX</label>
+                    <label for="boxModel" class="nl">BOX</label>
+                  </th>
+                  <th class="boxProdPrice">
+                    <label for="boxProdPrice" class="fr">PRIX PRODUCTION</label>
+                    <label for="boxProdPrice" class="en">MANUFACTURING PRICE</label>
+                    <label for="boxProdPrice" class="nl">PRIX PRODUCTION</label>
+                  </th>
+                  <th class="boxInstallationPrice">
+                    <label for="boxInstallationPrice" class="fr">PLACEMENT HTVA</label>
+                    <label for="boxInstallationPrice" class="en">POSE EXCLUDING VAT</label>
+                    <label for="boxInstallationPrice" class="nl">PLACEMENT HTVA</label>
+                  </th>
+                  <th class="boxLocationPrice">
+                    <label for="boxLocationPrice" class="fr">LOCATION MENSUELLE</label>
+                    <label for="boxLocationPrice" class="en">MONTHLY RENTING</label>
+                    <label for="boxLocationPrice" class="nl">LOCATION MENSUELLE</label>
+                  </th>
+                  <th class="boxMarge">
+                    <label for="boxMarge" class="fr">MARGE</label>
+                    <label for="boxMarge" class="en">MARGE</label>
+                    <label for="boxMarge" class="nl">MARGE</label>
+                  </th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="separator"></div>
+          <div class="row templateAccessories">
+            <div class="col-sm-4">
+              <h4 class="fr text-green">Accessoires: </h4>
+              <h4 class="en text-green">Accessories: </h4>
+              <h4 class="nl text-green">Accessoires: </h4>
+            </div>
+            <div class="col-sm-12 accessoriesButtons">
+              <i class="fa fa-calculator"></i> <span class="accessoriesNumber">0</span><input type="hidden" id="accessoriesNumber" name="accessoriesNumber" value="0" />
+              <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+              <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+            </div>
+            <table class="table table-condensed tableFixed otherCostsAccesoiresTable hideAt0">
+              <thead>
+                <th class="accessoriesLabel"></th>
+                <th class="accessoriesCategory">
+                  <label for="aCategory" class="fr">Cat�gorie</label>
+                </th>
+                <th class="accessoriesAccessory">
+                  <label for="aAccessory" class="fr">Accessoire</label>
+                </th>
+                <th class="accessoriesBuyingPrice">
+                  <label for="aBuyingPrice" class="fr">Prix achat</label>
+                </th>
+                <th class="accessoriesPriceHTVA">
+                  <label for="aPriceHTVA" class="fr">Prix Vente HTVA</label>
+                </th>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="separator"></div>
+          <div class="row templateOthers">
+            <div class="col-sm-4">
+              <h4 class="fr text-green">Autres: </h4>
+              <h4 class="en text-green">Others: </h4>
+              <h4 class="nl text-green">Others: </h4>
+            </div>
+            <div class="col-sm-12 othersButtons">
+              <i class="fa fa-eur"></i> <span class="othersNumber">0</span><input type="hidden" id="othersNumber" name="othersNumber" value="0" />
+              <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+              <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+            </div>
+            <table class="table table-condensed tableFixed otherTable hideAt0">
+              <thead>
+                <th class="othersLabel"></th>
+                <th class="othersDescription">
+                  <label for="oDescription" class="fr">Description</label>
+                </th>
+                <th class="othersCost">
+                  <label for="oCost" class="fr">Cout</label>
+                </th>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="separator"></div><div class="separator"></div>
+          <div class="row templateTableauRecap">
+            <div class="col-sm-4">
+              <h4 class="fr text-green">Tableau r�capitulatif: </h4>
+              <h4 class="en text-green">Summary table: </h4>
+              <h4 class="nl text-green">Summary table: </h4>
+            </div>
+            <div class="col-sm-12">
+              <button type="button" id="generateTableRecap" class="fr button small green button-3d rounded icon-left">G�n�rer / Actualiser</button>
+            </div>
+            <table class="table table-condensed tableFixed summaryTable" style="display:none">
+              <thead>
+                <th><label for="recapLabel fr">Item</label></th>
+                <th><label for="recapPrice fr">Prix de vente</label></th>
+                <th><label for="recapLeasing fr">Leasing/location (au mois)</label></th>
+              </thead>
+              <tbody></tbody>
+              <tfoot></tfoot>
+            </table>
+            <div class="separator"></div><div class="separator"></div>
+          </div>
+          <button type="submit" class="fr button small green button-3d rounded icon-left">G�n�rer PDF</button>
+        </form>
+      </div>
+      <script src="js/template-offre.js"></script>
+
+      <div class="modal-footer">
+        <div class="pull-left">
+          <button data-dismiss="modal" class="btn btn-b fr" type="button">Fermer</button>
+          <button data-dismiss="modal" class="btn btn-b en" type="button">Close</button>
+          <button data-dismiss="modal" class="btn btn-b nl" type="button">Sluiten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="costsManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
@@ -9875,12 +10170,12 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<form id="widget-costsManagement-form" action="include/costs_management.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                                 <h4 class="fr text-green costManagementTitle">Ajouter un frais</h4>
-                                
+
 								<div class="col-sm-12">
                                     <label for="title"  class="fr">Titre</label>
                                     <label for="title"  class="en">Title</label>
@@ -9891,9 +10186,9 @@ if($connected){
                                     <label for="description"  class="fr">Description</label>
                                     <label for="description"  class="en">Description</label>
                                     <label for="description"  class="nl">Description</label>
-                                    <textarea class="form-control required" rows="5" name="description"></textarea>                                    
+                                    <textarea class="form-control required" rows="5" name="description"></textarea>
 								</div>
-                                
+
                                 <div class="col-sm-12">
 									<div class="col-sm-3">
 	                                    <label for="type"  class="fr">Type</label>
@@ -9904,14 +10199,14 @@ if($connected){
 	                                        <option value="one-shot">Coût ponctuel</option>
 	                                    </select>
 	                                </div>
-									
+
 									<div class="col-sm-3">
 	                                    <label for="amount"  class="fr">Montant</label>
 	                                    <label for="amount"  class="en">Montant</label>
 	                                    <label for="amount"  class="nl">Montant</label>
 	                                    <input type="number" min="0" name="amount" class="form-control required">
 	                                </div>
-	
+
 	                            </div>
 
 								<div class="col-sm-12">
@@ -9928,20 +10223,20 @@ if($connected){
 	                                    <input type="date" name="end" class="form-control">
 	                                </div>
 								</div>
-								                                
+
                                 <div class="col-sm-12"></div>
                                 <br>
-                            
+
                                 <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user; ?>">
                                 <input type="text" name="action" class="form-control required hidden" value="add">
                                 <input type="text" name="ID" class="hidden">
-                                
+
                                 <div class="separator"></div>
                                 <button  class="fr button small green button-3d rounded icon-left costManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
                             </div>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-costsManagement-form").validate({
 								submitHandler: function(form) {
 									jQuery(form).ajaxSubmit({
@@ -9952,10 +10247,10 @@ if($connected){
 												}, {
 													type: 'success'
 												});
-                                                list_contracts_offers('*');                           
+                                                list_contracts_offers('*');
                                                 document.getElementById('widget-costsManagement-form').reset();
 												$('#costsManagement').modal('toggle');
-                                                
+
 											} else {
 												$.notify({
 													message: response.message
@@ -9967,22 +10262,22 @@ if($connected){
 									});
 								}
 							});
-                            
+
                             $("#widget-costsManagement-form select[name=type]").change(function() {
                                 if($("#widget-costsManagement-form select[name=type]").val()=="one-shot"){
                                     $("#widget-costsManagement-form input[name=end]").val("");
                                     $("#widget-costsManagement-form input[name=end]").attr("readonly", true);
-                                    
+
                                 }
                                 if($("#widget-costsManagement-form select[name=type]").val()=="monthly"){
                                     $("#widget-costsManagement-form input[name=end]").attr("readonly", false);
                                 }
-                            });                  
-                            
-                            
+                            });
 
 
-						</script>                 					
+
+
+						</script>
 					</div>
 				</div>
 			</div>
@@ -10013,21 +10308,21 @@ if($connected){
 						<h4 class="en-inline text-green">Booking reference:</h4>
 						<h4 class="nl-inline text-green">Booking reference:</h4>
                         <h4 span class="reservationNumber fr-inline"></h4>
-						<br><br>                        
+						<br><br>
 						<div class="col-sm-6">
                             <h4><span class="fr"> Date de début: </span></h4>
                             <h4><span class="en"> Start date: </span></h4>
                             <h4><span class="nl"> Start date: </span></h4>
                             <p span class="reservationStartDate"></p>
                         </div>
-                        
+
 						<div class="col-sm-6">
                             <h4><span class="fr"> Date de fin : </span></h4>
                             <h4><span class="en"> End date: </span></h4>
                             <h4><span class="nl"> End date: </span></h4>
                             <p span class="reservationEndDate"></p>
                         </div>
-                        
+
 						<div class="col-sm-6">
                             <h4><span class="fr"> Bâtiment de départ: </span></h4>
                             <h4><span class="en"> Start building: </span></h4>
@@ -10041,7 +10336,7 @@ if($connected){
                             <p span class="reservationEndBuilding"></p>
                         </div>
                     </div>
-                    <div class="col-sm-12">        
+                    <div class="col-sm-12">
 						<div class="col-sm-6">
                             <h4><span class="fr"> Vélo: </span></h4>
                             <h4><span class="en"> Bike: </span></h4>
@@ -10053,11 +10348,11 @@ if($connected){
                             <h4><span class="en"> User: </span></h4>
                             <h4><span class="nl"> User: </span></h4>
                             <p span class="reservationEmail"></p>
-                        </div>                        
-                           
+                        </div>
+
                         <div class="col-sm-4">
                             <img src="" class="reservationBikeImage" alt="image" />
-                        </div>           
+                        </div>
 					</div>
                     <div id="updateReservationdiv"></div>
                     <div id="deleteReservationdiv"></div>
@@ -10089,9 +10384,9 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Supprimer une réservation</h4>
-						
+
 						<form id="widget-deleteReservation-form" action="include/delete-reservation.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                             	<div class="col-sm-6">
                                 <label for="widget-deleteReservation-form-start"  class="fr">Début :</label>
@@ -10099,7 +10394,7 @@ if($connected){
                                 <label for="widget-deleteReservation-form-start"  class="nl">Start: </label>
                                 <input type="text" id="widget-deleteReservation-form-start" readonly="readonly" name="widget-deleteReservation-form-start" class="form-control required">
                                 </div>
-								
+
 								<div class="col-sm-6">
                                 <label for="widget-deleteReservation-form-end"  class="fr">Fin :</label>
                                 <label for="widget-deleteReservation-form-end"  class="en">End:</label>
@@ -10117,16 +10412,16 @@ if($connected){
                                 </div>
                             </div>
                             <h4>Confirmation de suppression</h4>
-                            
+
                             <label for="widget-deleteReservation-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
-                            <input type="text" id="widget-deleteReservation-form-confirmation" name="widget-deleteReservation-form-confirmation" class="form-control">                            
+                            <input type="text" id="widget-deleteReservation-form-confirmation" name="widget-deleteReservation-form-confirmation" class="form-control">
 
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-deleteReservation-form").validate({
 								submitHandler: function(form) {
 
@@ -10153,7 +10448,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -10181,9 +10476,9 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Supprimer une réservation</h4>
-						
+
 						<form id="widget-updateReservation-form" action="include/update-reservation.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
                             	<div class="col-sm-6">
                                 <label for="widget-updateReservation-form-start"  class="fr">Début :</label>
@@ -10191,7 +10486,7 @@ if($connected){
                                 <label for="widget-updateReservation-form-start"  class="nl">Start: </label>
                                 <input type="text" id="widget-updateReservation-form-start" name="widget-updateReservation-form-start" class="form-control required">
                                 </div>
-								
+
 								<div class="col-sm-6">
                                 <label for="widget-updateReservation-form-end"  class="fr">Fin :</label>
                                 <label for="widget-updateReservation-form-end"  class="en">End:</label>
@@ -10209,16 +10504,16 @@ if($connected){
                                 </div>
                             </div>
                             <h4>Confirmation de suppression</h4>
-                            
+
                             <label for="widget-updateReservation-form-confirmation" class="fr">Veuillez écrire "update" afin de confirmer la suppression</label>
-                            <input type="text" id="widget-updateReservation-form-confirmation" name="widget-updateReservation-form-confirmation" class="form-control">                            
+                            <input type="text" id="widget-updateReservation-form-confirmation" name="widget-updateReservation-form-confirmation" class="form-control">
 
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                            
+
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-updateReservation-form").validate({
 								submitHandler: function(form) {
 
@@ -10245,7 +10540,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -10275,14 +10570,14 @@ if($connected){
                         <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
 
                         <div class="col-sm-12">
-                            
+
                             <h4 class="fr-inline text-green">Référence du vélo :</h4>
                             <h4 class="en-inline text-green">Bike Reference:</h4>
                             <h4 class="nl-inline text-green">Bike Reference :</h4>
                             <span class="bikeReference"></span>
-                            
+
                             <div class="col-sm-12"></div>
-                            
+
                             <div class="col-sm-5">
                                 <h4><span class="fr"> Modèle : </span></h4>
                                 <h4><span class="en"> Model: </span></h4>
@@ -10297,16 +10592,16 @@ if($connected){
                                 <p span class="frameReference"></p>
 
                             </div>
-                            
+
                             <div class="separator"></div>
-                            
+
                             <h4 class="text-green">Informations relatives au contrat</h4>
 
                             <div class="col-sm-4">
                                 <h4><span class="fr"> Type de contrat : </span></h4>
                                 <h4><span class="en"> Contract type: </span></h4>
                                 <h4><span class="nl"> Contract type : </span></h4>
-                                <p><span class="contractType"></span></p> 
+                                <p><span class="contractType"></span></p>
                             </div>
 
                            <div class="col-sm-4">
@@ -10322,14 +10617,14 @@ if($connected){
                                 <h4><span class="nl" >End date :</span></h4>
                                 <p><span class="endDateContract"></span></p>
                             </div>
-                            
+
                             <div class="separator"></div>
-                            
+
                             <h4 class="text-green">Informations relatives au vélo</h4>
 
                             <div class="col-md-12">
                                 <img src="" class="bikeImage" alt="image" />
-                            </div>  
+                            </div>
                             <div class="col-sm-12">
                                 <div class="col-sm-4">
                                     <h4><span class="fr" >Status :</span></h4>
@@ -10348,21 +10643,21 @@ if($connected){
                                     <input type="text" class="hidden" id="widget-updateBikeStatus-form-frameNumber" name="widget-updateBikeStatus-form-frameNumber"/>
                                     <input type="text" class="hidden" name="user" value="<?php echo $user; ?>"/>
                                     <h4><span class="fr" >Accès aux bâtiments :</span></h4>
-                                    <div id="bikeBuildingAccess"></div>    
-                                </div>                                            
+                                    <div id="bikeBuildingAccess"></div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-12">    
+                        <div class="col-sm-12">
                         <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
                         <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
                         <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                         </div>
-                    </form>                        
+                    </form>
 				</div>
 			</div>
-			
-            
+
+
             <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -10382,7 +10677,7 @@ if($connected){
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
                 success: function(response) {
-                                        
+
                     if (response.response == 'success') {
                         $.notify({
                             message: response.message
@@ -10404,7 +10699,7 @@ if($connected){
         }
     });
 
-</script>                    
+</script>
 
 
 <div class="modal fade" id="updateBillingStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -10418,22 +10713,22 @@ if($connected){
                     <form id="widget-updateBillingStatus-form" action="include/updateBillingStatus.php" role="form" method="post">
 
                         <div class="form-group col-md-12">
-                            
-                            <h4 class="text-green">Informations sur la facture</h4>  
-                            
+
+                            <h4 class="text-green">Informations sur la facture</h4>
+
                             <div class="col-md-3">
                                 <label for="widget-updateBillingStatus-form-billingReference"  class="fr">ID</label>
                                 <label for="widget-updateBillingStatus-form-billingReference"  class="en">ID</label>
                                 <label for="widget-updateBillingStatus-form-billingReference"  class="nl">ID</label>
                                 <input type="text" class="form-control required" readonly="readonly" name="widget-updateBillingStatus-form-billingReference">
                             </div>
-                            
+
                             <div class="col-md-3">
                                 <label for="widget-updateBillingStatus-form-billingCompany"  class="fr">Originateur</label>
                                 <label for="widget-updateBillingStatus-form-billingCompany"  class="en">Originateur</label>
                                 <label for="widget-updateBillingStatus-form-billingCompany"  class="nl">Originateur</label>
                                 <input type="text" class="form-control required" name="widget-updateBillingStatus-form-billingCompany">
-                            </div>                            
+                            </div>
 
 
                             <div class="col-md-3">
@@ -10441,12 +10736,12 @@ if($connected){
                                 <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany"  class="en">Beneficiaire</label>
                                 <label for="widget-updateBillingStatus-form-beneficiaryBillingCompany"  class="nl">Beneficiaire</label>
                                 <input type="text" name="widget-updateBillingStatus-form-beneficiaryBillingCompany" class="form-control required">
-                            </div> 
+                            </div>
 
                             <div class="col-md-3">
                                 <label for="widget-updateBillingStatus-form-type" class="widget-updateBillingStatus-form-type">Type de facture</label>
                                 <input type="text" name="widget-updateBillingStatus-form-type" class="form-control required">
-                            </div> 
+                            </div>
 
                             <div class="col-md-12"></div><!-- Pour mettre "COMMUNICATON" à la ligne -->
                             <div class="col-md-3">
@@ -10454,12 +10749,12 @@ if($connected){
                                 <label for="widget-updateBillingStatus-form-communication"  class="en">Communication </label>
                                 <label for="widget-updateBillingStatus-form-communication"  class="nl">Communication</label>
                                 <input type="text" class="form-control required" name="widget-updateBillingStatus-form-communication">
-                            </div>                                   
+                            </div>
 
                             <div class="separator"></div>
 
                             <h4 class="text-green">Informations sur les montants</h4>
-                            
+
                             <div class="col-md-3">
                                 <label for="widget-updateBillingStatus-form-amountHTVA"  class="fr">Montant (HTVA)</label>
                                 <label for="widget-updateBillingStatus-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
@@ -10472,18 +10767,18 @@ if($connected){
                                 <label for="widget-updateBillingStatus-form-VAT" class="nl">TVA ?</label>
                                 <label for="widget-updateBillingStatus-form-VAT" class="en">TVA ? </label>
                                 <input type="checkbox" class="form-control" name="widget-updateBillingStatus-form-VAT" />
-                            </div>  
+                            </div>
 
                             <div class="col-md-3">
                                 <label for="widget-updateBillingStatus-form-amountTVAC"  class="fr">Montant (TVAC)</label>
                                 <label for="widget-updateBillingStatus-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
                                 <label for="widget-updateBillingStatus-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
                                 <input type="text" class="form-control required" name="widget-updateBillingStatus-form-amountTVAC" readonly="readonly">
-                            </div> 
+                            </div>
 
                             <div class="separator"></div>
                             <h4 class="text-green">Informations sur les dates</h4>
-                            <div class="col-md-6">                            
+                            <div class="col-md-6">
 
                                 <div class="col-md-6">
                                     <label for="widget-updateBillingStatus-form-date"  class="fr">Date</label>
@@ -10496,7 +10791,7 @@ if($connected){
                                     <label for="widget-updateBillingStatus-form-datelimite"  class="en">Date limite de paiement </label>
                                     <label for="widget-updateBillingStatus-form-datelimite"  class="nl">Date limite de paiement</label>
                                     <input type="date" class="form-control required" name="widget-updateBillingStatus-form-datelimite">
-                                </div>                             
+                                </div>
                                 <div class="col-md-12"></div><!-- Pour mettre "Envoyée" à la ligne -->
 
                                 <div class="col-md-6">
@@ -10504,34 +10799,34 @@ if($connected){
                                     <label for="widget-updateBillingStatus-form-sent"  class="en">Sent ?</label>
                                     <label for="widget-updateBillingStatus-form-sent"  class="nl">Sent ?</label>
                                     <input type="checkbox" class='form-control' name="widget-updateBillingStatus-form-sent" >
-                                </div> 
+                                </div>
 
                                 <div class="col-md-6">
                                     <label for="widget-updateBillingStatus-form-sendingDate"  class="fr">Date d'envoi</label>
                                     <label for="widget-updateBillingStatus-form-sendingDate"  class="en">Sending date </label>
                                     <label for="widget-updateBillingStatus-form-sendingDate"  class="nl">Sending date</label>
                                     <input type="date" class='form-control'  name="widget-updateBillingStatus-form-sendingDate">
-                                </div>          
+                                </div>
                                 <div class="col-md-12"></div><!-- Pour mettre "Payée" à la ligne -->
                                 <div class="col-md-6">
                                     <label for="widget-updateBillingStatus-form-paid"  class="fr">Payée ?</label>
                                     <label for="widget-updateBillingStatus-form-paid"  class="en">Paid ?</label>
                                     <label for="widget-updateBillingStatus-form-paid"  class="nl">Paid ?</label>
                                     <input type="checkbox" class='form-control'  name="widget-updateBillingStatus-form-paid" >
-                                </div>  
+                                </div>
 
                                 <div class="col-md-6">
                                     <label for="widget-updateBillingStatus-form-paymentDate"  class="fr">Date de paiement</label>
                                     <label for="widget-updateBillingStatus-form-paymentDate"  class="en">Payment date </label>
                                     <label for="widget-updateBillingStatus-form-paymentDate"  class="nl">Payment date</label>
                                     <input type="date" class='form-control'  name="widget-updateBillingStatus-form-paymentDate" >
-                                </div>     
+                                </div>
 
-                                
+
                             </div>
                             <div class="col-md-6">
                                 <h4 class="text-green">Informations sur le fichier</h4>
-                                
+
                                 <div class="col-md-12">
                                     <label for="accounting"  class="fr">Envoyée au comptable ?</label>
                                     <label for="accounting"  class="en">Sent to accounting ?</label>
@@ -10539,39 +10834,39 @@ if($connected){
                                     <input type="checkbox" class='form-control'  name="accounting" >
                                 </div>
                                 <br><br>
-                                
+
                                 <div class="col-md-12">
                                     <a href="#" class="widget-updateBillingStatus-form-currentFile" target="_blank"><img src="images/pdf.jpg" /></a>
                                     <input type="text" name="widget-updateBillingStatus-form-currentFile" class="hidden"/>
                                 </div>
-                                
+
                                 <div class="col-md-12">
                                     <label for="widget-updateBillingStatus-form-file"  class="fr">Modifier la facture (pdf):</label>
                                     <label for="widget-updateBillingStatus-form-file"  class="en">Modify the bill (pdf):</label>
                                     <label for="widget-updateBillingStatus-form-file"  class="nl">Modify the bill (pdf):</label>
                                     <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                     <input type=file size=40 name="widget-updateBillingStatus-form-file">
-                                </div>      
-                                
+                                </div>
+
                             </div>
-                            
-                            
+
+
 
 				        </div>
                         <div class="separator"></div>
-                        <h4 class="text-green">Détails de la facture</h4>                                                    
+                        <h4 class="text-green">Détails de la facture</h4>
                         <div id="billingDetails" class="col-md-12">
                         </div>
-                        
+
                         <input type="text" name="widget-updateBillingStatus-form-user" value="<?php echo $user; ?>" class="hidden">
 
-                        <div class="col-sm-12">    
+                        <div class="col-sm-12">
                             <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
                             <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
                             <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                         </div>
                     </form>
-                    
+
                     <form id="widget-deleteBillingStatus-form" action="include/updateBillingStatus.php" role="form" method="post">
                         <div class="col-sm-12">
                             <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
@@ -10582,13 +10877,13 @@ if($connected){
                             <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
                         </div>
                     </form>
-                    
-                    
-                    
+
+
+
 				</div>
 			</div>
-			
-            
+
+
             <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -10609,7 +10904,7 @@ if($connected){
         }else{
             $('input[name=widget-updateBillingStatus-form-amountTVAC]').val($('input[name=widget-updateBillingStatus-form-amountHTVA]').val());
         }
-      });    
+      });
     $('input[name=widget-updateBillingStatus-form-amountHTVA]').change(function(){
         if($('input[name=widget-updateBillingStatus-form-VAT]').is(':checked')){
             $('input[name=widget-updateBillingStatus-form-amountTVAC]').val((1.21*$('input[name=widget-updateBillingStatus-form-amountHTVA]').val()).toFixed(2));
@@ -10622,7 +10917,7 @@ if($connected){
             jQuery(form).ajaxSubmit({
                 success: function(response) {
                     if (response.response == 'success') {
-                        document.getElementById('widget-updateBillingStatus-form').reset();                        
+                        document.getElementById('widget-updateBillingStatus-form').reset();
                         $.notify({
                             message: response.message
                         }, {
@@ -10641,13 +10936,13 @@ if($connected){
             });
         }
     });
-    
+
     jQuery("#widget-deleteBillingStatus-form").validate({
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
                 success: function(response) {
                     if (response.response == 'success') {
-                        document.getElementById('widget-deleteBillingStatus-form').reset();                        
+                        document.getElementById('widget-deleteBillingStatus-form').reset();
                         $.notify({
                             message: response.message
                         }, {
@@ -10666,9 +10961,9 @@ if($connected){
             });
         }
     });
-    
 
-</script>                    
+
+</script>
 
 <div class="modal fade" id="updateAction" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
@@ -10679,13 +10974,13 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<form id="widget-updateAction-form" action="include/action_company.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
-                                
+
                                 <h4 class="fr text-green">Modifier une action</h4>
-                                
+
                                 <div class="col-sm-12">
                                     <div class="col-sm-4">
                                         <label for="id">ID :</label>
@@ -10706,22 +11001,22 @@ if($connected){
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-12">
                                     <div class="col-sm-4">
                                         <label for="type" class="fr"> Type : </label>
                                         <label for="type" class="en"> Type : </label>
-                                        <label for="type" class="nl"> Type : </label>                                        
+                                        <label for="type" class="nl"> Type : </label>
                                         <select title="type" class="selectpicker form-control required" name="type">
                                           <option value="contact">Prise de contact</option>
-                                          <option value="rappel">Rappel</option>            
-                                          <option value="plan rdv">Planification de rendez-vous</option>            
-                                          <option value="rdv">Rendez-vous</option>            
-                                          <option value="offre">Formulation d'une offre</option>            
-                                          <option value="offreSigned">Offre signée</option>            
-                                          <option value="delivery">Livraison vélo</option>            
-                                          <option value="other">Autre</option>            
-                                        </select>                                    
+                                          <option value="rappel">Rappel</option>
+                                          <option value="plan rdv">Planification de rendez-vous</option>
+                                          <option value="rdv">Rendez-vous</option>
+                                          <option value="offre">Formulation d'une offre</option>
+                                          <option value="offreSigned">Offre signée</option>
+                                          <option value="delivery">Livraison vélo</option>
+                                          <option value="other">Autre</option>
+                                        </select>
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="date">Date :</label>
@@ -10736,7 +11031,7 @@ if($connected){
                                 <div class="col-sm-12">
                                     <div class="col-sm-12">
                                         <label for="title">Titre :</label>
-                                        <input type="text" class="form-control required" name="title" />                                    
+                                        <input type="text" class="form-control required" name="title" />
 
                                     </div>
                                     <div class="col-sm-12">
@@ -10748,27 +11043,27 @@ if($connected){
                                         <label for="status">Statut :</label>
                                         <select title="Status" class="selectpicker" name="status">
                                           <option value="TO DO">To do</option>
-                                          <option value="DONE">Done</option>            
-                                        </select>                                    
+                                          <option value="DONE">Done</option>
+                                        </select>
                                     </div>
-                                
+
                                 </div>
                             </div>
 
                             <input type="text" name="requestor" value="<?php echo $user; ?>" class="hidden"/>
                             <input type="text" name="action" value="update" class="hidden"/>
 
-                            <div class="col-sm-12">    
+                            <div class="col-sm-12">
                                 <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
                                 <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
                                 <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
                             </div>
-                        </form>  
+                        </form>
                     </div>
 				</div>
 			</div>
-			
-            
+
+
             <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -10796,7 +11091,7 @@ if($connected){
                         list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
                         document.getElementById('widget-updateAction-form').reset();
                         $('#updateAction').modal('toggle');
-                        
+
 
                     } else {
                         $.notify({
@@ -10810,7 +11105,7 @@ if($connected){
         }
     });
 
-</script>        
+</script>
 
 
 <div class="modal fade" id="updatePortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -10822,11 +11117,11 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<form id="widget-updateCatalog-form" action="include/update_catalog_bike.php" role="form" method="post">
-                            
+
                             <div class="form-group col-sm-12">
-                                
+
                                 <h4 class="fr text-green">Modifier un vélo</h4>
                                 <div class="col-sm-12">
 
@@ -10868,10 +11163,10 @@ if($connected){
                                         </select>
 
                                     </div>
-                                    
+
                                 </div>
                                 <div class="col-sm-12">
-                                
+
                                     <div class="col-sm-4">
                                         <h4><span class="fr"> Utilisation : </span></h4>
                                         <h4><span class="en"> Utilisation: </span></h4>
@@ -10925,8 +11220,8 @@ if($connected){
                                         <label for="display" class="nl">Display ? </label>
                                         <input type="checkbox" name="display" class="form-control">
                                     </div>
-                                    
-                                    
+
+
                                     <div class="col-sm-8">
                                         <label for="link" class="fr"> Lien vers le site : </label>
                                         <label for="link" class="en"> Vendor link : </label>
@@ -10936,9 +11231,9 @@ if($connected){
                                 </div>
                             </div>
                             <h4 class="text-green">Image en taille normale</h4>
-                            
+
                             <div class="col-sm-12">
-                            
+
 
                                 <img src="" class="bikeCatalogImage" alt="image" height="200" />
 
@@ -10948,11 +11243,11 @@ if($connected){
                                     <label for="file"  class="nl">Modify the picture (don't do anything if already ok)</label>
                                     <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                     <input type=file size=40 class="form-control" name="file">
-                                </div>  
+                                </div>
                             </div>
-                            
+
                             <div class="col-sm-12">
-                            
+
                                 <h4 class="text-green">Image en taille réduite</h4>
                                     <img src="" class="bikeCatalogImageMini" alt="image" height="200" />
                                 <div class="col-sm-6">
@@ -10961,20 +11256,20 @@ if($connected){
                                     <label for="fileMini"  class="nl">Modify the mini picture (don't do anything if already ok)</label>
                                     <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                     <input type=file size=40 class="form-control" name="fileMini">
-                                </div>  
+                                </div>
                             </div>
 
 
                             <input type="text" name="user" value="<?php echo $user; ?>" class="hidden"/>
                             <input type="text" name="action" value="update" class="hidden"/>
 
-                            <div class="col-sm-12">    
+                            <div class="col-sm-12">
                                 <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
                                 <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
                                 <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
                             </div>
-                        </form>  
-                        
+                        </form>
+
                         <form id="widget-deletePortfolioBike-form" action="include/update_catalog_bike.php" role="form" method="post">
                             <div class="col-sm-12">
                                 <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
@@ -10985,12 +11280,12 @@ if($connected){
                                 <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
                             </div>
                         </form>
-                        
+
                     </div>
 				</div>
 			</div>
-			
-            
+
+
             <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -11010,7 +11305,7 @@ if($connected){
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
                 success: function(response) {
-                                        
+
                     if (response.response == 'success') {
                         $.notify({
                             message: response.message
@@ -11019,7 +11314,7 @@ if($connected){
                         });
                         listPortfolioBikes();
                         document.getElementById('widget-updateCatalog-form').reset();
-                        $('#updatePortfolioBike').modal('toggle');                                                
+                        $('#updatePortfolioBike').modal('toggle');
 
                     } else {
                         $.notify({
@@ -11032,12 +11327,12 @@ if($connected){
             });
         }
     });
-    
+
     jQuery("#widget-deletePortfolioBike-form").validate({
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
                 success: function(response) {
-                                        
+
                     if (response.response == 'success') {
                         $.notify({
                             message: response.message
@@ -11046,7 +11341,7 @@ if($connected){
                         });
                         listPortfolioBikes();
                         document.getElementById('widget-updateCatalog-form').reset();
-                        $('#updatePortfolioBike').modal('toggle');                                                
+                        $('#updatePortfolioBike').modal('toggle');
 
                     } else {
                         $.notify({
@@ -11060,7 +11355,7 @@ if($connected){
         }
     });
 
-</script>        
+</script>
 
 
 <div class="modal fade" id="addPortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -11075,7 +11370,7 @@ if($connected){
                     <form id="widget-addCatalog-form" action="include/add_catalog_bike.php" role="form" method="post">
                         <div class="col-sm-12">
                             <h4 class="text-green">Informations sur le modèle</h4>
-                        
+
                             <div class="col-sm-12">
                                 <div class="col-sm-4">
                                     <label for="brand" class="fr"> Marque : </label>
@@ -11112,7 +11407,7 @@ if($connected){
 
                                 </div>
                             </div>
-                    
+
                             <div class="col-sm-12">
 
                                 <div class="col-sm-4">
@@ -11145,10 +11440,10 @@ if($connected){
                                     <label for="link" class="nl"> Vendor link</label>
                                     <input type="text" class="form-control required" name="link" />
                                 </div>
-                            </div>                    
+                            </div>
                             <div class="separator"></div>
                             <h4 class="text-green">Information financières et stock</h4>
-                            
+
                             <div class="col-sm-12">
                                 <div class="col-sm-4">
                                     <label for="buyPrice" class="fr">Prix d'achat</label>
@@ -11176,21 +11471,21 @@ if($connected){
                                         <label for="display" class="nl">Display ? </label>
                                         <input type="checkbox" name="display" class="form-control">
                                     </div>
-                                
-                            
-                            
+
+
+
                             </div>
                             <div class="separator"></div>
                             <h4 class="text-green">Photos</h4>
-                            
-                            
+
+
                             <div class="form-group col-sm-6">
                                 <label for="file"  class="fr">Photo</label>
                                 <label for="file"  class="en">Picture</label>
                                 <label for="file"  class="nl">Picture</label>
                                 <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                 <input type=file size=40 class="form-control required" name="file">
-                            </div>  
+                            </div>
 
                             <div class="col-sm-6">
                                 <label for="fileMini"  class="fr">Photo mini</label>
@@ -11198,21 +11493,21 @@ if($connected){
                                 <label for="fileMini"  class="nl">Mini picture</label>
                                 <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                 <input type=file size=40 class="form-control required" name="fileMini">
-                            </div>  
+                            </div>
                         </div>
-                            
+
                         <input type="text" name="user" value="<?php echo $user; ?>" class="hidden" />
 
-                        <div class="col-sm-12">    
+                        <div class="col-sm-12">
                             <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
                             <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
                             <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                         </div>
-                    </form>                        
+                    </form>
 				</div>
 			</div>
-			
-            
+
+
             <div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
 			</div>
@@ -11232,7 +11527,7 @@ if($connected){
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
                 success: function(response) {
-                                        
+
                     if (response.response == 'success') {
                         $.notify({
                             message: response.message
@@ -11241,7 +11536,7 @@ if($connected){
                         });
                         listPortfolioBikes();
                         document.getElementById('widget-addCatalog-form').reset();
-                        $('#addPortfolioBike').modal('toggle');                                                
+                        $('#addPortfolioBike').modal('toggle');
 
                     } else {
                         $.notify({
@@ -11255,7 +11550,7 @@ if($connected){
         }
     });
 
-</script>                    
+</script>
 
 
 <div class="modal fade" id="tellus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -11268,7 +11563,7 @@ if($connected){
 				<div class="row">
 					<div class="col-sm-12">
 						<form id="widget-tellus-form" action="include/tellus-form.php" role="form" method="post">
-                                
+
                                 <div class="row">
                                     <div class="form-group col-sm-12">
                                         <label for="subject"  class="fr">Votre sujet</label>
@@ -11289,13 +11584,13 @@ if($connected){
 								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                             </form>
 							<script type="text/javascript">
-                                
+
                                 function initializeTellUs() {
                                     document.getElementById('widget-tellus-form-subject').value="";
                                     document.getElementById('widget-tellus-form-message').value="";
-                                    
+
                                 }
-                                
+
                                 jQuery("#widget-tellus-form").validate({
 
                                     submitHandler: function(form) {
@@ -11348,7 +11643,7 @@ if($connected){
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<form id="widget-updateInfo" action="include/updateInfos.php" role="form" method="post">                     
+						<form id="widget-updateInfo" action="include/updateInfos.php" role="form" method="post">
                                 <div class="row">
 									<h4 class="col-md-3 fr">Informations générales</h4>
 									<h4 class="col-md-3 en">General information</h4>
@@ -11358,13 +11653,13 @@ if($connected){
                                         <label for="firstname"  class="en">Firstname</label>
                                         <label for="firstname"  class="nl">Voornaam</label>
                                         <input type="text" id="widget-update-form-firstname" name="widget-update-form-firstname" class="form-control required" value="<?php echo $row["PRENOM"] ?>">
-                                        
+
                                         <label for="firstname"  class="fr">Nom</label>
                                         <label for="firstname"  class="en">Name</label>
                                         <label for="firstname"  class="nl">Achternaam</label>
                                         <input type="text" id="widget-update-form-name" name="widget-update-form-name" class="form-control required" value="<?php echo $row["NOM"] ?>">
-                                        
-                                        
+
+
                                         <label for="telephone"  class="fr">Numéro de téléphone</label>
 										<label for="telephone"  class="en">Phone number</label>
 										<label for="telephone"  class="nl">Telefoonnumber</label>
@@ -11411,7 +11706,7 @@ if($connected){
                                         <label for="widget-update-form-work-city"  class="en">City</label>
                                         <label for="widget-update-form-work-city"  class="nl">Gemeente</label>
                                         <input type="text" id="widget-update-form-work-city" name="widget-update-form-work-city" class="form-control" value="<?php echo $row['WORK_CITY'] ?>" autocomplete="off">
-                                    </div>											
+                                    </div>
                                     <div class="col-sm-3">
                                     <label for="password"  class="fr">Mot de passe</label>
                                     <label for="password"  class="en">Password</label>
@@ -11426,20 +11721,20 @@ if($connected){
                                      <div class="col-sm-12">
                                         <span id="widget-update-form-password-text"></span>
                                         <input type="password" id="widget-update-form-password" name="widget-update-form-password" class="form-control" value="********" autocomplete="off" readonly>
-                                        <span id="widget-update-form-password-confirmation-text"></span>                                           
+                                        <span id="widget-update-form-password-confirmation-text"></span>
                                         <input type="hidden" id="widget-update-form-password-confirmation"  name="widget-update-form-password-confirmation" class="form-control required" autocomplete="off">
                                         <input id="widget-update-form-password-switch" name="widget-update-form-password-switch" type="hidden" value="false">
-                                    </div>	
-										
+                                    </div>
+
 									<input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-updateInfo-antispam" value="" />
 								</div>
 								<button  class="fr button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Envoyer</button>
 								<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
 								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                                
+
                             </form>
 							<script type="text/javascript">
-                                
+
                                 function initializeUpdate(){
                                     document.getElementById('widget-update-form-password-text').innerHTML="";
                                     document.getElementById('widget-update-form-password').readOnly = true;
@@ -11448,16 +11743,16 @@ if($connected){
                                     document.getElementById('widget-update-form-password-confirmation').type='hidden';
                                     document.getElementById('widget-update-form-password-switch').value="false";
                                 }
-                                
+
                                 function updatePassword(){
-                                    
+
                                     document.getElementById('widget-update-form-password-text').innerHTML="<span class=\"fr\">Votre Nouveau mot de passe :</span><span class=\"nl\">Your new password :</span><span class=\"en\">Your new password:</span>";
                                     document.getElementById('widget-update-form-password').removeAttribute('readonly');
                                     document.getElementById('widget-update-form-password').value="";
                                     document.getElementById('widget-update-form-password-confirmation-text').innerHTML="<span class=\"fr\">Veuillez confirmer :</span><span class=\"nl\">Please confirm :</span><span class=\"en\">Please confirm:</span>";
                                     document.getElementById('widget-update-form-password-confirmation').type='password';
                                     document.getElementById('widget-update-form-password-switch').value="true";
-                                    
+
                                     displayLanguage();
                                     var langue = getLanguage();
                                 }
@@ -11475,10 +11770,10 @@ if($connected){
                                                     });
 													$('#update').modal('toggle');
                                                     var timestamp=Date.now().toString();
-                                                    addressDomicile="<?php 
+                                                    addressDomicile="<?php
                                                     $address=$row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'];
-                                                    echo $address;?>";                                                    
-                                                    get_meteo(timestamp.substring(0,10), addressDomicile)                                                    
+                                                    echo $address;?>";
+                                                    get_meteo(timestamp.substring(0,10), addressDomicile)
                                                 } else {
                                                     $.notify({
                                                         message: text.message
@@ -11533,11 +11828,11 @@ if($connected){
 								<p></p>
 							</a>
 						</div>
-					
+
 					</div>
-					
+
 					<div class="col-sm-6">
-						<div class=" jumbotron jumbotron-small jumbotron-border">	
+						<div class=" jumbotron jumbotron-small jumbotron-border">
 							<a data-target="#entretien2" data-toggle="modal" href="#" onclick="initializeEntretien2()">
 								<img src="images/entretien.jpg" class="img-responsive img-rounded" alt="entretien">
 								<h3 class="text-green fr">Entretien</h3>
@@ -11548,7 +11843,7 @@ if($connected){
 								<p class="nl"><small>Vraag om onderhoud</small></p>
 							</a>
 						</div>
-					
+
 					</div>
 				</div>
 			</div>
@@ -11587,8 +11882,8 @@ if($connected){
 						<p><span class="fr">Donnez votre numéro de contrat </span>
 						<span class="en">Give your contract number </span>
 						<span class="nl">Geef je contractnummer op </span>
-						<em class="text-green" id="ContractReference"><?php 
-						
+						<em class="text-green" id="ContractReference"><?php
+
 						if(isset($contractNumber) && $contractNumber!='0' && $contractNumber!='')
 						{
 							echo "<span style='display:block'>".$contractNumber."</span>";
@@ -11601,9 +11896,9 @@ if($connected){
 						<p class="fr">Pour nous aider à suivre votre dossier, veuillez remplir les informations ci-dessous.</p>
 						<p class="en">To help to follow the ticket, please mention the following information.</p>
 						<p class="nl">Volg de volgende informatie om het ticket te volgen.</p>
-						
+
 						<form id="widget-assistance-form" action="include/assistance-form.php" role="form" method="post">
-                            
+
 							<div class="form-group">
 								<label for="widget-assistance-form-message"  class="fr">Description du problème</label>
 								<label for="widget-assistance-form-message"  class="en">Message</label>
@@ -11626,12 +11921,12 @@ if($connected){
                                 echo "<input type=\"text\" class=\"hidden\" name=\"widget-assistance-form-contract\"/>";
                             }
                             ?>
-							
+
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
 						</form>
-						<script type="text/javascript">							
+						<script type="text/javascript">
 							jQuery("#widget-assistance-form").validate({
 
 								submitHandler: function(form) {
@@ -11659,7 +11954,7 @@ if($connected){
 								}
 							});
 
-						</script>                 					
+						</script>
 					</div>
 				</div>
 			</div>
@@ -11689,14 +11984,14 @@ if($connected){
 					<h4 class="en">Ask for an maintenance</h4>
 					<h4 class="nl">Vraag om een onderhoud</h4>
 						<form id="widget-entretien-form" action="include/entretien-form.php" role="form" method="post">
-                                
+
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                         <label for="widget-entretien-form-message"  class="fr">Numéro de cadre</label>
                                         <label for="widget-entretien-form-message"  class="en">Frame Number</label>
                                         <label for="widget-entretien-form-message"  class="nl">Frame Numer</label>
                                         <input type="text" id="widget-entretien-form-frame-number" name="widget-entretien-form-frame-number" class="form-control required" />
-                                    </div>                                    
+                                    </div>
                                     <div class="form-group col-sm-12">
                                         <label for="widget-entretien-form-bikePart"  class="fr">Pièce présentant un problème</label>
 										<label for="widget-entretien-form-bikePart"  class="en">Subject</label>
@@ -11752,7 +12047,7 @@ if($connected){
 								<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
 								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                             </form>
-                            <script type="text/javascript">								
+                            <script type="text/javascript">
                                 jQuery("#widget-entretien-form").validate({
 
                                     submitHandler: function(form) {
@@ -11801,7 +12096,7 @@ if($connected){
 	function initializeAssistance2() {
 		document.getElementById('widget-assistance-form-message').value="";
 		document.getElementById('widget-assistance-form-message-attachment').value="";
-		
+
 	}
 	function initializeEntretien2(frameNumber) {
         if(!(frameNumber)){
@@ -11812,9 +12107,9 @@ if($connected){
 		document.getElementById('widget-entretien-form-frame-number').value=frameNumber;
 		document.getElementById('widget-entretien-form-message').value="";
 		document.getElementById('widget-entretien-form-message-attachment').value="";
-		
+
 	}
-</script>	
+</script>
 
 
 
@@ -11831,7 +12126,7 @@ if($connected){
                 <div class="social-icons center">
 							<ul>
 								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
+
 								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 							</ul>
 						</div>
