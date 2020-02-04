@@ -26,6 +26,11 @@ include 'include/activitylog.php';
 .tableFixed {
   table-layout: fixed;
 }
+.separator-small{
+  padding-top:20px;
+  width:60%;
+  opacity: 0.5;
+}
 </style>
 
 
@@ -8244,9 +8249,10 @@ if($connected){
                             <label class="nl" >Phone :</label>
                             <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
                           </div>
-                          <div class="separator" style="padding-top:20px;width:60%"></div>
+                          <div class="separator separator-small"></div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6" style="text-align:center; margin-bottom:20px;">
                         <label for="statistiques">Envoyer le rapport de statistiques ?</label>
                         <input type="checkbox" name="statistiques" class="form-control" readonly="true"/>
                       </div>
@@ -8382,58 +8388,8 @@ if($connected){
 
                   });
 
-                  //ajouter un contact
-                  $('.addContact')[0].addEventListener('click', function(){
-                    var content = "";
-                    content +=`
-                    <div class="contactAddIteration">
-                      <div class="col-sm-12">
-                        <label for="contact">Ajout de contact</label>
-                        <button class="removeContact button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
-                      </div>
-                      <div class="col-md-3">
-                        <label for="email_billing" class="fr"> Email : </label>
-                        <input type="text" class="form-control emailContact" placeholder="email" />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="fr" >Nom :</label>
-                        <input type="text" class="form-control lastNameContact" placeholder="nom" />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="fr" >Prénom :</label>
-                        <input type="text" class="form-control firstNameContact" placeholder="prenom" />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="fr" >Téléphone :</label>
-                        <input type="text" class="form-control phoneContact" placeholder="téléphone" />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="fr" >Fonction :</label>
-                        <input type="text" class="form-control functionContact" placeholder="Fonction" />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="fr" >Recevoir les statistiques d'utilisation des vélos :</label>
-                        <input type="checkbox" class="form-control bikeStatsContact" value="true" />
-                      </div>
-                      <div class="col-sm-12" style="margin-top:20px;">
-                        <button class="button small green button-3d rounded icon-right addBikeAdmin">
-                        <span class="fr-inline" style="display: inline;">
-                        <i class="fa fa-plus"></i> Ajouter le contact</span></button>
-                      </div>
-                      <div class="separator"></div>
-                    </div>
-
-                    `;
-                    $('.clientContactZone').append(content);
-                  });
-                  $(document).ready(function(){
-                    $('body').on('click', '.removeContact', function(){
-                      $(this).parents('.contactAddIteration').fadeOut('600',function(){
-                        $(this).remove();
-                      });
-                      //$(this).parents('.contactAddIteration').hide();
-                    });
-                  });
+                  </script>
+                  <script type="text/javascript" src="js/add_company_contact.js">
 
                   </script>
 
@@ -9540,7 +9496,7 @@ if($connected){
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
               </div>
               <div class="modal-body">
-                <form role="form" class="isLeasing" id="templateForm" action="include/offer_template.php" method="post" role="form" novalidate="novalidate">
+                <form class="isLeasing" id="templateForm" action="include/offer_template.php" method="post" role="form" novalidate="novalidate">
                   <input type="hidden" name="companyIdTemplate" id ="companyIdTemplate" value="" />
                   <div class="row buyOrLeasing">
                     <div class="col-sm-4">
