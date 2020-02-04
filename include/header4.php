@@ -127,60 +127,7 @@
 					</div>
 					<!--END: MOBILE MENU -->
 
-					<!--NAVIGATION-->
-					<div class="navbar-collapse collapse main-menu-collapse navigation-wrap">
-						<div class="container">
-							<nav id="mainMenu" class="main-menu mega-menu">
-								<ul class="main-menu nav nav-pills">
-									<li class="fr"><a href="index2.php">Accueil</a></li>
-									<li class="en"><a href="index2.php">Home</a></li>
-									<li class="nl"><a href="index2.php">Home</a></li>
-									
-									<li class="dropdown fr"> <a href="#">Nos solutions <i class="fa fa-angle-down"></i> </a>
-										<ul class="dropdown-menu">
-											<li><a href="velo-partage.php">Vélo partagé</a> </li>
-											<li><a href="velo-personnel.php">Vélo personnel</a> </li>
-											<li><a href="#">Système de gestion de flotte</a> </li>
-											<li><a href="leasing.php">Leasing Vélo</a> </li>
-										</ul>
-									</li>
-									
-									<li class="fr"><a href="achat.php">Catalogue</a></li>
-									<li class="en"><a href="achat.php">Catalog</a></li>
-									<li class="nl"><a href="achat.php">Catalogus</a></li>
-									
-									<li class="fr"><a href="contact2.php">Contact</a></li>
-									<li class="en"><a href="contact2.php">Contact</a></li>
-									<li class="nl"><a href="contact2.php">Contact</a></li>
-									
-									<!--
-									
-									<?php 
-									//$_SESSION['login']="false";
-                                    $login = isset($_POST['login']) ? $_POST['login'] : "false";
-                                    $userID = isset($_POST['userID']) ? $_POST['userID'] : NULL;
-
-                                    
-									if ($login=="true" && $userID=NULL)
-									{?>
-									<li><a class="text-red" href="mykameo.php"><span>My Kameo</span></a></li>
-									<?php
-									}
-									else
-									{
-									?>
-									<li><a class="text-red" data-target="#mykameo" data-toggle="modal" href="#"><span>My Kameo</span></a></li>										
-									<?php
-									}
-									?>
-									
-									-->
-									
-								</ul>
-							</nav>
-						</div>
-					</div>
-					<!--END: NAVIGATION-->
+					
 				</div>
 			</div>
 		</header>

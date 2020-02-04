@@ -6,6 +6,20 @@ include 'include/header3.php';
 
 
  <!-- CONTENT -->
+ 
+		 <section class="p-b-0">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<!-- <hr class="space"> -->
+						<h1><ins>Achat vélo</ins></h1>
+						<p class="lead text-light">Achetez votre nouveau vélo via votre employeur</p>
+						<p>bla bla bla</p>
+						<p class="text-green">Ne s'affiche que quand on vient depuis la page d'accueil et qu'on clique sur "je suis un employé"</p>
+						<p>bla bla bla</p>
+				</div>
+			</div>
+		</section>
 		<section class="background-green">
             <div class="container">
                 <div class="row">
