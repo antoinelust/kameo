@@ -1,0 +1,24 @@
+    $ git status
+    [...]
+    # Untracked files:
+    [...]
+    #       Documentation/foo.html
+    #       Documentation/gitignore.html
+    #       file.o
+    #       lib.a
+    #       src/internal.o
+    [...]
+    $ cat .git/info/exclude
+    # ignore objects and archives, anywhere in the tree.
+    *.[oa]
+    $ cat Documentation/.gitignore
+    # ignore connexion.php files that contain information to connect to db
+    *connexion.php
+    *mp4
+    $ git status
+    [...]
+    # Untracked files:
+    [...]
+    #       Documentation/foo.html
+    [...]
+

@@ -36,7 +36,7 @@ include 'include/activitylog.php';
 <script type="text/javascript">
 var color=Chart.helpers.color;
 
-//id de la compagnie selectionn�e si il y en a une s�lectionn�e
+//id de la compagnie selectionnée si il y en a une sélectionnée
 var companyId;
 
 //varibles des charts chartJS
@@ -8445,7 +8445,7 @@ if($connected){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -8453,12 +8453,12 @@ if($connected){
             <div class="col-sm-12 form-group">
 
               <div class="col-sm-12">
-                <h4 class="text-green">Informations g�n�rales</h4>
+                <h4 class="text-green">Informations générales</h4>
                 <a href="#" class="text-red updateClientInformationButton">Update</a>
                 <a href="#" class="text-red cancelUpdateClientInformation hidden">Cancel update</a>
               </div>
               <div class="col-sm-12">
-                <label class="fr">Nom de la soci�t� :</label>
+                <label class="fr">Nom de la société :</label>
                 <label class="en">Company Name:</label>
                 <label class="nl">Company Name :</label>
                 <input type="text" id="companyName" class="form-control updateClientInformation" name="widget_companyDetails_companyName" value="" readonly="true"/>
@@ -8483,7 +8483,7 @@ if($connected){
                 <input type="text" id="companyTown" class="form-control updateClientInformation" name="widget_companyDetails_companyTown" value="" readonly="true"/>
               </div>
               <div class="col-sm-5">
-                <label class="fr"> Num�ro TVA : </label>
+                <label class="fr"> Numéro TVA : </label>
                 <label class="en"> VAT Number: </label>
                 <label class="nl"> VAT Number: </label>
                 <input type="text" id="companyVAT" class="form-control updateClientInformation" name="widget_companyDetails_companyVAT" value="" readonly="true"/>
@@ -8524,14 +8524,14 @@ if($connected){
                   </div>
 
                   <div class="col-md-3">
-                    <label class="fr" >Pr�nom :</label>
+                    <label class="fr" >Prénom :</label>
                     <label class="en" >First Name:</label>
                     <label class="nl" >First Name :</label>
                     <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
                   </div>
 
                   <div class="col-md-3">
-                    <label class="fr" >T�l�phone :</label>
+                    <label class="fr" >Téléphone :</label>
                     <label class="en" >Phone:</label>
                     <label class="nl" >Phone :</label>
                     <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
@@ -8548,7 +8548,7 @@ if($connected){
               <div class="separator"></div>
 
               <div class="col-sm-12">
-                <h4 class="text-green">Informations relatives � la facturation</h4>
+                <h4 class="text-green">Informations relatives à la facturation</h4>
               </div>
 
               <div class="col-md-3">
@@ -8566,14 +8566,14 @@ if($connected){
               </div>
 
               <div class="col-md-3">
-                <label for="firstNameContactBilling" class="fr" >Pr�nom :</label>
+                <label for="firstNameContactBilling" class="fr" >Prénom :</label>
                 <label for="firstNameContactBilling" class="en" >First Name:</label>
                 <label for="firstNameContactBilling" class="nl" >First Name :</label>
                 <input type="text" class="form-control" name="firstNameContactBilling" value="" readonly="true"/>
               </div>
 
               <div class="col-md-3">
-                <label for="phoneBilling" class="fr" >T�l�phone :</label>
+                <label for="phoneBilling" class="fr" >Téléphone :</label>
                 <label for="phoneBilling" class="en" >Phone:</label>
                 <label for="phoneBilling" class="nl" >Phone :</label>
                 <input type="text" class="form-control" name="phoneBilling" value="" readonly="true"/>
@@ -8681,7 +8681,7 @@ if($connected){
           </script>
 
           <div class="col-sm-12" id="clientBikes">
-            <h4 class="text-green">V�los :</h4>
+            <h4 class="text-green">Vélos :</h4>
             <p><span id="companyBikes"></span></p>
           </div>
 
@@ -8702,7 +8702,7 @@ if($connected){
           </div>
 
           <div class="col-sm-12" id="clientBuildings">
-            <h4 class="text-green">B�timents:</h4>
+            <h4 class="text-green">Bétiments:</h4>
             <p><span id="companyBuildings"></span></p>
           </div>
 
@@ -9928,14 +9928,14 @@ if($connected){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">�</button>
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">-</button>
       </div>
       <div class="modal-body">
         <form class="isLeasing" id="templateForm" action="include/offer_template.php" method="post" role="form" novalidate="novalidate">
           <input type="hidden" name="companyIdTemplate" id ="companyIdTemplate" value="" />
           <div class="row buyOrLeasing">
             <div class="col-sm-4">
-              <h4 class="fr text-green">G�n�ral: </h4>
+              <h4 class="fr text-green">Général: </h4>
               <h4 class="en text-green">General: </h4>
               <h4 class="nl text-green">General: </h4>
             </div>
@@ -9952,9 +9952,9 @@ if($connected){
                 <!--<input type="checkbox" class="leasingCheck form-control" name="isLeasing" value="leasing" checked />-->
               </div>
               <div class="col-sm-4 form-group leasingSpecific">
-                <label for="leasingDuration" class="fr">Dur�e leasing (mois)</label>
+                <label for="leasingDuration" class="fr">Durée leasing (mois)</label>
                 <label for="leasingDuration" class="en">Leasing duration (months)</label>
-                <label for="leasingDuration" class="nl">Dur�e leasing (mois)</label>
+                <label for="leasingDuration" class="nl">Durée leasing (mois)</label>
                 <input type="number" name="leasingDuration" class="leasingDuration form-control required" aria-required="true" value="36" min="1">
               </div>
               <div class="col-sm-3 form-group leasingSpecific">
@@ -9974,9 +9974,9 @@ if($connected){
           <div class="separator"></div>
           <div class="row templateBike">
             <div class="col-sm-4">
-              <h4 class="fr text-green">Nombre de v�los: </h4>
+              <h4 class="fr text-green">Nombre de vélos: </h4>
               <h4 class="en text-green">Bike number: </h4>
-              <h4 class="nl text-green">Nombre de v�los: </h4>
+              <h4 class="nl text-green">Nombre de vélos: </h4>
             </div>
             <div class="col-sm-12">
               <i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span><input type="hidden" id="bikesNumber" name="bikesNumber" value="0" />
@@ -9988,9 +9988,9 @@ if($connected){
                 <tr>
                   <th class="bLabel"></th>
                   <th class="bikeBrandModel">
-                    <label for="bikeBrandModel" class="fr">MARQUE - MOD�LE</label>
+                    <label for="bikeBrandModel" class="fr">MARQUE - MODÈLE</label>
                     <label for="bikeBrandModel" class="en">BRAND - MODEL</label>
-                    <label for="bikeBrandModel" class="nl">MARQUE - MOD�LE</label>
+                    <label for="bikeBrandModel" class="nl">MARQUE - MODÈLE</label>
                   </th>
                   <th class="bikepAchat">
                     <label for="pAchat" class="fr">PRIX ACHAT</label>
@@ -10080,7 +10080,7 @@ if($connected){
               <thead>
                 <th class="accessoriesLabel"></th>
                 <th class="accessoriesCategory">
-                  <label for="aCategory" class="fr">Cat�gorie</label>
+                  <label for="aCategory" class="fr">Catégorie</label>
                 </th>
                 <th class="accessoriesAccessory">
                   <label for="aAccessory" class="fr">Accessoire</label>
@@ -10127,12 +10127,12 @@ if($connected){
           <div class="separator"></div><div class="separator"></div>
           <div class="row templateTableauRecap">
             <div class="col-sm-4">
-              <h4 class="fr text-green">Tableau r�capitulatif: </h4>
+              <h4 class="fr text-green">Tableau récapitulatif: </h4>
               <h4 class="en text-green">Summary table: </h4>
               <h4 class="nl text-green">Summary table: </h4>
             </div>
             <div class="col-sm-12">
-              <button type="button" id="generateTableRecap" class="fr button small green button-3d rounded icon-left">G�n�rer / Actualiser</button>
+              <button type="button" id="generateTableRecap" class="fr button small green button-3d rounded icon-left">Générer / Actualiser</button>
             </div>
             <table class="table table-condensed tableFixed summaryTable" style="display:none">
               <thead>
@@ -10145,7 +10145,7 @@ if($connected){
             </table>
             <div class="separator"></div><div class="separator"></div>
           </div>
-          <button type="submit" class="fr button small green button-3d rounded icon-left">G�n�rer PDF</button>
+          <button type="submit" class="fr button small green button-3d rounded icon-left">Générer PDF</button>
         </form>
       </div>
       <script src="js/template-offre.js"></script>
