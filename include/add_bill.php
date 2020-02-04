@@ -14,7 +14,7 @@ include 'globalfunctions.php';
 
 $email=$_POST['widget-addBill-form-email'];
 $company=$_POST['widget-addBill-form-company'];
-$beneficiaryCompany=$_POST['widget-addBill-form-beneficiaryCompany'];
+$beneficiaryCompany=$_POST['beneficiaryCompany'];
 $companyOther=$_POST['widget-addBill-form-companyOther'];
 $date=$_POST['widget-addBill-form-date'];
 $type=$_POST['type'];
@@ -23,11 +23,12 @@ $amountHTVA=$_POST['widget-addBill-form-amountHTVA'];
 $amountTVAC=$_POST['widget-addBill-form-amountTVAC'];
 $billingSent=isset($_POST['widget-addBill-form-sent']) ? "1" : "0";
 $ID=isset($_POST['ID']) ?$_POST['ID'] :  NULL;
+$ID_OUT=isset($_POST['ID_OUT']) ?$_POST['ID_OUT'] :  NULL;
 $billingSentDate=isset($_POST['widget-addBill-form-sendingDate']) ? date($_POST['widget-addBill-form-sendingDate']) : "0";
 $billingPaid=isset($_POST['widget-addBill-form-paid']) ? "1" : "0";
 $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST['widget-addBill-form-paymentDate']) : "0";
 $billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
-$communication=$_POST['widget-addBill-form-communication'];
+$communication=$_POST['communication'];
 
 
 if($amountHTVA<0 && $company!="KAMEO"){
@@ -61,32 +62,20 @@ if($type=="autre" && !isset($typeOther)){
 }
 
 if(isset($_FILES['widget-addBill-form-file']))
-{ 
-    include 'connexion.php';
-    $sql="select max(ID) as 'MAXID' from factures";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result = mysqli_query($conn, $sql);   
-    $resultat = mysqli_fetch_assoc($result);
-    $maxID=$resultat['MAXID'];
-    $newID=$maxID+1;
-    
+{     
     $dossier = '../factures/';
 
     $extensions = array('.pdf');
     $extension = strrchr($_FILES['widget-addBill-form-file']['name'], '.');
     
     if($amountHTVA<0){
-        $fileName=substr($date, 0, 10)."_".$beneficiaryCompany."_".$newID;
+        $fileName=substr($date, 0, 10)."_".$beneficiaryCompany."_".$ID;
     }else{
-        $fileName=substr($date, 0, 10)."_".$company."_".$newID;
+        $fileName=substr($date, 0, 10)."_".$company."_".$ID;
     }
     
     if($ID && $beneficiaryCompany=='KAMEO'){
-        $fileName=$fileName."_facture_".$ID;
+        $fileName=$fileName."_facture_".$ID_OUT;
     }
         
     if(!in_array($extension, $extensions))
@@ -160,8 +149,11 @@ if($billingPaidDate!=NULL){
     $billingLimitPaidDate='NULL';
 }      
 
-
-$sql= "INSERT INTO  factures (ID, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$newID', '$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
+if($ID && $beneficiaryCompany=='KAMEO'){
+    $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', '$ID_OUT', '$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
+}else{
+    $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', NULL, '$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
+}
 
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);

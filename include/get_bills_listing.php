@@ -171,7 +171,7 @@ if($email != NULL)
 
     
     include 'connexion.php';
-    $sql="select MAX(ID_OUT_BILL) as MAX from factures";
+    $sql="select MAX(ID_OUT_BILL) as MAX_OUT, MAX(ID) as MAX_TOTAL from factures";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -181,7 +181,27 @@ if($email != NULL)
     $resultat = mysqli_fetch_assoc($result);
     $conn->close();
 
-    $response['IDMaxBillingOut']=$resultat['MAX'];
+    $response['IDMaxBillingOut']=$resultat['MAX_OUT'];
+    
+    $newID=$resultat['MAX_TOTAL'];
+    $newID=strval($newID+1);
+    $length=strlen($newID);
+    $i=(3-$length);
+    $reference=$newID;
+    while($i>0){
+        $i-=1;
+        $reference="0".$reference;
+    }
+    $currentDate = new DateTime('now');
+    $month=$currentDate->format('m');
+    $year=$currentDate->format('Y');
+    $base_modulo=$month.substr($year,2,2).$reference;
+    $modulo_check=($base_modulo % 97);
+    $reference='000/'.$month.substr($year,2,2).'/'.$reference.$modulo_check;
+    
+    $response['communication']=$reference;
+    $response['IDMaxBilling']=$resultat['MAX_TOTAL'];
+    
     
     
     

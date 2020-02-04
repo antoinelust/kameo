@@ -16,13 +16,14 @@ include 'include/header2.php';
                         <hr class="space">
                         
                         <!-- SECTION -->
+                        	<div class="hidden-sm">
 						    <!--Default icons-->
 						    <div class="row">
 						    
 						      <div class="col-md-4">
 						        <div class="icon-box effect medium center">
 						          <div class="icon"><i class="fa fa-arrow-up"></i></div>
-						          <h3>Augmenter le pouvoir d'achat de vos employés</h3>
+						          <h3>Augmentez le pouvoir d'achat de vos employés</h3>
 						          <p></p>
 						          <hr class="space">
 						        </div>
@@ -48,6 +49,46 @@ include 'include/header2.php';
 						     <h3 class="text-green text-center">De plus</h3>      
 						<p class="lead text-dark text-center">Vos employés arriveront <bold class="text-green">toujours à l'heure</bold>, ils garderont <bold class="text-green">la forme</bold>, et auront <bold class="text-green">le sourire</bold>.</p>
 						      
+						    </div>
+						    </div>
+						    
+						    <div class="visible-sm">
+						    <!--Default icons-->
+						    <div class="row">
+						    
+						      <div class="col-md-6">
+						        <div class="icon-box effect medium center">
+						          <div class="icon"><i class="fa fa-arrow-up"></i></div>
+						          <h3>Augmentez le pouvoir d'achat de vos employés</h3>
+						          <p></p>
+						        </div>
+						      </div>
+						      
+						      <div class="separator seperator-small"></div>
+						      
+						      <div class="col-md-6">
+						        <div class="icon-box effect medium center">
+						          <div class="icon"><i class="fa fa-diamond"></i></div>
+						          <h3>Coût équivalent pour votre entreprise</h3>
+						          <p></p>
+						        </div>
+						      </div>
+						      
+						      <div class="separator seperator-small"></div>
+						      
+						      <div class="col-md-6">
+						        <div class="icon-box effect medium center color">
+						          <div class="icon"><i class="fa fa-leaf"></i></div>
+						          <h3 class="text-green">Mobilité respectueuse de l'environnement</h3>
+						          <p></p>
+						        </div>
+						      </div>
+						     </div>
+						     
+						     <h3 class="text-green text-center">De plus</h3>      
+						<p class="lead text-dark text-center">Vos employés arriveront <bold class="text-green">toujours à l'heure</bold>, ils garderont <bold class="text-green">la forme</bold>, et auront <bold class="text-green">le sourire</bold>.</p>
+						      
+						    </div>
 						    </div>
 						 
 		 
@@ -103,11 +144,13 @@ include 'include/header2.php';
 			
 			<div class="col-md-12 text-center">			 
 				<h3 class="text-green">KAMEO Bikes vous propose:</h3>
-				<p class="text-dark">Pour une durée de 3 mois minimum</p>
+				<p class="text-dark">Pour une durée de minimum 3 mois</p>
 			</div>
 			<hr class="space">
 			
 			 <!-- SECTION -->
+			 
+			 				<div class="hidden-sm">
 						    <!--Default icons-->
 						    <div class="row">
 						    
@@ -139,6 +182,44 @@ include 'include/header2.php';
 						     
 						     
 						    </div>
+						    </div>
+						    
+						    <div class="visible-sm">
+						    <!--Default icons-->
+						    <div class="row">
+						    
+						      <div class="col-md-6">
+						        <div class="icon-box effect medium center">
+						          <div class="icon"><i class="fa fa-bicycle"></i></div>
+						          <h3>Différents vélos</h3>
+						          <p>pour s'adapter aux différents trajets de chaque cycliste</p>
+						        </div>
+						      </div>
+						      
+						      <div class="separator seperator-small"></div>
+						      
+						      <div class="col-md-6">
+						        <div class="icon-box effect medium center">
+						          <div class="icon"><i class="fa fa-laptop"></i></div>
+						          <h3>Une solution informatique complète</h3>
+						          <p>pour gérer les prêts des vélos pendant la période de location</p>
+						        </div>
+						      </div>
+						      
+						      <div class="separator seperator-small"></div>
+						      
+						      <div class="col-md-6">
+						        <div class="icon-box effect medium center">
+						          <div class="icon"><i class="fa fa-line-chart"></i></div>
+						          <h3>Toutes les statistiques</h3>
+						          <p>sur votre test pour vous permettre d'agir pendant et après celui-ci</p>
+						        </div>
+						      </div>
+						     </div>
+						     
+						     
+						    </div>
+						    </div>
 						      
 						<h3 class="text-green text-center">Mais aussi</h3>      
 						<p class="lead text-dark text-center"><bold class="text-green">Une série d'accessoires</bold> pour rouler en sécurité et bien équipé, <bold class="text-green">une aide</bold> pour la communication autour des vélos, <bold class="text-green">un jeu concours</bold> pour motiver vos futurs cyclistes.</p>
@@ -158,41 +239,44 @@ include 'include/header2.php';
 		<div class="row">
 			<h2 class="text-light text-center">Envie de pédaler avec nous?</h2>
 			
+			<div class="hidden-sm">
+			
 			<!--Default icons-->
-            <div class="row">
+			<div class="row">
 
                 <div class="col-md-4">
-                <div class="icon-box effect medium center text-light">
-                  <div class="icon"><i class="fa fa-envelope"></i></div>
-                  <h3>1. Contact</h3>
-                  <p>Vous nous envoyez vos coordonnées via le formulaire de contact</p>
-                  <hr class="space">
-                </div>
-                </div>
+                	<div class="icon-box effect medium center text-light">
+                 		<div class="icon"><i class="fa fa-envelope"></i></div>
+                  			<h3>1. Contact</h3>
+                  			<p>Vous nous envoyez vos coordonnées via le formulaire de contact</p>
+                  			<hr class="space">
+                	</div>
+               	</div>
 
                 <div class="col-md-4">
-                <div class="icon-box effect medium center text-light">
-                  <div class="icon"><i class="fa fa-phone"></i></div>
-                  <h3>2. Prise de rendez-vous</h3>
-                  <p>Nous vous recontactons pour une rencontre</p>
+                	<div class="icon-box effect medium center text-light">
+                 		<div class="icon"><i class="fa fa-phone"></i></div>
+                  			<h3>2. Prise de rendez-vous</h3>
+                  			<p>Nous vous recontactons pour une rencontre</p>
+                	</div>
                 </div>
-                </div>
+                
 
                 <div class="col-md-4">
                     <div class="icon-box effect medium center text-light">
                         <div class="icon"><i class="fa fa-comments-o"></i></div>
                             <h3>3. Rencontre</h3>
                             <p>Nous fixons ensemble les modalités de votre test</p>
-                        </div>
-                </div>
-            </div>
+                	</div>
+            	</div>
+            	</div>
 
                 <div class="row center">
                     <div class="col-md-6">
                         <div class="icon-box effect medium center text-light">
-                          <div class="icon"><i class="fa fa-book"></i></div>
-                          <h3>4. Documentation</h3>
-                          <p>Vous recevez tous les détails pratiques à l'avance</p>
+                			<div class="icon"><i class="fa fa-book"></i></div>
+                          	<h3>4. Documentation</h3>
+                          	<p>Vous recevez tous les détails pratiques à l'avance</p>
                         </div>
                     </div>
 
@@ -206,13 +290,72 @@ include 'include/header2.php';
 
                 </div>
 						 
+		 </div>
+		 </div>
 		 
-        </div>
+		 <div class="visible-sm">
+			
+			<!--Default icons-->
+			<div class="row">
+
+                <div class="col-md-6">
+                	<div class="icon-box effect medium center text-light">
+                 		<div class="icon"><i class="fa fa-envelope"></i></div>
+                  			<h3>1. Contact</h3>
+                  			<p>Vous nous envoyez vos coordonnées via le formulaire de contact</p>
+                	</div>
+               	</div>
+               	
+               	<div class="separator seperator-small"></div>
+
+                <div class="col-md-6">
+                	<div class="icon-box effect medium center text-light">
+                 		<div class="icon"><i class="fa fa-phone"></i></div>
+                  			<h3>2. Prise de rendez-vous</h3>
+                  			<p>Nous vous recontactons pour une rencontre</p>
+                	</div>
+                </div>
+                
+                <div class="separator seperator-small"></div>
+
+                <div class="col-md-6">
+                    <div class="icon-box effect medium center text-light">
+                        <div class="icon"><i class="fa fa-comments-o"></i></div>
+                            <h3>3. Rencontre</h3>
+                            <p>Nous fixons ensemble les modalités de votre test</p>
+                	</div>
+            	</div>
+            	
+            	<div class="separator seperator-small"></div>
+
+                <div class="col-md-6">
+                    <div class="icon-box effect medium center text-light">
+                		<div class="icon"><i class="fa fa-book"></i></div>
+                        <h3>4. Documentation</h3>
+                        <p>Vous recevez tous les détails pratiques à l'avance</p>
+                    </div>
+                </div>
+                
+                <div class="separator seperator-small"></div>
+
+                <div class="col-md-6">
+                    <div class="icon-box effect medium center text-light">
+                    	<div class="icon"><i class="fa fa-bicycle"></i></div>
+                        <h3>5. Enjoy your ride!</h3>
+                        <p>Le test commence</p>
+                    </div>
+                </div>
+
+						 
+		 </div>
+		 </div>
+		 
     </div>
     <!--End: Square icons-->
     <div class="separator"></div>
 			
 			<!--Default Form-->
+			<div class="container">
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1">
 						
@@ -287,6 +430,7 @@ include 'include/header2.php';
                             </script>
 					</div>
 				</div>
+			</div>
 				<!--END: Default Form-->
 			
 </section>
@@ -375,6 +519,8 @@ include 'include/header2.php';
 	                <div class="social-icons center">
 								<ul>
 									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
 									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>

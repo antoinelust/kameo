@@ -385,9 +385,10 @@ if($action=="graphic"){
     $i=0;
     while($row = mysqli_fetch_array($result)){
         $response['owner'][$i]['email']=$row['EMAIL'];
-        $response['owner'][$i]['name']=$resultat['NOM'];
-        $response['owner'][$i]['firstName']=$resultat['PRENOM'];
+        $response['owner'][$i]['name']=$row['NOM'];
+        $response['owner'][$i]['firstName']=$row['PRENOM'];
         $i++;
+        
         
     }
     

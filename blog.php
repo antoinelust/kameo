@@ -10,8 +10,6 @@ include 'include/header2.php';
 								
 				<div class="heading heading text-left m-b-20">
 					<h2 class="fr">Le Blog</h2>
-					<h2 class="en">The Blog</h2>
-					<h2 class="nl">De Blog</h2>
 				</div>
 				<br>
             
@@ -22,31 +20,20 @@ include 'include/header2.php';
 				            <!-- Post OpenRouteService-->
 				            <div class="post-item">
 				                <div class="post-image">
-				                    <a href="blog_openrouteservice.php">
-				                        <img alt="" src="images/blog/OpenRouteService_Mini.jpg">
+				                    <a href="blog_exofiscale.php">
+				                        <img alt="" src="images/blog/exo_fiscale.jpg">
 				                    </a>
 				                </div>
 				                <div class="post-content-details">
 				                    <div class="post-title">
-				                        <h3><a href="blog_openrouteservice.php">OpenRouteService</a></h3>
-				                    </div>
-				                    <div class="post-info">
-				                        <span class="post-autor">Écrit par: <a href="#">Antoine</a></span>
+				                        <h3><a href="blog_exofiscale.php">Déduction fiscale</a></h3>
 				                    </div>
 				                    <div class="post-description">
-				                        <p>OpenRoutesService est un outil publié par le "Heidelberg Institute for Geoinformation Technology" et permet de générer des cartes isochrones de manière très précises.</p>
+				                        <p>Profitez de la déduction fiscale de 120% jusqu'au 31 décembre 2019.</p>
 				
 				                        <div class="post-info">
-				                            <a class="read-more" href="blog_openrouteservice.php">Lire plus <i class="fa fa-long-arrow-right"></i></a>
+				                            <a class="read-more" href="blog_exofiscale.php">Lire plus <i class="fa fa-long-arrow-right"></i></a>
 				                        </div>
-				                    </div>
-				                </div>
-				
-				                <div class="post-meta">
-				                    <div class="post-date">
-				                        <span class="post-date-day">29</span>
-				                        <span class="post-date-month">Decembre</span>
-				                        <span class="post-date-year">2018</span>
 				                    </div>
 				                </div>
 				            </div>
@@ -104,8 +91,8 @@ include 'include/header2.php';
                 <div class="social-icons center">
 							<ul>
 								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+								<!--
+								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>-->
 							</ul>
 				</div>
 				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>

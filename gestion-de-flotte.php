@@ -86,13 +86,19 @@ window.addEventListener("DOMContentLoaded", function(event) {
              
              
 		
-		<div class="col-md-6">
-        <div class="icon-box medium fancy">
-          <div class="icon" data-animation="wobble infinite"> <a href="#"><i class="fa fa-bicycle"></i></a> </div>
-          <div id="bookingCounter" class="counter bold"></div>
+        <div class="icon-box medium fancy hidden-xs">
+          <div class="icon bold" data-animation="pulse infinite"><i class="fa fa-bicycle"></i></div>
+          <div id="bookingCounter" class="counter bold" style="color:#3cb395"></div>
           <p>Nombre de réservations faites depuis notre plateforme</p>
         </div>
-      </div>
+        
+        <!--
+        <div class="icon-box effect center clean">
+          <div class="icon"><i class="fa fa-bicycle"></i></div>
+		  <div class="counter"> <span data-speed="1500" data-refresh-interval="50" data-to="534" data-from="0" data-seperator="true"></span> </div>			
+          <p>Nombre de réservations faites depuis notre plateforme</p>
+        </div>
+        -->
       
 		
 		<div class="separator"></div>
@@ -291,7 +297,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
 	            <div class="row text-center">
 	            
 	           
-					<div class="copyright-text text-center"><a href="newsletter.php" class="text-green text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
 				
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
@@ -301,6 +307,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
 	                <div class="social-icons center">
 								<ul>
 									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
 									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
