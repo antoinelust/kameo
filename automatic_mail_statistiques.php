@@ -1047,7 +1047,7 @@ $part1 = "<!doctype html>
                             $mail->CharSet = 'UTF-8';
                             if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
                                 $mail->AddAddress("antoine.lust@kameobikes.com");
-                                //$mail->AddAddress("julien.jamar@kameobikes.com");
+                                $mail->AddAddress("julien.jamar@kameobikes.com");
                                 //$mail->AddAddress("pierre-yves.adant@kameobikes.com");
                                 //$mail->AddAddress("thibaut.mativa@kameobikes.com");
                             }else {

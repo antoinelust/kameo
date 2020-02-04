@@ -47,34 +47,317 @@ var myChart2;
 var myChart3;
 
 
-window.addEventListener("DOMContentLoaded", function(event) {
+ window.addEventListener("DOMContentLoaded", function(event) {
 
-  var classname = document.getElementsByClassName('fleetmanager');
-  for (var i = 0; i < classname.length; i++) {
+    var classname = document.getElementsByClassName('fleetmanager');
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', hideResearch, false);
+        classname[i].addEventListener('click', get_bikes_listing, false);
+        classname[i].addEventListener('click', get_users_listing, false);
+        classname[i].addEventListener('click', get_company_conditions(), false);
+        classname[i].addEventListener('click', list_condition, false);
 
-    classname[i].addEventListener('click', hideResearch, false);
-    classname[i].addEventListener('click', get_bikes_listing, false);
-    classname[i].addEventListener('click', get_users_listing, false);
-    classname[i].addEventListener('click', get_company_conditions(), false);
-    classname[i].addEventListener('click', list_condition, false);
+        classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
+        classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*')}, false);
+        classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
+        classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
+        classname[i].addEventListener('click', function () { list_feedbacks()}, false);
+        classname[i].addEventListener('click', function () { list_bikes_admin()}, false);
+        classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);
+        classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+        classname[i].addEventListener('click', initialize_booking_counter, false);
 
-    classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
-    classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*')}, false);
-    classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
-    classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
-    classname[i].addEventListener('click', function () { list_bikes_admin()}, false);
-    classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);
-    classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-    classname[i].addEventListener('click', initialize_booking_counter, false);
 
+
+        var tempDate=new Date();
+        $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
+        tempDate.setMonth(tempDate.getMonth()-6);
+        $(".form_date_start_client").data("datetimepicker").setDate(tempDate);
+
+        classname[i].addEventListener('click', function () { generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate())}, false);
+
+
+        classname[i].addEventListener('click', function () { list_boxes("*")}, false);
+        classname[i].addEventListener('click', function () { initializeFields()}, false);
+
+    }
+
+    var classname = document.getElementsByClassName('reservations');
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', hideResearch, false);
+
+    }
+
+
+
+    document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
+    document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
+    document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
+    document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false);
+    document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+}, false);
+    document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
+    document.getElementsByClassName('feedbackManagementClick')[0].addEventListener('click', function() { list_feedbacks()}, false);
+    document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
+    document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+    document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false);
+    document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 
 
     var tempDate=new Date();
-    $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
-    tempDate.setMonth(tempDate.getMonth()-6);
-    $(".form_date_start_client").data("datetimepicker").setDate(tempDate);
+    $(".form_date_end").data("datetimepicker").setDate(tempDate);
+    tempDate.setMonth(tempDate.getMonth()-1);
+    $(".form_date_start").data("datetimepicker").setDate(tempDate);
 
-    classname[i].addEventListener('click', function () { generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate())}, false);
+    <?php
+    if(isset($_GET['feedback'])){
+    ?>
+        initiatizeFeedback(<?php echo $_GET['feedback']; ?>);
+    <?php
+    }
+    ?>
+
+});
+  
+function initiatizeFeedback(id){
+    $.ajax({
+        url: 'include/feedback_management.php',
+        type: 'get',
+        data: {"action": "retrieveBooking", "ID": id},
+        success: function(response){
+        
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                var unix_timestamp = response.start
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                var unix_timestamp = response.end
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                $('.feedbackManagementTitle').html("Ajouter un feedback");
+                $('#feedbackManagement input[name=bike]').val(response.bikeNumber);
+                $('#feedbackManagement input[name=startDate]').val(formattedTimeStart);
+                $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
+                $('#feedbackManagement input[name=ID]').val(response.ID);
+                $('#feedbackManagement input[name=utilisateur]').val(response.email);
+                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeNumber+"_mini.jpg";
+                $('#feedbackManagement select[name=note]').attr("readonly", false);                            
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", false);    
+                $('.feedbackManagementSendButton').removeClass('hidden');
+                
+                $('#feedbackManagement').modal('toggle');
+            }
+        }
+    });
+}
+   
+function list_feedbacks() {
+    $.ajax({
+        url: 'include/feedback_management.php',
+        type: 'get',
+        data: {action: "list"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                
+                document.getElementById('counterFeedbacks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.feedbacksNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.feedbacksNumber+"</span>";
+                
+                
+                var i=0;
+                var dest="";
+                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien ? </span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th></tr></thead>";
+                dest=dest.concat(temp);    
+                while (i < response.feedbacksNumber){
+                    var unix_timestamp = response.feedback[i].start;
+                    // Create a new JavaScript Date object based on the timestamp
+                    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                    var date = new Date(unix_timestamp * 1000);
+                    //day from the timestamp
+                    var day = date.getDate();
+                    //month from the timestamp
+                    var month = date.getMonth();
+                    //year from the timestamp
+                    var year = date.getFullYear();
+                    // Hours part from the timestamp
+                    var hours = date.getHours();
+                    // Minutes part from the timestamp
+                    var minutes = "0" + date.getMinutes();
+                    // Seconds part from the timestamp
+                    var seconds = "0" + date.getSeconds();
+
+                    // Will display time in 10:30:23 format
+                    var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    
+                    var unix_timestamp = response.feedback[i].end;
+                    // Create a new JavaScript Date object based on the timestamp
+                    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                    var date = new Date(unix_timestamp * 1000);
+                    //day from the timestamp
+                    var day = date.getDate();
+                    //month from the timestamp
+                    var month = date.getMonth();
+                    //year from the timestamp
+                    var year = date.getFullYear();
+                    // Hours part from the timestamp
+                    var hours = date.getHours();
+                    // Minutes part from the timestamp
+                    var minutes = "0" + date.getMinutes();
+                    // Seconds part from the timestamp
+                    var seconds = "0" + date.getSeconds();
+
+                    // Will display time in 10:30:23 format
+                    var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    
+                    if(response.feedback[i].entretien==null || response.feedback[i].entretien=="0"){
+                        entretien="<span class=\"text-red\">OUI</span>";
+                    }else{
+                        entretien="<span class=\"text-green\">Non</span>";
+                    }                        
+
+                    
+                    
+                    var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+formattedTimeStart+"</td><td>"+formattedTimeEnd+"</td><td>"+response.feedback[i].note+"</td><td>"+response.feedback[i].comment.substr(0,20)+"</td><td>"+entretien+"</td><td>"+response.feedback[i].email+"</td></tr>";
+                    dest=dest.concat(temp);
+                    i++;
+
+                }
+                var temp="</tobdy></table>";
+                dest=dest.concat(temp);     
+
+                document.getElementById('feedbacksListingSpan').innerHTML = dest;
+                $('.retrieveFeedback').click(function(){
+                    retrieve_feedback(this.name);
+                });
+                
+            }
+
+            displayLanguage();    
+        }
+    })
+}
+
+function retrieve_feedback(ID) {
+    $.ajax({
+        url: 'include/feedback_management.php',
+        type: 'get',
+        data: {"action": "retrieveFeedback", "ID": ID},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                
+                var unix_timestamp = response.start
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                var unix_timestamp = response.end
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+                $('.feedbackManagementTitle').html("Consulter un feedback");
+                $('#feedbackManagement input[name=bike]').val(response.bike);
+                $('#feedbackManagement input[name=startDate]').val(formattedTimeStart);
+                $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
+                $('#feedbackManagement input[name=ID]').val(response.ID);
+                $('#feedbackManagement input[name=utilisateur]').val(response.email);
+                $('#feedbackManagement textarea[name=comment]').val(response.comment);
+                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bike+"_mini.jpg";
+                
+                $('#feedbackManagement select[name=note]').attr("readonly", true);                            
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", true);    
+                
+                if(response.entretien=="1"){
+                    $('#feedbackManagement input[name=entretien]').prop("checked", true);
+                }else{
+                    $('#feedbackManagement input[name=entretien]').prop("checked", false);
+                }
+                
+                $('.feedbackManagementSendButton').addClass('hidden');
+                                
+            }
+
+            displayLanguage();    
+        }
+    })
+}
+
+    
+    
+function initializeFields(){
 
 
     classname[i].addEventListener('click', function () { list_boxes("*")}, false);
@@ -772,155 +1055,153 @@ function construct_form_for_bike_access_updateAdmin(frameNumber, company){
 function updateAccessAdmin(frame_number, company){
   construct_form_for_bike_access_updateAdmin(frame_number, company);
 }
-
 function construct_form_for_action_update(id){
 
 
 
-  $('#widget-updateAction-form select[name=owner]')
-  .find('option')
-  .remove()
-  .end()
-  ;
+        $('#widget-updateAction-form select[name=owner]')
+            .find('option')
+            .remove()
+            .end()
+        ;
 
-  $.ajax({
-    url: 'include/get_kameobikes_members.php',
-    type: 'get',
-    success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
-      if(response.response == 'success'){
-        var i=0;
-        while (i < response.membersNumber){
-          $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
-          i++;
-        }
-      }
-    }
-  }).done(function(){
-    $.ajax({
-      url: 'include/action_company.php',
-      type: 'get',
-      data: { "id": id},
-      success: function(response){
-        if (response.response == 'error') {
-          console.log(response.message);
-        } else{
-          document.getElementById('widget-updateAction-form').reset();
-          $('#widget-updateAction-form input[name=id]').val(response.action.id);
-          $('#widget-updateAction-form select[name=type]').val(response.action.type);
-          $('#widget-updateAction-form input[name=date]').val(response.action.date.substr(0,10));
-          $('#widget-updateAction-form textarea[name=description]').val(response.action.description);
-          $('#widget-updateAction-form input[name=title]').val(response.action.title);
-          if(response.action.date_reminder != null){
-            $('#widget-updateAction-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
-          }
-          $('#widget-updateAction-form select[name=company]').val(response.action.company);
-          $('#widget-updateAction-form select[name=status]').val(response.action.status);
-          $('#widget-updateAction-form select[name=owner]').val(response.action.owner);
-        }
+        $.ajax({
+            url: 'include/get_kameobikes_members.php',
+            type: 'get',
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    while (i < response.membersNumber){
+                        $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
+                        i++;
+                    }
+                }
+            }
+        }).done(function(){
+            $.ajax({
+                url: 'include/action_company.php',
+                type: 'get',
+                data: { "id": id},
+                success: function(response){
+                    if (response.response == 'error') {
+                        console.log(response.message);
+                    } else{
+                        document.getElementById('widget-updateAction-form').reset();
+                        $('#widget-updateAction-form input[name=id]').val(response.action.id);
+                        $('#widget-updateAction-form select[name=type]').val(response.action.type);
+                        $('#widget-updateAction-form input[name=date]').val(response.action.date.substr(0,10));
+                        $('#widget-updateAction-form textarea[name=description]').val(response.action.description);
+                        $('#widget-updateAction-form input[name=title]').val(response.action.title);
+                        if(response.action.date_reminder != null){
+                            $('#widget-updateAction-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
+                        }
+                        $('#widget-updateAction-form select[name=company]').val(response.action.company);
+                        $('#widget-updateAction-form select[name=status]').val(response.action.status);
+                        $('#widget-updateAction-form select[name=owner]').val(response.action.owner);
+                    }
 
-      }
-    })
+                }
+            })
 
-  })
+        })
 }
 
 
-
 function construct_form_for_billing_status_update(ID){
-  $.ajax({
-    url: 'include/get_billing_details.php',
-    type: 'post',
-    data: { "ID": ID},
-    success: function(response){
-      if (response.response == 'error') {
-        console.log(response.message);
-      } else{
-        $('input[name=widget-updateBillingStatus-form-billingReference]').val(ID);
-        $('input[name=widget-updateBillingStatus-form-billingCompany]').val(response.bill.company);
-        $('input[name=widget-updateBillingStatus-form-beneficiaryBillingCompany]').val(response.bill.beneficiaryCompany);
-        $('input[name=widget-updateBillingStatus-form-type]').val(response.bill.type);
-        $('input[name=widget-updateBillingStatus-form-communication]').val(response.bill.communication);
-        $('input[name=widget-updateBillingStatus-form-date]').val(response.bill.date.substring(0,10));
-        $('input[name=widget-updateBillingStatus-form-amountHTVA]').val(response.bill.amountHTVA);
-        $('input[name=widget-updateBillingStatus-form-amountTVAC]').val(response.bill.amountTVAC);
-        if(response.bill.amountHTVA == response.bill.amountTVAC){
-          $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', false);
-        }else{
-          $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', true);
+    $.ajax({
+        url: 'include/get_billing_details.php',
+        type: 'post',
+        data: { "ID": ID},
+        success: function(response){
+            if (response.response == 'error') {
+                console.log(response.message);
+            } else{
+                $('input[name=widget-updateBillingStatus-form-billingReference]').val(ID);
+                $('input[name=widget-updateBillingStatus-form-billingCompany]').val(response.bill.company);
+                $('input[name=widget-updateBillingStatus-form-beneficiaryBillingCompany]').val(response.bill.beneficiaryCompany);
+                $('input[name=widget-updateBillingStatus-form-type]').val(response.bill.type);
+                $('input[name=widget-updateBillingStatus-form-communication]').val(response.bill.communication);
+                $('input[name=widget-updateBillingStatus-form-date]').val(response.bill.date.substring(0,10));
+                $('input[name=widget-updateBillingStatus-form-amountHTVA]').val(response.bill.amountHTVA);
+                $('input[name=widget-updateBillingStatus-form-amountTVAC]').val(response.bill.amountTVAC);
+                if(response.bill.amountHTVA == response.bill.amountTVAC){
+                    $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', false);
+                }else{
+                    $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', true);
+                }
+
+
+                if(response.bill.sent=="1"){
+                    $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', true);
+                }else{
+                    $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', false);
+                }
+                if(response.bill.sentDate){
+                    $('input[name=widget-updateBillingStatus-form-sendingDate]').val(response.bill.sentDate.substring(0,10));
+                }else{
+                    $('input[name=widget-updateBillingStatus-form-sendingDate]').val('');
+                }
+
+                if(response.bill.paid=="1"){
+                    $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', true);
+                }else{
+                    $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', false);
+                }
+                if(response.bill.paidDate){
+                    $('input[name=widget-updateBillingStatus-form-paymentDate]').val(response.bill.paidDate.substring(0,10));
+                }else{
+                    $('input[name=widget-updateBillingStatus-form-paymentDate]').val('');
+                }
+
+
+                if(response.bill.paidLimitDate){
+                    $('input[name=widget-updateBillingStatus-form-datelimite]').val(response.bill.paidLimitDate.substring(0,10));
+                }else{
+                    $('input[name=widget-updateBillingStatus-form-datelimite]').val('');
+                }
+                if(response.bill.file != '' ){
+                    $('.widget-updateBillingStatus-form-currentFile').attr("href", "factures/"+response.bill.file);
+                    $('.widget-updateBillingStatus-form-currentFile').unbind('click');
+                }else{
+                    $('.widget-updateBillingStatus-form-currentFile').click(function(e) {
+                        e.preventDefault();
+                        $.notify({
+                            message: "No file available for that bill"
+                        }, {
+                            type: 'danger'
+                        });
+                    });
+                }
+
+                if(response.bill.communicationSentAccounting=="1"){
+                    $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', true);
+                }else{
+                    $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', false);
+                }
+
+
+                $('input[name=widget-updateBillingStatus-form-currentFile]').val(response.bill.file);
+                $("#widget-deleteBillingStatus-form input[name=reference]").val(ID);
+
+
+                var i=0;
+                var dest='<table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
+                while(i<response.billDetailsNumber){
+                    var temp="<tr>";
+                    temp=temp.concat("<th>"+response.bill.billDetails[i].frameNumber+"</th><th>"+response.bill.billDetails[i].amountHTVA+"</th><th>"+response.bill.billDetails[i].comments+"</th></tr>")
+                    i++;
+                    dest=dest.concat(temp);
+                }
+                dest=dest.concat("</tbody><table>");
+                document.getElementById('billingDetails').innerHTML=dest;
+                displayLanguage();
+
+            }
         }
-
-
-        if(response.bill.sent=="1"){
-          $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', true);
-        }else{
-          $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', false);
-        }
-        if(response.bill.sentDate){
-          $('input[name=widget-updateBillingStatus-form-sendingDate]').val(response.bill.sentDate.substring(0,10));
-        }else{
-          $('input[name=widget-updateBillingStatus-form-sendingDate]').val('');
-        }
-
-        if(response.bill.paid=="1"){
-          $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', true);
-        }else{
-          $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', false);
-        }
-        if(response.bill.paidDate){
-          $('input[name=widget-updateBillingStatus-form-paymentDate]').val(response.bill.paidDate.substring(0,10));
-        }else{
-          $('input[name=widget-updateBillingStatus-form-paymentDate]').val('');
-        }
-
-
-        if(response.bill.paidLimitDate){
-          $('input[name=widget-updateBillingStatus-form-datelimite]').val(response.bill.paidLimitDate.substring(0,10));
-        }else{
-          $('input[name=widget-updateBillingStatus-form-datelimite]').val('');
-        }
-        if(response.bill.file != '' ){
-          $('.widget-updateBillingStatus-form-currentFile').attr("href", "factures/"+response.bill.file);
-          $('.widget-updateBillingStatus-form-currentFile').unbind('click');
-        }else{
-          $('.widget-updateBillingStatus-form-currentFile').click(function(e) {
-            e.preventDefault();
-            $.notify({
-              message: "No file available for that bill"
-            }, {
-              type: 'danger'
-            });
-          });
-        }
-
-        if(response.bill.communicationSentAccounting=="1"){
-          $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', true);
-        }else{
-          $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', false);
-        }
-
-
-        $('input[name=widget-updateBillingStatus-form-currentFile]').val(response.bill.file);
-        $("#widget-deleteBillingStatus-form input[name=reference]").val(ID);
-
-
-        var i=0;
-        var dest='<table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
-        while(i<response.billDetailsNumber){
-          var temp="<tr>";
-          temp=temp.concat("<th>"+response.bill.billDetails[i].frameNumber+"</th><th>"+response.bill.billDetails[i].amountHTVA+"</th><th>"+response.bill.billDetails[i].comments+"</th></tr>")
-          i++;
-          dest=dest.concat(temp);
-        }
-        dest=dest.concat("</tbody><table>");
-        document.getElementById('billingDetails').innerHTML=dest;
-        displayLanguage();
-
-      }
-    }
-  })
+    })
 }
 
 
@@ -1004,94 +1285,92 @@ function initializeCreatePortfolioBike(){
 
 
 function update_deposit_form(){
-  var hour=document.getElementById('search-bikes-form-intake-hour').value;
-  var date=document.getElementById('search-bikes-form-day').value;
-  var Date1=date.split('-');
-  var day=Date1[0];
-  var month=(Date1[1]-1);
-  var Hours=hour.split('h');
-
-  var hour=Hours[0];
-  var minute=Hours[1];
-
-
-  var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
-
-
-  var dateTemp = new Date(new Date().getFullYear(), month, day, hour, minute);
-
-  loadClientConditions()
-  .done(function(response){
-    bookingLength=parseInt(response.clientConditions.bookingLength);
-
     var hour=document.getElementById('search-bikes-form-intake-hour').value;
-    var Hours1=hour.split('h');
-    var hour=Hours1[0];
-    var minute=Hours1[1];
     var date=document.getElementById('search-bikes-form-day').value;
     var Date1=date.split('-');
     var day=Date1[0];
     var month=(Date1[1]-1);
+    var Hours=hour.split('h');
+
+    var hour=Hours[0];
+    var minute=Hours[1];
 
 
-    var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
-    dateEnd.setHours(dateEnd.getHours()+bookingLength);
-
-    var currentDate = new Date(new Date().getFullYear(), month, day, hour, minute);
+    var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
 
 
+    var dateTemp = new Date(new Date().getFullYear(), month, day, hour, minute);
 
-    var numberOfDays=Math.round((dateEnd-currentDate)/(1000*60*60*24));
+    loadClientConditions()
+    .done(function(response){
+        bookingLength=parseInt(response.clientConditions.bookingLength);
 
-
-    // 1st step: days and month fileds
-
-    var hour=document.getElementById('search-bikes-form-intake-hour').value;
-    var date1=document.getElementById('search-bikes-form-day').value;
-    var Date1=date.split('-');
-    var day=Date1[0];
-    var month=(Date1[1]-1);
-    var Hours1=hour.split('h');
-    var hour=Hours1[0];
-    var minute=Hours1[1];
-
-    var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-    var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
-    var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-    var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+        var hour=document.getElementById('search-bikes-form-intake-hour').value;
+        var Hours1=hour.split('h');
+        var hour=Hours1[0];
+        var minute=Hours1[1];
+        var date=document.getElementById('search-bikes-form-day').value;
+        var Date1=date.split('-');
+        var day=Date1[0];
+        var month=(Date1[1]-1);
 
 
-    var tempDate = new Date(new Date().getFullYear(), month, day, hour, minute);
-    var i=0;
-    var j=0;
-    var dest ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
+        var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
+        dateEnd.setHours(dateEnd.getHours()+bookingLength);
+
+        var currentDate = new Date(new Date().getFullYear(), month, day, hour, minute);
 
 
-    while(i<=numberOfDays){
-      if((tempDate.getDay()=="1" && parseInt(response.clientConditions.mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(response.clientConditions.tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(response.clientConditions.wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(response.clientConditions.thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(response.clientConditions.fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(response.clientConditions.saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(response.clientConditions.sundayDeposit))){
-        var dayFR = daysFR[tempDate.getDay()];
-        var dayEN = daysEN[tempDate.getDay()];
-        var dayNL = daysNL[tempDate.getDay()];
-        var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option>";
+
+        var numberOfDays=Math.round((dateEnd-currentDate)/(1000*60*60*24));
+
+
+        // 1st step: days and month fileds
+
+        var hour=document.getElementById('search-bikes-form-intake-hour').value;
+        var date1=document.getElementById('search-bikes-form-day').value;
+        var Date1=date.split('-');
+        var day=Date1[0];
+        var month=(Date1[1]-1);
+        var Hours1=hour.split('h');
+        var hour=Hours1[0];
+        var minute=Hours1[1];
+
+        var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+
+
+        var tempDate = new Date(new Date().getFullYear(), month, day, hour, minute);
+        var i=0;
+        var j=0;
+        var dest ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
+
+
+        while(i<=numberOfDays){
+            if((tempDate.getDay()=="1" && parseInt(response.clientConditions.mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(response.clientConditions.tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(response.clientConditions.wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(response.clientConditions.thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(response.clientConditions.fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(response.clientConditions.saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(response.clientConditions.sundayDeposit))){
+                var dayFR = daysFR[tempDate.getDay()];
+                var dayEN = daysEN[tempDate.getDay()];
+                var dayNL = daysNL[tempDate.getDay()];
+                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option>";
+                dest = dest.concat(bookingDay);
+            }
+            tempDate.setDate(tempDate.getDate()+1);
+            i++;
+
+        }
+        var bookingDay="</select>";
         dest = dest.concat(bookingDay);
-      }
-      tempDate.setDate(tempDate.getDate()+1);
-      i++;
+        document.getElementById('booking_day_form_deposit').innerHTML=dest;
 
-    }
-    var bookingDay="</select>";
-    dest = dest.concat(bookingDay);
-    document.getElementById('booking_day_form_deposit').innerHTML=dest;
+        document.getElementById('search-bikes-form-day-deposit').addEventListener('change', function () { update_deposit_hour_form()}, false);
 
-    document.getElementById('search-bikes-form-day-deposit').addEventListener('change', function () { update_deposit_hour_form()}, false);
+        update_deposit_hour_form();
 
-    update_deposit_hour_form();
-
-  });
-
-
+    });
 
 }
 
@@ -1227,56 +1506,57 @@ function update_deposit_hour_form(){
 
 function fillBikeDetails(element)
 {
-  var frameNumber=element;
-  $.ajax({
-    url: 'include/get_bike_details.php',
-    type: 'post',
-    data: { "frameNumber": frameNumber},
-    success: function(response){
-      if (response.response == 'error') {
-        console.log(response.message);
-      } else{
-        document.getElementsByClassName("bikeReference")[0].innerHTML=frameNumber;
-        document.getElementsByClassName("bikeModel")[0].innerHTML=response.model;
-        document.getElementsByClassName("frameReference")[0].innerHTML=response.frameReference;
-        document.getElementsByClassName("contractType")[0].innerHTML=response.contractType;
-        document.getElementsByClassName("startDateContract")[0].innerHTML=response.contractStart;
-        document.getElementsByClassName("endDateContract")[0].innerHTML=response.contractEnd;
-        document.getElementsByClassName("bikeImage")[0].src="images_bikes/"+frameNumber+"_mini.jpg";
+    var frameNumber=element;
+    $.ajax({
+            url: 'include/get_bike_details.php',
+            type: 'post',
+            data: { "frameNumber": frameNumber},
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                } else{
+                    document.getElementsByClassName("bikeReference")[0].innerHTML=frameNumber;
+                    document.getElementsByClassName("bikeModel")[0].innerHTML=response.model;
+                    document.getElementsByClassName("frameReference")[0].innerHTML=response.frameReference;
+                    document.getElementsByClassName("contractType")[0].innerHTML=response.contractType;
+                    document.getElementsByClassName("startDateContract")[0].innerHTML=response.contractStart;
+                    document.getElementsByClassName("endDateContract")[0].innerHTML=response.contractEnd;
+                    document.getElementsByClassName("bikeImage")[0].src="images_bikes/"+frameNumber+"_mini.jpg";
 
-      }
+                }
 
-    }
-  })
+                }
+            })
 
-  $.ajax({
-    url: 'include/action_bike_management.php',
-    type: 'post',
-    data: { "readActionBike-action": "read", "readActionBike-bikeNumber": frameNumber, "readActionBike-user": "<?php echo $user; ?>"},
-    success: function(response){
-      if (response.response == 'error') {
-        console.log(response.message);
-      } else{
+    $.ajax({
+            url: 'include/action_bike_management.php',
+            type: 'post',
+            data: { "readActionBike-action": "read", "readActionBike-bikeNumber": frameNumber, "readActionBike-user": "<?php echo $user; ?>"},
+            success: function(response){
+                if (response.response == 'error') {
+                    console.log(response.message);
+                } else{
 
-        var i=0;
-        var dest="<table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th></tr></thead> ";
-        while(i<response.actionNumber){
-          if(response.action[i].public=="1"){
-            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].description+"</td></tr>";
-            dest=dest.concat(temp);
-          }
-          i++;
+                    var i=0;
+                    var dest="<table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th></tr></thead> ";
+                    while(i<response.actionNumber){
+                        if(response.action[i].public=="1"){
+                            var temp="<tr><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].description+"</td></tr>";
+                            dest=dest.concat(temp);
+                        }
+                        i++;
 
-        }
-        dest=dest.concat("</tbody></table>");
-        $('#action_bike_log_user').html(dest);
-        displayLanguage();
+                    }
+                    dest=dest.concat("</tbody></table>");
+                    $('#action_bike_log_user').html(dest);
+                    displayLanguage();
 
-      }
+                }
 
-    }
-  })
+            }
+    })
 }
+
 
 function fillReservationDetails(element)
 {
@@ -1356,163 +1636,163 @@ if($connected){
 
   }
   // Goal of this function is to construct the reasearch fields
-  function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking, mondayIntake, tuesdayIntake, wednesdayIntake, thursdayIntake, fridayIntake, saturdayIntake, sundayIntake, mondayDeposit, tuesdayDeposit, wednesdayDeposit, thursdayDeposit, fridayDeposit, saturdayDeposit, sundayDeposit, maxBookingsPerYear, maxBookingsPerMonth){
-    if(assistance=="Y"){
-      document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
-    }
-    // 1st step: days and month fileds
-
-    var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-    var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
-    var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-    var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
-
-
-    var startDate = new Date();
-    var i=0;
-    var j=0;
-    var dest ="<select id=\"search-bikes-form-day\" name=\"search-bikes-form-day\"  class=\"form-control\">";
-    var dest2 ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
-
-    var tempDate = new Date();
-    var tempDate2=tempDate;
-    bookingLength=parseInt(bookingLength);
-    while(i<=daysToDisplay){
-      if(tempDate.getHours()>=hourEndDepositBooking){
-        tempDate.setHours(hourStartIntakeBooking);
-        tempDate.setMinutes(0);
-        tempDate.setDate(tempDate.getDate()+1);
-      }
-      var dayFR = daysFR[tempDate.getDay()];
-      var dayEN = daysEN[tempDate.getDay()];
-      var dayNL = daysNL[tempDate.getDay()];
-      if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
-        var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
-
-        dest = dest.concat(bookingDay);
-      }
-      else{
-
-      }
-
-      i++;
-      tempDate.setDate(tempDate.getDate()+1);
-    }
-    var bookingDay="</select>";
-    dest = dest.concat(bookingDay);
-    document.getElementById('booking_day_form').innerHTML=dest;
-
-    document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);
-
-
-    var currentDate=new Date();
-
-    var hours=currentDate.getHours();
-    var minutes=currentDate.getMinutes();
-
-    var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
-    var h = ((((minutes/105) + .5) | 0) + hours) % 24;
-
-    var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
-
-
-
-    var dest="";
-    if(dateTemp.getHours()>=hourEndDepositBooking){
-      dateTemp.setHours(hourStartIntakeBooking);
-      dateTemp.setMinutes(0);
-      dateTemp.setDate(dateTemp.getDate()+1);
-    }
-    while(dateTemp.getHours()<hourEndIntakeBooking){
-      if(dateTemp.getMinutes()=="0"){
-        var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
-      }else{
-        var hourString=dateTemp.getHours()+"h"+dateTemp.getMinutes();
-      }
-
-      dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
-
-
-      var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
-      dest=dest.concat(tempString);
-    }
-
-    var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
-    var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
-    dest=dest.concat(tempString);
-
-
-    document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
-
-
-
-    // 2nd step: intake and deposit buildings
-    var langue= "<?php echo $_SESSION['langue']; ?>";
-    var email="<?php echo $user; ?>";
-    var i=0;
-    $.ajax({
-      url: 'include/booking_building_form.php',
-      type: 'post',
-      data: { "email": email},
-      success: function(response) {
-        if(response.buildingNumber=="1"){
-          var dest="";
-          var building_fr=response.building[1].fr;
-          var building_en=response.building[1].en;
-          var building_nl=response.building[1].nl;
-
-          var tempBuilding="<select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select>";
-          dest=tempBuilding;
-        } else{
-          var dest="";
-          var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";
-          dest = dest.concat(tempBuilding);
-          while (i < response.buildingNumber){
-            i++;
-            var building_code=response.building[i].building_code;
-            var building_fr=response.building[i].fr;
-            var building_en=response.building[i].en;
-            var building_nl=response.building[i].nl;
-
-            var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
-            dest = dest.concat(tempBuilding);
-          }
-          var tempBuilding="</select>";
-          dest = dest.concat(tempBuilding);
-          document.getElementById('start_building_form').innerHTML=dest;
-          document.getElementById('start_building_form').innerHTML=dest;
-
-          var j=0;
-          var dest="";
-          var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";
-          dest = dest.concat(tempBuilding);
-
-          while (j < response.buildingNumber){
-            j++;
-            var building_code=response.building[j].building_code;
-            var building_fr=response.building[j].fr;
-            var building_en=response.building[j].en;
-            var building_nl=response.building[j].nl;
-
-            var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
-            dest = dest.concat(tempBuilding);
-            var tempBuilding="</select>";
-
-          }
-          dest = dest.concat(tempBuilding);
+function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking, mondayIntake, tuesdayIntake, wednesdayIntake, thursdayIntake, fridayIntake, saturdayIntake, sundayIntake, mondayDeposit, tuesdayDeposit, wednesdayDeposit, thursdayDeposit, fridayDeposit, saturdayDeposit, sundayDeposit, maxBookingsPerYear, maxBookingsPerMonth){
+        if(assistance=="Y"){
+            document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
         }
-        document.getElementById('deposit_building_form').innerHTML=dest;
-        document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
-        document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
-        displayLanguage();
-      }
-    });
+        // 1st step: days and month fileds
+
+        var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+        var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
 
-    update_deposit_form();
-  }
+        var startDate = new Date();
+        var i=0;
+        var j=0;
+        var dest ="<select id=\"search-bikes-form-day\" name=\"search-bikes-form-day\"  class=\"form-control\">";
+        var dest2 ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
+
+        var tempDate = new Date();
+        var tempDate2=tempDate;
+        bookingLength=parseInt(bookingLength);
+        while(i<=daysToDisplay){
+            if(tempDate.getHours()>=hourEndDepositBooking){
+                tempDate.setHours(hourStartIntakeBooking);
+                tempDate.setMinutes(0);
+                tempDate.setDate(tempDate.getDate()+1);
+            }
+            var dayFR = daysFR[tempDate.getDay()];
+            var dayEN = daysEN[tempDate.getDay()];
+            var dayNL = daysNL[tempDate.getDay()];
+            if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
+                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
+
+                dest = dest.concat(bookingDay);
+            }
+            else{
+
+            }
+
+            i++;
+            tempDate.setDate(tempDate.getDate()+1);
+        }
+        var bookingDay="</select>";
+        dest = dest.concat(bookingDay);
+        document.getElementById('booking_day_form').innerHTML=dest;
+
+        document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);
+
+
+        var currentDate=new Date();
+
+        var hours=currentDate.getHours();
+        var minutes=currentDate.getMinutes();
+
+        var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
+        var h = ((((minutes/105) + .5) | 0) + hours) % 24;
+
+        var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
+
+
+
+        var dest="";
+        if(dateTemp.getHours()>=hourEndDepositBooking){
+            dateTemp.setHours(hourStartIntakeBooking);
+            dateTemp.setMinutes(0);
+            dateTemp.setDate(dateTemp.getDate()+1);
+        }
+        while(dateTemp.getHours()<hourEndIntakeBooking){
+            if(dateTemp.getMinutes()=="0"){
+                var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
+            }else{
+                var hourString=dateTemp.getHours()+"h"+dateTemp.getMinutes();
+            }
+
+            dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
+
+
+            var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
+            dest=dest.concat(tempString);
+        }
+
+        var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
+        var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
+        dest=dest.concat(tempString);
+
+
+        document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
+
+
+
+        // 2nd step: intake and deposit buildings
+        var langue= "<?php echo $_SESSION['langue']; ?>";
+        var email="<?php echo $user; ?>";
+        var i=0;
+        $.ajax({
+            url: 'include/booking_building_form.php',
+            type: 'post',
+            data: { "email": email},
+            success: function(response) {
+                if(response.buildingNumber=="1"){
+                    var dest="";
+                    var building_fr=response.building[1].fr;
+                    var building_en=response.building[1].en;
+                    var building_nl=response.building[1].nl;
+
+                    var tempBuilding="<select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select>";
+                    dest=tempBuilding;
+                } else{
+                    var dest="";
+                    var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";
+                    dest = dest.concat(tempBuilding);
+                    while (i < response.buildingNumber){
+                        i++;
+                        var building_code=response.building[i].building_code;
+                        var building_fr=response.building[i].fr;
+                        var building_en=response.building[i].en;
+                        var building_nl=response.building[i].nl;
+
+                        var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
+                        dest = dest.concat(tempBuilding);
+                    }
+                    var tempBuilding="</select>";
+                    dest = dest.concat(tempBuilding);
+                    document.getElementById('start_building_form').innerHTML=dest;
+                    document.getElementById('start_building_form').innerHTML=dest;
+
+                    var j=0;
+                    var dest="";
+                    var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";
+                    dest = dest.concat(tempBuilding);
+
+                    while (j < response.buildingNumber){
+                        j++;
+                        var building_code=response.building[j].building_code;
+                        var building_fr=response.building[j].fr;
+                        var building_en=response.building[j].en;
+                        var building_nl=response.building[j].nl;
+
+                        var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
+                        dest = dest.concat(tempBuilding);
+                        var tempBuilding="</select>";
+
+                    }
+                    dest = dest.concat(tempBuilding);
+                }
+                document.getElementById('deposit_building_form').innerHTML=dest;
+                document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
+                document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
+                displayLanguage();
+            }
+        });
+
+
+        update_deposit_form();
+    }
 
   function showBooking(bookingID){
     var dest="";
@@ -1930,412 +2210,410 @@ if($connected){
     })
   }
 
-  function list_tasks(status, owner2, numberOfResults) {
-    var email= "<?php echo $user; ?>";
-    if(!owner2){
-      owner2=email;
-    }
-    $.ajax({
-      url: 'include/action_company.php',
-      type: 'get',
-      data: { "company": '*', "status": status, "owner":owner2, "numberOfResults": numberOfResults},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
+    function list_tasks(status, owner2, numberOfResults) {
+        var email= "<?php echo $user; ?>";
+        if(!owner2){
+            owner2=email;
         }
-        if(response.response == 'success'){
-          var i=0;
-          var dest="";
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions :</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right addTask\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
-          dest=dest.concat(temp);
-          while (i < response.actionNumber){
-
-            if(response.action[i].date_reminder!=null){
-              var date_reminder=response.action[i].date_reminder.substr(0,10);
-            }else{
-              var date_reminder="N/A";
-            }
-
-            var status=response.action[i].status;
-            var ownerSpan=response.action[i].ownerFirstName+" "+response.action[i].ownerName;
-
-            if(response.action[i].late && response.action[i].status=='TO DO'){
-              date_reminder="<span class='text-red'>"+date_reminder+"</span>";
-              status="<span class='text-red'>"+status+"</span>";
-              owner="<span class='text-red'>"+ownerSpan+"</span>";
-            }else if(response.action[i].status=='DONE'){
-              date_reminder="<span class='text-green'>"+date_reminder+"</span>";
-              status="<span class='text-green'>"+status+"</span>";
-              owner="<span class='text-green'>"+ownerSpan+"</span>";
-            }else if(status='TO DO'){
-              date_reminder="<span class='text-orange'>"+date_reminder+"</span>";
-              status="<span class='text-orange'>"+status+"</span>";
-              owner="<span class='text-orange'>"+ownerSpan+"</span>";
-            }
-
-            if(response.action[i].type=="other"){
-              type="Autre";
-            }else if(response.action[i].type=="offer"){
-              type="Offre";
-            }else if(response.action[i].type=="offreSigned"){
-              type="Offre Signée";
-            }else if(response.action[i].type=="rdv"){
-              type="Rendez-vous";
-            }else if(response.action[i].type=="rdv plan"){
-              type="Planification rdv";
-            }else if(response.action[i].type=="contact"){
-              type="Contact";
-            }else if(response.action[i].type=="rappel"){
-              type="Rappel";
-            }else{
-              type=response.action[i].type;
-            }
-
-
-            var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td>"+response.action[i].date.substr(0,10)+"</td><td>"+type+"<td>"+response.action[i].title+"</td><td>"+date_reminder+"</td><td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-            dest=dest.concat(temp);
-            i++;
-
-          }
-          var temp="</tobdy></table>";
-          dest=dest.concat(temp);
-          document.getElementById('tasksListingSpan').innerHTML = dest;
-
-
-          $(".retrieveTask").click(function() {
-            retrieve_task(this.name, "retrieve");
-            $('.taskManagementSendButton').addClass("hidden");
-
-
-          });
-
-          $(".updateTask").click(function() {
-            update_task(this.name, "update");
-          });
-          $(".addTask").click(function() {
-            add_task(this.name);
-            $('.taskManagementSendButton').removeClass("hidden");
-            $('.taskManagementSendButton').text("Ajouter")
-
-          });
-
-
-          $('.taskOwnerSelection')
-          .find('option')
-          .remove()
-          .end()
-          ;
-          $('.taskOwnerSelection').append("<option value='*'>Tous<br>");
-
-          var i=0;
-          while (i < response.ownerNumber){
-            $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-            i++;
-
-          }
-
-          if(owner2){
-            $('.taskOwnerSelection').val(owner2);
-          }else{
-            $('.taskOwnerSelection').val('*');
-          }
-
-          $('.taskOwnerSelection2')
-          .find('option')
-          .remove()
-          .end()
-          ;
-          $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");
-
-          var i=0;
-          while (i < response.ownerNumber){
-            $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-            i++;
-
-          }
-
-          $('.taskOwnerSelection2').val('*');
-
-          $('#widget-taskManagement-form select[name=owner]')
-          .find('option')
-          .remove()
-          .end()
-          ;
-          $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");
-
-          var i=0;
-          while (i < response.ownerNumber){
-            $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-            i++;
-
-          }
-
-          document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
-
-          displayLanguage();
-
-          var classname = document.getElementsByClassName('updateAction');
-          for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
-          }
-
-        }
-      }
-    })
-  }
-
-  function list_contracts_offers(company) {
-    $.ajax({
-      url: 'include/offer_management.php',
-      type: 'get',
-      data: { "company": company, action: "retrieve"},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          var i=0;
-          var dest="";
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats signés :</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
-          dest=dest.concat(temp);
-          while (i < response.contractsNumber){
-            if(response.contract[i].start!=null){
-              var contract_start=response.contract[i].start.substr(0,10);
-            }else{
-              var contract_start="<span class=\"text-red\">N/A</span>";
-            }
-            if(response.contract[i].end!=null){
-              var contract_end=response.contract[i].end.substr(0,10);
-            }else{
-              var contract_end="<span class=\"text-red\">N/A</span>";
-            }
-
-            var temp="<tr><td>"+response.contract[i].company+"</td><td>"+response.contract[i].description+"</td><td>"+Math.round(response.contract[i].amount)+" €/mois</td><td>"+contract_start+"</td><td>"+contract_end+"</td></tr>";
-            dest=dest.concat(temp);
-            i++;
-
-          }
-          var temp="</tobdy></table>";
-          dest=dest.concat(temp);
-
-          var temp="<p>Valeur actuelle des contrat en cours : <strong>"+Math.round(response.sumContractsCurrent)+" €/mois</strong></p>";
-          dest=dest.concat(temp);
-
-          document.getElementById('contractsListingSpan').innerHTML = dest;
-
-
-
-          var i=0;
-          var dest="";
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Offres en cours :</h4><h4 class=\"en-inline text-green\">Offers:</h4><h4 class=\"nl-inline text-green\">Offers:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Probabilité</th><th></th></tr></thead>";
-          dest=dest.concat(temp);
-          while (i < response.offersNumber){
-            if(response.offer[i].start!=null){
-              var offer_start=response.offer[i].start.substr(0,10);
-            }else{
-              var offer_start="<span class=\"text-red\">N/A</span>";
-            }
-            if(response.offer[i].end!=null){
-              var offer_end=response.offer[i].end.substr(0,10);
-            }else{
-              var offer_end="<span class=\"text-red\">N/A</span>";
-            }
-
-            if(response.offer[i].type=="leasing"){
-              var amount=Math.round(response.offer[i].amount)+ "€/mois";
-            }else{
-              var amount=Math.round(response.offer[i].amount)+ "€";
-            }
-
-            if(response.offer[i].amount==0){
-              var amount="<span class=\"text-red\">"+amount+"</span>";
-            }
-
-            if(response.offer[i].type=="leasing"){
-              var type="Leasing";
-            }else if(response.offer[i].type=="achat"){
-              var type="Achat";
-            }
-
-            if(response.offer[i].probability==0 || response.offer[i].probability==0){
-              var probability="<span class=\"text-red\">"+response.offer[i].probability+" %</span>";
-            }else{
-              var probability="<span>"+response.offer[i].probability+" %</span>";
-            }
-
-
-            var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+response.offer[i].company+"</td><td>"+type+"</td><td>"+response.offer[i].title+"</td><td>"+amount+" </td><td>"+offer_start+"</td><td>"+offer_end+"</td><td>"+probability+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-
-
-            dest=dest.concat(temp);
-            i++;
-
-          }
-          var temp="</tobdy></table>";
-          dest=dest.concat(temp);
-          document.getElementById('offersListingSpan').innerHTML = dest;
-
-          var i=0;
-          var dest="";
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Coûts:</h4><h4 class=\"en-inline text-green\">Costs:</h4><h4 class=\"nl-inline text-green\">Costs:</h4><br/><br/><a class=\"button small green button-3d rounded icon-right addCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un coût</span></a><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Type</th><th></th></tr></thead>";
-          dest=dest.concat(temp);
-          while (i < response.costsNumber){
-            if(response.cost[i].start!=null){
-              var cost_start=response.cost[i].start.substr(0,10);
-            }else{
-              var cost="N/A";
-            }
-            if(response.cost[i].end!=null){
-              var cost_end=response.cost[i].end.substr(0,10);
-            }else{
-              var cost_end="N/A";
-            }
-
-            if(response.cost[i].type=="monthly"){
-              var amount=Math.round(response.cost[i].amount)+ "€/mois";
-            }else{
-              var amount=Math.round(response.cost[i].amount)+ "€";
-            }
-            var temp="<tr><td><a href=\"#\" class=\"retrieveCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" name=\""+response.cost[i].id+"\">"+response.cost[i].id+"</a></td><td>"+response.cost[i].title+"</td><td>"+amount+" </td><td>"+cost_start+"</td><td>"+cost_end+"</td><td><ins><a class=\"text-green costsManagement updateCost\" data-target=\"#costsManagement\" name=\""+response.cost[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-
-
-            dest=dest.concat(temp);
-            i++;
-
-          }
-          var temp="</tobdy></table>";
-          dest=dest.concat(temp);
-          document.getElementById('costsListingSpan').innerHTML = dest;
-
-          $(".retrieveOffer").click(function() {
-            retrieve_offer(this.name, "retrieve");
-            $('.offerManagementTitle').text("Consulter une offre");
-            $('.offerManagementSendButton').addClass("hidden");
-
-          });
-          $(".updateOffer").click(function() {
-            retrieve_offer(this.name, "update");
-            $('.offerManagementTitle').text("Mettre à jour une offre");
-            $('.offerManagementSendButton').removeClass("hidden");
-            $('.offerManagementSendButton').text("Mettre à jour")
-
-          });
-
-
-          $(".addCost").click(function() {
-            $('#widget-costsManagement-form input').attr("readonly", false);
-            $('#widget-costsManagement-form textarea').attr("readonly", false);
-            $('#widget-costsManagement-form select').attr("readonly", false);
-            $('.costManagementTitle').text("Ajouter un coût");
-            $('.costManagementSendButton').removeClass("hidden");
-            document.getElementById('widget-costsManagement-form').reset();
-            $('.costManagementSendButton').text("Ajouter")
-
-          });
-          $(".retrieveCost").click(function() {
-            retrieve_cost(this.name, "retrieve");
-            $('.costManagementTitle').text("Consulter un coût");
-            $('.costManagementSendButton').addClass("hidden");
-          });
-          $(".updateCost").click(function() {
-            retrieve_cost(this.name, "update");
-            $('.costManagementTitle').text("Mettre à jour un coût");
-
-            $('.costManagementSendButton').removeClass("hidden");
-            $('.costManagementSendButton').text("Mettre à jour")
-
-          });
-
-
-          displayLanguage();
-
-        }
-      }
-    })
-
-
-
-
-
-    $.ajax({
-      url: 'include/offer_management.php',
-      type: 'get',
-      data: { "graphics": "Y", action: "retrieve"},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          var threeYearsFromNow = new Date();
-          threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
-          var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
-
-          var ctx = document.getElementById('myChart').getContext('2d');
-          if (myChart != undefined) {
-            myChart.destroy();
-          }
-          myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              datasets: [{
-                label: 'Contrats signés',
-                borderColor: 'rgba(44, 132, 109, 0.5)',
-                backgroundColor:'rgba(44, 132, 109, 0)',
-                data: response.arrayContracts
-              },{
-                label: 'Offres',
-                borderColor: 'rgba(145, 145, 145, 0.5)',
-                backgroundColor:'rgba(145, 145, 145, 0)',
-                data: response.arrayOffers
-              },{
-                label: 'Chiffre d\'affaire',
-                borderColor: 'rgba(60, 179, 149, 0.5)',
-                backgroundColor:'rgba(60, 179, 149, 0)',
-                data: response.totalIN
-              },{
-                label: 'Frais',
-                borderColor: 'rgba(176, 0, 0, 0.5)',
-                backgroundColor:'rgba(176, 0, 0, 0)',
-                data: response.arrayCosts
-              },{
-                label: 'Cash flow',
-                borderColor: 'rgba(60, 179, 149, 0.5)',
-                backgroundColor:'rgba(60, 179, 149, 0.5)',
-                data: response.arrayFreeCashFlow
-              }],
-              labels: response.arrayDates
-
-            },
-
-            options: {
-              scales: {
-                xAxes:[{
-                  ticks:{
-                    max: "2020-12-19"
-                  }
-                }],
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true
-                  }
-                }]
-              },
-              elements: {
-                line: {
-                  tension: 0
+        $.ajax({
+            url: 'include/action_company.php',
+            type: 'get',
+            data: { "company": '*', "status": status, "owner":owner2, "numberOfResults": numberOfResults},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
                 }
-              }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Actions :</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right addTask\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead>";
+                    dest=dest.concat(temp);
+                    while (i < response.actionNumber){
 
+                        if(response.action[i].date_reminder!=null){
+                            var date_reminder=response.action[i].date_reminder.substr(0,10);
+                        }else{
+                            var date_reminder="N/A";
+                        }
+
+                        var status=response.action[i].status;
+                        var ownerSpan=response.action[i].ownerFirstName+" "+response.action[i].ownerName;
+
+                        if(response.action[i].late && response.action[i].status=='TO DO'){
+                            date_reminder="<span class='text-red'>"+date_reminder+"</span>";
+                            status="<span class='text-red'>"+status+"</span>";
+                            owner="<span class='text-red'>"+ownerSpan+"</span>";
+                        }else if(response.action[i].status=='DONE'){
+                            date_reminder="<span class='text-green'>"+date_reminder+"</span>";
+                            status="<span class='text-green'>"+status+"</span>";
+                            owner="<span class='text-green'>"+ownerSpan+"</span>";
+                        }else if(status='TO DO'){
+                            date_reminder="<span class='text-orange'>"+date_reminder+"</span>";
+                            status="<span class='text-orange'>"+status+"</span>";
+                            owner="<span class='text-orange'>"+ownerSpan+"</span>";
+                        }
+
+                        if(response.action[i].type=="other"){
+                            type="Autre";
+                        }else if(response.action[i].type=="offer"){
+                            type="Offre";
+                        }else if(response.action[i].type=="offreSigned"){
+                            type="Offre Signée";
+                        }else if(response.action[i].type=="rdv"){
+                            type="Rendez-vous";
+                        }else if(response.action[i].type=="rdv plan"){
+                            type="Planification rdv";
+                        }else if(response.action[i].type=="contact"){
+                            type="Contact";
+                        }else if(response.action[i].type=="rappel"){
+                            type="Rappel";
+                        }else{
+                            type=response.action[i].type;
+                        }
+
+
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td>"+response.action[i].date.substr(0,10)+"</td><td>"+type+"<td>"+response.action[i].title+"</td><td>"+date_reminder+"</td><td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);
+                    document.getElementById('tasksListingSpan').innerHTML = dest;
+
+
+                    $(".retrieveTask").click(function() {
+                        retrieve_task(this.name, "retrieve");
+                        $('.taskManagementSendButton').addClass("hidden");
+
+
+                    });
+
+                    $(".updateTask").click(function() {
+                        update_task(this.name, "update");
+                    });
+                    $(".addTask").click(function() {
+                        add_task(this.name);
+                        $('.taskManagementSendButton').removeClass("hidden");
+                        $('.taskManagementSendButton').text("Ajouter")
+
+                    });
+
+
+                    $('.taskOwnerSelection')
+                        .find('option')
+                        .remove()
+                        .end()
+                    ;
+                    $('.taskOwnerSelection').append("<option value='*'>Tous<br>");
+
+                    var i=0;
+                    while (i < response.ownerNumber){
+                        $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
+                        i++;
+
+                    }
+
+                    if(owner2){
+                        $('.taskOwnerSelection').val(owner2);
+                    }else{
+                        $('.taskOwnerSelection').val('*');
+                    }
+
+                    $('.taskOwnerSelection2')
+                        .find('option')
+                        .remove()
+                        .end()
+                    ;
+                    $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");
+
+                    var i=0;
+                    while (i < response.ownerNumber){
+                        $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
+                        i++;
+
+                    }
+
+                    $('.taskOwnerSelection2').val('*');
+
+                    $('#widget-taskManagement-form select[name=owner]')
+                        .find('option')
+                        .remove()
+                        .end()
+                    ;
+                    $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");
+
+                    var i=0;
+                    while (i < response.ownerNumber){
+                        $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
+                        i++;
+
+                    }
+
+                    document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
+
+                    displayLanguage();
+
+                    var classname = document.getElementsByClassName('updateAction');
+                    for (var i = 0; i < classname.length; i++) {
+                        classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
+                    }
+
+                }
             }
-          });
-
-        }
-      }
-    })
+        })
+    }
 
 
-  }
 
+    function list_contracts_offers(company) {
+        $.ajax({
+            url: 'include/offer_management.php',
+            type: 'get',
+            data: { "company": company, action: "retrieve"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats signés :</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
+                    dest=dest.concat(temp);
+                    while (i < response.contractsNumber){
+                        if(response.contract[i].start!=null){
+                            var contract_start=response.contract[i].start.substr(0,10);
+                        }else{
+                            var contract_start="<span class=\"text-red\">N/A</span>";
+                        }
+                        if(response.contract[i].end!=null){
+                            var contract_end=response.contract[i].end.substr(0,10);
+                        }else{
+                            var contract_end="<span class=\"text-red\">N/A</span>";
+                        }
+
+                        var temp="<tr><td>"+response.contract[i].company+"</td><td>"+response.contract[i].description+"</td><td>"+Math.round(response.contract[i].amount)+" €/mois</td><td>"+contract_start+"</td><td>"+contract_end+"</td></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);
+
+                    var temp="<p>Valeur actuelle des contrat en cours : <strong>"+Math.round(response.sumContractsCurrent)+" €/mois</strong></p>";
+                    dest=dest.concat(temp);
+
+                    document.getElementById('contractsListingSpan').innerHTML = dest;
+
+
+
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Offres en cours :</h4><h4 class=\"en-inline text-green\">Offers:</h4><h4 class=\"nl-inline text-green\">Offers:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Probabilité</th><th></th></tr></thead>";
+                    dest=dest.concat(temp);
+                    while (i < response.offersNumber){
+                        if(response.offer[i].start!=null){
+                            var offer_start=response.offer[i].start.substr(0,10);
+                        }else{
+                            var offer_start="<span class=\"text-red\">N/A</span>";
+                        }
+                        if(response.offer[i].end!=null){
+                            var offer_end=response.offer[i].end.substr(0,10);
+                        }else{
+                            var offer_end="<span class=\"text-red\">N/A</span>";
+                        }
+
+                        if(response.offer[i].type=="leasing"){
+                            var amount=Math.round(response.offer[i].amount)+ "€/mois";
+                        }else{
+                            var amount=Math.round(response.offer[i].amount)+ "€";
+                        }
+
+                        if(response.offer[i].amount==0){
+                            var amount="<span class=\"text-red\">"+amount+"</span>";
+                        }
+
+                        if(response.offer[i].type=="leasing"){
+                            var type="Leasing";
+                        }else if(response.offer[i].type=="achat"){
+                            var type="Achat";
+                        }
+
+                        if(response.offer[i].probability==0 || response.offer[i].probability==0){
+                            var probability="<span class=\"text-red\">"+response.offer[i].probability+" %</span>";
+                        }else{
+                            var probability="<span>"+response.offer[i].probability+" %</span>";
+                        }
+
+
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+response.offer[i].company+"</td><td>"+type+"</td><td>"+response.offer[i].title+"</td><td>"+amount+" </td><td>"+offer_start+"</td><td>"+offer_end+"</td><td>"+probability+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+
+
+                        dest=dest.concat(temp);
+                        i++;
+
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);
+                    document.getElementById('offersListingSpan').innerHTML = dest;
+
+                    var i=0;
+                    var dest="";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Coûts:</h4><h4 class=\"en-inline text-green\">Costs:</h4><h4 class=\"nl-inline text-green\">Costs:</h4><br/><br/><a class=\"button small green button-3d rounded icon-right addCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un coût</span></a><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Type</th><th></th></tr></thead>";
+                    dest=dest.concat(temp);
+                    while (i < response.costsNumber){
+                        if(response.cost[i].start!=null){
+                            var cost_start=response.cost[i].start.substr(0,10);
+                        }else{
+                            var cost="N/A";
+                        }
+                        if(response.cost[i].end!=null){
+                            var cost_end=response.cost[i].end.substr(0,10);
+                        }else{
+                            var cost_end="N/A";
+                        }
+
+                        if(response.cost[i].type=="monthly"){
+                            var amount=Math.round(response.cost[i].amount)+ "€/mois";
+                        }else{
+                            var amount=Math.round(response.cost[i].amount)+ "€";
+                        }
+                        var temp="<tr><td><a href=\"#\" class=\"retrieveCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" name=\""+response.cost[i].id+"\">"+response.cost[i].id+"</a></td><td>"+response.cost[i].title+"</td><td>"+amount+" </td><td>"+cost_start+"</td><td>"+cost_end+"</td><td><ins><a class=\"text-green costsManagement updateCost\" data-target=\"#costsManagement\" name=\""+response.cost[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+
+
+                        dest=dest.concat(temp);
+                        i++;
+
+                    }
+                    var temp="</tobdy></table>";
+                    dest=dest.concat(temp);
+                    document.getElementById('costsListingSpan').innerHTML = dest;
+
+                    $(".retrieveOffer").click(function() {
+                        retrieve_offer(this.name, "retrieve");
+                        $('.offerManagementTitle').text("Consulter une offre");
+                        $('.offerManagementSendButton').addClass("hidden");
+
+                    });
+                    $(".updateOffer").click(function() {
+                        retrieve_offer(this.name, "update");
+                        $('.offerManagementTitle').text("Mettre à jour une offre");
+                        $('.offerManagementSendButton').removeClass("hidden");
+                        $('.offerManagementSendButton').text("Mettre à jour")
+
+                    });
+
+
+                    $(".addCost").click(function() {
+                        $('#widget-costsManagement-form input').attr("readonly", false);
+                        $('#widget-costsManagement-form textarea').attr("readonly", false);
+                        $('#widget-costsManagement-form select').attr("readonly", false);
+                        $('.costManagementTitle').text("Ajouter un coût");
+                        $('.costManagementSendButton').removeClass("hidden");
+                        document.getElementById('widget-costsManagement-form').reset();
+                        $('.costManagementSendButton').text("Ajouter")
+
+                    });
+                    $(".retrieveCost").click(function() {
+                        retrieve_cost(this.name, "retrieve");
+                        $('.costManagementTitle').text("Consulter un coût");
+                        $('.costManagementSendButton').addClass("hidden");
+                    });
+                    $(".updateCost").click(function() {
+                        retrieve_cost(this.name, "update");
+                        $('.costManagementTitle').text("Mettre à jour un coût");
+
+                        $('.costManagementSendButton').removeClass("hidden");
+                        $('.costManagementSendButton').text("Mettre à jour")
+
+                    });
+
+
+                    displayLanguage();
+
+                }
+            }
+        })
+
+
+
+
+
+        $.ajax({
+            url: 'include/offer_management.php',
+            type: 'get',
+            data: { "graphics": "Y", action: "retrieve"},
+            success: function(response){
+                if(response.response == 'error') {
+                    console.log(response.message);
+                }
+                if(response.response == 'success'){
+                    var threeYearsFromNow = new Date();
+                    threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
+                    var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
+
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            datasets: [{
+                                label: 'Contrats signés',
+                                borderColor: 'rgba(44, 132, 109, 0.5)',
+                                backgroundColor:'rgba(44, 132, 109, 0)',
+                                data: response.arrayContracts
+                            },{
+                                label: 'Offres',
+                                borderColor: 'rgba(145, 145, 145, 0.5)',
+                                backgroundColor:'rgba(145, 145, 145, 0)',
+                                data: response.arrayOffers
+                            },{
+                                label: 'Chiffre d\'affaire',
+                                borderColor: 'rgba(60, 179, 149, 0.5)',
+                                backgroundColor:'rgba(60, 179, 149, 0)',
+                                data: response.totalIN
+                            },{
+                                label: 'Frais',
+                                borderColor: 'rgba(176, 0, 0, 0.5)',
+                                backgroundColor:'rgba(176, 0, 0, 0)',
+                                data: response.arrayCosts
+                            },{
+                                label: 'Cash flow',
+                                borderColor: 'rgba(60, 179, 149, 0.5)',
+                                backgroundColor:'rgba(60, 179, 149, 0.5)',
+                                data: response.arrayFreeCashFlow
+                            }],
+                        labels: response.arrayDates
+
+                        },
+
+                        options: {
+                            scales: {
+                                xAxes:[{
+                                    ticks:{
+                                        max: "2020-12-19"
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            },
+                            elements: {
+                                line: {
+                                    tension: 0
+                                }
+                            }
+
+                        }
+                    });
+
+                }
+            }
+        })
+
+
+    } 
   function get_users_listing(){
     var email= "<?php echo $user; ?>";
     $.ajax({
@@ -7152,6 +7430,32 @@ if($connected){
 </div>
 </div>
 </div>
+<div class="modal fade" id="feedbacksListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+
+            <div data-example-id="contextual-table" class="bs-example">
+                        <span id="feedbacksListingSpan"></span>
+            </div>
+
+            <div class="separator"></div>
+
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="modal fade" id="conditionListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
@@ -8068,1143 +8372,1270 @@ if($connected){
         </div>
 
 
+<div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr-inline text-green">Référence du vélo :</h4>
+						<h4 class="en-inline text-green">Bike Reference:</h4>
+						<h4 class="nl-inline text-green">Bike Reference :</h4>
+                        <p span class="bikeReference"></p>
+                    </div>
 
-        <div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h4 class="fr-inline text-green">Référence du vélo :</h4>
-                    <h4 class="en-inline text-green">Bike Reference:</h4>
-                    <h4 class="nl-inline text-green">Bike Reference :</h4>
-                    <p span class="bikeReference"></p>
-                  </div>
+                    <div class="col-sm-5">
+                        <h4><span class="fr"> Modèle : </span></h4>
+                        <h4><span class="en"> Model: </span></h4>
+                        <h4><span class="nl"> Model : </span></h4>
+                        <p span class="bikeModel"></p>
 
-                  <div class="col-sm-5">
-                    <h4><span class="fr"> Modèle : </span></h4>
-                    <h4><span class="en"> Model: </span></h4>
-                    <h4><span class="nl"> Model : </span></h4>
-                    <p span class="bikeModel"></p>
+                    </div>
+                    <div class="col-sm-5">
+                        <h4><span class="fr"> Référence du cadre : </span></h4>
+                        <h4><span class="en"> Frame reference: </span></h4>
+                        <h4><span class="nl"> Frame reference: </span></h4>
+                        <p span class="frameReference"></p>
 
-                  </div>
-                  <div class="col-sm-5">
-                    <h4><span class="fr"> Référence du cadre : </span></h4>
-                    <h4><span class="en"> Frame reference: </span></h4>
-                    <h4><span class="nl"> Frame reference: </span></h4>
-                    <p span class="frameReference"></p>
+                    </div>
 
-                  </div>
-
-                  <div class="col-sm-10">
+                    <div class="col-sm-10">
                     <h4 class="text-green">Informations relatives au contrat</h4>
-                  </div>
+                    </div>
 
-                  <div class="col-sm-4">
+                    <div class="col-sm-4">
                     <h4><span class="fr"> Type de contrat : </span></h4>
                     <h4><span class="en"> Contract type: </span></h4>
                     <h4><span class="nl"> Contract type : </span></h4>
 
 
                     <p><span class="contractType"></span></p>
-                  </div>
+                    </div>
 
-                  <div class="col-sm-4">
+                   <div class="col-sm-4">
                     <h4><span class="fr" >Date de début :</span></h4>
                     <h4><span class="en" >Start date:</span></h4>
                     <h4><span class="nl" >Start date :</span></h4>
 
                     <p><span class="startDateContract"></span></p>
-                  </div>
+                    </div>
 
-                  <div class="col-sm-4">
-                    <h4><span class="fr" >Date de fin :</span></h4>
-                    <h4><span class="en" >End date:</span></h4>
-                    <h4><span class="nl" >End date :</span></h4>
+                    <div class="col-sm-4">
+                        <h4><span class="fr" >Date de fin :</span></h4>
+                        <h4><span class="en" >End date:</span></h4>
+                        <h4><span class="nl" >End date :</span></h4>
                     <p><span class="endDateContract"></span></p>
-                  </div>
+                    </div>
 
-                  <div class="col-sm-10">
+                   <div class="col-sm-10">
                     <h4>Votre vélo: </h4>
-                    <div class="col-md-4">
-                      <img src="" class="bikeImage" alt="image" />
+                        <div class="col-md-4">
+                        <img src="" class="bikeImage" alt="image" />
+                        </div>
                     </div>
-                  </div>
-                  <div class="separator"></div>
-                  <h4 class="fr text-green">Historique du vélo</h4>
-                  <span id="action_bike_log_user">
-                  </span>
+                    <div class="separator"></div>
+                    <h4 class="fr text-green">Historique du vélo</h4>
+                    <span id="action_bike_log_user">
+                    </span>
 
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-
+				</div>
             </div>
-          </div>
-        </div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
 
-        <div class="modal fade" id="companyDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <form id="widget-companyDetails-form" action="include/update_client.php" role="form" method="post">
-                    <div class="col-sm-12 form-group">
+		</div>
+	</div>
+</div>
 
-                      <div class="col-sm-12">
-                        <h4 class="text-green">Informations générales</h4>
-                        <a href="#" class="text-red updateClientInformationButton">Update</a>
-                        <a href="#" class="text-red cancelUpdateClientInformation hidden">Cancel update</a>
-                      </div>
-                      <div class="col-sm-12">
-                        <label class="fr">Nom de la société :</label>
-                        <label class="en">Company Name:</label>
-                        <label class="nl">Company Name :</label>
-                        <input type="text" id="companyName" class="form-control updateClientInformation" name="widget_companyDetails_companyName" value="" readonly="true"/>
-                      </div>
+<div class="modal fade" id="companyDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+                    <div class="row">
+                        <form id="widget-companyDetails-form" action="include/update_client.php" role="form" method="post">
+                        	<div class="col-sm-12 form-group">
 
-                      <div class="col-sm-4">
-                        <label class="fr"> Rue : </label>
-                        <label class="en"> Street: </label>
-                        <label class="nl"> Street : </label>
-                        <input type="text" id="companyStreet" class="form-control updateClientInformation" name="widget_companyDetails_companyStreet" value="" readonly="true"/>
-                      </div>
-                      <div class="col-sm-4">
-                        <label class="fr"> Code postal : </label>
-                        <label class="en"> Zip Code: </label>
-                        <label class="nl"> Zip Code: </label>
-                        <input type="text" id="companyZIPCode" class="form-control updateClientInformation" name="widget_companyDetails_companyZIPCode" value="" readonly="true"/>
-                      </div>
-                      <div class="col-sm-4">
-                        <label class="fr"> Ville: </label>
-                        <label class="en"> Town: </label>
-                        <label class="nl"> Town : </label>
-                        <input type="text" id="companyTown" class="form-control updateClientInformation" name="widget_companyDetails_companyTown" value="" readonly="true"/>
-                      </div>
-                      <div class="col-sm-5">
-                        <label class="fr"> Numéro TVA : </label>
-                        <label class="en"> VAT Number: </label>
-                        <label class="nl"> VAT Number: </label>
-                        <input type="text" id="companyVAT" class="form-control updateClientInformation" name="widget_companyDetails_companyVAT" value="" readonly="true"/>
+	                            <div class="col-sm-12">
+	                                <h4 class="text-green">Informations générales</h4>
+	                                <a href="#" class="text-red updateClientInformationButton">Update</a>
+	                                <a href="#" class="text-red cancelUpdateClientInformation hidden">Cancel update</a>
+	                            </div>
+	                            <div class="col-sm-12">
+	                                <label class="fr">Nom de la société :</label>
+	                                <label class="en">Company Name:</label>
+	                                <label class="nl">Company Name :</label>
+	                                <input type="text" id="companyName" class="form-control updateClientInformation" name="widget_companyDetails_companyName" value="" readonly="true"/>
+	                            </div>
 
-                      </div>
-                      <div class="col-sm-5">
-                        <label class="fr"> Type : </label>
-                        <label class="en"> Type: </label>
-                        <label class="nl"> Type : </label>
-                        <select title="Type" class="form-control selectpicker updateClientInformationSelect" disabled name="type">
-                          <option value="CLIENT">Client</option>
-                          <option value="PROSPECT">Prospect</option>
-                          <option value="ANCIEN PROSPECT">Ancien Prospect</option>
-                          <option value="ANCIEN CLIENT">Ancien Client</option>
-                        </select>
-                      </div>
-                      <div class="separator"></div>
+	                            <div class="col-sm-4">
+	                                <label class="fr"> Rue : </label>
+	                                <label class="en"> Street: </label>
+	                                <label class="nl"> Street : </label>
+	                                <input type="text" id="companyStreet" class="form-control updateClientInformation" name="widget_companyDetails_companyStreet" value="" readonly="true"/>
+	                            </div>
+	                            <div class="col-sm-4">
+	                                <label class="fr"> Code postal : </label>
+	                                <label class="en"> Zip Code: </label>
+	                                <label class="nl"> Zip Code: </label>
+	                                <input type="text" id="companyZIPCode" class="form-control updateClientInformation" name="widget_companyDetails_companyZIPCode" value="" readonly="true"/>
+	                            </div>
+	                            <div class="col-sm-4">
+	                                <label class="fr"> Ville: </label>
+	                                <label class="en"> Town: </label>
+	                                <label class="nl"> Town : </label>
+	                                <input type="text" id="companyTown" class="form-control updateClientInformation" name="widget_companyDetails_companyTown" value="" readonly="true"/>
+	                            </div>
+	                            <div class="col-sm-5">
+	                                <label class="fr"> Numéro TVA : </label>
+	                                <label class="en"> VAT Number: </label>
+	                                <label class="nl"> VAT Number: </label>
+	                                <input type="text" id="companyVAT" class="form-control updateClientInformation" name="widget_companyDetails_companyVAT" value="" readonly="true"/>
 
-                      <div class="col-sm-12">
-                        <h4 class="text-green">Informations relatives au contact</h4>
-                      </div>
-                      <div class="col-sm-12 contactAddButtons">
-                        <button class="addContact button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
-                        <label for="addContact">Ajouter un contact</label>
-                      </div>
-                      <div class="clientContactZone">
-                          <div class="col-md-3">
-                            <label class="fr"> Email : </label>
-                            <label class="en"> Email: </label>
-                            <label class="nl"> Email : </label>
-                            <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
-                          </div>
-                          <div class="col-md-3">
-                            <label class="fr" >Nom :</label>
-                            <label class="en" >Last Name:</label>
-                            <label class="nl" >Last Name:</label>
-                            <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
-                          </div>
+	                            </div>
+	                            <div class="col-sm-5">
+	                                <label class="fr"> Type : </label>
+	                                <label class="en"> Type: </label>
+	                                <label class="nl"> Type : </label>
+                                    <select title="Type" class="form-control selectpicker updateClientInformationSelect" disabled name="type">
+                                      <option value="CLIENT">Client</option>
+                                      <option value="PROSPECT">Prospect</option>
+                                      <option value="ANCIEN PROSPECT">Ancien Prospect</option>
+                                      <option value="ANCIEN CLIENT">Ancien Client</option>
+                                    </select>
+	                            </div>
+                                <div class="separator"></div>
 
-                          <div class="col-md-3">
-                            <label class="fr" >Prénom :</label>
-                            <label class="en" >First Name:</label>
-                            <label class="nl" >First Name :</label>
-                            <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
-                          </div>
+	                            <div class="col-sm-12">
+	                                <h4 class="text-green">Informations relatives au contact</h4>
+	                            </div>
 
-                          <div class="col-md-3">
-                            <label class="fr" >Téléphone :</label>
-                            <label class="en" >Phone:</label>
-                            <label class="nl" >Phone :</label>
-                            <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
-                          </div>
-                          <div class="separator separator-small"></div>
-                      </div>
-                      <div class="col-md-3"></div>
-                      <div class="col-md-6" style="text-align:center; margin-bottom:20px;">
-                        <label for="statistiques">Envoyer le rapport de statistiques ?</label>
-                        <input type="checkbox" name="statistiques" class="form-control" readonly="true"/>
-                      </div>
+	                            <div class="col-md-3">
+	                            <label class="fr"> Email : </label>
+	                            <label class="en"> Email: </label>
+	                            <label class="nl"> Email : </label>
+	                                <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
+	                            </div>
 
+	                           <div class="col-md-3">
+	                            <label class="fr" >Nom :</label>
+	                            <label class="en" >Last Name:</label>
+	                            <label class="nl" >Last Name:</label>
+	                                <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
+	                            </div>
 
-                      <div class="separator"></div>
+	                            <div class="col-md-3">
+	                                <label class="fr" >Prénom :</label>
+	                                <label class="en" >First Name:</label>
+	                                <label class="nl" >First Name :</label>
+	                                <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
+	                            </div>
 
-                      <div class="col-sm-12">
-                        <h4 class="text-green">Informations relatives à la facturation</h4>
-                      </div>
-
-                      <div class="col-md-3">
-                        <label for="email_billing" class="fr"> Email : </label>
-                        <label for="email_billing" class="en"> Email: </label>
-                        <label for="email_billing" class="nl"> Email : </label>
-                        <input type="text" class="form-control" name="email_billing" value="" readonly="true"/>
-                      </div>
-
-                      <div class="col-md-3">
-                        <label for="lastNameContactBilling" class="fr" >Nom :</label>
-                        <label for="lastNameContactBilling" class="en" >Last Name:</label>
-                        <label for="lastNameContactBilling" class="nl" >Last Name:</label>
-                        <input type="text" class="form-control" name="lastNameContactBilling" value="" readonly="true"/>
-                      </div>
-
-                      <div class="col-md-3">
-                        <label for="firstNameContactBilling" class="fr" >Prénom :</label>
-                        <label for="firstNameContactBilling" class="en" >First Name:</label>
-                        <label for="firstNameContactBilling" class="nl" >First Name :</label>
-                        <input type="text" class="form-control" name="firstNameContactBilling" value="" readonly="true"/>
-                      </div>
-
-                      <div class="col-md-3">
-                        <label for="phoneBilling" class="fr" >Téléphone :</label>
-                        <label for="phoneBilling" class="en" >Phone:</label>
-                        <label for="phoneBilling" class="nl" >Phone :</label>
-                        <input type="text" class="form-control" name="phoneBilling" value="" readonly="true"/>
-                      </div>
-                      <div class="col-sm-4">
-                        <label for="billing">Envoyer les factures automatiquement ?</label>
-                        <input type="checkbox" name="billing" class="form-control" readonly="true"/>
-                      </div>
-
-                      <div class="separator"></div>
-
-                      <div class="col-sm-12">
-                        <h4 class="text-green">Options</h4>
-                      </div>
-
-                      <div class="col-sm-4">
-                        <label for="assistance">Assistance</label>
-                        <input type="checkbox" name="assistance" class="form-control" readonly="true"/>
-                      </div>
-
-                      <div class="col-sm-4">
-                        <label for="locking">Locking</label>
-                        <input type="checkbox" name="locking" class="form-control" readonly="true"/>
-                      </div>
+	                            <div class="col-md-3">
+	                                <label class="fr" >Téléphone :</label>
+	                                <label class="en" >Phone:</label>
+	                                <label class="nl" >Phone :</label>
+	                                <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
+	                            </div>
+								<div class="col-md-4">
+                                    <label for="statistiques">Envoyer le rapport de statistiques ?</label>
+                                    <input type="checkbox" name="statistiques" class="form-control" readonly="true"/>
+                                </div>
 
 
-                      <input type="text" id="widget_companyDetails_requestor" name="widget_companyDetails_requestor" class="form-control hidden" value="<?php echo $user; ?>">
-                      <input type="text" name="ID" class="form-control hidden">
-                      <input type="text" id="widget_companyDetails_internalReference" name="widget_companyDetails_internalReference" class="form-control hidden">
+                                <div class="separator"></div>
 
-                      <div class="col-sm-12">
-                        <button  class="button small green button-3d rounded icon-left hidden" id="sendButtonClientDetails" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                      </div>
+	                            <div class="col-sm-12">
+	                                <h4 class="text-green">Informations relatives à la facturation</h4>
+	                            </div>
+
+	                            <div class="col-md-3">
+                                    <label for="email_billing" class="fr"> Email : </label>
+                                    <label for="email_billing" class="en"> Email: </label>
+                                    <label for="email_billing" class="nl"> Email : </label>
+	                                <input type="text" class="form-control" name="email_billing" value="" readonly="true"/>
+	                            </div>
+
+	                           <div class="col-md-3">
+                                    <label for="lastNameContactBilling" class="fr" >Nom :</label>
+                                    <label for="lastNameContactBilling" class="en" >Last Name:</label>
+                                    <label for="lastNameContactBilling" class="nl" >Last Name:</label>
+	                                <input type="text" class="form-control" name="lastNameContactBilling" value="" readonly="true"/>
+	                            </div>
+
+	                            <div class="col-md-3">
+	                                <label for="firstNameContactBilling" class="fr" >Prénom :</label>
+	                                <label for="firstNameContactBilling" class="en" >First Name:</label>
+	                                <label for="firstNameContactBilling" class="nl" >First Name :</label>
+	                                <input type="text" class="form-control" name="firstNameContactBilling" value="" readonly="true"/>
+	                            </div>
+
+	                            <div class="col-md-3">
+	                                <label for="phoneBilling" class="fr" >Téléphone :</label>
+	                                <label for="phoneBilling" class="en" >Phone:</label>
+	                                <label for="phoneBilling" class="nl" >Phone :</label>
+	                                <input type="text" class="form-control" name="phoneBilling" value="" readonly="true"/>
+	                            </div>
+								<div class="col-sm-4">
+                                    <label for="billing">Envoyer les factures automatiquement ?</label>
+                                    <input type="checkbox" name="billing" class="form-control" readonly="true"/>
+                                </div>
+
+                                <div class="separator"></div>
+
+	                            <div class="col-sm-12">
+	                                <h4 class="text-green">Options</h4>
+	                            </div>
+
+                                <div class="col-sm-4">
+                                    <label for="assistance">Assistance</label>
+                                    <input type="checkbox" name="assistance" class="form-control" readonly="true"/>
+                                </div>
+
+								<div class="col-sm-4">
+                                    <label for="locking">Locking</label>
+                                    <input type="checkbox" name="locking" class="form-control" readonly="true"/>
+                                </div>
+
+
+	                            <input type="text" id="widget_companyDetails_requestor" name="widget_companyDetails_requestor" class="form-control hidden" value="<?php echo $user; ?>">
+	                            <input type="text" name="ID" class="form-control hidden">
+	                            <input type="text" id="widget_companyDetails_internalReference" name="widget_companyDetails_internalReference" class="form-control hidden">
+
+	                            <div class="col-sm-12">
+	                                <button  class="button small green button-3d rounded icon-left hidden" id="sendButtonClientDetails" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+	                            </div>
+	                		</div>
+
+
+                        </form>
+
+                        <script type="text/javascript">
+							jQuery("#widget-companyDetails-form").validate({
+								submitHandler: function(form){
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+
+                                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+                                                document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
+                                                document.getElementById("sendButtonClientDetails").classList.add("hidden");
+                                                document.getElementById("clientBikes").classList.remove("hidden");
+                                                document.getElementById("clientBuildings").classList.remove("hidden");
+                                                document.getElementById("clientContracts").classList.remove("hidden");
+
+                                                var classname = document.getElementsByClassName('updateClientInformation');
+                                                $('#widget-companyDetails-form input').attr("readonly", true);
+                                                $('#widget-companyDetails-form select').prop( "disabled", true );
+
+
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+
+                            document.getElementsByClassName('updateClientInformationButton')[0].addEventListener('click', function(){
+                                document.getElementById("sendButtonClientDetails").classList.remove("hidden");
+                                document.getElementById("clientBikes").classList.add("hidden");
+                                document.getElementById("clientBuildings").classList.add("hidden");
+                                document.getElementById("clientContracts").classList.add("hidden");
+                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.remove("hidden");
+                                document.getElementsByClassName("updateClientInformationButton")[0].classList.add("hidden");
+                                $('#widget-companyDetails-form input').attr("readonly", false);
+                                $('#widget-companyDetails-form select').removeAttr("disabled");
+
+
+                            });
+                            document.getElementsByClassName('cancelUpdateClientInformation')[0].addEventListener('click', function(){
+                                document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+                                document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
+                                document.getElementById("sendButtonClientDetails").classList.add("hidden");
+                                document.getElementById("clientBikes").classList.remove("hidden");
+                                document.getElementById("clientContracts").classList.remove("hidden");
+                                document.getElementById("clientBuildings").classList.remove("hidden");
+                                $('#widget-companyDetails-form input').attr("readonly", true);
+                                $('#widget-companyDetails-form select').prop( "disabled", true );
+
+
+                            });
+                        </script>
+
+                    <div class="col-sm-12" id="clientBikes">
+                        <h4 class="text-green">Vélos :</h4>
+                        <p><span id="companyBikes"></span></p>
                     </div>
 
-
-                  </form>
-
-                  <script type="text/javascript">
-                  jQuery("#widget-companyDetails-form").validate({
-                    submitHandler: function(form){
-                      jQuery(form).ajaxSubmit({
-                        success: function(response) {
-                          if (response.response == 'success') {
-                            $.notify({
-                              message: response.message
-                            }, {
-                              type: 'success'
-                            });
-
-                            document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
-                            document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
-                            document.getElementById("sendButtonClientDetails").classList.add("hidden");
-                            document.getElementById("clientBikes").classList.remove("hidden");
-                            document.getElementById("clientBuildings").classList.remove("hidden");
-                            document.getElementById("clientContracts").classList.remove("hidden");
-
-                            var classname = document.getElementsByClassName('updateClientInformation');
-                            $('#widget-companyDetails-form input').attr("readonly", true);
-                            $('#widget-companyDetails-form select').prop( "disabled", true );
-
-
-
-                          } else {
-                            $.notify({
-                              message: response.message
-                            }, {
-                              type: 'danger'
-                            });
-                          }
-                        }
-                      });
-                    }
-                  });
-
-
-                  document.getElementsByClassName('updateClientInformationButton')[0].addEventListener('click', function(){
-                    document.getElementById("sendButtonClientDetails").classList.remove("hidden");
-                    document.getElementById("clientBikes").classList.add("hidden");
-                    document.getElementById("clientBuildings").classList.add("hidden");
-                    document.getElementById("clientContracts").classList.add("hidden");
-                    document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.remove("hidden");
-                    document.getElementsByClassName("updateClientInformationButton")[0].classList.add("hidden");
-                    $('#widget-companyDetails-form input').attr("readonly", false);
-                    $('#widget-companyDetails-form select').removeAttr("disabled");
-
-
-                  });
-                  document.getElementsByClassName('cancelUpdateClientInformation')[0].addEventListener('click', function(){
-                    document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
-                    document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
-                    document.getElementById("sendButtonClientDetails").classList.add("hidden");
-                    document.getElementById("clientBikes").classList.remove("hidden");
-                    document.getElementById("clientContracts").classList.remove("hidden");
-                    document.getElementById("clientBuildings").classList.remove("hidden");
-                    $('#widget-companyDetails-form input').attr("readonly", true);
-                    $('#widget-companyDetails-form select').prop( "disabled", true );
-
-
-                  });
-
-                  </script>
-                  <script type="text/javascript" src="js/add_company_contact.js">
-
-                  </script>
-
-                  <div class="col-sm-12" id="clientBikes">
-                    <h4 class="text-green">Vélos :</h4>
-                    <p><span id="companyBikes"></span></p>
-                  </div>
-
-                  <div class="col-sm-12" id="clientBoxes">
-                    <h4 class="text-green">Bornes :</h4>
-                    <p><span id="companyBoxes"></span></p>
-                  </div>
-
-                  <div class="col-sm-12" id="clientContracts">
-                    <h4 class="text-green">Contrats et Offres :</h4>
-                    <p><span id="companyContracts"></span></p>
-                  </div>
-
-                  <div class="col-sm-12">
-                    <h4 class="text-green">Historique et actions :</h4>
-                    <span id="action_company_log"></span>
-
-                  </div>
-
-                  <div class="col-sm-12" id="clientBuildings">
-                    <h4 class="text-green">Bâtiments:</h4>
-                    <p><span id="companyBuildings"></span></p>
-                  </div>
-
-                  <div class="col-sm-12" id="clientusers">
-                    <h4 class="text-green">Utilisateurs:</h4>
-                    <span id="companyUsers"></span>
-                  </div>
-
-                </div>
-
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-
-        <div class="modal fade" id="addUser" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h4 class="fr text-green">Ajouter un utilisateur</h4>
-
-                    <form id="widget-addUser-form" action="include/add_user.php" role="form" method="post">
-
-                      <div class="form-group col-sm-12">
-                        <div class="col-md-4">
-                          <label for="firstname"  class="fr">Prénom</label>
-                          <label for="firstname"  class="en">Firstname</label>
-                          <label for="firstname"  class="nl">Voornaam</label>
-                          <input type="text" name="firstName" class="form-control required">
-                        </div>
-
-                        <div class="col-md-4">
-                          <label for="name"  class="fr">Nom</label>
-                          <label for="name"  class="en">Name</label>
-                          <label for="name"  class="nl">Achternaam</label>
-                          <input type="text" name="name" class="form-control required">
-                        </div>
-
-                        <div class="col-md-4">
-                          <label for="mail"  class="fr">E-mail</label>
-                          <label for="mail"  class="en">E-mail</label>
-                          <label for="mail"  class="nl">E-mail</label>
-                          <input type="text" name="mail" class="form-control mail required">
-                        </div>
-                        <div class="col-md-4">
-                          <label for="generatePassword"  class="fr">Genérer un password automatiquement</label>
-                          <input type="checkbox" name="generatePassword" class="form-control" checked>
-                        </div>
-                        <div class="col-md-8">
-                          <label for="password"  class="fr hidden">Password</label>
-                          <label for="password"  class="en hidden">Password</label>
-                          <label for="password"  class="nl hidden">Password</label>
-                          <input type="text" name="password" class="form-control required hidden">
-                        </div>
-                        <div class="col-md-4">
-                          <label for="fleetManager">Fleet manager</label>
-                          <input type="checkbox" name="fleetManager" class="form-control">
-                        </div>
-                        <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="company" class="form-control hidden">
-
-                      </div>
-                      <h4>Accès aux bâtiments</h4>
-                      <div class="form-group col-sm-12" id="buildingCreateUser"></div>
-
-                      <h4>Accès aux vélos</h4>
-                      <div class="form-group col-sm-12" id="bikeCreateUser"></div>
-
-                      <div id="confirmAddUser">
-
-                      </div>
-
-                    </form>
-                    <script type="text/javascript">
-                    jQuery("#widget-addUser-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              get_users_listing();
-                              $('#addUser').modal('toggle');
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <script type="text/javascript">
-        $('#widget-addUser-form input[name=generatePassword]').change(function(){
-          if($('#widget-addUser-form input[name=generatePassword').is(':checked')){
-            $('#widget-addUser-form label[for=password]').addClass("hidden");
-            $('#widget-addUser-form input[name=password]').addClass("hidden");
-          }else{
-            $('#widget-addUser-form label[for=password]').removeClass("hidden");
-            $('#widget-addUser-form input[name=password]').removeClass("hidden");
-          }
-        })
-        </script>
-
-        <div class="modal fade" id="taskManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h4 class="fr text-green taskManagementTitle">Ajouter une action</h4>
-
-                    <form id="widget-taskManagement-form" action="include/action_company.php" role="form" method="post">
-
-                      <div class="form-group col-sm-12">
-                        <div class="col-md-12">
-
-                          <div class="col-md-4">
-                            <label for="owner">Owner</label>
-                            <select title="owner" class="form-control required" name="owner">
-                            </select>
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="status">Statut :</label>
-                            <select title="Status" class="selectpicker form-control required" name="status">
-                              <option value="TO DO">To do</option>
-                              <option value="DONE">Done</option>
-                            </select>
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="company"  class="fr">Société</label>
-                            <label for="company"  class="en">Company</label>
-                            <label for="company"  class="nl">Company</label>
-                            <select title="company" class="selectpicker form-control required" name="company">
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="col-md-4">
-                            <label for="type"  class="fr">Type</label>
-                            <label for="type"  class="en">Type</label>
-                            <label for="type"  class="nl">Type</label>
-                            <select title="type" class="selectpicker form-control required" name="type">
-                              <option value="contact">Prise de contact</option>
-                              <option value="rappel">Rappel</option>
-                              <option value="plan rdv">Planification de rendez-vous</option>
-                              <option value="rdv">Rendez-vous</option>
-                              <option value="offre">Formulation d'une offre</option>
-                              <option value="offreSigned">Offre signée</option>
-                              <option value="delivery">Livraison vélo</option>
-                              <option value="other">Autre</option>
-                            </select>
-
-                          </div>
-                          <div class="col-md-4">
-                            <label for="date"  class="fr">Date</label>
-                            <label for="date"  class="en">Date</label>
-                            <label for="date"  class="nl">Date</label>
-                            <input type="date" name="date" class="form-control required">
-                          </div>
-                          <div class="col-md-4">
-                            <label for="reminder"  class="fr">Rappel ?</label>
-                            <label for="reminder"  class="en">Reminder ?</label>
-                            <label for="reminder"  class="nl">Reminder ?</label>
-                            <input type="date" name="date_reminder" class="form-control ">
-                          </div>
-                        </div>
-
-
-                        <div class="col-md-12">
-
-                          <div class="col-md-12">
-                            <label for="reminder"  class="fr">Titre</label>
-                            <label for="reminder"  class="en">Title</label>
-                            <label for="reminder"  class="nl">Title</label>
-                            <input type="text" name="title" class="form-control ">
-                          </div>
-
-                          <div class="col-md-12">
-                            <label for="reminder"  class="fr">Description</label>
-                            <label for="reminder"  class="en">Description</label>
-                            <label for="reminder"  class="nl">Description</label>
-                            <textarea class="form-control" rows="5" name="description"></textarea>
-                          </div>
-
-                        </div>
-
-                        <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="action" class="form-control hidden" value="create">
-                        <div class="col-sm-12">
-                          <button  class="button small green button-3d rounded icon-left taskManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
-                        </div>
-
-                      </div>
-
-                    </form>
-                    <script type="text/javascript">
-                    jQuery("#widget-taskManagement-form").validate({
-                      submitHandler: function(form) {
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
-                              $('#taskManagement').modal('toggle');
-                              document.getElementById('widget-taskManagement-form').reset();
-
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-
-                    <form id="widget-bikeManagement-form" action="include/bike_management.php" role="form" method="post">
-
-                      <div class="form-group col-sm-12">
-                        <h4 class="fr text-green bikeManagementTitle">Ajouter un vélo</h4>
-                        <div class="col-sm-12">
-                          <h4 class="fr text-green">Caractéristiques du vélo</h4>
-                          <div class="col-sm-4">
-                            <label for="portfolioID"  class="fr">Marque - Modèle</label>
-                            <label for="portfolioID"  class="en">Marque - Modèle</label>
-                            <label for="portfolioID"  class="nl">Marque - Modèle</label>
-                            <select name="portfolioID" class="form-control required"></select>
-
-                          </div>
-
-                          <div class="col-sm-4">
-                            <label for="size"  class="fr">Taille</label>
-                            <label for="size"  class="en">Size</label>
-                            <label for="size"  class="nl">Size</label>
-                            <input type="text" name="size" class="form-control required">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="company"  class="fr">Société</label>
-                            <label for="company"  class="en">Company</label>
-                            <label for="company"  class="nl">Company</label>
-                            <select name="company" class="form-control required"></select>
-                          </div>
-
-                        </div>
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="model"  class="fr">Nom pour client</label>
-                            <label for="model"  class="en">Bike name for client</label>
-                            <label for="model"  class="nl">Bike name for client</label>
-                            <input type="text" name="model" class="form-control required">
-
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="frameNumber"  class="fr">Numéro d'identification</label>
-                            <label for="frameNumber"  class="en">Identification number</label>
-                            <label for="frameNumber"  class="nl">Identification number</label>
-                            <input type="text" name="frameNumberOriginel" class="form-control required hidden">
-                            <input type="text" name="frameNumber" class="form-control required">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="frameReference"  class="fr">Référence de cadre</label>
-                            <label for="frameReference"  class="en">Frame reference</label>
-                            <label for="frameReference"  class="nl">Frame reference</label>
-                            <input type="text" name="frameReference" class="form-control required">
-                          </div>
-
-                        </div>
-                        <div class="col-sm-12">
-
-                          <div class="col-sm-4 bikeManagementPicture">
-                            <label for="picture"  class="fr">Image actuelle</label>
-                            <label for="picture"  class="en">Current Image</label>
-                            <label for="picture"  class="nl">Current Image</label>
-                            <img id='bikeManagementPicture' alt="image">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="picture"  class="fr">Photo du vélo (.jpg)</label>
-                            <label for="picture"  class="en">Bike picture (jpg)</label>
-                            <label for="picture"  class="nl">Bike picture(jpg)</label>
-                            <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                            <input type=file size=40 name="picture" class="form-control">
-                          </div>
-
-                        </div>
-
-
-
-
-                        <div class="separator"></div>
-
-                        <div class="col-sm-12">
-                          <h4 class="fr text-green">Informations sur l'achat du vélo</h4>
-                          <div class="col-sm-5">
-                            <label for="price"  class="fr">Prix d'achat</label>
-                            <label for="price"  class="en">Buying price</label>
-                            <label for="price"  class="nl">Buying price</label>
-                            <div class="input-group">
-                              <span class="input-group-addon">€</span>
-                              <input type="float" name="price" class="form-control required">
-                            </div>
-                          </div>
-                          <div class="col-sm-5">
-                            <label for="buyingDate"  class="fr">Date d'achat</label>
-                            <label for="buyingDate"  class="en">Buying date</label>
-                            <label for="buyingDate"  class="nl">Buying date</label>
-                            <input type="date" name="buyingDate" class="form-control required">
-                          </div>
-                        </div>
-
-                        <div class="separator"></div>
-                        <div class="col-sm-12">
-                          <h4 class="fr text-green">Informations relatives au contrat</h4>
-
-                          <div class="col-sm-4">
-                            <label for="contractType"  class="fr">Type de contrat</label>
-                            <label for="contractType"  class="en">Contract type</label>
-                            <label for="contractType"  class="nl">Contract type</label>
-                            <select name="contractType" class="form-control required">
-                              <option value="leasing">Leasing</option>
-                              <option value="renting">Location</option>
-                              <option value="test">Vélo de test</option>
-                              <option value="stock">Vélo de stock</option>
-                            </select>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="contractStart"  class="fr">Début de contrat</label>
-                            <label for="contractStart"  class="en">Contract start</label>
-                            <label for="contractStart"  class="nl">Contract start</label>
-                            <input type="date" name="contractStart" class="form-control">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="contractEnd"  class="fr">Fin de contrat</label>
-                            <label for="contractEnd"  class="en">Contract End</label>
-                            <label for="contractEnd"  class="nl">Contract End</label>
-                            <input type="date" name="contractEnd" class="form-control">
-                          </div>
-                        </div>
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="insurance"  class="fr">Assurance ?</label>
-                            <label for="insurance"  class="en">Insurance ?</label>
-                            <label for="insurance"  class="nl">Insurance ?</label>
-                            <label><input type="checkbox"name="insurance" class="form-control">Oui</label>
-                          </div>
-
-                        </div>
-                        <div class="separator"></div>
-
-                        <div class="col-sm-12">
-                          <h4 class="fr text-green">Informations relatives à la facturation</h4>
-
-                          <div class="col-sm-4">
-                            <label for="billingType"  class="fr">Type de facturation</label>
-                            <label for="billingType"  class="en">Billing type</label>
-                            <label for="billingType"  class="nl">Billing type</label>
-                            <select name="billingType" class="form-control">
-                              <option value="monthly">Mensuelle</option>
-                              <option value="annuelle">Annuelle </option>
-                              <option value="paid">Déjà payé</option>
-                            </select>
-                          </div>
-
-                          <div class="col-sm-4">
-                            <label for="billingPrice"  class="fr">Montant de facturation</label>
-                            <label for="billingPrice"  class="en">Montant de facturation</label>
-                            <label for="billingPrice"  class="nl">Montant de facturation</label>
-
-                            <div class="input-group">
-                              <span class="input-group-addon">€/mois</span>
-                              <input type="float" name="billingPrice" class="form-control">
-                            </div>
-                          </div>
-
-                          <div class="col-sm-4">
-                            <label for="billingGroup"  class="fr">Groupe de facturation</label>
-                            <label for="billingGroup"  class="en">Groupe de facturation</label>
-                            <label for="billingGroup"  class="nl">Groupe de facturation</label>
-                            <input type="text" name="billingGroup" class="form-control required">
-                          </div>
-                        </div>
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="billing"  class="fr">Facturation automatique ?</label>
-                            <label for="billing"  class="en">Automatic billing ?</label>
-                            <label for="billing"  class="nl">Automatic billing ?</label>
-                            <label><input type="checkbox"name="billing" class="form-control">Oui</label>
-                          </div>
-
-
-                        </div>
-                        <div class="form-group col-sm-4" id="addBike_firstBuilding"></div>
-                        <div class="form-group col-sm-12" id="addBike_buildingListing"></div>
-
-
-                        <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="action" class="form-control hidden">
-
-                        <div class="col-sm-12"><h4>Accès aux bâtiments de ce vélo</h4></div>
-                        <div class="form-group col-sm-12" id="bikeBuildingAccessAdmin"></div>
-
-                        <div class="col-sm-12"><h4>Accès des utilisateurs à ce vélo</h4></div>
-                        <div class="form-group col-sm-12" id="bikeUserAccessAdmin"></div>
-
-                      </div>
-                      <div class="col-sm-12">
-                        <button  class="fr button small green button-3d rounded icon-left bikeManagementSend" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
-                      </div>
-
-
-                    </form>
-
-
-
-                    <div class="separator bikeActions"></div>
+                    <div class="col-sm-12" id="clientBoxes">
+                        <h4 class="text-green">Bornes :</h4>
+                        <p><span id="companyBoxes"></span></p>
+                    </div>
+
+                    <div class="col-sm-12" id="clientContracts">
+                        <h4 class="text-green">Contrats et Offres :</h4>
+                        <p><span id="companyContracts"></span></p>
+                    </div>
 
                     <div class="col-sm-12">
+                        <h4 class="text-green">Historique et actions :</h4>
+                        <span id="action_company_log"></span>
 
-                      <h4 class="fr text-green">Actions prises sur le vélo</h4>
+                    </div>
+
+                    <div class="col-sm-12" id="clientBuildings">
+                        <h4 class="text-green">Bâtiments:</h4>
+                        <p><span id="companyBuildings"></span></p>
+                    </div>
+
+                    <div class="col-sm-12" id="clientusers">
+                        <h4 class="text-green">Utilisateurs:</h4>
+                        <span id="companyUsers"></span>
+                    </div>
+
+                </div>
+
+            </div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+
+		</div>
+	</div>
+</div>
 
 
-                      <form id="widget-addActionBike-form" action="include/action_bike_management.php" role="form" method="post">
-                        <input type="text" name="bikeNumber" class="form-control required hidden">
-                        <input type="text" name="widget-addActionBike-form-user" class="form-control required hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="widget-addActionBike-form-action" class="form-control required hidden" value="add">
+
+<div class="modal fade" id="addUser" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green">Ajouter un utilisateur</h4>
+
+						<form id="widget-addUser-form" action="include/add_user.php" role="form" method="post">
+
+                            <div class="form-group col-sm-12">
+                            	<div class="col-md-4">
+                                <label for="firstname"  class="fr">Prénom</label>
+                                <label for="firstname"  class="en">Firstname</label>
+                                <label for="firstname"  class="nl">Voornaam</label>
+                                <input type="text" name="firstName" class="form-control required">
+                                </div>
+
+								<div class="col-md-4">
+                                <label for="name"  class="fr">Nom</label>
+                                <label for="name"  class="en">Name</label>
+                                <label for="name"  class="nl">Achternaam</label>
+                                <input type="text" name="name" class="form-control required">
+								</div>
+
+								<div class="col-md-4">
+                                    <label for="mail"  class="fr">E-mail</label>
+                                    <label for="mail"  class="en">E-mail</label>
+                                    <label for="mail"  class="nl">E-mail</label>
+                                    <input type="text" name="mail" class="form-control mail required">
+                                </div>
+								<div class="col-md-4">
+                                    <label for="generatePassword"  class="fr">Genérer un password automatiquement</label>
+                                    <input type="checkbox" name="generatePassword" class="form-control" checked>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="password"  class="fr hidden">Password</label>
+                                    <label for="password"  class="en hidden">Password</label>
+                                    <label for="password"  class="nl hidden">Password</label>
+                                    <input type="text" name="password" class="form-control required hidden">
+                                </div>
+								<div class="col-md-4">
+                                    <label for="fleetManager">Fleet manager</label>
+                                    <input type="checkbox" name="fleetManager" class="form-control">
+                                </div>
+                                <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="company" class="form-control hidden">
+
+                            </div>
+                            <h4>Accès aux bâtiments</h4>
+                            <div class="form-group col-sm-12" id="buildingCreateUser"></div>
+
+                            <h4>Accès aux vélos</h4>
+                            <div class="form-group col-sm-12" id="bikeCreateUser"></div>
+
+                            <div id="confirmAddUser">
+
+                            </div>
+
+						</form>
+						<script type="text/javascript">
+							jQuery("#widget-addUser-form").validate({
+								submitHandler: function(form) {
+
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                get_users_listing();
+												$('#addUser').modal('toggle');
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    $('#widget-addUser-form input[name=generatePassword]').change(function(){
+        if($('#widget-addUser-form input[name=generatePassword').is(':checked')){
+            $('#widget-addUser-form label[for=password]').addClass("hidden");
+            $('#widget-addUser-form input[name=password]').addClass("hidden");
+        }else{
+            $('#widget-addUser-form label[for=password]').removeClass("hidden");
+            $('#widget-addUser-form input[name=password]').removeClass("hidden");
+        }
+    })
+</script>
+
+<div class="modal fade" id="taskManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green taskManagementTitle">Ajouter une action</h4>
+
+						<form id="widget-taskManagement-form" action="include/action_company.php" role="form" method="post">
+
+                            <div class="form-group col-sm-12">
+                                <div class="col-md-12">
+
+                                    <div class="col-md-4">
+                                        <label for="owner">Owner</label>
+                                        <select title="owner" class="form-control required" name="owner">
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="status">Statut :</label>
+                                        <select title="Status" class="selectpicker form-control required" name="status">
+                                          <option value="TO DO">To do</option>
+                                          <option value="DONE">Done</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="company"  class="fr">Société</label>
+                                        <label for="company"  class="en">Company</label>
+                                        <label for="company"  class="nl">Company</label>
+                                        <select title="company" class="selectpicker form-control required" name="company">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label for="type"  class="fr">Type</label>
+                                        <label for="type"  class="en">Type</label>
+                                        <label for="type"  class="nl">Type</label>
+                                        <select title="type" class="selectpicker form-control required" name="type">
+                                          <option value="contact">Prise de contact</option>
+                                          <option value="rappel">Rappel</option>
+                                          <option value="plan rdv">Planification de rendez-vous</option>
+                                          <option value="rdv">Rendez-vous</option>
+                                          <option value="offre">Formulation d'une offre</option>
+                                          <option value="offreSigned">Offre signée</option>
+                                          <option value="delivery">Livraison vélo</option>
+                                          <option value="other">Autre</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="date"  class="fr">Date</label>
+                                        <label for="date"  class="en">Date</label>
+                                        <label for="date"  class="nl">Date</label>
+                                        <input type="date" name="date" class="form-control required">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="reminder"  class="fr">Rappel ?</label>
+                                        <label for="reminder"  class="en">Reminder ?</label>
+                                        <label for="reminder"  class="nl">Reminder ?</label>
+                                        <input type="date" name="date_reminder" class="form-control ">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+
+                                    <div class="col-md-12">
+                                        <label for="reminder"  class="fr">Titre</label>
+                                        <label for="reminder"  class="en">Title</label>
+                                        <label for="reminder"  class="nl">Title</label>
+                                        <input type="text" name="title" class="form-control ">
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="reminder"  class="fr">Description</label>
+                                        <label for="reminder"  class="en">Description</label>
+                                        <label for="reminder"  class="nl">Description</label>
+                                        <textarea class="form-control" rows="5" name="description"></textarea>
+                                    </div>
+
+                                </div>
+
+                                <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control hidden" value="create">
+	                            <div class="col-sm-12">
+	                                <button  class="button small green button-3d rounded icon-left taskManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
+	                            </div>
+
+                            </div>
+
+						</form>
+						<script type="text/javascript">
+							jQuery("#widget-taskManagement-form").validate({
+								submitHandler: function(form) {
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+												$('#taskManagement').modal('toggle');
+                                                document.getElementById('widget-taskManagement-form').reset();
+
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="feedbackManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green feedbackManagementTitle">Ajouter un feedback</h4>
+
+						<form id="widget-feedbackManagement-form" action="include/feedback_management.php" role="form" method="post">
+
+                            <div class="form-group col-sm-12">
+                                <div class="col-md-12">
+
+                                    <div class="col-md-4">
+                                        <label for="utilisateur">ID</label>
+                                        <input type='int' title="ID" class="form-control required" name="ID" readonly='readonly'>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="utilisateur">Utilisateur</label>
+                                        <input type="text" title="utilisateur" class="form-control required" name="utilisateur" readonly='readonly'>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label for="bike"  class="fr">Vélo</label>
+                                        <label for="bike"  class="en">Bike</label>
+                                        <label for="bike"  class="nl">Bike</label>
+                                        <input type="text" name="bike" class="form-control" readonly='readonly'>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="StartDate"  class="fr">Date de début</label>
+                                        <label for="StartDate"  class="en">Start date</label>
+                                        <label for="StartDate"  class="nl">Start date</label>
+                                        <input type="text" name="startDate" class="form-control" readonly='readonly'>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="endDate"  class="fr">Date de Fin</label>
+                                        <label for="endDate"  class="en">End date</label>
+                                        <label for="endDate"  class="nl">End date</label>
+                                        <input type="text" name="endDate" class="form-control" readonly='readonly'>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+
+                                    <img class="feedbackBikeImage" alt="image vélo" />
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label for="note"  class="fr">Note</label>
+                                        <label for="note"  class="en">Note</label>
+                                        <label for="note"  class="nl">Note</label>
+                                        <select class="form-control" name="note">
+                                            <option value="5">5/5</option>
+                                            <option value="4">4/5</option>
+                                            <option value="3">3/5</option>
+                                            <option value="2">2/5</option>
+                                            <option value="1">1/5</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="entretien"  class="fr">Besoin d'entretien ?</label>
+                                        <label for="entretien"  class="en">Need of maintenance ?</label>
+                                        <label for="entretien"  class="nl">Need of maintenance ?</label>
+                                        <label><input type="checkbox" name="entretien" class="form-control">Oui</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <label for="comment"  class="fr">Commentaire</label>
+                                        <label for="comment"  class="en">Comment</label>
+                                        <label for="comment"  class="nl">Comment</label>
+                                        <textarea class="form-control" rows="5" name="comment"></textarea>
+                                    </div>
+                                </div>
+
+                                <input type="text" name="action" class="form-control hidden" value="add">
+                                <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+	                            <div class="col-sm-12">
+	                                <button  class="button small green button-3d rounded icon-left feedbackManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
+	                            </div>
+
+                            </div>
+
+						</form>
+						<script type="text/javascript">
+							jQuery("#widget-feedbackManagement-form").validate({
+								submitHandler: function(form) {
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+												$('#feedbackManagement').modal('toggle');
+                                                document.getElementById('widget-feedbackManagement-form').reset();
+
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+
+						<form id="widget-bikeManagement-form" action="include/bike_management.php" role="form" method="post">
+
+                            <div class="form-group col-sm-12">
+                                <h4 class="fr text-green bikeManagementTitle">Ajouter un vélo</h4>
+                                <div class="col-sm-12">
+                                    <h4 class="fr text-green">Caractéristiques du vélo</h4>
+                                    <div class="col-sm-4">
+                                        <label for="portfolioID"  class="fr">Marque - Modèle</label>
+                                        <label for="portfolioID"  class="en">Marque - Modèle</label>
+                                        <label for="portfolioID"  class="nl">Marque - Modèle</label>
+                                        <select name="portfolioID" class="form-control required"></select>
+
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <label for="size"  class="fr">Taille</label>
+                                        <label for="size"  class="en">Size</label>
+                                        <label for="size"  class="nl">Size</label>
+                                        <input type="text" name="size" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="company"  class="fr">Société</label>
+                                        <label for="company"  class="en">Company</label>
+                                        <label for="company"  class="nl">Company</label>
+                                        <select name="company" class="form-control required"></select>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label for="model"  class="fr">Nom pour client</label>
+                                        <label for="model"  class="en">Bike name for client</label>
+                                        <label for="model"  class="nl">Bike name for client</label>
+                                        <input type="text" name="model" class="form-control required">
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="frameNumber"  class="fr">Numéro d'identification</label>
+                                        <label for="frameNumber"  class="en">Identification number</label>
+                                        <label for="frameNumber"  class="nl">Identification number</label>
+                                        <input type="text" name="frameNumberOriginel" class="form-control required hidden">
+                                        <input type="text" name="frameNumber" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="frameReference"  class="fr">Référence de cadre</label>
+                                        <label for="frameReference"  class="en">Frame reference</label>
+                                        <label for="frameReference"  class="nl">Frame reference</label>
+                                        <input type="text" name="frameReference" class="form-control required">
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-12">
+
+                                    <div class="col-sm-4 bikeManagementPicture">
+                                        <label for="picture"  class="fr">Image actuelle</label>
+                                        <label for="picture"  class="en">Current Image</label>
+                                        <label for="picture"  class="nl">Current Image</label>
+                                        <img id='bikeManagementPicture' alt="image">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="picture"  class="fr">Photo du vélo (.jpg)</label>
+                                        <label for="picture"  class="en">Bike picture (jpg)</label>
+                                        <label for="picture"  class="nl">Bike picture(jpg)</label>
+                                        <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                        <input type=file size=40 name="picture" class="form-control">
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <div class="separator"></div>
+
+                                <div class="col-sm-12">
+                                    <h4 class="fr text-green">Informations sur l'achat du vélo</h4>
+                                    <div class="col-sm-5">
+                                        <label for="price"  class="fr">Prix d'achat</label>
+                                        <label for="price"  class="en">Buying price</label>
+                                        <label for="price"  class="nl">Buying price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">€</span>
+                                            <input type="float" name="price" class="form-control required">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <label for="buyingDate"  class="fr">Date d'achat</label>
+                                        <label for="buyingDate"  class="en">Buying date</label>
+                                        <label for="buyingDate"  class="nl">Buying date</label>
+                                        <input type="date" name="buyingDate" class="form-control required">
+                                    </div>
+                                </div>
+
+                                <div class="separator"></div>
+                                <div class="col-sm-12">
+                                    <h4 class="fr text-green">Informations relatives au contrat</h4>
+
+                                    <div class="col-sm-4">
+                                        <label for="contractType"  class="fr">Type de contrat</label>
+                                        <label for="contractType"  class="en">Contract type</label>
+                                        <label for="contractType"  class="nl">Contract type</label>
+                                        <select name="contractType" class="form-control required">
+                                            <option value="leasing">Leasing</option>
+                                            <option value="renting">Location</option>
+                                            <option value="test">Vélo de test</option>
+                                            <option value="stock">Vélo de stock</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="contractStart"  class="fr">Début de contrat</label>
+                                        <label for="contractStart"  class="en">Contract start</label>
+                                        <label for="contractStart"  class="nl">Contract start</label>
+                                        <input type="date" name="contractStart" class="form-control">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="contractEnd"  class="fr">Fin de contrat</label>
+                                        <label for="contractEnd"  class="en">Contract End</label>
+                                        <label for="contractEnd"  class="nl">Contract End</label>
+                                        <input type="date" name="contractEnd" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label for="insurance"  class="fr">Assurance ?</label>
+                                        <label for="insurance"  class="en">Insurance ?</label>
+                                        <label for="insurance"  class="nl">Insurance ?</label>
+                                        <label><input type="checkbox"name="insurance" class="form-control">Oui</label>
+                                    </div>
+
+                                </div>
+                                <div class="separator"></div>
+
+                                <div class="col-sm-12">
+                                    <h4 class="fr text-green">Informations relatives à la facturation</h4>
+
+                                    <div class="col-sm-4">
+                                        <label for="billingType"  class="fr">Type de facturation</label>
+                                        <label for="billingType"  class="en">Billing type</label>
+                                        <label for="billingType"  class="nl">Billing type</label>
+                                        <select name="billingType" class="form-control">
+                                            <option value="monthly">Mensuelle</option>
+                                            <option value="annuelle">Annuelle </option>
+                                            <option value="paid">Déjà payé</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <label for="billingPrice"  class="fr">Montant de facturation</label>
+                                        <label for="billingPrice"  class="en">Montant de facturation</label>
+                                        <label for="billingPrice"  class="nl">Montant de facturation</label>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">€/mois</span>
+                                            <input type="float" name="billingPrice" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <label for="billingGroup"  class="fr">Groupe de facturation</label>
+                                        <label for="billingGroup"  class="en">Groupe de facturation</label>
+                                        <label for="billingGroup"  class="nl">Groupe de facturation</label>
+                                        <input type="text" name="billingGroup" class="form-control required">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label for="billing"  class="fr">Facturation automatique ?</label>
+                                        <label for="billing"  class="en">Automatic billing ?</label>
+                                        <label for="billing"  class="nl">Automatic billing ?</label>
+                                        <label><input type="checkbox"name="billing" class="form-control">Oui</label>
+                                    </div>
+
+
+                                </div>
+                                <div class="form-group col-sm-4" id="addBike_firstBuilding"></div>
+                                <div class="form-group col-sm-12" id="addBike_buildingListing"></div>
+
+
+                                <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control hidden">
+
+                                <div class="col-sm-12"><h4>Accès aux bâtiments de ce vélo</h4></div>
+                                <div class="form-group col-sm-12" id="bikeBuildingAccessAdmin"></div>
+
+                                <div class="col-sm-12"><h4>Accès des utilisateurs à ce vélo</h4></div>
+                                <div class="form-group col-sm-12" id="bikeUserAccessAdmin"></div>
+
+                            </div>
+                            <div class="col-sm-12">
+                                <button  class="fr button small green button-3d rounded icon-left bikeManagementSend" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+                            </div>
+
+
+						</form>
+
+
+
+                        <div class="separator bikeActions"></div>
+
                         <div class="col-sm-12">
-                          <div class="col-sm-3">
-                            <label for="widget-addActionBike-form-date" class="hidden">Date</label>
-                            <input type="date" name="widget-addActionBike-form-date" class="form-control required hidden">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="widget-addActionBike-form-description" class="hidden">Description</label>
-                            <input type="text" name="widget-addActionBike-form-description" class="form-control required hidden">
-                          </div>
-                          <div class="col-sm-2">
-                            <label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
-                            <input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">
-                          </div>
-                          <div class="col-sm-1">
-                            <button  class="fr button small green button-3d rounded icon-left hidden addActionConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
-                          </div>
+
+                            <h4 class="fr text-green">Actions prises sur le vélo</h4>
+
+
+                            <form id="widget-addActionBike-form" action="include/action_bike_management.php" role="form" method="post">
+                                <input type="text" name="bikeNumber" class="form-control required hidden">
+                                <input type="text" name="widget-addActionBike-form-user" class="form-control required hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="widget-addActionBike-form-action" class="form-control required hidden" value="add">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-3">
+                                        <label for="widget-addActionBike-form-date" class="hidden">Date</label>
+                                        <input type="date" name="widget-addActionBike-form-date" class="form-control required hidden">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="widget-addActionBike-form-description" class="hidden">Description</label>
+                                        <input type="text" name="widget-addActionBike-form-description" class="form-control required hidden">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
+                                        <input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button  class="fr button small green button-3d rounded icon-left hidden addActionConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <span id="action_bike_log"></span>
+
                         </div>
-                      </form>
-
-                      <span id="action_bike_log"></span>
-
-                    </div>
-                    <div class="right">
-                      <form  id="widget-deleteBike-form" action="include/bike_management.php" role="form" method="post">
-                        <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
-                        <input type="text" name="action" value="delete" class="hidden">
-                        <input type="text" class="hidden" readonly="readonly" name="frameNumber">
-                        <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer le vélo</button>
-                        <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
-                        <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
-                      </form>
-                    </div>
-
-
-                    <div class="fr" class="modal-footer">
-                      <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-                    </div>
-                    <div class="en" class="modal-footer">
-                      <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-                    </div>
-                    <div class="nl" class="modal-footer">
-                      <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-                    </div>
-
-
-
-                    <script type="text/javascript">
-                    jQuery("#widget-bikeManagement-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              get_company_details($('#widget-companyDetails-form input[name=ID]').val());
-                              document.getElementById('widget-bikeManagement-form').reset();
-                              $('#bikeManagement').modal('toggle');
-                              list_bikes_admin();
-
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    jQuery("#widget-addActionBike-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              $("label[for='widget-addActionBike-form-date']").addClass("hidden");
-                              $('input[name=widget-addActionBike-form-date]').addClass("hidden");
-                              $("label[for='widget-addActionBike-form-description']").addClass("hidden");
-                              $('input[name=widget-addActionBike-form-description]').addClass("hidden");
-                              $("label[for='widget-addActionBike-form-public']").addClass("hidden");
-                              $('input[name=widget-addActionBike-form-public]').addClass("hidden");
-                              $('.addActionConfirmButton').addClass("hidden");
-                              construct_form_for_bike_status_updateAdmin($('#widget-addActionBike-form input[name=bikeNumber]').val());
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    jQuery("#widget-deleteBike-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              document.getElementById('widget-bikeManagement-form').reset();
-                              list_bikes_admin();
-                              $('#bikeManagement').modal('toggle');
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="boxManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-
-                    <form id="widget-boxManagement-form" action="include/box_management.php" role="form" method="post">
-
-                      <div class="form-group col-sm-12">
-                        <h4 class="fr text-green" id="widget-boxManagement-form-title">Ajouter une borne</h4>
-
-
-                        <div class="col-sm-4">
-                          <label for="reference"  class="fr">Référence</label>
-                          <label for="reference"  class="en">Reference</label>
-                          <label for="reference"  class="nl">Reference</label>
-                          <input type="text"  name="reference" class="form-control">
+                        <div class="right">
+                            <form  id="widget-deleteBike-form" action="include/bike_management.php" role="form" method="post">
+                                <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
+                                <input type="text" name="action" value="delete" class="hidden">
+                                <input type="text" class="hidden" readonly="readonly" name="frameNumber">
+                                <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer le vélo</button>
+                                <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
+                                <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
+                            </form>
                         </div>
 
 
-                        <div class="col-sm-4">
-                          <label for="boxModel"  class="fr">Modèle</label>
-                          <label for="boxModel"  class="en">Model</label>
-                          <label for="boxModel"  class="nl">Model</label>
-                          <select name="boxModel" class="form-control required">
-                            <option value="5keys" />Box 5 clés<br/>
-                            <option value="10keys" />Box 10 clés<br/>
-                            <option value="20keys" />Box 20 clés<br/>
-                          </select>
+                        <div class="fr" class="modal-footer">
+                            <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+                        </div>
+                        <div class="en" class="modal-footer">
+                            <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="nl" class="modal-footer">
+                            <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
                         </div>
 
 
-                        <div class="separator"></div>
-                        <h4 class="fr text-green">Informations relatives au contrat</h4>
 
-                        <div class="col-sm-4">
-                          <label for="company"  class="fr">Client actuel</label>
-                          <label for="company"  class="en">Current customer</label>
-                          <label for="company"  class="nl">Current customer</label>
-                          <select name="company" class="form-control required">
-                          </select>
-                        </div>
+						<script type="text/javascript">
+							jQuery("#widget-bikeManagement-form").validate({
+								submitHandler: function(form) {
 
-
-                        <div class="col-sm-4">
-                          <label for="contractStart"  class="fr">Début de contrat</label>
-                          <label for="contractStart"  class="en">Contract start</label>
-                          <label for="contractStart"  class="nl">Contract start</label>
-                          <input type="date"  name="contractStart" class="form-control">
-                        </div>
-                        <div class="col-sm-4">
-                          <label for="contractEnd"  class="fr">Fin de contrat</label>
-                          <label for="contractEnd"  class="en">Contract End</label>
-                          <label for="contractEnd"  class="nl">Contract End</label>
-                          <input type="date" name="contractEnd" class="form-control">
-                        </div>
-                        <div class="separator"></div>
-
-                        <h4 class="fr text-green">Informations relatives à la facturation</h4>
-
-                        <div class="col-sm-4">
-                          <label for="billing"  class="fr">Facturation automatique ?</label>
-                          <label for="billing"  class="en">Automatic billing ?</label>
-                          <label for="billing"  class="nl">Automatic billing ?</label>
-                          <label><input type="checkbox" name="billing" class="form-control">Oui</label>
-                        </div>
-
-                        <div class="col-sm-4">
-                          <label for="amount"  class="fr">Montant (par mois)</label>
-                          <label for="amount"  class="en">Amount per month</label>
-                          <label for="amount"  class="nl">Amount per month</label>
-                          <input type="number" min='0' name="amount" class="form-control">
-                        </div>
-
-                        <div class="col-sm-4">
-                          <label for="billingGroup"  class="fr">Groupe de facturation</label>
-                          <label for="billingGroup"  class="en">Groupe de facturation</label>
-                          <label for="billingGroup"  class="nl">Groupe de facturation</label>
-                          <input type="number" min="1" max="10" name="billingGroup" class="form-control required" value="1">
-                        </div>
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());
+                                                document.getElementById('widget-bikeManagement-form').reset();
+												$('#bikeManagement').modal('toggle');
+                                                list_bikes_admin();
 
 
-                        <input type="text" name="id" class="form-control hidden">
-                        <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="action" class="form-control hidden">
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
 
-                      </div>
+                            jQuery("#widget-addActionBike-form").validate({
+                                submitHandler: function(form) {
+
+                                    jQuery(form).ajaxSubmit({
+                                        success: function(response) {
+                                            if (response.response == 'success') {
+                                                $.notify({
+                                                    message: response.message
+                                                }, {
+                                                    type: 'success'
+                                                });
+                                                $("label[for='widget-addActionBike-form-date']").addClass("hidden");
+                                                $('input[name=widget-addActionBike-form-date]').addClass("hidden");
+                                                $("label[for='widget-addActionBike-form-description']").addClass("hidden");
+                                                $('input[name=widget-addActionBike-form-description]').addClass("hidden");
+                                                $("label[for='widget-addActionBike-form-public']").addClass("hidden");
+                                                $('input[name=widget-addActionBike-form-public]').addClass("hidden");
+                                                $('.addActionConfirmButton').addClass("hidden");
+                                                construct_form_for_bike_status_updateAdmin($('#widget-addActionBike-form input[name=bikeNumber]').val());
+
+                                            } else {
+                                                $.notify({
+                                                    message: response.message
+                                                }, {
+                                                    type: 'danger'
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
+                            jQuery("#widget-deleteBike-form").validate({
+                                submitHandler: function(form) {
+
+                                    jQuery(form).ajaxSubmit({
+                                        success: function(response) {
+                                            if (response.response == 'success') {
+                                                $.notify({
+                                                    message: response.message
+                                                }, {
+                                                    type: 'success'
+                                                });
+                                                document.getElementById('widget-bikeManagement-form').reset();
+                                                list_bikes_admin();
+                                                $('#bikeManagement').modal('toggle');
+                                            } else {
+                                                $.notify({
+                                                    message: response.message
+                                                }, {
+                                                    type: 'danger'
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            });
 
 
-                      <button  id="widget-boxManagement-form-send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
-
-                    </form>
-                    <script type="text/javascript">
-                    jQuery("#widget-boxManagement-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              get_company_details($('#widget-companyDetails-form input[name=ID]').val());
-                              document.getElementById('widget-boxManagement-form').reset();
-                              $('#boxManagement').modal('toggle');
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
+<div class="modal fade" id="boxManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+
+						<form id="widget-boxManagement-form" action="include/box_management.php" role="form" method="post">
+
+                            <div class="form-group col-sm-12">
+                                <h4 class="fr text-green" id="widget-boxManagement-form-title">Ajouter une borne</h4>
 
 
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
+								<div class="col-sm-4">
+                                    <label for="reference"  class="fr">Référence</label>
+                                    <label for="reference"  class="en">Reference</label>
+                                    <label for="reference"  class="nl">Reference</label>
+                                    <input type="text"  name="reference" class="form-control">
+                                </div>
+
+
+								<div class="col-sm-4">
+                                    <label for="boxModel"  class="fr">Modèle</label>
+                                    <label for="boxModel"  class="en">Model</label>
+                                    <label for="boxModel"  class="nl">Model</label>
+                                    <select name="boxModel" class="form-control required">
+                                        <option value="5keys" />Box 5 clés<br/>
+                                        <option value="10keys" />Box 10 clés<br/>
+                                        <option value="20keys" />Box 20 clés<br/>
+                                    </select>
+								</div>
+
+
+                                <div class="separator"></div>
+                                <h4 class="fr text-green">Informations relatives au contrat</h4>
+
+                                <div class="col-sm-4">
+                                    <label for="company"  class="fr">Client actuel</label>
+                                    <label for="company"  class="en">Current customer</label>
+                                    <label for="company"  class="nl">Current customer</label>
+                                    <select name="company" class="form-control required">
+                                    </select>
+                                </div>
+
+
+								<div class="col-sm-4">
+                                    <label for="contractStart"  class="fr">Début de contrat</label>
+                                    <label for="contractStart"  class="en">Contract start</label>
+                                    <label for="contractStart"  class="nl">Contract start</label>
+                                    <input type="date"  name="contractStart" class="form-control">
+                                </div>
+								<div class="col-sm-4">
+                                    <label for="contractEnd"  class="fr">Fin de contrat</label>
+                                    <label for="contractEnd"  class="en">Contract End</label>
+                                    <label for="contractEnd"  class="nl">Contract End</label>
+                                    <input type="date" name="contractEnd" class="form-control">
+                                </div>
+                                <div class="separator"></div>
+
+                                <h4 class="fr text-green">Informations relatives à la facturation</h4>
+
+								<div class="col-sm-4">
+                                    <label for="billing"  class="fr">Facturation automatique ?</label>
+                                    <label for="billing"  class="en">Automatic billing ?</label>
+                                    <label for="billing"  class="nl">Automatic billing ?</label>
+                                    <label><input type="checkbox" name="billing" class="form-control">Oui</label>
+                                </div>
+
+								<div class="col-sm-4">
+                                    <label for="amount"  class="fr">Montant (par mois)</label>
+                                    <label for="amount"  class="en">Amount per month</label>
+                                    <label for="amount"  class="nl">Amount per month</label>
+                                    <input type="number" min='0' name="amount" class="form-control">
+                                </div>
+
+								<div class="col-sm-4">
+                                    <label for="billingGroup"  class="fr">Groupe de facturation</label>
+                                    <label for="billingGroup"  class="en">Groupe de facturation</label>
+                                    <label for="billingGroup"  class="nl">Groupe de facturation</label>
+                                    <input type="number" min="1" max="10" name="billingGroup" class="form-control required" value="1">
+                                </div>
+
+
+                                <input type="text" name="id" class="form-control hidden">
+                                <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" name="action" class="form-control hidden">
+
+                            </div>
+
+
+                            <button  id="widget-boxManagement-form-send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+
+						</form>
+						<script type="text/javascript">
+							jQuery("#widget-boxManagement-form").validate({
+								submitHandler: function(form) {
+
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                get_company_details($('#widget-companyDetails-form input[name=ID]').val());
+                                                document.getElementById('widget-boxManagement-form').reset();
+												$('#boxManagement').modal('toggle');
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+
+
+
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 
         <div class="modal fade" id="addBuilding" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -10032,240 +10463,241 @@ if($connected){
         </div>
 
 
-        <div class="modal fade" id="updateReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h4 class="fr text-green">Supprimer une réservation</h4>
+       <div class="modal fade" id="updateReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green">Supprimer une réservation</h4>
 
-                    <form id="widget-updateReservation-form" action="include/update-reservation.php" role="form" method="post">
+						<form id="widget-updateReservation-form" action="include/update-reservation.php" role="form" method="post">
 
-                      <div class="form-group col-sm-12">
-                        <div class="col-sm-6">
-                          <label for="widget-updateReservation-form-start"  class="fr">Début :</label>
-                          <label for="widget-updateReservation-form-start"  class="en">Start: </label>
-                          <label for="widget-updateReservation-form-start"  class="nl">Start: </label>
-                          <input type="text" id="widget-updateReservation-form-start" name="widget-updateReservation-form-start" class="form-control required">
+                            <div class="form-group col-sm-12">
+                            	<div class="col-sm-6">
+                                <label for="widget-updateReservation-form-start"  class="fr">Début :</label>
+                                <label for="widget-updateReservation-form-start"  class="en">Start: </label>
+                                <label for="widget-updateReservation-form-start"  class="nl">Start: </label>
+                                <input type="text" id="widget-updateReservation-form-start" name="widget-updateReservation-form-start" class="form-control required">
+                                </div>
+
+								<div class="col-sm-6">
+                                <label for="widget-updateReservation-form-end"  class="fr">Fin :</label>
+                                <label for="widget-updateReservation-form-end"  class="en">End:</label>
+                                <label for="widget-updateReservation-form-end"  class="nl">End:</label>
+                                <input type="text" id="widget-updateReservation-form-end" name="widget-updateReservation-form-end" class="form-control required">
+                                </div>
+
+								<div class="col-sm-6">
+                                <label for="widget-updateReservation-form-user"  class="fr">Utilisateur :</label>
+                                <label for="widget-updateReservation-form-user"  class="en">User:</label>
+                                <label for="widget-updateReservation-form-user"  class="nl">User:</label>
+                                <input type="text" id="widget-updateReservation-form-user" readonly="readonly" name="widget-updateReservation-form-user" class="form-control">
+                                <input type="text" id="widget-updateReservation-form-requestor" name="widget-updateReservation-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
+                                <input type="text" id="widget-updateReservation-form-ID" name="widget-updateReservation-form-ID" class="form-control hidden">
+                                </div>
+                            </div>
+                            <h4>Confirmation de suppression</h4>
+
+                            <label for="widget-updateReservation-form-confirmation" class="fr">Veuillez écrire "update" afin de confirmer la suppression</label>
+                            <input type="text" id="widget-updateReservation-form-confirmation" name="widget-updateReservation-form-confirmation" class="form-control">
+
+							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+
+						</form>
+						<script type="text/javascript">
+							jQuery("#widget-updateReservation-form").validate({
+								submitHandler: function(form) {
+
+									jQuery(form).ajaxSubmit({
+										success: function(response) {
+											if (response.response == 'success') {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'success'
+												});
+                                                get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+												$('#updateReservation').modal('toggle');
+
+											} else {
+												$.notify({
+													message: response.message
+												}, {
+													type: 'danger'
+												});
+											}
+										}
+									});
+								}
+							});
+
+						</script>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="modal fade" id="updateBikeStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+                        <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
+
+                        <div class="col-sm-12">
+
+                            <h4 class="fr-inline text-green">Référence du vélo :</h4>
+                            <h4 class="en-inline text-green">Bike Reference:</h4>
+                            <h4 class="nl-inline text-green">Bike Reference :</h4>
+                            <span class="bikeReference"></span>
+
+                            <div class="col-sm-12"></div>
+
+                            <div class="col-sm-5">
+                                <h4><span class="fr"> Modèle : </span></h4>
+                                <h4><span class="en"> Model: </span></h4>
+                                <h4><span class="nl"> Model : </span></h4>
+                                <input type="text" class="bikeModel" name="model" />
+
+                            </div>
+                            <div class="col-sm-5">
+                                <h4><span class="fr"> Référence du cadre : </span></h4>
+                                <h4><span class="en"> Frame reference: </span></h4>
+                                <h4><span class="nl"> Frame reference: </span></h4>
+                                <p span class="frameReference"></p>
+
+                            </div>
+
+                            <div class="separator"></div>
+
+                            <h4 class="text-green">Informations relatives au contrat</h4>
+
+                            <div class="col-sm-4">
+                                <h4><span class="fr"> Type de contrat : </span></h4>
+                                <h4><span class="en"> Contract type: </span></h4>
+                                <h4><span class="nl"> Contract type : </span></h4>
+                                <p><span class="contractType"></span></p>
+                            </div>
+
+                           <div class="col-sm-4">
+                                <h4><span class="fr" >Date de début :</span></h4>
+                                <h4><span class="en" >Start date:</span></h4>
+                                <h4><span class="nl" >Start date :</span></h4>
+                                <p><span class="startDateContract"></span></p>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <h4><span class="fr" >Date de fin :</span></h4>
+                                <h4><span class="en" >End date:</span></h4>
+                                <h4><span class="nl" >End date :</span></h4>
+                                <p><span class="endDateContract"></span></p>
+                            </div>
+
+                            <div class="separator"></div>
+
+                            <h4 class="text-green">Informations relatives au vélo</h4>
+
+                            <div class="col-md-12">
+                                <img src="" class="bikeImage" alt="image" />
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                    <h4><span class="fr" >Status :</span></h4>
+                                    <h4><span class="en" >Status:</span></h4>
+                                    <h4><span class="nl" >Status :</span></h4>
+                                    <select title="Bike Status" class="selectpicker" id="bikeStatus" name="bikeStatus">
+                                      <option value="OK">En état d'utilisation</option>
+                                      <option value="KO">Cassé</option>
+                                      <option value="test">Vélo de test</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="separator"></div>
+                            <div class="col-sm-12">
+                                 <div class="col-md-6">
+                                    <input type="text" class="hidden" id="widget-updateBikeStatus-form-frameNumber" name="widget-updateBikeStatus-form-frameNumber"/>
+                                    <input type="text" class="hidden" name="user" value="<?php echo $user; ?>"/>
+                                    <h4><span class="fr" >Accès aux bâtiments :</span></h4>
+                                    <div id="bikeBuildingAccess"></div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-sm-6">
-                          <label for="widget-updateReservation-form-end"  class="fr">Fin :</label>
-                          <label for="widget-updateReservation-form-end"  class="en">End:</label>
-                          <label for="widget-updateReservation-form-end"  class="nl">End:</label>
-                          <input type="text" id="widget-updateReservation-form-end" name="widget-updateReservation-form-end" class="form-control required">
+                        <div class="col-sm-12">
+                        <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+                        <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+                        <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                         </div>
-
-                        <div class="col-sm-6">
-                          <label for="widget-updateReservation-form-user"  class="fr">Utilisateur :</label>
-                          <label for="widget-updateReservation-form-user"  class="en">User:</label>
-                          <label for="widget-updateReservation-form-user"  class="nl">User:</label>
-                          <input type="text" id="widget-updateReservation-form-user" readonly="readonly" name="widget-updateReservation-form-user" class="form-control">
-                          <input type="text" id="widget-updateReservation-form-requestor" name="widget-updateReservation-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
-                          <input type="text" id="widget-updateReservation-form-ID" name="widget-updateReservation-form-ID" class="form-control hidden">
-                        </div>
-                      </div>
-                      <h4>Confirmation de suppression</h4>
-
-                      <label for="widget-updateReservation-form-confirmation" class="fr">Veuillez écrire "update" afin de confirmer la suppression</label>
-                      <input type="text" id="widget-updateReservation-form-confirmation" name="widget-updateReservation-form-confirmation" class="form-control">
-
-                      <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                      <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                      <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-
                     </form>
-                    <script type="text/javascript">
-                    jQuery("#widget-updateReservation-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
-                              $('#updateReservation').modal('toggle');
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
+				</div>
+			</div>
 
 
+            <div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
 
-        <div class="modal fade" id="updateBikeStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
 
-                    <div class="col-sm-12">
-
-                      <h4 class="fr-inline text-green">Référence du vélo :</h4>
-                      <h4 class="en-inline text-green">Bike Reference:</h4>
-                      <h4 class="nl-inline text-green">Bike Reference :</h4>
-                      <span class="bikeReference"></span>
-
-                      <div class="col-sm-12"></div>
-
-                      <div class="col-sm-5">
-                        <h4><span class="fr"> Modèle : </span></h4>
-                        <h4><span class="en"> Model: </span></h4>
-                        <h4><span class="nl"> Model : </span></h4>
-                        <input type="text" class="bikeModel" name="model" />
-
-                      </div>
-                      <div class="col-sm-5">
-                        <h4><span class="fr"> Référence du cadre : </span></h4>
-                        <h4><span class="en"> Frame reference: </span></h4>
-                        <h4><span class="nl"> Frame reference: </span></h4>
-                        <p span class="frameReference"></p>
-
-                      </div>
-
-                      <div class="separator"></div>
-
-                      <h4 class="text-green">Informations relatives au contrat</h4>
-
-                      <div class="col-sm-4">
-                        <h4><span class="fr"> Type de contrat : </span></h4>
-                        <h4><span class="en"> Contract type: </span></h4>
-                        <h4><span class="nl"> Contract type : </span></h4>
-                        <p><span class="contractType"></span></p>
-                      </div>
-
-                      <div class="col-sm-4">
-                        <h4><span class="fr" >Date de début :</span></h4>
-                        <h4><span class="en" >Start date:</span></h4>
-                        <h4><span class="nl" >Start date :</span></h4>
-                        <p><span class="startDateContract"></span></p>
-                      </div>
-
-                      <div class="col-sm-4">
-                        <h4><span class="fr" >Date de fin :</span></h4>
-                        <h4><span class="en" >End date:</span></h4>
-                        <h4><span class="nl" >End date :</span></h4>
-                        <p><span class="endDateContract"></span></p>
-                      </div>
-
-                      <div class="separator"></div>
-
-                      <h4 class="text-green">Informations relatives au vélo</h4>
-
-                      <div class="col-md-12">
-                        <img src="" class="bikeImage" alt="image" />
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="col-sm-4">
-                          <h4><span class="fr" >Status :</span></h4>
-                          <h4><span class="en" >Status:</span></h4>
-                          <h4><span class="nl" >Status :</span></h4>
-                          <select title="Bike Status" class="selectpicker" id="bikeStatus" name="bikeStatus">
-                            <option value="OK">En état d'utilisation</option>
-                            <option value="KO">Cassé</option>
-                            <option value="test">Vélo de test</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="separator"></div>
-                      <div class="col-sm-12">
-                        <div class="col-md-6">
-                          <input type="text" class="hidden" id="widget-updateBikeStatus-form-frameNumber" name="widget-updateBikeStatus-form-frameNumber"/>
-                          <input type="text" class="hidden" name="user" value="<?php echo $user; ?>"/>
-                          <h4><span class="fr" >Accès aux bâtiments :</span></h4>
-                          <div id="bikeBuildingAccess"></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                      <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                      <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                      <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
-
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <script type="text/javascript">
-
-        jQuery("#widget-updateBikeStatus-form").validate({
-          submitHandler: function(form) {
+    jQuery("#widget-updateBikeStatus-form").validate({
+        submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
-              success: function(response) {
+                success: function(response) {
 
-                if (response.response == 'success') {
-                  $.notify({
-                    message: response.message
-                  }, {
-                    type: 'success'
-                  });
-                  get_bikes_listing();
-                  $('#updateBikeStatus').modal('toggle');
+                    if (response.response == 'success') {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'success'
+                        });
+                        get_bikes_listing();
+                        $('#updateBikeStatus').modal('toggle');
 
-                } else {
-                  $.notify({
-                    message: response.message
-                  }, {
-                    type: 'danger'
-                  });
+                    } else {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'danger'
+                        });
+                    }
                 }
-              }
             });
-          }
-        });
+        }
+    });
 
-        </script>
+</script>
 
 
         <div class="modal fade" id="updateBillingStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -10531,147 +10963,147 @@ if($connected){
 
         </script>
 
-        <div class="modal fade" id="updateAction" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
+<div class="modal fade" id="updateAction" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
 
-                    <form id="widget-updateAction-form" action="include/action_company.php" role="form" method="post">
+						<form id="widget-updateAction-form" action="include/action_company.php" role="form" method="post">
 
-                      <div class="form-group col-sm-12">
+                            <div class="form-group col-sm-12">
 
-                        <h4 class="fr text-green">Modifier une action</h4>
+                                <h4 class="fr text-green">Modifier une action</h4>
 
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="id">ID :</label>
-                            <input type="text" readonly="readonly" class="form-control required" name="id" readonly="true"/>
-                          </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label for="id">ID :</label>
+                                        <input type="text" readonly="readonly" class="form-control required" name="id" readonly="true"/>
+                                    </div>
 
-                          <div class="col-sm-4">
-                            <label for="owner"> Owner : </label>
-                            <select title="Société" class="selectpicker" name="owner">
-                            </select>
-                          </div>
+                                    <div class="col-sm-4">
+                                        <label for="owner"> Owner : </label>
+                                        <select title="Société" class="selectpicker" name="owner">
+                                        </select>
+                                    </div>
 
-                          <div class="col-sm-4">
-                            <label for="company" class="fr"> Société : </label>
-                            <label for="company" class="en"> Société : </label>
-                            <label for="company" class="nl"> Société : </label>
-                            <select title="Société" class="selectpicker" name="company">
-                            </select>
-                          </div>
-                        </div>
+                                    <div class="col-sm-4">
+                                        <label for="company" class="fr"> Société : </label>
+                                        <label for="company" class="en"> Société : </label>
+                                        <label for="company" class="nl"> Société : </label>
+                                        <select title="Société" class="selectpicker" name="company">
+                                        </select>
+                                    </div>
+                                </div>
 
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="type" class="fr"> Type : </label>
-                            <label for="type" class="en"> Type : </label>
-                            <label for="type" class="nl"> Type : </label>
-                            <select title="type" class="selectpicker form-control required" name="type">
-                              <option value="contact">Prise de contact</option>
-                              <option value="rappel">Rappel</option>
-                              <option value="plan rdv">Planification de rendez-vous</option>
-                              <option value="rdv">Rendez-vous</option>
-                              <option value="offre">Formulation d'une offre</option>
-                              <option value="offreSigned">Offre signée</option>
-                              <option value="delivery">Livraison vélo</option>
-                              <option value="other">Autre</option>
-                            </select>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="date">Date :</label>
-                            <input type="date" class="form-control required" name="date" />
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label for="type" class="fr"> Type : </label>
+                                        <label for="type" class="en"> Type : </label>
+                                        <label for="type" class="nl"> Type : </label>
+                                        <select title="type" class="selectpicker form-control required" name="type">
+                                          <option value="contact">Prise de contact</option>
+                                          <option value="rappel">Rappel</option>
+                                          <option value="plan rdv">Planification de rendez-vous</option>
+                                          <option value="rdv">Rendez-vous</option>
+                                          <option value="offre">Formulation d'une offre</option>
+                                          <option value="offreSigned">Offre signée</option>
+                                          <option value="delivery">Livraison vélo</option>
+                                          <option value="other">Autre</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="date">Date :</label>
+                                        <input type="date" class="form-control required" name="date" />
 
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="date_reminder">Rappel :</label>
-                            <input type="date" class="form-control" name="date_reminder" />
-                          </div>
-                        </div>
-                        <div class="col-sm-12">
-                          <div class="col-sm-12">
-                            <label for="title">Titre :</label>
-                            <input type="text" class="form-control required" name="title" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="date_reminder">Rappel :</label>
+                                        <input type="date" class="form-control" name="date_reminder" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-12">
+                                        <label for="title">Titre :</label>
+                                        <input type="text" class="form-control required" name="title" />
 
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="description">Description :</label>
-                            <textarea class="form-control" rows="5" name="description"></textarea>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label for="description">Description :</label>
+                                        <textarea class="form-control" rows="5" name="description"></textarea>
 
-                          </div>
-                          <div class="col-sm-5">
-                            <label for="status">Statut :</label>
-                            <select title="Status" class="selectpicker" name="status">
-                              <option value="TO DO">To do</option>
-                              <option value="DONE">Done</option>
-                            </select>
-                          </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <label for="status">Statut :</label>
+                                        <select title="Status" class="selectpicker" name="status">
+                                          <option value="TO DO">To do</option>
+                                          <option value="DONE">Done</option>
+                                        </select>
+                                    </div>
 
-                        </div>
-                      </div>
+                                </div>
+                            </div>
 
-                      <input type="text" name="requestor" value="<?php echo $user; ?>" class="hidden"/>
-                      <input type="text" name="action" value="update" class="hidden"/>
+                            <input type="text" name="requestor" value="<?php echo $user; ?>" class="hidden"/>
+                            <input type="text" name="action" value="update" class="hidden"/>
 
-                      <div class="col-sm-12">
-                        <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
-                        <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
-                        <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
+                            <div class="col-sm-12">
+                                <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
+                                <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+                                <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+                            </div>
+                        </form>
+                    </div>
+				</div>
+			</div>
 
 
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
+            <div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
 
-            </div>
-          </div>
-        </div>
-        <script type="text/javascript">
-        jQuery("#widget-updateAction-form").validate({
-          submitHandler: function(form) {
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    jQuery("#widget-updateAction-form").validate({
+        submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
-              success: function(response) {
-                if (response.response == 'success') {
-                  $.notify({
-                    message: response.message
-                  }, {
-                    type: 'success'
-                  });
-                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
-                  document.getElementById('widget-updateAction-form').reset();
-                  $('#updateAction').modal('toggle');
+                success: function(response) {
+                    if (response.response == 'success') {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'success'
+                        });
+                        list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+                        document.getElementById('widget-updateAction-form').reset();
+                        $('#updateAction').modal('toggle');
 
 
-                } else {
-                  $.notify({
-                    message: response.message
-                  }, {
-                    type: 'danger'
-                  });
+                    } else {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'danger'
+                        });
+                    }
                 }
-              }
             });
-          }
-        });
+        }
+    });
 
-        </script>
+</script>
 
 
         <div class="modal fade" id="updatePortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -10921,453 +11353,454 @@ if($connected){
           }
         });
 
-        </script>
+</script>        
 
 
-        <div class="modal fade" id="addPortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <h4 class="text-green">Ajouter un vélo au catalogue</h4>
-                  <form id="widget-addCatalog-form" action="include/add_catalog_bike.php" role="form" method="post">
-                    <div class="col-sm-12">
-                      <h4 class="text-green">Informations sur le modèle</h4>
+<div class="modal fade" id="addPortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+                    <h4 class="text-green">Ajouter un vélo au catalogue</h4>
+                    <form id="widget-addCatalog-form" action="include/add_catalog_bike.php" role="form" method="post">
+                        <div class="col-sm-12">
+                            <h4 class="text-green">Informations sur le modèle</h4>
 
-                      <div class="col-sm-12">
-                        <div class="col-sm-4">
-                          <label for="brand" class="fr"> Marque : </label>
-                          <label for="brand" class="en"> Brand: </label>
-                          <label for="brand" class="nl"> Brand : </label>
-                          <select class="form-control required" name="brand">
-                            <option value="Ahooga">Ahooga</option>
-                            <option value="Bzen">Bzen</option>
-                            <option value="Conway">Conway</option>
-                            <option value="Douze Cycle">Douze Cycle</option>
-                            <option value="HNF Nicolai">HNF Nicolai</option>
-                            <option value="Orbea">Orbea</option>
-                            <option value="Stevens">Stevens</option>
-                            <option value="other">Other</option>
-                          </select>
+                            <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                    <label for="brand" class="fr"> Marque : </label>
+                                    <label for="brand" class="en"> Brand: </label>
+                                    <label for="brand" class="nl"> Brand : </label>
+                                    <select class="form-control required" name="brand">
+                                               <option value="Ahooga">Ahooga</option>
+                                               <option value="Bzen">Bzen</option>
+                                               <option value="Conway">Conway</option>
+                                               <option value="Douze Cycle">Douze Cycle</option>
+                                               <option value="HNF Nicolai">HNF Nicolai</option>
+                                               <option value="Orbea">Orbea</option>
+                                               <option value="Stevens">Stevens</option>
+                                               <option value="other">Other</option>
+                                    </select>
 
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="model" class="fr"> Modèle : </label>
+                                    <label for="model" class="en"> Model: </label>
+                                    <label for="model" class="nl"> Model: </label>
+                                    <input type="text" class="form-control required" name="model" />
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="frame" class="fr"> Type de cadre : </label>
+                                    <label for="frame" class="en"> Frame type: </label>
+                                    <label for="frame" class="nl"> Frame type: </label>
+                                    <select class="form-control required" name="frame">
+                                               <option value="F">Femme</option>
+                                               <option value="H">Homme</option>
+                                               <option value="M">Mixte</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+
+                                <div class="col-sm-4">
+                                    <label for="utilisation" class="fr"> Utilisation : </label>
+                                    <label for="utilisation" class="en"> Utilisation: </label>
+                                    <label for="utilisation" class="nl"> Utilisation: </label>
+                                    <select class="form-control required" name="utilisation">
+                                               <option value="Tout chemin">Tout chemin</option>
+                                               <option value="Ville et chemin">Ville et chemin</option>
+                                               <option value="Pliant">Pliant</option>
+                                               <option value="Ville">Vile</option>
+                                               <option value="Cargo">Cargo</option>
+                                               <option value="Speedpedelec">Speedpedelec</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="electric" class="fr"> Vélo électrique ? </label>
+                                    <label for="electric" class="en"> Electric bike? </label>
+                                    <label for="electric" class="nl"> Electric bike? </label>
+                                    <select class="form-control required" name="electric">
+                                               <option value="Y">Y</option>
+                                               <option value="N">N</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="link" class="fr"> Lien vers le site : </label>
+                                    <label for="link" class="en"> Vendor link : </label>
+                                    <label for="link" class="nl"> Vendor link</label>
+                                    <input type="text" class="form-control required" name="link" />
+                                </div>
+                            </div>
+                            <div class="separator"></div>
+                            <h4 class="text-green">Information financières et stock</h4>
+
+                            <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                    <label for="buyPrice" class="fr">Prix d'achat</label>
+                                    <label for="buyPrice" class="nl">Buying price</label>
+                                    <label for="buyPrice" class="en">Buying price</label>
+                                    <input type="text" class="form-control required" name="buyPrice" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="price" class="fr"> Prix : </label>
+                                    <label for="price" class="en"> Price: </label>
+                                    <label for="price" class="nl"> Price: </label>
+                                    <input type="text" class="form-control required" name="price" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="stock" class="fr"> En stock ? </label>
+                                    <label for="stock" class="en"> Sotck? </label>
+                                    <label for="stock" class="nl"> Stock? </label>
+                                    <input type="text" class="bikeCatalogStock form-control required" name="stock" />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label for="display" class="fr">Afficher ? </label>
+                                        <label for="display" class="en">Display ? </label>
+                                        <label for="display" class="nl">Display ? </label>
+                                        <input type="checkbox" name="display" class="form-control">
+                                    </div>
+
+
+
+                            </div>
+                            <div class="separator"></div>
+                            <h4 class="text-green">Photos</h4>
+
+
+                            <div class="form-group col-sm-6">
+                                <label for="file"  class="fr">Photo</label>
+                                <label for="file"  class="en">Picture</label>
+                                <label for="file"  class="nl">Picture</label>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                <input type=file size=40 class="form-control required" name="file">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="fileMini"  class="fr">Photo mini</label>
+                                <label for="fileMini"  class="en">Mini picture</label>
+                                <label for="fileMini"  class="nl">Mini picture</label>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                <input type=file size=40 class="form-control required" name="fileMini">
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                          <label for="model" class="fr"> Modèle : </label>
-                          <label for="model" class="en"> Model: </label>
-                          <label for="model" class="nl"> Model: </label>
-                          <input type="text" class="form-control required" name="model" />
 
-                        </div>
-                        <div class="col-sm-4">
-                          <label for="frame" class="fr"> Type de cadre : </label>
-                          <label for="frame" class="en"> Frame type: </label>
-                          <label for="frame" class="nl"> Frame type: </label>
-                          <select class="form-control required" name="frame">
-                            <option value="F">Femme</option>
-                            <option value="H">Homme</option>
-                            <option value="M">Mixte</option>
-                          </select>
-
-                        </div>
-                      </div>
-
-                      <div class="col-sm-12">
-
-                        <div class="col-sm-4">
-                          <label for="utilisation" class="fr"> Utilisation : </label>
-                          <label for="utilisation" class="en"> Utilisation: </label>
-                          <label for="utilisation" class="nl"> Utilisation: </label>
-                          <select class="form-control required" name="utilisation">
-                            <option value="Tout chemin">Tout chemin</option>
-                            <option value="Ville et chemin">Ville et chemin</option>
-                            <option value="Pliant">Pliant</option>
-                            <option value="Ville">Vile</option>
-                            <option value="Cargo">Cargo</option>
-                            <option value="Speedpedelec">Speedpedelec</option>
-                          </select>
-
-                        </div>
-                        <div class="col-sm-4">
-                          <label for="electric" class="fr"> Vélo électrique ? </label>
-                          <label for="electric" class="en"> Electric bike? </label>
-                          <label for="electric" class="nl"> Electric bike? </label>
-                          <select class="form-control required" name="electric">
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
-                          </select>
-
-                        </div>
-                        <div class="col-sm-4">
-                          <label for="link" class="fr"> Lien vers le site : </label>
-                          <label for="link" class="en"> Vendor link : </label>
-                          <label for="link" class="nl"> Vendor link</label>
-                          <input type="text" class="form-control required" name="link" />
-                        </div>
-                      </div>
-                      <div class="separator"></div>
-                      <h4 class="text-green">Information financières et stock</h4>
-
-                      <div class="col-sm-12">
-                        <div class="col-sm-4">
-                          <label for="buyPrice" class="fr">Prix d'achat</label>
-                          <label for="buyPrice" class="nl">Buying price</label>
-                          <label for="buyPrice" class="en">Buying price</label>
-                          <input type="text" class="form-control required" name="buyPrice" />
-                        </div>
-                        <div class="col-sm-4">
-                          <label for="price" class="fr"> Prix : </label>
-                          <label for="price" class="en"> Price: </label>
-                          <label for="price" class="nl"> Price: </label>
-                          <input type="text" class="form-control required" name="price" />
-                        </div>
-                        <div class="col-sm-4">
-                          <label for="stock" class="fr"> En stock ? </label>
-                          <label for="stock" class="en"> Sotck? </label>
-                          <label for="stock" class="nl"> Stock? </label>
-                          <input type="text" class="bikeCatalogStock form-control required" name="stock" />
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="col-sm-4">
-                          <label for="display" class="fr">Afficher ? </label>
-                          <label for="display" class="en">Display ? </label>
-                          <label for="display" class="nl">Display ? </label>
-                          <input type="checkbox" name="display" class="form-control">
-                        </div>
-
-
-
-                      </div>
-                      <div class="separator"></div>
-                      <h4 class="text-green">Photos</h4>
-
-
-                      <div class="form-group col-sm-6">
-                        <label for="file"  class="fr">Photo</label>
-                        <label for="file"  class="en">Picture</label>
-                        <label for="file"  class="nl">Picture</label>
-                        <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                        <input type=file size=40 class="form-control required" name="file">
-                      </div>
-
-                      <div class="col-sm-6">
-                        <label for="fileMini"  class="fr">Photo mini</label>
-                        <label for="fileMini"  class="en">Mini picture</label>
-                        <label for="fileMini"  class="nl">Mini picture</label>
-                        <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                        <input type=file size=40 class="form-control required" name="fileMini">
-                      </div>
-                    </div>
-
-                    <input type="text" name="user" value="<?php echo $user; ?>" class="hidden" />
-
-                    <div class="col-sm-12">
-                      <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                      <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                      <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
-
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <script type="text/javascript">
-
-        jQuery("#widget-addCatalog-form").validate({
-          submitHandler: function(form) {
-            jQuery(form).ajaxSubmit({
-              success: function(response) {
-
-                if (response.response == 'success') {
-                  $.notify({
-                    message: response.message
-                  }, {
-                    type: 'success'
-                  });
-                  listPortfolioBikes();
-                  document.getElementById('widget-addCatalog-form').reset();
-                  $('#addPortfolioBike').modal('toggle');
-
-                } else {
-                  $.notify({
-                    message: response.message
-                  }, {
-                    type: 'danger'
-                  });
-                }
-              }
-            });
-          }
-        });
-
-        </script>
-
-
-        <div class="modal fade" id="tellus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <form id="widget-tellus-form" action="include/tellus-form.php" role="form" method="post">
-
-                      <div class="row">
-                        <div class="form-group col-sm-12">
-                          <label for="subject"  class="fr">Votre sujet</label>
-                          <label for="subject"  class="en">Subject</label>
-                          <label for="subject"  class="nl">Onderwerp</label>
-                          <input type="text" name="widget-tellus-form-subject" id="widget-tellus-form-subject" class="form-control required">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="message"  class="fr">Message</label>
-                        <label for="message"  class="en">Message</label>
-                        <label for="message"  class="nl">Bericht</label>
-                        <textarea type="text" name="widget-tellus-form-message" id="widget-tellus-form-message" rows="5" class="form-control required"></textarea>
-                      </div>
-                      <input type="text" class="hidden" id="widget-tellus-form-antispam" name="widget-tellus-form-antispam" value="" />
-                      <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                      <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                      <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-                    </form>
-                    <script type="text/javascript">
-
-                    function initializeTellUs() {
-                      document.getElementById('widget-tellus-form-subject').value="";
-                      document.getElementById('widget-tellus-form-message').value="";
-
-                    }
-
-                    jQuery("#widget-tellus-form").validate({
-
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(text) {
-                            if (text.response == 'success') {
-                              $.notify({
-                                message: text.message
-                              }, {
-                                type: 'success'
-                              });
-                              $('#tellus').modal('toggle');
-
-                            } else {
-                              $.notify({
-                                message: text.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="update" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <form id="widget-updateInfo" action="include/updateInfos.php" role="form" method="post">
-                      <div class="row">
-                        <h4 class="col-md-3 fr">Informations générales</h4>
-                        <h4 class="col-md-3 en">General information</h4>
-                        <h4 class="col-md-3 nl">Algemene informatie</h4>
-                        <div class="form-group col-sm-12">
-                          <label for="firstname"  class="fr">Prénom</label>
-                          <label for="firstname"  class="en">Firstname</label>
-                          <label for="firstname"  class="nl">Voornaam</label>
-                          <input type="text" id="widget-update-form-firstname" name="widget-update-form-firstname" class="form-control required" value="<?php echo $row["PRENOM"] ?>">
-
-                          <label for="firstname"  class="fr">Nom</label>
-                          <label for="firstname"  class="en">Name</label>
-                          <label for="firstname"  class="nl">Achternaam</label>
-                          <input type="text" id="widget-update-form-name" name="widget-update-form-name" class="form-control required" value="<?php echo $row["NOM"] ?>">
-
-
-                          <label for="telephone"  class="fr">Numéro de téléphone</label>
-                          <label for="telephone"  class="en">Phone number</label>
-                          <label for="telephone"  class="nl">Telefoonnumber</label>
-                          <input type="text" id="widget-update-form-phone" name="widget-update-form-phone" class="form-control" value="<?php echo $row["PHONE"] ?>">
-                        </div>
-                        <h4 class="col-md-3 fr">Domicile</h4>
-                        <h4 class="col-md-3 en">Home</h4>
-                        <h4 class="col-md-3 nl">Thuis</h4>
-                        <div class="form-group col-sm-12">
-                          <label for="email"  class="fr">Adresse</label>
-                          <label for="email"  class="en">Adress</label>
-                          <label for="email"  class="nl">Adres</label>
-                          <input type="text" id="widget-update-form-adress" name="widget-update-form-adress" class="form-control" value="<?php echo $row['ADRESS'] ?>">
-                        </div>
-                        <div class="form-group col-sm-12">
-                          <label for="widget-update-form-post-code"  class="fr">Code Postal</label>
-                          <label for="widget-update-form-post-code"  class="en">Postal Code</label>
-                          <label for="widget-update-form-post-code"  class="nl">Postcode</label>
-                          <input type="text" id="widget-update-form-post-code" name="widget-update-form-post-code" class="form-control" value="<?php echo $row['POSTAL_CODE'] ?>" autocomplete="postal-code">
-                        </div>
-                        <div class="form-group col-sm-12">
-                          <label for="widget-update-form-city"  class="fr">Commune</label>
-                          <label for="widget-update-form-city"  class="en">City</label>
-                          <label for="widget-update-form-city"  class="nl">Gemeente</label>
-                          <input type="text" id="widget-update-form-city" name="widget-update-form-city" class="form-control" value="<?php echo $row['CITY'] ?>" autocomplete="address-level2">
-                        </div>
-                        <h4 class="col-md-3 fr">Lieu de travail</h4>
-                        <h4 class="col-md-3 nl">Werk</h4>
-                        <h4 class="col-md-3 en">Work place</h4>
-                        <div class="form-group col-sm-12">
-                          <label for="widget-update-form-work-adress"  class="fr">Adresse</label>
-                          <label for="widget-update-form-work-adress"  class="en">Adress</label>
-                          <label for="widget-update-form-work-adress"  class="nl">Adres</label>
-                          <input type="text" id="widget-update-form-work-adress" name="widget-update-form-work-adress" class="form-control" value="<?php echo $row['WORK_ADRESS'] ?>" autocomplete="off">
-                        </div>
-                        <div class="form-group col-sm-12">
-                          <label for="widget-update-form-work-post-code"  class="fr">Code Postal</label>
-                          <label for="widget-update-form-work-post-code"  class="en">Postal Code</label>
-                          <label for="widget-update-form-work-post-code"  class="nl">Postcode</label>
-                          <input type="text" id="widget-update-form-work-post-code" name="widget-update-form-work-post-code" class="form-control" value="<?php echo $row['WORK_POSTAL_CODE'] ?>" autocomplete="off">
-                        </div>
-                        <div class="form-group col-sm-12">
-                          <label for="widget-update-form-work-city"  class="fr">Commune</label>
-                          <label for="widget-update-form-work-city"  class="en">City</label>
-                          <label for="widget-update-form-work-city"  class="nl">Gemeente</label>
-                          <input type="text" id="widget-update-form-work-city" name="widget-update-form-work-city" class="form-control" value="<?php echo $row['WORK_CITY'] ?>" autocomplete="off">
-                        </div>
-                        <div class="col-sm-3">
-                          <label for="password"  class="fr">Mot de passe</label>
-                          <label for="password"  class="en">Password</label>
-                          <label for="password"  class="nl">Wachtwoord</label>
-                        </div>
-                        <div class="col-sm-9">
-                          <a class="text-green fr" onclick="updatePassword()">Actualiser</a>
-                          <a class="text-green en" onclick="updatePassword()">Update</a>
-                          <a class="text-green nl" onclick="updatePassword()">Update</a>
-                        </div>
+                        <input type="text" name="user" value="<?php echo $user; ?>" class="hidden" />
 
                         <div class="col-sm-12">
-                          <span id="widget-update-form-password-text"></span>
-                          <input type="password" id="widget-update-form-password" name="widget-update-form-password" class="form-control" value="********" autocomplete="off" readonly>
-                          <span id="widget-update-form-password-confirmation-text"></span>
-                          <input type="hidden" id="widget-update-form-password-confirmation"  name="widget-update-form-password-confirmation" class="form-control required" autocomplete="off">
-                          <input id="widget-update-form-password-switch" name="widget-update-form-password-switch" type="hidden" value="false">
+                            <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+                            <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+                            <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
                         </div>
-
-                        <input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-updateInfo-antispam" value="" />
-                      </div>
-                      <button  class="fr button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Envoyer</button>
-                      <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                      <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-
                     </form>
-                    <script type="text/javascript">
+				</div>
+			</div>
 
-                    function initializeUpdate(){
-                      document.getElementById('widget-update-form-password-text').innerHTML="";
-                      document.getElementById('widget-update-form-password').readOnly = true;
-                      document.getElementById('widget-update-form-password').value="********";
-                      document.getElementById('widget-update-form-password-confirmation-text').innerHTML="";
-                      document.getElementById('widget-update-form-password-confirmation').type='hidden';
-                      document.getElementById('widget-update-form-password-switch').value="false";
-                    }
 
-                    function updatePassword(){
+            <div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
 
-                      document.getElementById('widget-update-form-password-text').innerHTML="<span class=\"fr\">Votre Nouveau mot de passe :</span><span class=\"nl\">Your new password :</span><span class=\"en\">Your new password:</span>";
-                      document.getElementById('widget-update-form-password').removeAttribute('readonly');
-                      document.getElementById('widget-update-form-password').value="";
-                      document.getElementById('widget-update-form-password-confirmation-text').innerHTML="<span class=\"fr\">Veuillez confirmer :</span><span class=\"nl\">Please confirm :</span><span class=\"en\">Please confirm:</span>";
-                      document.getElementById('widget-update-form-password-confirmation').type='password';
-                      document.getElementById('widget-update-form-password-switch').value="true";
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
 
-                      displayLanguage();
-                      var langue = getLanguage();
-                    }
-                    jQuery("#widget-updateInfo").validate({
+    jQuery("#widget-addCatalog-form").validate({
+        submitHandler: function(form) {
+            jQuery(form).ajaxSubmit({
+                success: function(response) {
 
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(text) {
-                            if (text.response == 'success') {
-                              $.notify({
-                                message: text.message
-                              }, {
-                                type: 'success'
-                              });
-                              $('#update').modal('toggle');
-                              var timestamp=Date.now().toString();
-                              addressDomicile="<?php
-                              $address=$row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'];
-                              echo $address;?>";
-                              get_meteo(timestamp.substring(0,10), addressDomicile)
-                            } else {
-                              $.notify({
-                                message: text.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
+                    if (response.response == 'success') {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'success'
                         });
-                      }
-                    });
+                        listPortfolioBikes();
+                        document.getElementById('widget-addCatalog-form').reset();
+                        $('#addPortfolioBike').modal('toggle');
 
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
+                    } else {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: 'danger'
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+</script>
+
+
+<div class="modal fade" id="tellus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form id="widget-tellus-form" action="include/tellus-form.php" role="form" method="post">
+
+                                <div class="row">
+                                    <div class="form-group col-sm-12">
+                                        <label for="subject"  class="fr">Votre sujet</label>
+										<label for="subject"  class="en">Subject</label>
+										<label for="subject"  class="nl">Onderwerp</label>
+                                        <input type="text" name="widget-tellus-form-subject" id="widget-tellus-form-subject" class="form-control required">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message"  class="fr">Message</label>
+									<label for="message"  class="en">Message</label>
+									<label for="message"  class="nl">Bericht</label>
+                                    <textarea type="text" name="widget-tellus-form-message" id="widget-tellus-form-message" rows="5" class="form-control required"></textarea>
+                                </div>
+                                <input type="text" class="hidden" id="widget-tellus-form-antispam" name="widget-tellus-form-antispam" value="" />
+                                <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+								<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+                            </form>
+							<script type="text/javascript">
+
+                                function initializeTellUs() {
+                                    document.getElementById('widget-tellus-form-subject').value="";
+                                    document.getElementById('widget-tellus-form-message').value="";
+
+                                }
+
+                                jQuery("#widget-tellus-form").validate({
+
+                                    submitHandler: function(form) {
+
+                                        jQuery(form).ajaxSubmit({
+                                            success: function(text) {
+                                                if (text.response == 'success') {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'success'
+                                                    });
+													$('#tellus').modal('toggle');
+
+                                                } else {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'danger'
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            </script>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="update" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form id="widget-updateInfo" action="include/updateInfos.php" role="form" method="post">
+                                <div class="row">
+									<h4 class="col-md-3 fr">Informations générales</h4>
+									<h4 class="col-md-3 en">General information</h4>
+									<h4 class="col-md-3 nl">Algemene informatie</h4>
+                                    <div class="form-group col-sm-12">
+                                        <label for="firstname"  class="fr">Prénom</label>
+                                        <label for="firstname"  class="en">Firstname</label>
+                                        <label for="firstname"  class="nl">Voornaam</label>
+                                        <input type="text" id="widget-update-form-firstname" name="widget-update-form-firstname" class="form-control required" value="<?php echo $row["PRENOM"] ?>">
+
+                                        <label for="firstname"  class="fr">Nom</label>
+                                        <label for="firstname"  class="en">Name</label>
+                                        <label for="firstname"  class="nl">Achternaam</label>
+                                        <input type="text" id="widget-update-form-name" name="widget-update-form-name" class="form-control required" value="<?php echo $row["NOM"] ?>">
+
+
+                                        <label for="telephone"  class="fr">Numéro de téléphone</label>
+										<label for="telephone"  class="en">Phone number</label>
+										<label for="telephone"  class="nl">Telefoonnumber</label>
+                                        <input type="text" id="widget-update-form-phone" name="widget-update-form-phone" class="form-control" value="<?php echo $row["PHONE"] ?>">
+                                    </div>
+                                    <h4 class="col-md-3 fr">Domicile</h4>
+                                    <h4 class="col-md-3 en">Home</h4>
+                                    <h4 class="col-md-3 nl">Thuis</h4>
+                                    <div class="form-group col-sm-12">
+                                        <label for="email"  class="fr">Adresse</label>
+                                        <label for="email"  class="en">Adress</label>
+                                        <label for="email"  class="nl">Adres</label>
+                                        <input type="text" id="widget-update-form-adress" name="widget-update-form-adress" class="form-control" value="<?php echo $row['ADRESS'] ?>">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label for="widget-update-form-post-code"  class="fr">Code Postal</label>
+                                        <label for="widget-update-form-post-code"  class="en">Postal Code</label>
+                                        <label for="widget-update-form-post-code"  class="nl">Postcode</label>
+                                        <input type="text" id="widget-update-form-post-code" name="widget-update-form-post-code" class="form-control" value="<?php echo $row['POSTAL_CODE'] ?>" autocomplete="postal-code">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label for="widget-update-form-city"  class="fr">Commune</label>
+                                        <label for="widget-update-form-city"  class="en">City</label>
+                                        <label for="widget-update-form-city"  class="nl">Gemeente</label>
+                                        <input type="text" id="widget-update-form-city" name="widget-update-form-city" class="form-control" value="<?php echo $row['CITY'] ?>" autocomplete="address-level2">
+                                    </div>
+                                    <h4 class="col-md-3 fr">Lieu de travail</h4>
+                                    <h4 class="col-md-3 nl">Werk</h4>
+                                    <h4 class="col-md-3 en">Work place</h4>
+                                    <div class="form-group col-sm-12">
+                                        <label for="widget-update-form-work-adress"  class="fr">Adresse</label>
+                                        <label for="widget-update-form-work-adress"  class="en">Adress</label>
+                                        <label for="widget-update-form-work-adress"  class="nl">Adres</label>
+                                        <input type="text" id="widget-update-form-work-adress" name="widget-update-form-work-adress" class="form-control" value="<?php echo $row['WORK_ADRESS'] ?>" autocomplete="off">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label for="widget-update-form-work-post-code"  class="fr">Code Postal</label>
+                                        <label for="widget-update-form-work-post-code"  class="en">Postal Code</label>
+                                        <label for="widget-update-form-work-post-code"  class="nl">Postcode</label>
+                                        <input type="text" id="widget-update-form-work-post-code" name="widget-update-form-work-post-code" class="form-control" value="<?php echo $row['WORK_POSTAL_CODE'] ?>" autocomplete="off">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label for="widget-update-form-work-city"  class="fr">Commune</label>
+                                        <label for="widget-update-form-work-city"  class="en">City</label>
+                                        <label for="widget-update-form-work-city"  class="nl">Gemeente</label>
+                                        <input type="text" id="widget-update-form-work-city" name="widget-update-form-work-city" class="form-control" value="<?php echo $row['WORK_CITY'] ?>" autocomplete="off">
+                                    </div>
+                                    <div class="col-sm-3">
+                                    <label for="password"  class="fr">Mot de passe</label>
+                                    <label for="password"  class="en">Password</label>
+                                    <label for="password"  class="nl">Wachtwoord</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                    <a class="text-green fr" onclick="updatePassword()">Actualiser</a>
+                                    <a class="text-green en" onclick="updatePassword()">Update</a>
+                                    <a class="text-green nl" onclick="updatePassword()">Update</a>
+                                    </div>
+
+                                     <div class="col-sm-12">
+                                        <span id="widget-update-form-password-text"></span>
+                                        <input type="password" id="widget-update-form-password" name="widget-update-form-password" class="form-control" value="********" autocomplete="off" readonly>
+                                        <span id="widget-update-form-password-confirmation-text"></span>
+                                        <input type="hidden" id="widget-update-form-password-confirmation"  name="widget-update-form-password-confirmation" class="form-control required" autocomplete="off">
+                                        <input id="widget-update-form-password-switch" name="widget-update-form-password-switch" type="hidden" value="false">
+                                    </div>
+
+									<input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-updateInfo-antispam" value="" />
+								</div>
+								<button  class="fr button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Envoyer</button>
+								<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+
+                            </form>
+							<script type="text/javascript">
+
+                                function initializeUpdate(){
+                                    document.getElementById('widget-update-form-password-text').innerHTML="";
+                                    document.getElementById('widget-update-form-password').readOnly = true;
+                                    document.getElementById('widget-update-form-password').value="********";
+                                    document.getElementById('widget-update-form-password-confirmation-text').innerHTML="";
+                                    document.getElementById('widget-update-form-password-confirmation').type='hidden';
+                                    document.getElementById('widget-update-form-password-switch').value="false";
+                                }
+
+                                function updatePassword(){
+
+                                    document.getElementById('widget-update-form-password-text').innerHTML="<span class=\"fr\">Votre Nouveau mot de passe :</span><span class=\"nl\">Your new password :</span><span class=\"en\">Your new password:</span>";
+                                    document.getElementById('widget-update-form-password').removeAttribute('readonly');
+                                    document.getElementById('widget-update-form-password').value="";
+                                    document.getElementById('widget-update-form-password-confirmation-text').innerHTML="<span class=\"fr\">Veuillez confirmer :</span><span class=\"nl\">Please confirm :</span><span class=\"en\">Please confirm:</span>";
+                                    document.getElementById('widget-update-form-password-confirmation').type='password';
+                                    document.getElementById('widget-update-form-password-switch').value="true";
+
+                                    displayLanguage();
+                                    var langue = getLanguage();
+                                }
+                                jQuery("#widget-updateInfo").validate({
+
+                                    submitHandler: function(form) {
+
+                                        jQuery(form).ajaxSubmit({
+                                            success: function(text) {
+                                                if (text.response == 'success') {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'success'
+                                                    });
+													$('#update').modal('toggle');
+                                                    var timestamp=Date.now().toString();
+                                                    addressDomicile="<?php
+                                                    $address=$row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'];
+                                                    echo $address;?>";
+                                                    get_meteo(timestamp.substring(0,10), addressDomicile)
+                                                } else {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'danger'
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            </script>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 

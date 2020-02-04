@@ -1393,11 +1393,11 @@ include 'include/header2.php';
 
 
 
-
 			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
+
 
 	        <br><br>
 
@@ -1409,6 +1409,7 @@ include 'include/header2.php';
 
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins>
 						<br>BE 0681.879.712
+
 						<br>+32 498 72 75 46 </div>
 						<br>
 	                <div class="social-icons center">
@@ -1423,6 +1424,7 @@ include 'include/header2.php';
 
 					<br>
 					<br>
+
 
 	            </div>
 	        </div>

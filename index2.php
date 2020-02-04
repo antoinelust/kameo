@@ -19,7 +19,7 @@ include 'include/header3.php';
 		<div class="col-md-6 text-center" style="background-color: #3cb395">
 			<h2>JE SUIS UN EMPLOYEUR</h2>
 			<span class="">KAMEO Bikes vous offre des solutions de mobilité urbaine pour entreprises.<br>
-			<a class="button green button-3d effect fill-vertical" href="employeur.php"><span><i class="fa fa-key"></i>Découvrir nos solutions</span></a>
+			<a class="button green button-3d effect fill-vertical"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Découvrir nos solutions</span></a>
 			</span>
 		</div>
 
@@ -33,12 +33,53 @@ include 'include/header3.php';
 </section>
 <!-- END: MISSION & VISSION -->
 
+<div class="modal fade" id="employeur" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h2 class="modal-title" id="modal-label">Je suis un employeur et je recherche</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row text-center">
+					<div class="col-md-12">
+						<h4 class="text-green">Des vélos partagés</h4>
+						<p>Je souhaite mettre à disposition de mes employés une flotte de vélos.</p>
+						<a class="button green button-3d effect fill-vertical" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
+					</div>
+					<div class="separator"></div>
+					<div class="col-md-12">
+						<h4 class="text-green">Des vélos personnels</h4>
+						<p>Je souhaite proposer à mes employés d'acheter un vélo via mon entreprise.</p>
+						<a class="button green button-3d effect fill-vertical" href="velo-personnel.php"><span><i class="fa fa-user"></i>En savoir plus</span></a>
+					</div>
+					<div class="separator"></div>
+					<div class="col-md-12">
+						<h4 class="text-red">Un système de gestion de flotte</h4>
+						<p>Je dispose déjà de vélos ou de véhicules mais j'aimerais optimiser leur utilisation avec un système simple et fluide.</p>
+						<a class="button red button-3d effect fill-vertical" href="velo-personnel.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
+					</div>
+				</div>
+			</div>
+			<!--
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-b">Save Changes</button>
+			</div>
+			-->
+		</div>
+	</div>
+</div>
+
 <!-- SECTION VISION -->
+<!--
 <section class="p-b-0">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8">
+			-->
 				<!-- <hr class="space"> -->
+				<!--
 				<h1 class="text-green">LA VISION DE KAMEO</h1>
 				<p class="lead"><strong class="text-green">KAMEO Bikes</strong> est une entreprise active dans la mobilité urbaine qui propose, aux entreprises, des solutions complètes de mobilité basées sur le vélo. Nous sommes convaincus que le vélo est le mode de transport urbain de demain mais, surtout d’aujourd’hui, et nous travaillons tous les jours pour le démontrer à nos clients.</p>
 
@@ -52,9 +93,11 @@ include 'include/header3.php';
 		</div>
 	</div>
 </section>
+-->
 <!-- END: SECTION VISION -->
 
 <!-- SECTION FLOTTE -->
+<!--
 <section class="p-b-0">
 	<div class="container">
 		<div class="row text-center">
@@ -62,7 +105,9 @@ include 'include/header3.php';
 				<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
 			</div>
 			<div class="col-md-4">
+			-->
 				<!-- <hr class="space"> -->
+				<!--
 				<h1 class="text-green">CHOIX DE LA FLOTTE DE VÉLOS</h1>
 				<p class="">« Le vélo qui vous convient est un vélo qui vous ressemble. »</p>
 				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-eye"></i>Voir le catalogue</span></a>
@@ -73,15 +118,19 @@ include 'include/header3.php';
 		</div>
 	</div>
 </section>
+-->
 <!-- END: SECTION FLOTTE -->
 
 <!-- SECTION MAINTENANCE -->
+<!--
 <section class="p-b-0">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 hidden-xs hidden-sm"> <img alt="" src="images/Maintenance.jpg"> </div>
 			<div class="col-md-8">
+			-->
 				<!-- <hr class="space"> -->
+				<!--
 				<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
 				<p class="">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. 
 C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>
@@ -92,14 +141,18 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 		</div>
 	</div>
 </section>
+-->
 <!-- END: SECTION MAINTENANCE -->
 
 <!-- SECTION GESTION FLOTTE -->
+<!--
 <section class="p-b-0">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8">
+			-->
 				<!-- <hr class="space"> -->
+				<!--
 				<h1 class="text-green">GESTION DE FLOTTE</h1>
 				<p class="">Gérer une flotte de vélos partagés demande de l’organisation et du temps ! MyKAMEO a été développé pour permettre à nos clients de profiter de leurs vélos sans devoir s’en soucier.</p>
 
@@ -113,6 +166,7 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 		</div>
 	</div>
 </section>
+-->
 <!-- END: SECTION GESTION FLOTTE -->
 
 <!-- Language management -->
@@ -120,6 +174,7 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 				
 				
 <!-- SECTION CLIENTS -->
+<!--
 <section class="p-b-0">
 	<div class="container">
 		<h1 class="text-green">ILS NOUS FONT CONFIANCE</h1>
@@ -187,6 +242,7 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
         
 	</div>
 </section>
+-->
 <!-- END: SECTION CLIENTS -->
 		
 	<div class="modal fade" id="newPassword" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -265,6 +321,7 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 
 
 				<!-- FOOTER -->
+				<!--
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -274,8 +331,8 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 	            <div class="row text-center">
 	            
 	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a>--> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
+				<!--
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -299,7 +356,7 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 	            </div>
 	        </div>
 	    </div>
-	</footer>
+	</footer>-->
 			<!-- END: FOOTER -->
 
 	</div>
