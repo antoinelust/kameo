@@ -6693,7 +6693,17 @@ if($connected){
                                             jQuery(form).ajaxSubmit({
                                                 success: function(text) {
                                                     if (text.response == 'success') {
-                                                    window.location.href = "mykameo.php";
+                                                        <?php
+                                                            if(isset($_GET['feedback'])){
+                                                                ?>
+                                                                    window.location.href = "mykameo.php"+<?php echo "feedback=".$_GET['feedback']; ?>;
+                                                                <?php
+                                                            }else{
+                                                                ?>
+                                                                    window.location.href = "mykameo.php";
+                                                                <?php
+                                                            }
+                                                            ?>
                                                     } else {
                                                         $.notify({
                                                             message: text.message
@@ -9009,7 +9019,7 @@ if($connected){
                                             <option value="1">1/5</option>
                                         </select>                                    
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 feedbackEntretien hidden">
                                         <label for="entretien"  class="fr">Besoin d'entretien ?</label>
                                         <label for="entretien"  class="en">Need of maintenance ?</label>
                                         <label for="entretien"  class="nl">Need of maintenance ?</label>
@@ -9078,6 +9088,19 @@ if($connected){
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+    $('#widget-feedbackManagement-form select[name=note]').change(function() {
+        if($('#widget-feedbackManagement-form select[name=note]').val()=="5"){
+            $('#widget-feedbackManagement-form input[name=entretien]').prop("checked", false);
+            $('.feedbackEntretien').addClass("hidden");
+        }
+        else{
+            $('.feedbackEntretien').removeClass("hidden");
+        }
+    });                  
+    
+</script>
 
 <div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
