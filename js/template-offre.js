@@ -688,6 +688,7 @@ $("#templateForm").validate({
     jQuery(form).ajaxSubmit({
       success: function(response) {
         console.log(response);
+        alert('Le pdf a bien été généré !');
       }
     });
   }
