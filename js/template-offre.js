@@ -292,8 +292,8 @@ get_all_bikes().done(function(response){
   $('.templateBike .glyphicon-minus')[0].addEventListener("click",function(){
     bikesNumber = $("#template").find('.bikesNumber').html();
     if(bikesNumber > 0){
-      $('#template').find('.bikesNumber').html(bikesNumberHTML*1 - 1);
-      $('#bikesNumber').val(bikesNumberHTML*1 - 1);
+      $('#template').find('.bikesNumber').html(bikesNumber*1 - 1);
+      $('#bikesNumber').val(bikesNumber*1 - 1);
       $('#template').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
       bikesNumber--;
     }
