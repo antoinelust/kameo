@@ -4049,6 +4049,7 @@ if($connected){
                 }
                 if(response.response == 'success'){
                     get_company_boxes(response.internalReference);
+                    console.log(response);
 
                     $('#widget-companyDetails-form input[name=ID]').val(response.ID);
                     document.getElementById('companyName').value = response.companyName;
@@ -4056,17 +4057,69 @@ if($connected){
                     document.getElementById('companyZIPCode').value = response.companyZIPCode;
                     document.getElementById('companyTown').value = response.companyTown;
                     document.getElementById('companyVAT').value = response.companyVAT;
-                    document.getElementById('emailContact').value = response.emailContact;
-                    document.getElementById('firstNameContact').value = response.firstNameContact;
-                    document.getElementById('lastNameContact').value = response.lastNameContact;
                     document.getElementById('widget_companyDetails_internalReference').value=response.internalReference;
                     internalReference=response.internalReference;
                     $('#widget-companyDetails-form select[name=type]').val(response.type);
-                    $('#widget-companyDetails-form input[name=phone]').val(response.phone);
                     $('#widget-companyDetails-form input[name=email_billing]').val(response.emailContactBilling);
                     $('#widget-companyDetails-form input[name=firstNameContactBilling]').val(response.firstNameContactBilling);
                     $('#widget-companyDetails-form input[name=lastNameContactBilling]').val(response.lastNameContactBilling);
                     $('#widget-companyDetails-form input[name=phoneBilling]').val(response.phoneContactBilling);
+
+                    var contactContent = `
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th><label class="fr">Email: </label></th>
+                            <th><label class="fr">Nom: </label></th>
+                            <th><label class="fr">Prénom: </label></th>
+                            <th><label class="fr">Téléphone: </label></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>`;
+                    for (var i = 0; i < response.emailContact.length; i++) {
+                      contactContent += `
+                      <tr>
+                        <td>
+                          <input type="text" class="form-control" readonly="true"  name="contactEmail`+response.contactId[i]+`" id="contactEmail`+response.contactId[i]+`" value="`+response.emailContact[i]+`"/>
+                        </td>
+                        <td>
+                        <input type="text" class="form-control" readonly="true"  name="contactNom`+response.contactId[i]+`" id="contactNom`+response.contactId[i]+`" value="`+response.firstNameContact[i]+`"/>
+                        </td>
+                        <td>
+                        <input type="text" class="form-control" readonly="true" name="contactPrenom`+response.contactId[i]+`" id="contactPrenom`+response.contactId[i]+`" value="`+response.lastNameContact[i]+`"/>
+                        </td>
+                        <td>
+                        <input type="text" class="form-control" readonly="true"  name="contactPhone`+response.contactId[i]+`" id="contactPhone`+response.contactId[i]+`" value="`+response.phone[i]+`"/>
+                        </td>
+                        <td>
+                          <button class="modify button small green button-3d rounded">Modifier</button>
+                        </td>
+                        <td>
+                          <button class="delete button small red button-3d rounded">Supprimer</button>
+                        </td>
+                      </tr>`;
+                    }
+                    contactContent += "</tbody></table>";
+                    $('.clientContactZone').append(contactContent);
+
+                    $('.clientContactZone .modify').on('click', function(){
+                      $(this).removeClass('modify').addClass('validate').html('valider');
+                      $(this).parents('tr').find('.delete').removeClass('delete').removeClass('red').addClass('white').addClass('anuuler').html('annuler');
+                      $(this).parents('tr').find('input').each(function(){
+                        $(this).prop('readonly', false);
+                      });
+                    });
+
+                    $('.clientContactZone .annuler').on('click', function(){
+                      $(this).removeClass('validate').addClass('modify').html('modifier');
+                      $(this).parents('tr').find('.annuler').removeClass('anuuler').removeClass('white').addClass('delete').addClass('red').html('supprimer');
+                      $(this).parents('tr').find('input').each(function(){
+                        $(this).prop('readonly', false);
+                      });
+                    });
+
 
                     if(response.automaticBilling=="Y"){
                         $('#widget-companyDetails-form input[name=billing]').prop( "checked", true );
@@ -4349,10 +4402,6 @@ if($connected){
                             }
                         }
                     })
-
-
-
-
                     });
 
                     displayLanguage();
@@ -8445,7 +8494,7 @@ if($connected){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -8510,41 +8559,8 @@ if($connected){
                 <label for="addContact">Ajouter un contact</label>
               </div>
               <div class="clientContactZone">
-                  <div class="col-md-3">
-                    <label class="fr"> Email : </label>
-                    <label class="en"> Email: </label>
-                    <label class="nl"> Email : </label>
-                    <input type="text" id="emailContact" class="form-control updateClientInformation" name="widget_companyDetails_emailContact" value="" readonly="true"/>
-                  </div>
-                  <div class="col-md-3">
-                    <label class="fr" >Nom :</label>
-                    <label class="en" >Last Name:</label>
-                    <label class="nl" >Last Name:</label>
-                    <input type="text" id="lastNameContact" class="form-control updateClientInformation" name="widget_companyDetails_lastNameContact" value="" readonly="true"/>
-                  </div>
-
-                  <div class="col-md-3">
-                    <label class="fr" >Prénom :</label>
-                    <label class="en" >First Name:</label>
-                    <label class="nl" >First Name :</label>
-                    <input type="text" id="firstNameContact" class="form-control updateClientInformation" name="widget_companyDetails_firstNameContact" value="" readonly="true"/>
-                  </div>
-
-                  <div class="col-md-3">
-                    <label class="fr" >Téléphone :</label>
-                    <label class="en" >Phone:</label>
-                    <label class="nl" >Phone :</label>
-                    <input type="text" id="phoneContact" class="form-control" name="phone" value="" readonly="true"/>
-                  </div>
-                  <div class="separator separator-small"></div>
+                  <!--<div class="separator separator-small"></div>-->
               </div>
-              <div class="col-md-3"></div>
-              <div class="col-md-6" style="text-align:center; margin-bottom:20px;">
-                <label for="statistiques">Envoyer le rapport de statistiques ?</label>
-                <input type="checkbox" name="statistiques" class="form-control" readonly="true"/>
-              </div>
-
-
               <div class="separator"></div>
 
               <div class="col-sm-12">
@@ -9928,7 +9944,7 @@ if($connected){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">-</button>
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
       </div>
       <div class="modal-body">
         <form class="isLeasing" id="templateForm" action="include/offer_template.php" method="post" role="form" novalidate="novalidate">
@@ -9963,7 +9979,7 @@ if($connected){
                 <label for="numberMaintenance" class="nl">Entretiens par an</label>
                 <input type="number" name="numberMaintenance" class="numberMaintenance form-control required" aria-required="true" value="1" min="0">
               </div>
-              <div class="col-sm-2 form-group">
+              <div class="col-sm-2 form-group leasingSpecific">
                 <label for="assuranceCheck" class="fr">Assurance</label>
                 <label for="assuranceCheck" class="en">Assurance</label>
                 <label for="assuranceCheck" class="nl">Assurance</label>

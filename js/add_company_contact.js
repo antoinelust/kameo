@@ -27,8 +27,8 @@ $('.addContact')[0].addEventListener('click', function(){
       <label class="fr" >Fonction :</label>
       <input type="text" name="function" class="form-control functionContact required" placeholder="Fonction" />
     </div>
-    <div class="col-md-6 form-group">
-      <label class="fr" >Recevoir les statistiques d'utilisation des vélos :</label>
+    <div class="col-md-3 form-group">
+      <label class="fr" >Envoyer le rapport de statistiques ?</label>
       <input type="checkbox" name="bikesStats" class="form-control bikeStatsContact" value="true" />
     </div>
     <div class="col-sm-12 form-group" style="margin-top:20px;">
