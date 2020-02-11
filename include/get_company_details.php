@@ -81,6 +81,8 @@ if($ID != NULL)
       $response['firstNameContact'][$i]=$row['PRENOM'];
       $response['lastNameContact'][$i]=$row['NOM'];
       $response['phone'][$i]=$row['PHONE'];
+      $response['bikesStats'][$i]=$row['BIKES_STATS'];
+      $response['fonction'][$i]=$row['FUNCTION'];
         $i++;
     }
 

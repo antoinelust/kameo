@@ -4048,8 +4048,9 @@ if($connected){
                     console.log(response.message);
                 }
                 if(response.response == 'success'){
+                  $("#companyIdHidden").val(response.ID);
+                  alert($("#companyIdHidden").val());
                     get_company_boxes(response.internalReference);
-                    console.log(response);
 
                     $('#widget-companyDetails-form input[name=ID]').val(response.ID);
                     document.getElementById('companyName').value = response.companyName;
@@ -4066,60 +4067,133 @@ if($connected){
                     $('#widget-companyDetails-form input[name=phoneBilling]').val(response.phoneContactBilling);
 
                     var contactContent = `
-                      <table class="table">
+                      <table class="table contactsTable">
                         <thead>
                           <tr>
-                            <th><label class="fr">Email: </label></th>
-                            <th><label class="fr">Nom: </label></th>
-                            <th><label class="fr">Prénom: </label></th>
-                            <th><label class="fr">Téléphone: </label></th>
+                            <th><label class="fr">Email: </label><label class="en">Email: </label><label class="nl">Email: </label></th>
+                            <th><label class="fr">Nom: </label><label class="en">Lastname: </label><label class="nl">Lastname: </label></th>
+                            <th><label class="fr">Prénom: </label><label class="en">Firstname: </label><label class="nl">Firstname: </label></th>
+                            <th><label class="fr">Téléphone: </label><label class="en">Phone: </label><label class="nl">Phone: </label></th>
+                            <th><label class="fr">Fonction: </label><label class="en">Function: </label><label class="nl">Function: </label></th>
+                            <th><label class="fr">Statistiques vélos: </label><label class="en">Bikes stats: </label><label class="nl">Bikes stats: </label></th>
                             <th></th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>`;
                     for (var i = 0; i < response.emailContact.length; i++) {
+                      var contactId = (response.contactId[i] != undefined) ? response.contactId[i] : '';
+                      var email = (response.emailContact[i] != undefined) ? response.emailContact[i] : '';
+                      var lastName = (response.lastNameContact[i] != undefined) ? response.lastNameContact[i] : '';
+                      var firstName = (response.firstNameContact[i] != undefined) ? response.firstNameContact[i] : '';
+                      var phone = (response.phone[i] != undefined) ? response.phone[i] : '';
+                      var fonction = (response.fonction[i] != undefined) ? response.fonction[i] : '';
+                      var bikesStatsChecked = "";
+                      if (response.bikesStats[i] == "Y") {
+                        bikesStatsChecked = "checked";
+                      }
                       contactContent += `
-                      <tr>
+                      <tr class="form-group">
                         <td>
-                          <input type="text" class="form-control" readonly="true"  name="contactEmail`+response.contactId[i]+`" id="contactEmail`+response.contactId[i]+`" value="`+response.emailContact[i]+`"/>
+                          <input type="text" class="form-control required" readonly="true"  name="contactEmail`+response.contactId[i]+`" id="contactEmail`+response.contactId[i]+`" value="`+email+`" required/>
                         </td>
                         <td>
-                        <input type="text" class="form-control" readonly="true"  name="contactNom`+response.contactId[i]+`" id="contactNom`+response.contactId[i]+`" value="`+response.firstNameContact[i]+`"/>
+                        <input type="text" class="form-control required" readonly="true"  name="contactNom`+response.contactId[i]+`" id="contactNom`+response.contactId[i]+`" value="`+lastName+`" required/>
                         </td>
                         <td>
-                        <input type="text" class="form-control" readonly="true" name="contactPrenom`+response.contactId[i]+`" id="contactPrenom`+response.contactId[i]+`" value="`+response.lastNameContact[i]+`"/>
+                        <input type="text" class="form-control required" readonly="true" name="contactPrenom`+response.contactId[i]+`" id="contactPrenom`+response.contactId[i]+`" value="`+firstName+`" required/>
                         </td>
                         <td>
-                        <input type="text" class="form-control" readonly="true"  name="contactPhone`+response.contactId[i]+`" id="contactPhone`+response.contactId[i]+`" value="`+response.phone[i]+`"/>
+                        <input type="tel" class="form-control" readonly="true"  name="contactPhone`+response.contactId[i]+`" id="contactPhone`+response.contactId[i]+`" value="`+phone+`"/>
                         </td>
                         <td>
-                          <button class="modify button small green button-3d rounded">Modifier</button>
+                        <input type="text" class="form-control" readonly="true"  name="contactFunction`+response.contactId[i]+`" id="contactFunction`+response.contactId[i]+`" value="`+fonction+`"/>
                         </td>
                         <td>
-                          <button class="delete button small red button-3d rounded">Supprimer</button>
+                        <input type="checkbox" class="form-control" readonly="true"  name="contactBikesStats`+response.contactId[i]+`" id="contactBikesStats`+response.contactId[i]+`" value="bikesStats" `+bikesStatsChecked+`/>
                         </td>
+                        <td>
+                          <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil"></button>
+                        </td>
+                        <td>
+                          <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove"></button>
+                        </td>
+                        <input type="hidden" name="contactId`+response.contactId[i]+`" id="contactId`+response.contactId[i]+`" value="`+contactId+`" />
                       </tr>`;
                     }
                     contactContent += "</tbody></table>";
+                    var contactInfo  = [];
+                    var contactKeys = [];
                     $('.clientContactZone').append(contactContent);
 
-                    $('.clientContactZone .modify').on('click', function(){
-                      $(this).removeClass('modify').addClass('validate').html('valider');
-                      $(this).parents('tr').find('.delete').removeClass('delete').removeClass('red').addClass('white').addClass('anuuler').html('annuler');
+                    $('.clientContactZone').on('click','.modify', function(){
+
+                      $(this).removeClass('modify').addClass('validate').removeClass('glyphicon-pencil').addClass('glyphicon-ok');
+                      $(this).parents('tr').find('.delete').removeClass('delete').removeClass('red').addClass('white').addClass('annuler').removeClass('glyphicon-remove').addClass('glyphicon-repeat');
                       $(this).parents('tr').find('input').each(function(){
+                        contactInfo.push($(this).val());
+                        contactKeys.push($(this).attr('id'));
                         $(this).prop('readonly', false);
+                      });
+                      console.log(contactInfo);
+                    });
+
+                    $('.clientContactZone').on('click','.annuler', function(){
+                      $(this).parents('tr').find('.validate').removeClass('validate').addClass('modify').addClass('glyphicon-pencil').removeClass('glyphicon-ok');
+                      $(this).removeClass('annuler').removeClass('white').addClass('delete').addClass('red').addClass('glyphicon-remove').removeClass('glyphicon-repeat');
+                      $(this).parents('tr').find('input').each(function(){
+                        var that = $(this);
+                        for (var i = contactKeys.length -1; i >= 0; i--) {
+                          //si l'id correspond a l'input
+                          if (contactKeys[i] == $(that).attr('id')) {
+                            //on remet l'ancienne valeur
+                            $(that).val(contactInfo[i]);
+                            //on retire l'entrée du tableau de clés
+                            contactKeys.splice(i,1);
+                            //on retire l'entrée du tableau contactInfo
+                            contactInfo.splice(i,1);
+                          }
+                        }
+                        $(that).prop('readonly', true);
                       });
                     });
 
-                    $('.clientContactZone .annuler').on('click', function(){
-                      $(this).removeClass('validate').addClass('modify').html('modifier');
-                      $(this).parents('tr').find('.annuler').removeClass('anuuler').removeClass('white').addClass('delete').addClass('red').html('supprimer');
-                      $(this).parents('tr').find('input').each(function(){
-                        $(this).prop('readonly', false);
-                      });
+                    $('.clientContactZone').on('click', '.validate', function(){
+                      var valid = true;
+                        $(this).parents('tr').find('input').each(function(){
+                          //verification de la validité des champs
+                          if (!$(this).valid()) {
+                            valid = false;
+                          }
+                        });
+                        if (valid) {
+                          $(this).parents('tr').find('.validate').removeClass('validate').addClass('modify').addClass('glyphicon-pencil').removeClass('glyphicon-ok');
+                          $(this).parents('tr').find('.annuler').removeClass('annuler').removeClass('white').addClass('delete').addClass('red').addClass('glyphicon-remove').removeClass('glyphicon-repeat');
+                          $(this).parents('tr').find('input').each(function(){
+                            //suppression des valeurs dans les tableaux
+                            var that = $(this);
+                            for (var i = contactKeys.length -1; i >= 0; i--) {
+                              //si l'id correspond a l'input
+                              if (contactKeys[i] == $(that).attr('id')) {
+                                //on retire l'entrée du tableau de clés
+                                contactKeys.splice(i,1);
+                                //on retire l'entrée du tableau contactInfo
+                                contactInfo.splice(i,1);
+                              }
+                            }
+                            $(this).prop('readonly', true);
+                          });
+                        }else{ console.log('invalide');}
+
                     });
 
+                    $('.clientContactZone').on('click', '.delete', function(){
+                      if(confirm('Êtes-vous sur de vouloir supprimer ce contact ? Cette action est irréversible.')){
+                        $(this).parents('tr').fadeOut(function(){
+                          $(this).parents('tr').remove();
+                        });
+                      }
+                    })
 
                     if(response.automaticBilling=="Y"){
                         $('#widget-companyDetails-form input[name=billing]').prop( "checked", true );
@@ -8497,6 +8571,7 @@ if($connected){
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
       <div class="modal-body">
+        <input type="hidden" id="companyIdHidden" name="companyId" value="" />
         <div class="row">
           <form id="widget-companyDetails-form" action="include/update_client.php" role="form" method="post">
             <div class="col-sm-12 form-group">
@@ -8557,6 +8632,38 @@ if($connected){
               <div class="col-sm-12 contactAddButtons">
                 <button class="addContact button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
                 <label for="addContact">Ajouter un contact</label>
+              </div>
+              <div class="contactAddIteration" style="display:none;">
+                <div class="col-md-3 form-group">
+                  <label for="email_billing" class="fr"> Email : </label>
+                  <input disabled type="text" class="form-control emailContact required" name="email" placeholder="email" />
+                </div>
+                <div class="col-md-3 form-group">
+                  <label class="fr" >Nom :</label>
+                  <input disabled type="text" class="form-control lastNameContact required" name="lastName" placeholder="nom" />
+                </div>
+                <div class="col-md-3 form-group">
+                  <label class="fr" >Prénom :</label>
+                  <input disabled type="text" class="form-control firstNameContact required" name="firstName" placeholder="prenom" />
+                </div>
+                <div class="col-md-3 form-group">
+                  <label class="fr" >Téléphone :</label>
+                  <input disabled type="text" class="form-control phoneContact" name="phone" placeholder="téléphone" />
+                </div>
+                <div class="col-md-3 form-group">
+                  <label class="fr" >Fonction :</label>
+                  <input disabled type="text" name="function" class="form-control functionContact required" placeholder="Fonction" />
+                </div>
+                <div class="col-md-3 form-group">
+                  <label class="fr" >Envoyer le rapport de statistiques ?</label>
+                  <input disabled type="checkbox" name="bikesStats" class="form-control bikeStatsContact" value="true" />
+                </div>
+                <div class="col-sm-12 form-group" style="margin-top:20px;">
+                  <button class="button small green button-3d rounded icon-right addCompanyContact">
+                  <span class="fr-inline" style="display: inline;">
+                  <i class="fa fa-plus"></i> Ajouter le contact</span></button>
+                </div>
+                <div class="separator separator-small"></div>
               </div>
               <div class="clientContactZone">
                   <!--<div class="separator separator-small"></div>-->
