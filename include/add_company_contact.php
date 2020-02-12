@@ -12,6 +12,7 @@ include 'globalfunctions.php';
 
   $response=array();
   //récupération des données du $_POST (pré boucle)
+  $id = 0;
   $companyId = isset($_POST["companyId"]) ? $_POST["companyId"] : NULL;
   $email = isset($_POST["email"]) ? $_POST["email"] : NULL;
   $firstName = isset($_POST["firstName"]) ? $_POST["firstName"] : NULL;
@@ -20,18 +21,14 @@ include 'globalfunctions.php';
   $function = isset($_POST["function"]) ? $_POST["function"] : NULL;
   $bikesStats = isset($_POST["bikesStats"]) ? $_POST["bikesStats"] : false;
 
-  include 'connexion.php';
+  /*include 'connexion.php';
   $sql= "INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
          VALUES ($lastName, $firstName, $email, $phone, $function, $companyId, $bikesStats);";
   $result = mysqli_query($conn, $sql);
   $id = $conn->insert_id;
 
   //$id = $conn->query($sql);
-  $conn->close();
-
-
-
-
+  $conn->close();*/
 
   //creation de la response
   $response['id'] = $id;

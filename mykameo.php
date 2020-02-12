@@ -3928,7 +3928,6 @@ if($connected){
             type: 'get',
             data: {"id": ID, "action": action},
             success: function(response){
-
                 if(response.response == 'error') {
                     console.log(response.message);
                 }
@@ -4049,7 +4048,7 @@ if($connected){
                 }
                 if(response.response == 'success'){
                   $("#companyIdHidden").val(response.ID);
-                  alert($("#companyIdHidden").val());
+                  $('#companyIdTemplate').val(response.ID);
                     get_company_boxes(response.internalReference);
 
                     $('#widget-companyDetails-form input[name=ID]').val(response.ID);
@@ -4480,6 +4479,9 @@ if($connected){
 
                     displayLanguage();
                 }
+            },error: function(response){
+
+                    console.log(response);
             }
         }).done(function(){
             $.ajax({
@@ -10055,7 +10057,7 @@ if($connected){
       </div>
       <div class="modal-body">
         <form class="isLeasing" id="templateForm" action="include/offer_template.php" method="post" role="form" novalidate="novalidate">
-          <input type="hidden" name="companyIdTemplate" id ="companyIdTemplate" value="" />
+          <input type="hidden" name="companyIdTemplate" id ="companyIdTemplate" value="" aria-required="true"/>
           <div class="row buyOrLeasing">
             <div class="col-sm-4">
               <h4 class="fr text-green">Général: </h4>
@@ -10268,6 +10270,14 @@ if($connected){
             </table>
             <div class="separator"></div><div class="separator"></div>
           </div>
+          <div class="row form-group" style="margin-bottom:20px;">
+            <h4 class="text-green">Contact société</h4>
+            <div class="col-sm-12">Champs temporaires, a remplacer par un select</div>
+            <div class="col-sm-2"><label for="">Email</label><input type="text" class="form-control required" required name="contactEmail"></div>
+            <div class="col-sm-2"><label for="">Nom</label><input type="text" class="form-control required" required name="contactLastName"></div>
+            <div class="col-sm-2"><label for="">Prénom</label><input type="text" class="form-control required" required name="contactFirstName"></div>
+            <div class="col-sm-2"><label for="">Téléphone</label><input type="text" class="form-control required" required name="contactPhone"></div>
+          </div><br/>
           <button type="submit" class="fr button small green button-3d rounded icon-left">Générer PDF</button>
         </form>
       </div>

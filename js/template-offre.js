@@ -799,12 +799,12 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 //validation du formulaire
 //
 $("#templateForm").validate({
+  ignore: '',
   submitHandler: function(form) {
-    $("#companyIdTemplate").val(companyId);
     jQuery(form).ajaxSubmit({
       success: function(response) {
         console.log(response);
-        alert('Le pdf a bien été généré !');
+        //alert('Le pdf a bien été généré !');
       }
     });
   }
