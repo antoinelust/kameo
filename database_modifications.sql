@@ -29,6 +29,7 @@ ADD FOREIGN KEY (ACCESSORIES_CATEGORIES) REFERENCES accessories_categories(ID);
 
 /*Création de la table companies_contact*/
 CREATE TABLE `kameobiknq`.`companies_contact` ( `ID` INT(3) NOT NULL AUTO_INCREMENT , `NOM` VARCHAR(250) NOT NULL , `PRENOM` VARCHAR(250) NOT NULL , `EMAIL` VARCHAR(250) NOT NULL , `PHONE` VARCHAR(15) NULL , `ID_COMPANY` INT NOT NULL,`FUNCTION` VARCHAR(250) NULL , `BIKES_STATS` VARCHAR(1) NOT NULL, PRIMARY KEY (`ID`)) ENGINE = MyISAM;
+>>>>>>> aecac39fc9e370b7109ada0fe853d1502da6b494
 /*Ajout de la clé étrangère reliant la compagnie et le contact*/
 ALTER TABLE companies_contact
 ADD FOREIGN KEY (ID_COMPANY) REFERENCES companies(ID);
