@@ -9,12 +9,31 @@
   $boxesNumber = isset($_POST["boxesNumber"]) ? $_POST["boxesNumber"] : NULL;
   $accessoriesNumber = isset($_POST["accessoriesNumber"]) ? $_POST["accessoriesNumber"] : NULL;
   $othersNumber = isset($_POST["othersNumber"]) ? $_POST["othersNumber"] : NULL;
+  $contact['email'] = isset($_POST["contactEmail"]) ? $_POST["contactEmail"] : NULL;
+  $contact['lastName'] = isset($_POST["contactLastName"]) ? $_POST["contactLastName"] : NULL;
+  $contact['firstName'] = isset($_POST["contactFirstName"]) ? $_POST["contactFirstName"] : NULL;
+  $contact['phone'] = isset($_POST["contactPhone"]) ? $_POST["contactPhone"] : NULL;
+
+
 
   //création des tableaux destinés a recevoir les id des différents item
-  $bikes = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
-  $boxes = $boxesNumber > 0 ? getIds('boxModel',$boxesNumber) : NULL;
-  $accessories = $accessoriesNumber > 0 ? getIds('accessoryAccessory',$accessoriesNumber) : NULL;
+  $bikesId = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
+  $boxesId = $boxesNumber > 0 ? getIds('boxModel',$boxesNumber) : NULL;
+  $accessoriesId = $accessoriesNumber > 0 ? getIds('accessoryAccessory',$accessoriesNumber) : NULL;
   $others = $othersNumber > 0 ? getOthers($othersNumber) : NULL;
+
+
+  $bikes = array();
+  $boxes = array();
+  $accessories = array();
+  //recuperation des données nécéssaire en db
+  $bikes = getItemsInDatabase($bikesId, 'bike_catalog');
+  $boxes = getItemsInDatabase($boxesId, 'boxes_catalog');
+  $accessories = getItemsInDatabase($accessoriesId, 'accessories_catalog');
+
+  $company = getCompany($companyId);
+
+
 
   //creation de la response
   $response['companyId'] = $companyId;
@@ -22,13 +41,18 @@
   $response['leasingDuration'] = $leasingDuration;
   $response['numberMaintenance'] = $numberMaintenance;
   $response['assurance'] = $assurance;
+  $response['bikesId'] = $bikesId;
   $response['bikes'] = $bikes;
+  $response['boxesId'] = $boxesId;
   $response['boxes'] = $boxes;
+  $response['accessoriesId'] = $accessoriesId;
   $response['accessories'] = $accessories;
   $response['others'] = $others;
+  $response['contact'] = $contact;
 
   //affichage de la réponse en front (debug, a supprimer en prod)
-  //echo json_encode($response);
+  //header('Content-type: application/json');
+  echo json_encode($response);
 
   require_once dirname(__FILE__).'/../vendor/autoload.php';
   use Spipu\Html2Pdf\Html2Pdf;
@@ -37,7 +61,7 @@
   ob_start();
   try {
     //generation de l'objet html2pdf
-    $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
+    $html2pdf = new Html2Pdf('P', 'A4', 'fr', 'UTF-8',true, 3);
     $html2pdf->pdf->SetDisplayMode('fullpage');
     $html2pdf->addFont('ArcaMajora', '', dirname(__FILE__).'/pdf/template/fonts/ArcaMajora.php');
     $html2pdf->addFont('ArcaMajora', 'b', dirname(__FILE__).'/pdf/template/fonts/ArcaMajorab.php');
@@ -45,6 +69,10 @@
     $html2pdf->addFont('helveticaneue', 'b', dirname(__FILE__).'/pdf/template/fonts/helvetica_neueb.php');
     $html2pdf->addFont('helveticaneue-light', '', dirname(__FILE__).'/pdf/template/fonts/helvetica_neuel.php');
     $html2pdf->addFont('helveticaneue-light', 'b', dirname(__FILE__).'/pdf/template/fonts/helvetica_neuelb.php');
+    $html2pdf->addFont('Akkurat', '', dirname(__FILE__).'/pdf/template/fonts/akkurat.php');
+    $html2pdf->addFont('Akkurat', 'b', dirname(__FILE__).'/pdf/template/fonts/akkurat-bold.php');
+    $html2pdf->addFont('Akkurat-Light', '', dirname(__FILE__).'/pdf/template/fonts/akkurat-light.php');
+    $html2pdf->addFont('Akkurat-Light', 'b', dirname(__FILE__).'/pdf/template/fonts/akkurat-light-b.php');
     //ajout du fichier contenant le HTML a convertir
     include dirname(__FILE__).'/pdf/template/PDFContent.php';
     //fin de tampon
@@ -81,6 +109,30 @@
       $arr[$i-1]['othersCost'] = $_POST[$composedCost];
     }
     return $arr;
+  }
+
+  function getItemsInDatabase($ids, $table){
+    $arr = array();
+    if($ids != NULL){
+      include 'connexion.php';
+      foreach ($ids as $id) {
+        $sql = "SELECT * FROM $table WHERE ID = $id";
+        $res = mysqli_query($conn, $sql);
+        $res = mysqli_fetch_assoc($res);
+        array_push($arr, $res);
+      }
+      $conn->close();
+    }
+    return $arr;
+  }
+
+  function getCompany($id){
+    include 'connexion.php';
+    $sql = "SELECT * FROM companies WHERE ID = $id";
+    $res = mysqli_query($conn, $sql);
+    $res = mysqli_fetch_assoc($res);
+    $conn->close();
+    return $res;
   }
 
 

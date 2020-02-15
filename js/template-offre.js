@@ -1,3 +1,7 @@
+//CONSTANTES
+const PRIX_ENTRETIEN = 100;
+const PRIX_ASSURANCE = 84;
+
 //AJAX
 
 //liste des vélos
@@ -177,6 +181,10 @@ var bikes = [];
 get_all_bikes().done(function(response){
 
   bikes = response.bike;
+  if(bikes == undefined){
+    bikes =[];
+    console.log('bikes => table vide');
+  }
   //tableau bikes avec tout les champs
   var bikeModels = "<option hidden disabled selected value></option>";
 
@@ -306,6 +314,10 @@ var boxes = [];
 get_all_boxes().done(function(response){
   //variables
   boxes = response.boxes;
+  if(boxes == undefined){
+    boxes =[];
+    console.log('boxes => table vide');
+  }
 
   //gestion bouton moins
   checkMinus('.templateBoxes','.boxesNumber');
@@ -388,7 +400,12 @@ get_all_accessories().done(function(response){
   checkMinus('.templateAccessories','.accessoriesNumber');
   //variables
   var accessories = response.accessories;
+  if(accessories == undefined){
+    accessories =[];
+    console.log('accessories => table vide');
+  }
   var categories = [];
+
 
   //generation du tableau de catégories
   accessories.forEach((accessory) => {
@@ -543,22 +560,29 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   //variables
   var prixAchatTotal = 0;
   var prixLocationTotal = 0;
-    //bikes
+  var prixLocationTotalMois = 0;
+  var coutsTotaux = 0;
+
+  var tabMarge = 0;
+  var tabMargePourcent = 0;
 
   var bikesRecap = {
     'leasing' : [],
-    'vente' : []
+    'vente' : [],
+    'pAchat' : []
   };
 
     //boxes
   var boxesRecap ={
     'install' : [],
-    'location' : []
+    'location' : [],
+    'productionPrice' : []
   };
 
     //accessories
   var accessoriesRecap = {
-    'vente' : []
+    'vente' : [],
+    'pAchat': []
   };
     //Autres
   var othersRecap = {
@@ -568,22 +592,29 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 
     //compteur
   var count = 0;
+  var issetPAchat = false;
   //génération des valeurs pour la partie bikes
     //valeurs venteBike
   $('.inRecapVenteBike').each(function(){
     bikesRecap.vente.push($(this).html().split('€')[0]);
+    bikesRecap.pAchat.push($(this).parents('tr').find('.bikepAchat').html().split('€')[0]);
+    issetPAchat = true;
     count++;
   });
   count=0;
     //valeurs leasingBike
   $('.inRecapLeasingBike').each(function(){
     bikesRecap.leasing.push($(this).html().split('€')[0]);
+    if (!issetPAchat) {
+      bikesRecap.pAchat.push($(this).parents('tr').find('.bikepAchat').html().split('€')[0]);
+    }
     count++;
   });
   count=0
     //valeurs installBox
   $('.inRecapInstallBox').each(function(){
     boxesRecap.install.push($(this).html().split('€')[0]);
+    boxesRecap.productionPrice.push($(this).parents('tr').find('.boxProdPrice').html().split('€')[0]);
     count++;
   });
   count=0
@@ -597,6 +628,7 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
     //valeurs venteAccessory
   $('.inRecapVenteAccessory').each(function(){
     accessoriesRecap.vente.push($(this).html().split('€')[0]);
+    accessoriesRecap.pAchat.push($(this).parents('tr').find('.aBuyingPrice').html().split('€')[0]);
     count++;
   });
   count=0
@@ -606,7 +638,6 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
     othersRecap.description.push($(this).parents('tr').find('.othersDescription input').val());
     count++;
   });
-
   //génération de la vue
   var content = "";
 
@@ -622,7 +653,15 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
     if (bikesRecap.leasing[i] == undefined) {
       bikesRecap.leasing[i] = '/';
     }else{
-      prixLocationTotal += bikesRecap.leasing[i]*1;
+      prixLocationTotalMois += bikesRecap.leasing[i]*1;
+    }
+    if (bikesRecap.pAchat[i] == undefined) {
+      bikesRecap.pAchat[i] = '/';
+    }else{
+      if (bikesRecap.pAchat[i] != 'non renseigné') {
+        coutsTotaux += bikesRecap.pAchat[i]*1;
+      }
+
     }
     content += `
     <tr>
@@ -635,7 +674,8 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   //vue boxes
   for (var i = 0; i < boxesNumber; i++) {
     prixAchatTotal += boxesRecap.install[i]*1;
-    prixLocationTotal += boxesRecap.location[i]*1;
+    prixLocationTotalMois += boxesRecap.location[i]*1;
+    coutsTotaux += boxesRecap.productionPrice[i]*1;
     content += `
     <tr>
       <td>Box `+(i*1+1)+`</td>
@@ -647,6 +687,7 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   //vue accessories
   for (var i = 0; i < accessoriesNumber; i++) {
     prixAchatTotal += accessoriesRecap.vente[i]*1;
+    coutsTotaux += accessoriesRecap.pAchat[i]*1;
     content += `
     <tr>
       <td>Accessoire `+(i*1+1)+`</td>
@@ -665,14 +706,89 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
       <td>/</td>
     </tr>`;
   }
-
   //ajout de la ligne total
-  var footer = `
-  <tr style="font-weight:bold">
-    <td>Total: </td>
+  content += `
+  <tr style="font-weight:700">
+    <td>Sous total: </td>
     <td>`+prixAchatTotal+` €</td>
-    <td>`+prixLocationTotal+` €</td>
+    <td>`+prixLocationTotalMois+` €</td>
+  </tr>
+  <tr style="font-weight:700">
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  `;
+
+  //calcul de la marge
+  var coutsLocatifs = 0;
+  var prixLocationTotalSansAjouts = 0;
+  var prixTotal = 0;
+  //cas du calcul avec vélos en leasing
+  if (($('#buyOrLeasingSelect').val() == "leasing" || $('#buyOrLeasingSelect').val() == "both") &&  prixLocationTotalMois != 0) {
+    //variables utiles
+    var leasingDuration = $('.leasingDuration').val();
+    var nbreEntretiens = $('.numberMaintenance').val();
+    var assurance = 0;
+    if ($('.assuranceCheck ').prop('checked')) {
+      assurance = bikesNumber*PRIX_ASSURANCE;
+    }
+    //calcul pour les entretiens des vélos (par an)
+    coutsLocatifs += (nbreEntretiens*bikesNumber)*PRIX_ENTRETIEN;
+    //calcul pour l'assurance des vélos(par an)
+    coutsLocatifs += assurance*1;
+    //modification de la valeur pour qu'elle colle au nombre de mois de leasing
+    coutsLocatifs = ((coutsLocatifs/12)*leasingDuration).toFixed(2);
+    //modification de la valeur du cout de location total sans entretiens et assurance
+    prixLocationTotal = prixLocationTotalMois*leasingDuration;
+    //Ajout des charges dans les frais de l'entreprise
+    coutsTotaux += coutsLocatifs*1;
+    //calcul du prix total cumulé
+    prixTotal = (prixAchatTotal*1 + prixLocationTotal*1)*1;
+
+    tabMarge = (prixTotal - coutsTotaux);
+    tabMarge = tabMarge.toFixed(2);
+
+    tabMargePourcent = (tabMarge/coutsTotaux)*100;
+    tabMargePourcent = tabMargePourcent.toFixed(2);
+
+  }else{
+    //cas ou on est en achat de vélo
+    prixTotal = prixAchatTotal*1 + prixLocationTotal*1;
+
+    tabMarge = (prixTotal - coutsTotaux);
+    tabMarge = tabMarge.toFixed(2);
+
+    tabMargePourcent = (tabMarge/coutsTotaux)*100;
+    tabMargePourcent = tabMargePourcent.toFixed(2);
+
+  }
+  var footer = "";
+  if ($('#buyOrLeasingSelect').val() == "leasing" || $('#buyOrLeasingSelect').val() == "both") {
+    footer += `
+    <tr style="font-weight:bold">
+      <td>Autres couts: </td>
+      <td>Frais (total)</td>
+      <td>Leasing/location (Durée totale)</td>
+    </tr>
+    <tr>
+      <td>Sous total: `+prixAchatTotal+` €</td>
+      <td>- `+coutsTotaux+` €</td>
+      <td>`+prixLocationTotal+` €</td>
+    </tr>`;
+  }
+  footer += `
+  <tr style="font-weight:bold">
+    <td>PRIX TOTAL</td>
+    <td>MARGE (€)</td>
+    <td>MARGE (%)</td>
+  </tr>
+  <tr style="font-weight:bold; font-size:18px; color:#3CB295;">
+    <td>`+prixTotal+` €</td>
+    <td>`+tabMarge+` €</td>
+    <td>`+tabMargePourcent+` %</td>
   </tr>`;
+
 
   $('.summaryTable tbody').append(content);
   $('.summaryTable tfoot').append(footer);
@@ -683,12 +799,12 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 //validation du formulaire
 //
 $("#templateForm").validate({
+  ignore: '',
   submitHandler: function(form) {
-    $("#companyIdTemplate").val(companyId);
     jQuery(form).ajaxSubmit({
       success: function(response) {
         console.log(response);
-        alert('Le pdf a bien été généré !');
+        //alert('Le pdf a bien été généré !');
       }
     });
   }
