@@ -1,9 +1,9 @@
 <?php
 ob_start();
 session_start();
-include 'include/header2.php';
-// checkAccess();
 $user=$_SESSION['userID'];
+
+include 'include/header2.php';
 
 
 if($user==NULL){
@@ -567,6 +567,7 @@ function initializeCreatePortfolioBike(){
 
 </script>
 <?php
+
 if($connected){
 
     include 'include/connexion.php';
@@ -2051,8 +2052,10 @@ if($connected){
 
 
     function deconnexion(){
-        <?php $_SESSION['login']="false"; ?>
-        window.location.href = "http://www.kameobikes.com/index.php";
+        <?php $_SESSION['login']="false"; 	
+        $_SESSION['userID']=null;?>
+        
+        window.location.href = "index.php";
     }
     </script>
 
@@ -3951,16 +3954,16 @@ if($connected){
                                             jQuery(form).ajaxSubmit({
                                                 success: function(text) {
                                                     if (text.response == 'success') {
-                                                        //<?php
-                                                          //  if(isset($_GET['feedback'])){
-                                                        //        ?>
-                                                          //          window.location.href = "mykameo.php"+<?php echo "feedback=".$_GET['feedback']; ?>;
-                                                        //        <?php
-                                                        //    }else{
-                                                        //        ?>
+                                                        <?php
+                                                            if(isset($_GET['feedback'])){
+                                                                ?>                                                                
+                                                                window.location.href = "<?php echo "mykameo.php?feedback=".$_GET['feedback']; ?>";
+                                                                <?php
+                                                            }else{
+                                                                ?>
                                                                     window.location.href = "mykameo.php";
-                                                          //      <?php
-                                                        //    }
+                                                                <?php
+                                                            }
                                                             ?>
                                                     } else {
                                                         $.notify({
@@ -8877,7 +8880,8 @@ if($connected){
 		</div>
 	</div>
 </div>
-
+<?php if($connected){
+    ?>
 <div class="modal fade" id="update" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -8951,6 +8955,7 @@ if($connected){
                                         <label for="widget-update-form-work-city"  class="nl">Gemeente</label>
                                         <input type="text" id="widget-update-form-work-city" name="widget-update-form-work-city" class="form-control" value="<?php echo $row['WORK_CITY'] ?>" autocomplete="off">
                                     </div>
+                                    
                                     <div class="col-sm-3">
                                     <label for="password"  class="fr">Mot de passe</label>
                                     <label for="password"  class="en">Password</label>
@@ -9048,7 +9053,9 @@ if($connected){
 </div>
 
 
-
+<?php
+}
+?>
 
 <div class="modal fade" id="assistance" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
