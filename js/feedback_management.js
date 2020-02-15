@@ -1,3 +1,77 @@
+function initiatizeFeedback(id){
+    $.ajax({
+        url: 'include/feedback_management.php',
+        type: 'get',
+        data: {"action": "retrieveBooking", "ID": id},
+        success: function(response){
+
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                var unix_timestamp = response.start
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                var unix_timestamp = response.end
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                //day from the timestamp
+                var day = date.getDate();
+                //month from the timestamp
+                var month = date.getMonth();
+                //year from the timestamp
+                var year = date.getFullYear();
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+
+                // Will display time in 10:30:23 format
+                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
+                $('.feedbackManagementTitle').html("Ajouter un feedback");
+                $('#feedbackManagement input[name=bike]').val(response.bikeNumber);
+                $('#feedbackManagement input[name=startDate]').val(formattedTimeStart);
+                $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
+                $('#feedbackManagement input[name=ID]').val(response.ID);
+                $('#feedbackManagement input[name=utilisateur]').val(response.email);
+                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeNumber+"_mini.jpg";
+                $('#feedbackManagement select[name=note]').attr("readonly", false);
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", false);
+                $('.feedbackManagementSendButton').removeClass('hidden');
+
+                $('#feedbackManagement').modal('toggle');
+            }
+        }
+    });
+}
+
+
+
+
+
 function list_feedbacks() {
     $.ajax({
         url: 'include/feedback_management.php',
