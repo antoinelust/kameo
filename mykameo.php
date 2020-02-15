@@ -60,6 +60,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
         classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
         classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
         classname[i].addEventListener('click', function () { list_feedbacks()}, false);
+        
         classname[i].addEventListener('click', function () { list_bikes_admin()}, false);
         classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);
         classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
@@ -95,7 +96,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
     document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 }, false);
     document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
-    document.getElementsByClassName('feedbackManagementClick')[0].addEventListener('click', function() { list_feedbacks()}, false);
     document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
     document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
     document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false);
@@ -203,7 +203,7 @@ function list_feedbacks() {
 
                 var i=0;
                 var dest="";
-                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien ? </span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th></tr></thead>";
+                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Bike</th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien</span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th><th>Statut</th></tr></thead>";
                 dest=dest.concat(temp);
                 while (i < response.feedbacksNumber){
                     var unix_timestamp = response.feedback[i].start;
@@ -224,7 +224,7 @@ function list_feedbacks() {
                     var seconds = "0" + date.getSeconds();
 
                     // Will display time in 10:30:23 format
-                    var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2);
 
                     var unix_timestamp = response.feedback[i].end;
                     // Create a new JavaScript Date object based on the timestamp
@@ -244,17 +244,30 @@ function list_feedbacks() {
                     var seconds = "0" + date.getSeconds();
 
                     // Will display time in 10:30:23 format
-                    var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2);
 
-                    if(response.feedback[i].entretien==null || response.feedback[i].entretien=="0"){
-                        entretien="<span class=\"text-red\">OUI</span>";
-                    }else{
+                    if(response.feedback[i].entretien==null){
+                        entretien="<span>N/A</span>";
+                    } else if (response.feedback[i].entretien=="0"){
                         entretien="<span class=\"text-green\">Non</span>";
+                    }else{
+                        entretien="<span class=\"text-red\">Oui</span>";
                     }
 
 
-
-                    var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+formattedTimeStart+"</td><td>"+formattedTimeEnd+"</td><td>"+response.feedback[i].note+"</td><td>"+response.feedback[i].comment.substr(0,20)+"</td><td>"+entretien+"</td><td>"+response.feedback[i].email+"</td></tr>";
+                    if(response.feedback[i].comment== null){
+                        var comment = 'N/A';
+                    }else{
+                        var comment = response.feedback[i].comment.substr(0,20);
+                    }
+                        
+                    if(response.feedback[i].note== null){
+                        var note = 'N/A';
+                    }else{
+                        var note = response.feedback[i].note;
+                    }
+                                                
+                    var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+response.feedback[i].bikeNumber+"<td>"+formattedTimeStart+"</td><td>"+formattedTimeEnd+"</td><td>"+note+"</td><td>"+comment+"</td><td>"+entretien+"</td><td>"+response.feedback[i].firstName+" " +response.feedback[i].name+"</td><td>"+response.feedback[i].status+"</td></tr>";
                     dest=dest.concat(temp);
                     i++;
 
@@ -332,16 +345,39 @@ function retrieve_feedback(ID) {
                 $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
                 $('#feedbackManagement input[name=ID]').val(response.ID);
                 $('#feedbackManagement input[name=utilisateur]').val(response.email);
-                $('#feedbackManagement textarea[name=comment]').val(response.comment);
+                
+                $('#feedbackManagement select[name=note]').attr("readonly", true);                
+                
+                if(response.note==null){
+                    $('.spanNote').addClass("hidden");
+                    $('#feedbackManagement select[name=note]').val('5');                
+                }else{
+                    $('#feedbackManagement select[name=note]').val(response.note);                
+                    $('.spanNote').removeClass("hidden");
+                    
+                }
+                
+                $('#feedbackManagement textarea[name=comment]').attr("readonly", true);
+                if(response.comment==null){
+                    $('.textAreaComment').addClass("hidden");
+                }else{
+                    $('#feedbackManagement textarea[name=comment]').val(response.comment);
+                    $('.textAreaComment').removeClass("hidden");
+                    
+                }
                 document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bike+"_mini.jpg";
 
-                $('#feedbackManagement select[name=note]').attr("readonly", true);
-                $('#feedbackManagement textarea[name=comment]').attr("readonly", true);
-
-                if(response.entretien=="1"){
+                if(response.entretien==null){
+                    $('.spanEntretien').addClass("hidden");
+                }
+                else if(response.entretien=="1"){
                     $('#feedbackManagement input[name=entretien]').prop("checked", true);
+                    $('.spanEntretien').removeClass("hidden");
+                    
                 }else{
                     $('#feedbackManagement input[name=entretien]').prop("checked", false);
+                    $('.spanEntretien').removeClass("hidden");
+                    
                 }
 
                 $('.feedbackManagementSendButton').addClass('hidden');
@@ -6719,16 +6755,16 @@ if($connected){
                                             jQuery(form).ajaxSubmit({
                                                 success: function(text) {
                                                     if (text.response == 'success') {
-                                                        <?php
-                                                            if(isset($_GET['feedback'])){
-                                                                ?>
-                                                                    window.location.href = "mykameo.php"+<?php echo "feedback=".$_GET['feedback']; ?>;
-                                                                <?php
-                                                            }else{
-                                                                ?>
+                                                        //<?php
+                                                          //  if(isset($_GET['feedback'])){
+                                                        //        ?>
+                                                          //          window.location.href = "mykameo.php"+<?php echo "feedback=".$_GET['feedback']; ?>;
+                                                        //        <?php
+                                                        //    }else{
+                                                        //        ?>
                                                                     window.location.href = "mykameo.php";
-                                                                <?php
-                                                            }
+                                                          //      <?php
+                                                        //    }
                                                             ?>
                                                     } else {
                                                         $.notify({
@@ -9043,7 +9079,7 @@ if($connected){
                                     <img class="feedbackBikeImage" alt="image vélo" />
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 spanNote">
                                         <label for="note"  class="fr">Note</label>
                                         <label for="note"  class="en">Note</label>
                                         <label for="note"  class="nl">Note</label>
@@ -9063,7 +9099,7 @@ if($connected){
                                     </div>
 
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 textAreaComment">
                                     <div class="col-md-12">
                                         <label for="comment"  class="fr">Commentaire</label>
                                         <label for="comment"  class="en">Comment</label>

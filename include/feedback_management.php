@@ -82,7 +82,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT * FROM feedbacks";
+        $sql = "SELECT bb.EMAIL, cc.DATE_START, cc.DATE_END, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_NUMBER FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID ORDER BY aa.HEU_MAJ DESC";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -103,35 +103,15 @@ if(isset($_GET['action'])){
             $response['feedback'][$i]['note']=$row['NOTE'];
             $response['feedback'][$i]['comment']=$row['COMMENT'];
             $response['feedback'][$i]['entretien']=$row['ENTRETIEN'];
+            $response['feedback'][$i]['status']=$row['STATUS'];
             
-            include 'connexion.php';
-            $sql2="SELECT * FROM reservations where ID='$IDReservation'";
-            if ($conn->query($sql2) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result2 = mysqli_query($conn, $sql2);
-            $resultat2 = mysqli_fetch_assoc($result2);
-            $conn->close();
+            $response['feedback'][$i]['company']=$row['COMPANY'];
+            $response['feedback'][$i]['firstName']=$row['PRENOM'];
+            $response['feedback'][$i]['name']=$row['NOM'];
+            $response['feedback'][$i]['start']=$row['DATE_START'];
+            $response['feedback'][$i]['end']=$row['DATE_END'];
+            $response['feedback'][$i]['email']=$row['EMAIL'];
             
-            $response['feedback'][$i]['start']=$resultat2['DATE_START'];
-            $response['feedback'][$i]['end']=$resultat2['DATE_END'];
-            $email=$resultat2['EMAIL'];
-            $response['feedback'][$i]['email']=$email;
-            
-            include 'connexion.php';
-            $sql3="SELECT * FROM customer_referential where email='$email'";
-            if ($conn->query($sql3) === FALSE){
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result3 = mysqli_query($conn, $sql3);
-            $resultat3 = mysqli_fetch_assoc($result3);
-            $conn->close();
-            
-            $response['feedback'][$i]['company']=$resultat3['COMPANY'];
             $i++;
         }
         
