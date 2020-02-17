@@ -8,7 +8,6 @@ function bikeFilter(e){
 
 
 function list_bikes_admin() {
-    var email= "<?php echo $user; ?>";
     $.ajax({
         url: 'include/get_bikes_listing.php',
         type: 'post',
@@ -742,7 +741,7 @@ function fillBikeDetails(element)
 }
 
 function get_bikes_listing() {
-    var email= "<?php echo $user; ?>";
+    
     $.ajax({
         url: 'include/get_bikes_listing.php',
         type: 'post',

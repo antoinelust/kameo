@@ -23,7 +23,7 @@ if( $email!=NULL ) {
 	}
     $result = mysqli_query($conn, $sql);     
     $length = $result->num_rows;
-    $conn->close();   
+    $conn->close();       
 
     if($length == "0")
     {

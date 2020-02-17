@@ -48,8 +48,6 @@ function initializeUpdateReservation(reservationID){
 
 
 function initialize_booking_counter(){
-    var email= "<?php echo $user; ?>";
-
     var date_start=new Date();
     var date_end=new Date();
 
@@ -131,7 +129,6 @@ function initialize_booking_counter(){
 
 
 function get_reservations_listing(bike, date_start, date_end){
-    var email= "<?php echo $user; ?>";
     var frameNumber='';
     var timeStampStart=(date_start.valueOf()/1000);
     var timeStampEnd=(date_end.valueOf()/1000);
@@ -227,7 +224,6 @@ function fillReservationDetails(element)
 
 function showBooking(bookingID){
     var dest="";
-    var langue= "<?php echo $_SESSION['langue']; ?>";
 
     $.ajax({
         url: 'include/get_future_booking.php',

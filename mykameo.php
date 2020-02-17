@@ -43,6 +43,20 @@ include 'include/activitylog.php';
 
 
 <script type="text/javascript">
+    
+var email="<?php echo $user; ?>";
+var langue= "<?php echo $_SESSION['langue']; ?>";
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
 var color=Chart.helpers.color;
 
 //id de la compagnie selectionnée si il y en a une sélectionnée
@@ -609,7 +623,7 @@ if($connected){
         document.getElementById('velos').innerHTML = "";
         document.getElementById("velos").style.display = "none";
         document.getElementById("travel_information").style.display = "none";
-        getHistoricBookings();
+        getHistoricBookings(email);
 
     }
 
@@ -1485,7 +1499,7 @@ if($connected){
                     $('#widget-companyDetails-form input[name=lastNameContactBilling]').val(response.lastNameContactBilling);
                     $('#widget-companyDetails-form input[name=phoneBilling]').val(response.phoneContactBilling);
 
-                    var contactContent = `
+                    /*var contactContent = `
                       <table class="table contactsTable">
                         <thead>
                           <tr>
@@ -1612,7 +1626,7 @@ if($connected){
                           $(this).parents('tr').remove();
                         });
                       }
-                    })
+                    })*/
 
                     if(response.automaticBilling=="Y"){
                         $('#widget-companyDetails-form input[name=billing]').prop( "checked", true );
@@ -2198,9 +2212,10 @@ if($connected){
                                     </form>
 
                                     <script type="text/javascript">
+                                        var email="<?php echo $user; ?>";
                                         loadClientConditions()
                                         .done(function(response){
-                                            constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartIntakeBooking, response.clientConditions.hourEndIntakeBooking, response.clientConditions.hourStartDepositBooking, response.clientConditions.hourEndDepositBooking, response.clientConditions.mondayIntake, response.clientConditions.tuesdayIntake, response.clientConditions.wednesdayIntake, response.clientConditions.thursdayIntake, response.clientConditions.fridayIntake, response.clientConditions.saturdayIntake, response.clientConditions.sundayIntake, response.clientConditions.mondayDeposit, response.clientConditions.tuesdayDeposit, response.clientConditions.wednesdayDeposit, response.clientConditions.thursdayDeposit, response.clientConditions.fridayDeposit, response.clientConditions.saturdayDeposit, response.clientConditions.sundayDeposit, response.clientConditions.maxBookingsPerYear, response.clientConditions.maxBookingsPerMonth);
+                                            constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartIntakeBooking, response.clientConditions.hourEndIntakeBooking, response.clientConditions.hourStartDepositBooking, response.clientConditions.hourEndDepositBooking, response.clientConditions.mondayIntake, response.clientConditions.tuesdayIntake, response.clientConditions.wednesdayIntake, response.clientConditions.thursdayIntake, response.clientConditions.fridayIntake, response.clientConditions.saturdayIntake, response.clientConditions.sundayIntake, response.clientConditions.mondayDeposit, response.clientConditions.tuesdayDeposit, response.clientConditions.wednesdayDeposit, response.clientConditions.thursdayDeposit, response.clientConditions.fridayDeposit, response.clientConditions.saturdayDeposit, response.clientConditions.sundayDeposit, response.clientConditions.maxBookingsPerYear, response.clientConditions.maxBookingsPerMonth, email);
                                             if (response.clientConditions.administrator == "Y"){
                                                     $(".fleetmanager").removeClass("hidden");
                                             }
@@ -4143,7 +4158,8 @@ if($connected){
 									document.getElementById("travel_information").style.display = "none";
 
                                     window.scrollTo(0, 0);
-                                    getHistoricBookings();
+                                    var email="<?php echo $user; ?>";
+                                    getHistoricBookings(email);
 
                                 } else {
                                     $.notify({
