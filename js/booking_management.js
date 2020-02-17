@@ -312,7 +312,6 @@ function showBooking(bookingID){
 
 function cancelBooking(bookingID){
     var dest="";
-    var langue= "<?php echo $_SESSION['langue']; ?>";
 
     $.ajax({
         url: 'include/cancel_booking.php',
@@ -344,7 +343,6 @@ function cancelBooking(bookingID){
 
 function getHistoricBookings() {
     var user= "<?php echo $user; ?>";
-    var langue= "<?php echo $_SESSION['langue']; ?>";
     $.ajax({
         url: 'include/get_historic_bookings.php',
         type: 'post',
