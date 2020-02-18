@@ -199,12 +199,10 @@
 									<li class="nl"><a href="contact.php">Contact</a></li>
 									
 									<?php 
-									//$_SESSION['login']="false";
-                                    $login = isset($_POST['login']) ? $_POST['login'] : "false";
                                     $userID = isset($_POST['userID']) ? $_POST['userID'] : NULL;
 
                                     
-									if ($login=="true" && $userID=NULL)
+									if ($userID=NULL)
 									{?>
 									<li><a class="text-red" href="mykameo.php"><span>My Kameo</span></a></li>
 									<?php

@@ -36,10 +36,8 @@ if($row["STAANN"]=="D"){
 if (password_verify($UserPassword, $row["PASSWORD"])) { 
 	$_SESSION['userID']=$userID;
 	$_SESSION['UserPassword']=$UserPassword;
-	$_SESSION['login']=true;
 }
 else{
-	$_SESSION['login']=false;
 	errorMessage("ES0007");
 }
 

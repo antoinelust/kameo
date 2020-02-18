@@ -2066,8 +2066,10 @@ if($connected){
 
 
     function deconnexion(){
-        <?php $_SESSION['login']="false"; 	
-        $_SESSION['userID']=null;?>
+        
+        <?php 
+        //$_SESSION['userID']=null;
+        ?>
         
         window.location.href = "index.php";
     }
