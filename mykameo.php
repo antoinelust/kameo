@@ -5388,7 +5388,6 @@ if($connected){
                                     <input type="text" class="form-control" name="city" class="form-control required">
 								</div>
 
-                                <div class="separator"></div>
                                 <h4 class="fr text-green addClientTechnicalUser hidden">Données techniques pour le premier utilisateur</h4>
                                 <div class="separator"></div>
 								<div class="col-md-3">
@@ -5423,7 +5422,6 @@ if($connected){
 
 
                             </div>
-                            <div class="separator"></div>
 							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
 							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
 							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
