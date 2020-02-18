@@ -2065,14 +2065,6 @@ if($connected){
     }
 
 
-    function deconnexion(){
-        
-        <?php 
-        //$_SESSION['userID']=null;
-        ?>
-        
-        window.location.href = "index.php";
-    }
     </script>
 
     <!-- CONTENT -->
@@ -3900,12 +3892,21 @@ if($connected){
                             <span class="nl">Vertel ons wat je voelt</span>
                         </a>
                         <br>
-                        <a class="button small red button-3d rounded icon-left" onclick="deconnexion()">
+                        <a class="button small red button-3d rounded icon-left deconnexion">
                             <span class="fr">Déconnexion</span>
                             <span class="en">Disconnect</span>
                             <span class="nl">Loskoppelen</span>
                         </a>
                     </div>
+                    <script type="text/javascript">
+                        $('.deconnexion').on('click', function(){
+                            <?php 
+                                //$_SESSION['userID']=null;
+                            ?>
+                            window.location.href = "index.php";
+                            
+                        })
+                    </script>
                     <!--end: widget blog articles-->
                 </div>
                 <!-- END: Sidebar-->

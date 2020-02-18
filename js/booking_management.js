@@ -342,11 +342,11 @@ function cancelBooking(bookingID){
 
 
 function getHistoricBookings() {
-    var user= "<?php echo $user; ?>";
+    console.log("coucou");
     $.ajax({
         url: 'include/get_historic_bookings.php',
         type: 'post',
-        data: { "user": user},
+        data: { "user": email},
         success: function(response) {
             if(response.response=="success"){
                 var i=0;
