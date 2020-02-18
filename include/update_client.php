@@ -5,13 +5,16 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+$fichier =fopen('update_client_logs.txt', 'a');
+fwrite($fichier, json_encode($_POST) . "\r\n");
+fclose($fichier);
 
 $companyName = addslashes($_POST["widget_companyDetails_companyName"]);
 $companyStreet = addslashes($_POST["widget_companyDetails_companyStreet"]);
 $ZIPCode = $_POST["widget_companyDetails_companyZIPCode"];
 $companyTown = addslashes($_POST["widget_companyDetails_companyTown"]);
 $companyVAT = $_POST["widget_companyDetails_companyVAT"];
-$type = $_POST["type"];
+$type = isset($_POST["type"]) ? $_POST["type"] : $_POST["typeHidden"];
 $user = $_POST["widget_companyDetails_requestor"];
 $internalReference = $_POST["widget_companyDetails_internalReference"];
 $billing=isset($_POST['billing']) ? "Y" : "N";
@@ -27,7 +30,7 @@ $phoneBilling=isset($_POST['phoneBilling']) ? $_POST['phoneBilling'] : NULL;
 if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
  if($user != '' && $ID!='') {
- 
+
     include 'connexion.php';
 	$sql = "select ID from companies where INTERNAL_REFERENCE='$internalReference'";
 	if ($conn->query($sql) === FALSE) {
@@ -35,12 +38,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 		echo json_encode($response);
 		die;
 	}
-     
-    $result = mysqli_query($conn, $sql);     
+
+    $result = mysqli_query($conn, $sql);
     if($result->num_rows=='0'){
         errorMessage("ES0037");
     }
-	
+
 	$sql = "update companies set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', COMPANY_NAME='$companyName', STREET='$companyStreet', ZIP_CODE='$ZIPCode', TOWN='$companyTown',  VAT_NUMBER='$companyVAT', TYPE='$type', EMAIL_CONTACT_BILLING='$emailContactBilling', FIRSTNAME_CONTACT_BILLING='$firstNameContactBilling', LASTNAME_CONTACT_BILLING='$lastNameContactBilling', PHONE_CONTACT_BILLING='$phoneBilling', BILLS_SENDING='$billing', AUTOMATIC_STATISTICS='$statistiques' where ID='$ID'";
 
 	if ($conn->query($sql) === FALSE) {
@@ -50,7 +53,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	$result = mysqli_query($conn, $sql);
 	$conn->close();
-     
+
     include 'connexion.php';
     $sql = "select * from conditions WHERE COMPANY='$internalReference'";
 
@@ -63,8 +66,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
     $resultat = mysqli_fetch_assoc($result);
     $length = $result->num_rows;
 
-    $conn->close();   
-     
+    $conn->close();
+
      if($length==0){
             include 'connexion.php';
             $sql="INSERT INTO conditions (USR_MAJ, HEU_MAJ, BOOKING_DAYS, BOOKING_LENGTH, HOUR_START_INTAKE_BOOKING, HOUR_END_INTAKE_BOOKING, HOUR_START_DEPOSIT_BOOKING, HOUR_END_DEPOSIT_BOOKING, MONDAY_INTAKE, TUESDAY_INTAKE, WEDNESDAY_INTAKE, THURSDAY_INTAKE, FRIDAY_INTAKE, SATURDAY_INTAKE, SUNDAY_INTAKE, MONDAY_DEPOSIT, TUESDAY_DEPOSIT, WEDNESDAY_DEPOSIT, THURSDAY_DEPOSIT, FRIDAY_DEPOSIT, SATURDAY_DEPOSIT, SUNDAY_DEPOSIT, COMPANY, ASSISTANCE, LOCKING, MAX_BOOKINGS_YEAR, MAX_BOOKINGS_MONTH, NAME) VALUE('$user', CURRENT_TIMESTAMP, '2', '24', '7', '19', '7', '19', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1', '1', '1', '0', '0', '$internalReference', '$assistance', '$locking', '999', '999', 'generic')";
@@ -88,16 +91,16 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = mysqli_query($conn, $sql);
          }
      }
-     
-     
+
+
 	 successMessage("SM0003");
 
 } else {
-	$response = array ('response'=>'error');     
+	$response = array ('response'=>'error');
 	echo json_encode($response);
 	die;
 }
-    
+
 }
 else
 {

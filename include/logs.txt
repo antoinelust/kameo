@@ -1,0 +1,312 @@
+false
+{"id":0,"companyId":614,"email":"bruno.grisafi@kameobikes.com","firstName":"sdf","lastName":"rf","fonction":"","phone":"df","bikesStats":false}
+Erreur de syntaxe près de '@kameobikes.com, df, , 614, )' à la ligne 2
+ ---- 
+false
+{"id":0,"companyId":615,"email":"bruno.grisafi@kameobikes.com","firstName":"qs","lastName":"qs","fonction":"","phone":"qs","bikesStats":false}
+Erreur de syntaxe près de '@kameobikes.com, qs, , 615, )' à la ligne 2
+ ---- 
+false
+{"id":0,"companyId":0,"email":"bruno.grisafi@kameobikes.com","firstName":"qsd","lastName":"qsd","fonction":null,"phone":"","bikesStats":false}
+Erreur de syntaxe près de '@kameobikes.com, , , 0, )' à la ligne 2
+ ---- 
+false
+{"id":0,"companyId":616,"email":"bruno.grisafi@kameobikes.com","firstName":"qsd","lastName":"qsd","fonction":null,"phone":null,"bikesStats":false}
+Erreur de syntaxe près de '@kameobikes.com, , , 616, )' à la ligne 2
+ ---- 
+false
+{"id":0,"companyId":0,"email":"bruno.grisafi@kameobikes.com","firstName":"qsd","lastName":"qsd","fonction":null,"phone":null,"bikesStats":false}
+Erreur de syntaxe près de '@kameobikes.com, , , 0, )' à la ligne 2
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES (qsd, qsd, bruno.grisafi@kameobikes.com, NULL, NULL, 0, );
+Erreur de syntaxe près de '@kameobikes.com, NULL, NULL, 0, )' à la ligne 2
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES (qsd, qsd, bruno.grisafi@kameobikes.com, NULL, NULL, 0, false);
+Erreur de syntaxe près de '@kameobikes.com, NULL, NULL, 0, false)' à la ligne 2
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES (qsd, qsd, `bruno.grisafi@kameobikes.com`, NULL, NULL, 0, false);
+Champ 'qsd' inconnu dans field list
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES (`qsd`, qsd, `bruno.grisafi@kameobikes.com`, NULL`, `NULL`, `0`, `false`);
+Erreur de syntaxe près de '`, `NULL`, `0`, `false`)' à la ligne 2
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES (`qsd`, qsd, `bruno.grisafi@kameobikes.com`, `NULL`, `NULL`, 0, `false`);
+Champ 'qsd' inconnu dans field list
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES (qsd, qsd, bruno.grisafi@kameobikes.com, NULL, NULL, 0, false);
+Erreur de syntaxe près de '@kameobikes.com, NULL, NULL, 0, false)' à la ligne 2
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES (qsd, qsd, `bruno.grisafi@kameobikes.com`, NULL, NULL, 0, false);
+Champ 'qsd' inconnu dans field list
+ ---- 
+false
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'bruno.grisafi@kameobikes.com', 'NULL', 'NULL', 617, 'false');
+Data too long for column 'BIKES_STATS' at row 1
+ ---- 
+false
+Erreur de syntaxe près de ' 'N')' à la ligne 2
+ ---- 
+true
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'dqsd', 'bruno.grisafi@kameobikes.com', '', '', 618, 'N');
+
+ ---- 
+619
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'bruno.grisafi@kameobikes.com', '', '', 619, 'N');
+
+ ---- 
+83
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'bruno.grisafi@kameobikes.com', '', '', 83, 'N');
+
+ ---- 
+84
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('nomTest', 'prénomTest', 'bruno.grisafi@kameobikes.com', '', '', 84, 'N');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@edmail.comqsdq', '', '', 85, 'N');
+
+ ---- 
+85
+
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sqd', 85, 'true');
+Data too long for column 'BIKES_STATS' at row 1
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 's', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'fd', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sd', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'xw', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sqd', 85, 'Y');
+
+ ---- 
+84
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'f', 84, 'Y');
+
+ ---- 
+84
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'dsf', 84, 'Y');
+
+ ---- 
+84
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'dv', 84, 'Y');
+
+ ---- 
+84
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sdfdfg', 84, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('fqsd', 'qsd', '', 'qsd', 'sqd', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'fd', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sqd', 85, 'Y');
+
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'az', 14, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sqd', 85, 'Y');
+
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sqd', 14, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sqd', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'cx', 85, 'Y');
+
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', '', '', 'sdf', 85, 'Y');
+
+
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'qsdqsdzadcq', '', 'e', 14, 'Y');
+
+qsdqsdzadcq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'Y');
+
+admin@email.comqsdq
+ ---- 
+85
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sdf', 85, 'Y');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.cosqdqsmqsdq', '', 'sqd', 14, 'Y');
+
+admin@email.cosqdqsmqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'Y');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'Y');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'Y');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'Y');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'N');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'N');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsddsfcds', 'qsddsfdsfsdf', 'mqsd', '', 'sqddsf', 14, 'Y');
+
+mqsd
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'aaa', 14, 'N');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'sqd', 14, 'N');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'qsd', 'admin@email.comqsdq', '', 'az', 14, 'Y');
+
+admin@email.comqsdq
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qzd', 'qsd', 'dzaed', '', 'qsd', 14, 'N');
+
+dzaed
+ ---- 

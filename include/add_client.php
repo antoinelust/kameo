@@ -3,17 +3,19 @@ session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
 include 'globalfunctions.php';
 
 global $requestor;
 global $email;
 global $password_unencrypted;
-
+//variable indiquant a add_company_contact.php qu'il s'agit d'un ajout de contact
+//au moment de l'ajout d'un client (fonctionnement différent)
+$addClient = true;
 
 $internalReference=$_POST['internalReference'];
 $description=$_POST['description'];
@@ -37,7 +39,7 @@ if(isset($_POST['passwordInitialisation'])){
 $dossier = '../images/';
 
 
-if(isset($_FILES['picture'])){
+if(isset($_FILES['picture']) && !empty($_FILES['picture'])){
     $extensions = array('.jpg');
     $extension = strrchr($_FILES['picture']['name'], '.');
     if(!in_array($extension, $extensions))
@@ -85,10 +87,10 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
-            die;   
+            die;
 
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $length=$result->num_rows;
         if($length>0){
             errorMessage("ES0049");
@@ -96,12 +98,12 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
     }
 
 
-    
-    
+
+
     $sql="select * from companies where INTERNAL_REFERENCE='$internalReference'";
 
-    
-    
+
+
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -109,7 +111,7 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
     }
     $result = mysqli_query($conn, $sql);
     if($result->num_rows!='0'){
-        $conn->close();   
+        $conn->close();
         errorMessage("ES0036");
     }
 
@@ -118,22 +120,25 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
-        die;   
+        die;
     }
+    $compID = $conn->insert_id;
 
     if($type=="CLIENT" && $mailInitialisation != '' && $passwordTechnicalUser != ''){
         $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN) VALUES ('mykameo', UPPER('$nameInitialisation'), UPPER('$firstNameInitialisation'), '$nameInitialisation', '$firstNameInitialisation', '', '0', '', '', '', '0', '', '$internalReference', '$mailInitialisation', '$passwordTechnicalUser', 'N', '')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
-            die;   
+            die;
         }
-
     $conn->close();
     }
-    
 
+  //  if($companyId != NULL){
+      include 'add_company_contact.php';
+    //}
     successMessage("SM0008");
+
 }else{
     errorMessage("ES0025");
 }

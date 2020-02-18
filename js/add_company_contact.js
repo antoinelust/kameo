@@ -37,41 +37,40 @@ $('body').on('click', '.addCompanyContact', function(){
         bikesStatsChecked = "checked";
       }
       var id = (response.id != undefined) ? response.id : '';
-      var email = (response.email != undefined) ? response.email : '';
+      var email = (response.emailContact != undefined) ? response.emailContact : '';
       var companyId = (response.companyId != undefined) ? response.companyId : '';
       var lastName = (response.lastName != undefined) ? response.lastName : '';
       var firstName = (response.firstName != undefined) ? response.firstName : '';
-      var lastName = (response.lastName != undefined) ? response.lastName : '';
       var phone = (response.phone != undefined) ? response.phone : '';
       var fonction = (response.fonction != undefined) ? response.fonction : '';
       responseContent = `<tr class="form-group">
         <td>
-          <input type="text" class="form-control required" readonly="true"  name="contactEmail`+id+`" id="contactEmail`+id+`" value="`+email+`" required/>
+          <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail`+id+`" id="contactEmail`+id+`" value="`+email+`" required/>
         </td>
         <td>
-        <input type="text" class="form-control required" readonly="true"  name="contactNom`+id+`" id="contactNom`+id+`" value="`+lastName+`" required/>
+        <input type="text" class="form-control required lastName" readonly="true"  name="contactNom`+id+`" id="contactNom`+id+`" value="`+lastName+`" required/>
         </td>
         <td>
-        <input type="text" class="form-control required" readonly="true" name="contactPrenom`+id+`" id="contactPrenom`+id+`" value="`+firstName+`" required/>
+        <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom`+id+`" id="contactPrenom`+id+`" value="`+firstName+`" required/>
         </td>
         <td>
-        <input type="tel" class="form-control" readonly="true"  name="contactPhone`+id+`" id="contactPhone`+id+`" value="`+phone+`"/>
+        <input type="tel" class="form-control phone" readonly="true"  name="contactPhone`+id+`" id="contactPhone`+id+`" value="`+phone+`"/>
         </td>
         <td>
-        <input type="text" class="form-control" readonly="true"  name="contactFunction`+id+`" id="contactFunction`+id+`" value="`+fonction+`"/>
+        <input type="text" class="form-control fonction" readonly="true"  name="contactFunction`+id+`" id="contactFunction`+id+`" value="`+fonction+`"/>
         </td>
         <td>
-        <input type="checkbox" class="form-control" readonly="true"  name="contactBikesStats`+id+`" id="contactBikesStats`+id+`" value="bikesStats" `+bikesStatsChecked+`/>
+        <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats`+id+`" id="contactBikesStats`+id+`" value="bikesStats" `+bikesStatsChecked+`/>
         </td>
         <td>
-          <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil"></button>
+          <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil" type="button"></button>
         </td>
         <td>
-          <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove"></button>
+          <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove" type="button"></button>
         </td>
-        <input type="hidden" name="contactId`+id+`" id="contactId`+id+`" value="`+id+`"/>
+        <input type="hidden" class="companyIdHidden" name="contactId`+id+`" id="contactId`+id+`" value="`+id+`"/>
       </tr>`;
-      //console.log(responseContent);
+      alert(responseContent);
       $('.clientContactZone').find('.contactsTable').find('tbody').append(responseContent);
     });
 
@@ -90,19 +89,16 @@ function add_contact(that){
       method: 'post',
       data: {
         'companyId': $('#companyIdHidden').val(),
-        'email': $(that).find('.emailContact').val(),
+        'contactEmail':$(that).find('.emailContact').val(),
         'firstName': $(that).find('.firstNameContact').val(),
         'lastName': $(that).find('.lastNameContact').val(),
         'phone': $(that).find('.phoneContact').val(),
         'function': $(that).find('.functionContact').val(),
-        'bikesStats': $(that).find('.bikeStatsContact').val()
+        'bikesStats': $(that).find('.bikeStatsContact').prop('checked')
       },
       success: function(response){
         console.log(response);
-      }, error: function(response){
-        console.log(response);
       }
-
   });
 }
 
