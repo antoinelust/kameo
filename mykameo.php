@@ -1336,7 +1336,7 @@ if($connected){
                 }
                 if(response.response == 'success'){
                     var dest="";
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><br/><tbody><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead>";
+                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('NOT INTERESTED')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Pas intéressé</span></a><br/><tbody><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead>";
                     dest=dest.concat(temp);
                     var i=0;
 
@@ -5351,6 +5351,7 @@ if($connected){
                                       <option value="PROSPECT" selected>Prospect</option>
                                       <option value="ANCIEN PROSPECT" selected>Ancien prospect</option>
                                       <option value="ANCIEN CLIENT">Ancien client</option>
+                                      <option value="NOT INTERESTED">Pas intéressé</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-6">
@@ -5388,33 +5389,6 @@ if($connected){
 								</div>
 
                                 <div class="separator"></div>
-                                <h4 class="fr text-green">Personne de Contact</h4>
-
-								<div class="col-md-3">
-                                    <label for="contactMail"  class="fr">E-Mail</label>
-                                    <label for="contactMail"  class="en">EMAIL</label>
-                                    <label for="contactMail"  class="nl">EMAIL</label>
-                                    <input type="text" class="form-control" name="contactMail" class="form-control required">
-								</div>
-
-								<div class="col-md-3">
-                                    <label for="contactFirstMail"  class="fr">Prénom</label>
-                                    <label for="contactFirstMail"  class="en">First Name</label>
-                                    <label for="contactFirstMail"  class="nl">First Name</label>
-                                    <input type="text" class="form-control" name="contactFirstName" class="form-control required">
-								</div>
-								<div class="col-md-3">
-                                    <label for="contactLastName"  class="fr">Nom de Famille</label>
-                                    <label for="contactLastName"  class="en">Last Name</label>
-                                    <label for="contactLastName"  class="nl">Last Name</label>
-                                    <input type="text" class="form-control" name="contactLastName" class="form-control required">
-								</div>
-                                <div class="col-md-3">
-                                    <label for="phone"  class="fr">Téléphone</label>
-                                    <label for="phone"  class="en">Phone</label>
-                                    <label for="phone"  class="nl">Phone</label>
-                                    <input type="text" class="form-control" name="phone" class="form-control">
-								</div>
                                 <h4 class="fr text-green addClientTechnicalUser hidden">Données techniques pour le premier utilisateur</h4>
                                 <div class="separator"></div>
 								<div class="col-md-3">
@@ -5752,6 +5726,7 @@ if($connected){
                   <option value="PROSPECT">Prospect</option>
                   <option value="ANCIEN PROSPECT">Ancien Prospect</option>
                   <option value="ANCIEN CLIENT">Ancien Client</option>
+                  <option value="NOT INTERESTED">Pas intéressé</option>
                 </select>
               </div>
               <div class="separator"></div>
