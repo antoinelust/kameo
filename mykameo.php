@@ -623,7 +623,7 @@ if($connected){
         document.getElementById('velos').innerHTML = "";
         document.getElementById("velos").style.display = "none";
         document.getElementById("travel_information").style.display = "none";
-        getHistoricBookings(email);
+        getHistoricBookings();
 
     }
 
@@ -4161,8 +4161,25 @@ if($connected){
 									document.getElementById("travel_information").style.display = "none";
 
                                     window.scrollTo(0, 0);
-                                    var email="<?php echo $user; ?>";
-                                    getHistoricBookings(email);
+                                    getHistoricBookings();
+                                    
+                                    
+                                    var frameNumber= $('#widget-new-booking-frame-number').val();
+                                    var emailUser= $('#widget-new-booking-mail-customer').val();
+                                    var dateStart= $('#widget-new-booking-date-start').val();
+                                    var dateEnd= $('#widget-new-booking-date-end').val();
+                                    
+
+                                    $.ajax({
+                                        url: 'automatic_mail_new_booking.php',
+                                        type: 'post',
+                                        data: {frameNumber: frameNumber, emailUser: emailUser, dateStart: dateStart, dateEnd: dateEnd},
+                                        success: function(response){
+                                            if(response.response == 'error') {
+                                                console.log(response.message);
+                                            }
+                                        }
+                                    })
 
                                 } else {
                                     $.notify({

@@ -342,7 +342,6 @@ function cancelBooking(bookingID){
 
 
 function getHistoricBookings() {
-    console.log("coucou");
     $.ajax({
         url: 'include/get_historic_bookings.php',
         type: 'post',

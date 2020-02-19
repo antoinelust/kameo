@@ -685,24 +685,6 @@ while($row = mysqli_fetch_array($result))
                     <!--[if mso]>
                     <td valign=\"top\" width=\"600\" style=\"width:600px;\">
                     <![endif]-->
-                    <<table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:100%; min-width:100%;\" width=\"100%\" class=\"mcnTextContentContainer\">
-                        <tbody><tr>
-
-                            <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
-                            <p>Il vous reste un peu de temps et vous êtes satisfaits de nos services?<br>
-                            N'hésitez pas à nous donner 5 étoiles sur Google en cliquant <a href=\"https://search.google.com/local/writereview?placeid=ChIJi-fK-wP6wEcRMOYloSmBCds\">sur ce lien</a>.</p>
-
-                            <strong>OU</strong>
-
-                            <p>Vous aimez nos vélos et nos services?<br>
-                            Aidez d'autres utilisateurs à nous trouver sur Google en nous donnant une note de 5 étoiles <a href=\"https://search.google.com/local/writereview?placeid=ChIJi-fK-wP6wEcRMOYloSmBCds\">sur ce lien</a>.</p>
-
-
-
-
-                            </td>
-                        </tr>
-                    </tbody></table>
                     <!--[if mso]>
                     </td>
                     <![endif]-->
