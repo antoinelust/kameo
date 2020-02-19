@@ -25,6 +25,11 @@ h1{
   color: #2fa37c;
   font-weight: bold;
 }
+h3{
+  font-size: 17px;
+  color: #2fa37c;
+  font-weight: 400;
+}
 h2{
   color: #cc304d;
   font-weight: 400;
@@ -32,6 +37,12 @@ h2{
 }
 .white{
   color: white;
+}
+.red{
+  color: #cc304d;
+}
+.green{
+  color: #2fa37c;
 }
 .firstPage{
   font-size: 15px;
@@ -100,7 +111,34 @@ h2{
   padding-left: 10mm;
   font-family: 'Akkurat-Light';
 }
+.img-large{
+  width: 160mm;
+  height: auto;
+  max-height: 250mm;
+}
+.bordered{
+  border: 1px, solid, black;
+}
+.bordered-bottom{
+  border-bottom: 1px, solid, black;
+}
+.bordered-top{
+  border-top: 1px, solid, black;
+}
 
+.tableBorder {
+  border-collapse: collapse;
+}
+
+.tableBorder th,.tableBorder td {
+  border: 1px solid black;
+}
+.center{
+  text-align: center;
+}
+.tbody-leftMargin td>*{
+  margin-left:3mm;
+}
 </style>
 
 
@@ -277,7 +315,7 @@ h2{
       </div>
     <?php  } ?>
 
-    <?php if (count($others) > 0) { ?>
+    <?php if (is_array($others) && count($others) > 0) { ?>
       <div>
         <?php
         echo "<div class='listItem'>- Autres : </div>" ; ?>
@@ -314,11 +352,367 @@ h2{
         <?php if($numberMaintenance >= 0){echo '<div class="subListItem">• Maintenance</div>';} ?>
       </div>
       <div class="listItem">• OPTION D ACHAT</div>
-        <div class="subList">
-          <div class="subListItem">• A calculer selon la durée du leasing</div>
-        </div>
+      <div class="subList">
+        <div class="subListItem">• A calculer selon la durée du leasing</div>
+      </div>
     </div>
     <img src="<?php echo __DIR__ ; ?>/img/leasing_schema.png" alt="" style="width:600px; height: auto;" />
   <?php } ?>
 
 </page>
+
+<?php
+//vélos
+if (count($bikes) > 0) {
+  foreach ($bikes as $bike) { ?>
+    <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+      <?php echo <<<BIKETITLE
+      <h2>Le vélo: {$bike['BRAND']} {$bike['MODEL']}</h2>
+      BIKETITLE;
+      $temp = $bike['BRAND'] . '_' . $bike['MODEL'] . '_' . $bike['FRAME_TYPE'];
+      $temp = strtolower(str_replace(' ','-',$temp));
+      $bikeImg = $root.'/images_bikes/'.$temp.'.jpg' ;
+      ?>
+      <img src="<?php echo $bikeImg ?>" alt="velo.jpg" class="img-large" />
+
+      <p>Texte a définir</p>
+      <a href="<?php echo $bike['LINK'] ?>">Lien du vélo</a>
+    </page>
+  <?php }
+}
+?>
+
+<?php
+//boxes
+if (count($boxes) > 0) {
+  foreach ($boxes as $box) { ?>
+    <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+      <h2>La Box <?php echo $box['MODEL']?></h2>
+      <?php
+      $temp = explode(' ',$box['MODEL'])[0];
+      $boxImg = $root.'/images_bikes/'.$temp.'keys.png' ;
+      ?>
+      <img src="<?php echo $boxImg ?>" alt="box.png" class="img-large" />
+      <p>Facilitant grandement la gestion de la flotte, notre box
+        <?php echo $box['MODEL']?> offre un confort certain. Une simple réservation sur <a href="www.kameobikes.com">MyKameo</a>,
+        et vous receverez un code de dévérouillage pour récupérer la clé de votre vélo !
+      </p>
+    </page>
+  <?php }
+}
+?>
+<?php
+//maintenance
+if($numberMaintenance > 0){ ?>
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <h2>Maintenance</h2>
+    <p>
+      La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable.
+      KAMEO Bikes part du principe que pour prendre du plaisir sur votre vélo, celui-ci doit rouler sans souci
+      mécanique.<br/>
+      <span class="bold">
+        Les entretiens seront organisés sur le site de l’entreprise entre 8h et 18h lors d’une date annoncée avec
+        un délai de minimum 2 semaines.
+      </span>
+    </p>
+    <h3 style="margin: 0;">Entretiens</h3>
+    <p style="margin-bottom: 10px;">
+      Un premier entretien est effectué après 3 mois. Ensuite, une révision annuelle est organisée en fonction de
+      la durée du leasing. L’entretien annuel est conçu pour assurer une remise en état de votre vélo. Il correspond
+      aux changements de pièces et réglages de l'ensemble des organes de votre vélo.
+    </p>
+    <table class="maxWidth bordered">
+      <tbody>
+        <tr>
+          <td class="bordered-bottom" style="width:100%;font-size: 18px; font-weight: bold; padding-bottom: 3mm;">
+            POINTS VÉRIFIÉS LOS D'UN ENTRETIEN
+          </td>
+        </tr>
+        <tr>
+          <td style="width:100%; margin-top: 3mm;" class="list">
+            <div class="subListItem" style="margin-top: 3mm;">• Nettoyage du vélo</div>
+            <div class="subListItem">• Etat général du vélo</div>
+            <div class="subListItem">• Pression et état des pneus</div>
+            <div class="subListItem">• Fonctionnement des freins</div>
+            <div class="subListItem">• Fonctionnement du changement de vitesse</div>
+            <div class="subListItem">• Etat des roulements</div>
+            <div class="subListItem">• Vérification des jeux et serrages</div>
+            <div class="subListItem">• Vérification de la tension des rayons</div>
+            <div class="subListItem">• Vérification des connexions électriques</div>
+            <div class="subListItem">• Huilage de la chaine et des parties en roulement</div>
+            <div class="subListItem">• Vérification des points de sécurité et des lampes</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="bordered-top bordered-Bottom"style="width:100%;font-size: 18px; font-weight: bold; padding-bottom: 3mm;">
+            PIÈCES DE RECHANGE COMPRISES POUR LE LEASING
+          </td>
+        </tr>
+        <tr>
+          <td class="list"style="width:100%;">
+            <div class="subListItem" style="margin-top: 3mm;">• Pneus</div>
+            <div class="subListItem">• Plaquettes de freins</div>
+            <div class="subListItem">• Transmission (chaine, cassette et plateau)</div>
+            <div class="subListItem">• Poignées</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </page>
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <p>
+      Les éléments suivants ne sont pas couverts par l’entretien :
+    </p>
+    <div class="list">
+      <div class="subListItem">• Pièces de rechanges non comprises dans la liste précédente ;</div>
+      <div class="subListItem">• Réparation des dommages causés par une utilisation impropre, négligence, lors d’une compétition, collision, accidents ou les chutes, le vandalisme ou toute autre cause que l'usure normale ;</div>
+      <div class="subListItem">• Entretien et réparation de composants, de fonctions optionnelles et d'accessoires qui n'étaient pas fournis et montés à la livraison du vélo.</div>
+    </div>
+    <h3>Intervention sur demande</h3>
+    <p>
+      Un vélo ne fonctionne plus correctement ou une pièce est cassée ? Vous souhaitez réaliser un check complet
+      de la flotte avant une activité de la cellule environnement ?
+    </p>
+    <p>
+      Pas de problème, nous pouvons planifier un entretien supplémentaire. La facturation de celui-ci dépend
+      alors de la nature de la demande.
+    </p>
+    <p class="bold">
+      SI LA DEMANDE RELÈVE D’UNE MALFAÇON DU VÉLO, KAMEO BIKES PREND À SA CHARGE
+      LE COÛT DE L’ENTRETIEN ET LES PIÈCES.
+    </p>
+    <p>Pour toute autre raison, KAMEO Bikes facturera l’intervention de la manière suivante :</p>
+    <div class="list">
+      <div class="listItem">• 75€ pour le déplacement et la première heure de travail</div>
+      <div class="listItem">
+        <div>• Main d’œuvre : (après les 60 min de base)</div>
+        <div class="subList" style="margin-top: 4mm;">
+          <div class="subListItem">o 50€/h pour le travail effectué par notre technicien de 8h à 18h du lundi au vendredi</div>
+          <div class="subListItem">o 85€/h en dehors de cette tranche horaire.</div>
+        </div>
+      </div>
+      <div class="listItem">• Les pièces de rechange au prix du marché</div>
+    </div>
+  </page>
+<?php } ?>
+
+<?php
+//assurance
+if ($assurance == true) { ?>
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <h2>Assurance</h2>
+    <?php
+    $assuImg1 = $root.'/images/aedes.png';
+    $assuImg2 = $root.'/images/DEDALE.jpg';
+    ?>
+    <p>
+      KAMEO Bikes collabore avec Aedes et Dedales afin de vous offrir l’assurance Omnium la plus complète et la
+      plus flexible actuellement disponible sur le marché : La P-Vélo
+    </p>
+    <table class="maxWidth">
+      <tbody>
+        <tr>
+          <td style="width:50%;"><img src="<?php echo $assuImg1; ?>" alt="Aedes.jpg"></td>
+          <td style="width:50%; text-align:right;"><img src="<?php echo $assuImg2; ?>" alt="Dedale.jpg" style="height:150px; width:auto;"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <div class="bold">L’omnium P-Vélo a les caractéristiques suivantes :</div>
+      <div class="list" style="margin-top: 5mm;">
+        <div class="subListItem">• En cas de perte totale ou vol complet, le vélo est remboursé TVAC la première année. A partir du 13eme mois, il y a une dégressivité mensuelle du remboursement du vélo de 1% par mois ;</div>
+        <div class="subListItem bold">• Franchise de 150€ ;</div>
+        <div class="subListItem">• Aedes impose l’achat d’un cadenas d’une valeur d’achat de minimum 60€ pour tout qui souscrit une Omnium Vélo et qui souhaite être couvert contre le vol. </div>
+        <div class="subListItem">• La couverture est valable en Belgique comme à l’étranger ;</div>
+        <div class="subListItem">• L’assurance comprend <span class="bold">2 dépannages</span> d’un même vélo dans la même année. S’il devait y en avoir plus, ceux-ci seront facturés suivant la police Aedes en annexe.</div>
+      </div>
+    </div>
+    <div>
+      <div class="bold">Les risques non-couverts sont les suivants :</div>
+      <div class="list" style="margin-top: 5mm;">
+        <div class="subListItem">• Un sinistre provoqué intentionnellement par l'assuré ;</div>
+        <div class="subListItem">• Le vol du vélo s'il n'est pas attaché à un point fixe par un cadenas d'une valeur de 60€ min ;</div>
+        <div class="subListItem">• La compétition.</div>
+      </div>
+    </div>
+    <div class="bold red">
+      Si vous respectez les 3 points précédents la seule chose à faire pour être couvert est donc ATTACHER
+      votre vélo à UN POINT FIXE avec le CADENAS FOURNI PAR KAMEO. Dans un garage privé et fermé,
+      c’est un cas particulier, il n’est pas nécessaire d’attacher le vélo.
+    </div>
+    <p>Informations et conditions complètes sur <a href="https://www.aedessa.be/assurances/velo" class="bold" style="color:black; ">https://www.aedessa.be/assurances/velo</a></p>
+    <p>
+      L’utilisateur s’engage à respecter toutes les conditions de l’assurance afin d’en bénéficier et à utiliser le vélo
+      en bon père de famille. Dans le cas contraire, l’ensemble des frais causés par sa négligence seront à sa
+      charge.
+    </p>
+    <div>Si vous avez des questions supplémentaires, n’hésitez pas à nous contacter !</div>
+  </page>
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <h3>Procédure en cas de vol</h3>
+    <p>
+      <span class="bold">Les démarches suivantes sont obligatoires.</span> En cas de non-respect des délais ou de non-réalisation
+      d’une des démarches, la police d’assurance n’est pas applicable.
+    </p>
+    <div class="list">
+      <div class="subListItem">• Informer KAMEO Bikes (dans le cas d’un leasing) ou votre assureur (pour une assurance personnelle) dans les 24h suivant la découverte du vol ;</div>
+      <div class="subListItem">• Porter plainte à la police dans les 24h suivant la découverte du vol ;</div>
+      <div class="subListItem">• Envoyer la déclaration de vol à KAMEO Bikes / votre assureur dès qu’elle est en votre possession ;</div>
+      <div class="subListItem">• KAMEO Bikes s’occupe du reste.</div>
+    </div>
+    <h3>Procédure en cas de besoin d’assistance</h3>
+    <p>Si vous ne savez pas continuer à rouler :</p>
+    <div class="list">
+      <div class="subListItem">• Téléphoner à Aedes, le numéro d’appel se trouve sur le sticker KAMEO sur le cadre de votre vélo ( 02 642 45 03 ) ;</div>
+      <div class="subListItem">• Prendre un maximum de photo de votre problème ;</div>
+      <div class="subListItem">• Contacter KAMEO Bikes via l’adresse suivante <a href="mailto:sav@kameobikes.com" class="bold" style="color:black">sav@kameobikes.com</a> décrire votre problème et joindre vos photos.</div>
+    </div>
+    <h3>Quelques exemples</h3>
+    <table class="maxWidth tableBorder">
+      <tbody>
+        <tr>
+          <td style="width:50%; height: 10mm;">
+            <div style="margin-left:3mm;">Vélo fixé sur un parking vélo en rue avec le cadenas fourni par KAMEO</div>
+          </td>
+          <td style="width:50%; height: 10mm; text-align:center;"><span class="green">COUVERT</span></td>
+        </tr>
+        <tr>
+          <td style="width:50%; height: 10mm;">
+            <div style="margin-left:3mm;">Vélo fixé sur un parking vélo en rue avec un cadenas acheté 59 € de 6h à 22h</div>
+          </td>
+          <td style="width:50%; height: 10mm; text-align:center;"><span class="red">PAS COUVERT</span></td>
+        </tr>
+        <tr>
+          <td style="width:50%; height: 10mm;">
+            <div style="margin-left:3mm;">Vélo à l’intérieur de votre domicile avec ou sans cadenas</div>
+          </td>
+          <td style="width:50%; height: 10mm; text-align:center;"><span class="green">COUVERT</span></td>
+        </tr>
+        <tr>
+          <td style="width:50%; height: 10mm;">
+            <div style="margin-left:3mm;">Vélo laissé en rue sans cadenas</div>
+          </td>
+          <td style="width:50%; height: 10mm; text-align:center;"><span class="red">PAS COUVERT</span></td>
+        </tr>
+        <tr>
+          <td style="width:50%; height: 10mm;">
+            <div style="margin-left:3mm;">Vélo cadenassé à lui-même sans fixation à un point fixe, en rue, avec le cadenas fourni par KAMEO </div>
+          </td>
+          <td style="width:50%; height: 10mm; text-align:center;"><span class="red">PAS COUVERT</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </page>
+<?php } ?>
+
+<?php
+  //accessoires
+  if (count($accessories) > 0) { ?>
+    <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+      <h1>2. Accessoires</h1>
+      <p>
+        Les vélos sont équipés mais les cyclistes doivent l’être également ! Il est important d’avoir un bon cadenas
+        pour sécuriser le vélo à un point fixe et une sacoche pour transporter ses affaires sans transpirer. La
+        sécurité des cyclistes est également à assurer via un casque répondant aux normes d’usage et
+        rétroéclairé. Une chasuble permet de garantir la visibilité vis-à-vis des autres usagers de la route !
+      </p>
+      <table class="maxWidth tableBorder">
+        <thead style="font-size: 18px;">
+          <tr>
+            <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">ACCESSOIRE</div></th>
+            <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">VISUEL</div></th>
+            <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">CARACTÉRISTIQUES</div></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($accessories as $accessory) { ?>
+            <tr>
+              <td style="width:33%;" class="center"><?php echo $accessory['NAME']; ?></td>
+              <td style="width:33%;" class="center">A venir ...</td>
+              <td style="width:33%;" class="center"><?php echo $accessory['DESCRIPTION']; ?></td>
+            </tr>
+          <?php } ?>
+        </tbody>
+      </table>
+    </page>
+  <?php } ?>
+
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <?php if ($buyOrLeasing =="leasing" || $buyOrLeasing == "both") {
+      echo "<h2>En leasing sur {$leasingDuration} mois: </h2>";
+    } ?>
+    <table class="maxWidth tableBorder">
+      <thead>
+        <tr style="font-size: 18px;">
+          <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">POSTE</div></th>
+          <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">DESCRIPTIF</div></th>
+          <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">BUDGET</div></th>
+        </tr>
+      </thead>
+      <tbody class="tbody-leftMargin">
+        <?php if ($buyOrLeasing =="leasing" || $buyOrLeasing == "both" && count($bikes) > 0) { ?>
+          <tr>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Vélo: Leasing <?php echo $leasingDuration ; ?> mois</div> </td>
+            <td style="width:33%;">
+              <?php foreach ($bikes as $bike) {
+                echo "<div style='margin-left:3mm;'>{$bike['BRAND']} {$bike['MODEL']}</div><br/>";
+              } ?>
+            </td>
+            <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
+              <?php foreach ($bikes as $bike) {
+                echo "<div style='margin-left:3mm;'>{$bike['LEASING_PRICE']} € HTVA/mois</div><br/>";
+              } ?>
+            </td>
+          </tr>
+        <?php } ?>
+
+        <?php if (count($boxes) > 0) { ?>
+          <tr>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Boxes: Installation + leasing <?php echo $leasingDuration ; ?> mois</div> </td>
+            <td style="width:33%;">
+              <?php foreach ($boxes as $box) {
+                echo "<div style='margin-left:3mm;'>Box {$box['MODEL']}</div><br/>";
+              } ?>
+            </td>
+            <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
+              <?php foreach ($boxes as $box) {
+                echo "<div style='margin-left:3mm;'>Installation: {$box['INSTALLATION_PRICE']} € HTVA + location {$box['LOCATION_PRICE']} € HTVA/mois</div><br/>";
+              } ?>
+            </td>
+          </tr>
+        <?php } ?>
+
+        <?php if (count($accessories) > 0) { ?>
+          <tr>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Accessoires(achat) </div></td>
+            <td style="width:33%;">
+              <?php foreach ($accessories as $accessory) {
+                echo "<div style='margin-left:3mm;'>{$accessory['NAME']}</div><br/>";
+              } ?>
+            </td>
+            <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
+              <?php foreach ($accessories as $accessory) {
+                echo "<div style='margin-left:3mm;'>Prix: {$accessory['BUYING_PRICE']} € HTVA</div><br/>";
+              } ?>
+            </td>
+          </tr>
+        <?php } ?>
+        <?php if (count($others) > 0) { ?>
+          <tr>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Autres </div></td>
+            <td style="width:33%;">
+              <?php foreach ($others as $other) {
+                echo "<div style='margin-left:3mm;'>{$other['othersDescription']}</div><br/>";
+              } ?>
+            </td>
+            <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
+              <?php foreach ($others as $other) {
+                echo "<div style='margin-left:3mm;'>Prix: {$other['othersCost']} € HTVA</div><br/>";
+              } ?>
+            </td>
+          </tr>
+        <?php } ?>
+      </tbody>
+    </table>
+
+  </page>

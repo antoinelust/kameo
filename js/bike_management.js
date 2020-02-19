@@ -1,4 +1,4 @@
-   
+
 
 function bikeFilter(e){
     document.getElementsByClassName('bikeSelectionText')[0].innerHTML=e;
@@ -741,7 +741,7 @@ function fillBikeDetails(element)
 }
 
 function get_bikes_listing() {
-    
+
     $.ajax({
         url: 'include/get_bikes_listing.php',
         type: 'post',

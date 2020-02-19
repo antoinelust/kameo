@@ -675,7 +675,7 @@ var INSPIRO = {};
                          autoHeight: false,
                          video: $sliderCarouseVideo,
                          smartSpeed: 1300,
-                         
+
 
                      });
 
