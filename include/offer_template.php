@@ -4,7 +4,7 @@
   $buyOrLeasing = isset($_POST["buyOrLeasing"]) ? $_POST["buyOrLeasing"] : NULL;
   $leasingDuration = isset($_POST["leasingDuration"]) ? $_POST["leasingDuration"] : NULL;
   $numberMaintenance = isset($_POST["numberMaintenance"]) ? $_POST["numberMaintenance"] : NULL;
-  $assurance = isset($_POST["assurance"]) ? true : false;
+  $assurance = isset($_POST["assurance"]) ? $_POST["assurance"] : false;
   $bikesNumber = isset($_POST["bikesNumber"]) ? $_POST["bikesNumber"] : NULL;
   $boxesNumber = isset($_POST["boxesNumber"]) ? $_POST["boxesNumber"] : NULL;
   $accessoriesNumber = isset($_POST["accessoriesNumber"]) ? $_POST["accessoriesNumber"] : NULL;
@@ -15,7 +15,7 @@
   $contact['phone'] = isset($_POST["contactPhone"]) ? $_POST["contactPhone"] : NULL;
 
 
-
+  $others = array();
   //création des tableaux destinés a recevoir les id des différents item
   $bikesId = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
   $boxesId = $boxesNumber > 0 ? getIds('boxModel',$boxesNumber) : NULL;
@@ -32,6 +32,10 @@
   $accessories = getItemsInDatabase($accessoriesId, 'accessories_catalog');
 
   $company = getCompany($companyId);
+
+  for ($i=0; $i < count($bikes) ; $i++) {
+    $bikes[$i]['LEASING_PRICE'] = leasingPrice($bikes[$i]['PRICE_HTVA']);
+  }
 
 
 
@@ -60,6 +64,8 @@
   use Spipu\Html2Pdf\Exception\ExceptionFormatter;
   ob_start();
   try {
+    //adresse de la racine du site
+    $root = $_SERVER['DOCUMENT_ROOT'].'/kameo';
     //generation de l'objet html2pdf
     $html2pdf = new Html2Pdf('P', 'A4', 'fr', 'UTF-8',true, 3);
     $html2pdf->pdf->SetDisplayMode('fullpage');
@@ -133,6 +139,24 @@
     $res = mysqli_fetch_assoc($res);
     $conn->close();
     return $res;
+  }
+
+  function leasingPrice($retailPrice){
+    $priceTemp=($retailPrice/1.21+3*75+4*100+4*100);
+    // Calculation of coefficiant for leasing price
+    if($priceTemp<2500){
+        $coefficient=3.289;
+    }elseif ($priceTemp<=5000){
+        $coefficient=3.056;
+    }elseif ($priceTemp<=12500){
+        $coefficient=2.965;
+    }elseif ($priceTemp<=25000){
+        $coefficient=2.921;
+    }elseif ($priceTemp<=75000){
+        $coefficient=2.898;
+    }
+    $leasingPrice=round(($priceTemp)*($coefficient)/100);
+    return $leasingPrice;
   }
 
 

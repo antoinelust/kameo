@@ -1,7 +1,7 @@
 <?php
 ob_start();
 session_start();
-$user=$_SESSION['userID'];
+$user=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL;
 include 'include/header2.php';
 
 
@@ -11,7 +11,7 @@ if($user==NULL){
   $connected=true;
 }
 
-$langue=$_SESSION['langue'];
+$langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 include 'include/activitylog.php';
 ?>
 
@@ -1716,7 +1716,6 @@ if($connected){
 
           var i=0;
           var dest="<a class=\"button small green button-3d rounded icon-right addBikeAdmin\" data-target=\"#bikeManagement\" data-toggle=\"modal\" href=\"#\" name=\""+response.ID+"\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a>";
-          dest+="<a class=\"button small green button-3d rounded icon-right addBikeAdmin\" data-target=\"#bikeManagement\" data-toggle=\"modal\" href=\"#\" name=\""+response.ID+"\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i>Vélos vendus</span></a>";
           if(response.bikeNumber>0){
             var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead>";
             dest=dest.concat(temp);
