@@ -6,18 +6,28 @@ include 'include/header5.php';
 			<!-- SECTION SOLUTIONS -->
 			<section class="p-b-0 background-green">
 				<div class="container">
-				<a class="button small black-light button-3d full-rounded right" href="velo-partage.php"><span>Vélos partagés <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right"  href="velo-partage.php"><span>Vélos partagés  <i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
-							<h1><ins>Vélos personnels</ins></h1>
+							<h1 class="text-dark">VÉLOS PERSONNELS</h1>
+							<p class="lead text-light"><strong>KAMEO Bikes</strong> vous propose des vélos personnels pour vos employés.<br>
+							Ils utiliseront ces vélos pour leurs déplacements domicile-travail, rendez-vous, etc.</p>
+							<p class="lead text-light">En plus de ces vélos nous vous proposons d'autres services qui sont:<br>
+							- la <strong class="text-light">livraison</strong> sur votre lieu de travail,<br>
+							- un accès personnel à <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="Le système de gestion de flotte en ligne développé par KAMEO Bikes.">MyKAMEO</a></strong></ins>,<br>
+							- la <strong class="text-light">maintenance</strong> sur le site de votre entreprise,<br>
+							- une <strong class="text-light">assurance</strong> contre la casse et le vol,<br>
+							- l'<strong class="text-light">assistance</strong> dépannage, <br>
+							- l'installation d'<strong class="text-light">infrastructures</strong>.</p>
+							<b>Pour une simplicité de gestion, tous ces services sont gérés par KAMEO Bikes.</b>
 							
-							<p class="lead text-light"><strong>Contarcter un leasing vélo via l'entreprise qui vous emploie</strong> lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae arcu eu lorem consequat laoreet non eget libero. Etiam et consectetur lectus, a varius ligula. Sed quis tincidunt turpis, et pharetra urna. Etiam dignissim, eros quis maximus pellentesque, erat elit scelerisque urna, volutpat egestas felis lorem at diam. Etiam ornare elementum quam, at faucibus ligula faucibus sed. Phasellus euismod massa vitae mi condimentum posuere. Mauris aliquet, magna eget rutrum ultricies, urna augue porttitor sapien, sed condimentum felis leo eget elit. Etiam orci nibh, aliquam a malesuada id, laoreet nec mi.</p>
+							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>En savoir plus <i class="fa fa-arrow-down"></i></span></a>
 						</div>
 						<div class="col-md-4">
 							<img src="images/Solution.png" class="img-responsive img-rounded" alt="">
 						</div>
-						<hr class="space">
+						<hr class="space" id="plus">
 						
 					</div>
 				</div>
@@ -29,7 +39,7 @@ include 'include/header5.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8">
-							<img src="images/process.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="">
 						</div>
 						<div class="col-md-4">
 							<!-- <hr class="space"> -->
@@ -45,6 +55,20 @@ include 'include/header5.php';
 			</section>
 			<!-- END: SECTION PROCESS PERSONNEL-->
 			
+			<!-- SECTION LEASING -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<h1 class="text-green">LEASING OU VENTE?</h1>
+							<p>Faites votre choix en comparant vos avantages du leasing ou de l'achat.</p>
+							<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-balance-scale"></i>Comparer</span></a>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION LEASING -->
+			
 			<!-- SECTION VELO PERSONNE -->
 			<section class="p-b-0">
 				<div class="container">
@@ -55,6 +79,9 @@ include 'include/header5.php';
 							<p>KAMEO Bikes vous propose une large gamme de vélos.</p>
 							<p>Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
 							<p>Tous les vélos que nous proposons sont à assistance électrique, pour un plus grand confort lors des déplacements de vos collaborateurs. Ils sont équipés de garde-bous, phares, porte bagage. Mais nous pouvons y ajouters différentes options telles que des sacoches. De plus, les vélos peuvent être brandés avec le logo de votre entreprise.</p>
+							<div class="col-md-12 text-center">
+								<a class="button green button-3d effect fill-vertical" href="contact.php"><span>Le catalogue complet</span></a>
+							</div>
 			 
 						</div>
 						<!--
@@ -69,9 +96,9 @@ include 'include/header5.php';
 	                    <div class="col-md-6">
 		                    <div id="slider">
 								<div id="slider-carousel">
-				                	<img alt="image" src="images/Flotte_BZen.jpg" class="slider-content">
-				                	<img alt="image" src="images/Flotte_BZen2.jpg" class="slider-content">
-				                	<img alt="image" src="images/Flotte_BZen3.jpg" class="slider-content">
+				                	<img alt="image" src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" >
+				                	<img alt="image" src="images/Flotte_BZen2.jpg" class="img-responsive img-rounded" >
+				                	<img alt="image" src="images/Flotte_BZen3.jpg" class="img-responsive img-rounded" >
 		                    	</div>
 		                    </div>
 	                    </div>
@@ -80,26 +107,6 @@ include 'include/header5.php';
 			</section>
 			<!-- END: SECTION VELO PERSONNEL -->
 						
-			<!-- SECTION LEASING VELO -->
-			<section class="p-b-0">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-4">
-							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="">
-						</div>
-						<div class="col-md-8">
-							<!-- <hr class="space"> -->
-							<h1 class="text-green">LEASING VELO</h1>
-							<p class="">KAMEO Bikes propose à vos collaborateurs des vélos sous forme de <strong class="text-green">leasing</strong>.</p>
-							<p>Dans le montant du leasing sont compris: le vélo, l'assurance P-Vélo et la maintenance sur le site de l'entreprise.</p>
-							<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus sur le leasing vélo</span></a>
-			 
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- END: SECTION LEASING VELO -->
-			
 			<!-- SECTION MAINTENANCE PERSONNEL -->
 			<section class="p-b-0">
 				<div class="container">
@@ -121,7 +128,28 @@ include 'include/header5.php';
 			</section>
 			<!-- END: SECTION MAINTENANCE PERSONNEL -->
 			
-				<!--<hr class="space">-->
+			<!-- SECTION INFRASTRUCTURES -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<img src="images/infrastructure.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">INSTALLATION D'INFRASTRUCTURES</h1>
+							<p>Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							KAMEO Bikes, fort de son expérience pour vous construire une installation sur mesure pour votre projet.</p>
+			
+							<p>N'hésitez pas à nous demander une remise de prix.</p>
+			 
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION INFRASTRUCTURES -->
+			
+				<hr class="space">
 				
 			<!-- SECTION CALL TO ACTION CONTACT -->
 				<div class="container">
@@ -214,7 +242,7 @@ include 'include/header5.php';
 		
 
 
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -223,9 +251,9 @@ include 'include/header5.php';
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 

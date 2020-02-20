@@ -4,23 +4,29 @@ include 'include/header5.php';
 			<!-- SECTION SOLUTIONS -->
 			<section class="p-b-0 background-green">
 				<div class="container">
-				<a class="button small black-light button-3d full-rounded right" href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right"  href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
-							<h1><ins>Vélos partagés</ins></h1>
+							<h1 class="text-dark">VÉLOS PARTAGÉS</h1>
 							<p class="lead text-light"><strong>KAMEO Bikes</strong> vous propose des vélos partagés pour vos employés.<br>
 							Utilisez ces vélos pour vos déplacements domicile-travail, vos rendez-vous, etc.</p>
 							<p class="lead text-light">En plus de ces vélos nous vous proposons d'autres services qui sont:<br>
-							- la gestion de flotte via <strong class="text-dark">MyKAMEO</strong> et <strong class="text-dark">MyBORNE</strong>,<br>
-							- la <strong class="text-dark">maintenance</strong> sur le site de votre entreprise,<br>
-							- une <strong class="text-dark">assurance</strong> contre la casse et le vol.</p>
+							- la <strong class="text-light">livraison</strong> sur votre lieu de travail,<br>
+							- la gestion de flotte via <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="Le système de gestion de flotte en ligne développé par KAMEO Bikes.">MyKAMEO</a></strong></ins> et <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="La boite de rangement de clés sécurisée dévelopée par KAMEO Bikes.">MyBORNE</a></strong></ins>,<br>
+							- la <strong class="text-light">maintenance</strong> sur le site de votre entreprise,<br>
+							- une <strong class="text-light">assurance</strong> contre la casse et le vol,<br>
+							- l'<strong class="text-light">assistance</strong> dépannage, <br>
+							- l'installation d'<strong class="text-light">infrastructures</strong>.</p>
+							<b>Pour une simplicité de gestion, tous ces services sont gérés par KAMEO Bikes.</b>
+							
+							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>En savoir plus <i class="fa fa-arrow-down"></i></span></a>
 						
 						</div>
 						<div class="col-md-5">
 							<img src="images/Atradius_Bikes.jpg" class="img-responsive img-rounded" alt="">
 						</div>
-						<hr class="space">
+						<hr class="space" id="plus">
 						
 					</div>
 				</div>
@@ -43,11 +49,26 @@ include 'include/header5.php';
 								<li>Nous vous proposons différent vélos</li>
 								<li>Nous organisons des sessions d'essais avec vos employés</li>
 							</ul>
+							<a class="button green button-3d effect fill-vertical" href="contact.php"><span>Bouton call to action</span></a>
 						</div>
 					</div>
 				</div>
 			</section>
 			<!-- END: SECTION PROCESS -->
+			
+			<!-- SECTION LEASING -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<h1 class="text-green">LEASING OU VENTE?</h1>
+							<p>Faites votre choix en comparant vos avantages du leasing ou de l'achat.</p>
+							<a class="button green button-3d effect fill-vertical" href="leasing.php"><span><i class="fa fa-balance-scale"></i>Comparer</span></a>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION LEASING -->
 			
 			<!-- SECTION FLOTTE -->
 			<section class="p-b-0">
@@ -172,7 +193,9 @@ include 'include/header5.php';
 							</div>
 						</div>
 						<!-- END : SELECTION -->
-						
+						<div class="col-md-12 text-center">
+							<a class="button green button-3d effect fill-vertical" href="contact.php"><span>Le catalogue complet</span></a>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -221,19 +244,38 @@ include 'include/header5.php';
 			</section>
 			<!-- END: SECTION MAINTENANCE -->
 			
-				<!--<hr class="space">-->
-				
-			<!-- SECTION CALL TO ACTION CONTACT -->
+			<!-- SECTION INFRASTRUCTURES -->
+			<section class="p-b-0">
 				<div class="container">
-					<div class="row text-center background-green">
-					<br>
-						<h1 class="text-light">NOUS RENCONTRER</h1>
-						<p class="text-dark">Envie de pédaler avec nous?<br>
-						Contactez-nous, nous viendrons vous présenter nos offres.</p>
-						<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-eye"></i>Nous contacter</span></a>
+					<div class="row">
+						<div class="col-md-4">
+							<img src="images/infrastructure.jpg" class="img-responsive img-rounded" alt="">
+						</div>
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">INSTALLATION D'INFRASTRUCTURES</h1>
+							<p>Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							KAMEO Bikes, fort de son expérience pour vous construire une installation sur mesure pour votre projet.</p>
+			
+							<p>N'hésitez pas à nous demander une remise de prix.</p>
+			 
+						</div>
 					</div>
 				</div>
-			<!-- END: SECTION CALL TO ACTION CONTACT -->
+			</section>
+			<!-- END: SECTION INFRASTRUCTURES -->
+			
+				<hr class="space">
+			<!-- CALL TO ACTION -->
+				<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
+				  <div class="container">
+				    <h3>NOUS RENCONTRER</h3>
+				    <p>Envie de pédaler avec nous?<br>
+						Contactez-nous, nous viendrons vous présenter nos offres.</p>
+				    <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
+				</div>
+
+<!--END: CALL TO ACTION -->
 			
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
@@ -315,7 +357,7 @@ include 'include/header5.php';
 		
 
 
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -324,9 +366,9 @@ include 'include/header5.php';
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 

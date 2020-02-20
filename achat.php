@@ -12,10 +12,10 @@ include 'include/header5.php';
 				<div class="row">
 					<div class="col-md-12">
 						<!-- <hr class="space"> -->
-						<h1><ins>Achat vélo</ins></h1>
+						<h1 class="text-green">ACHAT & LEASING VÉLO</h1>
 						<p class="lead text-light">Achetez votre nouveau vélo via votre employeur</p>
 						<p>bla bla bla</p>
-						<p class="text-green">Ne s'affiche que quand on vient depuis la page d'accueil et qu'on clique sur "je suis un employé"</p>
+						<p class="text-green">Bref résumé des deux modes d'obtention d'un vélo</p>
 						<p>bla bla bla</p>
 				</div>
 			</div>
@@ -263,9 +263,9 @@ include 'include/header5.php';
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -280,6 +280,8 @@ include 'include/header5.php';
 									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
+					
+					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
 					
 					<br>
 					<br>

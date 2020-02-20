@@ -1,5 +1,5 @@
 <?php 
-include 'include/header4.php';
+include 'include/header5.php';
 ?>
 
 
@@ -26,7 +26,7 @@ include 'include/header4.php';
 		<div class="col-md-6 text-center" style="background-color: #1D9377">
 			<h2>JE SUIS UN EMPLOYÉ</h2>
 			<span class="">KAMEO Bikes vous fournit en vélos mais aussi en accessoires.<br>
-			<a class="button green button-3d effect fill-vertical" href="achat.php"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
+			<a class="button green button-3d effect fill-vertical"  data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			</span>
 		</div>
 	</div>
@@ -57,7 +57,7 @@ include 'include/header4.php';
 					<div class="col-md-12">
 						<h4 class="text-red">Un système de gestion de flotte</h4>
 						<p>Je dispose déjà de vélos ou de véhicules mais j'aimerais optimiser leur utilisation avec un système simple et fluide.</p>
-						<a class="button red button-3d effect fill-vertical" href="#"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
+						<a class="button red button-3d effect fill-vertical" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
 					</div>
 				</div>
 			</div>
@@ -71,110 +71,99 @@ include 'include/header4.php';
 	</div>
 </div>
 
-<!-- SECTION VISION -->
-<!--
-<section class="p-b-0">
+<div class="modal fade" id="employe" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h2 class="modal-title" id="modal-label">Je suis un employé et je recherche</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row text-center">
+					<div class="col-md-12">
+						<h4 class="text-green">Un vélo</h4>
+						<p>Je souhaite acheter un vélo.</p>
+						<a class="button green button-3d effect fill-vertical" href="achat.php"><span><i class="fa fa-bicycle"></i>Catalogue vélos</span></a>
+					</div>
+					<div class="separator"></div>
+					<div class="col-md-12">
+						<h4 class="text-green">Des accessoires</h4>
+						<p>Je souhaite m'équiper d'accessoires.</p>
+						<a class="button green button-3d effect fill-vertical" href="accessoires.php"><span><i class="fa fa-diamond"></i>Catalogue accessoires</span></a>
+					</div>
+				</div>
+			</div>
+			<!--
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-b">Save Changes</button>
+			</div>
+			-->
+		</div>
+	</div>
+</div>
+
+
+<section>
+	
 	<div class="container">
 		<div class="row">
-			<div class="col-md-8">
-			-->
-				<!-- <hr class="space"> -->
-				<!--
-				<h1 class="text-green">LA VISION DE KAMEO</h1>
-				<p class="lead"><strong class="text-green">KAMEO Bikes</strong> est une entreprise active dans la mobilité urbaine qui propose, aux entreprises, des solutions complètes de mobilité basées sur le vélo. Nous sommes convaincus que le vélo est le mode de transport urbain de demain mais, surtout d’aujourd’hui, et nous travaillons tous les jours pour le démontrer à nos clients.</p>
-
-				<p class="lead"><strong class="text-green">NOS SOLUTIONS</strong> s’appuient sur 3 pôles interdépendants que sont des <strong class="text-green">CYCLES DE QUALITÉ</strong>, une <strong class="text-green">MAINTENANCE CONTINUE</strong> et une <strong class="text-green">GESTION CONNECTÉE</strong> des interactions. La maitrise de ses 3 axes nous permet de garantir une expérience cyclable de qualité, quelles que soient les circonstances.</p>
-
-				<p class="lead">Avec KAMEO Bikes, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, elles sont toujours en mouvement.</p>
-				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus</span></a>
+			<div class="col-md-6">
+				<h1 class="text-green">EN QUELQUES MOTS...</h1>
+				<br>
+				<p class="fr">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
+				<p>Nos solutions s’appuient sur <strong>des cycles de qualité</strong>, <strong>une maintenance continue</strong> et <strong>une gestion connectée de vos vélos</strong>. L’ensemble vous garantit une expérience cyclable optimale, quelles que soient les circonstances.</p>
+				<p>Avec KAMEO, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, vous êtes toujours en mouvement.</p>
 			</div>
-			<div class="col-md-4 hidden-xs hidden-sm"> <img alt="" src="images/VisionKameo.jpg"> </div>
-			<img src="images/VisionKameo.jpg" class="img-responsive img-rounded visible-sm visible-xs" alt="">
+			<div class="col-md-6">
+				<img src="images/RoueKameo.png" class="img-responsive img-rounded img-thumbnail" alt="">
+			</div>
+			<div class="separator"></div>
+			<div class="col-md-12">
+				<h1 class="text-green text-center">POURQUOI CHOISIR KAMEO BIKES?</h1>
+				<br>
+				<div class="col-md-6 text-right">
+					<h3>Avantage pour l'employeur</h3>
+					<ul class="list-unstyled">
+						<li>Respect de l'environnement</li>
+						<li>Incitants fiscaux</li>
+						<li>Productivité et bien-être des employés</li>
+						<li>Attirer de nouveaux talents</li>
+						<li>Vélos de qualité et fiables</li>
+						<li>Offre et services personnalisés</li>
+					</ul>
+				</div>
+				<div class="col-md-6 text-left">
+					<h3>Avantage pour l'employé</h3>
+					<ul class="list-unstyled">
+						<li>Respect de l'environnement</li>
+						<li>Incitants fiscaux</li>
+						<li>Gain de temps</li>
+						<li>Combinaison avec la voiture de société</li>
+						<li>Mode de vie sain</li>
+						<li>Offre et services personnalisés</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
--->
-<!-- END: SECTION VISION -->
 
-<!-- SECTION FLOTTE -->
-<!--
-<section class="p-b-0">
+			
+<!-- CALL TO ACTION -->
+<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
 	<div class="container">
-		<div class="row text-center">
-			<div class="col-md-4">
-				<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
-			</div>
-			<div class="col-md-4">
-			-->
-				<!-- <hr class="space"> -->
-				<!--
-				<h1 class="text-green">CHOIX DE LA FLOTTE DE VÉLOS</h1>
-				<p class="">« Le vélo qui vous convient est un vélo qui vous ressemble. »</p>
-				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-eye"></i>Voir le catalogue</span></a>
-			</div>
-			<div class="col-md-4">
-				<img src="images/Flotte_Conway.jpg" class="img-responsive img-rounded" alt="">
-			</div>
-		</div>
+		<h3>ENVIE D'EN SAVOIR PLUS SUR LES AVANTAGES?</h3>
+		<a class="button large black-light button-3d effect icon-left" href="avantages.php"><span><i class="fa fa-plus"></i>En savoir plus</span></a> </div>
 	</div>
-</section>
--->
-<!-- END: SECTION FLOTTE -->
-
-<!-- SECTION MAINTENANCE -->
-<!--
-<section class="p-b-0">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4 hidden-xs hidden-sm"> <img alt="" src="images/Maintenance.jpg"> </div>
-			<div class="col-md-8">
-			-->
-				<!-- <hr class="space"> -->
-				<!--
-				<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-				<p class="">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. 
-C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>
-
-				<p class="">Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.</p>
-				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus</span></a>
-			</div>
-		</div>
-	</div>
-</section>
--->
-<!-- END: SECTION MAINTENANCE -->
-
-<!-- SECTION GESTION FLOTTE -->
-<!--
-<section class="p-b-0">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8">
-			-->
-				<!-- <hr class="space"> -->
-				<!--
-				<h1 class="text-green">GESTION DE FLOTTE</h1>
-				<p class="">Gérer une flotte de vélos partagés demande de l’organisation et du temps ! MyKAMEO a été développé pour permettre à nos clients de profiter de leurs vélos sans devoir s’en soucier.</p>
-
-				<p class="">La plateforme MyKAMEO est une solution IT de gestion qui permet à chaque utilisateur de se connecter sur un espace sécurisé, de réserver un vélo de la flotte partagée de l’entreprise et de donner du feedback quant à l’état et l’utilisation de celui-ci. Elle permet également au Fleet Manager de contrôler la flotte, les réservations et de paramétrer l’ensemble. Des statistiques mensuelles sur l’utilisation des vélos et leur état lui sont envoyées automatiquement afin de pouvoir suivre facilement l’évolution du projet vélo !</p>
-
-				<p class="">La demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>
-				<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus</span></a>
-			</div>
-			<div class="col-md-4 hidden-xs hidden-sm"> <img alt="" src="images/Borne.jpg"> </div>
-			<img src="images/Borne.jpg" class="img-responsive img-rounded visible-sm visible-xs" alt="">
-		</div>
-	</div>
-</section>
--->
-<!-- END: SECTION GESTION FLOTTE -->
+</div>
+<!--END: CALL TO ACTION -->
 
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
 				
 				
 <!-- SECTION CLIENTS -->
-<!--
 <section class="p-b-0">
 	<div class="container">
 		<h1 class="text-green">ILS NOUS FONT CONFIANCE</h1>
@@ -242,7 +231,6 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
         
 	</div>
 </section>
--->
 <!-- END: SECTION CLIENTS -->
 		
 	<div class="modal fade" id="newPassword" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -321,7 +309,6 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 
 
 				<!-- FOOTER -->
-				<!--
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -330,9 +317,9 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a>--> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				<!--
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -356,7 +343,7 @@ C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pe
 	            </div>
 	        </div>
 	    </div>
-	</footer>-->
+	</footer>
 			<!-- END: FOOTER -->
 
 	</div>

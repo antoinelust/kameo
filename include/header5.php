@@ -86,7 +86,7 @@
 	<div class="wrapper">
 	
 	<!-- TOPBAR -->
-	
+	<!--
 		<div id="topbar" class="topbar-colored dark">
 			<div class="container">
 				<div class="row">
@@ -97,13 +97,54 @@
 							<li><a href="#" onClick="setNl()">Nl</a></li>
 							<li><a href="#" onClick="setEn()">En</a></li>
 						</ul>
+						<ul class="top-menu left">
+							<a class="button small blue  full-rounded center" href="#"><span> <i class="fa fa-facebook"></i></span></a>
+							<a class="button small pink  full-rounded center" href="#"><span> <i class="fa fa-instagram"></i></span></a>
+						</ul>
 					</div>
-					
 				</div>
 			</div>
 		</div>
+		-->
 		
 		<!-- END: TOPBAR -->
+		
+					
+		
+		
+		<!-- TOPBAR -->
+		<div id="topbar" class="topbar-dark">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12">
+						<ul class="top-menu left">
+							<li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li class="social-instagram"><a href="#"><i class="fa fa-instagram"></i></a></li>
+							<li class="social-linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END: TOPBAR -->
+		
+		<!-- TOPBAR -->
+		<div id="topbar" class="topbar-colored">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12">
+						<ul class="top-menu right">
+							<a class="button small red-dark button-3d full-rounded" href="#"><span>MyKAMEO</span></a>
+							<li><a href="#" onClick="setFr()">Fr</a></li>
+							<li><a href="#" onClick="setNl()">Nl</a></li>
+							<li><a href="#" onClick="setEn()">En</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END: TOPBAR -->
+		
 
 		<!-- HEADER -->
 		<header id="header" class="header-light">
@@ -132,22 +173,27 @@
 						<div class="container">
 							<nav id="mainMenu" class="main-menu mega-menu">
 								<ul class="main-menu nav nav-pills">
-									<li class="fr"><a href="index2.php">Accueil</a></li>
-									<li class="en"><a href="index2.php">Home</a></li>
-									<li class="nl"><a href="index2.php">Home</a></li>
+									<li class="fr"><a href="index2.php"><i class="fa fa-home"></i> Accueil</a></li>
+									<li class="en"><a href="index2.php"><i class="fa fa-home"></i> Home</a></li>
+									<li class="nl"><a href="index2.php"><i class="fa fa-home"></i> Home</a></li>
 									
 									<li class="dropdown fr"> <a href="#">Nos solutions <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
-											<li><a href="velo-partage.php">Vélo partagé</a> </li>
-											<li><a href="velo-personnel.php">Vélo personnel</a> </li>
-											<li><a href="#">Système de gestion de flotte</a> </li>
-											<li><a href="leasing.php">Leasing Vélo</a> </li>
+											<li><a href="velo-partage.php">Vélos partagés</a> </li>
+											<li><a href="velo-personnel.php">Vélos personnels</a> </li>
+											<li><a href="gestion-flotte.php">Système de gestion de flotte</a> </li>
+											<li><a href="leasing.php">Leasing & Vente Vélo</a> </li>
 										</ul>
 									</li>
 									
-									<li class="fr"><a href="achat.php">Catalogue</a></li>
-									<li class="en"><a href="achat.php">Catalog</a></li>
-									<li class="nl"><a href="achat.php">Catalogus</a></li>
+									<li class="dropdown fr"> <a href="#">Catalogue <i class="fa fa-angle-down"></i> </a>
+										<ul class="dropdown-menu">
+											<li><a href="achat.php">Nos vélos</a> </li>
+											<li><a href="accessoires.php">Nos accessoires</a> </li>
+										</ul>
+									</li>
+									
+									<li class="fr"><a href="avantages.php">Avantages</a></li>
 									
 									<li class="fr"><a href="contact2.php">Contact</a></li>
 									<li class="en"><a href="contact2.php">Contact</a></li>

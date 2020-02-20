@@ -1,5 +1,5 @@
 <?php 
-include 'include/header2.php';
+include 'include/header5.php';
 ?>
 
 		
@@ -10,11 +10,7 @@ include 'include/header2.php';
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                    	<div class="heading heading text-left m-b-20">
-                        <h2 class="fr">COMMANDER</h2>
-						<h2 class="en">ORDER</h2>
-						<h2 class="nl">BEVELEN</h2>
-                        </div>
+                    	<h1 class="text-green">COMMANDER</h1>
                         <p class="fr">Vous voulez commander un vélo ou des accessoires? 
                         <br><strong class="text-green">Félicitations!</strong>
                         <br>Laissez nous vos coordonnées, nous reviendrons vers vous dès que possible.</p>
@@ -112,7 +108,7 @@ include 'include/header2.php';
         
         
 
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -121,9 +117,9 @@ include 'include/header2.php';
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -138,6 +134,8 @@ include 'include/header2.php';
 									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
+					
+					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
 					
 					<br>
 					<br>
