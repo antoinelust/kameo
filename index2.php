@@ -2,6 +2,36 @@
 include 'include/header5.php';
 ?>
 
+<div class="modal fade" id="donnees" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h2 class="modal-title" id="modal-label">Vos données personnelles</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row text-center">
+					<div class="col-md-12">
+						<p>Dans le but de vous offrir une meilleure expérience utilisateur, nous utilisons des cookies spécifiques.</p>
+						<p>Veuillez accepter l'utilisation de ceux-ci ou découvrir à quoi ils nous sont utiles.</p>
+						<p>Vous pourrez toujours changer vos paramètres plus tard.</p>
+						<p class="text-green">ATTENTION: Antoine doit paramétrer ce popup pour qu'il ne s'ouvre qu'à chaque nouvel utilisateur. Une fois validé il ne s'affichera plus.<br>
+						Voir avec Megge et/ou Désiré les informations légales à y mettre.</p>
+						<a class="button green button-3d effect fill-vertical" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-thumbs-o-up"></i>J'accepte</span></a><br>
+						<a class="button button-3d effect fill-vertical" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-info"></i>En savoir plus</span></a>
+					</div>
+				</div>
+			</div>
+			<!--
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-b">Save Changes</button>
+			</div>
+			-->
+		</div>
+	</div>
+</div>
+
 
 <br>
 <h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, la solution complète pour vos vélos de société</h1>
@@ -396,6 +426,13 @@ include 'include/header5.php';
 <?php
 }
 ?>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#donnees").modal('show');
+    });
+</script>
 
 </body>
 
