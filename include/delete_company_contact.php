@@ -9,7 +9,7 @@ include 'globalfunctions.php';
 $id = isset($_POST["id"]) ? $_POST["id"] : NULL;
 
 if($id != NULL){
-/*  include 'connexion.php';
+  include 'connexion.php';
   $sql = "DELETE FROM companies_contact
           WHERE ID = $id;";
 
@@ -17,7 +17,7 @@ if($id != NULL){
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);
       die;
-  }*/
+  }
   echo ('valide');
 }else{
   $response = 'ID invalide';

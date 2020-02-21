@@ -310,3 +310,80 @@ INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, 
 
 dzaed
  ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('nom', 'prenom', 'email', '', 'fct', 14, 'Y');
+
+email
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('nom', 'prenom', 'email', '', 'fct', 14, 'N');
+
+email
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('nom', 'prenom', 'email', '', 'fct', 14, 'N');
+
+email
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('n', 'p', 'e', '', 'f', 14, 'N');
+
+e
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('qsd', 'sqd', 'ssd', '', 'qsd', 14, 'N');
+
+ssd
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('q', 's', 'a', '', 's', 14, 'N');
+
+a
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'e', 'a', '', 'r', 14, 'N');
+
+a
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'e', 'a', '', 'r', 14, 'N');
+
+a
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'e', 'aza', '', 'r', 14, 'N');
+
+aza
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'e', 'a', '', 'r', 14, 'N');
+
+a
+ ---- 
+11
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'e', 'a', '', 'r', 11, 'N');
+
+a
+ ---- 

@@ -537,7 +537,7 @@ if ($assurance == true) { ?>
     </div>
     <div class="bold red">
       Si vous respectez les 3 points précédents la seule chose à faire pour être couvert est donc ATTACHER
-      votre vélo à UN POINT FIXE avec le CADENAS FOURNI PAR KAMEO. Dans un garage privé et fermé,
+      votre vélo à UN POINT FIXE avec le CADENAS PROPOSÉ PAR KAMEO. Dans un garage privé et fermé,
       c’est un cas particulier, il n’est pas nécessaire d’attacher le vélo.
     </div>
     <p>Informations et conditions complètes sur <a href="https://www.aedessa.be/assurances/velo" class="bold" style="color:black; ">https://www.aedessa.be/assurances/velo</a></p>
