@@ -349,7 +349,7 @@ function generateCompaniesGraphic(dateStart, dateEnd){
       if (response.response == 'error') {
         console.log(response.message);
       } else{
-
+        
         var ctx = document.getElementById('myChart3').getContext('2d');
         if (myChart3 != undefined) {
           myChart3.destroy();
@@ -375,6 +375,11 @@ function generateCompaniesGraphic(dateStart, dateEnd){
               borderColor: "#1D9377",
               backgroundColor: "#3cb395",
               data: response.companiesOfferSigned
+            },{
+              label: 'Entreprises pas intéressées',
+              borderColor: "#1D9377",
+              backgroundColor: "#3cb395",
+              data: response.companiesNotInterested
             }],
             labels:response.dates
           },
@@ -1341,7 +1346,7 @@ if($connected){
         }
         if(response.response == 'success'){
           var dest="";
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><br/><tbody><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead>";
+          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('NOT INTERESTED')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Not interested</span></a><br/><tbody><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead>";
           dest=dest.concat(temp);
           var i=0;
 
@@ -4930,91 +4935,91 @@ jQuery("#widget-updateCompanyConditions-form").validate({
 
 
 <div class="modal fade" id="companyListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-</div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
 
-<div data-example-id="contextual-table" class="bs-example">
-<span id="companyListingSpan"></span>
-</div>
-<div class="separator">            </div>
+            <div data-example-id="contextual-table" class="bs-example">
+                <span id="companyListingSpan"></span>
+            </div>
+            <div class="separator">            </div>
 
-<h4 class="text-green">Statistiques sur le nombre de clients : </h4>
-<div class="col-sm-3">
-<div class="form-group">
-<label for="dtp_input3" class="control-label">Date de début</label>
-<div class="input-group date form_date_start_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
-<input class="form-control" size="16" type="text" value="" readonly>
-<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-</div>
-<input type="hidden" id="dtp_input3" value="" /><br/>
-</div>
-</div>
+            <h4 class="text-green">Statistiques sur le nombre de clients : </h4>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="dtp_input3" class="control-label">Date de début</label>
+                    <div class="input-group date form_date_start_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <input type="hidden" id="dtp_input3" value="" /><br/>
+                </div>
+            </div>
 
-<div class="col-sm-3">
-<div class="form-group">
-<label for="dtp_input4" class="control-label">Date de fin</label>
-<div class="input-group date form_date_end_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">
-<input class="form-control" size="16" type="text" value="" readonly>
-<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-</div>
-<input type="hidden" id="dtp_input4" value="" /><br/>
-</div>
-</div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="dtp_input4" class="control-label">Date de fin</label>
+                    <div class="input-group date form_date_end_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <input type="hidden" id="dtp_input4" value="" /><br/>
+                </div>
+            </div>
 
 
 
-<canvas id="myChart3" style="display: block; width: 800px; height: 400px;" width="800" height="400" class="chartjs-render-monitor"></canvas>
+            <canvas id="myChart3" style="display: block; width: 800px; height: 400px;" width="800" height="400" class="chartjs-render-monitor"></canvas>
 
-<div class="fr" class="modal-footer">
-<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-</div>
-<div class="en" class="modal-footer">
-<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-</div>
-<div class="nl" class="modal-footer">
-<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-</div>
-</div>
-</div>
+            <div class="fr" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+            </div>
+            <div class="en" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+            </div>
+            <div class="nl" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
 
-$('.form_date_start_client').datetimepicker({
-  language:  'fr',
-  weekStart: 1,
-  todayBtn:  1,
-  autoclose: 1,
-  todayHighlight: 1,
-  startView: 2,
-  minView: 2,
-  forceParse: 0
-});
+    $('.form_date_start_client').datetimepicker({
+      language:  'fr',
+      weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      minView: 2,
+      forceParse: 0
+    });
 
-$('.form_date_end_client').datetimepicker({
-  language:  'fr',
-  weekStart: 1,
-  todayBtn:  1,
-  autoclose: 1,
-  todayHighlight: 1,
-  startView: 2,
-  minView: 2,
-  forceParse: 0
-});
+    $('.form_date_end_client').datetimepicker({
+      language:  'fr',
+      weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      minView: 2,
+      forceParse: 0
+    });
 
 
 
-$('.form_date_start_client').change(function(){
-  generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-});
-$('.form_date_end_client').change(function(){
-  generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-});
+    $('.form_date_start_client').change(function(){
+      generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+    });
+    $('.form_date_end_client').change(function(){
+      generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+    });
 
 </script>
 

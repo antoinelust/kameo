@@ -29,6 +29,7 @@ if($action=="graphic"){
     $companiesContact=array();
     $companiesOffer=array();
     $companiesOfferSigned=array();
+    $companiesNotInterested=array();
     $dates=array();
     while($date_start<=$date_end){
         
@@ -61,7 +62,7 @@ if($action=="graphic"){
         array_push($companiesOffer, $resultat['SUM']); 
         
         include 'connexion.php';
-        $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<='$date_start_string' AND TYPE = 'offreSigned' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND bb.TYPE='delivery') ";
+        $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions aa, companies bb WHERE bb.INTERNAL_REFERENCE=aa.COMPANY AND DATE<='$date_start_string' AND aa.TYPE = 'offreSigned' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND bb.TYPE='delivery') ";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -71,6 +72,18 @@ if($action=="graphic"){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
         array_push($companiesOfferSigned, $resultat['SUM']); 
+        
+        include 'connexion.php';
+        $sql="SELECT COUNT(1) AS 'SUM' FROM companies aa WHERE HEU_MAJ<='$date_start_string' AND TYPE = 'NOT INTERESTED'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);    
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();
+        array_push($companiesNotInterested, $resultat['SUM']); 
         
         
         array_push($dates, $date_start_string);
@@ -82,6 +95,8 @@ if($action=="graphic"){
     $response['companiesContact']=$companiesContact;
     $response['companiesOffer']=$companiesOffer;
     $response['companiesOfferSigned']=$companiesOfferSigned;
+    $response['companiesNotInterested']=$companiesNotInterested;
+    $response['sql']=$sql;
     echo json_encode($response);
     die;
     
@@ -96,7 +111,7 @@ if($action=="graphic"){
         $sql=$sql." WHERE TYPE='$type'";
     }
 
-    $sql=$sql." ORDER BY COMPANY_NAME";
+    $sql=$sql." ORDER BY HEU_MAJ DESC";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -158,6 +173,7 @@ if($action=="graphic"){
             $sql4="SELECT * from building_access where COMPANY='$internalReference'";
             if ($conn->query($sql4) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
                 echo json_encode($response);
                 die;
             }
