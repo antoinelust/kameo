@@ -21,7 +21,7 @@ $('body').on('click', '.addCompanyContact', function(){
   var responseContent = "";
   var sendData = true;
   //verification de la validité des champs
-  $(this).parents('.contactAddIteration').find('input').each(function(){
+  $('.contactAddIteration').find('input').each(function(){
     //si un champ est invalide, on empèche la requete
     if(!$(this).valid()){
       sendData = false;
@@ -29,7 +29,7 @@ $('body').on('click', '.addCompanyContact', function(){
 
   });
   if (sendData) {
-    var that = $(this).parents('.contactAddIteration');
+    var that = $('.contactAddIteration');
     add_contact(that).done(function(response, selecteur = that){
       //response = JSON.parse(response);
       var bikesStatsChecked = "";
@@ -68,10 +68,10 @@ $('body').on('click', '.addCompanyContact', function(){
         <td>
           <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove" type="button"></button>
         </td>
-        <input type="hidden" class="companyIdHidden" name="contactId`+id+`" id="contactId`+id+`" value="`+id+`"/>
+        <input type="hidden" class="contactIdHidden" name="contactId`+id+`" id="contactId`+id+`" value="`+id+`"/>
       </tr>`;
-      alert(responseContent);
       $('.clientContactZone').find('.contactsTable').find('tbody').append(responseContent);
+      nbContacts++;
     });
 
     //retirer le visuel d'ajout
@@ -100,14 +100,4 @@ function add_contact(that){
         console.log(response);
       }
   });
-}
-
-function remove_contact_form(){
-  //retrait de l ajout
-  $('.contactAddIteration').fadeOut();
-  //ajout du statut disabled des input
-  $('.contactAddIteration').find('input').each(function(){
-    $(this).prop('disabled', true);
-  });
-  $('.removeContact').addClass('glyphicon-plus').addClass('green').addClass('addContact').removeClass('glyphicon-minus').removeClass('red').removeClass('removeContact');
 }
