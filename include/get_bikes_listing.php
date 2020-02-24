@@ -18,19 +18,19 @@ $response=array();
 if($admin!="Y"){
     if($company==NULL){
         if($email != NULL){
-            include 'connexion.php';            
+            include 'connexion.php';
             $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
                 die;
             }
-            $result = mysqli_query($conn, $sql);    
+            $result = mysqli_query($conn, $sql);
             if($result->num_rows=='0'){
                 errorMessage("ES0039");
-            }        
-            $resultat = mysqli_fetch_assoc($result);        
-            $company=$resultat['COMPANY'];            
+            }
+            $resultat = mysqli_fetch_assoc($result);
+            $company=$resultat['COMPANY'];
 
         }else{
             errorMessage("ES0038");
@@ -42,7 +42,7 @@ if($admin!="Y"){
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;
-    }           
+    }
 }else{
     include 'connexion.php';
     $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
@@ -51,10 +51,10 @@ if($admin!="Y"){
         echo json_encode($response);
         die;
     }
-}   
+}
 include 'connexion.php';
 
-$result = mysqli_query($conn, $sql);        
+$result = mysqli_query($conn, $sql);
 $length = $result->num_rows;
 $response['bikeNumber']=$length;
 $response['response']="success";
@@ -67,17 +67,18 @@ while($row = mysqli_fetch_array($result))
 {
 
     $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-    $response['bike'][$i]['model']=$row['MODEL'];            
-    $response['bike'][$i]['company']=$row['COMPANY'];            
+    $response['bike'][$i]['model']=$row['MODEL'];
+    $response['bike'][$i]['company']=$row['COMPANY'];
     $response['bike'][$i]['automatic_billing']=$row['AUTOMATIC_BILLING'];
     $response['bike'][$i]['billingType']=$row['BILLING_TYPE'];
     $response['bike'][$i]['contractType']=$row['CONTRACT_TYPE'];
     $response['bike'][$i]['contractStart']=$row['CONTRACT_START'];
     $response['bike'][$i]['leasingPrice']=$row['LEASING_PRICE'];
+    $response['bike'][$i]['soldPrice']=$row['SOLD_PRICE'];
     $response['bike'][$i]['contractEnd']=$row['CONTRACT_END'];
     $response['bike'][$i]['status']=$row['STATUS'];
     $response['bike'][$i]['insurance']=$row['INSURANCE'];
-    
+
     if($row['TYPE']){
         $type=$row['TYPE'];
         include 'connexion.php';
@@ -88,18 +89,18 @@ while($row = mysqli_fetch_array($result))
             die;
         }
 
-        $result2 = mysqli_query($conn, $sql2);        
+        $result2 = mysqli_query($conn, $sql2);
         $resultat2 = mysqli_fetch_assoc($result2);
         $conn->close();
-        $response['bike'][$i]['brand']=$resultat2['BRAND'];            
-        $response['bike'][$i]['modelBike']=$resultat2['MODEL'];            
-        $response['bike'][$i]['frameType']=$resultat2['FRAME_TYPE'];            
-        
+        $response['bike'][$i]['brand']=$resultat2['BRAND'];
+        $response['bike'][$i]['modelBike']=$resultat2['MODEL'];
+        $response['bike'][$i]['frameType']=$resultat2['FRAME_TYPE'];
+
     }else{
-        $response['bike'][$i]['brand']=null;            
-        $response['bike'][$i]['modelBike']=null;            
+        $response['bike'][$i]['brand']=null;
+        $response['bike'][$i]['modelBike']=null;
     }
-    
+
     $i++;
 
 }
@@ -112,7 +113,7 @@ if ($conn->query($sql2) === FALSE){
     echo json_encode($response);
     die;
 }
-$result2 = mysqli_query($conn, $sql2);        
+$result2 = mysqli_query($conn, $sql2);
 $resultat2 = mysqli_fetch_assoc($result2);
 
 $response['numberOfBookings']=$resultat2['count(1)'];

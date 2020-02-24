@@ -11,7 +11,7 @@ function list_contracts_offers(company) {
                 var i=0;
                 var dest="";
                 var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats signés :</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
-                dest=dest.concat(temp);    
+                dest=dest.concat(temp);
                 while (i < response.contractsNumber){
                     if(response.contract[i].start!=null){
                         var contract_start=response.contract[i].start.substr(0,10);
@@ -30,10 +30,10 @@ function list_contracts_offers(company) {
 
                 }
                 var temp="</tobdy></table>";
-                dest=dest.concat(temp);     
+                dest=dest.concat(temp);
 
                 var temp="<p>Valeur actuelle des contrat en cours : <strong>"+Math.round(response.sumContractsCurrent)+" €/mois</strong></p>";
-                dest=dest.concat(temp);     
+                dest=dest.concat(temp);
 
                 document.getElementById('contractsListingSpan').innerHTML = dest;
 
@@ -42,7 +42,7 @@ function list_contracts_offers(company) {
                 var i=0;
                 var dest="";
                 var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Offres en cours :</h4><h4 class=\"en-inline text-green\">Offers:</h4><h4 class=\"nl-inline text-green\">Offers:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Probabilité</th><th></th></tr></thead>";
-                dest=dest.concat(temp); 
+                dest=dest.concat(temp);
                 while (i < response.offersNumber){
                     if(response.offer[i].start!=null){
                         var offer_start=response.offer[i].start.substr(0,10);
@@ -59,7 +59,7 @@ function list_contracts_offers(company) {
                         var amount=Math.round(response.offer[i].amount)+ "€/mois";
                     }else{
                         var amount=Math.round(response.offer[i].amount)+ "€";
-                    }        
+                    }
 
                     if(response.offer[i].amount==0){
                         var amount="<span class=\"text-red\">"+amount+"</span>";
@@ -81,18 +81,18 @@ function list_contracts_offers(company) {
                     var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+response.offer[i].company+"</td><td>"+type+"</td><td>"+response.offer[i].title+"</td><td>"+amount+" </td><td>"+offer_start+"</td><td>"+offer_end+"</td><td>"+probability+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
 
 
-                    dest=dest.concat(temp);                        
+                    dest=dest.concat(temp);
                     i++;
 
                 }
                 var temp="</tobdy></table>";
-                dest=dest.concat(temp);                         
+                dest=dest.concat(temp);
                 document.getElementById('offersListingSpan').innerHTML = dest;
 
                 var i=0;
                 var dest="";
                 var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Coûts:</h4><h4 class=\"en-inline text-green\">Costs:</h4><h4 class=\"nl-inline text-green\">Costs:</h4><br/><br/><a class=\"button small green button-3d rounded icon-right addCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un coût</span></a><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th>Type</th><th></th></tr></thead>";
-                dest=dest.concat(temp); 
+                dest=dest.concat(temp);
                 while (i < response.costsNumber){
                     if(response.cost[i].start!=null){
                         var cost_start=response.cost[i].start.substr(0,10);
@@ -109,16 +109,16 @@ function list_contracts_offers(company) {
                         var amount=Math.round(response.cost[i].amount)+ "€/mois";
                     }else{
                         var amount=Math.round(response.cost[i].amount)+ "€";
-                    }                        
+                    }
                     var temp="<tr><td><a href=\"#\" class=\"retrieveCost\" data-target=\"#costsManagement\" data-toggle=\"modal\" name=\""+response.cost[i].id+"\">"+response.cost[i].id+"</a></td><td>"+response.cost[i].title+"</td><td>"+amount+" </td><td>"+cost_start+"</td><td>"+cost_end+"</td><td><ins><a class=\"text-green costsManagement updateCost\" data-target=\"#costsManagement\" name=\""+response.cost[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
 
 
-                    dest=dest.concat(temp);                        
+                    dest=dest.concat(temp);
                     i++;
 
                 }
                 var temp="</tobdy></table>";
-                dest=dest.concat(temp);                         
+                dest=dest.concat(temp);
                 document.getElementById('costsListingSpan').innerHTML = dest;
 
                 $(".retrieveOffer").click(function() {
@@ -126,31 +126,31 @@ function list_contracts_offers(company) {
                     $('.offerManagementTitle').text("Consulter une offre");
                     $('.offerManagementSendButton').addClass("hidden");
 
-                });                    
+                });
                 $(".updateOffer").click(function() {
                     retrieve_offer(this.name, "update");
                     $('.offerManagementTitle').text("Mettre à jour une offre");
                     $('.offerManagementSendButton').removeClass("hidden");
-                    $('.offerManagementSendButton').text("Mettre à jour")                        
+                    $('.offerManagementSendButton').text("Mettre à jour")
 
-                });                    
+                });
 
 
                 $(".addCost").click(function() {
-                    $('#widget-costsManagement-form input').attr("readonly", false);                            
-                    $('#widget-costsManagement-form textarea').attr("readonly", false);                            
-                    $('#widget-costsManagement-form select').attr("readonly", false);                                                    
+                    $('#widget-costsManagement-form input').attr("readonly", false);
+                    $('#widget-costsManagement-form textarea').attr("readonly", false);
+                    $('#widget-costsManagement-form select').attr("readonly", false);
                     $('.costManagementTitle').text("Ajouter un coût");
                     $('.costManagementSendButton').removeClass("hidden");
-                    document.getElementById('widget-costsManagement-form').reset(); 
+                    document.getElementById('widget-costsManagement-form').reset();
                     $('.costManagementSendButton').text("Ajouter")
 
-                });                    
+                });
                 $(".retrieveCost").click(function() {
                     retrieve_cost(this.name, "retrieve");
                     $('.costManagementTitle').text("Consulter un coût");
                     $('.costManagementSendButton').addClass("hidden");
-                });                    
+                });
                 $(".updateCost").click(function() {
                     retrieve_cost(this.name, "update");
                     $('.costManagementTitle').text("Mettre à jour un coût");
@@ -158,10 +158,10 @@ function list_contracts_offers(company) {
                     $('.costManagementSendButton').removeClass("hidden");
                     $('.costManagementSendButton').text("Mettre à jour")
 
-                });                    
+                });
 
 
-                displayLanguage();    
+                displayLanguage();
 
             }
         }
@@ -321,3 +321,90 @@ function retrieve_offer(ID, action){
 
 }
 
+
+function get_sold_bikes(){
+  $.ajax({
+      url: 'include/get_bikes_listing.php',
+      method: 'post',
+      data: {
+        "email" : email,
+        "admin" : "Y"
+    },
+      success: function(response){
+        var soldBikes = new Array();
+        for (var i = 0; i < response.bike.length; i++) {
+          if(response.bike[i].contractType == "selling"){
+            soldBikes.push(response.bike[i]);
+          }
+        }
+        var dest = `
+        <h4 class="fr-inline text-green">Vélos vendus</h4>
+        <h4 class="en-inline text-green">Sold bikes</h4>
+        <h4 class="nl-inline text-green">Sold Bikes</h4>
+        <br />
+        <br />
+        <div class="seperator seperator-small visible-xs"></div>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>
+                <span class="fr-inline">Société</span>
+                <span class="en-inline">Company</span>
+                <span class="nl-inline">Company</span>
+              </th>
+              <th>
+                <span class="fr-inline">Vélo</span>
+                <span class="en-inline">Bike</span>
+                <span class="nl-inline">Bike</span>
+              </th>
+              <th>
+                <span class="fr-inline">Marque</span>
+                <span class="en-inline">Brand</span>
+                <span class="nl-inline">Brand</span>
+              </th>
+              <th>
+                <span class="fr-inline">Modèle</span>
+                <span class="en-inline">Model</span>
+                <span class="nl-inline">Model</span>
+              </th>
+              <th>
+                <span class="fr-inline">Prix de vente HTVA</span>
+                <span class="en-inline">Sold price</span>
+                <span class="nl-inline">Sold price</span>
+              </th>
+              <th>
+                <span class="fr-inline">Date de vente</span>
+                <span class="en-inline">Sold date</span>
+                <span class="nl-inline">Sold date</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+        `;
+
+        soldBikes.forEach((soldBike) => {
+          var soldBikeTd = `<td>`+soldBike.soldPrice+` €</td>`
+          if(soldBike.soldPrice == 0){
+            soldBikeTd = `<td class="text-red">N/A</td>`
+          }
+          dest += `
+            <tr>
+            <td>`+soldBike.company+`</td>
+            <td>`+soldBike.frameNumber+`</td>
+            <td>`+soldBike.brand+`</td>
+            <td>`+soldBike.modelBike+`</td>
+            `+soldBikeTd+`
+            <td>`+soldBike.contractStart+`</td>
+            </tr>
+          `;
+        });
+
+
+
+        dest +="</tobdy></table>";
+        $("#soldBikesListingSpan").html(dest);
+        console.log(soldBikes);
+      }
+
+  });
+}
