@@ -18,12 +18,12 @@ function list_bikes_admin() {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp=`<table class="table table-condensed">
-                            <h4 class="fr-inline text-green">Vélos:</h4><br/>
+                var temp=`<table class="table table-condensed bikesListingTable">
+                            <h4 class="fr-inline text-green">Vélos: Leasing et autres</h4><br/>
                             <a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#" onclick="set_required_image('true')">
                               <span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span>
                             </a>
-                            <span class="button small green button-3d rounded icon-right showBoughtBike">
+                            <span class="button small green button-3d rounded icon-right showSoldBikes">
                               <span class="fr-inline">Afficher les vélos vendus</span>
                             </span>
                             <br/>
@@ -135,9 +135,9 @@ function list_bikes_admin() {
                     }else{
                         var contractType="<span class=\"text-green\">"+response.bike[i].contractType+"</span>";
                     }
-                    var row = "<tr>";
+                    var row = '<tr class="showRow">';
                     if(response.bike[i].contractType == 'selling'){
-                      row = "<tr style='display:none;'>";
+                      row = '<tr style="display:none;" class="hideRow">';
                     }
                     var temp= row + "<td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"retrieveBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td><ins><a class=\"text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">Mettre à jour</a></ins></td></tr>";
                     dest=dest.concat(temp);
@@ -854,6 +854,37 @@ function get_bikes_listing() {
         }
     })
 }
+
+//Affichage des vélos vendus
+$('body').on('click','.showSoldBikes', function(){
+  var buttonContent = "Afficher les autres vélos";
+  var titleContent = "Vélos: Vendus";
+  switch_showed_bikes ('showSoldBikes', 'hideSoldBikes', buttonContent, titleContent);
+});
+
+//Affichage des autres vélos
+$('body').on('click','.hideSoldBikes', function(){
+  var buttonContent = "Afficher vélos vendus";
+  var titleContent = "Vélos: Leasing et autres";
+  switch_showed_bikes ('hideSoldBikes', 'showSoldBikes', buttonContent, titleContent);
+});
+
+
+function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleContent){
+  //modification du bouton
+  $('.'+buttonRemove).removeClass(buttonRemove).addClass(buttonAdd).find('.fr-inline').html(buttonContent);
+  //modification du Titre
+  $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
+  //gestion des classes show et hide
+  $('.bikesListingTable').find('.showRow').removeClass('showRow').addClass('hideRowTemp');
+  $('.bikesListingTable').find('.hideRow').removeClass('hideRow').addClass('showRow');
+  $('.bikesListingTable').find('.hideRowTemp').removeClass('hideRowTemp').addClass('hideRow');
+  //affichage
+  $('.bikesListingTable').find('.hideRow').hide();
+  $('.bikesListingTable').find('.showRow').fadeIn();
+
+}
+
 
 function set_required_image(foo){
   if (foo == 'true') {

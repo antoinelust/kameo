@@ -22,6 +22,10 @@ $('.contractInfos').on('change','select',function(){
       $('.contractInfos').find('.contractEndBloc input').removeAttr('disabled');
       $('.contractInfos').find('.contractEndBloc').fadeIn();
     }
+    //affichage de l'input pour le prix de vente
+    $('#bikeSoldPrice').addClass('required').removeAttr('disabled').prop('required','required');
+    $('.soldPrice').fadeIn();
+
     //autres types de vente/location de vélo
   } else{
     //changement des labels
@@ -35,6 +39,10 @@ $('.contractInfos').on('change','select',function(){
 
     $('.contractInfos').find('.contractEndBloc input').removeAttr('disabled');
     $('.contractInfos').find('.contractEndBloc').fadeIn();
+
+    //affichage de l'input pour le prix de vente
+    $('#bikeSoldPrice').removeClass('required').removeAttr('required').prop('disabled','disabled');
+    $('.soldPrice').fadeOut();
   }
   currentOption = $('.contractInfos select').val();
 });

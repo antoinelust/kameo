@@ -15,6 +15,7 @@ $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 include 'include/activitylog.php';
 ?>
 
+
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
 <script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
@@ -28,6 +29,7 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/contracts_management.js"></script>
 <script type="text/javascript" src="js/bills_management.js"></script>
 <script type="text/javascript" src="js/search_module.js"></script>
+
 
 <style media="screen">
 .tableFixed {
@@ -109,6 +111,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
   document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
 }, false);
 document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
+document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
 document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
 document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false);
@@ -341,7 +344,7 @@ function generateCompaniesGraphic(dateStart, dateEnd){
       if (response.response == 'error') {
         console.log(response.message);
       } else{
-        
+
         var ctx = document.getElementById('myChart3').getContext('2d');
         if (myChart3 != undefined) {
           myChart3.destroy();
@@ -4705,47 +4708,53 @@ if($connected){
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
+      <!--
+      <div class="col-md-3">
+        <label for="companySelection">Filtrer sur la société</label>
+        <select class="companySelection" name="companySelection"></select>
+      </div>
 
-      <!--<div class="col-md-3">
-      <label for="companySelection">Filtrer sur la société</label>
-      <select class="companySelection" name="companySelection">
-    </select>
+      <div class="separator"></div>
+      -->
+
+  <div data-example-id="contextual-table" class="bs-example">
+    <span id="contractsListingSpan"></span>
   </div>
 
   <div class="separator"></div>
--->
-<div data-example-id="contextual-table" class="bs-example">
-  <span id="contractsListingSpan"></span>
-</div>
 
-<div class="separator"></div>
+  <div data-example-id="contextual-table" class="bs-example">
+    <span id="soldBikesListingSpan"></span>
+  </div>
 
-<div data-example-id="contextual-table" class="bs-example">
-  <span id="offersListingSpan"></span>
-</div>
+  <div class="separator"></div>
 
-<div class="separator"></div>
+  <div data-example-id="contextual-table" class="bs-example">
+    <span id="offersListingSpan"></span>
+  </div>
 
-<div data-example-id="contextual-table" class="bs-example">
-  <span id="costsListingSpan"></span>
-</div>
+  <div class="separator"></div>
 
-<div class="separator"></div>
-<h4 class="text-green">Graphique :</h4>
+  <div data-example-id="contextual-table" class="bs-example">
+    <span id="costsListingSpan"></span>
+  </div>
 
-
-<canvas id="myChart" width="400" height="300"></canvas>
+  <div class="separator"></div>
+  <h4 class="text-green">Graphique :</h4>
 
 
-<div class="fr" class="modal-footer">
-  <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-</div>
-<div class="en" class="modal-footer">
-  <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-</div>
-<div class="nl" class="modal-footer">
-  <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-</div>
+  <canvas id="myChart" width="400" height="300"></canvas>
+
+
+  <div class="fr" class="modal-footer">
+    <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+  </div>
+  <div class="en" class="modal-footer">
+    <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+  </div>
+  <div class="nl" class="modal-footer">
+    <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+  </div>
 </div>
 </div>
 </div>
@@ -6615,6 +6624,12 @@ if($connected){
                               <label for="insurance"  class="en">Insurance ?</label>
                               <label for="insurance"  class="nl">Insurance ?</label>
                               <input type="checkbox"name="insurance" id="insuranceBikeCheck" class="form-control">Oui
+                            </div>
+                            <div class="col-sm-4 soldPrice" style="display:none;">
+                              <label for="insurance"  class="fr">Prix de vente du vélo</label>
+                              <label for="insurance"  class="en">Bike sold price</label>
+                              <label for="insurance"  class="nl">Bike sold price</label>
+                              <input type="number" min="0" value="0" name="bikeSoldPrice" id="bikeSoldPrice" class="form-control" disabled />
                             </div>
                           </div>
                         </div>

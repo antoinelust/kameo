@@ -3,17 +3,17 @@ session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
 include 'globalfunctions.php';
 
 
 if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
-    if($action=='add'){     
+    if($action=='add'){
         $model=$_POST['model'];
         $frameNumber=$_POST['frameNumber'];
         $size=$_POST['size'];
@@ -23,6 +23,7 @@ if(isset($_POST['action'])){
         $contractType=isset($_POST['contractType']) ? $_POST['contractType'] : NULL;
         $contractStart=isset($_POST['contractStart']) ? $_POST['contractStart'] : NULL;
         $contractEnd=isset($_POST['contractEnd']) ? $_POST['contractEnd'] : NULL;
+        $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
 
         $frameReference=$_POST['frameReference'];
         $billingPrice=$_POST['billingPrice'];
@@ -73,7 +74,7 @@ if(isset($_POST['action'])){
         copy($dossier . $fichier, $dossier . $frameNumber."_mini".$extension);
         $img = resize_image($dossier . $frameNumber.$extension, 800, 800);
         imagejpeg($img, $dossier. $frameNumber.$extension);
-        $img = resize_image($dossier . $frameNumber.$extension, 100, 100);    
+        $img = resize_image($dossier . $frameNumber.$extension, 100, 100);
         imagejpeg($img, $dossier. $frameNumber."_mini".$extension);
 
 
@@ -88,7 +89,7 @@ if(isset($_POST['action'])){
             }
             $result = mysqli_query($conn, $sql);
             if($result->num_rows!='0'){
-                $conn->close();   
+                $conn->close();
                 errorMessage("ES0036");
             }
 
@@ -101,7 +102,7 @@ if(isset($_POST['action'])){
             }
             $result = mysqli_query($conn, $sql);
             if($result->num_rows=='0'){
-                $conn->close();   
+                $conn->close();
                 errorMessage("ES0036");
             }
 
@@ -121,26 +122,26 @@ if(isset($_POST['action'])){
                 $contractStart="'".$contractStart."'";
             }else{
                 $contractStart='NULL';
-            }    
+            }
             if($contractEnd!=NULL){
                 $contractEnd="'".$contractEnd."'";
             }else{
                 $contractEnd='NULL';
-            }        
+            }
 
 
             if($billingPrice!=NULL){
                 $billingPrice="'".$billingPrice."'";
             }else{
                 $billingPrice='NULL';
-            }        
+            }
 
-            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '')";
+            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice')";
 
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
-                die;   
+                die;
             }
 
             $sql= "INSERT INTO  reservations (USR_MAJ, HEU_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIL, STATUS, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$buildingInitialization', '0', '$buildingInitialization', '$user', 'Closed','')";
@@ -148,7 +149,7 @@ if(isset($_POST['action'])){
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
-                die;   
+                die;
             }
 
             if(isset($_POST['buildingAccess'])){
@@ -157,8 +158,8 @@ if(isset($_POST['action'])){
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
-                        die;   
-                    }        
+                        die;
+                    }
                 }
             }
 
@@ -168,23 +169,23 @@ if(isset($_POST['action'])){
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
-                        die;   
-                    }        
+                        die;
+                    }
                 }
-            }    
+            }
 
 
-            $conn->close();   
+            $conn->close();
 
             successMessage("SM0015");
         }else{
             errorMessage("ES0025");
-        } 
-        
-        
+        }
+
+
     }else if($action=='update'){
         $model=$_POST['model'];
-        $frameNumberOriginel=$_POST['frameNumberOriginel'];        
+        $frameNumberOriginel=$_POST['frameNumberOriginel'];
         $frameNumber=$_POST['frameNumber'];
         $size=$_POST['size'];
         $portfolioID=$_POST['portfolioID'];
@@ -200,7 +201,7 @@ if(isset($_POST['action'])){
         $billingGroup=$_POST['billingGroup'];
         $user=$_POST['user'];
         $company=$_POST['company'];
-        
+
         if(isset($_POST['billing'])){
             $automaticBilling="Y";
         }else{
@@ -211,30 +212,30 @@ if(isset($_POST['action'])){
         }else{
             $insurance="N";
         }
-        
+
         if($contractStart!=NULL){
             $contractStart="'".$contractStart."'";
         }else{
             $contractStart='NULL';
-        }    
+        }
         if($contractEnd!=NULL){
             $contractEnd="'".$contractEnd."'";
         }else{
             $contractEnd='NULL';
-        }        
+        }
         if($buyingDate!=NULL){
             $buyingDate="'".$buyingDate."'";
         }else{
             $buyingDate='NULL';
-        }         
+        }
 
         if($billingPrice!=NULL){
             $billingPrice="'".$billingPrice."'";
         }else{
             $billingPrice='NULL';
-        }        
+        }
 
-        
+
 
         if(substr($frameNumber, 0, 3) != substr($company, 0, 3)){
             errorMessage("ES0051");
@@ -260,7 +261,7 @@ if(isset($_POST['action'])){
 
             //upload of Bike picture
 
-            $dossier = '../images_bikes/'; 
+            $dossier = '../images_bikes/';
 
             $fichier=$frameNumber.$extension;
             unlink($dossier.$fichier) or die("Couldn't delete file");
@@ -344,7 +345,7 @@ if(isset($_POST['action'])){
             include 'connexion.php';
 
             $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', BIKE_BUYING_DATE=$buyingDate where FRAME_NUMBER = '$frameNumber'";
-            
+
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -367,9 +368,9 @@ if(isset($_POST['action'])){
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $length = $result->num_rows;
-        $conn->close(); 
+        $conn->close();
 
         if($length==0){
             include 'connexion.php';
@@ -380,7 +381,7 @@ if(isset($_POST['action'])){
                 echo json_encode($response);
                 die;
             }
-            $conn->close(); 
+            $conn->close();
         }
 
 
@@ -393,9 +394,9 @@ if(isset($_POST['action'])){
                 echo json_encode($response);
                 die;
             }
-            $result = mysqli_query($conn, $sql);        
+            $result = mysqli_query($conn, $sql);
             $length = $result->num_rows;
-            $conn->close(); 
+            $conn->close();
 
             while($row = mysqli_fetch_array($result)){
                 $presence=false;
@@ -418,7 +419,7 @@ if(isset($_POST['action'])){
                     }
                     $conn->close();
                 }
-            }             
+            }
 
 
 
@@ -430,11 +431,11 @@ if(isset($_POST['action'])){
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);                    
+                $result = mysqli_query($conn, $sql);
                 $length=$result->num_rows;
 
                 if($length==0){
-                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BUILDING_CODE, BIKE_NUMBER, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$frameNumber', '')";                
+                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BUILDING_CODE, BIKE_NUMBER, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$frameNumber', '')";
                 }else{
                     $sql="select * FROM bike_building_access WHERE BUILDING_CODE='$valueInArray' and BIKE_NUMBER='$frameNumber' and STAANN = 'D'";
                 }
@@ -453,8 +454,8 @@ if(isset($_POST['action'])){
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
-                        die;   
-                    }        
+                        die;
+                    }
                     $conn->close();
 
                 }
@@ -481,9 +482,9 @@ if(isset($_POST['action'])){
                 echo json_encode($response);
                 die;
             }
-            $result = mysqli_query($conn, $sql);        
+            $result = mysqli_query($conn, $sql);
             $length = $result->num_rows;
-            $conn->close(); 
+            $conn->close();
 
             while($row = mysqli_fetch_array($result)){
                 $presence=false;
@@ -506,7 +507,7 @@ if(isset($_POST['action'])){
                     }
                     $conn->close();
                 }
-            }             
+            }
 
 
             foreach($_POST['userAccess'] as $valueInArray){
@@ -518,14 +519,14 @@ if(isset($_POST['action'])){
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);                    
+                $result = mysqli_query($conn, $sql);
                 $length=$result->num_rows;
                 $conn->close();
 
                 include 'connexion.php';
 
                 if($length==0){
-                    $sql= "INSERT INTO  customer_bike_access (USR_MAJ, TIMESTAMP, EMAIL, BIKE_NUMBER, TYPE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$frameNumber', 'partage', '')";                
+                    $sql= "INSERT INTO  customer_bike_access (USR_MAJ, TIMESTAMP, EMAIL, BIKE_NUMBER, TYPE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$frameNumber', 'partage', '')";
                 }else{
                     $sql="select * FROM customer_bike_access WHERE EMAIL='$valueInArray' and BIKE_NUMBER='$frameNumber' and STAANN = 'D'";
                 }
@@ -543,10 +544,10 @@ if(isset($_POST['action'])){
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
-                        die;   
-                    }        
+                        die;
+                    }
                     $conn->close();
-                } 
+                }
 
             }
 
@@ -565,7 +566,7 @@ if(isset($_POST['action'])){
         successMessage("SM0003");
 
     }
-    
+
 
     if($action=="delete"){
         $frameNumber=$_POST['frameNumber'];
@@ -577,7 +578,7 @@ if(isset($_POST['action'])){
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
                 die;
-            }        
+            }
             $sql="DELETE FROM customer_bike_access WHERE BIKE_NUMBER = '$frameNumber'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -590,15 +591,15 @@ if(isset($_POST['action'])){
                 echo json_encode($response);
                 die;
             }
-            $conn->close();     
+            $conn->close();
             successMessage("SM0018");
         }else{
             errorMessage("ES0012");
         }
     }
-    
-    
-    
+
+
+
 }else{
     errorMessage("ES0012");
 }

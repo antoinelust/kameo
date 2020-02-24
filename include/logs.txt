@@ -396,3 +396,10 @@ INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, 
 a
 >>>>>>> 49c2bbf5cccd99ef909cdf4395ab34094ee43bbf
  ---- 
+86
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'a', 'admin@edmail.comqsdq', '045', '', 86, 'N');
+
+admin@edmail.comqsdq
+ ---- 
