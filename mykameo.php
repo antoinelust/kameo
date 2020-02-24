@@ -353,25 +353,25 @@ function generateCompaniesGraphic(dateStart, dateEnd){
           type: 'line',
           data: {
             datasets: [{
+              label: 'Entreprises pas intéressées',
+              borderColor: "#99111C",
+              backgroundColor: "#f6856f",
+              data: response.companiesNotInterested
+            },{
               label: 'Entreprises en contact',
-              borderColor: "#0F7096",
-              backgroundColor: "#288DBF",
+              borderColor: "#333333",
+              backgroundColor: "#fcdb76",
               data: response.companiesContact
             },{
               label: 'Entreprises sous offre',
-              borderColor: "#99111C",
-              backgroundColor: "#C1272D",
+              borderColor: "#333333",
+              backgroundColor: "#b6db4d",
               data: response.companiesOffer
             },{
               label: 'Entreprises sous offre signée',
-              borderColor: "#1D9377",
-              backgroundColor: "#3cb395",
+              borderColor: "#333333",
+              backgroundColor: "#96c220",
               data: response.companiesOfferSigned
-            },{
-              label: 'Entreprises pas intéressées',
-              borderColor: "#1D9377",
-              backgroundColor: "#3cb395",
-              data: response.companiesNotInterested
             }],
             labels:response.dates
           },
@@ -6238,18 +6238,38 @@ if($connected){
                             </select>
 
                           </div>
-                          <div class="col-md-4">
-                            <label for="date"  class="fr">Date</label>
-                            <label for="date"  class="en">Date</label>
-                            <label for="date"  class="nl">Date</label>
-                            <input type="date" name="date" class="form-control required">
+
+                            <div class="col-md-4">
+                              <label for="channel"  class="fr">Canal d'acquisition</label>
+                              <label for="channel"  class="en">Channel</label>
+                              <label for="channel"  class="nl">Channel</label>
+                              <select title="channel" class="form-control required selectpicker" name="channel">
+                                <option value="telephone">Téléphone</option>
+                                <option value="salon" selected>Contact après visite sur salon</option>
+                                <option value="site" selected>Contact sur site internet</option>
+                              </select>
+                            </div>
+                            
+                            <div class="col-md-4">
+                              <label for="sector"  class="fr">Secteur</label>
+                                <label for="sector"  class="en">Sector</label>
+                                <label for="sector"  class="nl">Sector</label>
+                                <input type="text" title="sector" name="sector" class="form-control required" />
+                            </div>
                           </div>
-                          <div class="col-md-4">
-                            <label for="reminder"  class="fr">Rappel ?</label>
-                            <label for="reminder"  class="en">Reminder ?</label>
-                            <label for="reminder"  class="nl">Reminder ?</label>
-                            <input type="date" name="date_reminder" class="form-control ">
-                          </div>
+                        <div class="col-md-12">
+                              <div class="col-md-4">
+                                <label for="date"  class="fr">Date</label>
+                                <label for="date"  class="en">Date</label>
+                                <label for="date"  class="nl">Date</label>
+                                <input type="date" name="date" class="form-control required">
+                              </div>
+                              <div class="col-md-4">
+                                <label for="reminder"  class="fr">Rappel ?</label>
+                                <label for="reminder"  class="en">Reminder ?</label>
+                                <label for="reminder"  class="nl">Reminder ?</label>
+                                <input type="date" name="date_reminder" class="form-control ">
+                              </div>
                         </div>
 
 
@@ -6281,32 +6301,53 @@ if($connected){
 
                     </form>
                     <script type="text/javascript">
-                    jQuery("#widget-taskManagement-form").validate({
-                      submitHandler: function(form) {
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
-                              $('#taskManagement').modal('toggle');
-                              document.getElementById('widget-taskManagement-form').reset();
+                        
+                          $('#widget-taskManagement-form select[name=type]').change(function(){
+                              console.log($('#widget-taskManagement-form select[name=type]').val());
+                              if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
+                                  $('#widget-taskManagement-form select[name=channel]').addClass("required");
+                                  $('#widget-taskManagement-form select[name=channel]').removeClass("hideen");
+                                  $('#widget-taskManagement-form input[name=sector]').addClass("required");
+                                  $('#widget-taskManagement-form input[name=sector]').removeClass("hideen");
+                              }else{
+                                  $('#widget-taskManagement-form select[name=channel]').addClass("hidden");
+                                  $('#widget-taskManagement-form select[name=channel]').removeClass("required");
+                                  $('#widget-taskManagement-form input[name=sector]').addClass("hidden");
+                                  $('#widget-taskManagement-form input[name=sector]').removeClass("required");
+                                  $('#widget-taskManagement-form input[name=sector]').val("");
+                                  $('#widget-taskManagement-form select[name=channel]').val("");
+                                  
+                              }
+                          });
 
 
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
+
+                        jQuery("#widget-taskManagement-form").validate({
+                          submitHandler: function(form) {
+                            jQuery(form).ajaxSubmit({
+                              success: function(response) {
+                                if (response.response == 'success') {
+                                  $.notify({
+                                    message: response.message
+                                  }, {
+                                    type: 'success'
+                                  });
+                                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+                                  $('#taskManagement').modal('toggle');
+                                  document.getElementById('widget-taskManagement-form').reset();
+
+
+                                } else {
+                                  $.notify({
+                                    message: response.message
+                                  }, {
+                                    type: 'danger'
+                                  });
+                                }
+                              }
+                            });
                           }
                         });
-                      }
-                    });
 
                     </script>
                   </div>

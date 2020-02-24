@@ -435,6 +435,8 @@ if($action=="graphic"){
     $action = isset($_POST["action"]) ? $_POST["action"] : NULL;
     $company = isset($_POST["company"]) ? $_POST["company"] : NULL;
     $type = isset($_POST["type"]) ? $_POST["type"] : NULL;
+    $channel = isset($_POST["channel"]) ? $_POST["channel"] : NULL;
+    $sector = isset($_POST["sector"]) ? $_POST["sector"] : NULL;
     $user = isset($_POST["requestor"]) ? $_POST["requestor"] : NULL;
     $title=isset($_POST["title"]) ? addslashes($_POST["title"]) : NULL;
     $description=isset($_POST["description"]) ? addslashes($_POST["description"]) : NULL;
