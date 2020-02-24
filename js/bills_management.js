@@ -1,4 +1,3 @@
-
 function get_bills_listing(company, sent, paid, direction) {
     var email= "<?php echo $user; ?>";
     $.ajax({
