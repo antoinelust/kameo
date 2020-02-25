@@ -1713,7 +1713,6 @@ if($connected){
       data: { 'ID' : ID },
       success: function(response){
         initialize_company_contacts();
-        console.log(response);
         var contactContent = `
         <table class="table contactsTable">
         <thead>
@@ -1729,37 +1728,37 @@ if($connected){
         </tr>
         </thead>
         <tbody>`;
-        nbContacts = response.emailContact.length;
-        for (var i = 0; i < response.emailContact.length; i++) {
-          var contactId = (response.contactId[i] != undefined) ? response.contactId[i] : '';
-          var email = (response.emailContact[i] != undefined) ? response.emailContact[i] : '';
-          var lastName = (response.lastNameContact[i] != undefined) ? response.lastNameContact[i] : '';
-          var firstName = (response.firstNameContact[i] != undefined) ? response.firstNameContact[i] : '';
-          var phone = (response.phone[i] != undefined) ? response.phone[i] : '';
-          var fonction = (response.fonction[i] != undefined) ? response.fonction[i] : '';
+        nbContacts = response.length;
+        for (var i = 0; i < response.length; i++) {
+          var contactId = (response[i].contactId != undefined) ? response[i].contactId : '';
+          var email = (response[i].emailContact != undefined) ? response[i].emailContact : '';
+          var lastName = (response[i].lastNameContact != undefined) ? response[i].lastNameContact : '';
+          var firstName = (response[i].firstNameContact != undefined) ? response[i].firstNameContact : '';
+          var phone = (response[i].phone != undefined) ? response[i].phone : '';
+          var fonction = (response[i].fonction != undefined) ? response[i].fonction : '';
           var bikesStatsChecked = "";
-          if (response.bikesStats[i] == "Y") {
+          if (response[i].bikesStats == "Y") {
             bikesStatsChecked = "checked";
           }
           contactContent += `
           <tr class="form-group">
           <td>
-          <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail`+response.contactId[i]+`" id="contactEmail`+response.contactId[i]+`" value="`+email+`" required/>
+          <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail`+response[i].contactId+`" id="contactEmail`+response[i].contactId+`" value="`+email+`" required/>
           </td>
           <td>
-          <input type="text" class="form-control required lastName" readonly="true"  name="contactNom`+response.contactId[i]+`" id="contactNom`+response.contactId[i]+`" value="`+lastName+`" required/>
+          <input type="text" class="form-control required lastName" readonly="true"  name="contactNom`+response[i].contactId+`" id="contactNom`+response[i].contactId+`" value="`+lastName+`" required/>
           </td>
           <td>
-          <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom`+response.contactId[i]+`" id="contactPrenom`+response.contactId[i]+`" value="`+firstName+`" required/>
+          <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom`+response[i].contactId+`" id="contactPrenom`+response[i].contactId+`" value="`+firstName+`" required/>
           </td>
           <td>
-          <input type="tel" class="form-control phone" readonly="true"  name="contactPhone`+response.contactId[i]+`" id="contactPhone`+response.contactId[i]+`" value="`+phone+`"/>
+          <input type="tel" class="form-control phone" readonly="true"  name="contactPhone`+response[i].contactId+`" id="contactPhone`+response[i].contactId+`" value="`+phone+`"/>
           </td>
           <td>
-          <input type="text" class="form-control fonction" readonly="true"  name="contactFunction`+response.contactId[i]+`" id="contactFunction`+response.contactId[i]+`" value="`+fonction+`"/>
+          <input type="text" class="form-control fonction" readonly="true"  name="contactFunction`+response[i].contactId+`" id="contactFunction`+response[i].contactId+`" value="`+fonction+`"/>
           </td>
           <td>
-          <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats`+response.contactId[i]+`" id="contactBikesStats`+response.contactId[i]+`" value="bikesStats" `+bikesStatsChecked+`/>
+          <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats`+response[i].contactId+`" id="contactBikesStats`+response[i].contactId+`" value="bikesStats" `+bikesStatsChecked+`/>
           </td>
           <td>
           <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil" type="button"></button>
@@ -1767,7 +1766,7 @@ if($connected){
           <td>
           <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove" type="button"></button>
           </td>
-          <input type="hidden" class="contactIdHidden" name="contactId`+response.contactId[i]+`" id="contactId`+response.contactId[i]+`" value="`+contactId+`" />
+          <input type="hidden" class="contactIdHidden" name="contactId`+response[i].contactId+`" id="contactId`+response[i].contactId+`" value="`+contactId+`" />
           </tr>`;
         }
         contactContent += "</tbody></table>";
@@ -6459,7 +6458,7 @@ if($connected){
                                 <option value="site" selected>Contact sur site internet</option>
                               </select>
                             </div>
-                            
+
                             <div class="col-md-4">
                               <label for="sector"  class="fr">Secteur</label>
                                 <label for="sector"  class="en">Sector</label>
@@ -6511,7 +6510,7 @@ if($connected){
 
                     </form>
                     <script type="text/javascript">
-                        
+
                           $('#widget-taskManagement-form select[name=type]').change(function(){
                               console.log($('#widget-taskManagement-form select[name=type]').val());
                               if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
@@ -6526,7 +6525,7 @@ if($connected){
                                   $('#widget-taskManagement-form input[name=sector]').removeClass("required");
                                   $('#widget-taskManagement-form input[name=sector]').val("");
                                   $('#widget-taskManagement-form select[name=channel]').val("");
-                                  
+
                               }
                           });
 
@@ -7743,13 +7742,20 @@ if($connected){
                     </table>
                     <div class="separator"></div><div class="separator"></div>
                   </div>
+                  <div class="row form-group">
+                    <h4 class="text-green">Délais vélos</h4>
+                    <div class="col-sm-12">
+                      <textarea name="delais" id="delais" class="form-control required" required></textarea>
+                    </div>
+                    <h4 class="text-green">Validité de l'offre</h4>
+                    <div class="col-sm-12">
+                      <input type="date" name="offerValidity" id="offerValidity" class="form-control required" required>
+                    </div>
+                  </div>
                   <div class="row form-group" style="margin-bottom:20px;">
                     <h4 class="text-green">Contact société</h4>
-                    <div class="col-sm-12">Champs temporaires, a remplacer par un select</div>
-                    <div class="col-sm-2"><label for="">Email</label><input type="text" class="form-control required" required name="contactEmail"></div>
-                    <div class="col-sm-2"><label for="">Nom</label><input type="text" class="form-control required" required name="contactLastName"></div>
-                    <div class="col-sm-2"><label for="">Prénom</label><input type="text" class="form-control required" required name="contactFirstName"></div>
-                    <div class="col-sm-2"><label for="">Téléphone</label><input type="text" class="form-control required" required name="contactPhone"></div>
+                    <div class="col-sm-12 companyContactDiv">
+                    </div>
                   </div><br/>
                   <button type="submit" class="fr button small green button-3d rounded icon-left">Générer PDF</button>
                 </form>

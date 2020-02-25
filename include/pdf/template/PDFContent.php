@@ -96,6 +96,10 @@ h2{
 .bold{
   font-weight:bold;
 }
+.light{
+  font-family: 'Akkurat-Light';
+  font-weight:400;
+}
 .normalFont{
   font-family: 'Akkurat';
 }
@@ -137,6 +141,21 @@ h2{
   text-align: center;
 }
 .tbody-leftMargin td>*{
+  margin-left:3mm;
+}
+
+.count-border{
+  border: 3px solid #2fa37c;
+  border-radius: 50px;
+  padding:7mm;
+  padding-top: 4mm;
+}
+.tableMargins td, .tableMargins th {
+  padding-top:3mm;
+  padding-bottom:3mm;
+}
+
+.lMargin{
   margin-left:3mm;
 }
 </style>
@@ -203,9 +222,9 @@ h2{
         0498 72 75 46
       </td>
       <td style="text-align:right; padding-right:0; margin-right:0;  width:50%;">
-        <span class="arcamajora" style="color:#efefef; font-size:25px;"><?php echo $contact['firstName']; ?> <?php echo strtoupper($contact['lastName']); ?></span><br/><br/>
-        <?php echo $contact['email']; ?><br/>
-        <?php if(isset($contact['phone'])){echo $contact['phone'];} ?>
+        <span class="arcamajora" style="color:#efefef; font-size:25px;"><?php echo $contact['PRENOM']; ?> <?php echo strtoupper($contact['NOM']); ?></span><br/><br/>
+        <?php echo $contact['EMAIL']; ?><br/>
+        <?php if(isset($contact['PHONE'])){echo $contact['PHONE'];} ?>
       </td>
     </tr>
   </table>
@@ -271,7 +290,7 @@ h2{
   </p>
   <h2>Documents de référence et contacts</h2>
   <p>
-    Cette offre est basée sur les échanges entre, M./Mme. <?php echo $contact['lastName']; ?> de <?php echo $company['COMPANY_NAME'] ?> et M. Jamar de KAMEO.
+    Cette offre est basée sur les échanges entre, M./Mme. <?php echo $contact['NOM']; ?> de <?php echo $company['COMPANY_NAME'] ?> et M. Jamar de KAMEO.
   </p>
   <p>
     La solution proposée est cependant définie entièrement et uniquement par ce document et ses annexes
@@ -283,21 +302,21 @@ h2{
   </p>
   <div class="list">
     <?php if ($buyOrLeasing =="leasing" || $buyOrLeasing =="both") {
-      echo "<div class='listItem'>- Leasing de " . $nbVelos . " " . $txtVelo ."</div>";
+      echo "<div class='listItem'>• Leasing de " . $nbVelos . " " . $txtVelo ."</div>";
     } ?>
 
     <?php if ($buyOrLeasing =="buy") {
-      echo "<div class='listItem'>- Achat de " . $nbVelos . " " . $txtVelo."</div>";
+      echo "<div class='listItem'>• Achat de " . $nbVelos . " " . $txtVelo."</div>";
     } ?>
 
     <?php if (count($boxes) > 0) { ?>
       <div>
         <?php
-        echo "<div class='listItem'>- Location de " . count($boxes) . " boxe(s) de gestion des clés de vélos: </div>"; ?>
+        echo "<div class='listItem'>• Location de " . count($boxes) . " boxe(s) de gestion des clés de vélos: </div>"; ?>
         <div class='subList'>
           <?php
           foreach ($boxes as $box) {
-            echo "<div class='subListItem'>* Box " . $box['MODEL'] . "</div>";
+            echo "<div class='subListItem'>• Box " . $box['MODEL'] . "</div>";
           }?>
         </div>
       </div>
@@ -305,11 +324,11 @@ h2{
     <?php if (count($accessories) > 0) { ?>
       <div>
         <?php
-        echo "<div class='listItem'>- Achat de " . count($accessories)  . "accessoire(s): </div>" ; ?>
+        echo "<div class='listItem'>• Achat de " . count($accessories)  . "accessoire(s): </div>" ; ?>
         <div class='subList'>
           <?php
           foreach ($accessories as $accessory) {
-            echo "<div class='subListItem'>* " . $accessory['NAME'] . "</div>";
+            echo "<div class='subListItem'>• " . $accessory['NAME'] . "</div>";
           }?>
         </div>
       </div>
@@ -318,11 +337,11 @@ h2{
     <?php if (is_array($others) && count($others) > 0) { ?>
       <div>
         <?php
-        echo "<div class='listItem'>- Autres : </div>" ; ?>
+        echo "<div class='listItem'>• Autres : </div>" ; ?>
         <div class='subList'>
           <?php
           foreach ($others as $other) {
-            echo "<div class='subListItem'>* " . $other['othersDescription'] . "</div>";
+            echo "<div class='subListItem'>• " . $other['othersDescription'] . "</div>";
           } ?>
         </div>
       </div>
@@ -330,7 +349,7 @@ h2{
   </div>
 </page>
 <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
-  <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
+
     <h1>1. Leasing</h1>
     <p>
       Le leasing est un contrat comprenant à la fois la mise à disposition d’un produit et des services liés à ce
@@ -340,24 +359,30 @@ h2{
     </p>
     <p>Dans le cadre de cette offre, le leasing englobe les éléments suivants :</p>
     <div class="list">
+      <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
       <div class="listItem">• PRODUIT</div>
       <div class="subList">
         <div class="subListItem">
           • <?php echo $nbVelos . ' '. $txtVelo; ?>
         </div>
       </div>
+      <?php } ?>
+      <?php if($assurance == true ||  $numberMaintenance >= 0){ ?>
       <div class="listItem">• SERVICES</div>
       <div class="subList">
         <?php if($assurance == true){echo '<div class="subListItem">• Assurance</div>';} ?>
         <?php if($numberMaintenance >= 0){echo '<div class="subListItem">• Maintenance</div>';} ?>
       </div>
+    <?php } ?>
+      <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
       <div class="listItem">• OPTION D ACHAT</div>
       <div class="subList">
         <div class="subListItem">• A calculer selon la durée du leasing</div>
       </div>
+      <?php } ?>
     </div>
     <img src="<?php echo __DIR__ ; ?>/img/leasing_schema.png" alt="" style="width:600px; height: auto;" />
-  <?php } ?>
+
 
 </page>
 
@@ -367,16 +392,39 @@ if (count($bikes) > 0) {
   foreach ($bikes as $bike) { ?>
     <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
       <?php echo <<<BIKETITLE
-      <h2>Le vélo: {$bike['BRAND']} {$bike['MODEL']}</h2>
-      BIKETITLE;
+      <table class="maxWidth">
+        <tbody>
+          <tr>
+            <td style="width:70%;"><span><h2>Le vélo: {$bike['BRAND']} {$bike['MODEL']}</h2></span></td>
+            <td class="green" style:"width:30%; text-align:center;"><div class="count-border" style="width:auto;"><span style="font-size:30px;">x </span><span style="font-size:25mm;">{$bike['count']}</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+BIKETITLE;
       $temp = $bike['BRAND'] . '_' . $bike['MODEL'] . '_' . $bike['FRAME_TYPE'];
       $temp = strtolower(str_replace(' ','-',$temp));
       $bikeImg = $root.'/images_bikes/'.$temp.'.jpg' ;
       ?>
-      <img src="<?php echo $bikeImg ?>" alt="velo.jpg" class="img-large" />
-
-      <p>Texte a définir</p>
-      <a href="<?php echo $bike['LINK'] ?>">Lien du vélo</a>
+      <table class="maxWidth tableBorder tableMargins" style="margin-top:10mm; margin-bottom:10mm;">
+        <thead>
+          <tr>
+            <th style="width:25%"><span class="lMargin">Marque</span></th>
+            <th style="width:25%"><span class="lMargin">Modèle</span></th>
+            <th style="width:25%"><span class="lMargin">Utilisation</span></th>
+            <th style="width:25%"><span class="lMargin">Électrique</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:25%"><span class="lMargin"><?php echo $bike['BRAND'] ?></span></td>
+            <td style="width:25%"><span class="lMargin"><?php echo $bike['MODEL'] ?></span></td>
+            <td style="width:25%"><span class="lMargin"><?php echo $bike['UTILISATION'] ?></span></td>
+            <td style="width:25%"><?php if($bike['ELECTRIC'] == "Y"){ echo "<span class='green lMargin'>Oui</span>";}else{echo "<span class='red lMargin'>Non</span>";}   ?></td>
+          </tr>
+        </tbody>
+      </table>
+      <div><img src="<?php echo $bikeImg ?>" alt="velo.jpg" class="img-large" /></div>
+      <div><a href="<?php echo $bike['LINK'] ?>">Lien du vélo</a></div>
     </page>
   <?php }
 }
@@ -387,7 +435,17 @@ if (count($bikes) > 0) {
 if (count($boxes) > 0) {
   foreach ($boxes as $box) { ?>
     <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
-      <h2>La Box <?php echo $box['MODEL']?></h2>
+
+      <?php echo <<<BOXTITLE
+      <table class="maxWidth">
+        <tbody>
+          <tr>
+            <td style="width:70%;"><span><h2>La Box {$box['MODEL']}</h2></span></td>
+            <td class="green" style:"width:30%; text-align:center;"><div class="count-border" style="width:auto;"><span style="font-size:30px;">x </span><span style="font-size:25mm;">{$box['count']}</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+BOXTITLE; ?>
       <?php
       $temp = explode(' ',$box['MODEL'])[0];
       $boxImg = $root.'/images_bikes/'.$temp.'keys.png' ;
@@ -572,7 +630,7 @@ if ($assurance == true) { ?>
       <tbody>
         <tr>
           <td style="width:50%; height: 10mm;">
-            <div style="margin-left:3mm;">Vélo fixé sur un parking vélo en rue avec le cadenas fourni par KAMEO</div>
+            <div style="margin-left:3mm;">Vélo fixé sur un parking vélo en rue avec le cadenas proposé par KAMEO</div>
           </td>
           <td style="width:50%; height: 10mm; text-align:center;"><span class="green">COUVERT</span></td>
         </tr>
@@ -620,27 +678,33 @@ if ($assurance == true) { ?>
         <thead style="font-size: 18px;">
           <tr>
             <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">ACCESSOIRE</div></th>
-            <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">VISUEL</div></th>
+            <!--<th style="width:25%; height: 10mm;"><div style="margin:3mm;" class="bold">VISUEL</div></th> -->
             <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">CARACTÉRISTIQUES</div></th>
+            <th style="width:33%; height: 10mm;"><div style="margin:3mm;" class="bold">QUANTITÉ</div></th>
           </tr>
         </thead>
         <tbody>
           <?php foreach ($accessories as $accessory) { ?>
             <tr>
               <td style="width:33%;" class="center"><?php echo $accessory['NAME']; ?></td>
-              <td style="width:33%;" class="center">A venir ...</td>
+              <!--<td style="width:25%;" class="center">A venir ...</td> -->
               <td style="width:33%;" class="center"><?php echo $accessory['DESCRIPTION']; ?></td>
+              <td style="width:33%;" class="center"><?php echo $accessory['count']; ?></td>
             </tr>
           <?php } ?>
         </tbody>
       </table>
     </page>
   <?php } ?>
-
   <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
     <?php if ($buyOrLeasing =="leasing" || $buyOrLeasing == "both") {
-      echo "<h2>En leasing sur {$leasingDuration} mois: </h2>";
+      $both = "";
+      if($buyOrLeasing == "both"){$both = " et achat";}
+      echo "<h2>En leasing sur {$leasingDuration} mois{$both}: </h2>";
+    } else{
+      echo "<h2>En achat: </h2>";
     } ?>
+
     <table class="maxWidth tableBorder">
       <thead>
         <tr style="font-size: 18px;">
@@ -650,17 +714,31 @@ if ($assurance == true) { ?>
         </tr>
       </thead>
       <tbody class="tbody-leftMargin">
-        <?php if ($buyOrLeasing =="leasing" || $buyOrLeasing == "both" && count($bikes) > 0) { ?>
+        <?php if (($buyOrLeasing =="leasing" || $buyOrLeasing == "both") && count($bikes) > 0) { ?>
           <tr>
             <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Vélo: Leasing <?php echo $leasingDuration ; ?> mois</div> </td>
             <td style="width:33%;">
               <?php foreach ($bikes as $bike) {
-                echo "<div style='margin-left:3mm;'>{$bike['BRAND']} {$bike['MODEL']}</div><br/>";
+                echo "<div style='margin-left:3mm;'>{$bike['BRAND']} {$bike['MODEL']}  <span class='green bold'> x{$bike['count']}</span></div><br/>";
               } ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($bikes as $bike) {
-                echo "<div style='margin-left:3mm;'>{$bike['LEASING_PRICE']} € HTVA/mois</div><br/>";
+                echo "<div style='margin-left:3mm;'>{$bike['LEASING_PRICE']} € HTVA/mois  <span class='green bold'> x{$bike['count']}</span></div><br/>";
+              } ?>
+            </td>
+          </tr>
+        <?php } if(($buyOrLeasing =="both" || $buyOrLeasing == "buy") && count($bikes) > 0) { ?>
+          <tr>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Vélo: Achat</div> </td>
+            <td style="width:33%;">
+              <?php foreach ($bikes as $bike) {
+                echo "<div style='margin-left:3mm;'>{$bike['BRAND']} {$bike['MODEL']}  <span class='green bold'> x{$bike['count']}</span></div><br/>";
+              } ?>
+            </td>
+            <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
+              <?php foreach ($bikes as $bike) {
+                echo "<div style='margin-left:3mm;'>{$bike['PRICE_HTVA']} € HTVA  <span class='green bold'> x{$bike['count']}</span></div><br/>";
               } ?>
             </td>
           </tr>
@@ -671,12 +749,12 @@ if ($assurance == true) { ?>
             <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Boxes: Installation + leasing <?php echo $leasingDuration ; ?> mois</div> </td>
             <td style="width:33%;">
               <?php foreach ($boxes as $box) {
-                echo "<div style='margin-left:3mm;'>Box {$box['MODEL']}</div><br/>";
+                echo "<div style='margin-left:3mm;'>Box {$box['MODEL']}  <span class='green bold'> x{$box['count']}</span></div><br/>";
               } ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($boxes as $box) {
-                echo "<div style='margin-left:3mm;'>Installation: {$box['INSTALLATION_PRICE']} € HTVA + location {$box['LOCATION_PRICE']} € HTVA/mois</div><br/>";
+                echo "<div style='margin-left:3mm;'>Installation: {$box['INSTALLATION_PRICE']} € HTVA + location {$box['LOCATION_PRICE']} € HTVA/mois  <span class='green bold'> x{$box['count']}</span></div><br/>";
               } ?>
             </td>
           </tr>
@@ -687,12 +765,12 @@ if ($assurance == true) { ?>
             <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Accessoires(achat) </div></td>
             <td style="width:33%;">
               <?php foreach ($accessories as $accessory) {
-                echo "<div style='margin-left:3mm;'>{$accessory['NAME']}</div><br/>";
+                echo "<div style='margin-left:3mm;'>{$accessory['NAME']} <span class='green bold'> x{$box['count']}</span></div><br/>";
               } ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($accessories as $accessory) {
-                echo "<div style='margin-left:3mm;'>Prix: {$accessory['BUYING_PRICE']} € HTVA</div><br/>";
+                echo "<div style='margin-left:3mm;'>Prix: {$accessory['BUYING_PRICE']} € HTVA <span class='green bold'> x{$box['count']}</span></div><br/>";
               } ?>
             </td>
           </tr>
@@ -714,5 +792,98 @@ if ($assurance == true) { ?>
         <?php } ?>
       </tbody>
     </table>
+  </page>
 
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <?php $titleNumber = 2;
+    if (count($accessories) > 0) { $titleNumber = 3; } ?>
+    <h1><?php echo $titleNumber; ?>. Conditions de vente</h1>
+    <h2>Prix</h2>
+    <div class="light">Les prix sont entendus HTVA.</div>
+    <h2>Livraison</h2>
+    <table class="maxWidth">
+      <tbody>
+        <tr>
+          <td style="width:50%;" class="light">Livraison directement chez vous soit :</td>
+          <td style="width:50%;" class="light"><?php echo $company['STREET'] . '<br/><br/>' . $company['ZIP_CODE'] . ' '. $company['TOWN']?></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Délais</h2>
+    <div class="light">
+      <?php
+          foreach ($delais as $delai) {
+            echo "• ".$delai."<br/>";
+          }
+       ?>
+    </div>
+    <h2>Validité de l’offre</h2>
+    <div class="light">
+      <?php echo $offerValidity; ?>
+    </div>
+    <h2>Garantie</h2>
+    <div class="light">KAMEO Bikes offre une garantie conforme à celle de la marque. Soit 2 ans sur le cadre et les composants.</div>
+    <h2>Facturation</h2>
+    <div class="light">
+      La facturation s’effectuera de façon mensuelle chaque 1er du mois pour les leasings et lors de la livraison pour les achats.<br/>
+      Cette offre est sujette aux conditions générales de vente et de leasing de KAMEO Bikes SPRL.
+    </div>
+    <h2>Conditions de paiement</h2>
+    <div class="light">30 jours à partir de la date de la facture. Prélèvement automatique par domiciliation.</div>
+  </page>
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <h2>Rupture du contrat – Option d’achat</h2>
+    <div class="light">
+      En cas de rupture unilatérale du contrat de leasing de la part du client, les indemnités suivantes seront dues :<br/>
+      <table class="maxWidth tableBorder tableMargins">
+        <thead>
+          <tr>
+            <th style="width:50%;" class="bold">DURÉE ÉCOULÉE DU LEASING</th>
+            <th style="width:50%;" class="bold">Indemnité de rupture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:50%;" class="light">1-12 mois</td>
+            <td style="width:50%;" class="light">12 mois</td>
+          </tr>
+          <tr>
+            <td style="width:50%;" class="light">12-24 mois</td>
+            <td style="width:50%;" class="light">6 mois</td>
+          </tr>
+          <tr>
+            <td style="width:50%;" class="light">24-36 mois</td>
+            <td style="width:50%;" class="light">3 mois</td>
+          </tr>
+          <tr>
+            <td style="width:50%;" class="bold">A l’échéance </td>
+            <td style="width:50%;" class="bold">Option d’achat</td>
+          </tr>
+          <tr>
+            <td style="width:50%;" class="light">36 mois</td>
+            <td style="width:50%;" class="light">15% de la valeur neuve du vélo € HTVA</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </page>
+  <page backcolor="#2fa37c" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+    <page_footer>
+      <div style="text-align:center" class="white">
+        <img src="<?php echo __DIR__ ; ?>/img/logo_black_low_opacity.png" alt="logo" class="logo" /><br/>
+      </div>
+        <div class="light white" style="margin-bottom:10mm; text-align:center;">
+            <span class="bold">KAMEO Bikes SPRL <br/></span>
+            Boulevard de la Sauvenière, 118 <br/>
+            4000 Liège <br/>
+            BE 0681.879.712
+          </div>
+
+          <div class="light white" style="margin-bottom:10mm; text-align:center;">
+            <span class="bold">Julien JAMAR DE BOLSEE <br/></span>
+            julien.jamar@kameobikes.com <br/>
+            0498 72 75 46 <br/>
+          </div>
+
+    </page_footer>
   </page>

@@ -4,6 +4,20 @@ const PRIX_ASSURANCE = 84;
 
 //AJAX
 
+//liste des contacts
+function get_company_contacts_list(ID) {
+  return  $.ajax({
+    url: 'include/get_company_contact.php',
+    type: 'post',
+    data: { 'ID' : ID },
+    success: function(response){
+      if(response.response == 'error') {
+        console.log(response.message);
+      }
+    }
+  });
+}
+
 //liste des vélos
 function get_all_bikes() {
   return  $.ajax({
@@ -17,6 +31,7 @@ function get_all_bikes() {
     }
   });
 }
+
 
 //récuperation du prix de leasing en fct du prix HTVA
 function get_leasing_price(retailPrice){
@@ -69,6 +84,7 @@ var bikesNumber = 0;
 var boxesNumber = 0;
 var accessoriesNumber = 0;
 var othersNumber = 0;
+var contacts;
 
 
 
@@ -507,9 +523,31 @@ get_all_accessories().done(function(response){
 
 });
 
+//Contacts
+$('body').on('click','.getTemplate', function(){
+  get_company_contacts_list($('.contactIdHidden').val()).done(function(response){
+    var content = `
+      <select name="contactSelect" id="contactSelect" class="form-control required valid">
+    `;
+      for (var i = 0; i < response.length; i++) {
+        var selected ='';
+        if (i == 0) {
+          selected = 'selected';
+        }
+        content += `<option `+selected+` value="`+response[i].contactId+`">` + response[i].firstNameContact + ` `+ response[i].lastNameContact + `</option>`;
+      }
+      content += "</select>";
+      $('.companyContactDiv').html(content);
+
+  });
+})
+
+
 //Autres
 
 $(document).ready(function(){
+
+  //affichage de la liste des personnes de contact
 
   checkMinus('.templateOthers','.othersNumber');
   //ajout
@@ -803,8 +841,12 @@ $("#templateForm").validate({
   submitHandler: function(form) {
     jQuery(form).ajaxSubmit({
       success: function(response) {
-        console.log(response);
-        //alert('Le pdf a bien été généré !');
+        if(response.response == 'true'){
+          alert('Le pdf a bien été généré !');
+        } else{
+          alert('Une erreur est survenue ...');
+        }
+
       }
     });
   }
