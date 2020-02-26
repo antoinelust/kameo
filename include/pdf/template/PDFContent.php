@@ -436,16 +436,15 @@ if (count($boxes) > 0) {
   foreach ($boxes as $box) { ?>
     <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
 
-      <?php echo <<<BOXTITLE
-      <table class="maxWidth">
+      <?php echo "
+      <table class='maxWidth'>
         <tbody>
           <tr>
-            <td style="width:70%;"><span><h2>La Box {$box['MODEL']}</h2></span></td>
-            <td class="green" style:"width:30%; text-align:center;"><div class="count-border" style="width:auto;"><span style="font-size:30px;">x </span><span style="font-size:25mm;">{$box['count']}</span></div></td>
+            <td style='width:70%;'><span><h2>La Box {$box['MODEL']}</h2></span></td>
+            <td class='green' style:'width:30%; text-align:center;'><div class='count-border' style='width:auto;'><span style='font-size:30px;'>x </span><span style='font-size:25mm;'>{$box['count']}</span></div></td>
           </tr>
         </tbody>
-      </table>
-BOXTITLE; ?>
+      </table>" ?>
       <?php
       $temp = explode(' ',$box['MODEL'])[0];
       $boxImg = $root.'/images_bikes/'.$temp.'keys.png' ;

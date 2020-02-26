@@ -839,10 +839,36 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 $("#templateForm").validate({
   ignore: '',
   submitHandler: function(form) {
+    var buttonContent = `
+    <i class="fa fa-circle-o-notch fa-spin"></i>Chargement...
+    `;
+    $('.generatePDF').html(buttonContent);
     jQuery(form).ajaxSubmit({
       success: function(response) {
         if(response.response == 'true'){
+          $('.generatePDF').html('Générer PDF');
           alert('Le pdf a bien été généré !');
+          var offerType = response.buyOrLeasing;
+
+          if(offerType =='buy'){
+            offerType = 'achat';
+          } else if (offerType == 'both'){
+            offerType = 'achat/leasing';
+          }
+
+          var offerLink = 'offres/' + response.file;
+
+          var dest = `
+            <tr>
+              <td>`+response.id+`</td>
+              <td>`+offerType+`</td>
+              <td><a href="`+offerLink+`" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
+              <td>`+response.bikesNumber+`</td>
+              <td>`+response.boxesNumber+`</td>
+              <td><a href="#" class="text-green deletePdfOffer" style="text-decoration:underline !important;">supprimer</a></td>
+            </tr>
+          `;
+          $('#companyContracts').find('.tableBody').append(dest);
         } else{
           alert('Une erreur est survenue ...');
         }
@@ -851,9 +877,6 @@ $("#templateForm").validate({
     });
   }
 });
-
-
-
 
 //gestion du bouton moins et du tableau
 function checkMinus(select, valueLocation){

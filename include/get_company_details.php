@@ -58,7 +58,7 @@ if($ID != NULL)
 
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
-    $conn->close();    
+    $conn->close();
 
 
     $response['response']="success";
@@ -76,6 +76,28 @@ if($ID != NULL)
     $response['automaticBilling']=$resultat['BILLS_SENDING'];
     $response['automaticStatistics']=$resultat['AUTOMATIC_STATISTICS'];
     $response['internalReference']=$resultat['INTERNAL_REFERENCE'];
+
+    include 'connexion.php';
+	  $sql="SELECT * FROM companies_offers dd where COMPANY_ID='$ID'";
+
+    if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+
+    $result = mysqli_query($conn, $sql);
+    $response['companyOffersNumber']=$result->num_rows;
+    $i = 0;
+    while($row = mysqli_fetch_array($result)){
+      $response['companyOffers'][$i]['ID'] = $row['ID'];
+      $response['companyOffers'][$i]['FILE_NAME'] = $row['FILE_NAME'];
+      $response['companyOffers'][$i]['BIKE_NUMBER'] = $row['BIKE_NUMBER'];
+      $response['companyOffers'][$i]['BOX_NUMBER'] = $row['BOX_NUMBER'];
+      $response['companyOffers'][$i]['TYPE'] = $row['TYPE'];
+      $i++;
+    }
+    $conn->close();
 
     if($company==NULL){
         $company=$resultat['INTERNAL_REFERENCE'];

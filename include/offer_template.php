@@ -48,7 +48,7 @@
 
   $currentDate = getDate();
 
-  $pdfTitle = $company['INTERNAL_REFERENCE'].'_'.$currentDate['year'].'_'.$currentDate['mon'].'_'.$currentDate['mday'].'_'.$currentDate['hours'].'_'.$currentDate['minutes'];
+  $pdfTitle = $company['INTERNAL_REFERENCE'].'_'.$currentDate['year'].'_'.$currentDate['mon'].'_'.$currentDate['mday'].'_temp';
 
   //affichage de la réponse en front (debug, a supprimer en prod)
   //header('Content-type: application/json');
@@ -83,14 +83,21 @@
     //sort le fichier PDF sur le serveur
     $html2pdf->Output($root.'/offres/'.$pdfTitle.'.pdf', 'F');
     //ajoute le PDF a la table
-    add_PDF($companyId, $pdfTitle);
+    $response['id'] = add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing);
+    $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
+    rename($root.'/offres/'.$pdfTitle.'.pdf', $root.'/offres/'.$newPdfFile.'.pdf');
+
 
     //response
     $response['response'] = 'true';
-    $response['file'] = $pdfTitle.'.pdf';
+    $response['file'] = $newPdfFile.'.pdf';
+    $response['bikesNumber'] = $bikesNumber;
+    $response['boxesNumber'] = $boxesNumber;
+    $response['buyOrLeasing'] = $buyOrLeasing;
+
     header('Content-type: application/json');
     echo json_encode($response);
-    
+
   }  catch (Html2PdfException $e) {
       $html2pdf->clean();
 
@@ -196,11 +203,19 @@
     return $temp;
   }
 
-  function add_PDF($id, $file){
+  function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing){
     include 'connexion.php';
-    $sql = "INSERT INTO companies_offers (FILE_NAME,COMPANY_ID) VALUES ('$file','$id')";
+    $sql = "INSERT INTO companies_offers (FILE_NAME,COMPANY_ID, BIKE_NUMBER,BOX_NUMBER, TYPE) VALUES ('$file','$id','$bikesNumber','$boxesNumber','$buyOrLeasing')";
+    $res = $conn->query($sql);
+    $id = $conn->insert_id;
+    $file = str_replace('temp', $id, $file);
+    $conn->close();
+
+    include 'connexion.php';
+    $sql = "UPDATE `companies_offers` SET `FILE_NAME` = '$file' WHERE `companies_offers`.`ID` = '$id'";
     $res = $conn->query($sql);
     $conn->close();
+    return $id;
   }
 
  ?>

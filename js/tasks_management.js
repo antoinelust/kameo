@@ -1,5 +1,4 @@
-function list_tasks(status, owner2, numberOfResults) {
-    var email= "<?php echo $user; ?>";
+function list_tasks(status, owner2, numberOfResults, email) {
     if(!owner2){
         owner2=email;
     }
@@ -153,7 +152,7 @@ function list_tasks(status, owner2, numberOfResults) {
 }
 
 
-    
+
 
 function construct_form_for_action_update(id){
 

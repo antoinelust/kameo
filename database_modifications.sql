@@ -56,3 +56,22 @@ CREATE TABLE `kameobiknq`.`companies_offers` ( `ID` INT NOT NULL AUTO_INCREMENT 
 ALTER TABLE companies_offers
 ADD FOREIGN KEY (COMPANY_ID) REFERENCES companies(ID);
 INSERT INTO companies_offers (FILE_NAME,COMPANY_ID) VALUES ('AFELIO_2020_2_25_16_15',14);
+/*Ajout de champs indiquant le nombre de vélos et de boxes*/
+ALTER TABLE `companies_offers` ADD `BIKE_NUMBER` INT NULL AFTER `COMPANY_ID`, ADD `BOX_NUMBER` INT NULL AFTER `BIKE_NUMBER`;
+/*ajout du champ type*/
+ALTER TABLE `companies_offers` ADD `TYPE` VARCHAR(100) NULL AFTER `BOX_NUMBER`;
+
+/*=====NOTIFICATIONS=====*/
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `HEU_MAJ` TIMESTAMP NOT NULL,
+  `USR_MAJ` VARCHAR(150) NOT NULL,
+  `DATE` TIMESTAMP NOT NULL,
+  `TEXT` TEXT NOT NULL,
+  `READ` VARCHAR(1) NOT NULL,
+  `TYPE` VARCHAR(45) NOT NULL,
+  `USER_ID` INT NOT NULL, PRIMARY KEY (`ID`)) ENGINE = MyISAM;
+
+/*Ajout clé étrangère*/
+ALTER TABLE notifications
+ADD FOREIGN KEY (USER_ID) REFERENCES customer_referential(ID);
