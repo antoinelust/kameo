@@ -403,3 +403,10 @@ INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, 
 
 admin@edmail.comqsdq
  ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('Lust', 'Antoine', 'antoine.lust@hotmail.fr', '0478996698', 'président', 14, 'N');
+
+antoine.lust@hotmail.fr
+ ---- 
