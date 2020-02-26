@@ -5062,6 +5062,7 @@ if($connected){
                             <option value="PROSPECT" selected>Prospect</option>
                             <option value="ANCIEN PROSPECT" selected>Ancien prospect</option>
                             <option value="ANCIEN CLIENT">Ancien client</option>
+                            <option value="NOT INTERESTED">Pas intéressé</option>
                           </select>
                         </div>
                         <div class="col-sm-6">
@@ -5463,6 +5464,7 @@ if($connected){
                           <option value="PROSPECT">Prospect</option>
                           <option value="ANCIEN PROSPECT">Ancien Prospect</option>
                           <option value="ANCIEN CLIENT">Ancien Client</option>
+                          <option value="NOT INTERESTED">Pas intéressé</option>
                         </select>
                       </div>
                       <div class="separator"></div>
