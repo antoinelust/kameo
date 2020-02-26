@@ -29,206 +29,8 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/contracts_management.js"></script>
 <script type="text/javascript" src="js/search_module.js"></script>
 <script type="text/javascript" src="js/bills_management.js"></script>
+<script type="text/javascript" src="js/company_management.js"></script>
 
-
-<script type="text/javascript">
-
-function get_bills_listing(company, sent, paid, direction) {
-    var email= "<?php echo $user; ?>";
-    $.ajax({
-        url: 'include/get_bills_listing.php',
-        type: 'post',
-        data: { "email": email, "company": company, "sent": sent, "paid": paid, "direction": direction},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-
-                $('#widget-addBill-form input[name=ID_OUT]').val(parseInt(response.IDMaxBillingOut) +1);
-                $('#widget-addBill-form input[name=ID]').val(parseInt(response.IDMaxBilling) +1);
-                $('#widget-addBill-form input[name=communication]').val(response.communication);
-                $('#widget-addBill-form input[name=communicationHidden]').val(response.communication);
-
-                var i=0;
-                var dest="";
-                if(response.update){
-                    var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures ("+response.billNumberTotal+")</span></a><br/>";
-                }else{
-                    var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures("+response.billNumberTotal+")</span></a>  <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', '*')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures non payées ("+response.billINNumberNotPaid+")</span></a><br/>";
-                }
-                dest=dest.concat(temp);
-
-                if(response.update){
-                    var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises ("+response.billINNumber+")</span></a> <a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '0', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises non envoyées ("+response.billINNumberNotSent+")</span></a><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', 'IN')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture émises envoyées mais non payées ("+response.billINNumberNotPaid+")</span></a><br /><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues ("+response.billOUTNumber+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '0', 'OUT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues non-payées  ("+response.billOUTNumberNotPaid+")</span></a><br/>";
-                    dest=dest.concat(temp);
-                    document.getElementsByClassName('companyBillSelection')[0].hidden=false;
-                    document.getElementsByClassName('companyBillSelection')[1].hidden=false;
-
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><tbody><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead>";
-                }else{
-                    document.getElementsByClassName('companyBillSelection')[0].hidden=true;
-                    document.getElementsByClassName('companyBillSelection')[1].hidden=true;
-
-                    var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><tbody><thead><tr></th><th>ID</th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th></tr></thead>";
-
-                }
-                dest=dest.concat(temp);
-
-                if(response.update){
-                    $.ajax({
-                        url: 'include/get_companies_listing.php',
-                        type: 'post',
-                        data: {type: "*"},
-                        success: function(response){
-                            if(response.response == 'error') {
-                                console.log(response.message);
-                            }
-                            if(response.response == 'success'){
-                                var i=0;
-                                var dest2="";
-                                temp2="<li><a href=\"#\" onclick=\"billFilter('Choix de la société')\">Toutes les sociétés</a></li><li class=\"divider\"></li>";
-                                dest2=dest2.concat(temp2);
-                                while (i < response.companiesNumber){
-                                    var temp2="<li><a href=\"#\" onclick=\"billFilter('"+response.company[i].internalReference+"')\">"+response.company[i].companyName+"</a></li>";
-                                    dest2=dest2.concat(temp2);
-                                    i++;
-
-                                }
-                                document.getElementsByClassName('billSelection')[0].innerHTML=dest2;
-
-                            }
-                        }
-                    })
-                }
-                while (i < response.billNumber){
-                    if(response.bill[i].sentDate==null){
-                        var sendDate="N/A";
-                    }else{
-                        var sendDate=response.bill[i].sentDate.substr(0,10);
-                    }
-                    if(response.bill[i].paidDate==null){
-                        var paidDate="N/A";
-                    }else{
-                        var paidDate=response.bill[i].paidDate.substr(0,10);
-                    }
-                    if(response.bill[i].sent=="0"){
-                        var sent="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
-                    }else{
-                        var sent="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                    }
-                    if(response.bill[i].paid=="0"){
-                        var paid="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
-                    }else{
-                        var paid="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                    }
-
-                    if(response.bill[i].limitPaidDate && response.bill[i].paid=="0"){
-                        var dateNow=new Date();
-                        var dateLimit=new Date(response.bill[i].limitPaidDate);
-
-                          let month = String(dateLimit.getMonth() + 1);
-                          let day = String(dateLimit.getDate());
-                          let year = String(dateLimit.getFullYear());
-
-                          if (month.length < 2) month = '0' + month;
-                          if (day.length < 2) day = '0' + day;
-
-
-                        if(dateNow>dateLimit){
-                            var paidLimit="<span class=\"text-red\">"+day+"/"+month+"/"+year.substr(2,2)+"</span>";
-                        }else{
-                            var paidLimit="<span>"+day+"/"+month+"/"+year.substr(2,2)+"</span>";
-                        }
-                    }else if(response.bill[i].paid=="0"){
-                        var paidLimit="<span class=\"text-red\">N/A</span>";
-                    }else{
-                        var paidLimit="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
-                    }
-
-
-
-                    if(response.update && response.bill[i].amountHTVA>0){
-                        var temp="<tr><th class=\"text-green\">IN</th>";
-                    }else if(response.update && response.bill[i].amountHTVA<0){
-                        var temp="<tr><th class=\"text-red\">OUT</th>";
-                    }else{
-                        var temp="<tr>";
-                    }
-                    dest=dest.concat(temp);
-
-                    if(response.bill[i].fileName){
-                        var temp="<th><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].ID+"</a></th>";
-                    }
-                    else{
-                        var temp="<th><a href=\"#\" class=\"text-red\">"+response.bill[i].ID+"</a></th>";
-                    }
-                    dest=dest.concat(temp);
-                    if(response.update && response.bill[i].amountHTVA>0){
-                        var temp="<th>"+response.bill[i].company+"</a></th>";
-                        dest=dest.concat(temp);
-                    }else if(response.update && response.bill[i].amountHTVA<0){
-                        var temp="<th>"+response.bill[i].beneficiaryCompany+"</a></th>";
-                        dest=dest.concat(temp);
-                    }
-                    var temp="<th>"+response.bill[i].date.substr(0,10)+"</th><th>"+Math.round(response.bill[i].amountHTVA)+" €</th><th>"+response.bill[i].communication+"</th>";
-                    dest=dest.concat(temp);
-
-                    if(sent=="Y"){
-                        var temp="<th class=\"text-green\">"+sendDate+"</th>";
-                    }else{
-                        var temp="<th class=\"text-red\">"+sent+"</th>";
-                    }
-                    dest=dest.concat(temp);
-
-                    if(paid=="Y"){
-                        var temp="<th class=\"text-green\">"+paidDate+"</th>";
-                    }else{
-                        var temp="<th class=\"text-red\">"+paid+"</th>";
-                    }
-                    dest=dest.concat(temp);
-
-
-                    dest=dest.concat("<th>"+paidLimit+"</th>");
-
-
-                    if(response.update){
-                        if(response.bill[i].communicationSentAccounting=="1"){
-                            var temp="<th class=\"text-green\">OK</th>";
-                        }else{
-                            var temp="<th class=\"text-red\">KO</th>";
-                        }
-                        dest=dest.concat(temp);
-                    }
-
-                    if(response.update){
-                        temp="<th><ins><a class=\"text-green updateBillingStatus\" data-target=\"#updateBillingStatus\" name=\""+response.bill[i].ID+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></th>";
-                        dest=dest.concat(temp);
-                    }
-
-                    dest=dest.concat("</tr>");
-                    i++;
-
-                }
-                var temp="</tobdy></table>";
-                dest=dest.concat(temp);
-                document.getElementById('billsListing').innerHTML = dest;
-                document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"\" data-from=\"0\" data-seperator=\"true\">"+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"</span>";
-
-                var classname = document.getElementsByClassName('updateBillingStatus');
-                for (var i = 0; i < classname.length; i++) {
-                    classname[i].addEventListener('click', function() {construct_form_for_billing_status_update(this.name)}, false);
-                }
-                displayLanguage();
-
-            }
-        }
-    })
-}
-
-
-
-</script>
 
 
 
@@ -273,12 +75,12 @@ window.addEventListener("DOMContentLoaded", function(event) {
     classname[i].addEventListener('click', list_condition, false);
 
     classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
-    classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*')}, false);
+    classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email)}, false);
     classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
     classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
     classname[i].addEventListener('click', function () { list_feedbacks()}, false);
     classname[i].addEventListener('click', function () { list_bikes_admin()}, false);
-    classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val())}, false);
+    classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>')}, false);
     classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
     classname[i].addEventListener('click', initialize_booking_counter, false);
 
@@ -309,7 +111,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
   document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
   document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
   document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false);
-  document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+  document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(), '<?php echo $user ?>');
 }, false);
 document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
 document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
@@ -387,13 +189,13 @@ function initializeFields(){
 }
 
 function taskFilter(e){
-  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
 
 }
 
 function billFilter(e){
   document.getElementsByClassName('billSelectionText')[0].innerHTML=e;
-  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
+  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
 
 }
 
@@ -1582,7 +1384,7 @@ if($connected){
 
           var classname = document.getElementsByClassName('internalReferenceCompany');
           for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener('click', function() {get_company_details(this.name, true)}, false);
+            classname[i].addEventListener('click', function() {get_company_details(this.name,email, true)}, false);
           }
           var classname = document.getElementsByClassName('updateCompany');
           for (var i = 0; i < classname.length; i++) {
@@ -1713,7 +1515,6 @@ if($connected){
       data: { 'ID' : ID },
       success: function(response){
         initialize_company_contacts();
-        console.log(response);
         var contactContent = `
         <table class="table contactsTable">
         <thead>
@@ -1729,37 +1530,37 @@ if($connected){
         </tr>
         </thead>
         <tbody>`;
-        nbContacts = response.emailContact.length;
-        for (var i = 0; i < response.emailContact.length; i++) {
-          var contactId = (response.contactId[i] != undefined) ? response.contactId[i] : '';
-          var email = (response.emailContact[i] != undefined) ? response.emailContact[i] : '';
-          var lastName = (response.lastNameContact[i] != undefined) ? response.lastNameContact[i] : '';
-          var firstName = (response.firstNameContact[i] != undefined) ? response.firstNameContact[i] : '';
-          var phone = (response.phone[i] != undefined) ? response.phone[i] : '';
-          var fonction = (response.fonction[i] != undefined) ? response.fonction[i] : '';
+        nbContacts = response.length;
+        for (var i = 0; i < response.length; i++) {
+          var contactId = (response[i].contactId != undefined) ? response[i].contactId : '';
+          var email = (response[i].emailContact != undefined) ? response[i].emailContact : '';
+          var lastName = (response[i].lastNameContact != undefined) ? response[i].lastNameContact : '';
+          var firstName = (response[i].firstNameContact != undefined) ? response[i].firstNameContact : '';
+          var phone = (response[i].phone != undefined) ? response[i].phone : '';
+          var fonction = (response[i].fonction != undefined) ? response[i].fonction : '';
           var bikesStatsChecked = "";
-          if (response.bikesStats[i] == "Y") {
+          if (response[i].bikesStats == "Y") {
             bikesStatsChecked = "checked";
           }
           contactContent += `
           <tr class="form-group">
           <td>
-          <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail`+response.contactId[i]+`" id="contactEmail`+response.contactId[i]+`" value="`+email+`" required/>
+          <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail`+response[i].contactId+`" id="contactEmail`+response[i].contactId+`" value="`+email+`" required/>
           </td>
           <td>
-          <input type="text" class="form-control required lastName" readonly="true"  name="contactNom`+response.contactId[i]+`" id="contactNom`+response.contactId[i]+`" value="`+lastName+`" required/>
+          <input type="text" class="form-control required lastName" readonly="true"  name="contactNom`+response[i].contactId+`" id="contactNom`+response[i].contactId+`" value="`+lastName+`" required/>
           </td>
           <td>
-          <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom`+response.contactId[i]+`" id="contactPrenom`+response.contactId[i]+`" value="`+firstName+`" required/>
+          <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom`+response[i].contactId+`" id="contactPrenom`+response[i].contactId+`" value="`+firstName+`" required/>
           </td>
           <td>
-          <input type="tel" class="form-control phone" readonly="true"  name="contactPhone`+response.contactId[i]+`" id="contactPhone`+response.contactId[i]+`" value="`+phone+`"/>
+          <input type="tel" class="form-control phone" readonly="true"  name="contactPhone`+response[i].contactId+`" id="contactPhone`+response[i].contactId+`" value="`+phone+`"/>
           </td>
           <td>
-          <input type="text" class="form-control fonction" readonly="true"  name="contactFunction`+response.contactId[i]+`" id="contactFunction`+response.contactId[i]+`" value="`+fonction+`"/>
+          <input type="text" class="form-control fonction" readonly="true"  name="contactFunction`+response[i].contactId+`" id="contactFunction`+response[i].contactId+`" value="`+fonction+`"/>
           </td>
           <td>
-          <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats`+response.contactId[i]+`" id="contactBikesStats`+response.contactId[i]+`" value="bikesStats" `+bikesStatsChecked+`/>
+          <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats`+response[i].contactId+`" id="contactBikesStats`+response[i].contactId+`" value="bikesStats" `+bikesStatsChecked+`/>
           </td>
           <td>
           <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil" type="button"></button>
@@ -1767,7 +1568,7 @@ if($connected){
           <td>
           <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove" type="button"></button>
           </td>
-          <input type="hidden" class="contactIdHidden" name="contactId`+response.contactId[i]+`" id="contactId`+response.contactId[i]+`" value="`+contactId+`" />
+          <input type="hidden" class="contactIdHidden" name="contactId`+response[i].contactId+`" id="contactId`+response[i].contactId+`" value="`+contactId+`" />
           </tr>`;
         }
         contactContent += "</tbody></table>";
@@ -1881,398 +1682,7 @@ if($connected){
     $('.removeContact').addClass('glyphicon-plus').addClass('green').addClass('addContact').removeClass('glyphicon-minus').removeClass('red').removeClass('removeContact');
   }
 
-  function get_company_details(ID, getCompanyContacts = false) {
-    var email= "<?php echo $user; ?>";
-    var internalReference;
-    $.ajax({
-      url: 'include/get_company_details.php',
-      type: 'post',
-      data: {"ID": ID},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          $("#companyIdHidden").val(response.ID);
-          $('#companyIdTemplate').val(response.ID);
-          get_company_boxes(response.internalReference);
-          if(getCompanyContacts == true){
-            get_company_contacts(response.ID);
-          }
 
-          remove_contact_form(true);
-
-          $('#widget-companyDetails-form input[name=ID]').val(response.ID);
-          document.getElementById('companyName').value = response.companyName;
-          document.getElementById('companyStreet').value = response.companyStreet;
-          document.getElementById('companyZIPCode').value = response.companyZIPCode;
-          document.getElementById('companyTown').value = response.companyTown;
-          document.getElementById('companyVAT').value = response.companyVAT;
-          document.getElementById('widget_companyDetails_internalReference').value=response.internalReference;
-          internalReference=response.internalReference;
-          $('#widget-companyDetails-form select[name=type]').val(response.type);
-          $('#widget-companyDetails-form input[name=email_billing]').val(response.emailContactBilling);
-          $('#widget-companyDetails-form input[name=firstNameContactBilling]').val(response.firstNameContactBilling);
-          $('#widget-companyDetails-form input[name=lastNameContactBilling]').val(response.lastNameContactBilling);
-          $('#widget-companyDetails-form input[name=phoneBilling]').val(response.phoneContactBilling);
-
-          if(response.automaticBilling=="Y"){
-            $('#widget-companyDetails-form input[name=billing]').prop( "checked", true );
-          }else{
-            $('#widget-companyDetails-form input[name=billing]').prop( "checked", false );
-          }
-          if(response.automaticStatistics=="Y"){
-            $('#widget-companyDetails-form input[name=statistiques]').prop( "checked", true );
-          }else{
-            $('#widget-companyDetails-form input[name=statistiques]').prop( "checked", false );
-          }
-          if(response.assistance=='Y'){
-            $("#widget-companyDetails-form input[name=assistance]").prop( "checked", true );
-          }else{
-            $("#widget-companyDetails-form input[name=assistance]").prop( "checked", false );
-          }
-          if(response.locking=='Y'){
-            $("#widget-companyDetails-form input[name=locking]").prop( "checked", true );
-          }else{
-            $("#widget-companyDetails-form input[name=locking]").prop( "checked", false );
-          }
-
-
-          var i=0;
-          var dest="<a class=\"button small green button-3d rounded icon-right addBikeAdmin\" data-target=\"#bikeManagement\" data-toggle=\"modal\" href=\"#\" name=\""+response.ID+"\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a>";
-          if(response.bikeNumber>0){
-            var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead>";
-            dest=dest.concat(temp);
-            while(i<response.bikeNumber){
-
-              if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart != null){
-                var contractStart="<span>"+response.bike[i].contractStart.substr(0,10)+"</span>";
-              }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart == null){
-                var contractStart="<span class=\"text-red\">N/A</span>";
-              }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart == null){
-                var contractStart="<span>N/A</span>";
-              }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart != null){
-                var contractStart="<span class=\"text-red\">"+response.bike[i].contractStart.substr(0,10)+"</span>";
-              }else{
-                var contractStart="<span class=\"text-red\">ERROR</span>";
-              }
-              if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd != null){
-                var contractEnd="<span>"+response.bike[i].contractEnd.substr(0,10)+"</span>";
-              }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd == null){
-                var contractEnd="<span class=\"text-red\">N/A</span>";
-              }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd == null){
-                var contractEnd="<span>N/A</span>";
-              }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd != null){
-                var contractEnd="<span class=\"text-red\">"+response.bike[i].contractEnd.substr(0,10)+"</span>";
-              }else{
-                var contractEnd="<span class=\"text-red\">ERROR</span>";
-              }
-
-
-              var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].facturation+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+response.bike[i].leasingPrice+"</td><td>";
-              dest=dest.concat(temp);
-
-              var j=0;
-              while(j<response.bike[i].buildingNumber){
-                var temp=response.bike[i].building[j].buildingCode+"<br/>"
-                dest=dest.concat(temp);
-                j++;
-              }
-              if(response.bike[i].buildingNumber==0){
-                var temp="<span class=\"text-red\">Non-défini</span>";
-                dest=dest.concat(temp);
-              }
-              dest=dest.concat("</td><td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
-              i++;
-            }
-            dest=dest.concat("</tbody></table>");
-          }
-
-          document.getElementById('companyBikes').innerHTML = dest;
-
-
-          $('.updateBikeAdmin').click(function(){
-            construct_form_for_bike_status_updateAdmin(this.name);
-            $('#widget-bikeManagement-form input').attr('readonly', false);
-            $('#widget-bikeManagement-form select').attr('readonly', false);
-            $('.bikeManagementTitle').html('Modifier un vélo');
-            $('.bikeManagementSend').removeClass('hidden');
-          });
-
-          $('.addBikeAdmin').click(function(){
-            add_bike(this.name);
-            $('#widget-bikeManagement-form input').attr('readonly', false);
-            $('#widget-bikeManagement-form select').attr('readonly', false);
-            $('.bikeManagementTitle').html('Ajouter un vélo');
-            $('.bikeManagementSend').removeClass('hidden');
-          });
-
-
-          //Ajouter un bâtiment
-          var dest="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBuilding\" data-toggle=\"modal\" onclick=\"add_building('"+response.internalReference+"')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un bâtiment</span></a>";
-
-          if(response.buildingNumber>0){
-            var i=0;
-            var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th scope=\"col\"><span class=\"fr-inline\">Adresse</span><span class=\"en-inline\">Address</span><span class=\"nl-inline\">Address</span></th></tr></thead>";
-            dest=dest.concat(temp);
-            while(i<response.buildingNumber){
-              var temp="<tr><td scope=\"row\">"+response.building[i].buildingReference+"</td><td>"+response.building[i].buildingFR+"</td><td>"+response.building[i].address+"</td></tr>";
-              dest=dest.concat(temp);
-              i++;
-            }
-            dest=dest.concat("</tbody></table>");
-          }
-
-          document.getElementById('companyBuildings').innerHTML = dest;
-
-
-          //Ajouter une offre
-
-          var dest="<a class=\"button small green button-3d rounded icon-right offerManagement addOffer\" name=\""+internalReference+"\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a>";
-          dest+="<a class=\"button small green button-3d rounded icon-right offerManagement getTemplate\" name=\""+internalReference+"\" data-target=\"#template\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Template Offre</span></a>";
-          if((response.offerNumber + response.bikeContracts)>0){
-            var i=0;
-            var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>";
-            dest=dest.concat(temp);
-            while(i<response.bikeContracts){
-              if(response.offer[i].description){
-                var description=response.offer[i].description;
-              }else{
-                var description="N/A";
-              }
-              if(response.offer[i].probability){
-                var probability=response.offer[i].probability;
-              }else{
-                var probability="N/A";
-              }
-              if(response.offer[i].amount){
-                var amount=response.offer[i].amount;
-              }else{
-                var amount="N/A";
-              }
-              if(response.offer[i].start){
-                var start=response.offer[i].start.substr(0,10);
-              }else{
-                var start="N/A";
-              }
-              if(response.offer[i].end){
-                var end=response.offer[i].end.substr(0,10);
-              }else{
-                var end="N/A";
-              }
-              if(response.offer[i].status){
-                var status=response.offer[i].status;
-              }else{
-                var status="N/A";
-              }
-
-              var temp="<tr><td>"+response.offer[i].id+"</td><td>Signé</td><td>"+description+"</td><td>"+probability+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td></td></tr>";
-              dest=dest.concat(temp);
-              i++;
-            }
-
-            while(i<(response.offerNumber + response.bikeContracts)){
-
-              if(!response.offer[i].date){
-                var date="?";
-              }else{
-                var date=response.offer[i].date.substr(0,10);
-              }
-              if(!response.offer[i].start){
-                var start="?";
-              }else{
-                var start=response.offer[i].start.substr(0,10);
-              }
-              if(!response.offer[i].end){
-                var end="?";
-              }else{
-                var end=response.offer[i].end.substr(0,10);
-              }
-
-              if(response.offer[i].type=="leasing"){
-                var amount = response.offer[i].amount+" €/mois";
-              }else{
-                var amount = response.offer[i].amount+" €";
-              }
-              if(response.offer[i].status){
-                var status=response.offer[i].status;
-              }else{
-                var status="N/A";
-              }
-
-
-              var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-              dest=dest.concat(temp);
-              i++;
-            }
-            dest=dest.concat("</tbody></table>");
-          }
-          document.getElementById('companyContracts').innerHTML = dest;
-
-          $(".retrieveOffer").click(function() {
-            retrieve_offer(this.name, "retrieve");
-          });
-
-          $(".updateOffer").click(function() {
-            retrieve_offer(this.name, "update");
-          });
-          $(".addOffer").click(function() {
-            add_offer(this.name);
-            $('.offerManagementSendButton').removeClass("hidden");
-            $('.offerManagementSendButton').text("Ajouter")
-
-          });
-
-
-
-
-          //Ajouter un utilisateur
-          var dest="<a class=\"button small green button-3d rounded icon-right addUser\" data-target=\"#addUser\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un Utilisateur</span></a>";
-          if(response.userNumber>0){
-            var i=0;
-            var temp="<table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Name</span></th><th scope=\"col\"><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">First Name</span><span class=\"nl-inline\">First Name</span></th><th scope=\"col\"><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-Mail</span><span class=\"nl-inline\">E-Mail</span></th></tr></thead>";
-            dest=dest.concat(temp);
-            while(i<response.userNumber){
-              var temp="<tr><td scope=\"row\">"+response.user[i].name+"</td><td>"+response.user[i].firstName+"</td><td>"+response.user[i].email+"</td></tr>";
-              dest=dest.concat(temp);
-              i++;
-            }
-            dest=dest.concat("</tbody></table>");
-          }
-          document.getElementById('companyUsers').innerHTML = dest;
-
-
-          $('.addUser').click(function(){
-            $('#widget-addUser-form input[name=company]').val(response.internalReference);
-
-
-            var company=response.internalReference;
-
-            $.ajax({
-              url: 'include/get_building_listing.php',
-              type: 'post',
-              data: { "company": response.internalReference},
-              success: function(response){
-                if(response.response == 'error') {
-                  console.log(response.message);
-                }
-                if(response.response == 'success'){
-                  var i=0;
-                  var dest="";
-                  while (i < response.buildingNumber){
-                    temp="<input type=\"checkbox\" name=\"buildingAccess[]\" checked value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"<br>";
-                    dest=dest.concat(temp);
-                    i++;
-
-                  }
-                  document.getElementById('buildingCreateUser').innerHTML = dest;
-
-                  $.ajax({
-                    url: 'include/get_bikes_listing.php',
-                    type: 'post',
-                    data: { "company": company, "admin": "N"},
-                    success: function(response){
-                      if(response.response == 'error') {
-                        console.log(response.message);
-                      }
-                      if(response.response == 'success'){
-                        var i=0;
-                        var dest="";
-                        while (i < response.bikeNumber){
-                          temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].frameNumber+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
-                          dest=dest.concat(temp);
-                          i++;
-
-                        }
-                        document.getElementById('bikeCreateUser').innerHTML = dest;
-                        document.getElementById('confirmAddUser').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" onclick=\"confirm_add_user()\">\
-                        <i class=\"fa fa-paper-plane\">\
-                        </i>\
-                        Confirmer\
-                        </button>";
-
-                      }
-                    }
-                  })
-                }
-              }
-            })
-          });
-
-          displayLanguage();
-        }
-      },error: function(response){
-
-        console.log(response);
-      }
-    }).done(function(){
-      $.ajax({
-        url: 'include/action_company.php',
-        type: 'get',
-        data: { "company": internalReference, "user": email},
-        success: function(response){
-          if (response.response == 'error') {
-            console.log(response.message);
-          } else{
-
-
-            var dest="<a href=\"#\" data-target=\"#taskManagement\" name=\""+internalReference+"\" data-toggle=\"modal\" class=\"button small green button-3d rounded icon-right addTask\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a>";
-
-            if(response.actionNumber>0){
-              var i=0;
-              var temp="<table class=\"table table-condensed\"><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Owner</span><span class=\"en-inline\">Owner</span><span class=\"nl-inline\">Owner</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th></th></tr></thead> ";
-              dest=dest.concat(temp);
-              while(i<response.actionNumber){
-                if(!(response.action[i].date_reminder)){
-                  $date_reminder="N/A"
-                }else{
-                  $date_reminder=response.action[i].date_reminder.substring(0,10);
-                }
-                var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].date.substring(0,10)+"</td><td>"+response.action[i].type+"</td><td>"+response.action[i].title+"</td><td>"+response.action[i].ownerFirstName+" "+response.action[i].ownerName+"</td><td>"+response.action[i].status+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
-                dest=dest.concat(temp);
-                i++;
-              }
-              dest=dest.concat("</tbody></table>");
-            }
-
-            $('#action_company_log').html(dest);
-
-
-
-            $(".retrieveTask").click(function() {
-              retrieve_task(this.name, "retrieve");
-              $('.taskManagementSendButton').addClass("hidden");
-
-
-            });
-
-            $(".updateTask").click(function() {
-              update_task(this.name, "update");
-            });
-            $(".addTask").click(function() {
-              add_task(this.name);
-              $('.taskManagementSendButton').removeClass("hidden");
-              $('.taskManagementSendButton').text("Ajouter")
-
-            });
-
-
-
-            displayLanguage();
-
-            var classname = document.getElementsByClassName('updateAction');
-            for (var i = 0; i < classname.length; i++) {
-              classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
-            }
-            list_kameobikes_member();
-
-
-          }
-
-        }
-      })
-    })
-  }
 
   function list_kameobikes_member(){
     $('#widget-addActionCompany-form select[name=owner]')
@@ -2375,7 +1785,16 @@ if($connected){
         <div class="post-item">
           <div class="post-content-details">
             <div class="heading heading text-left m-b-20">
-              <h2>MY KAMEO</h2>
+              <div class="row">
+                <h2 class="col-sm-8">MY KAMEO</h2>
+                <!--<div class="col-sm-4" style="padding:0;">
+                  <div style="position:relative;">
+                    <i class="fa fa-3x fa-bell-o text-green" aria-hidden="true"></i>
+                    <span style="position:absolute; bottom:50%; left:21px; font-size:20px;">0</span>
+                  </div>
+                </div> -->
+              </div>
+
             </div>
             <br />
             <div class="col-md-12">
@@ -5496,7 +4915,7 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
-                              get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
+                              get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
                               $('#addBill').modal('toggle');
                               document.getElementById('widget-addBill-form').reset();
 
@@ -6459,7 +5878,7 @@ if($connected){
                                 <option value="site" selected>Contact sur site internet</option>
                               </select>
                             </div>
-                            
+
                             <div class="col-md-4">
                               <label for="sector"  class="fr">Secteur</label>
                                 <label for="sector"  class="en">Sector</label>
@@ -6511,7 +5930,7 @@ if($connected){
 
                     </form>
                     <script type="text/javascript">
-                        
+
                           $('#widget-taskManagement-form select[name=type]').change(function(){
                               console.log($('#widget-taskManagement-form select[name=type]').val());
                               if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
@@ -6526,7 +5945,7 @@ if($connected){
                                   $('#widget-taskManagement-form input[name=sector]').removeClass("required");
                                   $('#widget-taskManagement-form input[name=sector]').val("");
                                   $('#widget-taskManagement-form select[name=channel]').val("");
-                                  
+
                               }
                           });
 
@@ -6542,7 +5961,7 @@ if($connected){
                                   }, {
                                     type: 'success'
                                   });
-                                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+                                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
                                   $('#taskManagement').modal('toggle');
                                   document.getElementById('widget-taskManagement-form').reset();
 
@@ -7011,7 +6430,7 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
-                              get_company_details($('#widget-companyDetails-form input[name=ID]').val());
+                              get_company_details($('#widget-companyDetails-form input[name=ID]').val(),email);
                               document.getElementById('widget-bikeManagement-form').reset();
                               $('#bikeManagement').modal('toggle');
                               list_bikes_admin();
@@ -7205,7 +6624,7 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
-                              get_company_details($('#widget-companyDetails-form input[name=ID]').val());
+                              get_company_details($('#widget-companyDetails-form input[name=ID]').val(),email);
                               document.getElementById('widget-boxManagement-form').reset();
                               $('#boxManagement').modal('toggle');
                             } else {
@@ -7318,7 +6737,7 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
-                              get_company_details($('#widget-companyDetails-form input[name=ID]').val());
+                              get_company_details($('#widget-companyDetails-form input[name=ID]').val(),email);
                               document.getElementById('widget-addBuilding-form').reset();
                               $('#addBuilding').modal('toggle');
 
@@ -7743,15 +7162,23 @@ if($connected){
                     </table>
                     <div class="separator"></div><div class="separator"></div>
                   </div>
+                  <div class="row form-group">
+                    <h4 class="text-green">Délais vélos</h4>
+                    <div class="col-sm-8">
+                      <textarea name="delais" id="delais" class="form-control required" required></textarea>
+                    </div><div class="separator"></div>
+                    <h4 class="text-green">Validité de l'offre</h4>
+                    <div class="col-sm-4">
+                      <input type="date" name="offerValidity" id="offerValidity" class="form-control required" required>
+                    </div><div class="separator"></div>
+                  </div>
                   <div class="row form-group" style="margin-bottom:20px;">
                     <h4 class="text-green">Contact société</h4>
-                    <div class="col-sm-12">Champs temporaires, a remplacer par un select</div>
-                    <div class="col-sm-2"><label for="">Email</label><input type="text" class="form-control required" required name="contactEmail"></div>
-                    <div class="col-sm-2"><label for="">Nom</label><input type="text" class="form-control required" required name="contactLastName"></div>
-                    <div class="col-sm-2"><label for="">Prénom</label><input type="text" class="form-control required" required name="contactFirstName"></div>
-                    <div class="col-sm-2"><label for="">Téléphone</label><input type="text" class="form-control required" required name="contactPhone"></div>
+                    <div class="col-sm-4 companyContactDiv">
+                    </div>
+                    <div class="separator"></div>
                   </div><br/>
-                  <button type="submit" class="fr button small green button-3d rounded icon-left">Générer PDF</button>
+                  <button type="submit" class="fr button small green button-3d rounded icon-left generatePDF">Générer PDF</button>
                 </form>
               </div>
               <script src="js/template-offre.js"></script>
@@ -8530,7 +7957,7 @@ if($connected){
                     type: 'success'
                   });
                   $('#updateBillingStatus').modal('toggle');
-                  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
+                  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
                 } else {
                   $.notify({
                     message: response.message
@@ -8555,7 +7982,7 @@ if($connected){
                     type: 'success'
                   });
                   $('#updateBillingStatus').modal('toggle');
-                  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*');
+                  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
                 } else {
                   $.notify({
                     message: response.message
@@ -8694,7 +8121,7 @@ if($connected){
                   }, {
                     type: 'success'
                   });
-                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val());
+                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
                   document.getElementById('widget-updateAction-form').reset();
                   $('#updateAction').modal('toggle');
 

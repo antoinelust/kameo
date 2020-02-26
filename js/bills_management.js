@@ -1,5 +1,5 @@
-function get_bills_listing(company, sent, paid, direction) {
-    var email= "<?php echo $user; ?>";
+function get_bills_listing(company, sent, paid, direction, email) {
+
     $.ajax({
         url: 'include/get_bills_listing.php',
         type: 'post',

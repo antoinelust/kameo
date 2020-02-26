@@ -406,7 +406,34 @@ admin@edmail.comqsdq
 14
 1
 INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+<<<<<<< HEAD
          VALUES ('Lust', 'Antoine', 'antoine.lust@hotmail.fr', '0478996698', 'président', 14, 'N');
 
 antoine.lust@hotmail.fr
+=======
+         VALUES ('Grisafi', 'Bruno', 'email', '', 'a', 14, 'N');
+
+email
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'e', 'a', '', 't', 14, 'N');
+
+a
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'er', 'a', '', 'r', 14, 'N');
+
+a
+ ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('a', 'z', 'aze', '', 'e', 14, 'N');
+
+aze
+>>>>>>> 9314aff41dd787c8b68dafe975ff763f7cb1edbb
  ---- 

@@ -25,13 +25,13 @@ $conn->close();
 $i=0;
 while($row = mysqli_fetch_array($result2))
 {
-  $response['contactId'][$i]=$row['ID'];
-  $response['emailContact'][$i]=$row['EMAIL'];
-  $response['firstNameContact'][$i]=$row['PRENOM'];
-  $response['lastNameContact'][$i]=$row['NOM'];
-  $response['phone'][$i]=$row['PHONE'];
-  $response['bikesStats'][$i]=$row['BIKES_STATS'];
-  $response['fonction'][$i]=$row['FUNCTION'];
+  $response[$i]['contactId']=$row['ID'];
+  $response[$i]['emailContact']=$row['EMAIL'];
+  $response[$i]['firstNameContact']=$row['PRENOM'];
+  $response[$i]['lastNameContact']=$row['NOM'];
+  $response[$i]['phone']=$row['PHONE'];
+  $response[$i]['bikesStats']=$row['BIKES_STATS'];
+  $response[$i]['fonction']=$row['FUNCTION'];
     $i++;
 }
 

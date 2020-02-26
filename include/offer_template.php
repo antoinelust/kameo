@@ -9,10 +9,13 @@
   $boxesNumber = isset($_POST["boxesNumber"]) ? $_POST["boxesNumber"] : NULL;
   $accessoriesNumber = isset($_POST["accessoriesNumber"]) ? $_POST["accessoriesNumber"] : NULL;
   $othersNumber = isset($_POST["othersNumber"]) ? $_POST["othersNumber"] : NULL;
-  $contact['email'] = isset($_POST["contactEmail"]) ? $_POST["contactEmail"] : NULL;
-  $contact['lastName'] = isset($_POST["contactLastName"]) ? $_POST["contactLastName"] : NULL;
-  $contact['firstName'] = isset($_POST["contactFirstName"]) ? $_POST["contactFirstName"] : NULL;
-  $contact['phone'] = isset($_POST["contactPhone"]) ? $_POST["contactPhone"] : NULL;
+  $contact['id'] = isset($_POST["contactSelect"]) ? $_POST["contactSelect"] : NULL;
+  $delais = isset($_POST["delais"]) ? $_POST["delais"] : NULL;
+  $offerValidity = isset($_POST["offerValidity"]) ? $_POST["offerValidity"] : NULL;
+
+  $delais = explode("\n",$delais);
+  $offerValidity = date_create($offerValidity);
+  $offerValidity = date_format($offerValidity,"d/m/Y");
 
 
   $others = array();
@@ -20,7 +23,7 @@
   $bikesId = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
   $boxesId = $boxesNumber > 0 ? getIds('boxModel',$boxesNumber) : NULL;
   $accessoriesId = $accessoriesNumber > 0 ? getIds('accessoryAccessory',$accessoriesNumber) : NULL;
-  $others = $othersNumber > 0 ? getOthers($othersNumber) : NULL;
+  $others = $othersNumber > 0 ? getOthers($othersNumber) : array();
 
 
   $bikes = array();
@@ -30,6 +33,12 @@
   $bikes = getItemsInDatabase($bikesId, 'bike_catalog');
   $boxes = getItemsInDatabase($boxesId, 'boxes_catalog');
   $accessories = getItemsInDatabase($accessoriesId, 'accessories_catalog');
+  $contact = getItemInDatabase($contact['id'], 'companies_contact');
+
+  //transforme le tableau pour n avoir qu'une itération de chaque
+  $bikes = distinct($bikes);
+  $boxes = distinct($boxes);
+  $accessories = distinct($accessories);
 
   $company = getCompany($companyId);
 
@@ -37,26 +46,13 @@
     $bikes[$i]['LEASING_PRICE'] = leasingPrice($bikes[$i]['PRICE_HTVA']);
   }
 
+  $currentDate = getDate();
 
-
-  //creation de la response
-  $response['companyId'] = $companyId;
-  $response['buyOrLeasing'] = $buyOrLeasing;
-  $response['leasingDuration'] = $leasingDuration;
-  $response['numberMaintenance'] = $numberMaintenance;
-  $response['assurance'] = $assurance;
-  $response['bikesId'] = $bikesId;
-  $response['bikes'] = $bikes;
-  $response['boxesId'] = $boxesId;
-  $response['boxes'] = $boxes;
-  $response['accessoriesId'] = $accessoriesId;
-  $response['accessories'] = $accessories;
-  $response['others'] = $others;
-  $response['contact'] = $contact;
+  $pdfTitle = $company['INTERNAL_REFERENCE'].'_'.$currentDate['year'].'_'.$currentDate['mon'].'_'.$currentDate['mday'].'_temp';
 
   //affichage de la réponse en front (debug, a supprimer en prod)
   //header('Content-type: application/json');
-  echo json_encode($response);
+  //echo json_encode($response);
 
   require_once dirname(__FILE__).'/../vendor/autoload.php';
   use Spipu\Html2Pdf\Html2Pdf;
@@ -85,9 +81,23 @@
     $content = ob_get_clean();
     $html2pdf->writeHTML($content);
     //sort le fichier PDF sur le serveur
-    $html2pdf->Output(__DIR__ .'/test.pdf', 'F');
-    //Affiche le PDF dans le navigateur
-    //$html2pdf->Output(__DIR__ .'/test.pdf');
+    $html2pdf->Output($root.'/offres/'.$pdfTitle.'.pdf', 'F');
+    //ajoute le PDF a la table
+    $response['id'] = add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing);
+    $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
+    rename($root.'/offres/'.$pdfTitle.'.pdf', $root.'/offres/'.$newPdfFile.'.pdf');
+
+
+    //response
+    $response['response'] = 'true';
+    $response['file'] = $newPdfFile.'.pdf';
+    $response['bikesNumber'] = $bikesNumber;
+    $response['boxesNumber'] = $boxesNumber;
+    $response['buyOrLeasing'] = $buyOrLeasing;
+
+    header('Content-type: application/json');
+    echo json_encode($response);
+
   }  catch (Html2PdfException $e) {
       $html2pdf->clean();
 
@@ -95,6 +105,8 @@
       echo $formatter->getHtmlMessage();
   }
 
+
+/*==========FONCTIONS==========*/
 
   function getIds($key, $counter){
     $arr = array();
@@ -140,6 +152,14 @@
     $conn->close();
     return $res;
   }
+  function getItemInDatabase($id, $table){
+    include 'connexion.php';
+    $sql = "SELECT * FROM $table WHERE ID = $id";
+    $res = mysqli_query($conn, $sql);
+    $res = mysqli_fetch_assoc($res);
+    $conn->close();
+    return $res;
+  }
 
   function leasingPrice($retailPrice){
     $priceTemp=($retailPrice/1.21+3*75+4*100+4*100);
@@ -159,5 +179,43 @@
     return $leasingPrice;
   }
 
+  function distinct($arr){
+    $temp = $arr;
+    //parcours le tableau
+    for ($i=0; $i < count($temp); $i++) {
+      $count = 1;
+      $temp[$i]['count'] = $count;
+      //parcours le tableau
+      for ($j=0; $j < count($temp) ; $j++) {
+        //si on est pas au même index et qu'on a le même item
+        if ($temp[$i]['ID'] == $temp[$j]['ID'] && $i != $j) {
+          //incrémente le compteur
+          $count = $count + 1;
+          //ajoute la valeur du compteur au tableau
+          $temp[$i]['count'] = $count;
+          //retire l'item en trop du tableau
+          array_splice($temp, $j, 1);
+          //on reste au même index car array_splice retire les index non utilisé
+          $j--;
+        }
+      }
+    }
+    return $temp;
+  }
+
+  function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing){
+    include 'connexion.php';
+    $sql = "INSERT INTO companies_offers (FILE_NAME,COMPANY_ID, BIKE_NUMBER,BOX_NUMBER, TYPE) VALUES ('$file','$id','$bikesNumber','$boxesNumber','$buyOrLeasing')";
+    $res = $conn->query($sql);
+    $id = $conn->insert_id;
+    $file = str_replace('temp', $id, $file);
+    $conn->close();
+
+    include 'connexion.php';
+    $sql = "UPDATE `companies_offers` SET `FILE_NAME` = '$file' WHERE `companies_offers`.`ID` = '$id'";
+    $res = $conn->query($sql);
+    $conn->close();
+    return $id;
+  }
 
  ?>
