@@ -279,7 +279,7 @@ h2{
     <?php if($buyOrLeasing =="leasing" || $buyOrLeasing =="both"){echo "sous forme de leasing";} ?>
     de
     <?php
-    $nbVelos = count($bikes);
+    $nbVelos = $bikesNumber;
     $txtVelo = "vélo";
     if($nbVelos > 1) {
       $txtVelo = "vélos";
@@ -312,11 +312,11 @@ h2{
     <?php if (count($boxes) > 0) { ?>
       <div>
         <?php
-        echo "<div class='listItem'>• Location de " . count($boxes) . " boxe(s) de gestion des clés de vélos: </div>"; ?>
+        echo "<div class='listItem'>• Location de " . $boxesNumber . " boxe(s) de gestion des clés de vélos: </div>"; ?>
         <div class='subList'>
           <?php
           foreach ($boxes as $box) {
-            echo "<div class='subListItem'>• Box " . $box['MODEL'] . "</div>";
+            echo "<div class='subListItem'>• Box " . $box['MODEL'] . "<span class='green'> x".$box['count']."</span></div>";
           }?>
         </div>
       </div>
@@ -324,7 +324,7 @@ h2{
     <?php if (count($accessories) > 0) { ?>
       <div>
         <?php
-        echo "<div class='listItem'>• Achat de " . count($accessories)  . "accessoire(s): </div>" ; ?>
+        echo "<div class='listItem'>• Achat de " . count($accessories)  . " accessoire(s): </div>" ; ?>
         <div class='subList'>
           <?php
           foreach ($accessories as $accessory) {
