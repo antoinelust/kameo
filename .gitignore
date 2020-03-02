@@ -18,6 +18,7 @@ $ cat Documentation/.gitignore
 factures/
 images
 images_bikes
+include/logs.txt
 $ git status
 [...]
 # Untracked files:
