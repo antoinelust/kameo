@@ -1491,7 +1491,6 @@ if($connected){
         'companyId': $('#companyIdHidden').val()
       },
       success: function(response){
-        console.log(response);
       }
     });
   }
@@ -1504,7 +1503,6 @@ if($connected){
         'id' : id
       },
       success: function(response){
-        console.log(response);
       }
     });
   }
@@ -1590,7 +1588,6 @@ if($connected){
         contactKeys.push($(this).attr('id'));
         $(this).prop('readonly', false);
       });
-      console.log(contactInfo);
     });
 
     $('.clientContactZone').on('click','.annuler', function(){
@@ -1648,7 +1645,6 @@ if($connected){
     $('.clientContactZone').on('click', '.delete', function(){
       if(confirm('Êtes-vous sur de vouloir supprimer ce contact ? Cette action est irréversible.')){
         that = $(this);
-        console.log($(this).parents('tr'), $(this).parents('tr').find('.contactIdHidden').val());
         if( nbContacts > 1) {
           delete_contact($(this).parents('tr'), $(this).parents('tr').find('.contactIdHidden').val()).done(function(response){
             $(that).parents('tr').fadeOut(function(){
