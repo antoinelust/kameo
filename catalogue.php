@@ -1,8 +1,8 @@
-<?php 
+<?php
 include 'include/header2.php';
 ?>
 
-		
+
 
 
  <!-- CONTENT -->
@@ -13,10 +13,10 @@ include 'include/header2.php';
                     	<div class="heading heading text-left m-b-20">
                         <h2 class="fr">Rechercher</h2>
                         </div>
-                        
+
                         <div class="m-t-30">
                                 <div class="row">
-                                
+
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-marque">Marque</label>
 											<select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
@@ -30,7 +30,7 @@ include 'include/header2.php';
 									           <option data-filter=".hnf">HNF Nicolai</option>
 									       </select>
                                     </div>
-                                    
+
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-utilisation">Utilisation</label>
 											<select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
@@ -43,7 +43,7 @@ include 'include/header2.php';
 									           <option data-filter=".cargo">Cargo</option>
 									       </select>
                                     </div>
-                                    
+
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-cadre">Type de cadre</label>
 											<select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
@@ -53,7 +53,7 @@ include 'include/header2.php';
 									           <option data-filter=".h" value="H">Homme</option>
 									       </select>
                                     </div>
-                                    
+
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-electrique">Assistance électrique</label>
 											<select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
@@ -62,7 +62,7 @@ include 'include/header2.php';
 									            <option data-filter=".n">Non</option>
 									       </select>
                                     </div>
-                                    
+
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-prix">Prix Achat (HTVA)</label>
 											<select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
@@ -74,30 +74,30 @@ include 'include/header2.php';
                                                 <option data-filter=".5000"> Plus de 5000€</option>
 									       </select>
                                     </div>
-									
-										                                     
-                                
+
+
+
                                 </div>
                            </div>
-                   
+
                     </div>
-                    
-                    
-                    
-                    
+
+
+
+
                     <div class="col-md-8">
                     	<div class="heading heading text-left m-b-20">
                         <h2 class="fr">Nos vélos</h2>
                         </div>
-                        
+
                         <!-- Portfolio Items -->
 				        <div id="isotope" class="isotope portfolio-items" data-isotope-item-space="2" data-isotope-mode="masonry" data-isotope-col="3" data-isotope-item=".portfolio-item">
-                            <div id="bikeCatalog" class="grid"></div>		
-				            
-				
+                            <div id="bikeCatalog" class="grid"></div>
+
+
 				        </div>
 				        <!-- END: Portfolio Items -->
-                        
+
                     </div>
                 </div>
             </div>
@@ -150,6 +150,7 @@ include 'include/header2.php';
                             if(response.bikeNumber=="0"){
                                 dest="<p>Aucun vélo ne correspond à votre sélection</p>";
                             }
+														console.log(response.bikeNumber);
                             while(i<response.bikeNumber){
                                 if(response.bike[i].display=='Y'){
                                     if(response.bike[i].frameType.toLowerCase()=="h"){
@@ -193,19 +194,19 @@ include 'include/header2.php';
                                             <br><b class=\"text-green\">Leasing :"+response.bike[i].leasingPrice+" €/mois</b></p>\
                                         </div>\
                                     </div>";
-                                    dest=dest.concat(temp);                                            
+                                    dest=dest.concat(temp);
                                 }
                                 i++;
-                                
+
                             }
-                            
+
                             document.getElementById('bikeCatalog').innerHTML = dest;
-                            
+
                             var $grid = $('.grid').isotope({
                             });
 
                             var filters = {};
-                            
+
                             $('.portfolio').on( 'change', function(event) {
                                 var $cible = $( event.currentTarget );
                                 var filterGroup = $cible.attr('data-filter-group');
@@ -213,7 +214,7 @@ include 'include/header2.php';
                                 var filterValue = concatValues( filters );
                                 $grid.isotope({ filter: filterValue });
                             });
-                            
+
                             function concatValues( obj ) {
                               var value = '';
                               for ( var prop in obj ) {
@@ -225,56 +226,56 @@ include 'include/header2.php';
                         }
                     }
                 });
-                                
+
                 var classname = document.getElementsByClassName('portfolio');
                 for (var i = 0; i < classname.length; i++) {
                     //classname[i].addEventListener('change', loadPortfolio, false);
                 }
             }
             loadPortfolio();
-            
+
             function updateBikePicture(brand, model, frameType)
             {
 
                 document.getElementById('bikePicturetitle').innerHTML=brand+" "+model;
-                document.getElementById('bikePictureImage').src="images_bikes/"+brand.toLowerCase()+"_"+model.toLowerCase().replace(/ /g, '-')+"_"+frameType.toLowerCase()+".jpg";
-                
+                document.getElementById('bikePictureImage').src="images_bikes/"+brand.toLowerCase()+"_"+model.toLowerCase().replace(/ /g, '-')+"_"+frameType.toLowerCase()+"_mini.jpg";
+
             }
         </script>
 
-    
 
-        
+
+
 				<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
-	        
+
 	        <br><br>
-	        
+
 	            <div class="row text-center">
-	            
-	           
+
+
 					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
-	            
-	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-						<br>BE 0681.879.712 
+
+
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins>
+						<br>BE 0681.879.712
 						<br>+32 498 72 75 46 </div>
 						<br>
 	                <div class="social-icons center">
 								<ul>
 									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-									
+
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-									
+
 									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
-					
+
 					<br>
 					<br>
-					
+
 	            </div>
 	        </div>
 	    </div>
@@ -295,4 +296,3 @@ include 'include/header2.php';
 </body>
 
 </html>
-

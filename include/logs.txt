@@ -437,3 +437,24 @@ INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, 
 aze
 >>>>>>> 9314aff41dd787c8b68dafe975ff763f7cb1edbb
  ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('z', 'e', 'a', '', 'e', 14, 'N');
+
+a
+ ---- 
+42
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('Grisafi', 'Bruno', 'email@email.com', '', 'aaa', 42, 'N');
+
+email@email.com
+ ---- 
+42
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('aze', 'aze', 'aze', '', 'aze', 42, 'N');
+
+aze
+ ---- 
