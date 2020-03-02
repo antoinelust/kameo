@@ -2,6 +2,7 @@
 ob_start();
 session_start();
 $user=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL;
+$user_ID = isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL;
 include 'include/header2.php';
 
 
@@ -30,6 +31,7 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/search_module.js"></script>
 <script type="text/javascript" src="js/bills_management.js"></script>
 <script type="text/javascript" src="js/company_management.js"></script>
+<script type="text/javascript" src="js/notifications.js"></script>
 
 
 
@@ -43,6 +45,32 @@ include 'include/activitylog.php';
   width:60%;
   opacity: 0.5;
 }
+.pointerClick:hover{
+  cursor: pointer;
+}
+.notificationsBlock{
+  border: 1px solid rgb(221,221,221);
+  width:300px;
+  height: auto;
+  background-color:white;
+  border-radius: 8px;
+  position:absolute;
+  z-index:99;
+  right:0;
+  top: 40px;
+}
+
+.notificationItem {
+  min-height: 40px;
+}
+.notificationBorder{
+  border-bottom: 1px solid rgb(221,221,221);
+}
+
+.notRead{
+  background-color: rgb(248, 250, 250);
+  font-weight:bold;
+}
 </style>
 
 
@@ -50,6 +78,7 @@ include 'include/activitylog.php';
 
 var email="<?php echo $user; ?>";
 var langue= "<?php echo $_SESSION['langue']; ?>";
+var user_ID = "<?php echo $user_ID; ?>";
 
 var color=Chart.helpers.color;
 
@@ -1761,11 +1790,21 @@ if($connected){
 
   function deconnexion(){
     alert('deco');
+    $.ajax({
+      url: 'include/logout.php',
+      method: 'post',
+      data: {},
+      //si le tableau de session est vide, on est bien déconnecté
+      success: function(response){
+        if (response.length == 0) {
+          console.log(response);
+        }
+      }
+    });
     <?php
     //$_SESSION['userID']=null;
     ?>
 
-    window.location.href = "index.php";
   }
 </script>
 
@@ -1781,14 +1820,17 @@ if($connected){
         <div class="post-item">
           <div class="post-content-details">
             <div class="heading heading text-left m-b-20">
-              <div class="row">
+              <div class="row" style="position: relative;">
                 <h2 class="col-sm-8">MY KAMEO</h2>
-                <!--<div class="col-sm-4" style="padding:0;">
-                  <div style="position:relative;">
-                    <i class="fa fa-3x fa-bell-o text-green" aria-hidden="true"></i>
-                    <span style="position:absolute; bottom:50%; left:21px; font-size:20px;">0</span>
-                  </div>
-                </div> -->
+                <div class="col-sm-4" style="padding:0;">
+                  <span class="pointerClick notificationsClick">
+                    <i class="fa fa-2x fa-bell-o text-green" aria-hidden="true"></i>
+                    <span style="font-size:20px;">0</span> &nbsp;
+                  </span>
+                   <a href="#" class="text-green hideNotifications" style="display:none">Masquer</a>
+                </div>
+                <div class="notificationsBlock row" style="display:none; overflow:hidden;">
+                </div>
               </div>
 
             </div>
@@ -4326,12 +4368,12 @@ if($connected){
       </div>
       <!--
       <div class="col-md-3">
-        <label for="companySelection">Filtrer sur la société</label>
-        <select class="companySelection" name="companySelection"></select>
-      </div>
+      <label for="companySelection">Filtrer sur la société</label>
+      <select class="companySelection" name="companySelection"></select>
+    </div>
 
-      <div class="separator"></div>
-      -->
+    <div class="separator"></div>
+  -->
 
   <div data-example-id="contextual-table" class="bs-example">
     <span id="contractsListingSpan"></span>
@@ -5866,37 +5908,37 @@ if($connected){
 
                           </div>
 
-                            <div class="col-md-4">
-                              <label for="channel"  class="fr">Canal d'acquisition</label>
-                              <label for="channel"  class="en">Channel</label>
-                              <label for="channel"  class="nl">Channel</label>
-                              <select title="channel" class="form-control required selectpicker" name="channel">
-                                <option value="telephone">Téléphone</option>
-                                <option value="salon" selected>Contact après visite sur salon</option>
-                                <option value="site" selected>Contact sur site internet</option>
-                              </select>
-                            </div>
-
-                            <div class="col-md-4">
-                              <label for="sector"  class="fr">Secteur</label>
-                                <label for="sector"  class="en">Sector</label>
-                                <label for="sector"  class="nl">Sector</label>
-                                <input type="text" title="sector" name="sector" class="form-control required" />
-                            </div>
+                          <div class="col-md-4">
+                            <label for="channel"  class="fr">Canal d'acquisition</label>
+                            <label for="channel"  class="en">Channel</label>
+                            <label for="channel"  class="nl">Channel</label>
+                            <select title="channel" class="form-control required selectpicker" name="channel">
+                              <option value="telephone">Téléphone</option>
+                              <option value="salon" selected>Contact après visite sur salon</option>
+                              <option value="site" selected>Contact sur site internet</option>
+                            </select>
                           </div>
+
+                          <div class="col-md-4">
+                            <label for="sector"  class="fr">Secteur</label>
+                            <label for="sector"  class="en">Sector</label>
+                            <label for="sector"  class="nl">Sector</label>
+                            <input type="text" title="sector" name="sector" class="form-control required" />
+                          </div>
+                        </div>
                         <div class="col-md-12">
-                              <div class="col-md-4">
-                                <label for="date"  class="fr">Date</label>
-                                <label for="date"  class="en">Date</label>
-                                <label for="date"  class="nl">Date</label>
-                                <input type="date" name="date" class="form-control required">
-                              </div>
-                              <div class="col-md-4">
-                                <label for="reminder"  class="fr">Rappel ?</label>
-                                <label for="reminder"  class="en">Reminder ?</label>
-                                <label for="reminder"  class="nl">Reminder ?</label>
-                                <input type="date" name="date_reminder" class="form-control ">
-                              </div>
+                          <div class="col-md-4">
+                            <label for="date"  class="fr">Date</label>
+                            <label for="date"  class="en">Date</label>
+                            <label for="date"  class="nl">Date</label>
+                            <input type="date" name="date" class="form-control required">
+                          </div>
+                          <div class="col-md-4">
+                            <label for="reminder"  class="fr">Rappel ?</label>
+                            <label for="reminder"  class="en">Reminder ?</label>
+                            <label for="reminder"  class="nl">Reminder ?</label>
+                            <input type="date" name="date_reminder" class="form-control ">
+                          </div>
                         </div>
 
 
@@ -5929,52 +5971,52 @@ if($connected){
                     </form>
                     <script type="text/javascript">
 
-                          $('#widget-taskManagement-form select[name=type]').change(function(){
-                              console.log($('#widget-taskManagement-form select[name=type]').val());
-                              if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
-                                  $('#widget-taskManagement-form select[name=channel]').addClass("required");
-                                  $('#widget-taskManagement-form select[name=channel]').removeClass("hideen");
-                                  $('#widget-taskManagement-form input[name=sector]').addClass("required");
-                                  $('#widget-taskManagement-form input[name=sector]').removeClass("hideen");
-                              }else{
-                                  $('#widget-taskManagement-form select[name=channel]').addClass("hidden");
-                                  $('#widget-taskManagement-form select[name=channel]').removeClass("required");
-                                  $('#widget-taskManagement-form input[name=sector]').addClass("hidden");
-                                  $('#widget-taskManagement-form input[name=sector]').removeClass("required");
-                                  $('#widget-taskManagement-form input[name=sector]').val("");
-                                  $('#widget-taskManagement-form select[name=channel]').val("");
+                    $('#widget-taskManagement-form select[name=type]').change(function(){
+                      console.log($('#widget-taskManagement-form select[name=type]').val());
+                      if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
+                        $('#widget-taskManagement-form select[name=channel]').addClass("required");
+                        $('#widget-taskManagement-form select[name=channel]').removeClass("hideen");
+                        $('#widget-taskManagement-form input[name=sector]').addClass("required");
+                        $('#widget-taskManagement-form input[name=sector]').removeClass("hideen");
+                      }else{
+                        $('#widget-taskManagement-form select[name=channel]').addClass("hidden");
+                        $('#widget-taskManagement-form select[name=channel]').removeClass("required");
+                        $('#widget-taskManagement-form input[name=sector]').addClass("hidden");
+                        $('#widget-taskManagement-form input[name=sector]').removeClass("required");
+                        $('#widget-taskManagement-form input[name=sector]').val("");
+                        $('#widget-taskManagement-form select[name=channel]').val("");
 
-                              }
-                          });
-
-
-
-                        jQuery("#widget-taskManagement-form").validate({
-                          submitHandler: function(form) {
-                            jQuery(form).ajaxSubmit({
-                              success: function(response) {
-                                if (response.response == 'success') {
-                                  $.notify({
-                                    message: response.message
-                                  }, {
-                                    type: 'success'
-                                  });
-                                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
-                                  $('#taskManagement').modal('toggle');
-                                  document.getElementById('widget-taskManagement-form').reset();
+                      }
+                    });
 
 
-                                } else {
-                                  $.notify({
-                                    message: response.message
-                                  }, {
-                                    type: 'danger'
-                                  });
-                                }
-                              }
-                            });
+
+                    jQuery("#widget-taskManagement-form").validate({
+                      submitHandler: function(form) {
+                        jQuery(form).ajaxSubmit({
+                          success: function(response) {
+                            if (response.response == 'success') {
+                              $.notify({
+                                message: response.message
+                              }, {
+                                type: 'success'
+                              });
+                              list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
+                              $('#taskManagement').modal('toggle');
+                              document.getElementById('widget-taskManagement-form').reset();
+
+
+                            } else {
+                              $.notify({
+                                message: response.message
+                              }, {
+                                type: 'danger'
+                              });
+                            }
                           }
                         });
+                      }
+                    });
 
                     </script>
                   </div>
@@ -9126,6 +9168,7 @@ if($connected){
             </div>
           </div>
 
+          </div>
 
           <script type="text/javascript">
           function initializeAssistance2() {

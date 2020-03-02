@@ -6,7 +6,7 @@ $sql= "INSERT INTO activitylog (TIMESTAMP, MAIL) VALUES ('$today','$user')";
 if ($conn->query($sql) === FALSE) {
 
 	echo $conn->error;
-} 
+}
 
 $conn->close();
 ?>
