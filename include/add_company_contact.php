@@ -20,6 +20,7 @@ if(!isset($addClient) || $addClient != true){
   $phone = isset($_POST["phone"]) ? $_POST["phone"] : NULL;
   $function = isset($_POST["function"]) ? $_POST["function"] : NULL;
   $bikesStats = isset($_POST["bikesStats"]) ? (($_POST["bikesStats"] == 'true') ? 'Y' : 'N')  : 'N';
+  $USRemail = isset($_POST["email"]) ? $_POST["email"] : NULL;
 
   if(isset($addClient) && $addClient == true){
     $companyId = $compID;
@@ -27,17 +28,13 @@ if(!isset($addClient) || $addClient != true){
 
 
   include 'connexion.php';
-  $sql= "INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
-         VALUES ('$lastName', '$firstName', '$email', '$phone', '$function', $companyId, '$bikesStats');";
+  $sql= "INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS,USR_MAJ)
+         VALUES ('$lastName', '$firstName', '$email', '$phone', '$function', $companyId, '$bikesStats','$USRemail');";
   $result = $conn->query($sql);
 
   $id = $conn->insert_id;
   $error = $conn->error;
   $conn->close();
-
-  $fichier = fopen('logs.txt', "a");
-  fwrite($fichier, $companyId . "\r\n" . $result ."\r\n" . $sql . "\r\n" . $error . "\r\n" . $_POST['contactEmail'] . "\r\n ---- \r\n");
-  fclose($fichier);
 
   if(!isset($addClient) || $addClient == false){
     $response['id'] = $id;

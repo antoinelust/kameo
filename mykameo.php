@@ -1504,6 +1504,7 @@ if($connected){
     $('#widget-taskManagement-form select').attr("readonly", false);
     $('.taskManagementTitle').text("Ajouter une action");
 
+
   }
   function edit_contact(contact){
     return $.ajax({
@@ -1517,10 +1518,11 @@ if($connected){
         'phone': $(contact).find('.phone').val(),
         'function': $(contact).find('.fonction').val(),
         'bikesStats': $(contact).find('.bikesStats').prop('checked'),
-        'companyId': $('#companyIdHidden').val()
+        'companyId': $('#companyIdHidden').val(),
+        'email': email
+
       },
       success: function(response){
-        console.log(response);
       }
     });
   }
@@ -1533,7 +1535,6 @@ if($connected){
         'id' : id
       },
       success: function(response){
-        console.log(response);
       }
     });
   }
@@ -1602,9 +1603,6 @@ if($connected){
         }
         contactContent += "</tbody></table>";
         $('.clientContactZone').append(contactContent);
-      },
-      error: function(){
-        window.alert("Problème durant la transaction...");
       }
     });
 
@@ -1619,7 +1617,6 @@ if($connected){
         contactKeys.push($(this).attr('id'));
         $(this).prop('readonly', false);
       });
-      console.log(contactInfo);
     });
 
     $('.clientContactZone').on('click','.annuler', function(){
@@ -1670,14 +1667,13 @@ if($connected){
             $(this).prop('readonly', true);
           });
         });
-      }else{ console.log('invalide');}
+      }
 
     });
 
     $('.clientContactZone').on('click', '.delete', function(){
       if(confirm('Êtes-vous sur de vouloir supprimer ce contact ? Cette action est irréversible.')){
         that = $(this);
-        console.log($(this).parents('tr'), $(this).parents('tr').find('.contactIdHidden').val());
         if( nbContacts > 1) {
           delete_contact($(this).parents('tr'), $(this).parents('tr').find('.contactIdHidden').val()).done(function(response){
             $(that).parents('tr').fadeOut(function(){
@@ -1793,7 +1789,6 @@ if($connected){
 
 
   function deconnexion(){
-    alert('deco');
     $.ajax({
       url: 'include/logout.php',
       method: 'post',
@@ -1801,13 +1796,10 @@ if($connected){
       //si le tableau de session est vide, on est bien déconnecté
       success: function(response){
         if (response.length == 0) {
-          console.log(response);
+          window.location.href = "http://www.kameobikes.com/index.php";
         }
       }
     });
-    <?php
-    //$_SESSION['userID']=null;
-    ?>
 
   }
 </script>

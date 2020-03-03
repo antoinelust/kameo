@@ -94,10 +94,10 @@ function add_contact(that){
         'lastName': $(that).find('.lastNameContact').val(),
         'phone': $(that).find('.phoneContact').val(),
         'function': $(that).find('.functionContact').val(),
-        'bikesStats': $(that).find('.bikeStatsContact').prop('checked')
+        'bikesStats': $(that).find('.bikeStatsContact').prop('checked'),
+        'email': email
       },
       success: function(response){
-        console.log(response);
       }
   });
 }

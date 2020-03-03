@@ -14,6 +14,7 @@ $lastName = isset($_POST["lastName"]) ? $_POST["lastName"] : NULL;
 $phone = isset($_POST["phone"]) ? $_POST["phone"] : NULL;
 $function = isset($_POST["function"]) ? $_POST["function"] : NULL;
 $bikesStats = isset($_POST["bikesStats"]) ? (($_POST["bikesStats"] == 'true') ? 'Y' : 'N')  : 'N';
+$USRemail = isset($_POST["email"]) ? $_POST["email"] : NULL;
 
 include 'connexion.php';
 $sql = "UPDATE companies_contact
@@ -22,7 +23,9 @@ $sql = "UPDATE companies_contact
             PRENOM = '$firstName',
             PHONE = '$phone',
             FUNCTION = '$function',
-            BIKES_STATS = '$bikesStats'
+            BIKES_STATS = '$bikesStats',
+            USR_MAJ = '$USRemail',
+            HEU_MAJ = CURRENT_TIMESTAMP
         WHERE ID = $id;";
 
 if ($conn->query($sql) === FALSE) {

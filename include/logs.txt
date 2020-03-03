@@ -458,3 +458,10 @@ INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, 
 
 aze
  ---- 
+14
+1
+INSERT INTO companies_contact (NOM, PRENOM, EMAIL, PHONE, FUNCTION, ID_COMPANY, BIKES_STATS)
+         VALUES ('aze', 'aze', 'zea', '', 'aze', 14, 'N');
+
+zea
+ ---- 

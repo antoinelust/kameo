@@ -10,6 +10,7 @@ include 'globalfunctions.php';
 
 
 
+
 $action=isset($_GET["action"]) ? $_GET["action"] : NULL;
 $owner=isset($_GET["owner"]) ? $_GET["owner"] : NULL;
 
@@ -18,15 +19,15 @@ if($action=="graphic"){
     $owner = isset($_GET["owner"]) ? $_GET["owner"] : NULL;
     $numberOfDays = isset($_GET["numberOfDays"]) ? $_GET["numberOfDays"] : NULL;
     $intervalStop="P".$numberOfDays."D";
-    
-    $date_start = new DateTime("NOW"); 
+
+    $date_start = new DateTime("NOW");
     $date_start->sub(new DateInterval($intervalStop));
     $date_start_string=$date_start->format('Y-m-d');
 
-    $date_end = new DateTime("NOW");       
+    $date_end = new DateTime("NOW");
     $date_end->add(new DateInterval('P1D'));
     $date_end->sub(new DateInterval($intervalStop));
-    
+
     $arrayTotalTasks=array();
     $arrayContacts=array();
     $arrayReminder=array();
@@ -37,10 +38,10 @@ if($action=="graphic"){
     $arrayDelivery=array();
     $arrayOther=array();
     $arrayDates=array();
-    
+
     $date_now=new DateTime("NOW");
     $date_nom_string=$date_now->format('Y-m-d');
-    
+
     include 'connexion.php';
     $sql="SELECT TYPE, COUNT(1) AS 'SUM' FROM company_actions WHERE STATUS='TO DO' AND DATE < '$date_nom_string'";
 
@@ -54,9 +55,9 @@ if($action=="graphic"){
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql);     
-    
-    
+    $result = mysqli_query($conn, $sql);
+
+
     $presenceTotalTasks=0;
     $presenceContacts=0;
     $presenceReminder=0;
@@ -93,8 +94,8 @@ if($action=="graphic"){
         if($row['TYPE']=="other"){
             $presenceOther=1;
         }
-    }  
-          
+    }
+
     $response['response']="success";
     $response['presenceContacts']=$presenceContacts;
     $response['presenceReminder']=$presenceReminder;
@@ -103,55 +104,55 @@ if($action=="graphic"){
     $response['presenceOffers']=$presenceOffers;
     $response['presenceOffersSigned']=$presenceOffersSigned;
     $response['presenceDelivery']=$presenceOffersSigned;
-    $response['presenceOther']=$presenceOther;    
-    
-    
+    $response['presenceOther']=$presenceOther;
+
+
     $conn->close();
-    
-    
-    
+
+
+
     while($date_start<=$date_now){
         $date_start_string=$date_start->format('Y-m-d');
-        
+
         include 'connexion.php';
         $sql="SELECT COUNT(1) AS 'SUM' FROM company_actions WHERE STATUS='TO DO' AND DATE<='$date_start_string'";
-        
+
         if($owner!='*' && $owner != ''){
             $sql=$sql. "AND OWNER='$owner'";
         }
-        
-        
+
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);     
+        $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
-        array_push($arrayTotalTasks, $resultat['SUM']); 
+        array_push($arrayTotalTasks, $resultat['SUM']);
         $conn->close();
-        
 
-        
-        
-        
+
+
+
+
         include 'connexion.php';
         $sql="SELECT TYPE, COUNT(1) AS 'SUM' FROM company_actions WHERE STATUS='TO DO' AND DATE<='$date_start_string'";
         if($owner!='*' && $owner != ''){
             $sql=$sql. "AND OWNER='$owner'";
         }
-        
+
         $sql=$sql." GROUP BY TYPE";
-        
-        
+
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);    
+        $result = mysqli_query($conn, $sql);
         $conn->close();
-        
+
         $presenceTotalTasks=0;
         $presenceContacts=0;
         $presenceReminder=0;
@@ -161,77 +162,77 @@ if($action=="graphic"){
         $presenceOffersSigned=0;
         $presenceDelivery=0;
         $presenceOther=0;
-        
+
         while($row = mysqli_fetch_array($result))
         {
-            
+
             if($row['TYPE']=="contact"){
                 $presenceContacts=1;
-                array_push($arrayContacts, $row['SUM']); 
+                array_push($arrayContacts, $row['SUM']);
             }
             if($row['TYPE']=="rappel"){
                 $presenceReminder=1;
-                array_push($arrayReminder, $row['SUM']); 
+                array_push($arrayReminder, $row['SUM']);
             }
             if($row['TYPE']=="plan rdv"){
                 $presenceRDVPlan=1;
-                array_push($arrayRDVPlan, $row['SUM']); 
+                array_push($arrayRDVPlan, $row['SUM']);
             }
             if($row['TYPE']=="rdv"){
                 $presenceRDV=1;
-                array_push($arrayRDV, $row['SUM']); 
+                array_push($arrayRDV, $row['SUM']);
             }
             if($row['TYPE']=="offre"){
                 $presenceOffers=1;
-                array_push($arrayOffers, $row['SUM']); 
+                array_push($arrayOffers, $row['SUM']);
             }
             if($row['TYPE']=="offreSigned"){
                 $presenceOffersSigned=1;
-                array_push($arrayOffersSigned, $row['SUM']); 
+                array_push($arrayOffersSigned, $row['SUM']);
             }
             if($row['TYPE']=="delivery"){
                 $presenceDelivery=1;
-                array_push($arrayDelivery, $row['SUM']); 
+                array_push($arrayDelivery, $row['SUM']);
             }
             if($row['TYPE']=="other"){
                 $presenceOther=1;
-                array_push($arrayOther, $row['SUM']); 
+                array_push($arrayOther, $row['SUM']);
             }
-            
+
         }
-        
+
         if($presenceContacts==0){
-            array_push($arrayContacts, "0"); 
-        }        
-        if($presenceReminder==0){
-            array_push($arrayReminder, "0"); 
-        }        
-        if($presenceRDVPlan==0){
-            array_push($arrayRDVPlan, "0"); 
-        }        
-        if($presenceRDV==0){
-            array_push($arrayRDV, "0"); 
-        }        
-        if($presenceOffers==0){
-            array_push($arrayOffers, "0"); 
-        }        
-        if($presenceOffersSigned==0){
-            array_push($arrayOffersSigned, "0"); 
-        }        
-        if($presenceDelivery==0){
-            array_push($arrayDelivery, "0"); 
-        }        
-        if($presenceOther==0){
-            array_push($arrayOther, "0"); 
+            array_push($arrayContacts, "0");
         }
-        
-        array_push($arrayDates, $date_start_string); 
-            
-        
+        if($presenceReminder==0){
+            array_push($arrayReminder, "0");
+        }
+        if($presenceRDVPlan==0){
+            array_push($arrayRDVPlan, "0");
+        }
+        if($presenceRDV==0){
+            array_push($arrayRDV, "0");
+        }
+        if($presenceOffers==0){
+            array_push($arrayOffers, "0");
+        }
+        if($presenceOffersSigned==0){
+            array_push($arrayOffersSigned, "0");
+        }
+        if($presenceDelivery==0){
+            array_push($arrayDelivery, "0");
+        }
+        if($presenceOther==0){
+            array_push($arrayOther, "0");
+        }
+
+        array_push($arrayDates, $date_start_string);
+
+
         $date_start->add(new DateInterval('P1D'));
         $date_end->add(new DateInterval('P1D'));
-    }    
-          
+    }
+
     $response['response']="success";
     $response['arrayTotalTasks']=$arrayTotalTasks;
     $response['arrayContacts']=$arrayContacts;
@@ -244,15 +245,15 @@ if($action=="graphic"){
     $response['arrayOther']=$arrayOther;
     $response['arrayDates']=$arrayDates;
     echo json_encode($response);
-    die;    
-          
+    die;
+
 }else if(isset($_GET["company"])){
     $company = isset($_GET["company"]) ? $_GET["company"] : NULL;
     $status = isset($_GET["status"]) ? $_GET["status"] : NULL;
     $user = isset($_GET["user"]) ? $_GET["user"] : NULL;
     $owner = isset($_GET["owner"]) ? $_GET["owner"] : NULL;
     $tasksListing_number=isset($_GET["numberOfResults"]) ? $_GET["numberOfResults"] : NULL;
-    
+
     include 'connexion.php';
     if($company=="*"){
         $sql="SELECT * FROM company_actions WHERE 1";
@@ -265,11 +266,11 @@ if($action=="graphic"){
     }else if($status=="LATE"){
         $sql=$sql." AND CURRENT_DATE()>DATE_REMINDER AND STATUS = 'TO DO'";
     }
-    
+
     if($owner!='*' && $owner != NULL){
         $sql=$sql." AND OWNER='$owner'";
-    }        
-    
+    }
+
     if($tasksListing_number){
         $sql=$sql." ORDER BY ID DESC LIMIT $tasksListing_number";
     }else{
@@ -280,12 +281,12 @@ if($action=="graphic"){
 		echo json_encode($response);
 		die;
 	}
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $response['actionNumber']=$length;
-    
+
     $currentDate= new DateTime();
-    
+
     $response['user']=$user;
     $i=0;
     $response['response']="success";
@@ -301,15 +302,15 @@ if($action=="graphic"){
         $response['action'][$i]['status']=$row['STATUS'];
         $response['action'][$i]['owner']=$row['OWNER'];
         $ownerTask=$row['OWNER'];
-        
+
         include 'connexion.php';
         $sql2="select * from customer_referential where email='$ownerTask'";
         $result2 = mysqli_query($conn, $sql2);
         $resultat2 = mysqli_fetch_assoc($result2);
         $response['action'][$i]['ownerName']=$resultat2['NOM'];
         $response['action'][$i]['ownerFirstName']=$resultat2['PRENOM'];
-        
-        
+
+
         $response['action'][$i]['id']=$row['ID'];
         $actionDate=new DateTime($row['DATE_REMINDER']);
         if($actionDate<$currentDate){
@@ -319,16 +320,16 @@ if($action=="graphic"){
         }
 
         $i++;
-    }                                                       
+    }
     $conn->close();
-    
-    
+
+
     include 'connexion.php';
     $sql="SELECT * FROM company_actions";
     if($owner!='*' && $owner != NULL){
         $sql=$sql." WHERE OWNER='$owner'";
-    }        
-    
+    }
+
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -338,40 +339,40 @@ if($action=="graphic"){
     $length = $result->num_rows;
     $response['actionNumberTotal']=$length;
     $response['sql1']=$sql;
-    $conn->close(); 
-    
+    $conn->close();
+
     include 'connexion.php';
     $sql="SELECT * FROM company_actions WHERE STATUS != 'DONE'";
     if($owner!='*' && $owner != NULL){
         $sql=$sql." AND OWNER='$owner'";
     }
-    
+
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $response['actionNumberNotDone']=$length;
     $conn->close();
-        
+
     include 'connexion.php';
     $sql="SELECT * FROM company_actions WHERE STATUS != 'DONE' AND CURRENT_DATE()>DATE_REMINDER";
     if($owner!='*' && $owner != NULL){
         $sql=$sql." AND OWNER='$owner'";
-    }        
+    }
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $response['actionNumberLate']=$length;
     $conn->close();
-    
-    
+
+
     include 'connexion.php';
     $sql="SELECT * from customer_referential WHERE COMPANY='KAMEO' and STAANN != 'D'";
 	if ($conn->query($sql) === FALSE) {
@@ -379,7 +380,7 @@ if($action=="graphic"){
 		echo json_encode($response);
 		die;
 	}
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $response['ownerNumber']=$length;
     $i=0;
@@ -388,23 +389,23 @@ if($action=="graphic"){
         $response['owner'][$i]['name']=$row['NOM'];
         $response['owner'][$i]['firstName']=$row['PRENOM'];
         $i++;
-        
-        
-    }
-    
-    echo json_encode($response);
-    die;    
-    
-    
-    
-    
 
-    
+
+    }
+
+    echo json_encode($response);
+    die;
+
+
+
+
+
+
 }else if(isset($_GET['id'])){
     $id = isset($_GET["id"]) ? $_GET["id"] : NULL;
     include 'connexion.php';
-    $sql="SELECT * FROM company_actions WHERE ID='$id'";       
-    
+    $sql="SELECT * FROM company_actions WHERE ID='$id'";
+
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -412,8 +413,8 @@ if($action=="graphic"){
 	}
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
-    $conn->close();   
-    
+    $conn->close();
+
     $response['sql']=$sql;
     $response['response']="success";
     $response['action']['id']=$resultat['ID'];
@@ -425,12 +426,12 @@ if($action=="graphic"){
     $response['action']['date_reminder']=$resultat['DATE_REMINDER'];
     $response['action']['status']=$resultat['STATUS'];
     $response['action']['owner']=$resultat['OWNER'];
-    
+
     echo json_encode($response);
-    die;    
+    die;
 
 } else if(isset($_POST["company"])){
-    
+
     $id = isset($_POST["id"]) ? $_POST["id"] : NULL;
     $action = isset($_POST["action"]) ? $_POST["action"] : NULL;
     $company = isset($_POST["company"]) ? $_POST["company"] : NULL;
@@ -449,10 +450,10 @@ if($action=="graphic"){
     }else{
         $date_reminder="'".$date_reminder."'";
     }
-    
-    
+
+
     if($action=="create"){
-        
+
         include 'connexion.php';
         $sql= "INSERT INTO  company_actions (USR_MAJ, HEU_MAJ, COMPANY, TYPE, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES ('$user', CURRENT_TIMESTAMP, '$company', '$type', '$date', $date_reminder, '$title','$description', '$status', '$owner')";
         if ($conn->query($sql) === FALSE) {
@@ -460,13 +461,32 @@ if($action=="graphic"){
             echo json_encode($response);
             die;
         }
-
-        $conn->close();   
+        $insertedID = $conn->insert_id;
+        $conn->close();
         $response['sql']=$sql;
+
+        //ajout de la task dans les notifications, si c'est une task destinée a un autre utilisateur
+        if ($owner == $_SESSION['userID']) {
+          //récupération de l'ID
+          include 'connexion.php';
+          $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$owner'");
+          $ownerID = mysqli_fetch_assoc($ownerID)['ID'];
+          $conn->close();
+
+          //ajout de la task
+          include 'connexion.php';
+          $sql = "INSERT INTO notifications (USR_MAJ, TEXT, `READ`, TYPE, USER_ID, TYPE_ITEM, HEU_MAJ, DATE) VALUES ('$user', 'Une nouvelle tâche vous a été assigné', 'N', 'taskNew', '$ownerID', '$insertedID', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+          if ($conn->query($sql) === FALSE) {
+              $response = array ('response'=>'error', 'message'=> $conn->error);
+              echo json_encode($response);
+              die;
+          }
+        }
+
         successMessage("SM0017");
-        
     }else if($action=="update"){
-        
+
+
         include 'connexion.php';
         $sql= "UPDATE  company_actions SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, TYPE='$type', COMPANY='$company', DATE='$date', DATE_REMINDER=$date_reminder, TITLE='$title', DESCRIPTION='$description', STATUS='$status', OWNER='$owner' WHERE ID='$id'";
         if ($conn->query($sql) === FALSE) {
@@ -474,12 +494,42 @@ if($action=="graphic"){
             echo json_encode($response);
             die;
         }
-
-        $conn->close();   
+        $conn->close();
         $response['sql']=$sql;
+
+
+        //passage des anciennes notifications en 'deleted'
+        include 'connexion.php';
+        $sql = "UPDATE notifications SET STAAN = 'D' WHERE (TYPE_ITEM ='$id' AND TYPE LIKE 'task%' AND (STAAN <> 'D' OR STAAN IS NULL))";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $conn->close();
+
+        //Si utilisateur différent de l'owner, nouvelle notif
+        if ($owner == $_SESSION['userID']) {
+          //récupération de l'id de l'utilisateur
+          include 'connexion.php';
+          $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$owner'");
+          $ownerID = mysqli_fetch_assoc($ownerID)['ID'];
+          $conn->close();
+
+          //création de la notification
+          include 'connexion.php';
+          $sql = "INSERT INTO notifications (USR_MAJ, TEXT, `READ`, TYPE, USER_ID, TYPE_ITEM, HEU_MAJ, DATE) VALUES ('$user', 'Une tache vous concernant a été modifié', 'N', 'taskEdited', '$ownerID', '$id', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+          if ($conn->query($sql) === FALSE) {
+              $response = array ('response'=>'error', 'message'=> $conn->error);
+              echo json_encode($response);
+              die;
+          }
+          $conn->close();
+        }
+
         successMessage("SM0017");
     }
-    
+
 } else
 {
 	errorMessage("ES0012");

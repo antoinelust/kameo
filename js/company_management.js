@@ -462,7 +462,6 @@ $('body').on('click', '.deletePdfOffer', function(e){
     success: function(response){
       if (response.response == true) {
         $(that).parents('tr').slideUp('',function(){
-          console.log($(this));
           $(this).remove();
         });
       } else{
