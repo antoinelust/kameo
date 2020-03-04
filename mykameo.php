@@ -2117,7 +2117,6 @@ if($connected){
                                           get_kameo_score(weather, precipitation, temperature, windSpeed, travel_time_bike, travel_time_car);
                                           loaded1=true;
                                           if (loaded2){
-                                            alert('coucou');
                                             $.notify({
                                               message: successMessage
                                             }, {
