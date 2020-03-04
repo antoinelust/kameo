@@ -525,7 +525,7 @@ get_all_accessories().done(function(response){
 
 //Contacts
 $('body').on('click','.getTemplate', function(){
-  get_company_contacts_list($('.contactIdHidden').val()).done(function(response){
+  get_company_contacts_list($('#companyIdHidden').val()).done(function(response){
     var content = `
       <select name="contactSelect" id="contactSelect" class="form-control required valid">
     `;

@@ -203,9 +203,13 @@ function initializeFields(){
       if(response.response == 'success'){
         var i=0;
         while (i < response.companiesNumber){
+          var selected ="";
+          if (response.company[i].internalReference == "KAMEO") {
+            selected ="selected";
+          }
           $('#widget-bikeManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
           $('#widget-updateAction-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
-          $('#widget-taskManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
+          $('#widget-taskManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\" "+selected+">"+response.company[i].companyName+"<br>");
           $('#widget-boxManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
           i++;
         }
@@ -1496,8 +1500,13 @@ if($connected){
 
   }
   function add_task(company){
+    $('#widget-taskManagement-form label[for=channel]').addClass("required");
+    $('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
+
+    $('#widget-taskManagement-form select[name=channel]').addClass("required");
+    $('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
     document.getElementById('widget-taskManagement-form').reset();
-    $('#widget-taskManagement-form select[name=company]').val(company);
+    //$('#widget-taskManagement-form select[name=company]').val(company);
     $('#widget-taskManagement-form select[name=type]').val("contact");
     $('#widget-taskManagement-form input').attr("readonly", false);
     $('#widget-taskManagement-form textarea').attr("readonly", false);
@@ -1796,7 +1805,7 @@ if($connected){
       //si le tableau de session est vide, on est bien déconnecté
       success: function(response){
         if (response.length == 0) {
-          window.location.href = "http://www.kameobikes.com/index.php";
+          window.location.reload(true);
         }
       }
     });
@@ -2108,11 +2117,13 @@ if($connected){
                                           get_kameo_score(weather, precipitation, temperature, windSpeed, travel_time_bike, travel_time_car);
                                           loaded1=true;
                                           if (loaded2){
+                                            alert('coucou');
                                             $.notify({
                                               message: successMessage
                                             }, {
                                               type: 'success'
                                             });
+                                            console.log(text);
                                             document.getElementById("travel_information").style.display = "block";
                                             document.getElementById("velos").style.display = "block";
                                             $("body").removeClass("loading");
@@ -2222,11 +2233,11 @@ if($connected){
                                   }, {
                                     type: 'success'
                                   });
+                                  console.log(text);
                                   document.getElementById("travel_information").style.display = "block";
                                   document.getElementById("velos").style.display = "block";
                                   $("body").removeClass("loading");
                                 }
-
                               }
                             }
                           });
@@ -5911,17 +5922,10 @@ if($connected){
                             <label for="channel"  class="en">Channel</label>
                             <label for="channel"  class="nl">Channel</label>
                             <select title="channel" class="form-control required selectpicker" name="channel">
-                              <option value="telephone">Téléphone</option>
-                              <option value="salon" selected>Contact après visite sur salon</option>
-                              <option value="site" selected>Contact sur site internet</option>
+                              <option value="telephone" selected>Téléphone</option>
+                              <option value="salon">Contact après visite sur salon</option>
+                              <option value="site">Contact sur site internet</option>
                             </select>
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="sector"  class="fr">Secteur</label>
-                            <label for="sector"  class="en">Sector</label>
-                            <label for="sector"  class="nl">Sector</label>
-                            <input type="text" title="sector" name="sector" class="form-control required" />
                           </div>
                         </div>
                         <div class="col-md-12">
@@ -5969,21 +5973,32 @@ if($connected){
                     </form>
                     <script type="text/javascript">
 
+                    var oldChannelValue = $('#widget-taskManagement-form select[name=channel]').val();
+
+                    $('body').on('change', '#widget-taskManagement-form select[name=channel]', function(){
+                      if ($('#widget-taskManagement-form select[name=channel]').val() != null) {
+                        oldChannelValue = $('#widget-taskManagement-form select[name=channel]').val();
+                      }
+                    });
+
                     $('#widget-taskManagement-form select[name=type]').change(function(){
-                      console.log($('#widget-taskManagement-form select[name=type]').val());
                       if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
+                        $('#widget-taskManagement-form select[name=channel]').val(oldChannelValue);
+
+                        $('#widget-taskManagement-form label[for=channel]').addClass("required");
+                        $('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
+
                         $('#widget-taskManagement-form select[name=channel]').addClass("required");
-                        $('#widget-taskManagement-form select[name=channel]').removeClass("hideen");
-                        $('#widget-taskManagement-form input[name=sector]').addClass("required");
-                        $('#widget-taskManagement-form input[name=sector]').removeClass("hideen");
+                        $('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
+
                       }else{
+                        $('#widget-taskManagement-form label[for=channel]').removeClass("required");
+                        $('#widget-taskManagement-form label[for=channel]').addClass("hidden");
+
                         $('#widget-taskManagement-form select[name=channel]').addClass("hidden");
                         $('#widget-taskManagement-form select[name=channel]').removeClass("required");
-                        $('#widget-taskManagement-form input[name=sector]').addClass("hidden");
-                        $('#widget-taskManagement-form input[name=sector]').removeClass("required");
-                        $('#widget-taskManagement-form input[name=sector]').val("");
-                        $('#widget-taskManagement-form select[name=channel]').val("");
 
+                        $('#widget-taskManagement-form select[name=channel]').val(null);
                       }
                     });
 

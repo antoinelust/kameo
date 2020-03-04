@@ -18,7 +18,6 @@ $type = isset($_POST["type"]) ? $_POST["type"] : $_POST["typeHidden"];
 $user = $_POST["widget_companyDetails_requestor"];
 $internalReference = $_POST["widget_companyDetails_internalReference"];
 $billing=isset($_POST['billing']) ? "Y" : "N";
-$statistiques=isset($_POST['statistiques']) ? "Y" : "N";
 $locking=isset($_POST['locking']) ? "Y" : "N";
 $assistance=isset($_POST['assistance']) ? "Y" : "N";
 $emailContactBilling=isset($_POST['email_billing']) ? $_POST['email_billing'] : NULL;
@@ -44,7 +43,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
         errorMessage("ES0037");
     }
 
-	$sql = "update companies set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', COMPANY_NAME='$companyName', STREET='$companyStreet', ZIP_CODE='$ZIPCode', TOWN='$companyTown',  VAT_NUMBER='$companyVAT', TYPE='$type', EMAIL_CONTACT_BILLING='$emailContactBilling', FIRSTNAME_CONTACT_BILLING='$firstNameContactBilling', LASTNAME_CONTACT_BILLING='$lastNameContactBilling', PHONE_CONTACT_BILLING='$phoneBilling', BILLS_SENDING='$billing', AUTOMATIC_STATISTICS='$statistiques' where ID='$ID'";
+	$sql = "update companies set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', COMPANY_NAME='$companyName', STREET='$companyStreet', ZIP_CODE='$ZIPCode', TOWN='$companyTown',  VAT_NUMBER='$companyVAT', TYPE='$type', EMAIL_CONTACT_BILLING='$emailContactBilling', FIRSTNAME_CONTACT_BILLING='$firstNameContactBilling', LASTNAME_CONTACT_BILLING='$lastNameContactBilling', PHONE_CONTACT_BILLING='$phoneBilling', BILLS_SENDING='$billing' where ID='$ID'";
 
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
