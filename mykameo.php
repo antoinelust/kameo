@@ -5799,6 +5799,8 @@ if($connected){
 
                         jQuery(form).ajaxSubmit({
                           success: function(response) {
+                              
+                              
                             if (response.response == 'success') {
                               $.notify({
                                 message: response.message

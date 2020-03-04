@@ -133,7 +133,7 @@ function writeMail(){
 
 
     
-    if(substr($_SERVER[REQUEST_URI], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+    if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
         $mail->AddAddress($email);
     }else{
         $mail->AddAddress($requestor);        
@@ -1026,13 +1026,16 @@ Merci de simplement répondre 'STOP' à ce mail.
 ";
     $mail->Body = $body;
 
+    if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+        if(!$mail->Send()) {
+            $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
+            echo json_encode($response);
+            die;
+        }    
+    }
+    
 
 
-    if(!$mail->Send()) {
-        $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
-        echo json_encode($response);
-        die;
-    }    
 
 }
 
