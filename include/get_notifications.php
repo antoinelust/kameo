@@ -11,7 +11,7 @@ $id = isset($_POST['ID']) ? $_POST['ID'] : NULL;
 $response=array();
   if ($id != NULL) {
     include 'connexion.php';
-    $sql="SELECT *  FROM notifications WHERE USER_ID = '$id'";
+    $sql="SELECT *  FROM notifications WHERE USER_ID = '$id' AND STAAN <> 'D' OR STAAN IS NULL ORDER BY DATE DESC LIMIT 10";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);

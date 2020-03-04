@@ -1504,6 +1504,7 @@ if($connected){
     $('#widget-taskManagement-form select').attr("readonly", false);
     $('.taskManagementTitle').text("Ajouter une action");
 
+
   }
   function edit_contact(contact){
     return $.ajax({
@@ -1517,7 +1518,9 @@ if($connected){
         'phone': $(contact).find('.phone').val(),
         'function': $(contact).find('.fonction').val(),
         'bikesStats': $(contact).find('.bikesStats').prop('checked'),
-        'companyId': $('#companyIdHidden').val()
+        'companyId': $('#companyIdHidden').val(),
+        'email': email
+
       },
       success: function(response){
       }
@@ -1600,9 +1603,6 @@ if($connected){
         }
         contactContent += "</tbody></table>";
         $('.clientContactZone').append(contactContent);
-      },
-      error: function(){
-        window.alert("Problème durant la transaction...");
       }
     });
 
@@ -1667,7 +1667,7 @@ if($connected){
             $(this).prop('readonly', true);
           });
         });
-      }else{ console.log('invalide');}
+      }
 
     });
 
@@ -1789,7 +1789,6 @@ if($connected){
 
 
   function deconnexion(){
-    alert('deco');
     $.ajax({
       url: 'include/logout.php',
       method: 'post',
@@ -1797,13 +1796,10 @@ if($connected){
       //si le tableau de session est vide, on est bien déconnecté
       success: function(response){
         if (response.length == 0) {
-          console.log(response);
+          window.location.href = "http://www.kameobikes.com/index.php";
         }
       }
     });
-    <?php
-    //$_SESSION['userID']=null;
-    ?>
 
   }
 </script>

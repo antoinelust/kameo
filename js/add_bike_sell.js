@@ -53,11 +53,9 @@ $('.contractInfos .insurance').on('click','input',function(){
   if (currentOption == "selling") {
     //si on a une assurance, on affiche le bloc de fin de contrat
     if(insuranceBool){
-      console.log(insuranceBool);
       $('.contractInfos').find('.contractEndBloc input').removeAttr('disabled');
       $('.contractInfos').find('.contractEndBloc').fadeIn();
     }else{
-      console.log(insuranceBool);
       $('.contractInfos').find('.contractEndBloc input').prop('disabled','disabled');
       $('.contractInfos').find('.contractEndBloc').fadeOut();
     }

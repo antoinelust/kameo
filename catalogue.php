@@ -150,7 +150,6 @@ include 'include/header2.php';
                             if(response.bikeNumber=="0"){
                                 dest="<p>Aucun vélo ne correspond à votre sélection</p>";
                             }
-														console.log(response.bikeNumber);
                             while(i<response.bikeNumber){
                                 if(response.bike[i].display=='Y'){
                                     if(response.bike[i].frameType.toLowerCase()=="h"){
@@ -238,7 +237,7 @@ include 'include/header2.php';
             {
 
                 document.getElementById('bikePicturetitle').innerHTML=brand+" "+model;
-                document.getElementById('bikePictureImage').src="images_bikes/"+brand.toLowerCase()+"_"+model.toLowerCase().replace(/ /g, '-')+"_"+frameType.toLowerCase()+"_mini.jpg";
+                document.getElementById('bikePictureImage').src="images_bikes/"+brand.toLowerCase()+"_"+model.toLowerCase().replace(/ /g, '-')+"_"+frameType.toLowerCase()+".jpg";
 
             }
         </script>

@@ -403,7 +403,6 @@ function get_sold_bikes(){
 
         dest +="</tobdy></table>";
         $("#soldBikesListingSpan").html(dest);
-        console.log(soldBikes);
       }
 
   });
