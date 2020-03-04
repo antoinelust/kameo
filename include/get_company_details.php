@@ -29,7 +29,7 @@ if($ID==NULL & $email != NULL){
     $company=$resultat['COMPANY'];
 
     include 'connexion.php';
-	  $sql="SELECT * FROM companies dd where INTERNAL_REFERENCE='$company'";
+	  $sql="SELECT * FROM companies  where INTERNAL_REFERENCE='$company'";
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -74,7 +74,6 @@ if($ID != NULL)
     $response['lastNameContactBilling']=$resultat['LASTNAME_CONTACT_BILLING'];
     $response['phoneContactBilling']=$resultat['PHONE_CONTACT_BILLING'];
     $response['automaticBilling']=$resultat['BILLS_SENDING'];
-    $response['automaticStatistics']=$resultat['AUTOMATIC_STATISTICS'];
     $response['internalReference']=$resultat['INTERNAL_REFERENCE'];
 
     include 'connexion.php';

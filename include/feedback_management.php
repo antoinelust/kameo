@@ -41,7 +41,7 @@ if(isset($_GET['action'])){
 
         include 'connexion.php';
         $sql = "SELECT * FROM feedbacks where ID_RESERVATION='$ID'";
-
+        error_log('in function');
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -57,7 +57,7 @@ if(isset($_GET['action'])){
         $response['note']=$resultat['NOTE'];
         $response['comment']=$resultat['COMMENT'];
         $response['entretien']=$resultat['ENTRETIEN'];
-        
+
         include 'connexion.php';
         $sql = "SELECT * FROM reservations where ID='$ID'";
 
@@ -73,7 +73,7 @@ if(isset($_GET['action'])){
         $response['start']=$resultat['DATE_START'];
         $response['end']=$resultat['DATE_END'];
         $response['email']=$resultat['EMAIL'];
-                
+
         echo json_encode($response);
         die;
     }
@@ -104,20 +104,20 @@ if(isset($_GET['action'])){
             $response['feedback'][$i]['comment']=$row['COMMENT'];
             $response['feedback'][$i]['entretien']=$row['ENTRETIEN'];
             $response['feedback'][$i]['status']=$row['STATUS'];
-            
+
             $response['feedback'][$i]['company']=$row['COMPANY'];
             $response['feedback'][$i]['firstName']=$row['PRENOM'];
             $response['feedback'][$i]['name']=$row['NOM'];
             $response['feedback'][$i]['start']=$row['DATE_START'];
             $response['feedback'][$i]['end']=$row['DATE_END'];
             $response['feedback'][$i]['email']=$row['EMAIL'];
-            
+
             $i++;
         }
-        
+
         echo json_encode($response);
         die;
-        
+
     }
 }else if(isset($_POST['action'])){
     $action=$_POST['action'];
@@ -142,16 +142,16 @@ if(isset($_GET['action'])){
         if($length>0){
             errorMessage('ES0055');
         }
-        
+
 
         if($comment!=NULL){
             $comment="'".$comment."'";
         }else{
             $comment='NULL';
-        }    
+        }
 
-        
-        
+
+
         include 'connexion.php';
         $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_NUMBER='$bike', ID_RESERVATION='$ID', NOTE='$note', COMMENT='$comment', ENTRETIEN='$entretien', STATUS='DONE'";
         if ($conn->query($sql) === FALSE) {
@@ -160,7 +160,7 @@ if(isset($_GET['action'])){
             die;
         }
         $conn->close();
-        
+
         if($note != "5"){
             $mail = new PHPMailer();
 
@@ -180,7 +180,7 @@ if(isset($_GET['action'])){
 
             $mail->AddReplyTo($user);
             $mail->Subject = "Nouveau feedback - ".$user;
-            
+
 
             $body = "<!doctype html>
             <html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">
@@ -983,7 +983,7 @@ if(isset($_GET['action'])){
                                     </td>
                                 </tr>
                             </tbody></table>
-            <!--            
+            <!--
                             <td class=\"mcnDividerBlockInner\" style=\"padding: 18px;\">
                             <hr class=\"mcnDividerContent\" style=\"border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;\" />
             -->
@@ -1043,24 +1043,24 @@ if(isset($_GET['action'])){
                     </center>
                 </body>
             </html>
-            ";     
+            ";
 
             $mail->Body = $body;
             if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
                             if(!$mail->Send()) {
-                               echo error_get_last()['message'];  
+                               echo error_get_last()['message'];
 
                             }else {
                                echo 'mail envoyé';
-                            }    
+                            }
             }else{
                 echo '<br><strong>environnement localhost, mail non envoyé</strong><br>';
-            }            
-            
-            
-            
+            }
+
+
+
         }
-        
+
         if($entretien == "1"){
             $mail = new PHPMailer();
 
@@ -1079,7 +1079,7 @@ if(isset($_GET['action'])){
 
             $mail->AddReplyTo($user);
             $mail->Subject = "Nouvelle demande d'entretien sur le vélo $bike ";
-            
+
 
             $body = "<!doctype html>
             <html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">
@@ -1882,7 +1882,7 @@ if(isset($_GET['action'])){
                                     </td>
                                 </tr>
                             </tbody></table>
-            <!--            
+            <!--
                             <td class=\"mcnDividerBlockInner\" style=\"padding: 18px;\">
                             <hr class=\"mcnDividerContent\" style=\"border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;\" />
             -->
@@ -1942,27 +1942,27 @@ if(isset($_GET['action'])){
                     </center>
                 </body>
             </html>
-            ";     
+            ";
 
             $mail->Body = $body;
             if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
                             if(!$mail->Send()) {
-                               echo error_get_last()['message'];  
+                               echo error_get_last()['message'];
 
                             }else {
                                echo 'mail envoyé';
-                            }    
+                            }
             }else{
                 echo '<br><strong>environnement localhost, mail non envoyé</strong><br>';
-            }            
-            
-            
-            
-        }        
-        
+            }
+
+
+
+        }
+
         successMessage("SM0023");
     }
-    
+
 }
 
 

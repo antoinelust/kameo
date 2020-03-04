@@ -7,7 +7,6 @@ session_start();
 include 'globalfunctions.php';
 $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
 
-
 include 'connexion.php';
 $sql="SELECT * FROM companies_contact dd where ID_COMPANY='$ID'";
 

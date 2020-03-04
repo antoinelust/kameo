@@ -115,7 +115,7 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
         errorMessage("ES0036");
     }
 
-    $sql= "INSERT INTO  companies (USR_MAJ, HEU_MAJ, COMPANY_NAME, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, BILLING_GROUP, STAANN, AUTOMATIC_STATISTICS, BILLS_SENDING) VALUES ('$originator', CURRENT_TIMESTAMP, '$description', '$street', '$zipCode', '$city', '$VAT', '$internalReference', '$type', '1', '', 'N', 'N')";
+    $sql= "INSERT INTO  companies (USR_MAJ, HEU_MAJ, COMPANY_NAME, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, BILLING_GROUP, STAANN, BILLS_SENDING) VALUES ('$originator', CURRENT_TIMESTAMP, '$description', '$street', '$zipCode', '$city', '$VAT', '$internalReference', '$type', '1', '', 'N')";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);

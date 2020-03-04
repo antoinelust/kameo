@@ -445,6 +445,13 @@ if($action=="graphic"){
     $date_reminder=isset($_POST["date_reminder"]) ? date($_POST["date_reminder"]) : NULL;
     $status=isset($_POST["status"]) ? $_POST["status"] : NULL;
     $owner=isset($_POST["owner"]) ? $_POST["owner"] : NULL;
+    $channel = isset($_POST["channel"]) ? $_POST["channel"] : NULL;
+
+    if ($channel == '') {
+      $channel = 'NULL';
+    }else{
+      $channel="'".$channel."'";
+    }
     if($date_reminder==''){
         $date_reminder='NULL';
     }else{
@@ -455,7 +462,7 @@ if($action=="graphic"){
     if($action=="create"){
 
         include 'connexion.php';
-        $sql= "INSERT INTO  company_actions (USR_MAJ, HEU_MAJ, COMPANY, TYPE, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES ('$user', CURRENT_TIMESTAMP, '$company', '$type', '$date', $date_reminder, '$title','$description', '$status', '$owner')";
+        $sql= "INSERT INTO  company_actions (USR_MAJ, HEU_MAJ, COMPANY, TYPE, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER, CHANNEL) VALUES ('$user', CURRENT_TIMESTAMP, '$company', '$type', '$date', $date_reminder, '$title','$description', '$status', '$owner', $channel)";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
