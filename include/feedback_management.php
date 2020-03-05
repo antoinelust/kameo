@@ -28,8 +28,9 @@ if(isset($_GET['action'])){
 
 
         $response = array ('response'=>'success');
-        $response['start']=$resultat['DATE_START'];
-        $response['end']=$resultat['DATE_END'];
+		$response['start']= date('d/m/Y h:i',$resultat['DATE_START']);            
+		$response['end']= date('d/m/Y h:i',$resultat['DATE_END']);            
+        
         $response['bikeNumber']=$resultat['FRAME_NUMBER'];
         $response['email']=$resultat['EMAIL'];
         $response['ID']=$resultat['ID'];
@@ -137,11 +138,26 @@ if(isset($_GET['action'])){
             die;
         }
         $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
         $length = $result->num_rows;
         $conn->close();
         if($length>0){
             errorMessage('ES0055');
         }
+        
+        include 'connexion.php';
+        $sql="select * from feedbacks WHERE ID_RESERVATION='$ID'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();        
+        $ID_feedback=$resultat['ID'];
+        
 
 
         if($comment!=NULL){
@@ -153,13 +169,17 @@ if(isset($_GET['action'])){
 
 
         include 'connexion.php';
-        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_NUMBER='$bike', ID_RESERVATION='$ID', NOTE='$note', COMMENT='$comment', ENTRETIEN='$entretien', STATUS='DONE'";
+        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_NUMBER='$bike', ID_RESERVATION='$ID', NOTE='$note', COMMENT=$comment, ENTRETIEN='$entretien', STATUS='DONE' WHERE ID='$ID_feedback'";
+        
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
         $conn->close();
+        
+                
 
         if($note != "5"){
             $mail = new PHPMailer();
@@ -738,7 +758,7 @@ if(isset($_GET['action'])){
 
             <p><br>
             <br>
-            <strong>$email :</strong><br>
+            <strong>$user :</strong><br>
             Vélo : $bike <br>
             ID de réservation : $ID <br>
             Note : $note <br>
@@ -1060,6 +1080,11 @@ if(isset($_GET['action'])){
 
 
         }
+        
+            
+        
+        
+        
 
         if($entretien == "1"){
             $mail = new PHPMailer();
@@ -1637,7 +1662,7 @@ if(isset($_GET['action'])){
 
             <p><br>
             <br>
-            <strong>$email :</strong><br>
+            <strong>$user :</strong><br>
             Vélo : $bike <br>
             ID de réservation : $ID <br>
             Note : $note <br>
@@ -1943,6 +1968,8 @@ if(isset($_GET['action'])){
                 </body>
             </html>
             ";
+            
+            
 
             $mail->Body = $body;
             if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
@@ -1957,9 +1984,9 @@ if(isset($_GET['action'])){
             }
 
 
-
+        
+        
         }
-
         successMessage("SM0023");
     }
 

@@ -35,15 +35,15 @@ if($bookingID != NULL)
   die;
 }*/
 
-//désactivation de la notification de feedback
-include 'connexion.php';
-$sql= "update notifications set STAAN='D' where TYPE = 'feedback' AND TYPE_ITEM='$bookingID'";
-if ($conn->query($sql) === FALSE) {
+    //désactivation de la notification de feedback
+    include 'connexion.php';
+    $sql= "update notifications set STAAN='D' where TYPE = 'feedback' AND TYPE_ITEM='$bookingID'";
+    if ($conn->query($sql) === FALSE) {
 
-  $response = array ('response'=>'error', 'message'=> $conn->error);
-  echo json_encode($response);
-  die;
-}
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+    }
 
 
 
@@ -55,7 +55,18 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
   }
+    
+  $sql= "update feedbacks set STATUS='CANCELLED' where ID_reservation='$bookingID'";
+
+  if ($conn->query($sql) === FALSE) {
+
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+  }
   $conn->close();
+    
+    
   successMessage("SM0007");
 }
 else

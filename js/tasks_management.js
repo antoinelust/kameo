@@ -1,3 +1,22 @@
+function add_task(company){
+$('#widget-taskManagement-form label[for=channel]').addClass("required");
+$('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
+
+$('#widget-taskManagement-form select[name=channel]').addClass("required");
+$('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
+document.getElementById('widget-taskManagement-form').reset();
+//$('#widget-taskManagement-form select[name=company]').val(company);
+$('#widget-taskManagement-form select[name=type]').val("contact");
+$('#widget-taskManagement-form input').attr("readonly", false);
+$('#widget-taskManagement-form textarea').attr("readonly", false);
+$('#widget-taskManagement-form select').attr("readonly", false);
+$('.taskManagementTitle').text("Ajouter une action");
+
+
+}
+
+
+
 function list_tasks(status, owner2, numberOfResults, email) {
     if(!owner2){
         owner2=email;

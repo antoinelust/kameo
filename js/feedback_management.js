@@ -9,6 +9,7 @@ function initiatizeFeedback(id){
                 console.log(response.message);
             }
             if(response.response == 'success'){
+                /*
                 var unix_timestamp = response.start
                 // Create a new JavaScript Date object based on the timestamp
                 // multiplied by 1000 so that the argument is in milliseconds, not seconds.
@@ -27,7 +28,7 @@ function initiatizeFeedback(id){
                 var seconds = "0" + date.getSeconds();
 
                 // Will display time in 10:30:23 format
-                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours-1 + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 
 
                 var unix_timestamp = response.end
@@ -48,13 +49,13 @@ function initiatizeFeedback(id){
                 var seconds = "0" + date.getSeconds();
 
                 // Will display time in 10:30:23 format
-                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-
+                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours+ ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                */
 
                 $('.feedbackManagementTitle').html("Ajouter un feedback");
                 $('#feedbackManagement input[name=bike]').val(response.bikeNumber);
-                $('#feedbackManagement input[name=startDate]').val(formattedTimeStart);
-                $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
+                $('#feedbackManagement input[name=startDate]').val(response.start);
+                $('#feedbackManagement input[name=endDate]').val(response.end);
                 $('#feedbackManagement input[name=ID]').val(response.ID);
                 $('#feedbackManagement input[name=utilisateur]').val(response.email);
                 document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeNumber+"_mini.jpg";

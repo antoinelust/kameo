@@ -87,18 +87,27 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 		include 'connexion.php';
 		$ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$user'");
 		$ownerID = mysqli_fetch_assoc($ownerID)['ID'];
-		$conn->close();
-
-		include 'connexion.php';
 		$dateFinReservation = date("Y-m-d H:i:s", $dateEnd);
-		$feedbackText = 'Feedback utilisateur<br/><a data-toggle="modal" data-target="#feedbackManagement" href="#" class="text-green">Cliquez ici</a> pour donner votre feedback';
+		$feedbackText = 'Votre réservation n°'.$insertedID.' est terminée<br/><a data-toggle="modal" href="#" onclick=initiatizeFeedback("'.$insertedID.'") class="text-green">Cliquez ici</a> pour donner votre feedback';
+    
 		$sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateFinReservation','$feedbackText', 'N', 'feedback',$ownerID,$insertedID)";
 			if ($conn->query($sql) === FALSE) {
 			$response = array ('response'=>'error', 'message'=> $conn->error);
 			echo json_encode($response);
 			die;
 		}
-		$conn->close();
+    
+        $sql="INSERT INTO feedbacks (HEU_MAJ, USR_MAJ, BIKE_NUMBER, ID_RESERVATION, NOTE, COMMENT, ENTRETIEN, STATUS) VALUES (CURRENT_TIMESTAMP, '$user', '$frameNumber', '$insertedID', NULL, NULL, NULL, 'SENT')";
+    
+    
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $conn->close();
+    
+    
 
     if($lockingcode!=""){
         include 'connexion.php';

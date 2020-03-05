@@ -1502,22 +1502,6 @@ if($connected){
     document.getElementById('widget-offerManagement-form').reset();
 
   }
-  function add_task(company){
-    $('#widget-taskManagement-form label[for=channel]').addClass("required");
-    $('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
-
-    $('#widget-taskManagement-form select[name=channel]').addClass("required");
-    $('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
-    document.getElementById('widget-taskManagement-form').reset();
-    //$('#widget-taskManagement-form select[name=company]').val(company);
-    $('#widget-taskManagement-form select[name=type]').val("contact");
-    $('#widget-taskManagement-form input').attr("readonly", false);
-    $('#widget-taskManagement-form textarea').attr("readonly", false);
-    $('#widget-taskManagement-form select').attr("readonly", false);
-    $('.taskManagementTitle').text("Ajouter une action");
-
-
-  }
   function edit_contact(contact){
     return $.ajax({
       url: 'include/edit_company_contact.php',

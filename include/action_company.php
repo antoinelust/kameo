@@ -473,7 +473,7 @@ if($action=="graphic"){
         $response['sql']=$sql;
 
         //ajout de la task dans les notifications, si c'est une task destinée a un autre utilisateur
-        if ($owner == $_SESSION['userID']) {
+        if ($owner != $_SESSION['userID']) {
           //récupération de l'ID
           include 'connexion.php';
           $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$owner'");
@@ -516,7 +516,7 @@ if($action=="graphic"){
         $conn->close();
 
         //Si utilisateur différent de l'owner, nouvelle notif
-        if ($owner == $_SESSION['userID']) {
+        if ($owner != $_SESSION['userID']) {
           //récupération de l'id de l'utilisateur
           include 'connexion.php';
           $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$owner'");
@@ -525,7 +525,7 @@ if($action=="graphic"){
 
           //création de la notification
           include 'connexion.php';
-          $sql = "INSERT INTO notifications (USR_MAJ, TEXT, `READ`, TYPE, USER_ID, TYPE_ITEM, HEU_MAJ, DATE) VALUES ('$user', 'Une tache vous concernant a été modifié', 'N', 'taskEdited', '$ownerID', '$id', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+          $sql = "INSERT INTO notifications (USR_MAJ, TEXT, `READ`, TYPE, USER_ID, TYPE_ITEM, HEU_MAJ, DATE) VALUES ('$user', 'Une action vous a été assignée ou votre action a été modifiée', 'N', 'taskEdited', '$ownerID', '$id', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
           if ($conn->query($sql) === FALSE) {
               $response = array ('response'=>'error', 'message'=> $conn->error);
               echo json_encode($response);
