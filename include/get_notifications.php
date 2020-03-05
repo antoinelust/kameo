@@ -11,7 +11,7 @@ $id = isset($_POST['ID']) ? $_POST['ID'] : NULL;
 $response=array();
   if ($id != NULL) {
     include 'connexion.php';
-    $sql="SELECT *  FROM notifications WHERE USER_ID = '$id' AND STAAN <> 'D' OR STAAN IS NULL ORDER BY FIELD(`READ`, 'N', 'Y'), DATE DESC LIMIT 10";
+    $sql="SELECT *  FROM notifications WHERE USER_ID = '$id' AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY FIELD(`READ`, 'N', 'Y'), DATE DESC LIMIT 10";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);
@@ -31,15 +31,31 @@ $response=array();
 
     {
 
-      $response['notification'][$i]['ID']=$row['ID'];
-      $response['notification'][$i]['DATE']=$row['DATE'];
-      $response['notification'][$i]['TYPE']=$row['TYPE'];
-      $response['notification'][$i]['TEXT']=$row['TEXT'];
-      $response['notification'][$i]['READ']=$row['READ'];
-      $response['notification'][$i]['USER_ID'] = $id;
+      if ($row['TYPE'] == "feedback") {
+        date_default_timezone_set('Europe/Brussels');
+        $currentDate = strtotime('now');
+        $dateFinReservation = strtotime($row['DATE']);
+        if ($currentDate >= $dateFinReservation) {
+          $response['notification'][$i]['ID']=$row['ID'];
+          $response['notification'][$i]['DATE']=$row['DATE'];
+          $response['notification'][$i]['TYPE']=$row['TYPE'];
+          $response['notification'][$i]['TEXT']=$row['TEXT'];
+          $response['notification'][$i]['READ']=$row['READ'];
+          $response['notification'][$i]['USER_ID'] = $id;
+          $i++;
+        }
+
+      } else {
+        $response['notification'][$i]['ID']=$row['ID'];
+        $response['notification'][$i]['DATE']=$row['DATE'];
+        $response['notification'][$i]['TYPE']=$row['TYPE'];
+        $response['notification'][$i]['TEXT']=$row['TEXT'];
+        $response['notification'][$i]['READ']=$row['READ'];
+        $response['notification'][$i]['USER_ID'] = $id;
+        $i++;
+      }
 
 
-      $i++;
 
     }
     echo json_encode($response);

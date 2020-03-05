@@ -8,6 +8,7 @@ session_start();
 include 'globalfunctions.php';
 
 
+
 //timestampStart and timestampEnd can be decomissioned from mykameo
 //$timestampStart=$_POST['widget-new-booking-timestamp-start'];
 //$timestampEnd=$_POST['widget-new-booking-timestamp-end'];
@@ -33,25 +34,25 @@ $dateEnd=strtotime($temp->format('Y-m-d H:i'));
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
-    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END > '$dateStart' and bb.DATE_END < '$dateEnd') OR (bb.DATE_START>'$dateStart' and bb.DATE_START<'$dateEnd')))";    
-    
-    
+    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END > '$dateStart' and bb.DATE_END < '$dateEnd') OR (bb.DATE_START>'$dateStart' and bb.DATE_START<'$dateEnd')))";
+
+
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-	$result = mysqli_query($conn, $sql);     
+	$result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
 
-    
-    
+
+
 	 if($length == 0){
         errorMessage("ES0019");
     }
-	
+
 	include 'connexion.php';
-    
+
     $timestamp= time();
     $sql= "INSERT INTO reservations (USR_MAJ, STATUS, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$frameNumber', '$dateStart', '$buildingStart', '$dateEnd', '$buildingEnd', '$user', '')";
 
@@ -60,62 +61,98 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
-	} 
+	}
+		$insertedID = $conn->insert_id;
     $conn->close();
-    
+
+	/*	// ====Ajout de la notification de la réservation====
+
+		//récuperation de l'id de l'utilisateur
+		include 'connexion.php';
+		$ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$user'");
+		$ownerID = mysqli_fetch_assoc($ownerID)['ID'];
+		$conn->close();
+
+		include 'connexion.php';
+		$dateDebutReservation = date("Y-m-d H:i:s", $dateStart);
+		$sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateDebutReservation','Réservation vélo imminente', 'N', 'reservation',$ownerID,$insertedID)";
+			if ($conn->query($sql) === FALSE) {
+			$response = array ('response'=>'error', 'message'=> $conn->error);
+			echo json_encode($response);
+			die;
+		}
+		$conn->close();*/
+
+		// ====Ajout de la notification de feedback
+		include 'connexion.php';
+		$ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$user'");
+		$ownerID = mysqli_fetch_assoc($ownerID)['ID'];
+		$conn->close();
+
+		include 'connexion.php';
+		$dateFinReservation = date("Y-m-d H:i:s", $dateEnd);
+		$feedbackText = 'Feedback utilisateur<br/><a data-toggle="modal" data-target="#feedbackManagement" href="#" class="text-green">Cliquez ici</a> pour donner votre feedback';
+		$sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateFinReservation','$feedbackText', 'N', 'feedback',$ownerID,$insertedID)";
+			if ($conn->query($sql) === FALSE) {
+			$response = array ('response'=>'error', 'message'=> $conn->error);
+			echo json_encode($response);
+			die;
+		}
+		$conn->close();
+
     if($lockingcode!=""){
         include 'connexion.php';
 
         $sql= "select ID from reservations where FRAME_NUMBER = '$frameNumber' and EMAIL = '$user' and DATE_START = '$dateStart' and DATE_END = '$dateEnd' and STAANN != 'D' ";
-        
+
         //error_log($sql, 3, "mes-erreurs.log");
 
-        
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);  
-        $resultat = mysqli_fetch_assoc($result);    
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
         $ID = $resultat['ID'];
-        
+
         include 'connexion.php';
 
         $sql= "select * from building_access where BUILDING_REFERENCE = '$buildingStart'";
-        
+
         //error_log($sql, 3, "mes-erreurs.log");
 
-        
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);  
-        $resultat = mysqli_fetch_assoc($result);  
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
         $building=$resultat['BUILDING_CODE'];
 
-        
+
         $sql= "INSERT INTO locking_code (ID_reservation, USR_MAJ, DATE_BEGIN, DATE_END, BUILDING_START, CODE, VALID) VALUES ('$ID', 'new_booking.php', '$dateStart2', '$dateEnd', '$building', '$lockingcode', 'Y')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        } 
-        
+        }
+
         $sql= "UPDATE reservations SET STATUS='Open' where ID='$ID'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        }         
-        
+        }
+
         $conn->close();
 
     }
-    
-    
+
+
     successMessage("SM0006");
 } else{
 	errorMessage("ES0012");

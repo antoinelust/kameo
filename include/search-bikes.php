@@ -91,7 +91,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response); error_log(json_encode($response));
+		echo json_encode($response); 
 		die;
 	}
     $result = mysqli_query($conn, $sql);
@@ -106,7 +106,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
     $sql="select * from reservations where DATE_START>'$date1stOfMonth' and EMAIL='$email' and STAANN != 'D'";
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response); error_log(json_encode($response));
+		echo json_encode($response);
 		die;
 	}
 
@@ -125,7 +125,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
     $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.FRAME_NUMBER=aa.BIKE_NUMBER and aa.BUILDING_CODE='$deposit_building'";
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response); error_log(json_encode($response));
+		echo json_encode($response);
 		die;
 	}
 
@@ -152,7 +152,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response); error_log(json_encode($response));
+		echo json_encode($response);
 		die;
 	}
     $result = mysqli_query($conn, $sql);
@@ -175,7 +175,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response); error_log(json_encode($response));
+            echo json_encode($response);
             die;
         }
 
@@ -188,7 +188,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 
             if ($conn->query($sql3) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response); error_log(json_encode($response));
+                echo json_encode($response);
                 die;
             }
             $result3 = mysqli_query($conn, $sql3);
@@ -198,7 +198,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
                 $sql4="SELECT * FROM bike_building_access WHERE BIKE_NUMBER='$frameNumber' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
                 if ($conn->query($sql4) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response); error_log(json_encode($response));
+                    echo json_encode($response);
                     die;
                 }
                 $result4 = mysqli_query($conn, $sql4);
@@ -211,7 +211,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
                     $sql5="SELECT * FROM customer_bikes WHERE FRAME_NUMBER='$frameNumber'";
                     if ($conn->query($sql5) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
-                        echo json_encode($response); error_log(json_encode($response));
+                        echo json_encode($response);
                         die;
                     }
                     $result5 = mysqli_query($conn, $sql5);
@@ -226,7 +226,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
                     $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
                     if ($conn->query($sql6) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
-                        echo json_encode($response); error_log(json_encode($response));
+                        echo json_encode($response);
                         die;
                     }
                     $result6 = mysqli_query($conn, $sql6);
@@ -268,7 +268,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 		$response['message']= "Veuillez choisir votre vélo ci-dessous.";
 	}
 
-    echo json_encode($response); error_log(json_encode($response));
+    echo json_encode($response);
     die;
 
 }

@@ -4,6 +4,7 @@ session_start();
 $user=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL;
 $user_ID = isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL;
 include 'include/header2.php';
+include 'include/environment.php';
 
 
 if($user==NULL){
@@ -75,6 +76,8 @@ include 'include/activitylog.php';
 
 
 <script type="text/javascript">
+
+const ENVIRONMENT = "<?php echo ENVIRONMENT; ?>";
 
 var email="<?php echo $user; ?>";
 var langue= "<?php echo $_SESSION['langue']; ?>";
@@ -1996,6 +1999,10 @@ if($connected){
                               } else {
                                 var loaded1=false;
                                 var loaded2=false;
+
+                                //uniquement en dev
+                                loaded1=true;
+                                loaded2=true;
                                 $("body").addClass("loading");
                                 document.getElementById("travel_information").style.display = "none";
                                 document.getElementById("velos").style.display = "none";
@@ -5809,8 +5816,8 @@ if($connected){
 
                         jQuery(form).ajaxSubmit({
                           success: function(response) {
-                              
-                              
+
+
                             if (response.response == 'success') {
                               $.notify({
                                 message: response.message

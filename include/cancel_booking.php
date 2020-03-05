@@ -14,30 +14,53 @@ $bookingID=$_POST['bookingID'];
 
 
 if($bookingID != NULL)
-{		
-    include 'connexion.php';
-    $sql= "update reservations set STAANN='D' where ID='$bookingID'";
-   	if ($conn->query($sql) === FALSE) {
+{
+  include 'connexion.php';
+  $sql= "update reservations set STAANN='D' where ID='$bookingID'";
+  if ($conn->query($sql) === FALSE) {
 
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	} 
-    
-    $sql= "update locking_code set STAANN='D', VALID='N' where ID_reservation='$bookingID'";
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+  }
 
-   	if ($conn->query($sql) === FALSE) {
+  /*  //désactivation de la notification de réservation
 
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	} 
-    $conn->close();
-    successMessage("SM0007");
+  include 'connexion.php';
+  $sql= "update notifications set STAAN='D' where TYPE = 'reservation' AND TYPE_ITEM='$bookingID'";
+  if ($conn->query($sql) === FALSE) {
+
+  $response = array ('response'=>'error', 'message'=> $conn->error);
+  echo json_encode($response);
+  die;
+}*/
+
+//désactivation de la notification de feedback
+include 'connexion.php';
+$sql= "update notifications set STAAN='D' where TYPE = 'feedback' AND TYPE_ITEM='$bookingID'";
+if ($conn->query($sql) === FALSE) {
+
+  $response = array ('response'=>'error', 'message'=> $conn->error);
+  echo json_encode($response);
+  die;
+}
+
+
+
+  $sql= "update locking_code set STAANN='D', VALID='N' where ID_reservation='$bookingID'";
+
+  if ($conn->query($sql) === FALSE) {
+
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+  }
+  $conn->close();
+  successMessage("SM0007");
 }
 else
 {
-	errorMessage("ES0012");
+  errorMessage("ES0012");
 }
 
 ?>
