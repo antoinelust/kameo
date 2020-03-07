@@ -285,11 +285,24 @@ function update_deposit_hour_form(){
 
 
         var dest="";
-        if(dateTemp.getHours()>=hourEndDepositBooking){
+        
+        var dateActuelle=dateTemp.getDate()+'-'+dateTemp.getMonth()+'-'+dateTemp.getFullYear();
+        
+        var dateSearch=$('#search-bikes-form-day').val().split('-');
+        
+        if(dateActuelle!=$('#search-bikes-form-day').val()){
+            dateTemp.setDate(dateSearch[0]);
+            dateTemp.setMonth(dateSearch[1] - 1);
+            dateTemp.setFullYear(dateSearch[2]);
+            dateTemp.setHours(hourStartIntakeBooking);
+            dateTemp.setMinutes(0);            
+        }                
+        else if(dateTemp.getHours()>=hourEndDepositBooking){
             dateTemp.setHours(hourStartIntakeBooking);
             dateTemp.setMinutes(0);
             dateTemp.setDate(dateTemp.getDate()+1);
         }
+        
         while(dateTemp.getHours()<hourEndIntakeBooking){
             if(dateTemp.getMinutes()=="0"){
                 var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
@@ -314,7 +327,6 @@ function update_deposit_hour_form(){
 
 
         // 2nd step: intake and deposit buildings
-        var langue= "<?php echo $_SESSION['langue']; ?>";
         var i=0;
         $.ajax({
             url: 'include/booking_building_form.php',

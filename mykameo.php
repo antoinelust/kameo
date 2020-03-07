@@ -1985,8 +1985,6 @@ if($connected){
                                 var loaded2=false;
 
                                 //uniquement en dev
-                                loaded1=true;
-                                loaded2=true;
                                 $("body").addClass("loading");
                                 document.getElementById("travel_information").style.display = "none";
                                 document.getElementById("velos").style.display = "none";
@@ -2113,7 +2111,6 @@ if($connected){
                                             }, {
                                               type: 'success'
                                             });
-                                            console.log(text);
                                             document.getElementById("travel_information").style.display = "block";
                                             document.getElementById("velos").style.display = "block";
                                             $("body").removeClass("loading");
@@ -2223,7 +2220,6 @@ if($connected){
                                   }, {
                                     type: 'success'
                                   });
-                                  console.log(text);
                                   document.getElementById("travel_information").style.display = "block";
                                   document.getElementById("velos").style.display = "block";
                                   $("body").removeClass("loading");

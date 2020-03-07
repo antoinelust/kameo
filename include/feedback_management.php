@@ -34,6 +34,30 @@ if(isset($_GET['action'])){
         $response['bikeNumber']=$resultat['FRAME_NUMBER'];
         $response['email']=$resultat['EMAIL'];
         $response['ID']=$resultat['ID'];
+        
+
+        include 'connexion.php';
+
+
+        $sql = "SELECT * FROM feedbacks where ID_RESERVATION='$ID'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();
+
+        $response['status']=$resultat['STATUS'];
+        if($resultat['STATUS']=='DONE'){
+            $response['note']= $resultat['NOTE'];            
+            $response['comment']=$resultat['COMMENT'];
+            $response['entretien']=$resultat['ENTRETIEN'];
+        }
+        
+        
         echo json_encode($response);
         die;
     }
@@ -1080,12 +1104,6 @@ if(isset($_GET['action'])){
 
 
         }
-        
-            
-        
-        
-        
-
         if($entretien == "1"){
             $mail = new PHPMailer();
 
@@ -1987,6 +2005,7 @@ if(isset($_GET['action'])){
         
         
         }
+        
         successMessage("SM0023");
     }
 

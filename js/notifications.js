@@ -19,7 +19,6 @@ $('document').ready(function(){
         var size = response.notification.length;
         var count = 1;
         var countNew = 0;
-        console.log(response.notification);
         response.notification.forEach((notification) => {
           read = "";
           borderBottom = "";
