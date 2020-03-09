@@ -473,7 +473,7 @@ if($action=="graphic"){
         $response['sql']=$sql;
 
         //ajout de la task dans les notifications, si c'est une task destinée a un autre utilisateur
-        if ($owner != $_SESSION['userID']) {
+        if ($owner == $_SESSION['userID']) {
           //récupération de l'ID
           include 'connexion.php';
           $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$owner'");
@@ -482,7 +482,9 @@ if($action=="graphic"){
 
           //ajout de la task
           include 'connexion.php';
-          $sql = "INSERT INTO notifications (USR_MAJ, TEXT, `READ`, TYPE, USER_ID, TYPE_ITEM, HEU_MAJ, DATE) VALUES ('$user', 'Une nouvelle tâche vous a été assigné', 'N', 'taskNew', '$ownerID', '$insertedID', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+          $notifContent = '<a class="text-green retrieveTask" onclick="retrieve_task('.$insertedID.')"  name="'.$insertedID.'" data-toggle="modal" data-target="#taskManagement" href="#">Une nouvelle notification vous a été assigné.</a>';
+          $sql = "INSERT INTO notifications (USR_MAJ, TEXT, `READ`, TYPE, USER_ID, TYPE_ITEM, HEU_MAJ, DATE) VALUES ('$user', '$notifContent', 'N', 'taskNew', '$ownerID', '$insertedID', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+          error_log($sql);
           if ($conn->query($sql) === FALSE) {
               $response = array ('response'=>'error', 'message'=> $conn->error);
               echo json_encode($response);
@@ -516,7 +518,7 @@ if($action=="graphic"){
         $conn->close();
 
         //Si utilisateur différent de l'owner, nouvelle notif
-        if ($owner != $_SESSION['userID']) {
+        if ($owner == $_SESSION['userID']) {
           //récupération de l'id de l'utilisateur
           include 'connexion.php';
           $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$owner'");

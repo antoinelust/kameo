@@ -228,7 +228,7 @@ function construct_form_for_action_update(id){
 }
 
 
-function retrieve_task(ID, action){
+function retrieve_task(ID, action = "retrieve"){
     $.ajax({
         url: 'include/action_company.php',
         type: 'get',
@@ -238,6 +238,8 @@ function retrieve_task(ID, action){
                 console.log(response.message);
             }
             if(response.response == 'success'){
+              initializeFields();
+              list_kameobikes_member();
                 if(action=="retrieve"){
                     $('#widget-taskManagement-form input').attr("readonly", true);
                     $('#widget-taskManagement-form textarea').attr("readonly", true);
@@ -249,7 +251,7 @@ function retrieve_task(ID, action){
 
                 }
 
-
+                console.log(response.action.owner);
                 $('#widget-taskManagement-form input[name=title]').val(response.action.title);
                 $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
                 $('#widget-taskManagement-form select[name=company]').val(response.action.company);

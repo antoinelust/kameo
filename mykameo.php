@@ -1493,8 +1493,9 @@ if($connected){
   }
 
   function add_offer(company){
+    $('#companyHiddenOffer').val(company);
+
     $('#widget-offerManagement-form select[name=type]').val("leasing");
-    $('#widget-offerManagement-form input[name=company]').val(company);
     $('#widget-offerManagement-form input[name=action]').val("add");
     $('#widget-offerManagement-form input').attr("readonly", false);
     $('#widget-offerManagement-form textarea').attr("readonly", false);
@@ -1814,14 +1815,16 @@ if($connected){
             <div class="heading heading text-left m-b-20">
               <div class="row" style="position: relative;">
                 <h2 class="col-sm-8">MY KAMEO</h2>
-                <div class="col-sm-4" style="padding:0;">
-                  <span class="pointerClick notificationsClick">
-                    <i class="fa fa-2x fa-bell-o text-green" aria-hidden="true"></i>
-                    <span style="font-size:20px;">0</span> &nbsp;
-                  </span>
-                   <a href="#" class="text-green hideNotifications" style="display:none">Masquer</a>
-                </div>
-                <div class="notificationsBlock row" style="display:none; overflow:hidden;">
+                <div class="notificationHeading">
+                  <div class="col-sm-4" style="padding:0;">
+                    <span class="pointerClick notificationsClick">
+                      <i class="fa fa-2x fa-bell-o text-green" aria-hidden="true"></i>
+                      <span style="font-size:20px;">0</span> &nbsp;
+                    </span>
+                     <a href="#" class="text-green hideNotifications" style="display:none">Masquer</a>
+                  </div>
+                  <div class="notificationsBlock row" style="display:none; overflow:hidden;">
+                  </div>
                 </div>
               </div>
 
@@ -1983,6 +1986,10 @@ if($connected){
                               } else {
                                 var loaded1=false;
                                 var loaded2=false;
+                                if (ENVIRONMENT == "DEV") {
+                                  loaded1=true;
+                                  loaded2=true;
+                                }
 
                                 //uniquement en dev
                                 $("body").addClass("loading");
@@ -6121,6 +6128,7 @@ if($connected){
 
                         <input type="text" name="action" class="form-control hidden" value="add">
                         <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+                        <input type="hidden" name="notificationID" />
                         <div class="col-sm-12">
                           <button  class="button small green button-3d rounded icon-left feedbackManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
                         </div>
@@ -6139,6 +6147,9 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
+                              if ($('#feedbackManagement input[name=notificationID]').val() != -1) {
+                                notification_set_as_read($('#feedbackManagement input[name=notificationID]').val());
+                              }
                               $('#feedbackManagement').modal('toggle');
                               document.getElementById('widget-feedbackManagement-form').reset();
 
@@ -6907,11 +6918,11 @@ if($connected){
 
                         <div class="col-sm-12"></div>
                         <br>
-
+                        <input type="hidden" id="companyHiddenOffer" name="company" class="form-control required hidden" value="">
                         <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user; ?>">
                         <input type="text" name="action" class="form-control required hidden" value="add">
                         <input type="text" name="ID" class="hidden">
-                        <input type="text" name="company" class="form-control required hidden">
+
 
                         <div class="separator"></div>
                         <button  class="fr button small green button-3d rounded icon-left offerManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>

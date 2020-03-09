@@ -28,38 +28,39 @@ if(isset($_POST['action']))
         $date="'".$date."'";
     }else{
         $date='NULL';
-    }       
+    }
 
     if($start!=NULL){
         $start="'".$start."'";
     }else{
         $start='NULL';
-    }       
+    }
 
     if($end!=NULL){
         $end="'".$end."'";
     }else{
         $end='NULL';
-    }       
+    }
 
     if(isset($_POST["action"])){
         if($_POST["action"]=="add"){
             include 'connexion.php';
-            $sql="INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, STAANN) VALUES (CURRENT_TIMESTAMP, '$requestor', '$title', '$description', '$status', '$probability', '$type', '$amount', '$margin', $date, $start, $end, '$company', '')";
-            
-            
+            $sql="INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, STAANN)
+             VALUES (CURRENT_TIMESTAMP, '$requestor', '$title', '$description', '$status', '$probability', '$type', '$amount', '$margin', $date, $start, $end, '$company', '')";
+
+
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
                 die;
             }
 
-            $conn->close();   
+            $conn->close();
             $response['sql']=$sql;
             successMessage("SM0019");
-            
+
         }else if($_POST["action"]=="update"){
-            
+
             include 'connexion.php';
             $sql="UPDATE offers SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$requestor', TITRE='$title', DESCRIPTION='$description', STATUS='$status', PROBABILITY='$probability', MARGIN='$margin', AMOUNT='$amount', DATE=$date, START=$start, END=$end WHERE ID='$id'";
             if ($conn->query($sql) === FALSE) {
@@ -68,12 +69,12 @@ if(isset($_POST['action']))
                 die;
             }
 
-            $conn->close();   
+            $conn->close();
             $response['sql']=$sql;
             successMessage("SM0020");
-            
+
         }
-    } 
+    }
     else
     {
         errorMessage("ES0012");
@@ -84,15 +85,15 @@ if(isset($_POST['action']))
     $company = isset($_GET["company"]) ? $_GET["company"] : NULL;
     $graphics = isset($_GET["graphics"]) ? "1" : NULL;
 
-    
+
     if($action=="retrieve"){
-        
-            
+
+
         if($graphics){
-            
+
             $response['response']="success";
 
-            
+
             include "connexion.php";
             $sql="select MAX(CONTRACT_END) as 'DATE_END' from customer_bikes WHERE AUTOMATIC_BILLING='Y'";
             if ($conn->query($sql) === FALSE) {
@@ -100,13 +101,13 @@ if(isset($_POST['action']))
                 echo json_encode($response);
                 die;
             }
-            $result = mysqli_query($conn, $sql);        
+            $result = mysqli_query($conn, $sql);
             $resultat = mysqli_fetch_assoc($result);
-            $conn->close();  
+            $conn->close();
 
             $date_end=$resultat['DATE_END'];
-            
-            $date_start = new DateTime("NOW");            
+
+            $date_start = new DateTime("NOW");
             $arrayContracts=array();
             $arrayOffers=array();
             $arrayDates=array();
@@ -115,9 +116,9 @@ if(isset($_POST['action']))
             $arrayIN=array();
             $i=0;
             while(($date_start->format('Y-m-d'))<=$date_end){
-                
+
                 $date_start_string=$date_start->format('Y-m-d');
-                
+
                 include 'connexion.php';
                 $sql="SELECT SUM(LEASING_PRICE) AS 'PRICE' FROM customer_bikes WHERE CONTRACT_START <= '$date_start_string' AND CONTRACT_END >= '$date_start_string' AND STAANN != 'D'";
                 if ($conn->query($sql) === FALSE) {
@@ -125,13 +126,13 @@ if(isset($_POST['action']))
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $resultat = mysqli_fetch_assoc($result);
                 $conn->close();
-                
+
                 $contractAmountTemp=$resultat['PRICE'];
-                
-                
+
+
                 include 'connexion.php';
                 $sql="SELECT SUM(AMOUNT) AS 'PRICE' FROM boxes WHERE START <= '$date_start_string' AND END >= '$date_start_string' AND STAANN != 'D'";
                 if ($conn->query($sql) === FALSE) {
@@ -139,16 +140,16 @@ if(isset($_POST['action']))
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $resultat = mysqli_fetch_assoc($result);
                 $conn->close();
-                
+
                 $contractAmountTemp=$contractAmountTemp+$resultat['PRICE'];
-                
-                
-                
-                array_push($arrayContracts, round($contractAmountTemp)); 
-                
+
+
+
+                array_push($arrayContracts, round($contractAmountTemp));
+
                 include 'connexion.php';
                 $sql="SELECT SUM(AMOUNT) AS 'PRICE' FROM costs WHERE START <= '$date_start_string' AND END >= '$date_start_string'";
                 if ($conn->query($sql) === FALSE) {
@@ -156,14 +157,14 @@ if(isset($_POST['action']))
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $resultat = mysqli_fetch_assoc($result);
-                array_push($arrayCosts, round(-$resultat['PRICE'])); 
+                array_push($arrayCosts, round(-$resultat['PRICE']));
                 $costs=$resultat['PRICE'];
-                
+
                 $conn->close();
-                
-                
+
+
                 include 'connexion.php';
                 $sql="SELECT AMOUNT, PROBABILITY FROM offers WHERE START != '' AND END != '' AND TYPE = 'leasing' AND STATUS='ongoing' AND START <= '$date_start_string' AND END >= '$date_start_string'";
                 if ($conn->query($sql) === FALSE) {
@@ -171,25 +172,25 @@ if(isset($_POST['action']))
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);  
+                $result = mysqli_query($conn, $sql);
                 $amount=0;
                 while($row = mysqli_fetch_array($result)){
                     $amount=$amount+round(($row['AMOUNT']*$row['PROBABILITY']/100));
                 }
-                
+
                 array_push($arrayOffers, $amount);
-                array_push($arrayDates, $date_start->format('Y-m-d'));                
-                array_push($arrayIN, round($amount + $contractAmountTemp));                
-                array_push($arrayFreeCashFlow, round($amount + $contractAmountTemp - $costs ));                
+                array_push($arrayDates, $date_start->format('Y-m-d'));
+                array_push($arrayIN, round($amount + $contractAmountTemp));
+                array_push($arrayFreeCashFlow, round($amount + $contractAmountTemp - $costs ));
                 $date_start->add(new DateInterval('P10D'));
 
-                $conn->close();                  
+                $conn->close();
                 $i++;
-                
 
-                
+
+
             }
-                        
+
             $response['response']="success";
             $response['arrayContracts']=$arrayContracts;
             $response['arrayOffers']=$arrayOffers;
@@ -197,16 +198,16 @@ if(isset($_POST['action']))
             $response['arrayFreeCashFlow']=$arrayFreeCashFlow;
             $response['totalIN']=$arrayIN;
             $response['arrayDates']=$arrayDates;
-            
-            
-            
-            
-            
+
+
+
+
+
             echo json_encode($response);
-            die;                
-            
-            
-            
+            die;
+
+
+
 
         }else{
             if($id){
@@ -218,9 +219,9 @@ if(isset($_POST['action']))
                     die;
                 }
 
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $resultat = mysqli_fetch_assoc($result);
-                $conn->close();  
+                $conn->close();
 
                 $response['response']="success";
                 $response['title']=$resultat['TITRE'];
@@ -234,10 +235,10 @@ if(isset($_POST['action']))
                 $response['end']=$resultat['END'];
                 $response['status']=$resultat['STATUS'];
                 echo json_encode($response);
-                die;                
+                die;
 
             }
-            else if($company){            
+            else if($company){
 
 
                 include 'connexion.php';
@@ -254,8 +255,8 @@ if(isset($_POST['action']))
                 }
 
 
-                $result = mysqli_query($conn, $sql);        
-                $conn->close();  
+                $result = mysqli_query($conn, $sql);
+                $conn->close();
 
                 $response['contractsNumber'] = $result->num_rows;
                 $i=0;
@@ -274,7 +275,7 @@ if(isset($_POST['action']))
                     $response['contract'][$i]['end']=$row['CONTRACT_END'];
                     $i++;
                 }
-                
+
                 include 'connexion.php';
                 $sql="SELECT COMPANY, START, END, SUM(AMOUNT) as 'PRICE', COUNT(1) AS 'BOXES_NUMBER' FROM boxes WHERE STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
                 if($company!="*"){
@@ -289,11 +290,11 @@ if(isset($_POST['action']))
                 }
 
 
-                $result = mysqli_query($conn, $sql);        
-                $conn->close();  
+                $result = mysqli_query($conn, $sql);
+                $conn->close();
 
                 $response['contractsNumber'] = $response['contractsNumber'] + $result->num_rows;
-                
+
                 while($row = mysqli_fetch_array($result))
                 {
 
@@ -322,12 +323,12 @@ if(isset($_POST['action']))
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $resultat = mysqli_fetch_assoc($result);
-                $conn->close();  
+                $conn->close();
 
                 $response['sumContractsCurrent']=$resultat['PRICE'];
-                
+
                 include 'connexion.php';
                 $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
                 if($company!="*"){
@@ -339,9 +340,9 @@ if(isset($_POST['action']))
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $resultat = mysqli_fetch_assoc($result);
-                $conn->close();  
+                $conn->close();
 
                 $response['sumContractsCurrent']=$response['sumContractsCurrent']+$resultat['PRICE'];
 
@@ -356,9 +357,9 @@ if(isset($_POST['action']))
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
                     die;
-                }            
-                $result = mysqli_query($conn, $sql);        
-                $conn->close();  
+                }
+                $result = mysqli_query($conn, $sql);
+                $conn->close();
 
                 $response['offersNumber'] = $result->num_rows;
                 $i=0;
@@ -379,10 +380,10 @@ if(isset($_POST['action']))
                     $i++;
                 }
 
-                
+
                 /////////////////////
-                
-                
+
+
                 include 'connexion.php';
                 $sql="SELECT * FROM costs WHERE STAANN != 'D' AND (START> CURRENT_TIMESTAMP OR END>CURRENT_TIMESTAMP)";
 
@@ -391,9 +392,9 @@ if(isset($_POST['action']))
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
                     die;
-                }            
-                $result = mysqli_query($conn, $sql);        
-                $conn->close();  
+                }
+                $result = mysqli_query($conn, $sql);
+                $conn->close();
 
                 $response['costsNumber'] = $result->num_rows;
                 $i=0;
@@ -413,7 +414,7 @@ if(isset($_POST['action']))
 
 
                 echo json_encode($response);
-                die;      
+                die;
 
             }else{
             errorMessage("ES0012");

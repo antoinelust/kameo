@@ -1,7 +1,7 @@
-function initiatizeFeedback(id){
-    
+function initiatizeFeedback(id, notificationId = -1){
+
   document.getElementById('widget-feedbackManagement-form').reset();
-    
+
     $.ajax({
         url: 'include/feedback_management.php',
         type: 'get',
@@ -12,8 +12,8 @@ function initiatizeFeedback(id){
                 console.log(response.message);
             }
             if(response.response == 'success'){
-
-
+              
+                $('#feedbackManagement input[name=notificationID]').val(notificationId);
                 $('.feedbackManagementTitle').html("Ajouter un feedback");
                 $('#feedbackManagement input[name=bike]').val(response.bikeNumber);
                 $('#feedbackManagement input[name=startDate]').val(response.start);
@@ -25,13 +25,13 @@ function initiatizeFeedback(id){
                 $('#feedbackManagement textarea[name=comment]').attr("readonly", false);
                 if(response.status=='DONE'){
                     $('#feedbackManagement select[name=note]').val(response.note);
-                    
+
                         $('#feedbackManagement select[name=note]').attr("readonly", true);
                     $('#feedbackManagement textarea[name=comment]').attr("readonly", 'true');
-                    
+
                     if(response.feedback=='1'){
                         $('#feedbackManagement input[name=entretien]').prop("checked", true);
-                        
+
                     }else{
                         $('#feedbackManagement input[name=entretien]').prop("checked", false);
                     }
@@ -123,13 +123,13 @@ function list_feedbacks() {
                     }else{
                         var comment = response.feedback[i].comment.substr(0,20);
                     }
-                        
+
                     if(response.feedback[i].note== null){
                         var note = 'N/A';
                     }else{
                         var note = response.feedback[i].note;
                     }
-                                                
+
                     var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+response.feedback[i].bikeNumber+"<td>"+formattedTimeStart+"</td><td>"+formattedTimeEnd+"</td><td>"+note+"</td><td>"+comment+"</td><td>"+entretien+"</td><td>"+response.feedback[i].firstName+" " +response.feedback[i].name+"</td><td>"+response.feedback[i].status+"</td></tr>";
                     dest=dest.concat(temp);
                     i++;
@@ -208,25 +208,25 @@ function retrieve_feedback(ID) {
                 $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
                 $('#feedbackManagement input[name=ID]').val(response.ID);
                 $('#feedbackManagement input[name=utilisateur]').val(response.email);
-                
-                $('#feedbackManagement select[name=note]').attr("readonly", true);                
-                
+
+                $('#feedbackManagement select[name=note]').attr("readonly", true);
+
                 if(response.note==null){
                     $('.spanNote').addClass("hidden");
-                    $('#feedbackManagement select[name=note]').val('5');                
+                    $('#feedbackManagement select[name=note]').val('5');
                 }else{
-                    $('#feedbackManagement select[name=note]').val(response.note);                
+                    $('#feedbackManagement select[name=note]').val(response.note);
                     $('.spanNote').removeClass("hidden");
-                    
+
                 }
-                
+
                 $('#feedbackManagement textarea[name=comment]').attr("readonly", true);
                 if(response.comment==null){
                     $('.textAreaComment').addClass("hidden");
                 }else{
                     $('#feedbackManagement textarea[name=comment]').val(response.comment);
                     $('.textAreaComment').removeClass("hidden");
-                    
+
                 }
                 document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bike+"_mini.jpg";
 
@@ -236,11 +236,11 @@ function retrieve_feedback(ID) {
                 else if(response.entretien=="1"){
                     $('#feedbackManagement input[name=entretien]').prop("checked", true);
                     $('.spanEntretien').removeClass("hidden");
-                    
+
                 }else{
                     $('#feedbackManagement input[name=entretien]').prop("checked", false);
                     $('.spanEntretien').removeClass("hidden");
-                    
+
                 }
 
                 $('.feedbackManagementSendButton').addClass('hidden');

@@ -231,7 +231,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         $(".updateOffer").click(function() {
           retrieve_offer(this.name, "update");
         });
-        $(".addOffer").click(function() {
+        $("body").on('click','.addOffer',function() {
           add_offer(this.name);
           $('.offerManagementSendButton').removeClass("hidden");
           $('.offerManagementSendButton').text("Ajouter")
