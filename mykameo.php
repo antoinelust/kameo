@@ -1986,10 +1986,6 @@ if($connected){
                               } else {
                                 var loaded1=false;
                                 var loaded2=false;
-                                if (ENVIRONMENT == "DEV") {
-                                  loaded1=true;
-                                  loaded2=true;
-                                }
 
                                 //uniquement en dev
                                 $("body").addClass("loading");
