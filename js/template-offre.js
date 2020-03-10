@@ -845,12 +845,10 @@ $("#templateForm").validate({
     $('.generatePDF').html(buttonContent);
     jQuery(form).ajaxSubmit({
       success: function(response) {
-        var rep = response;
-        console.log(response);
-        if(rep.response == 'true'){
+        if(response.response == 'true'){
           $('.generatePDF').html('Générer PDF');
           alert('Le pdf a bien été généré !');
-          var offerType = rep.buyOrLeasing;
+          var offerType = response.buyOrLeasing;
 
           if(offerType =='buy'){
             offerType = 'achat';
@@ -858,15 +856,15 @@ $("#templateForm").validate({
             offerType = 'achat/leasing';
           }
 
-          var offerLink = 'offres/' + rep.file;
+          var offerLink = 'offres/' + response.file;
 
           var dest = `
             <tr>
-              <td>`+rep.id+`</td>
+              <td>`+response.id+`</td>
               <td>`+offerType+`</td>
               <td><a href="`+offerLink+`" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
-              <td>`+rep.bikesNumber+`</td>
-              <td>`+rep.boxesNumber+`</td>
+              <td>`+response.bikesNumber+`</td>
+              <td>`+response.boxesNumber+`</td>
               <td><a href="#" class="text-green deletePdfOffer" style="text-decoration:underline !important;">supprimer</a></td>
             </tr>
           `;
@@ -874,7 +872,7 @@ $("#templateForm").validate({
         } else{
           $('.generatePDF').html('Générer PDF');
           alert('Une erreur est survenue ...');
-          console.log(rep);
+          console.log(response);
         }
 
       }
