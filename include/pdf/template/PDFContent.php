@@ -160,7 +160,6 @@ h2{
 }
 </style>
 
-
 <page class="white firstPage" backcolor="#2fa37c" backtop="10mm" backleft="10mm" backright="10mm">
   <page_footer>
     <img style="margin-top:15px;" src="<?php echo __DIR__ ; ?>/img/logo_black.png" alt="kameo" class="logo-sm">
