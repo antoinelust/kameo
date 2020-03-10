@@ -32,6 +32,7 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/search_module.js"></script>
 <script type="text/javascript" src="js/bills_management.js"></script>
 <script type="text/javascript" src="js/company_management.js"></script>
+<script type="text/javascript" src="js/maintenance_management.js"></script>
 <script type="text/javascript" src="js/notifications.js"></script>
 
 
@@ -96,6 +97,7 @@ var myChart3;
 var nbContacts;
 $('document').ready(function(){
   list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),user_ID);
+  list_maintenances();
 });
 
 window.addEventListener("DOMContentLoaded", function(event) {
@@ -2655,7 +2657,7 @@ if($connected){
                               <div class="icon bold" data-animation="pulse infinite">
                                 <a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick"><i class="fa fa-wrench"></i></a>
                               </div>
-                              <div class="counter bold" id="counterManagement" style="color:#3cb395"></div>
+                              <div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
                               <p>Vue sur les entretiens</p>
                             </div>
                           </div>
