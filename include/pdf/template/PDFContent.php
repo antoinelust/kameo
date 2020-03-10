@@ -403,7 +403,7 @@ if (count($bikes) > 0) {
 BIKETITLE;
       $temp = $bike['BRAND'] . '_' . $bike['MODEL'] . '_' . $bike['FRAME_TYPE'];
       $temp = strtolower(str_replace(' ','-',$temp));
-      $bikeImg = $root.'/images_bikes/'.$temp.'.jpg' ;
+      $bikeImg =  __DIR__ .'/../../../images_bikes/'.$temp.'.jpg' ;
       ?>
       <table class="maxWidth tableBorder tableMargins" style="margin-top:10mm; margin-bottom:10mm;">
         <thead>
@@ -447,7 +447,7 @@ if (count($boxes) > 0) {
       </table>" ?>
       <?php
       $temp = explode(' ',$box['MODEL'])[0];
-      $boxImg = $root.'/images_bikes/'.$temp.'keys.png' ;
+      $boxImg =  __DIR__ .'/../../../images_bikes/'.$temp.'keys.png' ;
       ?>
       <img src="<?php echo $boxImg ?>" alt="box.png" class="img-large" />
       <p>Facilitant grandement la gestion de la flotte, notre box
@@ -559,8 +559,8 @@ if ($assurance == true) { ?>
   <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
     <h2>Assurance</h2>
     <?php
-    $assuImg1 = $root.'/images/aedes.png';
-    $assuImg2 = $root.'/images/DEDALE.jpg';
+    $assuImg1 =  __DIR__ .'/../../../images/aedes.png';
+    $assuImg2 =  __DIR__ .'/../../../images/DEDALE.jpg';
     ?>
     <p>
       KAMEO Bikes collabore avec Aedes et Dedales afin de vous offrir l’assurance Omnium la plus complète et la

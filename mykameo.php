@@ -789,6 +789,7 @@ if($connected){
             document.getElementById('tasksManagement').classList.remove("hidden");
             document.getElementById('cashFlowManagement').classList.remove("hidden");
             document.getElementById('feedbacksManagement').classList.remove("hidden");
+            document.getElementById('maintenanceManagement').classList.remove("hidden");
           }
 
 
@@ -2649,6 +2650,15 @@ if($connected){
                               <p>Vue sur les feedbacks</p>
                             </div>
                           </div>
+                          <div class="col-md-4 hidden" id="maintenanceManagement">
+                            <div class="icon-box medium fancy">
+                              <div class="icon bold" data-animation="pulse infinite">
+                                <a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick"><i class="fa fa-wrench"></i></a>
+                              </div>
+                              <div class="counter bold" id="counterManagement" style="color:#3cb395"></div>
+                              <p>Vue sur les entretiens</p>
+                            </div>
+                          </div>
                         </div>
 
 
@@ -4441,6 +4451,31 @@ if($connected){
   </div>
 </div>
 
+<div class="modal fade" id="maintenanceListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+
+      <div data-example-id="contextual-table" class="bs-example">
+        <span id="managementsListingSpan"></span>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="conditionListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
