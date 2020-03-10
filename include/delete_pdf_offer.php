@@ -16,8 +16,7 @@ $response = array();
 //construction du lien vers le fichier sur le serveur
 if ($file != NULL) {
   //adresse de la racine du site
-  $root = $_SERVER['DOCUMENT_ROOT'].'/kameo';
-  $file = $root . '/' . $file;
+  $file = __DIR__ . '/../' . $file;
 }
 
 
@@ -38,6 +37,7 @@ if($id != NULL){
     echo json_encode($response);
   } else{
     $response = array ('response'=>'error', 'message'=> 'Une erreur est survenue lors de la suppression du fichier');
+    echo json_encode($response);
   }
 }else{
   $response = 'ID invalide';
