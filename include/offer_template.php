@@ -85,7 +85,7 @@
     //ajoute le PDF a la table
     $response['id'] = add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing);
     $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
-    rename($root.'/offres/'.$pdfTitle.'.pdf', $root.'/offres/'.$newPdfFile.'.pdf');
+    rename(__DIR__.'/../offres/'.$pdfTitle.'.pdf', $root.'/offres/'.$newPdfFile.'.pdf');
 
 
     //response
