@@ -845,7 +845,7 @@ $("#templateForm").validate({
     $('.generatePDF').html(buttonContent);
     jQuery(form).ajaxSubmit({
       success: function(response) {
-        var rep = JSON.parse(response);
+        var rep = response;
         console.log(response);
         if(rep.response == 'true'){
           $('.generatePDF').html('Générer PDF');

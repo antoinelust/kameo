@@ -94,7 +94,7 @@
     $response['boxesNumber'] = $boxesNumber;
     $response['buyOrLeasing'] = $buyOrLeasing;
 
-    //header('Content-type: application/json');
+    header('Content-type: application/json');
     echo json_encode($response);
 
   }  catch (Html2PdfException $e) {
