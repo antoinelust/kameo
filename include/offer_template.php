@@ -1,4 +1,5 @@
 <?php
+  ini_set('internal_encoding', 'utf-8');
   //récupération des données du $_POST (pré boucle)
   $companyId = isset($_POST["companyIdTemplate"]) ? $_POST["companyIdTemplate"] : NULL;
   $buyOrLeasing = isset($_POST["buyOrLeasing"]) ? $_POST["buyOrLeasing"] : NULL;
