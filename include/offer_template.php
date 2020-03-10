@@ -81,11 +81,11 @@
     $content = ob_get_clean();
     $html2pdf->writeHTML($content);
     //sort le fichier PDF sur le serveur
-    $html2pdf->Output($root.'/offres/'.$pdfTitle.'.pdf', 'F');
+    $html2pdf->Output(__DIR__.'/../offres/'.$pdfTitle.'.pdf', 'F');
     //ajoute le PDF a la table
     $response['id'] = add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing);
     $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
-    rename($root.'/offres/'.$pdfTitle.'.pdf', $root.'/offres/'.$newPdfFile.'.pdf');
+    rename(__DIR__.'/../offres/'.$pdfTitle.'.pdf', __DIR__.'/../offres/'.$newPdfFile.'.pdf');
 
 
     //response
