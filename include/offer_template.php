@@ -1,4 +1,5 @@
 <?php
+  ini_set('internal_encoding', 'utf-8');
   //récupération des données du $_POST (pré boucle)
   $companyId = isset($_POST["companyIdTemplate"]) ? $_POST["companyIdTemplate"] : NULL;
   $buyOrLeasing = isset($_POST["buyOrLeasing"]) ? $_POST["buyOrLeasing"] : NULL;
@@ -63,7 +64,7 @@
     //adresse de la racine du site
     $root = $_SERVER['DOCUMENT_ROOT'].'/kameo';
     //generation de l'objet html2pdf
-    $html2pdf = new Html2Pdf('P', 'A4', 'fr', 'UTF-8',true, 3);
+    $html2pdf = new Html2Pdf('P', 'A4', 'fr', 'UTF-8',true);
     $html2pdf->pdf->SetDisplayMode('fullpage');
     $html2pdf->addFont('ArcaMajora', '', dirname(__FILE__).'/pdf/template/fonts/ArcaMajora.php');
     $html2pdf->addFont('ArcaMajora', 'b', dirname(__FILE__).'/pdf/template/fonts/ArcaMajorab.php');
