@@ -871,6 +871,7 @@ $("#templateForm").validate({
           $('#companyContracts').find('.tableBody').append(dest);
         } else{
           alert('Une erreur est survenue ...');
+          console.log(response);
         }
 
       }

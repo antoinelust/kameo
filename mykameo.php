@@ -94,7 +94,9 @@ var myChart2;
 var myChart3;
 
 var nbContacts;
-
+$('document').ready(function(){
+  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),user_ID);
+});
 
 window.addEventListener("DOMContentLoaded", function(event) {
 
