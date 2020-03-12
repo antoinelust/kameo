@@ -43,8 +43,7 @@ if($action=="delete"){
 
 
 if($action=="update"){
-    
-    
+        
     $frameNumber=$_POST['widget-updateBikeStatusAdmin-form-bikeNumber'];
     $frameNumberOriginel=$_POST['widget-updateBikeStatusAdmin-form-bikeNumberOriginel'];
     $model=$_POST['widget-updateBikeStatusAdmin-form-model'];
@@ -130,6 +129,7 @@ if($action=="update"){
             
             $dossier = '../images_bikes/';
             $fichier= $frameNumberOriginel.'.jpg';
+            
             
             copy($dossier . $fichier, $dossier . $frameNumber.'.jpg');
 
