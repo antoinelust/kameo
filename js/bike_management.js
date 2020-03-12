@@ -116,8 +116,10 @@ function list_bikes_admin() {
                         insurance="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                     }
 
-
-                    if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'renting' || response.bike[i].contractType=='leasing') && response.bike[i].billingType != 'paid'){
+                    if(response.bike[i].contractType== 'selling'){
+                      var leasingPrice="<span class=\"text-green\">"+response.bike[i].soldPrice+"</span>";
+                    }
+                    else if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'renting' || response.bike[i].contractType=='leasing') && response.bike[i].billingType != 'paid'){
                         var leasingPrice="<span class=\"text-red\">0</span>";
                     }else if((response.bike[i].leasingPrice!=null && response.bike[i].leasingPrice!=0) && (response.bike[i].contractType== 'renting' || response.bike[i].contractType=='leasing')){
                         var leasingPrice="<span class=\"text-green\">"+response.bike[i].leasingPrice+"</span>";
@@ -387,6 +389,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                         $('#widget-bikeManagement-form input[name=buyingDate]').val(response.buyingDate);
                         $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);
                         $('#widget-bikeManagement-form select[name=contractType]').val(response.contractType);
+                        $('#widget-bikeManagement-form input[name=bikeSoldPrice]').val(response.soldPrice);
                         if(response.contractStart){
                             $('#widget-bikeManagement-form input[name=contractStart]').val(response.contractStart.substr(0,10));
                         }else{
@@ -401,6 +404,19 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                             $('#widget-bikeManagement-form select[name=portfolioID]').val("");
                         }else{
                             $('#widget-bikeManagement-form select[name=portfolioID]').val(response.type);
+                        }
+                        if(response.contractType == 'selling'){
+                          $('#widget-bikeManagement-form label[for=contractStart]').html("Date de vente");
+                          $('#widget-bikeManagement-form .soldPrice').show();
+                          $('#widget-bikeManagement-form .soldPrice input').removeAttr("disabled");
+                          if(response.insurance=="Y"){
+                            $('#widget-bikeManagement-form label[for=contractEnd]').html("Date de fin d'assurance");
+                            $('#widget-bikeManagement-form .contractEndBloc input').removeAttr("disabled");
+                            $('#widget-bikeManagement-form .contractEndBloc').show();
+                          } else{
+                            $('#widget-bikeManagement-form .contractEndBloc input').prop("disabled", true);
+                            $('#widget-bikeManagement-form .contractEndBloc').hide();
+                          }
                         }
 
                         company=response.company;

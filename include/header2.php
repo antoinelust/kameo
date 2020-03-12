@@ -1,8 +1,8 @@
 <?php
-    if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
+    if(!isset($_SESSION))
+    {
+        session_start();
+    }
 
 
 ?>
@@ -28,8 +28,8 @@
  	<meta name="author" content="Thibaut Mativa">
  	<meta property="og:image" content="http://www.kameobikes/images/vignette.jpg" />
 
-	
-	
+
+
 	<link rel="shortcut icon" href="images/favicon.png">
 	<title>KAMEO Bikes | Mobilité urbaine pour entreprises</title>
 
@@ -46,18 +46,20 @@
 	<link href="css/theme-base.css" rel="stylesheet">
 
 	<!-- Template elements -->
-	<link href="css/theme-elements.css" rel="stylesheet">	
-	
+	<link href="css/theme-elements.css" rel="stylesheet">
+
+  <!-- Template notifications -->
+	<link href="css/notifications.css" rel="stylesheet">
     <!-- DateTimePicker css -->
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 
-    
+
 <!-- Responsive classes -->
 	<link href="css/responsive.css" rel="stylesheet">
 
 <!--[if lt IE 9]>
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-	<![endif]-->	
+	<![endif]-->
 
 
 	<!-- Template color -->
@@ -65,7 +67,7 @@
 
 	<!-- LOAD GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600%7CRaleway:100,300,600,700,800" rel="stylesheet" type="text/css" />
-	
+
 
 	<!-- CSS CUSTOM STYLE -->
     <link rel="stylesheet" type="text/css" href="css/custom.css" media="screen" />
@@ -76,7 +78,7 @@
 
 	<!-- I am not a robot script -->
 	<script src='https://www.google.com/recaptcha/api.js'></script>
-	
+
 	<!-- Facebook Pixel Code -->
 	<script>
 	  !function(f,b,e,v,n,t,s)
@@ -98,11 +100,11 @@
 </head>
 
 <body class="wide">
-	
+
 
 	<!-- WRAPPER -->
 	<div class="wrapper">
-	
+
 	<!-- TOPBAR -->
 	<!--
 		<div id="topbar" class="topbar-dark">
@@ -115,13 +117,13 @@
 							<li><a href="#" onClick="setEn()">En</a></li>
 						</ul>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
 
 -->
-		
+
 		<!-- END: TOPBAR -->
 
 		<!-- HEADER -->
@@ -154,14 +156,14 @@
 									<li class="fr"><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
 									<li class="en"><a href="index.php"><i class="fa fa-home"></i>Home</a></li>
 									<li class="nl"><a href="index.php"><i class="fa fa-home"></i>Home</a></li>
-									
+
 									<li class="dropdown fr"> <a href="#">Notre solution <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li><a href="vente-leasing-location.php">Vente, Leasing et Location</a> </li>
 											<li><a href="maintenance-assurance.php">Maintenance et Assurance</a> </li>
 											<li><a href="gestion-de-flotte.php">Gestion de flotte</a> </li>
 										</ul>
-									</li>									
+									</li>
                                     <li class="dropdown en"> <a href="#">Our solution <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li><a href="vente-leasing-location.php">Sell, lease and renting</a> </li>
@@ -197,11 +199,11 @@
 									<li class="fr"><a href="contact.php">Contact</a></li>
 									<li class="en"><a href="contact.php">Contact</a></li>
 									<li class="nl"><a href="contact.php">Contact</a></li>
-									
-									<?php 
+
+									<?php
                                     $userID = isset($_POST['userID']) ? $_POST['userID'] : NULL;
 
-                                    
+
 									if ($userID=NULL)
 									{?>
 									<li><a class="text-red" href="mykameo.php"><span>My Kameo</span></a></li>
@@ -210,7 +212,7 @@
 									else
 									{
 									?>
-									<li><a class="text-red" data-target="#mykameo" data-toggle="modal" href="#"><span>My Kameo</span></a></li>										
+									<li><a class="text-red" data-target="#mykameo" data-toggle="modal" href="#"><span>My Kameo</span></a></li>
 									<?php
 									}
 									?>
@@ -223,7 +225,7 @@
 			</div>
 		</header>
 		<!-- END: HEADER -->
-		
+
 <div class="modal fade" id="mykameo" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -252,7 +254,7 @@
 								</div>
 								<div class="form-group form-inline text-left ">
 
-								
+
 									<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right fr"><small>Mot de passe oublié?</small></a>
 									<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right nl"><small>Wachtwoord kwijt?</small></a>
 									<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right en"><small>Password lost?</small></a>
@@ -284,12 +286,12 @@
                                 });
 
                             </script>
-						
-						
+
+
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 </div>
@@ -305,7 +307,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						
+
 						<h3 class="fr">Mot de passe oublié</h3>
 						<h3 class="nl">Wachtwoord kwijt</h3>
 						<h3 class="en">Password lost</h3>
@@ -350,12 +352,12 @@
                                 });
 
                             </script>
-						
-						
+
+
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 </div>

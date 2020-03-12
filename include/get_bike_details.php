@@ -17,7 +17,7 @@ $response=array();
 if($frameNumber != NULL)
 {
 
-	
+
     include 'connexion.php';
 	$sql="SELECT *  FROM customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
     if ($conn->query($sql) === FALSE) {
@@ -25,28 +25,29 @@ if($frameNumber != NULL)
 		echo json_encode($response);
 		die;
 	}
-	
-    $result = mysqli_query($conn, $sql);       
+
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $row = mysqli_fetch_assoc($result);
     $response['response']="success";
     $response['frameNumber']=$frameNumber;
     $response['model']=$row['MODEL'];
     $response['type']=$row['TYPE'];
-    $response['frameReference']=$row['FRAME_REFERENCE'];            
-    $response['company']=$row['COMPANY'];            
-    $response['size']=$row['SIZE'];            
-    $response['leasing']=$row['AUTOMATIC_BILLING'];            
-    $response['insurance']=$row['INSURANCE'];            
-    $response['leasingPrice']=$row['LEASING_PRICE'];            
-    $response['bikePrice']=$row['BIKE_PRICE'];            
-    $response['buyingDate']=$row['BIKE_BUYING_DATE'];            
-    $response['billingGroup']=$row['BILLING_GROUP'];            
-    $response['billingType']=$row['BILLING_TYPE'];            
+    $response['frameReference']=$row['FRAME_REFERENCE'];
+    $response['company']=$row['COMPANY'];
+    $response['size']=$row['SIZE'];
+    $response['leasing']=$row['AUTOMATIC_BILLING'];
+    $response['insurance']=$row['INSURANCE'];
+    $response['leasingPrice']=$row['LEASING_PRICE'];
+    $response['bikePrice']=$row['BIKE_PRICE'];
+    $response['buyingDate']=$row['BIKE_BUYING_DATE'];
+    $response['billingGroup']=$row['BILLING_GROUP'];
+    $response['billingType']=$row['BILLING_TYPE'];
     $response['contractType']=$row['CONTRACT_TYPE'];
     $response['contractStart']=$row['CONTRACT_START'];
     $response['contractEnd']=$row['CONTRACT_END'];
-    
+		$response['soldPrice']=$row['SOLD_PRICE'];
+
     $response['status']=$row['STATUS'];
     if(!$company){
         $company=$row['COMPANY'];
@@ -60,7 +61,7 @@ if($frameNumber != NULL)
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $i=0;
     while($row = mysqli_fetch_array($result)){
@@ -78,7 +79,7 @@ if($frameNumber != NULL)
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $response['buildingNumber'] = $result->num_rows + $length;
     while($row = mysqli_fetch_array($result)){
         $response['building'][$i]['buildingCode']=$row['BUILDING_REFERENCE'];
@@ -95,7 +96,7 @@ if($frameNumber != NULL)
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $i=0;
     while($row = mysqli_fetch_array($result)){
@@ -118,7 +119,7 @@ if($frameNumber != NULL)
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $length + $result->num_rows;
     while($row = mysqli_fetch_array($result)){
         $response['user'][$i]['name']=$row['NOM'];

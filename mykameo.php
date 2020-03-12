@@ -32,6 +32,7 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/search_module.js"></script>
 <script type="text/javascript" src="js/bills_management.js"></script>
 <script type="text/javascript" src="js/company_management.js"></script>
+<script type="text/javascript" src="js/maintenance_management.js"></script>
 <script type="text/javascript" src="js/notifications.js"></script>
 
 
@@ -45,32 +46,6 @@ include 'include/activitylog.php';
   padding-top:20px;
   width:60%;
   opacity: 0.5;
-}
-.pointerClick:hover{
-  cursor: pointer;
-}
-.notificationsBlock{
-  border: 1px solid rgb(221,221,221);
-  width:300px;
-  height: auto;
-  background-color:white;
-  border-radius: 8px;
-  position:absolute;
-  z-index:99;
-  right:0;
-  top: 40px;
-}
-
-.notificationItem {
-  min-height: 40px;
-}
-.notificationBorder{
-  border-bottom: 1px solid rgb(221,221,221);
-}
-
-.notRead{
-  background-color: rgb(248, 250, 250);
-  font-weight:bold;
 }
 </style>
 
@@ -96,12 +71,15 @@ var myChart3;
 var nbContacts;
 $('document').ready(function(){
   list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),user_ID);
+
 });
 
 window.addEventListener("DOMContentLoaded", function(event) {
 
   var classname = document.getElementsByClassName('fleetmanager');
+
   for (var i = 0; i < classname.length; i++) {
+
     classname[i].addEventListener('click', hideResearch, false);
     classname[i].addEventListener('click', get_bikes_listing, false);
     classname[i].addEventListener('click', get_users_listing, false);
@@ -120,6 +98,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
 
 
 
+
+
     var tempDate=new Date();
     $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
     tempDate.setMonth(tempDate.getMonth()-6);
@@ -130,6 +110,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
 
     classname[i].addEventListener('click', function () { list_boxes("*")}, false);
     classname[i].addEventListener('click', function () { initializeFields()}, false);
+    classname[i].addEventListener('click', function () {list_maintenances();}, false);
+
 
   }
 
@@ -138,6 +120,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
     classname[i].addEventListener('click', hideResearch, false);
 
   }
+
 
 
 
@@ -153,6 +136,7 @@ document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('chang
 document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false);
 document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
 
 
 var tempDate=new Date();
@@ -616,7 +600,6 @@ function initializeUpdatePortfolioBike(ID){
 function initializeCreatePortfolioBike(){
   document.getElementById('widget-addCatalog-form').reset();
 }
-
 
 
 </script>
@@ -1606,89 +1589,6 @@ if($connected){
       }
     });
 
-    var contactInfo  = [];
-    var contactKeys = [];
-
-    $('.clientContactZone').on('click','.modify', function(){
-      $(this).removeClass('modify').addClass('validate').removeClass('glyphicon-pencil').addClass('glyphicon-ok');
-      $(this).parents('tr').find('.delete').removeClass('delete').removeClass('red').addClass('white').addClass('annuler').removeClass('glyphicon-remove').addClass('glyphicon-repeat');
-      $(this).parents('tr').find('input').each(function(){
-        contactInfo.push($(this).val());
-        contactKeys.push($(this).attr('id'));
-        $(this).prop('readonly', false);
-      });
-    });
-
-    $('.clientContactZone').on('click','.annuler', function(){
-      $(this).parents('tr').find('.validate').removeClass('validate').addClass('modify').addClass('glyphicon-pencil').removeClass('glyphicon-ok');
-      $(this).removeClass('annuler').removeClass('white').addClass('delete').addClass('red').addClass('glyphicon-remove').removeClass('glyphicon-repeat');
-      $(this).parents('tr').find('input').each(function(){
-        var that = $(this);
-        for (var i = contactKeys.length -1; i >= 0; i--) {
-          //si l'id correspond a l'input
-          if (contactKeys[i] == $(that).attr('id')) {
-            //on remet l'ancienne valeur
-            $(that).val(contactInfo[i]);
-            //on retire l'entrée du tableau de clés
-            contactKeys.splice(i,1);
-            //on retire l'entrée du tableau contactInfo
-            contactInfo.splice(i,1);
-          }
-        }
-        $(that).prop('readonly', true);
-      });
-    });
-
-    $('.clientContactZone').on('click', '.validate', function(){
-      var valid = true;
-      var that = $(this);
-      $(this).parents('tr').find('input').each(function(){
-        //verification de la validité des champs
-        if (!$(this).valid()) {
-          valid = false;
-        }
-      });
-      if (valid) {
-        edit_contact($(this).parents('tr')).done(function(response){
-          $(that).parents('tr').find('.validate').removeClass('validate').addClass('modify').addClass('glyphicon-pencil').removeClass('glyphicon-ok');
-          $(that).parents('tr').find('.annuler').removeClass('annuler').removeClass('white').addClass('delete').addClass('red').addClass('glyphicon-remove').removeClass('glyphicon-repeat');
-          $(that).parents('tr').find('input').each(function(){
-            //suppression des valeurs dans les tableaux
-            var that = $(this);
-            for (var i = contactKeys.length -1; i >= 0; i--) {
-              //si l'id correspond a l'input
-              if (contactKeys[i] == $(that).attr('id')) {
-                //on retire l'entrée du tableau de clés
-                contactKeys.splice(i,1);
-                //on retire l'entrée du tableau contactInfo
-                contactInfo.splice(i,1);
-              }
-            }
-            $(this).prop('readonly', true);
-          });
-        });
-      }
-
-    });
-
-    $('.clientContactZone').on('click', '.delete', function(){
-      if(confirm('Êtes-vous sur de vouloir supprimer ce contact ? Cette action est irréversible.')){
-        that = $(this);
-        if( nbContacts > 1) {
-          delete_contact($(this).parents('tr'), $(this).parents('tr').find('.contactIdHidden').val()).done(function(response){
-            $(that).parents('tr').fadeOut(function(){
-              $(that).parents('tr').remove();
-              nbContacts--;
-            });
-          });
-        }
-        else{
-          alert("Impossible d'effectuer la suppression, il faut au minimum une personne de contact");
-        }
-
-      }
-    });
-
   }
 
   function initialize_company_contacts (){
@@ -1706,6 +1606,8 @@ if($connected){
     });
     $('.removeContact').addClass('glyphicon-plus').addClass('green').addClass('addContact').removeClass('glyphicon-minus').removeClass('red').removeClass('removeContact');
   }
+
+
 
 
 
@@ -2655,7 +2557,8 @@ if($connected){
                               <div class="icon bold" data-animation="pulse infinite">
                                 <a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick"><i class="fa fa-wrench"></i></a>
                               </div>
-                              <div class="counter bold" id="counterManagement" style="color:#3cb395"></div>
+                              <div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
+                              <div class="counter bold" id="counterMaintenance2" style="color:#3cb395"></div>
                               <p>Vue sur les entretiens</p>
                             </div>
                           </div>
@@ -4459,7 +4362,7 @@ if($connected){
       </div>
 
       <div data-example-id="contextual-table" class="bs-example">
-        <span id="managementsListingSpan"></span>
+        <span id="maintenanceListingSpan"></span>
       </div>
 
       <div class="separator"></div>
@@ -5765,6 +5668,96 @@ if($connected){
 
 
         <script type="text/javascript" src="js/add_company_contact.js"></script>
+        <script type="text/javascript">
+        var contactInfo  = [];
+        var contactKeys = [];
+
+        $('.clientContactZone').on('click','.modify', function(){
+          $(this).removeClass('modify').addClass('validate').removeClass('glyphicon-pencil').addClass('glyphicon-ok');
+          $(this).parents('tr').find('.delete').removeClass('delete').removeClass('red').addClass('white').addClass('annuler').removeClass('glyphicon-remove').addClass('glyphicon-repeat');
+          $(this).parents('tr').find('input').each(function(){
+            contactInfo.push($(this).val());
+            contactKeys.push($(this).attr('id'));
+            $(this).prop('readonly', false);
+          });
+        });
+
+        $('.clientContactZone').on('click','.annuler', function(){
+          $(this).parents('tr').find('.validate').removeClass('validate').addClass('modify').addClass('glyphicon-pencil').removeClass('glyphicon-ok');
+          $(this).removeClass('annuler').removeClass('white').addClass('delete').addClass('red').addClass('glyphicon-remove').removeClass('glyphicon-repeat');
+          $(this).parents('tr').find('input').each(function(){
+            var that = $(this);
+            for (var i = contactKeys.length -1; i >= 0; i--) {
+              //si l'id correspond a l'input
+              if (contactKeys[i] == $(that).attr('id')) {
+                //on remet l'ancienne valeur
+                $(that).val(contactInfo[i]);
+                //on retire l'entrée du tableau de clés
+                contactKeys.splice(i,1);
+                //on retire l'entrée du tableau contactInfo
+                contactInfo.splice(i,1);
+              }
+            }
+            $(that).prop('readonly', true);
+          });
+        });
+
+        $('.clientContactZone').on('click', '.validate', function(){
+          var valid = true;
+          var that = $(this);
+          $(this).parents('tr').find('input').each(function(){
+            //verification de la validité des champs
+            if (!$(this).valid()) {
+              valid = false;
+            }
+          });
+          if (valid) {
+            edit_contact($(this).parents('tr')).done(function(response){
+              $(that).parents('tr').find('.validate').removeClass('validate').addClass('modify').addClass('glyphicon-pencil').removeClass('glyphicon-ok');
+              $(that).parents('tr').find('.annuler').removeClass('annuler').removeClass('white').addClass('delete').addClass('red').addClass('glyphicon-remove').removeClass('glyphicon-repeat');
+              $(that).parents('tr').find('input').each(function(){
+                //suppression des valeurs dans les tableaux
+                var that = $(this);
+                for (var i = contactKeys.length -1; i >= 0; i--) {
+                  //si l'id correspond a l'input
+                  if (contactKeys[i] == $(that).attr('id')) {
+                    //on retire l'entrée du tableau de clés
+                    contactKeys.splice(i,1);
+                    //on retire l'entrée du tableau contactInfo
+                    contactInfo.splice(i,1);
+                  }
+                }
+                $(this).prop('readonly', true);
+              });
+            });
+          }
+
+        });
+
+
+        $('.clientContactZone').on('click', '.delete', function(){
+          if(confirm('Êtes-vous sur de vouloir supprimer ce contact ? Cette action est irréversible.')){
+            that = $(this);
+            if( nbContacts > 1) {
+              delete_contact($(this).parents('tr'), $(this).parents('tr').find('.contactIdHidden').val()).done(function(response){
+                $(that).parents('tr').fadeOut(function(){
+                  $(that).parents('tr').remove();
+                  nbContacts--;
+                });
+              });
+            }
+            else{
+              $.notify({
+                message: "Impossible d'effectuer la suppression, il faut au minimum une personne de contact"
+              }, {
+                type: 'danger'
+              });
+            }
+
+          }
+        });
+        </script>
+
 
 
         <div class="modal fade" id="addUser" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
@@ -6216,6 +6209,7 @@ if($connected){
           </div>
         </div>
 
+
         <script type="text/javascript">
         $('#widget-feedbackManagement-form select[name=note]').change(function() {
           if($('#widget-feedbackManagement-form select[name=note]').val()=="5"){
@@ -6229,6 +6223,109 @@ if($connected){
 
         </script>
 
+
+        <div class="modal fade" id="maintenanceManagementItem" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h4 class="fr text-green maintenanceManagementTitle">Éditer un entretien</h4>
+
+                    <form id="widget-maintenanceManagement-form" action="include/edit_maintenance.php" role="form" method="post">
+
+                      <div class="form-group col-sm-12">
+                        <div class="col-md-12">
+
+                          <div class="col-md-4">
+                            <label for="ID">ID</label>
+                            <input type='int' title="ID" class="form-control required" name="ID" readonly='readonly'>
+                          </div>
+                          <div class="col-md-4">
+                            <label for="utilisateur">Vélo</label>
+                            <input type="text" title="velo" class="form-control required" name="velo" readonly='readonly'>
+                          </div>
+                          <div class="col-md-4">
+                            <label for="utilisateur">Société</label>
+                            <input type="text" title="company" class="form-control required" name="company" readonly='readonly'>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="col-md-4">
+                            <label for="utilisateur">Status</label>
+                            <select title="status" class="form-control required" name="status">
+                              <option value="CONFIRMED">CONFIRMED</option>
+                              <option value="AUTOMATICLY_PLANNED">AUTOMATICLY_PLANNED</option>
+                              <option value="DONE">DONE</option>
+                              <option value="CANCELLED">CANCELLED</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4">
+                            <label for="dateMaintenance"  class="fr">Date d'entretien</label>
+                            <input type="date" title="dateMaintenance" name="dateMaintenance" class="form-control">
+                          </div>
+                        </div>
+                          <div class="col-md-12">
+                            <label for="comment"  class="fr">Commentaire</label>
+                            <label for="comment"  class="en">Comment</label>
+                            <label for="comment"  class="nl">Comment</label>
+                            <textarea class="form-control" rows="5" name="comment"></textarea>
+                          </div>
+                        </div>
+                        <input type="text" name="action" class="form-control hidden" value="edit">
+                        <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
+                        <div class="col-sm-12">
+                          <button  class="button small green button-3d rounded icon-left maintenanceManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
+                        </div>
+
+                      </div>
+
+                    </form>
+                    <script type="text/javascript">
+                    jQuery("#widget-maintenanceManagement-form").validate({
+                      submitHandler: function(form) {
+                        jQuery(form).ajaxSubmit({
+                          success: function(response) {
+                            if (response.response == 'success') {
+                              $.notify({
+                                message: response.message
+                              }, {
+                                type: 'success'
+                              });
+                              list_maintenances();
+                              $('#maintenanceManagementItem').modal('toggle');
+                              document.getElementById('widget-maintenanceManagement-form').reset()
+                            } else {
+                              $.notify({
+                                message: response.message
+                              }, {
+                                type: 'danger'
+                              });
+                            }
+                          }
+                        });
+                      }
+                    });
+
+                    </script>
+                  </div>
+                </div>
+              </div>
+              <div class="fr" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+              </div>
+              <div class="en" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+              </div>
+              <div class="nl" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
         <div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
@@ -6681,7 +6778,7 @@ if($connected){
                           <label for="billingGroup"  class="fr">Groupe de facturation</label>
                           <label for="billingGroup"  class="en">Groupe de facturation</label>
                           <label for="billingGroup"  class="nl">Groupe de facturation</label>
-                          <input type="number" min="1" max="10" name="billingGroup" class="form-control required" value="1">
+                          <input type="number" min="0" max="10" name="billingGroup" class="form-control required" value="1">
                         </div>
 
 

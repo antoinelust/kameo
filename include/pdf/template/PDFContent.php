@@ -204,7 +204,7 @@ h2{
     <tr>
       <td style="text-align:left; padding-left:0; margin-left:0; width:50%;">
         <span class="arcamajora" style="color:#efefef; font-size:25px;">KAMEO Bikes sprl</span><br/><br/>
-        Boulevard de la sauvenière 118<br/>
+        Rue de la Brasserie, 8<br/>
         4000 Liège<br/>
       </td>
       <td style="text-align:right; padding-right:0; margin-right:0;  width:50%;">
@@ -238,7 +238,7 @@ h2{
     <table class="maxWidth">
       <tr>
         <td><img src="<?php echo __DIR__ ; ?>/img/logo_black.png" alt="kameo" class="logo-xsm"></td>
-        <td style="font-size:13px;">Kameo bikes SPRL<br/>Boulevard de la Sauvenière, 118<br/>B-4000 Liège<br/>Belgium</td>
+        <td style="font-size:13px;">Kameo bikes SPRL<br/>Rue de la Brasserie, 8<br/>B-4000 Liège<br/>Belgium</td>
         <td style="width:33%; text-align:right; padding-right:0; margin-right:0;"><span>Page [[page_cu]]</span></td>
       </tr>
     </table>
@@ -872,7 +872,7 @@ if ($assurance == true) { ?>
       </div>
         <div class="light white" style="margin-bottom:10mm; text-align:center;">
             <span class="bold">KAMEO Bikes SPRL <br/></span>
-            Boulevard de la Sauvenière, 118 <br/>
+            Rue de la Brasserie, 8<br/>
             4000 Liège <br/>
             BE 0681.879.712
           </div>
