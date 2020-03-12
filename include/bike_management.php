@@ -25,6 +25,8 @@ if(isset($_POST['action'])){
         $contractEnd=isset($_POST['contractEnd']) ? $_POST['contractEnd'] : NULL;
         $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
 
+        error_log($sellPrice);
+
         $frameReference=$_POST['frameReference'];
         $billingPrice=$_POST['billingPrice'];
         $billingType=$_POST['billingType'];
@@ -194,6 +196,8 @@ if(isset($_POST['action'])){
         $contractType=isset($_POST['contractType']) ? $_POST['contractType'] : NULL;
         $contractStart=isset($_POST['contractStart']) ? $_POST['contractStart'] : NULL;
         $contractEnd=isset($_POST['contractEnd']) ? $_POST['contractEnd'] : NULL;
+        $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
+        error_log($sellPrice);
 
         $frameReference=$_POST['frameReference'];
         $billingPrice=$_POST['billingPrice'];
@@ -344,7 +348,7 @@ if(isset($_POST['action'])){
 
             include 'connexion.php';
 
-            $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', BIKE_BUYING_DATE=$buyingDate where FRAME_NUMBER = '$frameNumber'";
+            $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', BIKE_BUYING_DATE=$buyingDate, SOLD_PRICE = $sellPrice where FRAME_NUMBER = '$frameNumber'";
 
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);

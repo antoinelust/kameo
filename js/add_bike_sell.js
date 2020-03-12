@@ -1,4 +1,3 @@
-var currentOption = $('.contractInfos select').val();
 var insuranceBool = $('#insuranceBikeCheck').prop("checked");
 var contactStartBloc = $('.contractInfos .contractStartBloc');
 var contactEndBloc = $('.contractInfos .contractEndBloc');
@@ -50,7 +49,7 @@ $('.contractInfos').on('change','select',function(){
 //gestion assurance
 $('.contractInfos .insurance').on('click','input',function(){
   insuranceBool = $('#insuranceBikeCheck').prop('checked');
-  if (currentOption == "selling") {
+  if ($('.contractInfos select[name=contractType]').val() == "selling") {
     //si on a une assurance, on affiche le bloc de fin de contrat
     if(insuranceBool){
       $('.contractInfos').find('.contractEndBloc input').removeAttr('disabled');
