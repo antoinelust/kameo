@@ -40,7 +40,7 @@ include 'include/header5.php';
 
 
 
-<img src="images/background_new.jpg" class="img-responsive img-rounded" alt="">
+<img src="images/background_new.jpg" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
 
 
 <!-- MISSION & VISSION -->
@@ -147,7 +147,7 @@ include 'include/header5.php';
 				<p>Tous les services proposés sont gérés par KAMEO Bikes. On s'occupe de tout, vous restez concentré sur votre activité!</p>
 			</div>
 			<div class="col-md-6">
-				<img src="images/RoueKameo.png" class="img-responsive img-rounded" alt="">
+				<img src="images/RoueKameo.png" class="img-responsive img-rounded" alt="Roue des services KAMEO Bikes">
 			</div>
 			<div class="col-md-12 text-center" style="background: url('images/fond_degrade2.jpg');" data-stellar-background-ratio="0.6"><br>
 					<h4>Respect de l'environnement</h4>

@@ -225,6 +225,19 @@ include 'include/header5.php';
 							
 						</div>
 					</div>
+					
+					<div class="col-md-6 center">
+					<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
+						<div class="image-box-description text-center">
+							<h4 class="fr">Vous</h4>
+							<h4 class="en">Vous</h4>
+							<h4 class="nl">Vous</h4>
+							<hr class="line">
+							<div  class="fr">Vous souhaitez intégrer notre équipe ?<br> Ecrivez-nous à <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
+							
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		</section>

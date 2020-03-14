@@ -15,12 +15,12 @@ include 'include/header5.php';
 				<div class="col-md-6">
 					<h3>MyKAMEO</h3>
 					<p>Vous permet de réserver un vélo et permet la bonne gestion de ceux-ci</p>
-					<img src="images/MyKameo_face.jpg" class="img-responsive img-rounded img-thumbnail" alt="">
+					<img src="images/MyKameo_face.jpg" class="img-responsive img-rounded img-thumbnail" alt="Ecran MyKAMEO">
 				</div>
 				<div class="col-md-6">
 					<h3>MyBORNE</h3>
 					<p>Sécurise et gère l’accès aux clés des vélos de la flotte.</p>
-					<img src="images/Borne_Web_Out.jpg" class="img-responsive img-rounded img-thumbnail" alt="">
+					<img src="images/Borne_Web_Out.jpg" class="img-responsive img-rounded img-thumbnail" alt="MyBorne">
 				</div>
 				
 				<div class="space"></div>
@@ -35,22 +35,22 @@ include 'include/header5.php';
 				<h3>Réserver un véhicule</h3>
 				
 				<div class="col-md-3">
-					<img src="images/Mykameo1.png" class="img-responsive img-rounded" alt="">
+					<img src="images/Mykameo1.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 1">
 					<p class="text-center">Connectez-vous sur MyKAMEO et réservez votre véhicule.</p>
 				</div>
 				
 				<div class="col-md-3">
-					<img src="images/Mykameo2.png" class="img-responsive img-rounded" alt="">
+					<img src="images/Mykameo2.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 2">
 					<p class="text-center">Entrez le code reçu par mail pour déverrouiller la borne.</p>
 				</div>
 				
 				<div class="col-md-3">
-					<img src="images/Mykameo3.png" class="img-responsive img-rounded" alt="">
+					<img src="images/Mykameo3.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 3">
 					<p class="text-center">Prenez la clé du cadenas de votre véhicule sous le led illuminé..</p>
 				</div>
 				
 				<div class="col-md-3">
-					<img src="images/Mykameo4.png" class="img-responsive img-rounded" alt="">
+					<img src="images/Mykameo4.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 4">
 					<p class="text-center">Déverrouillez votre véhicule à l’aide de la clé reçue.</p>
 				</div>
 				

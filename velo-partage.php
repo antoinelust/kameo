@@ -24,7 +24,7 @@ include 'include/header5.php';
 						
 						</div>
 						<div class="col-md-5">
-							<img src="images/Atradius_Bikes.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/Atradius_Bikes.jpg" class="img-responsive img-rounded" alt="Vélos électriques BZEN brandés aux couleurs d'Atradius">
 						</div>
 						<hr class="space" id="plus">
 						
@@ -38,7 +38,7 @@ include 'include/header5.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8">
-							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="">
+							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="Infographie - Parcous client chez KAMEO Bikes">
 						</div>
 						<div class="col-md-4">
 							<!-- <hr class="space"> -->
@@ -82,7 +82,7 @@ include 'include/header5.php';
 			 
 						</div>
 						<div class="col-md-6">
-							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="BZEN - flotte de vélos">
 						</div>
 						
 						<!-- SELECTION -->
@@ -91,7 +91,7 @@ include 'include/header5.php';
 							<div class="carousel" data-lightbox-type="gallery">
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="">
+										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="BZEN Amsterdam">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -107,7 +107,7 @@ include 'include/header5.php';
 
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="">
+										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -122,7 +122,7 @@ include 'include/header5.php';
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="">
+										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -137,7 +137,7 @@ include 'include/header5.php';
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="">
+										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -152,7 +152,7 @@ include 'include/header5.php';
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="">
+										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="BZEN Amsterdam">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -168,7 +168,7 @@ include 'include/header5.php';
 
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="">
+										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -183,7 +183,7 @@ include 'include/header5.php';
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="">
+										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -198,7 +198,7 @@ include 'include/header5.php';
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="">
+										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
@@ -228,7 +228,7 @@ include 'include/header5.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4">
-							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="MyBORNE - gestion des clés de votre flotte">
 						</div>
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
@@ -259,7 +259,7 @@ include 'include/header5.php';
 			 
 						</div>
 						<div class="col-md-4">
-							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="">
+							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="PVELO - l'assurance vélo">
 						</div>
 					</div>
 				</div>
@@ -271,7 +271,7 @@ include 'include/header5.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4">
-							<img src="images/infrastructure.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/infrastructure.png" class="img-responsive img-rounded" alt="Schéma d'une infrastructure réalisable par KAMEO Bikes">
 						</div>
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->

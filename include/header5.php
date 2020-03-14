@@ -134,9 +134,11 @@
 					<div class="col-sm-12">
 						<ul class="top-menu right">
 							<a class="button small red-dark button-3d full-rounded" href="#"><span>MyKAMEO</span></a>
+							<!--
 							<li><a href="#" onClick="setFr()">Fr</a></li>
 							<li><a href="#" onClick="setNl()">Nl</a></li>
 							<li><a href="#" onClick="setEn()">En</a></li>
+							-->
 						</ul>
 					</div>
 				</div>

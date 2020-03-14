@@ -25,7 +25,7 @@ include 'include/header5.php';
 							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>En savoir plus <i class="fa fa-arrow-down"></i></span></a>
 						</div>
 						<div class="col-md-4">
-							<img src="images/Solution2.png" class="img-responsive img-rounded" alt="">
+							<img src="images/Solution2.png" class="img-responsive img-rounded" alt="Roue des solutions de KAMEO Bikes">
 						</div>
 						<hr class="space" id="plus">
 						
@@ -39,7 +39,7 @@ include 'include/header5.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8">
-							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="">
+							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="Infographie - Parcous client chez KAMEO Bikes">
 						</div>
 						<div class="col-md-4">
 							<!-- <hr class="space"> -->
@@ -78,7 +78,8 @@ include 'include/header5.php';
 							<h1 class="text-green">CHOIX DU VÉLO</h1>
 							<p class="text-justify">KAMEO Bikes vous propose une large gamme de vélos.</p>
 							<p class="text-justify">Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
-							<p class="text-justify">Pour votre plus grand confort, la majorité des vélos que nous vous proposons sont à assistance électrique. Ils sont naturellement équipés de garde-boues, phares et porte bagage. Des accessoires supplémentaires peuvent combler vos besoins spécifiques : Bac, Sacoches, remorque, siège enfant,... De plus, les vélos peuvent être brandés aux couleurs de votre entreprise. </p>							<div class="col-md-12 text-center">
+							<p class="text-justify">Pour votre plus grand confort, la majorité des vélos que nous vous proposons sont à assistance électrique. Ils sont naturellement équipés de garde-boues, phares et porte bagage. Des accessoires supplémentaires peuvent combler vos besoins spécifiques : Bac, Sacoches, remorque, siège enfant,... De plus, les vélos peuvent être brandés aux couleurs de votre entreprise. </p>							
+							<div class="col-md-12 text-center">
 								<a class="button green button-3d effect fill-vertical" href="achat.php"><span>Le catalogue complet</span></a>
 							</div>
 			 
@@ -120,7 +121,7 @@ include 'include/header5.php';
 			 
 						</div>
 						<div class="col-md-4">
-							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="">
+							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="PVELO - l'assurance vélo">
 						</div>
 					</div>
 				</div>
@@ -132,7 +133,7 @@ include 'include/header5.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4">
-							<img src="images/infrastructure.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/infrastructure.png" class="img-responsive img-rounded" alt="Schéma d'une infrastructure réalisable par KAMEO Bikes">
 						</div>
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
