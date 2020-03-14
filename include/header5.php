@@ -118,9 +118,8 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<ul class="top-menu left">
-							<li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li class="social-instagram"><a href="#"><i class="fa fa-instagram"></i></a></li>
-							<li class="social-linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+							<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+							<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 						</ul>
 					</div>
 				</div>
@@ -190,6 +189,7 @@
 										<ul class="dropdown-menu">
 											<li><a href="achat.php">Nos vélos</a> </li>
 											<li><a href="accessoires.php">Nos accessoires</a> </li>
+											<li><a href="bonsplans.php">Nos bons plans</a> </li>
 										</ul>
 									</li>
 									

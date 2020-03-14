@@ -82,7 +82,7 @@ include 'include/header5.php';
 			        <div class="icon-box box-type effect medium center color">
 			          <div class="icon"> <a href="#"><i class="fa fa-money"></i></a> </div>
 			          <h5>Incitants fiscaux</h5>
-			          <p>Prime vélo de 0,23€ par km.</p>
+			          <p>Prime vélo de 0,24€ par km.</p>
 			          <br>
 			        </div>
 			      </div>
@@ -151,7 +151,6 @@ include 'include/header5.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -164,7 +163,7 @@ include 'include/header5.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 
 
 	</div>

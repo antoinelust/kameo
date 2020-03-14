@@ -4,7 +4,7 @@ include 'include/header5.php';
 
 
 			<!-- SECTION SOLUTIONS -->
-			<section class="p-b-0 background-green">
+			<section class="" style="background: url('images/fond_degrade.jpg');" data-stellar-background-ratio="0.3">
 				<div class="container">
 				<a class="button black-light button-3d effect fill-vertical right"  href="velo-partage.php"><span>Vélos partagés  <i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
@@ -14,18 +14,18 @@ include 'include/header5.php';
 							<p class="lead text-light"><strong>KAMEO Bikes</strong> vous propose des vélos personnels pour vos employés.<br>
 							Ils utiliseront ces vélos pour leurs déplacements domicile-travail, rendez-vous, etc.</p>
 							<p class="lead text-light">En plus de ces vélos nous vous proposons d'autres services qui sont:<br>
-							- la <strong class="text-light">livraison</strong> sur votre lieu de travail,<br>
-							- un accès personnel à <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="Le système de gestion de flotte en ligne développé par KAMEO Bikes.">MyKAMEO</a></strong></ins>,<br>
 							- la <strong class="text-light">maintenance</strong> sur le site de votre entreprise,<br>
 							- une <strong class="text-light">assurance</strong> contre la casse et le vol,<br>
 							- l'<strong class="text-light">assistance</strong> dépannage, <br>
-							- l'installation d'<strong class="text-light">infrastructures</strong>.</p>
-							<b>Pour une simplicité de gestion, tous ces services sont gérés par KAMEO Bikes.</b>
+							- un accès personnel à <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="Le système de gestion de flotte en ligne développé par KAMEO Bikes.">MyKAMEO</a></strong></ins>,<br>
+							- l'installation d'<strong class="text-light">infrastructures</strong>,<br>
+							- le tout, directement livré sur votre lieu de travail.</p>
+							<b>Pour votre confort, l'ensemble de ces services sont gérés intégralement par KAMEO Bikes.</b>
 							
 							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>En savoir plus <i class="fa fa-arrow-down"></i></span></a>
 						</div>
 						<div class="col-md-4">
-							<img src="images/Solution.png" class="img-responsive img-rounded" alt="">
+							<img src="images/Solution2.png" class="img-responsive img-rounded" alt="">
 						</div>
 						<hr class="space" id="plus">
 						
@@ -44,7 +44,7 @@ include 'include/header5.php';
 						<div class="col-md-4">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">COMMENT ON PROCÈDE</h1>
-							<p><strong class="text-green">Vous restez concentré sur votre activité, on se charge de tout!</strong><br>
+							<p class="text-justify"><strong class="text-green">Vous restez concentré sur votre activité, on se charge de tout!</strong><br>
 							Nous réfléchissons à vos besoins réels pour vos collaborateurs. Nous leur proposons des vélos électriques adaptés et nous leur proposons des essais au sein de l'entreprise.<br>
 							Après ces essais, ils auront la possibilité de passer commande pour leur propre vélo. Ils pourront également commander des accessoires tels que des sacoches, casques, vêtements, ...<br>
 							Nous livrons les vélos sur le site de l'entreprise et donnerons les accès à la plateforme MyKAMEO, depuis laquelle ils retrouveront toutes les informations relatives à leur contrat. Ils auront également la possibilité de nous contacter via cette plateforme en cas de problème.</p>
@@ -76,11 +76,10 @@ include 'include/header5.php';
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">CHOIX DU VÉLO</h1>
-							<p>KAMEO Bikes vous propose une large gamme de vélos.</p>
-							<p>Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
-							<p>Tous les vélos que nous proposons sont à assistance électrique, pour un plus grand confort lors des déplacements de vos collaborateurs. Ils sont équipés de garde-bous, phares, porte bagage. Mais nous pouvons y ajouters différentes options telles que des sacoches. De plus, les vélos peuvent être brandés avec le logo de votre entreprise.</p>
-							<div class="col-md-12 text-center">
-								<a class="button green button-3d effect fill-vertical" href="contact.php"><span>Le catalogue complet</span></a>
+							<p class="text-justify">KAMEO Bikes vous propose une large gamme de vélos.</p>
+							<p class="text-justify">Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
+							<p class="text-justify">Pour votre plus grand confort, la majorité des vélos que nous vous proposons sont à assistance électrique. Ils sont naturellement équipés de garde-boues, phares et porte bagage. Des accessoires supplémentaires peuvent combler vos besoins spécifiques : Bac, Sacoches, remorque, siège enfant,... De plus, les vélos peuvent être brandés aux couleurs de votre entreprise. </p>							<div class="col-md-12 text-center">
+								<a class="button green button-3d effect fill-vertical" href="achat.php"><span>Le catalogue complet</span></a>
 							</div>
 			 
 						</div>
@@ -114,10 +113,10 @@ include 'include/header5.php';
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<p>La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>
+							<p class="text-justify">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>
 							C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>
 			
-							<p>Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>
+							<p class="text-justify">Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>
 			 
 						</div>
 						<div class="col-md-4">
@@ -148,19 +147,17 @@ include 'include/header5.php';
 				</div>
 			</section>
 			<!-- END: SECTION INFRASTRUCTURES -->
-			
-				<hr class="space">
-				
-			<!-- SECTION CALL TO ACTION CONTACT -->
-				<div class="container">
-					<div class="row text-center background-green">
-						<h1 class="text-light">DEMANDEZ UN RENDEZ-VOUS</h1>
-						<p class="text-dark">Envie de pédaler avec nous?<br>
+							<hr class="space">
+			<!-- CALL TO ACTION -->
+				<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
+				  <div class="container">
+				    <h3>DEMANDEZ UN RENDEZ-VOUS</h3>
+				    <p>Envie de pédaler avec nous?<br>
 						Contactez-nous, nous viendrons vous rencontrer dans votre entreprise.</p>
-						<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-eye"></i>Nous contacter</span></a>
-					</div>
+				    <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
 				</div>
-			<!-- END: SECTION CALL TO ACTION CONTACT -->
+
+			<!--END: CALL TO ACTION -->
 			
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
@@ -265,7 +262,6 @@ include 'include/header5.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -278,7 +274,7 @@ include 'include/header5.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 
 	</div>
 	<!-- END: WRAPPER -->

@@ -15,7 +15,7 @@ include 'include/header5.php';
 				<div class="col-md-6">
 					<h3>MyKAMEO</h3>
 					<p>Vous permet de réserver un vélo et permet la bonne gestion de ceux-ci</p>
-					<img src="images/Mykameo_face.jpg" class="img-responsive img-rounded img-thumbnail" alt="">
+					<img src="images/MyKameo_face.jpg" class="img-responsive img-rounded img-thumbnail" alt="">
 				</div>
 				<div class="col-md-6">
 					<h3>MyBORNE</h3>
@@ -63,7 +63,7 @@ include 'include/header5.php';
   <div class="container">
     <h3>ENVIE D'EN SAVOIR PLUS?</h3>
     <p>Demandez à nous rencontrer pour connaitre toutes les possibilités et ce que nous pouvons aménager pour vous.</p>
-    <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
+    <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
 </div>
 
 <!--END: CALL TO ACTION -->
@@ -94,7 +94,6 @@ include 'include/header5.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -107,7 +106,7 @@ include 'include/header5.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 
 
 	</div>

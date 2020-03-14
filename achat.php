@@ -6,20 +6,6 @@ include 'include/header5.php';
 
 
  <!-- CONTENT -->
- 
-		 <section class="p-b-0">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<!-- <hr class="space"> -->
-						<h1 class="text-green">ACHAT & LEASING VÉLO</h1>
-						<p class="lead text-light">Achetez votre nouveau vélo via votre employeur</p>
-						<p>bla bla bla</p>
-						<p class="text-green">Bref résumé des deux modes d'obtention d'un vélo</p>
-						<p>bla bla bla</p>
-				</div>
-			</div>
-		</section>
 		<section class="background-green">
             <div class="container">
                 <div class="row">
@@ -93,6 +79,7 @@ include 'include/header5.php';
                            </div>
                    	  </div>
                   </div>
+                  <br><a class="button black-light button-3d effect fill-vertical"  href="bonsplans.php"><span>Retrouvez nos bons plans  <i class="fa fa-arrow-right"></i></span></a>
               </div>
          </section>
                     
@@ -254,7 +241,7 @@ include 'include/header5.php';
     
 
         
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -277,7 +264,6 @@ include 'include/header5.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -290,7 +276,7 @@ include 'include/header5.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 	</div>
 	<!-- END: WRAPPER -->
 

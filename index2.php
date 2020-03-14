@@ -34,7 +34,7 @@ include 'include/header5.php';
 
 
 <br>
-<h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, la solution complète pour vos vélos de société</h1>
+<h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
 <h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, the complete solution for your company bikes</h1>
 <h1 class="text-center text-uppercase text-medium nl" data-animation="fadeInUp">KAMEO Bikes, de complete oplossing voor uw bedrijfsfietsen</h1>
 
@@ -55,7 +55,7 @@ include 'include/header5.php';
 
 		<div class="col-md-6 text-center" style="background-color: #1D9377">
 			<h2>JE SUIS UN EMPLOYÉ</h2>
-			<span class="">KAMEO Bikes vous fournit en vélos mais aussi en accessoires.<br>
+			<span class="">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes <br>
 			<a class="button green button-3d effect fill-vertical"  data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			</span>
 		</div>
@@ -139,55 +139,31 @@ include 'include/header5.php';
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<h1 class="text-green">EN QUELQUES MOTS...</h1>
+				<h1 class="text-green">POURQUOI CHOISIR KAMEO BIKES?</h1>
 				<br>
-				<p class="fr">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
-				<p>Nos solutions s’appuient sur <strong>des cycles de qualité</strong>, <strong>une maintenance continue</strong> et <strong>une gestion connectée de vos vélos</strong>. L’ensemble vous garantit une expérience cyclable optimale, quelles que soient les circonstances.</p>
-				<p>Avec KAMEO, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, vous êtes toujours en mouvement.</p>
+				<p class="fr text-justify">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
+				<p class="text-justify">Nos solutions s’appuient sur <strong>des cycles de qualité</strong>, <strong>une maintenance continue</strong> et <strong>une gestion connectée de vos vélos</strong>. L’ensemble vous garantit une expérience cyclable optimale, quelles que soient les circonstances.</p>
+				<p class="text-justify">Avec KAMEO, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, vous êtes toujours en mouvement.</p>
+				<p>Tous les services proposés sont gérés par KAMEO Bikes. On s'occupe de tout, vous restez concentré sur votre activité!</p>
 			</div>
 			<div class="col-md-6">
-				<img src="images/RoueKameo.png" class="img-responsive img-rounded img-thumbnail" alt="">
+				<img src="images/RoueKameo.png" class="img-responsive img-rounded" alt="">
 			</div>
-			<div class="separator"></div>
-			<div class="col-md-12">
-				<h1 class="text-green text-center">POURQUOI CHOISIR KAMEO BIKES?</h1>
-				<br>
-				<div class="col-md-6 text-right">
-					<h3>Avantage pour l'employeur</h3>
-					<ul class="list-unstyled">
-						<li>Respect de l'environnement</li>
-						<li>Incitants fiscaux</li>
-						<li>Productivité et bien-être des employés</li>
-						<li>Attirer de nouveaux talents</li>
-						<li>Vélos de qualité et fiables</li>
-						<li>Offre et services personnalisés</li>
-					</ul>
-				</div>
-				<div class="col-md-6 text-left">
-					<h3>Avantage pour l'employé</h3>
-					<ul class="list-unstyled">
-						<li>Respect de l'environnement</li>
-						<li>Incitants fiscaux</li>
-						<li>Gain de temps</li>
-						<li>Combinaison avec la voiture de société</li>
-						<li>Mode de vie sain</li>
-						<li>Offre et services personnalisés</li>
-					</ul>
-				</div>
+			<div class="col-md-12 text-center" style="background: url('images/fond_degrade2.jpg');" data-stellar-background-ratio="0.6"><br>
+					<h4>Respect de l'environnement</h4>
+					<h4>Incitants fiscaux</h4>
+					<h4>Gain de temps</h4>
+					<h4>Productivité et bien-être des employés</h4>
+					<h4>Combinaison avec la voiture de société</h4>
+					<h4>Attirer de nouveaux talents</h4>
+					<h4>Mode de vie sain</h4>
+					<h4>Vélos de qualité et fiables</h4>
+					<h4>Offre et services personnalisés</h4>
 			</div>
 		</div>
 	</div>
 </section>
 
-			
-<!-- CALL TO ACTION -->
-<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
-	<div class="container">
-		<h3>ENVIE D'EN SAVOIR PLUS SUR LES AVANTAGES?</h3>
-		<a class="button large black-light button-3d effect icon-left" href="avantages.php"><span><i class="fa fa-plus"></i>En savoir plus</span></a> </div>
-	</div>
-</div>
-<!--END: CALL TO ACTION -->
 
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
@@ -198,64 +174,31 @@ include 'include/header5.php';
 	<div class="container">
 		<h1 class="text-green">ILS NOUS FONT CONFIANCE</h1>
         
-        <ul class="grid grid-5-columns">
+        <ul class="grid grid-4-columns">
 				
 				<li>
-					<img src="images/afelio.jpg" alt="client vélo électrique Bruxelles - Afelio">
+					<img src="images/clients/afelio.png" alt="Nos clients - Afelio">
 				</li>
 				<li>
-					<img src="images/spi.jpg" alt="client vélo électrique Bruxelles - SPI">
+					<img src="images/clients/atradius.png" alt="Nos clients - Atradius">
 				</li>
 				<li>
-					<img src="images/siapartners.jpg" alt="client vélo électrique Bruxelles - SiaPartners">
+					<img src="images/clients/galler.png" alt="Nos clients - Galler Chocolatiers">
 				</li>
-				
 				<li>
-					<img src="images/DEDALE.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
+					<img src="images/clients/siapartners.png" alt="Nos clients - SiaPartners">
 				</li>
-				
 				<li>
-					<img src="images/deliveroo.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
+					<img src="images/clients/spi.png" alt="Nos clients - SPI">
 				</li>
-				
 				<li>
-					<img src="images/ATRADIUS.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
+					<img src="images/clients/agc.png" alt="Nos clients - AGC">
 				</li>
-				
 				<li>
-					<img src="images/venturelab.jpg" alt="client vélo électrique Liège - Venturelab">
+					<img src="images/clients/rayon9.png" alt="Nos clients - Rayon 9">
 				</li>
-				
 				<li>
-					<img src="images/chu.jpg" alt="client vélo électrique Liège - CHU Liège">
-				</li>
-				
-				<li>
-					<img src="images/AGC.jpg" alt="client vélo électrique Liège - AGC">
-				</li>
-				
-				<li>
-					<img src="images/Epsylon.jpg" alt="client vélo électrique Liège - Epsylon">
-				</li>
-				
-				<li>
-					<img src="images/IDEA.jpg" alt="client vélo électrique Liège - IDEA">
-				</li>
-				
-				<li>
-					<img src="images/Galler.jpg" alt="client vélo électrique Liège - Galler">
-				</li>
-				
-				<li>
-					<img src="images/CIE.jpg" alt="client vélo électrique Liège - CIE">
-				</li>
-				
-				<li>
-					<img src="images/RAYON9.jpg" alt="client vélo électrique Liège et Bruxelles - Deliveroo">
-				</li>
-				
-				<li>
-					<img src="images/Kartell.jpg" alt="client vélo électrique Liège - Kartell+">
+					<img src="images/clients/chu.png" alt="Nos clients - CHU Liège">
 				</li>
 		</ul>
         
@@ -338,7 +281,7 @@ include 'include/header5.php';
 		
 
 
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -361,7 +304,6 @@ include 'include/header5.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -374,7 +316,7 @@ include 'include/header5.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 
 	</div>
 	<!-- END: WRAPPER -->

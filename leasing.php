@@ -483,12 +483,14 @@ include 'include/header5.php';
 	-->
 
 <!-- CALL TO ACTION -->
+<!--
 <div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
   <div class="container">
     <h3>DÉCOUVREZ L'AVANTAGE FISCAL DE VOS EMPLOYÉS</h3>
     <p>texte ligne 2</p>
     <a class="button large black-light button-3d effect icon-left" href="#"><span><i class="fa fa-cloud"></i>Découvrir</span></a> </div>
 </div>
+-->
 
 <!--END: CALL TO ACTION -->
 
@@ -516,7 +518,6 @@ include 'include/header5.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -529,7 +530,7 @@ include 'include/header5.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 
 
 	</div>

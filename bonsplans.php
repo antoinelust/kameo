@@ -1,5 +1,5 @@
 <?php 
-include 'include/header2.php';
+include 'include/header5.php';
 ?>
 
 		
@@ -12,9 +12,7 @@ include 'include/header2.php';
                                         
                     
                     <div class="col-md-12">
-                    	<div class="heading heading text-left m-b-20">
-                        <h2 class="fr">Les bons plans</h2>
-                        </div>
+                    	<h1 class="text-green">NOS BONS PLANS</h1>
                         <p>Les vélos présentés ci-dessous ont été mis en test chez des clients durant l'année.<br>
                         Ils ont entièrement été contrôlés et entretenus.<br>
                         Ces vélos sont garantis 1 an.</p>
@@ -410,38 +408,42 @@ include 'include/header2.php';
     
 
         
-		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-					<br>BE 0681.879.712 
-					<br>+32 498 72 75 46 </div>
+	<!-- FOOTER -->
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									
+								</ul>
+					</div>
+					
+					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					
 					<br>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				
-				<div class="copyright-text text-center"><!--<a href="blog.php" class="text-green text-bold">Le blog</a> | --><a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
-				
-				<br>
-				<br>
-				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+	<!-- END: FOOTER -->
 	</div>
 	<!-- END: WRAPPER -->
 
