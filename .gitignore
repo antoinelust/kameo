@@ -16,6 +16,8 @@ $ cat Documentation/.gitignore
 *connexion.php
 *mp4
 factures/
+images/
+offres/
 images
 images_bikes
 include/logs.txt
