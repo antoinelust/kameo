@@ -1,9 +1,11 @@
 <?php
-include 'globalfunctions.php';
-
 session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
+require_once('php-mailer/PHPMailerAutoload.php');
+
+
+include 'globalfunctions.php';
 
 
 //corresponds to the request for the mail, to have the link for reseting the mail
@@ -34,7 +36,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['widget-update-form-ema
 			if($row["PASSWORD"]==NULL)
 			{
 				//refaire un test avec celui là, ne marche pas. essayer avec un compte qui n'existe pas dans notre db.
-				errorMessage(ES0014);
+				errorMessage("ES0014");
 			}
 
 			writeMail();
@@ -65,11 +67,11 @@ elseif( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['widget-lostPasswor
 	
 	if($row["TIMESTAMP"]==NULL)
 	{
-		errorMessage(ES0012);
+		errorMessage("ES0012");
 	}
 	if($row["EMAIL"]==NULL)
 	{
-		errorMessage(ES0012);
+		errorMessage("ES0012");
 	}
 	
     
@@ -82,7 +84,7 @@ elseif( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['widget-lostPasswor
 
 	if ($demand < $timestamp_onehourbefore) {
         //cette erreur ne marche pas, voir pourquoi ! 
-		errorMessage(ES0013);
+		errorMessage("ES0013");
 	}
 
 	$EMAIL=$row["EMAIL"];
@@ -127,9 +129,9 @@ function writeMail(){
 	$mail->Subject = $subject;
 	
 	$body = "Veuillez trouvez ci-dessous le lien afin de pouvoir réinitialiser votre mot de passe. <br /> Veuillez copier-coller le lien ci-dessous dans votre barre d'adresse : ";
-    if(substr($_SERVER[REQUEST_URI], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+    if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
        $link = 'http://www.kameobikes.com/index.php?hash='. $hash;
-    }else if(substr($_SERVER[REQUEST_URI], 1, 4) == "test"){
+    }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
        $link = 'http://www.kameobikes.com/index.php?hash='. $hash;
     }else{
         $link='';

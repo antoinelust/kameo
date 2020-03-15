@@ -320,6 +320,68 @@
 	</div>
 </div>
 
+<div class="modal fade" id="lostPassword" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+
+						<h3 class="fr">Mot de passe oublié</h3>
+						<h3 class="nl">Wachtwoord kwijt</h3>
+						<h3 class="en">Password lost</h3>
+							<form id="widget-lostPassword" class="form-transparent-grey" action="include/lostPassword.php" role="form" method="post">
+								<div class="form-group">
+									<label for="widget-update-form-email" class="fr">Adresse mail</label>
+									<label for="widget-update-form-email" class="en">E-mail</label>
+									<label for="widget-update-form-email" class="nl">Mail</label>
+									<input type="text" name="widget-update-form-email" class="form-control required" autocomplete="username">
+								</div>
+								<div class="text-left form-group">
+									<button  class="button effect fill fr" type="submit"><i class="fa fa-paper-plane"></i>&nbsp;Envoyer</button>
+									<button  class="button effect fill en" type="submit" ><i class="fa fa-paper-plane"></i>&nbsp;Confirm</button>
+									<button  class="button effect fill nl" type="submit" ><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>
+
+								</div>
+							</form>
+							<script type="text/javascript">
+                                jQuery("#widget-lostPassword").validate({
+
+                                    submitHandler: function(form) {
+
+                                        jQuery(form).ajaxSubmit({
+                                            success: function(text) {
+                                                if (text.response == 'success') {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'success'
+                                                    });
+                                                } else {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'danger'
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            </script>
+
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
 
 
 <!-- Hotjar Tracking Code for www.kameobikes.com -->
