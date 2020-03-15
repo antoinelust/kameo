@@ -107,7 +107,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT bb.EMAIL, cc.DATE_START, cc.DATE_END, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_NUMBER FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID ORDER BY aa.HEU_MAJ DESC";
+        $sql = "SELECT bb.EMAIL, cc.DATE_START, cc.DATE_END, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_NUMBER FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID and aa.STATUS != 'CANCELLED' ORDER BY aa.HEU_MAJ DESC";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -129,13 +129,27 @@ if(isset($_GET['action'])){
             $response['feedback'][$i]['comment']=$row['COMMENT'];
             $response['feedback'][$i]['entretien']=$row['ENTRETIEN'];
             $response['feedback'][$i]['status']=$row['STATUS'];
-
             $response['feedback'][$i]['company']=$row['COMPANY'];
             $response['feedback'][$i]['firstName']=$row['PRENOM'];
             $response['feedback'][$i]['name']=$row['NOM'];
             $response['feedback'][$i]['start']=$row['DATE_START'];
             $response['feedback'][$i]['end']=$row['DATE_END'];
             $response['feedback'][$i]['email']=$row['EMAIL'];
+            
+            include 'connexion.php';
+            
+            $sql2="SELECT * FROM notifications where TYPE='feedback' AND TYPE_ITEM='$IDReservation'";
+    
+            if ($conn->query($sql2) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result2 = mysqli_query($conn, $sql2);
+            $resultat = mysqli_fetch_assoc($result2);
+            $conn->close();
+            $response['feedback'][$i]['read']=$resultat['READ'];
+            
 
             $i++;
         }
