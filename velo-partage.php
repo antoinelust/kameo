@@ -1,26 +1,32 @@
 <?php 
-include 'include/header3.php';
+include 'include/header5.php';
 ?>
 			<!-- SECTION SOLUTIONS -->
-			<section class="p-b-0 background-green">
+			<section class="" style="background: url('images/fond_degrade.jpg');" data-stellar-background-ratio="0.3">
 				<div class="container">
-				<a class="button small black-light button-3d full-rounded right" href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right"  href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
-							<h1><ins>Vélos partagés</ins></h1>
+							<h1 class="text-dark">VÉLOS PARTAGÉS</h1>
 							<p class="lead text-light"><strong>KAMEO Bikes</strong> vous propose des vélos partagés pour vos employés.<br>
 							Utilisez ces vélos pour vos déplacements domicile-travail, vos rendez-vous, etc.</p>
 							<p class="lead text-light">En plus de ces vélos nous vous proposons d'autres services qui sont:<br>
-							- la gestion de flotte via <strong class="text-dark">MyKAMEO</strong> et <strong class="text-dark">MyBORNE</strong>,<br>
-							- la <strong class="text-dark">maintenance</strong> sur le site de votre entreprise,<br>
-							- une <strong class="text-dark">assurance</strong> contre la casse et le vol.</p>
+							- la <strong class="text-light">maintenance</strong> sur le site de votre entreprise,<br>
+							- une <strong class="text-light">assurance</strong> contre la casse et le vol,<br>
+							- l'<strong class="text-light">assistance</strong> dépannage, <br>
+							- la gestion de flotte via <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="Le système de gestion de flotte en ligne développé par KAMEO Bikes.">MyKAMEO</a></strong></ins> et <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="La boite de rangement de clés sécurisée dévelopée par KAMEO Bikes.">MyBORNE</a></strong></ins>,<br>
+							- l'installation d'<strong class="text-light">infrastructures</strong>,<br>
+							- le tout, directement livré sur votre lieu de travail.</p>
+							<b>Par souci d'efficacité, l'ensemble de ces services sont gérés par KAMEO Bikes. </b>
+							
+							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>En savoir plus <i class="fa fa-arrow-down"></i></span></a>
 						
 						</div>
 						<div class="col-md-5">
-							<img src="images/Atradius_Bikes.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/Atradius_Bikes.jpg" class="img-responsive img-rounded" alt="Vélos électriques BZEN brandés aux couleurs d'Atradius">
 						</div>
-						<hr class="space">
+						<hr class="space" id="plus">
 						
 					</div>
 				</div>
@@ -32,14 +38,14 @@ include 'include/header3.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8">
-							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="">
+							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="Infographie - Parcous client chez KAMEO Bikes">
 						</div>
 						<div class="col-md-4">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green">COMMENT ON PROCÈDE</h1>
+							<h1 class="text-green">COMMENT ÇA MARCHE</h1>
 							<p><strong class="text-green">Vous restez concentré sur votre activité, on se charge de tout!</strong></p>
 							<ul>
-								<li>Nous réfléchissons à vos besoins réels pour votre flotte</li>
+								<li>Nous définissons ensemble vos besoins réels pour votre future flotte</li>
 								<li>Nous vous proposons différent vélos</li>
 								<li>Nous organisons des sessions d'essais avec vos employés</li>
 							</ul>
@@ -49,6 +55,20 @@ include 'include/header3.php';
 			</section>
 			<!-- END: SECTION PROCESS -->
 			
+			<!-- SECTION LEASING -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<h1 class="text-green">LEASING OU VENTE?</h1>
+							<p>Faites votre choix en comparant les deux solutions.</p>
+							<a class="button green button-3d effect fill-vertical" href="leasing.php"><span><i class="fa fa-balance-scale"></i>Comparer</span></a>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION LEASING -->
+			
 			<!-- SECTION FLOTTE -->
 			<section class="p-b-0">
 				<div class="container">
@@ -56,13 +76,13 @@ include 'include/header3.php';
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">CHOIX DE LA FLOTTE DE VÉLO</h1>
-							<p>KAMEO Bikes vous propose une large gamme de vélos. Nous avons particulièrement des vélos adaptés aux vélos partagés.</p>
+							<p class="text-justify">KAMEO Bikes possède une large gamme de vélos. Celle-ci est sélectionnée afin de vous offrir des vélos durables.</p>
 							<p>Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
-							<p>Tous les vélos que nous proposons sont à assistance électrique, pour un plus grand confort lors des déplacements de vos collaborateurs. Ils sont équipés de garde-bous, phares, porte bagage. Mais nous pouvons y ajouters différentes options telles que des sacoches. De plus, les vélos peuvent être brandés avec le logo de votre entreprise.</p>
+							<p class="text-justify">Pour votre plus grand confort, la majorité des vélos que nous vous proposons sont à assistance électrique. Ils sont naturellement équipés de garde-boues, phares et porte bagage. Des accessoires supplémentaires peuvent combler vos besoins spécifiques : Bac, Sacoches, remorque, siège enfant,... De plus, les vélos peuvent être brandés aux couleurs de votre entreprise. </p>
 			 
 						</div>
 						<div class="col-md-6">
-							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" alt="BZEN - flotte de vélos">
 						</div>
 						
 						<!-- SELECTION -->
@@ -71,108 +91,133 @@ include 'include/header3.php';
 							<div class="carousel" data-lightbox-type="gallery">
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images/catalogue/Orbea_Gain.jpg" alt="">
+										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="BZEN Amsterdam">
 										<div class="image-box-content">
 											<p>
-												<a href="images/catalogue/Orbea_Gain.jpg" data-lightbox-type="image" title="Orbea Gain - le vélo électrique urbain au look sportif."><i class="fa fa-expand"></i></a>
+												<a href="#"><i class="fa fa-expand"></i></a>
 												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
 											</p>
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title">ORBEA Gain</h4>
-										<p>Il sera l'arme de choix du travailleur sportif voulant arriver au travail en vélo sans forcer.</p>
-										<!--
-										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
-																				  - Son look sportif<br>
-																				  - La batterie intégrée (difficile de voir qu'il est électrique)<br> 
-																				  - Son poids maitrisé </p>
-										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
-																				  - Position sportive, ne s'adapte pas à tout le monde</p>
-										<p> -->
+										<h4 class="title">BZEN Amsterdam</h4>
+									</div>
+								</div>
+
+
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
+										<div class="image-box-content">
+											<p>
+												<a href="#"><i class="fa fa-expand"></i></a>
+												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">CONWAY Cairon T 200</h4>
 									</div>
 								</div>
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images/catalogue/Conway_ETrekking.jpg" alt="">
+										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
-												<a href="images/catalogue/Conway_ETrekking.jpg" data-lightbox-type="image" title="Conway E Trekking - un vélo électrique de ville qui s'adapte à tout le monde."><i class="fa fa-expand"></i></a>
+												<a href="#"><i class="fa fa-expand"></i></a>
 												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
 											</p>
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title">CONWAY E Trekking</h4>
-										<p>Un vélo électrique de ville qui s'adapte à tout le monde.</p>
-										<!--
-										<br>
-										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
-																				  - Le moteur Bosch performance ( le plus puissant de la marque )<br>
-																				  - Cadre Homme, Dame ou Mixte <br> 
-																				  - Les équipements d'origine complets </p>
-										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
-																				  - Le design trop sobre (à notre goût)</p>
-										<p>
-										-->
+										<h4 class="title">AHOOGA Modular</h4>
 									</div>
 								</div>
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images/catalogue/Ahooga_Pliant.jpg" alt="">
+										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
-												<a href="images/catalogue/Ahooga_Pliant.jpg" data-lightbox-type="image" title="Ahooga pliant - combiner train + vélo ou voiture + vélo, voilà votre monture pour les derniers kms"><i class="fa fa-expand"></i></a>
+												<a href="#"><i class="fa fa-expand"></i></a>
 												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
 											</p>
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title">AHOOGA Pliant</h4>
-										<p>Combiner train + vélo ou voiture + vélo, voilà votre monture pour les derniers kilomètres</p>
-										<!--
-										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
-																				  - Le design belge et intelligent<br>
-																				  - Le confort de conduite<br> 
-																				  - La possibilité de l'avoir en vélo traditionnel ou électrique</p>
-										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
-																				  - Ne convient pas pour de longues distances</p>
-										<p>
-										-->
+										<h4 class="title">CONWAY Cairon T 200</h4>
 									</div>
 								</div>
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images/catalogue/Victoria_Eurban.jpg" alt="">
+										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="BZEN Amsterdam">
 										<div class="image-box-content">
 											<p>
-												<a href="images/catalogue/Victoria_Eurban.jpg" data-lightbox-type="image" title="Vitcoria E Urban - Un vélo à tout épreuve pour la ville qui vous procurera un sentiment de sécurité"><i class="fa fa-expand"></i></a>
+												<a href="#"><i class="fa fa-expand"></i></a>
 												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
 											</p>
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title">VICTORIA E Urban</h4>
-										<p>Un vélo à toute épreuve pour la ville qui vous procurera un sentiment de sécurité</p>
-										<!--
-										<br>
-										<p><i class="fa fa-thumbs-o-up"></i><ins> On aime :</ins><br>  
-																				  - Les pneus anticrevaison et confortables<br>
-																				  - Transmission par courroie et moteur puissant <br> 
-																				  - Position relevée agréable </p>
-										<p><i class="fa fa-thumbs-o-down"></i><ins> On aime moins:</ins><br>  
-																				  - Le poids du vélo si vous devez le porter</p>
-										<p>
-										-->
+										<h4 class="title">BZEN Amsterdam</h4>
 									</div>
 								</div>
+
+
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
+										<div class="image-box-content">
+											<p>
+												<a href="#"><i class="fa fa-expand"></i></a>
+												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">CONWAY Cairon T 200</h4>
+									</div>
+								</div>
+								
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
+										<div class="image-box-content">
+											<p>
+												<a href="#"><i class="fa fa-expand"></i></a>
+												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">AHOOGA Modular</h4>
+									</div>
+								</div>
+								
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="CONWAY Cairon">
+										<div class="image-box-content">
+											<p>
+												<a href="#"><i class="fa fa-expand"></i></a>
+												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title">CONWAY Cairon T 200</h4>
+									</div>
+								</div>
+								
+								
 							</div>
 						</div>
 						<!-- END : SELECTION -->
-						
+						<div class="col-md-12 text-center">
+							<a class="button green button-3d effect fill-vertical" href="achat.php"><span>Le catalogue complet</span></a>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -183,16 +228,16 @@ include 'include/header3.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4">
-							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="MyBORNE - gestion des clés de votre flotte">
 						</div>
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">GESTION DE LA FLOTTE</h1>
-							<p class="">Gérer une flotte de vélos partagés demande de l’organisation et du temps ! MyKAMEO a été développé pour permettre à nos clients de profiter de leurs vélos sans devoir s’en soucier.</p>
+							<p class="text-justify">Gérer une flotte de vélos partagés demande de l’organisation et du temps ! MyKAMEO a été développé pour permettre à nos clients de profiter de leurs vélos sans devoir s’en soucier.</p>
 			
-							<p class="">La plateforme MyKAMEO est une solution IT de gestion qui permet à chaque utilisateur de se connecter sur un espace sécurisé, de réserver un vélo de la flotte partagée de l’entreprise et de donner du feedback quant à l’état et l’utilisation de celui-ci. Elle permet également au Fleet Manager de contrôler la flotte, les réservations et de paramétrer l’ensemble. Des statistiques mensuelles sur l’utilisation des vélos et leur état lui sont envoyées automatiquement afin de pouvoir suivre facilement l’évolution du projet vélo !</p>
+							<p class="text-justify">La plateforme MyKAMEO est une solution IT de gestion qui permet à chaque utilisateur de se connecter sur un espace sécurisé, de réserver un vélo de la flotte partagée de l’entreprise et de donner du feedback quant à l’état et l’utilisation de celui-ci. Elle permet également au Fleet Manager de contrôler la flotte, les réservations et de paramétrer l’ensemble. Des statistiques mensuelles sur l’utilisation des vélos et leur état lui sont envoyées automatiquement afin de pouvoir suivre facilement l’évolution du projet vélo !</p>
 			
-							<p class="">La demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>
+							<p class="text-justify"">La demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>
 			 
 						</div>
 					</div>
@@ -207,33 +252,52 @@ include 'include/header3.php';
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<p>La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>
+							<p class="text-justify">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>
 							C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>
 			
-							<p>Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>
+							<p class="text-justify">Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>
 			 
 						</div>
 						<div class="col-md-4">
-							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="">
+							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="PVELO - l'assurance vélo">
 						</div>
 					</div>
 				</div>
 			</section>
 			<!-- END: SECTION MAINTENANCE -->
 			
-				<!--<hr class="space">-->
-				
-			<!-- SECTION CALL TO ACTION CONTACT -->
+			<!-- SECTION INFRASTRUCTURES -->
+			<section class="p-b-0">
 				<div class="container">
-					<div class="row text-center background-green">
-					<br>
-						<h1 class="text-light">NOUS RENCONTRER</h1>
-						<p class="text-dark">Envie de pédaler avec nous?<br>
-						Contactez-nous, nous viendrons vous présenter nos offres.</p>
-						<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-eye"></i>Nous contacter</span></a>
+					<div class="row">
+						<div class="col-md-4">
+							<img src="images/infrastructure.png" class="img-responsive img-rounded" alt="Schéma d'une infrastructure réalisable par KAMEO Bikes">
+						</div>
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">INSTALLATION D'INFRASTRUCTURES</h1>
+							<p>Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							KAMEO Bikes, fort de son expérience pour vous construire une installation sur mesure pour votre projet.</p>
+			
+							<p>N'hésitez pas à nous demander une remise de prix.</p>
+			 
+						</div>
 					</div>
 				</div>
-			<!-- END: SECTION CALL TO ACTION CONTACT -->
+			</section>
+			<!-- END: SECTION INFRASTRUCTURES -->
+			
+				<hr class="space">
+			<!-- CALL TO ACTION -->
+				<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
+				  <div class="container">
+				    <h3>NOUS RENCONTRER</h3>
+				    <p>Envie de pédaler avec nous?<br>
+						Contactez-nous, nous viendrons vous présenter nos offres.</p>
+				    <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
+				</div>
+
+<!--END: CALL TO ACTION -->
 			
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
@@ -315,7 +379,7 @@ include 'include/header3.php';
 		
 
 
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -324,9 +388,9 @@ include 'include/header3.php';
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -338,7 +402,6 @@ include 'include/header3.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -351,7 +414,7 @@ include 'include/header3.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 
 	</div>
 	<!-- END: WRAPPER -->

@@ -2109,7 +2109,7 @@ body.wide #header.header-fullwidth nav .main-menu .mega-menu-item .dropdown-menu
 
 #topbar .social-icons {
     float: right;
-    height: 100%;
+    width: 10%;
     overflow: hidden;
 }
 #topbar .social-icons li,

@@ -1,23 +1,33 @@
 <?php 
-include 'include/header3.php';
+include 'include/header5.php';
 ?>
 
 
 			<!-- SECTION SOLUTIONS -->
-			<section class="p-b-0 background-green">
+			<section class="" style="background: url('images/fond_degrade.jpg');" data-stellar-background-ratio="0.3">
 				<div class="container">
-				<a class="button small black-light button-3d full-rounded right" href="velo-partage.php"><span>Vélos partagés <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right"  href="velo-partage.php"><span>Vélos partagés  <i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
-							<h1><ins>Vélos personnels</ins></h1>
+							<h1 class="text-dark">VÉLOS PERSONNELS</h1>
+							<p class="lead text-light"><strong>KAMEO Bikes</strong> vous propose des vélos personnels pour vos employés.<br>
+							Ils utiliseront ces vélos pour leurs déplacements domicile-travail, rendez-vous, etc.</p>
+							<p class="lead text-light">En plus de ces vélos nous vous proposons d'autres services qui sont:<br>
+							- la <strong class="text-light">maintenance</strong> sur le site de votre entreprise,<br>
+							- une <strong class="text-light">assurance</strong> contre la casse et le vol,<br>
+							- l'<strong class="text-light">assistance</strong> dépannage, <br>
+							- un accès personnel à <ins class="text-light"><strong><a href="#" data-toggle="tooltip" data-placement="top" title="Le système de gestion de flotte en ligne développé par KAMEO Bikes.">MyKAMEO</a></strong></ins>,<br>
+							- l'installation d'<strong class="text-light">infrastructures</strong>,<br>
+							- le tout, directement livré sur votre lieu de travail.</p>
+							<b>Pour votre confort, l'ensemble de ces services sont gérés intégralement par KAMEO Bikes.</b>
 							
-							<p class="lead text-light"><strong>Contarcter un leasing vélo via l'entreprise qui vous emploie</strong> lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae arcu eu lorem consequat laoreet non eget libero. Etiam et consectetur lectus, a varius ligula. Sed quis tincidunt turpis, et pharetra urna. Etiam dignissim, eros quis maximus pellentesque, erat elit scelerisque urna, volutpat egestas felis lorem at diam. Etiam ornare elementum quam, at faucibus ligula faucibus sed. Phasellus euismod massa vitae mi condimentum posuere. Mauris aliquet, magna eget rutrum ultricies, urna augue porttitor sapien, sed condimentum felis leo eget elit. Etiam orci nibh, aliquam a malesuada id, laoreet nec mi.</p>
+							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>En savoir plus <i class="fa fa-arrow-down"></i></span></a>
 						</div>
 						<div class="col-md-4">
-							<img src="images/Solution.png" class="img-responsive img-rounded" alt="">
+							<img src="images/Solution2.png" class="img-responsive img-rounded" alt="Roue des solutions de KAMEO Bikes">
 						</div>
-						<hr class="space">
+						<hr class="space" id="plus">
 						
 					</div>
 				</div>
@@ -29,12 +39,12 @@ include 'include/header3.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8">
-							<img src="images/process.jpg" class="img-responsive img-rounded" alt="">
+							<img src="images/infographie_fr.png" class="img-responsive img-rounded" alt="Infographie - Parcous client chez KAMEO Bikes">
 						</div>
 						<div class="col-md-4">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">COMMENT ON PROCÈDE</h1>
-							<p><strong class="text-green">Vous restez concentré sur votre activité, on se charge de tout!</strong><br>
+							<p class="text-justify"><strong class="text-green">Vous restez concentré sur votre activité, on se charge de tout!</strong><br>
 							Nous réfléchissons à vos besoins réels pour vos collaborateurs. Nous leur proposons des vélos électriques adaptés et nous leur proposons des essais au sein de l'entreprise.<br>
 							Après ces essais, ils auront la possibilité de passer commande pour leur propre vélo. Ils pourront également commander des accessoires tels que des sacoches, casques, vêtements, ...<br>
 							Nous livrons les vélos sur le site de l'entreprise et donnerons les accès à la plateforme MyKAMEO, depuis laquelle ils retrouveront toutes les informations relatives à leur contrat. Ils auront également la possibilité de nous contacter via cette plateforme en cas de problème.</p>
@@ -45,6 +55,20 @@ include 'include/header3.php';
 			</section>
 			<!-- END: SECTION PROCESS PERSONNEL-->
 			
+			<!-- SECTION LEASING -->
+			<section class="p-b-0">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<h1 class="text-green">LEASING OU VENTE?</h1>
+							<p>Faites votre choix en comparant vos avantages du leasing ou de l'achat.</p>
+							<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-balance-scale"></i>Comparer</span></a>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- END: SECTION LEASING -->
+			
 			<!-- SECTION VELO PERSONNE -->
 			<section class="p-b-0">
 				<div class="container">
@@ -52,9 +76,12 @@ include 'include/header3.php';
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">CHOIX DU VÉLO</h1>
-							<p>KAMEO Bikes vous propose une large gamme de vélos.</p>
-							<p>Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
-							<p>Tous les vélos que nous proposons sont à assistance électrique, pour un plus grand confort lors des déplacements de vos collaborateurs. Ils sont équipés de garde-bous, phares, porte bagage. Mais nous pouvons y ajouters différentes options telles que des sacoches. De plus, les vélos peuvent être brandés avec le logo de votre entreprise.</p>
+							<p class="text-justify">KAMEO Bikes vous propose une large gamme de vélos.</p>
+							<p class="text-justify">Nous travaillons avec des partenaires prestigieux tels que <strong class="text-green">BZEN</strong>, <strong class="text-green">Ahooga</strong>, <strong class="text-green">Conway</strong>, <strong class="text-green">Orbea</strong>, <strong class="text-green">Stevens</strong>, <strong class="text-green">HNF Nicolai</strong>, ...</p>
+							<p class="text-justify">Pour votre plus grand confort, la majorité des vélos que nous vous proposons sont à assistance électrique. Ils sont naturellement équipés de garde-boues, phares et porte bagage. Des accessoires supplémentaires peuvent combler vos besoins spécifiques : Bac, Sacoches, remorque, siège enfant,... De plus, les vélos peuvent être brandés aux couleurs de votre entreprise. </p>							
+							<div class="col-md-12 text-center">
+								<a class="button green button-3d effect fill-vertical" href="achat.php"><span>Le catalogue complet</span></a>
+							</div>
 			 
 						</div>
 						<!--
@@ -69,9 +96,9 @@ include 'include/header3.php';
 	                    <div class="col-md-6">
 		                    <div id="slider">
 								<div id="slider-carousel">
-				                	<img alt="image" src="images/Flotte_BZen.jpg" class="slider-content">
-				                	<img alt="image" src="images/Flotte_BZen2.jpg" class="slider-content">
-				                	<img alt="image" src="images/Flotte_BZen3.jpg" class="slider-content">
+				                	<img alt="image" src="images/Flotte_BZen.jpg" class="img-responsive img-rounded" >
+				                	<img alt="image" src="images/Flotte_BZen2.jpg" class="img-responsive img-rounded" >
+				                	<img alt="image" src="images/Flotte_BZen3.jpg" class="img-responsive img-rounded" >
 		                    	</div>
 		                    </div>
 	                    </div>
@@ -80,26 +107,6 @@ include 'include/header3.php';
 			</section>
 			<!-- END: SECTION VELO PERSONNEL -->
 						
-			<!-- SECTION LEASING VELO -->
-			<section class="p-b-0">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-4">
-							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="">
-						</div>
-						<div class="col-md-8">
-							<!-- <hr class="space"> -->
-							<h1 class="text-green">LEASING VELO</h1>
-							<p class="">KAMEO Bikes propose à vos collaborateurs des vélos sous forme de <strong class="text-green">leasing</strong>.</p>
-							<p>Dans le montant du leasing sont compris: le vélo, l'assurance P-Vélo et la maintenance sur le site de l'entreprise.</p>
-							<a class="button green button-3d effect fill-vertical" href=""><span><i class="fa fa-plus"></i>En savoir plus sur le leasing vélo</span></a>
-			 
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- END: SECTION LEASING VELO -->
-			
 			<!-- SECTION MAINTENANCE PERSONNEL -->
 			<section class="p-b-0">
 				<div class="container">
@@ -107,32 +114,51 @@ include 'include/header3.php';
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<p>La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>
+							<p class="text-justify">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. KAMEO Bikes part du principe que pour prendre du 				plaisir sur un vélo, et donc renouveler ensuite l’expérience, celui-ci doit rouler sans souci mécanique. <br>
 							C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail. </p>
 			
-							<p>Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>
+							<p class="text-justify">Il est important de se sentir couvert en toutes circonstances lorsque l’on se déplace à vélo. Pour cela, KAMEO Bikes collabore avec Aedes et Dedales afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo.</strong></p>
 			 
 						</div>
 						<div class="col-md-4">
-							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="">
+							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="PVELO - l'assurance vélo">
 						</div>
 					</div>
 				</div>
 			</section>
 			<!-- END: SECTION MAINTENANCE PERSONNEL -->
 			
-				<!--<hr class="space">-->
-				
-			<!-- SECTION CALL TO ACTION CONTACT -->
+			<!-- SECTION INFRASTRUCTURES -->
+			<section class="p-b-0">
 				<div class="container">
-					<div class="row text-center background-green">
-						<h1 class="text-light">DEMANDEZ UN RENDEZ-VOUS</h1>
-						<p class="text-dark">Envie de pédaler avec nous?<br>
-						Contactez-nous, nous viendrons vous rencontrer dans votre entreprise.</p>
-						<a class="button green button-3d effect fill-vertical" href="contact.php"><span><i class="fa fa-eye"></i>Nous contacter</span></a>
+					<div class="row">
+						<div class="col-md-4">
+							<img src="images/infrastructure.png" class="img-responsive img-rounded" alt="Schéma d'une infrastructure réalisable par KAMEO Bikes">
+						</div>
+						<div class="col-md-8">
+							<!-- <hr class="space"> -->
+							<h1 class="text-green">INSTALLATION D'INFRASTRUCTURES</h1>
+							<p>Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							KAMEO Bikes, fort de son expérience pour vous construire une installation sur mesure pour votre projet.</p>
+			
+							<p>N'hésitez pas à nous demander une remise de prix.</p>
+			 
+						</div>
 					</div>
 				</div>
-			<!-- END: SECTION CALL TO ACTION CONTACT -->
+			</section>
+			<!-- END: SECTION INFRASTRUCTURES -->
+							<hr class="space">
+			<!-- CALL TO ACTION -->
+				<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
+				  <div class="container">
+				    <h3>DEMANDEZ UN RENDEZ-VOUS</h3>
+				    <p>Envie de pédaler avec nous?<br>
+						Contactez-nous, nous viendrons vous rencontrer dans votre entreprise.</p>
+				    <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
+				</div>
+
+			<!--END: CALL TO ACTION -->
 			
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
@@ -214,7 +240,7 @@ include 'include/header3.php';
 		
 
 
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -223,9 +249,9 @@ include 'include/header3.php';
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -237,7 +263,6 @@ include 'include/header3.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
@@ -250,7 +275,7 @@ include 'include/header3.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 
 	</div>
 	<!-- END: WRAPPER -->

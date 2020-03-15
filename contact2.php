@@ -1,5 +1,5 @@
 <?php 
-include 'include/header3.php';
+include 'include/header5.php';
 ?>
 
 		
@@ -42,6 +42,20 @@ include 'include/header3.php';
 										<label for="phone"  id="nl">Telefoonnumber</label>
                                         <input type="phone" aria-required="true" name="widget-contact-form-phone" class="form-control required phone" placeholder="+32">
                                     </div>
+                                    <div class="form-group col-sm-6">
+		                                <div class="particulier">
+											<label><input type="radio" name="optionsRadios" id="particulier" value="particulier" checked> Je suis un particulier</label>
+										</div>
+										<div class="professionnel">
+											<label><input type="radio" name="optionsRadios" id="professionnel" value="professionnel"> Je suis un professionnel</label>
+										</div>
+									</div>
+									<div class="form-group col-sm-12">
+	                                	<label for="entreprise" id="fr">Nom de votre entreprise</label>
+										<label for="entreprise" id="en">Nom de votre entreprise</label>
+										<label for="entreprise" id="nl">Nom de votre entreprise</label>
+	                                	<input type="text" aria-required="true" name="widget-contact-form-entreprise" class="form-control required entreprise">
+	                                </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-sm-12">
@@ -105,16 +119,16 @@ include 'include/header3.php';
                             <div class="col-md-6">
                                 <address>
                                   <strong>KAMEO Bikes</strong><br>
-                                  Boulevard de la Sauvenière 118<br>
+                                  Rue de la Brasserie 8,<br>
                                   4000 Liège<br>
                                   Belgique<br>
                                   </address>
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2530.1842023612126!2d5.563493815738344!3d50.642270079502346!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0fa10dc542751%3A0x26d03b27411f9003!2sBoulevard+de+la+Sauveni%C3%A8re+118%2C+4000+Li%C3%A8ge!5e0!3m2!1sfr!2sbe!4v1548313771584" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1264.7922885746027!2d5.590069958227898!3d50.65340589487594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0fa03fbcae78b%3A0xdb098129a125e630!2sKAMEO%20Bikes!5e0!3m2!1sfr!2sbe!4v1584177978200!5m2!1sfr!2sbe" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                             </div>
                         </div>
 						
 						<br>
-						
+						<!--
 						<div id="slider">
 							<div id="slider-carousel">
 							
@@ -124,8 +138,13 @@ include 'include/header3.php';
 							
 							</div>
 						</div>
-
-                        
+						-->
+                        <div class="social-icons social-icons-large social-icons-colored">
+							<ul>
+								<li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li class="social-linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+							</ul>
+						</div>
 
                     </div>
                 </div>
@@ -206,6 +225,19 @@ include 'include/header3.php';
 							
 						</div>
 					</div>
+					
+					<div class="col-md-6 center">
+					<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
+						<div class="image-box-description text-center">
+							<h4 class="fr">Vous</h4>
+							<h4 class="en">Vous</h4>
+							<h4 class="nl">Vous</h4>
+							<hr class="line">
+							<div  class="fr">Vous souhaitez intégrer notre équipe ?<br> Ecrivez-nous à <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
+							
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		</section>
@@ -214,35 +246,41 @@ include 'include/header3.php';
 		<!-- END: TEAM -->
 
 		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-					<br>BE 0681.879.712 
-					<br>+32 498 72 75 46 </div>
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									
+								</ul>
+					</div>
+					
+					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					
 					<br>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				<!--
-				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-				-->
-				<br>
-				<br>
-				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+	<!-- END: FOOTER -->
 	</div>
 	<!-- END: WRAPPER -->
 

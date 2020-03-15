@@ -1,5 +1,5 @@
 <?php 
-include 'include/header3.php';
+include 'include/header5.php';
 ?>
 		
 		<!--Square icons-->
@@ -7,7 +7,7 @@ include 'include/header3.php';
 	
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green">LEASING VÉLO</h1>
+				<h1 class="text-green">LEASING & VENTE DE VÉLO</h1>
 				<br>
 				<p class="fr">KAMEO Bikes se charge de définir le(s) moyen(s) de mobilité urbaine des entreprises selon leurs besoins, qu'il s'agisse de vélos classiques, électriques, pliants ou même de trottinettes électriques. <br /><br />
                 Toutes les dépenses liées à la mobilité douce sont <strong class="text-green text-uppercase">déductibles à 120%</strong> (à l'exception du renting qui est déductible à 100%), n'hésitez donc pas à en profiter ! </p>
@@ -482,39 +482,55 @@ include 'include/header3.php';
 </section>	
 	-->
 
+<!-- CALL TO ACTION -->
+<!--
+<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
+  <div class="container">
+    <h3>DÉCOUVREZ L'AVANTAGE FISCAL DE VOS EMPLOYÉS</h3>
+    <p>texte ligne 2</p>
+    <a class="button large black-light button-3d effect icon-left" href="#"><span><i class="fa fa-cloud"></i>Découvrir</span></a> </div>
+</div>
+-->
 
+<!--END: CALL TO ACTION -->
 
 		
 		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-					<br>BE 0681.879.712 
-					<br>+32 498 72 75 46 </div>
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									
+								</ul>
+					</div>
+					
+					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					
 					<br>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				<!--
-				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-				-->
-				<br>
-				<br>
-				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+	<!-- END: FOOTER -->
 
 
 	</div>

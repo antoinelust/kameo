@@ -1,5 +1,5 @@
 <?php 
-include 'include/header3.php';
+include 'include/header5.php';
 ?>
 
 		
@@ -79,6 +79,7 @@ include 'include/header3.php';
                            </div>
                    	  </div>
                   </div>
+                  <br><a class="button black-light button-3d effect fill-vertical"  href="bonsplans.php"><span>Retrouvez nos bons plans  <i class="fa fa-arrow-right"></i></span></a>
               </div>
          </section>
                     
@@ -240,7 +241,7 @@ include 'include/header3.php';
     
 
         
-				<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -249,9 +250,9 @@ include 'include/header3.php';
 	        
 	            <div class="row text-center">
 	            
-	           
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
-				
+	           <!--
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
+					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -263,9 +264,10 @@ include 'include/header3.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
-									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
+					
+					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
 					
 					<br>
 					<br>
@@ -274,7 +276,7 @@ include 'include/header3.php';
 	        </div>
 	    </div>
 	</footer>
-			<!-- END: FOOTER -->
+	<!-- END: FOOTER -->
 	</div>
 	<!-- END: WRAPPER -->
 
