@@ -12,16 +12,15 @@ $mail = new PHPMailer();
 
 
 // Form Fields
-$name = $_POST["widget-contact-form-name"];
-$firstName = $_POST["widget-contact-form-firstName"];
-
-
-$email = $_POST["widget-contact-form-email"];
-$phone = isset($_POST["widget-contact-form-phone"]) ? $_POST["widget-contact-form-phone"] : null;
-$subject = isset($_POST["widget-contact-form-subject"]) ? $_POST["widget-contact-form-subject"] : 'New Message From Contact Form';
-$message = nl2br($_POST["widget-contact-form-message"]);
-$antispam = $_POST['widget-contact-form-antispam'];
-$captcha = strlen($_POST['g-recaptcha-response']);
+$name = $_POST["name"];
+$firstName = $_POST["firstName"];
+$email = $_POST["email"];
+$phone =  $_POST["phone"];
+$type = $_POST["type"];
+$entreprise = isset($_POST["entreprise"]) ? $_POST["entreprise"] : "N/A";
+$message = nl2br($_POST["message"]);
+$antispam = $_POST['antispam'];
+$captcha = strlen($_POST['response']);
 
 
 $length = strlen($phone);
@@ -37,15 +36,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
     
  if($email != '') {
             
-    //If you don't receive the email, enable and configure these parameters below: 
-
-    //$mail->isSMTP();                                      // Set mailer to use SMTP
-    //$mail->Host = 'mail.yourserver.com';                  // Specify main and backup SMTP servers, example: smtp1.example.com;smtp2.example.com
-    //$mail->SMTPAuth = true;                               // Enable SMTP authentication
-    //$mail->Username = 'SMTP username';                    // SMTP username
-    //$mail->Password = 'SMTP password';                    // SMTP password
-    //$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-    //$mail->Port = 587;                                    // TCP port to connect to 
 
     $mail->IsHTML(true);                                    // Set email format to HTML
     $mail->CharSet = 'UTF-8';
@@ -54,6 +44,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
     $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
     $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
     $mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
+    $mail->AddAddress('info@kameobikes.com', 'Information Kameo Bikes');
 
     $mail->From = $email;
     $mail->FromName = $firstName.' '.$name;
@@ -618,7 +609,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
     <p>Vous avez reçu un nouveau mail, veuillez le trouver ci-dessous:<br>
     <br>
     <strong>$firstName $name ($phone):</strong><br>
-    $message<br></p>
+    Type: $type<br>
+    Nom d'entreprise : $entreprise<br>
+    Message : $message<br></p>
 
                             </td>
                         </tr>

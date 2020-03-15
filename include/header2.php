@@ -204,7 +204,7 @@
                                     $userID = isset($_POST['userID']) ? $_POST['userID'] : NULL;
 
 
-									if ($userID=NULL)
+									if ($userID != NULL)
 									{?>
 									<li><a class="text-red" href="mykameo.php"><span>My Kameo</span></a></li>
 									<?php

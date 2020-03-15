@@ -2,6 +2,25 @@
 include 'include/header5.php';
 ?>
 
+
+<script type="text/javascript">
+
+    window.addEventListener("DOMContentLoaded", function(event) {
+        $('#widget-contact-form input[name=type]').change(function(){
+            if($('#widget-contact-form input[name=type]:checked').val()=="particulier"){
+                $('.entreprise').addClass("hidden");
+                $('#widget-contact-form input[name=entreprise]').removeClass("required");
+            }else{
+                $('.entreprise').removeClass("hidden");
+                $('#widget-contact-form input[name=entreprise]').addClass("required");
+            }
+        });
+        
+        
+    })
+                            
+</script>
+
 		
 
 
@@ -21,40 +40,40 @@ include 'include/header5.php';
                                         <label for="name" id="fr">Nom</label>
 										<label for="name" id="en">Name</label>
 										<label for="name" id="nl">Naam</label>
-                                        <input type="text" aria-required="true" name="widget-contact-form-name" class="form-control required name">
+                                        <input type="text" aria-required="true" name="name" class="form-control required name">
                                     </div>
                                      <div class="form-group col-sm-6">
                                         <label for="firstName" id="fr">Prénom</label>
 										<label for="firstName" id="en">First Name</label>
 										<label for="firstName" id="nl">Voornaam</label>
-                                        <input type="text" aria-required="true" name="widget-contact-form-firstName" class="form-control required name">
+                                        <input type="text" aria-required="true" name="firstName" class="form-control required name">
 
 										</div>
                                     <div class="form-group col-sm-6">
                                         <label for="email"  id="fr">Email</label>
 										<label for="email"  id="en">Email</label>
 										<label for="email"  id="nl">Email</label>
-                                        <input type="email" aria-required="true" name="widget-contact-form-email" class="form-control required email">
+                                        <input type="email" aria-required="true" name="email" class="form-control required email">
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label for="phone"  id="fr">Numéro de téléphone</label>
 										<label for="phone"  id="en">Phone number</label>
 										<label for="phone"  id="nl">Telefoonnumber</label>
-                                        <input type="phone" aria-required="true" name="widget-contact-form-phone" class="form-control required phone" placeholder="+32">
+                                        <input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
                                     </div>
                                     <div class="form-group col-sm-6">
 		                                <div class="particulier">
-											<label><input type="radio" name="optionsRadios" id="particulier" value="particulier" checked> Je suis un particulier</label>
+											<label><input type="radio" name="type" value="particulier" checked> Je suis un particulier</label>
 										</div>
 										<div class="professionnel">
-											<label><input type="radio" name="optionsRadios" id="professionnel" value="professionnel"> Je suis un professionnel</label>
+											<label><input type="radio" name="type" value="professionnel"> Je suis un professionnel</label>
 										</div>
 									</div>
-									<div class="form-group col-sm-12">
+									<div class="form-group col-sm-12 entreprise">
 	                                	<label for="entreprise" id="fr">Nom de votre entreprise</label>
 										<label for="entreprise" id="en">Nom de votre entreprise</label>
 										<label for="entreprise" id="nl">Nom de votre entreprise</label>
-	                                	<input type="text" aria-required="true" name="widget-contact-form-entreprise" class="form-control required entreprise">
+	                                	<input type="text" aria-required="true" name="entreprise" class="form-control required entreprise">
 	                                </div>
                                 </div>
                                 <div class="row">

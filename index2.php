@@ -2,7 +2,12 @@
 include 'include/header5.php';
 ?>
 
-<div class="modal fade" id="donnees" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<script type="text/javascript">
+
+                            
+</script>
+
+<div class="modal fade" id="GDPR" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -17,7 +22,7 @@ include 'include/header5.php';
 						<p>Vous pourrez toujours changer vos paramètres plus tard.</p>
 						<p class="text-green">ATTENTION: Antoine doit paramétrer ce popup pour qu'il ne s'ouvre qu'à chaque nouvel utilisateur. Une fois validé il ne s'affichera plus.<br>
 						Voir avec Megge et/ou Désiré les informations légales à y mettre.</p>
-						<a class="button green button-3d effect fill-vertical" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-thumbs-o-up"></i>J'accepte</span></a><br>
+						<a class="button green button-3d effect fill-vertical GDPRaccept" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-thumbs-o-up"></i>J'accepte</span></a><br>
 						<a class="button button-3d effect fill-vertical" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-info"></i>En savoir plus</span></a>
 					</div>
 				</div>
@@ -31,7 +36,27 @@ include 'include/header5.php';
 		</div>
 	</div>
 </div>
+<script type='text/javascript'>
+    
+    function set_GDPR_cookie(){
+        $.ajax({
+            url: 'include/cookie_management.php',
+            type: 'post',
+            data: {action:"set", type: "GDPR"},
+            success: function(response){
+              if(response.response == 'error') {
+                console.log(response.message);
+              }
+              if(response.response == 'success'){
 
+              }
+            }
+        })
+    }
+    
+    //document.getElementsByClassName('GDPRaccept')[0].addEventListener('click', function() { set_GDPR_cookie()}, false);
+    
+</script>
 
 <br>
 <h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
@@ -368,13 +393,6 @@ include 'include/header5.php';
 <?php
 }
 ?>
-
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#donnees").modal('show');
-    });
-</script>
 
 </body>
 

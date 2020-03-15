@@ -95,7 +95,7 @@ include 'include/header5.php';
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
+												<a href="offre.php?brand=bzen&model=amsterdam&frameType=f"><i class="fa fa-link"></i></a>
 											</p>
 										</div>
 									</div>
@@ -111,7 +111,7 @@ include 'include/header5.php';
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
+												<a href="offre.php?brand=conway&model=cairon t 200&frameType=f"><i class="fa fa-link"></i></a>
 											</p>
 										</div>
 									</div>
@@ -126,7 +126,7 @@ include 'include/header5.php';
 										<div class="image-box-content">
 											<p>
 												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
+												<a href="offre.php?brand=ahooga&model=modular&frameType=f"><i class="fa fa-link"></i></a>
 											</p>
 										</div>
 									</div>
@@ -134,83 +134,7 @@ include 'include/header5.php';
 										<h4 class="title">AHOOGA Modular</h4>
 									</div>
 								</div>
-								
-								<div class="portfolio-item">
-									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="CONWAY Cairon">
-										<div class="image-box-content">
-											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
-											</p>
-										</div>
-									</div>
-									<div class="">
-										<h4 class="title">CONWAY Cairon T 200</h4>
-									</div>
-								</div>
-								
-								<div class="portfolio-item">
-									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="BZEN Amsterdam">
-										<div class="image-box-content">
-											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
-											</p>
-										</div>
-									</div>
-									<div class="">
-										<h4 class="title">BZEN Amsterdam</h4>
-									</div>
-								</div>
-
-
-								<div class="portfolio-item">
-									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
-										<div class="image-box-content">
-											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
-											</p>
-										</div>
-									</div>
-									<div class="">
-										<h4 class="title">CONWAY Cairon T 200</h4>
-									</div>
-								</div>
-								
-								<div class="portfolio-item">
-									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
-										<div class="image-box-content">
-											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
-											</p>
-										</div>
-									</div>
-									<div class="">
-										<h4 class="title">AHOOGA Modular</h4>
-									</div>
-								</div>
-								
-								<div class="portfolio-item">
-									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="CONWAY Cairon">
-										<div class="image-box-content">
-											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<!-- <a href="velos.php"><i class="fa fa-link"></i></a>-->
-											</p>
-										</div>
-									</div>
-									<div class="">
-										<h4 class="title">CONWAY Cairon T 200</h4>
-									</div>
-								</div>
-								
+																								
 								
 							</div>
 						</div>

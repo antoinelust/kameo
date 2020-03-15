@@ -132,8 +132,22 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12">
-						<ul class="top-menu right">
-							<a class="button small red-dark button-3d full-rounded" href="#"><span>MyKAMEO</span></a>
+						<ul class="top-menu right"><?php
+                            $userID = isset($_POST['userID']) ? $_POST['userID'] : NULL;
+                            
+                            if ($userID != NULL){?>
+                                <a class="text-red" href="mykameo.php"><span>My Kameo</span></a>
+                                <?php
+                            }
+                            else
+                            {
+                                ?>
+                                <a class="button small red-dark button-3d full-rounded" data-target="#mykameo" data-toggle="modal" href="#"><span>My Kameo</span></a>
+                                <?php
+                            }
+                            ?>
+                            
+                            
 							<!--
 							<li><a href="#" onClick="setFr()">Fr</a></li>
 							<li><a href="#" onClick="setNl()">Nl</a></li>
@@ -236,6 +250,75 @@
 		</header>
 		<!-- END: HEADER -->		
 
+<div class="modal fade" id="mykameo" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h3 class="fr">Accéder à My Kameo</h3>
+						<h3 class="en">Access to My Kameo</h3>
+						<h3 class="nl">Ga naar My Kameo</h3>
+
+							<form id="user_management" class="form-transparent-grey" action="include/access_management.php" role="form" method="post">
+								<div class="form-group">
+									<label class="sr-only fr">Adresse mail</label>
+									<label class="sr-only en">E-mail</label>
+									<label class="sr-only nl">Mail</label>
+									<input type="email" name="userID" class="form-control" placeholder="Adresse mail" autocomplete="username">
+								</div>
+								<div class="form-group m-b-5">
+									<label class="sr-only fr">Mot de passe</label>
+									<label class="sr-only en">Password</label>
+									<label class="sr-only nl">Wachtwoord</label>
+									<input type="password" name="password" class="form-control" placeholder="Mot de passe" autocomplete="current-password">
+								</div>
+								<div class="form-group form-inline text-left ">
+
+
+									<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right fr"><small>Mot de passe oublié?</small></a>
+									<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right nl"><small>Wachtwoord kwijt?</small></a>
+									<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right en"><small>Password lost?</small></a>
+								</div>
+								<div class="text-left form-group">
+									<button class="button effect fill fr" type="submit">Accéder</button>
+									<button class="button effect fill en" type="submit">Confirm</button>
+									<button class="button effect fill nl" type="submit">Bevestingen</button>
+								</div>
+							</form>
+							<script type="text/javascript">
+                                jQuery("#user_management").validate({
+
+                                    submitHandler: function(form) {
+                                        jQuery(form).ajaxSubmit({
+                                            success: function(text) {
+                                                if (text.response == 'success') {
+												window.location.href = "mykameo.php";
+                                                } else {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'danger'
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            </script>
+
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
 
 
 
