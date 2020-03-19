@@ -10,11 +10,11 @@ include 'include/header5.php';
 				<h1 class="text-green">LEASING & VENTE DE VÉLO</h1>
 				<br>
 				<p class="fr">KAMEO Bikes se charge de définir le(s) moyen(s) de mobilité urbaine des entreprises selon leurs besoins, qu'il s'agisse de vélos classiques, électriques, pliants ou même de trottinettes électriques. <br /><br />
-                Toutes les dépenses liées à la mobilité douce sont <strong class="text-green text-uppercase">déductibles à 120%</strong> (à l'exception du renting qui est déductible à 100%), n'hésitez donc pas à en profiter ! </p>
+                Toutes les dépenses liées à la mobilité douce sont <strong class="text-green text-uppercase">déductibles à 100%</strong>, n'hésitez donc pas à en profiter ! </p>
 				<p class="en">KAMEO Bikes defines the mobility plan that fits you the best. It can be made of electric, foldable or normal bikes or even electric scooters.<br /><br />
-                All expenses linked to mobility are <strong class="text-green text-uppercase">120% deductible</strong> (exception made for renting, deductibe at 100%), make sure you make the most of it!</p>
+                All expenses linked to mobility are <strong class="text-green text-uppercase">100% deductible</strong> (exception made for renting, deductibe at 100%), make sure you make the most of it!</p>
 				<p class="nl">KAMEO Bikes definieert het mobiliteitsplan dat het beste bij u past. Het kan worden gemaakt van elektrische, opvouwbare of normale fietsen of zelfs elektrische scooters.<br /><br />
-                Alle uitgaven in verband met mobiliteit zijn voor <strong class="text-green text-uppercase">120% aftrekbaar</strong> (met uitzondering van huren die 100% aftrekbaar is), zorg dat u er het beste van maakt!</p>
+                Alle uitgaven in verband met mobiliteit zijn voor <strong class="text-green text-uppercase">100% aftrekbaar</strong> (met uitzondering van huren die 100% aftrekbaar is), zorg dat u er het beste van maakt!</p>
 				
 				<!--
 				<p class="fr">KAMEO Bikes propose 3 solutions afin de mettre à disposition des moyens de mobilité à vos employés :</p>
@@ -205,34 +205,34 @@ include 'include/header5.php';
 									<div class="row mb20">
 										<div class="col-sm-12">
                                             
-											<p class="fr">Toutes les dépenses liées aux vélos et vélos électriques sont déductibles à <strong>120%</strong> fiscalement, profitez-en ! <br />
+											<p class="fr">Toutes les dépenses liées aux vélos et vélos électriques sont déductibles à <strong>100%</strong> fiscalement, profitez-en ! <br />
                                             Sur base d'un achat de vélo d'une valeur de <span class="text-green" id="spanRetailPriceFR"></span>, voici l'avantage fiscal: <br /><br />
                                             <strong>Prix du vélo :</strong> <span id="spanRetailPriceFR2"></span><br />
                                             <strong>TVA :</strong> <span id="spanTVARetailPriceFR"></span><br />
                                             <strong>Prix HTVA :</strong> <span id="spanHTVARetailPriceFR"></span><br />
-                                            <strong>Avantage fiscal :</strong> 120 % x <span id="spanHTVARetailPriceFR2"></span> x 34 % = <span id="spanAvantageFiscalRetailPriceFR" class="text-green"></span><br /><br />
+                                            <strong>Avantage fiscal :</strong> 100 % x <span id="spanHTVARetailPriceFR2"></span> x 34 % = <span id="spanAvantageFiscalRetailPriceFR" class="text-green"></span><br /><br />
                                             
                                                 
                                             Grâce à l'avantage fiscal, le vélo d'une valeur de <span id="spanHTVARetailPriceFR3"></span> HTVA ne coûte réellement à la société que <strong><span id="spanFinalPriceRetailPriceFR" class="text-green"></span></strong> (<span id="spanHTVARetailPriceFR4"></span> - <span id="spanAvantageFiscalRetailPriceFR2"></span>).
                                             </p>
                                             
-											<p class="en">All expenses linked to green mobility are <strong>120%</strong> deductible, make sure you make the best of it! <br />
+											<p class="en">All expenses linked to green mobility are <strong>100%</strong> deductible, make sure you make the best of it! <br />
                                             Based on a retail value of <span class="text-green" id="spanRetailPriceEN"></span>, here is the fiscal advantage: <br /><br />
                                             <strong>Retail Price :</strong> <span id="spanRetailPriceEN2"></span><br />
                                             <strong>VAT :</strong> <span id="spanTVARetailPriceEN"></span><br />
                                             <strong>Price VAT exluded :</strong> <span id="spanHTVARetailPriceEN"></span><br />
-                                            <strong>Fiscal advantage :</strong> 120 % x <span id="spanHTVARetailPriceEN2"></span> x 34 % = <span id="spanAvantageFiscalRetailPriceEN" class="text-green"></span><br /><br />
+                                            <strong>Fiscal advantage :</strong> 100 % x <span id="spanHTVARetailPriceEN2"></span> x 34 % = <span id="spanAvantageFiscalRetailPriceEN" class="text-green"></span><br /><br />
                                             
                                                 
                                             Thanks to the fiscal advantage, bike with a retail price of <span id="spanHTVARetailPriceEN3"></span> (VAT excluded) only costs <strong><span id="spanFinalPriceRetailPriceEN" class="text-green"></span></strong> (<span id="spanHTVARetailPriceEN4"></span> - <span id="spanAvantageFiscalRetailPriceEN2"></span>).
                                             </p>
                                             
-											<p class="nl">Alle uitgaven in verband met groene mobiliteit zijn voor <strong>120%</strong> aftrekbaar, zorg dat u er het beste van maakt! <br />
+											<p class="nl">Alle uitgaven in verband met groene mobiliteit zijn voor <strong>100%</strong> aftrekbaar, zorg dat u er het beste van maakt! <br />
                                             Gebaseerd op een winkelwaarde van <span class="text-green" id="spanRetailPriceNL"> </span>, is hier het fiscale voordeel:<br /><br />
                                             <strong>Verkoopprijs :</strong> <span id="spanRetailPriceNL2"></span><br />
                                             <strong>BTW :</strong> <span id="spanTVARetailPriceNL"></span><br />
                                             <strong>Prijs exclusief BTW :</strong> <span id="spanHTVARetailPriceNL"></span><br />
-                                            <strong>Fiscaal voordeel :</strong> 120 % x <span id="spanHTVARetailPriceNL2"></span> x 34 % = <span id="spanAvantageFiscalRetailPriceNL" class="text-green"></span><br /><br />
+                                            <strong>Fiscaal voordeel :</strong> 100 % x <span id="spanHTVARetailPriceNL2"></span> x 34 % = <span id="spanAvantageFiscalRetailPriceNL" class="text-green"></span><br /><br />
                                             
                                                 
                                             Dankzij het fiscale voordeel kost een fiets met een verkoopprijs van <span id="spanHTVARetailPriceNL3"> </span> (exclusief btw) alleen <strong><span id="spanFinalPriceRetailPriceNL" class="text-green"></span></strong>
@@ -259,28 +259,28 @@ include 'include/header5.php';
 									<div class="row mb20">
 										<div class="col-sm-12">
                                             
-											<p class="fr">Toutes les dépenses liées aux vélos et vélos électriques sont déductibles à <strong>120%</strong> fiscalement, profitez-en ! <br />
+											<p class="fr">Toutes les dépenses liées aux vélos et vélos électriques sont déductibles à <strong>100%</strong> fiscalement, profitez-en ! <br />
                                             Sur base d'un achat de vélo d'une valeur de <span class="text-green" id="spanLeasingPriceFR"></span>, voici l'avantage fiscal: <br /><br />
                                             <strong>Montant du leasing :</strong> <span id="spanLeasingPriceFR2"></span><br />
-                                            <strong>Avantage fiscal :</strong> 120 % x <span id="spanHTVALeasingPriceFR2"></span> x 34 % = <span id="spanAvantageFiscalLeasingPriceFR" class="text-green"></span><br /><br />
+                                            <strong>Avantage fiscal :</strong> 100 % x <span id="spanHTVALeasingPriceFR2"></span> x 34 % = <span id="spanAvantageFiscalLeasingPriceFR" class="text-green"></span><br /><br />
                                             
                                                 
                                             Grâce à l'avantage fiscal, le leasing d'une valeur de <span id="spanHTVALeasingPriceFR3"></span> HTVA ne coûte réellement à la société que <strong><span id="spanFinalPriceLeasingPriceFR" class="text-green"></span></strong> (<span id="spanHTVALeasingPriceFR4"></span> - <span id="spanAvantageFiscalLeasingPriceFR2"></span>).
                                             </p>			
                                             
-											<p class="en">All expenses linked to green mobility are <strong>120%</strong> deductible, make sure you make the best of it! <br />
+											<p class="en">All expenses linked to green mobility are <strong>100%</strong> deductible, make sure you make the best of it! <br />
                                             Based on a retail value of <span class="text-green" id="spanLeasingPriceEN"></span>, here is the fiscal advantage: <br /><br />
                                             <strong>Leasing :</strong> <span id="spanLeasingPriceEN2"></span><br />
-                                            <strong>Fiscal advantage :</strong> 120 % x <span id="spanHTVALeasingPriceEN2"></span> x 34 % = <span id="spanAvantageFiscalLeasingPriceEN" class="text-green"></span><br /><br />
+                                            <strong>Fiscal advantage :</strong> 100 % x <span id="spanHTVALeasingPriceEN2"></span> x 34 % = <span id="spanAvantageFiscalLeasingPriceEN" class="text-green"></span><br /><br />
                                             
                                                 
                                             Thanks to the fiscal advantage, the leasing with a value of <span id="spanHTVALeasingPriceEN3"></span> (VAT excluded) only costs <strong><span id="spanFinalPriceLeasingPriceEN" class="text-green"></span></strong> (<span id="spanHTVALeasingPriceEN4"></span> - <span id="spanAvantageFiscalLeasingPriceEN2"></span>).
                                             </p>
 
-											<p class="nl">Alle uitgaven in verband met groene mobiliteit zijn voor <strong>120%</strong> aftrekbaar, zorg dat u er het beste van maakt!<br />
+											<p class="nl">Alle uitgaven in verband met groene mobiliteit zijn voor <strong>100%</strong> aftrekbaar, zorg dat u er het beste van maakt!<br />
                                             Gebaseerd op een winkelwaarde van <span class="text-green" id="spanLeasingPriceNL"> </span>, is hier het fiscale voordeel: <br /><br />
                                             <strong>Leasing :</strong> <span id="spanLeasingPriceNL2"></span><br />
-                                            <strong>Fiscaal voordeel:</strong> 120 % x <span id="spanHTVALeasingPriceNL2"></span> x 34 % = <span id="spanAvantageFiscalLeasingPriceNL" class="text-green"></span><br /><br />
+                                            <strong>Fiscaal voordeel:</strong> 100 % x <span id="spanHTVALeasingPriceNL2"></span> x 34 % = <span id="spanAvantageFiscalLeasingPriceNL" class="text-green"></span><br /><br />
                                             
                                                 
                                             Dankzij het fiscale voordeel, de leasing met een waarde van <span id="spanHTVALeasingPriceNL3"></span> (Exclusief btw) kost alleen <strong><span id="spanFinalPriceLeasingPriceNL" class="text-green"></span></strong> (<span id="spanHTVALeasingPriceNL4"></span> - <span id="spanAvantageFiscalLeasingPriceNL2"></span>).
@@ -296,7 +296,7 @@ include 'include/header5.php';
 							</div>
 						</div>
 					</div>
-				    <div class="modal fade" id="avantageRentingPrice" tabindex="-1" role="modal" aria-labelledby="modal-label-3" aria-hidden="true">
+				    <!--<div class="modal fade" id="avantageRentingPrice" tabindex="-1" role="modal" aria-labelledby="modal-label-3" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -342,7 +342,7 @@ include 'include/header5.php';
 								</div>
 							</div>
 						</div>
-					</div>
+					</div>-->
 
 	
 	
@@ -360,11 +360,11 @@ include 'include/header5.php';
             success: function(response){
                 document.getElementById('retailPrice').innerHTML = "<sup>€</sup>"+response.HTVARetailPrice+"<span></span>";                
                 document.getElementById('leasingPriceFR').innerHTML = "<sup>€</sup>"+response.leasingPrice+"<span>/mois</span>";                
-                document.getElementById('rentingPriceFR').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/mois</span>";  
+                //document.getElementById('rentingPriceFR').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/mois</span>";  
                 document.getElementById('leasingPriceNL').innerHTML = "<sup>€</sup>"+response.leasingPrice+"<span>/mij</span>";                
-                document.getElementById('rentingPriceNL').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/mij</span>";  
+                //document.getElementById('rentingPriceNL').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/mij</span>";  
                 document.getElementById('leasingPriceEN').innerHTML = "<sup>€</sup>"+response.leasingPrice+"<span>/month</span>";                
-                document.getElementById('rentingPriceEN').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/month</span>";  
+                //document.getElementById('rentingPriceEN').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/month</span>";  
 
                 document.getElementById('spanRetailPriceFR').innerHTML = response.retailPrice+" € ";
                 document.getElementById('spanRetailPriceFR2').innerHTML = response.retailPrice+" € ";
@@ -424,7 +424,7 @@ include 'include/header5.php';
                 document.getElementById('spanAvantageFiscalLeasingPriceNL2').innerHTML = response.avantageFiscalLeasingPrice+" € ";
                 document.getElementById('spanFinalPriceLeasingPriceNL').innerHTML = response.finalPriceLeasingPrice+" €/maand ";
 
-                document.getElementById('spanRentingPriceFR').innerHTML = response.retailPrice+" € ";
+                /*document.getElementById('spanRentingPriceFR').innerHTML = response.retailPrice+" € ";
                 document.getElementById('spanRentingPriceFR2').innerHTML = response.rentingPrice+" €/mois ";
                 document.getElementById('spanHTVARentingPriceFR2').innerHTML = response.HTVARentingPrice+" € ";
                 document.getElementById('spanHTVARentingPriceFR3').innerHTML = response.HTVARentingPrice+" €/mois ";
@@ -447,7 +447,7 @@ include 'include/header5.php';
                 document.getElementById('spanHTVARentingPriceNL4').innerHTML = response.HTVARentingPrice+" € ";
                 document.getElementById('spanAvantageFiscalRentingPriceNL').innerHTML = response.avantageFiscalRentingPrice+" €/maand ";
                 document.getElementById('spanAvantageFiscalRentingPriceNL2').innerHTML = response.avantageFiscalRentingPrice+" € ";
-                document.getElementById('spanFinalPriceRentingPriceNL').innerHTML = response.finalPriceRentingPrice+" €/maand ";
+                document.getElementById('spanFinalPriceRentingPriceNL').innerHTML = response.finalPriceRentingPrice+" €/maand ";*/
 
                 
             }
