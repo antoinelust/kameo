@@ -69,11 +69,11 @@ include 'include/header5.php';
 											<label><input type="radio" name="type" value="professionnel"> Je suis un professionnel</label>
 										</div>
 									</div>
-									<div class="form-group col-sm-12 entreprise">
+									<div class="form-group col-sm-12 entreprise hidden">
 	                                	<label for="entreprise" id="fr">Nom de votre entreprise</label>
 										<label for="entreprise" id="en">Nom de votre entreprise</label>
 										<label for="entreprise" id="nl">Nom de votre entreprise</label>
-	                                	<input type="text" aria-required="true" name="entreprise" class="form-control required entreprise">
+	                                	<input type="text" aria-required="true" name="entreprise" class="form-control">
 	                                </div>
                                 </div>
                                 <div class="row">
@@ -81,19 +81,20 @@ include 'include/header5.php';
                                         <label for="subject"  id="fr">Votre sujet</label>
 										<label for="subject"  id="en">Subject</label>
 										<label for="subject"  id="nl">Onderwerp</label>
-                                        <input type="text" name="widget-contact-form-subject" class="form-control required">
+                                        <input type="text" name="subject" class="form-control required">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="message"  id="fr">Message</label>
 									<label for="message"  id="en">Message</label>
 									<label for="message"  id="nl">Bericht</label>
-                                    <textarea type="text" name="widget-contact-form-message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
+                                    <textarea type="text" name="message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
                                 </div>
                                 
                                 <div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
                                 
-                                <input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-contact-form-antispam" value="" />
+                                <input type="text" class="hidden" name="antispam" value="" />
+                                
                                 <button  id="fr" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Envoyer</button>
 								<button  id="en" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Send</button>
 								<button  id="nl" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>

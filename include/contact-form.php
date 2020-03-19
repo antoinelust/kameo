@@ -18,9 +18,10 @@ $email = $_POST["email"];
 $phone =  $_POST["phone"];
 $type = $_POST["type"];
 $entreprise = isset($_POST["entreprise"]) ? $_POST["entreprise"] : "N/A";
+$subject = isset($_POST["subject"]) ? $_POST["subject"] : "N/A";
 $message = nl2br($_POST["message"]);
 $antispam = $_POST['antispam'];
-$captcha = strlen($_POST['response']);
+$captcha = strlen($_POST['g-recaptcha-response']);
 
 
 $length = strlen($phone);
@@ -884,7 +885,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 
                             <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                                <em>Copyright © 2019 KAMEO Bikes, Tous droits réservés.</em><br>
+                                <em>Copyright © 2020 KAMEO Bikes, Tous droits réservés.</em><br>
     <br>
     <strong>info@kameobikes.com</strong><br>
     <br>
