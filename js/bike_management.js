@@ -18,7 +18,7 @@ function list_bikes_admin() {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp=`<table class="table table-condensed bikesListingTable">
+                var temp=`<table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='10'>
                             <h4 class="fr-inline text-green">Vélos: Leasing et autres</h4><br/>
                             <a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#" onclick="set_required_image('true')">
                               <span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span>
@@ -28,9 +28,11 @@ function list_bikes_admin() {
                             </span>
                             <br/>
                             <h4 class="en-inline text-green">Bikes:</h4><h4 class="nl-inline text-green">Fietsen:</h4>
-                            <tbody>
                               <thead>
                                 <tr>
+                                  <th>
+                                    ID
+                                  </th>
                                   <th>
                                     <span class="fr-inline">Société</span><span class="en-inline">Company</span>
                                     <span class="nl-inline">Company</span></th><th><span class="fr-inline">Vélo</span>
@@ -58,9 +60,10 @@ function list_bikes_admin() {
                                     <span class="nl-inline">Bike status</span>
                                   </th>
                                   <th>Assurance ?</th>
+                                  <th>Mise à jour </th>
                                   <th></th>
                                 </tr>
-                              </thead>`;
+                              </thead><tbody>`;
                 dest=dest.concat(temp);
 
                 while (i < response.bikeNumber){
@@ -81,12 +84,12 @@ function list_bikes_admin() {
 
                     if(response.bike[i].contractStart==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
                         start="<span class=\"text-red\">N/A</span>";
-                    }else if(response.bike[i].contractStart!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
-                        start="<span class=\"text-green\">"+response.bike[i].contractStart.substr(0,10)+"</span>";
+                    }else if(response.bike[i].contractStart!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){                     
+                        start="<span class=\"text-green\">"+response.bike[i].contractStart.substr(8,2)+"/"+response.bike[i].contractStart.substr(5,2)+"/"+response.bike[i].contractStart.substr(2,2)+"</span>";
                     }else if(response.bike[i].contractStart==null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
                         start="<span class=\"text-green\">N/A</span>";
                     }else if(response.bike[i].contractStart!=null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
-                        start="<span class=\"text-red\">"+response.bike[i].contractStart.substr(0,10)+"</span>";
+                        start="<span class=\"text-red\">"+response.bike[i].contractStart.substr(8,2)+"/"+response.bike[i].contractStart.substr(5,2)+"/"+response.bike[i].contractStart.substr(2,2)+"</span>";
                     }else{
                         start="<span class=\"text-red\">ERROR</span>";
                     }
@@ -96,11 +99,11 @@ function list_bikes_admin() {
                     if(response.bike[i].contractEnd==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
                         end="<span class=\"text-red\">N/A</span>";
                     }else if(response.bike[i].contractEnd!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
-                        end="<span class=\"text-green\">"+response.bike[i].contractEnd.substr(0,10)+"</span>";
+                        end="<span class=\"text-green\">"+response.bike[i].contractEnd.substr(8,2)+"/"+response.bike[i].contractEnd.substr(5,2)+"/"+response.bike[i].contractEnd.substr(2,2)+"</span>";
                     }else if(response.bike[i].contractEnd==null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
                         end="<span class=\"text-green\">N/A</span>";
                     }else if(response.bike[i].contractEnd!=null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
-                        end="<span class=\"text-red\">"+response.bike[i].contractEnd.substr(0,10)+"</span>";
+                        end="<span class=\"text-red\">"+response.bike[i].contractEnd.substr(8,2)+"/"+response.bike[i].contractEnd.substr(5,2)+"/"+response.bike[i].contractEnd.substr(2,2)+"</span>";
                     }else{
                         start="<span class=\"text-red\">ERROR</span>";
                     }
@@ -141,14 +144,35 @@ function list_bikes_admin() {
                     if(response.bike[i].contractType == 'selling'){
                       row = '<tr style="display:none;" class="hideRow">';
                     }
-                    var temp= row + "<td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"retrieveBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td><ins><a class=\"text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">Mettre à jour</a></ins></td></tr>";
+                    var temp= row + "<td>"+response.bike[i].id+"</td><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"retrieveBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td data-sort=\""+(new Date(response.bike[i].HEU_MAJ)).getTime()+"\">"+response.bike[i].HEU_MAJ.substr(8,2)+"/"+response.bike[i].HEU_MAJ.substr(5,2)+"/"+response.bike[i].HEU_MAJ.substr(2,2)+"</td><td><ins><a class=\"text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">Mettre à jour</a></ins></td></tr>";
                     dest=dest.concat(temp);
                   i++;
                 }
                 var temp="</tobdy></table>";
                 dest=dest.concat(temp);
                 document.getElementById('bikeDetailsAdmin').innerHTML = dest;
+                table = $('#bookingAdminTable').DataTable( {
+                    paging: true,
+                    searching: true,
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tous"]],
+                    "scrollX": true,
+                      "columns": [
+                        { "width": "2%" },
+                        { "width": "2%" },
+                        { "width": "5%" },
+                        { "width": "10%" },
+                        { "width": "5%" },
+                        { "width": "10%" },
+                        { "width": "10%" },
+                        { "width": "3%" },
+                        { "width": "5%" },
+                        { "width": "5%" },
+                        { "width": "5%" },
+                        { "width": "5%" },
+                        { "width": "5%" }]
+                });
 
+                
                 document.getElementById('counterBikeAdmin').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
 
                 displayLanguage();
@@ -390,7 +414,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                         $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);
                         $('#widget-bikeManagement-form select[name=contractType]').val(response.contractType);
                         $('#widget-bikeManagement-form input[name=bikeSoldPrice]').val(response.soldPrice);
-                        if(response.contractStart){
+                        if(response.contractStart){                            
                             $('#widget-bikeManagement-form input[name=contractStart]').val(response.contractStart.substr(0,10));
                         }else{
                             $('#widget-bikeManagement-form input[name=contractStart]').val("");
@@ -812,7 +836,7 @@ function get_bikes_listing() {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><tbody><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Début du contrat</span><span class=\"en-inline\">Contract start</span><span class=\"nl-inline\">Contract start</span></th><th><span class=\"fr-inline\">Fin du contrat</span><span class=\"en-inline\">Contract End</span><span class=\"nl-inline\">Contract End</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead>";
+                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type de contrat</span><span class=\"en-inline\">Contract type</span><span class=\"nl-inline\">Contract type</span></th><th><span class=\"fr-inline\">Début du contrat</span><span class=\"en-inline\">Contract start</span><span class=\"nl-inline\">Contract start</span></th><th><span class=\"fr-inline\">Fin du contrat</span><span class=\"en-inline\">Contract End</span><span class=\"nl-inline\">Contract End</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead><tbody>";
                 dest=dest.concat(temp);
 
                 var dest2="";
@@ -851,7 +875,7 @@ function get_bikes_listing() {
                     i++;
 
                 }
-                var temp="</tobdy></table>";
+                var temp="</tbody></table>";
                 dest=dest.concat(temp);
                 document.getElementById('bikeDetails').innerHTML = dest;
                 document.getElementsByClassName('bikeSelection')[0].innerHTML=dest2;

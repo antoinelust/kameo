@@ -66,7 +66,7 @@ function list_feedbacks() {
 
                 var i=0;
                 var dest="";
-                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Bike</th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien</span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th><th>Statut</th><th>Lu ?</th></tr></thead>";
+                var temp="<table class=\"table table-condensed\" id=\"feedbackListing\" data-order='[[ 0, \"desc\" ]]'><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Bike</th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien</span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th><th>Statut</th><th>Lu ?</th></tr></thead><tbody>";
                 dest=dest.concat(temp);
                 while (i < response.feedbacksNumber){
                     var unix_timestamp = response.feedback[i].start;
@@ -135,13 +135,25 @@ function list_feedbacks() {
                     i++;
 
                 }
-                var temp="</tobdy></table>";
+                var temp="</tbody></table>";
                 dest=dest.concat(temp);
 
                 document.getElementById('feedbacksListingSpan').innerHTML = dest;
                 $('.retrieveFeedback').click(function(){
                     retrieve_feedback(this.name);
                 });
+                
+                if ( $.fn.dataTable.isDataTable( '#feedbackListing' ) ) {
+                    table = $('#feedbackListing').DataTable();
+                }
+                else {
+                    table = $('#feedbackListing').DataTable( {
+                        "language": {
+                          "emptyTable": "Pas de feedbacks"
+                        }                        
+                    } );
+                }
+                
 
             }
 

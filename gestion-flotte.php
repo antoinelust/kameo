@@ -9,8 +9,23 @@ include 'include/header5.php';
 		<div class="row">
 				<h1 class="text-green">GESTION DE FLOTTE</h1>
 				<br>
-				<p class="fr">KAMEO Bikes a élaboré un système <strong>simple</strong>, <strong>connecté</strong> & <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</p>
-				<p class="fr">Le modèle que nous avons développé est <strong>unique</strong> et modulable. Vous avez envie d'ajouter des fonctionnalités? <strong>On s'en occupe!</strong></p>
+				<div class="col-md-12" style="background: url('images/fond_degrade4.jpg');" data-stellar-background-ratio="0.6">
+					<h4 class="col-md-6 text-center">Accès sécurisé</h4><br>
+					<h4 class="col-md-6 text-center">Gestion des clés</h4><br>
+					<h4 class="col-md-6 text-center">Demande d’entretien</h4><br>
+					<h4 class="col-md-6 text-center">Recharge des batteries</h4><br>
+					<h4 class="col-md-6 text-center">Accès aux accessoires</h4><br>
+					<h4 class="col-md-6 text-center">Réservation d’un vélo</h4><br>
+					<h4 class="col-md-6 text-center">Gestion des utilisateurs</h4><br>
+					<h4 class="col-md-6 text-center">Conditions d’utilisation</h4><br>
+					<h4 class="col-md-6 text-center">Monitoring / Contrôle</h4>
+				</div>
+				<div class="space"></div>
+				<h4 class="text-green text-center">Face à ces problèmes KAMEO Bikes a élaboré un système <strong>simple</strong>, <strong>connecté</strong> & <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</h4>
+
+				<h4 class="text-green text-center">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés.</h4>
+				
+				<div class="separator"></div>
 				
 				<div class="col-md-6">
 					<h3>MyKAMEO</h3>
@@ -24,12 +39,37 @@ include 'include/header5.php';
 				</div>
 				
 				<div class="space"></div>
+				<!--
 				
 				<p class="fr">Gérer sa mobilité demande de l’énergie et du temps! En partant de ce constat, KAMEO Bikes a développé sa plateforme <strong class="text-red">MyKAMEO</strong> et son système de rangement de clés <strong class="text-green">MyBORNE</strong>.</p>
 				<p>L’objectif de cette plateforme est de digitaliser l’ensemble des actions répétitives liées à vos déplacements tant au niveau administratif qu’au niveau pratique. De base, la demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>
 				<p class="fr">Vous avez des difficultés à gérer votre flotte de matériel roulant? Vous souhaitez le faire selon des critères complexes à optimiser? Nous pouvons implémenter ensemble votre système de gestion sur mesure! Simplifiez vous la vie en automatisant les tâches répétitives et chronophages.</p>
 				<p class="fr">Par exemple, notre système de gestion de flotte partagées peut intégrer tous vos véhicules et être paramétré en fonction de vos besoins!</p>
-				
+				-->
+				<p><strong class="text-red">MyKAMEO</strong> est la plateforme de réservation en ligne.<br> Dotée d’accès différenciés pour un utilisateur lamda ou pour un responsable de la flotte, vous retrouverez différentes fonctions.</p>
+				<div class="col-md-6">
+					<h4>Vous êtes simple utilisateur, vous pouvez :</h4>
+					<ul>
+						<li>Vous connecter avec un identifiant unique</li>
+						<li>Réserver un vélo</li>
+						<li>Consulter l’historique des réservations</li>
+						<li>Choisir le moyen de transport idéal selon le trafic et la météo</li>
+						<li>Demander une assistance ou un entretien</li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<h4>Vous êtes responsable de la flotte. En plus d’être un utilisateur classique, vous pouvez :</h4>
+					<ul>
+						<li>Gérer les vélos</li>
+						<li>Ajouter et modifier des utilisateurs</li>
+						<li>Paramétrer vos conditions de réservation des vélos</li>
+						<li>Consulter l’historique et les statistiques d’utilisation</li>
+						<li>Avoir accès à vos factures et à votre contrat</li>
+					</ul>
+				</div>
+				<div class="space"></div>
+				<p><strong class="text-red">MyBORNE</strong> est le boitier connecté sécurisant l’accès aux clés. Il est en lien direct avec notre base de données pour donner accès à la clé d’un vélo grâce à un identifiant personnel. Ceci pouvant fonctionner via un code à 4 chiffres ou un badge RFID.<br>MyBorne permet donc d’identifier quel utilisateur à pris un vélo et quand.<br> Le boitier est modulaire selon vos besoins, possibilité de gérer de 5 à 100 clés. Il est aussi personnalisable aux couleurs de votre entreprise.</p>
+				<p>Vous avez envie d'ajouter des fonctionnalités? <strong>On s'en occupe!</strong> De plus notre système fonctionne aussi pour <strong>vos voitures</strong>, <strong>camionnettes</strong> ou <strong>tout autre véhicule</strong>.</p>
 				<div class="separator"></div>
 				
 				<h3>Réserver un véhicule</h3>

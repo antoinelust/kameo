@@ -102,16 +102,21 @@ if($action=="graphic"){
     
 }else{
     include 'connexion.php';
-    $sql="SELECT * from companies";
+    $sql="SELECT * from companies WHERE 1 ";
     $company=isset($_POST['company']) ? $_POST['company'] : "*";
-
-
     $type=isset($_POST['type']) ? $_POST['type'] : NULL;    
+    $filter=isset($_POST['filter']) ? $_POST['filter'] : NULL;    
+    
+    
+    
     if($type!="*" && $type != NULL){
-        $sql=$sql." WHERE TYPE='$type'";
+        $sql=$sql." AND TYPE='$type'";
     }
 
     $sql=$sql." ORDER BY HEU_MAJ DESC";
+    
+    $response['sql']=$sql;
+    
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -129,9 +134,12 @@ if($action=="graphic"){
     while($row = mysqli_fetch_array($result)){
         $response['company'][$i]['ID']=$row['ID'];
         $response['company'][$i]['companyName']=$row['COMPANY_NAME'];
+        $currentCompany=$row['INTERNAL_REFERENCE'];
         $response['company'][$i]['internalReference']=$row['INTERNAL_REFERENCE'];
         $response['company'][$i]['type']=$row['TYPE'];
         $internalReference=$row['INTERNAL_REFERENCE'];
+        $HEU_MAJ=$row['HEU_MAJ'];
+        
         $sql2="SELECT * FROM customer_bikes WHERE COMPANY='$internalReference'";
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -190,10 +198,27 @@ if($action=="graphic"){
                 if($result5->num_rows=='0'){
                     $customerBuildingStatus="KO";
                 }
-            }
+            }            
         }
+        
         $response['company'][$i]['bikeAccessStatus'] = $bikeAccessStatus;
         $response['company'][$i]['customerBuildingAccess'] = $customerBuildingStatus;
+        
+        
+        $sql6="SELECT MAX(HEU_MAJ) as HEU_MAJ from company_actions where COMPANY='$currentCompany'";
+        if ($conn->query($sql6) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+    
+        $result6 = mysqli_query($conn, $sql6);     
+        $resultat6=mysqli_fetch_array($result6);
+        
+        if($resultat6['HEU_MAJ'] > $HEU_MAJ){
+            $HEU_MAJ=$resultat6['HEU_MAJ'];
+        }
+        $response['company'][$i]['HEU_MAJ'] = $HEU_MAJ;
         $i++;
     }
 

@@ -7,7 +7,6 @@ $code=$_GET['code'];
 
 
 $sql="SELECT ID_reservation from locking_code WHERE BUILDING_START = '$building' AND CODE = '$code'";
-
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);

@@ -351,7 +351,7 @@ function getHistoricBookings() {
                 var i=0;
                 var dest="";
 
-                var tempHistoricBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations précédentes:</h4><h4 class=\"en-inline\">Previous Bookings:</h4><h4 class=\"nl-inline\">Vorige reservaties:</h4>";
+                var tempHistoricBookings="<table class=\"table table-condensed\" id=\"previousBookingsTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='5'><h4 class=\"fr-inline\">Réservations précédentes:</h4><h4 class=\"en-inline\">Previous Bookings:</h4><h4 class=\"nl-inline\">Vorige reservaties:</h4>";
                 dest=dest.concat(tempHistoricBookings);
 
                 var tempHistoricBookings="<ul><li>Depuis le début de l'année : "+response.maxBookingsPerYear+" réservations";
@@ -376,7 +376,7 @@ function getHistoricBookings() {
 
 
 
-                var tempHistoricBookings="<thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th></th></tr></thead><tbody>";
+                var tempHistoricBookings="<thead><tr><th>ID</th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th></th></tr></thead><tbody>";
                 dest = dest.concat(tempHistoricBookings);
 
                 while (i < response.previous_bookings)
@@ -394,7 +394,7 @@ function getHistoricBookings() {
                     var frame_number=response.booking[i].frameNumber;
 
 
-                    var tempHistoricBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small red rounded effect\" data-target=\"#entretien2\" data-toggle=\"modal\" href=\"#\" onclick=\"initializeEntretien2('"+frame_number+"')\"><i class=\"fa fa-wrench\"></i><span>Entretien</span></a></td></tr>";
+                    var tempHistoricBookings ="<tr><td>"+response.booking[i].ID+"</td><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small red rounded effect\" data-target=\"#entretien2\" data-toggle=\"modal\" href=\"#\" onclick=\"initializeEntretien2('"+frame_number+"')\"><i class=\"fa fa-wrench\"></i><span>Entretien</span></a></td></tr>";
 
                     dest = dest.concat(tempHistoricBookings);
                     i++;
@@ -406,15 +406,30 @@ function getHistoricBookings() {
                 dest = dest.concat(tempHistoricBookings);
 
                 //affichage du résultat de la recherche
-                document.getElementById('historicBookings').innerHTML = dest;
-
+                document.getElementById('historicBookings').innerHTML = dest;                
+                
+                if ( $.fn.dataTable.isDataTable( '#previousBookingsTable' ) ) {
+                    table = $('#previousBookingsTable').DataTable();
+                }
+                else {
+                    table = $('#previousBookingsTable').DataTable( {
+                        paging: true,
+                        "lengthChange": false,
+                        searching: false,
+                        "language": {
+                          "emptyTable": "Pas de réservations futures"
+                        }                        
+                    } );
+                }
+                
+                
                 //Booking futurs
 
                 var dest="";
                 if(response.booking.codePresence==false){
-                    var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
+                    var tempFutureBookings="<table class=\"table table-condensed\" id=\"futureBookingsTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='5'><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th>ID</th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th></tr></thead><tbody>";
                 } else{
-                    var tempFutureBookings="<table class=\"table table-condensed\"><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th>Code</th></tr></thead><tbody>";
+                    var tempFutureBookings="<table class=\"table table-condensed\" id=\"futureBookingsTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='5'><h4 class=\"fr-inline\">Réservations futures:</h4><h4 class=\"en-inline\">Next bookings:</h4><h4 class=\"nl-inline\">Volgende boekingen:</h4><thead><tr><th>ID</th><th><span class=\"fr-inline\">Départ</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Arrivée</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fitse</span></th><th>Code</th></tr></thead><tbody>";
                 }
                 dest = dest.concat(tempFutureBookings);
                 var length = parseInt(response.future_bookings)+parseInt(response.previous_bookings);
@@ -435,7 +450,7 @@ function getHistoricBookings() {
                     var annulation=response.booking[i].annulation;
 
                     if(response.booking.codePresence==false){
-                        var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+                        var tempFutureBookings ="<tr><td>"+booking_id+"</td><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span> "+hour_end+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
                     }else{
                         code=response.booking[i].codeValue;
                         if(code.length==3){
@@ -446,7 +461,7 @@ function getHistoricBookings() {
                             code="000"+length;
                         }
 
-                        var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span><span class=\"en-inline\">at</span><span class=\"nl-inline\">om</span> "+hour_end+"</td><td>"+frame_number+"</td><td>"+code+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+                        var tempFutureBookings ="<tr><td>"+dayStart+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span> "+hour_start+"</td><td>"+dayEnd+" - "+building_end_fr+" <span class=\"fr-inline\">à</span> "+hour_end+"</td><td>"+frame_number+"</td><td>"+code+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
 
                     }
                     if(annulation){
@@ -466,7 +481,24 @@ function getHistoricBookings() {
 
                 //affichage du résultat de la recherche
                 document.getElementById('futureBookings').innerHTML = dest;
+                
                 displayLanguage();
+                
+                if ( $.fn.dataTable.isDataTable( '#futureBookingsTable' ) ) {
+                    table = $('#futureBookingsTable').DataTable();
+                }
+                else {
+                    table = $('#futureBookingsTable').DataTable( {
+                        paging: true,
+                        "lengthChange": false,                        
+                        searching: false,
+                        "language": {
+                          "emptyTable": "Pas de réservations futures"
+                        }                        
+                    } );
+                }
+                
+                
             }else{
                 console.log(response.message);
             }

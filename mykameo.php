@@ -34,8 +34,14 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/company_management.js"></script>
 <script type="text/javascript" src="js/maintenance_management.js"></script>
 <script type="text/javascript" src="js/notifications.js"></script>
+<script type="text/javascript" src="js/addons/datatables.min.js"></script>
+<script type="text/javascript" src="js/datatable_default.js"></script>
 
 
+<script type="text/javascript">
+    
+
+</script>
 
 
 <style media="screen">
@@ -69,17 +75,13 @@ var myChart2;
 var myChart3;
 
 var nbContacts;
-$('document').ready(function(){
-  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),user_ID);
-
-});
 
 window.addEventListener("DOMContentLoaded", function(event) {
 
   var classname = document.getElementsByClassName('fleetmanager');
 
   for (var i = 0; i < classname.length; i++) {
-
+      
     classname[i].addEventListener('click', hideResearch, false);
     classname[i].addEventListener('click', get_bikes_listing, false);
     classname[i].addEventListener('click', get_users_listing, false);
@@ -92,13 +94,9 @@ window.addEventListener("DOMContentLoaded", function(event) {
     classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
     classname[i].addEventListener('click', function () { list_feedbacks()}, false);
     classname[i].addEventListener('click', function () { list_bikes_admin()}, false);
-    classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>')}, false);
+    classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>')}, false);
     classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
     classname[i].addEventListener('click', initialize_booking_counter, false);
-
-
-
-
 
     var tempDate=new Date();
     $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
@@ -110,8 +108,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
 
     classname[i].addEventListener('click', function () { list_boxes("*")}, false);
     classname[i].addEventListener('click', function () { initializeFields()}, false);
-    classname[i].addEventListener('click', function () {list_maintenances();}, false);
-
+    classname[i].addEventListener('click', function () {list_maintenances();}, false);        
 
   }
 
@@ -128,13 +125,12 @@ window.addEventListener("DOMContentLoaded", function(event) {
   document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
   document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
   document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false);
-  document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(), '<?php echo $user ?>');
+  document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');
 }, false);
 document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
 document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
 document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
 document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-document.getElementsByClassName('tasksListing_number')[0].addEventListener('change', function() { taskFilter()}, false);
 document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
 
@@ -211,7 +207,7 @@ function initializeFields(){
 }
 
 function taskFilter(e){
-  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
+  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user ?>');
 
 }
 
@@ -534,15 +530,15 @@ function listPortfolioBikes(){
       } else{
         var i=0;
         var dest="";
-        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vélos du catalogue:</h4><h4 class=\"en-inline text-green\">Portfolio bikes:</h4><h4 class=\"nl-inline text-green\">Portfolio bikes:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addPortfolioBike\" data-toggle=\"modal\" onclick=\"initializeCreatePortfolioBike()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><tbody><thead><tr><th>ID</th><th><span class=\"fr-inline\">Marque</span><span class=\"en-inline\">Brand</span><span class=\"nl-inline\">Brand</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Utilisation</span><span class=\"en-inline\">Use</span><span class=\"nl-inline\">Use</span></th><th><span class=\"fr-inline\">Electrique ?</span><span class=\"en-inline\">Electric</span><span class=\"nl-inline\">Electric</span></th><th><span class=\"fr-inline\">Cadre</span><span class=\"en-inline\">Frame</span><span class=\"nl-inline\">Frame</span></th><th><span class=\"fr-inline\">Prix</span><span class=\"en-inline\">Price</span><span class=\"nl-inline\">Price</span></th><th></th></tr></thead>";
+        var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Vélos du catalogue:</h4><h4 class=\"en-inline text-green\">Portfolio bikes:</h4><h4 class=\"nl-inline text-green\">Portfolio bikes:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addPortfolioBike\" data-toggle=\"modal\" onclick=\"initializeCreatePortfolioBike()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class=\"fr-inline\">Marque</span><span class=\"en-inline\">Brand</span><span class=\"nl-inline\">Brand</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Utilisation</span><span class=\"en-inline\">Use</span><span class=\"nl-inline\">Use</span></th><th><span class=\"fr-inline\">Electrique ?</span><span class=\"en-inline\">Electric</span><span class=\"nl-inline\">Electric</span></th><th><span class=\"fr-inline\">Cadre</span><span class=\"en-inline\">Frame</span><span class=\"nl-inline\">Frame</span></th><th><span class=\"fr-inline\">Prix</span><span class=\"en-inline\">Price</span><span class=\"nl-inline\">Price</span></th><th></th></tr></thead><tbody>";
         dest=dest.concat(temp);
 
         while(i<response.bikeNumber){
-          var temp="<tr><th>"+response.bike[i].ID+"</th><th>"+response.bike[i].brand+"</th><th>"+response.bike[i].model+"</th><th>"+response.bike[i].utilisation+"</th><th>"+response.bike[i].electric+"</th><th>"+response.bike[i].frameType+"</th><th>"+response.bike[i].price+"</th><th><a href=\"#\" class=\"text-green updatePortfolioClick\" onclick=\"initializeUpdatePortfolioBike('"+response.bike[i].ID+"')\" data-target=\"#updatePortfolioBike\" data-toggle=\"modal\">Mettre à jour </a></th></tr>";
+          var temp="<tr><td>"+response.bike[i].ID+"</td><td>"+response.bike[i].brand+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].utilisation+"</td><td>"+response.bike[i].electric+"</td><td>"+response.bike[i].frameType+"</td><td>"+Math.round(response.bike[i].price)+" €</td><td><a href=\"#\" class=\"text-green updatePortfolioClick\" onclick=\"initializeUpdatePortfolioBike('"+response.bike[i].ID+"')\" data-target=\"#updatePortfolioBike\" data-toggle=\"modal\">Mettre à jour </a></td></tr>";
           dest=dest.concat(temp);
           i++;
         }
-        document.getElementById('portfolioBikesListing').innerHTML=dest;
+        document.getElementById('portfolioBikesListing').innerHTML=dest.concat("</tbody>");
         document.getElementById('counterBikePortfolio').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
 
         displayLanguage();
@@ -1354,40 +1350,42 @@ if($connected){
     }
   }
   function get_company_listing(type) {
+      
+      var filter=$('#companyListingFilter').html();
 
     var email= "<?php echo $user; ?>";
     $.ajax({
       url: 'include/get_companies_listing.php',
       type: 'post',
-      data: {"type": type},
+      data: {"type": type, "filter": filter},
       success: function(response){
         if(response.response == 'error') {
           console.log(response.message);
         }
         if(response.response == 'success'){
           var dest="";
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('NOT INTERESTED')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Not interested</span></a><br/><tbody><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead>";
+          var temp="<table id=\"test\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('NOT INTERESTED')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Not interested</span></a><br/><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th><th>Mise à jour</th></tr></thead><tbody>";
           dest=dest.concat(temp);
           var i=0;
 
           while (i < response.companiesNumber){
-            temp="<tr><th><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.company[i].ID+"\">"+response.company[i].internalReference+"</a></th><th>"+response.company[i].companyName+"</th><th>"+response.company[i].companyBikeNumber+"</th>";
+            temp="<tr><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.company[i].ID+"\">"+response.company[i].internalReference+"</a></td><td>"+response.company[i].companyName+"</td><td>"+response.company[i].companyBikeNumber+"</td>";
             dest=dest.concat(temp);
 
             if(response.company[i].bikeAccessStatus=="OK"){
-              var temp="<th class=\"text-green\">"+response.company[i].bikeAccessStatus+"</th>";
+              var temp="<td class=\"text-green\">"+response.company[i].bikeAccessStatus+"</td>";
             }else{
-              var temp="<th class=\"text-red\">"+response.company[i].bikeAccessStatus+"</th>";
+              var temp="<td class=\"text-red\">"+response.company[i].bikeAccessStatus+"</td>";
             }
             dest=dest.concat(temp);
             if(response.company[i].customerBuildingAccess=="OK"){
-              var temp="<th class=\"text-green\">"+response.company[i].customerBuildingAccess+"</th>";
+              var temp="<td class=\"text-green\">"+response.company[i].customerBuildingAccess+"</td>";
             }else{
-              var temp="<th class=\"text-red\">"+response.company[i].customerBuildingAccess+"</th>";
+              var temp="<td class=\"text-red\">"+response.company[i].customerBuildingAccess+"</td>";
             }
             dest=dest.concat(temp);
 
-            dest=dest.concat("<th>"+response.company[i].type+"</th>");
+            dest=dest.concat("<td>"+response.company[i].type+"</td><td data-sort=\""+(new Date(response.company[i].HEU_MAJ)).getTime()+"\">"+response.company[i].HEU_MAJ.substr(8,2)+"/"+response.company[i].HEU_MAJ.substr(5,2)+"/"+response.company[i].HEU_MAJ.substr(2,2)+"</td>");
 
             var temp="</tr>";
             dest=dest.concat(temp);
@@ -1413,6 +1411,9 @@ if($connected){
             classname[i].addEventListener('click', function() {construct_form_for_company_update(this.name)}, false);
           }
           displayLanguage();
+            
+            $('#test').DataTable();
+            
 
         }
       }
@@ -4228,14 +4229,6 @@ if($connected){
         <select class="taskOwnerSelection" name="taskOwnerSelection">
         </select>
       </div>
-      <div class="col-md-3">
-        <label for="tasksListing_number">Nombre de résultats</label>
-        <select class="form-control required tasksListing_number" name="tasksListing_number">
-          <option value="10" selected>10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-        </select>
-      </div>
 
       <div class="separator"></div>
 
@@ -4555,6 +4548,7 @@ if($connected){
 
               <div data-example-id="contextual-table" class="bs-example">
                 <span id="companyListingSpan"></span>
+                <span id="companyListingFilter" class="hidden">HEU_MAJ</span>
               </div>
               <div class="separator">            </div>
 
@@ -6033,7 +6027,7 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
-                              list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
+                              list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user ?>');
                               $('#taskManagement').modal('toggle');
                               document.getElementById('widget-taskManagement-form').reset();
 
@@ -8301,7 +8295,7 @@ if($connected){
                   }, {
                     type: 'success'
                   });
-                  list_tasks('*', $('.taskOwnerSelection').val(), $('.tasksListing_number').val(),'<?php echo $user ?>');
+                  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user ?>');
                   document.getElementById('widget-updateAction-form').reset();
                   $('#updateAction').modal('toggle');
 

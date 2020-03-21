@@ -66,6 +66,8 @@ while($row = mysqli_fetch_array($result))
 
 {
 
+    $response['bike'][$i]['id']=$row['ID'];
+    $response['bike'][$i]['HEU_MAJ']=$row['HEU_MAJ'];
     $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
     $response['bike'][$i]['model']=$row['MODEL'];
     $response['bike'][$i]['company']=$row['COMPANY'];

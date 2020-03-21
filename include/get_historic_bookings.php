@@ -57,7 +57,7 @@ if($user != NULL)
     
     
     
-	$sql="select * from reservations where EMAIL = '$user' and DATE_END < '$timestamp_now' and STAANN!='D' order by DATE_START DESC LIMIT 5";
+	$sql="select * from reservations where EMAIL = '$user' and DATE_END < '$timestamp_now' and STAANN!='D' order by DATE_START DESC";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -80,6 +80,7 @@ if($user != NULL)
 		$response['booking'][$i]['hour_end']=date('H:i',$row['DATE_END']);
 		$response['booking'][$i]['building_start']=$row['BUILDING_START'];
 		$response['booking'][$i]['building_end']=$row['BUILDING_END'];
+		$response['booking'][$i]['ID']=$row['ID'];
 		$response['booking'][$i]['time']="past";       
         
         $buildingReference=$row['BUILDING_START'];        
