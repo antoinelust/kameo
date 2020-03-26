@@ -223,6 +223,124 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
           dest=dest.concat("</tbody></table>");
         }
         document.getElementById('companyContracts').innerHTML = dest;
+          
+          
+        var dest="<table class=\"table table-condensed\"><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead><tbody>";
+
+        while (i < response.billNumber){
+            if(response.bill[i].sentDate==null){
+                var sendDate="N/A";
+            }else{
+                var sendDate=response.bill[i].sentDate.substr(0,10);
+            }
+            if(response.bill[i].paidDate==null){
+                var paidDate="N/A";
+            }else{
+                var paidDate=response.bill[i].paidDate.substr(0,10);
+            }
+            if(response.bill[i].sent=="0"){
+                var sent="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
+            }else{
+                var sent="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
+            }
+            if(response.bill[i].paid=="0"){
+                var paid="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
+            }else{
+                var paid="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
+            }
+
+            if(response.bill[i].limitPaidDate && response.bill[i].paid=="0"){
+                var dateNow=new Date();
+                var dateLimit=new Date(response.bill[i].limitPaidDate);
+
+                  let month = String(dateLimit.getMonth() + 1);
+                  let day = String(dateLimit.getDate());
+                  let year = String(dateLimit.getFullYear());
+
+                  if (month.length < 2) month = '0' + month;
+                  if (day.length < 2) day = '0' + day;
+
+
+                if(dateNow>dateLimit){
+                    var paidLimit="<span class=\"text-red\">"+day+"/"+month+"/"+year.substr(2,2)+"</span>";
+                }else{
+                    var paidLimit="<span>"+day+"/"+month+"/"+year.substr(2,2)+"</span>";
+                }
+            }else if(response.bill[i].paid=="0"){
+                var paidLimit="<span class=\"text-red\">N/A</span>";
+            }else{
+                var paidLimit="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
+            }
+
+
+
+            if(response.bill[i].amountHTVA>0){
+                var temp="<tr><td class=\"text-green\">IN</td>";
+            }else if(response.bill[i].amountHTVA<0){
+                var temp="<tr><td class=\"text-red\">OUT</td>";
+            }else{
+                var temp="<tr>";
+            }
+            dest=dest.concat(temp);
+
+            if(response.bill[i].fileName){
+                var temp="<td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].ID+"</a></td>";
+            }
+            else{
+                var temp="<td><a href=\"#\" class=\"text-red\">"+response.bill[i].ID+"</a></td>";
+            }
+            dest=dest.concat(temp);
+            if(response.bill[i].amountHTVA>0){
+                var temp="<td>"+response.bill[i].company+"</a></td>";
+                dest=dest.concat(temp);
+            }else if(response.bill[i].amountHTVA<0){
+                var temp="<td>"+response.bill[i].beneficiaryCompany+"</a></td>";
+                dest=dest.concat(temp);
+            }
+            var temp="<td>"+response.bill[i].date.substr(0,10)+"</td><td>"+Math.round(response.bill[i].amountHTVA)+" €</td><td>"+response.bill[i].communication+"</td>";
+            dest=dest.concat(temp);
+
+            if(sent=="Y"){
+                var temp="<td class=\"text-green\">"+sendDate+"</td>";
+            }else{
+                var temp="<td class=\"text-red\">"+sent+"</td>";
+            }
+            dest=dest.concat(temp);
+
+            if(paid=="Y"){
+                var temp="<td class=\"text-green\">"+paidDate+"</td>";
+            }else{
+                var temp="<td class=\"text-red\">"+paid+"</td>";
+            }
+            dest=dest.concat(temp);
+
+
+            dest=dest.concat("<td>"+paidLimit+"</td>");
+
+
+            if(response.bill[i].communicationSentAccounting=="1"){
+                var temp="<td class=\"text-green\">OK</td>";
+            }else{
+                var temp="<td class=\"text-red\">KO</td>";
+            }
+            dest=dest.concat(temp);
+
+            temp="<td><ins><a class=\"text-green updateBillingStatus\" data-target=\"#updateBillingStatus\" name=\""+response.bill[i].ID+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></td>";
+            dest=dest.concat(temp);
+
+            dest=dest.concat("</tr>");
+            i++;
+
+        }
+        var temp="</tbody></table>";
+        dest=dest.concat(temp);
+        document.getElementById('companyBills').innerHTML = dest;
+        var classname = document.getElementsByClassName('updateBillingStatus');
+        for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', function() {construct_form_for_billing_status_update(this.name)}, false);
+        }
+          
+          
 
         $(".retrieveOffer").click(function() {
           retrieve_offer(this.name, "retrieve");

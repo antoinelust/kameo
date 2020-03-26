@@ -672,7 +672,7 @@ if($connected){
             }else{
               var status="Actif";
             }
-            var temp="<tr><th>"+response.user[i].name+"</th><th>"+response.user[i].firstName+"</th><th>"+response.user[i].email+"</th><th>"+status+"</th><th><a  data-target=\"#updateUserInformation\" name=\""+response.user[i].email+"\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"update_user_information('"+response.user[i].email+"')\">Mettre à jour</a></th></tr>";
+            var temp="<tr><td>"+response.user[i].name+"</td><td>"+response.user[i].firstName+"</td><td>"+response.user[i].email+"</td><td>"+status+"</td><td><a  data-target=\"#updateUserInformation\" name=\""+response.user[i].email+"\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"update_user_information('"+response.user[i].email+"')\">Mettre à jour</a></td></tr>";
             dest=dest.concat(temp);
 
             i++;
@@ -5625,13 +5625,18 @@ if($connected){
                   </div>
 
                   <div class="col-sm-12" id="clientBuildings">
-                    <h4 class="text-green">Bétiments:</h4>
+                    <h4 class="text-green">Bâtiments:</h4>
                     <p><span id="companyBuildings"></span></p>
                   </div>
 
                   <div class="col-sm-12" id="clientusers">
                     <h4 class="text-green">Utilisateurs:</h4>
                     <span id="companyUsers"></span>
+                  </div>
+
+                  <div class="col-sm-12" id="clientBills">
+                    <h4 class="text-green">Factures:</h4>
+                    <span id="companyBills"></span>
                   </div>
 
                 </div>

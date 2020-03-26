@@ -114,60 +114,60 @@ function get_bills_listing(company, sent, paid, direction, email) {
 
 
                     if(response.update && response.bill[i].amountHTVA>0){
-                        var temp="<tr><th class=\"text-green\">IN</th>";
+                        var temp="<tr><td class=\"text-green\">IN</td>";
                     }else if(response.update && response.bill[i].amountHTVA<0){
-                        var temp="<tr><th class=\"text-red\">OUT</th>";
+                        var temp="<tr><td class=\"text-red\">OUT</td>";
                     }else{
                         var temp="<tr>";
                     }
                     dest=dest.concat(temp);
 
                     if(response.bill[i].fileName){
-                        var temp="<th><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].ID+"</a></th>";
+                        var temp="<td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].ID+"</a></td>";
                     }
                     else{
-                        var temp="<th><a href=\"#\" class=\"text-red\">"+response.bill[i].ID+"</a></th>";
+                        var temp="<td><a href=\"#\" class=\"text-red\">"+response.bill[i].ID+"</a></td>";
                     }
                     dest=dest.concat(temp);
                     if(response.update && response.bill[i].amountHTVA>0){
-                        var temp="<th>"+response.bill[i].company+"</a></th>";
+                        var temp="<td>"+response.bill[i].company+"</a></td>";
                         dest=dest.concat(temp);
                     }else if(response.update && response.bill[i].amountHTVA<0){
-                        var temp="<th>"+response.bill[i].beneficiaryCompany+"</a></th>";
+                        var temp="<td>"+response.bill[i].beneficiaryCompany+"</a></td>";
                         dest=dest.concat(temp);
                     }
-                    var temp="<th>"+response.bill[i].date.substr(0,10)+"</th><th>"+Math.round(response.bill[i].amountHTVA)+" €</th><th>"+response.bill[i].communication+"</th>";
+                    var temp="<td>"+response.bill[i].date.substr(0,10)+"</td><td>"+Math.round(response.bill[i].amountHTVA)+" €</td><td>"+response.bill[i].communication+"</td>";
                     dest=dest.concat(temp);
 
                     if(sent=="Y"){
-                        var temp="<th class=\"text-green\">"+sendDate+"</th>";
+                        var temp="<td class=\"text-green\">"+sendDate+"</td>";
                     }else{
-                        var temp="<th class=\"text-red\">"+sent+"</th>";
+                        var temp="<td class=\"text-red\">"+sent+"</td>";
                     }
                     dest=dest.concat(temp);
 
                     if(paid=="Y"){
-                        var temp="<th class=\"text-green\">"+paidDate+"</th>";
+                        var temp="<td class=\"text-green\">"+paidDate+"</td>";
                     }else{
-                        var temp="<th class=\"text-red\">"+paid+"</th>";
+                        var temp="<td class=\"text-red\">"+paid+"</td>";
                     }
                     dest=dest.concat(temp);
 
 
-                    dest=dest.concat("<th>"+paidLimit+"</th>");
+                    dest=dest.concat("<td>"+paidLimit+"</td>");
 
 
                     if(response.update){
                         if(response.bill[i].communicationSentAccounting=="1"){
-                            var temp="<th class=\"text-green\">OK</th>";
+                            var temp="<td class=\"text-green\">OK</td>";
                         }else{
-                            var temp="<th class=\"text-red\">KO</th>";
+                            var temp="<td class=\"text-red\">KO</td>";
                         }
                         dest=dest.concat(temp);
                     }
 
                     if(response.update){
-                        temp="<th><ins><a class=\"text-green updateBillingStatus\" data-target=\"#updateBillingStatus\" name=\""+response.bill[i].ID+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></th>";
+                        temp="<td><ins><a class=\"text-green updateBillingStatus\" data-target=\"#updateBillingStatus\" name=\""+response.bill[i].ID+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></td>";
                         dest=dest.concat(temp);
                     }
 
