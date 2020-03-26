@@ -10,7 +10,7 @@ include 'include/header5.php';
 							<!-- <hr class="space"> -->
 							<h1 class="text-dark">VÉLOS PARTAGÉS</h1>
 							<p class="lead text-light text-justify">Rendez les déplacements de vos employés plus <strong>dynamiques</strong> et <strong>écologiques</strong>, mettez leur des vélos partagés à disposition.<br> Que ce soit pour : des rendez-vous clients, les trajets domicile-travail, un trajet inter-sites ou se rendre à un lunch, soyez sûr de leur temps de parcours et améliorez leur forme.</p>
-							<p class="lead text-light"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous :<br>
+							<p class="lead text-light"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous:<br>
 							- <strong>conseil</strong> sur le vélo adapté,<br>
 							- <strong>maintenance</strong> sur site,<br>
 							- <strong>assurance</strong> et <strong>assistance</strong> dépannage,<br>
@@ -18,7 +18,6 @@ include 'include/header5.php';
 							- installation d'<strong>infrastructures</strong>.</p>
 							
 							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>Découvrez notre offre <i class="fa fa-arrow-down"></i></span></a>
-							<p class="lead text-light"><strong>Testez pendant 1 mois.</strong></p>
 						
 						</div>
 						<div class="col-md-5">
@@ -83,13 +82,12 @@ include 'include/header5.php';
 										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="BZEN Amsterdam">
 										<div class="image-box-content">
 											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<a href="offre.php?brand=bzen&model=amsterdam&frameType=f"><i class="fa fa-link"></i></a>
+												<a href="offre.php?brand=bzen&model=amsterdam&frameType=f"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title">BZEN Amsterdam</h4>
+										<h4 class="title text-center">BZEN Amsterdam</h4>
 									</div>
 								</div>
 
@@ -99,13 +97,12 @@ include 'include/header5.php';
 										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<a href="offre.php?brand=conway&model=cairon t 200&frameType=f"><i class="fa fa-link"></i></a>
+												<a href="offre.php?brand=conway&model=cairon t 200&frameType=f"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title">CONWAY Cairon T 200</h4>
+										<h4 class="title text-center">CONWAY Cairon T 200 Mixte</h4>
 									</div>
 								</div>
 								
@@ -114,13 +111,26 @@ include 'include/header5.php';
 										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
-												<a href="#"><i class="fa fa-expand"></i></a>
-												<a href="offre.php?brand=ahooga&model=modular&frameType=f"><i class="fa fa-link"></i></a>
+												<a href="offre.php?brand=ahooga&model=modular&frameType=f"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title">AHOOGA Modular</h4>
+										<h4 class="title text-center">AHOOGA Modular</h4>
+									</div>
+								</div>
+								
+								<div class="portfolio-item">
+									<div class="portfolio-image effect social-links">
+										<img src="images_bikes/conway_cairon-t-200-se-500_m.jpg" alt="AHOOGA Modular">
+										<div class="image-box-content">
+											<p>
+												<a href="offre.php?brand=conway&model=cairon%20t%20200%20se%20500&frameType=m"><i class="fa fa-eye"></i></a>
+											</p>
+										</div>
+									</div>
+									<div class="">
+										<h4 class="title text-center">CONWAY Cairon T 200 Mixte</h4>
 									</div>
 								</div>
 																								
@@ -176,6 +186,16 @@ include 'include/header5.php';
 			</section>
 			<!-- END: SECTION GESTION FLOTTE -->
 			
+			<!-- CALL TO ACTION -->
+			<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark text-light">
+			  <div class="container">
+			    <h3>Testez pendant 1 mois</h3>
+			    <p>Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
+		   		<a class="button large green button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Contacter</span></a> </div>
+			</div>
+	
+			<!--END: CALL TO ACTION -->	
+			
 			<!-- SECTION MAINTENANCE -->
 			<section class="p-b-0">
 				<div class="container">
@@ -185,7 +205,7 @@ include 'include/header5.php';
 							<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
 							<p class="text-justify">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
 
-							<p class="text-justify">Les vélos on une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
+							<p class="text-justify">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
 			 
 						</div>
 						<div class="col-md-4">
@@ -200,17 +220,17 @@ include 'include/header5.php';
 			<section class="p-b-0">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-6">
 						<h1 class="text-green visible-sm visible-xs">INSTALLATION D'INFRASTRUCTURES</h1>
 							<img src="images/infrastructure.png" class="img-responsive img-rounded" alt="Schéma d'une infrastructure réalisable par KAMEO Bikes">
 						</div>
-						<div class="col-md-8">
+						<div class="col-md-6">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green visible-md visible-lg">INSTALLATION D'INFRASTRUCTURES</h1>
-							<p>Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
-							KAMEO Bikes, fort de son expérience peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
+							<p class="text-justify">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							KAMEO Bikes, fort de son expérience, peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
 			
-							<p>N'hésitez pas à nous demander une remise de prix.</p>
+							<p class="text-justify">N'hésitez pas à nous demander une remise de prix.</p>
 			 
 						</div>
 					</div>
@@ -218,19 +238,19 @@ include 'include/header5.php';
 			</section>
 			<!-- END: SECTION INFRASTRUCTURES -->
 			
-			<!-- SECTION LEASING -->
+			<!-- SECTION LOCATION TOUT INCLUS -->
 			<section class="p-b-0">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12 text-center">
-							<h1 class="text-green">LEASING OU VENTE?</h1>
+							<h1 class="text-green">LOCATION TOUT INCLUS OU ACHAT?</h1>
 							<p>Vous choisirez la formule qui vous convient le mieux.</p>
-							<a class="button green button-3d effect fill-vertical" href="leasing.php"><span><i class="fa fa-balance-scale"></i>Comparer</span></a>
+							<a class="button green button-3d effect fill-vertical" href="location-tout-inclus.php"><span><i class="fa fa-balance-scale"></i>Comparer</span></a>
 						</div>
 					</div>
 				</div>
 			</section>
-			<!-- END: SECTION LEASING -->
+			<!-- END: SECTION LOCATION TOUT INCLUS -->
 
 			
 				<hr class="space">

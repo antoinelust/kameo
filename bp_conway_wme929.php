@@ -36,7 +36,8 @@ include 'include/header5.php';
 							<p><strong>Cadre Homme - Taille M</strong></p>
 							<p><strong>VTT Trail Carbonne 140mm</strong></p>
 						</div>
-						<div class="product-price"><ins class="text-green">3100€</ins>
+						<div class="product-price"><ins class="text-green">2851€</ins> htva
+						<p class="right text-right">Location tout inclus:<br> <strong class="text-green">118€</strong> / mois</p>
 						</div>
 						
 
@@ -50,7 +51,7 @@ include 'include/header5.php';
 
 				</div>
 				
-				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les Bons Plans</a>
+				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les articles</a>
 
 			</div>
 		</div>
@@ -70,7 +71,7 @@ include 'include/header5.php';
 					<div class="col-sm-12">
 						<h4 class="text-green">Ce vélo vous intéresse?</h4>
 						<p>Envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat AH-165 mixte&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
-						<!-- <p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p> -->
+						<p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p>
 					</div>
 				</div>
 			</div>
@@ -84,7 +85,7 @@ include 'include/header5.php';
 </div>
 
         
-<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">

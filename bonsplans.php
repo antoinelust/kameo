@@ -12,10 +12,8 @@ include 'include/header5.php';
                                         
                     
                     <div class="col-md-12">
-                    	<h1 class="text-green">NOS BONS PLANS</h1>
-                        <p>Les vélos présentés ci-dessous ont été mis en test chez des clients durant l'année.<br>
-                        Ils ont entièrement été contrôlés et entretenus.<br>
-                        Ces vélos sont garantis 1 an.</p>
+                        <h1 class="fr text-green">LES BONS PLANS</h1>
+                        </div>
                         <!-- SHOP PRODUCTS -->
 								<div class="shop">
 									<div class="row">
@@ -24,8 +22,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_conway_ets370_f1.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-24%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-24%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_ets370_f1.php">Aperçu</a>
 													</div>
@@ -37,11 +35,12 @@ include 'include/header5.php';
 														<h3><a href="bp_conway_ets370_f1.php">Conway</a></h3>
 														<p>Ets 370</p>
 														<p><strong>Cadre Femme</strong><br>
-														<!--Kilomètres parcourus : 1986 km--></p>
+														Kilomètres parcourus : 1986 km</p>
 													</div>
 													<div class="product-price">
-														<del>2500€ tvac</del><ins class="text-green">1900€ tvac</ins>
+														<del>2066€ htva</del><ins class="text-green">1570€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">79€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -54,8 +53,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_conway_ets370_f2.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-24%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-20%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_ets370_f2.php">Aperçu</a>
 													</div>
@@ -67,11 +66,12 @@ include 'include/header5.php';
 														<h3><a href="bp_conway_ets370_f2.php">Conway</a></h3>
 														<p>Ets 370</p>
 														<p><strong>Cadre Femme</strong><br>
-														<!--Kilomètres parcourus : 590,4 km--></p>
+														Kilomètres parcourus : 590,4 km</p>
 													</div>
 													<div class="product-price">
-														<del>2500€ tvac</del><ins class="text-green">1900€ tvac</ins>
+														<del>2066€ htva</del><ins class="text-green">1652€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -84,8 +84,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_conway_ets370_f3.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-24%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-20%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_ets370_f3.php">Aperçu</a>
 													</div>
@@ -97,11 +97,12 @@ include 'include/header5.php';
 														<h3><a href="bp_conway_ets370_f3.php">Conway</a></h3>
 														<p>Ets 370</p>
 														<p><strong>Cadre Femme</strong><br>
-														<!--Kilomètres parcourus : 584,6 km--></p>
+														Kilomètres parcourus : 584,6 km</p>
 													</div>
 													<div class="product-price">
-														<del>2500€ tvac</del><ins class="text-green">1900€ tvac</ins>
+														<del>2066€ htva</del><ins class="text-green">1652€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -114,8 +115,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_conway_ets370_f4.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-24%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-22%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_ets370_f4.php">Aperçu</a>
 													</div>
@@ -127,11 +128,12 @@ include 'include/header5.php';
 														<h3><a href="bp_conway_ets370_f4.php">Conway</a></h3>
 														<p>Ets 370</p>
 														<p><strong>Cadre Femme</strong><br>
-														<!--Kilomètres parcourus : 1009,1 km--></p>
+														Kilomètres parcourus : 1009,1 km</p>
 													</div>
 													<div class="product-price">
-														<del>2500€ tvac</del><ins class="text-green">1900€ tvac</ins>
+														<del>2066€ htva</del><ins class="text-green">1611€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">81€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -146,8 +148,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_orbea_gain.php"><img alt="Shop product image!" src="images_bikes/bonsplans/orbea_gain_h.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-24%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-20%</span>
 													<div class="product-overlay">
 														<a href="bp_orbea_gain.php">Aperçu</a>
 													</div>
@@ -159,11 +161,12 @@ include 'include/header5.php';
 														<h3><a href="bp_orbea_gain.php">Orbea</a></h3>
 														<p>Gain</p>
 														<p><strong>Cadre Homme</strong><br>
-														<!--Kilomètres parcourus : -200 km--></p>
+														Kilomètres parcourus : -200 km</p>
 													</div>
 													<div class="product-price">
-														<del>2500€ tvac</del><ins class="text-green">1900€ tvac</ins>
+														<del>2066€ htva</del><ins class="text-green">1652€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -176,7 +179,7 @@ include 'include/header5.php';
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
-													<a href="#"><img alt="Shop product image!" src="images_bikes/bonsplans/hnf_xd2_h_vendu.jpg">
+													<a href="bp_hnf.php"><img alt="Shop product image!" src="images_bikes/bonsplans/hnf_xd2_h.jpg">
 													</a>
 													<span class="product-sale">Promo</span>
 													<span class="product-sale-off">-18%</span>
@@ -188,11 +191,12 @@ include 'include/header5.php';
 														<h3><a href="#">HNF Nicolai</a></h3>
 														<p>XD2</p>
 														<p><strong>Cadre Homme</strong><br>
-														<!--Kilomètres parcourus : 202 km--></p>
+														Kilomètres parcourus : 202 km</p>
 													</div>
 													<div class="product-price">
-														<del>4650€ tvac</del><ins class="text-green">3800€ tvac</ins>
+														<del>3842€ htva</del><ins class="text-green">3140€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">127€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -207,8 +211,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_ahooga_folding.php"><img alt="Shop product image!" src="images_bikes/bonsplans/ahooga_folding.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-25%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-19%</span>
 													<div class="product-overlay">
 														<a href="bp_ahooga_folding.php">Aperçu</a>
 													</div>
@@ -220,11 +224,12 @@ include 'include/header5.php';
 														<h3><a href="bp_ahooga_folding.php">Ahooga</a></h3>
 														<p>Folding Bike</p>
 														<p><strong>Cadre mixte</strong><br>
-														<!--Kilomètres parcourus :  inconnu--></p>
+														Kilomètres parcourus :  inconnu</p>
 													</div>
 													<div class="product-price">
-														<del>2220€ tvac</del><ins class="text-green">1650€ tvac</ins>
+														<del>1834€ htva</del><ins class="text-green">1487€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">77€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -239,8 +244,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_douze_cargo.php"><img alt="Shop product image!" src="images_bikes/bonsplans/douze_cargo.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-28%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-21%</span>
 													<div class="product-overlay">
 														<a href="bp_douze_cargo.php">Aperçu</a>
 													</div>
@@ -252,11 +257,12 @@ include 'include/header5.php';
 														<h3><a href="bp_douze_cargo.php">Douze Cycles</a></h3>
 														<p>G4 Mixte</p>
 														<p><strong>Vélo Cargo</strong><br>
-														<!--Kilomètres parcourus :  120 km--></p>
+														Kilomètres parcourus :  120 km</p>
 													</div>
 													<div class="product-price">
-														<del>5100€ tvac</del><ins class="text-green">3650€ tvac</ins>
+														<del>4214€ htva</del><ins class="text-green">3305€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">132€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -271,8 +277,8 @@ include 'include/header5.php';
 												<div class="product-image">
 													<a href="bp_conway_wme929.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_wme929.jpg">
 													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-26%</span>
+													<span class="product-sale">Promo</span>
+													<span class="product-sale-off">-17%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_wme929.php">Aperçu</a>
 													</div>
@@ -287,8 +293,9 @@ include 'include/header5.php';
 														VTT Trail Carbonne 140mm</p>
 													</div>
 													<div class="product-price">
-														<del>4200€ tvac</del><ins class="text-green">3100€ tvac</ins>
+														<del>3471€ htva</del><ins class="text-green">2851€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">118€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -314,82 +321,17 @@ include 'include/header5.php';
 														<h3><a href="#">BZEN</a></h3>
 														<p>Amsterdam</p>
 														<p><strong>Cadre Femme</strong><br>
-														<!--Kilomètres parcourus :  -200 km--></p>
+														Kilomètres parcourus :  -200 km</p>
 													</div>
 													<div class="product-price">
-														<del>2800€ tvac</del><ins class="text-green">1500€ tvac</ins>
+														<del>2314€ htva</del><ins class="text-green">1239€ htva</ins>
 													</div>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">74€</strong> / mois</p>
 												</div>
 						
 											</div>
 										</div>
 										
-										
-										<!--
-										<div class="separator visible-xs"></div>
-										
-										
-										
-										<div class="col-md-4">
-											<div class="product">
-												<div class="product-image">
-													<a href="bp_romeo_h1.php"><img alt="Shop product image!" src="images_bikes/bonsplans/romeo_h.jpg">
-													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-50%</span>
-													<div class="product-overlay">
-														<a href="bp_romeo_h1.php">Aperçu</a>
-													</div>
-												</div>
-						
-												<div class="product-description">
-													<div class="product-category">Réf. : RM-651</div>
-													<div class="product-title">
-														<h3><a href="bp_romeo_h1.php">Derry</a></h3>
-														<p>Romeo</p>
-														<p><strong>Cadre Homme</strong><br>
-														Kilomètres parcourus :  1048 km</p>
-													</div>
-													<div class="product-price">
-														<del>2000€ tvac</del><ins class="text-green">1000€ tvac</ins>
-													</div>
-												</div>
-						
-											</div>
-										</div>
-										
-										<div class="separator visible-xs"></div>
-										
-										
-										
-										<div class="col-md-4">
-											<div class="product">
-												<div class="product-image">
-													<a href="bp_pameo.php"><img alt="Shop product image!" src="images_bikes/bonsplans/pameo_h.jpg">
-													</a>
-													<span class="product-hot">Promo</span>
-													<span class="product-sale-off-red">-50%</span>
-													<div class="product-overlay">
-														<a href="bp_pameo.php">Aperçu</a>
-													</div>
-												</div>
-						
-												<div class="product-description">
-													<div class="product-category">Réf. : PM-652</div>
-													<div class="product-title">
-														<h3><a href="bp_pameo.php">Derry</a></h3>
-														<p>Pameo</p>
-														<p><strong>Cadre Homme</strong><br>
-														Kilomètres parcourus :  inconnu</p>
-													</div>
-													<div class="product-price">
-														<del>2500€ tvac</del><ins class="text-green">1250€ tvac</ins>
-													</div>
-												</div>
-						
-											</div>
-										</div>
-										-->
 										
 										
 										

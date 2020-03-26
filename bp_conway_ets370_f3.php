@@ -31,9 +31,11 @@ include 'include/header5.php';
 							<h3><a href="#">Conway</a></h3>
 							<p>Ets 370</p>
 							<p><strong>Cadre Femme - Taille M</strong></p>
-							<!--<p><strong>Kilomètres parcourus : 584,6 km</strong></p>-->
+							<p><strong>Kilomètres parcourus : 584,6 km</strong></p>
 						</div>
-						<div class="product-price"><ins class="text-green">1900€</ins>
+						<div class="product-price"><ins class="text-green">1652€</ins>htva
+						<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
+
 						</div>
 						
 
@@ -47,7 +49,7 @@ include 'include/header5.php';
 
 				</div>
 				
-				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les Bons Plans</a>
+				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les articles</a>
 
 			</div>
 		</div>
@@ -67,7 +69,7 @@ include 'include/header5.php';
 					<div class="col-sm-12">
 						<h4 class="text-green">Ce vélo vous intéresse?</h4>
 						<p>Envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat CW-370f3 femme&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
-						<!-- <p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p> -->
+						<p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p>
 					</div>
 				</div>
 			</div>
@@ -81,7 +83,7 @@ include 'include/header5.php';
 </div>
 
         
-<!-- FOOTER -->
+	<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -117,6 +119,7 @@ include 'include/header5.php';
 	    </div>
 	</footer>
 	<!-- END: FOOTER -->
+		<!-- END: FOOTER -->
 	</div>
 	<!-- END: WRAPPER -->
 

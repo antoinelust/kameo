@@ -417,7 +417,7 @@ function getHistoricBookings() {
                         "lengthChange": false,
                         searching: false,
                         "language": {
-                          "emptyTable": "Pas de réservations futures"
+                          "emptyTable": "Pas de réservations passées"
                         }                        
                     } );
                 }
@@ -484,19 +484,20 @@ function getHistoricBookings() {
                 
                 displayLanguage();
                 
-                if ( $.fn.dataTable.isDataTable( '#futureBookingsTable' ) ) {
+                
+                /*if ( $.fn.dataTable.isDataTable( '#futureBookingsTable' ) ) {
                     table = $('#futureBookingsTable').DataTable();
                 }
                 else {
                     table = $('#futureBookingsTable').DataTable( {
                         paging: true,
-                        "lengthChange": false,                        
+                        "lengthChange": false,
                         searching: false,
                         "language": {
                           "emptyTable": "Pas de réservations futures"
                         }                        
                     } );
-                }
+                }*/
                 
                 
             }else{

@@ -84,6 +84,17 @@ include 'include/header5.php';
 			<a class="button green button-3d effect fill-vertical"  data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			</span>
 		</div>
+		
+		<!-- CALL TO ACTION -->
+		<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark text-light">
+		  <div class="container">
+		    <h3>Envie de savoir combien vous coûte réellement un vélo?</h3>
+		    <p>Nous avons développé un calculateur permettant de vous afficher le coût réel d'un vélo.</p>
+		    <a class="button large green button-3d effect icon-left" href="cash4bike.php"><span><i class="fa fa-calculator"></i>Faire le calcul</span></a> </div>
+		</div>
+
+		<!--END: CALL TO ACTION -->
+		
 	</div>
 </section>
 <!-- END: MISSION & VISSION -->

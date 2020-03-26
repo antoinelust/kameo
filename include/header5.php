@@ -168,7 +168,7 @@
 					<!--LOGO-->
 					<h1>
 					<div id="logo">
-						<a href="index2.php"><img src="images/logo.png" alt="KAMEO Bikes Logo">
+						<a href="index.php"><img src="images/logo.png" alt="KAMEO Bikes Logo">
 						</a>
 					</div>
 					</h1>
@@ -187,16 +187,16 @@
 						<div class="container">
 							<nav id="mainMenu" class="main-menu mega-menu">
 								<ul class="main-menu nav nav-pills">
-									<li class="fr"><a href="index2.php"><i class="fa fa-home"></i> Accueil</a></li>
-									<li class="en"><a href="index2.php"><i class="fa fa-home"></i> Home</a></li>
-									<li class="nl"><a href="index2.php"><i class="fa fa-home"></i> Home</a></li>
+									<li class="fr"><a href="index.php"><i class="fa fa-home"></i> Accueil</a></li>
+									<li class="en"><a href="index.php"><i class="fa fa-home"></i> Home</a></li>
+									<li class="nl"><a href="index.php"><i class="fa fa-home"></i> Home</a></li>
 									
 									<li class="dropdown fr"> <a href="#">Nos solutions <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li><a href="velo-partage.php">Vélos partagés</a> </li>
 											<li><a href="velo-personnel.php">Vélos personnels</a> </li>
 											<li><a href="gestion-flotte.php">Système de gestion de flotte</a> </li>
-											<li><a href="leasing.php">Leasing & Vente Vélo</a> </li>
+											<li><a href="location-tout-inclus.php">Location tout inclus & Achat</a> </li>
 										</ul>
 									</li>
 									
@@ -208,7 +208,12 @@
 										</ul>
 									</li>
 									
-									<li class="fr"><a href="avantages.php">Avantages</a></li>
+									<li class="dropdown fr"> <a href="#">Avantages <i class="fa fa-angle-down"></i> </a>
+										<ul class="dropdown-menu">
+											<li><a href="avantages.php">Avantages liés au vélo</a> </li>
+											<li><a href="cash4bike.php">Calculateur</a> </li>
+										</ul>
+									</li>
 									
 									<li class="fr"><a href="contact2.php">Contact</a></li>
 									<li class="en"><a href="contact2.php">Contact</a></li>
