@@ -17,7 +17,7 @@ $ cat Documentation/.gitignore
 *mp4
 factures/
 offres/
-images_bikes
+images_bikes/
 ./images_bikes/
 include/logs.txt
 $ git status
