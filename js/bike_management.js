@@ -34,14 +34,12 @@ function list_bikes_admin() {
                                     ID
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Société</span><span class="en-inline">Company</span>
-                                    <span class="nl-inline">Company</span></th><th><span class="fr-inline">Vélo</span>
-                                    <span class="en-inline">Bike</span><span class="nl-inline">Fiet</span>
+                                    <span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th>
+                                    <th><span class="fr-inline">Vélo</span><span class="en-inline">Bike</span><span class="nl-inline">Fiet</span>
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Marque - Modèle</span><span class="en-inline">Brand - Model</span>
-                                    <span class="nl-inline">Brand - Model</span></th><th><span class="fr-inline">Type de contrat</span>
-                                    <span class="en-inline">Contract type</span><span class="nl-inline">Contract type</span>
+                                    <span class="fr-inline">Marque - Modèle</span><span class="en-inline">Brand - Model</span><span class="nl-inline">Brand - Model</span></th>
+                                    <th><span class="fr-inline">Type de contrat</span><span class="en-inline">Contract type</span><span class="nl-inline">Contract type</span>
                                   </th>
                                   <th>
                                     <span class="fr-inline">Début contrat</span>
@@ -49,15 +47,12 @@ function list_bikes_admin() {
                                     <span class="nl-inline">Contract Start</span>
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Fin contrat</span><span class="en-inline">Contract End</span>
-                                    <span class="nl-inline">Contract End</span></th><th><span class="fr-inline">Montant</span>
-                                    <span class="en-inline">Amount</span><span class="nl-inline">Amount</span>
+                                    <span class="fr-inline">Fin contrat</span><span class="en-inline">Contract End</span><span class="nl-inline">Contract End</span></th>
+                                    <th><span class="fr-inline">Montant</span><span class="en-inline">Amount</span><span class="nl-inline">Amount</span>
                                   </th>
                                   <th>Facturation</th>
                                   <th>
-                                    <span class="fr-inline">Etat du vélo</span>
-                                    <span class="en-inline">Bike status</span>
-                                    <span class="nl-inline">Bike status</span>
+                                    <span class="fr-inline">Etat du vélo</span><span class="en-inline">Bike status</span><span class="nl-inline">Bike status</span>
                                   </th>
                                   <th>Assurance ?</th>
                                   <th>Mise à jour </th>
@@ -155,21 +150,6 @@ function list_bikes_admin() {
                     paging: true,
                     searching: true,
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tous"]],
-                    "scrollX": true,
-                      "columns": [
-                        { "width": "2%" },
-                        { "width": "2%" },
-                        { "width": "5%" },
-                        { "width": "10%" },
-                        { "width": "5%" },
-                        { "width": "10%" },
-                        { "width": "10%" },
-                        { "width": "3%" },
-                        { "width": "5%" },
-                        { "width": "5%" },
-                        { "width": "5%" },
-                        { "width": "5%" },
-                        { "width": "5%" }]
                 });
 
                 
@@ -847,14 +827,14 @@ function get_bikes_listing() {
                 while (i < response.bikeNumber){
 
                     if(response.bike[i].contractStart){
-                        var contractStart=response.bike[i].contractStart.substr(0,10);
+                        var contractStart="<td data-sort=\""+(new Date(response.bike[i].contractStart)).getTime()+"\">"+response.bike[i].contractStart.shortDate()+"</date>";
                     }else{
-                        var contractStart="N/A";
+                        var contractStart="<td>N/A</td>";
                     }
                     if(response.bike[i].contractEnd){
-                        var contractEnd=response.bike[i].contractEnd.substr(0,10);
+                        var contractEnd="<td data-sort=\""+(new Date(response.bike[i].contractEnd)).getTime()+"\">"+response.bike[i].contractEnd.shortDate()+"</date>";
                     }else{
-                        var contractEnd="N/A";
+                        var contractEnd="<td>N/A</td>";
                     }
 
 
@@ -866,7 +846,7 @@ function get_bikes_listing() {
                     }
 
 
-                    var temp="<tr><td><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].contractType+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+status+"</td><td><ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                    var temp="<tr><td><a  data-target=\"#bikeDetailsFull\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.bike[i].frameNumber+"</a></td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].contractType+"</td>"+contractStart+contractEnd+"<td>"+status+"</td><td><ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
                     dest=dest.concat(temp);
 
                     var temp2="<li><a href=\"#\" onclick=\"bikeFilter('"+response.bike[i].frameNumber+"')\">"+response.bike[i].frameNumber+"</a></li>";

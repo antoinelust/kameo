@@ -7,17 +7,22 @@ include 'include/header5.php';
 	
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green">CASH FOR BIKE</h1>
+				<h1 class="text-green">CALCULATEUR CASH FOR BIKE</h1>
 				<br>
 				
-				<p>CASH FOR BIKE est un module vous permettant de calculer le coût réel de votre vélo.</p>
+				<h3> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
+				<p>En Belgique vous avez la possibilité déchanger une partie de votre rémunération brut totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
+				Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
+				<p>Nous vous proposons ici de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brut afin de prendre un vélo pour vos trajets domicile-travail.</p>
+				<p>Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
 				<br>
 				<h2 class="text-green">Le calculateur</h2>
 				
-				<div class="m-t-30">
-                	<form id="cash4bike-form" action="include/contact-form.php" role="form" method="post">
+				<div class="m-t-30 col-md-12">
+                	<form id="cash4bike-form" action="include/calculate_cash4bike.php" role="form" method="get">
                     <div class="row">
-                        <div class="col-sm-6 border">
+                        <div class="col-sm-6" style= "background-color: #D3EFDD">
+                        <div class="space"></div>
                             <h4 class="text-green">Informations personnelles</h4>
 
                             <div class="form-group col-sm-12 ">
@@ -43,15 +48,17 @@ include 'include/header5.php';
                             <div class="col-sm-12">
                                 <div class="form-group col-sm-12">
                                     <label for="domicile" class="fr">Adresse du domicile</label>
-                                    <input type="text" aria-required="true" name="domicile" class="form-control required domicile">
+                                    <input type="text" name="domicile" class="form-control required is-invalid">
                                 </div>
                                 <div class="form-group col-sm-12">
                                     <label for="travail" class="fr">Adresse du lieu de travail</label>
-                                    <input type="text" aria-required="true" name="travail" class="form-control required travail">
+                                    <input type="text" aria-required="true" name="travail" class="form-control required is-invalid">
                                 </div>
                             </div>
+                            <div class="space"></div>
                         </div>
-                        <div class="col-sm-6 border">
+                        <div class="col-sm-6" style= "background-color: #E6E6E6">
+                        <div class="space"></div>
                             <h4 class="text-green">Moyen de transport</h4>
                             <div class="form-group col-sm-12">
                                 <div class="col-sm-6">
@@ -67,27 +74,38 @@ include 'include/header5.php';
                                 </div>
                                 <div class="form-group col-sm-6 essence">
                                     <div class="essence">
-                                        <label><input type="radio" name="type" value="essence" checked> Essence</label>
+                                        <label><input type="radio" name="transportationEssence" value="essence" checked> Essence</label>
                                     </div>
                                     <div class="diesel">
-                                        <label><input type="radio" name="type" value="diesel"> Diesel</label>
+                                        <label><input type="radio" name="transportationEssence" value="diesel"> Diesel</label>
                                     </div>
                                     <div class="lpg">
-                                        <label><input type="radio" name="type" value="lpg"> LPG</label>
+                                        <label><input type="radio" name="transportationEssence" value="lpg"> LPG</label>
                                     </div>
                                 </div>
                                 
                             </div>
                             <div class="form-group col-sm-12">
+                                                                
+                                
+                                
                                 <div class="col-sm-12">
                                     <div class="employeurremunere">
-                                        <label><input type="radio" name="type" value="employeurremunere" checked> Mon employeur rémunère mes kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="0" checked> Mon employeur rémunère mes kilomètres vélo</label>
                                     </div>
                                     <div class="employeurneremunerepas">
-                                        <label><input type="radio" name="type" value="employeurneremunerepas"> Mon employeur ne me rémunère par les kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="1"> Mon employeur ne me rémunère par les kilomètres vélo</label>
                                     </div>
                                 </div>
                             </div>
+                            <div class="space visible-md visible-lg"></div>
+                            <div class="space visible-md visible-lg"></div>
+                            <div class="space visible-md visible-lg"></div>
+                            <div class="space visible-md visible-lg"></div>
+                            <div class="space visible-md visible-lg"></div>
+                            <div class="space visible-md visible-lg"></div>
+                            <div class="space visible-md visible-lg"></div>
+                            <br><br>
                         </div>
                         <div class="separator"></div>
                         
@@ -111,7 +129,8 @@ include 'include/header5.php';
                         </div>
                         
                         <div class="col-sm-12 bike_picture hidden">
-                            <h4 id="bike_price" class="center-block"></h4>
+                        	<div class="space"></div>
+                            <h4 id="bike_price" class="text-center"></h4>
                             <img id="bike_picture" alt="image" class="centerimg" />
                         </div>
                         
@@ -124,6 +143,25 @@ include 'include/header5.php';
                         </div>
                     </div>
                     </form>
+                    
+                <script type="text/javascript">
+                  jQuery("#cash4bike-form").validate({
+                    submitHandler: function(form) {
+                      jQuery(form).ajaxSubmit({
+                        success: function(response) {
+                          if (response.response == 'error'){
+                              console.log(response);
+                          }else{
+                              console.log(response);
+                          }
+                        }
+                      })
+                    }
+                  })
+                </script>
+                            
+                    
+                    
                             
 				</div>
 		</div>
@@ -153,7 +191,7 @@ include 'include/header5.php';
 
 
 		
-		<!-- FOOTER -->
+			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -161,10 +199,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -179,7 +213,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

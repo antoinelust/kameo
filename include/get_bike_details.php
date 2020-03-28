@@ -9,22 +9,33 @@ include 'globalfunctions.php';
 
 
 
-$frameNumber=$_POST['frameNumber'];
+$frameNumber=isset($_POST['frameNumber']) ? $_POST['frameNumber'] : NULL;
+$id=isset($_POST['id']) ? $_POST['id'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : NULL;
 
 $response=array();
 
-if($frameNumber != NULL)
+if($frameNumber != NULL || $id != NULL)
 {
 
 
     include 'connexion.php';
-	$sql="SELECT *  FROM customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
-    if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+    if($frameNumber != NULL){
+        $sql="SELECT *  FROM customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+    }
+    else if($id != NULL){
+        $sql="SELECT *  FROM customer_bikes WHERE ID = '$id'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+    }
 
     $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;

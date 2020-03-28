@@ -31,9 +31,22 @@ $('document').ready(function(){
         }
     });
     
-    
-    
-    
+    $('#cash4bike-form input[name=domicile]').change(function(){
+        var address=$('#cash4bike-form input[name=domicile]').val();
+        $.ajax({
+            url: 'include/API_google_maps/validate_address.php',
+            method: 'get',
+            data: {'address': address},
+            success: function(response){
+                if (response.response == "success") {
+                    console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+            }
+        });   
+    });
 });
 
 
