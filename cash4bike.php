@@ -1,7 +1,7 @@
 <?php 
 include 'include/header5.php';
 ?>
-		
+<script type="text/javascript" src="js/cash4bike.js"></script>
 		<!--Square icons-->
   <section>
 	
@@ -10,95 +10,121 @@ include 'include/header5.php';
 				<h1 class="text-green">CASH FOR BIKE</h1>
 				<br>
 				
-				<p>CASH FOR BIKE est un module puissant vous permettant de calculer le coût réel de votre vélo.</p>
+				<p>CASH FOR BIKE est un module vous permettant de calculer le coût réel de votre vélo.</p>
 				<br>
-				<h3>Le calculateur</h3>
+				<h2 class="text-green">Le calculateur</h2>
 				
 				<div class="m-t-30">
-                	<form id="widget-contact-form" action="include/contact-form.php" role="form" method="post">
+                	<form id="cash4bike-form" action="include/contact-form.php" role="form" method="post">
                     <div class="row">
-                    
-                    	<div class="form-group col-sm-6">
-		                	<div class="employe">
-								<label><input type="radio" name="type" value="employe" checked> Je suis un employé</label>
-							</div>
-							<div class="ouvrier">
-								<label><input type="radio" name="type" value="ouvrier"> Je suis un ouvrier</label>
-							</div>
-						</div>
-						
-						<div class="separator"></div>
-						
-                   		<div class="form-group col-sm-6">
-	                   		<div class="form-group">
-								<label class="revenu" for="phone">Votre revenu mensuel brut :</label>
-								<input type="number" class="form-control required" name="revenu" value="3000" id="revenu" aria-required="true">
-							</div>
+                        <div class="col-sm-6 border">
+                            <h4 class="text-green">Informations personnelles</h4>
+
+                            <div class="form-group col-sm-12 ">
+                                <div class="employe">
+                                    <label><input type="radio" name="type" value="employe" checked> Je suis un employé</label>
+                                </div>
+                                <div class="ouvrier">
+                                    <label><input type="radio" name="type" value="ouvrier"> Je suis un ouvrier</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group col-sm-6">
+                                    <div class="form-group">
+                                        <label class="revenu" for="phone">Votre revenu mensuel brut :</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">€/mois</span>
+                                            <input type="number" class="form-control required" min='0' name="revenu" value="0" id="revenu" aria-required="true">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
+                            <div class="col-sm-12">
+                                <div class="form-group col-sm-12">
+                                    <label for="domicile" class="fr">Adresse du domicile</label>
+                                    <input type="text" aria-required="true" name="domicile" class="form-control required domicile">
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="travail" class="fr">Adresse du lieu de travail</label>
+                                    <input type="text" aria-required="true" name="travail" class="form-control required travail">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 border">
+                            <h4 class="text-green">Moyen de transport</h4>
+                            <div class="form-group col-sm-12">
+                                <div class="col-sm-6">
+                                    <label for="transport" class="fr">Votre moyen de transport actuel :</label>
+                                    <select class="form-control" name="transport">
+                                        <option value="personnalCar" selected>Voiture personnelle</option>
+                                        <option value="companyCar">Voiture de société</option>
+                                        <option value="covoiturage">Covoiturage</option>
+                                        <option value="public transport">Transport en commun</option>
+                                        <option value="personalBike">Vélo personnel</option>
+                                        <option value="walk">Marche</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-6 essence">
+                                    <div class="essence">
+                                        <label><input type="radio" name="type" value="essence" checked> Essence</label>
+                                    </div>
+                                    <div class="diesel">
+                                        <label><input type="radio" name="type" value="diesel"> Diesel</label>
+                                    </div>
+                                    <div class="lpg">
+                                        <label><input type="radio" name="type" value="lpg"> LPG</label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <div class="col-sm-12">
+                                    <div class="employeurremunere">
+                                        <label><input type="radio" name="type" value="employeurremunere" checked> Mon employeur rémunère mes kilomètres vélo</label>
+                                    </div>
+                                    <div class="employeurneremunerepas">
+                                        <label><input type="radio" name="type" value="employeurneremunerepas"> Mon employeur ne me rémunère par les kilomètres vélo</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator"></div>
+                        
+                        
+                        <h4 class="text-green">Vélo souhaité</h4>
+                        
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <label for="brand">Marque</label>
+                                <select class="from-control" name='brand'>
+                                    <option value="selection">Veuillez sélectionner</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 model hidden">
+                                <label for="brand">Modèle</label>
+                                <select class="from-control" name='model'>
+                                    <option value="selection">Veuillez sélectionner</option>
+                                </select>
+                            </div>
+                            
                         </div>
                         
-                        <div class="separator"></div>
-						
-                   		<div class="form-group col-sm-6">
-	                   		<div class="form-group">
-								<label class="prixvelo" for="phone">Le prix HTVA du vélo souhaité :</label>
-								<input type="number" class="form-control required" name="prixvelo" value="1700" id="prixvelo" aria-required="true">
-							</div>
+                        <div class="col-sm-12 bike_picture hidden">
+                            <h4 id="bike_price" class="center-block"></h4>
+                            <img id="bike_picture" alt="image" class="centerimg" />
                         </div>
                         
-                        <div class="separator"></div>
-                        
-                        <div class="form-group col-sm-6">
-		                	<div class="employeurremunere">
-								<label><input type="radio" name="type" value="employeurremunere" checked> Mon employeur rémunère mes kilomètres vélo</label>
-							</div>
-							<div class="employeurneremunerepas">
-								<label><input type="radio" name="type" value="employeurneremunerepas"> Mon employeur ne me rémunère par les kilomètres vélo</label>
-							</div>
-						</div>
 						
-						<div class="space"></div>
-						
-						<div class="form-group col-sm-6">
-                        	<label for="domicile" id="fr">Adresse du domicile</label>
-                            <input type="text" aria-required="true" name="domicile" class="form-control required domicile">
-						</div>
-						<div class="form-group col-sm-6">
-                        	<label for="travail" id="fr">Adresse du lieu de travail</label>
-                            <input type="text" aria-required="true" name="travail" class="form-control required travail">
-						</div>
-						
-						<div class="separator"></div>
-						
-						<div class="form-group col-sm-6">
-							<label for="transport" id="fr">Votre moyen de transport actuel :</label>
-							<select class="form-control">
-								<option>Voiture personnelle</option>
-								<option>Voiture de société</option>
-								<option>Covoiturage</option>
-								<option>Transport en commun</option>
-								<option>Vélo personnel</option>
-								<option>Marche</option>
-							</select>
-						</div>
-						<div class="form-group col-sm-6">
-		                	<div class="essence">
-								<label><input type="radio" name="type" value="essence" checked> Essence</label>
-							</div>
-							<div class="diesel">
-								<label><input type="radio" name="type" value="diesel"> Diesel</label>
-							</div>
-							<div class="lpg">
-								<label><input type="radio" name="type" value="lpg"> LPG</label>
-							</div>
-						</div>
 						
 						<div class="separator"></div>
                                 
-                                
-                            <button  id="fr" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-calculator"></i>&nbsp;Calculer</button>
+						<div class="form-group col-sm-6">
+                            <button class="button green button-3d effect fill-vertical fr" type="submit"><i class="fa fa-calculator"></i>&nbsp;Calculer</button>
+                        </div>
+                    </div>
                     </form>
                             
-					</div>
 				</div>
 		</div>
 		
@@ -115,10 +141,11 @@ include 'include/header5.php';
 		
 	</div>
 	<h3>Disclaimer</h3>
-		<p>Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
-		<p>L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>
-		<p>Les informations reprises ne remplacent en aucun cas un avis juridique ou l’assistance personnalisée d’un professionnel.</p>
-		<p>Dans la mesure autorisée par la loi, nous ne sommes en aucun cas être tenus responsables de tout dommage, direct ou indirect, de quelque nature et importance qu’il soit, qui pourrait être causé directement ou indirectement par la consultation ou, plus généralement, par toute utilisation quelconque qui serait faite de cet outil et notamment des informations qui s’y trouvent.</p>
+    <p>Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
+    <p>L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>
+    <p>Les informations reprises ne remplacent en aucun cas un avis juridique ou l’assistance personnalisée d’un professionnel.</p>
+    <p>Dans la mesure autorisée par la loi, nous ne sommes en aucun cas être tenus responsables de tout dommage, direct ou indirect, de quelque nature et importance qu’il soit, qui pourrait être causé directement ou indirectement par la consultation ou, plus généralement, par toute utilisation quelconque qui serait faite de cet outil et notamment des informations qui s’y trouvent.</p>
+      </div>
 </section>
 
 

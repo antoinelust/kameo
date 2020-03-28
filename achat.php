@@ -20,12 +20,13 @@ include 'include/header5.php';
                                         <label for="widget-contact-form-marque">Marque</label>
 											<select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
 									           <option data-filter="" value="*">Toutes nos marques</option>
-									           <option data-filter=".conway" value="Conway">Conway</option>
-									           <option data-filter=".orbea">Orbea</option>
+									           <option data-filter=".ahooga">Ahooga</option>                                                
 									           <option data-filter=".bzen">Bzen</option>
-									           <option data-filter=".ahooga">Ahooga</option>
+									           <option data-filter=".conway" value="Conway">Conway</option>                                                
+									           <option data-filter=".douze">Douze</option>                                            
+									           <option data-filter=".orbea">Orbea</option>                                            
+									           <option data-filter=".victoria">Victoria</option>
 									           <option data-filter=".stevens">Stevens</option>
-									           <option data-filter=".douze">Douze</option>
 									           <option data-filter=".hnf">HNF Nicolai</option>
 									       </select>
                                     </div>
@@ -33,13 +34,15 @@ include 'include/header5.php';
                                     <div class="form-group col-md-2">
                                         <label for="widget-contact-form-utilisation">Utilisation</label>
 											<select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
-									           <option data-filter="" value="*">Tous types</option>
-									           <option data-filter=".villeetchemin">Ville et chemin</option>
-									           <option data-filter=".ville">Ville</option>
-									           <option data-filter=".toutchemin">Tout chemin</option>
-									           <option data-filter=".pliant">Pliant</option>
-									           <option data-filter=".speedpedelec">Speedpedelec</option>
-									           <option data-filter=".cargo">Cargo</option>
+                                                <option data-filter="" value="*">Tous types</option>
+                                                <option data-filter=".villeetchemin">Ville et chemin</option>
+                                                <option data-filter=".ville">Ville</option>
+                                                <option data-filter=".toutchemin">Tout chemin</option>
+                                                <option data-filter=".pliant">Pliant</option>
+                                                <option data-filter=".speedpedelec">Speedpedelec</option>
+                                                <option value=".gravel">Gravel</option>
+                                                <option value=".vtt">VTT</option>
+                                                <option data-filter=".cargo">Cargo</option>
 									       </select>
                                     </div>
                                     

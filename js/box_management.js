@@ -29,26 +29,26 @@
                             }
 
                             if(response.box[i].start!=null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
-                                start="<span class=\"text-green\">"+response.box[i].start.substr(0,10)+"</span>";
+                                start="<span class=\"text-green\">"+response.box[i].start.shortDate()+"</span>";
                             }else if (response.box[i].start == null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
                                 start="<span class=\"text-red\">N/A</span>";
                             }else if(response.box[i].start == null && (response.box[i].company == 'KAMEO' || response.box[i].company == 'KAMEO VELOS TEST')){
                                 start="<span class=\"text-green\">N/A</span>";
                             }else if(response.box[i].start != null && (response.box[i].company == 'KAMEO' || response.box[i].company == 'KAMEO VELOS TEST')){
-                                start="<span class=\"text-red\">"+response.box[i].start.substr(0,10)+"</span>";
+                                start="<span class=\"text-red\">"+response.box[i].start.shortDate()+"</span>";
                             }else{
                                 start="<span class=\"text-red\">ERROR</span>";
                             }
 
 
                             if(response.box[i].end && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
-                                end="<span class=\"text-green\">"+response.box[i].end.substr(0,10)+"</span>";
+                                end="<span class=\"text-green\">"+response.box[i].end.shortDate()+"</span>";
                             }else if (response.box[i].end == null && (response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST')){
                                 end="<span class=\"text-red\">N/A</span>";
                             }else if(response.box[i].end == null && (response.box[i].company == 'KAMEO' || response.box[i].company == 'KAMEO VELOS TEST')){
                                 end="<span class=\"text-green\">N/A</span>";
                             }else if(response.box[i].end != null && (response.box[i].company == 'KAMEO' || response.box[i].company == 'KAMEO VELOS TEST')){
-                                end="<span class=\"text-red\">"+response.box[i].end.substr(0,10)+"</span>";
+                                end="<span class=\"text-red\">"+response.box[i].end.shortDate()+"</span>";
                             }else{
                                 end="<span class=\"text-red\">ERROR</span>";
                             }
@@ -200,24 +200,24 @@ function get_company_boxes(company){
 
 
                         if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].start != null){
-                            var start="<span>"+response.box[i].start.substr(0,10)+"</span>";
+                            var start="<span>"+response.box[i].start.shortDate()+"</span>";
                         }else if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].start == null){
                             var start="<span class=\"text-red\">N/A</span>";
                         }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].start == null){
                             var start="<span>N/A</span>";
                         }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].start != null){
-                            var start="<span class=\"text-red\">"+response.box[i].start.substr(0,10)+"</span>";
+                            var start="<span class=\"text-red\">"+response.box[i].start.shortDate()+"</span>";
                         }else{
                             var start="<span class=\"text-red\">ERROR</span>";
                         }
                         if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].end != null){
-                            var end="<span>"+response.box[i].end.substr(0,10)+"</span>";
+                            var end="<span>"+response.box[i].end.shortDate()+"</span>";
                         }else if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].end == null){
                             var end="<span class=\"text-red\">N/A</span>";
                         }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].end == null){
                             var end="<span>N/A</span>";
                         }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].end != null){
-                            var end="<span class=\"text-red\">"+response.box[i].end.substr(0,10)+"</span>";
+                            var end="<span class=\"text-red\">"+response.box[i].end.shortDate()+"</span>";
                         }else{
                             var end="<span class=\"text-red\">ERROR</span>";
                         }

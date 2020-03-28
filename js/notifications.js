@@ -106,7 +106,7 @@ function load_notifications(){
           $('.notificationsClick span').html(countNew);
         } else if(countNew == 0 && size > 0){
           $('.notificationsBlock').html(content);
-          $('.notificationsClick i').addClass("fa-bell-o").addClass('text-green').removeClass("fa-bell-").removeClass('text-red');
+          $('.notificationsClick i').addClass("fa-bell-o").addClass('text-green').removeClass("fa-bell").removeClass('text-red');
           $('.notificationsClick span').html(countNew);
         } else if (size > 0){
           $('.notificationsBlock').html(content);

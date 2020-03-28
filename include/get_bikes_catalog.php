@@ -7,20 +7,32 @@ session_start();
 include 'globalfunctions.php';
 
 
+$brand=isset($_GET['brand']) ? $_GET['brand']: null;
+$id=isset($_GET['id']) ? $_GET['id']: null;
 
 $response=array();
 
-    include 'connexion.php';
-    $sql="SELECT *  FROM bike_catalog";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result = mysqli_query($conn, $sql);
-    if($result->num_rows=='0'){
-        errorMessage("ES0039");
-    }
+include 'connexion.php';
+$sql="SELECT *  FROM bike_catalog";
+
+if($brand){
+    $sql=$sql." WHERE BRAND='$brand'";    
+}
+if($id){
+    $sql=$sql." WHERE ID='$id'";    
+}
+
+
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$result = mysqli_query($conn, $sql);
+if($result->num_rows=='0'){
+    errorMessage("ES0056");
+}
 
 
 $length = $result->num_rows;

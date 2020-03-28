@@ -36,6 +36,7 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/notifications.js"></script>
 <script type="text/javascript" src="js/addons/datatables.min.js"></script>
 <script type="text/javascript" src="js/datatable_default.js"></script>
+<script type="text/javascript" src="js/global_functions.js"></script>
 
 
 <script type="text/javascript">
@@ -89,7 +90,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
     classname[i].addEventListener('click', list_condition, false);
 
     classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
-    classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email)}, false);
+    classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*', email)}, false);
     classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
     classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
     classname[i].addEventListener('click', function () { list_feedbacks()}, false);
@@ -212,7 +213,7 @@ function taskFilter(e){
 
 function billFilter(e){
   document.getElementsByClassName('billSelectionText')[0].innerHTML=e;
-  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
+  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*', email);
 
 }
 
@@ -1378,7 +1379,7 @@ if($connected){
             }
             dest=dest.concat(temp);
 
-            dest=dest.concat("<td>"+response.company[i].type+"</td><td data-sort=\""+(new Date(response.company[i].HEU_MAJ)).getTime()+"\">"+response.company[i].HEU_MAJ.substr(8,2)+"/"+response.company[i].HEU_MAJ.substr(5,2)+"/"+response.company[i].HEU_MAJ.substr(2,2)+"</td>");
+            dest=dest.concat("<td>"+response.company[i].type+"</td><td data-sort=\""+(new Date(response.company[i].HEU_MAJ)).getTime()+"\">"+response.company[i].HEU_MAJ.shortDate()+"</td>");
 
             var temp="</tr>";
             dest=dest.concat(temp);
@@ -8339,13 +8340,16 @@ if($connected){
                             <label for="brand" class="en"> Brand : </label>
                             <label for="brand" class="nl"> Brand : </label>
                             <select class="form-control required" name="brand">
-                              <option value="Ahooga">Ahooga</option>
-                              <option value="Bzen">Bzen</option>
-                              <option value="Conway">Conway</option>
-                              <option value="Douze Cycle">Douze Cycle</option>
-                              <option value="HNF Nicolai">HNF Nicolai</option>
-                              <option value="Orbea">Orbea</option>
-                              <option value="Stevens">Stevens</option>
+                                <option value="Ahooga">Ahooga</option>
+                                <option value="Bzen">Bzen</option>
+                                <option value="Conway">Conway</option>
+                                <option value="Douze Cycle">Douze Cycle</option>
+                                <option value="HNF Nicolai">HNF Nicolai</option>
+                                <option value="Orbea">Orbea</option>
+                                <option value="Victoria">Victoria</option>
+                                <option value="Stevens">Stevens</option>
+                                <option value="other">Other</option>
+                                
                             </select>
 
                           </div>
@@ -8380,6 +8384,8 @@ if($connected){
                               <option value="Pliant">Pliant</option>
                               <option value="Ville">Ville</option>
                               <option value="Cargo">Cargo</option>
+                              <option value="Gravel">Gravel</option>
+                              <option value="VTT">VTT</option>
                               <option value="Speedpedelec">Speedpedelec</option>
                             </select>
 
@@ -8586,6 +8592,7 @@ if($connected){
                             <option value="Douze Cycle">Douze Cycle</option>
                             <option value="HNF Nicolai">HNF Nicolai</option>
                             <option value="Orbea">Orbea</option>
+                            <option value="Victoria">Victoria</option>                              
                             <option value="Stevens">Stevens</option>
                             <option value="other">Other</option>
                           </select>
@@ -8614,17 +8621,19 @@ if($connected){
                       <div class="col-sm-12">
 
                         <div class="col-sm-4">
-                          <label for="utilisation" class="fr"> Utilisation : </label>
-                          <label for="utilisation" class="en"> Utilisation: </label>
-                          <label for="utilisation" class="nl"> Utilisation: </label>
-                          <select class="form-control required" name="utilisation">
-                            <option value="Tout chemin">Tout chemin</option>
-                            <option value="Ville et chemin">Ville et chemin</option>
-                            <option value="Pliant">Pliant</option>
-                            <option value="Ville">Vile</option>
-                            <option value="Cargo">Cargo</option>
-                            <option value="Speedpedelec">Speedpedelec</option>
-                          </select>
+                            <label for="utilisation" class="fr"> Utilisation : </label>
+                            <label for="utilisation" class="en"> Utilisation: </label>
+                            <label for="utilisation" class="nl"> Utilisation: </label>
+                            <select class="form-control required" name="utilisation">
+                                <option value="Tout chemin">Tout chemin</option>
+                                <option value="Ville et chemin">Ville et chemin</option>
+                                <option value="Pliant">Pliant</option>
+                                <option value="Ville">Vile</option>
+                                <option value="Cargo">Cargo</option>
+                                <option value="Gravel">Gravel</option>
+                                <option value="VTT">VTT</option>
+                                <option value="Speedpedelec">Speedpedelec</option>
+                            </select>
 
                         </div>
                         <div class="col-sm-4">

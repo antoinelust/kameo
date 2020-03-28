@@ -9,7 +9,7 @@ include 'globalfunctions.php';
 
 
 
-$email=$_POST['email'];
+$email=isset($_POST['email']) ? $_POST['email']: null;
 $sent=isset($_POST['sent']) ? $_POST['sent']: null;
 $paid=isset($_POST['paid']) ? $_POST['paid']: null;
 $direction=isset($_POST['direction']) ? $_POST['direction']: null;

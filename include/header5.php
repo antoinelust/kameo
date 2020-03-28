@@ -45,7 +45,9 @@
 
 	<!-- Template elements -->
 	<link href="css/theme-elements.css" rel="stylesheet">	
-	
+    <!-- Template notifications -->
+	<link href="css/notifications.css" rel="stylesheet">
+    
     <!-- DateTimePicker css -->
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 
