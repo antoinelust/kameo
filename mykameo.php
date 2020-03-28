@@ -1626,7 +1626,7 @@ if($connected){
             $('#widget-addActionCompany-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
             i++;
           }
-          $('#widget-addActionCompany-form select[name=owner]').val('julien.jamar@kameobikes.com');
+          $('#widget-addActionCompany-form select[name=owner]').val('julien@kameobikes.com');
 
         }
       }
@@ -2636,14 +2636,14 @@ if($connected){
                             <ul>
                               <li>Nom et prénom: Antoine Lust</li>
                               <li>Numéro de téléphone: 0478 99 66 98</li>
-                              <li>Adresse mail: antoine.lust@kameobikes.com</li>
+                              <li>Adresse mail: antoine@kameobikes.com</li>
                               <li>Remise du vélo à 15h.</li>
                             </ul>
                             <h4>Personne après vous:</h4>
                             <ul>
                               <li>Nom et prénom: Julien Jamar</li>
                               <li>Numéro de téléphone: 0487 65 44 83</li>
-                              <li>Adresse mail: pierre-yves.adant@kameobikes.com</li>
+                              <li>Adresse mail: pierre-yves@kameobikes.com</li>
                               <li>Prise en charge du vélo à 18h.</li>
                             </ul>
                           </div>

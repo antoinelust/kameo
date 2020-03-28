@@ -38,10 +38,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
      	        $mail->IsHTML(true);                                    // Set email format to HTML
                 $mail->CharSet = 'UTF-8';
      			
-				//$mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
-				$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-				$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-				//$mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
+				$mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
+				$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
 
                 $mail->From = $email;
                 $mail->FromName = $firstName.' '.$name;

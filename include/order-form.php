@@ -36,25 +36,11 @@ if($captcha == 0){
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
     
  if($email != '' && $message != '') {
-            
-                //If you don't receive the email, enable and configure these parameters below: 
-     
-                //$mail->isSMTP();                                      // Set mailer to use SMTP
-                //$mail->Host = 'mail.yourserver.com';                  // Specify main and backup SMTP servers, example: smtp1.example.com;smtp2.example.com
-                //$mail->SMTPAuth = true;                               // Enable SMTP authentication
-                //$mail->Username = 'SMTP username';                    // SMTP username
-                //$mail->Password = 'SMTP password';                    // SMTP password
-                //$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-                //$mail->Port = 587;                                    // TCP port to connect to 
-     
+                 
      	        $mail->IsHTML(true);                                    // Set email format to HTML
                 $mail->CharSet = 'UTF-8';
      			
-				//$mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
-				$mail->AddAddress('thibaut.mativa@gmail.com', 'Thibaut Mativa');
-				//$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-				//$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-				//$mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
+				$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
 
                 $mail->From = $email;
                 $mail->FromName = $firstName.' '.$name;

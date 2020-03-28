@@ -221,13 +221,13 @@ while($row = mysqli_fetch_array($result))
                     if(!$simulation || $simulation=='N'){
                         if($resultat3['BILLS_SENDING'] == "Y" && $emailContactBilling != "" && $lastNameContactBilling != ""){
                             $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
-                            $mail->AddBCC("antoine.lust@kameobikes.com", "Antoine Lust");
-                            $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");                        
+                            $mail->AddBCC("antoine@kameobikes.com", "Antoine Lust");
+                            $mail->AddBCC("julien@kameobikes.com", "Julien Jamar");                        
                         }else{
-                            $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                            $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
                         }
                     }else{
-                        $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                        $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
                     }
                     
                     if(!$mail->Send()) {
@@ -237,7 +237,7 @@ while($row = mysqli_fetch_array($result))
                        echo 'mail envoyé';
                     }    
                 }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
-                    $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                    $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
                     
                     if(!$mail->Send()) {
                        echo error_get_last()['message'];  

@@ -226,12 +226,12 @@ if(isset($_GET['action'])){
             $mail->CharSet = 'UTF-8';
 
             if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-                $mail->AddAddress("thibaut.mativa@kameobikes.com");
-                $mail->AddAddress("pierre-yves.adant@kameobikes.com");
+                $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+                $mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
+                $mail->AddAddress("thibaut@kameobikes.com");
+                $mail->AddAddress("pierre-yves@kameobikes.com");
             }else{
-                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
             }
             $mail->From = "info@kameobikes.com";
             $mail->FromName = "Kameo Bikes";
@@ -1126,10 +1126,10 @@ if(isset($_GET['action'])){
 
             if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
                 $mail->AddAddress('sav@kameobikes.com ', 'SAV Kameo Bikes');
-                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
+                $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+                $mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
             }else{
-                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
             }
             $mail->From = "info@kameobikes.com";
             $mail->FromName = "Kameo Bikes";

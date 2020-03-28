@@ -886,7 +886,7 @@ try{
         if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
             $mail->AddAddress('RENAUD.JASSELETTE@BNL.ENGIE.COM', 'Renaud Jasselette');
         }else{
-            $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+            $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
         }
         $mail->From = "info@kameobkes.com";
         $mail->FromName = "Kameo Bikes";

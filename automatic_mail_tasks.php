@@ -31,10 +31,10 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                             $mail->IsHTML(true);
                             $mail->CharSet = 'UTF-8';
 
-                            $mail->AddAddress("antoine.lust@kameobikes.com");
-                            $mail->AddAddress("julien.jamar@kameobikes.com");
-                            $mail->AddAddress("pierre-yves.adant@kameobikes.com");
-                            $mail->AddAddress("thibaud.mativa@kameobikes.com");
+                            $mail->AddAddress("antoine@kameobikes.com");
+                            $mail->AddAddress("julien@kameobikes.com");
+                            $mail->AddAddress("pierre-yves@kameobikes.com");
+                            $mail->AddAddress("thibaud@kameobikes.com");
 
                             $mail->From = "info@kameobikes.com";
                             $mail->FromName = "Kameo Bikes";

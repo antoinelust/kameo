@@ -68,10 +68,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 	$mail->IsHTML(true);                                    // Set email format to HTML
 	$mail->CharSet = 'UTF-8';
 	
- 	$mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
+ 	$mail->AddAddress('thibaut@kameobikes.com', 'Thibaut Mativa');
 	$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-	$mail->AddAddress('julien.jamardebolse@gmail.com', 'Julien Jamar De Bolsee');
-	$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+	$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
 
 
 	$firstName=$row["PRENOM"];

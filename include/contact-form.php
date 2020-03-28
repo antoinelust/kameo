@@ -43,13 +43,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 
 
     if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-        $mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
-        $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-        $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-        $mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
+        $mail->AddAddress('thibaut@kameobikes.com', 'Thibaut Mativa');
+        $mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
+        $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+        $mail->AddAddress('pierre-yves@kameobikes.com', 'Pierre-Yves Adant');
         $mail->AddAddress('info@kameobikes.com', 'Information Kameo Bikes');
     }else{
-        $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+        $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
     }
      
      

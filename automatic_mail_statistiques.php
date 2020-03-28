@@ -1012,11 +1012,11 @@ $part1 = "<!doctype html>
                                     $mail->CharSet = 'UTF-8';
                                     if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost" && $resultat5['AUTOMATIC_STATISTICS']=="Y" && $resultat5['EMAIL_CONTACT']!="" &&  $resultat5['NOM_CONTACT']!="" &&  $resultat5['PRENOM_CONTACT']!=""){
                                         $mail->AddAddress(resultat3['EMAIL_CONTACT'], resultat3['NOM_CONTACT']." ".resultat3['PRENOM_CONTACT']);
-                                        $mail->AddBCC("antoine.lust@kameobikes.com", "Antoine Lust");
-                                        $mail->AddBCC("julien.jamar@kameobikes.com", "Julien Jamar");
+                                        $mail->AddBCC("antoine@kameobikes.com", "Antoine Lust");
+                                        $mail->AddBCC("julien@kameobikes.com", "Julien Jamar");
                                     }else{
-                                        $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                                        $mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
+                                        $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+                                        $mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
                                     }
 
                                     $mail->From = "info@kameobikes.com";
@@ -1046,12 +1046,12 @@ $part1 = "<!doctype html>
                             $mail->IsHTML(true);
                             $mail->CharSet = 'UTF-8';
                             if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                                $mail->AddAddress("antoine.lust@kameobikes.com");
-                                $mail->AddAddress("julien.jamar@kameobikes.com");
+                                $mail->AddAddress("antoine@kameobikes.com");
+                                $mail->AddAddress("julien@kameobikes.com");
                                 //$mail->AddAddress("pierre-yves.adant@kameobikes.com");
                                 //$mail->AddAddress("thibaut.mativa@kameobikes.com");
                             }else {
-                                $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
+                                $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
                             }
 
                             $mail->From = "info@kameobikes.com";

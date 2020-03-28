@@ -85,8 +85,8 @@ function send_booking_reminder(){
                 $mail->AddAddress($row['EMAIL']);
                 $beneficiary=$row['EMAIL'];
             }else{
-                $mail->AddAddress('antoine.lust@kameobikes.com');     
-                $beneficiary="antoine.lust@kameobikes.com";
+                $mail->AddAddress('antoine@kameobikes.com');     
+                $beneficiary="antoine@kameobikes.com";
             }
 
             $mail->From = "info@kameobikes.com";

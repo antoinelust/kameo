@@ -72,7 +72,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                         $mail->IsHTML(true);
                                         $mail->CharSet = 'UTF-8';
 
-                                        $mail->AddAddress("antoine.lust@kameobikes.com");
+                                        $mail->AddAddress("antoine@kameobikes.com");
 
                                         $mail->From = "info@kameobikes.com";
                                         $mail->FromName = "Kameo Bikes";

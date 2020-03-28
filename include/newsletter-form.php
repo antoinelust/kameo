@@ -36,35 +36,6 @@ if($email==''){
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
     
      if($email != '' && $name != '' && $firstName != '') {
-                    /*
-                    $mail->IsHTML(true);                                    // Set email format to HTML
-                    $mail->CharSet = 'UTF-8';
-
-                    //$mail->AddAddress('thibaut.mativa@kameobikes.com', 'Thibaut Mativa');
-                    //$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-                    $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                    //$mail->AddAddress('pierre-yves.adant@kameobikes.com', 'Pierre-Yves Adant');
-
-                    $mail->From = $email;
-                    $mail->FromName = $firstName.' '.$name;
-                    $mail->AddReplyTo($email, $name);
-                    $mail->Subject = "Demande d'abonnement à la Newsletter";
-
-                    $name_message = isset($name) ? "Nom: $name<br><br>" : '';
-                    $firstName_message = isset($firstName) ? "Prenom: $firstName<br><br>" : '';
-                    $email_message = isset($email) ? "Email: $email<br><br>" : '';
-
-                    $mail->Body = $name_message . $firstName_message . $email_message;
-
-
-            if(!$mail->Send()) {
-               $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
-
-            }else {
-               $response = array ('response'=>'success');  
-            }
-            */
-
             $connected=@fsockopen("www.google.com", 80);
             if($connected){
 
