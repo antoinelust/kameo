@@ -19,6 +19,10 @@ if($connected){
     $transport=isset($_GET['transport']) ? $_GET['transport'] : NULL;
     $transportationEssence=isset($_GET['transportationEssence']) ? $_GET['transportationEssence'] : NULL;
     $bike=isset($_GET['model']) ? $_GET['model'] : NULL;
+    
+    if($bike=="selection"){
+        errorMessage("ES0057");
+    }
 
     $domicile = str_replace(', ', ',', $domicile);
     $domicile= str_replace(str_split(' \,'),"+",$domicile);
@@ -34,14 +38,7 @@ if($connected){
     
     if($json_a['status']!="OK")
     {
-        $response['response']="error";
-        $response['message']=$feedback;
-        $response['address']=$domicile;
-        
-        $response['status']=$json_a['status'];
-        echo json_encode($response);
-        die;
-        
+        errorMessage("ES0009");
     }
     
     
@@ -55,14 +52,9 @@ if($connected){
     
     if($json_a['status']!="OK")
     {
-        $response['response']="error";
-        $response['message']=$feedback;
-        $response['address']=$travail;
-        $response['status']=$json_a['status'];
-        echo json_encode($response);
-        die;
-        
+        errorMessage("ES0010");
     }
+    
     
     
     $latitude_end=$json_a['results']['0']['geometry']['location']['lat'];

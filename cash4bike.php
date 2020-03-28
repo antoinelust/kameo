@@ -16,7 +16,9 @@ include 'include/header5.php';
 				<p>Nous vous proposons ici de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brut afin de prendre un vélo pour vos trajets domicile-travail.</p>
 				<p>Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
 				<br>
+				
 				<h2 class="text-green">Le calculateur</h2>
+				<p>Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
 				
 				<div class="m-t-30 col-md-12">
                 	<form id="cash4bike-form" action="include/calculate_cash4bike.php" role="form" method="get">
@@ -48,11 +50,11 @@ include 'include/header5.php';
                             <div class="col-sm-12">
                                 <div class="form-group col-sm-12">
                                     <label for="domicile" class="fr">Adresse du domicile</label>
-                                    <input type="text" name="domicile" class="form-control required is-invalid">
+                                    <input type="text" name="domicile" class="form-control required is-invalid" placeholder="Rue, Numéro, Code postal, Commune">
                                 </div>
                                 <div class="form-group col-sm-12">
                                     <label for="travail" class="fr">Adresse du lieu de travail</label>
-                                    <input type="text" aria-required="true" name="travail" class="form-control required is-invalid">
+                                    <input type="text" aria-required="true" name="travail" class="form-control required is-invalid" placeholder="Rue, Numéro, Code postal, Commune">
                                 </div>
                             </div>
                             <div class="space"></div>
@@ -150,7 +152,11 @@ include 'include/header5.php';
                       jQuery(form).ajaxSubmit({
                         success: function(response) {
                           if (response.response == 'error'){
-                              console.log(response);
+                                $.notify({
+                                  message: response.message
+                                }, {
+                                  type: 'danger'
+                                });
                           }else{
                               console.log(response);
                           }
@@ -169,11 +175,83 @@ include 'include/header5.php';
 		<div class="space"></div>
 		
 		<!-- RESULTAT -->
-		<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
+		<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green">
 		  <div class="container">
-		    <h3>VALEUR DU RÉSULTAT</h3>
-		    <p>Explication de ce résultat.</p>
+		    <h3 class="text-light">+25€</h3>
+		    <p class="text-light">En souscrivant à une location, vous gagnerez 25€ par mois.<br>Ce montant comprend votre vélo (référence/modèle), une assurance p-vélo et un entretien annuel.</p>
+		  
+		    <a class="button black-light button-3d effect fill-vertical"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
 		</div>
+		
+		
+		
+<div class="modal fade" id="detail" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+            <form id="cash4bike-form-contact" action="include/contact_cash4bike.php" role="form" method="get">
+            
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h2 class="modal-title text-green" id="modal-label">Veuillez compléter vos informations de contact</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row text-left">
+					<div class="form-group col-sm-12">
+                    	<label for="prenom" class="fr">Prénom</label>
+                        <input type="text" aria-required="true" name="firstname" class="form-control required is-invalid">
+                    </div>
+					<div class="form-group col-sm-12">
+                    	<label for="prenom" class="fr">Nom</label>
+                        <input type="text" aria-required="true" name="name" class="form-control required is-invalid">
+                    </div>
+                    <div class="form-group col-sm-12">
+                    	<label for="mail" class="fr">Email</label>
+                        <input type="text" aria-required="true" name="mail" class="form-control required is-invalid">
+                    </div>
+                    <div class="form-group col-sm-12">
+                    	<label for="entreprise" class="fr">Entreprise</label>
+                        <input type="text" aria-required="true" name="entreprise" class="form-control required is-invalid">
+                    </div>
+				</div>
+			</div>
+            <input type="text" aria-required="true" name="type" class="form-control required hidden">
+            <input type="text" aria-required="true" name="revenu" class="form-control required hidden">
+            <input type="text" aria-required="true" name="domicile" class="form-control required hidden">
+            <input type="text" aria-required="true" name="travail" class="form-control required hidden">
+            <input type="text" aria-required="true" name="transport" class="form-control required hidden">
+            <input type="text" aria-required="true" name="transportationEssence" class="form-control hidden">
+            <input type="text" aria-required="true" name="model" class="form-control required hidden">
+			<div class="modal-footer">
+				<button type="button" class="button green button-3d effect fill-vertical">Envoyer</button>
+			</div>
+            </form>
+                    
+            <script type="text/javascript">
+              jQuery("#cash4bike-form-form").validate({
+                submitHandler: function(form) {
+                  jQuery(form).ajaxSubmit({
+                    success: function(response) {
+                      if (response.response == 'error'){
+                            $.notify({
+                              message: response.message
+                            }, {
+                              type: 'danger'
+                            });
+                      }else{
+                          console.log(response);
+                      }
+                    }
+                  })
+                }
+              })
+            </script>
+            
+            
+            
+		</div>
+	</div>
+</div>
+
 
 		<!--END: RESULTAT -->
 		

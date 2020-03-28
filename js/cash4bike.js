@@ -4,7 +4,8 @@ $('document').ready(function(){
     
     $('#cash4bike-form select[name=brand]').change(function(){
         $('.bike_picture').addClass("hidden");          
-        
+        $('#cash4bike-form select[name=model]').val("selection");
+           
         if($('#cash4bike-form select[name=brand]').val()=='selection'){
             $('.model').addClass("hidden");
         }else{
@@ -39,14 +40,36 @@ $('document').ready(function(){
             data: {'address': address},
             success: function(response){
                 if (response.response == "success") {
-                    console.log(response);
                 }
                 else{
-                    console.log(response);
                 }
             }
         });   
     });
+    
+    $('#cash4bike-form select[name=type]').change(function(){
+        $('#cash4bike-form input[name=type]').val($('#cash4bike-form select[name=type]').val());
+    });
+    $('#cash4bike-form input[name=revenu]').change(function(){
+        $('#cash4bike-form input[name=type]').val($('#cash4bike-form input[name=revenu]').val());
+    });
+    $('#cash4bike-form input[name=domicile]').change(function(){
+        $('#cash4bike-form input[name=type]').val($('#cash4bike-form input[name=domicile]').val());
+    });
+    $('#cash4bike-form input[name=travail]').change(function(){
+        $('#cash4bike-form input[name=type]').val($('#cash4bike-form input[name=travail]').val());
+    });
+    $('#cash4bike-form select[name=transport]').change(function(){
+        $('#cash4bike-form input[name=type]').val($('#cash4bike-form select[name=transport]').val());
+    });
+    $('#cash4bike-form select[name=transportationEssence]').change(function(){
+        $('#cash4bike-form input[name=type]').val($('#cash4bike-form select[name=transportationEssence]').val());
+    });
+    $('#cash4bike-form select[name=model]').change(function(){
+        $('#cash4bike-form input[name=type]').val($('#cash4bike-form select[name=model]').val());
+    });
+    
+    
 });
 
 
