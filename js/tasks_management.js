@@ -33,11 +33,11 @@ function list_tasks(status, owner2, email) {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp="<table data-order='[[ 0, \"desc\" ]]' class=\"table table-condensed\" id=\"task_listing\"><h4 class=\"fr-inline text-green\">Actions :</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right addTask\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" href=\"#\" name=\"KAMEO\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><thead><tr><th style=\"width: 2%\">ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Type</th><th style=\"width:25%;\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th><span class=\"fr-inline\">Rappel</span><span class=\"en-inline\">Reminder</span><span class=\"nl-inline\">Reminder</span></th><th><span class=\"fr-inline\">Statut</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Owner</th><th></th></tr></thead><tbody>";
+                var temp="<table data-order='[[ 0, \"desc\" ]]' class=\"table table-condensed\" id=\"task_listing\"><h4 class=\"fr-inline text-green\">Actions :</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right addTask\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" href=\"#\" name=\"KAMEO\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><thead><tr><th style=\"width: 2%\">ID</th><th><span class=\"fr-inline\">Société</span></th><th><span class=\"fr-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span></th><th><span class=\"fr-inline\">Rappel</span></th><th><span class=\"fr-inline\">Statut</span></th><th>Owner</th><th></th></tr></thead><tbody>";
                 dest=dest.concat(temp);
                 while (i < response.actionNumber){
                     if(response.action[i].date_reminder!=null){
-                        var date_reminder=response.action[i].date_reminder.substr(0,10);
+                        var date_reminder=response.action[i].date_reminder.shortDate();
                     }else{
                         var date_reminder="N/A";
                     }
@@ -46,15 +46,15 @@ function list_tasks(status, owner2, email) {
                     var ownerSpan=response.action[i].ownerFirstName+" "+response.action[i].ownerName;
 
                     if(response.action[i].late && response.action[i].status=='TO DO'){
-                        date_reminder="<span class='text-red'>"+date_reminder+"</span>";
+                        date_reminder="<td class=\"text-red\" data-sort=\""+(new Date(response.action[i].date_reminder)).getTime()+"\">"+date_reminder+"</span>";
                         status="<span class='text-red'>"+status+"</span>";
                         owner="<span class='text-red'>"+ownerSpan+"</span>";
                     }else if(response.action[i].status=='DONE'){
-                        date_reminder="<span class='text-green'>"+date_reminder+"</span>";
+                        date_reminder="<td class=\"text-green\" data-sort=\""+(new Date(response.action[i].date_reminder)).getTime()+"\">"+date_reminder+"</span>";
                         status="<span class='text-green'>"+status+"</span>";
                         owner="<span class='text-green'>"+ownerSpan+"</span>";
                     }else if(status='TO DO'){
-                        date_reminder="<span class='text-orange'>"+date_reminder+"</span>";
+                        date_reminder="<td class=\"text-orange\" data-sort=\""+(new Date(response.action[i].date_reminder)).getTime()+"\">"+date_reminder+"</span>";
                         status="<span class='text-orange'>"+status+"</span>";
                         owner="<span class='text-orange'>"+ownerSpan+"</span>";
                     }
@@ -78,7 +78,7 @@ function list_tasks(status, owner2, email) {
                     }
 
 
-                    var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td>"+response.action[i].date.substr(0,10)+"</td><td>"+type+"<td>"+response.action[i].title+"</td><td>"+date_reminder+"</td><td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                    var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td>"+response.action[i].date.substr(0,10)+"</td><td>"+type+"<td>"+response.action[i].title+"</td>"+date_reminder+"<td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></td></tr>";
                     dest=dest.concat(temp);
                     i++;
 
@@ -164,17 +164,22 @@ function list_tasks(status, owner2, email) {
                 for (var i = 0; i < classname.length; i++) {
                     classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
                 }
-                if ( $.fn.dataTable.isDataTable( '#task_listing' ) ) {
-                    table = $('#task_listing').DataTable();
-                }
-                else {
-                    table = $('#task_listing').DataTable( {
-                        paging: true
-                    } );
-                }
+                $('#task_listing').DataTable( {
+                    paging: true,
+                  "columns": [
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "200px" },
+                    { "width": "180px" },
+                    { "width": "500px" },
+                    { "width": "100px" },
+                    { "width": "100px" },
+                    { "width": "100px" },
+                    { "width": "100px" }                          
+                    ]
+                })
             }
-        }
-           
+        }      
     })
 }
 

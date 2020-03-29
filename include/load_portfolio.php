@@ -27,7 +27,7 @@ try{
 
 
                 include 'connexion.php';
-                $sql="SELECT *  FROM bike_catalog WHERE STAANN != 'D'";
+                $sql="SELECT *  FROM bike_catalog WHERE DISPLAY='Y' AND STAANN != 'D'";
 
                 if($ID != NULL){
                     $sql=$sql." AND ID='".$ID."'";

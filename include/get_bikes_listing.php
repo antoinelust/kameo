@@ -65,7 +65,7 @@ $i=0;
 while($row = mysqli_fetch_array($result))
 
 {
-
+    $idBike=$row['ID'];
     $response['bike'][$i]['id']=$row['ID'];
     $response['bike'][$i]['HEU_MAJ']=$row['HEU_MAJ'];
     $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
@@ -80,6 +80,7 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['contractEnd']=$row['CONTRACT_END'];
     $response['bike'][$i]['status']=$row['STATUS'];
     $response['bike'][$i]['insurance']=$row['INSURANCE'];
+    $response['bike'][$i]['bikePrice']=$row['BIKE_PRICE'];    
 
     if($row['TYPE']){
         $type=$row['TYPE'];
@@ -101,6 +102,26 @@ while($row = mysqli_fetch_array($result))
     }else{
         $response['bike'][$i]['brand']=null;
         $response['bike'][$i]['modelBike']=null;
+    }
+    
+    if($row['BIKE_PRICE']){
+        include 'connexion.php';
+        $sql3="select SUM(AMOUNT_HTVA) AS 'SOMME' from factures_details WHERE BIKE_ID='$idBike'";
+        if ($conn->query($sql3) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+
+        $result3 = mysqli_query($conn, $sql3);
+        $resultat3 = mysqli_fetch_assoc($result3);
+        $conn->close();
+        
+        $rentability=round($resultat3['SOMME']/$row['BIKE_PRICE']*100);
+        $response['bike'][$i]['rentability']=$rentability;
+        $response['bike'][$i]['sql']=$sql3;
+    }else{
+        $response['bike'][$i]['rentability']="N/A";
     }
 
     $i++;

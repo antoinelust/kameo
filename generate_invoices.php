@@ -17,7 +17,7 @@ if(isset($_GET['date'])){
     $date=null;
 }
 
-if(isset($_GET['meonth'])){
+if(isset($_GET['month'])){
     $month=$_GET['month'];
 }else{
     $month=null;

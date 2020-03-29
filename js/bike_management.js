@@ -18,7 +18,7 @@ function list_bikes_admin() {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp=`<table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='10'>
+                var temp=`<table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
                             <h4 class="fr-inline text-green">Vélos: Leasing et autres</h4><br/>
                             <a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#" onclick="set_required_image('true')">
                               <span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span>
@@ -34,35 +34,33 @@ function list_bikes_admin() {
                                     ID
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th>
-                                    <th><span class="fr-inline">Vélo</span><span class="en-inline">Bike</span><span class="nl-inline">Fiet</span>
+                                    <span class="fr-inline">Société</span>
+                                    <th><span class="fr-inline">Vélo</span>
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Marque - Modèle</span><span class="en-inline">Brand - Model</span><span class="nl-inline">Brand - Model</span></th>
-                                    <th><span class="fr-inline">Type de contrat</span><span class="en-inline">Contract type</span><span class="nl-inline">Contract type</span>
+                                    <span class="fr-inline">Marque - Modèle</span>
+                                    <th><span class="fr-inline">Type de contrat</span>
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Début contrat</span>
-                                    <span class="en-inline">Contract Start</span>
-                                    <span class="nl-inline">Contract Start</span>
+                                    <span class="fr-inline">Début contrat</span>                                                                    
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Fin contrat</span><span class="en-inline">Contract End</span><span class="nl-inline">Contract End</span></th>
-                                    <th><span class="fr-inline">Montant</span><span class="en-inline">Amount</span><span class="nl-inline">Amount</span>
+                                    <span class="fr-inline">Fin contrat</span>
+                                    <th><span class="fr-inline">Montant</span>
                                   </th>
                                   <th>Facturation</th>
                                   <th>
-                                    <span class="fr-inline">Etat du vélo</span><span class="en-inline">Bike status</span><span class="nl-inline">Bike status</span>
+                                    <span class="fr-inline">Etat du vélo</span>
                                   </th>
                                   <th>Assurance ?</th>
                                   <th>Mise à jour </th>
+                                  <th>Rentabilité </th>
                                   <th></th>
                                 </tr>
                               </thead><tbody>`;
                 dest=dest.concat(temp);
 
                 while (i < response.bikeNumber){
-
 
                     if(response.bike[i].automatic_billing==null || response.bike[i].automatic_billing=="N"){
                         automatic_billing="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
@@ -120,9 +118,10 @@ function list_bikes_admin() {
                     else if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'renting' || response.bike[i].contractType=='leasing') && response.bike[i].billingType != 'paid'){
                         var leasingPrice="<span class=\"text-red\">0</span>";
                     }else if((response.bike[i].leasingPrice!=null && response.bike[i].leasingPrice!=0) && (response.bike[i].contractType== 'renting' || response.bike[i].contractType=='leasing')){
-                        var leasingPrice="<span class=\"text-green\">"+response.bike[i].leasingPrice+"</span>";
+                        var leasingPrice="<span class=\"text-green\">"+response.bike[i].leasingPrice+" €/mois</span>";
                     }else if((response.bike[i].leasingPrice!=null && response.bike[i].leasingPrice!=0) && (response.bike[i].contractType== 'stock' || response.bike[i].contractType=='test')){
-                        var leasingPrice="<span class=\"text-red\">"+response.bike[i].leasingPrice+"</span>";
+                        var leasingPrice="<span class=\"text-red\">"+response.bike[i].leasingPrice+" €/mois</span>";
+                    }else if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'stock' || response.bike[i].contractType=='test' || response.bike[i].billingType=='paid')){
                     }else if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'stock' || response.bike[i].contractType=='test' || response.bike[i].billingType=='paid')){
                         var leasingPrice="<span class=\"text-green\">0</span>";
                     }else{
@@ -135,27 +134,32 @@ function list_bikes_admin() {
                     }else{
                         var contractType="<span class=\"text-green\">"+response.bike[i].contractType+"</span>";
                     }
+                    
+                    if(response.bike[i].rentability!='N/A'){
+                        var rentability="<td data-sort=\""+response.bike[i].rentability+"\">"+response.bike[i].rentability+" %</td>";
+                    }else{
+                        var rentability="<td data-sort=\"0\">"+response.bike[i].rentability+"</td>";
+                    }
+                    
                     var row = '<tr class="showRow">';
                     if(response.bike[i].contractType == 'selling'){
                       row = '<tr style="display:none;" class="hideRow">';
                     }
-                    var temp= row + "<td>"+response.bike[i].id+"</td><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"retrieveBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td data-sort=\""+(new Date(response.bike[i].HEU_MAJ)).getTime()+"\">"+response.bike[i].HEU_MAJ.substr(8,2)+"/"+response.bike[i].HEU_MAJ.substr(5,2)+"/"+response.bike[i].HEU_MAJ.substr(2,2)+"</td><td><ins><a class=\"text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">Mettre à jour</a></ins></td></tr>";
+                    var temp= row + "<td>"+response.bike[i].id+"</td><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"retrieveBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td data-sort=\""+(new Date(response.bike[i].HEU_MAJ)).getTime()+"\">"+response.bike[i].HEU_MAJ.shortDate()+"</td>"+rentability+"<td><ins><a class=\"text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">Mettre à jour</a></ins></td></tr>";
                     dest=dest.concat(temp);
                   i++;
                 }
                 var temp="</tobdy></table>";
                 dest=dest.concat(temp);
                 document.getElementById('bikeDetailsAdmin').innerHTML = dest;
-                table = $('#bookingAdminTable').DataTable( {
-                    paging: true,
-                    searching: true,
-                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tous"]],
-                });
-
+                
+                
+                displayLanguage();
+                
+                
                 
                 document.getElementById('counterBikeAdmin').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
 
-                displayLanguage();
 
                 $(".updateBikeAdmin").click(function() {
                     construct_form_for_bike_status_updateAdmin(this.name);
@@ -187,6 +191,28 @@ function list_bikes_admin() {
                 });
 
 
+                table = $('#bookingAdminTable').DataTable( {
+                    paging: true,
+                    searching: true,
+                    "scrollX": true,                    
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tous"]],
+                      "columns": [
+                        { "width": "50px" },
+                        { "width": "50px" },
+                        { "width": "100px" },
+                        { "width": "180px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" },
+                        { "width": "100px" }                          
+                      ]
+                });
 
             }
         }
@@ -372,6 +398,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
     }).done(function(){
         document.getElementById('bikeBuildingAccessAdmin').innerHTML = "";
         document.getElementById('bikeUserAccessAdmin').innerHTML = "";
+        var id;
         $.ajax({
                 url: 'include/get_bike_details.php',
                 type: 'post',
@@ -382,7 +409,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                     } else{
                         document.getElementById("bikeManagementPicture").src="images_bikes/"+response.frameNumber+"_mini.jpg";
                         $('bikeManagementPicture').removeClass('hidden');
-
+                        id=response.id;
                         $('#widget-bikeManagement-form input[name=frameNumber]').val(frameNumber);
                         $('#widget-deleteBike-form input[name=frameNumber]').val(frameNumber);
                         $('#widget-bikeManagement-form input[name=frameNumberOriginel]').val(frameNumber);
@@ -505,6 +532,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
 
                 }
         }).done(function(response){
+            
             $.ajax({
                 url: 'include/action_bike_management.php',
                 type: 'post',
@@ -547,7 +575,56 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
 
                 }
             })
+            
+            $.ajax({
+                url: 'include/get_bills_details_listing.php',
+                type: 'post',
+                data: { "bikeID": id},
+                success: function(response){
+                    console.log(response);
+                    if (response.response == 'error') {
+                        console.log(response.message);
+                    } else{
+
+                        var i=0;
+                        var dest="<table id=\"bills_details_listing\" class=\"table table-condensed\"  data-order='[[ 0, \"desc\" ]]'><thead><tr><th><span class=\"fr-inline\">ID</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th></tr></thead><tbody>";
+                        while(i<response.billNumber){
+                            if(response.bill[i].sent=="1"){
+                                sent="<span class=\"text-green\">Y</span>"
+                            }else{
+                                sent="<span class=\"text-red\">N</span>"
+                            }
+                            if(response.bill[i].paid=="1"){
+                                paid="<span class=\"text-green\">Y</span>"
+                            }else{
+                                paid="<span class=\"text-red\">N</span>"
+                            }
+                            
+                            var temp="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].FACTURE_ID+"</a></td><td>"+response.bill[i].date.shortDate()+"</td><td>"+response.bill[i].amountHTVA+" €</td><td>"+sent+"</td><td>"+paid+"</td></tr>";
+                            dest=dest.concat(temp);
+                            i++;
+                        }
+                        dest=dest.concat("</tbody></table>");
+                        $('#bills_bike').html(dest);
+                        displayLanguage();
+                        
+                        $('#bills_details_listing').DataTable({
+                            "searching": false,
+                            "paging": false
+                        }
+                        );
+                        
+                        
+
+                    }                                                                            
+                }
+            })
+            
+            
+            
         })
+        
+        
     })
 }
 

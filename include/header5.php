@@ -211,7 +211,7 @@
 									<li class="dropdown fr"> <a href="#">Avantages <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li><a href="avantages.php">Avantages liés au vélo</a> </li>
-											<li><a href="cash4bike.php">Calculateur</a> </li>
+											<li><a href="cash4bike.php">Calculateur Cash For Bike</a> </li>
 										</ul>
 									</li>
 									
@@ -239,9 +239,9 @@
 									<?php
 									}
 									?>
-									
+									<!--
 									<li class="fr"><a href="#.php">Media/Blog</a></li>
-									
+									-->
 								</ul>
 							</nav>
 						</div>

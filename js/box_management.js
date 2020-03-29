@@ -11,7 +11,7 @@
                     var i=0;
                     var dest="<a class=\"button small green button-3d rounded icon-right addBox\" name=\""+company+"\" data-target=\"#boxManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une borne</span></a>";
                     if(response.boxesNumber>0){
-                        var temp="<table class=\"table\"><tbody><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th>Début de contrat</th><th>Fin de contrat</th><th></th></tr></thead>";
+                        var temp="<table id=\"boxesListingTable\" class=\"table\"><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th>Début de contrat</th><th>Fin de contrat</th><th></th></tr></thead><tbody>";
                         dest=dest.concat(temp);
 
                         while (i < response.boxesNumber){
@@ -69,6 +69,15 @@
 
 
                     $('#boxesListingSpan').html(dest);
+                    
+                    $('#boxesListingTable').DataTable({
+                        "searching": false,
+                        "paging": false,
+                        "info":     false
+                        
+                    });
+                    
+                    
                     $('.addBox').click(function(){
                         add_box(this.name);
                     });

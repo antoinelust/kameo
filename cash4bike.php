@@ -23,11 +23,11 @@ include 'include/header5.php';
 				<div class="m-t-30 col-md-12">
                 	<form id="cash4bike-form" action="include/calculate_cash4bike.php" role="form" method="get">
                     <div class="row">
-                        <div class="col-sm-6" style= "background-color: #D3EFDD">
+                        <div class="col-md-6" style= "background-color: #D3EFDD ; height: 500px">
                         <div class="space"></div>
                             <h4 class="text-green">Informations personnelles</h4>
 
-                            <div class="form-group col-sm-12 ">
+                            <div class="form-group col-md-12 ">
                                 <div class="employe">
                                     <label><input type="radio" name="type" value="employe" checked> Je suis un employé</label>
                                 </div>
@@ -36,34 +36,38 @@ include 'include/header5.php';
                                 </div>
                             </div>
 
-                            <div class="col-sm-12">
-                                <div class="form-group col-sm-6">
+                            <div class="col-md-12">
+                                <div class="form-group col-md-6">
                                     <div class="form-group">
                                         <label class="revenu" for="phone">Votre revenu mensuel brut :</label>
                                         <div class="input-group">
                                             <span class="input-group-addon">€/mois</span>
-                                            <input type="number" class="form-control required" min='0' name="revenu" value="0" id="revenu" aria-required="true">
+                                            <input type="number" class="form-control required" min='0' placeholder="0" name="revenu" id="revenu" aria-required="true">
                                         </div>
                                     </div>
                                 </div>
                             </div>                                
-                            <div class="col-sm-12">
-                                <div class="form-group col-sm-12">
-                                    <label for="domicile" class="fr">Adresse du domicile</label>
-                                    <input type="text" name="domicile" class="form-control required is-invalid" placeholder="Rue, Numéro, Code postal, Commune">
-                                </div>
-                                <div class="form-group col-sm-12">
-                                    <label for="travail" class="fr">Adresse du lieu de travail</label>
-                                    <input type="text" aria-required="true" name="travail" class="form-control required is-invalid" placeholder="Rue, Numéro, Code postal, Commune">
-                                </div>
+                            <div class="col-md-12">  
+                                <div id="inputHomeAddress" class="form-group has-error has-feedback">							
+                                  <label class="control-label" for="domicile">Adresse du domicile</label>							
+                                  <input type="text" name="domicile" class="form-control" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">							
+                                  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
+                                  <span id="inputSuccess1Status" class="sr-only">(success)</span> 
+                                </div>                                
+                                <div id="inputWorkAddress" class="form-group has-error has-feedback">							
+                                  <label class="control-label" for="inputSuccess2">Adresse du lieu de travail</label>							
+                                  <input type="text" name="travail" class="form-control" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">							
+                                  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
+                                  <span id="inputSuccess2Status" class="sr-only">(success)</span> 
+                                </div>                                
                             </div>
                             <div class="space"></div>
                         </div>
-                        <div class="col-sm-6" style= "background-color: #E6E6E6">
+                        <div class="col-md-6" style= "background-color: #E6E6E6 ; height: 500px">
                         <div class="space"></div>
                             <h4 class="text-green">Moyen de transport</h4>
-                            <div class="form-group col-sm-12">
-                                <div class="col-sm-6">
+                            <div class="form-group col-md-12">
+                                <div class="col-md-6">
                                     <label for="transport" class="fr">Votre moyen de transport actuel :</label>
                                     <select class="form-control" name="transport">
                                         <option value="personnalCar" selected>Voiture personnelle</option>
@@ -87,11 +91,11 @@ include 'include/header5.php';
                                 </div>
                                 
                             </div>
-                            <div class="form-group col-sm-12">
+                            <div class="form-group col-md-12">
                                                                 
                                 
                                 
-                                <div class="col-sm-12">
+                                <div class="col-md-12">
                                     <div class="employeurremunere">
                                         <label><input type="radio" name="prime" value="0" checked> Mon employeur rémunère mes kilomètres vélo</label>
                                     </div>
@@ -108,20 +112,19 @@ include 'include/header5.php';
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
                             <br><br>
-                        </div>
+                        </div>                                                
                         <div class="separator"></div>
-                        
                         
                         <h4 class="text-green">Vélo souhaité</h4>
                         
-                        <div class="col-sm-12">
-                            <div class="col-sm-4">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
                                 <label for="brand">Marque</label>
                                 <select class="from-control" name='brand'>
                                     <option value="selection">Veuillez sélectionner</option>
                                 </select>
                             </div>
-                            <div class="col-sm-4 model hidden">
+                            <div class="col-md-4 model hidden">
                                 <label for="brand">Modèle</label>
                                 <select class="from-control" name='model'>
                                     <option value="selection">Veuillez sélectionner</option>
@@ -130,9 +133,10 @@ include 'include/header5.php';
                             
                         </div>
                         
-                        <div class="col-sm-12 bike_picture hidden">
+                        <div class="col-md-12 bike_picture hidden">
                         	<div class="space"></div>
                             <h4 id="bike_price" class="text-center"></h4>
+                            <h4 id="bike_leasing_price" class="text-center"></h4>
                             <img id="bike_picture" alt="image" class="centerimg" />
                         </div>
                         
@@ -140,7 +144,7 @@ include 'include/header5.php';
 						
 						<div class="separator"></div>
                                 
-						<div class="form-group col-sm-6">
+						<div class="form-group col-md-6">
                             <button class="button green button-3d effect fill-vertical fr" type="submit"><i class="fa fa-calculator"></i>&nbsp;Calculer</button>
                         </div>
                     </div>
@@ -148,20 +152,29 @@ include 'include/header5.php';
                     
                 <script type="text/javascript">
                   jQuery("#cash4bike-form").validate({
+
                     submitHandler: function(form) {
-                      jQuery(form).ajaxSubmit({
-                        success: function(response) {
-                          if (response.response == 'error'){
-                                $.notify({
-                                  message: response.message
-                                }, {
-                                  type: 'danger'
-                                });
-                          }else{
-                              console.log(response);
-                          }
-                        }
-                      })
+                      $("body").addClass("loading");
+                      
+                        jQuery(form).ajaxSubmit({
+                            success: function(response) {
+                              $("body").removeClass("loading");
+
+                              if (response.response == 'error'){
+                                    $.notify({
+                                      message: response.message
+                                    }, {
+                                      type: 'danger'
+                                    });
+                              }else{
+                                    $.notify({
+                                      message: response.message
+                                    }, {
+                                      type: 'success'
+                                    });
+                              }
+                            }
+                        })
                     }
                   })
                 </script>

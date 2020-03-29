@@ -151,7 +151,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
     </tr>
     <tr>
         <td>
-            <h4 style="color: #3CB195">FACTURE</h4>
+            <h4 style="color: #3CB195">FACTURE n°'.$newIDOUT.'</h4>
 
         </td>
         <td>

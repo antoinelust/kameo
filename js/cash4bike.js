@@ -33,6 +33,14 @@ $('document').ready(function(){
     });
     
     $('#cash4bike-form input[name=domicile]').change(function(){
+        $('#inputHomeAddress').removeClass('has-error');
+        $('#inputHomeAddress').removeClass('has-success');
+        $('#inputHomeAddress').addClass('has-warning');
+        $('#inputHomeAddress2').removeClass('fa-check');
+        $('#inputHomeAddress2').addClass('fa-info-circle');
+        $('#inputHomeAddress2').removeClass('fa-close');
+        
+        
         var address=$('#cash4bike-form input[name=domicile]').val();
         $.ajax({
             url: 'include/API_google_maps/validate_address.php',
@@ -40,8 +48,61 @@ $('document').ready(function(){
             data: {'address': address},
             success: function(response){
                 if (response.response == "success") {
+                    $('#inputHomeAddress').removeClass('has-error');
+                    $('#inputHomeAddress').addClass('has-success');
+                    $('#inputHomeAddress').removeClass('has-warning');
+                    $('#inputHomeAddress2').addClass('fa-check');
+                    $('#inputHomeAddress2').removeClass('fa-info-circle');
+                    $('#inputHomeAddress2').removeClass('fa-close');
+                                        
                 }
                 else{
+                    $('#inputHomeAddress').addClass('has-error');
+                    $('#inputHomeAddress').removeClass('has-success');
+                    $('#inputHomeAddress').removeClass('has-warning');
+                    $('#inputHomeAddress2').removeClass('fa-check');
+                    $('#inputHomeAddress2').removeClass('fa-info-circle');
+                    $('#inputHomeAddress2').addClass('fa-close');
+                                        
+                }
+            }
+        });   
+    });
+    $('#cash4bike-form input[name=travail]').change(function(){
+        $('#inputWorkAddress').removeClass('has-error');
+        $('#inputWorkAddress').removeClass('has-success');
+        $('#inputWorkAddress').addClass('has-warning');
+        $('#inputWorkAddress2').removeClass('fa-check');
+        $('#inputWorkAddress2').addClass('fa-info-circle');
+        $('#inputWorkAddress2').removeClass('fa-close');
+        
+        
+        var address=$('#cash4bike-form input[name=travail]').val();
+        $.ajax({
+            url: 'include/API_google_maps/validate_address.php',
+            method: 'get',
+            data: {'address': address},
+            success: function(response){
+                if (response.response == "success") {
+                    
+                    $('#inputWorkAddress').removeClass('has-error');
+                    $('#inputWorkAddress').addClass('has-success');
+                    $('#inputWorkAddress').removeClass('has-warning');
+                    $('#inputWorkAddress2').addClass('fa-check');
+                    $('#inputWorkAddress2').removeClass('fa-info-circle');
+                    $('#inputWorkAddress2').removeClass('fa-close');
+                    
+                }
+                else{
+                    
+                    $('#inputWorkAddress').addClass('has-error');
+                    $('#inputWorkAddress').removeClass('has-success');
+                    $('#inputWorkAddress').removeClass('has-warning');
+                    $('#inputWorkAddress2').removeClass('fa-check');
+                    $('#inputWorkAddress2').removeClass('fa-info-circle');
+                    $('#inputWorkAddress2').addClass('fa-close');
+                    
+                    
                 }
             }
         });   
@@ -151,7 +212,6 @@ function load_models(brand){
 
 
 function load_picture(id){
-    console.log(id);
     $.ajax({
         url: 'include/get_bikes_catalog.php',
         method: 'get',
@@ -159,8 +219,28 @@ function load_picture(id){
 
         success: function(response){
             if (response.response == "success") {
-                $('#bike_price').html("<span class=\"text-green\">Prix : </span>"+response.bike[0].priceHTVA+" €");
-                document.getElementById("bike_picture").src="images_bikes/"+(response.bike[0].brand+"_"+response.bike[0].model+"_"+response.bike[0].frameType).toLowerCase().replace(/ /g,'-')+"_mini.jpg";
+                
+                var price=response.bike[0].priceHTVA;
+                var brand=response.bike[0].brand;
+                var model=response.bike[0].model;
+                var frameType=response.bike[0].frameType;
+                
+                $.ajax({
+                    url: 'include/get_prices.php',
+                    method: 'post',
+                    data:{'retailPrice': price},
+
+                    success: function(response){
+                        if (response.response == "success") {
+                            $('#bike_price').html("<span class=\"text-green\">Prix à l'achat (HTVA): </span>"+price+" €");
+                            $('#bike_leasing_price').html("<span class=\"text-green\">Prix en location tout inclus (HTVA): </span>"+response.HTVALeasingPrice+" €/mois");
+                            document.getElementById("bike_picture").src="images_bikes/"+(brand+"_"+model+"_"+frameType).toLowerCase().replace(/ /g,'-')+"_mini.jpg";
+                        }
+                        else{
+                            console.log(response);
+                        }
+                    }
+                });                
             }
             else{
                 console.log(response.message);

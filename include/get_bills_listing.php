@@ -13,7 +13,7 @@ $email=isset($_POST['email']) ? $_POST['email']: null;
 $sent=isset($_POST['sent']) ? $_POST['sent']: null;
 $paid=isset($_POST['paid']) ? $_POST['paid']: null;
 $direction=isset($_POST['direction']) ? $_POST['direction']: null;
-$company2=$_POST['company'];
+$company2=isset($_POST['company']) ? $_POST['company']: null;
 $response=array();
 
 if($email != NULL)
@@ -34,42 +34,43 @@ if($email != NULL)
 
     $company=$resultat['COMPANY'];
     
+    
     include 'connexion.php';    
     if($company!='KAMEO'){
         $response['update']=false;
     	$sql="select * from factures where COMPANY = '$company'";
-    } else{
+    }else{
         $response['update']=true;
-        if($company2!="Choix de la société"){
+        if($company2!="Choix de la société" && $company2 != NULL){
     	   $sql="select * from factures WHERE COMPANY ='$company2'";
         }else{
     	   $sql="select * from factures WHERE 1 ";
         } 
     }
-    if($paid!='*'){
+        
+    
+    
+    if($paid!='*' && $paid != NULL){
         $sql=$sql." AND FACTURE_PAID='$paid'";
     }
-    if($sent!='*'){
+    if($sent!='*' && $sent != NULL){
         $sql=$sql." AND FACTURE_SENT='$sent'";
     }
-    if($direction!='*'){
+    if($direction!='*' && $direction != NULL){
         if($direction=="IN"){
             $sql=$sql." AND AMOUNT_HTVA>0";
         }else if($direction=="OUT"){
             $sql=$sql." AND AMOUNT_HTVA<0";
         }
     }
-    $sql=$sql." ORDER BY DATE DESC";
-
+    
     
     $result = mysqli_query($conn, $sql);   
     $conn->close();
-
     
     $length = $result->num_rows;
     $response['response']="success";
 	$response['billNumber']=$length;
-    $response['sql']=$sql;
 
     
     $i=0;

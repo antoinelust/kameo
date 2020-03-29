@@ -15,6 +15,7 @@ $company=isset($_POST['company']) ? $_POST['company'] : NULL;
 
 $response=array();
 
+
 if($frameNumber != NULL || $id != NULL)
 {
 
@@ -41,6 +42,7 @@ if($frameNumber != NULL || $id != NULL)
     $length = $result->num_rows;
     $row = mysqli_fetch_assoc($result);
     $response['response']="success";
+    $response['id']=$row['ID'];
     $response['frameNumber']=$frameNumber;
     $response['model']=$row['MODEL'];
     $response['type']=$row['TYPE'];

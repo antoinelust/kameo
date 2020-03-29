@@ -33,6 +33,7 @@ if($priceTemp<2500){
 	errorMessage(ES0012);
 }
 
+$response['response']="success";
 $response['retailPrice']=$retailPrice;
 $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
 $response['leasingPrice']=round($leasingPrice);
