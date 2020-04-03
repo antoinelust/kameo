@@ -64,7 +64,7 @@ include 'include/header5.php';
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">CHOIX DE LA FLOTTE DE VÉLO</h1>
 							<p class="text-justify">Nous avons l’expérience, laissez nous vous conseiller sur le modèle et le nombre de vélos adéquats pour votre projet.</p>
-							<p class="text-justify">Nous proposons des vélos adaptés pour une flotte partagée et travaillons avec des partenaies de qualité tels que <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
+							<p class="text-justify">Nous proposons des vélos adaptés pour une flotte partagée et travaillons avec des partenaires de qualité tels que <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
 						    <p class="text-justify">Envie de brander vos vélos, c’est comme si c’était fait.</p>
 							
 			 
@@ -97,7 +97,7 @@ include 'include/header5.php';
 										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
-												<a href="offre.php?brand=conway&model=cairon t 200&frameType=f"><i class="fa fa-eye"></i></a>
+												<a href="offre.php?brand=conway&model=cairon t 200 se 500&frameType=f"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
@@ -111,7 +111,7 @@ include 'include/header5.php';
 										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
-												<a href="offre.php?brand=ahooga&model=modular&frameType=f"><i class="fa fa-eye"></i></a>
+												<a href="offre.php?brand=ahooga&model=modular bike hybrid&frameType=h"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
@@ -122,7 +122,7 @@ include 'include/header5.php';
 								
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_m.jpg" alt="AHOOGA Modular">
+										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
 												<a href="offre.php?brand=conway&model=cairon%20t%20200%20se%20500&frameType=m"><i class="fa fa-eye"></i></a>
@@ -146,7 +146,7 @@ include 'include/header5.php';
 			<!-- SECTION GESTION FLOTTE -->
 			<section class="p-b-0">
 				<div class="container">
-					<div class="row" style="background: url('images/fond_degrade4.jpg');" data-stellar-background-ratio="0.6">
+					<div class="row" style="background-color: white;">
 					<!--
 						<div class="col-md-4">
 							<img src="images/Borne.jpg" class="img-responsive img-rounded" alt="MyBORNE - gestion des clés de votre flotte">
@@ -239,6 +239,7 @@ include 'include/header5.php';
 			<!-- END: SECTION INFRASTRUCTURES -->
 			
 			<!-- SECTION LOCATION TOUT INCLUS -->
+			<!--
 			<section class="p-b-0">
 				<div class="container">
 					<div class="row">
@@ -250,6 +251,7 @@ include 'include/header5.php';
 					</div>
 				</div>
 			</section>
+			-->
 			<!-- END: SECTION LOCATION TOUT INCLUS -->
 
 			
@@ -260,7 +262,7 @@ include 'include/header5.php';
 				    <h3>NOUS RENCONTRER</h3>
 				    <p>Envie de pédaler avec nous?<br>
 						Contactez-nous, nous viendrons vous présenter nos offres.</p>
-				    <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
+				    <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Nous contacter</span></a> </div>
 				</div>
 
 <!--END: CALL TO ACTION -->
@@ -345,7 +347,7 @@ include 'include/header5.php';
 		
 
 
-		<!-- FOOTER -->
+			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -353,10 +355,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -371,7 +369,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

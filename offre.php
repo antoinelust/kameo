@@ -115,7 +115,7 @@ $row = mysqli_fetch_assoc($result);
 						        <div class="col-md-4 col-sm-4 col-xs-4">
 						          <div class="plan">
 						            <div class="plan-header">
-						              <h4>Prix Leasing (HTVA)</h4>
+						              <h4>Prix Location (HTVA)</h4>
 						              <h2 class="text-green"><sup>€</sup><?php echo $leasingPrice; ?><span><small>/mois</small></span></h2>
 						              
 						            </div>
@@ -131,7 +131,7 @@ $row = mysqli_fetch_assoc($result);
 						</div>
                         
                         <div class="col-md-12">
-                            <p>L'option leasing sur 36 mois comprend les services suivants:</p>
+                            <p>L'option location sur 36 mois comprend les services suivants:</p>
                             <ul>
                                 <li>Assurance P-Vélo contre le vol et la casse</li>
                                 <li>4 entretiens sur les 36 mois de la durée de vie du leasing</li>
@@ -172,7 +172,7 @@ $row = mysqli_fetch_assoc($result);
                                         <label for="widget-offer-leasing">Type d'acquisition</label>
 											<select name="widget-offer-leasing">
                                                 <option value="achat">Achat</option>
-                                                <option value="leasing">Leasing</option>
+                                                <option value="location">Location</option>
 									       </select>
                                     </div>
                                     

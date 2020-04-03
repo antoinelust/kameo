@@ -763,6 +763,7 @@ if($connected){
             document.getElementById('cashFlowManagement').classList.remove("hidden");
             document.getElementById('feedbacksManagement').classList.remove("hidden");
             document.getElementById('maintenanceManagement').classList.remove("hidden");
+            document.getElementById('dashBoardManagement').classList.remove("hidden");
           }
 
 
@@ -2557,6 +2558,14 @@ if($connected){
                               <p>Vue sur les entretiens</p>
                             </div>
                           </div>
+                          <div class="col-md-4 hidden" id="dashBoardManagement">
+                            <div class="icon-box medium fancy">
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#dashboard" href="#" ><i class="fa fa-dashboard"></i></a> </div>
+                              <div class="counter bold" style="color:#3cb395"></div>
+                              <p>Dashboard</p>
+                            </div>
+                          </div>
+
                         </div>
 
 
@@ -4684,8 +4693,94 @@ if($connected){
         </div>
 
 
-
-
+        <div class="modal fade" id="dashboard" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+          <div class="modal-dialog modal-lg" style= "width: 1250px">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-12">
+             		 <h3 class="text-green">Dashboard</h3>
+             		 <div class="col-md-2 sidebar">
+		             	<div class="sidebar-menu">
+		                    <ul>
+		                        <li class="active"><a class="scroll-to" href="#">Overview</a>
+		                        </li>
+		                        <li><a class="scroll-to" href="#">Bouton 2</a>
+		                        </li>
+		                        <li><a class="scroll-to" href="#">Bouton 3</a>
+		                        </li>
+		                        <li><a class="scroll-to" href="#">Bouton 4</a>
+		                        </li>
+		                        <li><a class="scroll-to" href="#">Bouton 5</a>
+		                        </li>
+		                    </ul>
+		                </div>
+             		 </div>
+             		 <div class="col-md-10">
+                         <div class="col-md-12">
+                            <div class="col-md-6">
+                                <canvas id="myChart4" width="400" height="400"></canvas>
+                                <script>
+                                var ctx = document.getElementById('myChart4').getContext('2d');
+                                var myChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                                        datasets: [{
+                                            label: '# of Votes',
+                                            data: [12, 19, 3, 5, 2, 3],
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(255, 206, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgba(255, 99, 132, 1)',
+                                                'rgba(54, 162, 235, 1)',
+                                                'rgba(255, 206, 86, 1)',
+                                                'rgba(75, 192, 192, 1)',
+                                                'rgba(153, 102, 255, 1)',
+                                                'rgba(255, 159, 64, 1)'
+                                            ],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                                </script>                                
+                             </div>
+                         
+                         </div>
+             		 </div>
+				  </div>
+				</div>
+			  </div>
+              <div class="fr" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+              </div>
+              <div class="en" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+              </div>
+              <div class="nl" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="modal fade" id="addBill" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
@@ -6393,7 +6488,7 @@ if($connected){
                             <label for="picture"  class="en">Bike picture (jpg)</label>
                             <label for="picture"  class="nl">Bike picture(jpg)</label>
                             <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                            <input type=file size=40 name="picture" class="form-control required">
+                            <input type=file size=40 name="picture" class="form-control">
                           </div>
 
                         </div>
@@ -6481,7 +6576,7 @@ if($connected){
                             </select>
                           </div>
 
-                          <div class="col-sm-4">
+                          <div class="col-sm-4 billingPriceDiv">
                             <label for="billingPrice"  class="fr">Montant de facturation</label>
                             <label for="billingPrice"  class="en">Montant de facturation</label>
                             <label for="billingPrice"  class="nl">Montant de facturation</label>
@@ -6492,14 +6587,15 @@ if($connected){
                             </div>
                           </div>
 
-                          <div class="col-sm-4">
+                          <div class="col-sm-4 billingGroupDiv">
                             <label for="billingGroup"  class="fr">Groupe de facturation</label>
                             <label for="billingGroup"  class="en">Groupe de facturation</label>
                             <label for="billingGroup"  class="nl">Groupe de facturation</label>
                             <input type="text" name="billingGroup" class="form-control required">
                           </div>
                         </div>
-                        <div class="col-sm-12">
+                          
+                        <div class="col-sm-12 billingDiv">
                           <div class="col-sm-4">
                             <label for="billing"  class="fr">Facturation automatique ?</label>
                             <label for="billing"  class="en">Automatic billing ?</label>
@@ -6516,10 +6612,10 @@ if($connected){
                         <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
                         <input type="text" name="action" class="form-control hidden">
 
-                        <div class="col-sm-12"><h4>Accès aux bâtiments de ce vélo</h4></div>
+                        <div class="col-sm-12" id='bikeBuildingAccessAdminDiv'><h4>Accès aux bâtiments de ce vélo</h4></div>
                         <div class="form-group col-sm-12" id="bikeBuildingAccessAdmin"></div>
 
-                        <div class="col-sm-12"><h4>Accès des utilisateurs à ce vélo</h4></div>
+                        <div class="col-sm-12" id='bikeUserAccessAdminDiv'><h4>Accès des utilisateurs à ce vélo</h4></div>
                         <div class="form-group col-sm-12" id="bikeUserAccessAdmin"></div>
 
                       </div>
@@ -8350,6 +8446,7 @@ if($connected){
                             <label for="brand" class="nl"> Brand : </label>
                             <select class="form-control required" name="brand">
                                 <option value="Ahooga">Ahooga</option>
+                                <option value="Benno">Benno</option>
                                 <option value="Bzen">Bzen</option>
                                 <option value="Conway">Conway</option>
                                 <option value="Douze Cycle">Douze Cycle</option>
@@ -8596,6 +8693,7 @@ if($connected){
                           <label for="brand" class="nl"> Brand : </label>
                           <select class="form-control required" name="brand">
                             <option value="Ahooga">Ahooga</option>
+                            <option value="Benno">Benno</option>                              
                             <option value="Bzen">Bzen</option>
                             <option value="Conway">Conway</option>
                             <option value="Douze Cycle">Douze Cycle</option>
@@ -8682,7 +8780,7 @@ if($connected){
                           <label for="stock" class="fr"> En stock ? </label>
                           <label for="stock" class="en"> Sotck? </label>
                           <label for="stock" class="nl"> Stock? </label>
-                          <input type="text" class="bikeCatalogStock form-control required" name="stock" />
+                          <input type="text" class="bikeCatalogStock form-control" name="stock" />
                         </div>
                       </div>
                       <div class="col-sm-12">

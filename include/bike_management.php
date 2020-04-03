@@ -34,50 +34,110 @@ if(isset($_POST['action'])){
         $user=$_POST['user'];
         $company=$_POST['company'];
         $buildingInitialization=isset($_POST['firstBuilding']) ? $_POST['firstBuilding'] : NULL;
+        
+        
+            
+        if($billingType=='paid'){
+            $contractStart=NULL;
+            $contractEnd=NULL;
+            $billingPrice=NULL;
+            $_POST['userAccess']=NULL;
+            $_POST['buildingAccess']=NULL;    
+            $billingGroup='0';
+        }
+        
+        
+        if($contractStart!=NULL){
+            $contractStart="'".$contractStart."'";
+        }else{
+            $contractStart='NULL';
+        }
+        
+        if($contractEnd!=NULL){
+            $contractEnd="'".$contractEnd."'";
+        }else{
+            $contractEnd='NULL';
+        }
+        
+        if($billingPrice!=NULL){
+            $billingPrice="'".$billingPrice."'";
+        }else{
+            $billingPrice='NULL';
+        }
+        
+        
 
-        if($buildingInitialization == NULL){
-            errorMessage("ES0042");
+        if(isset($_FILES['picture']['name'])){
+            $extensions = array('.jpg');
+            $extension = strrchr($_FILES['picture']['name'], '.');
+            if(!in_array($extension, $extensions))
+            {
+                  errorMessage("ES0041");
+            }
+
+
+            $taille_maxi = 6291456;
+            $taille = filesize($_FILES['picture']['tmp_name']);
+            if($taille>$taille_maxi)
+            {
+                  errorMessage("ES0023");
+            }
+            
+            //upload of Bike picture
+
+            $dossier = '../images_bikes/';
+
+
+
+            $fichier = $frameNumber.$extension;
+
+             if(move_uploaded_file($_FILES['picture']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+             {
+                $upload=true;
+                $path= $dossier . $fichier;
+             }
+             else
+             {
+                  errorMessage("ES0024");
+             }
+
+            copy($dossier . $fichier, $dossier . $frameNumber."_big".$extension);
+            copy($dossier . $fichier, $dossier . $frameNumber."_mini".$extension);
+            $img = resize_image($dossier . $frameNumber."_mini".$extension, 100, 100);
+            imagejpeg($img, $dossier. $frameNumber."_mini".$extension);
+            
+        }else{
+            
+            include 'connexion.php';
+            $sql="select * from bike_catalog where ID='$portfolioID'";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            
+            
+            
+            
+            $result = mysqli_query($conn, $sql);
+            $resultat = mysqli_fetch_assoc($result);
+            $conn->close();
+            
+            $brand=$resultat['BRAND'];
+            $model=$resultat['MODEL'];
+            $frameType=$resultat['FRAME_TYPE'];
+            $dossier = '../images_bikes/';
+            
+            $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).".jpg";
+            copy($dossier . $fichier, $dossier . $frameNumber."_big.jpg");
+            copy($dossier . $fichier, $dossier . $frameNumber."_mini.jpg");
+            $img = resize_image($dossier . $frameNumber."_big.jpg", 800, 800);
+            imagejpeg($img, $dossier. $frameNumber."_big.jpg");
+            $img = resize_image($dossier . $frameNumber."_mini.jpg", 100, 100);
+            imagejpeg($img, $dossier. $frameNumber."_mini.jpg");
+            
         }
 
-        $extensions = array('.jpg');
-        $extension = strrchr($_FILES['picture']['name'], '.');
-        if(!in_array($extension, $extensions))
-        {
-              errorMessage("ES0041");
-        }
-
-
-        $taille_maxi = 6291456;
-        $taille = filesize($_FILES['picture']['tmp_name']);
-        if($taille>$taille_maxi)
-        {
-              errorMessage("ES0023");
-        }
-
-        //upload of Bike picture
-
-        $dossier = '../images_bikes/';
-
-
-
-        $fichier = $frameNumber.$extension;
-
-         if(move_uploaded_file($_FILES['picture']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-         {
-            $upload=true;
-            $path= $dossier . $fichier;
-         }
-         else
-         {
-              errorMessage("ES0024");
-         }
-
-        copy($dossier . $fichier, $dossier . $frameNumber."_big".$extension);
-        copy($dossier . $fichier, $dossier . $frameNumber."_mini".$extension);
-        $img = resize_image($dossier . $frameNumber.$extension, 800, 800);
-        imagejpeg($img, $dossier. $frameNumber.$extension);
-        $img = resize_image($dossier . $frameNumber.$extension, 100, 100);
-        imagejpeg($img, $dossier. $frameNumber."_mini".$extension);
 
 
         if($model != NULL && $frameNumber != NULL && $size != NULL && $frameReference != NULL && $user != NULL && $company != NULL && $buildingInitialization != NULL){
@@ -120,23 +180,7 @@ if(isset($_POST['action'])){
                 $insurance="N";
             }
 
-            if($contractStart!=NULL){
-                $contractStart="'".$contractStart."'";
-            }else{
-                $contractStart='NULL';
-            }
-            if($contractEnd!=NULL){
-                $contractEnd="'".$contractEnd."'";
-            }else{
-                $contractEnd='NULL';
-            }
 
-
-            if($billingPrice!=NULL){
-                $billingPrice="'".$billingPrice."'";
-            }else{
-                $billingPrice='NULL';
-            }
 
             $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice')";
 
@@ -146,17 +190,20 @@ if(isset($_POST['action'])){
                 die;
             }
 
-            $sql= "INSERT INTO  reservations (USR_MAJ, HEU_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIL, STATUS, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$buildingInitialization', '0', '$buildingInitialization', '$user', 'Closed','')";
+            if($buildingInitialization){
+                $sql= "INSERT INTO  reservations (USR_MAJ, HEU_MAJ, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIL, STATUS, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '0', '$buildingInitialization', '0', '$buildingInitialization', '$user', 'Closed','')";
 
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
             }
 
             if(isset($_POST['buildingAccess'])){
                 foreach($_POST['buildingAccess'] as $valueInArray){
                     $sql= "INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BUILDING_CODE, BIKE_NUMBER, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$frameNumber', '')";
+                    
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);

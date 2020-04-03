@@ -1,4 +1,44 @@
+window.addEventListener("DOMContentLoaded", function(event) {
 
+    $('#widget-bikeManagement-form select[name=billingType]').change(function(){
+        if($('#widget-bikeManagement-form select[name=billingType]').val()=="paid"){
+            $('.billingPriceDiv').addClass("hidden");
+            $('.billingGroupDiv').addClass("hidden");
+            $('.billingDiv').addClass("hidden");
+        }else{
+            $('.billingPriceDiv').removeClass("hidden");
+            $('.billingGroupDiv').removeClass("hidden");
+            $('.billingDiv').removeClass("hidden");
+        }
+    });
+    
+    $('#widget-bikeManagement-form select[name=contractType]').change(function(){
+        if($('#widget-bikeManagement-form select[name=contractType]').val()=="selling"){
+            $('.billingPriceDiv').addClass("hidden");
+            $('.billingGroupDiv').addClass("hidden");
+            $('.billingDiv').addClass("hidden");
+            $('#widget-bikeManagement-form select[name=billingType]').val("paid");
+            $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', true);
+            
+            $('#addBike_firstBuilding').addClass("hidden");
+            $('#addBike_buildingListing').addClass("hidden");
+            $('#bikeBuildingAccessAdminDiv').addClass("hidden");
+            $('#bikeUserAccessAdminDiv').addClass("hidden");
+            $('#bikeBuildingAccessAdmin').addClass("hidden");
+            $('#bikeUserAccessAdmin').addClass("hidden");
+            
+        }else{
+            $('#addBike_firstBuilding').removeClass("hidden");
+            $('#addBike_buildingListing').removeClass("hidden");
+            $('#bikeBuildingAccessAdminDiv').removeClass("hidden");
+            $('#bikeBuildingAccessAdminDiv').removeClass("hidden");
+            $('#bikeBuildingAccessAdmin').removeClass("hidden");
+            $('#bikeUserAccessAdmin').removeClass("hidden");
+            $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', false);
+            
+        }
+    });    
+});
 
 function bikeFilter(e){
     document.getElementsByClassName('bikeSelectionText')[0].innerHTML=e;
@@ -187,6 +227,7 @@ function list_bikes_admin() {
                     $('.bikeManagementTitle').html('Ajouter un vélo');
                     $('.bikeManagementSend').removeClass('hidden');
                     $('.bikeManagementSend').html('<i class="fa fa-plus"></i>Ajouter');
+                    
 
                 });
 
@@ -581,7 +622,6 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                 type: 'post',
                 data: { "bikeID": id},
                 success: function(response){
-                    console.log(response);
                     if (response.response == 'error') {
                         console.log(response.message);
                     } else{
