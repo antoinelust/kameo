@@ -28,6 +28,12 @@ window.addEventListener("DOMContentLoaded", function(event) {
             $('#bikeUserAccessAdmin').addClass("hidden");
             
         }else{
+            if($('#widget-bikeManagement-form select[name=billingType]').val()!="paid"){
+                $('.billingPriceDiv').removeClass("hidden");
+                $('.billingGroupDiv').removeClass("hidden");
+                $('.billingDiv').removeClass("hidden");            
+            }
+    
             $('#addBike_firstBuilding').removeClass("hidden");
             $('#addBike_buildingListing').removeClass("hidden");
             $('#bikeBuildingAccessAdminDiv').removeClass("hidden");
@@ -333,7 +339,7 @@ function add_bike(ID){
 
                     if(buildingNumber==0){
                         $.notify({
-                            message: "Veuillez d'abord définir au moins un bâtiment"
+                            message: "Si vous définissez un vélo en leasing, veuillez d'abord définir un bâtiment"
                         }, {
                             type: 'danger'
                         });

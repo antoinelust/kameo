@@ -13,6 +13,9 @@ include 'globalfunctions.php';
 
 if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
+    
+    
+    
     if($action=='add'){
         $model=$_POST['model'];
         $frameNumber=$_POST['frameNumber'];
@@ -25,7 +28,7 @@ if(isset($_POST['action'])){
         $contractEnd=isset($_POST['contractEnd']) ? $_POST['contractEnd'] : NULL;
         $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
 
-        error_log($sellPrice);
+        
 
         $frameReference=$_POST['frameReference'];
         $billingPrice=$_POST['billingPrice'];
@@ -45,6 +48,7 @@ if(isset($_POST['action'])){
             $_POST['buildingAccess']=NULL;    
             $billingGroup='0';
         }
+
         
         
         if($contractStart!=NULL){
@@ -66,6 +70,18 @@ if(isset($_POST['action'])){
         }
         
         
+        $dossier = '../images_bikes/';
+        $fichier = $frameNumber."_big.jpg";
+        $fichierMini = $frameNumber."_mini.jpg";
+        
+        if(file_exists($dossier.$fichier)){
+            unlink($dossier.$fichier) or die("Couldn't delete file");
+        }
+
+        if(file_exists($dossier.$fichierMini)){
+            unlink($dossier.$fichierMini) or die("Couldn't delete file");
+        }        
+        
 
         if(isset($_FILES['picture']['name'])){
             $extensions = array('.jpg');
@@ -85,11 +101,9 @@ if(isset($_POST['action'])){
             
             //upload of Bike picture
 
-            $dossier = '../images_bikes/';
 
 
 
-            $fichier = $frameNumber.$extension;
 
              if(move_uploaded_file($_FILES['picture']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
              {
@@ -118,29 +132,77 @@ if(isset($_POST['action'])){
             
             
             
-            
             $result = mysqli_query($conn, $sql);
             $resultat = mysqli_fetch_assoc($result);
             $conn->close();
+                        
+            
             
             $brand=$resultat['BRAND'];
             $model=$resultat['MODEL'];
             $frameType=$resultat['FRAME_TYPE'];
-            $dossier = '../images_bikes/';
+                    
+            
             
             $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).".jpg";
+            
             copy($dossier . $fichier, $dossier . $frameNumber."_big.jpg");
             copy($dossier . $fichier, $dossier . $frameNumber."_mini.jpg");
-            $img = resize_image($dossier . $frameNumber."_big.jpg", 800, 800);
-            imagejpeg($img, $dossier. $frameNumber."_big.jpg");
-            $img = resize_image($dossier . $frameNumber."_mini.jpg", 100, 100);
-            imagejpeg($img, $dossier. $frameNumber."_mini.jpg");
+            
+
+            
+            
+            $fichierBig=$dossier . $frameNumber."_big.jpg";
+            
+            $fn = $fichierBig;
+            $sizeImage = getimagesize($fn);
+            $ratio = $sizeImage[0]/$sizeImage[1]; // width/height
+            if( $ratio > 1) {
+                $width = 1000;
+                $height = 1000/$ratio;
+            }
+            else {
+                $width = 1000*$ratio;
+                $height = 1000;
+            }
+            $src = imagecreatefromstring(file_get_contents($fn));
+            $dst = imagecreatetruecolor($width,$height);
+            imagecopyresampled($dst,$src,0,0,0,0,$width,$height,$sizeImage[0],$sizeImage[1]);
+            imagedestroy($src);
+            imagepng($dst,$fichierBig);
+            imagedestroy($dst);            
+            
+            
+            $fichierMini=$dossier . $frameNumber."_mini.jpg";
+            
+            $fn = $fichierMini;
+            $sizeImage = getimagesize($fn);
+            $ratio = $sizeImage[0]/$sizeImage[1]; // width/height
+            if( $ratio > 1) {
+                $width = 300;
+                $height = 300/$ratio;
+            }
+            else {
+                $width = 300*$ratio;
+                $height = 300;
+            }
+            $src = imagecreatefromstring(file_get_contents($fn));
+            $dst = imagecreatetruecolor($width,$height);
+            imagecopyresampled($dst,$src,0,0,0,0,$width,$height,$sizeImage[0],$sizeImage[1]);
+            imagedestroy($src);
+            imagepng($dst,$fichierMini); // adjust format as needed
+            imagedestroy($dst);            
+            
+            
             
         }
+        
+        
+        
 
 
 
-        if($model != NULL && $frameNumber != NULL && $size != NULL && $frameReference != NULL && $user != NULL && $company != NULL && $buildingInitialization != NULL){
+        if($model != NULL && $frameNumber != NULL && $size != NULL && $frameReference != NULL && $user != NULL && $company != NULL){
             include 'connexion.php';
             $sql="select * from customer_bikes where FRAME_NUMBER='$frameNumber'";
 
@@ -151,19 +213,6 @@ if(isset($_POST['action'])){
             }
             $result = mysqli_query($conn, $sql);
             if($result->num_rows!='0'){
-                $conn->close();
-                errorMessage("ES0036");
-            }
-
-            $sql="select * from building_access where COMPANY='$company'";
-
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            if($result->num_rows=='0'){
                 $conn->close();
                 errorMessage("ES0036");
             }
@@ -180,10 +229,9 @@ if(isset($_POST['action'])){
                 $insurance="N";
             }
 
-
-
+            
             $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice')";
-
+            
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -288,11 +336,6 @@ if(isset($_POST['action'])){
 
 
 
-        if(substr($frameNumber, 0, 3) != substr($company, 0, 3)){
-            errorMessage("ES0051");
-        }
-
-
         if(isset($_FILES['picture'])){
 
             $extensions = array('.jpg');
@@ -345,7 +388,6 @@ if(isset($_POST['action'])){
 
                 include'connexion.php';
                 $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', FRAME_NUMBER='$frameNumber' where FRAME_NUMBER = '$frameNumberOriginel'";
-
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -355,9 +397,9 @@ if(isset($_POST['action'])){
                 $conn->close();
 
                 $dossier = '../images_bikes/';
-                $fichier= $frameNumberOriginel.'.jpg';
+                $fichier= $frameNumberOriginel.'_big.jpg';
 
-                copy($dossier . $fichier, $dossier . $frameNumber.'.jpg');
+                copy($dossier . $fichier, $dossier . $frameNumber.'_big.jpg');
 
                 $fichier= $frameNumberOriginel.'_mini.jpg';
 

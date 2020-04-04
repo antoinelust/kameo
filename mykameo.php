@@ -6571,7 +6571,6 @@ if($connected){
                             <label for="billingType"  class="nl">Billing type</label>
                             <select name="billingType" class="form-control">
                               <option value="monthly">Mensuelle</option>
-                              <option value="annuelle">Annuelle </option>
                               <option value="paid">Déjà payé</option>
                             </select>
                           </div>
