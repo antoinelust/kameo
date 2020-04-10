@@ -52,9 +52,12 @@ include 'include/globalfunctions.php';
 include 'include/connexion.php';
 $sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";
 
+
 if(isset($company)){
     $sql=$sql." WHERE COMPANY='$company'";
 }
+
+error_log("SQL1:".$sql."\n", 3, "generate_invoices.log");    
 
 
 if ($conn->query($sql) === FALSE) {
@@ -72,6 +75,9 @@ while($row = mysqli_fetch_array($result))
     $currentDate=date('Y-m-d');
     $billingGroup=$row['BILLING_GROUP'];
     $sql_dateStart="SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$currentDate' and (aa.CONTRACT_END>'$currentDate' or aa.CONTRACT_END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$currentDate' and (aa.END>'$currentDate' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup')) AS T1 WHERE start is NOT NULL";
+    error_log("SQL2 :".$sql_dateStart."\n", 3, "generate_invoices.log");    
+    
+    
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
         die;
@@ -249,7 +255,7 @@ while($row = mysqli_fetch_array($result))
                     echo '<br>Société '.$companyName.'<br><strong>environnement localhost, mail non envoyé</strong><br>';
                 }
 
-                $file = __DIR__.'/temp/company.txt';
+                /*$file = __DIR__.'/temp/company.txt';
                 if ((file_exists($file))){
                     unlink($file);
                 }
@@ -278,7 +284,7 @@ while($row = mysqli_fetch_array($result))
                 $file = __DIR__.'/facture'.$i.'.php';;
                 if ((file_exists($file))){
                     unlink($file);
-                }
+                }*/
 
             }            
         }

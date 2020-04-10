@@ -270,7 +270,12 @@ include 'include/header5.php';
                               type: 'danger'
                             });
                       }else{
-                          console.log(response);
+                            $.notify({
+                              message: response.message
+                            }, {
+                              type: 'success'
+                            });
+                            document.getElementById('cash4bike-form-contact').reset();
                       }
                     }
                   })

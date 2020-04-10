@@ -24,7 +24,6 @@ $('document').ready(function(){
     });
     
     $('#cash4bike-form select[name=transport]').change(function(){
-        console.log($('#cash4bike-form select[name=transport]').val());
         if($('#cash4bike-form select[name=transport]').val()!='personnalCar' && $('#cash4bike-form select[name=transport]').val()!='companyCar'){
             $('.essence').addClass("hidden");
         }else{
