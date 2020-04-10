@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
     });
     
     $('#widget-bikeManagement-form select[name=contractType]').change(function(){
-        if($('#widget-bikeManagement-form select[name=contractType]').val()=="selling"){
+        if($('#widget-bikeManagement-form select[name=contractType]').val()=="selling" || $('#widget-bikeManagement-form select[name=contractType]').val()=="stock"){
             $('.billingPriceDiv').addClass("hidden");
             $('.billingGroupDiv').addClass("hidden");
             $('.billingDiv').addClass("hidden");
@@ -311,6 +311,7 @@ function add_bike(ID){
                     console.log(response.message);
                 } else{
                     $('#widget-bikeManagement-form input[name=price]').val(response.buyingPrice);
+                    $('#widget-bikeManagement-form input[name=model]').val(response.model);
                 }
             }
         })

@@ -56,7 +56,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         var i=0;
         var dest="<a class=\"button small green button-3d rounded icon-right addBikeAdmin\" data-target=\"#bikeManagement\" data-toggle=\"modal\" href=\"#\" name=\""+response.ID+"\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a>";
         if(response.bikeNumber>0){
-          var temp="<table class=\"table table-condensed\"><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th scope=\"col\">Accès aux bâtiments</th></tr></thead><tbody>";
+          var temp="<table id=\"bike_company_listing\" class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant location</span><span class=\"en-inline\">Location Price</span><span class=\"nl-inline\">Location Price</span></th><th scope=\"col\">Accès aux bâtiments</th><th>Mise à jour</th><th></th></tr></thead><tbody>";
           dest=dest.concat(temp);
           while(i<response.bikeNumber){
 
@@ -97,13 +97,22 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
               var temp="<span class=\"text-red\">Non-défini</span>";
               dest=dest.concat(temp);
             }
-            dest=dest.concat("</td><td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
+            dest=dest.concat("<td data-sort=\""+(new Date(response.bike[i].heuMaj)).getTime()+"\">"+response.bike[i].heuMaj.shortDate()+"</td>");
+            dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
             i++;
           }
           dest=dest.concat("</tbody></table>");
         }
 
         document.getElementById('companyBikes').innerHTML = dest;
+          
+        $('#bike_company_listing').DataTable({
+            "searching": false,
+            "paging": false
+        }
+        );
+          
+          
 
 
         $('.updateBikeAdmin').click(function(){

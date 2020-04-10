@@ -138,12 +138,12 @@ if(isset($_POST['action'])){
             
             
             $brand=$resultat['BRAND'];
-            $model=$resultat['MODEL'];
+            $model_bike=$resultat['MODEL'];
             $frameType=$resultat['FRAME_TYPE'];
                     
             
             
-            $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).".jpg";
+            $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model_bike))."_".strtolower($frameType).".jpg";
             
             copy($dossier . $fichier, $dossier . $frameNumber."_big.jpg");
             copy($dossier . $fichier, $dossier . $frameNumber."_mini.jpg");
@@ -231,6 +231,8 @@ if(isset($_POST['action'])){
             
             $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice')";
             
+            
+            
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -249,8 +251,7 @@ if(isset($_POST['action'])){
 
             if(isset($_POST['buildingAccess'])){
                 foreach($_POST['buildingAccess'] as $valueInArray){
-                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BUILDING_CODE, BIKE_NUMBER, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$frameNumber', '')";
-                    
+                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BUILDING_CODE, BIKE_NUMBER, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$frameNumber', '')";                    
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
