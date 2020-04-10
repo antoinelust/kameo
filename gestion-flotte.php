@@ -21,9 +21,9 @@ include 'include/header5.php';
 					<h4 class="col-md-6 text-center">Monitoring / Contrôle</h4>
 				</div>
 				<div class="space"></div>
-				<h4 class="text-green text-center">Face à ces problèmes KAMEO Bikes a élaboré un système <strong>simple</strong>, <strong>connecté</strong> & <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</h4>
+				<h4 class="text-center">Face à ces problèmes KAMEO Bikes a élaboré un système <strong class="text-green">simple</strong>, <strong class="text-green">connecté</strong> & <strong class="text-green">intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</h4>
 
-				<h4 class="text-green text-center">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés.</h4>
+				<h4 class="text-center">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés.</h4>
 				
 				<div class="separator"></div>
 				
@@ -68,7 +68,7 @@ include 'include/header5.php';
 					</ul>
 				</div>
 				<div class="space"></div>
-				<p><strong class="text-red">MyBORNE</strong> est le boitier connecté sécurisant l’accès aux clés. Il est en lien direct avec notre base de données pour donner accès à la clé d’un vélo grâce à un identifiant personnel. Ceci pouvant fonctionner via un code à 4 chiffres ou un badge RFID.<br>MyBorne permet donc d’identifier quel utilisateur à pris un vélo et quand.<br> Le boitier est modulaire selon vos besoins, possibilité de gérer de 5 à 100 clés. Il est aussi personnalisable aux couleurs de votre entreprise.</p>
+				<p><strong class="text-red">MyBORNE</strong> est le boitier connecté sécurisant l’accès aux clés. Il est en lien direct avec notre base de données pour donner accès à la clé d’un vélo grâce à un identifiant personnel. Cela pouvant fonctionner via un code à 4 chiffres ou un badge RFID.<br>MyBorne permet donc d’identifier quel utilisateur à pris un vélo et quand.<br> Le boitier est modulaire selon vos besoins, possibilité de gérer de 5 à 100 clés. Il est aussi personnalisable aux couleurs de votre entreprise.</p>
 				<p>Vous avez envie d'ajouter des fonctionnalités? <strong>On s'en occupe!</strong> De plus notre système fonctionne aussi pour <strong>vos voitures</strong>, <strong>camionnettes</strong> ou <strong>tout autre véhicule</strong>.</p>
 				<div class="separator"></div>
 				
@@ -86,7 +86,7 @@ include 'include/header5.php';
 				
 				<div class="col-md-3">
 					<img src="images/Mykameo3.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 3">
-					<p class="text-center">Prenez la clé du cadenas de votre véhicule sous le led illuminé..</p>
+					<p class="text-center">Prenez la clé du cadenas de votre véhicule sous la led illuminée.</p>
 				</div>
 				
 				<div class="col-md-3">
@@ -111,7 +111,7 @@ include 'include/header5.php';
 
 
 		
-		<!-- FOOTER -->
+			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -119,10 +119,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -137,7 +133,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

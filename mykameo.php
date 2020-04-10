@@ -6488,7 +6488,7 @@ if($connected){
                             <label for="picture"  class="en">Bike picture (jpg)</label>
                             <label for="picture"  class="nl">Bike picture(jpg)</label>
                             <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                            <input type=file size=40 name="picture" class="form-control">
+                            <input type=file size=40 name="picture" class="form-control required">
                           </div>
 
                         </div>
@@ -6571,11 +6571,12 @@ if($connected){
                             <label for="billingType"  class="nl">Billing type</label>
                             <select name="billingType" class="form-control">
                               <option value="monthly">Mensuelle</option>
+                              <option value="annuelle">Annuelle </option>
                               <option value="paid">Déjà payé</option>
                             </select>
                           </div>
 
-                          <div class="col-sm-4 billingPriceDiv">
+                          <div class="col-sm-4">
                             <label for="billingPrice"  class="fr">Montant de facturation</label>
                             <label for="billingPrice"  class="en">Montant de facturation</label>
                             <label for="billingPrice"  class="nl">Montant de facturation</label>
@@ -6586,15 +6587,14 @@ if($connected){
                             </div>
                           </div>
 
-                          <div class="col-sm-4 billingGroupDiv">
+                          <div class="col-sm-4">
                             <label for="billingGroup"  class="fr">Groupe de facturation</label>
                             <label for="billingGroup"  class="en">Groupe de facturation</label>
                             <label for="billingGroup"  class="nl">Groupe de facturation</label>
                             <input type="text" name="billingGroup" class="form-control required">
                           </div>
                         </div>
-                          
-                        <div class="col-sm-12 billingDiv">
+                        <div class="col-sm-12">
                           <div class="col-sm-4">
                             <label for="billing"  class="fr">Facturation automatique ?</label>
                             <label for="billing"  class="en">Automatic billing ?</label>
@@ -6611,10 +6611,10 @@ if($connected){
                         <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
                         <input type="text" name="action" class="form-control hidden">
 
-                        <div class="col-sm-12" id='bikeBuildingAccessAdminDiv'><h4>Accès aux bâtiments de ce vélo</h4></div>
+                        <div class="col-sm-12"><h4>Accès aux bâtiments de ce vélo</h4></div>
                         <div class="form-group col-sm-12" id="bikeBuildingAccessAdmin"></div>
 
-                        <div class="col-sm-12" id='bikeUserAccessAdminDiv'><h4>Accès des utilisateurs à ce vélo</h4></div>
+                        <div class="col-sm-12"><h4>Accès des utilisateurs à ce vélo</h4></div>
                         <div class="form-group col-sm-12" id="bikeUserAccessAdmin"></div>
 
                       </div>
@@ -8779,7 +8779,7 @@ if($connected){
                           <label for="stock" class="fr"> En stock ? </label>
                           <label for="stock" class="en"> Sotck? </label>
                           <label for="stock" class="nl"> Stock? </label>
-                          <input type="text" class="bikeCatalogStock form-control" name="stock" />
+                          <input type="text" class="bikeCatalogStock form-control required" name="stock" />
                         </div>
                       </div>
                       <div class="col-sm-12">

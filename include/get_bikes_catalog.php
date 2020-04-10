@@ -13,13 +13,13 @@ $id=isset($_GET['id']) ? $_GET['id']: null;
 $response=array();
 
 include 'connexion.php';
-$sql="SELECT *  FROM bike_catalog";
+$sql="SELECT *  FROM bike_catalog WHERE STAANN != 'D'";
 
 if($brand){
-    $sql=$sql." WHERE BRAND='$brand'";    
+    $sql=$sql." AND BRAND='$brand'";    
 }
 if($id){
-    $sql=$sql." WHERE ID='$id'";    
+    $sql=$sql." AND ID='$id'";    
 }
 
 
@@ -57,6 +57,8 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['priceHTVA']=$row['PRICE_HTVA'];
     $response['bike'][$i]['stock']=$row['STOCK'];
     $response['bike'][$i]['link']=$row['LINK'];
+    $response['bike'][$i]['display']=$row['DISPLAY'];
+    
 
     $i++;
 

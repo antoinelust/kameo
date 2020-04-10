@@ -11,7 +11,7 @@ include 'include/header5.php';
 				<br>
 				<p class="fr">KAMEO Bikes se charge de définir le(s) moyen(s) de mobilité urbaine des entreprises selon leurs besoins, qu'il s'agisse de vélos classiques, électriques, pliants ou même de trottinettes électriques. <br /><br />
                 Toutes les dépenses liées à la mobilité douce sont <strong class="text-green text-uppercase">déductibles à 100%</strong>, n'hésitez donc pas à en profiter ! </p>
-                <p class="fr"><strong>Impact comptabilité:</strong> impacte uniquement vos charges dans vos comptes de résultat.</p>
+                
 				<p class="en">KAMEO Bikes defines the mobility plan that fits you the best. It can be made of electric, foldable or normal bikes or even electric scooters.<br /><br />
                 All expenses linked to mobility are <strong class="text-green text-uppercase">100% deductible</strong> (exception made for renting, deductibe at 100%), make sure you make the most of it!</p>
 				<p class="nl">KAMEO Bikes definieert het mobiliteitsplan dat het beste bij u past. Het kan worden gemaakt van elektrische, opvouwbare of normale fietsen of zelfs elektrische scooters.<br /><br />
@@ -113,7 +113,7 @@ include 'include/header5.php';
 				              </div>
 				            <div class="plan-list">
 				                <ul class="fr">
-                                    <li><i class="fa fa-globe"></i>600 kilomètres par mois <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Le nombre de kilomètres est cumulable. Sur une location de 36 mois, il suffit de ne pas dépasser 36 * 600 = 21.600 kms au total."></i></li>
+                                    <li><i class="fa fa-globe"></i>500 kilomètres par mois <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Le nombre de kilomètres est cumulable. Sur une location de 36 mois, il suffit de ne pas dépasser 36 * 500 = 18.000 kms au total."></i></li>
                                     <li><i class="fa fa-thumbs-up"></i>Garantie 2 ans</li>
                                     <li><i class="fa fa-lock"></i>Assurance comprise</li>
                                     <li><i class="fa fa-cogs"></i>4 entretiens sur la durée de la location <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="2 entretiens la première année puis un entretien par an. La planification exacte des entretiens se fait via la plateforme mykameo."></i></li>
@@ -123,7 +123,7 @@ include 'include/header5.php';
                                     <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Découvrez votre avantage fiscal</span></a>
 				                </ul>
 				                <ul class="en">
-                                    <li><i class="fa fa-globe"></i>600 kilometers per month <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Number of kilometers can be summed. For example, for a 36 months contract, the total number of kilometers must be lower than 36*600=21.600 kms"></i></li>
+                                    <li><i class="fa fa-globe"></i>500 kilometers per month <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Number of kilometers can be summed. For example, for a 36 months contract, the total number of kilometers must be lower than 36 * 500 = 18.000 kms"></i></li>
                                     <li><i class="fa fa-thumbs-up"></i>2 years warranty</li>
                                     <li><i class="fa fa-lock"></i>Insurance included</li>
                                     <li><i class="fa fa-cogs"></i>4 maintenances over the leasing contract <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="2 maintenances the first year, one per year afterwards. The exact timing of such maintenance can be configured via MyKameo platform"></i></li>
@@ -133,7 +133,7 @@ include 'include/header5.php';
                                     <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Discover your fiscal advantage</span></a>
 				                </ul>
 				                <ul class="nl">
-                                    <li><i class="fa fa-globe"></i>600 kilometer per maand <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Het aantal kilometers kan worden opgeteld. Voor een contract van 36 maanden moet het totale aantal kilometers bijvoorbeeld lager zijn dan 36 * 600 = 21.600 km"></i></li>
+                                    <li><i class="fa fa-globe"></i>500 kilometer per maand <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Het aantal kilometers kan worden opgeteld. Voor een contract van 36 maanden moet het totale aantal kilometers bijvoorbeeld lager zijn dan 36 * 500 = 18.000 km"></i></li>
                                     <li><i class="fa fa-thumbs-up"></i>2 jaar garantie</li>
                                     <li><i class="fa fa-lock"></i>Verzekering inbegrepen</li>
                                     <li><i class="fa fa-cogs"></i>4 onderhoud van het leasecontract <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="2 onderhoudt het eerste jaar, één per jaar daarna. De exacte timing van dergelijk onderhoud kan worden geconfigureerd via het MyKameo-platform"></i></li>
@@ -496,7 +496,7 @@ include 'include/header5.php';
 <!--END: CALL TO ACTION -->
 
 		
-		<!-- FOOTER -->
+			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -504,10 +504,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -522,7 +518,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

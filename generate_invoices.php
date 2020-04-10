@@ -62,9 +62,9 @@ if ($conn->query($sql) === FALSE) {
     die;
 }
 
+
 $result = mysqli_query($conn, $sql);     
 $i=0;
-
 
 while($row = mysqli_fetch_array($result))
 {
@@ -92,7 +92,7 @@ while($row = mysqli_fetch_array($result))
 
             if($today==$firstDay || $firstDay==$date)
             {
-                                
+                
                 $sql_companyDetails="select COMPANY_NAME from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
                 if ($conn->query($sql_companyDetails) === FALSE) {
                     echo $conn->error;
@@ -101,7 +101,7 @@ while($row = mysqli_fetch_array($result))
                 $result_companyDetails = mysqli_query($conn, $sql_companyDetails);   
                 $resultat_companyDetails = mysqli_fetch_assoc($result_companyDetails);
                 $companyName=$resultat_companyDetails['COMPANY_NAME'];
-                                
+                
                 $file = __DIR__.'/temp/company.txt';
                 $myfile = fopen($file, "w")  or die("Unable to open file!");
                 fwrite($myfile, $internalReference);

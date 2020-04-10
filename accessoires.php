@@ -87,9 +87,9 @@ include 'include/header5.php';
 											<h4 class="fr">Prix :</h4>
 											<h4 class="en">Price:</h4>
 											<h4 class="nl">Prijs:</h4>
-								            <p class="fr"><strong class="text-green bold">81€</strong> (HTVA)</p>
-								            <p class="en"><strong class="text-green bold">81€</strong> (Ex. VAT)</p>
-								            <p class="nl"><strong class="text-green bold">81€</strong> (Ex. BTW)</p>
+								            <p class="fr"><strong class="text-green bold">70€</strong> (HTVA)</p>
+								            <p class="en"><strong class="text-green bold">70€</strong> (Ex. VAT)</p>
+								            <p class="nl"><strong class="text-green bold">70€</strong> (Ex. BTW)</p>
 										</div>
 									</div>
 									
@@ -157,9 +157,9 @@ include 'include/header5.php';
 											<h4 class="fr">Prix :</h4>
 											<h4 class="en">Price:</h4>
 											<h4 class="nl">Prijs:</h4>
-								            <p class="fr"><strong class="text-green bold">90€</strong> (HTVA)</p>
-								            <p class="en"><strong class="text-green bold">90€</strong> (Ex. VAT)</p>
-								            <p class="nl"><strong class="text-green bold">90€</strong> (Ex. BTW)</p>
+								            <p class="fr"><strong class="text-green bold">99€</strong> (HTVA)</p>
+								            <p class="en"><strong class="text-green bold">99€</strong> (Ex. VAT)</p>
+								            <p class="nl"><strong class="text-green bold">99€</strong> (Ex. BTW)</p>
                                             
 										</div>
 									</div>
@@ -262,9 +262,9 @@ include 'include/header5.php';
 									</div>
 								</div>
 								
-								<h4 class="fr text-right">Prix total du pack: <strong class="text-green">257€</strong> (TVAC)</h4>
-								<h4 class="en text-right">Total price of the pack: <strong class="text-green">257€</strong> (VAT included)</h4>
-								<h4 class="nl text-right">Totale prijs van het pakket: <strong class="text-green">257€</strong> (Incl. BTW)</h4>
+								<h4 class="fr text-right">Prix total du pack: <strong class="text-green">255€</strong> (TVAC)</h4>
+								<h4 class="en text-right">Total price of the pack: <strong class="text-green">255€</strong> (VAT included)</h4>
+								<h4 class="nl text-right">Totale prijs van het pakket: <strong class="text-green">255€</strong> (Incl. BTW)</h4>
 								
 							</div>
 							<div class="modal-footer fr">
@@ -360,9 +360,9 @@ include 'include/header5.php';
 											<h4 class="fr">Prix :</h4>
 											<h4 class="en">Price:</h4>
 											<h4 class="nl">Prijs:</h4>
-								            <p class="fr"><strong class="text-green bold">4€</strong> (HTVA)</p>
-								            <p class="en"><strong class="text-green bold">4€</strong> (Ex. VAT)</p>
-								            <p class="nl"><strong class="text-green bold">4€</strong> (Ex. BTW)</p>
+								            <p class="fr"><strong class="text-green bold">3€</strong> (HTVA)</p>
+								            <p class="en"><strong class="text-green bold">3€</strong> (Ex. VAT)</p>
+								            <p class="nl"><strong class="text-green bold">3€</strong> (Ex. BTW)</p>
 										</div>
 									</div>
 									
@@ -382,28 +382,11 @@ include 'include/header5.php';
 										</div>
 									</div>
 									
-									<div class="col-sm-4">
-										<div class="box-services-a">
-											<h3 class="fr">Kit nettoyage et entretien ATLANTIC</h3>
-											<h3 class="en">ATLANTIC cleaning and maintenance kit</h3>
-											<h3 class="nl">ATLANTIC reinigings- en onderhoudskit</h3>
-											<img class="img-responsive" src="images/accessoires/Produits_Atlantic.jpg" alt="Produits de nettoyage de vélo ATLANTIC">
-											<p class="fr">2 produits nettoyants, un dégraissant et une huile pour chaine</p>
-											<p class="en">2 cleaning products, a degreaser and a chain oil</p>
-											<p class="nl">2 reinigingsproducten, een ontvetter en een kettingolie</p>
-											<h4 class="fr">Prix :</h4>
-											<h4 class="en">Price:</h4>
-											<h4 class="nl">Prijs:</h4>
-								            <p class="fr"><strong class="text-green bold">31€</strong> (HTVA)</p>
-								            <p class="en"><strong class="text-green bold">31€</strong> (Ex. VAT)</p>
-								            <p class="nl"><strong class="text-green bold">31€</strong> (Ex. BTW)</p>
-										</div>
-									</div>
 								</div>
 								
-								<h4 class="fr text-right">Prix total du pack: <strong class="text-green">92€</strong> (HTVA)</h4>
-								<h4 class="en text-right">Total price of the pack: <strong class="text-green">92€</strong> (Ex. VAT)</h4>
-								<h4 class="nl text-right">Totale prijs van het pakket: <strong class="text-green">92€</strong> (Ex. BTW)</h4>
+								<h4 class="fr text-right">Prix total du pack: <strong class="text-green">60€</strong> (HTVA)</h4>
+								<h4 class="en text-right">Total price of the pack: <strong class="text-green">60€</strong> (Ex. VAT)</h4>
+								<h4 class="nl text-right">Totale prijs van het pakket: <strong class="text-green">60€</strong> (Ex. BTW)</h4>
 								
 							</div>
 							<div class="modal-footer fr">
@@ -1374,7 +1357,7 @@ include 'include/header5.php';
 
 
 		
-		<!-- FOOTER -->
+			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -1382,10 +1365,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -1400,7 +1379,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

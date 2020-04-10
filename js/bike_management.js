@@ -455,7 +455,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                         console.log(response.message);
                     } else{
                         document.getElementById("bikeManagementPicture").src="images_bikes/"+response.frameNumber+"_mini.jpg";
-                        $('bikeManagementPicture').removeClass('hidden');
+                        $('.bikeManagementPicture').removeClass('hidden');
                         id=response.id;
                         $('#widget-bikeManagement-form input[name=frameNumber]').val(frameNumber);
                         $('#widget-deleteBike-form input[name=frameNumber]').val(frameNumber);
@@ -646,7 +646,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                                 paid="<span class=\"text-red\">N</span>"
                             }
                             
-                            var temp="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].FACTURE_ID+"</a></td><td>"+response.bill[i].date.shortDate()+"</td><td>"+response.bill[i].amountHTVA+" €</td><td>"+sent+"</td><td>"+paid+"</td></tr>";
+                            var temp="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].FACTURE_ID+"</a></td><td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td><td>"+response.bill[i].amountHTVA+" €</td><td>"+sent+"</td><td>"+paid+"</td></tr>";
                             dest=dest.concat(temp);
                             i++;
                         }

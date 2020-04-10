@@ -301,7 +301,7 @@ include 'include/header5.php';
 											</div>
 										</div>
 
-																				
+										<!--										
 										<div class="separator visible-xs"></div>
 										
 										
@@ -331,7 +331,7 @@ include 'include/header5.php';
 						
 											</div>
 										</div>
-										
+										-->
 										
 										
 										
@@ -350,7 +350,7 @@ include 'include/header5.php';
     
 
         
-	<!-- FOOTER -->
+		<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -358,10 +358,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -376,7 +372,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

@@ -9,15 +9,6 @@ include 'include/header5.php';
 		<div class="row">
 				<h1 class="text-green">CALCULATEUR CASH FOR BIKE</h1>
 				<br>
-				
-				<h3> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-				<p>En Belgique vous avez la possibilité déchanger une partie de votre rémunération brut totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
-				Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
-				<p>Nous vous proposons ici de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brut afin de prendre un vélo pour vos trajets domicile-travail.</p>
-				<p>Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
-				<br>
-				
-				<h2 class="text-green">Le calculateur</h2>
 				<p>Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
 				
 				<div class="m-t-30 col-md-12">
@@ -85,9 +76,6 @@ include 'include/header5.php';
                                     <div class="diesel">
                                         <label><input type="radio" name="transportationEssence" value="diesel"> Diesel</label>
                                     </div>
-                                    <div class="lpg">
-                                        <label><input type="radio" name="transportationEssence" value="lpg"> LPG</label>
-                                    </div>
                                 </div>
                                 
                             </div>
@@ -97,16 +85,29 @@ include 'include/header5.php';
                                 
                                 <div class="col-md-12">
                                     <div class="employeurremunere">
-                                        <label><input type="radio" name="prime" value="0" checked> Mon employeur rémunère mes kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="1" checked> Mon employeur rémunère mes kilomètres vélo</label>
                                     </div>
                                     <div class="employeurneremunerepas">
-                                        <label><input type="radio" name="prime" value="1"> Mon employeur ne me rémunère par les kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="0"> Mon employeur ne me rémunère par les kilomètres vélo</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="space visible-md visible-lg"></div>
-                            <div class="space visible-md visible-lg"></div>
-                            <div class="space visible-md visible-lg"></div>
+                            
+                            <div class="form-group col-md-12">
+                                <div class="col-md-6">
+                                    <label for="frequence" class="fr">Vous comptez aller au vélo :</label>
+                                    <select class="form-control" name="frequence">
+                                        <option value="1">1 fois par semaine</option>
+                                        <option value="2">2 fois par semaine</option>
+                                        <option value="3">3 fois par semaine</option>
+                                        <option value="4" selected>4 fois par semaine</option>
+                                        <option value="5">5 fois par semaine</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            
+                            
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
@@ -140,12 +141,12 @@ include 'include/header5.php';
                             <img id="bike_picture" alt="image" class="centerimg" />
                         </div>
                         
-						
+                        <input type="int" name="leasingAmount" class="hidden">							
 						
 						<div class="separator"></div>
-                                
-						<div class="form-group col-md-6">
-                            <button class="button green button-3d effect fill-vertical fr" type="submit"><i class="fa fa-calculator"></i>&nbsp;Calculer</button>
+                        
+						<div class="form-group col-md-2 center">
+                            <button class="button green button-3d effect fill-vertical fr " type="submit"><i class="fa fa-calculator"></i>&nbsp;Calculer</button>
                         </div>
                     </div>
                     </form>
@@ -154,25 +155,37 @@ include 'include/header5.php';
                   jQuery("#cash4bike-form").validate({
 
                     submitHandler: function(form) {
-                      $("body").addClass("loading");
                       
                         jQuery(form).ajaxSubmit({
                             success: function(response) {
-                              $("body").removeClass("loading");
-
-                              if (response.response == 'error'){
+                                if (response.response == 'error'){
                                     $.notify({
                                       message: response.message
                                     }, {
                                       type: 'danger'
                                     });
-                              }else{
+                                }else{
                                     $.notify({
                                       message: response.message
                                     }, {
                                       type: 'success'
                                     });
-                              }
+                                    
+                                    $('#resultCash4Bike').removeClass('hidden');
+                                    
+                                    if(response.totalImpact>=0){
+                                        $('#impactOnNetSalary').html("Coût réel du vélo : "+response.totalImpact+" €/mois")
+                                        $('#impactOnNetSalaryText').html("En souscrivant à une location, cela vous coutera réellement "+response.totalImpact+"€ par mois. <br>Ce montant comprend votre vélo (référence/modèle), une assurance p-vélo et un entretien annuel.")
+                                    }else if(response.totalImpact<0){
+                                        $('#impactOnNetSalary').html("Gain réalisé grâce au vélo : "+Math.abs(response.totalImpact)+" €/mois")
+                                        $('#impactOnNetSalaryText').html("En souscrivant à une location, vous économiserez "+Math.abs(response.totalImpact)+"€ par mois. En d'autre termes, avoir un vélo en leasing vous fera gagner de l'argent !<br>Votre vélo, une assurance p-vélo et un entretien annuel sont inclus.")
+                                        
+                                    }
+                                    
+                                    if(response.impactCarSavingCO2>0){
+                                        $('#impactOnCO2').html("Gain de CO2 réalisé par mois : "+response.impactCarSavingCO2+" kg.CO2/mois")
+                                    }
+                                }
                             }
                         })
                     }
@@ -188,20 +201,24 @@ include 'include/header5.php';
 		<div class="space"></div>
 		
 		<!-- RESULTAT -->
-		<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green">
+		<div id='resultCash4Bike' class="jumbotron jumbotron-center jumbotron-fullwidth background-green hidden">
 		  <div class="container">
-		    <h3 class="text-light">+25€</h3>
-		    <p class="text-light">En souscrivant à une location, vous gagnerez 25€ par mois.<br>Ce montant comprend votre vélo (référence/modèle), une assurance p-vélo et un entretien annuel.</p>
+		    <h3 class="text-light" id='impactOnNetSalary'></h3>
+		    <h3 class="text-light" id='impactOnCO2'></h3>
+		    <p class="text-light" id='impactOnNetSalaryText'></p>
 		  
 		    <a class="button black-light button-3d effect fill-vertical"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
-		</div>
+		</div>            
+            
 		
-		
-		
+            
+
+            
+            
 <div class="modal fade" id="detail" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
-            <form id="cash4bike-form-contact" action="include/contact_cash4bike.php" role="form" method="get">
+            <form id="cash4bike-form-contact" action="include/contact_cash4bike.php" role="form" method="post">
             
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -210,16 +227,16 @@ include 'include/header5.php';
 			<div class="modal-body">
 				<div class="row text-left">
 					<div class="form-group col-sm-12">
-                    	<label for="prenom" class="fr">Prénom</label>
-                        <input type="text" aria-required="true" name="firstname" class="form-control required is-invalid">
+                    	<label for="firstName" class="fr">Prénom</label>
+                        <input type="text" aria-required="true" name="firstName" class="form-control required is-invalid">
                     </div>
 					<div class="form-group col-sm-12">
-                    	<label for="prenom" class="fr">Nom</label>
+                    	<label for="name" class="fr">Nom</label>
                         <input type="text" aria-required="true" name="name" class="form-control required is-invalid">
                     </div>
                     <div class="form-group col-sm-12">
-                    	<label for="mail" class="fr">Email</label>
-                        <input type="text" aria-required="true" name="mail" class="form-control required is-invalid">
+                    	<label for="email" class="fr">Email</label>
+                        <input type="text" aria-required="true" name="email" class="form-control required is-invalid">
                     </div>
                     <div class="form-group col-sm-12">
                     	<label for="entreprise" class="fr">Entreprise</label>
@@ -227,23 +244,25 @@ include 'include/header5.php';
                     </div>
 				</div>
 			</div>
-            <input type="text" aria-required="true" name="type" class="form-control required hidden">
-            <input type="text" aria-required="true" name="revenu" class="form-control required hidden">
-            <input type="text" aria-required="true" name="domicile" class="form-control required hidden">
-            <input type="text" aria-required="true" name="travail" class="form-control required hidden">
-            <input type="text" aria-required="true" name="transport" class="form-control required hidden">
-            <input type="text" aria-required="true" name="transportationEssence" class="form-control hidden">
-            <input type="text" aria-required="true" name="model" class="form-control required hidden">
+            <input type="text" name="type" class="form-control hidden">
+            <input type="text" name="revenu" class="form-control hidden">
+            <input type="text" name="domicile" class="form-control hidden">
+            <input type="text" name="travail" class="form-control hidden">
+            <input type="text" name="transport" class="form-control hidden">
+            <input type="text" name="transportationEssence" class="form-control hidden">
+            <input type="text" name="frequence" class="form-control hidden">
+            <input type="text" name="model" class="form-control hidden">
+            <input type="text" name="prime" class="form-control hidden">
 			<div class="modal-footer">
-				<button type="button" class="button green button-3d effect fill-vertical">Envoyer</button>
+				<button type="submit" class="button green button-3d effect fill-vertical">Envoyer</button>
 			</div>
             </form>
                     
             <script type="text/javascript">
-              jQuery("#cash4bike-form-form").validate({
+              jQuery("#cash4bike-form-contact").validate({                  
                 submitHandler: function(form) {
                   jQuery(form).ajaxSubmit({
-                    success: function(response) {
+                    success: function(response) {                        
                       if (response.response == 'error'){
                             $.notify({
                               message: response.message
@@ -256,11 +275,19 @@ include 'include/header5.php';
                     }
                   })
                 }
-              })
+              });
+                
             </script>
             
-            
-            
+          <div class="fr" class="modal-footer">
+            <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+          </div>
+          <div class="en" class="modal-footer">
+            <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+          </div>
+          <div class="nl" class="modal-footer">
+            <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+          </div>
 		</div>
 	</div>
 </div>
@@ -269,6 +296,17 @@ include 'include/header5.php';
 		<!--END: RESULTAT -->
 		
 	</div>
+        
+    <h3> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
+    <p>En Belgique vous avez la possibilité d'échanger une partie de votre rémunération brute totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
+    Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
+    <p>Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
+    <p>Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
+    <br>
+        
+    <div class="separator"></div>
+        
+        
 	<h3>Disclaimer</h3>
     <p>Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
     <p>L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>

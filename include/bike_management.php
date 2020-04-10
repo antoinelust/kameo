@@ -41,7 +41,6 @@ if(isset($_POST['action'])){
         
             
         if($billingType=='paid'){
-            $contractStart=NULL;
             $contractEnd=NULL;
             $billingPrice=NULL;
             $_POST['userAccess']=NULL;
@@ -179,12 +178,12 @@ if(isset($_POST['action'])){
             $sizeImage = getimagesize($fn);
             $ratio = $sizeImage[0]/$sizeImage[1]; // width/height
             if( $ratio > 1) {
-                $width = 300;
-                $height = 300/$ratio;
+                $width = 100;
+                $height = 100/$ratio;
             }
             else {
-                $width = 300*$ratio;
-                $height = 300;
+                $width = 100*$ratio;
+                $height = 100;
             }
             $src = imagecreatefromstring(file_get_contents($fn));
             $dst = imagecreatetruecolor($width,$height);
@@ -292,7 +291,6 @@ if(isset($_POST['action'])){
         $contractStart=isset($_POST['contractStart']) ? $_POST['contractStart'] : NULL;
         $contractEnd=isset($_POST['contractEnd']) ? $_POST['contractEnd'] : NULL;
         $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
-        error_log($sellPrice);
 
         $frameReference=$_POST['frameReference'];
         $billingPrice=$_POST['billingPrice'];

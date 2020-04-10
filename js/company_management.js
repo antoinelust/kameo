@@ -61,24 +61,24 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
           while(i<response.bikeNumber){
 
             if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart != null){
-              var contractStart="<span>"+response.bike[i].contractStart.substr(0,10)+"</span>";
+              var contractStart="<span>"+response.bike[i].contractStart.shortDate()+"</span>";
             }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart == null){
               var contractStart="<span class=\"text-red\">N/A</span>";
             }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart == null){
               var contractStart="<span>N/A</span>";
             }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart != null){
-              var contractStart="<span class=\"text-red\">"+response.bike[i].contractStart.substr(0,10)+"</span>";
+              var contractStart="<span class=\"text-red\">"+response.bike[i].contractStart.shortDate()+"</span>";
             }else{
               var contractStart="<span class=\"text-red\">ERROR</span>";
             }
             if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd != null){
-              var contractEnd="<span>"+response.bike[i].contractEnd.substr(0,10)+"</span>";
+              var contractEnd="<span>"+response.bike[i].contractEnd.shortDate()+"</span>";
             }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd == null){
               var contractEnd="<span class=\"text-red\">N/A</span>";
             }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd == null){
               var contractEnd="<span>N/A</span>";
             }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd != null){
-              var contractEnd="<span class=\"text-red\">"+response.bike[i].contractEnd.substr(0,10)+"</span>";
+              var contractEnd="<span class=\"text-red\">"+response.bike[i].contractEnd.shortDate()+"</span>";
             }else{
               var contractEnd="<span class=\"text-red\">ERROR</span>";
             }
@@ -166,12 +166,12 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
               var amount="N/A";
             }
             if(response.offer[i].start){
-              var start=response.offer[i].start.substr(0,10);
+              var start=response.offer[i].start.shortDate();
             }else{
               var start="N/A";
             }
             if(response.offer[i].end){
-              var end=response.offer[i].end.substr(0,10);
+              var end=response.offer[i].end.shortDate();
             }else{
               var end="N/A";
             }
@@ -191,17 +191,17 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
             if(!response.offer[i].date){
               var date="?";
             }else{
-              var date=response.offer[i].date.substr(0,10);
+              var date=response.offer[i].date.shortDate();
             }
             if(!response.offer[i].start){
               var start="?";
             }else{
-              var start=response.offer[i].start.substr(0,10);
+              var start=response.offer[i].start.shortDate();
             }
             if(!response.offer[i].end){
               var end="?";
             }else{
-              var end=response.offer[i].end.substr(0,10);
+              var end=response.offer[i].end.shortDate();
             }
 
             if(response.offer[i].type=="leasing"){
@@ -231,12 +231,12 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
             if(response.bill[i].sentDate==null){
                 var sendDate="N/A";
             }else{
-                var sendDate=response.bill[i].sentDate.substr(0,10);
+                var sendDate=response.bill[i].sentDate.shortDate();
             }
             if(response.bill[i].paidDate==null){
                 var paidDate="N/A";
             }else{
-                var paidDate=response.bill[i].paidDate.substr(0,10);
+                var paidDate=response.bill[i].paidDate.shortDate();
             }
             if(response.bill[i].sent=="0"){
                 var sent="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
@@ -297,7 +297,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
                 var temp="<td>"+response.bill[i].beneficiaryCompany+"</a></td>";
                 dest=dest.concat(temp);
             }
-            var temp="<td>"+response.bill[i].date.substr(0,10)+"</td><td>"+Math.round(response.bill[i].amountHTVA)+" €</td><td>"+response.bill[i].communication+"</td>";
+            var temp="<td>"+response.bill[i].date.shortDate()+"</td><td>"+Math.round(response.bill[i].amountHTVA)+" €</td><td>"+response.bill[i].communication+"</td>";
             dest=dest.concat(temp);
 
             if(sent=="Y"){

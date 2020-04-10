@@ -118,7 +118,7 @@ if($ID != NULL)
     $response['locking']=$resultat['LOCKING'];
 
     include 'connexion.php';
-	$sql="SELECT * FROM customer_bikes dd where COMPANY='$company'";
+	$sql="SELECT * FROM customer_bikes dd where COMPANY='$company' AND STAANN != 'D'";
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

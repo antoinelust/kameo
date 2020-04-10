@@ -95,9 +95,9 @@ include 'include/header5.php';
                                 
                                 <input type="text" class="hidden" name="antispam" value="" />
                                 
-                                <button  id="fr" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Envoyer</button>
-								<button  id="en" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Send</button>
-								<button  id="nl" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>
+                                <button  id="fr" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Envoyer</button>
+								<button  id="en" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Send</button>
+								<button  id="nl" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>
                             </form>
                             <script type="text/javascript">
                                 jQuery("#widget-contact-form").validate({
@@ -161,8 +161,8 @@ include 'include/header5.php';
 						-->
                         <div class="social-icons social-icons-large social-icons-colored">
 							<ul>
-								<li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li class="social-linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+								<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 							</ul>
 						</div>
 
@@ -176,9 +176,11 @@ include 'include/header5.php';
 		<section id="section5" class="background-grey">
 			<div class="container">
 				<h1 class="text-green">L'ÉQUIPE</h1>
-					<p class="fr">KAMEO Bikes a été créé en 2017 par 4 jeunes désireux de proposer un service complet pour la mobilité en entreprise. Nous constations tous les jours les mêmes problèmes de trafic, retard et ne trouvions pas la solution que nous avions en tête. Nous avons alors décidé de la créer.</p>
+				<!--
+					<p class="fr">KAMEO Bikes a été créé en 2017 par 4 jeunes désireux de proposer un service complet pour la mobilité en entreprise.<br> Nous constations tous les jours les mêmes problèmes de trafic, retard et ne trouvions pas la solution que nous avions en tête.<br> <strong>Nous avons alors décidé de la créer.</strong></p>
 					<p class="en">KAMEO Bikes was created in 2017 by 4 young people eager to prove that it is possible to design innovative E-Bikes adapted to the tastes and needs of each.</p>
 					<p class="nl">KAMEO Bikes is in 2017 opgericht door 4 jonge mensen die graag willen aantonen dat het mogelijk is om innovatieve elektrische fietsen te ontwerpen die aangepast zijn op de smaken en behoeften van elk. </p>
+					-->
 				<div class="row">
 					<div class="col-md-3">
 						<div class="image-box circle-image small"> <img class="" src="images/Jams.jpg" alt="Julien - Responsable Technique vélo entretien mobilité"> </div>
@@ -186,13 +188,15 @@ include 'include/header5.php';
 							<h4 class="fr">Julien</h4>
 							<h4 class="en">Julien</h4>
 							<h4 class="nl">Julien</h4>
-							<p  class="fr" class="subtitle">Responsable technique</p>
-							<p  class="en" class="subtitle">Technical manager</p>
-							<p  class="nl" class="subtitle">Technical manager</p>
+							<p  class="fr" class="subtitle">Gérant</p>
+							<p  class="en" class="subtitle"></p>
+							<p  class="nl" class="subtitle"></p>
 							<hr class="line">
+							<!--
 							<div class="fr">Aussi loin qu'on s'en souvienne, Julien a toujours été passionné de vélo. Habile mécanicien et ingénieur industriel, il se tient au courant de toutes les nouveautés afin de pouvoir vous conseiller le vélo qui répondra au mieux à votre besoin.</div>
 							<div class="en">As far as we can go back, Julien has always been passionate about cycling. Skilled mechanic and industrial engineer, he knows inside out the technical details of each of our bikes and constantly strives to improve them. </div>
 							<div class="nl">Voor zover we terug kunnen gaan, heeft Julien altijd een passie gehad voor fietsen. Bekwaam mechanicus en industriële ingenieur, hij kent de technische details van elk van onze fietsen en streeft om ze te verbeteren. </div>
+							-->
 							
 						</div>
 					</div>
@@ -206,9 +210,11 @@ include 'include/header5.php';
 							<p  class="en" class="subtitle">Business Manager</p>
 							<p  class="nl" class="subtitle">Business Manager</p>
 							<hr class="line">
+							<!--
 							<div class="fr">Quel que soit le sport ou le terrain, Pierre-Yves veut toujours être en mouvement. La monotonie de ses transports urbains lui a donné l'envie de créer KAMEO Bikes. </div>
 							<div class="en">Whatever the sport whatever the field, Pierre-Yves always wants to be in motion. The monotony of his urban transports made him want to create KAMEO Bikes. </div>
 							<div class="nl">Wat de sport of het terrein betreft, zal Pierre-Yves altijd in beweging zijn. De monotoon van zijn stedelijk vervoer zorgde ervoor dat hij KAMEO Bikes wilde maken. </div>
+							-->
 							
 						</div>
 					</div>
@@ -218,13 +224,15 @@ include 'include/header5.php';
 							<h4 class="fr">Antoine</h4>
 							<h4 class="en">Antoine</h4>
 							<h4 class="nl">Antoine</h4>
-							<p  class="fr" class="subtitle">Responsable financier</p>
-							<p  class="en" class="subtitle">Financial manager</p>
-							<p  class="nl" class="subtitle">Financial manager</p>
+							<p  class="fr" class="subtitle">Responsable IT</p>
+							<p  class="en" class="subtitle">IT manager</p>
+							<p  class="nl" class="subtitle">IT manager</p>
 							<hr class="line">
+							<!--
 							<div  class="fr">Peu importe la technologie, Antoine est un éternel curieux qui veut tout comprendre et maitriser. Ingénieur civil, il est en charge des aspects financiers du projet. </div>
 							<div  class="en">Challenge him on one something and Antoine will want to understand and master it. As a civil engineer, he is in charge of the financial aspects of the project. </div>
 							<div  class="nl">Wat de technologie ook is, Antoine is een eeuwig nieuwsgierig dat alles alles wil begrijpen en beheersen. Hij is verantwoordelijk voor de financiële aspecten van het project. </div>
+							-->
 							
 						</div>
 					</div>
@@ -238,9 +246,11 @@ include 'include/header5.php';
 							<p  class="en" class="subtitle">Marketing manager</p>
 							<p  class="nl" class="subtitle">Marketing manager</p>
 							<hr class="line">
+							<!--
 							<div class="fr">En quelques clics sur son ordi, Thibaut transforme n'importe quel schéma en un design simple et élégant. Graphiste, il s'assure que la qualité visuelle de KAMEO Bikes soit à la hauteur de la qualité de son service.</div>
 							<div class="en">Just give Thibaut 5 minutes with his computer and he will transform any random sketch in a beautiful and clean design. As graphic designer, he makes sure that the visual quality of our products is as good as their technical quality. </div>
 							<div class="nl">Met een paar klikken op zijn computer verandert Thibaut elke schets in een schoon en elegant ontwerp. Als graficus, zorgt hij ervoor dat de visuele kwaliteit van KAMEO Bikes-producten aan hun technische kwaliteit voldoet.</div>
+							-->
 							<br>
 							
 						</div>
@@ -265,7 +275,7 @@ include 'include/header5.php';
 		</div>
 		<!-- END: TEAM -->
 
-		<!-- FOOTER -->
+			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -273,10 +283,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -291,7 +297,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

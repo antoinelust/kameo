@@ -504,6 +504,8 @@ include 'include/header2.php';
 								</ul>
 					</div>
 					
+					<div class="copyright-text text-center"><!--<a href="blog.php" class="text-green text-bold">Le blog</a> | --><a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					
 					<br>
 					<br>
 					

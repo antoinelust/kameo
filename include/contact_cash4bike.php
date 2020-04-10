@@ -12,24 +12,26 @@ $mail = new PHPMailer();
 
 
 // Form Fields
-$firstName=isset($_POST['firstName']) ? $_POST['firstName'] : false;
-$name=isset($_POST['name']) ? $_POST['name'] : false;
-$email=isset($_POST['email']) ? $_POST['email'] : false;
-$entreprise=isset($_POST['entreprise']) ? $_POST['entreprise'] : false;
-$type=isset($_POST['type']) ? $_POST['type'] : false;
-$revenu=isset($_POST['revenu']) ? $_POST['revenu'] : false;
+$firstName=isset($_POST['firstName']) ? $_POST['firstName'] : NULL;
+$name=isset($_POST['name']) ? $_POST['name'] : NULL;
+$email=isset($_POST['email']) ? $_POST['email'] : NULL;
+$entreprise=isset($_POST['entreprise']) ? $_POST['entreprise'] : NULL;
+$type=isset($_POST['type']) ? $_POST['type'] : NULL;
+$revenu=isset($_POST['revenu']) ? $_POST['revenu'] : NULL;
 $domicile=isset($_POST['domicile']) ? $_POST['domicile'] : NULL;
 $travail=isset($_POST['travail']) ? $_POST['travail'] : NULL;
 $transport=isset($_POST['transport']) ? $_POST['transport'] : NULL;
 $transportationEssence=isset($_POST['transportationEssence']) ? $_POST['transportationEssence'] : NULL;
 $bike=isset($_POST['model']) ? $_POST['model'] : NULL;
-
+$frequence=isset($_POST['frequence']) ? $_POST['frequence'] : NULL;
+$prime=isset($_POST['prime']) ? $_POST['prime'] : NULL;
 
 
 
 if($entreprise==NULL || $type==NULL || $type==NULL || $revenu == NULL || $domicile == NULL || $travail == NULL || $transport == NULL || $bike == NULL){
     errorMessage("ES0058");
 }
+
 
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -546,7 +548,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }</style></head>
         <body>
-            <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Mail reçu via la page de contact</span><!--<![endif]-->
+            <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Mail automatique</span><!--<![endif]-->
             <!--*|END:IF|*-->
             <center>
                 <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\">
@@ -628,6 +630,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
     Adresse travail : $travail<br>
     Moyen de transport actuel : $transport<br>
     Type d'essence utilisé : $transportationEssence<br>
+    Fréquence d'utilisation du vélo : $frequence<br>
+    Prime kilométrique : $prime<br>
     Vélo désiré : $bike<br>
     </p>
 
@@ -941,7 +945,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
        $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
 
     }else {
-       $response = array ('response'=>'success');  
+        successMessage("SM0025");
     }
     echo json_encode($response);
     die;

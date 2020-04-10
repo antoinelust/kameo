@@ -14,12 +14,12 @@ function list_contracts_offers(company) {
                 dest=dest.concat(temp);
                 while (i < response.contractsNumber){
                     if(response.contract[i].start!=null){
-                        var contract_start=response.contract[i].start.substr(0,10);
+                        var contract_start=response.contract[i].start.shortDate();
                     }else{
                         var contract_start="<span class=\"text-red\">N/A</span>";
                     }
                     if(response.contract[i].end!=null){
-                        var contract_end=response.contract[i].end.substr(0,10);
+                        var contract_end=response.contract[i].end.shortDate();
                     }else{
                         var contract_end="<span class=\"text-red\">N/A</span>";
                     }
@@ -45,12 +45,12 @@ function list_contracts_offers(company) {
                 dest=dest.concat(temp);
                 while (i < response.offersNumber){
                     if(response.offer[i].start!=null){
-                        var offer_start=response.offer[i].start.substr(0,10);
+                        var offer_start=response.offer[i].start.shortDate();
                     }else{
                         var offer_start="<span class=\"text-red\">N/A</span>";
                     }
                     if(response.offer[i].end!=null){
-                        var offer_end=response.offer[i].end.substr(0,10);
+                        var offer_end=response.offer[i].end.shortDate();
                     }else{
                         var offer_end="<span class=\"text-red\">N/A</span>";
                     }
@@ -95,12 +95,12 @@ function list_contracts_offers(company) {
                 dest=dest.concat(temp);
                 while (i < response.costsNumber){
                     if(response.cost[i].start!=null){
-                        var cost_start=response.cost[i].start.substr(0,10);
+                        var cost_start=response.cost[i].start.shortDate();
                     }else{
                         var cost="N/A";
                     }
                     if(response.cost[i].end!=null){
-                        var cost_end=response.cost[i].end.substr(0,10);
+                        var cost_end=response.cost[i].end.shortDate();
                     }else{
                         var cost_end="N/A";
                     }

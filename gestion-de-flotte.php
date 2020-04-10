@@ -287,7 +287,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
 
 
 		
-			<!-- FOOTER -->
+				<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -313,6 +313,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
 									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
+					
+					<div class="copyright-text text-center"><!--<a href="blog.php" class="text-green text-bold">Le blog</a> | --><a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
 					
 					<br>
 					<br>

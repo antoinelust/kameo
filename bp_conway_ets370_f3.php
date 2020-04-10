@@ -92,10 +92,6 @@ include 'include/header5.php';
 	        
 	            <div class="row text-center">
 	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
-	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
 						<br>+32 498 72 75 46 </div>
@@ -109,7 +105,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>
@@ -119,7 +115,6 @@ include 'include/header5.php';
 	    </div>
 	</footer>
 	<!-- END: FOOTER -->
-		<!-- END: FOOTER -->
 	</div>
 	<!-- END: WRAPPER -->
 

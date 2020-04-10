@@ -29,9 +29,10 @@ include 'include/header5.php';
 							<h3><a href="#">Orbea</a></h3>
 							<p>Gain</p>
 							<p><strong>Cadre Homme - Taille L</strong></p>
-							<!--<p><strong>Kilomètres parcourus : - 200 km</strong></p>-->
+							<p><strong>Kilomètres parcourus : - 200 km</strong></p>
 						</div>
-						<div class="product-price"><ins class="text-green">1900€</ins>
+						<div class="product-price"><ins class="text-green">1652€</ins> htva
+						<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 						</div>
 						
 
@@ -45,7 +46,7 @@ include 'include/header5.php';
 
 				</div>
 				
-				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les Bons Plans</a>
+				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les articles</a>
 
 			</div>
 		</div>
@@ -65,7 +66,7 @@ include 'include/header5.php';
 					<div class="col-sm-12">
 						<h4 class="text-green">Ce vélo vous intéresse?</h4>
 						<p>Envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat OB-F10 homme&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
-						<!-- <p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p> -->
+						<p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p>
 					</div>
 				</div>
 			</div>
@@ -88,10 +89,6 @@ include 'include/header5.php';
 	        
 	            <div class="row text-center">
 	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
-	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
 						<br>+32 498 72 75 46 </div>
@@ -105,7 +102,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

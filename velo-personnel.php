@@ -21,7 +21,6 @@ include 'include/header5.php';
 							- <strong>conseil</strong> sur le vélo adapté,<br>
 							- <strong>maintenance</strong> sur site,<br>
 							- <strong>assurance</strong> et <strong>assistance</strong> dépannage,<br>
-							- <strong>gestion</strong> des vélos simple, connectée et sécurisée,<br>
 							- installation d'<strong>infrastructures</strong>.<br>
 							- <strong>location tout inclus</strong> ou <strong>achat</strong>.</p>
 							
@@ -69,8 +68,8 @@ include 'include/header5.php';
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green">CHOIX DU VÉLO</h1>
-							<p class="text-justify">Soyez sûr que vos employés seront bien conseillés pour rouler avec le vélo qui leur convient. Nos experts prendrons le temps d’analyser les besoins de chacun.</p>				
-							<p class="text-justify">Nous trouverons le vélo (électrique ou mécanique) ainsi que les accessoires dont vos employés ont besoin parmis notre catalogue.</p>
+							<p class="text-justify">Soyez sûr que vos employés seront bien conseillés pour rouler avec le vélo qui leur convient. Nos experts prendront le temps d’analyser les besoins de chacun.</p>				
+							<p class="text-justify">Nous trouverons le vélo (électrique ou mécanique) ainsi que les accessoires dont vos employés ont besoin parmi notre catalogue.</p>
 							<p class="text-justify">Envie de brander vos vélos, c’est comme si c’était fait.</p>
 							<!--
 							<div class="col-md-12 text-center">
@@ -116,7 +115,7 @@ include 'include/header5.php';
 							<h1 class="text-green visible-md visible-lg">MAINTENANCE SUR SITE ET ASSURANCE</h1>
 							<p class="text-justify">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
 
-							<p class="text-justify">Les vélos on une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
+							<p class="text-justify">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
 			 
 						</div>
 					</div>
@@ -250,7 +249,7 @@ include 'include/header5.php';
 		
 
 
-		<!-- FOOTER -->
+			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -258,10 +257,6 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -276,7 +271,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

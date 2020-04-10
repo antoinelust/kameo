@@ -86,13 +86,12 @@ include 'include/header5.php';
 		</div>
 		
 		<!-- CALL TO ACTION -->
-		<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark text-light">
+		<div class="jumbotron jumbotron-center jumbotron-fullwidthtext-light" style="background: url('images/Fond_Site_Black.jpg');" data-stellar-background-ratio="0.3">
 		  <div class="container">
-		    <h3>Envie de savoir combien vous coûte réellement un vélo?</h3>
-		    <p>Nous avons développé un calculateur permettant de vous afficher le coût réel d'un vélo.</p>
+		    <h3> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
+		    <p>Nous avons développé un calculateur permettant de le savoir.</p>
 		    <a class="button large green button-3d effect icon-left" href="cash4bike.php"><span><i class="fa fa-calculator"></i>Faire le calcul</span></a> </div>
 		</div>
-
 		<!--END: CALL TO ACTION -->
 		
 	</div>
@@ -193,8 +192,6 @@ include 'include/header5.php';
 					<h4>Combinaison avec la voiture de société</h4>
 					<h4>Attirer de nouveaux talents</h4>
 					<h4>Mode de vie sain</h4>
-					<h4>Vélos de qualité et fiables</h4>
-					<h4>Offre et services personnalisés</h4>
 			</div>
 		</div>
 	</div>
@@ -235,6 +232,27 @@ include 'include/header5.php';
 				</li>
 				<li>
 					<img src="images/clients/chu.png" alt="Nos clients - CHU Liège">
+				</li>
+				<li>
+					<img src="images/clients/dedale.png" alt="Nos clients - Dedale Assurances">
+				</li>
+				<li>
+					<img src="images/clients/elegis.png" alt="Nos clients - Elegis">
+				</li>
+				<li>
+					<img src="images/clients/epsylon.png" alt="Nos clients - Epsylon">
+				</li>
+				<li>
+					<img src="images/clients/infine.png" alt="Nos clients - In Fine">
+				</li>
+				<li>
+					<img src="images/clients/idea.png" alt="Nos clients - IDEA">
+				</li>
+				<li>
+					<img src="images/clients/bxlville.png" alt="Nos clients - Ville de Bruxelles">
+				</li>
+				<li>
+					<img src="images/clients/prefer.png" alt="Nos clients - Prefer">
 				</li>
 		</ul>
         
@@ -326,10 +344,6 @@ include 'include/header5.php';
 	        
 	            <div class="row text-center">
 	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
-	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
 						<br>+32 498 72 75 46 </div>
@@ -343,7 +357,7 @@ include 'include/header5.php';
 								</ul>
 					</div>
 					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
 					
 					<br>
 					<br>

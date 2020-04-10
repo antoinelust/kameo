@@ -113,11 +113,11 @@ include 'include/header2.php';
                             <div class="col-md-6">
                                 <address>
                                   <strong>KAMEO Bikes</strong><br>
-                                  Boulevard de la Sauvenière 118<br>
+                                  Rue de la Brasserie 8,<br>
                                   4000 Liège<br>
                                   Belgique<br>
                                   </address>
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2530.1842023612126!2d5.563493815738344!3d50.642270079502346!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0fa10dc542751%3A0x26d03b27411f9003!2sBoulevard+de+la+Sauveni%C3%A8re+118%2C+4000+Li%C3%A8ge!5e0!3m2!1sfr!2sbe!4v1548313771584" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2529.6073729678096!2d5.588787815738747!3d50.65298257950374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0f09ecf5e1fad%3A0x32b1361b46dfea14!2sRue%20de%20la%20Brasserie%208%2C%204000%20Li%C3%A8ge!5e0!3m2!1sfr!2sbe!4v1582534865886!5m2!1sfr!2sbe" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
                             </div>
                         </div>
 
@@ -213,7 +213,7 @@ include 'include/header2.php';
 		</div>
 		<!-- END: TEAM -->
 
-			<!-- FOOTER -->
+				<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -239,6 +239,8 @@ include 'include/header2.php';
 									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
+					
+					<div class="copyright-text text-center"><!--<a href="blog.php" class="text-green text-bold">Le blog</a> | --><a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
 					
 					<br>
 					<br>

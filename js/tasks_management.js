@@ -78,7 +78,7 @@ function list_tasks(status, owner2, email) {
                     }
 
 
-                    var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td>"+response.action[i].date.substr(0,10)+"</td><td>"+type+"<td>"+response.action[i].title+"</td>"+date_reminder+"<td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></td></tr>";
+                    var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td data-sort=\""+(new Date(response.action[i].date)).getTime()+"\">"+response.action[i].date.shortDate()+"</td><td>"+type+"<td>"+response.action[i].title+"</td>"+date_reminder+"<td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></td></tr>";
                     dest=dest.concat(temp);
                     i++;
 

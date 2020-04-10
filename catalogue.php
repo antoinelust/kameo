@@ -1,52 +1,50 @@
 <?php 
-include 'include/header5.php';
+include 'include/header2.php';
 ?>
 
-<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@13.0.1/dist/lazyload.min.js"></script>
-
+		
 
 
  <!-- CONTENT -->
-		<section class="background-green">
+        <section>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-                    	<h1 class="text-light">RECHERCHER</h1>
+                    <div class="col-md-4">
+                    	<div class="heading heading text-left m-b-20">
+                        <h2 class="fr">Rechercher</h2>
+                        </div>
                         
                         <div class="m-t-30">
                                 <div class="row">
                                 
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-marque">Marque</label>
 											<select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
 									           <option data-filter="" value="*">Toutes nos marques</option>
-									           <option data-filter=".ahooga">Ahooga</option>             
-									           <option data-filter=".benno">Benno</option>                                                
+									           <option data-filter=".conway" value="Conway">Conway</option>
+									           <option data-filter=".orbea">Orbea</option>
 									           <option data-filter=".bzen">Bzen</option>
-									           <option data-filter=".conway" value="Conway">Conway</option>                                                
-									           <option data-filter=".douze">Douze</option>                                            
-									           <option data-filter=".orbea">Orbea</option>                                            
-									           <option data-filter=".victoria">Victoria</option>
+									           <option data-filter=".ahooga">Ahooga</option>
+									           <option data-filter=".stevens">Stevens</option>
+									           <option data-filter=".douze">Douze</option>
 									           <option data-filter=".hnf">HNF Nicolai</option>
 									       </select>
                                     </div>
                                     
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-utilisation">Utilisation</label>
 											<select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
-                                                <option data-filter="" value="*">Tous types</option>
-                                                <option data-filter=".villeetchemin">Ville et chemin</option>
-                                                <option data-filter=".ville">Ville</option>
-                                                <option data-filter=".toutchemin">Tout chemin</option>
-                                                <option data-filter=".pliant">Pliant</option>
-                                                <option data-filter=".speedpedelec">Speedpedelec</option>
-                                                <option data-filter=".gravel">Gravel</option>
-                                                <option data-filter=".vtt">VTT</option>
-                                                <option data-filter=".cargo">Cargo</option>
+									           <option data-filter="" value="*">Tous types d'utilisation</option>
+									           <option data-filter=".villeetchemin">Ville et chemin</option>
+									           <option data-filter=".ville">Ville</option>
+									           <option data-filter=".toutchemin">Tout chemin</option>
+									           <option data-filter=".pliant">Pliant</option>
+									           <option data-filter=".speedpedelec">Speedpedelec</option>
+									           <option data-filter=".cargo">Cargo</option>
 									       </select>
                                     </div>
                                     
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-cadre">Type de cadre</label>
 											<select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
 									           <option data-filter="" value="*">Tous types de cadre</option>
@@ -56,7 +54,7 @@ include 'include/header5.php';
 									       </select>
                                     </div>
                                     
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-electrique">Assistance électrique</label>
 											<select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
                                                 <option data-filter= "" value="*">Tous</option>
@@ -65,7 +63,7 @@ include 'include/header5.php';
 									       </select>
                                     </div>
                                     
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-prix">Prix Achat (HTVA)</label>
 											<select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
                                                 <option data-filter="" value="*" selected>Tous les prix</option>
@@ -81,18 +79,16 @@ include 'include/header5.php';
                                 
                                 </div>
                            </div>
-                   	  </div>
-                  </div>
-                  <br><a class="button black-light button-3d effect fill-vertical"  href="bonsplans.php"><span>Retrouvez nos bons plans  <i class="fa fa-arrow-right"></i></span></a>
-              </div>
-         </section>
+                   
+                    </div>
                     
                     
-         <section>
-            <div class="container">
-                <div class="row">         
-                	<div class="col-md-12">
-                    	<h1 class="text-green">NOS VÉLOS</h1>
+                    
+                    
+                    <div class="col-md-8">
+                    	<div class="heading heading text-left m-b-20">
+                        <h2 class="fr">Nos vélos</h2>
+                        </div>
                         
                         <!-- Portfolio Items -->
 				        <div id="isotope" class="isotope portfolio-items" data-isotope-item-space="2" data-isotope-mode="masonry" data-isotope-col="3" data-isotope-item=".portfolio-item">
@@ -155,50 +151,48 @@ include 'include/header5.php';
                                 dest="<p>Aucun vélo ne correspond à votre sélection</p>";
                             }
                             while(i<response.bikeNumber){
-                                if(response.bike[i].display=='Y'){
-                                    if(response.bike[i].frameType.toLowerCase()=="h"){
-                                        var frameType = "Homme";
-                                    } else if(response.bike[i].frameType.toLowerCase()=="m"){
-                                        var frameType = "Mixte";
-                                    } else if(response.bike[i].frameType.toLowerCase()=="f"){
-                                        var frameType = "Femme";
-                                    } else{
-                                        var frameType = "undefined";
-                                    }
-
-                                    if(parseInt(response.bike[i].price)<="2000"){
-                                        var price="2000";
-                                    }else if(parseInt(response.bike[i].price)<="3000"){
-                                        var price="between-2000-3000";
-                                    }else if(parseInt(response.bike[i].price)<="4000"){
-                                        var price="between-3000-4000";
-                                    }else if(parseInt(response.bike[i].price)<="5000"){
-                                        var price="between-4000-5000";
-                                    }else{
-                                        var price="5000";
-                                    }
-
-                                    var temp="\
-                                    <div class=\"portfolio-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
-                                        <div class=\"portfolio-image effect social-links\">\
-                                            <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"lazy\">\
-                                            <div class=\"image-box-content\">\
-                                                <p>\
-                                                    <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
-                                                    <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
-                                                </p>\
-                                            </div>\
-                                        </div>\
-                                        <div class=\"portfolio-description\">\
-                                            <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
-                                            <p>"+response.bike[i].model+" "+frameType+"\
-                                            <br>"+response.bike[i].utilisation+"\
-                                            <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
-                                            <br><b class=\"text-green\">Location :"+response.bike[i].leasingPrice+" €/mois</b></p>\
-                                        </div>\
-                                    </div>";
-                                    dest=dest.concat(temp);                                            
+                                if(response.bike[i].frameType.toLowerCase()=="h"){
+                                    var frameType = "Homme";
+                                } else if(response.bike[i].frameType.toLowerCase()=="m"){
+                                    var frameType = "Mixte";
+                                } else if(response.bike[i].frameType.toLowerCase()=="f"){
+                                    var frameType = "Femme";
+                                } else{
+                                    var frameType = "undefined";
                                 }
+                                
+                                if(parseInt(response.bike[i].price)<="2000"){
+                                    var price="2000";
+                                }else if(parseInt(response.bike[i].price)<="3000"){
+                                    var price="between-2000-3000";
+                                }else if(parseInt(response.bike[i].price)<="4000"){
+                                    var price="between-3000-4000";
+                                }else if(parseInt(response.bike[i].price)<="5000"){
+                                    var price="between-4000-5000";
+                                }else{
+                                    var price="5000";
+                                }
+                                
+                                var temp="\
+                                <div class=\"portfolio-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
+                                    <div class=\"portfolio-image effect social-links\">\
+                                        <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase()+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"\">\
+                                        <div class=\"image-box-content\">\
+                                            <p>\
+                                                <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
+                                                <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
+                                            </p>\
+                                        </div>\
+                                    </div>\
+                                    <div class=\"portfolio-description\">\
+                                        <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
+                                        <p>"+response.bike[i].model+" "+frameType+"\
+                                        <br>"+response.bike[i].utilisation+"\
+                                        <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
+                                        <br><b class=\"text-green\">Leasing :"+response.bike[i].leasingPrice+" €/mois</b></p>\
+                                    </div>\
+                                </div>";
+                                dest=dest.concat(temp);                                            
                                 i++;
                             }
                             document.getElementById('bikeCatalog').innerHTML = dest;
@@ -235,9 +229,6 @@ include 'include/header5.php';
             }
             loadPortfolio();
             
-            
-            
-            
             function updateBikePicture(brand, model, frameType)
             {
 
@@ -250,7 +241,7 @@ include 'include/header5.php';
     
 
         
-		<!-- FOOTER -->
+				<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
 	        <div class="container">
@@ -258,6 +249,10 @@ include 'include/header5.php';
 	        <br><br>
 	        
 	            <div class="row text-center">
+	            
+	           
+					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> <!--| <a href="faq.php" class="text-green text-bold">FAQ</a>--></div>
+				
 	            
 	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
 						<br>BE 0681.879.712 
@@ -269,10 +264,11 @@ include 'include/header5.php';
 									
 									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 									
+									<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
 								</ul>
 					</div>
 					
-					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
+					<div class="copyright-text text-center"><!--<a href="blog.php" class="text-green text-bold">Le blog</a> | --><a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
 					
 					<br>
 					<br>
@@ -281,7 +277,7 @@ include 'include/header5.php';
 	        </div>
 	    </div>
 	</footer>
-	<!-- END: FOOTER -->
+			<!-- END: FOOTER -->
 	</div>
 	<!-- END: WRAPPER -->
 
@@ -291,14 +287,6 @@ include 'include/header5.php';
 
 	<!-- Custom js file -->
 	<script src="js/language.js"></script>
-
-    <script type="text/javascript">
-
-    var lazyLoadInstance = new LazyLoad({
-        elements_selector: ".lazy"
-    });
-
-    </script>
 
 
 
