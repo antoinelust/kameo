@@ -14,16 +14,15 @@ $response=array();
 
 if($user != NULL)
 {
-
-	$timestamp_now=time();
 	
 	// 1st part : get all the records in the past
 	
 	//vérifier pour les champs
     include 'connexion.php';
     
-    $date1stJanuary=strtotime(date('Y-01-01'));
-    $sql="select * from reservations where DATE_START>'$date1stJanuary' and EMAIL='$user' and STAANN != 'D'";
+    $date1stJanuary=date('Y-01-01');
+    
+    $sql="select * from reservations where DATE_START_2>'$date1stJanuary' and EMAIL='$user' and STAANN != 'D'";
     
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -34,8 +33,8 @@ if($user != NULL)
     $response['maxBookingsPerYear']= $result->num_rows;            
         
         
-    $date1stOfMonth=strtotime(date('Y-m-01'));
-    $sql="select * from reservations where DATE_START>'$date1stOfMonth' and EMAIL='$user' and STAANN != 'D'";
+    $date1stOfMonth=date('Y-m-01');
+    $sql="select * from reservations where DATE_START_2>'$date1stOfMonth' and EMAIL='$user' and STAANN != 'D'";
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -57,7 +56,7 @@ if($user != NULL)
     
     
     
-	$sql="select * from reservations where EMAIL = '$user' and DATE_END < '$timestamp_now' and STAANN!='D' order by DATE_START DESC";
+	$sql="select * from reservations where EMAIL = '$user' and DATE_END_2 < now() and STAANN!='D' order by DATE_START_2 DESC";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -72,15 +71,12 @@ if($user != NULL)
     $i=0;
     while($row = mysqli_fetch_array($result))
     {
-
-        $response['booking'][$i]['dayStart']= date('d/m/Y',$row['DATE_START']);            
-		$response['booking'][$i]['dayEnd']= date('d/m/Y',$row['DATE_END']);            
+		$response['booking'][$i]['ID']=$row['ID'];
         $response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-		$response['booking'][$i]['hour_start']= date('H:i',$row['DATE_START']);            
-		$response['booking'][$i]['hour_end']=date('H:i',$row['DATE_END']);
+		$response['booking'][$i]['start']= $row['DATE_START_2'];            
+		$response['booking'][$i]['end']=$row['DATE_END_2'];
 		$response['booking'][$i]['building_start']=$row['BUILDING_START'];
 		$response['booking'][$i]['building_end']=$row['BUILDING_END'];
-		$response['booking'][$i]['ID']=$row['ID'];
 		$response['booking'][$i]['time']="past";       
         
         $buildingReference=$row['BUILDING_START'];        
@@ -115,7 +111,7 @@ if($user != NULL)
 	//2nd part : get all the records in the future
 
     include 'connexion.php';
-	$sql="select * from reservations where EMAIL = '$user' and DATE_END > '$timestamp_now' and STAANN!='D' order by DATE_START LIMIT 5";
+	$sql="select * from reservations where EMAIL = '$user' and DATE_END_2 > now() and STAANN!='D' order by DATE_START_2";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -136,10 +132,8 @@ if($user != NULL)
         
         
 		$response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-		$response['booking'][$i]['dayStart']= date('d/m/Y',$row['DATE_START']);            
-		$response['booking'][$i]['dayEnd']= date('d/m/Y',$row['DATE_END']);            
-		$response['booking'][$i]['hour_start']= date('H:i',$row['DATE_START']);            
-		$response['booking'][$i]['hour_end']=date('H:i',$row['DATE_END']);
+		$response['booking'][$i]['start']= $row['DATE_START_2'];
+		$response['booking'][$i]['end']=$row['DATE_END_2'];
 		$response['booking'][$i]['building_start']=$row['BUILDING_START'];
 		$response['booking'][$i]['building_end']=$row['BUILDING_END'];
 		$response['booking'][$i]['time']="past";
@@ -173,8 +167,8 @@ if($user != NULL)
         $response['booking'][$i]['building_end_en']=$resultat2['BUILDING_EN'];
         $response['booking'][$i]['building_end_nl']=$resultat2['BUILDING_NL'];
 
-        $dateEnd=$row['DATE_END'];
-        $sql3="select * from reservations where FRAME_NUMBER='$frameNumber' and DATE_START>'$dateEnd' and STAANN!='D' ORDER BY DATE_START LIMIT 1";
+        $dateEnd=$row['DATE_END_2'];
+        $sql3="select * from reservations where FRAME_NUMBER='$frameNumber' and DATE_START_2>'$dateEnd' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
         
         if ($conn->query($sql3) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

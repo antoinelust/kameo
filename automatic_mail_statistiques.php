@@ -6,7 +6,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
 
 <?php
 $currentMonth=date('n');
-$currentYear=date('y');
+$currentYear=date('Y');
 
 if($currentMonth==1){
     $monthBefore=12;
@@ -15,9 +15,13 @@ if($currentMonth==1){
     $monthBefore=$currentMonth-1;
     $yearBefore=$currentYear;
 }
+$dateStart = new DateTime();
+$dateStart->setDate($yearBefore, $monthBefore, 1);
+$dateStartString=$dateStart->format('Y-m-d H:i');
 
-$timestampStart=mktime(0, 0, 0, $monthBefore, 1, $yearBefore);
-$timestampEnd=mktime(0, 0, 0, $currentMonth, 1, $currentYear);
+$dateEnd = new DateTime();
+$dateEnd->setDate($yearBefore, $currentMonth, 1);
+$dateEndString=$dateEnd->format('Y-m-d H:i');
 
 
 $part1 = "<!doctype html>
@@ -906,8 +910,8 @@ $part1 = "<!doctype html>
                                 $company=$row['INTERNAL_REFERENCE'];
                                 $companyName=$row['COMPANY_NAME'];
                                 include 'include/connexion.php';
-                                $sql2= "SELECT aa.NOM, aa.PRENOM, aa.EMAIL, COUNT(1) AS COUNT, SUM(DATE_END-DATE_START) AS LENGTH FROM customer_referential aa, reservations bb WHERE aa.COMPANY='$company' and aa.EMAIL = bb.EMAIL and bb.STAANN != 'D' and DATE_START>'$timestampStart' and DATE_END<'$timestampEnd' GROUP BY aa.EMAIL ORDER BY COUNT DESC";
-                                                                
+                                $sql2= "SELECT aa.NOM, aa.PRENOM, aa.EMAIL, COUNT(1) AS COUNT, SUM(DATE_END_2-DATE_START_2) AS LENGTH FROM customer_referential aa, reservations bb WHERE aa.COMPANY='$company' and aa.EMAIL = bb.EMAIL and bb.STAANN != 'D' and DATE_START_2>'$dateStartString' and DATE_END_2<'$dateEndString' GROUP BY aa.NOM, aa.PRENOM, aa.EMAIL ORDER BY COUNT DESC";
+                                                                                                
                                 if ($conn->query($sql2) === FALSE) {
                                     $response = array ('response'=>'error', 'message'=> $conn->error);
                                     echo json_encode($response);
@@ -939,7 +943,7 @@ $part1 = "<!doctype html>
                                     $part4=$part4."</table><div class=\"separator\"></div><br/><br/>";
                                     
                                     include 'include/connexion.php';                                
-                                    $sql3="select aa.FRAME_NUMBER, aa.MODEL, count(*) AS COUNT, SUM(DATE_END-DATE_START) AS LENGTH from customer_bikes aa, reservations bb where aa.company = '$company' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and DATE_START>'$timestampStart' and DATE_END<'$timestampEnd' and bb.STAANN != 'D' group by aa.FRAME_NUMBER";
+                                    $sql3="select aa.FRAME_NUMBER, aa.MODEL, count(*) AS COUNT, SUM(DATE_END_2-DATE_START_2) AS LENGTH from customer_bikes aa, reservations bb where aa.company = '$company' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and DATE_START_2>'$dateStartString' and DATE_END_2<'$dateEndString' and bb.STAANN != 'D' group by aa.FRAME_NUMBER";
                                     if ($conn->query($sql2) === FALSE) {
                                         $response = array ('response'=>'error', 'message'=> $conn->error);
                                         echo json_encode($response);
@@ -973,9 +977,14 @@ $part1 = "<!doctype html>
                                     
                                     while($month>1){
                                         $month=$month-1;
-                                        $timestampStart2=mktime(0, 0, 0, $month, 1, $yearBefore);
-                                        $timestampEnd2=mktime(0, 0, 0, $month+1, 1, $currentYear);
-                                        $sql4= "SELECT * FROM customer_referential aa, reservations bb WHERE aa.COMPANY='$company' and aa.EMAIL = bb.EMAIL and bb.STAANN != 'D' and DATE_START>'$timestampStart2' and DATE_END<'$timestampEnd2'";
+                                        $dateStart = new DateTime();
+                                        $dateStart->setDate($yearBefore, $month, 1);
+                                        $dateStartString=$dateStart->format('Y-m-d H:i');
+                                        $dateEnd = new DateTime();
+                                        $dateEnd->setDate($yearBefore, $month+1, 1);
+                                        $dateEndString=$dateEnd->format('Y-m-d H:i');
+                                        
+                                        $sql4= "SELECT * FROM customer_referential aa, reservations bb WHERE aa.COMPANY='$company' and aa.EMAIL = bb.EMAIL and bb.STAANN != 'D' and DATE_START_2>'$dateStartString' and DATE_END_2<'$dateEndString'";
 
                                         if ($conn->query($sql4) === FALSE) {
                                             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -983,8 +992,8 @@ $part1 = "<!doctype html>
                                             die;
                                         }
                                         $result4 = mysqli_query($conn, $sql4); 
-                                        $part4=$part4."<tr class=\"tableResume\"><td class=\"tableResume\">".date("F", $timestampStart2)." ".date("Y")."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
-                                        $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".date("F", $timestampStart2)." ".date("Y")."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
+                                        $part4=$part4."<tr class=\"tableResume\"><td class=\"tableResume\">".$dateStart->format('Y-m')."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
+                                        $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$dateStart->format('Y-m')."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
                                         
                                         
                                     }

@@ -70,7 +70,7 @@ if(isset($_POST['action'])){
         
         
         $dossier = '../images_bikes/';
-        $fichier = $frameNumber."_big.jpg";
+        $fichier = $frameNumber.".jpg";
         $fichierMini = $frameNumber."_mini.jpg";
         
         if(file_exists($dossier.$fichier)){
@@ -114,7 +114,7 @@ if(isset($_POST['action'])){
                   errorMessage("ES0024");
              }
 
-            copy($dossier . $fichier, $dossier . $frameNumber."_big".$extension);
+            copy($dossier . $fichier, $dossier . $frameNumber."".$extension);
             copy($dossier . $fichier, $dossier . $frameNumber."_mini".$extension);
             $img = resize_image($dossier . $frameNumber."_mini".$extension, 100, 100);
             imagejpeg($img, $dossier. $frameNumber."_mini".$extension);
@@ -145,13 +145,13 @@ if(isset($_POST['action'])){
             
             $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model_bike))."_".strtolower($frameType).".jpg";
             
-            copy($dossier . $fichier, $dossier . $frameNumber."_big.jpg");
+            copy($dossier . $fichier, $dossier . $frameNumber.".jpg");
             copy($dossier . $fichier, $dossier . $frameNumber."_mini.jpg");
             
 
             
             
-            $fichierBig=$dossier . $frameNumber."_big.jpg";
+            $fichierBig=$dossier . $frameNumber.".jpg";
             
             $fn = $fichierBig;
             $sizeImage = getimagesize($fn);
@@ -396,9 +396,9 @@ if(isset($_POST['action'])){
                 $conn->close();
 
                 $dossier = '../images_bikes/';
-                $fichier= $frameNumberOriginel.'_big.jpg';
+                $fichier= $frameNumberOriginel.'.jpg';
 
-                copy($dossier . $fichier, $dossier . $frameNumber.'_big.jpg');
+                copy($dossier . $fichier, $dossier . $frameNumber.'.jpg');
 
                 $fichier= $frameNumberOriginel.'_mini.jpg';
 

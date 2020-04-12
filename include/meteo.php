@@ -14,8 +14,10 @@ if($connected){
 
     include 'globalfunctions.php';
 
-    $timestamp=$_POST['timestamp'];
+    $date=$_POST['date'];
     $address=$_POST['address'];
+    
+    $timestamp=strtotime($date);
 
     $address = str_replace(', ', ',', $address);
     $address= str_replace(str_split(' \,'),"+",$address);

@@ -15,7 +15,13 @@ if($connected){
     $address_start=isset($_POST['address_start']) ? $_POST['address_start'] : NULL;
     $address_end=isset($_POST['address_end']) ? $_POST['address_end'] : NULL;
     $timestamp=isset($_POST['timestamp']) ? $_POST['timestamp'] : NULL;
-
+    $date=isset($_POST['date']) ? $_POST['date'] : NULL;
+    
+    if($timestamp==NULL){
+        $timestamp=strtotime($date);
+    }
+    
+    
     $address_start = str_replace(', ', ',', $address_start);
     $address_start= str_replace(str_split(' \,'),"+",$address_start);
 

@@ -611,7 +611,7 @@ if($connected){
   $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.TYPE from customer_referential aa, customer_bike_access bb where aa.EMAIL='$user' and aa.EMAIL=bb.EMAIL LIMIT 1";
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_assoc($result);
-  if ($row['TYPE']="partage"){
+  if ($row['TYPE']=="partage"){
     $company=true;
   }
   else{
@@ -1230,19 +1230,20 @@ if($connected){
 
   }
 
-  function get_meteo(timestamp, address){
+  function get_meteo(date, address){
     return $.ajax({
       url: 'include/meteo.php',
       type: 'post',
-      data: { "timestamp": timestamp, "address": address}
+      data: { "date": date, "address": address}
     })
   }
 
-  function get_travel_time(timestamp, address_start, address_end){
+  function get_travel_time(date, address_start, address_end){
+      
     return $.ajax({
       url: 'include/get_directions.php',
       type: 'post',
-      data: {"timestamp": timestamp, "address_start": address_start, "address_end": address_end},
+      data: {"date": date, "address_start": address_start, "address_end": address_end},
       success: function(text){
       }
     });
@@ -1941,7 +1942,7 @@ if($connected){
                                     document.getElementById("meteoEnd3NL").innerHTML=buildingEndNl;
                                     document.getElementById("meteoEnd4NL").innerHTML=buildingEndNl;
 
-                                    date= new Date(text.timestampStartBooking * 1000);
+                                    date= new Date(text.dateStart);
 
                                     var day=date.getDate();
                                     var month=date.getMonth() + 1;
@@ -1963,7 +1964,7 @@ if($connected){
                                     document.getElementById("meteoHour2").innerHTML=hours+"h"+minutes;
                                     document.getElementById("meteoHour3").innerHTML=hours+"h"+minutes;
                                     document.getElementById("meteoHour4").innerHTML=hours+"h"+minutes;
-                                    get_meteo(text.timestampStartBooking, addressStart)
+                                    get_meteo(text.dateStart, addressStart)
                                     .done(function(response){
                                       if(response.response=="success")
                                       {
@@ -1991,7 +1992,9 @@ if($connected){
                                         document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
                                         document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
                                         document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
-                                        get_travel_time(text.timestampStartBooking, addressStart, addressEnd)
+                                          
+                                          
+                                        get_travel_time(text.dateStart, addressStart, addressEnd)
                                         .done(function(response){
                                           travel_time_bike=response.duration_bike;
                                           travel_time_car=response.duration_car;
@@ -2109,10 +2112,8 @@ if($connected){
                                   }
                                 });
 
-                                document.getElementById('widget-new-booking-date-start').value = text.dateStart.date;
-                                document.getElementById('widget-new-booking-date-end').value = text.dateEnd.date;
-                                document.getElementById('widget-new-booking-timestamp-start').value = text.timestampStartBooking;
-                                document.getElementById('widget-new-booking-timestamp-end').value = text.timestampEndBooking;
+                                document.getElementById('widget-new-booking-date-start').value = text.dateStart;
+                                document.getElementById('widget-new-booking-date-end').value = text.dateEnd;
                                 document.getElementById('widget-new-booking-building-start').value = document.getElementById("search-bikes-form-intake-building").value;;
                                 document.getElementById('widget-new-booking-building-end').value = document.getElementById("search-bikes-form-deposit-building").value;
 
@@ -2139,7 +2140,7 @@ if($connected){
                       function bookBike(bikeNumber)
                       {
                         document.getElementById('widget-new-booking-frame-number').value = bikeNumber;
-                        document.getElementById("resumeBikeImage").src="images_bikes/"+bikeNumber+"_mini.jpg";
+                        document.getElementById("resumeBikeImage").src="images_bikes/"+bikeNumber+".jpg";
 
                       }
                       </script>
@@ -2604,21 +2605,36 @@ if($connected){
                       </div>
                       <div class="modal-body">
                         <div class="row">
-                          <div class="col-sm-12">
-                            <h4 class="fr">Informations relatives à la réservation</h4>
-                            <span id="bookingInformation"></span>
-                            <h4 class="fr">Personne avant vous:</h4>
-                            <h4 class="nl">Persoon voor jou:</h4>
-                            <h4 class="en">Person before you:</h4>
-                            <ul>
-                              <span id="futureBookingBefore"></span>
-                            </ul>
-                            <h4 class="fr">Personne après vous:</h4>
-                            <h4 class="nl">Persoon na jou:</h4>
-                            <h4 class="en">Person after you:</h4>
-
-                            <span id="futureBookingAfter"></span>
-                          </div>
+                            <div class="col-sm-12">
+                                <h4 class="text-green fr">Informations relatives à la réservation</h4>
+                                <span id="bookingInformation"></span>
+                                <br/><br/>
+                            </div>
+                            <div class="col-sm-12">
+                                <h4 class="text-green fr">Vélo</h4>
+                                <span id="bookingInformationBike"></span>
+                                <img id='imageNextBooking' class="img-rounded img-responsive" alt="Responsive image">
+                            </div>
+                            
+                            
+                            <div class="separator"></div>
+                            
+                            <div class="col-sm-12">
+                                <h4 class="fr text-green">Personne avant vous:</h4>
+                                <h4 class="nl text-green">Persoon voor jou:</h4>
+                                <h4 class="en text-green">Person before you:</h4>
+                                <span id="futureBookingBefore"></span>
+                            </div>
+                            
+                            <div class="separator"></div>                              
+                            
+                            <div class="col-sm-12">
+                                <h4 class="fr text-green">Personne après vous:</h4>
+                                <h4 class="nl text-green">Persoon na jou:</h4>
+                                <h4 class="en text-green">Person after you:</h4>
+                                <span id="futureBookingAfter"></span>
+                            </div>
+                            
                         </div>
                       </div>
                       <div class="modal-footer">
@@ -2680,14 +2696,11 @@ if($connected){
             {
 
               include 'include/connexion.php';
-              $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY,
-              bb.CONTRACT_REFERENCE, bb.CONTRACT_START, bb.CONTRACT_END, cc.MODEL_FR \"bike_Model_FR\", cc.MODEL_EN \"bike_Model_EN\", cc.MODEL_NL \"bike_Model_NL\"
-              from customer_referential aa, customer_bikes bb, bike_models cc
-              where aa.EMAIL='$user' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.TYPE=cc.ID";
-
+              $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd where aa.EMAIL='$user' and aa.EMAIL=cc.EMAIL and cc.BIKE_NUMBER=bb.FRAME_NUMBER and bb.TYPE=dd.ID";
+                
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_assoc($result);
-              $contractNumber=$row['CONTRACT_REFERENCE'];
+              $contractNumber='KAMEO BIKES';
               $contractStart=$row['CONTRACT_START'];
               $contractEnd=$row['CONTRACT_END'];
 
@@ -3078,7 +3091,7 @@ if($connected){
               </div>
 
 
-              <img src="images_bikes/<?php echo $row['FRAME_NUMBER']; ?>.jpg" class="img-responsive img-rounded" alt="Infographie">
+              <img src="images_bikes/<?php echo $row['FRAME_NUMBER']; ?>.jpg" class="img-responsive img-rounded" alt="Image of Bike">
 
               <br />
               <div class="table-responsive">
@@ -3091,9 +3104,9 @@ if($connected){
                       <td class="fr">Modèle</td>
                       <td class="en">Bike model</td>
                       <td class="nl">Fietsmodel</td>
-                      <td class="fr-cell"><?php echo $row["bike_Model_FR"] ?></td>
-                      <td class="en-cell"><?php echo $row["bike_Model_EN"] ?></td>
-                      <td class="nl-cell"><?php echo $row["bike_Model_NL"] ?></td>
+                      <td class="fr-cell"><?php echo $row["BRAND"]." ".$row["MODEL"] ?></td>
+                      <td class="en-cell"><?php echo $row["BRAND"]." ".$row["MODEL"] ?></td>
+                      <td class="nl-cell"><?php echo $row["BRAND"]." ".$row["MODEL"] ?></td>
                     </tr>
                     <tr>
                       <td class="fr">Date de début de contrat</td>
@@ -3139,8 +3152,13 @@ if($connected){
               var addressDomicile=get_address_domicile();
               var addressTravail=get_address_travail();
 
-              var timestamp=Date.now().toString();
-              get_meteo(timestamp.substring(0,10), addressDomicile)
+              var timestamp=new Date();
+                  
+            timestamp=(timestamp.toISOString().split('T')[0]+" "+timestamp.toISOString().split('T')[1]).split('.')[0];
+                  
+                  
+                  
+              get_meteo(timestamp, addressDomicile)
               .done(function(response){
                 if(response.response=="success")
                 {
@@ -3169,7 +3187,7 @@ if($connected){
                   document.getElementById('precipitation_widget4').innerHTML = precipitation+" %";
                   document.getElementById('wind_widget4').innerHTML = Math.round(windSpeed*3.6)+" km/h";
 
-                  get_travel_time(timestamp.substring(0,10), addressDomicile, addressTravail)
+                  get_travel_time(timestamp, addressDomicile, addressTravail)
                   .done(function(response){
                     document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
                     document.getElementById('bike_duration_widget1').innerHTML = response.duration_bike+" min";
@@ -3679,9 +3697,9 @@ if($connected){
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-12">
-            <h3 class="fr">Résumé de votre commande</h3>
-            <h3 class="en">Resume</h3>
-            <h3 class="nl">Geresumeerd</h3>
+            <h4 class=" text-green fr">Résumé de votre réservation</h3>
+            <h3 class="text-green en">Resume</h3>
+            <h3 class="text-green nl">Geresumeerd</h3>
 
             <div class="col-sm-10">
               <h4>Prise en charge du vélo</h4>
@@ -3759,10 +3777,8 @@ if($connected){
                 </div>
 
                 <div class="col-sm-10">
-                  <h4>Votre vélo: </h4>
-                  <div class="col-md-4">
-                    <img src="" id="resumeBikeImage" alt="image" />
-                  </div>
+                  <h4>Vélo: </h4>
+                    <img id='resumeBikeImage' class="img-rounded img-responsive" alt="Responsive image">
                 </div>
                 <form id="widget-new-booking" class="form-transparent-grey" action="include/new_booking.php" role="form" method="post">
                   <!--
@@ -3778,8 +3794,6 @@ if($connected){
               });
             </script>
             <p id="text-eligibility-prime" class="fr text-green">Ce trajet est éligible pour le paiement de prime écologique. Les informations liées à votre trajet vous seront demandées à l'étape suivante.</p>-->
-            <input id="widget-new-booking-timestamp-start" name="widget-new-booking-timestamp-start" type="hidden">
-            <input id="widget-new-booking-timestamp-end" name="widget-new-booking-timestamp-end" type="hidden">
             <input id="widget-new-booking-building-start" name="widget-new-booking-building-start" type="hidden">
             <input id="widget-new-booking-building-end" name="widget-new-booking-building-end" type="hidden">
             <input id="widget-new-booking-frame-number" name="widget-new-booking-frame-number" type="hidden">
@@ -6235,7 +6249,8 @@ if($connected){
                             <textarea class="form-control" rows="5" name="comment"></textarea>
                           </div>
                         </div>
-
+                          
+                        <input type='int' class="form-control required hidden" name="feedbackID">
                         <input type="text" name="action" class="form-control hidden" value="add">
                         <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
                         <input type="hidden" name="notificationID" />

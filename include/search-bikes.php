@@ -66,28 +66,32 @@ $dateStart=new DateTime();
 $dateStart->setDate($year_intake, $month_intake, $day_intake);
 $dateStart->setTime($intake_hour, $intake_minute);
 
+$dateStart2=new DateTime();
+$dateStart2->setDate($year_intake, $month_intake, $day_intake);
+$dateStart2->setTime($intake_hour_2, $intake_minute_2);
+
 $dateEnd=new DateTime();
 $dateEnd->setDate($year_deposit, $month_deposit, $day_deposit);
 $dateEnd->setTime($deposit_hour, $deposit_minute);
 
-$timestamp_start_booking=mktime($intake_hour, $intake_minute, 0, $month_intake, $day_intake, $year_intake);
-$timestamp_start_booking_2=mktime($intake_hour_2, $intake_minute_2, 0, $month_intake, $day_intake, $year_intake);
 
-$timestamp_end_booking=mktime($deposit_hour, $deposit_minute, 0, $month_deposit, $day_deposit, $year_deposit);
-
-
+$dateStartString=$dateStart->format('Y-m-d H:i');
+$dateStart2String=$dateStart2->format('Y-m-d H:i');
+$dateEndString=$dateEnd->format('Y-m-d H:i');
 
 //gérer le error handling de mktime !
 
 
 
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestamp_start_booking != NULL && $deposit_building != NULL && $timestamp_end_booking != NULL ) {
+if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStart != NULL && $deposit_building != NULL && $dateEnd != NULL ) {
 
 
     include 'connexion.php';
-    $date1stJanuary=strtotime(date('Y-01-01'));
-    $sql="select * from reservations where DATE_START>'$date1stJanuary' and EMAIL='$email' and STAANN != 'D'";
+    $date1stJanuary=date('Y-01-01');
+    $sql="select * from reservations where DATE_START_2>'$date1stJanuary' and EMAIL='$email' and STAANN != 'D'";
+        
+    
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -102,8 +106,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 
 
 
-    $date1stOfMonth=strtotime(date('Y-m-01'));
-    $sql="select * from reservations where DATE_START>'$date1stOfMonth' and EMAIL='$email' and STAANN != 'D'";
+    $date1stOfMonth=date('Y-m-01');
+    $sql="select * from reservations where DATE_START_2>'$date1stOfMonth' and EMAIL='$email' and STAANN != 'D'";
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -134,23 +138,27 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
     $length = $result->num_rows;
     if($length == 0){
         errorMessage("ES0027");
-    }
-
-    if ($timestamp_start_booking<time()){
+    }        
+    
+    if ($dateStart< new DateTime('NOW')){
         errorMessage("ES0016");
     }
 
-    if ($timestamp_end_booking<time()){
+    if ($dateEnd<new DateTime('NOW')){
         errorMessage("ES0017");
     }
 
-    if ($timestamp_end_booking<=$timestamp_start_booking){
+    if ($dateEnd<=$dateStart){
         errorMessage("ES0018");
     }
 
     include 'connexion.php';
-    $sql= "select aa.FRAME_NUMBER from reservations aa, customer_bikes cc where aa.FRAME_NUMBER=cc.FRAME_NUMBER and cc.STATUS!='KO' and aa.STAANN!='D' and aa.FRAME_NUMBER in (select BIKE_NUMBER from customer_bike_access where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START>='$timestamp_start_booking_2' and bb.DATE_START<='$timestamp_end_booking') OR (bb.DATE_START<='$timestamp_start_booking_2' and bb.DATE_END>'$timestamp_start_booking'))) group by FRAME_NUMBER";
-
+    $sql= "select aa.FRAME_NUMBER from reservations aa, customer_bikes cc where aa.FRAME_NUMBER=cc.FRAME_NUMBER and cc.STATUS!='KO' and aa.STAANN!='D' and aa.FRAME_NUMBER in (select BIKE_NUMBER from customer_bike_access where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by FRAME_NUMBER";    
+    
+    
+    
+    
+    
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -165,13 +173,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 
     $bike=array();
 
-    $response=array('response'=>'success', 'timestampStartBooking' => $timestamp_start_booking, 'timestampEndBooking' => $timestamp_end_booking, 'buildingStart' => $intake_building, 'buildingEnd' => $deposit_building, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd);
+    $response=array('response'=>'success', 'buildingStart' => $intake_building, 'buildingEnd' => $deposit_building, 'dateStart' => $dateStartString, 'dateEnd' => $dateEndString);
     $length=0;
     while($row = mysqli_fetch_array($result))
     {
         $frameNumber=$row['FRAME_NUMBER'];
 
-        $sql2="SELECT max(DATE_END), BUILDING_END FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_END < '$timestamp_end_booking' and STAANN!='D' group by BUILDING_END";
+        $sql2="SELECT max(DATE_END), BUILDING_END FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_END_2 < '$dateEndString' and STAANN!='D' group by BUILDING_END";
 
 
         if ($conn->query($sql2) === FALSE) {
@@ -185,7 +193,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $timestam
 
         if($resultat2['BUILDING_END'] == $intake_building){
 
-            $sql3="SELECT min(DATE_START), BUILDING_START FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_START > '$timestamp_end_booking' and STAANN!='D' group by BUILDING_START";
+            $sql3="SELECT min(DATE_START_2), BUILDING_START FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_START_2 > '$dateEndString' and STAANN!='D' group by BUILDING_START";
 
             if ($conn->query($sql3) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);

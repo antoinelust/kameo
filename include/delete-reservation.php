@@ -34,15 +34,14 @@ if($ID != NULL)
     $row = mysqli_fetch_assoc($result);
     $conn->close();  
 
-    $dateStart=$row['DATE_START'];
-    $dateEnd=$row['DATE_END'];
+    $dateEnd=$row['DATE_END_2'];
     $buildingStart=$row['BUILDING_START'];
     $buildingEnd=$row['BUILDING_END'];
     $frameNumber=$row['FRAME_NUMBER'];
     
     if($buildingStart!=$buildingEnd){
         include 'connexion.php';
-        $sql="select * from reservations WHERE DATE_START>'$dateEnd' and FRAME_NUMBER='$frameNumber' and STAANN != 'D' ORDER BY DATE_START";
+        $sql="select * from reservations WHERE DATE_START_2>'$dateEnd' and FRAME_NUMBER='$frameNumber' and STAANN != 'D' ORDER BY DATE_START_2";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

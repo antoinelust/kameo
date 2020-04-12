@@ -129,8 +129,10 @@ while($row = mysqli_fetch_array($result))
 }
 
 include 'connexion.php';
-$timestamp=mktime(0, 0, 0, 1, 1, date("Y"));
-$sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') and cc.FRAME_NUMBER=dd.FRAME_NUMBER and cc.STAANN != 'D' and dd.STAANN!='D' and dd.DATE_START>'$timestamp'";
+$dateStart=new DateTime();
+$dateStart->setDate(date("Y"), 1 , 1);
+$dateStartString=$dateStart->format('Y-m-d');
+$sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') and cc.FRAME_NUMBER=dd.FRAME_NUMBER and cc.STAANN != 'D' and dd.STAANN!='D' and dd.DATE_START_2>'$dateStartString'";
 if ($conn->query($sql2) === FALSE){
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);

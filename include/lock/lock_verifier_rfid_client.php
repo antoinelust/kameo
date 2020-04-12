@@ -19,7 +19,7 @@ $length = $result->num_rows;
 
 if($length=="1"){
     $client=$resultat['EMAIL'];
-    $sql="SELECT * FROM reservations WHERE EMAIL='$client' AND BUILDING_START='$building' AND DATE_START <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())";
+    $sql="SELECT * FROM reservations WHERE EMAIL='$client' AND BUILDING_START='$building' AND DATE_START_2 <= CURRENT_TIMESTAMP() AND DATE_END_2 >= CURRENT_TIMESTAMP()";
     
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);

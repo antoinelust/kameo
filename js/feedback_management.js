@@ -69,45 +69,6 @@ function list_feedbacks() {
                 var temp="<table class=\"table table-condensed\" id=\"feedbackListing\" data-order='[[ 0, \"desc\" ]]'><h4 class=\"fr-inline text-green\">Feedbacks:</h4><h4 class=\"en-inline text-green\">Feedbacks:</h4><h4 class=\"nl-inline text-green\">Feedbacks:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th>Bike</th><th>Start</th><th>End</th><th><span class=\"fr-inline\">Note</span><span class=\"en-inline\">Note</span><span class=\"nl-inline\">Note</span></th><th><span class=\"fr-inline\">Commentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th><th><span class=\"fr-inline\">Entretien</span><span class=\"en-inline\">Maintenance ?</span><span class=\"nl-inline\">Maintenance ?</span></th><th><span class=\"fr-inline\">E-mail</span><span class=\"en-inline\">E-mail</span><span class=\"nl-inline\">E-mail</span></th><th>Statut</th><th>Lu ?</th></tr></thead><tbody>";
                 dest=dest.concat(temp);
                 while (i < response.feedbacksNumber){
-                    var unix_timestamp = response.feedback[i].start;
-                    // Create a new JavaScript Date object based on the timestamp
-                    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                    var date = new Date(unix_timestamp * 1000);
-                    //day from the timestamp
-                    var day = date.getDate();
-                    //month from the timestamp
-                    var month = date.getMonth();
-                    //year from the timestamp
-                    var year = date.getFullYear();
-                    // Hours part from the timestamp
-                    var hours = date.getHours();
-                    // Minutes part from the timestamp
-                    var minutes = "0" + date.getMinutes();
-                    // Seconds part from the timestamp
-                    var seconds = "0" + date.getSeconds();
-
-                    // Will display time in 10:30:23 format
-                    var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2);
-
-                    var unix_timestamp = response.feedback[i].end;
-                    // Create a new JavaScript Date object based on the timestamp
-                    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                    var date = new Date(unix_timestamp * 1000);
-                    //day from the timestamp
-                    var day = date.getDate();
-                    //month from the timestamp
-                    var month = date.getMonth();
-                    //year from the timestamp
-                    var year = date.getFullYear();
-                    // Hours part from the timestamp
-                    var hours = date.getHours();
-                    // Minutes part from the timestamp
-                    var minutes = "0" + date.getMinutes();
-                    // Seconds part from the timestamp
-                    var seconds = "0" + date.getSeconds();
-
-                    // Will display time in 10:30:23 format
-                    var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2);
 
                     if(response.feedback[i].entretien==null){
                         entretien="<span>N/A</span>";
@@ -130,7 +91,7 @@ function list_feedbacks() {
                         var note = response.feedback[i].note;
                     }
 
-                    var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+response.feedback[i].bikeNumber+"<td>"+formattedTimeStart+"</td><td>"+formattedTimeEnd+"</td><td>"+note+"</td><td>"+comment+"</td><td>"+entretien+"</td><td>"+response.feedback[i].firstName+" " +response.feedback[i].name+"</td><td>"+response.feedback[i].status+"</td><td>"+response.feedback[i].read+"</tr>";
+                    var temp="<tr><td><a href=\"#\" class=\"text-green retrieveFeedback\" data-target=\"#feedbackManagement\" name=\""+response.feedback[i].IDReservation+"\" data-toggle=\"modal\">"+response.feedback[i].IDReservation+"</a></td><td>"+response.feedback[i].company+"</td><td>"+response.feedback[i].bikeNumber+"<td>"+response.feedback[i].start.shortDateHours()+"</td><td>"+response.feedback[i].end.shortDateHours()+"</td><td>"+note+"</td><td>"+comment+"</td><td>"+entretien+"</td><td>"+response.feedback[i].firstName+" " +response.feedback[i].name+"</td><td>"+response.feedback[i].status+"</td><td>"+response.feedback[i].read+"</tr>";
                     dest=dest.concat(temp);
                     i++;
 
@@ -172,53 +133,13 @@ function retrieve_feedback(ID) {
                 console.log(response.message);
             }
             if(response.response == 'success'){
-
-                var unix_timestamp = response.start
-                // Create a new JavaScript Date object based on the timestamp
-                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                var date = new Date(unix_timestamp * 1000);
-                //day from the timestamp
-                var day = date.getDate();
-                //month from the timestamp
-                var month = date.getMonth();
-                //year from the timestamp
-                var year = date.getFullYear();
-                // Hours part from the timestamp
-                var hours = date.getHours();
-                // Minutes part from the timestamp
-                var minutes = "0" + date.getMinutes();
-                // Seconds part from the timestamp
-                var seconds = "0" + date.getSeconds();
-
-                // Will display time in 10:30:23 format
-                var formattedTimeStart = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-
-
-                var unix_timestamp = response.end
-                // Create a new JavaScript Date object based on the timestamp
-                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-                var date = new Date(unix_timestamp * 1000);
-                //day from the timestamp
-                var day = date.getDate();
-                //month from the timestamp
-                var month = date.getMonth();
-                //year from the timestamp
-                var year = date.getFullYear();
-                // Hours part from the timestamp
-                var hours = date.getHours();
-                // Minutes part from the timestamp
-                var minutes = "0" + date.getMinutes();
-                // Seconds part from the timestamp
-                var seconds = "0" + date.getSeconds();
-
-                // Will display time in 10:30:23 format
-                var formattedTimeEnd = day +'/' + month + '/' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-
+                
                 $('.feedbackManagementTitle').html("Consulter un feedback");
                 $('#feedbackManagement input[name=bike]').val(response.bike);
-                $('#feedbackManagement input[name=startDate]').val(formattedTimeStart);
-                $('#feedbackManagement input[name=endDate]').val(formattedTimeEnd);
-                $('#feedbackManagement input[name=ID]').val(response.ID);
+                $('#feedbackManagement input[name=startDate]').val(response.start.shortDateHours());
+                $('#feedbackManagement input[name=endDate]').val(response.end.shortDateHours());
+                $('#feedbackManagement input[name=ID]').val(ID);
+                $('#feedbackManagement input[name=feedbackID]').val(response.ID);
                 $('#feedbackManagement input[name=utilisateur]').val(response.email);
 
                 $('#feedbackManagement select[name=note]').attr("readonly", true);

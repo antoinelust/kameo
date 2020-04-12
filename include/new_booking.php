@@ -8,11 +8,6 @@ session_start();
 include 'globalfunctions.php';
 
 
-
-//timestampStart and timestampEnd can be decomissioned from mykameo
-//$timestampStart=$_POST['widget-new-booking-timestamp-start'];
-//$timestampEnd=$_POST['widget-new-booking-timestamp-end'];
-
 $user = $_POST['widget-new-booking-mail-customer'];
 $frameNumber=$_POST['widget-new-booking-frame-number'];
 $buildingStart=$_POST['widget-new-booking-building-start'];
@@ -21,6 +16,8 @@ $lockingcode=$_POST['widget-new-booking-locking-code'];
 
 $temp=new DateTime($_POST['widget-new-booking-date-start']);
 $dateStart=strtotime($temp->format('Y-m-d H:i'));
+$dateStart_2=$temp;
+$dateStart_2String=$dateStart_2->format('Y-m-d H:i');
 
 $temp->sub(new DateInterval('PT15M'));
 $dateStart2=strtotime($temp->format('Y-m-d H:i'));
@@ -28,13 +25,15 @@ $dateStart2=strtotime($temp->format('Y-m-d H:i'));
 
 $temp=new DateTime($_POST['widget-new-booking-date-end']);
 $dateEnd=strtotime($temp->format('Y-m-d H:i'));
+$dateEnd_2=$temp;
+$dateEnd_2String=$dateEnd_2->format('Y-m-d H:i');
 
 
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
-    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END > '$dateStart' and bb.DATE_END < '$dateEnd') OR (bb.DATE_START>'$dateStart' and bb.DATE_START<'$dateEnd')))";
+    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END > '$dateStart' and bb.DATE_END < '$dateEnd') OR (bb.DATE_START_2>'$dateStart_2String' and bb.DATE_START_2<'$dateEnd_2String')))";
 
 
    	if ($conn->query($sql) === FALSE) {
@@ -54,8 +53,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 	include 'connexion.php';
 
     $timestamp= time();
-    $sql= "INSERT INTO reservations (USR_MAJ, STATUS, FRAME_NUMBER, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$frameNumber', '$dateStart', '$buildingStart', '$dateEnd', '$buildingEnd', '$user', '')";
-
+    $sql= "INSERT INTO reservations (USR_MAJ, STATUS, FRAME_NUMBER, DATE_START, DATE_START_2, BUILDING_START, DATE_END, DATE_END_2, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$frameNumber', '$dateStart', '$dateStart_2String', '$buildingStart', '$dateEnd', '$dateEnd_2String', '$buildingEnd', '$user', '')";    
+    
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -122,7 +121,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
     if($lockingcode!=""){
         include 'connexion.php';
 
-        $sql= "select ID from reservations where FRAME_NUMBER = '$frameNumber' and EMAIL = '$user' and DATE_START = '$dateStart' and DATE_END = '$dateEnd' and STAANN != 'D' ";
+        $sql= "select ID from reservations where FRAME_NUMBER = '$frameNumber' and EMAIL = '$user' and DATE_START_2 = '$dateStart_2String' and DATE_END_2 = '$dateEnd_2String' and STAANN != 'D' ";
 
         //error_log($sql, 3, "mes-erreurs.log");
 

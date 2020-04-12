@@ -18,7 +18,7 @@ if($bookingID != NULL)
 
 	
     include 'connexion.php';
-	$sql="SELECT aa.FRAME_NUMBER, aa.EMAIL, aa.DATE_START, aa.DATE_END, bb.BUILDING_FR as building_start_fr, cc.BUILDING_FR as building_end_fr  FROM reservations aa, building_access bb, building_access cc WHERE aa.ID = '$bookingID' AND aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE";
+	$sql="SELECT aa.FRAME_NUMBER, aa.EMAIL, aa.DATE_START_2, aa.DATE_END_2, bb.BUILDING_FR as building_start_fr, cc.BUILDING_FR as building_end_fr  FROM reservations aa, building_access bb, building_access cc WHERE aa.ID = '$bookingID' AND aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -32,8 +32,8 @@ if($bookingID != NULL)
 
     $response['response']="success";
     $response['reservationBikeNumber']=$row['FRAME_NUMBER'];
-    $response['reservationStartDate']=date('d/m/Y H:i', $row['DATE_START']);            
-    $response['reservationEndDate']=date('d/m/Y H:i', $row['DATE_END']);            
+    $response['reservation']['start']=$row['DATE_START_2'];
+    $response['reservation']['end']=$row['DATE_END_2'];
     $response['reservationStartBuilding']=$row['building_start_fr'];
     $response['reservationEndBuilding']=$row['building_end_fr'];  
     $response['reservationEmail']=$row['EMAIL'];

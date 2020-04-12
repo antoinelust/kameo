@@ -28,8 +28,8 @@ if(isset($_GET['action'])){
 
 
         $response = array ('response'=>'success');
-		$response['start']= date('d/m/Y h:i',$resultat['DATE_START']);            
-		$response['end']= date('d/m/Y h:i',$resultat['DATE_END']);            
+		$response['start']= $resultat['DATE_START_2'];            
+		$response['end']= $resultat['DATE_END_2'];           
         
         $response['bikeNumber']=$resultat['FRAME_NUMBER'];
         $response['email']=$resultat['EMAIL'];
@@ -66,7 +66,9 @@ if(isset($_GET['action'])){
 
         include 'connexion.php';
         $sql = "SELECT * FROM feedbacks where ID_RESERVATION='$ID'";
-        error_log('in function');
+        //error_log('in function');
+        
+        
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -95,8 +97,8 @@ if(isset($_GET['action'])){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
 
-        $response['start']=$resultat['DATE_START'];
-        $response['end']=$resultat['DATE_END'];
+        $response['start']=$resultat['DATE_START_2'];
+        $response['end']=$resultat['DATE_END_2'];
         $response['email']=$resultat['EMAIL'];
 
         echo json_encode($response);
@@ -107,7 +109,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT bb.EMAIL, cc.DATE_START, cc.DATE_END, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_NUMBER FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID and aa.STATUS != 'CANCELLED' ORDER BY aa.HEU_MAJ DESC";
+        $sql = "SELECT bb.EMAIL, cc.DATE_START_2, cc.DATE_END_2, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_NUMBER FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID and aa.STATUS != 'CANCELLED' ORDER BY aa.HEU_MAJ DESC";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -132,8 +134,8 @@ if(isset($_GET['action'])){
             $response['feedback'][$i]['company']=$row['COMPANY'];
             $response['feedback'][$i]['firstName']=$row['PRENOM'];
             $response['feedback'][$i]['name']=$row['NOM'];
-            $response['feedback'][$i]['start']=$row['DATE_START'];
-            $response['feedback'][$i]['end']=$row['DATE_END'];
+            $response['feedback'][$i]['start']=$row['DATE_START_2'];
+            $response['feedback'][$i]['end']=$row['DATE_END_2'];
             $response['feedback'][$i]['email']=$row['EMAIL'];
             
             include 'connexion.php';
@@ -1105,14 +1107,10 @@ if(isset($_GET['action'])){
 
             $mail->Body = $body;
             if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                            if(!$mail->Send()) {
-                               echo error_get_last()['message'];
+                if(!$mail->Send()) {
+                   echo error_get_last()['message'];
 
-                            }else {
-                               echo 'mail envoyé';
-                            }
-            }else{
-                echo '<br><strong>environnement localhost, mail non envoyé</strong><br>';
+                }
             }
 
 
@@ -2005,14 +2003,10 @@ if(isset($_GET['action'])){
 
             $mail->Body = $body;
             if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                            if(!$mail->Send()) {
-                               echo error_get_last()['message'];
+                if(!$mail->Send()) {
+                   echo error_get_last()['message'];
 
-                            }else {
-                               echo 'mail envoyé';
-                            }
-            }else{
-                echo '<br><strong>environnement localhost, mail non envoyé</strong><br>';
+                }
             }
 
 

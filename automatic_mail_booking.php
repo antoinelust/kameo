@@ -26,7 +26,7 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                             $dateNow=strtotime($temp->format('Y-m-d H:i'));
 
                                 include 'include/connexion.php';
-                                $sql= "select aa.ID, aa.DATE_START, aa.DATE_END, aa.EMAIL, bb.BUILDING_FR as 'building_start', cc.BUILDING_FR as 'building_end' from reservations aa, building_access bb, building_access cc where aa.STATUS='Open' and aa.DATE_END<'$dateNow' and aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE";
+                                $sql= "select aa.ID, aa.DATE_START_2, aa.DATE_END_2, aa.EMAIL, bb.BUILDING_FR as 'building_start', cc.BUILDING_FR as 'building_end' from reservations aa, building_access bb, building_access cc where aa.STATUS='Open' and aa.DATE_END<'$dateNow' and aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE";
                                 if ($conn->query($sql) === FALSE) {
                                     $response = array ('response'=>'error', 'message'=> $conn->error);
                                     echo json_encode($response);
@@ -41,8 +41,8 @@ require_once('include/php-mailer/PHPMailerAutoload.php');
                                     $id=$row['ID'];
                                     $building_start=$row['building_start'];
                                     $building_end=$row['building_end'];
-                                    $date_start=date("H:i:s", $row['DATE_START']);
-                                    $date_end=date("H:i:s", $row['DATE_END']);
+                                    $date_start=date("H:i:s", $row['DATE_START_2']);
+                                    $date_end=date("H:i:s", $row['DATE_END_2']);
                                     $destination=$row['EMAIL'];
                                     
                                     $sql2= "select * from automatic_mail_booking aa where aa.BOOKING_ID='$id'";
