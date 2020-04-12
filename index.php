@@ -20,8 +20,8 @@ include 'include/header5.php';
 						<p>Dans le but de vous offrir une meilleure expérience utilisateur, nous utilisons des cookies spécifiques.</p>
 						<p>Veuillez accepter l'utilisation de ceux-ci ou découvrir à quoi ils nous sont utiles.</p>
 						<p>Vous pourrez toujours changer vos paramètres plus tard.</p>
-						<p class="text-green">ATTENTION: Antoine doit paramétrer ce popup pour qu'il ne s'ouvre qu'à chaque nouvel utilisateur. Une fois validé il ne s'affichera plus.<br>
-						Voir avec Megge et/ou Désiré les informations légales à y mettre.</p>
+						<!--<p class="text-green">ATTENTION: Antoine doit paramétrer ce popup pour qu'il ne s'ouvre qu'à chaque nouvel utilisateur. Une fois validé il ne s'affichera plus.<br>
+						Voir avec Megge et/ou Désiré les informations légales à y mettre.</p>-->
 						<a class="button green button-3d effect fill-vertical GDPRaccept" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-thumbs-o-up"></i>J'accepte</span></a><br>
 						<a class="button button-3d effect fill-vertical" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-info"></i>En savoir plus</span></a>
 					</div>
