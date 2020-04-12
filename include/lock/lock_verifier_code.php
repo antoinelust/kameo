@@ -14,7 +14,7 @@ catch(Exception $e)
 
 
 
-$reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = '.$_GET['code'].' AND VALID = \'Y\' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())));');
+$reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = '.$_GET['code'].' AND VALID = \'Y\' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END_2 >= CURRENT_TIMESTAMP()));');
 
 
 //print_r($bdd->errorInfo());
@@ -36,7 +36,7 @@ if ($is_null)
 }
 if ($is_null)
 {
-	$reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = '.$_GET['code'].' AND VALID = \'N\' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())));');
+	$reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = '.$_GET['code'].' AND VALID = \'N\' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END_2 >= CURRENT_TIMESTAMP()));');
 	if($reponse->fetch())
 	{
 		echo "-2";	// Code deja utilise ou annule

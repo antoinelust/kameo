@@ -95,7 +95,7 @@ if(isset($_POST['action']))
 
 
             include "connexion.php";
-            $sql="select MAX(CONTRACT_END) as 'DATE_END' from customer_bikes WHERE AUTOMATIC_BILLING='Y'";
+            $sql="select MAX(CONTRACT_END) as 'CONTRACT_END' from customer_bikes WHERE AUTOMATIC_BILLING='Y'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -105,7 +105,7 @@ if(isset($_POST['action']))
             $resultat = mysqli_fetch_assoc($result);
             $conn->close();
 
-            $date_end=$resultat['DATE_END'];
+            $date_end=$resultat['CONTRACT_END'];
 
             $date_start = new DateTime("NOW");
             $arrayContracts=array();

@@ -179,7 +179,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     {
         $frameNumber=$row['FRAME_NUMBER'];
 
-        $sql2="SELECT max(DATE_END), BUILDING_END FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_END_2 < '$dateEndString' and STAANN!='D' group by BUILDING_END";
+        $sql2="SELECT max(DATE_END_2), BUILDING_END FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_END_2 < '$dateEndString' and STAANN!='D' group by BUILDING_END";
 
 
         if ($conn->query($sql2) === FALSE) {

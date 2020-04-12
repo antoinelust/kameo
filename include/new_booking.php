@@ -7,6 +7,7 @@ session_start();
 
 include 'globalfunctions.php';
 
+error_log("test", 3, "test.log");
 
 $user = $_POST['widget-new-booking-mail-customer'];
 $frameNumber=$_POST['widget-new-booking-frame-number'];
@@ -33,7 +34,7 @@ $dateEnd_2String=$dateEnd_2->format('Y-m-d H:i');
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
-    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END > '$dateStart' and bb.DATE_END < '$dateEnd') OR (bb.DATE_START_2>'$dateStart_2String' and bb.DATE_START_2<'$dateEnd_2String')))";
+    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END_2 > '$dateStart_2String' and bb.DATE_END_2 < '$dateEnd_2String') OR (bb.DATE_START_2>'$dateStart_2String' and bb.DATE_START_2<'$dateEnd_2String')))";
 
 
    	if ($conn->query($sql) === FALSE) {
