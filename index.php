@@ -12,12 +12,16 @@ include 'include/header5.php';
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h2 class="modal-title" id="modal-label">Vos données personnelles</h2>
+				<h2 class="modal-title fr" id="modal-label">Vos données personnelles</h2>
+				<h2 class="modal-title en" id="modal-label">Your personal data</h2>
+				<h2 class="modal-title nl" id="modal-label">Uw persoonlijk gegevens</h2>
 			</div>
 			<div class="modal-body">
 				<div class="row text-center">
 					<div class="col-md-12">
-						<p>Dans le but de vous offrir une meilleure expérience utilisateur, nous utilisons des cookies spécifiques.</p>
+						<p class="fr" >Dans le but de vous offrir une meilleure expérience utilisateur, nous utilisons des cookies spécifiques.</p>
+						<p class="en" >In order to ahDans le but de vous offrir une meilleure expérience utilisateur, nous utilisons des cookies spécifiques.</p>
+						<p class="nl" >Ja zeker.</p>
 						<p>Veuillez accepter l'utilisation de ceux-ci ou découvrir à quoi ils nous sont utiles.</p>
 						<p>Vous pourrez toujours changer vos paramètres plus tard.</p>
 						<!--<p class="text-green">ATTENTION: Antoine doit paramétrer ce popup pour qu'il ne s'ouvre qu'à chaque nouvel utilisateur. Une fois validé il ne s'affichera plus.<br>
@@ -59,7 +63,7 @@ include 'include/header5.php';
 </script>
 
 <br>
-<h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
+<h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, BITCH votre one stop shop pour vos vélos de société</h1>
 <h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, the complete solution for your company bikes</h1>
 <h1 class="text-center text-uppercase text-medium nl" data-animation="fadeInUp">KAMEO Bikes, de complete oplossing voor uw bedrijfsfietsen</h1>
 
