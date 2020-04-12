@@ -43,16 +43,17 @@ if($length=="1"){
                     $url = sprintf("%s?%s", $url, http_build_query($data));
         }
         
-        echo $url;
-
         // Optional Authentication:
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_USERPWD, "username:password");
 
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
         $result = curl_exec($curl);
+                
+        
+        $errors = curl_error($curl);
+        $response = curl_getinfo($curl, CURLINFO_HTTP_CODE);        
 
         curl_close($curl);
 
@@ -62,18 +63,13 @@ if($length=="1"){
     $dateStart=new DateTime();
     $dateStartString=$dateStart->format("H-m-d H:i");
     $dateEndString=$dateStartString;
+        
+    $data=array("widget-new-booking-mail-customer" => $client, "widget-new-booking-frame-number" => 'blabla', "widget-new-booking-building-start" => $building, "widget-new-booking-building-end" => $building, "widget-new-booking-locking-code" => "0000", "widget-new-booking-date-start" => $dateStartString , "widget-new-booking-date-end"=> $dateEndString);
+        
+    $test=CallAPI('POST', 'http://localhost:81/kameo/include/new_booking.php', $data);
     
-    echo "dateStartString : ".$dateStartString."<br/>";
-    
-    $data=array("widget-new-booking-mail-customer" => $client, "widget-new-booking-frame-number" => $client, "widget-new-booking-building-start" => $building, "widget-new-booking-building-end" => $building, "widget-new-booking-locking-code" => "0000", "widget-new-booking-date-start" => $dateStartString , "widget-new-booking-date-end"=> $dateEndString);
-    
-    echo "avant call API<br/>";
-    
-    $test=CallAPI('POST', '../new_booking.php', $data);
-    
-    echo "après call API<br/>";
-    
-    print_r($test);
+    var_dump(json_decode($test)); 
+
     
     
 

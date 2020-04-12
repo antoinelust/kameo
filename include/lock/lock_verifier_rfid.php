@@ -1,5 +1,5 @@
 <?php
-include 'connexion2.php';
+include '../.php';
 
 try
 {

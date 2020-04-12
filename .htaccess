@@ -1,5 +1,4 @@
 RewriteEngine On
 RewriteCond %{SERVER_PORT} 80
-RewriteCond %{REQUEST_URI} !^/include/lock
 RewriteCond %{REQUEST_URI} !^/test/include/lock
-#RewriteRule ^(.*)$ https://www.kameobikes.com/$1 [R,L]
+RewriteRule ^(.*)$ https://www.kameobikes.com/$1 [R,L]
