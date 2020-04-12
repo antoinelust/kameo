@@ -118,6 +118,7 @@ if($length=="1"){
         
         include '../connexion.php';
         $sql="SELECT aa.BIKE_NUMBER from customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$client' and aa.STAANN != 'D' and aa.BIKE_NUMBER=bb.FRAME_NUMBER and bb.STAANN != 'D'";
+        
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -128,11 +129,17 @@ if($length=="1"){
         
         $maxLengthBooking=$maxLengthCondition;
         $maxLengthBookingMinutes=$maxLengthCondition*60;
+        
+        $i=0;
+        
+        
         while($row = mysqli_fetch_array($result)){
             $frameNumber=$row['BIKE_NUMBER'];
             
             include '../connexion.php';            
             $sql2="SELECT aa.DATE_START_2, aa.FRAME_NUMBER FROM reservations aa WHERE FRAME_NUMBER='$frameNumber' AND DATE_START_2 > CURRENT_TIMESTAMP() AND STAANN != 'D' and not exists (select 1 from reservations bb WHERE bb.STAANN != 'D' and bb.DATE_END > CURRENT_TIMESTAMP and bb.DATE_END_2 < aa.DATE_START_2) ORDER BY aa.DATE_START_2";
+            
+            
             if ($conn->query($sql2) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -142,7 +149,6 @@ if($length=="1"){
             $length = $result2->num_rows;    
             $conn->close();   
             
-            $i=0;
             
             $response=[];
             
@@ -182,6 +188,8 @@ if($length=="1"){
         
         $j=0;
         $max=0;
+                
+        
         while($j<$i){
             if($response[$j]['bookingMaxLength']>$max){
                 $max=$response[$j]['bookingMaxLength'];
