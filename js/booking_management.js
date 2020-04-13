@@ -54,7 +54,7 @@ function initialize_booking_counter(){
     var d = new Date();
     date_start.setMonth(date_start.getMonth()-1);
     
-    var month = '' + (d.getMonth() + 1),
+    var month = '' + (d.getMonth()),
         day = '' + d.getDate(),
         year = d.getFullYear();
 
@@ -79,7 +79,7 @@ function initialize_booking_counter(){
     
     var bikeValue="all";
 
-
+    
     $.ajax({
         url: 'include/get_reservations_listing.php',
         type: 'post',
@@ -91,8 +91,6 @@ function initialize_booking_counter(){
             if(response.response == 'success'){
                 document.getElementById('counterBookings').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bookingNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bookingNumber+"</span>";
                 var counter1=response.bookingNumber;
-
-
             }
         }
     })
@@ -149,7 +147,7 @@ function get_reservations_listing(bike, date_start, date_end){
                 var temp="<table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline text-green\">Réf.</span></th><th><span class=\"fr-inline text-green\">Vélo</span><span class=\"en-inline text-green\">Bike</span><span class=\"nl-inline text-green\">Bike</span></th><th><span class=\"fr-inline text-green\">Départ</span><span class=\"en-inline text-green\">Depart</span><span class=\"nl-inline text-green\">Depart</span></th><th><span class=\"fr-inline text-green\">Fin</span><span class=\"en-inline text-green\">End</span><span class=\"nl-inline text-green\">End</span></th><th><span class=\"fr-inline text-green\">Utilisateur</span><span class=\"en-inline text-green\">User</span><span class=\"nl-inline text-green\">User</span></th></tr></thead><tbody>";
                 dest=dest.concat(temp);
                 while (i < response.bookingNumber){
-                    var temp="<tr><td><a data-target=\"#reservationDetails\" name=\""+response.booking[i].reservationID+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillReservationDetails(this.name)\">"+response.booking[i].reservationID+"</a></td><td><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></td><td>"+response.booking[i].dateStart.shortDate()+" "+response.booking[i].dateStart.substring(11,16)+" - "+response.booking[i].buildingStart+"</td>><td>"+response.booking[i].dateEnd.shortDate()+" "+response.booking[i].dateEnd.substring(11,16)+" - "+response.booking[i].buildingEnd+"</td><td>"+response.booking[i].user+"</td></tr>";
+                    var temp="<tr><td><a data-target=\"#reservationDetails\" name=\""+response.booking[i].reservationID+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillReservationDetails(this.name)\">"+response.booking[i].reservationID+"</a></td><td><a  data-target=\"#bikeDetailsFull\" name=\""+response.booking[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"fillBikeDetails(this.name)\">"+response.booking[i].frameNumber+"</a></td><td>"+response.booking[i].dateStart.shortDate()+" "+response.booking[i].dateStart.substring(11,16)+" - "+response.booking[i].buildingStart+"</td><td>"+response.booking[i].dateEnd.shortDate()+" "+response.booking[i].dateEnd.substring(11,16)+" - "+response.booking[i].buildingEnd+"</td><td>"+response.booking[i].user+"</td></tr>";
                     dest=dest.concat(temp);
 
                     i++;
@@ -217,6 +215,8 @@ function showBooking(bookingID){
         data: { "bookingID": bookingID},
         success: function(response){
             if(response.response=="success"){
+                
+                console.log(response);
                 
                 //Current Booking
                 
@@ -436,11 +436,6 @@ function getHistoricBookings() {
                         }                        
                     } );
                 }
-                var classname = document.getElementsByClassName('showBooking');
-                for (var j = 0; j < classname.length; j++) {
-                    classname[j].addEventListener('click', function () { showBooking(this.name)}, false);      
-                }
-                
                 
                 
                 //Booking futurs
@@ -467,7 +462,7 @@ function getHistoricBookings() {
                     
 
                     if(response.booking.codePresence==false){
-                        var tempFutureBookings ="<tr><td>"+booking_id+"</td><td>"+response.booking[i].start.shortDate()+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].start.shortHours()+"</td><td>"+response.booking[i].end.shortDate()+" - "+building_end_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].end.shortHours()+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+                        var tempFutureBookings ="<tr><td><a href=\"#\" name=\""+response.booking[i].bookingID+"\" class=\"showBooking\">"+response.booking[i].bookingID+"</a></td><td>"+response.booking[i].start.shortDate()+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].start.shortHours()+"</td><td>"+response.booking[i].end.shortDate()+" - "+building_end_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].end.shortHours()+"</td><td>"+frame_number+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
                     }else{
                         code=response.booking[i].codeValue;
                         if(code.length==3){
@@ -478,7 +473,7 @@ function getHistoricBookings() {
                             code="000"+length;
                         }
 
-                        var tempFutureBookings ="<tr><td>"+response.booking[i].start.shortDate()+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].start.shortHours()+"</td><td>"+response.booking[i].end.shortDate()+" - "+building_end_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].end.shortHours()+"</td><td>"+frame_number+"</td><td>"+code+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
+                        var tempFutureBookings ="<tr><td><a href=\"#\" name=\""+response.booking[i].bookingID+"\" class=\"showBooking\">"+response.booking[i].bookingID+"</a></td><td>"+response.booking[i].start.shortDate()+ " - "+building_start_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].start.shortHours()+"</td><td>"+response.booking[i].end.shortDate()+" - "+building_end_fr+" <span class=\"fr-inline\">à</span> "+response.booking[i].end.shortHours()+"</td><td>"+frame_number+"</td><td>"+code+"</td><td><a class=\"button small green rounded effect\" onclick=\"showBooking("+booking_id+")\"><span>+</span></a></td>";
 
                     }
                     if(annulation){
@@ -500,6 +495,14 @@ function getHistoricBookings() {
                 document.getElementById('futureBookings').innerHTML = dest;
                 
                 displayLanguage();
+                
+                
+                var classname = document.getElementsByClassName('showBooking');
+                for (var j = 0; j < classname.length; j++) {
+                    classname[j].addEventListener('click', function () { showBooking(this.name)}, false);      
+                }
+                
+                
                 
                 
                 /*if ( $.fn.dataTable.isDataTable( '#futureBookingsTable' ) ) {

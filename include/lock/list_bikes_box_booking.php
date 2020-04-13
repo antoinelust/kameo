@@ -1,13 +1,11 @@
 <?php
-include '../connexion.php';
-
 $rfid=$_GET['uid'];
 $minutes=$_GET['minutes'];
 $building=$_GET['building'];
 
 
-
-$sql="SELECT * from customer_referential WHERE RFID='$rfid'";
+include '../connexion.php';
+$sql="SELECT * from building_access WHERE BUILDING_CODE='$building'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
@@ -16,66 +14,104 @@ if ($conn->query($sql) === FALSE) {
 
 
 $result = mysqli_query($conn, $sql);  
-$resultat = mysqli_fetch_assoc($result);
 $length = $result->num_rows;
-if($length=="1"){
-    $client=$resultat['EMAIL'];
-    $company=$resultat['COMPANY'];
-    
+$resultat = mysqli_fetch_assoc($result);
+$conn->close();
 
-    function CallAPI($method, $url, $data = false)
-    {
-        $curl = curl_init();
+$buildingReference=$resultat['BUILDING_REFERENCE'];
 
-        switch ($method)
-        {
-            case "POST":
-                curl_setopt($curl, CURLOPT_POST, 1);
 
-                if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                break;
-            case "PUT":
-                curl_setopt($curl, CURLOPT_PUT, 1);
-                break;
-            default:
-                if ($data)
-                    $url = sprintf("%s?%s", $url, http_build_query($data));
-        }
+include '../connexion.php';
+$sql="SELECT aa.EMAIL, aa.COMPANY, cc.FRAME_NUMBER, cc.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bike_access bb, customer_bikes cc, bike_catalog dd WHERE RFID='$rfid' and aa.EMAIL=bb.EMAIL and bb.BIKE_NUMBER=cc.FRAME_NUMBER AND cc.TYPE=dd.ID and aa.STAANN != 'D' AND bb.STAANN != 'D' AND dd.STAANN != 'D' and not exists (select 1 from reservations ee WHERE ee.FRAME_NUMBER=bb.BIKE_NUMBER and ee.DATE_START_2 < CURRENT_TIMESTAMP() and DATE_END_2 > CURRENT_TIMESTAMP() and ee.STAANN !='D')";
+
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+
+
+$result = mysqli_query($conn, $sql);  
+$length = $result->num_rows;
+$conn->close();
+
+$i=0;
+$bikes=[];
+
+if($length > 0){   
+    $dateNow=new DateTime();
+    $dateNowString=$dateNow->format("Y-m-d H:i");
+
+    $dateEnd=$dateNow;
+    $interval="PT".$minutes."M";
+    $dateEnd->add(new DateInterval($interval));
+    $dateEndString=$dateEnd->format("Y-m-d H:i");
         
-        // Optional Authentication:
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, "username:password");
-
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($curl);
+    while($row = mysqli_fetch_array($result)){
+        $frameNumber=$row['FRAME_NUMBER'];
+        
+        include '../connexion.php';
+        $sql2="SELECT min(DATE_START_2) as 'minimum' from reservations where FRAME_NUMBER='$frameNumber' AND BUILDING_START='$buildingReference' AND DATE_START_2 > CURRENT_TIMESTAMP() and DATE_START_2 < '$dateEndString'";
+        
+        if ($conn->query($sql2) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result2 = mysqli_query($conn, $sql2);  
+        $resultat2 = mysqli_fetch_assoc($result2);
+        
+        $length = $result2->num_rows;
+        $conn->close();
                 
         
-        $errors = curl_error($curl);
-        $response = curl_getinfo($curl, CURLINFO_HTTP_CODE);        
-
-        curl_close($curl);
-
-        return $result;
+        if($length=0 || $resultat2['minimum'] == NULL){
+            include '../connexion.php';
+            $sql3="SELECT BUILDING_START from reservations where FRAME_NUMBER='$frameNumber' AND DATE_END_2 < CURRENT_TIMESTAMP()";
+            if ($conn->query($sql3) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result3 = mysqli_query($conn, $sql3);  
+            $resultat3 = mysqli_fetch_assoc($result3);
+            $conn->close();
+                        
+            
+            if($buildingReference==$resultat3['BUILDING_START']){
+                $bikes[$i]['frameNumber']=$frameNumber;
+                $bikes[$i]['model']=$row['MODEL'];
+                switch ($row['FRAME_TYPE']) {
+                    case 'M':
+                        $bikes[$i]['frameType']="Mixte";
+                        break;
+                    case 'H':
+                        $bikes[$i]['frameType']="Homme";
+                        break;
+                    case 'F':
+                        $bikes[$i]['frameType']="Femme";
+                        break;
+                }
+                
+                $i++;
+                
+            }
+        }
+        
     }
     
-    $dateStart=new DateTime();
-    $dateStartString=$dateStart->format("H-m-d H:i");
-    $dateEndString=$dateStartString;
+    if($i>0){
         
-    $data=array("widget-new-booking-mail-customer" => $client, "widget-new-booking-frame-number" => 'blabla', "widget-new-booking-building-start" => $building, "widget-new-booking-building-end" => $building, "widget-new-booking-locking-code" => "0000", "widget-new-booking-date-start" => $dateStartString , "widget-new-booking-date-end"=> $dateEndString);
-        
-    $test=CallAPI('POST', 'http://localhost:81/kameo/include/new_booking.php', $data);
-    
-    var_dump(json_decode($test)); 
-
-    
+        echo $bikes[0]['frameNumber']."/".$bikes[0]['model']."/".$bikes[0]['frameType'];
+    }else{
+        echo "-3";
+    }
     
 
     
 }else{
     //pas d'utilisateur trouvé
-    echo "-3";
+    echo "-1";
 }
 ?>

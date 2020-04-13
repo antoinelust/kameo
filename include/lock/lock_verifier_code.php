@@ -1,8 +1,6 @@
 <?php
 include '../connexion.php';
 
-error_log("test", 3, "test.log");
-
 $is_null = true;
 
 try

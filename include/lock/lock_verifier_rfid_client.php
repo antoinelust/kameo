@@ -16,13 +16,16 @@ if ($conn->query($sql) === FALSE) {
 $result = mysqli_query($conn, $sql);  
 $resultat = mysqli_fetch_assoc($result);
 $length = $result->num_rows;
+$conn->close();
 
 if($length=="1"){
     $client=$resultat['EMAIL'];
     $company=$resultat['COMPANY'];
     
-    $sql="SELECT * FROM reservations WHERE EMAIL='$client' AND BUILDING_START='$building' AND DATE_START_2 <= CURRENT_TIMESTAMP() AND DATE_END_2 >= CURRENT_TIMESTAMP()";
     
+    
+    include '../connexion.php';
+    $sql="SELECT * FROM building_access WHERE BUILDING_CODE='$building'";    
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -32,25 +35,62 @@ if($length=="1"){
     $result = mysqli_query($conn, $sql);  
     $length = $result->num_rows;
     $resultat = mysqli_fetch_assoc($result);
+    $conn->close();
+
     
-    if($length=='1'){
-        if ($resultat['STAANN']=='D' || $resultat['STATUS']=='closed'){
-            //réservation annulée ou déjà finie
-            echo "-2";
-        }else{
-            $idReservation=$resultat['ID'];
-            $sql = "SELECT * from locking_bikes WHERE RESERVATION_ID='$idReservation'";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);  
-            $resultat = mysqli_fetch_assoc($result);
-            echo $resultat['PLACE_IN_BUILDING'];
+    $buildingReference=$resultat['BUILDING_REFERENCE'];
+    
+    $dateStartBooking=new DateTime();
+    $interval = new DateInterval("PT15M");
+    $dateStartBooking->add($interval);
+    $dateStartBookingString=$dateStartBooking->format("Y-m-d H:i");
+    
+    
+    include '../connexion.php';
+    $sql="SELECT * FROM reservations WHERE EMAIL='$client' AND BUILDING_START='$buildingReference' AND DATE_START_2 <='$dateStartBookingString' AND DATE_END_2 >= '$dateStartBookingString' AND STATUS='Open' AND STAANN != 'D'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    
+    $result = mysqli_query($conn, $sql);  
+    $length = $result->num_rows;
+    $resultat = mysqli_fetch_assoc($result);
+    $conn->close();
+    
+    
+    if($length>0){
+        $idReservation=$resultat['ID'];
+        include '../connexion.php';            
+        $sql = "SELECT * from reservations WHERE ID='$idReservation'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
         }
+        $result = mysqli_query($conn, $sql);  
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();
+
+        $frameNumber=$resultat['FRAME_NUMBER'];
+
+        include '../connexion.php';            
+        $sql = "SELECT * from locking_bikes WHERE FRAME_NUMBER='$frameNumber'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);  
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();
+
+        echo $resultat['PLACE_IN_BUILDING'];
     }else{
-        $sql="SELECT * FROM reservations WHERE EMAIL='$client' AND BUILDING_START='$building'";
+        include '../connexion.php';
+        $sql="SELECT * FROM reservations WHERE EMAIL='$client' AND BUILDING_START='$buildingReference' AND DATE_START_2 <= CURRENT_TIMESTAMP() AND DATE_END_2 >= CURRENT_TIMESTAMP() AND STAANN = 'D'";
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -58,22 +98,44 @@ if($length=="1"){
         }
 
         $result = mysqli_query($conn, $sql);  
-        $length = $result->num_rows;
-        if($length=='0'){
-            //pas de réservations trouvées
-            
-            echo "-1";
-            echo "\n";
+        $length2 = $result->num_rows;
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();
+        
+        if($length2==1){
+            echo "-2";
+            echo "/";
             
         }else{
-            //réservation hors délai
-            echo "-4";
-            echo "\n";
-            
+            include '../connexion.php';        
+            $sql="SELECT * FROM reservations WHERE EMAIL='$client' AND BUILDING_START='$buildingReference'";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+
+            $result = mysqli_query($conn, $sql);  
+            $length = $result->num_rows;
+            $conn->close();
+
+            if($length=='0'){
+                //pas de réservations trouvées
+
+                echo "-1";
+                echo "/";
+
+            }else{
+                //réservation hors délai
+                echo "-4";
+                echo "/";
+            }
         }
         
         
-        $conn->close();
+        
+        
+        
         include '../connexion.php';
         $sql="select * from specific_conditions where EMAIL='$client' AND STAANN != 'D'";
         if ($conn->query($sql) === FALSE) {
