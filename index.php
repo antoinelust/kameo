@@ -63,7 +63,7 @@ include 'include/header5.php';
 </script>
 
 <br>
-<h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, BITCH votre one stop shop pour vos vélos de société</h1>
+<h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
 <h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, the complete solution for your company bikes</h1>
 <h1 class="text-center text-uppercase text-medium nl" data-animation="fadeInUp">KAMEO Bikes, de complete oplossing voor uw bedrijfsfietsen</h1>
 
