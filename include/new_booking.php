@@ -7,8 +7,6 @@ session_start();
 
 include 'globalfunctions.php';
 
-error_log("test", 3, "test.log");
-
 $user = $_POST['widget-new-booking-mail-customer'];
 $frameNumber=$_POST['widget-new-booking-frame-number'];
 $buildingStart=$_POST['widget-new-booking-building-start'];
@@ -35,7 +33,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 
 	include 'connexion.php';
     $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END_2 > '$dateStart_2String' and bb.DATE_END_2 < '$dateEnd_2String') OR (bb.DATE_START_2>'$dateStart_2String' and bb.DATE_START_2<'$dateEnd_2String')))";
-
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -124,7 +121,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 
         $sql= "select ID from reservations where FRAME_NUMBER = '$frameNumber' and EMAIL = '$user' and DATE_START_2 = '$dateStart_2String' and DATE_END_2 = '$dateEnd_2String' and STAANN != 'D' ";
 
-        //error_log($sql, 3, "mes-erreurs.log");
 
 
         if ($conn->query($sql) === FALSE) {
@@ -140,7 +136,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 
         $sql= "select * from building_access where BUILDING_REFERENCE = '$buildingStart'";
 
-        //error_log($sql, 3, "mes-erreurs.log");
 
 
         if ($conn->query($sql) === FALSE) {

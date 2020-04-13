@@ -258,9 +258,6 @@ function update_deposit_hour_form(){
 
                 dest = dest.concat(bookingDay);
             }
-            else{
-
-            }
 
             i++;
             tempDate.setDate(tempDate.getDate()+1);
@@ -273,7 +270,7 @@ function update_deposit_hour_form(){
 
 
         var currentDate=new Date();
-
+        
         var hours=currentDate.getHours();
         var minutes=currentDate.getMinutes();
 
@@ -286,9 +283,10 @@ function update_deposit_hour_form(){
 
         var dest="";
         
-        var dateActuelle=dateTemp.getDate()+'-'+dateTemp.getMonth()+'-'+dateTemp.getFullYear();
+        var dateActuelle=dateTemp.getDate()+'-'+(dateTemp.getMonth()+1)+'-'+dateTemp.getFullYear();
         
         var dateSearch=$('#search-bikes-form-day').val().split('-');
+        
         
         if(dateActuelle!=$('#search-bikes-form-day').val()){
             dateTemp.setDate(dateSearch[0]);
@@ -302,7 +300,7 @@ function update_deposit_hour_form(){
             dateTemp.setMinutes(0);
             dateTemp.setDate(dateTemp.getDate()+1);
         }
-        
+                
         while(dateTemp.getHours()<hourEndIntakeBooking){
             if(dateTemp.getMinutes()=="0"){
                 var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();

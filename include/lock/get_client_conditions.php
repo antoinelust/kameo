@@ -35,19 +35,13 @@ if($length=="1"){
         if($resultat['BOX_BOOKING']=='Y'){
             //utilisateur trouvé et il a la condition
             echo "1";
-            echo "\n";
-            echo "1";
         }else{
             //utilisateur trouvé mais il n'a la condition
-            echo "1";
-            echo "\n";
-            echo "0";
+            echo "-2";
         }
     }else{
-    //utilisateur trouvé mais pas de condition définie (ne devrait jamais arrivé)
-        echo "1";
-        echo "\n";
-        echo "0";
+    //utilisateur trouvé mais pas de condition définie (ne devrait jamais arriver)
+        echo "-2";
     }
     
 }else{

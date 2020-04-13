@@ -7,8 +7,6 @@ session_start();
 include 'globalfunctions.php';
 
 
-
-
 $bookingID=$_POST['bookingID'];
 
 
