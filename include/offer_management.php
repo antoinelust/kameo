@@ -313,7 +313,7 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE CONTRACT_START<CURRENT_TIMESTAMP AND CONTRACT_END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE CONTRACT_END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -330,7 +330,7 @@ if(isset($_POST['action']))
                 $response['sumContractsCurrent']=$resultat['PRICE'];
 
                 include 'connexion.php';
-                $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+                $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -385,7 +385,7 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT * FROM costs WHERE STAANN != 'D' AND (START> CURRENT_TIMESTAMP OR END>CURRENT_TIMESTAMP)";
+                $sql="SELECT * FROM costs WHERE STAANN != 'D' AND END>CURRENT_TIMESTAMP";
 
 
                 if ($conn->query($sql) === FALSE) {

@@ -10,7 +10,7 @@ function list_contracts_offers(company) {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats signés :</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><tbody><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
+                var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Contrats signés :</h4><h4 class=\"en-inline text-green\">Contracts:</h4><h4 class=\"nl-inline text-green\">Contracts:</h4><br/><br/><div class=\"seperator seperator-small visible-xs\"></div><thead><tr><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Debut</span><span class=\"en-inline\">Start</span><span class=\"nl-inline\">Start</span></th><th><span class=\"fr-inline\">Fin</span><span class=\"en-inline\">End</span><span class=\"nl-inline\">End</span></th></tr></thead>";
                 dest=dest.concat(temp);
                 while (i < response.contractsNumber){
                     if(response.contract[i].start!=null){
@@ -338,12 +338,7 @@ function get_sold_bikes(){
           }
         }
         var dest = `
-        <h4 class="fr-inline text-green">Vélos vendus</h4>
-        <h4 class="en-inline text-green">Sold bikes</h4>
-        <h4 class="nl-inline text-green">Sold Bikes</h4>
-        <br />
-        <br />
-        <div class="seperator seperator-small visible-xs"></div>
+        <div class="card card-body">
         <table class="table table-condensed">
           <thead>
             <tr>
@@ -380,6 +375,7 @@ function get_sold_bikes(){
             </tr>
           </thead>
           <tbody>
+
         `;
 
         soldBikes.forEach((soldBike) => {
@@ -401,7 +397,7 @@ function get_sold_bikes(){
 
 
 
-        dest +="</tobdy></table>";
+        dest +="</tobdy></table></div>";
         $("#soldBikesListingSpan").html(dest);
       }
 

@@ -4279,6 +4279,8 @@ if($connected){
   </div>
 </div>
 
+
+
 <div class="modal fade" id="offersListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -4292,16 +4294,15 @@ if($connected){
     </div>
     <div class="separator"></div>
   -->
+        
+        
+        
 
   <div data-example-id="contextual-table" class="bs-example">
     <span id="contractsListingSpan"></span>
   </div>
 
-  <div class="separator"></div>
-
-  <div data-example-id="contextual-table" class="bs-example">
-    <span id="soldBikesListingSpan"></span>
-  </div>
+        
 
   <div class="separator"></div>
 
@@ -4310,6 +4311,21 @@ if($connected){
   </div>
 
   <div class="separator"></div>
+        
+        
+    <h4 class="text-green">Vélos Vendus :</h4>
+    <p>
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Afficher
+      </button>
+    </p>        
+
+    <div class="collapse" id="collapseExample">
+      <div class="card card-body">
+        <span id="soldBikesListingSpan"></span>
+      </div>
+    </div>
+    <div class="separator"></div>
 
   <div data-example-id="contextual-table" class="bs-example">
     <span id="costsListingSpan"></span>

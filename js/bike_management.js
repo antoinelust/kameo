@@ -64,8 +64,8 @@ function list_bikes_admin() {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp=`<table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
-                            <h4 class="fr-inline text-green">Vélos: Leasing et autres</h4><br/>
+                var temp=`<h4 class="fr-inline text-green">Vélos: Leasing et autres</h4>
+                            <h4 class="en-inline text-green">Bikes:</h4><h4 class="nl-inline text-green">Fietsen:</h4><br/>
                             <a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#" onclick="set_required_image('true')">
                               <span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span>
                             </a>
@@ -73,7 +73,7 @@ function list_bikes_admin() {
                               <span class="fr-inline">Afficher les vélos vendus</span>
                             </span>
                             <br/>
-                            <h4 class="en-inline text-green">Bikes:</h4><h4 class="nl-inline text-green">Fietsen:</h4>
+                            <table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
                               <thead>
                                 <tr>
                                   <th>
@@ -233,8 +233,6 @@ function list_bikes_admin() {
                     $('.bikeManagementTitle').html('Ajouter un vélo');
                     $('.bikeManagementSend').removeClass('hidden');
                     $('.bikeManagementSend').html('<i class="fa fa-plus"></i>Ajouter');
-                    
-
                 });
 
 
