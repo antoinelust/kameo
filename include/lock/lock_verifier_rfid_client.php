@@ -190,7 +190,7 @@ if($length=="1"){
         $conn->close();   
         
         $maxLengthBooking=$maxLengthCondition;
-        $maxLengthBookingMinutes=$maxLengthCondition*60;
+        $maxLengthBookingMinutes=$maxLengthCondition*60+15;
         
         $i=0;
         
@@ -259,7 +259,41 @@ if($length=="1"){
             $j++;
         }
         
+        if($max>15){
+            $max=$max-15;
+        }else{
+            $max=0;
+        }
+        
         echo $max;
+        echo "/";
+        
+        include '../connexion.php';
+        $sql="SELECT * FROM conditions WHERE COMPANY='$company'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+
+        $result = mysqli_query($conn, $sql);  
+        $length = $result->num_rows;
+        $resultat = mysqli_fetch_assoc($result);
+
+        if($length=='1'){
+            if($resultat['BOX_BOOKING']=='Y'){
+                //utilisateur trouvé et il a la condition
+                echo "1";
+            }else{
+                //utilisateur trouvé mais il n'a la condition
+                echo "-2";
+            }
+        }else{
+        //utilisateur trouvé mais pas de condition définie (ne devrait jamais arriver)
+            echo "-2";
+        }
+        
         
     }
     
