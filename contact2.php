@@ -30,9 +30,9 @@ include 'include/header5.php';
                 <div class="row">
                     <div class="col-md-6">
                     	<h1 class="text-green">NOUS CONTACTER</h1>
-                        <p class="fr">Vous souhaitez un complément d'informations ou nous rencontrer? Rien de plus simple, remplissez ce formulaire et nous vous contacterons dès que possible.</p>
-						<p class="en">Would you like more information or simply to meet us? It's easy, fill out this form and we will contact you as soon as possible.</p>
-						<p class="nl">Wilt u meer informatie of gewoon ons te ontmoeten? Het is gemakkelijk, vul dit formulier in en we nemen zo snel mogelijk contact met u op.</p>
+                        <p class="fr">Vous souhaitez un complément d'informations ou nous rencontrer ? Rien de plus simple, remplissez ce formulaire et nous vous contacterons dès que possible.</p>
+						<p class="en">Would you like more information or simply to meet us? It's easy, fill in this form and we will contact you as soon as possible.</p>
+						<p class="nl">Wilt u meer informatie of gewoon ons te ontmoeten? Het is gemakkelijk , vul dit formulier in en we nemen zo snel mogelijk contact met u op.</p>
                         <div class="m-t-30">
                             <form id="widget-contact-form" action="include/contact-form.php" role="form" method="post">
                                 <div class="row">
@@ -58,27 +58,31 @@ include 'include/header5.php';
                                     <div class="form-group col-sm-6">
                                         <label for="phone"  id="fr">Numéro de téléphone</label>
 										<label for="phone"  id="en">Phone number</label>
-										<label for="phone"  id="nl">Telefoonnumber</label>
+										<label for="phone"  id="nl">Telefoonnummer</label>
                                         <input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
                                     </div>
                                     <div class="form-group col-sm-6">
 		                                <div class="particulier">
-											<label><input type="radio" name="type" value="particulier" checked> Je suis un particulier</label>
+											<label id="fr"><input type="radio" name="type" value="particulier" checked> Je suis un particulier</label>
+											<label id="en"><input type="radio" name="type" value="particulier" checked> I am an individual</label>
+											<label id="nl"><input type="radio" name="type" value="particulier" checked> Ik ben een individu</label>
 										</div>
 										<div class="professionnel">
-											<label><input type="radio" name="type" value="professionnel"> Je suis un professionnel</label>
+											<label id="fr"><input type="radio" name="type" value="professionnel"> Je suis un professionnel</label>
+											<label id="en"><input type="radio" name="type" value="professionnel"> I am a professional</label>
+											<label id="nl"><input type="radio" name="type" value="professionnel"> Ik ben een professioneel</label>
 										</div>
 									</div>
 									<div class="form-group col-sm-12 entreprise hidden">
-	                                	<label for="entreprise" id="fr">Nom de votre entreprise</label>
-										<label for="entreprise" id="en">Nom de votre entreprise</label>
-										<label for="entreprise" id="nl">Nom de votre entreprise</label>
+	                                	<label for="entreprise" id="fr">Entreprise</label>
+										<label for="entreprise" id="en">Company</label>
+										<label for="entreprise" id="nl">Bedrijf</label>
 	                                	<input type="text" aria-required="true" name="entreprise" class="form-control">
 	                                </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-sm-12">
-                                        <label for="subject"  id="fr">Votre sujet</label>
+                                        <label for="subject"  id="fr">Sujet</label>
 										<label for="subject"  id="en">Subject</label>
 										<label for="subject"  id="nl">Onderwerp</label>
                                         <input type="text" name="subject" class="form-control required">
@@ -134,7 +138,9 @@ include 'include/header5.php';
                         </div>
                     </div>
                     <div class="col-md-6">
-                    	<h1 class="">NOUS TROUVER</h1>
+                    	<h1 class="fr">NOUS TROUVER</h1>
+                    	<h1 class="en">FIND US</h1>
+                    	<h1 class="nl">VIND ONS</h1>
                         <div class="row">
                             <div class="col-md-6">
                                 <address>
@@ -175,7 +181,9 @@ include 'include/header5.php';
         <!-- TEAM -->
 		<section id="section5" class="background-grey">
 			<div class="container">
-				<h1 class="text-green">L'ÉQUIPE</h1>
+				<h1 class="text-green" "fr">L'ÉQUIPE</h1>
+				<h1 class="text-green" "en">TEAM</h1>
+				<h1 class="text-green" "nl">TEAM</h1>
 				<!--
 					<p class="fr">KAMEO Bikes a été créé en 2017 par 4 jeunes désireux de proposer un service complet pour la mobilité en entreprise.<br> Nous constations tous les jours les mêmes problèmes de trafic, retard et ne trouvions pas la solution que nous avions en tête.<br> <strong>Nous avons alors décidé de la créer.</strong></p>
 					<p class="en">KAMEO Bikes was created in 2017 by 4 young people eager to prove that it is possible to design innovative E-Bikes adapted to the tastes and needs of each.</p>
@@ -189,8 +197,8 @@ include 'include/header5.php';
 							<h4 class="en">Julien</h4>
 							<h4 class="nl">Julien</h4>
 							<p  class="fr" class="subtitle">Gérant</p>
-							<p  class="en" class="subtitle"></p>
-							<p  class="nl" class="subtitle"></p>
+							<p  class="en" class="subtitle">Manager</p>
+							<p  class="nl" class="subtitle">Manager</p>
 							<hr class="line">
 							<!--
 							<div class="fr">Aussi loin qu'on s'en souvienne, Julien a toujours été passionné de vélo. Habile mécanicien et ingénieur industriel, il se tient au courant de toutes les nouveautés afin de pouvoir vous conseiller le vélo qui répondra au mieux à votre besoin.</div>
@@ -260,10 +268,12 @@ include 'include/header5.php';
 					<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
 						<div class="image-box-description text-center">
 							<h4 class="fr">Vous</h4>
-							<h4 class="en">Vous</h4>
-							<h4 class="nl">Vous</h4>
+							<h4 class="en">You</h4>
+							<h4 class="nl">U</h4>
 							<hr class="line">
 							<div  class="fr">Vous souhaitez intégrer notre équipe ?<br> Ecrivez-nous à <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
+							<div  class="en">Want to join us ?<br> Write us at <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
+							<div  class="nl">Wil je bij ons werken?<br> Schrijf ons <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
 							
 						</div>
 					</div>
