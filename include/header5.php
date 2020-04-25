@@ -212,14 +212,14 @@
 												<a class="nl" href="achat.php">Onze Fietsen</a>
 											</li>
 											<li>
-												<a class="fr" href="accessoires.php">Nos accessoires</a> 
-												<a class="en" href="accessoires.php">Our accessories</a> 
-												<a class="nl" href="accessoires.php">Onze accessoires</a> 
+												<a class="fr" href="accessoires.php">Nos Accessoires</a> 
+												<a class="en" href="accessoires.php">Our Accessories</a> 
+												<a class="nl" href="accessoires.php">Onze Accessoires</a> 
 											</li>
 											<li>
-												<a class="fr" href="bonsplans.php">Nos bons plans</a> 
-												<a class="en" href="bonsplans.php">Our deals</a> 
-												<a class="nl" href="bonsplans.php">Onze deals</a> 
+												<a class="fr" href="bonsplans.php">Nos Bons Plans</a> 
+												<a class="en" href="bonsplans.php">Our Deals</a> 
+												<a class="nl" href="bonsplans.php">Onze Deals</a> 
 											</li>
 										</ul>
 									</li>

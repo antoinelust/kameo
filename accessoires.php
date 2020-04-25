@@ -8,7 +8,9 @@ include 'include/header5.php';
 	<div class="container">
 		<div class="row">
 								
-				<h1 class="text-green">ACCESSOIRES</h1>
+				<h1 class="text-green fr">ACCESSOIRES</h1>
+				<h1 class="text-green en">ACCESSORIES</h1>
+				<h1 class="text-green nl">ACCESSOIRES</h1>
 				<br>
 				<p class="fr">En plus de fournir des vélos de qualité, KAMEO Bikes propose des dizaines d'accessoires liés à la pratique du vélo.</p>
 				<p class="en">KAMEO Bikes also offers a wide range of accessories.</p>
@@ -36,7 +38,9 @@ include 'include/header5.php';
 					<p class="en">We have selected for you a series of essential items for cycling.</p>
 					<p class="nl">We hebben voor u een reeks essentiële items voor fietsen geselecteerd.</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#starterpack" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#starterpack" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#starterpack" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#starterpack" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 					
 				</div>
 				
@@ -296,7 +300,9 @@ include 'include/header5.php';
 					<p class="en">Keep your bike running with this tool pack.</p>
 					<p class="nl">Laat je fiets draaien met dit gereedschapspakket.</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#packoutils" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#packoutils" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#packoutils" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#packoutils" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 				</div>
 				
 				<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/packoutils.jpg" alt="">
@@ -418,7 +424,9 @@ include 'include/header5.php';
 					<p class="en">A good padlock is a must-have to secure your bike between your trips. That's why KAMEO Bikes chose to work with ABUS, leader in this industry.</p>
 					<p class="nl">Een goed hangslot is een must-have om je fiets te beveiligen tussen je reizen. Daarom koos KAMEO Bikes voor samenwerking met ABUS, marktleider in deze branche.</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#cadenas" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#cadenas" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#cadenas" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#cadenas" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 					
 				</div>
 				
@@ -578,7 +586,9 @@ include 'include/header5.php';
 					<p class="en">Designed to protect you during your trips in town and country, wearing a helmet is not a constraint anymore! KAMEO Bikes selected protective but also fancy helmets.</p>
 					<p class="nl">Ontworpen om u te beschermen tijdens uw tochten in stad en land, het dragen van een helm is geen beperking meer! KAMEO Bikes heeft gekozen voor beschermende maar ook mooie helmen..</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#casques" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#casques" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#casques" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#casques" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 				</div>
 				
 				<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/casques.jpg" alt="">
@@ -743,7 +753,9 @@ include 'include/header5.php';
 					<p class="en">Design, convenient and secure are the 3 keywords that define a choice of bag. They will allow to transport all your belongings with you.</p>
 					<p class="nl">Ontwerp, handig en veilig zijn de 3 sleutelwoorden die een keuze aan tas definiëren. Ze zullen toelaten om al uw bezittingen met u te vervoeren.</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#sacoches" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#sacoches" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#sacoches" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#sacoches" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 					
 				</div>
 				
@@ -936,7 +948,9 @@ include 'include/header5.php';
 					<p class="en">Thanks to this selection of seats, you will carry your child with maximum security and comfort.</p>
 					<p class="nl">Dankzij deze selectie van stoelen draagt u uw kind met maximale veiligheid en comfort.</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#kids" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#kids" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#kids" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#kids" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 				</div>
 				
 				<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/kids.jpg" alt="">
@@ -1063,7 +1077,9 @@ include 'include/header5.php';
 					<p class="en">Protect yourself from weather and cold with our textiles. Cycling remains a sport, so be dressed like that.</p>
 					<p class="nl">Bescherm uzelf tegen weer en koude met onze textiel. Fietsen blijft een sport, dus kleed je zo aan.</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#textile" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#textile" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#textile" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#textile" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 					
 				</div>
 				
@@ -1219,7 +1235,9 @@ include 'include/header5.php';
 					<p class="en">The biggest danger when riding a bike is not being seen by another road user. With these accessories, be sure to always be visible!</p>
 					<p class="nl">Het grootste gevaar bij het fietsen wordt niet gezien door een andere weggebruiker. Zorg ervoor dat u met deze accessoires altijd zichtbaar bent!</p>
 					
-					<a class="button black-light button-3d effect fill-vertical" data-target="#securite" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical fr" data-target="#securite" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Notre sélection</span></a>
+					<a class="button black-light button-3d effect fill-vertical en" data-target="#securite" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Our selection</span></a>
+					<a class="button black-light button-3d effect fill-vertical nl" data-target="#securite" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i> Onze selectie</span></a>
 				</div>
 				
 				<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/securite.jpg" alt="Sécurité et visibilité fluo vélo">
