@@ -14,7 +14,7 @@ include 'globalfunctions.php';
 $retailPrice = $_POST["retailPrice"];
 //$retailPrice=100;
 
-$priceTemp=($retailPrice/1.21+3*75+4*100+4*100);
+$priceTemp=($retailPrice+3*75+4*100+4*100);
 
 
 // Calculation of coefficiant for leasing price

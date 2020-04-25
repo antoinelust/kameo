@@ -11,15 +11,15 @@ include 'connexion.php';
 $sql="SELECT * FROM companies_contact dd where ID_COMPANY='$ID'";
 
 if ($conn->query($sql) === FALSE) {
-  $response = array ('response'=>'error', 'message'=> $conn->error);
-echo json_encode($response);
-  die;
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
 $result2 = mysqli_query($conn, $sql);
-if($result2->num_rows=='0'){
-    errorMessage("ES0039");
-}
+$length = $result2->num_rows;
 $conn->close();
+
+$response['length']=$length;
 
 $i=0;
 while($row = mysqli_fetch_array($result2))

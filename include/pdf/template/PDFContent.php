@@ -179,18 +179,18 @@ h2{
       <td style="text-align:left; margin:0;padding:0; width:50%;">
         <div>
           <?php if($buyOrLeasing =="buy"){ ?><div style="font-size: 25px;">Achat de vélos</div>
-          <?php }else if ($buyOrLeasing =="leasing"){?><div style="font-size: 25px;">Leasing VAE</div>
+          <?php }else if ($buyOrLeasing =="leasing"){?><div style="font-size: 25px;">Location tout inclus VAE</div>
           <?php }else{?><div style="font-size: 25px;">Achat de vélos</div>
-            <div style="font-size: 25px;">Leasing VAE</div>
+            <div style="font-size: 25px;">Location tout inclus VAE</div>
           <?php } ?>
         </div>
       </td>
       <!--<td style="text-align:right; padding-right:0; margin-right:0;  width:50%;">
       <span>
       <?php if($buyOrLeasing =="buy"){ ?><span style="font-size: 25px;">Achat de vélos</span><br/>
-    <?php }else if ($buyOrLeasing =="leasing"){?><span style="font-size: 25px;">Leasing VAE</span><br/>
+    <?php }else if ($buyOrLeasing =="leasing"){?><span style="font-size: 25px;">Location tout inclus VAE</span><br/>
   <?php }else{?><span style="font-size: 25px;">Achat de vélos</span><br/>
-  <span style="font-size: 25px;">Leasing VAE</span><br/>
+  <span style="font-size: 25px;">Location tout inclus VAE</span><br/>
 <?php } ?>
 </span>
 </td>-->
@@ -232,7 +232,7 @@ h2{
 
 <page backtop="20mm" backleft="15mm" backright="10mm" backbottom="20mm">
   <page_header class="header">
-    <span>OFFRE DE LEASING VELO</span>
+    <span>OFFRE DE LOCATION TOUT INCLUS VELO</span>
   </page_header>
   <page_footer style="margin-bottom:10mm;">
     <table class="maxWidth">
@@ -259,7 +259,7 @@ h2{
     </p>
     <img src="<?php echo __DIR__ ; ?>/img/kameo_scheme.png" alt="kameo-scheme" style="margin-left:25mm; width:400px; height:auto;">
     <p>
-      Nous avons le plaisir de vous faire parvenir <span class="bold">notre offre</span> pour l’acquisition sous forme de leasing d’un
+      Nous avons le plaisir de vous faire parvenir <span class="bold">notre offre</span> pour l’acquisition sous forme d'une location tout inclus d’un
       vélo ainsi que les services associés. Ces solutions sont entièrement définies par le présent
       document et nos conditions générales.
     </p>
@@ -275,7 +275,7 @@ h2{
   <p>
     Le présent document est, avec ses annexes, l’offre détaillée de KAMEO Bikes SPRL (appelé KAMEO dans la
     suite du document) pour <?php echo $company['COMPANY_NAME']; ?> pour l’acquisition
-    <?php if($buyOrLeasing =="leasing" || $buyOrLeasing =="both"){echo "sous forme de leasing";} ?>
+    <?php if($buyOrLeasing =="leasing" || $buyOrLeasing =="both"){echo "sous forme de location tout inclus";} ?>
     de
     <?php
     $nbVelos = $bikesNumber;
@@ -293,7 +293,7 @@ h2{
   </p>
   <p>
     La solution proposée est cependant définie entièrement et uniquement par ce document et ses annexes
-    ainsi que les conditions générales de vente/leasing de KAMEO.
+    ainsi que les conditions générales de vente/location de KAMEO.
   </p>
   <h2>Scope de l’offre</h2>
   <p>
@@ -301,7 +301,7 @@ h2{
   </p>
   <div class="list">
     <?php if ($buyOrLeasing =="leasing" || $buyOrLeasing =="both") {
-      echo "<div class='listItem'>• Leasing de " . $nbVelos . " " . $txtVelo ."</div>";
+      echo "<div class='listItem'>• Location de " . $nbVelos . " " . $txtVelo ."</div>";
     } ?>
 
     <?php if ($buyOrLeasing =="buy") {
@@ -349,14 +349,14 @@ h2{
 </page>
 <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
 
-    <h1>1. Leasing</h1>
+    <h1>1. Location tout inclus</h1>
     <p>
-      Le leasing est un contrat comprenant à la fois la mise à disposition d’un produit et des services liés à ce
-      produit. Pendant toute la durée de la période de leasing, le produit appartient à KAMEO Bikes. A l’échéance
-      de la période de leasing, une option d’achat peut être levée par <?php echo $company['COMPANY_NAME']; ?> afin d’acquérir définitivement le
+      La location est un contrat comprenant à la fois la mise à disposition d’un produit et des services liés à ce
+      produit. Pendant toute la durée de la période de location, le produit appartient à KAMEO Bikes. A l’échéance
+      de la période de location, une possibilité d'achat du vélo peut être réçue par <?php echo $company['COMPANY_NAME']; ?> de la part de Kameo Bikes afin d’acquérir définitivement le
       produit. Les services peuvent toujours être contractés en supplément.
     </p>
-    <p>Dans le cadre de cette offre, le leasing englobe les éléments suivants :</p>
+    <p>Dans le cadre de cette offre, la location englobe les éléments suivants :</p>
     <div class="list">
       <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
       <div class="listItem">• PRODUIT</div>
@@ -374,9 +374,9 @@ h2{
       </div>
     <?php } ?>
       <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
-      <div class="listItem">• OPTION D ACHAT</div>
+      <div class="listItem">• POSSIBILIT D ACHAT</div>
       <div class="subList">
-        <div class="subListItem">• A calculer selon la durée du leasing</div>
+        <div class="subListItem">• A calculer selon la durée de location</div>
       </div>
       <?php } ?>
     </div>
@@ -474,7 +474,7 @@ if($numberMaintenance > 0){ ?>
     <h3 style="margin: 0;">Entretiens</h3>
     <p style="margin-bottom: 10px;">
       Un premier entretien est effectué après 3 mois. Ensuite, une révision annuelle est organisée en fonction de
-      la durée du leasing. L’entretien annuel est conçu pour assurer une remise en état de votre vélo. Il correspond
+      la durée de location. L’entretien annuel est conçu pour assurer une remise en état de votre vélo. Il correspond
       aux changements de pièces et réglages de l'ensemble des organes de votre vélo.
     </p>
     <table class="maxWidth bordered">
@@ -501,7 +501,7 @@ if($numberMaintenance > 0){ ?>
         </tr>
         <tr>
           <td class="bordered-top bordered-Bottom"style="width:100%;font-size: 18px; font-weight: bold; padding-bottom: 3mm;">
-            PIÈCES DE RECHANGE COMPRISES POUR LE LEASING
+            PIÈCES DE RECHANGE COMPRISES LORS LA LOCATION
           </td>
         </tr>
         <tr>
@@ -611,7 +611,7 @@ if ($assurance == true) { ?>
       d’une des démarches, la police d’assurance n’est pas applicable.
     </p>
     <div class="list">
-      <div class="subListItem">• Informer KAMEO Bikes (dans le cas d’un leasing) ou votre assureur (pour une assurance personnelle) dans les 24h suivant la découverte du vol ;</div>
+      <div class="subListItem">• Informer KAMEO Bikes (dans le cas d’une location) ou votre assureur (pour une assurance personnelle) dans les 24h suivant la découverte du vol ;</div>
       <div class="subListItem">• Porter plainte à la police dans les 24h suivant la découverte du vol ;</div>
       <div class="subListItem">• Envoyer la déclaration de vol à KAMEO Bikes / votre assureur dès qu’elle est en votre possession ;</div>
       <div class="subListItem">• KAMEO Bikes s’occupe du reste.</div>
@@ -698,7 +698,7 @@ if ($assurance == true) { ?>
     <?php if ($buyOrLeasing =="leasing" || $buyOrLeasing == "both") {
       $both = "";
       if($buyOrLeasing == "both"){$both = " et achat";}
-      echo "<h2>En leasing sur {$leasingDuration} mois{$both}: </h2>";
+      echo "<h2>En location sur {$leasingDuration} mois{$both}: </h2>";
     } else{
       echo "<h2>En achat: </h2>";
     } ?>
@@ -714,7 +714,7 @@ if ($assurance == true) { ?>
       <tbody class="tbody-leftMargin">
         <?php if (($buyOrLeasing =="leasing" || $buyOrLeasing == "both") && count($bikes) > 0) { ?>
           <tr>
-            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Vélo: Leasing <?php echo $leasingDuration ; ?> mois</div> </td>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Vélo: Location <?php echo $leasingDuration ; ?> mois</div> </td>
             <td style="width:33%;">
               <?php foreach ($bikes as $bike) {
                 echo "<div style='margin-left:3mm;'>{$bike['BRAND']} {$bike['MODEL']}  <span class='green bold'> x{$bike['count']}</span></div><br/>";
@@ -744,7 +744,7 @@ if ($assurance == true) { ?>
 
         <?php if (count($boxes) > 0) { ?>
           <tr>
-            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Boxes: Installation + leasing <?php echo $leasingDuration ; ?> mois</div> </td>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Boxes: Installation + Location <?php echo $leasingDuration ; ?> mois</div> </td>
             <td style="width:33%;">
               <?php foreach ($boxes as $box) {
                 echo "<div style='margin-left:3mm;'>Box {$box['MODEL']}  <span class='green bold'> x{$box['count']}</span></div><br/>";
@@ -823,20 +823,20 @@ if ($assurance == true) { ?>
     <div class="light">KAMEO Bikes offre une garantie conforme à celle de la marque. Soit 2 ans sur le cadre et les composants.</div>
     <h2>Facturation</h2>
     <div class="light">
-      La facturation s’effectuera de façon mensuelle chaque 1er du mois pour les leasings et lors de la livraison pour les achats.<br/>
-      Cette offre est sujette aux conditions générales de vente et de leasing de KAMEO Bikes SPRL.
+      La facturation s’effectuera de façon mensuelle chaque 1er du mois pour les locations et lors de la livraison pour les achats.<br/>
+      Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SPRL.
     </div>
     <h2>Conditions de paiement</h2>
     <div class="light">30 jours à partir de la date de la facture. Prélèvement automatique par domiciliation.</div>
   </page>
   <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
-    <h2>Rupture du contrat – Option d’achat</h2>
+    <h2>Rupture du contrat – possibilié d’achat</h2>
     <div class="light">
-      En cas de rupture unilatérale du contrat de leasing de la part du client, les indemnités suivantes seront dues :<br/>
+      En cas de rupture unilatérale du contrat de location de la part du client, les indemnités suivantes seront dues :<br/>
       <table class="maxWidth tableBorder tableMargins">
         <thead>
           <tr>
-            <th style="width:50%;" class="bold">DURÉE ÉCOULÉE DU LEASING</th>
+            <th style="width:50%;" class="bold">DURÉE ÉCOULÉE DE LOCATION</th>
             <th style="width:50%;" class="bold">Indemnité de rupture</th>
           </tr>
         </thead>
@@ -855,11 +855,11 @@ if ($assurance == true) { ?>
           </tr>
           <tr>
             <td style="width:50%;" class="bold">A l’échéance </td>
-            <td style="width:50%;" class="bold">Option d’achat</td>
+            <td style="width:50%;" class="bold">Possibilité d’achat</td>
           </tr>
           <tr>
             <td style="width:50%;" class="light">36 mois</td>
-            <td style="width:50%;" class="light">15% de la valeur neuve du vélo € HTVA</td>
+            <td style="width:50%;" class="light">A la valeur de marché du vélo, environ 16% du prix initial dans la plupart des cas</td>
           </tr>
         </tbody>
       </table>

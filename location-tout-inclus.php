@@ -352,7 +352,7 @@ include 'include/header5.php';
     updatePrices(document.getElementById('prix'));       
     
 	function updatePrices(ele) {
-        var price=(ele.value*1.21);
+        var price=(ele.value);
         
         $.ajax({
             url: 'include/get_prices.php',

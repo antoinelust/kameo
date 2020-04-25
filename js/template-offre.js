@@ -1,6 +1,7 @@
 //CONSTANTES
 const PRIX_ENTRETIEN = 100;
 const PRIX_ASSURANCE = 84;
+const box_maintenance_year = 500;
 
 //AJAX
 
@@ -249,6 +250,8 @@ get_all_bikes().done(function(response){
     <td class="bLabel"></td>
     <td class="bikeBrandModel"></td>
     <td class="bikepAchat"></td>
+    <td class="bikepCosts"></td>
+    <td class="bikepCatalog"></td>
     <td class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
     <td class="bikeLeasing TD_bikeLeasing `+inRecapLeasingBike+`"`+hideBikeLeasing+`></td>
     <td class="bikeMarge"></td>
@@ -277,15 +280,26 @@ get_all_bikes().done(function(response){
 
       var pAchat = bikes[id].buyingPrice + '€ ';
       var pVenteHTVA = bikes[id].priceHTVA + '€ ';
-      var margeVente = (bikes[id].priceHTVA - bikes[id].buyingPrice).toFixed(2) + '€';
+      var margeVente = (bikes[id].priceHTVA - bikes[id].buyingPrice).toFixed(0) + '€';
       get_leasing_price(bikes[id].priceHTVA).done(function(response){
+          
+        var nbreEntretiens = $('.numberMaintenance').val();
+        var pCosts = nbreEntretiens*PRIX_ENTRETIEN;
+        var assurance = 0;
+        if ($('.assuranceCheck ').prop('checked')) {
+          assurance = PRIX_ASSURANCE*leasingDuration/12;
+        }
+        pCosts+=assurance;
+          
 
         //recuperation du prix leasing
         var leasingPrice = response.leasingPrice;
-        var margeLeasing = (leasingDuration*leasingPrice - bikes[id].buyingPrice).toFixed(2) + '€';
+        var margeLeasing = (leasingDuration*leasingPrice*1 - bikes[id].buyingPrice - pCosts).toFixed(0) + '€ (' + ((leasingDuration*leasingPrice*1 - bikes[id].buyingPrice - pCosts)/(bikes[id].buyingPrice*1 + parseInt(pCosts))*100).toFixed(0) + '%)';
+          
         //gestion de prix null
         if (bikes[id].buyingPrice == null) {
           pAchat = 'non renseigné';
+          pVenteHTVA = 'non renseigné';
           margeVente = 'non calculable';
           margeLeasing = 'non calculable';
         }
@@ -296,17 +310,14 @@ get_all_bikes().done(function(response){
         } else {
           marge = '<span class="margeLeasing" style="display:none">'+margeLeasing+'<\/span><span class="margeVente">'+margeVente+'<\/span>';
         }
+          
 
-        //gestion de prix null
-        if (bikes[id].buyingPrice == null) {
-          pAchat = 'non renseigné';
-          marge = 'non calculable';
-        }
-
-        $(that).parents('.bikeRow').find('.bikepAchat').html(pAchat);
+        $(that).parents('.bikeRow').find('.bikepAchat').html(pAchat + " <span class=\"text-red\">(-)</span>");
+        $(that).parents('.bikeRow').find('.bikepCosts').html(pCosts+"€" + " <span class=\"text-red\">(-)</span>");
+        $(that).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
         $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
         $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
-        $(that).parents('.bikeRow').find('.bikeLeasing').html(leasingPrice + '€');
+        $(that).parents('.bikeRow').find('.bikeLeasing').html(leasingPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
       });
     });
     checkMinus('.templateBike','.bikesNumber');
@@ -359,6 +370,7 @@ get_all_boxes().done(function(response){
     .append(`<tr class="boxesNumberTable`+(boxesNumber)+` boxRow form-group">
               <td class="boxLabel"></td><td class="boxModel"></td>
               <td class="boxProdPrice"></td>
+              <td class="boxMaintenance"></td>
               <td class="boxInstallationPrice"></td>
               <td class="boxLocationPrice"></td>
               <td class="boxMarge"></td>
@@ -381,15 +393,19 @@ get_all_boxes().done(function(response){
 
       //récupère le bon index même si le tableau est désordonné
       boxId = getIndex(boxes, boxId);
-      var productionPrice = boxes[boxId].productionPrice + '€ ';
-      var installationPrice = boxes[boxId].installationPrice + '€ ';
-      var locationPrice = boxes[boxId].locationPrice + '€ ';
-      var marge = (boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 + (boxes[boxId].locationPrice*36)).toFixed(2) + '€';
+      var productionPrice = (boxes[boxId].productionPrice*1) + '€ ';
+      var installationPrice = boxes[boxId].installationPrice + '€';
+      var locationPrice = boxes[boxId].locationPrice + '€/mois';
+      var boxMaintenance = leasingDuration*box_maintenance_year/12;
+        
+      var marge = (boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*36)).toFixed(0) + '€ (' + ((boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*36))/(boxes[boxId].productionPrice*1 + boxMaintenance)*100).toFixed(0) + '%)';
+            
 
-      $(that).parents('.boxRow').find('.boxProdPrice').html(productionPrice)
-      $(that).parents('.boxRow').find('.boxInstallationPrice').html(installationPrice).addClass('inRecapInstallBox');
+      $(that).parents('.boxRow').find('.boxProdPrice').html(productionPrice + " <span class=\"text-red\">(-)</span>");
+      $(that).parents('.boxRow').find('.boxMaintenance').html(boxMaintenance+" €" + " <span class=\"text-red\">(-)</span>");
+      $(that).parents('.boxRow').find('.boxInstallationPrice').html(installationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapInstallBox');
       $(that).parents('.boxRow').find('.boxMarge').html(marge);
-      $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice).addClass('inRecapLocationBox');
+      $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapLocationBox');
 
     });
     checkMinus('.templateBoxes','.boxesNumber');
@@ -526,18 +542,28 @@ get_all_accessories().done(function(response){
 //Contacts
 $('body').on('click','.getTemplate', function(){
   get_company_contacts_list($('#companyIdHidden').val()).done(function(response){
-    var content = `
-      <select name="contactSelect" id="contactSelect" class="form-control required valid">
-    `;
-      for (var i = 0; i < response.length; i++) {
-        var selected ='';
-        if (i == 0) {
-          selected = 'selected';
+    if(response.length==0){
+      $.notify({
+        message: 'Veuillez d\'abord définir une personne de contact'
+      }, {
+        type: 'danger'
+      });    
+    }else{
+        var content = `
+          <select name="contactSelect" id="contactSelect" class="form-control required valid">
+        `;
+        for (var i = 0; i < response.length; i++) {
+            var selected ='';
+            if (i == 0) {
+              selected = 'selected';
         }
-        content += `<option `+selected+` value="`+response[i].contactId+`">` + response[i].firstNameContact + ` `+ response[i].lastNameContact + `</option>`;
-      }
-      content += "</select>";
-      $('.companyContactDiv').html(content);
+            content += `<option `+selected+` value="`+response[i].contactId+`">` + response[i].firstNameContact + ` `+ response[i].lastNameContact + `</option>`;
+        }
+        content += "</select>";
+        $('.companyContactDiv').html(content);
+        $('#template').modal('toggle');
+    }
+      
 
   });
 })
@@ -676,6 +702,7 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
     othersRecap.description.push($(this).parents('tr').find('.othersDescription input').val());
     count++;
   });
+        
   //génération de la vue
   var content = "";
 
@@ -772,11 +799,16 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
       assurance = bikesNumber*PRIX_ASSURANCE;
     }
     //calcul pour les entretiens des vélos (par an)
+      
+    nbreEntretiens=nbreEntretiens/leasingDuration*12;
+      
     coutsLocatifs += (nbreEntretiens*bikesNumber)*PRIX_ENTRETIEN;
     //calcul pour l'assurance des vélos(par an)
     coutsLocatifs += assurance*1;
+      
     //modification de la valeur pour qu'elle colle au nombre de mois de leasing
     coutsLocatifs = ((coutsLocatifs/12)*leasingDuration).toFixed(2);
+      
     //modification de la valeur du cout de location total sans entretiens et assurance
     prixLocationTotal = prixLocationTotalMois*leasingDuration;
     //Ajout des charges dans les frais de l'entreprise
@@ -786,6 +818,9 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 
     tabMarge = (prixTotal - coutsTotaux);
     tabMarge = tabMarge.toFixed(2);
+      
+    console.log(tabMarge);
+    console.log(coutsTotaux);
 
     tabMargePourcent = (tabMarge/coutsTotaux)*100;
     tabMargePourcent = tabMargePourcent.toFixed(2);
@@ -847,7 +882,12 @@ $("#templateForm").validate({
       success: function(response) {
         if(response.response == 'true'){
           $('.generatePDF').html('Générer PDF');
-          alert('Le pdf a bien été généré !');
+          $.notify({
+            message: 'Le pdf a bien été généré !'
+          }, {
+            type: 'success'
+          });
+            
           var offerType = response.buyOrLeasing;
 
           if(offerType =='buy'){
@@ -869,6 +909,8 @@ $("#templateForm").validate({
             </tr>
           `;
           $('#companyContracts').find('.tableBody').append(dest);
+          document.getElementById('templateForm').reset();
+            
         } else{
           $('.generatePDF').html('Générer PDF');
           alert('Une erreur est survenue ...');

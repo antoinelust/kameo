@@ -1359,15 +1359,34 @@ if($connected){
         if(response.response == 'error') {
           console.log(response.message);
         }
+          
+                    
         if(response.response == 'success'){
           var dest="";
-          var temp="<table id=\"test\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Clients</span></a> <a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Prospects</span></a><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN PROSPECT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien Prospects</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('ANCIEN CLIENT')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Ancien clients</span></a><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_company_listing('NOT INTERESTED')\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Not interested</span></a><br/><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th><th>Mise à jour</th></tr></thead><tbody>";
+          var temp="<table id=\"test\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th>Rappeler ?</th><th>Mise à jour</th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead><tbody>";
           dest=dest.concat(temp);
           var i=0;
 
           while (i < response.companiesNumber){
             temp="<tr><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.company[i].ID+"\">"+response.company[i].internalReference+"</a></td><td>"+response.company[i].companyName+"</td><td>"+response.company[i].companyBikeNumber+"</td>";
             dest=dest.concat(temp);
+              
+              
+            var heuMaj=new Date(response.company[i].HEU_MAJ);
+            var now=new Date();
+
+              
+            var difference= ((now.getTime()-heuMaj.getTime())/86400000).toFixed(0);
+              
+            if(response.company[i].type=='PROSPECT' && difference >=60){
+                var rappeler="Y";
+            }else{
+                var rappeler="N";
+            }
+
+            var dest=dest.concat("<td>"+rappeler+"</td><td data-sort=\""+(new Date(response.company[i].HEU_MAJ)).getTime()+"\">"+response.company[i].HEU_MAJ.shortDate()+"</td>");
+              
+              
 
             if(response.company[i].bikeAccessStatus=="OK"){
               var temp="<td class=\"text-green\">"+response.company[i].bikeAccessStatus+"</td>";
@@ -1382,8 +1401,11 @@ if($connected){
             }
             dest=dest.concat(temp);
 
-            dest=dest.concat("<td>"+response.company[i].type+"</td><td data-sort=\""+(new Date(response.company[i].HEU_MAJ)).getTime()+"\">"+response.company[i].HEU_MAJ.shortDate()+"</td>");
-
+              
+              
+              
+            dest=dest.concat("<td>"+response.company[i].type+"</td>");
+              
             var temp="</tr>";
             dest=dest.concat(temp);
             i++;
@@ -1409,7 +1431,38 @@ if($connected){
           }
           displayLanguage();
             
-            $('#test').DataTable();
+            $('#test thead tr').clone(true).appendTo('#test thead');
+            
+            $('#test thead tr:eq(1) th').each(function(i){
+                var title=$(this).text();
+                $(this).html('<input type="text" placeholder="Search" />');
+                
+                $('input', this).on('keyup change', function(){
+                    if (table.column(i).search() !== this.value){
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+                
+            var table=$('#test').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
+                scrollX: true,
+                  "columns": [
+                    { "width": "100px" },
+                    { "width": "100px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" }                  ]
+                
+                
+            });
             
 
         }
@@ -4862,7 +4915,7 @@ if($connected){
                           <div class="col-md-4">
                             <label for="type">Type de facture</label>
                             <select name="type">
-                              <option value="leasing">Leasing</option>
+                              <option value="leasing">Location</option>
                               <option value="achat">Achat</option>
                               <option value="accessoire">Accessoire</option>
                               <option value="autre">Autre</option>
@@ -6556,7 +6609,7 @@ if($connected){
                             <label for="contractType"  class="en">Contract type</label>
                             <label for="contractType"  class="nl">Contract type</label>
                             <select name="contractType" class="form-control required">
-                              <option value="leasing">Leasing</option>
+                              <option value="leasing">Location</option>
                               <option value="renting">Location</option>
                               <option value="test">Vélo de test</option>
                               <option value="stock">Vélo de stock</option>
@@ -7113,7 +7166,7 @@ if($connected){
                             <label for="type"  class="en">Type</label>
                             <label for="type"  class="nl">Type</label>
                             <select name="type" class="form-control required">
-                              <option value="leasing">Leasing</option>
+                              <option value="leasing">Location</option>
                               <option value="achat">achat</option>
                             </select>
                           </div>
@@ -7263,27 +7316,27 @@ if($connected){
                     </div>
                     <div class="col-sm-12">
                       <div class="col-sm-3 form-group">
-                        <label for="leasingCheck" class="fr">Leasing</label>
-                        <label for="leasingCheck" class="en">Leasing</label>
-                        <label for="leasingCheck" class="nl">Leasing</label>
+                        <label for="leasingCheck" class="fr">Type</label>
+                        <label for="leasingCheck" class="en">Type</label>
+                        <label for="leasingCheck" class="nl">Type</label>
                         <select name="buyOrLeasing" id="buyOrLeasingSelect" class="form-control required" aria-required="true">
-                          <option value="leasing" selected>Leasing</option>
+                          <option value="leasing" selected>Location</option>
                           <option value="buy">Achat</option>
-                          <option value="both"> Achat et leasing</option>
+                          <option value="both"> Achat et Location</option>
                         </select>
                         <!--<input type="checkbox" class="leasingCheck form-control" name="isLeasing" value="leasing" checked />-->
                       </div>
                       <div class="col-sm-4 form-group leasingSpecific">
-                        <label for="leasingDuration" class="fr">Durée leasing (mois)</label>
-                        <label for="leasingDuration" class="en">Leasing duration (months)</label>
-                        <label for="leasingDuration" class="nl">Durée leasing (mois)</label>
+                        <label for="leasingDuration" class="fr">Durée location (mois)</label>
+                        <label for="leasingDuration" class="en">Location duration (months)</label>
+                        <label for="leasingDuration" class="nl">Durée location (mois)</label>
                         <input type="number" name="leasingDuration" class="leasingDuration form-control required" aria-required="true" value="36" min="1">
                       </div>
                       <div class="col-sm-3 form-group leasingSpecific">
-                        <label for="numberMaintenance" class="fr">Entretiens par an</label>
-                        <label for="numberMaintenance" class="en">Maintenance per year</label>
-                        <label for="numberMaintenance" class="nl">Entretiens par an</label>
-                        <input type="number" name="numberMaintenance" class="numberMaintenance form-control required" aria-required="true" value="1" min="0">
+                        <label for="numberMaintenance" class="fr">Entretiens</label>
+                        <label for="numberMaintenance" class="en">Maintenance</label>
+                        <label for="numberMaintenance" class="nl">Maintenance</label>
+                        <input type="number" name="numberMaintenance" class="numberMaintenance form-control required" aria-required="true" value="4" min="0">
                       </div>
                       <div class="col-sm-2 form-group leasingSpecific">
                         <label for="assuranceCheck" class="fr">Assurance</label>
@@ -7310,29 +7363,39 @@ if($connected){
                         <tr>
                           <th class="bLabel"></th>
                           <th class="bikeBrandModel">
-                            <label for="bikeBrandModel" class="fr">MARQUE - MODÈLE</label>
-                            <label for="bikeBrandModel" class="en">BRAND - MODEL</label>
-                            <label for="bikeBrandModel" class="nl">MARQUE - MODÈLE</label>
+                            <label for="bikeBrandModel" class="fr">Modèle</label>
+                            <label for="bikeBrandModel" class="en">Model</label>
+                            <label for="bikeBrandModel" class="nl">Model</label>
                           </th>
                           <th class="bikepAchat">
-                            <label for="pAchat" class="fr">PRIX ACHAT</label>
-                            <label for="pAchat" class="en">BUTING PRICE</label>
-                            <label for="pAchat" class="nl">PRIX ACHAT</label>
+                            <label for="pAchat" class="fr">Prix d'achat</label>
+                            <label for="pAchat" class="en">Buying price</label>
+                            <label for="pAchat" class="nl">Buying price</label>
+                          </th>
+                          <th class="bikepCosts">
+                            <label for="pAchat" class="fr">Coûts</label>
+                            <label for="pAchat" class="en">Costs</label>
+                            <label for="pAchat" class="nl">Costs</label>
+                          </th>
+                          <th class="bikepCatalog">
+                            <label for="pCatalog" class="fr">Prix catalogue</label>
+                            <label for="pCatalog" class="en">Catalog price</label>
+                            <label for="pCatalog" class="nl">Catalog price</label>
                           </th>
                           <th class="bikepVenteHTVA" style="display:none">
-                            <label for="pVenteHTVA" class="fr">PRIX VENTE HTVA</label>
-                            <label for="pVenteHTVA" class="en">SELLING PRICE EXEPT VAT</label>
-                            <label for="pVenteHTVA" class="nl">PRIX VENTE HTVA</label>
+                            <label for="pVenteHTVA" class="fr">Prix de vente</label>
+                            <label for="pVenteHTVA" class="en">Selling price</label>
+                            <label for="pVenteHTVA" class="nl">Selling price</label>
                           </th>
                           <th class="bikeLeasing">
-                            <label for="leasing" class="fr">LEASING</label>
-                            <label for="leasing" class="en">LEASING</label>
-                            <label for="leasing" class="nl">LEASING</label>
+                            <label for="leasing" class="fr">Location</label>
+                            <label for="leasing" class="en">Renting</label>
+                            <label for="leasing" class="nl">Renting</label>
                           </th>
                           <th class="bikeMarge">
-                            <label for="marge" class="fr">MARGE</label>
-                            <label for="marge" class="en">PROFIT</label>
-                            <label for="marge" class="nl">MARGE</label>
+                            <label for="marge" class="fr">Margin</label>
+                            <label for="marge" class="en">Margin</label>
+                            <label for="marge" class="nl">Margin</label>
                           </th>
                         </tr>
                       </thead>
@@ -7357,29 +7420,34 @@ if($connected){
                           <th class="boxLabel">
                           </th>
                           <th class="boxModel">
-                            <label for="boxModel" class="fr">BOX</label>
-                            <label for="boxModel" class="en">BOX</label>
-                            <label for="boxModel" class="nl">BOX</label>
+                            <label for="boxModel" class="fr">Modèle</label>
+                            <label for="boxModel" class="en">Model</label>
+                            <label for="boxModel" class="nl">Model</label>
                           </th>
                           <th class="boxProdPrice">
-                            <label for="boxProdPrice" class="fr">PRIX PRODUCTION</label>
-                            <label for="boxProdPrice" class="en">MANUFACTURING PRICE</label>
-                            <label for="boxProdPrice" class="nl">PRIX PRODUCTION</label>
+                            <label for="boxProdPrice" class="fr">Production</label>
+                            <label for="boxProdPrice" class="en">Production</label>
+                            <label for="boxProdPrice" class="nl">Production</label>
+                          </th>
+                          <th class="boxMaintenance">
+                            <label for="boxMaintenance" class="fr">Coûts</label>
+                            <label for="boxMaintenance" class="en">Costs</label>
+                            <label for="boxMaintenance" class="nl">Costs</label>
                           </th>
                           <th class="boxInstallationPrice">
-                            <label for="boxInstallationPrice" class="fr">PLACEMENT HTVA</label>
-                            <label for="boxInstallationPrice" class="en">POSE EXCLUDING VAT</label>
-                            <label for="boxInstallationPrice" class="nl">PLACEMENT HTVA</label>
+                            <label for="boxInstallationPrice" class="fr">Installation</label>
+                            <label for="boxInstallationPrice" class="en">Installation</label>
+                            <label for="boxInstallationPrice" class="nl">Installation</label>
                           </th>
                           <th class="boxLocationPrice">
-                            <label for="boxLocationPrice" class="fr">LOCATION MENSUELLE</label>
-                            <label for="boxLocationPrice" class="en">MONTHLY RENTING</label>
-                            <label for="boxLocationPrice" class="nl">LOCATION MENSUELLE</label>
+                            <label for="boxLocationPrice" class="fr">Location</label>
+                            <label for="boxLocationPrice" class="en">Renting</label>
+                            <label for="boxLocationPrice" class="nl">Renting</label>
                           </th>
                           <th class="boxMarge">
-                            <label for="boxMarge" class="fr">MARGE</label>
-                            <label for="boxMarge" class="en">MARGE</label>
-                            <label for="boxMarge" class="nl">MARGE</label>
+                            <label for="boxMarge" class="fr">Marge</label>
+                            <label for="boxMarge" class="en">Margin</label>
+                            <label for="boxMarge" class="nl">Margin</label>
                           </th>
                         </tr>
                       </thead>
@@ -7460,7 +7528,7 @@ if($connected){
                       <thead>
                         <th><label for="recapLabel fr">Item</label></th>
                         <th><label for="recapPrice fr">Prix de vente</label></th>
-                        <th><label for="recapLeasing fr">Leasing/location (au mois)</label></th>
+                        <th><label for="recapLeasing fr">Location (au mois)</label></th>
                       </thead>
                       <tbody></tbody>
                       <tfoot></tfoot>

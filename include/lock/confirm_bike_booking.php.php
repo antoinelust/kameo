@@ -49,12 +49,26 @@ if($length=="1"){
         
     $data=array("widget-new-booking-mail-customer" => $client, "widget-new-booking-frame-number" => $frameNumber, "widget-new-booking-building-start" => $buildingReference, "widget-new-booking-building-end" => $buildingReference, "widget-new-booking-locking-code" => "0000", "widget-new-booking-date-start" => $dateStartString , "widget-new-booking-date-end"=> $dateEndString);
         
-    $test=CallAPI('POST', 'http://localhost:81/kameo/include/new_booking.php', $data);
+    $test=CallAPI('POST', 'https://www.kameobikes.com/test/include/new_booking.php', $data);
     
-    var_dump(json_decode($test)); 
-
+    include '../connexion.php';
+    $sql="SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START ='$building' AND CODE = '0' AND VALID = 'Y' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())))";    
+        
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);  
+    $resultat = mysqli_fetch_assoc($result);
+    $length = $result->num_rows;
+    $conn->close();
     
-    
+    if($length==1){
+        echo $resultat['PLACE_IN_BUILDING'];
+    }else{
+        echo "-1";
+    }
 
     
 }else{

@@ -100,6 +100,8 @@ while($row = mysqli_fetch_array($result))
             {
                 
                 $sql_companyDetails="select COMPANY_NAME from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
+                error_log("SQL3 :".$sql_companyDetails."\n", 3, "generate_invoices.log");    
+                
                 if ($conn->query($sql_companyDetails) === FALSE) {
                     echo $conn->error;
                     die;
@@ -255,7 +257,7 @@ while($row = mysqli_fetch_array($result))
                     echo '<br>Société '.$companyName.'<br><strong>environnement localhost, mail non envoyé</strong><br>';
                 }
 
-                /*$file = __DIR__.'/temp/company.txt';
+                $file = __DIR__.'/temp/company.txt';
                 if ((file_exists($file))){
                     unlink($file);
                 }
@@ -284,7 +286,7 @@ while($row = mysqli_fetch_array($result))
                 $file = __DIR__.'/facture'.$i.'.php';;
                 if ((file_exists($file))){
                     unlink($file);
-                }*/
+                }
 
             }            
         }

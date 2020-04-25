@@ -37,7 +37,9 @@ while($row = mysqli_fetch_array($result))
     $response['boxes'][$i]['userUpdate']=$row['USR_MAJ'];
     $response['boxes'][$i]['model']=$row['MODEL'];
     $response['boxes'][$i]['id']=$row['ID'];
-    $response['boxes'][$i]['productionPrice']=$row['PRODUCTION_PRICE'];
+    
+    //production price = cost of materials + 250 € to install it
+    $response['boxes'][$i]['productionPrice']=$row['PRODUCTION_PRICE']+250;
     $response['boxes'][$i]['installationPrice']=$row['INSTALLATION_PRICE'];
     $response['boxes'][$i]['locationPrice']=$row['LOCATION_PRICE'];
 

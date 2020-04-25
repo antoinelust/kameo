@@ -6,7 +6,7 @@ $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
 
 
 if ((file_exists(__DIR__.'/temp/date.txt'))) {   
-   $date = file_get_contents(__DIR__.'/temp/date.txt');
+   $date = file_get_contents(__DIR__.'/temp/date.txt');    
 }else{
     $date=date("d");
 }if ((file_exists(__DIR__.'/temp/month.txt'))) {   
@@ -29,6 +29,8 @@ $currentDateString = $currentDate->format('Y-m-d');
 
 include 'include/connexion.php';
 $sql_reference="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
+error_log("SQL4 :".$sql_reference."\n", 3, "generate_invoices.log");    
+
 if ($conn->query($sql_reference) === FALSE) {
     echo $conn->error;
     die;
@@ -50,6 +52,8 @@ $OneMonthAfterString=$OneMonthAfter->format('Y-m-d');
 
 include 'include/connexion.php';
 $sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
+error_log("SQL5 :".$sql."\n", 3, "generate_invoices.log");    
+
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
     die;
@@ -184,6 +188,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             
             include 'include/connexion.php';
             $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$monthAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
+            error_log("SQL6 :".$sql2."\n", 3, "generate_invoices.log");    
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -223,6 +228,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                         echo $conn->error;
                     } 
                     $conn->close();
+                    $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$monthAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
+                    error_log("SQL7 :".$sql2."\n", 3, "generate_invoices.log");    
+                    
                 }
                 
 

@@ -213,6 +213,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                 $result4 = mysqli_query($conn, $sql4);
                 $access = $result4->num_rows;
 
+                
+                
 
                 if($access==1){
                     $length++;

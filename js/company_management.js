@@ -153,7 +153,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         //Ajouter une offre
 
         var dest="<a class=\"button small green button-3d rounded icon-right offerManagement addOffer\" name=\""+internalReference+"\" data-target=\"#offerManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une offre</span></a>";
-        dest+="<a class=\"button small green button-3d rounded icon-right offerManagement getTemplate\" name=\""+internalReference+"\" data-target=\"#template\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i>Nouveau Template Offre</span></a>";
+        dest+="<a class=\"button small green button-3d rounded icon-right offerManagement getTemplate\" name=\""+internalReference+"\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i>Nouveau Template Offre</span></a>";
         if((response.offerNumber + response.bikeContracts)>0){
           var i=0;
           var temp="<h5 class=\"text-green\">Contrats</h5><table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>";
