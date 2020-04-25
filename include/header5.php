@@ -29,7 +29,9 @@
 	
 	
 	<link rel="shortcut icon" href="images/favicon.png">
-	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>
+	<title class="fr">KAMEO Bikes | La solution complète pour vos vélos de société</title>
+	<title class="fr">KAMEO Bikes | Bike solutions for businesses</title>
+	<title class="fr">KAMEO Bikes | Fiets oplossingen voor bedrijven</title>
 
 	<!-- Bootstrap Core CSS -->
 	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -171,28 +173,73 @@
 									<li class="en"><a href="index.php"><i class="fa fa-home"></i> Home</a></li>
 									<li class="nl"><a href="index.php"><i class="fa fa-home"></i> Home</a></li>
 									
-									<li class="dropdown fr"> <a href="#">Nos solutions <i class="fa fa-angle-down"></i> </a>
+									<li class="dropdown"> 
+										<a class="fr" href="#">Nos Solutions <i class="fa fa-angle-down"></i> </a>
+										<a class="en" href="#">Our Solutions <i class="fa fa-angle-down"></i> </a>
+										<a class="nl" href="#">Onze Oplossingen <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
-											<li><a href="velo-partage.php">Vélos partagés</a> </li>
-											<li><a href="velo-personnel.php">Vélos personnels</a> </li>
-											<li><a href="gestion-flotte.php">Système de gestion de flotte</a> </li>
-											<li><a href="location-tout-inclus.php">Location tout inclus & Achat</a> </li>
+											<li>
+												<a class="fr" href="velo-partage.php">Vélos partagés</a> 
+												<a class="fr" href="velo-partage.php">Shared Bikes</a> 
+												<a class="fr" href="velo-partage.php">Deelfietsen</a> 
+											</li>
+											<li>
+												<a class="fr" href="velo-personnel.php">Vélos personnels</a> 
+												<a class="en" href="velo-personnel.php">Personnal Bikes</a> 
+												<a class="nl" href="velo-personnel.php">Persoonlijke fietsen</a> 
+											</li>
+											<li>
+												<a class="fr" href="gestion-flotte.php">Gestion de flotte</a> 
+												<a class="en" href="gestion-flotte.php">Fleet management</a> 
+												<a class="nl" href="gestion-flotte.php">Vlootbeheer</a> 
+											</li>
+											<li>
+												<a class="fr" href="location-tout-inclus.php">Location tout inclus & Achat</a> 
+												<a class="en" href="location-tout-inclus.php">All inclusive rental & Purchase</a> 
+												<a class="nl" href="location-tout-inclus.php">All-inclusive verhuur & Aankoop</a> 
+											</li>
 										</ul>
 									</li>
 									
-									<li class="dropdown fr"> <a href="#">Catalogue <i class="fa fa-angle-down"></i> </a>
+									<li class="dropdown"> 
+										<a class="fr" href="#">Catalogue <i class="fa fa-angle-down"></i> </a>
+										<a class="en" href="#">Catalogue <i class="fa fa-angle-down"></i> </a>
+										<a class="nl" href="#">Catalogus <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
-											<li><a href="achat.php">Nos vélos</a> </li>
-											<li><a href="accessoires.php">Nos accessoires</a> </li>
-											<li><a href="bonsplans.php">Nos bons plans</a> </li>
+											<li>
+												<a class="fr" href="achat.php">Nos Vélos</a>
+												<a class="fr" href="achat.php">Our Bikes</a>
+												<a class="fr" href="achat.php">Onze Fietsen</a>
+											</li>
+											<li>
+												<a class="fr" href="accessoires.php">Nos accessoires</a> 
+												<a class="en" href="accessoires.php">Our accessories</a> 
+												<a class="nl" href="accessoires.php">Onze accessoires</a> 
+											</li>
+											<li>
+												<a class="fr" href="bonsplans.php">Nos bons plans</a> 
+												<a class="en" href="bonsplans.php">Our deals</a> 
+												<a class="nl" href="bonsplans.php">Onze deals</a> 
+											</li>
 										</ul>
 									</li>
 									
 									
-									<li class="dropdown fr"> <a href="#">Avantages <i class="fa fa-angle-down"></i> </a>
+									<li class="dropdown"> 
+										<a class="fr" href="#">Avantages <i class="fa fa-angle-down"></i> </a>
+										<a class="fr" href="#">Benefits <i class="fa fa-angle-down"></i> </a>
+										<a class="fr" href="#">Voordelen <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
-											<li><a href="avantages.php">Avantages liés au vélo</a> </li>
-											<li><a href="cash4bike.php">Calculateur Cash For Bike</a> </li>
+											<li>
+												<a class="fr" href="avantages.php">Avantages liés au vélo</a> 
+												<a class="en" href="avantages.php">Cycling benefits</a> 
+												<a class="nl" href="avantages.php">Fietsvoordelen</a> 
+											</li>
+											<li>
+												<a class="fr" href="cash4bike.php">Calculateur Cash For Bike</a> 
+												<a class="en" href="cash4bike.php">Cash For Bike Calculator</a> 
+												<a class="nl" href="cash4bike.php">Cash For Bike Rekening</a> 
+											</li>
 										</ul>
 									</li>
 									
