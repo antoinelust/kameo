@@ -67,14 +67,14 @@ include 'include/header2.php';
 									           <option class="en" data-filter=".toutchemin">Tout chemin</option>
 									           <option class="nl" data-filter=".toutchemin">Tout chemin</option>
 									           <option class="fr" data-filter=".pliant">Pliant</option>
-									           <option class="fr" data-filter=".pliant">Pliant</option>
-									           <option class="fr" data-filter=".pliant">Pliant</option>
+									           <option class="en" data-filter=".pliant">Pliant</option>
+									           <option class="nl" data-filter=".pliant">Pliant</option>
 									           <option class="fr" data-filter=".speedpedelec">Speedpedelec</option>
-									           <option class="fr" data-filter=".speedpedelec">Speedpedelec</option>
-									           <option class="fr" data-filter=".speedpedelec">Speedpedelec</option>
+									           <option class="en" data-filter=".speedpedelec">Speedpedelec</option>
+									           <option class="nl" data-filter=".speedpedelec">Speedpedelec</option>
 									           <option class="fr" data-filter=".cargo">Cargo</option>
-									           <option class="fr" data-filter=".cargo">Cargo</option>
-									           <option class="fr" data-filter=".cargo">Cargo</option>
+									           <option class="en" data-filter=".cargo">Cargo</option>
+									           <option class="nl" data-filter=".cargo">Cargo</option>
 									       </select>
                                     </div>
                                     
@@ -122,6 +122,8 @@ include 'include/header2.php';
                     <div class="col-md-8">
                     	<div class="heading heading text-left m-b-20">
                         <h2 class="fr">Nos vélos</h2>
+                        <h2 class="en">Our bikes</h2>
+                        <h2 class="nl">Onze fietsen</h2>
                         </div>
                         
                         <!-- Portfolio Items -->
