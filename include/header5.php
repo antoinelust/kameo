@@ -180,8 +180,8 @@
 										<ul class="dropdown-menu">
 											<li>
 												<a class="fr" href="velo-partage.php">Vélos partagés</a> 
-												<a class="fr" href="velo-partage.php">Shared Bikes</a> 
-												<a class="fr" href="velo-partage.php">Deelfietsen</a> 
+												<a class="en" href="velo-partage.php">Shared Bikes</a> 
+												<a class="nl" href="velo-partage.php">Deelfietsen</a> 
 											</li>
 											<li>
 												<a class="fr" href="velo-personnel.php">Vélos personnels</a> 

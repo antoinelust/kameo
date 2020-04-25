@@ -13,6 +13,8 @@ include 'include/header5.php';
                     
                     <div class="col-md-12">
                         <h1 class="fr text-green">LES BONS PLANS</h1>
+                        <h1 class="en text-green">OUR DEALS</h1>
+                        <h1 class="nl text-green">ONZE DEALS</h1>
                         </div>
                         <!-- SHOP PRODUCTS -->
 								<div class="shop">

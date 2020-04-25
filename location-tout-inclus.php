@@ -7,15 +7,17 @@ include 'include/header5.php';
 	
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green">LOCATION TOUT INCLUS & ACHAT DE VÉLO</h1>
+				<h1 class="text-green fr">LOCATION TOUT INCLUS & ACHAT DE VÉLO</h1>
+				<h1 class="text-green en">ALL INCLUSIVE RENTAL & PURCHASE</h1>
+				<h1 class="text-green nl">ALL-INCLUSIVE VERHUUR & AANKOOP</h1>
 				<br>
 				<p class="fr">KAMEO Bikes se charge de définir le(s) moyen(s) de mobilité urbaine des entreprises selon leurs besoins, qu'il s'agisse de vélos classiques, électriques, pliants ou même de trottinettes électriques. <br /><br />
                 Toutes les dépenses liées à la mobilité douce sont <strong class="text-green text-uppercase">déductibles à 100%</strong>, n'hésitez donc pas à en profiter ! </p>
                 
 				<p class="en">KAMEO Bikes defines the mobility plan that fits you the best. It can be made of electric, foldable or normal bikes or even electric scooters.<br /><br />
-                All expenses linked to mobility are <strong class="text-green text-uppercase">100% deductible</strong> (exception made for renting, deductibe at 100%), make sure you make the most of it!</p>
+                All expenses linked to mobility are <strong class="text-green text-uppercase">100% deductible</strong>, make sure you make the most of it!</p>
 				<p class="nl">KAMEO Bikes definieert het mobiliteitsplan dat het beste bij u past. Het kan worden gemaakt van elektrische, opvouwbare of normale fietsen of zelfs elektrische scooters.<br /><br />
-                Alle uitgaven in verband met mobiliteit zijn voor <strong class="text-green text-uppercase">100% aftrekbaar</strong> (met uitzondering van huren die 100% aftrekbaar is), zorg dat u er het beste van maakt!</p>
+                Alle uitgaven in verband met mobiliteit zijn voor <strong class="text-green text-uppercase">100% aftrekbaar</strong>, zorg dat u er het beste van maakt!</p>
 				
 				<!--
 				<p class="fr">KAMEO Bikes propose 3 solutions afin de mettre à disposition des moyens de mobilité à vos employés :</p>
@@ -62,7 +64,7 @@ include 'include/header5.php';
 				              <p class="text-muted fr">Paiement immédiat (HTVA)</p>
 				              <h4 class="en">Sell (ex. VAT)</h4>
 				              <p class="text-muted en">Immediate buy (excluding VAT)</p>
-				              <h4 class="nl">Verkopen (exclusief BTW)</h4>
+				              <h4 class="nl">Aankoop (exclusief BTW)</h4>
 				              <p class="text-muted nl">Onmiddellijke aankoop (exclusief BTW)</p>
 				              <div class="plan-price" id="retailPrice"></div>
 				            </div>
@@ -74,7 +76,7 @@ include 'include/header5.php';
                                     <li><i class="fa fa-lock"></i>Assurance à la demande</li>
                                     <li><i class="fa fa-user"></i>Accès à la plateforme MyKameo</li>
                                     <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRetailPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Découvrez votre avantage fiscal</span></a>  
+                                    <a class="button small green button-3d rounded effect icon-left fr" data-target="#avantageRetailPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Découvrez votre avantage fiscal</span></a>  
                                 </ul> 
                                 <ul class="en">
                                     <li><i class="fa fa-globe"></i>Unlimited kilometers</li>
@@ -83,7 +85,7 @@ include 'include/header5.php';
                                     <li><i class="fa fa-lock"></i>On-demand insurance</li>
                                     <li><i class="fa fa-user"></i>Full access to MyKameo</li>
                                     <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRetailPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Discover your fiscal advantage</span></a>  
+                                    <a class="button small green button-3d rounded effect icon-left en" data-target="#avantageRetailPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Discover your fiscal advantage</span></a>  
                                 </ul>
                                 <ul class="nl">
                                     <li><i class="fa fa-globe"></i>Onbeperkte kilometers</li>
@@ -92,7 +94,7 @@ include 'include/header5.php';
                                     <li><i class="fa fa-lock"></i>On-demand verzekering</li>
                                     <li><i class="fa fa-user"></i>Volledige toegang tot MyKameo</li>
                                     <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRetailPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Ontdek uw fiscale voordeel</span></a> 
+                                    <a class="button small green button-3d rounded effect icon-left nl" data-target="#avantageRetailPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Ontdek uw fiscale voordeel</span></a> 
 				                </ul>
 				            </div>
 				          </div>
@@ -103,9 +105,9 @@ include 'include/header5.php';
 				            <div class="plan-header">
 				              <h4 class="fr">Location tout inclus (HTVA)</h4>
 				              <p class="text-muted fr">Durée: 3 ans</p>
-				              <h4 class="en">Location tout inclus (ex. VAT)</h4>
+				              <h4 class="en">All inclusive rental (ex. VAT)</h4>
 				              <p class="text-muted en">Contract: 3 years</p>
-				              <h4 class="nl">Location tout inclus (ex. BTW)</h4>
+				              <h4 class="nl">All-inclusive verhuur (ex. BTW)</h4>
 				              <p class="text-muted nl">Contract: 3 jaar</p>
 				              <div class="plan-price fr" id="leasingPriceFR"></div>
 				              <div class="plan-price en" id="leasingPriceEN"></div>
@@ -120,7 +122,7 @@ include 'include/header5.php';
                                     <li><i class="fa fa-user"></i>Accès à la plateforme MyKameo</li>
                                     <li><i class="fa fa-money"></i>Possibilité de rachat du vélo <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="A la fin de la location, le vélo peut être racheté à hauteur de 15% du prix d'achat du vélo."></i></li>
                                     <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Découvrez votre avantage fiscal</span></a>
+                                    <a class="button small green button-3d rounded effect icon-left fr" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Découvrez votre avantage fiscal</span></a>
 				                </ul>
 				                <ul class="en">
                                     <li><i class="fa fa-globe"></i>500 kilometers per month <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Number of kilometers can be summed. For example, for a 36 months contract, the total number of kilometers must be lower than 36 * 500 = 18.000 kms"></i></li>
@@ -130,17 +132,17 @@ include 'include/header5.php';
                                     <li><i class="fa fa-user"></i>Full access to MyKameo</li>
                                     <li><i class="fa fa-money"></i>End of contract: possibility to buy the bike <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="At the end of leasing contract, possibility to buy the bike for 15% of its retail price."></i></li>
                                     <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Discover your fiscal advantage</span></a>
+                                    <a class="button small green button-3d rounded effect icon-left en" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Discover your fiscal advantage</span></a>
 				                </ul>
 				                <ul class="nl">
                                     <li><i class="fa fa-globe"></i>500 kilometer per maand <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Het aantal kilometers kan worden opgeteld. Voor een contract van 36 maanden moet het totale aantal kilometers bijvoorbeeld lager zijn dan 36 * 500 = 18.000 km"></i></li>
                                     <li><i class="fa fa-thumbs-up"></i>2 jaar garantie</li>
                                     <li><i class="fa fa-lock"></i>Verzekering inbegrepen</li>
-                                    <li><i class="fa fa-cogs"></i>4 onderhoud van het leasecontract <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="2 onderhoudt het eerste jaar, één per jaar daarna. De exacte timing van dergelijk onderhoud kan worden geconfigureerd via het MyKameo-platform"></i></li>
+                                    <li><i class="fa fa-cogs"></i>4 onderhoud tijdens leasecontract <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="2 onderhoudt het eerste jaar, één per jaar daarna. De exacte timing van dergelijk onderhoud kan worden geconfigureerd via het MyKameo-platform"></i></li>
                                     <li><i class="fa fa-user"></i>Volledige toegang tot MyKameo</li>
                                     <li><i class="fa fa-money"></i>Einde contract: mogelijkheid om de fiets te kopen <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Aan het einde van het leasecontract, mogelijkheid om de fiets te kopen voor 15% van de verkoopprijs."></i></li>
                                     <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Ontdek uw fiscale voordeel</span></a>
+                                    <a class="button small green button-3d rounded effect icon-left nl" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Ontdek uw fiscale voordeel</span></a>
 				                </ul>
                                 
 				            </div>
@@ -200,7 +202,9 @@ include 'include/header5.php';
 							<div class="modal-content">
 								<div class="modal-header">
 									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-									<h4 id="modal-label-3" class="modal-title">AVANTAGE FISCAL</h4>
+									<h4 id="modal-label-3" class="modal-title fr">AVANTAGE FISCAL</h4>
+									<h4 id="modal-label-3" class="modal-title en">TAX INCENTIVE</h4>
+									<h4 id="modal-label-3" class="modal-title nl">FISCAAL VOORDEEL</h4>
 								</div>
 								<div class="modal-body">
 									<div class="row mb20">
@@ -244,7 +248,9 @@ include 'include/header5.php';
 									</div>
 								</div>
 								<div class="modal-footer">
-									<a class="button button-3d rounded effect icon-left"  data-dismiss="modal"><span><i class="fa fa-close"></i>Fermer</span></a>
+									<a class="button button-3d rounded effect icon-left fr"  data-dismiss="modal"><span><i class="fa fa-close"></i>Fermer</span></a>
+									<a class="button button-3d rounded effect icon-left en"  data-dismiss="modal"><span><i class="fa fa-close"></i>Close</span></a>
+									<a class="button button-3d rounded effect icon-left nl"  data-dismiss="modal"><span><i class="fa fa-close"></i>Sluiten</span></a>
 								</div>
 							</div>
 						</div>
@@ -254,7 +260,9 @@ include 'include/header5.php';
 							<div class="modal-content">
 								<div class="modal-header">
 									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-									<h4 id="modal-label-3" class="modal-title">AVANTAGE FISCAL</h4>
+									<h4 id="modal-label-3" class="modal-title fr">AVANTAGE FISCAL</h4>
+									<h4 id="modal-label-3" class="modal-title en">TAX INCENTIVE</h4>
+									<h4 id="modal-label-3" class="modal-title nl">FISCAAL VOORDEEL</h4>
 								</div>
 								<div class="modal-body">
 									<div class="row mb20">
@@ -292,7 +300,9 @@ include 'include/header5.php';
 									</div>
 								</div>
 								<div class="modal-footer">
-									<a class="button button-3d rounded effect icon-left"  data-dismiss="modal"><span><i class="fa fa-close"></i>Fermer</span></a>
+									<a class="button button-3d rounded effect icon-left fr"  data-dismiss="modal"><span><i class="fa fa-close"></i>Fermer</span></a>
+									<a class="button button-3d rounded effect icon-left en"  data-dismiss="modal"><span><i class="fa fa-close"></i>Close</span></a>
+									<a class="button button-3d rounded effect icon-left nl"  data-dismiss="modal"><span><i class="fa fa-close"></i>Sluiten</span></a>
 								</div>
 							</div>
 						</div>
