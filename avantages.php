@@ -7,9 +7,9 @@ include 'include/header5.php';
 	
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green" "fr">QUELS SONT VOS AVANTAGES ?</h1>
-				<h1 class="text-green" "en">WHAT ARE YOUR BENEFITS ?</h1>
-				<h1 class="text-green" "nl">WELKE ZIJN UW VOORDELEN ?</h1>
+				<h1 class="text-green fr">QUELS SONT VOS AVANTAGES ?</h1>
+				<h1 class="text-green en">WHAT ARE YOUR BENEFITS ?</h1>
+				<h1 class="text-green nl">WELKE ZIJN UW VOORDELEN ?</h1>
 				<br>
 				<h3 class="fr">Comme Employeur :</h3>
 				<h3 class="en">As Employer: </h3>
@@ -133,9 +133,9 @@ include 'include/header5.php';
 			      </div>
 			    </div>
 			    
-			     <h3 class="text-green" "fr">Pourquoi travailler avec KAMEO Bikes ?</h3>
-			     <h3 class="text-green" "en">Why work with KAMEO Bikes?</h3>
-			     <h3 class="text-green" "nl">Waarom werken met KAMEO Bikes?</h3>
+			     <h3 class="text-green fr">Pourquoi travailler avec KAMEO Bikes ?</h3>
+			     <h3 class="text-green en">Why work with KAMEO Bikes?</h3>
+			     <h3 class="text-green nl">Waarom met KAMEO Bikes werken?</h3>
 				<div class="row">
 				
 			      <div class="col-md-6">
