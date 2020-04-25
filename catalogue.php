@@ -12,35 +12,69 @@ include 'include/header2.php';
                     <div class="col-md-4">
                     	<div class="heading heading text-left m-b-20">
                         <h2 class="fr">Rechercher</h2>
+                        <h2 class="en">Search</h2>
+                        <h2 class="nl">Zoeken</h2>
                         </div>
                         
                         <div class="m-t-30">
                                 <div class="row">
                                 
                                     <div class="form-group col-sm-12">
-                                        <label for="widget-contact-form-marque">Marque</label>
+                                        <label class="fr" for="widget-contact-form-marque">Marque</label>
+                                        <label class="en" for="widget-contact-form-marque">Brand</label>
+                                        <label class="nl" for="widget-contact-form-marque">Merk</label>
 											<select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
-									           <option data-filter="" value="*">Toutes nos marques</option>
-									           <option data-filter=".conway" value="Conway">Conway</option>
-									           <option data-filter=".orbea">Orbea</option>
-									           <option data-filter=".bzen">Bzen</option>
-									           <option data-filter=".ahooga">Ahooga</option>
-									           <option data-filter=".stevens">Stevens</option>
-									           <option data-filter=".douze">Douze</option>
-									           <option data-filter=".hnf">HNF Nicolai</option>
+									           <option class="fr" data-filter="" value="*">Toutes nos marques</option>
+									           <option class="en" data-filter="" value="*">All our brands</option>
+									           <option class="nl" data-filter="" value="*">Alle onze merken</option>
+									           <option class="fr" data-filter=".conway" value="Conway">Conway</option>
+									           <option class="en" data-filter=".conway" value="Conway">Conway</option>
+									           <option class="nl" data-filter=".conway" value="Conway">Conway</option>
+									           <option class="fr" data-filter=".orbea">Orbea</option>
+									           <option class="en" data-filter=".orbea">Orbea</option>
+									           <option class="nl" data-filter=".orbea">Orbea</option>
+									           <option class="fr" data-filter=".bzen">Bzen</option>
+									           <option class="en" data-filter=".bzen">Bzen</option>
+									           <option class="nl" data-filter=".bzen">Bzen</option>
+									           <option class="fr" data-filter=".ahooga">Ahooga</option>
+									           <option class="en" data-filter=".ahooga">Ahooga</option>
+									           <option class="nl" data-filter=".ahooga">Ahooga</option>
+									           <option class="fr" data-filter=".stevens">Stevens</option>
+									           <option class="en" data-filter=".stevens">Stevens</option>
+									           <option class="nl" data-filter=".stevens">Stevens</option>
+									           <option class="fr" data-filter=".douze">Douze</option>
+									           <option class="en" data-filter=".douze">Douze</option>
+									           <option class="nl" data-filter=".douze">Douze</option>
+									           <option class="fr" data-filter=".hnf">HNF Nicolai</option>
+									           <option class="en" data-filter=".hnf">HNF Nicolai</option>
+									           <option class="fr" data-filter=".hnf">HNF Nicolai</option>
 									       </select>
                                     </div>
                                     
                                     <div class="form-group col-sm-12">
                                         <label for="widget-contact-form-utilisation">Utilisation</label>
 											<select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
-									           <option data-filter="" value="*">Tous types d'utilisation</option>
-									           <option data-filter=".villeetchemin">Ville et chemin</option>
-									           <option data-filter=".ville">Ville</option>
-									           <option data-filter=".toutchemin">Tout chemin</option>
-									           <option data-filter=".pliant">Pliant</option>
-									           <option data-filter=".speedpedelec">Speedpedelec</option>
-									           <option data-filter=".cargo">Cargo</option>
+									           <option class="fr" data-filter="" value="*">Tous types d'utilisation</option>
+									           <option class="en" data-filter="" value="*">Tous types d'utilisation</option>
+									           <option class="nl" data-filter="" value="*">Tous types d'utilisation</option>
+									           <option class="fr" data-filter=".villeetchemin">Ville et chemin</option>
+									           <option class="en" data-filter=".villeetchemin">Ville et chemin</option>
+									           <option class="nl" data-filter=".villeetchemin">Ville et chemin</option>
+									           <option class="fr" data-filter=".ville">Ville</option>
+									           <option class="en" data-filter=".ville">Ville</option>
+									           <option class="nl" data-filter=".ville">Ville</option>
+									           <option class="fr" data-filter=".toutchemin">Tout chemin</option>
+									           <option class="en" data-filter=".toutchemin">Tout chemin</option>
+									           <option class="nl" data-filter=".toutchemin">Tout chemin</option>
+									           <option class="fr" data-filter=".pliant">Pliant</option>
+									           <option class="fr" data-filter=".pliant">Pliant</option>
+									           <option class="fr" data-filter=".pliant">Pliant</option>
+									           <option class="fr" data-filter=".speedpedelec">Speedpedelec</option>
+									           <option class="fr" data-filter=".speedpedelec">Speedpedelec</option>
+									           <option class="fr" data-filter=".speedpedelec">Speedpedelec</option>
+									           <option class="fr" data-filter=".cargo">Cargo</option>
+									           <option class="fr" data-filter=".cargo">Cargo</option>
+									           <option class="fr" data-filter=".cargo">Cargo</option>
 									       </select>
                                     </div>
                                     

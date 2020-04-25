@@ -208,8 +208,8 @@
 										<ul class="dropdown-menu">
 											<li>
 												<a class="fr" href="achat.php">Nos Vélos</a>
-												<a class="fr" href="achat.php">Our Bikes</a>
-												<a class="fr" href="achat.php">Onze Fietsen</a>
+												<a class="en" href="achat.php">Our Bikes</a>
+												<a class="nl" href="achat.php">Onze Fietsen</a>
 											</li>
 											<li>
 												<a class="fr" href="accessoires.php">Nos accessoires</a> 
@@ -227,8 +227,8 @@
 									
 									<li class="dropdown"> 
 										<a class="fr" href="#">Avantages <i class="fa fa-angle-down"></i> </a>
-										<a class="fr" href="#">Benefits <i class="fa fa-angle-down"></i> </a>
-										<a class="fr" href="#">Voordelen <i class="fa fa-angle-down"></i> </a>
+										<a class="en" href="#">Benefits <i class="fa fa-angle-down"></i> </a>
+										<a class="nl" href="#">Voordelen <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li>
 												<a class="fr" href="avantages.php">Avantages liés au vélo</a> 

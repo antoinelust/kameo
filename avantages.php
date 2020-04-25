@@ -113,7 +113,7 @@ include 'include/header5.php';
 			          <h5 class="fr">Combinaison</h5>
 			          <h5 class="en">Combination</h5>
 			          <h5 class="nl">Combinatie</h5>
-			          <p class="fr">Combinez la location tout inclus vélo à l'usage d'une voiture de société.</p>
+			          <p class="fr">Combinez la location tout inclus vélo avec l'usage d'une voiture de société.</p>
 			          <p class="en">Combine the all-inclusive bike rental with the use of a company car.</p>
 			          <p class="nl">Combineer de all-inclusive fietsverhuur met het gebruik van een bedrijfswagen.</p>
 			          <br>
