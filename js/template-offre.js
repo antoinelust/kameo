@@ -1030,6 +1030,8 @@ $("#templateForm").validate({
           `;
           $('#companyContracts').find('.tableBody').append(dest);
           document.getElementById('templateForm').reset();
+          $('#template').modal('toggle');
+            
             
         } else{
           $('.generatePDF').html('Générer PDF');
