@@ -3618,8 +3618,8 @@ if($connected){
           ?>
           <br>
           <a href="docs/cgvfr.pdf" target="_blank" title="Pdf" class="fr">Conditions générales</a>
-          <a href="docs/cgven.pdf" target="_blank" title="Pdf" class="en">Terms and Conditions</a>
-          <a href="docs/cgven.pdf" target="_blank" title="Pdf" class="nl">Algemene voorwaarden</a>
+          <a href="docs/cgvfr.pdf" target="_blank" title="Pdf" class="en">Terms and Conditions</a>
+          <a href="docs/cgvfr.pdf" target="_blank" title="Pdf" class="nl">Algemene voorwaarden</a>
           <br>
           <a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">Bike policy</a>
           <br><br>
