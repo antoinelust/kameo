@@ -1,4 +1,7 @@
 <?php
+
+    include 'globalfunctions.php';
+
   ini_set('internal_encoding', 'utf-8');
   //récupération des données du $_POST (pré boucle)
   $companyId = isset($_POST["companyIdTemplate"]) ? $_POST["companyIdTemplate"] : NULL;
@@ -13,6 +16,12 @@
   $contact['id'] = isset($_POST["contactSelect"]) ? $_POST["contactSelect"] : NULL;
   $delais = isset($_POST["delais"]) ? $_POST["delais"] : NULL;
   $offerValidity = isset($_POST["offerValidity"]) ? $_POST["offerValidity"] : NULL;
+  $bikeFinalPrice = isset($_POST["bikeFinalPrice"]) ? $_POST["bikeFinalPrice"] : NULL;
+  $boxFinalInstallationlPrice = isset($_POST["boxFinalInstallationPrice"]) ? $_POST["boxFinalInstallationPrice"] : NULL;
+  $boxFinalLocationPrice = isset($_POST["boxFinalLocationPrice"]) ? $_POST["boxFinalLocationPrice"] : NULL;
+  $boxFinalPrice=[$boxFinalInstallationlPrice, $boxFinalLocationPrice];
+
+
 
   $delais = explode("\n",$delais);
   $offerValidity = date_create($offerValidity);
@@ -23,8 +32,11 @@
   //création des tableaux destinés a recevoir les id des différents item
   $bikesId = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
   $boxesId = $boxesNumber > 0 ? getIds('boxModel',$boxesNumber) : NULL;
+
+
   $accessoriesId = $accessoriesNumber > 0 ? getIds('accessoryAccessory',$accessoriesNumber) : NULL;
   $others = $othersNumber > 0 ? getOthers($othersNumber) : array();
+
 
 
   $bikes = array();
@@ -33,11 +45,23 @@
   //recuperation des données nécéssaire en db
   $bikes = getItemsInDatabase($bikesId, 'bike_catalog');
   $boxes = getItemsInDatabase($boxesId, 'boxes_catalog');
+
   $accessories = getItemsInDatabase($accessoriesId, 'accessories_catalog');
   $contact = getItemInDatabase($contact['id'], 'companies_contact');
 
+    for ($i=0; $i < $boxesNumber ; $i++) {
+        
+      $boxes[$i]['FINAL_INSTALLATION_PRICE'] = $boxFinalPrice[0][$i];
+      $boxes[$i]['FINAL_LOCATION_PRICE'] = $boxFinalPrice[1][$i];
+            
+    }
+
+  for ($i=0; $i < $bikesNumber ; $i++) {
+    $bikes[$i]['FINAL_LEASING_PRICE'] = $bikeFinalPrice[$i];      
+  }
+
   //transforme le tableau pour n avoir qu'une itération de chaque
-  $bikes = distinct($bikes);
+  $bikes = distinct($bikes, $bikeFinalPrice);
   $boxes = distinct($boxes);
   $accessories = distinct($accessories);
 
@@ -120,11 +144,10 @@
 
   function getOthers($counter){
     $arr = array();
-    for ($i=1; $i <= $counter ; $i++) {
-      $composedDescription = 'othersDescription'.$i;
-      $composedCost = 'othersCost'.$i;
-      $arr[$i-1]['othersDescription'] = $_POST[$composedDescription];
-      $arr[$i-1]['othersCost'] = $_POST[$composedCost];
+    for ($i=0; $i < $counter ; $i++) {
+      $arr[$i]['othersDescription'] = $_POST['othersDescription'][$i];
+      $arr[$i]['othersSellingPrice'] = $_POST['othersSellingPrice'][$i];
+      $arr[$i]['othersSellingPriceFinal'] = $_POST['othersSellingPriceFinal'][$i];
     }
     return $arr;
   }
@@ -162,21 +185,21 @@
   }
 
   function leasingPrice($retailPrice){
-    $priceTemp=($retailPrice/1.21+3*75+4*100+4*100);
-    // Calculation of coefficiant for leasing price
-    if($priceTemp<2500){
-        $coefficient=3.289;
-    }elseif ($priceTemp<=5000){
-        $coefficient=3.056;
-    }elseif ($priceTemp<=12500){
-        $coefficient=2.965;
-    }elseif ($priceTemp<=25000){
-        $coefficient=2.921;
-    }elseif ($priceTemp<=75000){
-        $coefficient=2.898;
+    $data=array("retailPrice" => $retailPrice);
+      
+    if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+        $url='https://www.kameobikes.com/include/get_prices.php';
+    }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
+        $url='https://www.kameobikes.com/test/include/get_prices.php';
+    }else{
+        $url='localhost:81/kameo/include/get_prices.php';
     }
-    $leasingPrice=round(($priceTemp)*($coefficient)/100);
-    return $leasingPrice;
+        
+    $test=CallAPI('POST', $url, $data);
+    $response = json_decode($test);
+      
+    
+    return $response->leasingPrice;
   }
 
   function distinct($arr){
@@ -185,6 +208,7 @@
     for ($i=0; $i < count($temp); $i++) {
       $count = 1;
       $temp[$i]['count'] = $count;
+    
       //parcours le tableau
       for ($j=0; $j < count($temp) ; $j++) {
         //si on est pas au même index et qu'on a le même item

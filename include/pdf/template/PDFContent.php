@@ -374,7 +374,7 @@ h2{
       </div>
     <?php } ?>
       <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
-      <div class="listItem">• POSSIBILIT D ACHAT</div>
+      <div class="listItem">• POSSIBILITE D ACHAT</div>
       <div class="subList">
         <div class="subListItem">• A calculer selon la durée de location</div>
       </div>
@@ -722,7 +722,11 @@ if ($assurance == true) { ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($bikes as $bike) {
-                echo "<div style='margin-left:3mm;'>{$bike['LEASING_PRICE']} € HTVA/mois  <span class='green bold'> x{$bike['count']}</span></div><br/>";
+                if($bike['LEASING_PRICE'] != $bike['FINAL_LEASING_PRICE']){
+                    echo "<div style='margin-left:3mm;'>Location:<br/><del>{$bike['LEASING_PRICE']} € HTVA/mois</del><br /> {$bike['FINAL_LEASING_PRICE']} € HTVA/mois <span class='green bold'> x{$bike['count']}</span></div><br/>";
+                }else{
+                    echo "<div style='margin-left:3mm;'>Location<br/>{$bike['LEASING_PRICE']} € HTVA/mois  <span class='green bold'> x{$bike['count']}</span></div><br/>";
+                }
               } ?>
             </td>
           </tr>
@@ -752,7 +756,17 @@ if ($assurance == true) { ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($boxes as $box) {
-                echo "<div style='margin-left:3mm;'>Installation: {$box['INSTALLATION_PRICE']} € HTVA + location {$box['LOCATION_PRICE']} € HTVA/mois  <span class='green bold'> x{$box['count']}</span></div><br/>";
+                if($box['INSTALLATION_PRICE'] != $box['FINAL_INSTALLATION_PRICE']){
+                    echo "<div style='margin-left:3mm;'>Installation:<br/> <del>{$box['INSTALLATION_PRICE']} € HTVA</del><br/> {$box['FINAL_INSTALLATION_PRICE']} € HTVA <span class='green bold'> x{$box['count']}</span><br/><br/>";
+                }else{
+                    echo "<div style='margin-left:3mm;'>Installation:<br/> {$box['INSTALLATION_PRICE']} € HTVA <span class='green bold'> x{$box['count']}</span><br/><br/>";
+                }
+                if($box['LOCATION_PRICE'] != $box['FINAL_LOCATION_PRICE']){
+                    echo  " Location:<br/> <del>{$box['LOCATION_PRICE']} € HTVA/mois</del><br/> {$box['FINAL_LOCATION_PRICE']} € HTVA/mois  <span class='green bold'> x{$box['count']}</span></div><br/>";
+                }else{
+                    echo  " Location:<br/> {$box['LOCATION_PRICE']} € HTVA/mois  <span class='green bold'> x{$box['count']}</span></div><br/>";
+                }
+                
               } ?>
             </td>
           </tr>
@@ -783,7 +797,11 @@ if ($assurance == true) { ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($others as $other) {
-                echo "<div style='margin-left:3mm;'>Prix: {$other['othersCost']} € HTVA</div><br/>";
+                if($other['othersSellingPriceFinal']!=$other['othersSellingPrice']){
+                    echo "<div style='margin-left:3mm;'>Prix:<br/> <del>{$other['othersSellingPrice']} € HTVA</del><br/>{$other['othersSellingPriceFinal']} € HTVA</div><br/>";
+                }else{
+                    echo "<div style='margin-left:3mm;'>Prix:<br/> {$other['othersSellingPriceFinal']} € HTVA</div><br/>";
+                }
               } ?>
             </td>
           </tr>

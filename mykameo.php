@@ -7373,9 +7373,9 @@ if($connected){
                             <label for="pAchat" class="nl">Buying price</label>
                           </th>
                           <th class="bikepCosts">
-                            <label for="pAchat" class="fr">Coûts</label>
-                            <label for="pAchat" class="en">Costs</label>
-                            <label for="pAchat" class="nl">Costs</label>
+                            <label for="pAchat" class="fr">Coûts maintenance & assur.</label>
+                            <label for="pAchat" class="en">Maintenance costs</label>
+                            <label for="pAchat" class="nl">Maintenance costs</label>
                           </th>
                           <th class="bikepCatalog">
                             <label for="pCatalog" class="fr">Prix catalogue</label>
@@ -7392,10 +7392,20 @@ if($connected){
                             <label for="leasing" class="en">Renting</label>
                             <label for="leasing" class="nl">Renting</label>
                           </th>
+                          <th class="contractLeasing">
+                            <label for="contractLeasing" class="fr">Valeur totale</label>
+                            <label for="contractLeasing" class="en">Total value</label>
+                            <label for="contractLeasing" class="nl">Total value</label>
+                          </th>
                           <th class="bikeMarge">
-                            <label for="marge" class="fr">Margin</label>
+                            <label for="marge" class="fr">Marge</label>
                             <label for="marge" class="en">Margin</label>
                             <label for="marge" class="nl">Margin</label>
+                          </th>
+                          <th class="bikeFinalPrice hidden">
+                            <label for="bikeFinalPrice" class="fr">bikeFinalPrice</label>
+                            <label for="bikeFinalPrice" class="en">bikeFinalPrice</label>
+                            <label for="bikeFinalPrice" class="nl">bikeFinalPrice</label>
                           </th>
                         </tr>
                       </thead>
@@ -7430,19 +7440,35 @@ if($connected){
                             <label for="boxProdPrice" class="nl">Production</label>
                           </th>
                           <th class="boxMaintenance">
-                            <label for="boxMaintenance" class="fr">Coûts</label>
-                            <label for="boxMaintenance" class="en">Costs</label>
-                            <label for="boxMaintenance" class="nl">Costs</label>
+                            <label for="boxMaintenance" class="fr">Coûts maintenance</label>
+                            <label for="boxMaintenance" class="en">Maintenance costs</label>
+                            <label for="boxMaintenance" class="nl">Maintenance costs</label>
                           </th>
                           <th class="boxInstallationPrice">
                             <label for="boxInstallationPrice" class="fr">Installation</label>
                             <label for="boxInstallationPrice" class="en">Installation</label>
                             <label for="boxInstallationPrice" class="nl">Installation</label>
                           </th>
+                          <th class="boxFinalInstallationPrice hidden">
+                            <label for="boxFinalInstallationPrice" class="fr">boxFinalInstallationPrice</label>
+                            <label for="boxFinalInstallationPrice" class="en">boxFinalInstallationPrice</label>
+                            <label for="boxFinalInstallationPrice" class="nl">boxFinalInstallationPrice</label>
+                          </th>
                           <th class="boxLocationPrice">
                             <label for="boxLocationPrice" class="fr">Location</label>
                             <label for="boxLocationPrice" class="en">Renting</label>
                             <label for="boxLocationPrice" class="nl">Renting</label>
+                          </th>
+                          <th class="boxFinalLocationPrice hidden">
+                            <label for="boxFinalLocationPrice" class="fr">boxFinalLocationPrice</label>
+                            <label for="boxFinalLocationPrice" class="en">boxFinalLocationPrice</label>
+                            <label for="boxFinalLocationPrice" class="nl">boxFinalLocationPrice</label>
+                          </th>
+                            
+                          <th class="boxContractPrice">
+                            <label for="boxContractPrice" class="fr">Valeur totale</label>
+                            <label for="boxContractPrice" class="en">Total value</label>
+                            <label for="boxContractPrice" class="nl">Total value</label>
                           </th>
                           <th class="boxMarge">
                             <label for="boxMarge" class="fr">Marge</label>
@@ -7505,8 +7531,14 @@ if($connected){
                         <th class="othersDescription">
                           <label for="oDescription" class="fr">Description</label>
                         </th>
-                        <th class="othersCost">
-                          <label for="oCost" class="fr">Cout</label>
+                        <th class="othersBuyingCost">
+                          <label for="oBuyingCost" class="fr">Cout achat</label>
+                        </th>
+                        <th class="othersSellingCost">
+                          <label for="oSellingCost" class="fr">Prix vente</label>
+                        </th>
+                        <th class="othersSellingCostFinal">
+                          <label for="oSellingCost" class="fr">Prix vente final</label>
                         </th>
                       </thead>
                       <tbody>
@@ -7650,7 +7682,7 @@ if($connected){
                             if (response.response == 'success') {
                               $.notify({
                                 message: response.message
-                              }, {
+                              },{
                                 type: 'success'
                               });
                               list_contracts_offers('*');

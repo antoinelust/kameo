@@ -103,6 +103,7 @@ $('#buyOrLeasingSelect').on('change',function(){
     //gestion bike
       //prix achat/leasing
     $('.bikeLeasing').fadeIn();
+    $('.contractLeasing').fadeIn();
     $('.TD_bikeLeasing').addClass('inRecapLeasingBike');
     $('.bikepVenteHTVA').fadeOut();
     $('.TD_bikepVenteHTVA').removeClass('inRecapVenteBike');
@@ -121,6 +122,7 @@ $('#buyOrLeasingSelect').on('change',function(){
     //gestion bike
       //prix achat/leasing
     $('.bikeLeasing').fadeOut();
+    $('.contractLeasing').fadeOut();
     $('.TD_bikeLeasing').removeClass('inRecapLeasingBike');
     $('.bikepVenteHTVA').fadeIn();
     $('.TD_bikepVenteHTVA').addClass('inRecapVenteBike');
@@ -139,6 +141,7 @@ $('#buyOrLeasingSelect').on('change',function(){
     //gestion bike
       //prix achat/leasing
     $('.bikeLeasing').fadeIn();
+    $('.contractLeasing').fadeIn();
     $('.TD_bikeLeasing').addClass('inRecapLeasingBike');
     $('.bikepVenteHTVA').fadeIn();
     $('.TD_bikepVenteHTVA').addClass('inRecapVenteBike');
@@ -253,8 +256,10 @@ get_all_bikes().done(function(response){
     <td class="bikepCosts"></td>
     <td class="bikepCatalog"></td>
     <td class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
-    <td class="bikeLeasing TD_bikeLeasing `+inRecapLeasingBike+`"`+hideBikeLeasing+`></td>
+    <td contenteditable='true' class="bikeLeasing TD_bikeLeasing `+inRecapLeasingBike+`"`+hideBikeLeasing+`></td>
+    <td class="contractLeasing"></td>
     <td class="bikeMarge"></td>
+    <td class="bikeFinalPrice hidden"></td>
     </tr>`);
 
     //label selon la langue
@@ -295,6 +300,7 @@ get_all_bikes().done(function(response){
         //recuperation du prix leasing
         var leasingPrice = response.leasingPrice;
         var margeLeasing = (leasingDuration*leasingPrice*1 - bikes[id].buyingPrice - pCosts).toFixed(0) + '€ (' + ((leasingDuration*leasingPrice*1 - bikes[id].buyingPrice - pCosts)/(bikes[id].buyingPrice*1 + parseInt(pCosts))*100).toFixed(0) + '%)';
+        var contractLeasing=leasingDuration*leasingPrice*1;
           
         //gestion de prix null
         if (bikes[id].buyingPrice == null) {
@@ -318,9 +324,19 @@ get_all_bikes().done(function(response){
         $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
         $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
         $(that).parents('.bikeRow').find('.bikeLeasing').html(leasingPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
+        $(that).parents('.bikeRow').find('.bikeLeasing').attr('data-orig',leasingPrice);
+        $(that).parents('.bikeRow').find('.bikeFinalPrice').html("<input type=\"text\" name=\"bikeFinalPrice[]\" value=\""+leasingPrice+"\"/>");
+          
+          
+        $(that).parents('.bikeRow').find('.contractLeasing').html(contractLeasing + '€');
       });
-    });
+        
+        update_elements_price();                 
+        
+    });      
     checkMinus('.templateBike','.bikesNumber');
+      
+      
   });
 
   //retrait
@@ -335,6 +351,7 @@ get_all_bikes().done(function(response){
     checkMinus('.templateBike','.bikesNumber');
   });
 });
+
 
 //boxes
 var boxes = [];
@@ -371,8 +388,11 @@ get_all_boxes().done(function(response){
               <td class="boxLabel"></td><td class="boxModel"></td>
               <td class="boxProdPrice"></td>
               <td class="boxMaintenance"></td>
-              <td class="boxInstallationPrice"></td>
-              <td class="boxLocationPrice"></td>
+              <td contenteditable='true'  class="boxInstallationPrice"></td>
+              <td class="boxFinalInstallationPrice hidden"></td>
+              <td contenteditable='true'  class="boxLocationPrice"></td>
+              <td class="boxFinalLocationPrice hidden"></td>
+              <td class="boxContractPrice"></td>
               <td class="boxMarge"></td>
               </tr>`);
 
@@ -398,16 +418,24 @@ get_all_boxes().done(function(response){
       var locationPrice = boxes[boxId].locationPrice + '€/mois';
       var boxMaintenance = leasingDuration*box_maintenance_year/12;
         
-      var marge = (boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*36)).toFixed(0) + '€ (' + ((boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*36))/(boxes[boxId].productionPrice*1 + boxMaintenance)*100).toFixed(0) + '%)';
+      var marge = (boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*leasingDuration)).toFixed(0) + '€ (' + ((boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*leasingDuration))/(boxes[boxId].productionPrice*1 + boxMaintenance)*100).toFixed(0) + '%)';
             
 
-      $(that).parents('.boxRow').find('.boxProdPrice').html(productionPrice + " <span class=\"text-red\">(-)</span>");
-      $(that).parents('.boxRow').find('.boxMaintenance').html(boxMaintenance+" €" + " <span class=\"text-red\">(-)</span>");
-      $(that).parents('.boxRow').find('.boxInstallationPrice').html(installationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapInstallBox');
-      $(that).parents('.boxRow').find('.boxMarge').html(marge);
-      $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapLocationBox');
+        $(that).parents('.boxRow').find('.boxProdPrice').html(productionPrice + " <span class=\"text-red\">(-)</span>");
+        $(that).parents('.boxRow').find('.boxMaintenance').html(boxMaintenance+" €" + " <span class=\"text-red\">(-)</span>");
+        $(that).parents('.boxRow').find('.boxInstallationPrice').html(installationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapInstallBox');
+        $(that).parents('.boxRow').find('.boxInstallationPrice').attr('data-orig',boxes[boxId].installationPrice);
+        $(that).parents('.boxRow').find('.boxFinalInstallationPrice').html("<input type=\"text\" name=\"boxFinalInstallationPrice[]\" value=\""+boxes[boxId].installationPrice+"\"/>");        
+        $(that).parents('.boxRow').find('.boxMarge').html(marge);
+        $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapLocationBox');
+        $(that).parents('.boxRow').find('.boxLocationPrice').attr('data-orig',boxes[boxId].locationPrice);
+        $(that).parents('.boxRow').find('.boxFinalLocationPrice').html("<input type=\"text\" name=\"boxFinalLocationPrice1[]\" value=\""+boxes[boxId].locationPrice+"\"/>");        
+        
+      $(that).parents('.boxRow').find('.boxContractPrice').html((boxes[boxId].locationPrice*leasingDuration*1+boxes[boxId].installationPrice*1) + "€").addClass('inRecapLocationBox');
 
     });
+    update_elements_price();      
+      
     checkMinus('.templateBoxes','.boxesNumber');
   });
 
@@ -424,6 +452,88 @@ get_all_boxes().done(function(response){
     checkMinus('.templateBoxes','.boxesNumber');
   });
 });
+
+
+function update_elements_price(){
+    
+    var editable = document.querySelectorAll('td[contentEditable]');
+
+    for (var i=0, len = editable.length; i<len; i++){
+
+        editable[i].onblur = function(){
+            if(this.classList.contains("bikeLeasing")){
+                var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+                var newPrice=this.innerHTML.split('€')[0];
+                if(initialPrice==newPrice){
+                    $(this).parents('.bikeRow').find('.bikeLeasing').html(newPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
+                }else{
+                    var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+                    $(this).parents('.bikeRow').find('.bikeLeasing').html(newPrice + '€/mois' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+                }
+                var contractLeasing=leasingDuration*newPrice*1;
+                $(this).parents('.bikeRow').find('.contractLeasing').html(contractLeasing + '€');
+                var buyingPrice=$(this).parents('.bikeRow').find('.bikepAchat').html().split('€')[0];
+                var costs=$(this).parents('.bikeRow').find('.bikepCosts').html().split('€')[0];
+                var priceHTVA=$(this).parents('.bikeRow').find('.bikepCatalog').html().split('€')[0];
+                $(this).parents('.bikeRow').find('.bikeFinalPrice').html("<input type=\"text\" name=\"bikeFinalPrice[]\" value=\""+newPrice+"\"/>");
+                
+
+
+                var margeVente = (priceHTVA*1 - buyingPrice*1).toFixed(0) + '€';
+                var margeLeasing = (leasingDuration*newPrice*1 - buyingPrice - costs).toFixed(0) + '€ (' + ((leasingDuration*newPrice*1 - buyingPrice - costs*1)/(buyingPrice*1 + costs*1)*100).toFixed(0) + '%)';
+                if($("#templateForm").hasClass('isLeasing')){
+                  marge = '<span class="margeLeasing">'+margeLeasing+'<\/span><span class="margeVente" style="display:none">'+margeVente+'<\/span>';
+
+                } else {
+                  marge = '<span class="margeLeasing" style="display:none">'+margeLeasing+'<\/span><span class="margeVente">'+margeVente+'<\/span>';
+                }
+                $(this).parents('.bikeRow').find('.bikeMarge').html(marge);
+            }
+            else if(this.classList.contains("boxLocationPrice") || this.classList.contains("boxInstallationPrice")){
+                if(this.classList.contains("boxLocationPrice")){
+                    var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+                    var newPrice=this.innerHTML.split('€')[0];
+                    if(initialPrice==newPrice){
+                        $(this).parents('.boxRow').find('.boxLocationPrice').html(newPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
+                    }else{
+                        var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+                        $(this).parents('.boxRow').find('.boxLocationPrice').html(newPrice + '€/mois' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+                    }
+                    $(this).parents('.boxRow').find('.boxFinalLocationPrice').html("<input type=\"text\" name=\"boxFinalLocationPrice[]\" value=\""+newPrice+"\"/>");        
+                    
+                    
+                    
+                }else if(this.classList.contains("boxInstallationPrice")){
+                    var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+                    var newPrice=this.innerHTML.split('€')[0];
+                    if(initialPrice==newPrice){
+                        $(this).parents('.boxRow').find('.boxInstallationPrice').html(newPrice + '€' + " <span class=\"text-green\">(+)</span>");
+                    }else{
+                        var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+                        $(this).parents('.boxRow').find('.boxInstallationPrice').html(newPrice + '€' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+                    }          
+                    $(this).parents('.boxRow').find('.boxFinalInstallationPrice').html("<input type=\"text\" name=\"boxFinalInstallationPrice[]\" value=\""+newPrice+"\"/>");        
+                    
+                }
+                var contractLeasing=($(this).parents('.boxRow').find('.boxLocationPrice').html().split('€')[0])*leasingDuration;
+                var installationPrice=$(this).parents('.boxRow').find('.boxInstallationPrice').html().split('€')[0];
+
+                $(this).parents('.boxRow').find('.boxContractPrice').html((contractLeasing*1+ installationPrice*1)+ '€');
+
+
+
+
+                var boxProdPrice=$(this).parents('.boxRow').find('.boxProdPrice').html().split('€')[0];
+                var maintenance=$(this).parents('.boxRow').find('.boxMaintenance').html().split('€')[0];
+
+
+                var marge = (installationPrice*1 - boxProdPrice*1 - maintenance + (contractLeasing*1)).toFixed(0) + '€ (' + ((installationPrice*1 - boxProdPrice*1 - maintenance + (contractLeasing*1))/(boxProdPrice*1 + maintenance*1)*100).toFixed(0) + '%)';
+                $(this).parents('.boxRow').find('.boxMarge').html(marge);
+            }            
+            
+        }
+    }
+}
 
 
 //Accessoires
@@ -588,11 +698,16 @@ $(document).ready(function(){
                   .append(`<tr class="othersNumberTable`+(othersNumber)+` otherRow form-group">
                             <td class="othersLabel"></td>
                             <td class="othersDescription">
-                              <input type="textArea" class="form-control required" name="othersDescription`+othersNumber+`" placeholder="Description"/>
+                              <input type="textArea" class="form-control required" name="othersDescription[]" placeholder="Description"/>
                             </td>
-                            <td class="othersCost input-group">
-                              <span class="input-group-addon">€</span>
-                              <input type="number" class="form-control currency required inRecapOthersCost" name="othersCost`+othersNumber+`" min="0" />
+                            <td class="othersBuyingCost">
+                              <input type="number" class="form-control currency required inRecapOthersBuyingCost" name="othersBuyingCost`+othersNumber+`" min="0" />
+                            </td>
+                            <td class="othersSellingCost">
+                              <input type="number" class="form-control currency required inRecapOthersSellingCost" name="othersSellingPrice[]" min="0" />
+                            </td>
+                            <td class="othersSellingCostFinal">
+                              <input type="number" class="form-control currency required inRecapOthersSellingCostFinal" name="othersSellingPriceFinal[]" min="0" />
                             </td>
                           </tr>`);
 
@@ -640,7 +755,8 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   var boxesRecap ={
     'install' : [],
     'location' : [],
-    'productionPrice' : []
+    'productionPrice' : [],
+    'maintenancePrice' : []
   };
 
     //accessories
@@ -651,7 +767,9 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
     //Autres
   var othersRecap = {
     'description' : [],
-    'cost' : []
+    'vente' : [],
+    'venteFinal' : [],
+    'pAchat' : []
   };
 
     //compteur
@@ -679,6 +797,7 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   $('.inRecapInstallBox').each(function(){
     boxesRecap.install.push($(this).html().split('€')[0]);
     boxesRecap.productionPrice.push($(this).parents('tr').find('.boxProdPrice').html().split('€')[0]);
+    boxesRecap.maintenancePrice.push($(this).parents('tr').find('.boxMaintenance').html().split('€')[0]);
     count++;
   });
   count=0
@@ -697,9 +816,11 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   });
   count=0
     //valeurs othersDescription & othersCost
-  $('.inRecapOthersCost').each(function(){
-    othersRecap.cost.push($(this).val());
+  $('.inRecapOthersSellingCost').each(function(){
+    othersRecap.vente.push($(this).val());
     othersRecap.description.push($(this).parents('tr').find('.othersDescription input').val());
+    othersRecap.pAchat.push($(this).parents('tr').find('.othersBuyingCost input').val());
+    othersRecap.venteFinal.push($(this).parents('tr').find('.othersSellingCostFinal input').val());
     count++;
   });
         
@@ -740,7 +861,7 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   for (var i = 0; i < boxesNumber; i++) {
     prixAchatTotal += boxesRecap.install[i]*1;
     prixLocationTotalMois += boxesRecap.location[i]*1;
-    coutsTotaux += boxesRecap.productionPrice[i]*1;
+    coutsTotaux += boxesRecap.productionPrice[i]*1 + boxesRecap.maintenancePrice[i]*1;
     content += `
     <tr>
       <td>Box `+(i*1+1)+`</td>
@@ -763,11 +884,12 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 
   //vue others
   for (var i = 0; i < othersNumber; i++) {
-    prixAchatTotal += othersRecap.cost[i]*1;
+    prixAchatTotal += othersRecap.venteFinal[i]*1;
+    coutsTotaux += othersRecap.pAchat[i]*1;
     content += `
     <tr>
       <td>`+othersRecap.description[i]+`</td>
-      <td>`+othersRecap.cost[i]+` €</td>
+      <td>`+othersRecap.venteFinal[i]+` €</td>
       <td>/</td>
     </tr>`;
   }
@@ -776,7 +898,7 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   <tr style="font-weight:700">
     <td>Sous total: </td>
     <td>`+prixAchatTotal+` €</td>
-    <td>`+prixLocationTotalMois+` €</td>
+    <td>`+prixLocationTotalMois+` €/mois</td>
   </tr>
   <tr style="font-weight:700">
     <td></td>
@@ -819,9 +941,6 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
     tabMarge = (prixTotal - coutsTotaux);
     tabMarge = tabMarge.toFixed(2);
       
-    console.log(tabMarge);
-    console.log(coutsTotaux);
-
     tabMargePourcent = (tabMarge/coutsTotaux)*100;
     tabMargePourcent = tabMargePourcent.toFixed(2);
 
@@ -840,18 +959,18 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
   if ($('#buyOrLeasingSelect').val() == "leasing" || $('#buyOrLeasingSelect').val() == "both") {
     footer += `
     <tr style="font-weight:bold">
-      <td>Autres couts: </td>
+      <td>Récapitulatif leasing</td>
       <td>Frais (total)</td>
-      <td>Leasing/location (Durée totale)</td>
+      <td>Location (Durée totale)</td>
     </tr>
     <tr>
-      <td>Sous total: `+prixAchatTotal+` €</td>
+      <td></td>
       <td>- `+coutsTotaux+` €</td>
       <td>`+prixLocationTotal+` €</td>
     </tr>`;
   }
   footer += `
-  <tr style="font-weight:bold">
+<tr style="font-weight:bold">
     <td>PRIX TOTAL</td>
     <td>MARGE (€)</td>
     <td>MARGE (%)</td>
@@ -874,6 +993,7 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 $("#templateForm").validate({
   ignore: '',
   submitHandler: function(form) {
+      console.log(form);
     var buttonContent = `
     <i class="fa fa-circle-o-notch fa-spin"></i>Chargement...
     `;
