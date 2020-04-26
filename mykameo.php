@@ -3621,7 +3621,7 @@ if($connected){
           <a href="docs/cgven.pdf" target="_blank" title="Pdf" class="en">Terms and Conditions</a>
           <a href="docs/cgven.pdf" target="_blank" title="Pdf" class="nl">Algemene voorwaarden</a>
           <br>
-          <a href="#" title="Pdf">Bike policy</a>
+          <a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">Bike policy</a>
           <br><br>
           <a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Manuel d\'utilisation" class="fr">Manuel d'utilisation</a>
           <br>
