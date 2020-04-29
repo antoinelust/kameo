@@ -85,5 +85,6 @@ if ($conn->query($sql) === FALSE) {
 $result = mysqli_query($conn, $sql);  
 $conn->close();
 
+echo "1";
 
 ?>

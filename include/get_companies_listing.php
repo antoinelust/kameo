@@ -113,7 +113,7 @@ if($action=="graphic"){
         $sql=$sql." AND TYPE='$type'";
     }
 
-    $sql=$sql." ORDER BY HEU_MAJ DESC";
+    $sql=$sql." ORDER BY INTERNAL_REFERENCE";
     
     $response['sql']=$sql;
     

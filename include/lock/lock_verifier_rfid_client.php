@@ -287,7 +287,7 @@ if($length=="1"){
                 echo "1";
             }else{
                 //utilisateur trouvé mais il n'a la condition
-                echo "-2";
+                echo "-1";
             }
         }else{
         //utilisateur trouvé mais pas de condition définie (ne devrait jamais arriver)

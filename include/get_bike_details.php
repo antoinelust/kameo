@@ -47,6 +47,7 @@ if($frameNumber != NULL || $id != NULL)
     $response['model']=$row['MODEL'];
     $response['type']=$row['TYPE'];
     $response['frameReference']=$row['FRAME_REFERENCE'];
+    $response['lockerReference']=$row['LOCKER_REFERENCE'];
     $response['company']=$row['COMPANY'];
     $response['size']=$row['SIZE'];
     $response['leasing']=$row['AUTOMATIC_BILLING'];

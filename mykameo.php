@@ -5197,7 +5197,7 @@ if($connected){
                           <select title="Type" class="form-control selectpicker" name="type">
                             <option value="CLIENT">Client</option>
                             <option value="PROSPECT" selected>Prospect</option>
-                            <option value="ANCIEN PROSPECT" selected>Ancien prospect</option>
+                            <option value="ANCIEN PROSPECT">Ancien prospect</option>
                             <option value="ANCIEN CLIENT">Ancien client</option>
                             <option value="NOT INTERESTED">Pas intéressé</option>
                           </select>
@@ -5324,6 +5324,7 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
+                              initializeFields();
                               get_company_listing('*');
                               document.getElementById('widget-addClient-form').reset();
                               $('#addClient').modal('toggle');
@@ -6203,6 +6204,10 @@ if($connected){
                               });
                               list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user ?>');
                               $('#taskManagement').modal('toggle');
+                                
+                              get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);   
+                                
+                                
                               document.getElementById('widget-taskManagement-form').reset();
 
 
@@ -6559,6 +6564,12 @@ if($connected){
 
                         </div>
                         <div class="col-sm-12">
+                          <div class="col-sm-4">
+                            <label for="lockerReference"  class="fr">Clé du cadenas</label>
+                            <label for="lockerReference"  class="en">Locker key number</label>
+                            <label for="lockerReference"  class="nl">Locker key number</label>
+                            <input type="text" name="lockerReference" class="form-control">
+                          </div>
 
                           <div class="col-sm-4 bikeManagementPicture">
                             <label for="picture"  class="fr">Image actuelle</label>
@@ -7249,9 +7260,12 @@ if($connected){
                                 type: 'success'
                               });
                               list_contracts_offers('*');
+                              
                               document.getElementById('widget-offerManagement-form').reset();
+                              if($('#widget-companyDetails-form input[name=ID]').val()!=''){
+                                  get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);   
+                              }
                               $('#offerManagement').modal('toggle');
-
 
                             } else {
                               $.notify({

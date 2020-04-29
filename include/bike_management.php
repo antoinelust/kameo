@@ -31,6 +31,7 @@ if(isset($_POST['action'])){
         
 
         $frameReference=$_POST['frameReference'];
+        $lockerReference=$_POST['lockerReference'];
         $billingPrice=$_POST['billingPrice'];
         $billingType=$_POST['billingType'];
         $billingGroup=$_POST['billingGroup'];
@@ -66,6 +67,11 @@ if(isset($_POST['action'])){
             $billingPrice="'".$billingPrice."'";
         }else{
             $billingPrice='NULL';
+        }
+        if($lockerReference!=NULL){
+            $lockerReference="'".$lockerReference."'";
+        }else{
+            $lockerReference='NULL';
         }
         
         
@@ -229,7 +235,7 @@ if(isset($_POST['action'])){
             }
 
             
-            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice')";
+            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, LOCKER_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', $lockerReference, '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice')";
             
             
             
@@ -294,6 +300,7 @@ if(isset($_POST['action'])){
         $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
 
         $frameReference=$_POST['frameReference'];
+        $lockerReference=$_POST['lockerReference'];
         $billingPrice=$_POST['billingPrice'];
         $billingType=$_POST['billingType'];
         $billingGroup=$_POST['billingGroup'];
@@ -331,6 +338,11 @@ if(isset($_POST['action'])){
             $billingPrice="'".$billingPrice."'";
         }else{
             $billingPrice='NULL';
+        }
+        if($lockerReference!=NULL){
+            $lockerReference="'".$lockerReference."'";
+        }else{
+            $lockerReference='NULL';
         }
 
 
@@ -436,7 +448,7 @@ if(isset($_POST['action'])){
 
             include 'connexion.php';
 
-            $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', BIKE_BUYING_DATE=$buyingDate, SOLD_PRICE = $sellPrice where FRAME_NUMBER = '$frameNumber'";
+            $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', BIKE_BUYING_DATE=$buyingDate, SOLD_PRICE = $sellPrice where FRAME_NUMBER = '$frameNumber'";
 
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);

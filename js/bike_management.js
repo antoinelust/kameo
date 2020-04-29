@@ -462,6 +462,7 @@ function construct_form_for_bike_status_updateAdmin(frameNumber){
                         $('#widget-bikeManagement-form input[name=model]').val(response.model);
                         $('#widget-bikeManagement-form input[name=size]').val(response.size);
                         $('#widget-bikeManagement-form input[name=frameReference]').val(response.frameReference);
+                        $('#widget-bikeManagement-form input[name=lockerReference]').val(response.lockerReference);
                         $('#widget-bikeManagement-form input[name=price]').val(response.bikePrice);
                         $('#widget-bikeManagement-form input[name=buyingDate]').val(response.buyingDate);
                         $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);

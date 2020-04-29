@@ -993,7 +993,6 @@ $('#generateTableRecap')[0].addEventListener('click',function(){
 $("#templateForm").validate({
   ignore: '',
   submitHandler: function(form) {
-      console.log(form);
     var buttonContent = `
     <i class="fa fa-circle-o-notch fa-spin"></i>Chargement...
     `;
