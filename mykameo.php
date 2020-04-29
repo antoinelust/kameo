@@ -37,6 +37,7 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/addons/datatables.min.js"></script>
 <script type="text/javascript" src="js/datatable_default.js"></script>
 <script type="text/javascript" src="js/global_functions.js"></script>
+<script type="text/javascript" src="js/dashboard_management.js"></script>
 
 
 <script type="text/javascript">
@@ -134,6 +135,7 @@ document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('chang
 document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
+document.getElementsByClassName('dashboardClick')[0].addEventListener('click', function() { list_errors()}, false);
 
 
 var tempDate=new Date();
@@ -2615,7 +2617,7 @@ if($connected){
                           </div>
                           <div class="col-md-4 hidden" id="dashBoardManagement">
                             <div class="icon-box medium fancy">
-                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#dashboard" href="#" ><i class="fa fa-dashboard"></i></a> </div>
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" class="dashboardClick" data-target="#dashboard" href="#" ><i class="fa fa-dashboard"></i></a> </div>
                               <div class="counter bold" style="color:#3cb395"></div>
                               <p>Dashboard</p>
                             </div>
@@ -4788,9 +4790,9 @@ if($connected){
              		 <div class="col-md-2 sidebar">
 		             	<div class="sidebar-menu">
 		                    <ul>
-		                        <li class="active"><a class="scroll-to" href="#">Overview</a>
+		                        <li class="active"><a class="scroll-to" href="#">Erreurs à corriger</a>
 		                        </li>
-		                        <li><a class="scroll-to" href="#">Bouton 2</a>
+		                        <li><a class="scroll-to" href="#">KPI</a>
 		                        </li>
 		                        <li><a class="scroll-to" href="#">Bouton 3</a>
 		                        </li>
@@ -4803,49 +4805,8 @@ if($connected){
              		 </div>
              		 <div class="col-md-10">
                          <div class="col-md-12">
-                            <div class="col-md-6">
-                                <canvas id="myChart4" width="400" height="400"></canvas>
-                                <script>
-                                var ctx = document.getElementById('myChart4').getContext('2d');
-                                var myChart = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                                        datasets: [{
-                                            label: '# of Votes',
-                                            data: [12, 19, 3, 5, 2, 3],
-                                            backgroundColor: [
-                                                'rgba(255, 99, 132, 0.2)',
-                                                'rgba(54, 162, 235, 0.2)',
-                                                'rgba(255, 206, 86, 0.2)',
-                                                'rgba(75, 192, 192, 0.2)',
-                                                'rgba(153, 102, 255, 0.2)',
-                                                'rgba(255, 159, 64, 0.2)'
-                                            ],
-                                            borderColor: [
-                                                'rgba(255, 99, 132, 1)',
-                                                'rgba(54, 162, 235, 1)',
-                                                'rgba(255, 206, 86, 1)',
-                                                'rgba(75, 192, 192, 1)',
-                                                'rgba(153, 102, 255, 1)',
-                                                'rgba(255, 159, 64, 1)'
-                                            ],
-                                            borderWidth: 1
-                                        }]
-                                    },
-                                    options: {
-                                        scales: {
-                                            yAxes: [{
-                                                ticks: {
-                                                    beginAtZero: true
-                                                }
-                                            }]
-                                        }
-                                    }
-                                });
-                                </script>                                
-                             </div>
-                         
+                             <h4 class="text-green">Erreurs à corriger</h4>
+                              <span id="dashboardBody"></span>
                          </div>
              		 </div>
 				  </div>

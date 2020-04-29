@@ -409,12 +409,14 @@ if(isset($_POST['action'])){
 
                 $dossier = '../images_bikes/';
                 $fichier= $frameNumberOriginel.'.jpg';
-
-                copy($dossier . $fichier, $dossier . $frameNumber.'.jpg');
+                if(file_exists($dossier . $fichier)){
+                    copy($dossier . $fichier, $dossier . $frameNumber.'.jpg');
+                } 
 
                 $fichier= $frameNumberOriginel.'_mini.jpg';
-
-                copy($dossier . $fichier, $dossier . $frameNumber.'_mini.jpg');
+                if (file_exists($dossier . $fichier)){
+                    copy($dossier . $fichier, $dossier . $frameNumber.'_mini.jpg');
+                }
 
 
 

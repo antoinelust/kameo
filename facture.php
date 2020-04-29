@@ -419,6 +419,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 echo $test1.$test2.$test3;
 
 
+error_log("Result :".$test1.$test2.$test3."\n", 3, "generate_invoices.log");    
 
 
 
