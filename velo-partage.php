@@ -4,20 +4,40 @@ include 'include/header5.php';
 			<!-- SECTION SOLUTIONS -->
 			<section class="" style="background: url('images/fond_degrade.jpg');" data-stellar-background-ratio="0.3">
 				<div class="container">
-				<a class="button black-light button-3d effect fill-vertical right"  href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right fr"  href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right en"  href="velo-personnel.php"><span>Personnal bikes <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right nl"  href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
-							<h1 class="text-dark">VÉLOS PARTAGÉS</h1>
-							<p class="lead text-light text-justify">Rendez les déplacements de vos employés plus <strong>dynamiques</strong> et <strong>écologiques</strong>, mettez leur des vélos partagés à disposition.<br> Que ce soit pour : des rendez-vous clients, les trajets domicile-travail, un trajet inter-sites ou se rendre à un lunch, soyez sûr de leur temps de parcours et améliorez leur forme.</p>
-							<p class="lead text-light"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous:<br>
-							- <strong>conseil</strong> sur le vélo adapté,<br>
-							- <strong>maintenance</strong> sur site,<br>
-							- <strong>assurance</strong> et <strong>assistance</strong> dépannage,<br>
-							- <strong>gestion</strong> des vélos simple, connectée et sécurisée,<br>
-							- installation d'<strong>infrastructures</strong>.</p>
+							<h1 class="text-dark fr">VÉLOS PARTAGÉS</h1>
+							<h1 class="text-dark en">VÉLOS PARTAGÉS</h1>
+							<h1 class="text-dark nl">VÉLOS PARTAGÉS</h1>
+							<p class="lead text-light text-justify fr">Rendez les déplacements de vos employés plus <strong>dynamiques</strong> et <strong>écologiques</strong>, mettez leur des vélos partagés à disposition.<br> Que ce soit pour : des rendez-vous clients, les trajets domicile-travail, un trajet inter-sites ou se rendre à un lunch, soyez sûr de leur temps de parcours et améliorez leur forme.</p>
+							<p class="lead text-light text-justify en">Rendez les déplacements de vos employés plus <strong>dynamiques</strong> et <strong>écologiques</strong>, mettez leur des vélos partagés à disposition.<br> Que ce soit pour : des rendez-vous clients, les trajets domicile-travail, un trajet inter-sites ou se rendre à un lunch, soyez sûr de leur temps de parcours et améliorez leur forme.</p>
+							<p class="lead text-light text-justify nl">Rendez les déplacements de vos employés plus <strong>dynamiques</strong> et <strong>écologiques</strong>, mettez leur des vélos partagés à disposition.<br> Que ce soit pour : des rendez-vous clients, les trajets domicile-travail, un trajet inter-sites ou se rendre à un lunch, soyez sûr de leur temps de parcours et améliorez leur forme.</p>
+							<p class="lead text-light fr"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous:<br>
+								- <strong>conseil</strong> sur le vélo adapté,<br>
+								- <strong>maintenance</strong> sur site,<br>
+								- <strong>assurance</strong> et <strong>assistance</strong> dépannage,<br>
+								- <strong>gestion</strong> des vélos simple, connectée et sécurisée,<br>
+								- installation d'<strong>infrastructures</strong>.</p>							
+							<p class="lead text-light en"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous:<br>
+								- <strong>conseil</strong> sur le vélo adapté,<br>
+								- <strong>maintenance</strong> sur site,<br>
+								- <strong>assurance</strong> et <strong>assistance</strong> dépannage,<br>
+								- <strong>gestion</strong> des vélos simple, connectée et sécurisée,<br>
+								- installation d'<strong>infrastructures</strong>.</p>							
+							<p class="lead text-light nl"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous:<br>
+								- <strong>conseil</strong> sur le vélo adapté,<br>
+								- <strong>maintenance</strong> sur site,<br>
+								- <strong>assurance</strong> et <strong>assistance</strong> dépannage,<br>
+								- <strong>gestion</strong> des vélos simple, connectée et sécurisée,<br>
+								- installation d'<strong>infrastructures</strong>.</p>
 							
-							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span>Découvrez notre offre <i class="fa fa-arrow-down"></i></span></a>
+							<a class="button black-light button-3d effect fill-vertical scroll-to fr"  href="#plus"><span>Découvrez notre offre <i class="fa fa-arrow-down"></i></span></a>
+							<a class="button black-light button-3d effect fill-vertical scroll-to en"  href="#plus"><span>Discover our offer <i class="fa fa-arrow-down"></i></span></a>
+							<a class="button black-light button-3d effect fill-vertical scroll-to nl"  href="#plus"><span>Ontdekt onze aanbod <i class="fa fa-arrow-down"></i></span></a>
 						
 						</div>
 						<div class="col-md-5">
@@ -62,10 +82,18 @@ include 'include/header5.php';
 					<div class="row">
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green">CHOIX DE LA FLOTTE DE VÉLO</h1>
-							<p class="text-justify">Nous avons l’expérience, laissez nous vous conseiller sur le modèle et le nombre de vélos adéquats pour votre projet.</p>
-							<p class="text-justify">Nous proposons des vélos adaptés pour une flotte partagée et travaillons avec des partenaires de qualité tels que <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
-						    <p class="text-justify">Envie de brander vos vélos, c’est comme si c’était fait.</p>
+							<h1 class="text-green fr">CHOIX DE LA FLOTTE DE VÉLO</h1>
+							<h1 class="text-green en">CHOIX DE LA FLOTTE DE VÉLO</h1>
+							<h1 class="text-green nl">CHOIX DE LA FLOTTE DE VÉLO</h1>
+							<p class="text-justify fr">Nous avons l’expérience, laissez nous vous conseiller sur le modèle et le nombre de vélos adéquats pour votre projet.</p>
+							<p class="text-justify en">Nous avons l’expérience, laissez nous vous conseiller sur le modèle et le nombre de vélos adéquats pour votre projet.</p>
+							<p class="text-justify nl">Nous avons l’expérience, laissez nous vous conseiller sur le modèle et le nombre de vélos adéquats pour votre projet.</p>
+							<p class="text-justify fr">Nous proposons des vélos adaptés pour une flotte partagée et travaillons avec des partenaires de qualité tels que <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
+							<p class="text-justify en">Nous proposons des vélos adaptés pour une flotte partagée et travaillons avec des partenaires de qualité tels que <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
+							<p class="text-justify nl">Nous proposons des vélos adaptés pour une flotte partagée et travaillons avec des partenaires de qualité tels que <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
+						    <p class="text-justify fr">Envie de brander vos vélos, c’est comme si c’était fait.</p>
+						    <p class="text-justify en">Envie de brander vos vélos, c’est comme si c’était fait.</p>
+						    <p class="text-justify nl">Envie de brander vos vélos, c’est comme si c’était fait.</p>
 							
 			 
 						</div>
@@ -75,7 +103,9 @@ include 'include/header5.php';
 						
 						<!-- SELECTION -->
 						<div class="col-md-12">
-						<h3 class="text-green">NOTRE SELECTION DE VÉLOS PARTAGÉS</h3>
+						<h3 class="text-green fr">NOTRE SELECTION DE VÉLOS PARTAGÉS</h3>
+						<h3 class="text-green en">NOTRE SELECTION DE VÉLOS PARTAGÉS</h3>
+						<h3 class="text-green nl">NOTRE SELECTION DE VÉLOS PARTAGÉS</h3>
 							<div class="carousel" data-lightbox-type="gallery">
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
@@ -87,7 +117,9 @@ include 'include/header5.php';
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center">BZEN Amsterdam</h4>
+										<h4 class="title text-center fr">BZEN Amsterdam</h4>
+										<h4 class="title text-center en">BZEN Amsterdam</h4>
+										<h4 class="title text-center nl">BZEN Amsterdam</h4>
 									</div>
 								</div>
 
@@ -102,7 +134,9 @@ include 'include/header5.php';
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center">CONWAY Cairon T 200 Mixte</h4>
+										<h4 class="title text-center fr">CONWAY Cairon T 200 Mixte</h4>
+										<h4 class="title text-center en">CONWAY Cairon T 200 Mixed</h4>
+										<h4 class="title text-center nl">CONWAY Cairon T 200 Mixed</h4>
 									</div>
 								</div>
 								
@@ -116,7 +150,9 @@ include 'include/header5.php';
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center">AHOOGA Modular</h4>
+										<h4 class="title text-center fr">AHOOGA Modular</h4>
+										<h4 class="title text-center en">AHOOGA Modular</h4>
+										<h4 class="title text-center nl">AHOOGA Modular</h4>
 									</div>
 								</div>
 								
@@ -130,7 +166,9 @@ include 'include/header5.php';
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center">CONWAY Cairon T 200 Mixte</h4>
+										<h4 class="title text-center fr">CONWAY Cairon T 200 Mixte</h4>
+										<h4 class="title text-center en">CONWAY Cairon T 200 Mixed</h4>
+										<h4 class="title text-center nl">CONWAY Cairon T 200 Mixed</h4>
 									</div>
 								</div>
 																								
@@ -162,7 +200,9 @@ include 'include/header5.php';
 			
 							<p class="text-justify"">La demande d’un entretien, la gestion des factures ou encore le remplissage d’une déclaration de vol y sont entièrement automatisés.</p>
 				-->			
-							<h1 class="text-green text-center visible-sm visible-xs">GESTION DE LA FLOTTE</h1>	
+							<h1 class="text-green text-center visible-sm visible-xs fr">GESTION DE LA FLOTTE</h1>	
+							<h1 class="text-green text-center visible-sm visible-xs en">GESTION DE LA FLOTTE</h1>	
+							<h1 class="text-green text-center visible-sm visible-xs nl">GESTION DE LA FLOTTE</h1>	
 			 				<div class="col-md-7"><br><br>
 									<h4 class="col-md-6 text-center">Accès sécurisé</h4><br>
 									<h4 class="col-md-6 text-center">Gestion des clés</h4><br>
@@ -175,10 +215,16 @@ include 'include/header5.php';
 									<h4 class="col-md-6 text-center">Monitoring / Contrôle</h4>
 							</div>
 							<div class="col-md-5">
-							<h1 class="text-green text-center visible-md visible-lg">GESTION DE LA FLOTTE</h1>
-								<p class="text-justify background-white">Vous n’avez pas envie de vous tracasser de tout cela, vous voulez juste pouvoir prendre un vélo et l’utiliser?<br> Ça tombe bien, nous avons développé un système <strong>simple</strong>, <strong>connecté</strong> et <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</p>
+							<h1 class="text-green text-center visible-md visible-lg fr">GESTION DE LA FLOTTE</h1>
+							<h1 class="text-green text-center visible-md visible-lg en">GESTION DE LA FLOTTE</h1>
+							<h1 class="text-green text-center visible-md visible-lg nl">GESTION DE LA FLOTTE</h1>
+								<p class="text-justify background-white fr">Vous n’avez pas envie de vous tracasser de tout cela, vous voulez juste pouvoir prendre un vélo et l’utiliser?<br> Ça tombe bien, nous avons développé un système <strong>simple</strong>, <strong>connecté</strong> et <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</p>
+								<p class="text-justify background-white en">Vous n’avez pas envie de vous tracasser de tout cela, vous voulez juste pouvoir prendre un vélo et l’utiliser?<br> Ça tombe bien, nous avons développé un système <strong>simple</strong>, <strong>connecté</strong> et <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</p>
+								<p class="text-justify background-white nl">Vous n’avez pas envie de vous tracasser de tout cela, vous voulez juste pouvoir prendre un vélo et l’utiliser?<br> Ça tombe bien, nous avons développé un système <strong>simple</strong>, <strong>connecté</strong> et <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</p>
 	
-								<p class="text-justify background-white">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés. Le tout est paramétrable pour fonctionner selon votre politique interne. Demande d’entretien, monitoring et statistiques d’utilisation, tout y est intégré.</p>
+								<p class="text-justify background-white fr">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés. Le tout est paramétrable pour fonctionner selon votre politique interne. Demande d’entretien, monitoring et statistiques d’utilisation, tout y est intégré.</p>
+								<p class="text-justify background-white en">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés. Le tout est paramétrable pour fonctionner selon votre politique interne. Demande d’entretien, monitoring et statistiques d’utilisation, tout y est intégré.</p>
+								<p class="text-justify background-white nl">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés. Le tout est paramétrable pour fonctionner selon votre politique interne. Demande d’entretien, monitoring et statistiques d’utilisation, tout y est intégré.</p>
 							</div>
 						</div>
 					</div>
@@ -189,9 +235,15 @@ include 'include/header5.php';
 			<!-- CALL TO ACTION -->
 			<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark text-light">
 			  <div class="container">
-			    <h3>Testez pendant 1 mois</h3>
-			    <p>Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
-		   		<a class="button large green button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Contacter</span></a> </div>
+			    <h3 class="fr">Testez pendant 1 mois</h3>
+			    <h3 class="en">Testez pendant 1 mois</h3>
+			    <h3 class="nl">Testez pendant 1 mois</h3>
+			    <p class="fr">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
+			    <p class="en">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
+			    <p class="nl">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
+		   		<a class="button large green button-3d effect icon-left fr" href="contact2.php"><span><i class="fa fa-send"></i>Contacter</span></a> </div>
+		   		<a class="button large green button-3d effect icon-left en" href="contact2.php"><span><i class="fa fa-send"></i>Contacter</span></a> </div>
+		   		<a class="button large green button-3d effect icon-left nl" href="contact2.php"><span><i class="fa fa-send"></i>Contacter</span></a> </div>
 			</div>
 	
 			<!--END: CALL TO ACTION -->	
@@ -202,10 +254,16 @@ include 'include/header5.php';
 					<div class="row">
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<p class="text-justify">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
+							<h1 class="text-green fr">MAINTENANCE SUR SITE ET ASSURANCE</h1>
+							<h1 class="text-green en">MAINTENANCE SUR SITE ET ASSURANCE</h1>
+							<h1 class="text-green nl">MAINTENANCE SUR SITE ET ASSURANCE</h1>
+							<p class="text-justify fr">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
+							<p class="text-justify en">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
+							<p class="text-justify nl">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
 
-							<p class="text-justify">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
+							<p class="text-justify fr">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
+							<p class="text-justify en">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
+							<p class="text-justify nl">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
 			 
 						</div>
 						<div class="col-md-4">
@@ -221,16 +279,26 @@ include 'include/header5.php';
 				<div class="container">
 					<div class="row">
 						<div class="col-md-6">
-						<h1 class="text-green visible-sm visible-xs">INSTALLATION D'INFRASTRUCTURES</h1>
+						<h1 class="text-green visible-sm visible-xs fr">INSTALLATION D'INFRASTRUCTURES</h1>
+						<h1 class="text-green visible-sm visible-xs en">INSTALLATION D'INFRASTRUCTURES</h1>
+						<h1 class="text-green visible-sm visible-xs nl">INSTALLATION D'INFRASTRUCTURES</h1>
 							<img src="images/infrastructure.png" class="img-responsive img-rounded" alt="Schéma d'une infrastructure réalisable par KAMEO Bikes">
 						</div>
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green visible-md visible-lg">INSTALLATION D'INFRASTRUCTURES</h1>
-							<p class="text-justify">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							<h1 class="text-green visible-md visible-lg fr">INSTALLATION D'INFRASTRUCTURES</h1>
+							<h1 class="text-green visible-md visible-lg en">INSTALLATION D'INFRASTRUCTURES</h1>
+							<h1 class="text-green visible-md visible-lg nl">INSTALLATION D'INFRASTRUCTURES</h1>
+							<p class="text-justify fr">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							KAMEO Bikes, fort de son expérience, peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
+							<p class="text-justify en">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
+							KAMEO Bikes, fort de son expérience, peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
+							<p class="text-justify nl">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
 							KAMEO Bikes, fort de son expérience, peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
 			
-							<p class="text-justify">N'hésitez pas à nous demander une remise de prix.</p>
+							<p class="text-justify fr">N'hésitez pas à nous demander une remise de prix.</p>
+							<p class="text-justify en">N'hésitez pas à nous demander une remise de prix.</p>
+							<p class="text-justify nl">N'hésitez pas à nous demander une remise de prix.</p>
 			 
 						</div>
 					</div>
@@ -259,10 +327,18 @@ include 'include/header5.php';
 			<!-- CALL TO ACTION -->
 				<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
 				  <div class="container">
-				    <h3>NOUS RENCONTRER</h3>
-				    <p>Envie de pédaler avec nous?<br>
+				    <h3 class="fr">NOUS RENCONTRER</h3>
+				    <h3 class="en">NOUS RENCONTRER</h3>
+				    <h3 class="nl">NOUS RENCONTRER</h3>
+				    <p class="fr">Envie de pédaler avec nous?<br>
 						Contactez-nous, nous viendrons vous présenter nos offres.</p>
-				    <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Nous contacter</span></a> </div>
+				    <p class="en">Envie de pédaler avec nous?<br>
+						Contactez-nous, nous viendrons vous présenter nos offres.</p>
+				    <p class="nl">Envie de pédaler avec nous?<br>
+						Contactez-nous, nous viendrons vous présenter nos offres.</p>
+				    <a class="button large black-light button-3d effect icon-left fr" href="contact2.php"><span><i class="fa fa-send"></i>Nous contacter</span></a> </div>
+				    <a class="button large black-light button-3d effect icon-left en" href="contact2.php"><span><i class="fa fa-send"></i>Contact us</span></a> </div>
+				    <a class="button large black-light button-3d effect icon-left nl" href="contact2.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a> </div>
 				</div>
 
 <!--END: CALL TO ACTION -->
