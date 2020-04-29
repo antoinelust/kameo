@@ -62,10 +62,7 @@ include 'include/header5.php';
               }
             }
         })
-    }
-    
-    //document.getElementsByClassName('GDPRaccept')[0].addEventListener('click', function() { set_GDPR_cookie()}, false);
-    
+    }    
 </script>
 
 <br>
