@@ -41,7 +41,7 @@ if($email != NULL)
     	$sql="select * from factures where COMPANY = '$company'";
     }else{
         $response['update']=true;
-        if($company2!="Choix de la société" && $company2 != NULL){
+        if($company2!="*" && $company2 != NULL){
     	   $sql="select * from factures WHERE COMPANY ='$company2'";
         }else{
     	   $sql="select * from factures WHERE 1 ";

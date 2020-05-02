@@ -254,3 +254,711 @@ Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
 </page>
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1 WHERE COMPANY='IN The Air'
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-04-29' and (aa.CONTRACT_END>'2020-04-29' or aa.CONTRACT_END is NULL) and aa.COMPANY='IN The Air' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-04-29' and (aa.END>'2020-04-29' or aa.END is NULL) and aa.COMPANY='IN The Air' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='IN The Air' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='IN The Air' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='IN The Air' and CONTRACT_START<='2020-04-01' and (CONTRACT_END>='2020-05-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL7 :select * from customer_bikes where COMPANY='IN The Air' and CONTRACT_START<='2020-04-01' and (CONTRACT_END>='2020-05-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture In The Air</td>
+                <td style="text-align: right;    width: 33%">29/04/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 29/04/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/images/IN The Air.jpg" alt="">
+				
+				<p>In The Air</p>
+				
+				<p>Rue professeur Mahaim 49
+				<br>4000 Liege
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0847 553 147</p>
+				
+				<p>Référence client : IN The Air</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°75</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0420/73849</h4>
+			<p>Avril 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Orbea Gain f10 - CADRE: -</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">84 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-04-2020 au 01-05-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/IN The Air-001_mini.jpg" alt=""></td>
+                    <td>Période 3/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 84 €/mois<br>+TVA: 17.64 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">84 €/mois</td>
+                <td>21%</td>
+                <td>17.64 €/mois</td>
+                <td>101.64 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>101.64 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0420/73849</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1 WHERE COMPANY='IN The Air'
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-04-29' and (aa.CONTRACT_END>'2020-04-29' or aa.CONTRACT_END is NULL) and aa.COMPANY='IN The Air' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-04-29' and (aa.END>'2020-04-29' or aa.END is NULL) and aa.COMPANY='IN The Air' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='IN The Air' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='IN The Air' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='IN The Air' and CONTRACT_START<='2020-04-01' and (CONTRACT_END>='2020-05-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL7 :select * from customer_bikes where COMPANY='IN The Air' and CONTRACT_START<='2020-04-01' and (CONTRACT_END>='2020-05-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture In The Air</td>
+                <td style="text-align: right;    width: 33%">29/04/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 29/04/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/images/IN The Air.jpg" alt="">
+				
+				<p>In The Air</p>
+				
+				<p>Rue professeur Mahaim 49
+				<br>4000 Liege
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0847 553 147</p>
+				
+				<p>Référence client : IN The Air</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°74</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0420/73748</h4>
+			<p>Avril 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Orbea Gain f10 - CADRE: -</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">84 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-04-2020 au 01-05-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/IN The Air-001_mini.jpg" alt=""></td>
+                    <td>Période 3/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 84 €/mois<br>+TVA: 17.64 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">84 €/mois</td>
+                <td>21%</td>
+                <td>17.64 €/mois</td>
+                <td>101.64 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>101.64 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0420/73748</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1 WHERE COMPANY='S.A. G.P.I.'
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-01' and (aa.CONTRACT_END>'2020-05-01' or aa.CONTRACT_END is NULL) and aa.COMPANY='S.A. G.P.I.' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-01' and (aa.END>'2020-05-01' or aa.END is NULL) and aa.COMPANY='S.A. G.P.I.' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='S.A. G.P.I.' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='S.A. G.P.I.' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='S.A. G.P.I.' and CONTRACT_START<='2020-05-01' and (CONTRACT_END>='2020-06-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL7 :select * from customer_bikes where COMPANY='S.A. G.P.I.' and CONTRACT_START<='2020-05-01' and (CONTRACT_END>='2020-06-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL7 :select * from customer_bikes where COMPANY='S.A. G.P.I.' and CONTRACT_START<='2020-05-01' and (CONTRACT_END>='2020-06-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture S.A. G.P.I.</td>
+                <td style="text-align: right;    width: 33%">01/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 01/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/images/S.A. G.P.I..jpg" alt="">
+				
+				<p>S.A. G.P.I.</p>
+				
+				<p>Sart d Avette 110 
+				<br>4400 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE 0451.477.293</p>
+				
+				<p>Référence client : S.A. G.P.I.</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°82</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/75559</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Prefer-001 - CADRE: BAB9058</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">105 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-05-2020 au 01-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/Prefer-001_mini.jpg" alt=""></td>
+                    <td>Période 2/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Prefer-002 - CADRE: BAA9024</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">105 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-05-2020 au 01-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/Prefer-002_mini.jpg" alt=""></td>
+                    <td>Période 2/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 210 €/mois<br>+TVA: 44.1 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">210 €/mois</td>
+                <td>21%</td>
+                <td>44.1 €/mois</td>
+                <td>254.1 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>254.1 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/75559</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1 WHERE COMPANY='Affelio'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1 WHERE COMPANY='Affelio'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1 WHERE COMPANY='AFELIO'
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-01' and (aa.CONTRACT_END>'2020-05-01' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-01' and (aa.END>'2020-05-01' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='AFELIO' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='AFELIO' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='AFELIO' and CONTRACT_START<='2020-05-01' and (CONTRACT_END>='2020-06-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL7 :select * from customer_bikes where COMPANY='AFELIO' and CONTRACT_START<='2020-05-01' and (CONTRACT_END>='2020-06-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL7 :select * from customer_bikes where COMPANY='AFELIO' and CONTRACT_START<='2020-05-01' and (CONTRACT_END>='2020-06-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL7 :select * from customer_bikes where COMPANY='AFELIO' and CONTRACT_START<='2020-05-01' and (CONTRACT_END>='2020-06-01' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture AFELIO</td>
+                <td style="text-align: right;    width: 33%">01/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 01/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/images/AFELIO.jpg" alt="">
+				
+				<p>AFELIO</p>
+				
+				<p>Quai Mativa 62
+				<br>4020 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE 0536.963.393</p>
+				
+				<p>Référence client : AFELIO</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°82</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/75559</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS-200 se - Dame - CADRE: SW190100120</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">84 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-05-2020 au 01-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/AFE-001_mini.jpg" alt=""></td>
+                    <td>Période 5/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS-200 se - Dame - CADRE: SW190100101</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">84 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-05-2020 au 01-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/AFE-002_mini.jpg" alt=""></td>
+                    <td>Période 5/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS-300 se - Homme - CADRE: D8J10681</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">84 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-05-2020 au 01-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/AFE-003_mini.jpg" alt=""></td>
+                    <td>Période 5/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">3</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">5keys - REFERENCE: AFE-Box-1</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">125 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 01-05-2020 au 01-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="/home/kameobiknq/www/images_bikes/5keys_mini.png" alt=""></td><td>Location</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 377 €/mois<br>+TVA: 79.17 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">377 €/mois</td>
+                <td>21%</td>
+                <td>79.17 €/mois</td>
+                <td>456.17 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>456.17 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/75559</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>

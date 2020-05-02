@@ -102,6 +102,17 @@ if($action=="graphic"){
     
 }else{
     include 'connexion.php';
+    $sql="SELECT * from companies WHERE TYPE='PROSPECT' OR TYPE='CLIENT' ";    
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);        
+    $response['companiesNumberClientOrProspect'] = $result->num_rows;
+    
+    
+    
     $sql="SELECT * from companies WHERE 1 ";
     $company=isset($_POST['company']) ? $_POST['company'] : "*";
     $type=isset($_POST['type']) ? $_POST['type'] : NULL;    
@@ -125,6 +136,7 @@ if($action=="graphic"){
     }
     $result = mysqli_query($conn, $sql);        
     $response['companiesNumber'] = $result->num_rows;
+    
     $i=0;
     $response['response']="success";
 

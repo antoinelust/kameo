@@ -13,7 +13,7 @@ $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $response=array();
 
 
-if($ID==NULL & $email != NULL){
+if($ID==NULL && $email != NULL){
     include 'connexion.php';
 	$sql="SELECT * FROM customer_referential dd where EMAIL='$email'";
 
@@ -44,22 +44,29 @@ if($ID==NULL & $email != NULL){
 
 
 }
-if($ID != NULL)
+if($ID != NULL || $company != NULL)
 {
-
+    
     include 'connexion.php';
-	$sql="SELECT * FROM companies dd where ID='$ID'";
+    
+
+    if($ID != NULL){
+        $sql="SELECT * FROM companies dd where ID='$ID'";
+    }else{
+        $sql="SELECT * FROM companies dd where INTERNAL_REFERENCE='$company'";
+    }
 
     if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
 
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $conn->close();
-
+    
+    $ID=$resultat['ID'];
 
     $response['response']="success";
     $response['ID']=$resultat['ID'];
@@ -77,13 +84,13 @@ if($ID != NULL)
     $response['internalReference']=$resultat['INTERNAL_REFERENCE'];
 
     include 'connexion.php';
-	  $sql="SELECT * FROM companies_offers dd where COMPANY_ID='$ID'";
+      $sql="SELECT * FROM companies_offers dd where COMPANY_ID='$ID'";
 
     if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
 
     $result = mysqli_query($conn, $sql);
     $response['companyOffersNumber']=$result->num_rows;

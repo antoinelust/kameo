@@ -950,12 +950,12 @@ function get_bikes_listing() {
                 while (i < response.bikeNumber){
 
                     if(response.bike[i].contractStart){
-                        var contractStart="<td data-sort=\""+(new Date(response.bike[i].contractStart)).getTime()+"\">"+response.bike[i].contractStart.shortDate()+"</date>";
+                        var contractStart="<td data-sort=\""+(new Date(response.bike[i].contractStart)).getTime()+"\">"+response.bike[i].contractStart.shortDate()+"</td>";
                     }else{
                         var contractStart="<td>N/A</td>";
                     }
                     if(response.bike[i].contractEnd){
-                        var contractEnd="<td data-sort=\""+(new Date(response.bike[i].contractEnd)).getTime()+"\">"+response.bike[i].contractEnd.shortDate()+"</date>";
+                        var contractEnd="<td data-sort=\""+(new Date(response.bike[i].contractEnd)).getTime()+"\">"+response.bike[i].contractEnd.shortDate()+"</td>";
                     }else{
                         var contractEnd="<td>N/A</td>";
                     }

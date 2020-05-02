@@ -242,7 +242,7 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT COMPANY, CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes WHERE STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+                $sql="SELECT COMPANY, CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes WHERE STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST' and SOLD_PRICE = '0'";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -266,9 +266,9 @@ if(isset($_POST['action']))
                     $response['response']="success";
                     $response['contract'][$i]['company']=$row['COMPANY'];
                     if($row['BIKE_NUMBER']>1){
-                        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélos en leasing";
+                        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélos en location";
                     }else{
-                        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélo en leasing";
+                        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélo en location";
                     }
                     $response['contract'][$i]['amount']=$row['PRICE'];
                     $response['contract'][$i]['start']=$row['CONTRACT_START'];

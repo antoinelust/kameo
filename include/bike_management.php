@@ -347,6 +347,7 @@ if(isset($_POST['action'])){
 
 
 
+
         if(isset($_FILES['picture'])){
 
             $extensions = array('.jpg');
@@ -363,16 +364,24 @@ if(isset($_POST['action'])){
             {
                   errorMessage("ES0023");
             }
+            
+            
 
             //upload of Bike picture
 
             $dossier = '../images_bikes/';
 
             $fichier=$frameNumber.$extension;
-            unlink($dossier.$fichier) or die("Couldn't delete file");
+            if (file_exists($dossier.$fichier)){                        
+                unlink($dossier.$fichier) or die("Couldn't delete file");
+            }
+            
+            
 
             $fichierMini=$frameNumber."_mini".$extension;
-            unlink($dossier.$fichierMini) or die("Couldn't delete file");
+            if (file_exists($dossier.$fichierMini)){                        
+                unlink($dossier.$fichierMini) or die("Couldn't delete file");
+            }
 
 
             $fichier=$frameNumber.$extension;

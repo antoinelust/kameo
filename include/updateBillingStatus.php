@@ -74,6 +74,8 @@ if($action=="delete"){
     
     
     if(isset($_FILES['widget-updateBillingStatus-form-file'])){
+        
+        
 
         $extensions = array('.pdf');
         $extension = strrchr($_FILES['widget-updateBillingStatus-form-file']['name'], '.');
@@ -100,8 +102,14 @@ if($action=="delete"){
                 unlink($dossier.$currentFile) or die("Couldn't delete file");
             }
         }
+            
+        
         
         $fichier=substr($date, 0, 10)."_".$originator."_".$communication.".pdf";    
+        
+        $response = array ('response'=>'error', 'message'=> $dossier.$fichier);
+        echo json_encode($response);
+        die;
 
         if(move_uploaded_file($_FILES['widget-updateBillingStatus-form-file']['tmp_name'], $dossier.$fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
         {        }
@@ -109,6 +117,9 @@ if($action=="delete"){
         {
             errorMessage("ES0024");
         }
+        
+        
+        
 
         include 'connexion.php';
         $sql="UPDATE factures set FILE_NAME='$fichier' where ID='$IDBilling'";
