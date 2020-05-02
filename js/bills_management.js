@@ -1,6 +1,4 @@
 function get_bills_listing(company, sent, paid, direction, email) {
-
-    
     
     $.ajax({
         url: 'include/get_bills_listing.php',
@@ -19,56 +17,27 @@ function get_bills_listing(company, sent, paid, direction, email) {
 
                 var i=0;
                 var dest="";
+                var dest3="";
+                
+                
                 if(response.update){
-                    var temp="<h4 class=\"text-green\">Filtres :</h4><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures ("+response.billNumberTotal+")</span></a><br/>";
-                }else{
-                    var temp="<h4 class=\"text-green\">Filtres :</h4><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', '*', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les factures("+response.billNumberTotal+")</span></a>  <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', '*', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures non payées ("+response.billINNumberNotPaid+")</span></a><div class=\"separator\"></div>";
-                }
-                dest=dest.concat(temp);
-
-                if(response.update){
-                    var temp="<a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'IN', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises ("+response.billINNumber+")</span></a> <a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '0', '0', 'IN', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures émises non envoyées ("+response.billINNumberNotSent+")</span></a><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '1', '0', 'IN', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Facture émises envoyées mais non payées ("+response.billINNumberNotPaid+")</span></a><br /><a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '*', 'OUT', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues ("+response.billOUTNumber+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"get_bills_listing(document.getElementsByClassName(\'billSelectionText\')[0].innerHTML, '*', '0', 'OUT', email)\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Factures reçues non-payées  ("+response.billOUTNumberNotPaid+")</span></a><div class=\"separator\"></div>";
-                    dest=dest.concat(temp);
-                    document.getElementsByClassName('companyBillSelection')[0].hidden=false;
-                    document.getElementsByClassName('companyBillSelection')[1].hidden=false;
 
                     var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead><tbody>";
+                    var temp3="<table id=\"billsToSendListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Email</th><th>Prénom</th><th>Nom</th><th></th></tr></thead><tbody>";
                 }else{
-                    document.getElementsByClassName('companyBillSelection')[0].hidden=true;
-                    document.getElementsByClassName('companyBillSelection')[1].hidden=true;
 
                     var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><thead><tr><th>ID</th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th></tr></thead><tbody>";
 
                 }
                 dest=dest.concat(temp);
+                dest3=dest3.concat(temp3);
+                
 
-                if(response.update){
-                    $.ajax({
-                        url: 'include/get_companies_listing.php',
-                        type: 'post',
-                        data: {type: "*"},
-                        success: function(response){
-                            if(response.response == 'error') {
-                                console.log(response.message);
-                            }
-                            if(response.response == 'success'){
-                                var i=0;
-                                var dest2="";
-                                temp2="<li><a href=\"#\" onclick=\"billFilter('Choix de la société')\">Toutes les sociétés</a></li><li class=\"divider\"></li>";
-                                dest2=dest2.concat(temp2);
-                                while (i < response.companiesNumber){
-                                    var temp2="<li><a href=\"#\" onclick=\"billFilter('"+response.company[i].internalReference+"')\">"+response.company[i].companyName+"</a></li>";
-                                    dest2=dest2.concat(temp2);
-                                    i++;
-
-                                }
-                                document.getElementsByClassName('billSelection')[0].innerHTML=dest2;
-
-                            }
-                        }
-                    })
-                }
                 while (i < response.billNumber){
+                    
+                    
+                    
+                    
                     if(response.bill[i].sentDate==null){
                         var sendDate="N/A";
                     }else{
@@ -155,7 +124,6 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     }
                     dest=dest.concat(temp);
 
-
                     dest=dest.concat("<td>"+paidLimit+"</td>");
 
 
@@ -174,12 +142,91 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     }
 
                     dest=dest.concat("</tr>");
-                    i++;
+                    
+                    if(response.update){
+                        if(response.bill[i].sent=='0'){
+                            
+                            
+                            var request = new XMLHttpRequest();
+                            
+                            request.open('POST', './include/get_company_details', false);  // `false` makes the request synchronous
+                            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                            
+                            request.send("company="+response.bill[i].company);
 
+                            if (request.status === 200) {
+                                var json=request.responseText;
+                                var response2 = JSON.parse(json);
+                                                                
+                                var temp3="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\"><i class=\"fa fa-file\"></i></a><input type=\"text\" class=\"form-control required hidden ID\" value=\""+response.bill[i].ID+"\" /></a></td>";
+                                dest3=dest3.concat(temp3);
+                                var temp3="<td>"+response.bill[i].company+"</a></td>";
+                                dest3=dest3.concat(temp3);
+                                var temp3="<td>"+Math.round(response.bill[i].amountHTVA)+" €</td>";
+                                dest3=dest3.concat(temp3);
+                                var temp3="<td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td>";                 
+                                dest3=dest3.concat(temp3);
+                                var temp3="<td><input type=\"text\" class=\"form-control required email\" value=\""+response2.emailContactBilling+"\"/></td>";                 
+                                dest3=dest3.concat(temp3);
+                                var temp3="<td><input type=\"text\" class=\"form-control required firstName\" value=\""+response2.firstNameContactBilling+"\"/></td>";                 
+                                dest3=dest3.concat(temp3);
+                                var temp3="<td><input type=\"text\" class=\"form-control required lastName\" value=\""+response2.lastNameContactBilling+"\"/></td>";                 
+                                dest3=dest3.concat(temp3);
+                                var temp3="<td><input type=\"text\" class=\"form-control required hidden date\" value=\""+response.bill[i].date+"\"/></td>";     
+                                dest3=dest3.concat(temp3);                                
+                                var temp3="<td><input type=\"text\" class=\"form-control required hidden fileName\" value=\""+response.bill[i].fileName+"\"/></td>";
+                                dest3=dest3.concat(temp3);
+                                
+                                dest3=dest3.concat("<td><button  class=\"sendBillButton button small green button-3d rounded icon-left\"><i class=\"fa fa-check\"></i>Envoyer</button></tr>");
+                                
+                            }
+                        }
+                    }                    
+                    i++;
                 }
                 var temp="</tbody></table>";
                 dest=dest.concat(temp);
+                var temp3="</tbody></table>";
+                dest3=dest3.concat(temp3);
+                
                 document.getElementById('billsListing').innerHTML = dest;
+                document.getElementById('billsToSendListing').innerHTML = dest3;
+                
+                
+                $('.sendBillButton').click(function() {
+                    var email=$(this).parents('tr').find('.email').val();
+                    var id=$(this).parents('tr').find('.ID').val();
+                    var lastName=$(this).parents('tr').find('.lastName').val();
+                    var firstName=$(this).parents('tr').find('.firstName').val();
+                    var date=$(this).parents('tr').find('.date').val();
+                    var fileName=$(this).parents('tr').find('.fileName').val();
+                    
+                    $.ajax({
+                        url: 'include/send_bill.php',
+                        type: 'post',
+                        data: { "id": id, "email": email, "firstName": firstName, "lastName": lastName, "date": date, "fileName": fileName},
+                        success: function(response){
+                            if(response.response == 'error') {
+                              $.notify({
+                                message: response.message
+                              }, {
+                                type: 'danger'
+                              });
+                            }
+                            if(response.response == 'success'){
+                              $.notify({
+                                message: response.message
+                              }, {
+                                type: 'success'
+                              });
+                            }
+                        }
+                    })
+
+                    
+                });                
+                
+                
                 document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"\" data-from=\"0\" data-seperator=\"true\">"+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"</span>";
 
                 var classname = document.getElementsByClassName('updateBillingStatus');
@@ -189,6 +236,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                 displayLanguage();
                 
                 $('#billsListingTable').DataTable();
+                //$('#billsToSendListingTable').DataTable();
                 
 
             }

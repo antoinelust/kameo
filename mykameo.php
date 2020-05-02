@@ -85,13 +85,14 @@ window.addEventListener("DOMContentLoaded", function(event) {
   for (var i = 0; i < classname.length; i++) {
       
     classname[i].addEventListener('click', hideResearch, false);
+    classname[i].addEventListener('click', list_errors_bikes, false);
     classname[i].addEventListener('click', get_bikes_listing, false);
     classname[i].addEventListener('click', get_users_listing, false);
     classname[i].addEventListener('click', get_company_conditions(), false);
     classname[i].addEventListener('click', list_condition, false);
 
     classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
-    classname[i].addEventListener('click', function () { get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*', email)}, false);
+    classname[i].addEventListener('click', function () { get_bills_listing('*', '*', '*', '*', email)}, false);
     classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
     classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
     classname[i].addEventListener('click', function () { list_feedbacks()}, false);
@@ -121,8 +122,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
   }
 
 
-
-
   document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
   document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
   document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
@@ -135,21 +134,12 @@ document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('chang
 document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
-document.getElementsByClassName('dashboardClick')[0].addEventListener('click', function() { list_errors()}, false);
 
 
 var tempDate=new Date();
 $(".form_date_end").data("datetimepicker").setDate(tempDate);
 tempDate.setMonth(tempDate.getMonth()-1);
 $(".form_date_start").data("datetimepicker").setDate(tempDate);
-
-<?php
-if(isset($_GET['feedback'])){
-  ?>
-  initiatizeFeedback(<?php echo $_GET['feedback']; ?>);
-  <?php
-}
-?>
 
 });
 
@@ -216,7 +206,7 @@ function taskFilter(e){
 
 function billFilter(e){
   document.getElementsByClassName('billSelectionText')[0].innerHTML=e;
-  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*', email);
+  get_bills_listing('*', '*', '*', '*', email);
 
 }
 
@@ -1418,7 +1408,7 @@ if($connected){
           document.getElementById('companyListingSpan').innerHTML = dest;
 
 
-          document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.companiesNumber+"</span>";
+          document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumberClientOrProspect+"\" data-from=\"0\" data-seperator=\"true\">"+response.companiesNumberClientOrProspect+"</span>";
 
           document.getElementById('cashFlowSpan').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+Math.round(response.sumContractsCurrent)+"\" data-from=\"0\" data-seperator=\"true\">"+Math.round(response.sumContractsCurrent)+"</span>";
 
@@ -2618,7 +2608,7 @@ if($connected){
                           <div class="col-md-4 hidden" id="dashBoardManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" class="dashboardClick" data-target="#dashboard" href="#" ><i class="fa fa-dashboard"></i></a> </div>
-                              <div class="counter bold" style="color:#3cb395"></div>
+                              <div class="counter bold" id='errorCounter' style="color:#3cb395"></div>
                               <p>Dashboard</p>
                             </div>
                           </div>
@@ -4341,15 +4331,7 @@ if($connected){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <!--
-      <div class="col-md-3">
-      <label for="companySelection">Filtrer sur la société</label>
-      <select class="companySelection" name="companySelection"></select>
-    </div>
-    <div class="separator"></div>
-  -->
-        
+      </div>        
         
         
 
@@ -4746,19 +4728,13 @@ if($connected){
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
               </div>
-              <div class="dropdown companyBillSelection">
-                <div class="col-md-3">
-                  <ul class="nav">
-                    <li class="dropdown" role="presentation">
-                      <a aria-expanded="false" href="#" data-toggle="dropdown" class="dropdown-toggle"> <span class="billSelectionText">Choix de la société</span><span class="caret"></span> </a>
-                      <ul role="menu" class="dropdown-menu billSelection">
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
+                
+              <div data-example-id="contextual-table" class="bs-example billsToSendSpan">
+                  <h4 class="text-green">Factures à envoyer</h4>
+                  <span id="billsToSendListing"></span>
               </div>
-              <div class="separator companyBillSelection"></div>
-
+              <div class="separator billsToSendSpan"></div>
+                
               <div data-example-id="contextual-table" class="bs-example">
                 <span id="billsListing"></span>
               </div>
@@ -4790,9 +4766,9 @@ if($connected){
              		 <div class="col-md-2 sidebar">
 		             	<div class="sidebar-menu">
 		                    <ul>
-		                        <li class="active"><a class="scroll-to" href="#">Erreurs à corriger</a>
+		                        <li class="active"><a class="scroll-to dashboardBikes" href="#">Vélos</a>
 		                        </li>
-		                        <li><a class="scroll-to" href="#">KPI</a>
+		                        <li><a class="scroll-to dashboardBills" href="#">Factures</a>
 		                        </li>
 		                        <li><a class="scroll-to" href="#">Bouton 3</a>
 		                        </li>
@@ -5013,7 +4989,7 @@ if($connected){
                               }, {
                                 type: 'success'
                               });
-                              get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
+                              get_bills_listing('*', '*', '*', '*',email);
                               $('#addBill').modal('toggle');
                               document.getElementById('widget-addBill-form').reset();
 
@@ -6581,8 +6557,8 @@ if($connected){
                             <label for="contractType"  class="en">Contract type</label>
                             <label for="contractType"  class="nl">Contract type</label>
                             <select name="contractType" class="form-control required">
-                              <option value="leasing">Location</option>
-                              <option value="renting">Location</option>
+                              <option value="leasing">Location LT</option>
+                              <option value="renting">Location CT</option>
                               <option value="test">Vélo de test</option>
                               <option value="stock">Vélo de stock</option>
                               <option value="selling">Vente</option>
@@ -6751,7 +6727,6 @@ if($connected){
                     <script type="text/javascript">
                     jQuery("#widget-bikeManagement-form").validate({
                       submitHandler: function(form) {
-
                         jQuery(form).ajaxSubmit({
                           success: function(response) {
                             if (response.response == 'success') {
@@ -8329,6 +8304,7 @@ if($connected){
           submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
               success: function(response) {
+                console.log(response);
                 if (response.response == 'success') {
                   document.getElementById('widget-updateBillingStatus-form').reset();
                   $.notify({
@@ -8337,7 +8313,7 @@ if($connected){
                     type: 'success'
                   });
                   $('#updateBillingStatus').modal('toggle');
-                  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
+                  get_bills_listing('*', '*', '*', '*',email);
                 } else {
                   $.notify({
                     message: response.message
@@ -8362,7 +8338,7 @@ if($connected){
                     type: 'success'
                   });
                   $('#updateBillingStatus').modal('toggle');
-                  get_bills_listing(document.getElementsByClassName('billSelectionText')[0].innerHTML, '*', '*', '*',email);
+                  get_bills_listing('*', '*', '*', '*',email);
                 } else {
                   $.notify({
                     message: response.message

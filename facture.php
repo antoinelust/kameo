@@ -435,14 +435,7 @@ if ($conn->query($sql3) === FALSE) {
 $result3 = mysqli_query($conn, $sql3);   
 $resultat3 = mysqli_fetch_assoc($result3);
 
-
-if(!$simulation || $simulation == 'N'){
-    if($resultat3['BILLS_SENDING'] == "Y" && $resultat3['EMAIL_CONTACT_BILLING'] != "" && $resultat3['LASTNAME_CONTACT_BILLING'] != ""){
-        $sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$OneMonthAfterString','leasing')";
-    }else{
-        $sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$OneMonthAfterString','leasing', '$today')";
-    }
-}
+$sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$OneMonthAfterString','leasing', '$today')";
 
 include 'include/connexion.php';
 if ($conn->query($sql) === FALSE) {
