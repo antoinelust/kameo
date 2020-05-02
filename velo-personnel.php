@@ -7,7 +7,7 @@ include 'include/header5.php';
 			<section class="" style="background: url('images/fond_degrade.jpg');" data-stellar-background-ratio="0.3">
 				<div class="container">
 				<a class="button black-light button-3d effect fill-vertical right fr"  href="velo-partage.php"><span>Vélos partagés  <i class="fa fa-arrow-right"></i></span></a>
-				<a class="button black-light button-3d effect fill-vertical right en"  href="velo-partage.php"><span>Vélos partagés  <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right en"  href="velo-partage.php"><span>Shared bikes  <i class="fa fa-arrow-right"></i></span></a>
 				<a class="button black-light button-3d effect fill-vertical right nl"  href="velo-partage.php"><span>Vélos partagés  <i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
 						<div class="col-md-7">
