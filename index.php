@@ -67,8 +67,8 @@ include 'include/header5.php';
 
 <br>
 <h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
-<h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, the complete solution for your company bikes</h1>
-<h1 class="text-center text-uppercase text-medium nl" data-animation="fadeInUp">KAMEO Bikes, de complete oplossing voor uw bedrijfsfietsen</h1>
+<h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, your one stop shop for company bikes</h1>
+<h1 class="text-center text-uppercase text-medium nl" data-animation="fadeInUp">KAMEO Bikes, de volledige oplossing voor uw bedrijfsfietsen</h1>
 
 
 
@@ -80,24 +80,24 @@ include 'include/header5.php';
 	<div class="row">
 		<div class="col-md-6 text-center" style="background-color: #3cb395">
 			<h2 class="fr">JE SUIS UN EMPLOYEUR</h2>
-			<h2 class="en">JE SUIS UN EMPLOYEUR</h2>
-			<h2 class="nl">JE SUIS UN EMPLOYEUR</h2>
+			<h2 class="en">I AM AN EMPLOYER</h2>
+			<h2 class="nl">IK BEN EEN WERKGEVER</h2>
 			<span class="fr">KAMEO Bikes vous offre des solutions de mobilité urbaine pour entreprises.<br>
 			<span class="en">KAMEO Bikes vous offre des solutions de mobilité urbaine pour entreprises.<br>
 			<span class="nl">KAMEO Bikes vous offre des solutions de mobilité urbaine pour entreprises.<br>
 			<a class="button green button-3d effect fill-vertical fr"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Découvrir nos solutions</span></a>
-			<a class="button green button-3d effect fill-vertical en"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Découvrir nos solutions</span></a>
-			<a class="button green button-3d effect fill-vertical nl"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Découvrir nos solutions</span></a>
+			<a class="button green button-3d effect fill-vertical en"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Discover our solutions</span></a>
+			<a class="button green button-3d effect fill-vertical nl"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Ontdekt onze oplossingen</span></a>
 			</span>
 		</div>
 
 		<div class="col-md-6 text-center" style="background-color: #1D9377">
-			<h2 class="fr">JE SUIS UN EMPLOYE</h2>
-			<h2 class="en">JE SUIS UN EMPLOYEE</h2>
-			<h2 class="nl">JE SUIS UN EMPLOYE</h2>
+			<h2 class="fr">JE SUIS UN EMPLOYÉ</h2>
+			<h2 class="en">I AM AN EMPLOYEE</h2>
+			<h2 class="nl">IK BEN EEN WERKNEMER</h2>
 			<span class="fr">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes <br>
-			<span class="fr">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes <br>
-			<span class="fr">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes <br>
+			<span class="en">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes <br>
+			<span class="nl">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes <br>
 			<a class="button green button-3d effect fill-vertical fr"  data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
 			<a class="button green button-3d effect fill-vertical en"  data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>Learn more</span></a>
 			<a class="button green button-3d effect fill-vertical nl"  data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>Lees meer</span></a>
@@ -106,16 +106,19 @@ include 'include/header5.php';
 		
 		<!-- CALL TO ACTION -->
 		<div class="jumbotron jumbotron-center jumbotron-fullwidthtext-light" style="background: url('images/Fond_Site_Black.jpg');" data-stellar-background-ratio="0.3">
-		  <div class="container">
-		    <h3 class="fr"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-		    <h3 class="en"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-		    <h3 class="nl"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-		    <p class="fr">Nous avons développé un calculateur permettant de le savoir.</p>
-		    <p class="en">Nous avons développé un calculateur permettant de le savoir.</p>
-		    <p class="nl">Nous avons développé un calculateur permettant de le savoir.</p>
-		    <a class="button large green button-3d effect icon-left fr" href="cash4bike.php"><span><i class="fa fa-calculator"></i>Faire le calcul</span></a> </div>
-		    <a class="button large green button-3d effect icon-left en" href="cash4bike.php"><span><i class="fa fa-calculator"></i>Faire le calcul</span></a> </div>
-		    <a class="button large green button-3d effect icon-left nl" href="cash4bike.php"><span><i class="fa fa-calculator"></i>Faire le calcul</span></a> </div>
+			<div class="container">
+				<h3 class="fr"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
+				<h3 class="en"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
+				<h3 class="nl"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
+				<p class="fr">Nous avons développé un calculateur permettant de le savoir.</p>
+				<p class="en">Nous avons développé un calculateur permettant de le savoir.</p>
+				<p class="nl">Nous avons développé un calculateur permettant de le savoir.</p>
+				<a class="button large green button-3d effect icon-left" href="cash4bike.php">
+					<span class="fr"><i class="fa fa-calculator"></i>Faites le calcul</span>
+					<span class="en"><i class="fa fa-calculator"></i>Run the simulation</span>
+					<span class="nl"><i class="fa fa-calculator"></i>Voer de simulatie uit</span>
+				</a>
+			</div>
 		</div>
 		<!--END: CALL TO ACTION -->
 		
