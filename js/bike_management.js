@@ -62,6 +62,7 @@ function list_bikes_admin() {
                 console.log(response.message);
             }
             if(response.response == 'success'){
+                console.log(response);
                 var i=0;
                 var dest="";
                 var temp=`<h4 class="fr-inline text-green">Vélos: Leasing et autres</h4>
@@ -166,7 +167,6 @@ function list_bikes_admin() {
                         var leasingPrice="<span class=\"text-green\">"+response.bike[i].leasingPrice+" €/mois</span>";
                     }else if((response.bike[i].leasingPrice!=null && response.bike[i].leasingPrice!=0) && (response.bike[i].contractType== 'stock' || response.bike[i].contractType=='test')){
                         var leasingPrice="<span class=\"text-red\">"+response.bike[i].leasingPrice+" €/mois</span>";
-                    }else if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'stock' || response.bike[i].contractType=='test' || response.bike[i].billingType=='paid')){
                     }else if((response.bike[i].leasingPrice==null || response.bike[i].leasingPrice==0) && (response.bike[i].contractType== 'stock' || response.bike[i].contractType=='test' || response.bike[i].billingType=='paid')){
                         var leasingPrice="<span class=\"text-green\">0</span>";
                     }else{
