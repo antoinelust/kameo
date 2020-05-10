@@ -1,4 +1,8 @@
 window.addEventListener("DOMContentLoaded", function(event) {
+    
+    
+  document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false);
+    
 
     $('#widget-bikeManagement-form select[name=billingType]').change(function(){
         if($('#widget-bikeManagement-form select[name=billingType]').val()=="paid"){
@@ -62,7 +66,6 @@ function list_bikes_admin() {
                 console.log(response.message);
             }
             if(response.response == 'success'){
-                console.log(response);
                 var i=0;
                 var dest="";
                 var temp=`<h4 class="fr-inline text-green">Vélos: Leasing et autres</h4>
@@ -72,6 +75,7 @@ function list_bikes_admin() {
                             </a>
                             <span class="button small green button-3d rounded icon-right showSoldBikes">
                               <span class="fr-inline">Afficher les vélos vendus</span>
+                              <span class="en-inline">Display sold bikes</span>
                             </span>
                             <br/>
                             <table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
@@ -135,11 +139,11 @@ function list_bikes_admin() {
 
 
 
-                    if(response.bike[i].contractEnd==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
+                    if(response.bike[i].contractEnd==null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractType=='leasing')){
                         end="<span class=\"text-red\">N/A</span>";
                     }else if(response.bike[i].contractEnd!=null && (response.bike[i].company!="KAMEO" && response.bike[i].company != 'KAMEO VELOS TEST')){
                         end="<span class=\"text-green\">"+response.bike[i].contractEnd.substr(8,2)+"/"+response.bike[i].contractEnd.substr(5,2)+"/"+response.bike[i].contractEnd.substr(2,2)+"</span>";
-                    }else if(response.bike[i].contractEnd==null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
+                    }else if(response.bike[i].contractEnd==null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST' || response.bike[i].contractType=="renting" || response.bike[i].contractType=="test")){
                         end="<span class=\"text-green\">N/A</span>";
                     }else if(response.bike[i].contractEnd!=null && (response.bike[i].company=="KAMEO" || response.bike[i].company == 'KAMEO VELOS TEST')){
                         end="<span class=\"text-red\">"+response.bike[i].contractEnd.substr(8,2)+"/"+response.bike[i].contractEnd.substr(5,2)+"/"+response.bike[i].contractEnd.substr(2,2)+"</span>";
@@ -186,15 +190,15 @@ function list_bikes_admin() {
                         var rentability="<td data-sort=\"0\">"+response.bike[i].rentability+"</td>";
                     }
                     
-                    var row = '<tr class="showRow">';
+                    var row = '<tr>';
                     if(response.bike[i].contractType == 'selling'){
-                      row = '<tr style="display:none;" class="hideRow">';
+                      row = '<tr>';
                     }
                     var temp= row + "<td>"+response.bike[i].id+"</td><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"updateBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td data-sort=\""+(new Date(response.bike[i].HEU_MAJ)).getTime()+"\">"+response.bike[i].HEU_MAJ.shortDate()+"</td>"+rentability+"</tr>";
                     dest=dest.concat(temp);
                   i++;
                 }
-                var temp="</tobdy></table>";
+                var temp="</tbody></table>";
                 dest=dest.concat(temp);
                 document.getElementById('bikeDetailsAdmin').innerHTML = dest;
                 
@@ -255,6 +259,13 @@ function list_bikes_admin() {
                         { "width": "100px" },
                         { "width": "100px" }                      ]
                 });
+                
+                
+                table
+                    .column(4)
+                    .search( "test|stock|renting|leasing", true, false )
+                    .draw();
+                
 
             }
         }
@@ -999,6 +1010,12 @@ function get_bikes_listing() {
 $('body').on('click','.showSoldBikes', function(){
   var buttonContent = "Afficher les autres vélos";
   var titleContent = "Vélos: Vendus";
+    $('#bookingAdminTable').DataTable()
+        .column(4)
+        .search( "selling", true, false )
+        .draw();
+    
+    
   switch_showed_bikes ('showSoldBikes', 'hideSoldBikes', buttonContent, titleContent);
 });
 
@@ -1006,6 +1023,12 @@ $('body').on('click','.showSoldBikes', function(){
 $('body').on('click','.hideSoldBikes', function(){
   var buttonContent = "Afficher vélos vendus";
   var titleContent = "Vélos: Leasing et autres";
+    
+    $('#bookingAdminTable').DataTable()
+        .column(4)
+        .search( "test|stock|renting|leasing", true, false )
+        .draw();
+    
   switch_showed_bikes ('hideSoldBikes', 'showSoldBikes', buttonContent, titleContent);
 });
 
@@ -1015,14 +1038,6 @@ function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleConten
   $('.'+buttonRemove).removeClass(buttonRemove).addClass(buttonAdd).find('.fr-inline').html(buttonContent);
   //modification du Titre
   $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
-  //gestion des classes show et hide
-  $('.bikesListingTable').find('.showRow').removeClass('showRow').addClass('hideRowTemp');
-  $('.bikesListingTable').find('.hideRow').removeClass('hideRow').addClass('showRow');
-  $('.bikesListingTable').find('.hideRowTemp').removeClass('hideRowTemp').addClass('hideRow');
-  //affichage
-  $('.bikesListingTable').find('.hideRow').hide();
-  $('.bikesListingTable').find('.showRow').fadeIn();
-
 }
 
 

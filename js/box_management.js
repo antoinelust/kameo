@@ -74,9 +74,9 @@
                         "searching": false,
                         "paging": false,
                         "info":     false
-                        
                     });
                     
+                    displayLanguage();
                     
                     $('.addBox').click(function(){
                         add_box(this.name);

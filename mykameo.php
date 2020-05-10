@@ -38,6 +38,7 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/datatable_default.js"></script>
 <script type="text/javascript" src="js/global_functions.js"></script>
 <script type="text/javascript" src="js/dashboard_management.js"></script>
+<script type="text/javascript" src="js/initialize_counters.js"></script>
 
 <style media="screen">
 .tableFixed {
@@ -83,14 +84,9 @@ window.addEventListener("DOMContentLoaded", function(event) {
     classname[i].addEventListener('click', get_users_listing, false);
     classname[i].addEventListener('click', get_company_conditions(), false);
     classname[i].addEventListener('click', list_condition, false);
+    classname[i].addEventListener('click', initialize_counters, false);
 
     classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
-    classname[i].addEventListener('click', function () { get_bills_listing('*', '*', '*', '*', email)}, false);
-    classname[i].addEventListener('click', function () { get_company_listing('*')}, false);
-    classname[i].addEventListener('click', function () { listPortfolioBikes()}, false);
-    classname[i].addEventListener('click', function () { list_feedbacks()}, false);
-    classname[i].addEventListener('click', function () { list_bikes_admin()}, false);
-    classname[i].addEventListener('click', function () { list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>')}, false);
     classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
     classname[i].addEventListener('click', initialize_booking_counter, false);
 
@@ -102,7 +98,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
     classname[i].addEventListener('click', function () { generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate())}, false);
 
 
-    classname[i].addEventListener('click', function () { list_boxes("*")}, false);
     classname[i].addEventListener('click', function () { initializeFields()}, false);
     classname[i].addEventListener('click', function () {list_maintenances();}, false);        
 
@@ -118,11 +113,14 @@ window.addEventListener("DOMContentLoaded", function(event) {
   document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
   document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
   document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
-  document.getElementsByClassName('bikeManagerClick')[0].addEventListener('click', function() { list_bikes_admin()}, false);
+  document.getElementsByClassName('clientManagerClick')[0].addEventListener('click', function() { get_company_listing('*')}, false);
+  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
   document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');
 }, false);
 document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
 document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
+document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
+document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
 document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
 document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
@@ -2520,7 +2518,7 @@ if($connected){
                         <div class="row">
                           <div class="col-md-4 hidden" id="clientManagement">
                             <div class="icon-box medium fancy">
-                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#companyListing" href="#" ><i class="fa fa-users"></i></a> </div>
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#companyListing" href="#" class="clientManagerClick" ><i class="fa fa-users"></i></a> </div>
                               <div class="counter bold" id="counterClients" style="color:#3cb395"></div>
                               <p>Gérer les clients</p>
                             </div>
@@ -2582,7 +2580,7 @@ if($connected){
                           <div class="col-md-4 hidden" id="feedbacksManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite">
-                                <a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagementClick"><i class="fa fa-comments"></i></a>
+                                <a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagerClick"><i class="fa fa-comments"></i></a>
                               </div>
                               <div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
                               <p>Vue sur les feedbacks</p>
@@ -2618,7 +2616,7 @@ if($connected){
                         <div class="row">
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
-                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#billingListing" href="#" ><i class="fa fa-folder-open-o"></i></a> </div>
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#billingListing" href="#" class="billsManagerClick"><i class="fa fa-folder-open-o"></i></a> </div>
                               <div class="counter bold" id='counterBills' style="color:#3cb395"></div>
                               <p>Aperçu des factures</p>
                             </div>
