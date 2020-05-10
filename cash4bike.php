@@ -7,46 +7,32 @@ include 'include/header5.php';
 	
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green" "fr">CALCULATEUR CASH FOR BIKE</h1>
-				<h1 class="text-green" "en">CALCULATEUR CASH FOR BIKE</h1>
-				<h1 class="text-green" "nl">CALCULATEUR CASH FOR BIKE</h1>
+				<h1 class="text-green">CALCULATEUR CASH FOR BIKE</h1>
 				<br>
-				<p class="fr">Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
-				<p class="en">Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
-				<p class="nl">Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
+				<p>Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
 				
 				<div class="m-t-30 col-md-12">
                 	<form id="cash4bike-form" action="include/calculate_cash4bike.php" role="form" method="get">
                     <div class="row">
                         <div class="col-md-6" style= "background-color: #D3EFDD ; height: 500px">
                         <div class="space"></div>
-                            <h4 class="text-green" "fr">Informations personnelles</h4>
-                            <h4 class="text-green" "en">Informations personnelles</h4>
-                            <h4 class="text-green" "nl">Informations personnelles</h4>
+                            <h4 class="text-green">Informations personnelles</h4>
 
                             <div class="form-group col-md-12 ">
                                 <div class="employe">
-                                    <label><input type="radio" name="type" value="employe" class="fr" checked> Je suis un employé</label>
-                                    <label><input type="radio" name="type" value="employe" class="en" checked> Je suis un employé</label>
-                                    <label><input type="radio" name="type" value="employe" class="nl" checked> Je suis un employé</label>
+                                    <label><input type="radio" name="type" value="employe" checked> Je suis un employé</label>
                                 </div>
                                 <div class="ouvrier">
-                                    <label><input type="radio" name="type" value="ouvrier" class="fr"> Je suis un ouvrier</label>
-                                    <label><input type="radio" name="type" value="ouvrier" class="en"> Je suis un ouvrier</label>
-                                    <label><input type="radio" name="type" value="ouvrier" class="nl"> Je suis un ouvrier</label>
+                                    <label><input type="radio" name="type" value="ouvrier"> Je suis un ouvrier</label>
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="form-group col-md-6">
                                     <div class="form-group">
-                                        <label class="revenu" "fr" for="phone">Votre revenu mensuel brut :</label>
-                                        <label class="revenu" "en" for="phone">Votre revenu mensuel brut :</label>
-                                        <label class="revenu" "nl" for="phone">Votre revenu mensuel brut :</label>
+                                        <label class="revenu" for="phone">Votre revenu mensuel brut :</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon fr">€/mois</span>
-                                            <span class="input-group-addon en">€/month</span>
-                                            <span class="input-group-addon nl">€/maand</span>
+                                            <span class="input-group-addon">€/mois</span>
                                             <input type="number" class="form-control required" min='0' placeholder="0" name="revenu" id="revenu" aria-required="true">
                                         </div>
                                     </div>
@@ -54,67 +40,41 @@ include 'include/header5.php';
                             </div>                                
                             <div class="col-md-12">  
                                 <div id="inputHomeAddress" class="form-group has-error has-feedback">							
-                                  <label class="control-label fr" for="domicile">Adresse du domicile</label>							
-                                  <label class="control-label en" for="domicile">Adresse du domicile</label>							
-                                  <label class="control-label nl" for="domicile">Adresse du domicile</label>							
+                                  <label class="control-label" for="domicile">Adresse du domicile</label>							
                                   <input type="text" name="domicile" class="form-control" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">							
                                   <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
                                   <span id="inputSuccess1Status" class="sr-only">(success)</span> 
                                 </div>                                
                                 <div id="inputWorkAddress" class="form-group has-error has-feedback">							
-                                  <label class="control-label fr" for="inputSuccess2">Adresse du lieu de travail</label>							
-                                  <label class="control-label en" for="inputSuccess2">Adresse du lieu de travail</label>							
-                                  <label class="control-label nl" for="inputSuccess2">Adresse du lieu de travail</label>							
+                                  <label class="control-label" for="inputSuccess2">Adresse du lieu de travail</label>							
                                   <input type="text" name="travail" class="form-control" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">							
                                   <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
-                                  <span id="inputSuccess2Status" class="sr-only fr">(success)</span> 
-                                  <span id="inputSuccess2Status" class="sr-only en">(success)</span> 
-                                  <span id="inputSuccess2Status" class="sr-only nl">(success)</span> 
+                                  <span id="inputSuccess2Status" class="sr-only">(success)</span> 
                                 </div>                                
                             </div>
                             <div class="space"></div>
                         </div>
                         <div class="col-md-6" style= "background-color: #E6E6E6 ; height: 500px">
                         <div class="space"></div>
-                            <h4 class="text-green fr">Moyen de transport</h4>
-                            <h4 class="text-green en">Moyen de transport</h4>
-                            <h4 class="text-green nl">Moyen de transport</h4>
+                            <h4 class="text-green">Moyen de transport</h4>
                             <div class="form-group col-md-12">
                                 <div class="col-md-6">
                                     <label for="transport" class="fr">Votre moyen de transport actuel :</label>
-                                    <label for="transport" class="en">Votre moyen de transport actuel :</label>
-                                    <label for="transport" class="nl">Votre moyen de transport actuel :</label>
                                     <select class="form-control" name="transport">
-                                        <option value="personnalCar" selected class="fr">Voiture personnelle</option>
-                                        <option value="personnalCar" selected class="en">Voiture personnelle</option>
-                                        <option value="personnalCar" selected class="nl">Voiture personnelle</option>
-                                        <option value="companyCar" class="fr">Voiture de société</option>
-                                        <option value="companyCar" class="en">Voiture de société</option>
-                                        <option value="companyCar" class="nl">Voiture de société</option>
-                                        <option value="covoiturage"class="fr">Covoiturage</option>
-                                        <option value="covoiturage"class="en">Covoiturage</option>
-                                        <option value="covoiturage"class="nl">Covoiturage</option>
-                                        <option value="public transport" class="fr">Transport en commun</option>
-                                        <option value="public transport" class="en">Transport en commun</option>
-                                        <option value="public transport" class="nl">Transport en commun</option>
-                                        <option value="personalBike" class="fr">Vélo personnel</option>
-                                        <option value="personalBike" class="en">Personnal bike</option>
-                                        <option value="personalBike" class="nl">Persoonlijke fiets</option>
-                                        <option value="walk" class="fr">Marche</option>
-                                        <option value="walk" class="en">Walk</option>
-                                        <option value="walk" class="nl">Wandelen</option>
+                                        <option value="personnalCar" selected>Voiture personnelle</option>
+                                        <option value="companyCar">Voiture de société</option>
+                                        <option value="covoiturage">Covoiturage</option>
+                                        <option value="public transport">Transport en commun</option>
+                                        <option value="personalBike">Vélo personnel</option>
+                                        <option value="walk">Marche</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-6 essence">
                                     <div class="essence">
-                                        <label><input type="radio" name="transportationEssence" value="essence" class="fr" checked> Essence</label>
-                                        <label><input type="radio" name="transportationEssence" value="essence" class="en" checked> Essence</label>
-                                        <label><input type="radio" name="transportationEssence" value="essence" class="nl" checked> Essence</label>
+                                        <label><input type="radio" name="transportationEssence" value="essence" checked> Essence</label>
                                     </div>
                                     <div class="diesel">
-                                        <label><input type="radio" name="transportationEssence" class="fr" value="diesel"> Diesel</label>
-                                        <label><input type="radio" name="transportationEssence" class="en" value="diesel"> Diesel</label>
-                                        <label><input type="radio" name="transportationEssence" class="nl" value="diesel"> Diesel</label>
+                                        <label><input type="radio" name="transportationEssence" value="diesel"> Diesel</label>
                                     </div>
                                 </div>
                                 
@@ -125,14 +85,10 @@ include 'include/header5.php';
                                 
                                 <div class="col-md-12">
                                     <div class="employeurremunere">
-                                        <label><input type="radio" name="prime" value="1" class="fr" checked> Mon employeur rémunère mes kilomètres vélo</label>
-                                        <label><input type="radio" name="prime" value="1" class="en" checked> Mon employeur rémunère mes kilomètres vélo</label>
-                                        <label><input type="radio" name="prime" value="1" class="nl" checked> Mon employeur rémunère mes kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="1" checked> Mon employeur rémunère mes kilomètres vélo</label>
                                     </div>
                                     <div class="employeurneremunerepas">
-                                        <label><input type="radio" name="prime" class="fr" value="0"> Mon employeur ne me rémunère par les kilomètres vélo</label>
-                                        <label><input type="radio" name="prime" class="en" value="0"> Mon employeur ne me rémunère par les kilomètres vélo</label>
-                                        <label><input type="radio" name="prime" class="nl" value="0"> Mon employeur ne me rémunère par les kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="0"> Mon employeur ne me rémunère par les kilomètres vélo</label>
                                     </div>
                                 </div>
                             </div>
@@ -140,24 +96,12 @@ include 'include/header5.php';
                             <div class="form-group col-md-12">
                                 <div class="col-md-6">
                                     <label for="frequence" class="fr">Vous comptez aller au vélo :</label>
-                                    <label for="frequence" class="en">Vous comptez aller au vélo :</label>
-                                    <label for="frequence" class="nl">Vous comptez aller au vélo :</label>
                                     <select class="form-control" name="frequence">
-                                        <option value="1" class="fr">1 fois par semaine</option>
-                                        <option value="1" class="en">1 fois par semaine</option>
-                                        <option value="1" class="nl">1 fois par semaine</option>
-                                        <option value="2" class="fr">2 fois par semaine</option>
-                                        <option value="2" class="en">2 fois par semaine</option>
-                                        <option value="2" class="nl">2 fois par semaine</option>
-                                        <option value="3" class="fr">3 fois par semaine</option>
-                                        <option value="3" class="en">3 fois par semaine</option>
-                                        <option value="3" class="nl">3 fois par semaine</option>
-                                        <option value="4" class="fr" selected>4 fois par semaine</option>
-                                        <option value="4" class="en" selected>4 fois par semaine</option>
-                                        <option value="4" class="nl" selected>4 fois par semaine</option>
-                                        <option value="5" class="fr">5 fois par semaine</option>
-                                        <option value="5" class="en">5 fois par semaine</option>
-                                        <option value="5" class="nl">5 fois par semaine</option>
+                                        <option value="1">1 fois par semaine</option>
+                                        <option value="2">2 fois par semaine</option>
+                                        <option value="3">3 fois par semaine</option>
+                                        <option value="4" selected>4 fois par semaine</option>
+                                        <option value="5">5 fois par semaine</option>
                                     </select>
                                 </div>
                             </div>
@@ -172,29 +116,19 @@ include 'include/header5.php';
                         </div>                                                
                         <div class="separator"></div>
                         
-                        <h4 class="text-green fr">Vélo souhaité</h4>
-                        <h4 class="text-green en">Vélo souhaité</h4>
-                        <h4 class="text-green nl">Vélo souhaité</h4>
+                        <h4 class="text-green">Vélo souhaité</h4>
                         
                         <div class="col-md-12">
                             <div class="col-md-4">
-                                <label for="brand" class="fr">Marque</label>
-                                <label for="brand" class="en">Brand</label>
-                                <label for="brand" class="nl">Merk</label>
+                                <label for="brand">Marque</label>
                                 <select class="from-control" name='brand'>
-                                    <option value="selection" class="fr">Veuillez sélectionner</option>
-                                    <option value="selection" class="en">Veuillez sélectionner</option>
-                                    <option value="selection" class="nl">Veuillez sélectionner</option>
+                                    <option value="selection">Veuillez sélectionner</option>
                                 </select>
                             </div>
                             <div class="col-md-4 model hidden">
-                                <label for="brand" class="fr">Modèle</label>
-                                <label for="brand" class="en">Model</label>
-                                <label for="brand" class="nl">Model</label>
+                                <label for="brand">Modèle</label>
                                 <select class="from-control" name='model'>
-                                    <option value="selection" class="fr">Veuillez sélectionner</option>
-                                    <option value="selection" class="en">Veuillez sélectionner</option>
-                                    <option value="selection" class="nl">Veuillez sélectionner</option>
+                                    <option value="selection">Veuillez sélectionner</option>
                                 </select>
                             </div>
                             
@@ -213,8 +147,6 @@ include 'include/header5.php';
                         
 						<div class="form-group col-md-2 center">
                             <button class="button green button-3d effect fill-vertical fr " type="submit"><i class="fa fa-calculator"></i>&nbsp;Calculer</button>
-                            <button class="button green button-3d effect fill-vertical en " type="submit"><i class="fa fa-calculator"></i>&nbsp;Calculate</button>
-                            <button class="button green button-3d effect fill-vertical nl " type="submit"><i class="fa fa-calculator"></i>&nbsp;Rekenen</button>
                         </div>
                     </div>
                     </form>
@@ -240,6 +172,8 @@ include 'include/header5.php';
                                     });
                                     
                                     $('#resultCash4Bike').removeClass('hidden');
+                                    
+                                    console.log(response);
                                     
                                     if(response.totalImpact>=0){
                                         $('#impactOnNetSalary').html("Coût réel du vélo : "+response.totalImpact+" €/mois")
@@ -275,9 +209,7 @@ include 'include/header5.php';
 		    <h3 class="text-light" id='impactOnCO2'></h3>
 		    <p class="text-light" id='impactOnNetSalaryText'></p>
 		  
-		    <a class="button black-light button-3d effect fill-vertical fr"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
-		    <a class="button black-light button-3d effect fill-vertical en"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
-		    <a class="button black-light button-3d effect fill-vertical nl"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
+		    <a class="button black-light button-3d effect fill-vertical"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
 		</div>            
             
 		
@@ -292,34 +224,24 @@ include 'include/header5.php';
             
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h2 class="modal-title text-green fr" id="modal-label">Veuillez compléter vos informations de contact</h2>
-				<h2 class="modal-title text-green en" id="modal-label">Veuillez compléter vos informations de contact</h2>
-				<h2 class="modal-title text-green nl" id="modal-label">Veuillez compléter vos informations de contact</h2>
+				<h2 class="modal-title text-green" id="modal-label">Veuillez compléter vos informations de contact</h2>
 			</div>
 			<div class="modal-body">
 				<div class="row text-left">
 					<div class="form-group col-sm-12">
                     	<label for="firstName" class="fr">Prénom</label>
-                    	<label for="firstName" class="en">First name</label>
-                    	<label for="firstName" class="nl">Voornaam</label>
                         <input type="text" aria-required="true" name="firstName" class="form-control required is-invalid">
                     </div>
 					<div class="form-group col-sm-12">
                     	<label for="name" class="fr">Nom</label>
-                    	<label for="name" class="en">Name</label>
-                    	<label for="name" class="nl">Naam</label>
                         <input type="text" aria-required="true" name="name" class="form-control required is-invalid">
                     </div>
                     <div class="form-group col-sm-12">
                     	<label for="email" class="fr">Email</label>
-                    	<label for="email" class="en">Email</label>
-                    	<label for="email" class="nl">Email</label>
                         <input type="text" aria-required="true" name="email" class="form-control required is-invalid">
                     </div>
                     <div class="form-group col-sm-12">
                     	<label for="entreprise" class="fr">Entreprise</label>
-                    	<label for="entreprise" class="en">Company</label>
-                    	<label for="entreprise" class="nl">Bedrijf</label>
                         <input type="text" aria-required="true" name="entreprise" class="form-control required is-invalid">
                     </div>
 				</div>
@@ -334,9 +256,7 @@ include 'include/header5.php';
             <input type="text" name="model" class="form-control hidden">
             <input type="text" name="prime" class="form-control hidden">
 			<div class="modal-footer">
-				<button type="submit" class="button green button-3d effect fill-vertical fr">Envoyer</button>
-				<button type="submit" class="button green button-3d effect fill-vertical en">Send</button>
-				<button type="submit" class="button green button-3d effect fill-vertical nl">Verzenden</button>
+				<button type="submit" class="button green button-3d effect fill-vertical">Envoyer</button>
 			</div>
             </form>
                     
@@ -384,41 +304,21 @@ include 'include/header5.php';
 		
 	</div>
         
-    <h3 class="fr"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-    <h3 class="en"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-    <h3 class="nl"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-    <p class="fr">En Belgique vous avez la possibilité d'échanger une partie de votre rémunération brute totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
-	Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
-    <p class="en">En Belgique vous avez la possibilité d'échanger une partie de votre rémunération brute totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
+    <h3> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
+    <p>En Belgique vous avez la possibilité d'échanger une partie de votre rémunération brute totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
     Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
-    <p class="nl">En Belgique vous avez la possibilité d'échanger une partie de votre rémunération brute totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
-    Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
-    <p class="fr">Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
-    <p class="en">Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
-    <p class="nl">Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
-    <p class="fr">Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
-    <p class="en">Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
-    <p class="nl">Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
+    <p>Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
+    <p>Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit ce faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
     <br>
         
     <div class="separator"></div>
         
         
-	<h3 class="fr">Disclaimer</h3>
-	<h3 class="en">Disclaimer</h3>
-	<h3 class="nl">Disclaimer</h3>
-    <p class="fr">Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
-    <p class="en">Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
-    <p class="nl">Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
-    <p class="fr">L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>
-    <p class="en">L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>
-    <p class="nl">L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>
-    <p class="fr">Les informations reprises ne remplacent en aucun cas un avis juridique ou l’assistance personnalisée d’un professionnel.</p>
-    <p class="en">Les informations reprises ne remplacent en aucun cas un avis juridique ou l’assistance personnalisée d’un professionnel.</p>
-    <p class="nl">Les informations reprises ne remplacent en aucun cas un avis juridique ou l’assistance personnalisée d’un professionnel.</p>
-    <p class="fr">Dans la mesure autorisée par la loi, nous ne sommes en aucun cas être tenus responsables de tout dommage, direct ou indirect, de quelque nature et importance qu’il soit, qui pourrait être causé directement ou indirectement par la consultation ou, plus généralement, par toute utilisation quelconque qui serait faite de cet outil et notamment des informations qui s’y trouvent.</p>
-    <p class="en">Dans la mesure autorisée par la loi, nous ne sommes en aucun cas être tenus responsables de tout dommage, direct ou indirect, de quelque nature et importance qu’il soit, qui pourrait être causé directement ou indirectement par la consultation ou, plus généralement, par toute utilisation quelconque qui serait faite de cet outil et notamment des informations qui s’y trouvent.</p>
-    <p class="nl">Dans la mesure autorisée par la loi, nous ne sommes en aucun cas être tenus responsables de tout dommage, direct ou indirect, de quelque nature et importance qu’il soit, qui pourrait être causé directement ou indirectement par la consultation ou, plus généralement, par toute utilisation quelconque qui serait faite de cet outil et notamment des informations qui s’y trouvent.</p>
+	<h3>Disclaimer</h3>
+    <p>Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
+    <p>L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>
+    <p>Les informations reprises ne remplacent en aucun cas un avis juridique ou l’assistance personnalisée d’un professionnel.</p>
+    <p>Dans la mesure autorisée par la loi, nous ne sommes en aucun cas être tenus responsables de tout dommage, direct ou indirect, de quelque nature et importance qu’il soit, qui pourrait être causé directement ou indirectement par la consultation ou, plus généralement, par toute utilisation quelconque qui serait faite de cet outil et notamment des informations qui s’y trouvent.</p>
       </div>
 </section>
 

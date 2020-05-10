@@ -39,13 +39,6 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/global_functions.js"></script>
 <script type="text/javascript" src="js/dashboard_management.js"></script>
 
-
-<script type="text/javascript">
-    
-
-</script>
-
-
 <style media="screen">
 .tableFixed {
   table-layout: fixed;
@@ -191,7 +184,7 @@ function initializeFields(){
           $('#widget-boxManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
           i++;
         }
-
+        
       }
     }
   })
@@ -4232,7 +4225,7 @@ if($connected){
 </div>
 
 <div class="modal fade" id="BikesListingAdmin" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg" style= "width: 1250px">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -4729,11 +4722,11 @@ if($connected){
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
               </div>
                 
-              <div data-example-id="contextual-table" class="bs-example billsToSendSpan">
+              <div data-example-id="contextual-table" class="bs-example billsToSendSpan hidden">
                   <h4 class="text-green">Factures à envoyer</h4>
                   <span id="billsToSendListing"></span>
               </div>
-              <div class="separator billsToSendSpan"></div>
+              <div class="separator billsToSendSpan hidden"></div>
                 
               <div data-example-id="contextual-table" class="bs-example">
                 <span id="billsListing"></span>
@@ -6446,6 +6439,9 @@ if($connected){
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
               </div>
               <div class="modal-body">
+                  
+                  
+                  
                 <div class="row">
                   <div class="col-sm-12">
 
@@ -6475,7 +6471,7 @@ if($connected){
                             <label for="company"  class="nl">Company</label>
                             <select name="company" class="form-control required"></select>
                           </div>
-
+                            
                         </div>
                         <div class="col-sm-12">
                           <div class="col-sm-4">
@@ -8304,7 +8300,6 @@ if($connected){
           submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
               success: function(response) {
-                console.log(response);
                 if (response.response == 'success') {
                   document.getElementById('widget-updateBillingStatus-form').reset();
                   $.notify({

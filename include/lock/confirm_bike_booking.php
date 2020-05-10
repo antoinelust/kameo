@@ -46,14 +46,14 @@ if($length=="1"){
     $interval="PT".$minutes."M";
     $dateEnd->add(new DateInterval($interval));
     $dateEndString=$dateEnd->format("Y-m-d H:i");
-        
+            
     $data=array("widget-new-booking-mail-customer" => $client, "widget-new-booking-frame-number" => $frameNumber, "widget-new-booking-building-start" => $buildingReference, "widget-new-booking-building-end" => $buildingReference, "widget-new-booking-locking-code" => "0000", "widget-new-booking-date-start" => $dateStartString , "widget-new-booking-date-end"=> $dateEndString);
         
     $test=CallAPI('POST', 'https://www.kameobikes.com/test/include/new_booking.php', $data);
-    
-    include '../connexion.php';
-    $sql="SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START ='$building' AND CODE = '0' AND VALID = 'Y' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())))";    
         
+    include '../connexion.php';
+    $sql="SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START ='$building' AND FRAME_NUMBER='$frameNumber' AND CODE = '0' AND VALID = 'Y' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())))";    
+            
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);

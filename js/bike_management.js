@@ -101,7 +101,6 @@ function list_bikes_admin() {
                                   <th>Assurance ?</th>
                                   <th>Mise à jour </th>
                                   <th>Rentabilité </th>
-                                  <th></th>
                                 </tr>
                               </thead><tbody>`;
                 dest=dest.concat(temp);
@@ -191,7 +190,7 @@ function list_bikes_admin() {
                     if(response.bike[i].contractType == 'selling'){
                       row = '<tr style="display:none;" class="hideRow">';
                     }
-                    var temp= row + "<td>"+response.bike[i].id+"</td><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"retrieveBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td data-sort=\""+(new Date(response.bike[i].HEU_MAJ)).getTime()+"\">"+response.bike[i].HEU_MAJ.shortDate()+"</td>"+rentability+"<td><ins><a class=\"text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">Mettre à jour</a></ins></td></tr>";
+                    var temp= row + "<td>"+response.bike[i].id+"</td><td>"+response.bike[i].company+"</td><td><a  data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" class=\"updateBikeAdmin\" href=\"#\">"+response.bike[i].frameNumber+"</a></td><td>"+brandAndModel+"</td><td>"+contractType+"</td><td>"+start+"</td><td>"+end+"</td><td>"+leasingPrice+"</td><td>"+automatic_billing+"</td><td>"+status+"</td><td>"+insurance+"</td><td data-sort=\""+(new Date(response.bike[i].HEU_MAJ)).getTime()+"\">"+response.bike[i].HEU_MAJ.shortDate()+"</td>"+rentability+"</tr>";
                     dest=dest.concat(temp);
                   i++;
                 }
@@ -254,9 +253,7 @@ function list_bikes_admin() {
                         { "width": "100px" },
                         { "width": "100px" },
                         { "width": "100px" },
-                        { "width": "100px" },
-                        { "width": "100px" }                          
-                      ]
+                        { "width": "100px" }                      ]
                 });
 
             }

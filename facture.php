@@ -213,8 +213,14 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 $dateEnd = new DateTime();
                 $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
-                $temp1=$dateStart->format('d-m-Y');                
-                $temp2=$dateEnd->format('d-m-Y');      
+                $temp1=$dateStart->format('d-m-Y');      
+                $temp2=$dateEnd->format('d-m-Y');    
+                
+                $temp3=$dateStart->format('Y-m-d');                
+                $temp4=$dateStart->format('Y-m-d');                
+                
+                
+                
                 $comment='Période du '.$temp1.' au '.$temp2;
                 $leasingPrice=$row2['LEASING_PRICE'];
                 $leasingPriceTVAC=1.21*$row2['LEASING_PRICE'];
@@ -223,14 +229,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 if(!$simulation || $simulation == 'N'){
                     include 'include/connexion.php';
-                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID','$frameNumber', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
+                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID','$frameNumber', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                     } 
-                    $conn->close();
-                    $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$monthAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
-                    error_log("SQL7 :".$sql2."\n", 3, "generate_invoices.log");    
-                    
+                    $conn->close();                    
                 }
                 
 
@@ -294,7 +297,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $dateEnd = new DateTime();
                 $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
                 $temp1=$dateStart->format('d-m-Y');                
-                $temp2=$dateEnd->format('d-m-Y');                
+                $temp2=$dateEnd->format('d-m-Y');    
+                
+                $temp3=$dateStart->format('Y-m-d');
+                $temp4=$dateEnd->format('Y-m-d');
                 
                 if($row2['END']){
                     $contractEnd= new DateTime();
@@ -309,7 +315,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $boxID=$row2['ID'];
                 if(!$simulation || $simulation == 'N'){
                     include 'include/connexion.php';
-                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID','$reference2', '$comment', '$leasingPrice', '$leasingPriceTVAC')";
+                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID','$reference2', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                     } 

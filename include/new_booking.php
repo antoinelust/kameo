@@ -28,7 +28,6 @@ $dateEnd_2=$temp;
 $dateEnd_2String=$dateEnd_2->format('Y-m-d H:i');
 
 
-
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';

@@ -115,15 +115,15 @@ if($connected){
     
 
     if($type=='ouvrier'){
-        $impactOnGrossSalalary=($leasingAmount*12/17.58);
+        $impactOnGrossSalary=($leasingAmount*12/17.58);
     }else if($type=="employe"){
-        $impactOnGrossSalalary=($leasingAmount*12/18.08);
+        $impactOnGrossSalary=($leasingAmount*12/18.08);
     }else{
         errorMessage("ES0012");
     }
     
-    $socialCotisation=$impactOnGrossSalalary*0.1307;
-    $basisForTaxes=$impactOnGrossSalalary-$socialCotisation;
+    $socialCotisation=$impactOnGrossSalary*0.1307;
+    $basisForTaxes=$impactOnGrossSalary-$socialCotisation;
     
     if($revenuEmployee<636.49){
         $taxRate=0;
@@ -183,6 +183,8 @@ if($connected){
     }
 
     //$response['taxRate']=$taxRate;
+    $response['leasingAmount']=round($leasingAmount);
+    $response['impactOnGrossSalary']=round($impactOnGrossSalary);
     $response['impactBikeAllowance']=round($impactBikeAllowance);
     $response['impactOnNetSalary']=round($impactOnNetSalary);
     $response['impactCarSaving']=round($impactCarSavingMoney);

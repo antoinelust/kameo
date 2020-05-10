@@ -1,5 +1,4 @@
-function get_bills_listing(company, sent, paid, direction, email) {
-    
+function get_bills_listing(company, sent, paid, direction, email) {    
     $.ajax({
         url: 'include/get_bills_listing.php',
         type: 'post',
@@ -25,9 +24,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead><tbody>";
                     var temp3="<table id=\"billsToSendListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Email</th><th>Prénom</th><th>Nom</th><th></th></tr></thead><tbody>";
                 }else{
-
                     var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><thead><tr><th>ID</th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th></tr></thead><tbody>";
-
                 }
                 dest=dest.concat(temp);
                 dest3=dest3.concat(temp3);
@@ -189,12 +186,18 @@ function get_bills_listing(company, sent, paid, direction, email) {
                 var temp3="</tbody></table>";
                 dest3=dest3.concat(temp3);
                 
+                if(response.update){
+                    $('.billsToSendSpan').removeClass("hidden");
+                }else{
+                    $('.billsToSendSpan').addClass("hidden");
+                }
+                
                 document.getElementById('billsListing').innerHTML = dest;
                 document.getElementById('billsToSendListing').innerHTML = dest3;
                 
                 
                 $('.sendBillButton').click(function() {
-                    var email=$(this).parents('tr').find('.email').val();
+                    var email_client=$(this).parents('tr').find('.email').val();
                     var id=$(this).parents('tr').find('.ID').val();
                     var lastName=$(this).parents('tr').find('.lastName').val();
                     var firstName=$(this).parents('tr').find('.firstName').val();
@@ -204,7 +207,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     $.ajax({
                         url: 'include/send_bill.php',
                         type: 'post',
-                        data: { "id": id, "email": email, "firstName": firstName, "lastName": lastName, "date": date, "fileName": fileName},
+                        data: { "id": id, "email": email_client, "firstName": firstName, "lastName": lastName, "date": date, "fileName": fileName},
                         success: function(response){
                             if(response.response == 'error') {
                               $.notify({
@@ -214,6 +217,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                               });
                             }
                             if(response.response == 'success'){
+                              get_bills_listing('*', '*', '*', '*',email);
                               $.notify({
                                 message: response.message
                               }, {

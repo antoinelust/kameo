@@ -15,6 +15,7 @@ $bookingID=$_POST['bookingID'];
 
 if($bookingID != NULL)
 {
+    
   include 'connexion.php';
   $sql= "update reservations set STAANN='D' where ID='$bookingID'";
   if ($conn->query($sql) === FALSE) {

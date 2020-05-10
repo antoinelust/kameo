@@ -73,59 +73,43 @@ Bien à vous,<br><br>
 
 L'équipe Kameo Bikes";
 
-$file_to_attach = __DIR__ .$fileName;
+$file_to_attach = "../factures/".$fileName;
+
 
 if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
     $mail->AddAttachment( $file_to_attach , $fileName );
 }
 $mail->Body = $message;
 if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-    if(!$simulation || $simulation=='N'){
-        if($resultat3['BILLS_SENDING'] == "Y" && $emailContactBilling != "" && $lastNameContactBilling != ""){
-            $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
-            $mail->AddBCC("antoine@kameobikes.com", "Antoine Lust");
-            $mail->AddBCC("julien@kameobikes.com", "Julien Jamar");                        
-        }else{
-            $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
-        }
-    }else{
-        $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
-    }
-
-    if(!$mail->Send()) {
-       echo error_get_last()['message'];  
-    }else {
-       echo 'mail envoyé';
-    }    
-}else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
+    $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
+    $mail->AddBCC("antoine@kameobikes.com", "Antoine Lust");
+    $mail->AddBCC("julien@kameobikes.com", "Julien Jamar");                        
+}else{
     $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+}
 
+
+if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
     if(!$mail->Send()) {
        $response=array();
        $response['response']="error";  
        $response['message']=error_get_last()['message'];  
-
     }else{
-        
-    $now=new DateTime('now');
-    $nowString=$now->format('Y-m-d H:i')
-        
-    include 'connexion.php';
-    $sql="update factures set SENT = '1', SEND_DATE='$nowString' WHERE ID='$id'";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
+        $now=new DateTime('now');
+        $nowString=$now->format('Y-m-d H:i');
+        include 'connexion.php';
+        $sql="update factures set FACTURE_SENT = '1', FACTURE_SENT_DATE='$nowString' WHERE ID='$id'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);   
+        $conn->close();
+        successMessage("SM0026");
     }
-    $result = mysqli_query($conn, $sql);   
-    $resultat = mysqli_fetch_assoc($result);
-    $conn->close();
-    
-        
-       successMessage("SM0026");
-    }    
 }else{
-		$response = array ('response'=>'error', 'message'=> "Société ".$companyName."<br><strong>environnement localhost, mail non envoyé</strong>");
+		$response = array ('response'=>'success', 'message'=> "Société ".$companyName."<br><strong>environnement localhost, mail non envoyé</strong>");
 		echo json_encode($response);
 		die;    
 }

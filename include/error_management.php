@@ -74,14 +74,52 @@ if(isset($_GET['action'])){
                 $bikeNumber=$row['FRAME_NUMBER'];
                 $contractStart=new DateTime($row['CONTRACT_START']);
                 $dateTemp=$contractStart;
-                if($row['CONTRACT_START'] != NULL){
-                    $contractEnd=new DateTime($row['CONTRACT_END']);
-                    $now=new DateTime('now');
-                    if($now<$contractEnd){
-                        $contractEnd=$now;
+                
+                if($row['CONTRACT_TYPE']=='leasing'){
+                    if($row['CONTRACT_END'] != NULL){
+                        $contractEnd=new DateTime($row['CONTRACT_END']);
+                        $now=new DateTime('now');
+                        if($now<$contractEnd){
+                            $contractEnd=$now;
+                        }
+                    }else{
+                        $contractEnd=new DateTime('now');
                     }
-                }else{
-                    $contractEnd=new DateTime('now');
+                }else if($row['CONTRACT_TYPE']=='renting'){
+                    
+                    
+                    if($row['CONTRACT_END'] != NULL){
+                        $contractEnd=new DateTime($row['CONTRACT_END']);
+                        $now=new DateTime('now');
+                        if($now<$contractEnd){
+                            $contractEnd=$now;
+                        }
+                    }else{
+                        $contractEnd=new DateTime('now');
+                    }
+                    
+                    
+                    if($contractEnd->format('m')==1){
+                        $monthBefore=12;
+                        $yearBefore=(($contractEnd->format('Y'))-1);
+                    }else{
+                        $monthBefore=(($contractEnd->format('m'))-1);
+                        $yearBefore=$contractEnd->format('Y');
+                    }
+                    $dayBefore=$contractEnd->format('d');
+
+                    if(strlen($monthBefore)==1){
+                        $monthBefore='0'.$monthBefore;
+                    }
+                    if(strlen($dayBefore)==1){
+                        $dayBefore='0'.$dayBefore;
+                    }
+                    
+                    $contractEnd=new DateTime($yearBefore.'-'.$monthBefore.'-'.$dayBefore);
+
+                    
+                    
+                    
                 }
                 
                 $day=$contractStart->format('d');
@@ -93,13 +131,9 @@ if(isset($_GET['action'])){
                     
                                         
                     $dateTempString=$dateTemp->format('d-m-Y');
-                    
-                    
+                    $dateTempString2=$dateTemp->format('Y-m-d');
                     include 'connexion.php';
-                    
-                    $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID' and COMMENTS like 'Période du $dateTempString%'";                    
-                    
-                    
+                    $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID' and DATE_START = '$dateTempString2'";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -111,6 +145,7 @@ if(isset($_GET['action'])){
                     
                     if($length == 0){
                         $response['bike']['bill'][$i]['ID']=$bikeID;
+                        $response['bike']['bill'][$i]['sql']=$sql;
                         $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
                         $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo à la date du $dateTempString";
                         $i++;

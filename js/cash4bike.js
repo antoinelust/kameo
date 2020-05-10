@@ -248,7 +248,7 @@ function load_picture(id){
         success: function(response){
             if (response.response == "success") {
                 
-                var price=Math.round(response.bike[0].priceHTVA*1.21);
+                var price=(response.bike[0].priceHTVA);
                 var brand=response.bike[0].brand;
                 var model=response.bike[0].model;
                 var frameType=response.bike[0].frameType;
@@ -260,8 +260,8 @@ function load_picture(id){
 
                     success: function(response){
                         if (response.response == "success") {
-                            $('#bike_price').html("<span class=\"text-green\">Prix à l'achat (TVAC): </span>"+price+" €");
-                            $('#bike_leasing_price').html("<span class=\"text-green\">Prix en location tout inclus (TVAC): </span>"+Math.round(response.HTVALeasingPrice*1.21)+" €/mois");
+                            $('#bike_price').html("<span class=\"text-green\">Prix à l'achat (TVAC): </span>"+Math.round(price*1.21)+" €");
+                            //$('#bike_leasing_price').html("<span class=\"text-green\">Prix en location tout inclus (TVAC): </span>"+Math.round(response.HTVALeasingPrice)+" €/mois");
                             $('#cash4bike-form input[name=leasingAmount]').val(response.HTVALeasingPrice);
                             document.getElementById("bike_picture").src="images_bikes/"+(brand+"_"+model.replace(/ /g,'-')+"_"+frameType.replace(/ /g,'-')).toLowerCase()+"_mini.jpg";
                         }

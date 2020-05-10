@@ -10,38 +10,34 @@ if(!isset($_SESSION))
 
 include 'globalfunctions.php';
 
+$marginBike=0.7;
+$marginOther=0.3;
+$leasingDuration=36;
+
 // Form Fields
 $retailPrice = $_POST["retailPrice"];
-//$retailPrice=100;
+$priceRetailer=$retailPrice*(1-0.27);
+$debtCost=$priceRetailer*0.09;
 
-$priceTemp=($retailPrice+3*75+4*100+4*100);
+$otherCost=3*84+4*100;
 
+$totalCost=($priceRetailer+$debtCost+$otherCost);
 
-// Calculation of coefficiant for leasing price
+$bikeEndSell=0.15*$retailPrice;
 
-if($priceTemp<2500){
-    $coefficient=3.289;
-}elseif ($priceTemp<=5000){
-    $coefficient=3.056;
-}elseif ($priceTemp<=12500){
-    $coefficient=2.965;
-}elseif ($priceTemp<=25000){
-    $coefficient=2.921;
-}elseif ($priceTemp<=75000){
-    $coefficient=2.898;
-}else{
-	errorMessage(ES0012);
-}
+$leasingPrice=($priceRetailer*(1+$marginBike)+$otherCost*(1+$marginOther))/$leasingDuration;
+
+$rentabilite=($leasingPrice*$leasingDuration+$bikeEndSell-$totalCost)/$totalCost;
 
 $response['response']="success";
 $response['retailPrice']=$retailPrice;
-$leasingPrice=round(($priceTemp)*($coefficient)/100); 	
+//$response['rentabilite']=$rentabilite;
 $response['leasingPrice']=round($leasingPrice);
 
-$response['HTVARetailPrice']=round($retailPrice/1.21);
-$response['TVARetailPrice']=round($retailPrice-$retailPrice/1.21);
-$response['avantageFiscalRetailPrice']=round(0.34*$retailPrice/1.21);
-$response['finalPriceRetailPrice']=round($retailPrice/1.21-0.34*$retailPrice/1.21);
+$response['HTVARetailPrice']=round($retailPrice);
+$response['TVARetailPrice']=round($retailPrice-$retailPrice);
+$response['avantageFiscalRetailPrice']=round(0.34*$retailPrice);
+$response['finalPriceRetailPrice']=round($retailPrice-0.34*$retailPrice);
 
 $response['HTVALeasingPrice']=round($leasingPrice);
 $response['avantageFiscalLeasingPrice']=round(0.34*$leasingPrice);

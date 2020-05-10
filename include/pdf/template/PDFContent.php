@@ -722,9 +722,12 @@ if ($assurance == true) { ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($bikes as $bike) {
-                if($bike['LEASING_PRICE'] != $bike['FINAL_LEASING_PRICE']){
+                if($bike['LEASING_PRICE'] > $bike['FINAL_LEASING_PRICE']){
                     echo "<div style='margin-left:3mm;'>Location:<br/><del>{$bike['LEASING_PRICE']} € HTVA/mois</del><br /> {$bike['FINAL_LEASING_PRICE']} € HTVA/mois <span class='green bold'> x{$bike['count']}</span></div><br/>";
-                }else{
+                }else if($bike['LEASING_PRICE'] < $bike['FINAL_LEASING_PRICE']){
+                    echo "<div style='margin-left:3mm;'>Location<br/>{$bike['FINAL_LEASING_PRICE']} € HTVA/mois  <span class='green bold'> x{$bike['count']}</span></div><br/>";
+                }
+                else{
                     echo "<div style='margin-left:3mm;'>Location<br/>{$bike['LEASING_PRICE']} € HTVA/mois  <span class='green bold'> x{$bike['count']}</span></div><br/>";
                 }
               } ?>
