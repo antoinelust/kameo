@@ -6,6 +6,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 ob_start();
 
+include 'include/globalfunctions.php';
 
 if(isset($_GET['company'])){
     $company=$_GET['company'];
@@ -47,7 +48,6 @@ function requireToVar($file){
 
 
 
-include 'include/globalfunctions.php';
 
 include 'include/connexion.php';
 $sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";

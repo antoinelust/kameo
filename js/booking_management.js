@@ -46,57 +46,6 @@ function initializeUpdateReservation(reservationID){
 }
 
 
-
-function initialize_booking_counter(){
-    var date_start=new Date();
-    var date_end=new Date();
-
-    var d = new Date();
-    date_start.setMonth(date_start.getMonth()-1);
-    
-    var month = '' + (d.getMonth()),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    var date_start_string=([year, month, day].join('-'));
-    
-    var d = new Date(),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    var date_end_string=([year, month, day].join('-')+' 23:59');
-    
-    var bikeValue="all";
-
-    
-    $.ajax({
-        url: 'include/get_reservations_listing.php',
-        type: 'post',
-        data: { "email": email, "bikeValue": bikeValue, "dateStart": date_start_string, "dateEnd": date_end_string},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-                document.getElementById('counterBookings').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bookingNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bookingNumber+"</span>";
-                var counter1=response.bookingNumber;
-            }
-        }
-    })
-}
-
-
 function get_reservations_listing(bike, date_start, date_end){
         
     var frameNumber='';
@@ -168,8 +117,6 @@ function get_reservations_listing(bike, date_start, date_end){
 
 function reservation_listing(){
     get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
-    $('#ReservationsListing').modal('toggle');
-
 }
 
 

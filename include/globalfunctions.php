@@ -190,4 +190,10 @@ function resize_image($file, $w, $h, $crop=FALSE) {
     return $dst;
 }
 
+
+function last_day_month($month){
+    $lastDay=[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return $lastDay[($month-1)];
+}
+
 ?>

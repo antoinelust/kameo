@@ -1,5 +1,6 @@
 function get_company_details(ID, email ,getCompanyContacts = false) {
-  var internalReference;
+  var internalReference;    
+
   $.ajax({
     url: 'include/get_company_details.php',
     type: 'post',

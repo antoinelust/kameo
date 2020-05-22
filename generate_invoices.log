@@ -1735,3 +1735,2219 @@ Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 </page>
 Final :
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-13' and (aa.CONTRACT_END>'2020-05-13' or aa.CONTRACT_END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-13' and (aa.END>'2020-05-13' or aa.END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-08-07' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-08-07' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Area + </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Area + </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°20</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61011</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180628273</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-001_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527884</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-002_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61011</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-08-07' or CONTRACT_END IS NULL) and BILLING_GROUP='2' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Fond Roy </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Fond Roy </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°21</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61112</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180526464</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-003_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180626377</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-004_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61112</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-08-07' or CONTRACT_END IS NULL) and BILLING_GROUP='3' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site La Ramée</td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site La Ramée</p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°22</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61213</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527028</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-005_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW181053374</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-006_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61213</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-08-07' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Area + </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Area + </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°23</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61314</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180628273</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-001_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527884</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-002_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61314</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-08-07' or CONTRACT_END IS NULL) and BILLING_GROUP='2' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Fond Roy </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Fond Roy </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°24</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61415</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180526464</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-003_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180626377</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-004_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61415</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-08-07' or CONTRACT_END IS NULL) and BILLING_GROUP='3' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site La Ramée</td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site La Ramée</p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°25</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61516</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527028</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-005_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW181053374</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 07-08-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-006_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61516</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-06-15' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Area + </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Area + </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°20</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61011</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180628273</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-001_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527884</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-002_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61011</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-06-15' or CONTRACT_END IS NULL) and BILLING_GROUP='2' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Fond Roy </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Fond Roy </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°21</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61112</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180526464</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-003_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180626377</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-004_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61112</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-06-15' or CONTRACT_END IS NULL) and BILLING_GROUP='3' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site La Ramée</td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site La Ramée</p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°22</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61213</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">0</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527028</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-005_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW181053374</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-006_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61213</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL1:SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AFELIO' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='AGC' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ATR' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='BRIAN' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUBOIS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='DUNER' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='ELE' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='1'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-06-15' or CONTRACT_END IS NULL) and BILLING_GROUP='1' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Area + </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Area + </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°23</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61314</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180628273</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-001_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527884</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-002_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61314</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='2')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='2'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-06-15' or CONTRACT_END IS NULL) and BILLING_GROUP='2' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site Fond Roy </td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site Fond Roy </p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°24</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61415</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180526464</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-003_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180626377</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-004_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61415</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='EPS' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='3')) AS T1 WHERE start is NOT NULL
+SQL3 :select COMPANY_NAME from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='EPS' and BILLING_GROUP='3'
+SQL6 :select * from customer_bikes where COMPANY='EPS' and CONTRACT_START<='2020-05-15' and (CONTRACT_END>='2020-06-15' or CONTRACT_END IS NULL) and BILLING_GROUP='3' and AUTOMATIC_BILLING='Y' and STAANN !='D'
+Result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Epsylon site La Ramée</td>
+                <td style="text-align: right;    width: 33%">15/05/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 15/05/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images/EPS.jpg" alt="">
+				
+				<p>Epsylon site La Ramée</p>
+				
+				<p>Avenue Jacques Pastur, 47
+				<br>1180 Uccle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE055.37.49.343</p>
+				
+				<p>Référence client : EPS</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°25</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0520/61516</h4>
+			<p>Mai 2020</p>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW180527028</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-005_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr><tr>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2</td>
+                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Conway ETS 370 - CADRE: SW181053374</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">86 € / mois HTVA</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="color: grey">Période du 15-05-2020 au 15-06-2020</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="C:\Users\antoi\Downloads\Wampee-3.1.0-beta-3.4\www\kameo/images_bikes/EPS-006_mini.jpg" alt=""></td>
+                    <td>Période 13/36</td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 172 €/mois<br>+TVA: 36.12 /mois </p></td>
+            </tr>
+            <tr>
+                <td height="35">172 €/mois</td>
+                <td>21%</td>
+                <td>36.12 €/mois</td>
+                <td>208.12 €/mois</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>208.12 €/mois</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0520/61516</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='INF' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SIA' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL
+SQL2 :SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='2020-05-15' and (aa.CONTRACT_END>'2020-05-15' or aa.CONTRACT_END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='2020-05-15' and (aa.END>'2020-05-15' or aa.END is NULL) and aa.COMPANY='SOI' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='1')) AS T1 WHERE start is NOT NULL

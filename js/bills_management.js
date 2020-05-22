@@ -231,8 +231,6 @@ function get_bills_listing(company, sent, paid, direction, email) {
                 });                
                 
                 
-                document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"\" data-from=\"0\" data-seperator=\"true\">"+(parseInt(response.billINNumberNotPaid)+parseInt(response.billOUTNumberNotPaid))+"</span>";
-
                 var classname = document.getElementsByClassName('updateBillingStatus');
                 for (var i = 0; i < classname.length; i++) {
                     classname[i].addEventListener('click', function() {construct_form_for_billing_status_update(this.name)}, false);

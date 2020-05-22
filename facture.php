@@ -181,13 +181,33 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 	        <tbody>';
             $test2='';
 
-            $monthAfter=clone $currentDate;
-            $monthAfter->add(new DateInterval("P1M"));
-            $monthAfterString=$monthAfter->format('Y-m-d');
+            if($currentDate->format('m')==12){
+                $monthAfter=1;
+                $yearAfter=(($currentDate->format('Y'))+1);
+            }else{
+                $monthAfter=(($currentDate->format('m'))+1);
+                $yearAfter=$currentDate->format('Y');
+            }
+            $dayAfter=$currentDate->format('d');
 
+            $lastDayMonth= last_day_month( $monthAfter );
+            if($lastDayMonth < $dayAfter){
+                $dayAfter=$lastDayMonth;
+            }
+
+            if(strlen($monthAfter)==1){
+                $monthAfter='0'.$monthAfter;
+            }
+            if(strlen($dayAfter)==1){
+                $dayAfter='0'.$dayAfter;
+            }
+
+            $dateAfter=new DateTime();
+            $dateAfter->setDate($yearAfter, $monthAfter, $dayAfter);
+            $dateAfterString=$dateAfter->format('Y-m-d');
             
             include 'include/connexion.php';
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$monthAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$dateAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
             error_log("SQL6 :".$sql2."\n", 3, "generate_invoices.log");    
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
@@ -198,7 +218,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $conn->close();
 
             
-            $i=0;
+            $i=1;
             $total=0;
 
             while($row2 = mysqli_fetch_array($result2)){
@@ -211,13 +231,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $dateStart = new DateTime();
                 $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
                 
-                $dateEnd = new DateTime();
-                $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
                 $temp1=$dateStart->format('d-m-Y');      
-                $temp2=$dateEnd->format('d-m-Y');    
+                $temp2=$dateAfter->format('d-m-Y');    
                 
                 $temp3=$dateStart->format('Y-m-d');                
-                $temp4=$dateStart->format('Y-m-d');                
+                $temp4=$dateAfter->format('Y-m-d');                
                 
                 
                 
@@ -257,7 +275,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateEnd->format('d-m-Y').'</td>
+                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateAfter->format('d-m-Y').'</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -278,7 +296,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             }
 
             include 'include/connexion.php';
-            $sql2="select * from boxes where COMPANY='$company' and START<='$currentDateString' and (END>='$monthAfterString' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
+            $sql2="select * from boxes where COMPANY='$company' and START<='$currentDateString' and (END>='$dateAfterString' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -294,13 +312,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $contractStart->setDate(substr($row2['START'], 0, 4), substr($row2['START'],5,2), substr($row2['START'], 8,2));      
                 $dateStart = new DateTime();
                 $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
-                $dateEnd = new DateTime();
-                $dateEnd->setDate($monthAfter->format('Y'), $monthAfter->format('m'), $contractStart->format('d'));
                 $temp1=$dateStart->format('d-m-Y');                
-                $temp2=$dateEnd->format('d-m-Y');    
+                $temp2=$dateAfter->format('d-m-Y');    
                 
                 $temp3=$dateStart->format('Y-m-d');
-                $temp4=$dateEnd->format('Y-m-d');
+                $temp4=$dateAfter->format('Y-m-d');
                 
                 if($row2['END']){
                     $contractEnd= new DateTime();
@@ -339,7 +355,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateEnd->format('d-m-Y').'</td>
+                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateAfter->format('d-m-Y').'</td>
                     <td></td>
                 </tr>
                 <tr>

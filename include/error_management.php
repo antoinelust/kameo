@@ -18,6 +18,9 @@ if(isset($_GET['action'])){
     if($action=="list"){
         if($item=="bikes"){
             
+            $response=array();
+
+            
             include 'connexion.php';
             $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
             if ($conn->query($sql) === FALSE) {
@@ -48,12 +51,26 @@ if(isset($_GET['action'])){
             }
 
             $response['bike']['img']['number']=$i;
+            
+            include 'connexion.php';
+            $sql="SELECT * FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'";
+            if ($conn->query($sql) === FALSE){
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result = mysqli_query($conn, $sql);
+            $conn->close();
 
-            $response['response']="success";
-            echo json_encode($response);
-            die;
+            $i=0;
 
-        }else if($item=='bills'){
+            while($row = mysqli_fetch_array($result)){
+                $response['bike']['stock'][$i]['id']=$row['ID'];
+                $response['bike']['stock'][$i]['frameNumber']=$row['FRAME_NUMBER'];
+                $i++;
+            }
+
+            $response['bike']['stock']['number']=$i;
             
             include 'connexion.php';
             $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START != 'NULL' and STAANN != 'D' and (CONTRACT_TYPE = 'leasing' OR CONTRACT_TYPE = 'renting') and BILLING_TYPE != 'paid'";
@@ -66,6 +83,7 @@ if(isset($_GET['action'])){
             $conn->close();
 
             $i=0;            
+            $j=0;
 
             while($row = mysqli_fetch_array($result)){
                 
@@ -115,25 +133,27 @@ if(isset($_GET['action'])){
                         $dayBefore='0'.$dayBefore;
                     }
                     
-                    $contractEnd=new DateTime($yearBefore.'-'.$monthBefore.'-'.$dayBefore);
-
-                    
-                    
-                    
+                    $contractEnd=new DateTime($yearBefore.'-'.$monthBefore.'-'.$dayBefore);                    
                 }
                 
                 $day=$contractStart->format('d');
                 $month=$contractStart->format('m');
-                $year=$contractStart->format('Y');
+                $year=$contractStart->format('Y');                
                 
-                
-                while($dateTemp<$contractEnd){
+                while($dateTemp<=$contractEnd){
+                    
                     
                                         
                     $dateTempString=$dateTemp->format('d-m-Y');
-                    $dateTempString2=$dateTemp->format('Y-m-d');
+                    $dateTempString2=$dateTemp->format('Y-m-d');                    
+                    
                     include 'connexion.php';
                     $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID' and DATE_START = '$dateTempString2'";
+                    $response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
+                    $response['bike']['log'][$j]['sql']=$sql;
+                    $j++;
+                    
+                    
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -157,7 +177,15 @@ if(isset($_GET['action'])){
                     }else{
                         $month++;
                     }
-                    $dateTemp->setDate($year, $month, $day);                    
+                    
+                    if($day>last_day_month($month)){
+                        $dayTemp=last_day_month($month);
+                    }else{
+                        $dayTemp=$day;
+                    }
+                    
+                    
+                    $dateTemp->setDate($year, $month, $dayTemp);                    
                 }
                 
                 

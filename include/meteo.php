@@ -24,8 +24,6 @@ if($connected){
 
 
     $url="https://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyADDgTKivQUzNh2Aatlvdv1W9H1_n7GZro";
-
-
     $responseAPI=getAPIData($url);	
     $json_a = json_decode($responseAPI, true);
 

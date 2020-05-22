@@ -1,3 +1,5 @@
+
+
 function list_contracts_offers(company) {
     $.ajax({
         url: 'include/offer_management.php',
@@ -24,18 +26,26 @@ function list_contracts_offers(company) {
                         var contract_end="<span class=\"text-red\">N/A</span>";
                     }
 
-                    var temp="<tr><td>"+response.contract[i].company+"</td><td>"+response.contract[i].description+"</td><td>"+Math.round(response.contract[i].amount)+" €/mois</td><td>"+contract_start+"</td><td>"+contract_end+"</td></tr>";
+                    var temp="<tr><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.contract[i].companyID+"\">"+response.contract[i].company+"</a></td><td>"+response.contract[i].description+"</td><td>"+Math.round(response.contract[i].amount)+" €/mois</td><td>"+contract_start+"</td><td>"+contract_end+"</td></tr>";
                     dest=dest.concat(temp);
                     i++;
 
                 }
                 var temp="</tobdy></table>";
                 dest=dest.concat(temp);
+                
+                
 
                 var temp="<p>Valeur actuelle des contrat en cours : <strong>"+Math.round(response.sumContractsCurrent)+" €/mois</strong></p>";
                 dest=dest.concat(temp);
 
                 document.getElementById('contractsListingSpan').innerHTML = dest;
+                
+                var classname = document.getElementsByClassName('internalReferenceCompany');
+                for (var i = 0; i < classname.length; i++) {
+                    classname[i].addEventListener('click', function() {get_company_details(this.name,email, true)}, false);
+                }
+                
 
 
 

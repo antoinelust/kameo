@@ -61,8 +61,6 @@ function list_feedbacks() {
             }
             if(response.response == 'success'){
 
-                document.getElementById('counterFeedbacks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.feedbacksNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.feedbacksNumber+"</span>";
-
 
                 var i=0;
                 var dest="";

@@ -1,9 +1,11 @@
 <?php
-session_start();
-include 'globalfunctions.php';
 session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
+
+session_start();
+include 'globalfunctions.php';
+
 
 // Form Fields
 $user = $_SESSION['userID'];
@@ -28,7 +30,9 @@ if($newPasswordSwitch=="true"){
     }
     else
     {
-        $new_password_hash = password_hash($newPassword, PASSWORD_BCRYPT);        
+        $new_password_hash = password_hash($newPassword, PASSWORD_BCRYPT);
+         $_SESSION['UserPassword']=$new_password_hash;
+        
     }
 }
      
@@ -68,7 +72,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $conn->close();
 
-         $_SESSION['UserPassword']=$new_password_hash;
          successMessage('SM0003');
 
     } else {

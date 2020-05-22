@@ -73,22 +73,24 @@ var myChart3;
 var nbContacts;
 
 window.addEventListener("DOMContentLoaded", function(event) {
+    
 
   var classname = document.getElementsByClassName('fleetmanager');
 
   for (var i = 0; i < classname.length; i++) {
       
+    classname[i].addEventListener('click', function () { initializeFields()}, false);
     classname[i].addEventListener('click', hideResearch, false);
-    classname[i].addEventListener('click', list_errors_bikes, false);
-    classname[i].addEventListener('click', get_bikes_listing, false);
-    classname[i].addEventListener('click', get_users_listing, false);
+    classname[i].addEventListener('click', list_errors, false);
+    classname[i].addEventListener('click', initialize_task_owner_sales_selection, false);
     classname[i].addEventListener('click', get_company_conditions(), false);
     classname[i].addEventListener('click', list_condition, false);
     classname[i].addEventListener('click', initialize_counters, false);
 
-    classname[i].addEventListener('click', function () { get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()))}, false);
-    classname[i].addEventListener('click', function () { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-    classname[i].addEventListener('click', initialize_booking_counter, false);
+      
+
+      
+      
 
     var tempDate=new Date();
     $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
@@ -96,9 +98,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
     $(".form_date_start_client").data("datetimepicker").setDate(tempDate);
 
     classname[i].addEventListener('click', function () { generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate())}, false);
-
-
-    classname[i].addEventListener('click', function () { initializeFields()}, false);
     classname[i].addEventListener('click', function () {list_maintenances();}, false);        
 
   }
@@ -110,21 +109,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
   }
 
 
-  document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
-  document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
-  document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
-  document.getElementsByClassName('clientManagerClick')[0].addEventListener('click', function() { get_company_listing('*')}, false);
-  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
-  document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');
-}, false);
-document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
-document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
-document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
-document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
-document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
-document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
 
 
 var tempDate=new Date();
@@ -523,7 +507,6 @@ function listPortfolioBikes(){
                 i++;
             }
             document.getElementById('portfolioBikesListing').innerHTML=dest.concat("</tbody>");
-            document.getElementById('counterBikePortfolio').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";
 
             displayLanguage();
             $('#portfolioBikeListing').DataTable({
@@ -594,7 +577,7 @@ if($connected){
   include 'include/connexion.php';
   $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.TYPE from customer_referential aa, customer_bike_access bb where aa.EMAIL='$user' and aa.EMAIL=bb.EMAIL LIMIT 1";
   $result = mysqli_query($conn, $sql);
-  $row = mysqli_fetch_assoc($result);
+  $row = mysqli_fetch_assoc($result);    
   if ($row['TYPE']=="partage"){
     $company=true;
   }
@@ -662,7 +645,6 @@ if($connected){
 
             i++;
           }
-          document.getElementById('counterUsers').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.usersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.usersNumber+"</span>";
           document.getElementById('usersList').innerHTML = dest;
           displayLanguage();
         }
@@ -733,6 +715,26 @@ if($connected){
           $('#widget-updateCompanyConditions-form input[name=action]').val("update");
 
           if(response.update){
+              
+              
+            document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
+            document.getElementsByClassName('clientBikesManagerClick')[0].addEventListener('click', function() { get_bikes_listing()}, false);    
+            document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);    
+            document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
+            document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
+            document.getElementsByClassName('clientManagerClick')[0].addEventListener('click', function() { get_company_listing('*')}, false);
+            document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
+            document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');
+            document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+            }, false);
+            document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
+            document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
+            document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
+            document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
+            document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
+            document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+            document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+            document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
 
             var classname = document.getElementsByClassName('kameo');
             for (var i = 0; i < classname.length; i++) {
@@ -1228,7 +1230,7 @@ if($connected){
       url: 'include/get_directions.php',
       type: 'post',
       data: {"date": date, "address_start": address_start, "address_end": address_end},
-      success: function(text){
+      success: function(response){
       }
     });
   }
@@ -2035,6 +2037,7 @@ if($connected){
                                         .done(function(response){
                                           travel_time_bike=response.duration_bike;
                                           travel_time_car=response.duration_car;
+                                                                                        
                                           document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
                                           document.getElementById('bike_duration_widget1').innerHTML = travel_time_bike+" min";
                                           document.getElementById('car_duration_widget1').innerHTML = travel_time_car+" min";
@@ -2415,48 +2418,6 @@ if($connected){
 
                     </div>
 
-                    <div class="tab-pane" id="routes">
-
-                      <h4 class="fr">Itinéraires conseillés</h4>
-                      <p>Nous avons créé pour vous quelques itinéraires agréables pour vous rendre au travail.</p>
-                      <div class="separator"></div>
-
-                      <h5>Place du XX-Août - CHU Sart-Tilman</h5>
-                      <div class="visible-md visible-lg visible-sm">
-                        <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9725042/embed/fr/4d797178424b307264565857544b58755a6955334d6172376b6a434f45314154723253704b6a50515834303d3a3a0c5f9b347e3f087700118732ba812fb7" frameborder="0" allowfullscreen></iframe>
-                      </div>
-
-                      <div class="visible-xs">
-                        <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9725042/embed/fr/4d797178424b307264565857544b58755a6955334d6172376b6a434f45314154723253704b6a50515834303d3a3a0c5f9b347e3f087700118732ba812fb7" frameborder="0" allowfullscreen></iframe>
-                      </div>
-                      <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
-
-                      <div class="separator"></div>
-
-                      <h5>Embourg - CHU Sart-Tilman</h5>
-                      <div class="visible-md visible-lg visible-sm">
-                        <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9733246/embed/fr/537333576a65315635515657574578527375722b54564147524e61644a6b6c51666d34705a4677666f70733d3a3a30ca4562f0a633da7b53a0ba8bd2c6aa" frameborder="0" allowfullscreen></iframe>
-                      </div>
-
-                      <div class="visible-xs">
-                        <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9733246/embed/fr/537333576a65315635515657574578527375722b54564147524e61644a6b6c51666d34705a4677666f70733d3a3a30ca4562f0a633da7b53a0ba8bd2c6aa" frameborder="0" allowfullscreen></iframe>
-                      </div>
-                      <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
-
-                      <div class="separator"></div>
-
-                      <h5>Esneux - CHU Sart-Tilman</h5>
-                      <div class="visible-md visible-lg visible-sm">
-                        <iframe width="450px" height="580px" src="https://www.openrunner.com/route/9733176/embed/fr/786d4c57563377754e4f7131376630595674427a49544b385038702f73513274323956536e732b4c37374d3d3a3a2a1c2e0c4b78d238839ef9bd4487f60a" frameborder="0" allowfullscreen></iframe>
-                      </div>
-
-                      <div class="visible-xs">
-                        <iframe width="250px" height="280px" src="https://www.openrunner.com/route/9733176/embed/fr/786d4c57563377754e4f7131376630595674427a49544b385038702f73513274323956536e732b4c37374d3d3a3a2a1c2e0c4b78d238839ef9bd4487f60a" frameborder="0" allowfullscreen></iframe>
-                      </div>
-                      <a href="http://www.kameobikes.com/docs/Routes/XXAout_CHU_Itinineraire.pdf" download="XXAout_CHU_Itinineraire.pdf" target="_blank"><i class="fa fa-download"></i> Télécharger les instructions</a>
-
-
-                    </div>
 
                     <div class="tab-pane" id="fleetmanager">
 
@@ -2467,7 +2428,7 @@ if($connected){
                         <div class="row">
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
-                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#BikesListing" href="#" ><i class="fa fa-bicycle"></i></a> </div>
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#BikesListing" class="clientBikesManagerClick" href="#" ><i class="fa fa-bicycle"></i></a> </div>
                               <div class="counter bold" id="counterBike" style="color:#3cb395"></div>
                               <p>Nombre de vélos</p>
                             </div>
@@ -2477,7 +2438,7 @@ if($connected){
 
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
-                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#usersListing" href="#" ><i class="fa fa-users"></i></a> </div>
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#usersListing" class="usersManagerClick" href="#" ><i class="fa fa-users"></i></a> </div>
                               <div class="counter bold" id="counterUsers" style="color:#3cb395"></div>
                               <p>Nombre d'utilisateurs</p>
                             </div>
@@ -2487,7 +2448,7 @@ if($connected){
 
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
-                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" href="#"><i class="fa fa-calendar-plus-o reservationlisting"></i></a></div>
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#ReservationsListing" href="#"><i class="fa fa-calendar-plus-o reservationlisting"></i></a></div>
                               <div class="counter bold" id="counterBookings" style="color:#3cb395"></div>
                               <p>Nombre de réservations sur le mois passé</p>
                             </div>
@@ -2523,12 +2484,6 @@ if($connected){
                               <p>Gérer les clients</p>
                             </div>
                           </div>
-
-
-
-
-                          <div class="seperator seperator-small visible-xs"><br/><br/></div>
-
                           <div class="col-md-4 hidden" id="portfolioManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#portfolioManager" href="#" class="portfolioManagerClick"><i class="fa fa-book"></i></a> </div>
@@ -2536,9 +2491,6 @@ if($connected){
                               <p>Gérer le catalogue</p>
                             </div>
                           </div>
-
-                          <div class="seperator seperator-small visible-xs"><br/><br/></div>
-
                           <div class="col-md-4 hidden" id="bikesManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#BikesListingAdmin" href="#" class="bikeManagerClick"><i class="fa fa-bicycle"></i></a></div>
@@ -2546,10 +2498,6 @@ if($connected){
                               <p>Gérer les vélos</p>
                             </div>
                           </div>
-                          <br/><br/>
-                          <div class="col-md-12"><br/><br/></div>
-                          <div class="seperator seperator-small visible-xs"><br/><br/></div>
-
                           <div class="col-md-4 hidden" id="boxesManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#boxesListing" href="#" class="boxManagerClick"><i class="fa fa-cube"></i></a></div>
@@ -2557,7 +2505,6 @@ if($connected){
                               <p>Gérer les Bornes</p>
                             </div>
                           </div>
-
                           <div class="col-md-4 hidden" id="tasksManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite">
@@ -2567,7 +2514,6 @@ if($connected){
                               <p>Gérer les Actions</p>
                             </div>
                           </div>
-
                           <div class="col-md-4 hidden" id="cashFlowManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite">
@@ -2598,7 +2544,7 @@ if($connected){
                           </div>
                           <div class="col-md-4 hidden" id="dashBoardManagement">
                             <div class="icon-box medium fancy">
-                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" class="dashboardClick" data-target="#dashboard" href="#" ><i class="fa fa-dashboard"></i></a> </div>
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" class="dashboardManagementClick" data-target="#dashboard" href="#" ><i class="fa fa-dashboard"></i></a> </div>
                               <div class="counter bold" id='errorCounter' style="color:#3cb395"></div>
                               <p>Dashboard</p>
                             </div>
@@ -2732,18 +2678,25 @@ if($connected){
             else
             {
 
-              include 'include/connexion.php';
-              $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd where aa.EMAIL='$user' and aa.EMAIL=cc.EMAIL and cc.BIKE_NUMBER=bb.FRAME_NUMBER and bb.TYPE=dd.ID";
+                include 'include/connexion.php';
+                $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE, cc.BIKE_NUMBER from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd where aa.EMAIL='$user' and aa.EMAIL=cc.EMAIL and cc.BIKE_NUMBER=bb.FRAME_NUMBER and bb.TYPE=dd.ID";
+                                
                 
-              $result = mysqli_query($conn, $sql);
-              $row = mysqli_fetch_assoc($result);
-              $contractNumber='KAMEO BIKES';
-              $contractStart=$row['CONTRACT_START'];
-              $contractEnd=$row['CONTRACT_END'];
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+                                
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_fetch_assoc($result);
+                $contractNumber='KAMEO BIKES';
+                $contractStart=$row['CONTRACT_START'];
+                $contractEnd=$row['CONTRACT_END'];
 
               ?>
 
-              <div id="travel_information_2" style="display: none;">
+              <div id="travel_information_2" class="hidden">
                 <!-- Pour un écran large -->
                 <div class="visible-lg">
                   <div class="col-lg-12 backgroundgreen down">
@@ -2937,7 +2890,7 @@ if($connected){
                 </div>
               </div>
 
-              <div id="travel_information_2_error" style="display: none;">
+              <div id="travel_information_2_error" class="hidden">
                 <!-- Pour un écran large -->
                 <div class="visible-lg">
                   <div class="col-lg-12 backgroundgreen down">
@@ -3032,7 +2985,7 @@ if($connected){
                 </div>
               </div>
 
-              <div id="travel_information_2_loading" style="display: block;">
+              <div id="travel_information_2_loading">
                 <!-- Pour un écran large -->
                 <div class="visible-lg">
                   <div class="col-lg-12 backgroundgreen down">
@@ -3128,7 +3081,7 @@ if($connected){
               </div>
 
 
-              <img src="images_bikes/<?php echo $row['FRAME_NUMBER']; ?>.jpg" class="img-responsive img-rounded" alt="Image of Bike">
+              <img src="images_bikes/<?php echo $row['BIKE_NUMBER']; ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
 
               <br />
               <div class="table-responsive">
@@ -3164,99 +3117,103 @@ if($connected){
 
               </div>
               <script type="text/javascript">
+                  $('#travel_information_2_loading').removeClass("hidden");
+                  $('#travel_information_2_error').addClass("hidden");
+                  $('#travel_information_2').addClass("hidden");
 
-              var day= new Date().getDate();
-              var month= new Date().getMonth() + 1;
-              var year= new Date().getFullYear();
-              var hours= new Date().getHours();
-              var minutes= new Date().getMinutes();
-              minutes=minutes.toString();
-              var kameo_score_loaded=false;
+                  var day= new Date().getDate();
+                  var month= new Date().getMonth() + 1;
+                  var year= new Date().getFullYear();
+                  var hours= new Date().getHours();
+                  var minutes= new Date().getMinutes();
+                  minutes=minutes.toString();
+                  var kameo_score_loaded=false;
 
-              if (minutes.length ==1){
-                minutes="0"+minutes;
-              }
+                  if (minutes.length ==1){
+                    minutes="0"+minutes;
+                  }
 
-              document.getElementById('meteoDate1').innerHTML = day+"/"+ month+"/"+year;
-              document.getElementById('meteoDate2').innerHTML = day+"/"+ month+"/"+year;
-              document.getElementById('meteoDate3').innerHTML = day+"/"+ month+"/"+year;
-              document.getElementById('meteoDate4').innerHTML = day+"/"+ month+"/"+year;
-              document.getElementById('meteoHour1').innerHTML = hours+"h"+ minutes;
-              document.getElementById('meteoHour2').innerHTML = hours+"h"+ minutes;
-              document.getElementById('meteoHour3').innerHTML = hours+"h"+ minutes;
-              document.getElementById('meteoHour4').innerHTML = hours+"h"+ minutes;
+                  document.getElementById('meteoDate1').innerHTML = day+"/"+ month+"/"+year;
+                  document.getElementById('meteoDate2').innerHTML = day+"/"+ month+"/"+year;
+                  document.getElementById('meteoDate3').innerHTML = day+"/"+ month+"/"+year;
+                  document.getElementById('meteoDate4').innerHTML = day+"/"+ month+"/"+year;
+                  document.getElementById('meteoHour1').innerHTML = hours+"h"+ minutes;
+                  document.getElementById('meteoHour2').innerHTML = hours+"h"+ minutes;
+                  document.getElementById('meteoHour3').innerHTML = hours+"h"+ minutes;
+                  document.getElementById('meteoHour4').innerHTML = hours+"h"+ minutes;
 
-              var addressDomicile=get_address_domicile();
-              var addressTravail=get_address_travail();
+                  var addressDomicile=get_address_domicile();
+                  var addressTravail=get_address_travail();
 
-              var timestamp=new Date();
-                  
-            timestamp=(timestamp.toISOString().split('T')[0]+" "+timestamp.toISOString().split('T')[1]).split('.')[0];
-                  
-                  
-                  
-              get_meteo(timestamp, addressDomicile)
-              .done(function(response){
-                if(response.response=="success")
-                {
-                  var find = '-';
-                  var re = new RegExp(find, 'g');
-
-                  weather=response.icon.replace(re,"");
-                  temperature=response.temperature;
-                  precipitation=response.precipProbability;
-                  windSpeed=response.windSpeed;
-
-                  document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";
-                  document.getElementById('temperature_widget1').innerHTML = Math.round(temperature)+" °C";
-                  document.getElementById('precipitation_widget1').innerHTML = precipitation+" %";
-                  document.getElementById('wind_widget1').innerHTML = Math.round(windSpeed*3.6)+" km/h";
-                  document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";
-                  document.getElementById('temperature_widget2').innerHTML = Math.round(temperature)+" °C";
-                  document.getElementById('precipitation_widget2').innerHTML = precipitation+" %";
-                  document.getElementById('wind_widget2').innerHTML = Math.round(windSpeed*3.6)+" km/h";
-                  document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";
-                  document.getElementById('temperature_widget3').innerHTML = Math.round(temperature)+" °C";
-                  document.getElementById('precipitation_widget3').innerHTML = precipitation+" %";
-                  document.getElementById('wind_widget3').innerHTML = Math.round(windSpeed*3.6)+" km/h";
-                  document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
-                  document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
-                  document.getElementById('precipitation_widget4').innerHTML = precipitation+" %";
-                  document.getElementById('wind_widget4').innerHTML = Math.round(windSpeed*3.6)+" km/h";
-
-                  get_travel_time(timestamp, addressDomicile, addressTravail)
+                  var timestamp=new Date();
+                  timestamp=(timestamp.toISOString().split('T')[0]+" "+timestamp.toISOString().split('T')[1]).split('.')[0];
+                  get_meteo(timestamp, addressDomicile)
                   .done(function(response){
-                    document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
-                    document.getElementById('bike_duration_widget1').innerHTML = response.duration_bike+" min";
-                    document.getElementById('car_duration_widget1').innerHTML = response.duration_car+" min";
-                    document.getElementById('bike_duration_widget2').innerHTML = response.duration_bike+" min";
-                    document.getElementById('walking_duration_widget2').innerHTML = response.duration_walking+" min";
-                    document.getElementById('car_duration_widget2').innerHTML = response.duration_car+" min";
-                    document.getElementById('walking_duration_widget3').innerHTML = response.duration_walking+" min";
-                    document.getElementById('bike_duration_widget3').innerHTML = response.duration_bike+" min";
-                    document.getElementById('car_duration_widget3').innerHTML = response.duration_car+" min";
-                    document.getElementById('walking_duration_widget4').innerHTML = response.duration_walking+" min";
-                    document.getElementById('bike_duration_widget4').innerHTML = response.duration_bike+" min";
-                    document.getElementById('car_duration_widget4').innerHTML = response.duration_car+" min";
-                    var img1= new Image();
-                    var image=get_kameo_score(weather, precipitation, temperature, windSpeed, response.duration_bike, response.duration_car);
-                    img1.onload = function() {
-                      kameo_score_loaded=true;
-                      document.getElementById("travel_information_2").style.display = "block";
-                      document.getElementById("travel_information_2_loading").style.display = "none";
-                      document.getElementById("travel_information_2_error").style.display = "none";
-                    };
-                    img1.onerror = function() {
-                      document.getElementById("travel_information_2").style.display = "none";
-                      document.getElementById("travel_information_2_loading").style.display = "none";
-                      document.getElementById("travel_information_2_error").style.display = "block";
-                    };
-                    img1.src=image;
+                    if(response.response=="success")
+                    {
+                      var find = '-';
+                      var re = new RegExp(find, 'g');
 
-                  });
-                } else{
-                  console.log(response.message)
-                }
+                      weather=response.icon.replace(re,"");
+                      temperature=response.temperature;
+                      precipitation=response.precipProbability;
+                      windSpeed=response.windSpeed;
+
+                      document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";
+                      document.getElementById('temperature_widget1').innerHTML = Math.round(temperature)+" °C";
+                      document.getElementById('precipitation_widget1').innerHTML = precipitation+" %";
+                      document.getElementById('wind_widget1').innerHTML = Math.round(windSpeed*3.6)+" km/h";
+                      document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";
+                      document.getElementById('temperature_widget2').innerHTML = Math.round(temperature)+" °C";
+                      document.getElementById('precipitation_widget2').innerHTML = precipitation+" %";
+                      document.getElementById('wind_widget2').innerHTML = Math.round(windSpeed*3.6)+" km/h";
+                      document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";
+                      document.getElementById('temperature_widget3').innerHTML = Math.round(temperature)+" °C";
+                      document.getElementById('precipitation_widget3').innerHTML = precipitation+" %";
+                      document.getElementById('wind_widget3').innerHTML = Math.round(windSpeed*3.6)+" km/h";
+                      document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
+                      document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
+                      document.getElementById('precipitation_widget4').innerHTML = precipitation+" %";
+                      document.getElementById('wind_widget4').innerHTML = Math.round(windSpeed*3.6)+" km/h";
+
+                      get_travel_time("now", addressDomicile, addressTravail)
+                      .done(function(response){
+                          if(response.duration_walking === undefined || response.duration_bike === undefined || response.duration_car === undefined){
+                            $('#travel_information_2_loading').addClass("hidden")
+                            $('#travel_information_2_error').removeClass("hidden")
+                            $('#travel_information_2').addClass("hidden")                        
+                          }else{
+                            document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
+                            document.getElementById('bike_duration_widget1').innerHTML = response.duration_bike+" min";
+                            document.getElementById('car_duration_widget1').innerHTML = response.duration_car+" min";
+                            document.getElementById('bike_duration_widget2').innerHTML = response.duration_bike+" min";
+                            document.getElementById('walking_duration_widget2').innerHTML = response.duration_walking+" min";
+                            document.getElementById('car_duration_widget2').innerHTML = response.duration_car+" min";
+                            document.getElementById('walking_duration_widget3').innerHTML = response.duration_walking+" min";
+                            document.getElementById('bike_duration_widget3').innerHTML = response.duration_bike+" min";
+                            document.getElementById('car_duration_widget3').innerHTML = response.duration_car+" min";
+                            document.getElementById('walking_duration_widget4').innerHTML = response.duration_walking+" min";
+                            document.getElementById('bike_duration_widget4').innerHTML = response.duration_bike+" min";
+                            document.getElementById('car_duration_widget4').innerHTML = response.duration_car+" min";
+                            var img1= new Image();
+                            var image=get_kameo_score(weather, precipitation, temperature, windSpeed, response.duration_bike, response.duration_car);
+                            img1.onload = function() {
+                                kameo_score_loaded=true;
+                                $('#travel_information_2_loading').addClass("hidden")
+                                $('#travel_information_2_error').addClass("hidden")
+                                $('#travel_information_2').removeClass("hidden")
+                            };
+                            img1.onerror = function() {
+                                $('#travel_information_2_loading').addClass("hidden")
+                                $('#travel_information_2_error').removeClass("hidden")
+                                $('#travel_information_2').addClass("hidden")                        
+                            };
+                            img1.src=image;
+                          }
+                      });
+                    } else{
+                      console.log(response.message)
+                    }
 
 
 
@@ -3422,15 +3379,19 @@ if($connected){
                   url: 'include/get_directions.php',
                   type: 'post',
                   data: {"address_start": addressDomicile, "address_end": addressTravail},
-                  success: function(text){
-                    if (text.response == 'error') {
-                      console.log(text.message);
+                  success: function(response){
+                    if (response.response == 'error') {
+                      console.log(response.message);
+                    }else{
+                        var distance_bike= response.distance_bike;
+                        var total_distance= (distance_bike * 2 * count)/1000;
+                        document.getElementById('count_trips').innerHTML= count;
+                        if(distance_bike !== undefined){
+                            document.getElementById('total_trips').innerHTML= Math.round(total_distance)+" kms";
+                        }else{
+                            document.getElementById('total_trips').innerHTML=  "Veuillez renseigner votre adresse";
+                        }
                     }
-                    var distance_bike= text.distance_bike;
-                    var total_distance= (distance_bike * 2 * count)/1000;
-                    document.getElementById('count_trips').innerHTML= count;
-                    document.getElementById('total_trips').innerHTML= Math.round(total_distance)+" kms";
-
                   }
                 })
               }
@@ -4745,37 +4706,63 @@ if($connected){
 
 
         <div class="modal fade" id="dashboard" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg" style= "width: 1250px">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
               </div>
               <div class="modal-body">
                 <div class="row">
-                  <div class="col-md-12">
+                  <div id="tabs-05c" class="tabs color tabs radius">
              		 <h3 class="text-green">Dashboard</h3>
-             		 <div class="col-md-2 sidebar">
-		             	<div class="sidebar-menu">
-		                    <ul>
-		                        <li class="active"><a class="scroll-to dashboardBikes" href="#">Vélos</a>
-		                        </li>
-		                        <li><a class="scroll-to dashboardBills" href="#">Factures</a>
-		                        </li>
-		                        <li><a class="scroll-to" href="#">Bouton 3</a>
-		                        </li>
-		                        <li><a class="scroll-to" href="#">Bouton 4</a>
-		                        </li>
-		                        <li><a class="scroll-to" href="#">Bouton 5</a>
-		                        </li>
-		                    </ul>
-		                </div>
-             		 </div>
-             		 <div class="col-md-10">
-                         <div class="col-md-12">
-                             <h4 class="text-green">Erreurs à corriger</h4>
-                              <span id="dashboardBody"></span>
-                         </div>
-             		 </div>
+             		 
+             		 <ul class="tabs-navigation">
+						<li class="active"><a href="#" class="dashboardBikes">Vélos</a> </li>
+						<li><a href="#" class="dashboardBills">Factures</a> </li>
+						<li><a href="#" class="dashboardSells">Prospection commerciale</a> </li>
+						<li><a href="#" class="">Bouton 4</a> </li>
+					</ul>
+					<div class="tabs-content">
+						<div class="tab-pane active" id="">
+							<h4 class="text-green dashboardTitle">Erreurs à corriger - Vélos</h4>
+							<span id="dashboardBodyBikes"></span>
+                            <span id="dashboardBodyBills" style="display: none;"></span>
+                            <span id="dashboardBodySells" style="display: none;">
+                            
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="dtp_input2" class="control-label">Date de début</label>
+                                  <div class="input-group date form_date_start_sell col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                  </div>
+                                  <input type="hidden" id="dtp_input2" value="" /><br/>
+                                </div>
+                              </div>
+
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="dtp_input2" class="control-label">Date de fin</label>
+                                  <div class="input-group date form_date_end_sell col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                  </div>
+                                  <input type="hidden" id="dtp_input2" value="" /><br/>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <label for="taskOwnerSalesSelection">Filtrer sur Owner</label>
+                                <select class="taskOwnerSalesSelection" name="taskOwnerSalesSelection">
+                                </select>
+                              </div>
+                                
+                                <span id='dashboardBodySellsTable'></span>
+                            
+                            </span>
+                        </div>
+					</div>             		 
 				  </div>
 				</div>
 			  </div>
@@ -4791,6 +4778,74 @@ if($connected){
             </div>
           </div>
         </div>
+
+        <script type="text/javascript">
+            
+
+            $('.form_date_start_sell').datetimepicker({
+              language:  'fr',
+              weekStart: 1,
+              todayBtn:  1,
+              autoclose: 1,
+              todayHighlight: 1,
+              startView: 2,
+              minView: 2,
+              forceParse: 0
+            });
+
+            $('.form_date_end_sell').datetimepicker({
+              language:  'fr',
+              weekStart: 1,
+              todayBtn:  1,
+              autoclose: 1,
+              todayHighlight: 1,
+              startView: 2,
+              minView: 2,
+              forceParse: 0
+            });
+
+
+
+            var tempDate=new Date();
+            $(".form_date_end_sell").data("datetimepicker").setDate(tempDate);
+            tempDate.setDate(tempDate.getDate()-7);
+            $(".form_date_start_sell").data("datetimepicker").setDate(tempDate);
+            
+            $('.form_date_start_sell').change(function(){
+                list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
+            });
+            $('.form_date_end_sell').change(function(){
+                list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
+            });
+            $('.taskOwnerSalesSelection').change(function(){
+                list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
+            });
+            
+
+            
+            $( ".dashboardBikes" ).click(function() {
+                    $('#dashboardBodyBills').fadeOut();                    
+                    $('#dashboardBodyBikes').fadeIn();
+                    $('#dashboardBodySells').fadeOut();
+                    $('.dashboardTitle').html("Erreurs à corriger - Vélos");
+                });            
+                $( ".dashboardBills" ).click(function() {
+                    $('#dashboardBodyBikes').fadeOut();
+                    $('#dashboardBodyBills').fadeIn();
+                    $('#dashboardBodySells').fadeOut();
+                    
+                    $('.dashboardTitle').html("Erreurs à corriger - Factures");
+                });            
+                $( ".dashboardSells" ).click(function() {
+                    $('#dashboardBodyBikes').fadeOut();
+                    $('#dashboardBodyBills').fadeOut();
+                    $('#dashboardBodySells').fadeIn();
+                    $('.dashboardTitle').html("Suivi prospection commerciale");
+                });            
+
+            
+            
+        </script>
 
         <div class="modal fade" id="addBill" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">

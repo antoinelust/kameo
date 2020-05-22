@@ -64,9 +64,11 @@ $conn->close();
                     $company=$row['COMPANY'];
                     $firstDay=$row['firstDay'];
                     $billingGroup=$row['BILLING_GROUP'];
-                    $contractStart=$row['CONTRACT_START'];
+                    $contractStart=new DateTime($row['CONTRACT_START']);     
+                    $contractStartString=$contractStart->format('Y-m-d');
 
-                    if($firstDay==$now->format('d')){
+                    if($firstDay==$now->format('d') || last_day_month($now->format('m'))==$now->format('d')){
+                      
                         $i=0;
                         $data['company'] = $company;
                         
@@ -79,6 +81,10 @@ $conn->close();
                         }
                         $dayBefore=$now->format('d');
                                             
+                        $lastDayMonth=last_day_month( $monthBefore->format('m') );
+                        if($lastDayMonth < $dayBefore){
+                            $dayBefore=$lastDayMonth;
+                        }
                         
                         
                         if(strlen($monthBefore)==1){
@@ -113,7 +119,7 @@ $conn->close();
                         
                         
                         include './include/connexion.php';
-                        $sql="SELECT * from customer_bikes where COMPANY='$company' and CONTRACT_START = '$contractStart' and BILLING_GROUP='$billingGroup'";
+                        $sql="SELECT * from customer_bikes where COMPANY='$company' and CONTRACT_START = '$contractStartString' and BILLING_GROUP='$billingGroup'";
                         if ($conn->query($sql) === FALSE) {
                             echo $conn->error;
                             die;

@@ -36,7 +36,7 @@ if($action=="add"){
 
     if($length==0)
     {
-        $sql= "INSERT INTO calendar_manager (ID, EMAIL, DATE, STAANN) VALUES ('','$email','$date', '')";
+        $sql= "INSERT INTO calendar_manager (EMAIL, DATE, STAANN) VALUES ('$email','$date', '')";
 
         if ($conn->query($sql) === FALSE) {
 

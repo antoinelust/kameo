@@ -242,11 +242,11 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT COMPANY, CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes WHERE STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST' and SOLD_PRICE = '0'";
+                $sql="SELECT aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END, SUM(aa.LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes aa, companies bb WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' and aa.COMPANY!='KAMEO VELOS TEST' and aa.SOLD_PRICE = '0' and aa.COMPANY=bb.INTERNAL_REFERENCE and aa.BILLING_GROUP=bb.BILLING_GROUP";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
-                $sql=$sql." GROUP BY COMPANY, CONTRACT_START, CONTRACT_END";
+                $sql=$sql." GROUP BY aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END";
 
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -265,6 +265,7 @@ if(isset($_POST['action']))
 
                     $response['response']="success";
                     $response['contract'][$i]['company']=$row['COMPANY'];
+                    $response['contract'][$i]['companyID']=$row['ID'];
                     if($row['BIKE_NUMBER']>1){
                         $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélos en location";
                     }else{
@@ -313,7 +314,7 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE CONTRACT_END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";    
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -330,7 +331,7 @@ if(isset($_POST['action']))
                 $response['sumContractsCurrent']=$resultat['PRICE'];
 
                 include 'connexion.php';
-                $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+                $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND (END > CURRENT_TIMESTAMP OR END is NULL) AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
@@ -344,8 +345,7 @@ if(isset($_POST['action']))
                 $resultat = mysqli_fetch_assoc($result);
                 $conn->close();
 
-                $response['sumContractsCurrent']=$response['sumContractsCurrent']+$resultat['PRICE'];
-
+                $response['sumContractsCurrent']+=$resultat['PRICE'];
 
                 include 'connexion.php';
                 $sql="SELECT * FROM offers WHERE STATUS='ongoing' AND STAANN != 'D'";

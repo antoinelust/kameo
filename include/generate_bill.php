@@ -21,12 +21,6 @@ $dateEndString2 = $dateEnd->format('d-m-Y');
 
 $simulation='N';
 
-
-/*if(!isset($_POST['price0']) || !isset($_POST['type0']) || !isset($_POST['ID0']) || !isset($_POST['description0'])){
-    errorMessage("ES0059");
-}*/
-
-
 include 'connexion.php';
 $sql_reference="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
 error_log("SQL4 :".$sql_reference."\n", 3, "generate_invoices.log");    
@@ -105,6 +99,12 @@ if(strlen($monthAfter)==1){
 }
 if(strlen($dayAfter)==1){
     $dayAfter='0'.$dayAfter;
+}
+
+
+$lastDayMonth=last_day_month( $monthAfter->format('m') );
+if($lastDayMonth < $dayAfter){
+    $dayAfter=$lastDayMonth;
 }
 
 
