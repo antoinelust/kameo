@@ -715,8 +715,6 @@ if($connected){
           $('#widget-updateCompanyConditions-form input[name=action]').val("update");
 
           if(response.update){
-              
-              
             document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
             document.getElementsByClassName('clientBikesManagerClick')[0].addEventListener('click', function() { get_bikes_listing()}, false);    
             document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);    
@@ -730,13 +728,22 @@ if($connected){
             document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
             document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
             document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
-            document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
             document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
             document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
             document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
             document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
+              
+              
+            if(email=='julien@kameobikes.com' || email=='antoine@kameobikes.com' || email=='thibaut@kameobikes.com' || email=='pierre-yves@kameobikes.com'){
+                document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
+                document.getElementById('cashFlowManagement').classList.remove("hidden");
+                document.getElementById('billsManagement').classList.remove("hidden");
+                $('.billsTitle').removeClass("hidden");
+            }
+              
+              
 
-            var classname = document.getElementsByClassName('kameo');
+            var classname = document.getElementsByClassName('administrationKameo');
             for (var i = 0; i < classname.length; i++) {
               classname[i].classList.remove("hidden");
             }
@@ -746,10 +753,13 @@ if($connected){
             document.getElementById('bikesManagement').classList.remove("hidden");
             document.getElementById('boxesManagement').classList.remove("hidden");
             document.getElementById('tasksManagement').classList.remove("hidden");
-            document.getElementById('cashFlowManagement').classList.remove("hidden");
             document.getElementById('feedbacksManagement').classList.remove("hidden");
             document.getElementById('maintenanceManagement').classList.remove("hidden");
             document.getElementById('dashBoardManagement').classList.remove("hidden");
+          }else if(response.companyConditions.administrator=="Y"){
+              $('.billsTitle').removeClass("hidden");
+              document.getElementById('billsManagement').classList.remove("hidden");
+              document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
           }
 
 
@@ -2470,9 +2480,9 @@ if($connected){
 
                         <div class="separator"></div>
 
-                        <h4 class="fr hidden kameo">Administration Kameo</h4>
-                        <h4 class="en hidden kameo">Kameo administration</h4>
-                        <h4 class="en hidden kameo">Kameo administration</h4><br/><br />
+                        <h4 class="fr hidden administrationKameo">Administration Kameo</h4>
+                        <h4 class="en hidden administrationKameo">Kameo administration</h4>
+                        <h4 class="en hidden administrationKameo">Kameo administration</h4><br/><br />
                         <div class="row">
                           <div class="col-md-4 hidden" id="clientManagement">
                             <div class="icon-box medium fancy">
@@ -2552,12 +2562,12 @@ if($connected){
 
                         <div class="separator hidden kameo"></div>
 
-                        <h4 class="fr">Factures</h4>
-                        <h4 class="en">Billing</h4>
-                        <h4 class="en">Billing</h4><br/><br />
+                        <h4 class="fr billsTitle hidden">Factures</h4>
+                        <h4 class="en billsTitle hidden">Billing</h4>
+                        <h4 class="nl billsTitle hidden">Billing</h4><br/><br />
 
                         <div class="row">
-                          <div class="col-md-4">
+                          <div class="col-md-4 hidden" id="billsManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#billingListing" href="#" class="billsManagerClick"><i class="fa fa-folder-open-o"></i></a> </div>
                               <div class="counter bold" id='counterBills' style="color:#3cb395"></div>
@@ -5951,7 +5961,7 @@ if($connected){
                           <label for="password"  class="fr hidden">Password</label>
                           <label for="password"  class="en hidden">Password</label>
                           <label for="password"  class="nl hidden">Password</label>
-                          <input type="text" name="password" class="form-control required hidden">
+                          <input type="password" name="password" class="form-control required hidden">
                         </div>
                         <div class="col-md-4">
                           <label for="fleetManager">Fleet manager</label>
@@ -5988,6 +5998,8 @@ if($connected){
                               });
                               get_users_listing();
                               $('#addUser').modal('toggle');
+                              document.getElementById('widget-addUser-form').reset();
+                                
 
                             } else {
                               $.notify({

@@ -60,6 +60,7 @@ if($generatePassword){
     $password_unencrypted=uniqid();
     $pass=password_hash($password_unencrypted, PASSWORD_DEFAULT);
 }else if(isset($_POST['password'])){
+    $password_unencrypted=$_POST['password'];
     $pass=password_hash($_POST['password'], PASSWORD_DEFAULT);
 }else{
     
