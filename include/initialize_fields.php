@@ -12,7 +12,7 @@ if($type=="ownerField"){
     $response=array();
     $response['response']="success";
     include 'connexion.php';
-    $sql="SELECT OWNER, NOM, PRENOM  FROM company_actions aa, customer_referential bb WHERE aa.OWNER=bb.EMAIL and bb.STAANN != 'D' GROUP BY OWNER, NOM, PRENOM";
+    $sql="SELECT EMAIL, NOM, PRENOM  FROM customer_referential WHERE COMPANY='KAMEO' AND STAANN != 'D' GROUP BY EMAIL, NOM, PRENOM";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -23,7 +23,7 @@ if($type=="ownerField"){
     $response['ownerNumber']=$length;
     $i=0;
     while($row = mysqli_fetch_array($result)){
-        $response['owner'][$i]['email']=$row['OWNER'];
+        $response['owner'][$i]['email']=$row['EMAIL'];
         $response['owner'][$i]['name']=$row['NOM'];
         $response['owner'][$i]['firstName']=$row['PRENOM'];
         $i++;

@@ -74,39 +74,27 @@ var nbContacts;
 
 window.addEventListener("DOMContentLoaded", function(event) {
     
-
-  var classname = document.getElementsByClassName('fleetmanager');
-
-  for (var i = 0; i < classname.length; i++) {
+$( ".fleetmanager" ).click(function() {
       
-    classname[i].addEventListener('click', function () { initializeFields()}, false);
-    classname[i].addEventListener('click', hideResearch, false);
-    classname[i].addEventListener('click', list_errors, false);
-    classname[i].addEventListener('click', initialize_task_owner_sales_selection, false);
-    classname[i].addEventListener('click', get_company_conditions(), false);
-    classname[i].addEventListener('click', list_condition, false);
-    classname[i].addEventListener('click', initialize_counters, false);
-
-      
-
-      
-      
-
+    initializeFields();
+    hideResearch();
+    list_errors();
+    initialize_task_owner_sales_selection();
+    get_company_conditions();
+    list_condition();
+    initialize_counters();
+    
     var tempDate=new Date();
     $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
     tempDate.setMonth(tempDate.getMonth()-6);
     $(".form_date_start_client").data("datetimepicker").setDate(tempDate);
+    list_maintenances();        
+});
 
-    classname[i].addEventListener('click', function () { generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate())}, false);
-    classname[i].addEventListener('click', function () {list_maintenances();}, false);        
-
-  }
-
-  var classname = document.getElementsByClassName('reservations');
-  for (var i = 0; i < classname.length; i++) {
-    classname[i].addEventListener('click', hideResearch, false);      
-    classname[i].addEventListener('click', function () { getHistoricBookings(email)}, false);      
-  }
+$( ".reservations" ).click(function() {
+    hideResearch();      
+    getHistoricBookings(email);
+});
 
 
 
@@ -187,20 +175,36 @@ function initializeFields(){
                 .remove()
                 .end()
             ;
+            $('.taskOwnerSelection')
+                .find('option')
+                .remove()
+                .end()
+            ;
+
+            $('.taskOwnerSelection2')
+                .find('option')
+                .remove()
+                .end()
+            ;
+
+            
+            $('.taskOwnerSelection').append("<option value='*'>Tous<br>");
+            $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");
+            
+            
             $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");
 
             var i=0;
             while (i < response.ownerNumber){
                 $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-                i++;
+                $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
+                $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
+                i++;                
+            }
+
             }
         }
-    }
-  })
-    
-    
-
-
+    })    
 }
 
 function taskFilter(e){
@@ -215,7 +219,6 @@ function billFilter(e){
 }
 
 function generateTasksGraphic(company, owner, numberOfDays){
-
 
   $.ajax({
     url: 'include/action_company.php',
@@ -749,13 +752,25 @@ if($connected){
             document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);    
             document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
             document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
-            document.getElementsByClassName('clientManagerClick')[0].addEventListener('click', function() { get_company_listing('*')}, false);
+              
+            $('.clientManagerClick').click(function(){
+                get_company_listing('*');
+                generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+            });
+              
+              
+              
+              
             document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
-            document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');
-            document.getElementsByClassName('tasksManagerClick')[0].addEventListener('click', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-            }, false);
-            document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() { list_contracts_offers('*')}, false);
-            document.getElementsByClassName('offerManagerClick')[0].addEventListener('click', function() {get_sold_bikes()});
+              
+            $('.tasksManagerClick').click(function(){
+                list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');                
+                generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
+            });
+            $('#offerManagerClick').click(function(){
+                list_contracts_offers('*');                
+            });
+            
             document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
             document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
             document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
@@ -2557,7 +2572,7 @@ if($connected){
                           <div class="col-md-4 hidden" id="cashFlowManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite">
-                                <a data-toggle="modal" data-target="#offersListing" href="#" class="offerManagerClick"><i class="fa fa-money"></i></a>
+                                <a data-toggle="modal" data-target="#offersListing" href="#" id="offerManagerClick"><i class="fa fa-money"></i></a>
                               </div>
                               <div class="counter bold" id="cashFlowSpan" style="color:#3cb395"></div>
                               <p>Vue sur le cash-flow</p>

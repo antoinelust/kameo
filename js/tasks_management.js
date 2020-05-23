@@ -107,42 +107,12 @@ function list_tasks(status, owner2, email) {
                     $('.taskManagementSendButton').text("Ajouter")
 
                 });
-
-
-                $('.taskOwnerSelection')
-                    .find('option')
-                    .remove()
-                    .end()
-                ;
-                $('.taskOwnerSelection').append("<option value='*'>Tous<br>");
-
-                var i=0;
-                while (i < response.ownerNumber){
-                    $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-                    i++;
-
-                }
-
+                
                 if(owner2){
                     $('.taskOwnerSelection').val(owner2);
                 }else{
                     $('.taskOwnerSelection').val('*');
                 }
-
-                $('.taskOwnerSelection2')
-                    .find('option')
-                    .remove()
-                    .end()
-                ;
-                $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");
-
-                var i=0;
-                while (i < response.ownerNumber){
-                    $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-                    i++;
-
-                }
-
                 $('.taskOwnerSelection2').val('*');
 
 

@@ -1007,6 +1007,8 @@ function get_bikes_listing() {
     })
 }
 
+
+
 //Affichage des vélos vendus
 $('body').on('click','.showSoldBikes', function(){
     
