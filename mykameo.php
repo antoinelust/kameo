@@ -757,6 +757,10 @@ if($connected){
             document.getElementById('maintenanceManagement').classList.remove("hidden");
             document.getElementById('dashBoardManagement').classList.remove("hidden");
           }else if(response.companyConditions.administrator=="Y"){
+              document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);    
+              document.getElementsByClassName('clientBikesManagerClick')[0].addEventListener('click', function() { get_bikes_listing()}, false);    
+              document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
+              
               $('.billsTitle').removeClass("hidden");
               document.getElementById('billsManagement').classList.remove("hidden");
               document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
