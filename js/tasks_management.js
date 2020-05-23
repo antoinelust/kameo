@@ -145,21 +145,6 @@ function list_tasks(status, owner2, email) {
 
                 $('.taskOwnerSelection2').val('*');
 
-                $('#widget-taskManagement-form select[name=owner]')
-                    .find('option')
-                    .remove()
-                    .end()
-                ;
-                $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");
-
-                var i=0;
-                while (i < response.ownerNumber){
-                    $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-                    i++;
-
-                }
-
-                document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
 
                 displayLanguage();
 

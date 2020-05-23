@@ -170,6 +170,35 @@ function initializeFields(){
       }
     }
   })
+    
+    
+  $.ajax({
+    url: 'include/initialize_fields.php',
+    type: 'get',
+    data: {type: "ownerField"},
+    success: function(response){
+        if(response.response == 'error') {
+            console.log(response.message);
+        }
+        if(response.response == 'success'){
+            var i=0;
+            $('#widget-taskManagement-form select[name=owner]')
+                .find('option')
+                .remove()
+                .end()
+            ;
+            $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");
+
+            var i=0;
+            while (i < response.ownerNumber){
+                $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
+                i++;
+            }
+        }
+    }
+  })
+    
+    
 
 
 }
