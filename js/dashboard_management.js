@@ -130,15 +130,15 @@ function list_sales(owner, start, end){
           console.log(response.message);
         }else{
             var i=0;
-            var dest="<table class=\"table table-condensed\"><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Owner</th><th>Description</th><th>Points</th></thead><tbody>";
+            var dest="<table class=\"table table-condensed\"><thead><tr><th>ID</th><th scope=\"col\"><span>Date</span></th><th>Owner</th><th>Description</th><th>Points</th></thead><tbody>";
             var totalPoints=0;
             while (i< response.sales.contact.number){   
-                var contact=response.sales.contact[i];
+                var contact=response.sales.contact[i];                
                 if(contact.type=="premier contact"){
-                    var temp="<tr><td scope=\"row\">"+(i+1)+"</td><td>"+contact.date.shortDate()+"</td><td>"+contact.owner+"</td><td>Prise de contact pour entreprise "+contact.company+"</td><td>5</td></tr>";
+                    var temp="<tr><td scope=\"row\">"+(i+1)+"</td><td>"+contact.date.shortDate()+"</td><td>"+contact.owner+"</td><td><strong>Type:</strong> Prise de contact pour entreprise <a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+contact.companyID+"\">"+contact.company+"</a><br/><strong>Description :</strong> "+contact.description.replace(/(\r\n|\n|\r)/g,"<br />")+"</td><td>5</td></tr>";
                     totalPoints += 5;
                 }else{
-                    var temp="<tr><td scope=\"row\">"+(i+1)+"</td><td>"+contact.date.shortDate()+"</td><td>"+contact.owner+"</td><td>Relance pour entreprise "+contact.company+"</td><td>1</td></tr>";
+                    var temp="<tr><td scope=\"row\">"+(i+1)+"</td><td>"+contact.date.shortDate()+"</td><td>"+contact.owner+"</td><td><strong>Type:</strong> Relance pour entreprise <a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+contact.companyID+"\">"+contact.company+"</a><br/><strong>Description :</strong> "+contact.description.replace(/(\r\n|\n|\r)/g,"<br />")+"</td><td>1</td></tr>";
                     totalPoints += 1;
 
                 }
@@ -151,6 +151,12 @@ function list_sales(owner, start, end){
             dest=dest.concat("</tbody></table>");
             dest=dest.concat("<p>Nombre de points au total : <strong>"+totalPoints+"</strong></p>");
             $('#dashboardBodySellsTable').html(dest);
+            
+              var classname = document.getElementsByClassName('internalReferenceCompany');
+              for (var i = 0; i < classname.length; i++) {
+                classname[i].addEventListener('click', function() {get_company_details(this.name,email, true)}, false);
+              }
+            
         }
         }
     });

@@ -234,39 +234,6 @@ if($action=="graphic"){
         $i++;
     }
 
-
-
-    include 'connexion.php';
-    $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' FROM customer_bikes WHERE CONTRACT_START<CURRENT_TIMESTAMP AND (CONTRACT_END>CURRENT_TIMESTAMP OR CONTRACT_END is NULL) AND SOLD_PRICE = 0";
-
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result = mysqli_query($conn, $sql);        
-    $resultat = mysqli_fetch_assoc($result);
-    $conn->close();  
-
-    $response['sumContractsCurrent']=$resultat['PRICE'];
-
-    include 'connexion.php';
-    $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND END>CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
-    if($company!="*"){
-        $sql=$sql." AND COMPANY='$company'";
-    }
-
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result = mysqli_query($conn, $sql);        
-    $resultat = mysqli_fetch_assoc($result);
-    $conn->close();  
-
-    $response['sumContractsCurrent']=$response['sumContractsCurrent']+$resultat['PRICE'];
-
     echo json_encode($response);
     die;
 }

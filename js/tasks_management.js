@@ -266,8 +266,7 @@ function retrieve_task(ID, action = "retrieve"){
                     $('#widget-taskManagement-form textarea').attr("readonly", false);
                     $('#widget-taskManagement-form select').attr("readonly", false);
 
-                }
-
+                }            
                 $('#widget-taskManagement-form input[name=title]').val(response.action.title);
                 $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
                 $('#widget-taskManagement-form select[name=company]').val(response.action.company);

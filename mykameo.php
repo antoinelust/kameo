@@ -1403,9 +1403,6 @@ if($connected){
 
           document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumberClientOrProspect+"\" data-from=\"0\" data-seperator=\"true\">"+response.companiesNumberClientOrProspect+"</span>";
 
-          document.getElementById('cashFlowSpan').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+Math.round(response.sumContractsCurrent)+"\" data-from=\"0\" data-seperator=\"true\">"+Math.round(response.sumContractsCurrent)+"</span>";
-
-
           var classname = document.getElementsByClassName('internalReferenceCompany');
           for (var i = 0; i < classname.length; i++) {
             classname[i].addEventListener('click', function() {get_company_details(this.name,email, true)}, false);

@@ -54,8 +54,25 @@ if(isset($_GET['action'])){
                 $date=$row['DATE'];
                 
                 $response['sales']['contact'][$i]['id']=$row['ID'];
-                $response['sales']['contact'][$i]['company']=$row['COMPANY'];
+                $response['sales']['contact'][$i]['company']=$company;
                 $response['sales']['contact'][$i]['date']=$row['DATE'];
+                $response['sales']['contact'][$i]['description']=$row['DESCRIPTION'];
+                
+                
+                include 'connexion.php';
+                
+                $sql="SELECT ID FROM companies where INTERNAL_REFERENCE='$company'";
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+                $result2 = mysqli_query($conn, $sql);
+                $resultat2=mysqli_fetch_assoc($result2);
+                $conn->close();
+                
+                $response['sales']['contact'][$i]['companyID']=$resultat2['ID'];
+                
                 
                 include 'connexion.php';
                 
