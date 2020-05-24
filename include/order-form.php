@@ -17,6 +17,7 @@ $firstName = $_POST["widget-contact-form-firstName"];
 
 
 $email = $_POST["widget-contact-form-email"];
+$company = $_POST["widget-contact-form-entreprise"];
 $phone = isset($_POST["widget-contact-form-phone"]) ? $_POST["widget-contact-form-phone"] : null;
 $subject = isset($_POST["widget-contact-form-subject"]) ? $_POST["widget-contact-form-subject"] : 'Nouveau message - Commande';
 $message = $_POST["widget-contact-form-message"];
@@ -51,6 +52,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 				$firstName = isset($firstName) ? "Prenom: $firstName<br><br>" : '';
                 $email = isset($email) ? "Email: $email<br><br>" : '';
                 $phone = isset($phone) ? "Phone: $phone<br><br>" : '';
+                $company = isset($company) ? "Société: $company<br><br>" : '';
                 $message = isset($message) ? "Message: $message <br><br>" : '';
 
                 $mail->Body = $name . $firstName . $email . $phone . $message;

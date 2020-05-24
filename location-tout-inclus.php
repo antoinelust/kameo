@@ -17,32 +17,6 @@ include 'include/header5.php';
                 All expenses linked to soft mobility are <strong class="text-green text-uppercase">100% deductible</strong>, make sure you make the most of it!</p>
 				<p class="nl">KAMEO Bikes bepaalt het mobiliteitsplan dat het beste bij u past. Het wordt opgebouwd van elektrische, opvouwbare ofwel mechanische fietsen en zelfs elektrische scooters.<br /><br />
                 Alle kosten in verband met zachte mobiliteit zijn <strong class="text-green text-uppercase">100% aftrekbaar</strong>, zorg dat u er het beste van maakt!</p>
-				
-				<!--
-				<p class="fr">KAMEO Bikes propose 3 solutions afin de mettre à disposition des moyens de mobilité à vos employés :</p>
-				<p class="en">KAMEO Bikes offers 3 ways to implement a new mobility plan in your company:</p>
-				<p class="nl">KAMEO Bikes biedt 3 manieren om een nieuw mobiliteitsplan in uw bedrijf te implementeren:</p>
-                <ul class="fr">
-                    <li>Vente</li>
-                    <li>Leasing</li>
-                    <li>Location</li>
-                </ul>
-                <ul class="en">
-                    <li>Sell</li>
-                    <li>Leasing</li>
-                    <li>Renting</li>
-                </ul>
-                <ul class="nl">
-                    <li>Verkopen</li>
-                    <li>Verpachting</li>
-                    <li>Huren</li>
-                </ul>
-				
-            <p class="fr">Nous avons mis au point un module de calcul pour que vous puissiez avoir un aperçu de notre offre, il est disponible ci-dessous. N'oubliez pas d'aller visiter notre <a href="catalogue.php">catalogue</a> afin de choisir votre vélo ! </p>
-            <p class="en">We built an offer simulator that you can find here below. Don't forget to visit our <a href="catalogue.php">catalogue</a> to find the bike that suits you the best!</p>
-            <p class="nl">We hebben een aanbiedingssimulator gebouwd die u hieronder kunt vinden. Vergeet niet om onze <a href="catalogue.php"> catalogus </a> te bezoeken om de fiets te vinden die het beste bij u past!</p>
-				-->	
-				    
 				    <!-- Pricing Table -->
 				    <div class="col-md-6">
 						<div class="form-group">
@@ -147,51 +121,6 @@ include 'include/header5.php';
 				            </div>
 				          </div>
 				        </div>
-				        <!--
-				        <div class="col-md-4 col-sm-12 col-xs-12">
-				          <div class="plan">
-				            <div class="plan-header">
-				              <h4 class="fr">Location (HTVA)</h4>
-				              <h4 class="en">Renting (ex. VAT)</h4>
-				              <h4 class="nl">Renting (ex. BTW)</h4>
-				              <p class="text-muted fr">Minimum 1 mois</p>
-				              <p class="text-muted en">1 month minimum</p>
-				              <p class="text-muted nl">Minimaal 1 maand</p>
-				              <div class="plan-price fr" id="rentingPriceFR"></div>
-				              <div class="plan-price en" id="rentingPriceEN"></div>
-				              <div class="plan-price nl" id="rentingPriceNL"></div>
-				              </div>
-				            <div class="plan-list">
-				                <ul class="fr">
-                                    <li><i class="fa fa-globe"></i>600 kilomètres par mois <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Le nombre de kilomètres est cumulable. Sur un leasing de 36 mois, il suffit de ne pas dépasser 36 * 600 = 21.600 kms au total."></i></li>
-                                    <li><i class="fa fa-thumbs-up"></i>Garantie 2 ans</li>
-                                    <li><i class="fa fa-lock"></i>Assurance comprise</li>
-                                    <li><i class="fa fa-cogs"></i>Entretien à la carte <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Le nombre d'entretiens dépend de la durée du contrat de location Un entretien est d'office effectué entre chaque contrat. Des entretiens additionels sont planifiés pour tout contrat de plus d'un an."></i></li>
-                                    <li><i class="fa fa-user"></i>Accès à la plateforme MyKameo</li>
-                                    <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRentingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Découvrez votre avantage fiscal</span></a>
-				                </ul>
-				                <ul class="en">
-                                    <li><i class="fa fa-globe"></i>600 kilometers per month <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Number of kilometers can be summed. For example, for a 36 months contract, the total number of kilometers must be lower than 36*600=21.600 kms"></i></li>
-                                    <li><i class="fa fa-thumbs-up"></i>2 years warranty</li>
-                                    <li><i class="fa fa-lock"></i>Insurance included</li>
-                                    <li><i class="fa fa-cogs"></i>Maintenance included <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="The number of maintenances depends on the duration of the renting. An maintenance is automatically carried out between each contract. Additional maintenances are planned for any contract longer than one year."></i></li>
-                                    <li><i class="fa fa-user"></i>Full access to MyKameo</li>
-                                    <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRentingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Discover your fiscal advantage</span></a>
-				                </ul>
-				                <ul class="nl">
-                                    <li><i class="fa fa-globe"></i>600 kilometer per maand <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Het aantal kilometers kan worden opgeteld. Voor een contract van 36 maanden moet het totale aantal kilometers bijvoorbeeld lager zijn dan 36 * 600 = 21.600 km"></i></li>
-                                    <li><i class="fa fa-thumbs-up"></i>2 jaar garantie</li>
-                                    <li><i class="fa fa-lock"></i>Verzekering inbegrepen</li>
-                                    <li><i class="fa fa-cogs"></i>Onderhoud inbegrepen <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Het aantal onderhoudsbeurten is afhankelijk van de duur van de huur. Een onderhoud wordt automatisch uitgevoerd tussen elk contract. Aanvullende onderhoudsbeurten zijn gepland voor elk contract langer dan een jaar"></i></li>
-                                    <li><i class="fa fa-user"></i>Volledige toegang tot MyKameo</li>
-                                    <br>
-                                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRentingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i>Ontdek uw fiscale voordeel</span></a>
-				                </ul>				            
-                              </div>
-				          </div>
-				        </div> -->
 				      </div>
 				    </div>
 				    <!-- END: Pricing Table --> 
@@ -306,54 +235,6 @@ include 'include/header5.php';
 							</div>
 						</div>
 					</div>
-				    <!--<div class="modal fade" id="avantageRentingPrice" tabindex="-1" role="modal" aria-labelledby="modal-label-3" aria-hidden="true">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-									<h4 id="modal-label-3" class="modal-title">AVANTAGE FISCAL</h4>
-								</div>
-								<div class="modal-body">
-									<div class="row mb20">
-										<div class="col-sm-12">
-                                            
-											<p class="fr">Toutes les dépenses liées aux renting de vélos et vélos électriques sont déductibles à <strong>100%</strong> fiscalement, profitez-en ! <br />
-                                            Sur base d'un achat de vélo d'une valeur de <span class="text-green" id="spanRentingPriceFR"></span>, voici l'avantage fiscal: <br /><br />
-                                            <strong>Montant du renting :</strong> <span id="spanRentingPriceFR2"></span><br />
-                                            <strong>Avantage fiscal :</strong> 100 % x <span id="spanHTVARentingPriceFR2"></span> x 34 % = <span id="spanAvantageFiscalRentingPriceFR" class="text-green"></span><br /><br />
-                                            
-                                                
-                                            Grâce à l'avantage fiscal, le renting d'une valeur de <span id="spanHTVARentingPriceFR3"></span> HTVA ne coûte réellement à la société que <strong><span id="spanFinalPriceRentingPriceFR" class="text-green"></span></strong> (<span id="spanHTVARentingPriceFR4"></span> - <span id="spanAvantageFiscalRentingPriceFR2"></span>).
-                                            </p>			
-                                            
-											<p class="en">All expenses linked to the renting of a bike are <strong>100%</strong> deductible, make sure you make the best of it! <br />
-                                            Based on a renting value of <span class="text-green" id="spanRentingPriceEN"></span>, here is the fiscal advantage: <br /><br />
-                                            <strong>Renting :</strong> <span id="spanRentingPriceEN2"></span><br />
-                                            <strong>Fiscal advantage :</strong> 100 % x <span id="spanHTVARentingPriceEN2"></span> x 34 % = <span id="spanAvantageFiscalRentingPriceEN" class="text-green"></span><br /><br />
-                                            
-                                                
-                                            Thanks to the fiscal advantage, the renting with a value of <span id="spanHTVARentingPriceEN3"></span> (VAT excluded) only costs <strong><span id="spanFinalPriceRentingPriceEN" class="text-green"></span></strong> (<span id="spanHTVARentingPriceEN4"></span> - <span id="spanAvantageFiscalRentingPriceEN2"></span>).
-                                            </p>
-
-											<p class="nl">Alle uitgaven in verband met groene mobiliteit (renting) zijn voor <strong>100%</strong> aftrekbaar, zorg dat u er het beste van maakt!<br />
-                                            Gebaseerd op een winkelwaarde van <span class="text-green" id="spanRentingPriceNL"> </span>, is hier het fiscale voordeel: <br /><br />
-                                            <strong>Renting :</strong> <span id="spanRentingPriceNL2"></span><br />
-                                            <strong>Fiscaal voordeel:</strong> 100 % x <span id="spanHTVARentingPriceNL2"></span> x 34 % = <span id="spanAvantageFiscalRentingPriceNL" class="text-green"></span><br /><br />
-                                            
-                                                
-                                            Dankzij het fiscale voordeel, de renting met een waarde van <span id="spanHTVARentingPriceNL3"></span> (Exclusief BTW) kost alleen <strong><span id="spanFinalPriceRentingPriceNL" class="text-green"></span></strong> (<span id="spanHTVARentingPriceNL4"></span> - <span id="spanAvantageFiscalRentingPriceNL2"></span>).
-                                            </p>
-                            
-										</div>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<a class="button button-3d rounded effect icon-left"  data-dismiss="modal"><span><i class="fa fa-close"></i>Fermer</span></a>
-								</div>
-							</div>
-						</div>
-					</div>-->
-
 	
 	
 <script type="text/javascript">
@@ -433,33 +314,6 @@ include 'include/header5.php';
                 document.getElementById('spanAvantageFiscalLeasingPriceNL').innerHTML = response.avantageFiscalLeasingPrice+" €/maand ";
                 document.getElementById('spanAvantageFiscalLeasingPriceNL2').innerHTML = response.avantageFiscalLeasingPrice+" € ";
                 document.getElementById('spanFinalPriceLeasingPriceNL').innerHTML = response.finalPriceLeasingPrice+" €/maand ";
-
-                /*document.getElementById('spanRentingPriceFR').innerHTML = response.retailPrice+" € ";
-                document.getElementById('spanRentingPriceFR2').innerHTML = response.rentingPrice+" €/mois ";
-                document.getElementById('spanHTVARentingPriceFR2').innerHTML = response.HTVARentingPrice+" € ";
-                document.getElementById('spanHTVARentingPriceFR3').innerHTML = response.HTVARentingPrice+" €/mois ";
-                document.getElementById('spanHTVARentingPriceFR4').innerHTML = response.HTVARentingPrice+" € ";
-                document.getElementById('spanAvantageFiscalRentingPriceFR').innerHTML = response.avantageFiscalRentingPrice+" €/mois ";
-                document.getElementById('spanAvantageFiscalRentingPriceFR2').innerHTML = response.avantageFiscalRentingPrice+" € ";
-                document.getElementById('spanFinalPriceRentingPriceFR').innerHTML = response.finalPriceRentingPrice+" €/mois ";
-                document.getElementById('spanRentingPriceEN').innerHTML = response.retailPrice+" € ";
-                document.getElementById('spanRentingPriceEN2').innerHTML = response.rentingPrice+" €/mois ";
-                document.getElementById('spanHTVARentingPriceEN2').innerHTML = response.HTVARentingPrice+" € ";
-                document.getElementById('spanHTVARentingPriceEN3').innerHTML = response.HTVARentingPrice+" €/month ";
-                document.getElementById('spanHTVARentingPriceEN4').innerHTML = response.HTVARentingPrice+" € ";
-                document.getElementById('spanAvantageFiscalRentingPriceEN').innerHTML = response.avantageFiscalRentingPrice+" €/month ";
-                document.getElementById('spanAvantageFiscalRentingPriceEN2').innerHTML = response.avantageFiscalRentingPrice+" € ";
-                document.getElementById('spanFinalPriceRentingPriceEN').innerHTML = response.finalPriceRentingPrice+" €/month ";
-                document.getElementById('spanRentingPriceNL').innerHTML = response.retailPrice+" € ";
-                document.getElementById('spanRentingPriceNL2').innerHTML = response.rentingPrice+" €/mois ";
-                document.getElementById('spanHTVARentingPriceNL2').innerHTML = response.HTVARentingPrice+" € ";
-                document.getElementById('spanHTVARentingPriceNL3').innerHTML = response.HTVARentingPrice+" €/maand ";
-                document.getElementById('spanHTVARentingPriceNL4').innerHTML = response.HTVARentingPrice+" € ";
-                document.getElementById('spanAvantageFiscalRentingPriceNL').innerHTML = response.avantageFiscalRentingPrice+" €/maand ";
-                document.getElementById('spanAvantageFiscalRentingPriceNL2').innerHTML = response.avantageFiscalRentingPrice+" € ";
-                document.getElementById('spanFinalPriceRentingPriceNL').innerHTML = response.finalPriceRentingPrice+" €/maand ";*/
-
-                
             }
         });
 	}
@@ -468,42 +322,7 @@ include 'include/header5.php';
 
 				
     </div>
-    </div>
-    
-    <!--End: Square icons-->
-	
-	<!--
-<section class="background-dark">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8"> </div>
-			<div class="col-md-4 text-center text-light">
-				<p class="lead fr">Expérimentez ces avantages par vous-mêmes!</p>
-				<p class="lead en">Experiment those benefits by yourself!</p>
-				<p class="lead nl">Experimenteer die voordelen zelf!</p>
-				<a class="button large green button-3d rounded icon-left fr" href="essai.php"><span><i class="fa fa-bicycle"></i>Essayez</span></a>
-				<a class="button large green button-3d rounded icon-left en" href="essai.php"><span><i class="fa fa-bicycle"></i>Try me</span></a>
-				<a class="button large green button-3d rounded icon-left nl" href="essai.php"><span><i class="fa fa-bicycle"></i>Testrit</span></a>
-				<a class="button large black-light button-3d rounded icon-left fr" href="contact.php"><span><i class="fa fa-send"></i>Contactez-nous</span></a>
-				<a class="button large black-light button-3d rounded icon-left en" href="contact.php"><span><i class="fa fa-send"></i>Talk to us</span></a>
-				<a class="button large black-light button-3d rounded icon-left nl" href="contact.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a>
-		</div>
-	</div>
-</section>	
-	-->
-
-<!-- CALL TO ACTION -->
-<!--
-<div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
-  <div class="container">
-    <h3>DÉCOUVREZ L'AVANTAGE FISCAL DE VOS EMPLOYÉS</h3>
-    <p>texte ligne 2</p>
-    <a class="button large black-light button-3d effect icon-left" href="#"><span><i class="fa fa-cloud"></i>Découvrir</span></a> </div>
-</div>
--->
-
-<!--END: CALL TO ACTION -->
-
+</section>
 		
 			<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
@@ -553,3 +372,5 @@ include 'include/header5.php';
 </body>
 
 </html>
+
+

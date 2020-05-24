@@ -107,35 +107,6 @@ include 'include/header5.php';
         <!-- END: CONTENT -->
         
         
-
-<<<<<<< HEAD
-		<!-- FOOTER -->
-	<footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-        
-        <br><br>
-        
-            <div class="row text-center">
-                <div class="copyright-text text-center"> &copy; 2019 KAMEO Bikes</div>
-                <div class="social-icons center">
-							<ul>
-								<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								
-								<li class="social-instagram"><a href="https://www.instagram.com/kameobikes/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-							</ul>
-				</div>
-				<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-				
-				<br>
-				<br>
-				
-            </div>
-        </div>
-    </div>
-</footer>
-		<!-- END: FOOTER -->
-=======
 	<!-- FOOTER -->
 		<footer class="background-dark text-grey" id="footer">
 	    <div class="footer-content">
@@ -172,7 +143,6 @@ include 'include/header5.php';
 	    </div>
 	</footer>
 	<!-- END: FOOTER -->
->>>>>>> origin/master
 
 	</div>
 	<!-- END: WRAPPER -->

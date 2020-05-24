@@ -82,25 +82,6 @@ function checkAccess(){
 }
 
 
-function getClientData(){
-	include 'connexion.php';
-	$sql = "select customer_referential.EMAIL
-from customer_referential aa, customer_bikes bb, bike_models cc, handle_model dd, saddle_model ee, tires_model ff, color_proposed gg, color_proposed hh, color_proposed ii 
-where aa.EMAIL='antoine.lust@hotmail.fr' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.TYPE=cc.ID 
-and bb.HANDLE_MODEL=dd.ID and bb.SADDLE_MODEL=ee.ID and bb.TIRES_MODEL=ff.ID 
-and bb.PEDAL_COLOR=gg.COLOR_ID and bb.HANDLE_COLOR=hh.COLOR_ID and bb.WIRES_COLOR=ii.COLOR_ID";
-	$result = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_assoc($result);
-	if( $row["PASSWORD"]==NULL || $_SESSION['$UserPassword']<>$row["PASSWORD"])
-	{	
-		$_SESSION['login']=false;
-		header('Location: index.php');
-		exit();
-	}
-	$conn->close();	
-	return $row;
-}
-
 function getAPIData($url1){
 
 	$curl_handle=curl_init();

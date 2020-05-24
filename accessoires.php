@@ -1351,26 +1351,6 @@ include 'include/header5.php';
     </div>
     </div>
     <!--End: Square icons-->
-	
-	<!--
-<section class="background-dark">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8"> </div>
-			<div class="col-md-4 text-center text-light">
-				<p class="lead fr">Expérimentez ces avantages par vous-mêmes!</p>
-				<p class="lead en">Experiment those benefits by yourself!</p>
-				<p class="lead nl">Experimenteer die voordelen zelf!</p>
-				<a class="button large green button-3d rounded icon-left fr" href="essai.php"><span><i class="fa fa-bicycle"></i>Essayez</span></a>
-				<a class="button large green button-3d rounded icon-left en" href="essai.php"><span><i class="fa fa-bicycle"></i>Try me</span></a>
-				<a class="button large green button-3d rounded icon-left nl" href="essai.php"><span><i class="fa fa-bicycle"></i>Testrit</span></a>
-				<a class="button large black-light button-3d rounded icon-left fr" href="contact.php"><span><i class="fa fa-send"></i>Contactez-nous</span></a>
-				<a class="button large black-light button-3d rounded icon-left en" href="contact.php"><span><i class="fa fa-send"></i>Talk to us</span></a>
-				<a class="button large black-light button-3d rounded icon-left nl" href="contact.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a>
-		</div>
-	</div>
-</section>	
-	-->
 
 
 

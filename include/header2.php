@@ -181,19 +181,19 @@
 									<li class="dropdown fr"> <a href="#">Nos catalogues <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li><a href="catalogue.php">Nos vélos</a> </li>
-											<li><a href="accessoire.php">Nos accessoires</a> </li>
+											<li><a href="accessoires.php">Nos accessoires</a> </li>
 										</ul>
 									</li>
 									<li class="dropdown en"> <a href="#">Our catalogs <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li><a href="catalogue.php">Our bikes</a> </li>
-											<li><a href="accessoire.php">Our accessories</a> </li>
+											<li><a href="accessoires.php">Our accessories</a> </li>
 										</ul>
 									</li>
 									<li class="dropdown nl"> <a href="#">Onze catalogi <i class="fa fa-angle-down"></i> </a>
 										<ul class="dropdown-menu">
 											<li><a href="catalogue.php">Onze fietsen</a> </li>
-											<li><a href="accessoire.php">Onze accessoires</a> </li>
+											<li><a href="accessoires.php">Onze accessoires</a> </li>
 										</ul>
 									</li>
 									<li class="fr"><a href="contact.php">Contact</a></li>
