@@ -242,11 +242,11 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END, SUM(aa.LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes aa, companies bb WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' and aa.COMPANY!='KAMEO VELOS TEST' and aa.SOLD_PRICE = '0' and aa.COMPANY=bb.INTERNAL_REFERENCE and aa.BILLING_GROUP=bb.BILLING_GROUP";
+                $sql="SELECT bb.ID, aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END, SUM(aa.LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes aa, companies bb WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' and aa.COMPANY!='KAMEO VELOS TEST' and aa.SOLD_PRICE = '0' and aa.COMPANY=bb.INTERNAL_REFERENCE and aa.BILLING_GROUP=bb.BILLING_GROUP";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
-                $sql=$sql." GROUP BY aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END";
+                $sql=$sql." GROUP BY bb.ID, aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END";
 
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
