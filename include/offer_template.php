@@ -1,6 +1,6 @@
 <?php
 
-    include 'globalfunctions.php';
+  include 'globalfunctions.php';
 
   ini_set('internal_encoding', 'utf-8');
   //récupération des données du $_POST (pré boucle)

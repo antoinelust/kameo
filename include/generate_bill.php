@@ -16,8 +16,15 @@ $dateStartString1 = $dateStart->format('Y-m-d');
 $dateStartString2 = $dateStart->format('d-m-Y');
 
 $dateEnd=new DateTime($dateEnd);
-$dateEndString = $dateEnd->format('Y-m-d');
+$dateEndString1 = $dateEnd->format('Y-m-d');
 $dateEndString2 = $dateEnd->format('d-m-Y');
+
+$date1monthAfter=new DateTime('now');
+$interval = new DateInterval('P30D');
+$date1monthAfter->add($interval);
+$date1monthAfterString=$date1monthAfter->format('Y-m-d');
+
+
 
 $simulation='N';
 
@@ -102,7 +109,7 @@ if(strlen($dayAfter)==1){
 }
 
 
-$lastDayMonth=last_day_month( $monthAfter->format('m') );
+$lastDayMonth=last_day_month( $monthAfter);
 if($lastDayMonth < $dayAfter){
     $dayAfter=$lastDayMonth;
 }
@@ -201,8 +208,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             while($i<$itemNumber){
                 
-                $comment='Période du '.$dateStartString2.' au '.$dateEndString2;
-                $price=$_POST['price'.$i];
+                $price=intval($_POST['price'.$i]);
                 $priceTVAC=1.21*$price;
                 $type=$_POST['type'.$i];
                 $ID=$_POST['ID'.$i];
@@ -212,16 +218,37 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 if($type=="bike"){
                     include 'connexion.php';
-                    $sql="SELECT * from customer_bikes where ID='$ID'";
+                    $sql="SELECT MODEL, FRAME_REFERENCE, substr(CONTRACT_START,9,2) as 'firstDay', FRAME_NUMBER from customer_bikes where ID='$ID'";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                         die;
                     }
-                    $result = mysqli_query($conn, $sql);   
+                    $result = mysqli_query($conn, $sql);
                     $resultat = mysqli_fetch_assoc($result);
-                    $conn->close();                    
+                    $conn->close();     
+                    
+                    $contractStart=$dateStart;
+                    $contractEnd=$dateEnd;
+                    
+                    
+                    
+                    $contractStart->setDate($dateStart->format('Y'), $dateStart->format('m'), $resultat['firstDay']);
+                    $contractEnd->setDate($dateEnd->format('Y'), $dateEnd->format('m'), $resultat['firstDay']);
+                    
+                    $contractStartString=$contractStart->format('d-m-Y');
+                    $contractStartString2=$contractStart->format('Y-m-d');
+                    $contractEndString=$contractEnd->format('d-m-Y');
+                    $contractEndString2=$contractEnd->format('Y-m-d');
+                    
+                    
+                    $comment='Période du '.$contractStartString.' au '.$contractEndString;
+                    
                     
                 }
+                
+                
+                
+                
                 
                 
                 
@@ -232,7 +259,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du '.$dateStartString2.' au '.$dateEndString2.'</td>
+                    <td style="color: grey">Période du '.$contractStartString.' au '.$contractStartString.'</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -240,17 +267,21 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <td><img class="img-responsive" src="./images_bikes/'.$resultat['FRAME_NUMBER'].'_mini.jpg" alt=""></td>
                     ';
                 
-                $test2=$test2."<td>Location</td></tr>";
+                $test2=$test2."<td>Location </td></tr>";
                 
                 if(!$simulation || $simulation == 'N'){
                     include 'connexion.php';
-                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID','$description', '$comment', '$dateStartString2', '$dateEndString2', '$price', '$priceTVAC')";
+                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID','$description', '$comment', '$contractStartString2', '$contractEndString2', '$price', '$priceTVAC')";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
                         die;
                     } 
-                    $conn->close();                    
+                    $conn->close();
+                    
+                    $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
+
+                    
                 }                
                 
                 
@@ -276,15 +307,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
                <td style="background-color: white" witdth="100"></td>
-               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' €/mois<br>+TVA: '.round($tva,2).' /mois </p></td>
+               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' €<br>+TVA: '.round($tva,2).'</p></td>
             </tr>
             <tr>
-                <td height="35">'.round($total,2).' €/mois</td>
+                <td height="35">'.round($total,2).' €</td>
                 <td>21%</td>
-                <td>'.round($tva,2).' €/mois</td>
-                <td>'.round($totalTVAIncluded,2).' €/mois</td>
+                <td>'.round($tva,2).' €</td>
+                <td>'.round($totalTVAIncluded,2).' €</td>
                 <td style="background-color: white" width="100"></td>
-                <td style="background-color: white"> Total TVAC : <strong>'.round($totalTVAIncluded,2).' €/mois</strong></td>
+                <td style="background-color: white"> Total TVAC : <strong>'.round($totalTVAIncluded,2).' €</strong></td>
             </tr>
         </tbody>
     </table>
@@ -329,20 +360,17 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 </page>';
 
-echo $test1.$test2.$test3;
-
-$fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
-
 include 'connexion.php';
-$sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$monthAfter','leasing', NULL)";
-
-include 'connexion.php';
+$sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$date1monthAfterString','leasing', NULL)";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
     die;
 } 
 $conn->close();
+                    
 
+
+echo $test1.$test2.$test3;
 
 ?>

@@ -39,6 +39,9 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/global_functions.js"></script>
 <script type="text/javascript" src="js/dashboard_management.js"></script>
 <script type="text/javascript" src="js/initialize_counters.js"></script>
+<script src="js/OpenLayers/OpenLayers.js"></script>
+
+
 
 <style media="screen">
 .tableFixed {
@@ -579,8 +582,8 @@ function initializeUpdatePortfolioBike(ID){
         $('#widget-updateCatalog-form input[name=stock]').val(response.stock);
         $('#widget-updateCatalog-form input[name=link]').val(response.url);
 
-        document.getElementsByClassName("bikeCatalogImage")[0].src="images_bikes/"+response.brand.toLowerCase()+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
-        document.getElementsByClassName("bikeCatalogImageMini")[0].src="images_bikes/"+response.brand.toLowerCase()+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+"_mini.jpg";
+        document.getElementsByClassName("bikeCatalogImage")[0].src="images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
+        document.getElementsByClassName("bikeCatalogImageMini")[0].src="images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+"_mini.jpg";
         $('#widget-updateCatalog-form input[name=file]').val('');
         $('#widget-updateCatalog-form input[name=fileMini]').val('');
 
@@ -1388,126 +1391,6 @@ if($connected){
         }
       });
     }
-  }
-  function get_company_listing(type) {
-      
-      var filter=$('#companyListingFilter').html();
-
-    var email= "<?php echo $user; ?>";
-    $.ajax({
-      url: 'include/get_companies_listing.php',
-      type: 'post',
-      data: {"type": type, "filter": filter},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-          
-                    
-        if(response.response == 'success'){
-          var dest="";
-          var temp="<table id=\"test\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th>Rappeler ?</th><th>Mise à jour</th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead><tbody>";
-          dest=dest.concat(temp);
-          var i=0;
-
-          while (i < response.companiesNumber){
-            temp="<tr><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.company[i].ID+"\">"+response.company[i].internalReference+"</a></td><td>"+response.company[i].companyName+"</td><td>"+response.company[i].companyBikeNumber+"</td>";
-            dest=dest.concat(temp);
-              
-              
-            var heuMaj=new Date(response.company[i].HEU_MAJ);
-            var now=new Date();
-
-              
-            var difference= ((now.getTime()-heuMaj.getTime())/86400000).toFixed(0);
-              
-            if(response.company[i].type=='PROSPECT' && difference >=60){
-                var rappeler="Y";
-            }else{
-                var rappeler="N";
-            }
-
-            var dest=dest.concat("<td>"+rappeler+"</td><td data-sort=\""+(new Date(response.company[i].HEU_MAJ)).getTime()+"\">"+response.company[i].HEU_MAJ.shortDate()+"</td>");
-              
-              
-
-            if(response.company[i].bikeAccessStatus=="OK"){
-              var temp="<td class=\"text-green\">"+response.company[i].bikeAccessStatus+"</td>";
-            }else{
-              var temp="<td class=\"text-red\">"+response.company[i].bikeAccessStatus+"</td>";
-            }
-            dest=dest.concat(temp);
-            if(response.company[i].customerBuildingAccess=="OK"){
-              var temp="<td class=\"text-green\">"+response.company[i].customerBuildingAccess+"</td>";
-            }else{
-              var temp="<td class=\"text-red\">"+response.company[i].customerBuildingAccess+"</td>";
-            }
-            dest=dest.concat(temp);
-
-              
-              
-              
-            dest=dest.concat("<td>"+response.company[i].type+"</td>");
-              
-            var temp="</tr>";
-            dest=dest.concat(temp);
-            i++;
-
-          }
-          var temp="</tobdy></table>";
-          dest=dest.concat(temp);
-          document.getElementById('companyListingSpan').innerHTML = dest;
-
-
-          document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumberClientOrProspect+"\" data-from=\"0\" data-seperator=\"true\">"+response.companiesNumberClientOrProspect+"</span>";
-
-          var classname = document.getElementsByClassName('internalReferenceCompany');
-          for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener('click', function() {get_company_details(this.name,email, true)}, false);
-          }
-          var classname = document.getElementsByClassName('updateCompany');
-          for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener('click', function() {construct_form_for_company_update(this.name)}, false);
-          }
-          displayLanguage();
-            
-            $('#test thead tr').clone(true).appendTo('#test thead');
-            
-            $('#test thead tr:eq(1) th').each(function(i){
-                var title=$(this).text();
-                $(this).html('<input type="text" placeholder="Search" />');
-                
-                $('input', this).on('keyup change', function(){
-                    if (table.column(i).search() !== this.value){
-                        table
-                            .column(i)
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            });
-                
-            var table=$('#test').DataTable({
-                orderCellsTop: true,
-                fixedHeader: true,
-                scrollX: true,
-                  "columns": [
-                    { "width": "100px" },
-                    { "width": "100px" },
-                    { "width": "50px" },
-                    { "width": "50px" },
-                    { "width": "50px" },
-                    { "width": "50px" },
-                    { "width": "50px" },
-                    { "width": "50px" }                  ]
-                
-                
-            });
-            
-
-        }
-      }
-    })
   }
 
 
@@ -2477,6 +2360,8 @@ if($connected){
                     <div class="tab-pane" id="fleetmanager">
 
                       <tbody>
+                          
+                          
 
                         <h4 class="fr">Votre flotte</h4><br/><br />
 
@@ -4261,6 +4146,30 @@ if($connected){
   </div>
 </div>
 
+<div class="modal fade" id="bikePosition" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+  <div class="modal-dialog modal-lg" style= "width: 1250px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div data-example-id="contextual-table" class="bs-example">
+          <h4 class="text-green">Position du vélo</h4>
+          <div id="demoMap" style="height:750px"></div>          
+      </div>
+
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="boxesListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -4774,14 +4683,17 @@ if($connected){
              		 <ul class="tabs-navigation">
 						<li class="active"><a href="#" class="dashboardBikes">Vélos</a> </li>
 						<li><a href="#" class="dashboardBills">Factures</a> </li>
+						<li><a href="#" class="dashboardCompanies">Sociétés</a> </li>                         
 						<li><a href="#" class="dashboardSells">Prospection commerciale</a> </li>
-						<li><a href="#" class="">Bouton 4</a> </li>
 					</ul>
 					<div class="tabs-content">
 						<div class="tab-pane active" id="">
 							<h4 class="text-green dashboardTitle">Erreurs à corriger - Vélos</h4>
 							<span id="dashboardBodyBikes"></span>
                             <span id="dashboardBodyBills" style="display: none;"></span>
+                            <span id="dashboardBodyCompanies" style="display: none;"></span>
+                            
+                            
                             <span id="dashboardBodySells" style="display: none;">
                             
                               <div class="col-md-4">
@@ -4882,11 +4794,13 @@ if($connected){
                     $('#dashboardBodyBills').fadeOut();                    
                     $('#dashboardBodyBikes').fadeIn();
                     $('#dashboardBodySells').fadeOut();
+                    $('#dashboardBodyCompanies').fadeOut();
                     $('.dashboardTitle').html("Erreurs à corriger - Vélos");
                 });            
                 $( ".dashboardBills" ).click(function() {
                     $('#dashboardBodyBikes').fadeOut();
                     $('#dashboardBodyBills').fadeIn();
+                    $('#dashboardBodyCompanies').fadeOut();                    
                     $('#dashboardBodySells').fadeOut();
                     
                     $('.dashboardTitle').html("Erreurs à corriger - Factures");
@@ -4894,8 +4808,16 @@ if($connected){
                 $( ".dashboardSells" ).click(function() {
                     $('#dashboardBodyBikes').fadeOut();
                     $('#dashboardBodyBills').fadeOut();
+                    $('#dashboardBodyCompanies').fadeOut();                    
                     $('#dashboardBodySells').fadeIn();
                     $('.dashboardTitle').html("Suivi prospection commerciale");
+                });            
+                $( ".dashboardCompanies" ).click(function() {
+                    $('#dashboardBodyBikes').fadeOut();
+                    $('#dashboardBodyBills').fadeOut();
+                    $('#dashboardBodyCompanies').fadeIn();                    
+                    $('#dashboardBodySells').fadeOut();
+                    $('.dashboardTitle').html("Erreurs à corriger - Sociétés");
                 });            
 
             
@@ -5822,36 +5744,48 @@ if($connected){
 
                   <div class="col-sm-12" id="clientBikes">
                     <h4 class="text-green">Vélos :</h4>
-                    <p><span id="companyBikes"></span></p>
+                    <span id="companyBikes"></span>
                   </div>
+                    
+                    <div class="col-sm-12" id="clientOrderedBikes">
+                        <div class="separator"></div>
+                        <h4 class="text-green">Vélos en commande:</h4>
+                        <span id="companyBikesOrder"></span>
+                    </div>
 
                   <div class="col-sm-12" id="clientBoxes">
+                    <div class="separator"></div>                      
                     <h4 class="text-green">Bornes :</h4>
                     <p><span id="companyBoxes"></span></p>
                   </div>
 
                   <div class="col-sm-12" id="clientContracts">
+                    <div class="separator"></div>                      
                     <h4 class="text-green">Contrats et Offres :</h4>
                     <p><span id="companyContracts"></span></p>
                   </div>
 
                   <div class="col-sm-12">
+                    <div class="separator"></div>                      
                     <h4 class="text-green">Historique et actions :</h4>
                     <span id="action_company_log"></span>
 
                   </div>
 
                   <div class="col-sm-12" id="clientBuildings">
+                    <div class="separator"></div>                      
                     <h4 class="text-green">Bâtiments:</h4>
                     <p><span id="companyBuildings"></span></p>
                   </div>
 
                   <div class="col-sm-12" id="clientusers">
+                    <div class="separator"></div>                      
                     <h4 class="text-green">Utilisateurs:</h4>
                     <span id="companyUsers"></span>
                   </div>
 
                   <div class="col-sm-12" id="clientBills">
+                    <div class="separator"></div>  
                     <h4 class="text-green">Factures:</h4>
                     <span id="companyBills"></span>
                   </div>
@@ -6630,12 +6564,18 @@ if($connected){
 
                         </div>
 
+                          <div class="separator"></div>
+                          <h4 class="fr text-green">Type d'ajout</h4>
+                          <div class="col-sm-4">
+                            <label for="contractType"  class="fr">Type de contrat</label>
+                            <label for="contractType"  class="en">Contract type</label>
+                            <label for="contractType"  class="nl">Contract type</label>
+                            <select name="contractType" class="form-control required">
+                            </select>
+                          </div>
 
-
-
-                        <div class="separator"></div>
-
-                        <div class="col-sm-12">
+                        <div class="separator buyingInfos" style="display:none;"></div>
+                        <div class="col-sm-12 buyingInfos" style="display:none;">
                           <h4 class="fr text-green">Informations sur l'achat du vélo</h4>
                           <div class="col-sm-5">
                             <label for="price"  class="fr">Prix d'achat</label>
@@ -6646,30 +6586,12 @@ if($connected){
                               <input type="float" name="price" class="form-control required">
                             </div>
                           </div>
-                          <div class="col-sm-5">
-                            <label for="buyingDate"  class="fr">Date d'achat</label>
-                            <label for="buyingDate"  class="en">Buying date</label>
-                            <label for="buyingDate"  class="nl">Buying date</label>
-                            <input type="date" name="buyingDate" class="form-control required">
-                          </div>
                         </div>
 
-                        <div class="separator"></div>
-                        <div class="col-sm-12 contractInfos">
+                        <div class="separator contractInfos" style="display:none;"></div>
+                        <div class="col-sm-12 contractInfos" style="display:none;">
                           <h4 class="fr text-green">Informations relatives au contrat</h4>
 
-                          <div class="col-sm-4">
-                            <label for="contractType"  class="fr">Type de contrat</label>
-                            <label for="contractType"  class="en">Contract type</label>
-                            <label for="contractType"  class="nl">Contract type</label>
-                            <select name="contractType" class="form-control required">
-                              <option value="leasing">Location LT</option>
-                              <option value="renting">Location CT</option>
-                              <option value="test">Vélo de test</option>
-                              <option value="stock">Vélo de stock</option>
-                              <option value="selling">Vente</option>
-                            </select>
-                          </div>
                           <div class="col-sm-4 contractStartBloc">
                             <label for="contractStart"  class="fr">Début de contrat</label>
                             <label for="contractStart"  class="en">Contract start</label>
@@ -6697,9 +6619,38 @@ if($connected){
                             </div>
                           </div>
                         </div>
-                        <div class="separator"></div>
-
-                        <div class="col-sm-12">
+                        <div class="separator orderInfos" style="display:none;"></div>
+                        <div class="col-sm-12 orderInfos" style="display:none;">
+                          <h4 class="fr text-green">Informations relatives à la commande</h4>
+                          <div class="col-sm-4">
+                            <label for="orderingDate"  class="fr">Date de la commande</label>
+                            <label for="orderingDate"  class="en">Ordering date</label>
+                            <label for="orderingDate"  class="nl">Ordering date</label>
+                            <input type="date" name="orderingDate" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="deliveryDate"  class="fr">Date estimée d'arrivée</label>
+                            <label for="deliveryDate"  class="en">Arrival estimated date</label>
+                            <label for="deliveryDate"  class="nl">Arrival estimated date</label>
+                            <input type="date" name="deliveryDate" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="orderNumber"  class="fr">Numéro de commande</label>
+                            <label for="orderNumber"  class="en">Numéro de commande</label>
+                            <label for="orderNumber"  class="nl">Numéro de commande</label>
+                            <input type="text" name="orderNumber" class="form-control">
+                          </div>
+                          <div class="col-sm-4 offer">
+                            <label for="offerReference"  class="fr">Offre liée</label>
+                            <label for="offerReference"  class="en">Offre liée</label>
+                            <label for="offerReference"  class="nl">Offre liée</label>
+                            <select name="offerReference" class="form-control offerReference">
+                            </select>
+                          </div>
+                        </div>
+                          
+                        <div class="separator billingInfos" style="display:none;"></div>
+                        <div class="col-sm-12 billingInfos" style="display:none;">
                           <h4 class="fr text-green">Informations relatives à la facturation</h4>
 
                           <div class="col-sm-4">
@@ -6729,30 +6680,30 @@ if($connected){
                             <label for="billingGroup"  class="nl">Groupe de facturation</label>
                             <input type="text" name="billingGroup" class="form-control required">
                           </div>
+                            
+                            <div class="col-sm-12 billingDiv">
+                              <div class="col-sm-4">
+                                <label for="billing"  class="fr">Facturation automatique ?</label>
+                                <label for="billing"  class="en">Automatic billing ?</label>
+                                <label for="billing"  class="nl">Automatic billing ?</label>
+                                <label><input type="checkbox" name="billing" class="form-control">Oui</label>
+                              </div>
+                            </div>
+                            
                         </div>
                           
-                        <div class="col-sm-12 billingDiv">
-                          <div class="col-sm-4">
-                            <label for="billing"  class="fr">Facturation automatique ?</label>
-                            <label for="billing"  class="en">Automatic billing ?</label>
-                            <label for="billing"  class="nl">Automatic billing ?</label>
-                            <label><input type="checkbox"name="billing" class="form-control">Oui</label>
-                          </div>
-
-
-                        </div>
-                        <div class="form-group col-sm-4" id="addBike_firstBuilding"></div>
-                        <div class="form-group col-sm-12" id="addBike_buildingListing"></div>
+                        <div class="form-group col-sm-4" style="display:none;" id="addBike_firstBuilding"></div>
+                        <div class="form-group col-sm-12" style="display:none;" id="addBike_buildingListing"></div>
 
 
                         <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
                         <input type="text" name="action" class="form-control hidden">
 
-                        <div class="col-sm-12" id='bikeBuildingAccessAdminDiv'><h4>Accès aux bâtiments de ce vélo</h4></div>
-                        <div class="form-group col-sm-12" id="bikeBuildingAccessAdmin"></div>
+                        <div class="col-sm-12" id='bikeBuildingAccessAdminDiv'style="display:none;"><h4>Accès aux bâtiments de ce vélo</h4></div>
+                        <div class="form-group col-sm-12" id="bikeBuildingAccessAdmin" style="display:none;"></div>
 
-                        <div class="col-sm-12" id='bikeUserAccessAdminDiv'><h4>Accès des utilisateurs à ce vélo</h4></div>
-                        <div class="form-group col-sm-12" id="bikeUserAccessAdmin"></div>
+                        <div class="col-sm-12" id='bikeUserAccessAdminDiv' style="display:none;"><h4>Accès des utilisateurs à ce vélo</h4></div>
+                        <div class="form-group col-sm-12" id="bikeUserAccessAdmin" style="display:none;"></div>
 
                       </div>
                       <div class="col-sm-12">
@@ -6764,9 +6715,9 @@ if($connected){
 
 
 
-                    <div class="separator bikeActions"></div>
+                    <div class="separator bikeActions"style="display:none;"></div>
 
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 bikeActions" style="display:none;">
 
                       <h4 class="fr text-green">Actions prises sur le vélo</h4>
 
@@ -6797,9 +6748,9 @@ if($connected){
                       <span id="action_bike_log"></span>
                   </div>
 
-                    <div class="separator"></div>
+                    <div class="separator billsInfos" style="display:none;"></div>
 
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 billsInfos" style="display:none;">
 
                       <h4 class="fr text-green">Factures du vélo</h4>
 
@@ -6878,7 +6829,6 @@ if($connected){
                               $('input[name=widget-addActionBike-form-public]').addClass("hidden");
                               $('.addActionConfirmButton').addClass("hidden");
                               construct_form_for_bike_status_updateAdmin($('#widget-addActionBike-form input[name=bikeNumber]').val());
-
                             } else {
                               $.notify({
                                 message: response.message
@@ -8636,6 +8586,7 @@ if($connected){
                                 <option value="Conway">Conway</option>
                                 <option value="Douze Cycle">Douze Cycle</option>
                                 <option value="HNF Nicolai">HNF Nicolai</option>
+                                <option value="Kayza">Kayza</option>
                                 <option value="Orbea">Orbea</option>
                                 <option value="Victoria">Victoria</option>
                                 <option value="Stevens">Stevens</option>
@@ -8883,6 +8834,7 @@ if($connected){
                             <option value="Conway">Conway</option>
                             <option value="Douze Cycle">Douze Cycle</option>
                             <option value="HNF Nicolai">HNF Nicolai</option>
+                            <option value="Kayza">Kayza</option>
                             <option value="Orbea">Orbea</option>
                             <option value="Victoria">Victoria</option>                              
                             <option value="Stevens">Stevens</option>

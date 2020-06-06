@@ -60,7 +60,12 @@ if($frameNumber != NULL || $id != NULL)
     $response['contractType']=$row['CONTRACT_TYPE'];
     $response['contractStart']=$row['CONTRACT_START'];
     $response['contractEnd']=$row['CONTRACT_END'];
-		$response['soldPrice']=$row['SOLD_PRICE'];
+    $response['soldPrice']=$row['SOLD_PRICE'];
+    $response['deliveryDate']=$row['DELIVERY_DATE'];
+    $response['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
+    $response['orderNumber']=$row['ORDER_NUMBER'];
+    $response['offerID']=$row['OFFER_ID'];
+    
 
     $response['status']=$row['STATUS'];
     if(!$company){

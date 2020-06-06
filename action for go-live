@@ -1,1 +1,2 @@
-ALTER TABLE `companies` ADD `CHANNEL` VARCHAR(25) NULL AFTER `COMPANY_NAME`;
+ALTER TABLE `customer_bikes` ADD `DELIVER_DATE` TIMESTAMP NULL AFTER `GPS_ID`, ADD `ORDER_NUMBER` VARCHAR(150) NULL AFTER `DELIVER_DATE`;
+INSERT INTO `error_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'ES0060', 'Un vélo de stock ne peut être assigné que à la société Kameo', 'A stock bike can be assigned only to Kameo company', 'A stock bike can be assigned only to Kameo company');

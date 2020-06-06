@@ -1420,3 +1420,157 @@ SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
 SQL5 :select * from companies where INTERNAL_REFERENCE='AFELIO' and BILLING_GROUP='0'
 SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
 SQL5 :select * from companies where INTERNAL_REFERENCE='AFELIO' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Docteur Mayence' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Bernard Rausin' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Deliveroo' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Melon' and BILLING_GROUP='0'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'

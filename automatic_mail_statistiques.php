@@ -1,5 +1,5 @@
 <?php 
-include 'include/header2.php';
+include 'include/header5.php';
 require_once('include/php-mailer/PHPMailerAutoload.php');
 
 ?>
@@ -10,9 +10,9 @@ $currentYear=date('Y');
 
 if($currentMonth==1){
     $monthBefore=12;
-    $yearBefore=$currentYear-1;
+    $yearBefore=($currentYear-1);
 }else{
-    $monthBefore=$currentMonth-1;
+    $monthBefore=($currentMonth-1);
     $yearBefore=$currentYear;
 }
 $dateStart = new DateTime();
@@ -22,8 +22,7 @@ $dateStartString=$dateStart->format('Y-m-d H:i');
 $dateEnd = new DateTime();
 $dateEnd->setDate($yearBefore, $currentMonth, 1);
 $dateEndString=$dateEnd->format('Y-m-d H:i');
-
-
+                  
 $part1 = "<!doctype html>
                             <html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">
                                 <head>
@@ -977,12 +976,12 @@ $part1 = "<!doctype html>
                                     
                                     while($month>1){
                                         $month=$month-1;
-                                        $dateStart = new DateTime();
-                                        $dateStart->setDate($yearBefore, $month, 1);
-                                        $dateStartString=$dateStart->format('Y-m-d H:i');
-                                        $dateEnd = new DateTime();
-                                        $dateEnd->setDate($yearBefore, $month+1, 1);
-                                        $dateEndString=$dateEnd->format('Y-m-d H:i');
+                                        $dateStart2 = new DateTime();
+                                        $dateStart2->setDate($yearBefore, $month, 1);
+                                        $dateStartString2=$dateStart2->format('Y-m-d H:i');
+                                        $dateEnd2 = new DateTime();
+                                        $dateEnd2->setDate($yearBefore, $month+1, 1);
+                                        $dateEndString2=$dateEnd2->format('Y-m-d H:i');
                                         
                                         $sql4= "SELECT * FROM customer_referential aa, reservations bb WHERE aa.COMPANY='$company' and aa.EMAIL = bb.EMAIL and bb.STAANN != 'D' and DATE_START_2>'$dateStartString' and DATE_END_2<'$dateEndString'";
 
@@ -992,8 +991,8 @@ $part1 = "<!doctype html>
                                             die;
                                         }
                                         $result4 = mysqli_query($conn, $sql4); 
-                                        $part4=$part4."<tr class=\"tableResume\"><td class=\"tableResume\">".$dateStart->format('Y-m')."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
-                                        $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$dateStart->format('Y-m')."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
+                                        $part4=$part4."<tr class=\"tableResume\"><td class=\"tableResume\">".$dateStart2->format('Y-m')."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
+                                        $part2=$part2."<tr class=\"tableResume\"><td class=\"tableResume\">".$dateStart2->format('Y-m')."</td><td class=\"tableResume\">".$result4->num_rows."</td></tr>";
                                         
                                         
                                     }

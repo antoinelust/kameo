@@ -429,7 +429,7 @@ get_all_boxes().done(function(response){
         $(that).parents('.boxRow').find('.boxMarge').html(marge);
         $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapLocationBox');
         $(that).parents('.boxRow').find('.boxLocationPrice').attr('data-orig',boxes[boxId].locationPrice);
-        $(that).parents('.boxRow').find('.boxFinalLocationPrice').html("<input type=\"text\" name=\"boxFinalLocationPrice1[]\" value=\""+boxes[boxId].locationPrice+"\"/>");        
+        $(that).parents('.boxRow').find('.boxFinalLocationPrice').html("<input type=\"text\" name=\"boxFinalLocationPrice[]\" value=\""+boxes[boxId].locationPrice+"\"/>");        
         
       $(that).parents('.boxRow').find('.boxContractPrice').html((boxes[boxId].locationPrice*leasingDuration*1+boxes[boxId].installationPrice*1) + "€").addClass('inRecapLocationBox');
 
@@ -999,6 +999,7 @@ $("#templateForm").validate({
     $('.generatePDF').html(buttonContent);
     jQuery(form).ajaxSubmit({
       success: function(response) {
+          console.log(response);
         if(response.response == 'true'){
           $('.generatePDF').html('Générer PDF');
           $.notify({
@@ -1032,7 +1033,7 @@ $("#templateForm").validate({
           $('#template').modal('toggle');
             
             
-        } else{
+        }else{
           $('.generatePDF').html('Générer PDF');
           alert('Une erreur est survenue ...');
           console.log(response);

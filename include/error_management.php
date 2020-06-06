@@ -53,6 +53,53 @@ if(isset($_GET['action'])){
             $response['bike']['img']['number']=$i;
             
             include 'connexion.php';
+            $sql="SELECT * FROM companies WHERE STAANN != 'D'";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result = mysqli_query($conn, $sql);
+            $conn->close();
+
+            $dossier="../images/";
+            $i=0;
+
+            while($row = mysqli_fetch_array($result)){
+                $fichier=$row['INTERNAL_REFERENCE'].'.jpg';
+
+                if (!file_exists($dossier.$fichier)){                
+                    $response['company']['img'][$i]['id']=$row['ID'];
+                    $response['company']['img'][$i]['name']=$row['COMPANY_NAME'];
+                    $response['company']['img'][$i]['internalReference']=$row['INTERNAL_REFERENCE'];
+
+                    $i++;
+                }
+            }
+
+            $response['company']['img']['number']=$i;
+            
+            include 'connexion.php';
+            $sql="SELECT * FROM company_actions aa WHERE not exists (select 1 from companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE)";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result = mysqli_query($conn, $sql);
+            $conn->close();
+
+            $i=0;
+
+            while($row = mysqli_fetch_array($result)){
+                $response['company']['action'][$i]['id']=$row['ID'];
+                $response['company']['action'][$i]['description']="Pas de société définie pour l'action suivante.<br/><strong>Titre : </strong>".$row['TITLE']."<br /> Actuellement identifié sur la société : <strong>".$row['COMPANY']."</strong>";
+                $i++;
+            }
+
+            $response['company']['action']['number']=$i;
+            
+            include 'connexion.php';
             $sql="SELECT * FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'";
             if ($conn->query($sql) === FALSE){
                 $response = array ('response'=>'error', 'message'=> $conn->error);

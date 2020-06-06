@@ -6,7 +6,7 @@ header('Content-type: application/json');
 session_start();
 
 include 'connexion.php';
-$sql="SELECT * FROM customer_referential WHERE EMAIL like '%kameobikes.com' AND STAANN !='D'";
+$sql="SELECT * FROM customer_referential WHERE EMAIL like '%kameobikes.com'";
 
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -25,6 +25,7 @@ while($row = mysqli_fetch_array($result))
     $response['member'][$i]['name']=$row['NOM'];
     $response['member'][$i]['firstName']=$row['PRENOM'];
     $response['member'][$i]['email']=$row['EMAIL'];
+    $response['member'][$i]['staann']=$row['STAANN'];
     $i++;
 }                                                       
 $conn->close();

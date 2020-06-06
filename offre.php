@@ -29,7 +29,7 @@ $row = mysqli_fetch_assoc($result);
                 <div class="row">
                     <div class="col-md-6">
                         
-                        <img src="images_bikes/<?php echo $brand.'_'.str_replace(' ', '-', $model).'_'.$frameType; ?>.jpg" class="img-responsive img-rounded" alt="">
+                        <img src="images_bikes/<?php echo str_replace(' ', '-', $brand).'_'.str_replace(' ', '-', $model).'_'.$frameType; ?>.jpg" class="img-responsive img-rounded" alt="">
                         <br>
                         <dl class="dl">
 							<dt>Caractéristiques techniques</dt>

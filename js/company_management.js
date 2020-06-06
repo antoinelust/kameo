@@ -1,3 +1,127 @@
+function get_company_listing(type) {
+
+  var filter=$('#companyListingFilter').html();
+
+    var email= "<?php echo $user; ?>";
+    $.ajax({
+      url: 'include/get_companies_listing.php',
+      type: 'post',
+      data: {"type": type, "filter": filter},
+      success: function(response){
+        if(response.response == 'error') {
+          console.log(response.message);
+        }
+
+
+        if(response.response == 'success'){
+          var dest="";
+          var temp="<table id=\"test\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th>Rappeler ?</th><th>Mise à jour</th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead><tbody>";
+          dest=dest.concat(temp);
+          var i=0;
+
+          while (i < response.companiesNumber){
+            temp="<tr><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.company[i].ID+"\">"+response.company[i].internalReference+"</a></td><td>"+response.company[i].companyName+"</td><td>"+response.company[i].companyBikeNumber+"</td>";
+            dest=dest.concat(temp);
+
+
+            var heuMaj=new Date(response.company[i].HEU_MAJ);
+            var now=new Date();
+
+
+            var difference= ((now.getTime()-heuMaj.getTime())/86400000).toFixed(0);
+
+            if(response.company[i].type=='PROSPECT' && difference >=60){
+                var rappeler="Y";
+            }else{
+                var rappeler="N";
+            }
+
+            var dest=dest.concat("<td>"+rappeler+"</td><td data-sort=\""+(new Date(response.company[i].HEU_MAJ)).getTime()+"\">"+response.company[i].HEU_MAJ.shortDate()+"</td>");
+
+
+
+            if(response.company[i].bikeAccessStatus=="OK"){
+              var temp="<td class=\"text-green\">"+response.company[i].bikeAccessStatus+"</td>";
+            }else{
+              var temp="<td class=\"text-red\">"+response.company[i].bikeAccessStatus+"</td>";
+            }
+            dest=dest.concat(temp);
+            if(response.company[i].customerBuildingAccess=="OK"){
+              var temp="<td class=\"text-green\">"+response.company[i].customerBuildingAccess+"</td>";
+            }else{
+              var temp="<td class=\"text-red\">"+response.company[i].customerBuildingAccess+"</td>";
+            }
+            dest=dest.concat(temp);
+
+
+
+
+            dest=dest.concat("<td>"+response.company[i].type+"</td>");
+
+            var temp="</tr>";
+            dest=dest.concat(temp);
+            i++;
+
+          }
+          var temp="</tobdy></table>";
+          dest=dest.concat(temp);
+          document.getElementById('companyListingSpan').innerHTML = dest;
+
+
+          document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumberClientOrProspect+"\" data-from=\"0\" data-seperator=\"true\">"+response.companiesNumberClientOrProspect+"</span>";
+
+          var classname = document.getElementsByClassName('internalReferenceCompany');
+          for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', function() {get_company_details(this.name,email, true)}, false);
+          }
+          var classname = document.getElementsByClassName('updateCompany');
+          for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', function() {construct_form_for_company_update(this.name)}, false);
+          }
+          displayLanguage();
+
+            $('#test thead tr').clone(true).appendTo('#test thead');
+
+            $('#test thead tr:eq(1) th').each(function(i){
+                var title=$(this).text();
+                $(this).html('<input type="text" placeholder="Search" />');
+
+                $('input', this).on('keyup change', function(){
+                    if (table.column(i).search() !== this.value){
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+
+            var table=$('#test').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
+                scrollX: true,
+                  "columns": [
+                    { "width": "100px" },
+                    { "width": "100px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" },
+                    { "width": "50px" }                  ]
+
+
+            });
+
+
+        }
+      }
+    })
+}
+
+
+
+
 function get_company_details(ID, email ,getCompanyContacts = false) {
   var internalReference;    
 
@@ -60,46 +184,47 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
           var temp="<table id=\"bike_company_listing\" class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant location</span><span class=\"en-inline\">Location Price</span><span class=\"nl-inline\">Location Price</span></th><th scope=\"col\">Accès aux bâtiments</th><th>Mise à jour</th><th></th></tr></thead><tbody>";
           dest=dest.concat(temp);
           while(i<response.bikeNumber){
+            if(response.bike[i].contractType != "order"){
+                if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart != null){
+                    var contractStart="<span>"+response.bike[i].contractStart.shortDate()+"</span>";
+                }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart == null){
+                    var contractStart="<span class=\"text-red\">N/A</span>";
+                }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart == null){
+                    var contractStart="<span>N/A</span>";
+                }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart != null){
+                    var contractStart="<span class=\"text-red\">"+response.bike[i].contractStart.shortDate()+"</span>";
+                }else{
+                    var contractStart="<span class=\"text-red\">ERROR</span>";
+                }
+                if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd != null){
+                    var contractEnd="<span>"+response.bike[i].contractEnd.shortDate()+"</span>";
+                }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd == null){
+                    var contractEnd="<span class=\"text-red\">N/A</span>";
+                }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd == null){
+                    var contractEnd="<span>N/A</span>";
+                }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd != null){
+                    var contractEnd="<span class=\"text-red\">"+response.bike[i].contractEnd.shortDate()+"</span>";
+                }else{
+                    var contractEnd="<span class=\"text-red\">ERROR</span>";
+                }
 
-            if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart != null){
-              var contractStart="<span>"+response.bike[i].contractStart.shortDate()+"</span>";
-            }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractStart == null){
-              var contractStart="<span class=\"text-red\">N/A</span>";
-            }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart == null){
-              var contractStart="<span>N/A</span>";
-            }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractStart != null){
-              var contractStart="<span class=\"text-red\">"+response.bike[i].contractStart.shortDate()+"</span>";
-            }else{
-              var contractStart="<span class=\"text-red\">ERROR</span>";
-            }
-            if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd != null){
-              var contractEnd="<span>"+response.bike[i].contractEnd.shortDate()+"</span>";
-            }else if(response.bike[i].company != 'KAMEO' && response.bike[i].company != 'KAMEO VELOS TEST' && response.bike[i].contractEnd == null){
-              var contractEnd="<span class=\"text-red\">N/A</span>";
-            }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd == null){
-              var contractEnd="<span>N/A</span>";
-            }else if((response.bike[i].company == 'KAMEO' && response.bike[i].company == 'KAMEO VELOS TEST') && response.bike[i].contractEnd != null){
-              var contractEnd="<span class=\"text-red\">"+response.bike[i].contractEnd.shortDate()+"</span>";
-            }else{
-              var contractEnd="<span class=\"text-red\">ERROR</span>";
-            }
 
+                var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].facturation+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+response.bike[i].leasingPrice+"</td><td>";
+                dest=dest.concat(temp);
 
-            var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].facturation+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+response.bike[i].leasingPrice+"</td><td>";
-            dest=dest.concat(temp);
-
-            var j=0;
-            while(j<response.bike[i].buildingNumber){
-              var temp=response.bike[i].building[j].buildingCode+"<br/>"
-              dest=dest.concat(temp);
-              j++;
-            }
-            if(response.bike[i].buildingNumber==0){
-              var temp="<span class=\"text-red\">Non-défini</span>";
-              dest=dest.concat(temp);
-            }
-            dest=dest.concat("<td data-sort=\""+(new Date(response.bike[i].heuMaj)).getTime()+"\">"+response.bike[i].heuMaj.shortDate()+"</td>");
-            dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
+                var j=0;
+                while(j<response.bike[i].buildingNumber){
+                    var temp=response.bike[i].building[j].buildingCode+"<br/>"
+                    dest=dest.concat(temp);
+                    j++;
+                }
+                if(response.bike[i].buildingNumber==0){
+                    var temp="<span class=\"text-red\">Non-défini</span>";
+                    dest=dest.concat(temp);
+                }
+                dest=dest.concat("<td data-sort=\""+(new Date(response.bike[i].heuMaj)).getTime()+"\">"+response.bike[i].heuMaj.shortDate()+"</td>");
+                dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
+              }
             i++;
           }
           dest=dest.concat("</tbody></table>");
@@ -108,6 +233,34 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         document.getElementById('companyBikes').innerHTML = dest;
           
         $('#bike_company_listing').DataTable({
+            "searching": false,
+            "paging": false
+        });
+          
+          
+
+        var i=0;
+        var dest="";
+        if(response.bikeNumber>0){
+          var temp="<table id=\"ordered_bike_company_listing\" class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th>Date commande</th><th>Date livraison</th><th scope=\"col\"><span class=\"fr-inline\">Numéro commande fournisseur</span></th><th></th></tr></thead><tbody>";
+          dest=dest.concat(temp);
+          while(i<response.bikeNumber){
+              if(response.bike[i].contractType == "order")
+              {                      
+
+                var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].bikeBuyingDate.shortDate()+"</td><td>"+response.bike[i].deliveryDate.shortDate()+"</td><td>"+response.bike[i].orderNumber+"</td>";
+                dest=dest.concat(temp);
+
+                dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
+              }
+              i++;
+          }
+          dest=dest.concat("</tbody></table>");
+        }
+
+        document.getElementById('companyBikesOrder').innerHTML = dest;
+          
+        $('#ordered_bike_company_listing').DataTable({
             "searching": false,
             "paging": false
         }

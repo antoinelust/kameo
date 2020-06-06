@@ -144,8 +144,12 @@ if($ID != NULL || $company != NULL)
         $response['bike'][$i]['model']=$row['MODEL'];
         $response['bike'][$i]['facturation']=$row['AUTOMATIC_BILLING'];
         $response['bike'][$i]['leasingPrice']=$row['LEASING_PRICE'];
+        $response['bike'][$i]['contractType']=$row['CONTRACT_TYPE'];
         $response['bike'][$i]['contractStart']=$row['CONTRACT_START'];
         $response['bike'][$i]['contractEnd']=$row['CONTRACT_END'];
+        $response['bike'][$i]['deliveryDate']=$row['DELIVERY_DATE'];
+        $response['bike'][$i]['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
+        $response['bike'][$i]['orderNumber']=$row['ORDER_NUMBER'];
 
         $sql2="SELECT * FROM bike_building_access dd where BIKE_NUMBER='$frameNumber'";
 

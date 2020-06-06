@@ -79,16 +79,7 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
      else
      {
           errorMessage("ES0024");
-     }
-
-    
-    
-    
-    
-    /*$img = resize_image($dossier . $fichier, 200, 200);
-    $fichierMini = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
-    imagejpeg($img, $dossier . $fichierMini);*/
-    
+     }    
     
 }else{
 	errorMessage("ES0025");

@@ -30,9 +30,9 @@ if(isset($_GET['action'])){
             include 'connexion.php';
             
             if($owner == '*'){
-                $sql="SELECT * from company_actions  where TYPE='CONTACT' AND STATUS='DONE' AND DATE >= '$start' AND DATE <= '$end'";
+                $sql="SELECT * from company_actions  where (TYPE='contact' OR TYPE='rappel' OR TYPE='plan rdv') AND STATUS='DONE' AND DATE >= '$start' AND DATE <= '$end'";
             }else{
-                $sql="SELECT * from company_actions  where TYPE='CONTACT' AND STATUS='DONE' AND DATE >= '$start' AND DATE <= '$end' and OWNER='$owner'";
+                $sql="SELECT * from company_actions  where (TYPE='contact' OR TYPE='rappel' OR TYPE='plan rdv') AND STATUS='DONE' AND DATE >= '$start' AND DATE <= '$end' and OWNER='$owner'";
             }
             
             $response['sales']['sql']=$sql;
@@ -56,44 +56,43 @@ if(isset($_GET['action'])){
                 $response['sales']['contact'][$i]['id']=$row['ID'];
                 $response['sales']['contact'][$i]['company']=$company;
                 $response['sales']['contact'][$i]['date']=$row['DATE'];
+                $response['sales']['contact'][$i]['type']=$row['TYPE'];
                 $response['sales']['contact'][$i]['description']=$row['DESCRIPTION'];
                 
-                
-                include 'connexion.php';
-                
-                $sql="SELECT ID FROM companies where INTERNAL_REFERENCE='$company'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
+                if($row['TYPE']=="contact"){
+                    
+                    include 'connexion.php';
+
+                    $sql="SELECT ID FROM companies where INTERNAL_REFERENCE='$company'";
+                    if ($conn->query($sql) === FALSE) {
+                        $response = array ('response'=>'error', 'message'=> $conn->error);
+                        echo json_encode($response);
+                        die;
+                    }
+                    $result2 = mysqli_query($conn, $sql);
+                    $resultat2=mysqli_fetch_assoc($result2);
+                    $conn->close();
+
+                    $response['sales']['contact'][$i]['companyID']=$resultat2['ID'];
+
+
+                    include 'connexion.php';
+
+                    $sql="SELECT * FROM company_actions WHERE TYPE='contact' AND STATUS = 'DONE' AND COMPANY='$company' AND DATE < '$date'";
+                    if ($conn->query($sql) === FALSE) {
+                        $response = array ('response'=>'error', 'message'=> $conn->error);
+                        echo json_encode($response);
+                        die;
+                    }
+                    $result2 = mysqli_query($conn, $sql);
+                    $length = $result2->num_rows;
+                    $conn->close();
+                    if($length == 0){
+                        $response['sales']['contact'][$i]['type']="premier contact";
+                    }else{
+                        $response['sales']['contact'][$i]['type']="rappel";
+                    }               
                 }
-                $result2 = mysqli_query($conn, $sql);
-                $resultat2=mysqli_fetch_assoc($result2);
-                $conn->close();
-                
-                $response['sales']['contact'][$i]['companyID']=$resultat2['ID'];
-                
-                
-                include 'connexion.php';
-                
-                $sql="SELECT * FROM company_actions WHERE TYPE='contact' AND STATUS = 'DONE' AND COMPANY='$company' AND DATE < '$date'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $result2 = mysqli_query($conn, $sql);
-                $length = $result2->num_rows;
-                $conn->close();
-                if($length == 0){
-                    $response['sales']['contact'][$i]['type']="premier contact";
-                }else{
-                    $response['sales']['contact'][$i]['type']="relance";
-                }
-                
-                $response['sales']['contact'][$i]['sql']=$sql;
-                $response['sales']['contact'][$i]['length']=$length;
-                
                 
                 include 'connexion.php';
                 

@@ -1,5 +1,5 @@
 <?php 
-include 'include/header2.php';
+include 'include/header5.php';
 ?>
 		
 		<!--Square icons-->
@@ -74,7 +74,7 @@ include 'include/header2.php';
 						<div class="container">
 							<h4>Prenez aujourd’hui votre bonne résolution pour 2020 et partez tous les matins à vélo. </h4>
 							<p>Vous trouverez votre future monture ici:</p>
-							<a class="button large black-light button-3d effect icon-left" href="catalogue.php"><span><i class="fa fa-eye"></i>Le catalogue</span></a>
+							<a class="button large black-light button-3d effect icon-left" href="achat.php"><span><i class="fa fa-eye"></i>Le catalogue</span></a>
 						</div>	
 					</div>		
 		</div>

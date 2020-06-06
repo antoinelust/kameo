@@ -81,9 +81,11 @@ try{
                 $response['response']="success";
                 $response['bikeNumber']=$length;
 
-
+                
                 while($row = mysqli_fetch_array($result))
                 {
+                    $price=$row['PRICE_HTVA'];
+                    
                     $response['bike'][$i]['ID']=$row['ID'];
                     $response['bike'][$i]['brand']=$row['BRAND'];
                     $response['bike'][$i]['model']=$row['MODEL'];            
@@ -92,38 +94,16 @@ try{
                     $response['bike'][$i]['electric']=$row['ELECTRIC'];
                     $response['bike'][$i]['stock']=$row['STOCK'];
                     $response['bike'][$i]['display']=$row['DISPLAY'];
+                    $response['bike'][$i]['buyprice']=$row['BUYING_PRICE'];
+                    $response['bike'][$i]['price']=round($price);
+                    $response['bike'][$i]['url']=$row['LINK'];
+                    
+                    
+                    $i++;
+                    
                     
 
-                    $price=$row['PRICE_HTVA'];
-                    $priceTemp=($price+3*75+4*100+4*100);
-
-                    // Calculation of coefficiant for leasing price
-
-                    if($priceTemp<2500){
-                        $coefficient=3.289;
-                    }elseif ($priceTemp<=5000){
-                        $coefficient=3.056;
-                    }elseif ($priceTemp<=12500){
-                        $coefficient=2.965;
-                    }elseif ($priceTemp<=25000){
-                        $coefficient=2.921;
-                    }elseif ($priceTemp<=75000){
-                        $coefficient=2.898;
-                    }else{
-                        errorMessage(ES0012);
-                    }
-
-                    $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
-
-                    $response['bike'][$i]['leasingPrice']=$leasingPrice;
-                    $response['bike'][$i]['buyprice']=$row['BUYING_PRICE'];
-                    $response['bike'][$i]['price']=$price;
-                    $response['bike'][$i]['url']=$row['LINK'];
-
-                    $i++;
-
                 }
-
                 echo json_encode($response);
                 die;
 
@@ -174,5 +154,7 @@ try{
     die;
 
 }
+
+
 
 ?>

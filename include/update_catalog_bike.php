@@ -131,9 +131,9 @@ if($action=="update"){
 
         $dossier = '../images_bikes/';
 
+        
+        include 'connexion.php';
         $sql = "select * from bike_catalog where ID='$ID'";
-
-
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

@@ -23,13 +23,70 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 <script type="text/javascript" src="./js/datatable_default.js"></script>
 <script type="text/javascript" src="./js/global_functions.js"></script>
 
-
 <?php
+
 $now=new DateTime('now');
+
+
+if(isset($_GET['day'])){
+    $day=$_GET['day'];
+}else{
+    $day=$now->format('d');
+}
+
+if(isset($_GET['month'])){
+    $month=$_GET['month'];
+}else{
+    $month=$now->format('m');
+}
+
+if(isset($_GET['year'])){
+    $year=$_GET['year'];
+}else{
+    $year=null;
+    $year=$now->format('Y');
+}
+if(isset($_GET['simulation'])){
+    $simulation=$_GET['simulation'];
+}else{
+    $simulation=null;
+}
+
+$company=isset($_GET['company']) ? $_GET['company'] : NULL;
+
+
+
 $nowString=$now->format('Y-m-d');
 
+$date=$now;
+$date->setDate($year, $month, $day);
+$dateString=$date->format('Y-m-d');
+
+if($now->format('m')==1){
+    $monthBefore=12;
+    $yearBefore=(($now->format('Y'))-1);
+}else{
+    $monthBefore=(($now->format('m'))-1);
+    $yearBefore=$now->format('Y');
+}
+$dayBefore=$now->format('d');
+
+$date1MonthBefore=new DateTime('now');
+$date1MonthBefore->setDate($yearBefore, $monthBefore, $dayBefore);
+$date1MonthBeforeString=$date1MonthBefore->format('Y-m-d');
+
+$lastDayMonth=last_day_month( $monthBefore);
+if($lastDayMonth < $dayBefore){
+    $dayBefore=$lastDayMonth;
+}
+
+
 include './include/connexion.php';
-$sql="SELECT COMPANY, CONTRACT_START, BILLING_GROUP, substr(CONTRACT_START,9,2) as 'firstDay' from customer_bikes where CONTRACT_START<'$nowString' and CONTRACT_END is NULL GROUP BY COMPANY, CONTRACT_START, BILLING_GROUP";
+if($company){
+    $sql="SELECT COMPANY, BILLING_GROUP, max(substr(CONTRACT_START,9,2)) as 'lastDay' from customer_bikes where CONTRACT_START<='$date1MonthBeforeString' and CONTRACT_END is NULL and CONTRACT_TYPE != 'selling' and COMPANY='$company' GROUP BY COMPANY, BILLING_GROUP";
+}else{
+    $sql="SELECT COMPANY, BILLING_GROUP, max(substr(CONTRACT_START,9,2)) as 'lastDay' from customer_bikes where CONTRACT_START<='$date1MonthBeforeString' and CONTRACT_END is NULL and CONTRACT_TYPE != 'selling' GROUP BY COMPANY, BILLING_GROUP";
+}
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
     die;
@@ -39,6 +96,8 @@ $conn->close();
 
 
 ?>
+
+
 <!-- CONTENT -->
 <section class="content">
   <div class="container">
@@ -62,12 +121,13 @@ $conn->close();
                     
                     $data=array();
                     $company=$row['COMPANY'];
-                    $firstDay=$row['firstDay'];
+                    $lastDay=$row['lastDay'];
                     $billingGroup=$row['BILLING_GROUP'];
-                    $contractStart=new DateTime($row['CONTRACT_START']);     
-                    $contractStartString=$contractStart->format('Y-m-d');
-
-                    if($firstDay==$now->format('d') || last_day_month($now->format('m'))==$now->format('d')){
+                    
+                    echo "Company: ".$company."<br/>Last Day of contract :".$lastDay."<br/>Current day : ".$day."<br />";
+                    if($lastDay==$day || last_day_month($now->format('m'))==$day){
+                        
+                        echo "Result: Generation of bill <br/>";
                       
                         $i=0;
                         $data['company'] = $company;
@@ -80,8 +140,8 @@ $conn->close();
                             $yearBefore=$now->format('Y');
                         }
                         $dayBefore=$now->format('d');
-                                            
-                        $lastDayMonth=last_day_month( $monthBefore->format('m') );
+                        
+                        $lastDayMonth=last_day_month( $monthBefore);
                         if($lastDayMonth < $dayBefore){
                             $dayBefore=$lastDayMonth;
                         }
@@ -108,8 +168,8 @@ $conn->close();
                             echo json_encode($response);
                             die;
                         }
-                        $result = mysqli_query($conn, $sql);   
-                        $resultat = mysqli_fetch_assoc($result);
+                        $result3 = mysqli_query($conn, $sql);   
+                        $resultat = mysqli_fetch_assoc($result3);
                         $newID=$resultat['MAX_TOTAL'];
                         $newID=strval($newID+1);
 
@@ -119,7 +179,7 @@ $conn->close();
                         
                         
                         include './include/connexion.php';
-                        $sql="SELECT * from customer_bikes where COMPANY='$company' and CONTRACT_START = '$contractStartString' and BILLING_GROUP='$billingGroup'";
+                        $sql="SELECT * from customer_bikes where COMPANY='$company' and BILLING_GROUP='$billingGroup' and CONTRACT_START <= '$date1MonthBeforeString' and  CONTRACT_END is NULL and CONTRACT_TYPE != 'selling'";
                         if ($conn->query($sql) === FALSE) {
                             echo $conn->error;
                             die;
@@ -135,7 +195,17 @@ $conn->close();
                             $i++;
                         }
                         $data['itemNumber'] = $i;
-                        $test=CallAPI('POST', 'localhost:81/kameo/include/generate_bill.php', $data);
+                        if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+                            $test=CallAPI('POST', 'https://www.kameobikes.com/include/generate_bill.php', $data);
+                        }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
+                            $test=CallAPI('POST', 'https://www.kameobikes.com/test/include/generate_bill.php', $data);
+                        }else{
+                            $test=CallAPI('POST', 'localhost:81/kameo/include/generate_bill.php', $data);
+                        }
+
+                        
+                        
+                        
                         
                         $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
                         $html2pdf->pdf->SetDisplayMode('fullpage');
@@ -147,7 +217,11 @@ $conn->close();
 
                         var_dump($data);
                         var_dump($test);
+                    }else{
+                        echo "Result: Passed <br/>";                        
                     }
+                    
+                    echo "------------------<br />";
                     
                 }
                 
@@ -165,53 +239,54 @@ $conn->close();
       </div>
     </div>
 </section>
+		
+			<!-- FOOTER -->
+		<footer class="background-dark text-grey" id="footer">
+	    <div class="footer-content">
+	        <div class="container">
+	        
+	        <br><br>
+	        
+	            <div class="row text-center">
+	            
+	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
+						<br>BE 0681.879.712 
+						<br>+32 498 72 75 46 </div>
+						<br>
+	                <div class="social-icons center">
+								<ul>
+									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+									
+									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									
+								</ul>
+					</div>
+					
+					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
+					
+					<br>
+					<br>
+					
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+	<!-- END: FOOTER -->
 
-      <div class="loader"><!-- Place at bottom of page --></div>
 
-      <!-- FOOTER -->
-    <footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
+	</div>
+	<!-- END: WRAPPER -->
 
-        <br><br>
+	<!-- Theme Base, Components and Settings -->
+	<script src="js/theme-functions.js"></script>
 
-            <div class="row text-center">
+	<!-- Language management -->
+	<script type="text/javascript" src="js/language.js"></script>
 
-                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-                    <br>BE 0681.879.712 
-                    <br>+32 498 72 75 46 </div>
-                    <br>
-                <div class="social-icons center">
-                            <ul>
-                                <li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
 
-                                <li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-
-                            </ul>
-                </div>
-
-                <div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
-
-                <br>
-                <br>
-
-            </div>
-        </div>
-    </div>
-</footer>
-  <!-- END: FOOTER -->
-
-</div>
-<!-- END: WRAPPER -->
-<!-- Theme Base, Components and Settings -->
-<script src="./js/theme-functions.js"></script>
-<script type="text/javascript">
-displayLanguage();
-</script>
 
 </body>
-<?php
-ob_end_flush();
-?>
 
 </html>
+
+

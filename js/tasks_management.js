@@ -98,8 +98,11 @@ function list_tasks(status, owner2, email) {
 
                 });
 
-                $(".updateTask").click(function() {
-                    update_task(this.name, "update");
+                $(".updateAction").click(function() {
+                    construct_form_for_action_update(this.name);
+                    $('.taskManagementSendButton').removeClass("hidden");
+                    $('.taskManagementSendButton').text("Modifier")
+                    
                 });
                 $(".addTask").click(function() {
                     add_task(this.name);
@@ -118,10 +121,6 @@ function list_tasks(status, owner2, email) {
 
                 displayLanguage();
 
-                var classname = document.getElementsByClassName('updateAction');
-                for (var i = 0; i < classname.length; i++) {
-                    classname[i].addEventListener('click', function() {construct_form_for_action_update(this.name)}, false);
-                }
                 $('#task_listing').DataTable( {
                     paging: true,
                   "columns": [
@@ -164,7 +163,11 @@ function construct_form_for_action_update(id){
                 if(response.response == 'success'){
                     var i=0;
                     while (i < response.membersNumber){
-                        $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
+                        if(response.member[i].staann == 'D'){
+                            $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+" - Supprimé <br>");
+                        }else{
+                            $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
+                        }
                         i++;
                     }
                 }
@@ -222,13 +225,25 @@ function retrieve_task(ID, action = "retrieve"){
                     $('#widget-taskManagement-form select').attr("readonly", false);
 
                 }            
+                console.log(response);
+                
                 $('#widget-taskManagement-form input[name=title]').val(response.action.title);
+                $('#widget-taskManagement-form input[name=date]').val(response.action.date.substr(0,10));                
                 $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
+                $('#widget-taskManagement-form select[name=status]').val(response.action.status);
                 $('#widget-taskManagement-form select[name=company]').val(response.action.company);
                 $('#widget-taskManagement-form textarea[name=description]').val(response.action.description);
                 $('#widget-taskManagement-form select[name=type]').val(response.action.type);
                 $('#widget-offerTask-form select[name=company]').val(response.action.company);
-                $('.taskManagementTitle').text("Informations");
+                if(response.action.date_reminder != null){
+                    $('#widget-taskManagement-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
+                }else{
+                    $('#widget-taskManagement-form input[name=date_reminder]').val("");
+                }
+                
+                
+                $('.taskManagementTitle').text("Informations sur l'action");
+                $('.taskManagementSendButton').addClass("hidden");
             }
         }
     })
