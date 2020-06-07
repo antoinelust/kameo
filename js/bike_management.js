@@ -79,7 +79,8 @@ function updateDisplayBikeManagement(type){
         $('#bikeUserAccessAdmin').removeClass("hidden");
         $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', false);
 
-    }
+    }    
+    
 }
 
 
@@ -92,17 +93,17 @@ window.addEventListener("DOMContentLoaded", function(event) {
     
 
     $('#widget-bikeManagement-form select[name=billingType]').change(function(){
+        console.log($('#widget-bikeManagement-form select[name=billingType]').val());
         if($('#widget-bikeManagement-form select[name=billingType]').val()=="paid"){
             $('.billingPriceDiv').fadeOut("slow");
             $('.billingGroupDiv').fadeOut("slow");
             $('.billingDiv').fadeOut("slow");
         }else{
-            $('.billingPriceDiv').removeClass("hidden");
-            $('.billingGroupDiv').removeClass("hidden");
-            $('.billingDiv').removeClass("hidden");
+            $('.billingPriceDiv').fadeIn("slow");
+            $('.billingGroupDiv').fadeIn("slow");
+            $('.billingDiv').fadeIn("slow");
         }
     });
-    
     
     $('#widget-bikeManagement-form select[name=contractType]').change(function(){
         updateDisplayBikeManagement($('#widget-bikeManagement-form select[name=contractType]').val());

@@ -7571,24 +7571,62 @@ if($connected){
                       <tbody></tbody>
                       <tfoot></tfoot>
                     </table>
-                    <div class="separator"></div><div class="separator"></div>
+                    <div class="separator"></div>
                   </div>
                   <div class="row form-group">
                     <h4 class="text-green">Délais vélos</h4>
                     <div class="col-sm-8">
                       <textarea name="delais" id="delais" class="form-control required" required></textarea>
-                    </div><div class="separator"></div>
+                    </div>
+                    <div class="separator"></div>
                     <h4 class="text-green">Validité de l'offre</h4>
                     <div class="col-sm-4">
                       <input type="date" name="offerValidity" id="offerValidity" class="form-control required" required>
-                    </div><div class="separator"></div>
+                    </div>
+                      <div class="separator"></div>
                   </div>
                   <div class="row form-group" style="margin-bottom:20px;">
                     <h4 class="text-green">Contact société</h4>
                     <div class="col-sm-4 companyContactDiv">
                     </div>
                     <div class="separator"></div>
-                  </div><br/>
+                  </div>
+                  <div class="row form-group" style="margin-bottom:20px;">
+                    <h4 class="text-green">Signature de l'offre</h4>                      
+                    <div class="col-sm-12">  
+                        <div class="col-sm-12">  
+                                <label for="probability"  class="fr">Chance de réussite</label>
+                                <label for="probability"  class="en">Chance de réussite</label>
+                                <label for="probability"  class="nl">chance de réussite</label>                        
+                              <div class="col-sm-3 input-group">
+                                <span class="input-group-addon">%</span>
+                                <input type="number" min="0" max="100" name="probability" class="form-control required">
+                              </div>
+                          </div>
+                      </div>
+                        <div class="col-sm-12">
+                          <div class="col-sm-4">
+                            <label for="dateSignature"  class="fr">Date de signature</label>
+                            <label for="dateSignature"  class="en">Date de signature</label>
+                            <label for="dateSignature"  class="nl">Date de signature</label>
+                            <input type="date" name="dateSignature" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="dateStart"  class="fr">Date de début</label>
+                            <label for="dateStart"  class="en">Date de début</label>
+                            <label for="dateStart"  class="nl">Date de début</label>
+                            <input type="date" name="dateStart" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="dateEnd"  class="fr">Date de fin</label>
+                            <label for="dateEnd"  class="en">Date de fin</label>
+                            <label for="dateEnd"  class="nl">Date de fin</label>
+                            <input type="date" name="dateEnd" class="form-control">
+                          </div>
+                        </div>
+                    </div>
+                    <input type="text" name="email" class="form-control required hidden" value="<?php echo $user; ?>">
+                    <br/>
                   <button type="submit" class="fr button small green button-3d rounded icon-left generatePDF">Générer PDF</button>
                 </form>
               </div>

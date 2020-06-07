@@ -1031,12 +1031,15 @@ $("#templateForm").validate({
           $('#companyContracts').find('.tableBody').append(dest);
           document.getElementById('templateForm').reset();
           $('#template').modal('toggle');
-            
+          get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);   
             
         }else{
           $('.generatePDF').html('Générer PDF');
-          alert('Une erreur est survenue ...');
-          console.log(response);
+          $.notify({
+            message: response.message
+          }, {
+            type: 'danger'
+          });
         }
 
       }

@@ -62,7 +62,7 @@ if(isset($_POST['action']))
         }else if($_POST["action"]=="update"){
 
             include 'connexion.php';
-            $sql="UPDATE offers SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$requestor', TITRE='$title', DESCRIPTION='$description', STATUS='$status', PROBABILITY='$probability', MARGIN='$margin', AMOUNT='$amount', DATE=$date, START=$start, END=$end WHERE ID='$id'";
+            $sql="UPDATE offers SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$requestor', TITRE='$title', TYPE='$type', DESCRIPTION='$description', STATUS='$status', PROBABILITY='$probability', MARGIN='$margin', AMOUNT='$amount', DATE=$date, START=$start, END=$end WHERE ID='$id'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -377,6 +377,7 @@ if(isset($_POST['action']))
                     $response['offer'][$i]['end']=$row['END'];
                     $response['offer'][$i]['margin']=$row['MARGIN'];
                     $response['offer'][$i]['status']=$row['STATUS'];
+                    $response['offer'][$i]['file']=$row['FILE_NAME'];
                     $i++;
                 }
 

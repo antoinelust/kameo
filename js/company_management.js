@@ -310,7 +310,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         dest+="<a class=\"button small green button-3d rounded icon-right offerManagement getTemplate\" name=\""+internalReference+"\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i>Nouveau Template Offre</span></a>";
         if((response.offerNumber + response.bikeContracts)>0){
           var i=0;
-          var temp="<h5 class=\"text-green\">Contrats</h5><table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>";
+          var temp="<h5 class=\"text-green\">Contrats</h5><table class=\"table\"><tbody><thead><tr><th scope=\"col\"><span class=\"fr-inline\">ID</span><span class=\"en-inline\">ID</span><span class=\"nl-inline\">ID</span></th><th>PDF</th><th scope=\"col\"><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th scope=\"col\"><span class=\"fr-inline\">Titre</span><span class=\"en-inline\">Title</span><span class=\"nl-inline\">Title</span></th><th scope=\"col\"><span class=\"fr-inline\">Chance</span><span class=\"en-inline\">Chance</span><span class=\"nl-inline\">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>";
           dest=dest.concat(temp);
           while(i<response.bikeContracts){
             if(response.offer[i].description){
@@ -344,7 +344,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
               var status="N/A";
             }
 
-            var temp="<tr><td>"+response.offer[i].id+"</td><td>Signé</td><td>"+description+"</td><td>"+probability+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td></td></tr>";
+            var temp="<tr><td>"+response.offer[i].id+"</td><td></td><td>Signé</td><td>"+description+"</td><td>"+probability+"</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td></td></tr>";
             dest=dest.concat(temp);
             i++;
           }
@@ -377,9 +377,15 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
             }else{
               var status="N/A";
             }
+              
+            if(response.offer[i].file != '' && response.offer[i].file != null){
+                var offerLink = 'offres/' + response.offer[i].file;
 
-
-            var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+                var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td><a href="+offerLink+" target=\"_blank\"><i class=\"fa fa-file-pdf-o\" aria-hidden=\"true\"></i></a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+            }else{
+                var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
+            }
+              
             dest=dest.concat(temp);
             i++;
           }
@@ -519,62 +525,6 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
           $('.offerManagementSendButton').text("Ajouter")
 
         });
-
-        //affichage du tableau des PDF
-        if (response.companyOffersNumber > 0) {
-          var dest=`
-          <h5 class=\"text-green\">Offres PDF</h5>
-          <table class="table table-condensed">
-          <tbody></tbody>
-          <thead>
-          <tr>
-          <th>
-          ID
-          </th>
-          <th>
-          Type d'offre
-          </th>
-          <th>
-          Fichier
-          </th>
-          <th>
-          Nombre de vélos
-          </th>
-          <th>
-          Nombre de boxes
-          </th>
-          <th></th>
-          <th></th>
-          </tr>
-          </thead>
-          <tbody class="tableBody">
-          `;
-          for (var i = 0; i < response.companyOffers.length; i++) {
-            offerId = response.companyOffers[i].ID;
-            offerLink = 'offres/' + response.companyOffers[i].FILE_NAME + '.pdf';
-            offerBikeNumber = response.companyOffers[i].BIKE_NUMBER;
-            offerBoxNumber = response.companyOffers[i].BOX_NUMBER;
-            offerType = response.companyOffers[i].TYPE;
-
-            if(offerType =='buy'){
-              offerType = 'achat';
-            } else if (offerType == 'both'){
-              offerType = 'achat/leasing';
-            }
-            dest+=`
-            <tr>
-            <td>`+offerId+`</td>
-            <td>`+offerType+`</td>
-            <td><a href="`+offerLink+`" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
-            <td>`+offerBikeNumber+`</td>
-            <td>`+offerBoxNumber+`</td>
-            <td><a href="#" class="text-green deletePdfOffer" style="text-decoration:underline !important;">supprimer</a></td>
-            </tr>
-            `;
-          }
-          dest += "</tbody></table>"
-          $('#companyContracts').append(dest);
-        }
 
 
 

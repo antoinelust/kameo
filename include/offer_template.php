@@ -1,9 +1,13 @@
 <?php
+    session_cache_limiter('nocache');
+    header('Expires: ' . gmdate('r', 0));
+    header('Content-type: application/json');
 
   include 'globalfunctions.php';
 
   ini_set('internal_encoding', 'utf-8');
   //récupération des données du $_POST (pré boucle)
+  $email = isset($_POST["email"]) ? $_POST["email"] : NULL;
   $companyId = isset($_POST["companyIdTemplate"]) ? $_POST["companyIdTemplate"] : NULL;
   $buyOrLeasing = isset($_POST["buyOrLeasing"]) ? $_POST["buyOrLeasing"] : NULL;
   $leasingDuration = isset($_POST["leasingDuration"]) ? $_POST["leasingDuration"] : NULL;
@@ -20,7 +24,11 @@
   $boxFinalInstallationlPrice = isset($_POST["boxFinalInstallationPrice"]) ? $_POST["boxFinalInstallationPrice"] : NULL;
   $boxFinalLocationPrice = isset($_POST["boxFinalLocationPrice"]) ? $_POST["boxFinalLocationPrice"] : NULL;
   $boxFinalPrice=[$boxFinalInstallationlPrice, $boxFinalLocationPrice];
-
+  $probability = isset($_POST["probability"]) ? $_POST["probability"] : NULL;
+  $dateSignature = isset($_POST["dateSignature"]) ? $_POST["dateSignature"] : NULL;
+  $dateStart = isset($_POST["dateStart"]) ? $_POST["dateStart"] : NULL;
+  $dateEnd = isset($_POST["dateEnd"]) ? $_POST["dateEnd"] : NULL;
+  $totalPerMonth = 0;
 
 
   $delais = explode("\n",$delais);
@@ -53,11 +61,14 @@
         
       $boxes[$i]['FINAL_INSTALLATION_PRICE'] = $boxFinalPrice[0][$i];
       $boxes[$i]['FINAL_LOCATION_PRICE'] = $boxFinalPrice[1][$i];
+      $totalPerMonth += $boxFinalPrice[1][$i];
             
     }
 
   for ($i=0; $i < $bikesNumber ; $i++) {
-    $bikes[$i]['FINAL_LEASING_PRICE'] = $bikeFinalPrice[$i];      
+      $bikes[$i]['FINAL_LEASING_PRICE'] = $bikeFinalPrice[$i];      
+      $totalPerMonth += $bikeFinalPrice[$i]; 
+      
   }
 
   //transforme le tableau pour n avoir qu'une itération de chaque
@@ -108,7 +119,9 @@
     //sort le fichier PDF sur le serveur
     $html2pdf->Output(__DIR__.'/../offres/'.$pdfTitle.'.pdf', 'F');
     //ajoute le PDF a la table
-    $response['id'] = add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing);
+      
+      
+    $response['id'] = add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company['INTERNAL_REFERENCE'], $probability);
     $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
     rename(__DIR__.'/../offres/'.$pdfTitle.'.pdf', __DIR__.'/../offres/'.$newPdfFile.'.pdf');
 
@@ -227,16 +240,23 @@
     return $temp;
   }
 
-  function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing){
+  function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company, $probability){
     include 'connexion.php';
-    $sql = "INSERT INTO companies_offers (FILE_NAME,COMPANY_ID, BIKE_NUMBER,BOX_NUMBER, TYPE) VALUES ('$file','$id','$bikesNumber','$boxesNumber','$buyOrLeasing')";
-    $res = $conn->query($sql);
+    $description="Facture générée depuis mykameo pour ".$bikesNumber." vélos, ".$boxesNumber." bornes et ".$accessoriesNumber." accessoires.";
+      
+    $sql="INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, COMPANY_ID, FILE_NAME, STAANN) VALUES (CURRENT_TIMESTAMP, '$email', 'Facture générée via le template', '$description', 'ongoing', '$probability', '$buyOrLeasing', '$totalPerMonth', '40', '$dateSignature', '$dateStart', '$dateEnd', '$company', '$id', '$file',  '')";
+      
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
     $id = $conn->insert_id;
     $file = str_replace('temp', $id, $file);
     $conn->close();
 
     include 'connexion.php';
-    $sql = "UPDATE `companies_offers` SET `FILE_NAME` = '$file' WHERE `companies_offers`.`ID` = '$id'";
+    $sql = "UPDATE `offers` SET `FILE_NAME` = '$file' WHERE `offers`.`ID` = '$id'";
     $res = $conn->query($sql);
     $conn->close();
     return $id;
