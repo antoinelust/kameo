@@ -582,7 +582,7 @@ include 'include/header5.php';
 					<h4 class="en">Helmets</h4>
 					<h4 class="nl">Helmen</h4>
 					<br>
-					<p class="fr">Conçu pour pour vous protéger lors de vos déplacements et balades en ville dans les rues, pistes cyclables et parcs urbains. Porter un casque n'est plus une contrainte ! KAMEO Bikes a choisi des casques qui en plus d'être très protecteurs sont élégants.</p>
+					<p class="fr">Conçu pour vous protéger lors de vos déplacements et balades en ville dans les rues, pistes cyclables et parcs urbains. Porter un casque n'est plus une contrainte ! KAMEO Bikes a choisi des casques qui en plus d'être très protecteurs sont élégants.</p>
 					<p class="en">Designed to protect you during your trips in town and country, wearing a helmet is not a constraint anymore! KAMEO Bikes selected protective but also fancy helmets.</p>
 					<p class="nl">Ontworpen om u te beschermen tijdens uw tochten in stad en land, het dragen van een helm is geen beperking meer! KAMEO Bikes heeft gekozen voor beschermende maar ook mooie helmen..</p>
 					
