@@ -99,10 +99,17 @@ try{
                     $response['bike'][$i]['url']=$row['LINK'];
                     
                     
-                    $i++;
-                    
-                    
 
+                    $marginBike=0.7;
+                    $marginOther=0.3;
+                    $leasingDuration=36;
+                    $retailPrice = round($price);
+                    $priceRetailer=$retailPrice*(1-0.27);
+                    $otherCost=3*84+4*100;
+                    $leasingPrice=($priceRetailer*(1+$marginBike)+$otherCost*(1+$marginOther))/$leasingDuration;
+                    $response['bike'][$i]['leasingPrice']=round($leasingPrice);
+                    
+                    $i++;
                 }
                 echo json_encode($response);
                 die;

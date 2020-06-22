@@ -147,7 +147,6 @@ body { font-family: sans-serif; }
                 });
                 
                 
-                console.log("appel");
                 //document.getElementById('bikeCatalog').innerHTML="";
                 var utilisation=document.getElementById('widget-bike-utilisation').value;
                 var frameType=document.getElementById('widget-bike-frame-type').value;
@@ -173,117 +172,85 @@ body { font-family: sans-serif; }
                               itemSelector: '.grid-item',
                             });
                             
-                            console.response;
-                            bikes=response;
-                            
-                            var j=0;
-                            var dest="";
-                            if(response.bikeNumber=="0"){
-                                dest="<p>Aucun vélo ne correspond à votre sélection</p>";
-                            }
-                            
-                        }
-                        //document.getElementById('bikeCatalog').innerHTML = dest;
-                        
-                            
-                        }
-                    }).done(function(response){
-                        var i=0;
-                        $.ajax({
-                            url: 'include/get_prices.php',
-                            type: 'post',
-                            data: { "retailPrice": response.bike[i].price},
-                            success: function(response2){
-
-                                var i=0;
-                                while (i<bikes.bikeNumber){
-
-                                    if(response.bike[i].display=='Y'){
-                                        if(response.bike[i].frameType.toLowerCase()=="h"){
-                                            var frameType = "Homme";
-                                        } else if(response.bike[i].frameType.toLowerCase()=="m"){
-                                            var frameType = "Mixte";
-                                        } else if(response.bike[i].frameType.toLowerCase()=="f"){
-                                            var frameType = "Femme";
-                                        } else{
-                                            var frameType = "undefined";
-                                        }
-
-                                        if(parseInt(response.bike[i].price)<="2000"){
-                                            var price="2000";
-                                        }else if(parseInt(response.bike[i].price)<="3000"){
-                                            var price="between-2000-3000";
-                                        }else if(parseInt(response.bike[i].price)<="4000"){
-                                            var price="between-3000-4000";
-                                        }else if(parseInt(response.bike[i].price)<="5000"){
-                                            var price="between-4000-5000";
-                                        }else{
-                                            var price="5000";
-                                        }
-
-
-                                        var temp="\
-                                        <div class=\"grid-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
-                                            <div class=\"portfolio-image effect social-links\">\
-                                                <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"lazy\">\
-                                                <div class=\"image-box-content\">\
-                                                    <p>\
-                                                        <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
-                                                        <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
-                                                    </p>\
-                                                </div>\
-                                            </div>\
-                                            <div class=\"portfolio-description\">\
-                                                <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
-                                                <p>"+response.bike[i].model+" "+frameType+"\
-                                                <br>"+response.bike[i].utilisation+"\
-                                                <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
-                                                <br><b class=\"text-green\">Location :"+response2.leasingPrice+" €/mois</b></p>\
-                                            </div>\
-                                        </div>";
-
-                                      var $item = $(temp);
-                                      // add width and height class
-                                      $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
-                                      $grid.append( $item )
-                                        // add and lay out newly appended elements
-                                        .isotope( 'appended', $item );                                            
+                            var i=0;
+                            while (i<response.bikeNumber){
+                                if(response.bike[i].display=='Y'){
+                                    if(response.bike[i].frameType.toLowerCase()=="h"){
+                                        var frameType = "Homme";
+                                    } else if(response.bike[i].frameType.toLowerCase()=="m"){
+                                        var frameType = "Mixte";
+                                    } else if(response.bike[i].frameType.toLowerCase()=="f"){
+                                        var frameType = "Femme";
+                                    } else{
+                                        var frameType = "undefined";
                                     }
-                                    i++;
-                                }
-                                
-                                
-                                var filters = {};
 
-                                $('.portfolio').on( 'change', function(event) {
-                                    var $cible = $( event.currentTarget );
-                                    var filterGroup = $cible.attr('data-filter-group');
-                                    filters[ filterGroup ] = $( this ).children("option:selected").attr('data-filter');
-                                    var filterValue = concatValues( filters );
-                                    $grid.isotope({ filter: filterValue });
-                                });
+                                    if(parseInt(response.bike[i].price)<="2000"){
+                                        var price="2000";
+                                    }else if(parseInt(response.bike[i].price)<="3000"){
+                                        var price="between-2000-3000";
+                                    }else if(parseInt(response.bike[i].price)<="4000"){
+                                        var price="between-3000-4000";
+                                    }else if(parseInt(response.bike[i].price)<="5000"){
+                                        var price="between-4000-5000";
+                                    }else{
+                                        var price="5000";
+                                    }
 
-                                function concatValues( obj ) {
-                                  var value = '';
-                                  for ( var prop in obj ) {
-                                    value += obj[ prop ];
-                                  }
-                                  return value;
+                                    var temp="\
+                                    <div class=\"grid-item "+response.bike[i].brand.toLowerCase()+" "+response.bike[i].frameType.toLowerCase()+" "+response.bike[i].utilisation.toLowerCase().replace(/ /g, '')+" "+response.bike[i].electric.toLowerCase().replace(/ /g, '')+" "+price+"\" \">\
+                                        <div class=\"portfolio-image effect social-links\">\
+                                            <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"lazy\">\
+                                            <div class=\"image-box-content\">\
+                                                <p>\
+                                                    <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
+                                                    <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><i class=\"fa fa-link\"></i></a>\
+                                                </p>\
+                                            </div>\
+                                        </div>\
+                                        <div class=\"portfolio-description\">\
+                                            <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
+                                            <p>"+response.bike[i].model+" "+frameType+"\
+                                            <br>"+response.bike[i].utilisation+"\
+                                            <br><b class=\"text-green\">Achat :"+response.bike[i].price+"  €</b>\
+                                            <br><b class=\"text-green\">Location :"+response.bike[i].leasingPrice+" €/mois</b></p>\
+                                        </div>\
+                                    </div>";
+
+                                  var $item = $(temp);
+                                  // add width and height class
+                                  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
+                                  $grid.append( $item )
+                                    // add and lay out newly appended elements
+                                    .isotope( 'appended', $item );                                            
                                 }
-                                
-                                $('.grid').isotope("layout");                                
+                                i++;
                             }
-                        })
-                        
-                    });
+                            var filters = {};
+
+                            $('.portfolio').on( 'change', function(event) {
+                                var $cible = $( event.currentTarget );
+                                var filterGroup = $cible.attr('data-filter-group');
+                                filters[ filterGroup ] = $( this ).children("option:selected").attr('data-filter');
+                                var filterValue = concatValues( filters );
+                                $grid.isotope({ filter: filterValue });
+                            });
+
+                            function concatValues( obj ) {
+                              var value = '';
+                              for ( var prop in obj ) {
+                                value += obj[ prop ];
+                              }
+                              return value;
+                            }
+
+                            $('.grid').isotope("layout");                                
 
 
+                    }                        
 
-
-
-
-                
-                                
+                    }
+                });                                
             }
             loadPortfolio();
             
