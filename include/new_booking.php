@@ -8,7 +8,7 @@ session_start();
 include 'globalfunctions.php';
 
 $user = $_POST['widget-new-booking-mail-customer'];
-$frameNumber=$_POST['widget-new-booking-frame-number'];
+$bikeID=$_POST['bikeID'];
 $buildingStart=$_POST['widget-new-booking-building-start'];
 $buildingEnd=$_POST['widget-new-booking-building-end'];
 $lockingcode=$_POST['widget-new-booking-locking-code'];
@@ -28,10 +28,10 @@ $dateEnd_2=$temp;
 $dateEnd_2String=$dateEnd_2->format('Y-m-d H:i');
 
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
+if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
-    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.FRAME_NUMBER = '$frameNumber' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.FRAME_NUMBER=bb.FRAME_NUMBER and ((bb.DATE_END_2 > '$dateStart_2String' and bb.DATE_END_2 < '$dateEnd_2String') OR (bb.DATE_START_2>'$dateStart_2String' and bb.DATE_START_2<'$dateEnd_2String')))";
+    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.BIKE_ID = '$bikeID' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.ID=bb.BIKE_ID and ((bb.DATE_END_2 > '$dateStart_2String' and bb.DATE_END_2 < '$dateEnd_2String') OR (bb.DATE_START_2>'$dateStart_2String' and bb.DATE_START_2<'$dateEnd_2String')))";
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -50,7 +50,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 	include 'connexion.php';
 
     $timestamp= time();
-    $sql= "INSERT INTO reservations (USR_MAJ, STATUS, FRAME_NUMBER, DATE_START, DATE_START_2, BUILDING_START, DATE_END, DATE_END_2, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$frameNumber', '$dateStart', '$dateStart_2String', '$buildingStart', '$dateEnd', '$dateEnd_2String', '$buildingEnd', '$user', '')";    
+    $sql= "INSERT INTO reservations (USR_MAJ, STATUS, BIKE_ID, DATE_START, DATE_START_2, BUILDING_START, DATE_END, DATE_END_2, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$bikeID', '$dateStart', '$dateStart_2String', '$buildingStart', '$dateEnd', '$dateEnd_2String', '$buildingEnd', '$user', '')";    
     
 
    	if ($conn->query($sql) === FALSE) {
@@ -61,64 +61,46 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 		$insertedID = $conn->insert_id;
     $conn->close();
 
-	/*	// ====Ajout de la notification de la réservation====
+    // ====Ajout de la notification de feedback
+    include 'connexion.php';
+    $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$user'");
+    $ownerID = mysqli_fetch_assoc($ownerID)['ID'];
+    $dateFinReservation = date("Y-m-d H:i:s", $dateEnd);
+    $feedbackText = '';
 
-		//récuperation de l'id de l'utilisateur
-		include 'connexion.php';
-		$ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$user'");
-		$ownerID = mysqli_fetch_assoc($ownerID)['ID'];
-		$conn->close();
-
-		include 'connexion.php';
-		$dateDebutReservation = date("Y-m-d H:i:s", $dateStart);
-		$sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateDebutReservation','Réservation vélo imminente', 'N', 'reservation',$ownerID,$insertedID)";
-			if ($conn->query($sql) === FALSE) {
-			$response = array ('response'=>'error', 'message'=> $conn->error);
-			echo json_encode($response);
-			die;
-		}
-		$conn->close();*/
-
-		// ====Ajout de la notification de feedback
-		include 'connexion.php';
-		$ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$user'");
-		$ownerID = mysqli_fetch_assoc($ownerID)['ID'];
-		$dateFinReservation = date("Y-m-d H:i:s", $dateEnd);
-		$feedbackText = '';
-
-		$sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateFinReservation','$feedbackText', 'N', 'feedback',$ownerID,$insertedID)";
-			if ($conn->query($sql) === FALSE) {
-			$response = array ('response'=>'error', 'message'=> $conn->error);
-			echo json_encode($response);
-			die;
-		}
-		$notifID = $conn->insert_id;
-		$feedbackText = 'Votre réservation n°'.$insertedID.' est terminée<br/><a data-toggle="modal" href="#" onclick=initiatizeFeedback('.$insertedID.','.$notifID.') class="text-green">Cliquez ici</a> pour donner votre feedback';
-		$sql= "UPDATE notifications SET TEXT = '$feedbackText' WHERE ID = $notifID";
-			if ($conn->query($sql) === FALSE) {
-			$response = array ('response'=>'error', 'message'=> $conn->error);
-			echo json_encode($response);
-			die;
-		}
-
-
-
-        $sql="INSERT INTO feedbacks (HEU_MAJ, USR_MAJ, BIKE_NUMBER, ID_RESERVATION, NOTE, COMMENT, ENTRETIEN, STATUS) VALUES (CURRENT_TIMESTAMP, '$user', '$frameNumber', '$insertedID', NULL, NULL, NULL, 'SENT')";
-
-
+    $sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateFinReservation','$feedbackText', 'N', 'feedback',$ownerID,$insertedID)";
         if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $conn->close();
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $notifID = $conn->insert_id;
+    $feedbackText = 'Votre réservation n°'.$insertedID.' est terminée<br/><a data-toggle="modal" href="#" onclick=initiatizeFeedback('.$insertedID.','.$notifID.') class="text-green">Cliquez ici</a> pour donner votre feedback';
+    $sql= "UPDATE notifications SET TEXT = '$feedbackText' WHERE ID = $notifID";
+        if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+
+
+
+    $sql="INSERT INTO feedbacks (HEU_MAJ, USR_MAJ, BIKE_ID, ID_RESERVATION, NOTE, COMMENT, ENTRETIEN, STATUS) VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$insertedID', NULL, NULL, NULL, 'SENT')";
+
+
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $conn->close();
 
 
 
     if($lockingcode!=""){
         include 'connexion.php';
 
-        $sql= "select ID from reservations where FRAME_NUMBER = '$frameNumber' and EMAIL = '$user' and DATE_START_2 = '$dateStart_2String' and DATE_END_2 = '$dateEnd_2String' and STAANN != 'D' ";
+        $sql= "select ID from reservations where BIKE_ID = '$bikeID' and EMAIL = '$user' and DATE_START_2 = '$dateStart_2String' and DATE_END_2 = '$dateEnd_2String' and STAANN != 'D' ";
 
 
 
@@ -167,7 +149,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $frameNumber != NULL & $buildingStar
 
 
     successMessage("SM0006");
-} else{
+}else{
 	errorMessage("ES0012");
 }
 ?>

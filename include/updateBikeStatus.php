@@ -9,19 +9,18 @@ include 'globalfunctions.php';
 
 
 $user=$_POST['user'];
-$frameNumber=$_POST['widget-updateBikeStatus-form-frameNumber'];
-
-
-$model=$_POST['model'];
+$bikeID=$_POST['bikeID'];
+$model=$_POST['bikeModel'];
 $status=$_POST['bikeStatus'];
 
 $response=array();
 
-if($frameNumber != NULL && $status != NULL)
+
+if($bikeID != NULL && $status != NULL)
 {
 
     include 'connexion.php';
-    $sql="select * from customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
+    $sql="select * from customer_bikes WHERE ID = '$bikeID'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -35,7 +34,7 @@ if($frameNumber != NULL && $status != NULL)
 
     if($status!=$resultat['STATUS']){
         include 'connexion.php';
-        $sql="update customer_bikes set STATUS = '$status', USR_MAJ = '$user', HEU_MAJ = CURRENT_TIMESTAMP WHERE FRAME_NUMBER = '$frameNumber'";
+        $sql="update customer_bikes set STATUS = '$status', USR_MAJ = '$user', HEU_MAJ = CURRENT_TIMESTAMP WHERE ID = '$bikeID'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -46,7 +45,7 @@ if($frameNumber != NULL && $status != NULL)
 
     if($model!=$resultat['MODEL']){
         include 'connexion.php';
-        $sql="update customer_bikes set MODEL = '$model', USR_MAJ = '$user', HEU_MAJ = CURRENT_TIMESTAMP WHERE FRAME_NUMBER = '$frameNumber'";
+        $sql="update customer_bikes set MODEL = '$model', USR_MAJ = '$user', HEU_MAJ = CURRENT_TIMESTAMP WHERE ID = '$bikeID'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -61,7 +60,7 @@ if($frameNumber != NULL && $status != NULL)
         if($name=="buildingAccess"){   
             foreach($_POST['buildingAccess'] as $valueInArray){
                 include 'connexion.php';
-                $sql= "SELECT * FROM bike_building_access WHERE BIKE_NUMBER='$frameNumber' and BUILDING_CODE='$valueInArray'";
+                $sql= "SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$valueInArray'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -76,7 +75,7 @@ if($frameNumber != NULL && $status != NULL)
 
                 if($length==0){
                     include 'connexion.php';
-                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, BIKE_NUMBER, BUILDING_CODE, STAANN) VALUES ('$user','$frameNumber', '$valueInArray', '')";
+                    $sql= "INSERT INTO  bike_building_access (USR_MAJ, BIKE_ID, BUILDING_CODE, STAANN) VALUES ('$user','$bikeID', '$valueInArray', '')";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -86,7 +85,7 @@ if($frameNumber != NULL && $status != NULL)
                 }           
 
                 include 'connexion.php';
-                $sql= "SELECT * FROM bike_building_access WHERE BIKE_NUMBER='$frameNumber' and BUILDING_CODE='$valueInArray' and STAANN='D'";
+                $sql= "SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$valueInArray' and STAANN='D'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -98,7 +97,7 @@ if($frameNumber != NULL && $status != NULL)
 
                 if($length==1){
                     include 'connexion.php';
-                    $sql= "UPDATE  bike_building_access set STAANN='' WHERE BIKE_NUMBER='$frameNumber' and BUILDING_CODE='$valueInArray'";
+                    $sql= "UPDATE  bike_building_access set STAANN='' WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$valueInArray'";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -114,7 +113,7 @@ if($frameNumber != NULL && $status != NULL)
 
     if(!isset(($_POST['buildingAccess']))){
         include 'connexion.php';
-        $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_NUMBER = '$frameNumber'";
+        $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_ID = '$bikeID'";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -146,7 +145,7 @@ if($frameNumber != NULL && $status != NULL)
             if($presence==false){
                 $building=$row['BUILDING_REFERENCE'];
                 include 'connexion.php';
-                $sql="select * from bike_building_access where BIKE_NUMBER = '$frameNumber' and BUILDING_CODE='$building'";
+                $sql="select * from bike_building_access where BIKE_ID = '$bikeID' and BUILDING_CODE='$building'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -157,7 +156,7 @@ if($frameNumber != NULL && $status != NULL)
                 $conn->close();  
                 if($length==1){
                     include 'connexion.php';
-                    $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_NUMBER = '$frameNumber' and BUILDING_CODE='$building'";
+                    $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_ID = '$bikeID' and BUILDING_CODE='$building'";
 
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);

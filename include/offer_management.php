@@ -234,6 +234,61 @@ if(isset($_POST['action']))
                 $response['start']=$resultat['START'];
                 $response['end']=$resultat['END'];
                 $response['status']=$resultat['STATUS'];
+                $response['file']=$resultat['FILE_NAME'];
+                
+                include 'connexion.php';
+                $sql="SELECT * FROM offers_details WHERE OFFER_ID='$id' AND STAANN != 'D'";
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+
+                $result = mysqli_query($conn, $sql);
+                $length = $result->num_rows;
+                $conn->close();
+                $response['itemsNumber']=$length;
+                $i=0;
+                while($row = mysqli_fetch_array($result)){
+                    $response['item'][$i]['type']=$row['ITEM_TYPE'];
+                    $response['item'][$i]['ID']=$row['ITEM_ID'];
+                    $itemID=$row['ITEM_ID'];;
+                    $response['item'][$i]['locationPrice']=$row['ITEM_LOCATION_PRICE'];
+                    $response['item'][$i]['installationPrice']=$row['ITEM_INSTALLATION_PRICE'];
+                    
+                    
+                    if($response['item'][$i]['type'] == 'box'){
+                        include 'connexion.php';
+                        $sql2="SELECT * FROM boxes_catalog WHERE ID='$itemID'";
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        }
+                        $result2 = mysqli_query($conn, $sql2);
+                        $resultat2=mysqli_fetch_assoc($result2);
+                        $conn->close();
+                        $response['item'][$i]['model']=$resultat2['MODEL'];
+                    }else{
+                        include 'connexion.php';
+                        $sql2="SELECT * FROM bike_catalog WHERE ID='$itemID'";
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        }
+                        $result2 = mysqli_query($conn, $sql2);
+                        $resultat2=mysqli_fetch_assoc($result2);
+                        $conn->close();
+                        $response['item'][$i]['brand']=$resultat2['BRAND'];
+                        $response['item'][$i]['model']=$resultat2['MODEL'];
+                    }
+                    
+                    $i++;
+                }
+                
+                
+                
                 echo json_encode($response);
                 die;
 

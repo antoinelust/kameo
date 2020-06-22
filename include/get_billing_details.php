@@ -48,7 +48,7 @@ if($ID != NULL)
     $response['bill']['file']=$row['FILE_NAME'];
     
     include 'connexion.php';
-	$sql="SELECT *  FROM factures_details WHERE FACTURE_ID = '$ID'";
+	$sql="SELECT aa.*, bb.FRAME_NUMBER  FROM factures_details aa, customer_bikes bb WHERE FACTURE_ID = '$ID' and aa.BIKE_ID=bb.ID";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);

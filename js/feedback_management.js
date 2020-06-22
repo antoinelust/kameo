@@ -12,6 +12,8 @@ function initiatizeFeedback(id, notificationId = -1){
                 console.log(response.message);
             }
             if(response.response == 'success'){
+                
+                console.log(response);
               
                 $('#feedbackManagement input[name=notificationID]').val(notificationId);
                 $('.feedbackManagementTitle').html("Ajouter un feedback");
@@ -20,7 +22,7 @@ function initiatizeFeedback(id, notificationId = -1){
                 $('#feedbackManagement input[name=endDate]').val(response.end);
                 $('#feedbackManagement input[name=ID]').val(response.ID);
                 $('#feedbackManagement input[name=utilisateur]').val(response.email);
-                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeNumber+"_mini.jpg";
+                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeID+"_mini.jpg";
                 $('#feedbackManagement select[name=note]').attr("readonly", false);
                 $('#feedbackManagement textarea[name=comment]').attr("readonly", false);
                 if(response.status=='DONE'){
@@ -131,7 +133,7 @@ function retrieve_feedback(ID) {
                 console.log(response.message);
             }
             if(response.response == 'success'){
-                
+                                
                 $('.feedbackManagementTitle').html("Consulter un feedback");
                 $('#feedbackManagement input[name=bike]').val(response.bike);
                 $('#feedbackManagement input[name=startDate]').val(response.start.shortDateHours());
@@ -159,7 +161,7 @@ function retrieve_feedback(ID) {
                     $('.textAreaComment').removeClass("hidden");
 
                 }
-                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bike+"_mini.jpg";
+                document.getElementsByClassName("feedbackBikeImage")[0].src="images_bikes/"+response.bikeID+"_mini.jpg";
 
                 if(response.entretien==null){
                     $('.spanEntretien').addClass("hidden");

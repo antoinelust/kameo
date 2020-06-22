@@ -126,7 +126,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
 
 
-    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.FRAME_NUMBER=aa.BIKE_NUMBER and aa.BUILDING_CODE='$deposit_building'";
+    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -153,11 +153,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     }
 
     include 'connexion.php';
-    $sql= "select aa.FRAME_NUMBER from reservations aa, customer_bikes cc where aa.FRAME_NUMBER=cc.FRAME_NUMBER and cc.STATUS!='KO' and aa.STAANN!='D' and aa.FRAME_NUMBER in (select BIKE_NUMBER from customer_bike_access where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.FRAME_NUMBER=bb.FRAME_NUMBER and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by FRAME_NUMBER";    
-    
-    
-    
-    
+    $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";    
     
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -177,9 +173,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     $length=0;
     while($row = mysqli_fetch_array($result))
     {
-        $frameNumber=$row['FRAME_NUMBER'];
+        $bikeID=$row['ID'];
 
-        $sql2="SELECT max(DATE_END_2), BUILDING_END FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_END_2 < '$dateEndString' and STAANN!='D' group by BUILDING_END";
+        $sql2="SELECT max(DATE_END_2), BUILDING_END FROM reservations WHERE BIKE_ID='$bikeID' and DATE_END_2 < '$dateEndString' and STAANN!='D' group by BUILDING_END";
 
 
         if ($conn->query($sql2) === FALSE) {
@@ -190,10 +186,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
         $result2 = mysqli_query($conn, $sql2);
         $resultat2 = mysqli_fetch_assoc($result2);
+        
+        
 
         if($resultat2['BUILDING_END'] == $intake_building){
 
-            $sql3="SELECT min(DATE_START_2), BUILDING_START FROM reservations WHERE FRAME_NUMBER='$frameNumber' and DATE_START_2 > '$dateEndString' and STAANN!='D' group by BUILDING_START";
+            $sql3="SELECT min(DATE_START_2), BUILDING_START FROM reservations WHERE BIKE_ID='$bikeID' and DATE_START_2 > '$dateEndString' and STAANN!='D' group by BUILDING_START";
 
             if ($conn->query($sql3) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -204,7 +202,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
             $resultat3 = mysqli_fetch_assoc($result3);
 
             if($resultat3['BUILDING_START'] == $deposit_building or $resultat3['BUILDING_START'] == NULL){
-                $sql4="SELECT * FROM bike_building_access WHERE BIKE_NUMBER='$frameNumber' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
+                $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";                
                 if ($conn->query($sql4) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -219,7 +217,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                 if($access==1){
                     $length++;
 
-                    $sql5="SELECT * FROM customer_bikes WHERE FRAME_NUMBER='$frameNumber'";
+                    $sql5="SELECT * FROM customer_bikes WHERE ID='$bikeID'";
                     if ($conn->query($sql5) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -227,7 +225,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                     }
                     $result5 = mysqli_query($conn, $sql5);
                     $resultat5 = mysqli_fetch_assoc($result5);
-                    $response['bike'][$length]['frameNumber'] = $frameNumber;
+                    $response['bike'][$length]['bikeID'] = $bikeID;
+                    $response['bike'][$length]['frameNumber'] = $resultat5['FRAME_NUMBER'];
                     $response['bike'][$length]['type']= $resultat5['TYPE'];
                     $response['bike'][$length]['size']= $resultat5['SIZE'];
                     $type=$resultat5['TYPE'];
@@ -252,10 +251,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
             }
         }
     }
+    
+    
     $response['length']=$length;
-
-
-
     if($length==0)
     {
         errorMessage("ES0015");

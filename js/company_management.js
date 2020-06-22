@@ -207,9 +207,15 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
                 }else{
                     var contractEnd="<span class=\"text-red\">ERROR</span>";
                 }
+                
+                if(response.bike[i].frameNumber == null){
+                    var frameNumber = "N/A "+response.bike[i].id;
+                }else{
+                    var frameNumber = response.bike[i].frameNumber;
+                }
 
 
-                var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].facturation+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+response.bike[i].leasingPrice+"</td><td>";
+                var temp="<tr><td scope=\"row\">"+frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].facturation+"</td><td>"+contractStart+"</td><td>"+contractEnd+"</td><td>"+response.bike[i].leasingPrice+"</td><td>";
                 dest=dest.concat(temp);
 
                 var j=0;
@@ -223,7 +229,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
                     dest=dest.concat(temp);
                 }
                 dest=dest.concat("<td data-sort=\""+(new Date(response.bike[i].heuMaj)).getTime()+"\">"+response.bike[i].heuMaj.shortDate()+"</td>");
-                dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
+                dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
               }
             i++;
           }
@@ -247,11 +253,28 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
           while(i<response.bikeNumber){
               if(response.bike[i].contractType == "order")
               {                      
+                  
+                  
+                if(response.bike[i].frameNumber == null){
+                    var frameNumber = "N/A - "+response.bike[i].id;
+                }else{
+                    var frameNumber = response.bike[i].frameNumber;
+                }
+                if(response.bike[i].deliveryDate == null){
+                    var deliveryDate = "N/A ";
+                }else{
+                    var deliveryDate = response.bike[i].deliveryDate.shortDate();
+                }
+                if(response.bike[i].bikeBuyingDate == null){
+                    var bikeBuyingDate = "N/A ";
+                }else{
+                    var bikeBuyingDate = response.bike[i].bikeBuyingDate.shortDate();
+                }                  
 
-                var temp="<tr><td scope=\"row\">"+response.bike[i].frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].bikeBuyingDate.shortDate()+"</td><td>"+response.bike[i].deliveryDate.shortDate()+"</td><td>"+response.bike[i].orderNumber+"</td>";
+                var temp="<tr><td scope=\"row\">"+frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+bikeBuyingDate+"</td><td>"+deliveryDate+"</td><td>"+response.bike[i].orderNumber+"</td>";
                 dest=dest.concat(temp);
 
-                dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].frameNumber+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
+                dest=dest.concat("<td><ins><a class=\"text-green text-green updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+response.bike[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>");
               }
               i++;
           }
@@ -380,7 +403,6 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
               
             if(response.offer[i].file != '' && response.offer[i].file != null){
                 var offerLink = 'offres/' + response.offer[i].file;
-
                 var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td><a href="+offerLink+" target=\"_blank\"><i class=\"fa fa-file-pdf-o\" aria-hidden=\"true\"></i></a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
             }else{
                 var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";

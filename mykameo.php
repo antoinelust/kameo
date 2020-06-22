@@ -978,9 +978,10 @@ if($connected){
     $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val("");
     $('#widget-updateCompanyConditions-form input[name=endDepositBooking]').val("");
 
-    var temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\"\">Lundi<br><input type=\"checkbox\" name=\"depositBookingTuesday\" value=\"\">Mardi<br><input type=\"checkbox\" name=\"depositBookingWednesday\" value=\"\">Mercredi<br><input type=\"checkbox\" name=\"depositBookingThursday\" value=\"\">Jeudi<br><input type=\"checkbox\" name=\"depositBookingFriday\" value=\"\">Vendredi<br><input type=\"checkbox\" name=\"depositBookingSaturday\" value=\"\">Samedi<br><input type=\"checkbox\" name=\"depositBookingSunday\" value=\"\">Dimanche<br>";
+    var temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" value=\"\">Lundi<br><input type=\"checkbox\" name=\"intakeBookingTuesday\" value=\"\">Mardi<br><input type=\"checkbox\" name=\"intakeBookingWednesday\" value=\"\">Mercredi<br><input type=\"checkbox\" name=\"intakeBookingThursday\" value=\"\">Jeudi<br><input type=\"checkbox\" name=\"intakeBookingFriday\" value=\"\">Vendredi<br><input type=\"checkbox\" name=\"intakeBookingSaturday\" value=\"\">Samedi<br><input type=\"checkbox\" name=\"intakeBookingSunday\" value=\"\">Dimanche<br>";
+    var temp2="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\"\">Lundi<br><input type=\"checkbox\" name=\"depositBookingTuesday\" value=\"\">Mardi<br><input type=\"checkbox\" name=\"depositBookingWednesday\" value=\"\">Mercredi<br><input type=\"checkbox\" name=\"depositBookingThursday\" value=\"\">Jeudi<br><input type=\"checkbox\" name=\"depositBookingFriday\" value=\"\">Vendredi<br><input type=\"checkbox\" name=\"depositBookingSaturday\" value=\"\">Samedi<br><input type=\"checkbox\" name=\"depositBookingSunday\" value=\"\">Dimanche<br>";
     document.getElementsByClassName('intakeBookingDays')[0].innerHTML = temp;
-    document.getElementsByClassName('depositBookingDays')[0].innerHTML = temp;
+    document.getElementsByClassName('depositBookingDays')[0].innerHTML = temp2;
     $('#widget-updateCompanyConditions-form input[name=action]').val("create");
 
 
@@ -1142,11 +1143,11 @@ if($connected){
             var dest="<h4>Accès aux bâtiments</h4>";
             while(i<response.buildingNumber){
               if(response.building[i].access==true){
-                temp="<input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"<br>";
+                temp="<input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\"> "+response.building[i].descriptionFR+"<br>";
 
               }
               else if(response.building[i].access==false){
-                temp="<input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"<br>";
+                temp="<input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\"> "+response.building[i].descriptionFR+"<br>";
 
               }
               dest=dest.concat(temp);
@@ -1156,14 +1157,13 @@ if($connected){
 
             var i=0;
             var dest="<h4>Accès aux vélos</h4>";
-
             while(i<response.bikeNumber){
               if(response.bike[i].access==true){
-                temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeCode+"\">"+response.bike[i].bikeCode+" "+response.bike[i].model+"<br>";
+                temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
 
               }
               else if(response.bike[i].access==false){
-                temp="<input type=\"checkbox\" name=\"bikeAccess[]\" value=\""+response.bike[i].bikeCode+"\">"+response.bike[i].bikeCode+" "+response.bike[i].model+"<br>";
+                temp="<input type=\"checkbox\" name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
 
               }
               dest=dest.concat(temp);
@@ -2018,6 +2018,7 @@ if($connected){
                                   timestampEnd=text.timestampEndBooking;
                                   buildingEnd=text.buildingEnd;
 
+                                  var bikeID=text.bike[i].bikeID;
                                   var bikeFrameNumber=text.bike[i].frameNumber;
                                   var bikeType=text.bike[i].typeDescription;
 
@@ -2030,9 +2031,9 @@ if($connected){
 
                                   var codeVeloTemporaire ="<div class=\"col-md-4\">\
                                   <div class=\"featured-box\">\
-                                  <div class=\"effect social-links\"> <img src=\"images_bikes/"+bikeFrameNumber+".jpg\" alt=\"image\" />\
+                                  <div class=\"effect social-links\"> <img src=\"images_bikes/"+bikeID+".jpg\" alt=\"image\" />\
                                   <div class=\"image-box-content\">\
-                                  <p> <a href=\"images_bikes/"+bikeFrameNumber+".jpg\" data-lightbox-type=\"image\" title=\"\"><i class=\"fa fa-expand\"></i></a> </p>\
+                                  <p> <a href=\"images_bikes/"+bikeID+".jpg\" data-lightbox-type=\"image\" title=\"\"><i class=\"fa fa-expand\"></i></a> </p>\
                                   </div>\
                                   </div>\
                                   </div>\
@@ -2042,7 +2043,7 @@ if($connected){
                                   <p class=\"subtitle\">"+ title +"</p>\
                                   </div>\
                                   <div class=\"col-md-2\">\
-                                  <a class=\"button large green button-3d rounded icon-left\" name=\""+bikeFrameNumber+"\" id=\"fr\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike(this.name)\"><span>Réserver</span></a>\
+                                  <a class=\"button large green button-3d rounded icon-left\" name=\""+bikeID+"\" id=\"fr\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike(this.name)\"><span>Réserver</span></a>\
                                   </div>\
                                   <div class=\"seperator\"></div>";
                                   dest = dest.concat(codeVeloTemporaire);
@@ -2115,10 +2116,10 @@ if($connected){
                       </script>
 
                       <script type="text/javascript">
-                      function bookBike(bikeNumber)
+                      function bookBike(ID)
                       {
-                        document.getElementById('widget-new-booking-frame-number').value = bikeNumber;
-                        document.getElementById("resumeBikeImage").src="images_bikes/"+bikeNumber+".jpg";
+                        $('#widget-new-booking input[name=bikeID]').val(ID);
+                        document.getElementById("resumeBikeImage").src="images_bikes/"+ID+".jpg";
 
                       }
                       </script>
@@ -2571,46 +2572,9 @@ if($connected){
                   </div>
                 </div>
 
-                <div class="modal fade" id="2" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <h4>Personne avant vous:</h4>
-                            <ul>
-                              <li>Nom et prénom: Antoine Lust</li>
-                              <li>Numéro de téléphone: 0478 99 66 98</li>
-                              <li>Adresse mail: antoine@kameobikes.com</li>
-                              <li>Remise du vélo à 15h.</li>
-                            </ul>
-                            <h4>Personne après vous:</h4>
-                            <ul>
-                              <li>Nom et prénom: Julien Jamar</li>
-                              <li>Numéro de téléphone: 0487 65 44 83</li>
-                              <li>Adresse mail: pierre-yves@kameobikes.com</li>
-                              <li>Prise en charge du vélo à 18h.</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <div class="pull-left">
-                          <button data-dismiss="modal" class="btn btn-b fr" type="button">Fermer</button>
-                          <button data-dismiss="modal" class="btn btn-b en" type="button">Close</button>
-                          <button data-dismiss="modal" class="btn btn-b nl" type="button">Sluiten</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
 
-
-                <div id="velos"style="display: none;"></div>
+                <div id="velos" style="display: none;"></div>
               </div>
               <?php
 
@@ -3719,35 +3683,22 @@ if($connected){
                     <img id='resumeBikeImage' class="img-rounded img-responsive" alt="Responsive image">
                 </div>
                 <form id="widget-new-booking" class="form-transparent-grey" action="include/new_booking.php" role="form" method="post">
-                  <!--
-                  <label for="widget-new-booking=trip-type">Type de voyage</label>
-                  <select title="trip type" class="selectpicker" id="widget-new-booking=trip-type" name="widget-new-booking=trip-type">
-                  <option value="domiciletravail">Trajet domicile-travail</option>
-                  <option value="mission">Déplacement pour travail</option>
-                  <option value="loisir">Loisir</option>
-                </select>
-                <script type="text/javascript">
-                $('.widget-new-booking=trip-type').change(function(){
-                manage_elegibility_ecoprime(document.getElementsById('widget-new-booking=trip-type').value);
-              });
-            </script>
-            <p id="text-eligibility-prime" class="fr text-green">Ce trajet est éligible pour le paiement de prime écologique. Les informations liées à votre trajet vous seront demandées à l'étape suivante.</p>-->
-            <input id="widget-new-booking-building-start" name="widget-new-booking-building-start" type="hidden">
-            <input id="widget-new-booking-building-end" name="widget-new-booking-building-end" type="hidden">
-            <input id="widget-new-booking-frame-number" name="widget-new-booking-frame-number" type="hidden">
-            <input id="widget-new-booking-mail-customer" name="widget-new-booking-mail-customer" type="hidden" value="<?php echo $user; ?>">
-            <input id="widget-new-booking-locking-code" name="widget-new-booking-locking-code" type="hidden">
-            <input id="widget-new-booking-date-start" name="widget-new-booking-date-start" type="hidden">
-            <input id="widget-new-booking-date-end" name="widget-new-booking-date-end" type="hidden">
+                    <input id="widget-new-booking-building-start" name="widget-new-booking-building-start" type="hidden">
+                    <input id="widget-new-booking-building-end" name="widget-new-booking-building-end" type="hidden">
+                    <input name="bikeID" type="hidden">
+                    <input id="widget-new-booking-mail-customer" name="widget-new-booking-mail-customer" type="hidden" value="<?php echo $user; ?>">
+                    <input id="widget-new-booking-locking-code" name="widget-new-booking-locking-code" type="hidden">
+                    <input id="widget-new-booking-date-start" name="widget-new-booking-date-start" type="hidden">
+                    <input id="widget-new-booking-date-end" name="widget-new-booking-date-end" type="hidden">
 
-            <br>
-            <div class="text-left form-group">
-              <button  class="button effect fill fr" type="submit"><i class="fa fa-check"></i>&nbsp;Confirmer</button>
-              <button  class="button effect fill en" type="submit"><i class="fa fa-check"></i>&nbsp;Confirm</button>
-              <button  class="button effect fill nl" type="submit"><i class="fa fa-check"></i>&nbsp;Verzenden</button>
+                    <br>
+                    <div class="text-left form-group">
+                      <button  class="button effect fill fr" type="submit"><i class="fa fa-check"></i>&nbsp;Confirmer</button>
+                      <button  class="button effect fill en" type="submit"><i class="fa fa-check"></i>&nbsp;Confirm</button>
+                      <button  class="button effect fill nl" type="submit"><i class="fa fa-check"></i>&nbsp;Verzenden</button>
 
-            </div>
-          </form>
+                    </div>
+              </form>
         </div>
       </div>
     </div>
@@ -4418,36 +4369,36 @@ if($connected){
               <span class="en-inline"> Maximal number of bookings per month: </span>
               <span class="nl-inline"> Maximal number of bookings per month </span>
               <input type="number" class="form-control required" name="bookingsPerMonth" max="9999" style="width: 7em;"><br/><br/>
-
-              <div class="col-sm-6 jumbotron jumbotron-border">
-                <h4>Réglages de début de réservation</h4>
-                <div class="col-sm-12">
-                  <p><span class="fr-inline"> Première heure possible pour prendre un vélo : </span>
-                    <span class="en-inline"> First possible hour to take a bike: </span>
-                    <span class="nl-inline"> First possible hour to take a bike: </span>
-                    <input type="number" class="form-control required" name="startIntakeBooking" max="23" style="width: 7em;">
-                    <p>
-                    </div>
-                    <div class="col-sm-12">
-                      <p><span class="fr-inline"> Dernière heure possible afin de prendre un vélo : </span>
-                        <span class="en-inline"> Last possible hour to take a bike: </span>
-                        <span class="nl-inline"> Last possible hour to take a bike: </span>
-                        <input type="number" class="form-control required" name="endIntakeBooking" max="23" style="width: 7em;">
-                      </p>
-                    </div>
-                    <div class="col-sm-12">
-                      <h5>Début de réservation possible aux jours suivants:</h5>
-                      <span class="intakeBookingDays"></span>
-                    </div>
-                  </div>
+              <div class="col-sm-12">
                   <div class="col-sm-6 jumbotron jumbotron-border">
-                    <h4>Réglages de fin de réservation</h4>
+                    <h4>Réglages de début de réservation</h4>
                     <div class="col-sm-12">
-                      <p><span class="fr-inline"> Première heure possible pour rendre un vélo : </span>
-                        <span class="en-inline"> First possible hour to deposit a bike: </span>
-                        <span class="nl-inline"> First possible hour to deposit a bike: </span>
-                        <input type="number" class="form-control required" name="startDepositBooking" max="23" style="width: 7em;">
+                      <p><span class="fr-inline"> Première heure possible pour prendre un vélo : </span>
+                        <span class="en-inline"> First possible hour to take a bike: </span>
+                        <span class="nl-inline"> First possible hour to take a bike: </span>
+                        <input type="number" class="form-control required" name="startIntakeBooking" max="23" style="width: 7em;">
                         <p>
+                        </div>
+                        <div class="col-sm-12">
+                          <p><span class="fr-inline"> Dernière heure possible afin de prendre un vélo : </span>
+                            <span class="en-inline"> Last possible hour to take a bike: </span>
+                            <span class="nl-inline"> Last possible hour to take a bike: </span>
+                            <input type="number" class="form-control required" name="endIntakeBooking" max="23" style="width: 7em;">
+                          </p>
+                        </div>
+                        <div class="col-sm-12">
+                          <h5>Début de réservation possible aux jours suivants:</h5>
+                          <span class="intakeBookingDays"></span>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 jumbotron jumbotron-border">
+                        <h4>Réglages de fin de réservation</h4>
+                        <div class="col-sm-12">
+                          <p><span class="fr-inline"> Première heure possible pour rendre un vélo : </span>
+                            <span class="en-inline"> First possible hour to deposit a bike: </span>
+                            <span class="nl-inline"> First possible hour to deposit a bike: </span>
+                            <input type="number" class="form-control required" name="startDepositBooking" max="23" style="width: 7em;">
+                            <p>
                         </div>
                         <div class="col-sm-12">
                           <p><span class="fr-inline"> Dernière heure possible afin de rendre un vélo : </span>
@@ -4461,6 +4412,7 @@ if($connected){
                           <span class="depositBookingDays"></span>
                         </div>
                       </div>
+                </div>
 
                       <div class="col-sm-12">
                         <h4>Accès des utilisateurs à ce groupe de conditions</h4>
@@ -5431,7 +5383,7 @@ if($connected){
                     <h4 class="fr-inline text-green">Référence du vélo :</h4>
                     <h4 class="en-inline text-green">Bike Reference:</h4>
                     <h4 class="nl-inline text-green">Bike Reference :</h4>
-                    <p span class="bikeReference"></p>
+                    <p span class="bikeID"></p>
                   </div>
 
                   <div class="col-sm-5">
@@ -6490,19 +6442,23 @@ if($connected){
                   <div class="col-sm-12">
 
                     <form id="widget-bikeManagement-form" action="include/bike_management.php" role="form" method="post">
-
+                      <h4 class="fr text-green bikeManagementTitle">Ajouter un vélo</h4>
                       <div class="form-group col-sm-12">
-                        <h4 class="fr text-green bikeManagementTitle">Ajouter un vélo</h4>
+                        <h4 class="fr text-green">Caractéristiques du vélo</h4>
+                          
                         <div class="col-sm-12">
-                          <h4 class="fr text-green">Caractéristiques du vélo</h4>
+                          <div class="col-sm-4">
+                            <label for="bikeID">ID</label>
+                            <input type="text" name="bikeID" class="form-control required" readonly>
+                          </div>
+                        </div>
+                        <div class="col-sm-12">
                           <div class="col-sm-4">
                             <label for="portfolioID"  class="fr">Marque - Modèle</label>
                             <label for="portfolioID"  class="en">Marque - Modèle</label>
                             <label for="portfolioID"  class="nl">Marque - Modèle</label>
                             <select name="portfolioID" class="form-control required"></select>
-
                           </div>
-
                           <div class="col-sm-4">
                             <label for="size"  class="fr">Taille</label>
                             <label for="size"  class="en">Size</label>
@@ -6510,27 +6466,31 @@ if($connected){
                             <input type="text" name="size" class="form-control required">
                           </div>
                           <div class="col-sm-4">
+                            <label for="color"  class="fr">Couleur</label>
+                            <label for="color"  class="en">Color</label>
+                            <label for="color"  class="nl">Color</label>
+                            <input type="text" name="color" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-sm-12">
+                          <div class="col-sm-4">
                             <label for="company"  class="fr">Société</label>
                             <label for="company"  class="en">Company</label>
                             <label for="company"  class="nl">Company</label>
                             <select name="company" class="form-control required"></select>
                           </div>
-                            
-                        </div>
-                        <div class="col-sm-12">
                           <div class="col-sm-4">
                             <label for="model"  class="fr">Nom pour client</label>
                             <label for="model"  class="en">Bike name for client</label>
                             <label for="model"  class="nl">Bike name for client</label>
                             <input type="text" name="model" class="form-control required">
-
                           </div>
                           <div class="col-sm-4">
                             <label for="frameNumber"  class="fr">Numéro d'identification</label>
                             <label for="frameNumber"  class="en">Identification number</label>
                             <label for="frameNumber"  class="nl">Identification number</label>
-                            <input type="text" name="frameNumberOriginel" class="form-control required hidden">
-                            <input type="text" name="frameNumber" class="form-control required">
+                            <input type="text" name="frameNumberOriginel" class="form-control hidden">
+                            <input type="text" name="frameNumber" class="form-control">
                           </div>
                           <div class="col-sm-4">
                             <label for="frameReference"  class="fr">Référence de cadre</label>
@@ -6538,16 +6498,14 @@ if($connected){
                             <label for="frameReference"  class="nl">Frame reference</label>
                             <input type="text" name="frameReference" class="form-control required">
                           </div>
-
-                        </div>
-                        <div class="col-sm-12">
                           <div class="col-sm-4">
                             <label for="lockerReference"  class="fr">Clé du cadenas</label>
                             <label for="lockerReference"  class="en">Locker key number</label>
                             <label for="lockerReference"  class="nl">Locker key number</label>
                             <input type="text" name="lockerReference" class="form-control">
                           </div>
-
+                        </div>
+                        <div class="col-sm-12">
                           <div class="col-sm-4 bikeManagementPicture">
                             <label for="picture"  class="fr">Image actuelle</label>
                             <label for="picture"  class="en">Current Image</label>
@@ -6561,17 +6519,18 @@ if($connected){
                             <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                             <input type=file size=40 name="picture" class="form-control">
                           </div>
-
                         </div>
 
                           <div class="separator"></div>
-                          <h4 class="fr text-green">Type d'ajout</h4>
-                          <div class="col-sm-4">
-                            <label for="contractType"  class="fr">Type de contrat</label>
-                            <label for="contractType"  class="en">Contract type</label>
-                            <label for="contractType"  class="nl">Contract type</label>
-                            <select name="contractType" class="form-control required">
-                            </select>
+                          <h4 class="fr text-green">Type de contrat</h4>
+                          <div class="col-sm-12">
+                              <div class="col-sm-4">
+                                <label for="contractType"  class="fr">Type de contrat</label>
+                                <label for="contractType"  class="en">Contract type</label>
+                                <label for="contractType"  class="nl">Contract type</label>
+                                <select name="contractType" class="form-control required">
+                                </select>
+                              </div>
                           </div>
 
                         <div class="separator buyingInfos" style="display:none;"></div>
@@ -6641,9 +6600,7 @@ if($connected){
                             <input type="text" name="orderNumber" class="form-control">
                           </div>
                           <div class="col-sm-4 offer">
-                            <label for="offerReference"  class="fr">Offre liée</label>
-                            <label for="offerReference"  class="en">Offre liée</label>
-                            <label for="offerReference"  class="nl">Offre liée</label>
+                            <label for="offerReference"  class="offerReference">Offre liée</label>
                             <select name="offerReference" class="form-control offerReference">
                             </select>
                           </div>
@@ -6715,9 +6672,9 @@ if($connected){
 
 
 
-                    <div class="separator bikeActions"style="display:none;"></div>
+                    <div class="separator bikeActions" class="hidden"></div>
 
-                    <div class="col-sm-12 bikeActions" style="display:none;">
+                    <div class="col-sm-12 bikeActions" class="hidden">
 
                       <h4 class="fr text-green">Actions prises sur le vélo</h4>
 
@@ -6733,7 +6690,7 @@ if($connected){
                           </div>
                           <div class="col-sm-6">
                             <label for="widget-addActionBike-form-description" class="hidden">Description</label>
-                            <input type="text" name="widget-addActionBike-form-description" class="form-control required hidden">
+                            <textarea type="text" name="widget-addActionBike-form-description" class="form-control required hidden"></textarea>
                           </div>
                           <div class="col-sm-2">
                             <label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
@@ -7227,7 +7184,20 @@ if($connected){
                           </div>
                         </div>
 
-                        <div class="col-sm-12"></div>
+                        <div class="separator offerManagementDetails"></div>
+                        <div class="col-sm-12 offerManagementDetails">
+                            <h4 class="text-green">Détails de l'offre</h4>
+                            <ul id='offerManagementDetails'>
+                            </ul>
+                        </div>
+                        <div class="separator offerManagementPDF"></div>
+                        <div class="col-sm-12 offerManagementPDF">
+                            <h4 class="text-green">Offre PDF</h4>
+                            
+                            <object data="" id='offerManagementPDF' type="application/pdf" width="100%" height="800px"> 
+                              <p>Apparemment vous n'avez pas un plug-in pour lire directement un fichier PDF. Vous pouvez <a href="resume.pdf">cliquer ici pour télécharger le fichier.</a></p>  
+                            </object>                                                      
+                        </div>
                         <br>
                         <input type="hidden" id="companyHiddenOffer" name="company" class="form-control required hidden" value="">
                         <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user; ?>">
@@ -8052,27 +8022,31 @@ if($connected){
                   <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
 
                     <div class="col-sm-12">
-
-                      <h4 class="fr-inline text-green">Référence du vélo :</h4>
-                      <h4 class="en-inline text-green">Bike Reference:</h4>
-                      <h4 class="nl-inline text-green">Bike Reference :</h4>
-                      <span class="bikeReference"></span>
-
-                      <div class="col-sm-12"></div>
-
-                      <div class="col-sm-5">
-                        <h4><span class="fr"> Modèle : </span></h4>
-                        <h4><span class="en"> Model: </span></h4>
-                        <h4><span class="nl"> Model : </span></h4>
-                        <input type="text" class="bikeModel" name="model" />
-
+                      <h4 class="text-green">Caractéristiques du vélo</h4>                        
+                        <div class="col-sm-4">
+                            <label for="bikeID" class="fr-inline">Référence du vélo :</label>
+                            <label for="bikeID" class="en-inline">Bike Reference :</label>
+                            <label for="bikeID" class="nl-inline">Bike Reference :</label>
+                            <input type="text" name="bikeID" readonly class="form-control" />
+                        </div>
+                        <div class="col-sm-12"></div>
+                      <div class="col-sm-4">
+                        <label for="bikeModel" class="fr">Modèle :</label>
+                        <label for="bikeModel" class="en">Model:</label>
+                        <label for="bikeModel" class="nl">Model:</label>
+                        <input type="text" name="bikeModel" class="form-control" />
                       </div>
-                      <div class="col-sm-5">
-                        <h4><span class="fr"> Référence du cadre : </span></h4>
-                        <h4><span class="en"> Frame reference: </span></h4>
-                        <h4><span class="nl"> Frame reference: </span></h4>
-                        <p span class="frameReference"></p>
-
+                      <div class="col-sm-4">
+                        <label for="bikeNumber" class="fr">Numéro d'identification :</label>
+                        <label for="bikeNumber" class="en">Identification number :</label>
+                        <label for="bikeNumber" class="nl">Identification number :</label>
+                        <input type="text" disabled name="bikeNumber" class="form-control">
+                      </div>
+                      <div class="col-sm-4">
+                        <label for="frameReference" class="fr">Référence du cadre :</label>
+                        <label for="frameReference" class="en">Frame reference :</label>
+                        <label for="frameReference" class="nl">Frame reference :</label>
+                        <input type="text" disabled name="frameReference" class="form-control">
                       </div>
 
                       <div class="separator"></div>
@@ -8080,24 +8054,25 @@ if($connected){
                       <h4 class="text-green">Informations relatives au contrat</h4>
 
                       <div class="col-sm-4">
-                        <h4><span class="fr"> Type de contrat : </span></h4>
-                        <h4><span class="en"> Contract type: </span></h4>
-                        <h4><span class="nl"> Contract type : </span></h4>
-                        <p><span class="contractType"></span></p>
+                        <label for="contractType" class="fr">Type de contrat :</label>
+                        <label for="contractType" class="en">Contract type :</label>
+                        <label for="contractType" class="nl">Contract type :</label>
+                        <input type="text" disabled name="contractType" class="form-control">
+                          
                       </div>
 
                       <div class="col-sm-4">
-                        <h4><span class="fr" >Date de début :</span></h4>
-                        <h4><span class="en" >Start date:</span></h4>
-                        <h4><span class="nl" >Start date :</span></h4>
-                        <p><span class="startDateContract"></span></p>
+                        <label for="startDateContract" class="fr">Date de début :</label>
+                        <label for="startDateContract" class="en">Start date :</label>
+                        <label for="startDateContract" class="nl">Start date :</label>
+                        <input type="date" disabled name="startDateContract" class="form-control">
                       </div>
 
                       <div class="col-sm-4">
-                        <h4><span class="fr" >Date de fin :</span></h4>
-                        <h4><span class="en" >End date:</span></h4>
-                        <h4><span class="nl" >End date :</span></h4>
-                        <p><span class="endDateContract"></span></p>
+                        <label for="endDateContract" class="fr">Date de fin :</label>
+                        <label for="endDateContract" class="en">End date :</label>
+                        <label for="endDateContract" class="nl">End date :</label>
+                        <input type="date" disabled name="endDateContract" class="form-control">
                       </div>
 
                       <div class="separator"></div>
@@ -8122,7 +8097,7 @@ if($connected){
                       <div class="separator"></div>
                       <div class="col-sm-12">
                         <div class="col-md-6">
-                          <input type="text" class="hidden" id="widget-updateBikeStatus-form-frameNumber" name="widget-updateBikeStatus-form-frameNumber"/>
+                          <input type="text" class="hidden" name="bikeID"/>
                           <input type="text" class="hidden" name="user" value="<?php echo $user; ?>"/>
                           <h4><span class="fr" >Accès aux bâtiments :</span></h4>
                           <div id="bikeBuildingAccess"></div>
@@ -9485,10 +9460,10 @@ if($connected){
 
                         <div class="row">
                           <div class="form-group col-sm-6">
-                            <label for="widget-entretien-form-message"  class="fr">Numéro de cadre</label>
-                            <label for="widget-entretien-form-message"  class="en">Frame Number</label>
-                            <label for="widget-entretien-form-message"  class="nl">Frame Numer</label>
-                            <input type="text" id="widget-entretien-form-frame-number" name="widget-entretien-form-frame-number" class="form-control required" />
+                            <label for="bikeID"  class="fr">Numéro de cadre</label>
+                            <label for="bikeID"  class="en">Frame Number</label>
+                            <label for="bikeID"  class="nl">Frame Numer</label>
+                            <input type="text" name="bikeID" class="form-control required" />
                           </div>
                           <div class="form-group col-sm-12">
                             <label for="widget-entretien-form-bikePart"  class="fr">Pièce présentant un problème</label>
@@ -9597,13 +9572,15 @@ if($connected){
             document.getElementById('widget-assistance-form-message-attachment').value="";
 
           }
-          function initializeEntretien2(frameNumber) {
-            if(!(frameNumber)){
-              frameNumber="";
+          function initializeEntretien2(bikeID) {
+            if(!(bikeID)){
+                bikeID="";
+                $('#widget-entretien-form input[name=bikeID]').attr('disabled', false);
+                
             }else{
-              $('#widget-entretien-form-frame-number').prop('readonly', true);
+                $('#widget-entretien-form input[name=bikeID]').attr('disabled', true);
             }
-            document.getElementById('widget-entretien-form-frame-number').value=frameNumber;
+            $('#widget-entretien-form input[name=bikeID]').val(bikeID);
             document.getElementById('widget-entretien-form-message').value="";
             document.getElementById('widget-entretien-form-message-attachment').value="";
 

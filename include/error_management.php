@@ -42,10 +42,9 @@ if(isset($_GET['action'])){
                 $fichierMini=$row['FRAME_NUMBER'].'_mini.jpg';
 
                 if (!file_exists($dossier.$fichier) || !file_exists($dossier.$fichierMini)){                
-                    $response['bike']['img'][$i]['id']=$bikeID;
+                    $response['bike']['img'][$i]['bikeID']=$bikeID;
                     $response['bike']['img'][$i]['frameNumber']=$frameNumber;
                     $response['bike']['img'][$i]['path']=$dossier.$fichier;
-
                     $i++;
                 }
             }
@@ -196,6 +195,7 @@ if(isset($_GET['action'])){
                     
                     include 'connexion.php';
                     $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID' and DATE_START = '$dateTempString2'";
+                    $response['bike']['log'][$j]['bikeID']=$bikeID;
                     $response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
                     $response['bike']['log'][$j]['sql']=$sql;
                     $j++;
@@ -211,7 +211,7 @@ if(isset($_GET['action'])){
                     $conn->close();
                     
                     if($length == 0){
-                        $response['bike']['bill'][$i]['ID']=$bikeID;
+                        $response['bike']['bill'][$i]['bikeID']=$bikeID;
                         $response['bike']['bill'][$i]['sql']=$sql;
                         $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
                         $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo à la date du $dateTempString";

@@ -167,8 +167,8 @@ if($action=="graphic"){
             $bikeAccessStatus="OK";
         }
         while($row2 = mysqli_fetch_array($result2)){
-            $bikeReference=$row2['FRAME_NUMBER'];
-            $sql3="SELECT * from customer_bike_access where BIKE_NUMBER='$bikeReference' and STAANN!='D'";
+            $bikeID=$row2['ID'];
+            $sql3="SELECT * from customer_bike_access where BIKE_ID='$bikeID' and STAANN!='D'";
             if ($conn->query($sql3) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);

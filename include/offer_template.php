@@ -60,14 +60,16 @@
     for ($i=0; $i < $boxesNumber ; $i++) {
         
       $boxes[$i]['FINAL_INSTALLATION_PRICE'] = $boxFinalPrice[0][$i];
-      $boxes[$i]['FINAL_LOCATION_PRICE'] = $boxFinalPrice[1][$i];
-      $totalPerMonth += $boxFinalPrice[1][$i];
+      $boxes[$i]['FINAL_LOCATION_PRICE'] = $boxFinalPrice[1][$i];        
+      $totalPerMonth += intval($boxFinalPrice[1][$i]);
             
     }
 
+
+
   for ($i=0; $i < $bikesNumber ; $i++) {
       $bikes[$i]['FINAL_LEASING_PRICE'] = $bikeFinalPrice[$i];      
-      $totalPerMonth += $bikeFinalPrice[$i]; 
+      $totalPerMonth += intval($bikeFinalPrice[$i]); 
       
   }
 
@@ -84,7 +86,7 @@
 
   $currentDate = getDate();
 
-  $pdfTitle = $company['INTERNAL_REFERENCE'].'_'.$currentDate['year'].'_'.$currentDate['mon'].'_'.$currentDate['mday'].'_temp';
+  $pdfTitle = strtolower(str_replace(" ", "-", $company['INTERNAL_REFERENCE'])).'_'.$currentDate['year'].'_'.$currentDate['mon'].'_'.$currentDate['mday'].'_temp';
 
   //affichage de la réponse en front (debug, a supprimer en prod)
   //header('Content-type: application/json');
@@ -121,8 +123,39 @@
     //ajoute le PDF a la table
       
       
-    $response['id'] = add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company['INTERNAL_REFERENCE'], $probability);
+    $offerID= add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company['INTERNAL_REFERENCE'], $probability);
+    $response['id'] = $offerID;
     $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
+      
+    for ($i=0; $i < $boxesNumber ; $i++) {
+        
+        $boxFinalInstallationPrice = $boxFinalPrice[0][$i];
+        $boxFinalLocationPrice = $boxFinalPrice[1][$i];
+        $boxId=$boxesId[$i];
+        include 'connexion.php';
+        $sql = "INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES ('$email', '$offerID', 'box', '$boxId', '$boxFinalLocationPrice', '$boxFinalInstallationPrice', '')";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $conn->close();
+            
+    }
+
+    for ($i=0; $i < $bikesNumber ; $i++) {
+        $bikeFinalLocationPrice = $bikeFinalPrice[$i];      
+        include 'connexion.php';
+        $sql = "INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES ('$email', '$offerID', 'bike', '$boxId', '$bikeFinalLocationPrice', 0, '')";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $conn->close();
+    }
+      
+      
     rename(__DIR__.'/../offres/'.$pdfTitle.'.pdf', __DIR__.'/../offres/'.$newPdfFile.'.pdf');
 
     //response

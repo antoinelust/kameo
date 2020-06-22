@@ -12,13 +12,8 @@ $billingGroup=$_POST['billingGroup'];
 $itemNumber=$_POST['itemNumber'];
 
 $dateStart=new DateTime($dateStart);
-$dateStartString1 = $dateStart->format('Y-m-d');
-$dateStartString2 = $dateStart->format('d-m-Y');
 
 $dateEnd=new DateTime($dateEnd);
-$dateEndString1 = $dateEnd->format('Y-m-d');
-$dateEndString2 = $dateEnd->format('d-m-Y');
-
 $date1monthAfter=new DateTime('now');
 $interval = new DateInterval('P30D');
 $date1monthAfter->add($interval);
@@ -253,13 +248,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 
                 $test2.='<tr>
-                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
+                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
                     <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$resultat['MODEL'].' - CADRE: '.$resultat['FRAME_REFERENCE'].'</td>
                     <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($price).' € HTVA</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du '.$contractStartString.' au '.$contractStartString.'</td>
+                    <td style="color: grey">Période du '.$contractStartString.' au '.$contractEndString.'</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -369,8 +364,6 @@ if ($conn->query($sql) === FALSE) {
 } 
 $conn->close();
                     
-
-
 echo $test1.$test2.$test3;
 
 ?>

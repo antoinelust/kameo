@@ -115,9 +115,10 @@ if($ID != NULL || $company != NULL)
 
     $i=0;
     while($row = mysqli_fetch_array($result)){
+        $response['bike'][$i]['id']=$row['ID'];
         $response['bike'][$i]['heuMaj']=$row['HEU_MAJ'];
         $response['bike'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-        $frameNumber=$row['FRAME_NUMBER'];
+        $bikeID=$row['ID'];
         $response['bike'][$i]['model']=$row['MODEL'];
         $response['bike'][$i]['facturation']=$row['AUTOMATIC_BILLING'];
         $response['bike'][$i]['leasingPrice']=$row['LEASING_PRICE'];
@@ -128,7 +129,7 @@ if($ID != NULL || $company != NULL)
         $response['bike'][$i]['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
         $response['bike'][$i]['orderNumber']=$row['ORDER_NUMBER'];
 
-        $sql2="SELECT * FROM bike_building_access dd where BIKE_NUMBER='$frameNumber'";
+        $sql2="SELECT * FROM bike_building_access dd where BIKE_ID='$bikeID'";
 
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

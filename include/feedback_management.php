@@ -15,7 +15,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT * FROM reservations where ID='$ID'";
+        $sql = "SELECT aa.*, bb.FRAME_NUMBER FROM reservations aa, customer_bikes bb where aa.ID='$ID' and aa.BIKE_ID=bb.ID";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -26,14 +26,15 @@ if(isset($_GET['action'])){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
 
-
         $response = array ('response'=>'success');
 		$response['start']= $resultat['DATE_START_2'];            
 		$response['end']= $resultat['DATE_END_2'];           
         
-        $response['bikeNumber']=$resultat['FRAME_NUMBER'];
+        $response['bikeID']=$resultat['BIKE_ID'];
         $response['email']=$resultat['EMAIL'];
         $response['ID']=$resultat['ID'];
+        $response['bikeNumber']=$resultat['FRAME_NUMBER'];
+        
         
 
         include 'connexion.php';
@@ -65,7 +66,11 @@ if(isset($_GET['action'])){
         $ID = $_GET["ID"];
 
         include 'connexion.php';
-        $sql = "SELECT * FROM feedbacks where ID_RESERVATION='$ID'";
+        $sql = "SELECT aa.*, bb.FRAME_NUMBER FROM feedbacks aa, customer_bikes bb where ID_RESERVATION='$ID' and aa.BIKE_ID=bb.ID";
+        $response = array ('response'=>'error', 'message'=> $sql );
+        echo json_encode($response);
+        die;
+        
         //error_log('in function');
         
         
@@ -80,7 +85,8 @@ if(isset($_GET['action'])){
 
         $response = array ('response'=>'success');
         $response['ID']=$resultat['ID'];
-        $response['bike']=$resultat['BIKE_NUMBER'];
+        $response['bike']=$resultat['FRAME_NUMBER'];
+        $response['bikeID']=$resultat['BIKE_ID'];
         $response['note']=$resultat['NOTE'];
         $response['comment']=$resultat['COMMENT'];
         $response['entretien']=$resultat['ENTRETIEN'];
@@ -109,7 +115,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT bb.EMAIL, cc.DATE_START_2, cc.DATE_END_2, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_NUMBER FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID and aa.STATUS != 'CANCELLED' ORDER BY aa.HEU_MAJ DESC";
+        $sql = "SELECT bb.EMAIL, cc.DATE_START_2, cc.DATE_END_2, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_ID FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID and aa.STATUS != 'CANCELLED' ORDER BY aa.HEU_MAJ DESC";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -125,7 +131,7 @@ if(isset($_GET['action'])){
         while($row = mysqli_fetch_array($result))
         {
             $IDReservation=$row['ID_RESERVATION'];
-            $response['feedback'][$i]['bikeNumber']=$row['BIKE_NUMBER'];
+            $response['feedback'][$i]['bikeID']=$row['BIKE_ID'];
             $response['feedback'][$i]['IDReservation']=$row['ID_RESERVATION'];
             $response['feedback'][$i]['note']=$row['NOTE'];
             $response['feedback'][$i]['comment']=$row['COMMENT'];
@@ -209,7 +215,7 @@ if(isset($_GET['action'])){
 
 
         include 'connexion.php';
-        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_NUMBER='$bike', ID_RESERVATION='$ID', NOTE='$note', COMMENT=$comment, ENTRETIEN='$entretien', STATUS='DONE' WHERE ID='$ID_feedback'";
+        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_ID='$bike', ID_RESERVATION='$ID', NOTE='$note', COMMENT=$comment, ENTRETIEN='$entretien', STATUS='DONE' WHERE ID='$ID_feedback'";
         
 
         if ($conn->query($sql) === FALSE) {

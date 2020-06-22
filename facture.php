@@ -385,7 +385,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
                <td style="background-color: white" witdth="100"></td>
-               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' €/mois<br>+TVA: '.round($tva,2).' /mois </p></td>
+               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' €/mois<br>+TVA: '.round($tva,2).' €/mois </p></td>
             </tr>
             <tr>
                 <td height="35">'.round($total,2).' €/mois</td>

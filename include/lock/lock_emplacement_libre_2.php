@@ -14,7 +14,7 @@ $emplacement = 0;
 do
 {
 	$emplacement ++;
-	$reponse = $bdd->query('SELECT FRAME_NUMBER FROM locking_bikes WHERE BUILDING LIKE \''.$_GET['building'].'\' AND PLACE_IN_BUILDING = '.$emplacement.';');
+	$reponse = $bdd->query('SELECT BIKE_ID FROM locking_bikes WHERE BUILDING LIKE \''.$_GET['building'].'\' AND PLACE_IN_BUILDING = '.$emplacement.';');
 
 	//print_r($bdd->errorInfo());
 }

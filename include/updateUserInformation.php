@@ -174,7 +174,7 @@ if($email != NULL)
         if($name=="bikeAccess"){   
             foreach($_POST['bikeAccess'] as $valueInArray){
                 include 'connexion.php';
-                $sql= "SELECT * FROM customer_bike_access WHERE EMAIL='$email' and BIKE_NUMBER='$valueInArray'";
+                $sql= "SELECT * FROM customer_bike_access WHERE EMAIL='$email' and BIKE_ID='$valueInArray'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -189,7 +189,7 @@ if($email != NULL)
                 
                 if($length==0){
                     include 'connexion.php';
-                    $sql= "INSERT INTO  customer_bike_access (USR_MAJ, EMAIL, BIKE_NUMBER, TYPE, STAANN) VALUES ('mykameo','$email', '$valueInArray', 'partage', '')";
+                    $sql= "INSERT INTO  customer_bike_access (USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('mykameo','$email', '$valueInArray', 'partage', '')";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -199,7 +199,7 @@ if($email != NULL)
                 }           
                 
                 include 'connexion.php';
-                $sql= "SELECT * FROM customer_bike_access WHERE EMAIL='$email' and BIKE_NUMBER='$valueInArray' and STAANN='D'";
+                $sql= "SELECT * FROM customer_bike_access WHERE EMAIL='$email' and BIKE_ID='$valueInArray' and STAANN='D'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -211,14 +211,14 @@ if($email != NULL)
                 
                 if($length==1){
                     include 'connexion.php';
-                    $sql= "UPDATE  customer_bike_access set STAANN='' WHERE EMAIL='$email' and BIKE_NUMBER='$valueInArray'";
+                    $sql= "UPDATE  customer_bike_access set STAANN='' WHERE EMAIL='$email' and BIKE_ID='$valueInArray'";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
                         die;
                     }
                     $conn->close();
-                }    
+                }
                 
                 include 'connexion.php';
                 $sql= "SELECT * FROM customer_bikes WHERE COMPANY='$company'";
@@ -234,16 +234,16 @@ if($email != NULL)
                 while($row = mysqli_fetch_array($result)){
                     $presence=false;
                     foreach($_POST['bikeAccess'] as $valueInArray2){
-                        if($row['FRAME_NUMBER']==$valueInArray2){
+                        if($row['ID']==$valueInArray2){
                             $presence=true;
 
                         }
                     }
                     if($presence==false){
-                        $bike=$row['FRAME_NUMBER'];
+                        $bikeID=$row['ID'];
                     
                         include 'connexion.php';
-                        $sql="select * from customer_bike_access where EMAIL = '$email' and BIKE_NUMBER='$bike'";
+                        $sql="select * from customer_bike_access where EMAIL = '$email' and BIKE_ID='$bikeID'";
 
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -255,7 +255,7 @@ if($email != NULL)
                         $conn->close();  
                         if($length==1){
                             include 'connexion.php';
-                            $sql="update customer_bike_access set STAANN='D', USR_MAJ='mykameo', TIMESTAMP=CURRENT_TIMESTAMP where EMAIL = '$email' and BIKE_NUMBER='$bike'";
+                            $sql="update customer_bike_access set STAANN='D', USR_MAJ='mykameo', TIMESTAMP=CURRENT_TIMESTAMP where EMAIL = '$email' and BIKE_ID='$bikeID'";
 
                             if ($conn->query($sql) === FALSE) {
                                 $response = array ('response'=>'error', 'message'=> $conn->error);

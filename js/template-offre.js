@@ -1008,27 +1008,6 @@ $("#templateForm").validate({
             type: 'success'
           });
             
-          var offerType = response.buyOrLeasing;
-
-          if(offerType =='buy'){
-            offerType = 'achat';
-          } else if (offerType == 'both'){
-            offerType = 'achat/leasing';
-          }
-
-          var offerLink = 'offres/' + response.file;
-
-          var dest = `
-            <tr>
-              <td>`+response.id+`</td>
-              <td>`+offerType+`</td>
-              <td><a href="`+offerLink+`" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
-              <td>`+response.bikesNumber+`</td>
-              <td>`+response.boxesNumber+`</td>
-              <td><a href="#" class="text-green deletePdfOffer" style="text-decoration:underline !important;">supprimer</a></td>
-            </tr>
-          `;
-          $('#companyContracts').find('.tableBody').append(dest);
           document.getElementById('templateForm').reset();
           $('#template').modal('toggle');
           get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);   

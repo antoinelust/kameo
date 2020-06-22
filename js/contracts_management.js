@@ -271,6 +271,9 @@ function retrieve_offer(ID, action){
         type: 'get',
         data: {"ID": ID, "action": "retrieve"},
         success: function(response){
+            $('#offerManagementPDF').attr('data','');                    
+            
+            
             if(response.response == 'error') {
                 console.log(response.message);
             }
@@ -297,7 +300,24 @@ function retrieve_offer(ID, action){
                 $('#widget-offerManagement-form input[name=company]').val(response.company);
                 $('#widget-offerManagement-form input[name=action]').val(action);
                 $('#widget-offerManagement-form input[name=ID]').val(ID);
-
+                
+                
+                $('#thickBoxProductLists').empty();
+                var i=0;
+                if(response.itemsNumber>0){
+                    console.log(response);
+                    while(i<response.itemsNumber){
+                        if(response.item[i].type == "box"){
+                            $("#offerManagementDetails").append('<li>1 borne '+response.item[i].model+' au prix de '+response.item[i].locationPrice+' €/mois et un coût d\'installation de '+response.item[i].installationPrice+' €</a></li>');
+                        }else{
+                            $("#offerManagementDetails").append('<li>1 vélo '+response.item[i].brand+' '+response.item[i].model+' au prix de '+response.item[i].locationPrice+' €/mois</a></li>');
+                        }
+                        i++;
+                    }
+                }else{
+                    
+                }
+                
                 if($("#widget-offerManagement-form select[name=type]").val()=="achat"){
                     $("#widget-offerManagement-form input[name=start]").attr("readonly", true);
                     $("#widget-offerManagement-form input[name=end]").attr("readonly", true);
@@ -330,9 +350,17 @@ function retrieve_offer(ID, action){
                 if(response.amount){
                     $('#widget-offerManagement-form input[name=amount]').val(response.amount);
                 }
-
+                
+                $('#offerManagement').on('shown.bs.modal', function () {
+                    if(response.file != null && response.file != ''){
+                        $('.offerManagementPDF').removeClass('hidden');
+                        $('#offerManagementPDF').attr('data','offres/'+response.file+'.pdf');                    
+                    }else{
+                        $('.offerManagementPDF').addClass('hidden');
+                        $('#offerManagementPDF').attr('data',"");                    
+                    }
+                })                
             }
         }
     })
-
 }

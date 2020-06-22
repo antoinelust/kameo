@@ -56,7 +56,7 @@ if($user != NULL)
     
     
     
-	$sql="select * from reservations where EMAIL = '$user' and DATE_END_2 < now() and STAANN!='D' order by DATE_START_2 DESC";
+	$sql="select aa.*, bb.FRAME_NUMBER from reservations aa, customer_bikes bb where aa.EMAIL = '$user' and aa.DATE_END_2 < now() and aa.STAANN!='D' and aa.BIKE_ID=bb.ID order by DATE_START_2 DESC";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -72,6 +72,7 @@ if($user != NULL)
     while($row = mysqli_fetch_array($result))
     {
 		$response['booking'][$i]['ID']=$row['ID'];
+        $response['booking'][$i]['bikeID']=$row['BIKE_ID'];
         $response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];
 		$response['booking'][$i]['start']= $row['DATE_START_2'];            
 		$response['booking'][$i]['end']=$row['DATE_END_2'];
@@ -111,7 +112,7 @@ if($user != NULL)
 	//2nd part : get all the records in the future
 
     include 'connexion.php';
-	$sql="select * from reservations where EMAIL = '$user' and DATE_END_2 > now() and STAANN!='D' order by DATE_START_2";
+	$sql="select aa.*, bb.FRAME_NUMBER from reservations aa, customer_bikes bb where aa.EMAIL = '$user' and aa.DATE_END_2 > now() and aa.STAANN!='D' and aa.BIKE_ID=bb.ID order by DATE_START_2";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -124,14 +125,13 @@ if($user != NULL)
     $response['booking']['codePresence']=false;
     while($row = mysqli_fetch_array($result))
     {
-
-        
-        $frameNumber=$row['FRAME_NUMBER'];
         $buildingStart=$row['BUILDING_START'];
         $buildingEnd=$row['BUILDING_END'];
+        $bikeID=$row['BIKE_ID'];
         
         
-		$response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];
+		$response['booking'][$i]['bikeID']=$bikeID;
+		$response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];;
 		$response['booking'][$i]['start']= $row['DATE_START_2'];
 		$response['booking'][$i]['end']=$row['DATE_END_2'];
 		$response['booking'][$i]['building_start']=$row['BUILDING_START'];
@@ -139,9 +139,11 @@ if($user != NULL)
 		$response['booking'][$i]['time']="past";
 		$response['booking'][$i]['time']="future";
         $response['booking'][$i]['bookingID']=$row['ID'];
-        $ID=$row['ID'];
+        $ID=$row['ID'];      
+        
         
         $buildingReference=$row['BUILDING_START'];        
+        include 'connexion.php';
         $sql2="select * from building_access where BUILDING_REFERENCE='$buildingReference'";
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -168,7 +170,7 @@ if($user != NULL)
         $response['booking'][$i]['building_end_nl']=$resultat2['BUILDING_NL'];
 
         $dateEnd=$row['DATE_END_2'];
-        $sql3="select * from reservations where FRAME_NUMBER='$frameNumber' and DATE_START_2>'$dateEnd' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
+        $sql3="select * from reservations where BIKE_ID='$bikeID' and DATE_START_2>'$dateEnd' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
         
         if ($conn->query($sql3) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

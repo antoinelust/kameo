@@ -15,7 +15,7 @@ if($bookingID != NULL)
 {
 		
     include 'connexion.php';
-	$sql="select aa.ID, aa.DATE_START_2, aa.DATE_END_2, aa.FRAME_NUMBER, bb.BUILDING_FR as 'building_start', cc.BUILDING_FR as 'building_end' from reservations aa, building_access bb, building_access cc where aa.ID = '$bookingID' and aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE";
+	$sql="select aa.BIKE_ID, aa.DATE_START_2, aa.DATE_END_2, bb.BUILDING_FR as 'building_start', cc.BUILDING_FR as 'building_end', dd.FRAME_NUMBER from reservations aa, building_access bb, building_access cc, customer_bikes dd where aa.ID = '$bookingID' and aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE and aa.BIKE_ID=dd.ID";
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -32,7 +32,9 @@ if($bookingID != NULL)
     
     
 	$frameNumber = $resultat['FRAME_NUMBER'];
+	$bikeID = $resultat['BIKE_ID'];
     $response['booking']['ID']=$bookingID;
+    $response['booking']['bikeID']=$bikeID;
     $response['booking']['buildingStart']= $resultat['building_start'];            
     $response['booking']['buildingEnd']= $resultat['building_end'];   
     $response['booking']['start']=$resultat['DATE_START_2'];
@@ -40,7 +42,8 @@ if($bookingID != NULL)
     
     
     include 'connexion.php';
-	$sql2="SELECT * FROM customer_bikes WHERE FRAME_NUMBER='$frameNumber'";
+	$sql2="SELECT * FROM customer_bikes WHERE ID='$bikeID'";
+    
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -81,7 +84,7 @@ if($bookingID != NULL)
     
     
     include 'connexion.php';
-	$sql="select * from reservations where DATE_START_2 < '$dateStart2String' and FRAME_NUMBER = '$frameNumber' and STAANN != 'D' ORDER BY DATE_START_2 DESC LIMIT 1";
+	$sql="select * from reservations where DATE_START_2 < '$dateStart2String' and BIKE_ID = '$bikeID' and STAANN != 'D' ORDER BY DATE_START_2 DESC LIMIT 1";
     
 	
     if ($conn->query($sql) === FALSE) {
@@ -122,7 +125,7 @@ if($bookingID != NULL)
     
 
     include 'connexion.php';
-	$sql="select * from reservations where DATE_START_2 > '$dateStart2String' and FRAME_NUMBER = '$frameNumber' and STAANN != 'D' ORDER BY DATE_START_2 LIMIT 1";    
+	$sql="select * from reservations where DATE_START_2 > '$dateStart2String' and BIKE_ID = '$bikeID' and STAANN != 'D' ORDER BY DATE_START_2 LIMIT 1";    
     
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);

@@ -85,6 +85,8 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['deliveryDate']=$row['DELIVERY_DATE'];
     $response['bike'][$i]['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
     $response['bike'][$i]['orderNumber']=$row['ORDER_NUMBER'];
+    $response['bike'][$i]['size']=$row['SIZE'];
+    $response['bike'][$i]['color']=$row['COLOR'];
     
     
     if($row['TYPE']){
@@ -137,7 +139,7 @@ include 'connexion.php';
 $dateStart=new DateTime();
 $dateStart->setDate(date("Y"), 1 , 1);
 $dateStartString=$dateStart->format('Y-m-d');
-$sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') and cc.FRAME_NUMBER=dd.FRAME_NUMBER and cc.STAANN != 'D' and dd.STAANN!='D' and dd.DATE_START_2>'$dateStartString'";
+$sql2="SELECT count(1) FROM customer_bikes cc, reservations dd where COMPANY=(select COMPANY from customer_referential where EMAIL='$email') and cc.ID=dd.BIKE_ID and cc.STAANN != 'D' and dd.STAANN!='D' and dd.DATE_START_2>'$dateStartString'";
 if ($conn->query($sql2) === FALSE){
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);

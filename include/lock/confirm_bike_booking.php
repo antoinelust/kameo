@@ -8,6 +8,20 @@ $frameNumber=$_GET['frameNumber'];
 
 
 include '../connexion.php';
+$sql="SELECT ID from customer_bikes WHERE FRAME_NUMBER = '$frame_number'";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$result = mysqli_query($conn, $sql);  
+$resultat = mysqli_fetch_assoc($result);  
+$conn->close();
+
+$bike_ID=$resultat['ID'];
+
+
+include '../connexion.php';
 $sql="SELECT * from customer_referential WHERE RFID='$rfid'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -52,7 +66,7 @@ if($length=="1"){
     $test=CallAPI('POST', 'https://www.kameobikes.com/test/include/new_booking.php', $data);
         
     include '../connexion.php';
-    $sql="SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE FRAME_NUMBER LIKE (SELECT FRAME_NUMBER FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START ='$building' AND FRAME_NUMBER='$frameNumber' AND CODE = '0' AND VALID = 'Y' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())))";    
+    $sql="SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE BIKE_ID LIKE (SELECT BIKE_ID FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START ='$building' AND BIKE_ID='$bike_ID' AND CODE = '0' AND VALID = 'Y' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())))";    
             
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);

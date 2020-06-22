@@ -1574,3 +1574,11 @@ SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
 SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
 SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
 SQL5 :select * from companies where INTERNAL_REFERENCE='Les petits producteurs' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='S.A. G.P.I.' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='S.A. G.P.I.' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='S.A. G.P.I.' and BILLING_GROUP='1'
+SQL4 :select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures
+SQL5 :select * from companies where INTERNAL_REFERENCE='S.A. G.P.I.' and BILLING_GROUP='1'

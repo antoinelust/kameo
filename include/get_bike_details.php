@@ -9,47 +9,35 @@ include 'globalfunctions.php';
 
 
 
-$frameNumber=isset($_POST['frameNumber']) ? $_POST['frameNumber'] : NULL;
-$id=isset($_POST['id']) ? $_POST['id'] : NULL;
-$company=isset($_POST['company']) ? $_POST['company'] : NULL;
+$id=isset($_POST['bikeID']) ? $_POST['bikeID'] : NULL;
 
 $response=array();
 
 
-if($frameNumber != NULL || $id != NULL)
+if($id != NULL)
 {
 
 
     include 'connexion.php';
-    if($frameNumber != NULL){
-        $sql="SELECT *  FROM customer_bikes WHERE FRAME_NUMBER = '$frameNumber'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-    }
-    else if($id != NULL){
-        $sql="SELECT *  FROM customer_bikes WHERE ID = '$id'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
+    $sql="SELECT *  FROM customer_bikes WHERE ID = '$id'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
     }
 
     $result = mysqli_query($conn, $sql);
-    $length = $result->num_rows;
     $row = mysqli_fetch_assoc($result);
     $response['response']="success";
     $response['id']=$row['ID'];
-    $response['frameNumber']=$frameNumber;
+    $response['frameNumber']=$row['FRAME_NUMBER'];
     $response['model']=$row['MODEL'];
     $response['type']=$row['TYPE'];
     $response['frameReference']=$row['FRAME_REFERENCE'];
     $response['lockerReference']=$row['LOCKER_REFERENCE'];
     $response['company']=$row['COMPANY'];
     $response['size']=$row['SIZE'];
+    $response['color']=$row['COLOR'];
     $response['leasing']=$row['AUTOMATIC_BILLING'];
     $response['insurance']=$row['INSURANCE'];
     $response['leasingPrice']=$row['LEASING_PRICE'];
@@ -65,14 +53,12 @@ if($frameNumber != NULL || $id != NULL)
     $response['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
     $response['orderNumber']=$row['ORDER_NUMBER'];
     $response['offerID']=$row['OFFER_ID'];
+    $company=$row['COMPANY'];
     
 
     $response['status']=$row['STATUS'];
-    if(!$company){
-        $company=$row['COMPANY'];
-    }
     include 'connexion.php';
-    $sql="SELECT bb.BUILDING_REFERENCE, bb.BUILDING_FR FROM bike_building_access aa, building_access bb WHERE aa.BIKE_NUMBER='$frameNumber' and BUILDING_REFERENCE=aa.BUILDING_CODE and aa.STAANN!='D' and COMPANY='$company'";
+    $sql="SELECT bb.BUILDING_REFERENCE, bb.BUILDING_FR FROM bike_building_access aa, building_access bb WHERE aa.BIKE_ID='$id' and BUILDING_REFERENCE=aa.BUILDING_CODE and aa.STAANN!='D' and COMPANY='$company'";
 
 
     if ($conn->query($sql) === FALSE) {
@@ -92,7 +78,7 @@ if($frameNumber != NULL || $id != NULL)
 
 
     include 'connexion.php';
-    $sql="SELECT BUILDING_REFERENCE, BUILDING_FR FROM building_access WHERE COMPANY = '$company' AND not exists (select 1 from bike_building_access bb where bb.BUILDING_CODE=BUILDING_REFERENCE and bb.BIKE_NUMBER='$frameNumber' and bb.STAANN!='D')";
+    $sql="SELECT BUILDING_REFERENCE, BUILDING_FR FROM building_access WHERE COMPANY = '$company' AND not exists (select 1 from bike_building_access bb where bb.BUILDING_CODE=BUILDING_REFERENCE and bb.BIKE_ID='$id' and bb.STAANN!='D')";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -108,7 +94,7 @@ if($frameNumber != NULL || $id != NULL)
     }
 
     include 'connexion.php';
-    $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa, customer_bike_access bb WHERE aa.COMPANY='$company' AND aa.EMAIL=bb.EMAIL and aa.STAANN != 'D' and bb.BIKE_NUMBER='$frameNumber' and bb.STAANN!='D' ORDER BY NOM";
+    $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa, customer_bike_access bb WHERE aa.COMPANY='$company' AND aa.EMAIL=bb.EMAIL and aa.STAANN != 'D' and bb.BIKE_ID='$id' and bb.STAANN!='D' ORDER BY NOM";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -128,7 +114,7 @@ if($frameNumber != NULL || $id != NULL)
 
 
     include 'connexion.php';
-    $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa WHERE aa.COMPANY='$company' AND NOT EXISTS (select 1 from customer_bike_access bb WHERE aa.EMAIL=bb.EMAIL and bb.BIKE_NUMBER='$frameNumber' and bb.STAANN!='D') ORDER BY NOM";
+    $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa WHERE aa.COMPANY='$company' AND NOT EXISTS (select 1 from customer_bike_access bb WHERE aa.EMAIL=bb.EMAIL and bb.BIKE_ID='$id' and bb.STAANN!='D') ORDER BY NOM";
     if($company){
         $sql=$sql." AND COMPANY='$company'";
     }

@@ -34,7 +34,6 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     
                     
                     
-                    
                     if(response.bill[i].sentDate==null){
                         var sendDate="N/A";
                     }else{
@@ -79,9 +78,9 @@ function get_bills_listing(company, sent, paid, direction, email) {
                         var paidLimit="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
                     }
 
+                    
 
-
-                    if(response.update && response.bill[i].amountHTVA>0){
+                    if(response.update && response.bill[i].amountHTVA>=0){
                         var temp="<tr><td class=\"text-green\">IN</td>";
                     }else if(response.update && response.bill[i].amountHTVA<0){
                         var temp="<tr><td class=\"text-red\">OUT</td>";
@@ -97,7 +96,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                         var temp="<td><a href=\"#\" class=\"text-red\">"+response.bill[i].ID+"</a></td>";
                     }
                     dest=dest.concat(temp);
-                    if(response.update && response.bill[i].amountHTVA>0){
+                    if(response.update && response.bill[i].amountHTVA>=0){
                         var temp="<td>"+response.bill[i].company+"</a></td>";
                         dest=dest.concat(temp);
                     }else if(response.update && response.bill[i].amountHTVA<0){

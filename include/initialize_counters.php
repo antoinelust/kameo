@@ -71,7 +71,7 @@ $dateEndString=$dateEnd->format('Y-m-d');
 
 
 include 'connexion.php';
-$sql="SELECT 1 FROM customer_bikes cc, reservations dd where cc.COMPANY='$company' AND cc.FRAME_NUMBER=dd.FRAME_NUMBER and dd.STAANN!='D' and dd.DATE_START_2>'$dateStartString' and dd.DATE_END_2<='$dateEndString'";
+$sql="SELECT 1 FROM customer_bikes cc, reservations dd where cc.COMPANY='$company' AND cc.ID=dd.BIKE_ID and dd.STAANN!='D' and dd.DATE_START_2>'$dateStartString' and dd.DATE_END_2<='$dateEndString'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
