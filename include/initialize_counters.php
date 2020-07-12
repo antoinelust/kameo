@@ -116,6 +116,20 @@ if($company=='KAMEO'){
 
     $response['bikeNumber']=$length;
     $conn->close();
+    
+    include 'connexion.php';
+    $sql = "select 1 from client_orders";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+
+    $result = mysqli_query($conn, $sql);
+    $length=$result->num_rows;
+
+    $response['ordersNumber']=$length;
+    $conn->close();
 
     include 'connexion.php';
     $sql = "select 1 from bike_catalog where STAANN != 'D'";

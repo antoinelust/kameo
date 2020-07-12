@@ -51,14 +51,12 @@ $result = mysqli_query($conn, $sql);
 $length = $result->num_rows;
 $response['usersNumber']=$length;
 
+$response['response']="success";
 
 
 $i=0;
 while($row = mysqli_fetch_array($result))
-
 {
-
-    $response['response']="success";
     $response['user'][$i]['name']=$row['NOM'];
     $response['user'][$i]['firstName']=$row['PRENOM'];            
     $response['user'][$i]['email']=$row['EMAIL'];  

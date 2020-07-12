@@ -124,10 +124,24 @@ $conn->close();
                     $lastDay=$row['lastDay'];
                     $billingGroup=$row['BILLING_GROUP'];
                     
-                    echo "Company: ".$company."<br/>Last Day of contract :".$lastDay."<br/>Current day : ".$day."<br />";
-                    if($lastDay==$day || last_day_month($now->format('m'))==$day){
+                    echo "<h4 class='text-green'>Company: ".$company."</h4><br/>Billing Group: ".$billingGroup."<br/>Last Day of contract :".$lastDay."<br/>Current day : ".$day."<br /><br/><u>Details of bikes</u><br/>";
+                    
+                    include 'include/connexion.php';
+                    $sql="SELECT * FROM customer_bikes where COMPANY='$company' and BILLING_GROUP='$billingGroup' and CONTRACT_START<='$date1MonthBeforeString' and CONTRACT_END is NULL and CONTRACT_TYPE != 'selling'";
+                    if ($conn->query($sql) === FALSE) {
+                        echo $conn->error;
+                        die;
+                    }
+                    $result2 = mysqli_query($conn, $sql);   
+                    $conn->close();    
+                    while($row2 = mysqli_fetch_array($result2)){
+                        echo "<br/>Bike Number : ".$row2['FRAME_NUMBER']."<br/>Contract Start : ".$row2['CONTRACT_START']."<br/>";
+                    }
+                    
+                    
+                    if($lastDay==$day || (last_day_month($now->format('m'))==$day && last_day_month($now->format('m'))<$lastDay)){
                         
-                        echo "Result: Generation of bill <br/>";
+                        echo "<br/>Result: Generation of bill <br/>";
                       
                         $i=0;
                         $data['company'] = $company;
@@ -218,10 +232,10 @@ $conn->close();
                         var_dump($data);
                         var_dump($test);
                     }else{
-                        echo "Result: Passed <br/>";                        
+                        echo "<br/>Result: Passed <br/>";                        
                     }
                     
-                    echo "------------------<br />";
+                    echo "<div class=\"separator\"></div>";
                     
                 }
                 

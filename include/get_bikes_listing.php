@@ -12,6 +12,7 @@ include 'globalfunctions.php';
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : NULL;
 $admin=isset($_POST['admin']) ? $_POST['admin'] : NULL;
+$stockAndCommand=isset($_POST['stockAndCommand']) ? $_POST['stockAndCommand'] : FALSE;
 
 $response=array();
 
@@ -46,6 +47,11 @@ if($admin!="Y"){
 }else{
     include 'connexion.php';
     $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
+    
+    if($stockAndCommand){
+        $sql = $sql." AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";
+    }
+    
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -105,6 +111,8 @@ while($row = mysqli_fetch_array($result))
         $response['bike'][$i]['brand']=$resultat2['BRAND'];
         $response['bike'][$i]['modelBike']=$resultat2['MODEL'];
         $response['bike'][$i]['frameType']=$resultat2['FRAME_TYPE'];
+        $response['bike'][$i]['buyingPrice']=$resultat2['BUYING_PRICE'];
+        $response['bike'][$i]['priceHTVA']=$resultat2['PRICE_HTVA'];
 
     }else{
         $response['bike'][$i]['brand']=null;

@@ -20,7 +20,7 @@ if(isset($_GET['action'])){
             
             $response=array();
 
-            
+            /*
             include 'connexion.php';
             $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
             if ($conn->query($sql) === FALSE) {
@@ -49,7 +49,7 @@ if(isset($_GET['action'])){
                 }
             }
 
-            $response['bike']['img']['number']=$i;
+            $response['bike']['img']['number']=$i;*/
             
             include 'connexion.php';
             $sql="SELECT * FROM companies WHERE STAANN != 'D'";

@@ -330,7 +330,6 @@ get_all_bikes().done(function(response){
           
         $(that).parents('.bikeRow').find('.contractLeasing').html(contractLeasing + '€');
       });
-        
         update_elements_price();                 
         
     });      
@@ -459,7 +458,6 @@ function update_elements_price(){
     var editable = document.querySelectorAll('td[contentEditable]');
 
     for (var i=0, len = editable.length; i<len; i++){
-
         editable[i].onblur = function(){
             if(this.classList.contains("bikeLeasing")){
                 var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];

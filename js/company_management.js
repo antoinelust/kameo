@@ -108,12 +108,9 @@ function get_company_listing(type) {
                     { "width": "50px" },
                     { "width": "50px" },
                     { "width": "50px" },
-                    { "width": "50px" }                  ]
-
-
+                    { "width": "50px" }                  
+                  ]
             });
-
-
         }
       }
     })
@@ -604,7 +601,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
                       var i=0;
                       var dest="";
                       while (i < response.bikeNumber){
-                        temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].frameNumber+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
+                        temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
                         dest=dest.concat(temp);
                         i++;
 

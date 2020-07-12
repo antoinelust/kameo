@@ -226,169 +226,171 @@ function update_deposit_hour_form(){
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
         }
         // 1st step: days and month fileds
+        if(daysToDisplay>0){
+            
+            var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+            var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+            var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+            var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
-        var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-        var daysEN=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        var daysNL=['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
-        var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-        var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
 
+            var startDate = new Date();
+            var i=0;
+            var j=0;
+            var dest ="<select id=\"search-bikes-form-day\" name=\"search-bikes-form-day\"  class=\"form-control\">";
+            var dest2 ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
 
-        var startDate = new Date();
-        var i=0;
-        var j=0;
-        var dest ="<select id=\"search-bikes-form-day\" name=\"search-bikes-form-day\"  class=\"form-control\">";
-        var dest2 ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
+            var tempDate = new Date();
+            var tempDate2=tempDate;
+            bookingLength=parseInt(bookingLength);
+            while(i<=daysToDisplay){
+                if(tempDate.getHours()>=hourEndDepositBooking){
+                    tempDate.setHours(hourStartIntakeBooking);
+                    tempDate.setMinutes(0);
+                    tempDate.setDate(tempDate.getDate()+1);
+                }
+                var dayFR = daysFR[tempDate.getDay()];
+                var dayEN = daysEN[tempDate.getDay()];
+                var dayNL = daysNL[tempDate.getDay()];
+                if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
+                    var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
 
-        var tempDate = new Date();
-        var tempDate2=tempDate;
-        bookingLength=parseInt(bookingLength);
-        while(i<=daysToDisplay){
-            if(tempDate.getHours()>=hourEndDepositBooking){
-                tempDate.setHours(hourStartIntakeBooking);
-                tempDate.setMinutes(0);
+                    dest = dest.concat(bookingDay);
+                }
+
+                i++;
                 tempDate.setDate(tempDate.getDate()+1);
             }
-            var dayFR = daysFR[tempDate.getDay()];
-            var dayEN = daysEN[tempDate.getDay()];
-            var dayNL = daysNL[tempDate.getDay()];
-            if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
-                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayFR+" "+tempDate.getDate()+" "+monthFR[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control en\">"+dayEN+" "+tempDate.getDate()+" "+monthEN[tempDate.getMonth()]+"</option><option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control nl\">"+dayNL+" "+tempDate.getDate()+" "+monthNL[tempDate.getMonth()]+"</option>";
+            var bookingDay="</select>";
+            dest = dest.concat(bookingDay);
+            document.getElementById('booking_day_form').innerHTML=dest;
 
-                dest = dest.concat(bookingDay);
+            document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);
+
+
+            var currentDate=new Date();
+
+            var hours=currentDate.getHours();
+            var minutes=currentDate.getMinutes();
+
+            var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
+            var h = ((((minutes/105) + .5) | 0) + hours) % 24;
+
+            var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
+
+
+
+            var dest="";
+
+            var dateActuelle=dateTemp.getDate()+'-'+(dateTemp.getMonth()+1)+'-'+dateTemp.getFullYear();
+
+            var dateSearch=$('#search-bikes-form-day').val().split('-');
+
+
+            if(dateActuelle!=$('#search-bikes-form-day').val()){
+                dateTemp.setDate(dateSearch[0]);
+                dateTemp.setMonth(dateSearch[1] - 1);
+                dateTemp.setFullYear(dateSearch[2]);
+                dateTemp.setHours(hourStartIntakeBooking);
+                dateTemp.setMinutes(0);            
+            }                
+            else if(dateTemp.getHours()>=hourEndDepositBooking){
+                dateTemp.setHours(hourStartIntakeBooking);
+                dateTemp.setMinutes(0);
+                dateTemp.setDate(dateTemp.getDate()+1);
             }
 
-            i++;
-            tempDate.setDate(tempDate.getDate()+1);
-        }
-        var bookingDay="</select>";
-        dest = dest.concat(bookingDay);
-        document.getElementById('booking_day_form').innerHTML=dest;
+            while(dateTemp.getHours()<hourEndIntakeBooking){
+                if(dateTemp.getMinutes()=="0"){
+                    var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
+                }else{
+                    var hourString=dateTemp.getHours()+"h"+dateTemp.getMinutes();
+                }
 
-        document.getElementById('search-bikes-form-day').addEventListener('change', function () { update_intake_hour_form()}, false);
-
-
-        var currentDate=new Date();
-        
-        var hours=currentDate.getHours();
-        var minutes=currentDate.getMinutes();
-
-        var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
-        var h = ((((minutes/105) + .5) | 0) + hours) % 24;
-
-        var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
+                dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
 
 
-
-        var dest="";
-        
-        var dateActuelle=dateTemp.getDate()+'-'+(dateTemp.getMonth()+1)+'-'+dateTemp.getFullYear();
-        
-        var dateSearch=$('#search-bikes-form-day').val().split('-');
-        
-        
-        if(dateActuelle!=$('#search-bikes-form-day').val()){
-            dateTemp.setDate(dateSearch[0]);
-            dateTemp.setMonth(dateSearch[1] - 1);
-            dateTemp.setFullYear(dateSearch[2]);
-            dateTemp.setHours(hourStartIntakeBooking);
-            dateTemp.setMinutes(0);            
-        }                
-        else if(dateTemp.getHours()>=hourEndDepositBooking){
-            dateTemp.setHours(hourStartIntakeBooking);
-            dateTemp.setMinutes(0);
-            dateTemp.setDate(dateTemp.getDate()+1);
-        }
-                
-        while(dateTemp.getHours()<hourEndIntakeBooking){
-            if(dateTemp.getMinutes()=="0"){
-                var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
-            }else{
-                var hourString=dateTemp.getHours()+"h"+dateTemp.getMinutes();
+                var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
+                dest=dest.concat(tempString);
             }
 
-            dateTemp.setMinutes(dateTemp.getMinutes()+ parseInt(15));
-
-
+            var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
             var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
             dest=dest.concat(tempString);
-        }
-
-        var hourString=dateTemp.getHours()+"h0"+dateTemp.getMinutes();
-        var tempString="<option value=\""+hourString+"\">"+hourString+"</option>";
-        dest=dest.concat(tempString);
 
 
-        document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
+            document.getElementById('search-bikes-form-intake-hour').innerHTML=dest;
 
 
 
-        // 2nd step: intake and deposit buildings
-        var i=0;
-        $.ajax({
-            url: 'include/booking_building_form.php',
-            type: 'post',
-            data: { "email": email},
-            success: function(response) {
-                if(response.response=="success"){
-                    if(response.buildingNumber=="1"){
-                        var dest="";
-                        var building_fr=response.building[1].fr;
-                        var building_en=response.building[1].en;
-                        var building_nl=response.building[1].nl;
+            // 2nd step: intake and deposit buildings
+            var i=0;
+            $.ajax({
+                url: 'include/booking_building_form.php',
+                type: 'post',
+                data: { "email": email},
+                success: function(response) {
+                    if(response.response=="success"){
+                        if(response.buildingNumber=="1"){
+                            var dest="";
+                            var building_fr=response.building[1].fr;
+                            var building_en=response.building[1].en;
+                            var building_nl=response.building[1].nl;
 
-                        var tempBuilding="<select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select>";
-                        dest=tempBuilding;
-                    } else{
-                        var dest="";
-                        var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";
-                        dest = dest.concat(tempBuilding);
-                        while (i < response.buildingNumber){
-                            i++;
-                            var building_code=response.building[i].building_code;
-                            var building_fr=response.building[i].fr;
-                            var building_en=response.building[i].en;
-                            var building_nl=response.building[i].nl;
-
-                            var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
+                            var tempBuilding="<select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select>";
+                            dest=tempBuilding;
+                        } else{
+                            var dest="";
+                            var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";
                             dest = dest.concat(tempBuilding);
-                        }
-                        var tempBuilding="</select>";
-                        dest = dest.concat(tempBuilding);
-                        document.getElementById('start_building_form').innerHTML=dest;
-                        document.getElementById('start_building_form').innerHTML=dest;
+                            while (i < response.buildingNumber){
+                                i++;
+                                var building_code=response.building[i].building_code;
+                                var building_fr=response.building[i].fr;
+                                var building_en=response.building[i].en;
+                                var building_nl=response.building[i].nl;
 
-                        var j=0;
-                        var dest="";
-                        var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";
-                        dest = dest.concat(tempBuilding);
-
-                        while (j < response.buildingNumber){
-                            j++;
-                            var building_code=response.building[j].building_code;
-                            var building_fr=response.building[j].fr;
-                            var building_en=response.building[j].en;
-                            var building_nl=response.building[j].nl;
-
-                            var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
-                            dest = dest.concat(tempBuilding);
+                                var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
+                                dest = dest.concat(tempBuilding);
+                            }
                             var tempBuilding="</select>";
+                            dest = dest.concat(tempBuilding);
+                            document.getElementById('start_building_form').innerHTML=dest;
+                            document.getElementById('start_building_form').innerHTML=dest;
 
+                            var j=0;
+                            var dest="";
+                            var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";
+                            dest = dest.concat(tempBuilding);
+
+                            while (j < response.buildingNumber){
+                                j++;
+                                var building_code=response.building[j].building_code;
+                                var building_fr=response.building[j].fr;
+                                var building_en=response.building[j].en;
+                                var building_nl=response.building[j].nl;
+
+                                var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
+                                dest = dest.concat(tempBuilding);
+                                var tempBuilding="</select>";
+
+                            }
+                            dest = dest.concat(tempBuilding);
                         }
-                        dest = dest.concat(tempBuilding);
+                        document.getElementById('deposit_building_form').innerHTML=dest;
+                        document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
+                        document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
+                        displayLanguage();
+
+                    }else{
+                        console.log(response.message);
                     }
-                    document.getElementById('deposit_building_form').innerHTML=dest;
-                    document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
-                    document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
-                    displayLanguage();
-                    
-                }else{
-                    console.log(response.message);
                 }
-            }
-        });
+            });
 
 
-        update_deposit_form();
+            update_deposit_form();
+        }
     }

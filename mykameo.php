@@ -39,19 +39,21 @@ include 'include/activitylog.php';
 <script type="text/javascript" src="js/global_functions.js"></script>
 <script type="text/javascript" src="js/dashboard_management.js"></script>
 <script type="text/javascript" src="js/initialize_counters.js"></script>
+<script type="text/javascript" src="js/cafetaria.js"></script>
+<script type="text/javascript" src="js/orderManagement.js"></script>
 <script src="js/OpenLayers/OpenLayers.js"></script>
 
 
 
 <style media="screen">
-.tableFixed {
-  table-layout: fixed;
-}
-.separator-small{
-  padding-top:20px;
-  width:60%;
-  opacity: 0.5;
-}
+    .tableFixed {
+      table-layout: fixed;
+    }
+    .separator-small{
+      padding-top:20px;
+      width:60%;
+      opacity: 0.5;
+    }
 </style>
 
 
@@ -102,10 +104,10 @@ $( ".reservations" ).click(function() {
 
 
 
-var tempDate=new Date();
-$(".form_date_end").data("datetimepicker").setDate(tempDate);
-tempDate.setMonth(tempDate.getMonth()-1);
-$(".form_date_start").data("datetimepicker").setDate(tempDate);
+    var tempDate=new Date();
+    $(".form_date_end").data("datetimepicker").setDate(tempDate);
+    tempDate.setMonth(tempDate.getMonth()-1);
+    $(".form_date_start").data("datetimepicker").setDate(tempDate);
 
 });
 
@@ -508,7 +510,7 @@ function construct_form_for_billing_status_update(ID){
         var dest='<table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
         while(i<response.billDetailsNumber){
           var temp="<tr>";
-          temp=temp.concat("<th>"+response.bill.billDetails[i].frameNumber+"</th><th>"+response.bill.billDetails[i].amountHTVA+"</th><th>"+response.bill.billDetails[i].comments+"</th></tr>")
+          temp=temp.concat("<th>"+response.bill.billDetails[i].bikeID + " - " + response.bill.billDetails[i].frameNumber+"</th><th>"+response.bill.billDetails[i].amountHTVA+"</th><th>"+response.bill.billDetails[i].comments+"</th></tr>")
           i++;
           dest=dest.concat(temp);
         }
@@ -596,7 +598,6 @@ function initializeUpdatePortfolioBike(ID){
 
     }
   })
-
 }
 
 function initializeCreatePortfolioBike(){
@@ -610,14 +611,16 @@ function initializeCreatePortfolioBike(){
 if($connected){
 
   include 'include/connexion.php';
-  $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.TYPE from customer_referential aa, customer_bike_access bb where aa.EMAIL='$user' and aa.EMAIL=bb.EMAIL LIMIT 1";
+  $sql = "select * from customer_referential aa, customer_bike_access bb where aa.EMAIL='$user' and aa.EMAIL=bb.EMAIL and bb.TYPE='personnel' LIMIT 1";
   $result = mysqli_query($conn, $sql);
+  $length = $result->num_rows;
+    
   $row = mysqli_fetch_assoc($result);    
-  if ($row['TYPE']=="partage"){
-    $company=true;
+  if ($length>0){
+    $company=false;
   }
   else{
-    $company=false;
+    $company=true;
   }
   $conn->close();
   ?>
@@ -762,8 +765,6 @@ if($connected){
             });
               
               
-              
-              
             document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
               
             $('.tasksManagerClick').click(function(){
@@ -773,7 +774,7 @@ if($connected){
             $('#offerManagerClick').click(function(){
                 list_contracts_offers('*');                
             });
-            
+            $('.ordersManagerClick').click(function(){get_orders_listing()});
             document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
             document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
             document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
@@ -796,6 +797,7 @@ if($connected){
             }
 
             document.getElementById('clientManagement').classList.remove("hidden");
+            document.getElementById('orderManagement').classList.remove("hidden");
             document.getElementById('portfolioManagement').classList.remove("hidden");
             document.getElementById('bikesManagement').classList.remove("hidden");
             document.getElementById('boxesManagement').classList.remove("hidden");
@@ -1047,7 +1049,7 @@ if($connected){
                 var i=0;
                 var dest="";
                 while (i < response.bikeNumber){
-                  temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].frameNumber+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
+                  temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
                   dest=dest.concat(temp);
                   i++;
 
@@ -1067,39 +1069,6 @@ if($connected){
     })
   }
 
-  function create_bill(){
-    $.ajax({
-      url: 'include/get_companies_listing.php',
-      type: 'post',
-      data: {type: "*"},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          var i=0;
-          var dest="<select name=\"widget-addBill-form-company\" class=\"widget-addBill-form-company2\">";
-          while (i < response.companiesNumber){
-            temp="<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>";
-            dest=dest.concat(temp);
-            i++;
-
-          }
-          dest=dest.concat("<option value=\"other\">Autre</option></select>");
-          document.getElementsByClassName('widget-addBill-form-company')[0].innerHTML = dest;
-          document.getElementsByClassName('widget-addBill-form-date')[0].value = "";
-          document.getElementsByClassName('widget-addBill-form-amountHTVA')[0].value = "";
-          document.getElementsByClassName('widget-addBill-form-amountTVAC')[0].value = "";
-          document.getElementsByClassName('widget-addBill-form-sendingDate')[0].value = "";
-          document.getElementsByClassName('widget-addBill-form-paymentDate')[0].value = "";
-          $('.widget-addBill-form-companyOther').addClass("hidden");
-          $('.IDAddBill').removeClass('hidden');
-          $('.IDAddBillOut').removeClass('hidden');
-
-        }
-      }
-    })
-  }
 
 
   function update_user_information(email){
@@ -1712,7 +1681,8 @@ if($connected){
             <div class="col-md-12">
 
               <span id="assistanceSpan"></span>
-
+                
+            
               <?php if(!$company){
                 ?>
 
@@ -1739,6 +1709,9 @@ if($connected){
               <div class="col-md-12">
                 <div id="tabs-05c" class="tabs color tabs radius">
                   <ul id="mainTab" class="tabs-navigation">
+                    <li class="fr hidden orderBike"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>Commander</a></li>
+                    <li class="en hidden orderBike"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>Order</a></li>
+                    <li class="nl hidden orderBike"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>Order</a></li>
                     <li class="reserver active fr"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>Réserver un vélo</a> </li>
                     <li class="reserver active en"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>Book a bike</a> </li>
                     <li class="reserver active nl"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>Boek een fiets</a> </li>
@@ -1754,6 +1727,94 @@ if($connected){
                   </ul>
 
                   <div class="tabs-content">
+                    <div class="tab-pane" id="orderBike">
+                      <div class="bikeOrdered hidden">
+                            <h4 class="text-green fr">Votre commande - Vélo</h4>
+                            <h4 class="text-green en">Your order - Bike</h4>
+                            <h4 class="text-green nl">Your order - Bike</h4>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <ul>
+                                        <li class="fr"><strong>Marque :</strong> <span class="brand"></span></li>
+                                        <li class="nl"><strong>Brand :</strong> <span class="brand"></span></li>
+                                        <li class="en"><strong>Brand :</strong> <span class="brand"></span></li>
+                                        <li class="fr"><strong>Modèle :</strong> <span class="model"></span></li>
+                                        <li class="en"><strong>Model:</strong> <span class="model"></span></li>
+                                        <li class="nl"><strong>Model:</strong> <span class="model"></span></li>
+                                        <li class="fr"><strong>Taille :</strong> <span class="size"></span></li>
+                                        <li class="nl"><strong>Size :</strong> <span class="size"></span></li>
+                                        <li class="nl"><strong>Size :</strong> <span class="size"></span></li>
+                                        <li class="fr"><strong>Couleur :</strong> <span class="color"></span></li>
+                                        <li class="en"><strong>Couleur :</strong> <span class="color"></span></li>
+                                        <li class="nl"><strong>Couleur :</strong> <span class="color"></span></li>
+                                        <li class="fr"><strong>Statut :</strong> <span class="status"></span></li>
+                                        <li class="nl"><strong>Status :</strong> <span class="status"></span></li>
+                                        <li class="en"><strong>Status :</strong> <span class="status"></span></li>
+                                    </ul>
+                                    <strong>Remarque : </strong><br/>
+                                    <p class="remark"></p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <img class="image" title="Image commande" alt="image commande" width='100%' style="border: 1px solid #555;" />
+                                </div>
+                            </div>
+                            <div class="seperator"></div>
+                            <h4 class="text-green fr">Votre commande - Test</h4>
+                            <h4 class="text-green en">Your order - Test</h4>
+                            <h4 class="text-green nl">Your order - Test</h4>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <ul>
+                                        <li class="fr"><strong>Date pour le test :</strong> <span class="testDate"></span></li>
+                                        <li class="nl"><strong>Testing date :</strong> <span class="testDate"></span></li>
+                                        <li class="en"><strong>Testing date :</strong> <span class="testDate"></span></li>
+                                        <li class="fr"><strong>Lieu du test :</strong> <span class="testPlace"></span></li>
+                                        <li class="nl"><strong>Lieu du test :</strong> <span class="testPlace"></span></li>
+                                        <li class="en"><strong>Lieu du test :</strong> <span class="testPlace"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="seperator"></div>
+                            <h4 class="text-green fr">Votre commande - Livraison</h4>
+                            <h4 class="text-green en">Your order - Livraison</h4>
+                            <h4 class="text-green nl">Your order - Livraison</h4>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <ul>
+                                        <li class="fr"><strong>Date estimée de livraison :</strong> <span class="deliveryDate"></span></li>
+                                        <li class="nl"><strong>Estimated delivery date :</strong> <span class="deliveryDate"></span></li>
+                                        <li class="en"><strong>Estimated delivery date :</strong> <span class="deliveryDate"></span></li>
+                                        <li class="fr"><strong>Lieu de livraison :</strong> <span class="deliveryPlace"></span></li>
+                                        <li class="nl"><strong>Delivery address :</strong> <span class="deliveryPlace"></span></li>
+                                        <li class="en"><strong>Delivery address :</strong> <span class="deliveryPlace"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator"></div>
+                          
+                        <div id="gridForCatalog" class="gridForCatalog" data-example-id="contextual-table" class="bs-example">
+                            <div class="grid">
+                            </div>
+                        </div>
+                          
+                        <div class="separator gridForCatalog"></div>
+                          
+                        <div class="mesgs col-sm-12">
+                          <h4 class="text-green fr">Une question sur nos vélos ? Echangez avec notre expert</h4>
+                          <h4 class="text-green nl">Any question about our bikes ? Chat with our expert !</h4>
+                          <h4 class="text-green en">Any question about our bikes ? Chat with our expert !</h4>                            
+                          <div class="msg_history">
+                              <span id="divChatCommand"></span>
+                          </div>
+                          <div class="type_msg">
+                            <div class="input_msg_write">
+                              <input type="text" class="write_msg" placeholder="Type a message" />
+                              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>                      
                     <div class="tab-pane active" id="reserver">
                       <form id="search-bikes-form" action="include/search-bikes.php" method="post">
                         <div class="form-group">
@@ -1837,6 +1898,9 @@ if($connected){
                       loadClientConditions()
                       .done(function(response){
                         constructSearchForm(response.clientConditions.bookingDays, response.clientConditions.bookingLength, response.clientConditions.administrator, response.clientConditions.assistance, response.clientConditions.hourStartIntakeBooking, response.clientConditions.hourEndIntakeBooking, response.clientConditions.hourStartDepositBooking, response.clientConditions.hourEndDepositBooking, response.clientConditions.mondayIntake, response.clientConditions.tuesdayIntake, response.clientConditions.wednesdayIntake, response.clientConditions.thursdayIntake, response.clientConditions.fridayIntake, response.clientConditions.saturdayIntake, response.clientConditions.sundayIntake, response.clientConditions.mondayDeposit, response.clientConditions.tuesdayDeposit, response.clientConditions.wednesdayDeposit, response.clientConditions.thursdayDeposit, response.clientConditions.fridayDeposit, response.clientConditions.saturdayDeposit, response.clientConditions.sundayDeposit, response.clientConditions.maxBookingsPerYear, response.clientConditions.maxBookingsPerMonth, email);
+                        if (response.clientConditions.cafetaria == "Y"){
+                            $(".orderBike").removeClass("hidden");
+                        }
                         if (response.clientConditions.administrator == "Y"){
                           $(".fleetmanager").removeClass("hidden");
                         }
@@ -2013,41 +2077,42 @@ if($connected){
                                 var dest = "";
                                 while (i <= text.length)
                                 {
-                                  timestampStart=text.timestampStartBooking;
-                                  buildingStart=text.buildingStart;
-                                  timestampEnd=text.timestampEndBooking;
-                                  buildingEnd=text.buildingEnd;
+                                    timestampStart=text.timestampStartBooking;
+                                    buildingStart=text.buildingStart;
+                                    timestampEnd=text.timestampEndBooking;
+                                    buildingEnd=text.buildingEnd;
 
-                                  var bikeID=text.bike[i].bikeID;
-                                  var bikeFrameNumber=text.bike[i].frameNumber;
-                                  var bikeType=text.bike[i].typeDescription;
+                                    var bikeID=text.bike[i].bikeID;
+                                    var bikeFrameNumber=text.bike[i].frameNumber;
+                                    var bikeType=text.bike[i].typeDescription;
 
-                                  if(text.bike[i].brand && text.bike[i].model && text.bike[i].size){
+                                    if(text.bike[i].brand && text.bike[i].model && text.bike[i].size){
                                     var title= "Marque : "+text.bike[i].brand+" <br/>Modèle : "+text.bike[i].model+" <br/>Taille : "+text.bike[i].size;
-                                  }else{
+                                    }else{
                                     var title=bikeFrameNumber;
-                                  }
+                                    }
 
 
-                                  var codeVeloTemporaire ="<div class=\"col-md-4\">\
-                                  <div class=\"featured-box\">\
-                                  <div class=\"effect social-links\"> <img src=\"images_bikes/"+bikeID+".jpg\" alt=\"image\" />\
-                                  <div class=\"image-box-content\">\
-                                  <p> <a href=\"images_bikes/"+bikeID+".jpg\" data-lightbox-type=\"image\" title=\"\"><i class=\"fa fa-expand\"></i></a> </p>\
-                                  </div>\
-                                  </div>\
-                                  </div>\
-                                  </div>\
-                                  <div class=\"col-md-4\">\
-                                  <h4>"+ bikeType +"</h4>\
-                                  <p class=\"subtitle\">"+ title +"</p>\
-                                  </div>\
-                                  <div class=\"col-md-2\">\
-                                  <a class=\"button large green button-3d rounded icon-left\" name=\""+bikeID+"\" id=\"fr\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike(this.name)\"><span>Réserver</span></a>\
-                                  </div>\
-                                  <div class=\"seperator\"></div>";
-                                  dest = dest.concat(codeVeloTemporaire);
-                                  i++;
+
+                                    var codeVeloTemporaire ="<div class=\"col-md-4\">\
+                                    <div class=\"featured-box\">\
+                                    <div class=\"effect social-links\"> <img src=\"images_bikes/"+text.bike[i].img+".jpg\" alt=\"image\" />\
+                                    <div class=\"image-box-content\">\
+                                    <p> <a href=\"images_bikes/"+text.bike[i].img+".jpg\" data-lightbox-type=\"image\" title=\"\"><i class=\"fa fa-expand\"></i></a> </p>\
+                                    </div>\
+                                    </div>\
+                                    </div>\
+                                    </div>\
+                                    <div class=\"col-md-4\">\
+                                    <h4>"+ bikeType +"</h4>\
+                                    <p class=\"subtitle\">"+ title +"</p>\
+                                    </div>\
+                                    <div class=\"col-md-2\">\
+                                    <a class=\"button large green button-3d rounded icon-left\" name=\""+bikeID+"\" id=\"fr\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike(this.name)\"><span>Réserver</span></a>\
+                                    </div>\
+                                    <div class=\"seperator\"></div>";
+                                    dest = dest.concat(codeVeloTemporaire);
+                                    i++;
 
                                 }
                                 //affichage du résultat de la recherche
@@ -2423,6 +2488,13 @@ if($connected){
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#companyListing" href="#" class="clientManagerClick" ><i class="fa fa-users"></i></a> </div>
                               <div class="counter bold" id="counterClients" style="color:#3cb395"></div>
                               <p>Gérer les clients</p>
+                            </div>
+                          </div>
+                          <div class="col-md-4 hidden" id="orderManagement">
+                            <div class="icon-box medium fancy">
+                              <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#ordersListing" href="#" class="ordersManagerClick" ><i class="fa fa-users"></i></a> </div>
+                              <div class="counter bold" id="counterOrders" style="color:#3cb395"></div>
+                              <p>Gérer les commandes</p>
                             </div>
                           </div>
                           <div class="col-md-4 hidden" id="portfolioManagement">
@@ -4564,6 +4636,282 @@ if($connected){
         </script>
 
 
+        <div class="modal fade" id="ordersListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+                
+                <h4 class="text-green">Gérer les commandes</h4>
+
+              <div data-example-id="contextual-table" class="bs-example">
+                <span id="ordersListingSpan"></span>
+              </div>
+
+              <div class="fr" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+              </div>
+              <div class="en" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+              </div>
+              <div class="nl" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script type="text/javascript">
+
+        $('.form_date_start_client').datetimepicker({
+          language:  'fr',
+          weekStart: 1,
+          todayBtn:  1,
+          autoclose: 1,
+          todayHighlight: 1,
+          startView: 2,
+          minView: 2,
+          forceParse: 0
+        });
+
+        $('.form_date_end_client').datetimepicker({
+          language:  'fr',
+          weekStart: 1,
+          todayBtn:  1,
+          autoclose: 1,
+          todayHighlight: 1,
+          startView: 2,
+          minView: 2,
+          forceParse: 0
+        });
+
+
+
+        $('.form_date_start_client').change(function(){
+          generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+        });
+        $('.form_date_end_client').change(function(){
+          generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+        });
+
+        </script>
+
+        <div class="modal fade" id="orderManager" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+
+                    <form id="widget-order-form" action="include/orders_management.php" role="form" method="post">
+                      <h4 class="fr text-green">Gestion de la commande client</h4>
+                      <h4 class="nl text-green">Management of client order</h4>
+                      <h4 class="en text-green">Management of client order</h4>
+                      <div class="form-group col-sm-12">
+                        <div class="col-sm-12">
+                            <h4 class="fr text-green">Informations techniques</h4>
+                            <h4 class="nl text-green">Technical information</h4>
+                            <h4 class="en text-green">Technical information</h4>                            
+                          <div class="col-sm-4">
+                            <label for="portfolio">ID commande</label>
+                            <input type="text" name="ID" class="form-control required" readonly>
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="status"  class="fr">Statut</label>
+                            <label for="status"  class="en">Status</label>
+                            <label for="status"  class="nl">Status</label>
+                            <select name="status">
+                              <option value="new">Nouvelle demande</option>
+                              <option value="ongoing">En cours</option>
+                              <option value="closed">Terminée</option>
+                              <option value="cancelled">Annulée</option>
+                            </select>
+                          </div>
+                            
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12">
+                        <h4 class="fr text-green">Caractéristiques du vélo</h4>
+                        <h4 class="nl text-green">Bike characteristics</h4>
+                        <h4 class="en text-green">Bike characteristics</h4>
+                          
+                        <div class="col-sm-12">
+                          <div class="col-sm-4">
+                            <label for="portfolioID">ID Portfolio</label>
+                              <select name="portfolioID" class="form-control"></select>
+                          </div>
+                        </div>
+                        <div class="col-sm-12">
+                          <div class="col-sm-4">
+                            <label for="brand"  class="fr">Marque</label>
+                            <label for="brand"  class="en">Brand</label>
+                            <label for="brand"  class="nl">Brand</label>
+                            <input type="text" name="brand" class="form-control required" disabled>
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="model"  class="fr">Modèle</label>
+                            <label for="model"  class="en">Model</label>
+                            <label for="model"  class="nl">Model</label>
+                            <input type="text" name="model" class="form-control required" disabled>
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="frameType"  class="fr">Type de cadre</label>
+                            <label for="frameType"  class="en">Frame Type</label>
+                            <label for="frameType"  class="nl">Frame Type</label>
+                            <select name="frameType" class="form-control" disabled>
+                              <option value="H">Homme</option>
+                              <option value="M">Mixte</option>
+                              <option value="F">Femme</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="size"  class="fr">Taille</label>
+                            <label for="size"  class="en">Size</label>
+                            <label for="size"  class="nl">Size</label>
+                            <select name="size">
+                              <option value="XS">XS</option>
+                              <option value="S">S</option>
+                              <option value="M">M</option>
+                              <option value="L">L</option>
+                              <option value="XL">XL</option>
+                            </select>
+                          </div>
+                          <img class="commandBike" width="200" title="vélo commandé" alt="vélo commandé"/>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12">
+                        <h4 class="fr text-green">Détails du test</h4>
+                        <h4 class="nl text-green">Delivery details</h4>
+                        <h4 class="en text-green">Delivery details</h4>
+                          
+                        <div class="col-sm-12">
+                          <div class="col-sm-4">
+                            <label for="testBoolean"  class="fr">Besoin d'un test ?</label>
+                            <label for="testBoolean"  class="en">Need for a test?</label>
+                            <label for="testBoolean"  class="nl">Need for a test?</label>
+                            <input type="checkbox" name="testBoolean" class="form-control">
+                          </div>
+                          <div class="col-sm-4 testDate">
+                            <label for="testDate"  class="fr">Date du test</label>
+                            <label for="testDate"  class="en">Test date</label>
+                            <label for="testDate"  class="nl">Test date</label>
+                            <input type="date" name="testDate" class="form-control">
+                          </div>
+                            
+                          <div class="col-sm-4 testStatus">
+                            <label for="testStatus"  class="fr">Statut du test</label>
+                            <label for="testStatus"  class="en">Test status</label>
+                            <label for="testStatus"  class="nl">Test status</label>
+                            <select name="testStatus">
+                              <option value="not started">Pas commencé</option>
+                              <option value="ongoing">En cours</option>
+                              <option value="closed">Terminée</option>
+                              <option value="cancelled">Annulée</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-12 testAddress">
+                            <label for="testAddress"  class="fr">Adresse pour le test</label>
+                            <label for="testAddress"  class="en">Test address</label>
+                            <label for="testAddress"  class="nl">Test address</label>
+                            <input type="text" name="testAddress" class="form-control">
+                          </div>       
+                          <div class="col-sm-12 testResult">
+                            <label for="testResult"  class="fr">Résultat du test</label>
+                            <label for="testResult"  class="en">Test result</label>
+                            <label for="testResult"  class="nl">Test result</label>
+                            <textarea class="form-control" rows="5" name="testResult"></textarea>
+                          </div>
+                            
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12">
+                        <h4 class="fr text-green">Détails de la livraison</h4>
+                        <h4 class="nl text-green">Delivery details</h4>
+                        <h4 class="en text-green">Delivery details</h4>
+                          
+                        <div class="col-sm-12">
+                          <div class="col-sm-4">
+                            <label for="deliveryDate"  class="fr">Date de livraison estimée</label>
+                            <label for="deliveryDate"  class="en">Estimated delivery date</label>
+                            <label for="deliveryDate"  class="nl">Estimated delivery date</label>
+                            <input type="date" name="deliveryDate" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="deliveryAddress"  class="fr">Adresse de livraison</label>
+                            <label for="deliveryAddress"  class="en">Delivery address</label>
+                            <label for="deliveryAddress"  class="nl">Delivery address</label>
+                            <input type="text" name="deliveryAddress" class="form-control">
+                          </div>
+                            <input type="text" name="action" class="form-control hidden" value="update">
+                            <input type="text" name="emailUser" class="form-control hidden">
+                            <input type="text" name="email" class="form-control hidden" value="<?php echo $user; ?>">
+                            <div class="col-sm-12">
+                              <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Mettre à jour</button>
+                              <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Update</button>
+                              <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Update</button>
+                            </div>
+                          </div>
+                        </div>
+                  </form>
+                          
+                    <div class="mesgs col-sm-12">
+                      <div class="msg_history">
+                          <span id="divChatCommandAdmin"></span>
+                      </div>
+                      <div class="type_msg">
+                        <div class="input_msg_write">
+                          <input type="text" class="write_msg" placeholder="Type a message" />
+                          <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+
+              <div class="fr" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+              </div>
+              <div class="en" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+              </div>
+              <div class="nl" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+              </div>
+            </div>
+          </div>
+         </div>
+        </div>
+        <script type="text/javascript">
+            jQuery("#widget-order-form").validate({
+              submitHandler: function(form) {
+                jQuery(form).ajaxSubmit({
+                  success: function(response) {
+                    if (response.response == 'success') {
+                      $.notify({
+                        message: response.message
+                      }, {
+                        type: 'success'
+                      });
+                      get_orders_listing();
+                      $('#orderManager').modal('toggle');
+                      document.getElementById('widget-order-form').reset();
+                    } else {
+                      $.notify({
+                        message: response.message
+                      }, {
+                        type: 'danger'
+                      });
+                    }
+                  }
+                });
+              }
+            });
+        </script>
+
 
         <div class="modal fade" id="portfolioManager" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
           <div class="modal-dialog modal-lg">
@@ -4600,7 +4948,7 @@ if($connected){
               <div data-example-id="contextual-table" class="bs-example billsToSendSpan hidden">
                   <h4 class="text-green">Factures à envoyer</h4>
                   <span id="billsToSendListing"></span>
-              </div>
+              </div>                
               <div class="separator billsToSendSpan hidden"></div>
                 
               <div data-example-id="contextual-table" class="bs-example">
@@ -4862,31 +5210,6 @@ if($connected){
 
 
                         <div class="separator"></div>
-                        <h4 class="fr text-green">Informations sur les montants</h4>
-                        <div class="col-md-12">
-                          <div class="col-md-4">
-                            <label for="widget-addBill-form-amountHTVA"  class="fr">Montant (HTVA)</label>
-                            <label for="widget-addBill-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
-                            <label for="widget-addBill-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
-                            <input type="text" class="widget-addBill-form-amountHTVA form-control required" name="widget-addBill-form-amountHTVA">
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="widget-addBill-form-VAT" class="fr">TVA ? </label>
-                            <label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
-                            <label for="widget-addBill-form-VAT" class="en">TVA ? </label>
-                            <input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
-                            <label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
-                            <label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
-                            <input type="text" class="widget-addBill-form-amountTVAC form-control required" name="widget-addBill-form-amountTVAC" readonly="readonly">
-                          </div>
-                        </div>
-
-                        <div class="separator"></div>
                         <h4 class="fr text-green">Informations sur les dates</h4>
                         <div class="col-md-12">
                           <div class="col-md-6">
@@ -4933,16 +5256,163 @@ if($connected){
                             <input type="date" class="widget-addBill-form-paymentDate form-control " name="widget-addBill-form-paymentDate" >
                           </div>
                         </div>
+                        <div class="separator"></div>
                         <div class="col-md-12">
-                          <div class="form-group col-sm-6">
-                            <label for="widget-addBill-form-file"  class="fr">Facture</label>
-                            <label for="widget-addBill-form-file"  class="en">Bill</label>
-                            <label for="widget-addBill-form-file"  class="nl">Bill</label>
-                            <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                            <input type=file size=40 id="widget-addBill-form-file" class="form-control required" name="widget-addBill-form-file">
+                          <div class="col-md-4">
+                            <label for="billType">Type de facture</label>
+                            <select name="billType">
+                              <option value="automatic">Generation automatique</option>
+                              <option value="manual">Import manuel</option>
+                            </select>
                           </div>
+                        </div>                            
+                        <div class="separator"></div>
+                          
+                          <div class="col-md-12 generateBillDetails">
+                              <div class="row generateBillBike">
+                                <div class="col-sm-4">
+                                  <h4 class="fr text-green">Nombre de vélos: </h4>
+                                  <h4 class="en text-green">Bike number: </h4>
+                                  <h4 class="nl text-green">Nombre de vélos: </h4>
+                                </div>
+                                <div class="col-sm-12">
+                                  <i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span><input type="hidden" id="bikesNumberBill" name="bikesNumber" value="0" />
+                                  <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                                  <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+                                </div>
+                                <table class="table table-condensed tableFixed bikeNumberTable hideAt0">
+                                  <thead>
+                                    <tr>
+                                      <th class="bLabel"></th>
+                                      <th class="bikeBrandModel">
+                                        <label for="bikeID" class="fr">Vélo</label>
+                                        <label for="bikeID" class="en">Bike</label>
+                                        <label for="bikeID" class="nl">Bike</label>
+                                      </th>
+                                      <th class="bikepAchat">
+                                        <label for="pAchat" class="fr">Prix d'achat</label>
+                                        <label for="pAchat" class="en">Buying price</label>
+                                        <label for="pAchat" class="nl">Buying price</label>
+                                      </th>
+                                      <th class="bikepCatalog">
+                                        <label for="pCatalog" class="fr">Prix catalogue</label>
+                                        <label for="pCatalog" class="en">Catalog price</label>
+                                        <label for="pCatalog" class="nl">Catalog price</label>
+                                      </th>
+                                      <th class="bikepVenteHTVA">
+                                        <label for="pVenteHTVA" class="fr">Prix de vente</label>
+                                        <label for="pVenteHTVA" class="en">Selling price</label>
+                                        <label for="pVenteHTVA" class="nl">Selling price</label>
+                                      </th>
+                                      <th class="bikeMarge">
+                                        <label for="marge" class="fr">Marge</label>
+                                        <label for="marge" class="en">Margin</label>
+                                        <label for="marge" class="nl">Margin</label>
+                                      </th>
+                                      <th class="hidden">
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody></tbody>
+                                </table>
+                              </div>
+                              <div class="separator"></div>
+                              <div class="row generateBillAccessories">
+                                <div class="col-sm-4">
+                                  <h4 class="fr text-green">Accessoires catalogue: </h4>
+                                  <h4 class="en text-green">Catalog accessories: </h4>
+                                  <h4 class="nl text-green">Catalog accessoires: </h4>
+                                </div>
+                                <div class="col-sm-12 accessoriesButtons">
+                                  <i class="fa fa-calculator"></i> <span class="accessoriesNumber">0</span><input type="hidden" id="accessoriesNumber" name="accessoriesNumber" value="0" />
+                                  <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                                  <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+                                </div>
+                                <table class="table table-condensed tableFixed otherCostsAccesoiresTable hideAt0">
+                                  <thead>
+                                    <th class="accessoriesLabel"></th>
+                                    <th class="accessoriesCategory">
+                                      <label for="aCategory" class="fr">Catégorie</label>
+                                    </th>
+                                    <th class="accessoriesAccessory">
+                                      <label for="aAccessory" class="fr">Accessoire</label>
+                                    </th>
+                                    <th class="accessoriesBuyingPrice">
+                                      <label for="aBuyingPrice" class="fr">Prix achat</label>
+                                    </th>
+                                    <th class="accessoriesPriceHTVA">
+                                      <label for="aPriceHTVA" class="fr">Prix Vente HTVA</label>
+                                    </th>
+                                  </thead>
+                                  <tbody>
+
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="separator"></div>
+                              <div class="row generateBillOtherAccessories">
+                                <div class="col-sm-4">
+                                  <h4 class="fr text-green">Accessoires autre : </h4>
+                                  <h4 class="en text-green">Other accessories: </h4>
+                                  <h4 class="nl text-green">Other accessoires: </h4>
+                                </div>
+                                <div class="col-sm-12 accessoriesButtons">
+                                  <i class="fa fa-calculator"></i> 
+                                    <span class="otherAccessoriesNumber">0</span>
+                                    <input type="hidden" id="otherAccessoriesNumber" name="otherAccessoriesNumber" value="0" />
+                                  <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                                  <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+                                </div>
+                                <table class="table table-condensed tableFixed otherCostsOtherAccesoiresTable hideAt0">
+                                  <thead>
+                                    <th class="otherAccessoriesLabel"></th>
+                                    <th class="accessoriesAccessory">
+                                      <label for="aAccessory" class="fr">Accessoire</label>
+                                    </th>
+                                    <th class="accessoriesPriceHTVA">
+                                      <label for="aPriceHTVA" class="fr">Prix Vente HTVA</label>
+                                    </th>
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                                </table>
+                              </div>
+                          </div>
+  
+                          
+                        <h4 class="text-green manualBill" style="display: none;">Informations sur les montants</h4>
+                        <div class="col-md-12 manualBill" style="display: none;">
+                            <div class="col-md-4">
+                                <label for="widget-addBill-form-amountHTVA"  class="fr">Montant (HTVA)</label>
+                                <label for="widget-addBill-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
+                                <label for="widget-addBill-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
+                                <input type="text" class="widget-addBill-form-amountHTVA form-control required" name="widget-addBill-form-amountHTVA">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="widget-addBill-form-VAT" class="fr">TVA ? </label>
+                                <label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
+                                <label for="widget-addBill-form-VAT" class="en">TVA ? </label>
+                                <input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
+                                <label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
+                                <label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
+                                <input type="text" class="widget-addBill-form-amountTVAC form-control required" name="widget-addBill-form-amountTVAC" readonly="readonly">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="widget-addBill-form-file"  class="fr">Facture</label>
+                                <label for="widget-addBill-form-file"  class="en">Bill</label>
+                                <label for="widget-addBill-form-file"  class="nl">Bill</label>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                                <input type=file size=40 id="widget-addBill-form-file" class="form-control required" name="widget-addBill-form-file">
+                            </div>
+                            
                         </div>
-                      </div>
+                    </div>
+                        
                       <input type="text" name="communicationHidden" class="hidden">
                       <input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user; ?>" hidden>
                       <div class="separator"></div>
@@ -4957,7 +5427,6 @@ if($connected){
                       submitHandler: function(form) {
                         jQuery(form).ajaxSubmit({
                           success: function(response) {
-
                             if (response.response == 'success') {
                               $.notify({
                                 message: response.message
@@ -5206,7 +5675,7 @@ if($connected){
                           <input type="password" autocomplete="off" class="form-control addClientTechnicalUser hidden" name="passwordInitialisation" class="form-control required">
                         </div>
 
-                        <input type="text" class="form-control hidden" name="email" class="form-control required" value="<?php echo $user; ?>" hidden>
+                        <input type="text" class="form-control hidden" name="email" value="<?php echo $user; ?>" hidden>
 
 
                       </div>
@@ -6381,8 +6850,6 @@ if($connected){
                           <button  class="button small green button-3d rounded icon-left maintenanceManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
                         </div>
 
-                      </div>
-
                     </form>
                     <script type="text/javascript">
                     jQuery("#widget-maintenanceManagement-form").validate({
@@ -6435,9 +6902,6 @@ if($connected){
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
               </div>
               <div class="modal-body">
-                  
-                  
-                  
                 <div class="row">
                   <div class="col-sm-12">
 
@@ -6507,17 +6971,10 @@ if($connected){
                         </div>
                         <div class="col-sm-12">
                           <div class="col-sm-4 bikeManagementPicture">
-                            <label for="picture"  class="fr">Image actuelle</label>
-                            <label for="picture"  class="en">Current Image</label>
-                            <label for="picture"  class="nl">Current Image</label>
-                            <img id='bikeManagementPicture' alt="image">
-                          </div>
-                          <div class="col-sm-4 bikeImageUpload">
-                            <label for="picture"  class="fr">Photo du vélo (.jpg)</label>
-                            <label for="picture"  class="en">Bike picture (jpg)</label>
-                            <label for="picture"  class="nl">Bike picture(jpg)</label>
-                            <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                            <input type=file size=40 name="picture" class="form-control">
+                            <label for="picture"  class="fr">Image du vélo</label>
+                            <label for="picture"  class="en">Bike picture</label>
+                            <label for="picture"  class="nl">Bike picture</label>
+                            <img id='bikeManagementPicture' alt="image" width='200'>
                           </div>
                         </div>
 
@@ -6587,10 +7044,16 @@ if($connected){
                             <label for="orderingDate"  class="nl">Ordering date</label>
                             <input type="date" name="orderingDate" class="form-control">
                           </div>
-                          <div class="col-sm-4">
-                            <label for="deliveryDate"  class="fr">Date estimée d'arrivée</label>
-                            <label for="deliveryDate"  class="en">Arrival estimated date</label>
-                            <label for="deliveryDate"  class="nl">Arrival estimated date</label>
+                          <div class="col-sm-4 estimatedDeliveryDate">
+                            <label for="estimatedDeliveryDate"  class="fr">Date estimée d'arrivée</label>
+                            <label for="estimatedDeliveryDate"  class="en">Arrival estimated date</label>
+                            <label for="estimatedDeliveryDate"  class="nl">Arrival estimated date</label>
+                            <input type="date" name="estimatedDeliveryDate" class="form-control">
+                          </div>                            
+                          <div class="col-sm-4 deliveryDate">
+                            <label for="deliveryDate"  class="fr">Date d'arrivée</label>
+                            <label for="deliveryDate"  class="en">Delivery date</label>
+                            <label for="deliveryDate"  class="nl">Delivery date</label>
                             <input type="date" name="deliveryDate" class="form-control">
                           </div>
                           <div class="col-sm-4">
@@ -6602,6 +7065,11 @@ if($connected){
                           <div class="col-sm-4 offer">
                             <label for="offerReference"  class="offerReference">Offre liée</label>
                             <select name="offerReference" class="form-control offerReference">
+                            </select>
+                          </div>
+                          <div class="col-sm-4 clientReference">
+                            <label for="clientReference"  class="clientReference">Utilisateur</label>
+                            <select name="clientReference" class="form-control clientReference">
                             </select>
                           </div>
                         </div>
@@ -6705,9 +7173,9 @@ if($connected){
                       <span id="action_bike_log"></span>
                   </div>
 
-                    <div class="separator billsInfos" style="display:none;"></div>
+                    <div class="separator billsInfos" style="display:block;"></div>
 
-                    <div class="col-sm-12 billsInfos" style="display:none;">
+                    <div class="col-sm-12 billsInfos" style="display:block;">
 
                       <h4 class="fr text-green">Factures du vélo</h4>
 
@@ -6718,7 +7186,7 @@ if($connected){
                       <form  id="widget-deleteBike-form" action="include/bike_management.php" role="form" method="post">
                         <input type="text" name="user" value="<?php echo $user; ?>" class="hidden">
                         <input type="text" name="action" value="delete" class="hidden">
-                        <input type="text" class="hidden" readonly="readonly" name="frameNumber">
+                        <input type="text" class="hidden" readonly="readonly" name="bikeID">
                         <button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer le vélo</button>
                         <button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
                         <button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
@@ -6834,6 +7302,9 @@ if($connected){
           </div>
         </div>
 
+
+
+
         <div class="modal fade" id="boxManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -6945,6 +7416,183 @@ if($connected){
                               get_company_details($('#widget-companyDetails-form input[name=ID]').val(),email);
                               document.getElementById('widget-boxManagement-form').reset();
                               $('#boxManagement').modal('toggle');
+                            } else {
+                              $.notify({
+                                message: response.message
+                              }, {
+                                type: 'danger'
+                              });
+                            }
+                          }
+                        });
+                      }
+                    });
+
+
+
+
+                    </script>
+                  </div>
+                </div>
+              </div>
+              <div class="fr" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+              </div>
+              <div class="en" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+              </div>
+              <div class="nl" class="modal-footer">
+                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="command" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+
+                    <form id="widget-command-form" action="include/command.php" role="form" method="post">
+
+                      <div class="form-group col-sm-12">
+                        <h4 class="fr text-green" >Commander un vélo</h4>
+                        <h4 class="nl text-green" >Order a bike</h4>
+                        <h4 class="en text-green" >Order a bike</h4>
+                        <div class="col-sm-12">
+
+
+                            <div class="col-sm-4 hidden">
+                                <label for="ID">ID :</label>
+                                <input type="text" readonly="readonly" class="form-control" name="ID"/>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="fr" for="size">Taille :</label>
+                                <label class="en" for="size">Size :</label>
+                                <label class="nl" for="size">Size :</label>
+                                <select class="form-control required" name="size">
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M" selected>M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                </select>
+                            </div>
+                            
+                              <div class="col-sm-12"></div>
+
+                              <div class="col-sm-4" >
+                                <label for="brand" class="fr"> Marque : </label>
+                                <label for="brand" class="en"> Brand : </label>
+                                <label for="brand" class="nl"> Brand : </label>
+                                <select class="form-control required" disabled name="brand">
+                                    <option value="Ahooga">Ahooga</option>
+                                    <option value="Benno">Benno</option>
+                                    <option value="Bzen">Bzen</option>
+                                    <option value="Conway">Conway</option>
+                                    <option value="Douze Cycle">Douze Cycle</option>
+                                    <option value="HNF Nicolai">HNF Nicolai</option>
+                                    <option value="Kayza">Kayza</option>
+                                    <option value="Orbea">Orbea</option>
+                                    <option value="Victoria">Victoria</option>
+                                    <option value="Stevens">Stevens</option>
+                                    <option value="other">Other</option>
+
+                                </select>
+
+                              </div>
+                              <div class="col-sm-4">
+                                <label for="model" class="fr"> Modèle : </label>
+                                <label for="model" class="en"> Model : </label>
+                                <label for="model" class="nl"> Model : </label>
+                                <input type="text" class="form-control required" name="model" disabled />
+                              </div>
+                              <div class="col-sm-4">
+                                <h4><span class="fr"> Type de cadre : </span></h4>
+                                <h4><span class="en"> Frame type: </span></h4>
+                                <h4><span class="nl"> Frame type: </span></h4>
+                                <select class="form-control  required" disabled name="frame">
+                                  <option value="F">Femme</option>
+                                  <option value="H">Homme</option>
+                                  <option value="M">Mixte</option>
+                                </select>
+
+                              </div>
+                              <div class="col-sm-4">
+                                <h4><span class="fr"> Utilisation : </span></h4>
+                                <h4><span class="en"> Utilisation: </span></h4>
+                                <h4><span class="nl"> Utilisation: </span></h4>
+                                <select class="form-control" name="utilisation" disabled>
+                                  <option value="Tout chemin">Tout chemin</option>
+                                  <option value="Ville et chemin">Ville et chemin</option>
+                                  <option value="Pliant">Pliant</option>
+                                  <option value="Ville">Ville</option>
+                                  <option value="Cargo">Cargo</option>
+                                  <option value="Gravel">Gravel</option>
+                                  <option value="VTT">VTT</option>
+                                  <option value="Speedpedelec">Speedpedelec</option>
+                                </select>
+
+                              </div>
+                              <div class="col-sm-4">
+                                <h4><span class="fr"> Vélo électrique ? </span></h4>
+                                <h4><span class="en"> Electric bike? </span></h4>
+                                <h4><span class="nl"> Electric bike? </span></h4>
+                                <select class="form-control  required" name="electric" disabled>
+                                  <option value="Y">Y</option>
+                                  <option value="N">N</option>
+                                </select>
+
+                              </div>
+                            </div>
+                            <div class="col-sm-12">
+                              <div class="col-sm-8">
+                                <label for="link" class="fr"> Lien vers le site : </label>
+                                <label for="link" class="en"> Vendor link : </label>
+                                <label for="link" class="nl"> Vendor link</label>
+                                  <a class="link text-blue" name="link" target="_blank"></a>
+                              </div>
+                            </div>
+                          <div class="separator"></div>
+                          <h4 class="text-green">Image </h4>
+                          <div class="col-sm-12">
+                            <img src="" class="commandImage" alt="image" height="400" />
+                          </div>
+                          
+                          <label for="remark" class="fr"> Remarques : </label>
+                          <label for="remark" class="en"> Remarks : </label>
+                          <label for="remark" class="nl"> Remarks : </label>
+                          <textarea class="form-control" rows="5" name="remark"></textarea>
+                          
+                        <input type="text" name="email" class="form-control hidden" value="<?php echo $user; ?>">
+                        <input type="text" name="action" class="form-control hidden" value="command">
+
+                      </div>
+
+
+                      <button  id="send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Commander !</button>
+
+                    </form>
+                    <script type="text/javascript">
+                    jQuery("#widget-command-form").validate({
+                      submitHandler: function(form) {
+                        jQuery(form).ajaxSubmit({
+                          success: function(response) {
+                            if (response.response == 'success') {
+                                $.notify({
+                                    message: response.message
+                                }, {
+                                    type: 'success'
+                                });
+                                $('.grid').isotope('destroy');
+                                $('.grid').html("");
+                                $('#command').modal('toggle');
+                                get_command_user(email);
                             } else {
                               $.notify({
                                 message: response.message

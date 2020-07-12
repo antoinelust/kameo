@@ -1,0 +1,1860 @@
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/include/../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/include/../images/default.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°157</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88881</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">E urban</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="/home/kameobiknq/www/include/../images_bikes/conway_e-urban_h_mini.jpg" alt="" wjdth="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88881</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/include/../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/include/../images/default.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°158</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88982</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">E urban</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="/home/kameobiknq/www/include/../images_bikes/conway_e-urban_h_mini.jpg" alt="" wjdth="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88982</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/include/../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/include/../images/default.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°156</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88780</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="/home/kameobiknq/www/include/../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" wjdth="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88780</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="/home/kameobiknq/www/include/../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="/home/kameobiknq/www/include/../images/default.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°157</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88881</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="/home/kameobiknq/www/include/../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" wjdth="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88881</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/default.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°156</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88780</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88780</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture A & M Location de linge</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/A & M Location de linge.jpg" alt="">
+				
+				<p>A & M Location de linge</p>
+				
+				<p>Rue du Fond des Fourches 15
+				<br>4041 Herstal
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : /</p>
+				
+				<p>Référence client : A & M Location de linge</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°156</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88780</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88780</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/default.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°156</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88780</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88780</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/default.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°156</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88780</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88780</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Infrabel</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/Infrabel.jpg" alt="">
+				
+				<p>Infrabel</p>
+				
+				<p>x
+				<br>x x
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE 0869.763.267</p>
+				
+				<p>Référence client : Infrabel</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°157</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88881</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88881</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Michel Bal</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/Michel Bal.jpg" alt="">
+				
+				<p>Michel Bal</p>
+				
+				<p>Rue de l avenir
+				<br>4450 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Michel Bal</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°156</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88780</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Xyron 427</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">3636.36 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/conway_xyron-427_h_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 3636.36 €<br>+TVA: 763.64</p></td>
+            </tr>
+            <tr>
+                <td height="35">3636.36 €</td>
+                <td>21%</td>
+                <td>763.64 €</td>
+                <td>4400 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>4400 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88780</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture Lamberechts / Anne</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/A & M Location de linge.jpg" alt="">
+				
+				<p>Lamberechts / Anne</p>
+				
+				<p>Rue de la Renaissance 51
+				<br>4451 Juprelle
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : -</p>
+				
+				<p>Référence client : Lamberechts / Anne</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°157</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/88881</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Tanana Dry 5</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2148 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/kayza_tanana-dry-5_f_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2148 €<br>+TVA: 451.08</p></td>
+            </tr>
+            <tr>
+                <td height="35">2148 €</td>
+                <td>21%</td>
+                <td>451.08 €</td>
+                <td>2599.08 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>2599.08 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/88881</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>
+Final result :<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
+    <page_header>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 33%">KAMEO Bikes</td>
+                <td style="text-align: center;    width: 34%">Facture  HOTEL IBIS DINANT</td>
+                <td style="text-align: right;    width: 33%">06/07/2020</td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table style="width: 100%; border: solid 1px black;">
+            <tr>
+                <td style="text-align: left;    width: 50%">KAMEO Bikes</td>
+                <td style="text-align: right;    width: 50%">page [[page_cu]]/[[page_nb]]</td>
+            </tr>
+        </table>
+    </page_footer>
+
+
+<table style="width: 100%;border: solid 1px #5544DD; border-collapse: collapse" align="center">
+    <tr>
+        <td style="width: 50%">
+        
+                <img class="img-responsive" src="../images/logo-dark.png" alt="">
+				
+				<p>KAMEO Bikes sprl</p>
+				
+				<p>Quai Marcellis, 24
+				<br>B-4000 Liège
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0681.879.712
+				<br>BE38 0689 0775 9672</p>
+				
+				<p>Liège, le 06/07/2020</p>
+
+        
+        </td>
+        <td style="width: 50%">
+				<img class="img-responsive" src="../images/A & M Location de linge.jpg" alt="">
+				
+				<p> HOTEL IBIS DINANT</p>
+				
+				<p>Rempart d Albeau 16
+				<br>5500 Dinant
+				<br>Belgium</p>
+				
+				<p>TVA/VAT : BE0464236456</p>
+				
+				<p>Référence client :  HOTEL IBIS DINANT</p>
+        </td>
+    
+    </tr>
+    <tr>
+        <td>
+            <h4 style="color: #3CB195">FACTURE n°104</h4>
+
+        </td>
+        <td>
+            <h4 style="color: #C72C28">Référence : 000/0720/79080</h4>
+
+        </td>
+    </tr>
+</table>   
+<br />
+<br />
+<br />
+<br />
+    
+	      <table>
+	        <thead>
+	          <tr>
+	            <th>ID</th>
+	            <th>Elément</th>
+	            <th>Prix</th>
+	          </tr>
+	        </thead>
+	        <tbody><tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">1</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Benno  Boost E 400Wh</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">2479.34 € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">Vente au 06-07-2020</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="../images_bikes/benno_benno--boost-e-400wh_h_mini.jpg" alt="" width="200"></td>
+                        <td>Vente </td></tr></tbody>
+	      </table>
+
+ 		<br><br>
+    <table style="border-collapse: collapse; background-color: #E4E4E4">
+	   <tbody>
+           <tr>
+                <td width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</td>
+                <td width="70" style="border-bottom: solid 1px grey">% TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
+                <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
+               <td style="background-color: white" witdth="100"></td>
+               <td style="background-color: white"><p> Total HTVA: 2479.34 €<br>+TVA: 520.66</p></td>
+            </tr>
+            <tr>
+                <td height="35">2479.34 €</td>
+                <td>21%</td>
+                <td>520.66 €</td>
+                <td>3000 €</td>
+                <td style="background-color: white" width="100"></td>
+                <td style="background-color: white"> Total TVAC : <strong>3000 €</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br><br>
+    <div>
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="200" height="35"><strong>Délai de paiement</strong></td>
+                </tr>
+                <tr>
+                    <td height="35"><strong>000/0720/79080</strong></td>
+                    <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table style="border-collapse: collapse">
+           <tbody>
+               <tr>
+                    <td width="400" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                    <td width="200" height="20" style="color: grey">KAMEO Bikes SPRL</td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">Belfius Bank : BE38 0689 0775 9672 </td>
+                    <td width="200" height="20" style="color: grey">SWIFT/BIC Code : GKCCBEBB </td>
+                </tr>
+                <tr>
+                    <td width="400" height="20" style="color: grey">TVA/VAT : BE0681.879.712</td>
+                    <td width="200" height="20" style="color: grey">RPM : 0681.879.712 Liège (Belgium) </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+
+
+
+</page>

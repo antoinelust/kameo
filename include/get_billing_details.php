@@ -62,6 +62,7 @@ if($ID != NULL)
     
     $i=0;
     while($row = mysqli_fetch_array($result)){
+        $response['bill']['billDetails'][$i]['bikeID']=$row['BIKE_ID'];
         $response['bill']['billDetails'][$i]['frameNumber']=$row['FRAME_NUMBER'];
         $response['bill']['billDetails'][$i]['comments']=$row['COMMENTS'];
         $response['bill']['billDetails'][$i]['amountHTVA']=$row['AMOUNT_HTVA'];

@@ -1,5 +1,4 @@
 <?php 
-
 $company = file_get_contents(__DIR__.'/temp/company.txt');
 $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
 
@@ -222,6 +221,24 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $total=0;
 
             while($row2 = mysqli_fetch_array($result2)){
+                $catalogID=$row2['TYPE'];
+                
+                error_log("FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");    
+                if(file_exists("./images_bikes/".$row2['ID']."_mini.jpg")){
+                    $fichier="/images_bikes/".$row2['ID']."_mini.jpg";
+                }else{
+                    include 'include/connexion.php';
+                    $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
+                    error_log("SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");    
+                    
+                    if ($conn->query($sql) === FALSE) {
+                        echo $conn->error;
+                        die;
+                    }
+                    $result4 = mysqli_query($conn, $sql);  
+                    $resultat4 = mysqli_fetch_assoc($result4);
+                    $fichier = "/images_bikes/".strtolower(str_replace(" ", "-", $resultat4['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat4['MODEL']))."_".strtolower($resultat4['FRAME_TYPE'])."_mini.jpg";
+                }
                 
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));                
@@ -247,7 +264,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 if(!$simulation || $simulation == 'N'){
                     include 'include/connexion.php';
-                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID','$frameNumber', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
+                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                     } 
@@ -280,7 +297,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img class="img-responsive" src="'.__DIR__.'/images_bikes/'.$row2['FRAME_NUMBER'].'_mini.jpg" alt=""></td>
+                    <td><img class="img-responsive" src="'.__DIR__.$fichier.'" alt=""></td>
                     ';
                 if(($row2['CONTRACT_END'])){
                     $test2=$test2.'<td>Période '.($monthDifference).'/'.$numberOfMonthContract.'</td></tr>';
@@ -327,11 +344,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $comment='Période du '.$temp1.' au '.$temp2;
                 $leasingPrice=$row2['AMOUNT'];
                 $leasingPriceTVAC=1.21*$row2['AMOUNT'];
-                $reference2=$row2['REFERENCE'];
                 $boxID=$row2['ID'];
                 if(!$simulation || $simulation == 'N'){
                     include 'include/connexion.php';
-                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID','$reference2', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
+                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                     } 

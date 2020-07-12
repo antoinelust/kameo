@@ -9,6 +9,8 @@ function list_errors(){
         }else{
             var i=0;
             var j=0;
+            var dest="";
+            /*
             var dest="<table class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th>Description</th></thead><tbody>";
             while (i< response.bike.img.number){   
                 var bike=response.bike.img[i];
@@ -26,6 +28,7 @@ function list_errors(){
                 dest=dest.concat(temp);
                 i++;
             }
+*/
             
             
             while (j< response.bike.stock.number){   
@@ -49,14 +52,13 @@ function list_errors(){
             
             var i=0;
             var dest="<table class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th>Description</th></thead><tbody>";
-                                    
+                                   
             while (i< response.bike.bill.number){   
-                var bill=response.bike.bill[i];
-                
-                if(bike.frameNumber == null){
-                    var bikeDescription = "N/A - " + bike.bikeID;
+                var bill=response.bike.bill[i];                
+                if(bill.bikeNumber == null){
+                    var bikeDescription = bill.bikeID + " - N/A";
                 }else{
-                    var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
+                    var bikeDescription = bill.bikeID + " - " + bill.bikeNumber;
                 }
                 
                 
@@ -96,7 +98,7 @@ function list_errors(){
             });
             
             
-            $('.dashboardBikes').html("Vélos ("+response.bike.img.number+")");
+            $('.dashboardBikes').html("Vélos (0)");
             $('.dashboardBills').html("Factures ("+response.bike.bill.number+")");
             $('.dashboardCompanies').html("Sociétés ("+(response.company.img.number+response.company.action.number)+")");
             
@@ -113,11 +115,11 @@ function list_errors(){
             
             
 
-            if((response.bike.img.number+response.bike.bill.number+response.company.img.number+response.company.action.number)==0){
+            if((response.bike.bill.number+response.company.img.number+response.company.action.number)==0){
                 document.getElementById('errorCounter').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\"0\" data-from=\"0\" data-seperator=\"true\">0</span>";
                 $('#errorCounter').css('color', '#3cb395');                
-            }else{
-                document.getElementById('errorCounter').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+(response.bike.img.number+response.bike.bill.number+response.company.img.number+response.company.img.number)+"\" data-from=\"0\" data-seperator=\"true\">"+(response.bike.img.number+response.bike.bill.number+response.company.action.number)+"</span>";
+            }else{                
+                document.getElementById('errorCounter').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+(response.bike.bill.number+response.company.img.number+response.company.action.number)+"\" data-from=\"0\" data-seperator=\"true\">"+(response.bike.bill.number+response.company.img.number+response.company.action.number)+"</span>";
                 $('#errorCounter').css('color', '#d80000');
                 
             }

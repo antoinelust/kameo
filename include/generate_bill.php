@@ -7,13 +7,16 @@ include 'globalfunctions.php';
 
 $company=$_POST['company'];
 $dateStart=$_POST['dateStart'];
-$dateEnd=$_POST['dateEnd'];
+$dateEnd=isset($_POST['dateEnd']) ? $_POST['dateEnd'] : NULL;
+
 $billingGroup=$_POST['billingGroup'];
 $itemNumber=$_POST['itemNumber'];
 
-$dateStart=new DateTime($dateStart);
 
-$dateEnd=new DateTime($dateEnd);
+$dateStart=new DateTime($dateStart);
+if($dateEnd && $dateEnd != NULL){
+    $dateEnd=new DateTime($dateEnd);
+}
 $date1monthAfter=new DateTime('now');
 $interval = new DateInterval('P30D');
 $date1monthAfter->add($interval);
@@ -86,32 +89,42 @@ $modulo_check=($base_modulo % 97);
 $reference='000/'.$dateStart->format('m').substr($dateStart->format('Y'),2,2).'/'.$reference.$modulo_check;
 
 
+if($dateEnd && $dateEnd != NULL){
 
-if($dateEnd->format('m')==12){
-    $monthAfter=1;
-    $yearAfter=(($dateEnd->format('Y'))+1);
-}else{
-    $monthAfter=(($dateEnd->format('m'))+1);
-    $yearAfter=$dateEnd->format('Y');
+    if($dateEnd->format('m')==12){
+        $monthAfter=1;
+        $yearAfter=(($dateEnd->format('Y'))+1);
+    }else{
+        $monthAfter=(($dateEnd->format('m'))+1);
+        $yearAfter=$dateEnd->format('Y');
+    }
+    $dayAfter=$dateEnd->format('d');
+
+    if(strlen($monthAfter)==1){
+        $monthAfter='0'.$monthAfter;
+    }
+    if(strlen($dayAfter)==1){
+        $dayAfter='0'.$dayAfter;
+    }
+
+
+    $lastDayMonth=last_day_month( $monthAfter);
+    if($lastDayMonth < $dayAfter){
+        $dayAfter=$lastDayMonth;
+    }
 }
-$dayAfter=$dateEnd->format('d');
-
-if(strlen($monthAfter)==1){
-    $monthAfter='0'.$monthAfter;
-}
-if(strlen($dayAfter)==1){
-    $dayAfter='0'.$dayAfter;
-}
-
-
-$lastDayMonth=last_day_month( $monthAfter);
-if($lastDayMonth < $dayAfter){
-    $dayAfter=$lastDayMonth;
-}
-
 
 
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
+
+
+
+if ((file_exists(__DIR__.'/../images/'.$company.'.jpg'))){
+    $fichier=$company;
+}else{
+    $fichier="default";
+}
+
 
 
 $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
@@ -154,7 +167,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
         
         </td>
         <td style="width: 50%">
-				<img class="img-responsive" src="./images/'.$company.'.jpg" alt="">
+				<img class="img-responsive" src="./images/'.$fichier.'.jpg" alt="">
 				
 				<p>'.$companyName.'</p>
 				
@@ -202,18 +215,17 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
             while($i<$itemNumber){
-                
-                $price=intval($_POST['price'.$i]);
+                $price=floatval($_POST['price'.$i]);
                 $priceTVAC=1.21*$price;
                 $type=$_POST['type'.$i];
-                $ID=$_POST['ID'.$i];
-                $description=$_POST['description'.$i];
                 
+                $ID=isset($_POST['ID'.$i]) ? $_POST['ID'.$i] : NULL;
+                $description=isset($_POST['description'.$i]) ? $_POST['description'.$i] : NULL;
                 
                 
                 if($type=="bike"){
                     include 'connexion.php';
-                    $sql="SELECT MODEL, FRAME_REFERENCE, substr(CONTRACT_START,9,2) as 'firstDay', FRAME_NUMBER from customer_bikes where ID='$ID'";
+                    $sql="SELECT MODEL, FRAME_REFERENCE, TYPE, substr(CONTRACT_START,9,2) as 'firstDay', FRAME_NUMBER from customer_bikes where ID='$ID'";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                         die;
@@ -221,9 +233,28 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $result = mysqli_query($conn, $sql);
                     $resultat = mysqli_fetch_assoc($result);
                     $conn->close();     
+                    $catalogID=$resultat['TYPE'];
                     
                     $contractStart=$dateStart;
                     $contractEnd=$dateEnd;
+                    
+                    
+                    include 'connexion.php';
+                    $sql2="SELECT * from bike_catalog where ID='$catalogID'";
+                    if ($conn->query($sql2) === FALSE) {
+                        echo $conn->error;
+                        die;
+                    }
+                    $result2 = mysqli_query($conn, $sql2);
+                    $resultat2 = mysqli_fetch_assoc($result2);
+                    $conn->close();     
+                    
+                    $file=__DIR__.'/images_bikes/'.$resultat['ID'].'jpg';
+                    if ((file_exists($file))){
+                        $img=$resultat['ID'];
+                    }else{
+                        $img=strtolower(str_replace(" ", "-", $resultat2['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat2['MODEL']))."_".strtolower($resultat2['FRAME_TYPE']);
+                    }
                     
                     
                     
@@ -238,54 +269,160 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     
                     $comment='Période du '.$contractStartString.' au '.$contractEndString;
                     
-                    
-                }
-                
-                
-                
-                
-                
-                
-                
-                $test2.='<tr>
-                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
-                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$resultat['MODEL'].' - CADRE: '.$resultat['FRAME_REFERENCE'].'</td>
-                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($price).' € HTVA</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="color: grey">Période du '.$contractStartString.' au '.$contractEndString.'</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><img class="img-responsive" src="./images_bikes/'.$resultat['FRAME_NUMBER'].'_mini.jpg" alt=""></td>
-                    ';
-                
-                $test2=$test2."<td>Location </td></tr>";
-                
-                if(!$simulation || $simulation == 'N'){
-                    include 'connexion.php';
-                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, FRAME_NUMBER, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID','$description', '$comment', '$contractStartString2', '$contractEndString2', '$price', '$priceTVAC')";
-                    if ($conn->query($sql) === FALSE) {
-                        $response = array ('response'=>'error', 'message'=> $conn->error);
-                        echo json_encode($response);
-                        die;
-                    } 
-                    $conn->close();
-                    
-                    $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
+                    $test2.='<tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$resultat['MODEL'].' - CADRE: '.$resultat['FRAME_REFERENCE'].'</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($price).' € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">'.$comment.'</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="./images_bikes/'.$img.'_mini.jpg" width="200" alt=""></td>
+                        ';
+
+                    $test2=$test2."<td>Location </td></tr>";
+                    if(!$simulation || $simulation == 'N'){
+                        include 'connexion.php';
+                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID', '$comment', '$contractStartString2', '$contractEndString2', '$price', '$priceTVAC')";
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        } 
+                        $conn->close();
+                    }                
 
                     
-                }                
-                
-                
+                }else if($type=="bikeSell"){
+                    include 'connexion.php';
+                    $sql2="SELECT * from customer_bikes where ID='$ID'";
+                    if ($conn->query($sql2) === FALSE) {
+                        echo $conn->error;
+                        die;
+                    }
+                    $result2 = mysqli_query($conn, $sql2);
+                    $resultat2 = mysqli_fetch_assoc($result2);
+                    $conn->close();    
+                    $catalogID=$resultat2['TYPE'];
+                    
+                    include 'connexion.php';
+                    $sql3="SELECT * from bike_catalog where ID='$catalogID'";
+                    if ($conn->query($sql3) === FALSE) {
+                        echo $conn->error;
+                        die;
+                    }
+                    $result3 = mysqli_query($conn, $sql3);
+                    $resultat3 = mysqli_fetch_assoc($result3);
+                    $conn->close();     
+                    
+                    
+                    
+                    $file=__DIR__.'/images_bikes/'.$resultat2['ID'].'jpg';
+                    if ((file_exists($file))){
+                        $img=$resultat['ID'];
+                    }else{
+                        $img=strtolower(str_replace(" ", "-", $resultat3['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat3['MODEL']))."_".strtolower($resultat3['FRAME_TYPE']);
+                    }
+                    $comment='Vente au '.$dateStart->format('d-m-Y');
+
+                    $test2.='<tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$resultat2['MODEL'].'</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($price).' € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">'.$comment.'</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><img class="img-responsive" src="./images_bikes/'.$img.'_mini.jpg" alt="" width="200"></td>
+                        ';
+
+                    $test2=$test2."<td>Vente </td></tr>";
+                    
+                    $contractStartString=$dateStart->format('Y-m-d');
+
+                    if(!$simulation || $simulation == 'N'){
+                        include 'connexion.php';
+                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID', '$comment', '$contractStartString', '$contractStartString', '$price', '$priceTVAC')";
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        } 
+                        $conn->close();
+                        
+                        
+                        include 'connexion.php';
+                        $sql="UPDATE customer_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, CONTRACT_TYPE='selling', SELLING_DATE='$contractStartString', SOLD_PRICE='$price', COMPANY='$company' WHERE ID='$ID'";
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        } 
+                        $conn->close();
+
+                    }                
+                }else if($type=="accessorySell"){
+                    
+                    include 'connexion.php';
+                    $sql2="SELECT * from accessories_catalog where ID='$ID'";
+                    if ($conn->query($sql2) === FALSE) {
+                        echo $conn->error;
+                        die;
+                    }
+                    $result2 = mysqli_query($conn, $sql2);
+                    $resultat2 = mysqli_fetch_assoc($result2);
+                    $conn->close();    
+
+                    $comment='Vente au '.$dateStart->format('d-m-Y');
+
+                    $test2.='<tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$resultat2['DESCRIPTION'].'</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($price).' € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">'.$comment.'</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        ';
+                    $test2=$test2."<td>Vente</td></tr>";                
+                }else if($type=="otherAccessorySell"){
+                    
+                    $comment='Vente au '.$dateStart->format('d-m-Y');
+
+                    $test2.='<tr>
+                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$description.'</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($price).' € HTVA</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="color: grey">'.$comment.'</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        ';
+                    $test2=$test2."<td>Vente</td></tr>";
+                }
                 $i+=1;
                 $total+=$price;
-                
-                
-
             }
+            $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
+
 
             $tva=($total*0.21);
             $totalTVAIncluded=$total+$tva;
@@ -365,5 +502,6 @@ if ($conn->query($sql) === FALSE) {
 $conn->close();
                     
 echo $test1.$test2.$test3;
+
 
 ?>

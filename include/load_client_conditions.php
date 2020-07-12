@@ -100,6 +100,7 @@ if($email != NULL)
     $response['clientConditions']['sundayDeposit']=$resultat['SUNDAY_DEPOSIT'];
     $response['clientConditions']['maxBookingsPerYear']=$resultat['MAX_BOOKINGS_YEAR'];
     $response['clientConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
+    $response['clientConditions']['cafetaria']=$resultat['CAFETARIA'];
 
 	
     

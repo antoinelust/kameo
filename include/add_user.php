@@ -103,7 +103,7 @@ foreach($_POST as $name => $value){
     if($name=="bikeAccess"){
         foreach($_POST['bikeAccess'] as $valueInArray) {
             include 'connexion.php';
-            $sql= "INSERT INTO  customer_bike_access (USR_MAJ, EMAIL, BIKE_NUMBER, TYPE, STAANN) VALUES ('mykameo','$email', '$valueInArray', 'partage', '')";
+            $sql= "INSERT INTO  customer_bike_access (USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('mykameo','$email', '$valueInArray', 'partage', '')";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);

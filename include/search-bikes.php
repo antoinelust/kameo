@@ -231,7 +231,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                     $response['bike'][$length]['size']= $resultat5['SIZE'];
                     $type=$resultat5['TYPE'];
                     $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
-
+                    
                     include 'connexion.php';
                     $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
                     if ($conn->query($sql6) === FALSE) {
@@ -244,9 +244,15 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                         $resultat6 = mysqli_fetch_assoc($result6);
                         $response['bike'][$length]['brand'] = $resultat6['BRAND'];
                         $response['bike'][$length]['model'] = $resultat6['MODEL'];
+                        $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
                     }
-
-
+                    
+                    $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
+                    if ((file_exists($file))){
+                        $response['bike'][$length]['img']=$bikeID;
+                    }else{
+                        $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
+                    }
                 }
             }
         }

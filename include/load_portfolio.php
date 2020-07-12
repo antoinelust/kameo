@@ -143,7 +143,10 @@ try{
             $response['portfolioPrice']=$resultat['PRICE_HTVA'];
             $response['stock']=$resultat['STOCK'];
             $response['url']=$resultat['LINK'];
+            $response['img']=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']);
+            
             $response['display']=$resultat['DISPLAY'];
+            
             
             echo json_encode($response);
             die;
