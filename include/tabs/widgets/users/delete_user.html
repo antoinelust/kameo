@@ -1,0 +1,74 @@
+<div class="modal fade" id="deleteUser" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr">Supprimer un utilisateur</h4>
+						<form id="widget-deleteUser-form" action="include/delete-user.php" role="form" method="post">
+							<div class="form-group col-sm-12">
+								<label for="widget-deleteUser-form-firstname" class="fr">Prénom</label>
+								<label for="widget-deleteUser-form-firstname" class="en">Firstname</label>
+								<label for="widget-deleteUser-form-firstname" class="nl">Voornaam</label>
+								<input type="text" id="widget-deleteUser-form-firstname" readonly="readonly" name="widget-deleteUser-form-firstname" class="form-control required">
+								<label for="widget-deleteUser-form-name" class="fr">Nom</label>
+								<label for="widget-deleteUser-form-name" class="en">Name</label>
+								<label for="widget-deleteUser-form-name" class="nl">Achternaam</label>
+								<input type="text" id="widget-deleteUser-form-name" readonly="readonly" name="widget-deleteUser-form-name" class="form-control required">
+								<label for="widget-deleteUser-form-mail" class="fr">E-mail</label>
+								<label for="widget-deleteUser-form-mail" class="en">E-mail</label>
+								<label for="widget-deleteUser-form-mail" class="nl">E-mail</label>
+								<input type="text" id="widget-deleteUser-form-mail" readonly="readonly" name="widget-deleteUser-form-mail" class="form-control">
+								<input type="text" id="widget-deleteUser-form-requestor" name="widget-deleteUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
+							</div>
+							<h4>Confirmation de suppression</h4>
+							<label for="widget-deleteUser-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
+							<input type="text" id="widget-deleteUser-form-confirmation" name="widget-deleteUser-form-confirmation" class="form-control">
+							<button class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+							<button class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+							<button class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-deleteUser-form").validate({
+	  submitHandler: function(form) {
+		jQuery(form).ajaxSubmit({
+		  success: function(response) {
+			if (response.response == 'success') {
+			  $.notify({
+				message: response.message
+			  }, {
+				type: 'success'
+			  });
+			  $('#usersListing').modal('toggle');
+			  get_users_listing();
+			  $('#deleteUser').modal('toggle');
+			} else {
+			  $.notify({
+				message: response.message
+			  }, {
+				type: 'danger'
+			  });
+			}
+		  }
+		});
+	  }
+	});
+</script>

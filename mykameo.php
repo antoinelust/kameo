@@ -6,7 +6,6 @@ $user_ID = isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL;
 include 'include/header5.php';
 include 'include/environment.php';
 
-
 if($user==NULL){
   $connected=false;
 }else{
@@ -17,33 +16,32 @@ $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 include 'include/activitylog.php';
 ?>
 
-
-<!-- Language management -->
-<script type="text/javascript" src="js/language.js"></script>
-<script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-<script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
-<script type="text/javascript" src="./node_modules/chart.js/dist/Chart.js" charset="UTF-8"></script>
-<script type="text/javascript" src="js/feedback_management.js"></script>
-<script type="text/javascript" src="js/bike_management.js"></script>
-<script type="text/javascript" src="js/box_management.js"></script>
-<script type="text/javascript" src="js/booking_management.js"></script>
-<script type="text/javascript" src="js/tasks_management.js"></script>
-<script type="text/javascript" src="js/contracts_management.js"></script>
-<script type="text/javascript" src="js/search_module.js"></script>
-<script type="text/javascript" src="js/bills_management.js"></script>
-<script type="text/javascript" src="js/company_management.js"></script>
-<script type="text/javascript" src="js/maintenance_management.js"></script>
-<script type="text/javascript" src="js/notifications.js"></script>
-<script type="text/javascript" src="js/addons/datatables.min.js"></script>
-<script type="text/javascript" src="js/datatable_default.js"></script>
-<script type="text/javascript" src="js/global_functions.js"></script>
-<script type="text/javascript" src="js/dashboard_management.js"></script>
-<script type="text/javascript" src="js/initialize_counters.js"></script>
-<script type="text/javascript" src="js/cafetaria.js"></script>
-<script type="text/javascript" src="js/orderManagement.js"></script>
-<script src="js/OpenLayers/OpenLayers.js"></script>
-
-
+<!-- INCLUDES -->
+<div> <!-- DIV ONLY USED TO FOLD, REMOVE -->
+  <script type="text/javascript" src="js/language.js"></script>
+  <script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="./node_modules/chart.js/dist/Chart.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="js/feedback_management.js"></script>
+  <script type="text/javascript" src="js/bike_management.js"></script>
+  <script type="text/javascript" src="js/box_management.js"></script>
+  <script type="text/javascript" src="js/booking_management.js"></script>
+  <script type="text/javascript" src="js/tasks_management.js"></script>
+  <script type="text/javascript" src="js/contracts_management.js"></script>
+  <script type="text/javascript" src="js/search_module.js"></script>
+  <script type="text/javascript" src="js/bills_management.js"></script>
+  <script type="text/javascript" src="js/company_management.js"></script>
+  <script type="text/javascript" src="js/maintenance_management.js"></script>
+  <script type="text/javascript" src="js/notifications.js"></script>
+  <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+  <script type="text/javascript" src="js/datatable_default.js"></script>
+  <script type="text/javascript" src="js/global_functions.js"></script>
+  <script type="text/javascript" src="js/dashboard_management.js"></script>
+  <script type="text/javascript" src="js/initialize_counters.js"></script>
+  <script type="text/javascript" src="js/cafetaria.js"></script>
+  <script type="text/javascript" src="js/orderManagement.js"></script>
+  <script src="js/OpenLayers/OpenLayers.js"></script>
+</div>
 
 <style media="screen">
     .tableFixed {
@@ -56,7 +54,6 @@ include 'include/activitylog.php';
     }
 </style>
 
-
 <script type="text/javascript">
 
 const ENVIRONMENT = "<?php echo ENVIRONMENT; ?>";
@@ -64,12 +61,8 @@ const ENVIRONMENT = "<?php echo ENVIRONMENT; ?>";
 var email="<?php echo $user; ?>";
 var langue= "<?php echo $_SESSION['langue']; ?>";
 var user_ID = "<?php echo $user_ID; ?>";
-
 var color=Chart.helpers.color;
-
-//id de la compagnie selectionnée si il y en a une sélectionnée
 var companyId;
-
 //varibles des charts chartJS
 var myChart;
 var myChart2;
@@ -78,77 +71,50 @@ var myChart3;
 var nbContacts;
 
 window.addEventListener("DOMContentLoaded", function(event) {
-    
-$( ".fleetmanager" ).click(function() {
-      
-    initializeFields();
-    hideResearch();
-    list_errors();
-    initialize_task_owner_sales_selection();
-    get_company_conditions();
-    list_condition();
-    initialize_counters();
-    
-    var tempDate=new Date();
-    $(".form_date_end_client").data("datetimepicker").setDate(tempDate);
-    tempDate.setMonth(tempDate.getMonth()-6);
-    $(".form_date_start_client").data("datetimepicker").setDate(tempDate);
-    list_maintenances();        
-});
 
-$( ".reservations" ).click(function() {
-    hideResearch();      
-    getHistoricBookings(email);
-});
+	$( ".fleetmanager" ).click(function() {
+		initializeFields();
+		hideResearch();
+		list_errors();
+		initialize_task_owner_sales_selection();
+		get_company_conditions();
+		list_condition();
+		initialize_counters();
 
+		var date=new Date();
+		$(".form_date_end_client").data("datetimepicker").setDate(date);
+		date.setMonth(date.getMonth()-6);
+		$(".form_date_start_client").data("datetimepicker").setDate(date);
+		list_maintenances();
+	});
 
+	$( ".reservations" ).click(function() {
+		hideResearch();
+		getHistoricBookings(email);
+	});
 
-
-    var tempDate=new Date();
-    $(".form_date_end").data("datetimepicker").setDate(tempDate);
-    tempDate.setMonth(tempDate.getMonth()-1);
-    $(".form_date_start").data("datetimepicker").setDate(tempDate);
+    var date=new Date();
+    $(".form_date_end").data("datetimepicker").setDate(date);
+    date.setMonth(date.getMonth()-1);
+    $(".form_date_start").data("datetimepicker").setDate(date);
 
 });
-
 
 function initializeFields(){
 
-  $('#widget-bikeManagement-form select[name=company]')
-  .find('option')
-  .remove()
-  .end()
-  ;
-
-  $('#widget-updateAction-form select[name=company]')
-  .find('option')
-  .remove()
-  .end()
-  ;
-
-  $('#widget-taskManagement-form select[name=company]')
-  .find('option')
-  .remove()
-  .end()
-  ;
-  $('#widget-boxManagement-form select[name=company]')
-  .find('option')
-  .remove()
-  .end()
-  ;
-
+  $('#widget-bikeManagement-form select[name=company]').find('option').remove().end();
+  $('#widget-updateAction-form select[name=company]').find('option').remove().end();
+  $('#widget-taskManagement-form select[name=company]').find('option').remove().end();
+  $('#widget-boxManagement-form select[name=company]').find('option').remove().end();
 
   $.ajax({
     url: 'include/get_companies_listing.php',
     type: 'post',
     data: {type: "*"},
     success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
+
       if(response.response == 'success'){
-        var i=0;
-        while (i < response.companiesNumber){
+        for (var i = 0; i < response.companiesNumber; i++){
           var selected ="";
           if (response.company[i].internalReference == "KAMEO") {
             selected ="selected";
@@ -157,88 +123,67 @@ function initializeFields(){
           $('#widget-updateAction-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
           $('#widget-taskManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\" "+selected+">"+response.company[i].companyName+"<br>");
           $('#widget-boxManagement-form select[name=company]').append("<option value=\""+response.company[i].internalReference+"\">"+response.company[i].companyName+"<br>");
-          i++;
         }
-        
+      }
+	  else {
+        console.log(response.response + ': ' + response.message);
       }
     }
-  })
-    
-    
+  });
+
+
   $.ajax({
     url: 'include/initialize_fields.php',
     type: 'get',
     data: {type: "ownerField"},
     success: function(response){
-        if(response.response == 'error') {
-            console.log(response.message);
-        }
         if(response.response == 'success'){
-            var i=0;
-            $('#widget-taskManagement-form select[name=owner]')
-                .find('option')
-                .remove()
-                .end()
-            ;
-            $('.taskOwnerSelection')
-                .find('option')
-                .remove()
-                .end()
-            ;
 
-            $('.taskOwnerSelection2')
-                .find('option')
-                .remove()
-                .end()
-            ;
-
-            
+            $('#widget-taskManagement-form select[name=owner]').find('option').remove().end();
+            $('.taskOwnerSelection').find('option').remove().end();
+            $('.taskOwnerSelection2').find('option').remove().end();
             $('.taskOwnerSelection').append("<option value='*'>Tous<br>");
             $('.taskOwnerSelection2').append("<option value='*'>Tous<br>");
-            
-            
             $('#widget-taskManagement-form select[name=owner]').append("<option value='*'>Tous<br>");
 
-            var i=0;
-            while (i < response.ownerNumber){
+            for (var i = 0; i < response.ownerNumber; i++){
                 $('#widget-taskManagement-form select[name=owner]').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
                 $('.taskOwnerSelection').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
                 $('.taskOwnerSelection2').append("<option value="+response.owner[i].email+">"+response.owner[i].firstName+" "+response.owner[i].name+"<br>");
-                i++;                
-            }
-
-            }
+			}
         }
-    })    
+		else {
+			console.log(response.response + ': ' + response.message);
+      }
+    }
+  });
 }
 
+//FleetManager: Gérer les Actions | List user task on <select> call
 function taskFilter(e){
   list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user ?>');
-
 }
 
 function billFilter(e){
   document.getElementsByClassName('billSelectionText')[0].innerHTML=e;
   get_bills_listing('*', '*', '*', '*', email);
-
 }
 
+//FleetManager: Gérer les Actions | Displays the task graph by calling action_company.php and creating it
 function generateTasksGraphic(company, owner, numberOfDays){
-
   $.ajax({
     url: 'include/action_company.php',
     type: 'get',
     data: { "action": "graphic", "company": company, "owner": owner, "numberOfDays": numberOfDays},
     success: function(response){
       if (response.response == 'error') {
-        console.log(response.message);
-      } else{
-
-
+		  console.log(response.message);
+	  }
+	  else {
         var ctx = document.getElementById('myChart2').getContext('2d');
-        if (myChart2 != undefined) {
+        if (myChart2 != undefined)
           myChart2.destroy();
-        }
+
         myChart2 = new Chart(ctx, {
           type: 'line',
           data: {
@@ -299,68 +244,46 @@ function generateTasksGraphic(company, owner, numberOfDays){
               hidden: true
             }],
             labels: response.arrayDates
-
           },
-
           options: {
             scales: {
               yAxes: [{
-                ticks: {
-                  beginAtZero: true,
-                  stacked: true
-
-                }
+                ticks: { beginAtZero: true, stacked: true }
               }]
             },
             elements: {
-              line: {
-                tension: 0
-              }
+              line: { tension: 0 }
             }
-
           }
-
         });
-        if(response.presenceContacts=="1"){
+        if(response.presenceContacts=="1")
           myChart2.data.datasets[1].hidden=false;
-        }
-        if(response.presenceReminder=="1"){
+        if(response.presenceReminder=="1")
           myChart2.data.datasets[2].hidden=false;
-        }
-        if(response.presenceRDVPlan=="1"){
+        if(response.presenceRDVPlan=="1")
           myChart2.data.datasets[3].hidden=false;
-        }
-        if(response.presenceRDV=="1"){
+        if(response.presenceRDV=="1")
           myChart2.data.datasets[4].hidden=false;
-        }
-        if(response.presenceOffers=="1"){
+        if(response.presenceOffers=="1")
           myChart2.data.datasets[5].hidden=false;
-        }
-        if(response.presenceOffersSigned=="1"){
+        if(response.presenceOffersSigned=="1")
           myChart2.data.datasets[6].hidden=false;
-        }
-        if(response.presenceDelivery=="1"){
+        if(response.presenceDelivery=="1")
           myChart2.data.datasets[7].hidden=false;
-        }
-        if(response.presenceOther=="1"){
+        if(response.presenceOther=="1")
           myChart2.data.datasets[8].hidden=false;
-        }
+
         myChart2.update();
-
       }
-
     }
-  })
-
-
-
+  });
 }
 
+//FleetManager: Gérer les clients | Displays the companies graph by calling get_companies_listing.php and creating it
 function generateCompaniesGraphic(dateStart, dateEnd){
 
-
-  dateStartString=dateStart.getFullYear()+"-"+("0" + (dateStart.getMonth() + 1)).slice(-2)+"-"+("0" + dateStart.getDate()).slice(-2);
-  dateEndString=dateEnd.getFullYear()+"-"+("0" + (dateEnd.getMonth() + 1)).slice(-2)+"-"+("0" + dateEnd.getDate()).slice(-2);
+  var dateStartString=dateStart.getFullYear()+"-"+("0" + (dateStart.getMonth() + 1)).slice(-2)+"-"+("0" + dateStart.getDate()).slice(-2);
+  var dateEndString=dateEnd.getFullYear()+"-"+("0" + (dateEnd.getMonth() + 1)).slice(-2)+"-"+("0" + dateEnd.getDate()).slice(-2);
 
   $.ajax({
     url: 'include/get_companies_listing.php',
@@ -368,13 +291,12 @@ function generateCompaniesGraphic(dateStart, dateEnd){
     data: { "action": "graphic", "numberOfDays": "30", "dateStart": dateStartString, "dateEnd": dateEndString},
     success: function(response){
       if (response.response == 'error') {
-        console.log(response.message);
-      } else{
-
+		console.log(response.message);
+	  }
+	  else {
         var ctx = document.getElementById('myChart3').getContext('2d');
-        if (myChart3 != undefined) {
+        if (myChart3 != undefined)
           myChart3.destroy();
-        }
 
         var presets=window.chartColors;
 
@@ -405,7 +327,6 @@ function generateCompaniesGraphic(dateStart, dateEnd){
             labels:response.dates
           },
 
-
           options: {
             scales: {
               yAxes: [{
@@ -414,20 +335,15 @@ function generateCompaniesGraphic(dateStart, dateEnd){
               }]
             },
             elements: {
-              line: {
-                tension: 0
-              }
+              line: { tension: 0 }
             }
           }
         });
         myChart3.update();
       }
     }
-  })
+  });
 }
-
-
-
 
 function construct_form_for_billing_status_update(ID){
   $.ajax({
@@ -438,92 +354,53 @@ function construct_form_for_billing_status_update(ID){
       if (response.response == 'error') {
         console.log(response.message);
       } else{
-        $('input[name=widget-updateBillingStatus-form-billingReference]').val(ID);
-        $('input[name=widget-updateBillingStatus-form-billingCompany]').val(response.bill.company);
-        $('input[name=widget-updateBillingStatus-form-beneficiaryBillingCompany]').val(response.bill.beneficiaryCompany);
-        $('input[name=widget-updateBillingStatus-form-type]').val(response.bill.type);
-        $('input[name=widget-updateBillingStatus-form-communication]').val(response.bill.communication);
-        $('input[name=widget-updateBillingStatus-form-date]').val(response.bill.date.substring(0,10));
-        $('input[name=widget-updateBillingStatus-form-amountHTVA]').val(response.bill.amountHTVA);
-        $('input[name=widget-updateBillingStatus-form-amountTVAC]').val(response.bill.amountTVAC);
-        if(response.bill.amountHTVA == response.bill.amountTVAC){
-          $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', false);
-        }else{
-          $('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', true);
+			$('input[name=widget-updateBillingStatus-form-billingReference]').val(ID);
+			$('input[name=widget-updateBillingStatus-form-billingCompany]').val(response.bill.company);
+			$('input[name=widget-updateBillingStatus-form-beneficiaryBillingCompany]').val(response.bill.beneficiaryCompany);
+			$('input[name=widget-updateBillingStatus-form-type]').val(response.bill.type);
+			$('input[name=widget-updateBillingStatus-form-communication]').val(response.bill.communication);
+			$('input[name=widget-updateBillingStatus-form-date]').val(response.bill.date.substring(0,10));
+			$('input[name=widget-updateBillingStatus-form-amountHTVA]').val(response.bill.amountHTVA);
+			$('input[name=widget-updateBillingStatus-form-amountTVAC]').val(response.bill.amountTVAC);
+			$('input[name=widget-updateBillingStatus-form-VAT]').prop('checked', Boolean(response.bill.amountHTVA != response.bill.amountTVAC));
+			$('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', Boolean(response.bill.sent=="1"));
+			$('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', Boolean(response.bill.paid=="1"));
+			$('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', Boolean(response.bill.communicationSentAccounting=="1"));
+			$('input[name=widget-updateBillingStatus-form-currentFile]').val(response.bill.file);
+			$("#widget-deleteBillingStatus-form input[name=reference]").val(ID);
+			if(response.bill.sentDate)
+			  $('input[name=widget-updateBillingStatus-form-sendingDate]').val(response.bill.sentDate.substring(0,10));
+			else
+			  $('input[name=widget-updateBillingStatus-form-sendingDate]').val('');
+			if(response.bill.paidDate)
+			  $('input[name=widget-updateBillingStatus-form-paymentDate]').val(response.bill.paidDate.substring(0,10));
+			else
+			  $('input[name=widget-updateBillingStatus-form-paymentDate]').val('');
+			if(response.bill.paidLimitDate)
+			  $('input[name=widget-updateBillingStatus-form-datelimite]').val(response.bill.paidLimitDate.substring(0,10));
+			else
+			  $('input[name=widget-updateBillingStatus-form-datelimite]').val('');
+			if(response.bill.file != ''){
+			  $('.widget-updateBillingStatus-form-currentFile').attr("href", "factures/"+response.bill.file);
+			  $('.widget-updateBillingStatus-form-currentFile').unbind('click');
+			}else{
+			  $('.widget-updateBillingStatus-form-currentFile').click(function(e) {
+				e.preventDefault();
+				$.notify({ message: "No file available for that bill" }, { type: 'danger' });
+			  });
+			}
+			var dest='<table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
+			for(var i = 0; i<response.billDetailsNumber; i++){
+			  dest=dest.concat("<tr><th>"+response.bill.billDetails[i].bikeID + " - " + response.bill.billDetails[i].frameNumber+"</th><th>"+response.bill.billDetails[i].amountHTVA+"</th><th>"+response.bill.billDetails[i].comments+"</th></tr>");
+			}
+			document.getElementById('billingDetails').innerHTML=dest.concat("</tbody><table>");
+			displayLanguage();
         }
-
-
-        if(response.bill.sent=="1"){
-          $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', true);
-        }else{
-          $('input[name=widget-updateBillingStatus-form-sent]').prop( 'checked', false);
-        }
-        if(response.bill.sentDate){
-          $('input[name=widget-updateBillingStatus-form-sendingDate]').val(response.bill.sentDate.substring(0,10));
-        }else{
-          $('input[name=widget-updateBillingStatus-form-sendingDate]').val('');
-        }
-
-        if(response.bill.paid=="1"){
-          $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', true);
-        }else{
-          $('input[name=widget-updateBillingStatus-form-paid]').prop( 'checked', false);
-        }
-        if(response.bill.paidDate){
-          $('input[name=widget-updateBillingStatus-form-paymentDate]').val(response.bill.paidDate.substring(0,10));
-        }else{
-          $('input[name=widget-updateBillingStatus-form-paymentDate]').val('');
-        }
-
-
-        if(response.bill.paidLimitDate){
-          $('input[name=widget-updateBillingStatus-form-datelimite]').val(response.bill.paidLimitDate.substring(0,10));
-        }else{
-          $('input[name=widget-updateBillingStatus-form-datelimite]').val('');
-        }
-        if(response.bill.file != '' ){
-          $('.widget-updateBillingStatus-form-currentFile').attr("href", "factures/"+response.bill.file);
-          $('.widget-updateBillingStatus-form-currentFile').unbind('click');
-        }else{
-          $('.widget-updateBillingStatus-form-currentFile').click(function(e) {
-            e.preventDefault();
-            $.notify({
-              message: "No file available for that bill"
-            }, {
-              type: 'danger'
-            });
-          });
-        }
-
-        if(response.bill.communicationSentAccounting=="1"){
-          $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', true);
-        }else{
-          $('#widget-updateBillingStatus-form input[name=accounting]').prop( 'checked', false);
-        }
-
-
-        $('input[name=widget-updateBillingStatus-form-currentFile]').val(response.bill.file);
-        $("#widget-deleteBillingStatus-form input[name=reference]").val(ID);
-
-
-        var i=0;
-        var dest='<table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
-        while(i<response.billDetailsNumber){
-          var temp="<tr>";
-          temp=temp.concat("<th>"+response.bill.billDetails[i].bikeID + " - " + response.bill.billDetails[i].frameNumber+"</th><th>"+response.bill.billDetails[i].amountHTVA+"</th><th>"+response.bill.billDetails[i].comments+"</th></tr>")
-          i++;
-          dest=dest.concat(temp);
-        }
-        dest=dest.concat("</tbody><table>");
-        document.getElementById('billingDetails').innerHTML=dest;
-        displayLanguage();
-
-      }
     }
-  })
+  });
 }
 
-
+//FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it
 function listPortfolioBikes(){
   $.ajax({
     url: 'include/load_portfolio.php',
@@ -533,30 +410,21 @@ function listPortfolioBikes(){
       if (response.response == 'error') {
         console.log(response.message);
       } else{
-            var i=0;
-            var dest="";
-            var temp="<table class=\"table table-condensed\" id=\"portfolioBikeListing\"><h4 class=\"fr-inline text-green\">Vélos du catalogue:</h4><h4 class=\"en-inline text-green\">Portfolio bikes:</h4><h4 class=\"nl-inline text-green\">Portfolio bikes:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addPortfolioBike\" data-toggle=\"modal\" onclick=\"initializeCreatePortfolioBike()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class=\"fr-inline\">Marque</span><span class=\"en-inline\">Brand</span><span class=\"nl-inline\">Brand</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Utilisation</span><span class=\"en-inline\">Use</span><span class=\"nl-inline\">Use</span></th><th><span class=\"fr-inline\">Electrique ?</span><span class=\"en-inline\">Electric</span><span class=\"nl-inline\">Electric</span></th><th><span class=\"fr-inline\">Cadre</span><span class=\"en-inline\">Frame</span><span class=\"nl-inline\">Frame</span></th><th><span class=\"fr-inline\">Prix</span><span class=\"en-inline\">Price</span><span class=\"nl-inline\">Price</span></th><th>Afficher</th><th></th></tr></thead><tbody>";
-            dest=dest.concat(temp);
-
-            while(i<response.bikeNumber){
-                var temp="<tr><td>"+response.bike[i].ID+"</td><td>"+response.bike[i].brand+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].utilisation+"</td><td>"+response.bike[i].electric+"</td><td>"+response.bike[i].frameType+"</td><td>"+Math.round(response.bike[i].price)+" €</td><td>"+response.bike[i].display+"<td><a href=\"#\" class=\"text-green updatePortfolioClick\" onclick=\"initializeUpdatePortfolioBike('"+response.bike[i].ID+"')\" data-target=\"#updatePortfolioBike\" data-toggle=\"modal\">Mettre à jour </a></td></tr>";
-                dest=dest.concat(temp);
-                i++;
+            var dest="<table class=\"table table-condensed\" id=\"portfolioBikeListing\"><h4 class=\"fr-inline text-green\">Vélos du catalogue:</h4><h4 class=\"en-inline text-green\">Portfolio bikes:</h4><h4 class=\"nl-inline text-green\">Portfolio bikes:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addPortfolioBike\" data-toggle=\"modal\" onclick=\"initializeCreatePortfolioBike()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class=\"fr-inline\">Marque</span><span class=\"en-inline\">Brand</span><span class=\"nl-inline\">Brand</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Utilisation</span><span class=\"en-inline\">Use</span><span class=\"nl-inline\">Use</span></th><th><span class=\"fr-inline\">Electrique ?</span><span class=\"en-inline\">Electric</span><span class=\"nl-inline\">Electric</span></th><th><span class=\"fr-inline\">Cadre</span><span class=\"en-inline\">Frame</span><span class=\"nl-inline\">Frame</span></th><th><span class=\"fr-inline\">Prix</span><span class=\"en-inline\">Price</span><span class=\"nl-inline\">Price</span></th><th>Afficher</th><th></th></tr></thead><tbody>";
+            for(i = 0; i<response.bikeNumber; i++){
+                dest=dest.concat("<tr><td>"+response.bike[i].ID+"</td><td>"+response.bike[i].brand+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].utilisation+"</td><td>"+response.bike[i].electric+"</td><td>"+response.bike[i].frameType+"</td><td>"+Math.round(response.bike[i].price)+" €</td><td>"+response.bike[i].display+"<td><a href=\"#\" class=\"text-green updatePortfolioClick\" onclick=\"initializeUpdatePortfolioBike('"+response.bike[i].ID+"')\" data-target=\"#updatePortfolioBike\" data-toggle=\"modal\">Mettre à jour </a></td></tr>");
             }
-            document.getElementById('portfolioBikesListing').innerHTML=dest.concat("</tbody>");
-
+            document.getElementById('portfolioBikesListing').innerHTML=dest.concat("</tbody></table>");
             displayLanguage();
             $('#portfolioBikeListing').DataTable({
                 "paging": false
             });
-          
-          
       }
-
     }
-  })
+  });
 }
 
+//FleetManager: Gérer le catalogue | Displays the bike information when "Mettre à jour" is pressed
 function initializeUpdatePortfolioBike(ID){
   $.ajax({
     url: 'include/load_portfolio.php',
@@ -567,55 +435,46 @@ function initializeUpdatePortfolioBike(ID){
         console.log(response.message);
       } else{
         $('#widget-updateCatalog-form input[name=ID]').val(response.ID);
-
         $('#widget-deletePortfolioBike-form [name=id]').val(response.ID);
-
-        console.log(response.brand);
         $('#widget-updateCatalog-form select[name=brand]').val(response.brand);
         $('#widget-updateCatalog-form input[name=model]').val(response.model);
         $('#widget-updateCatalog-form select[name=frame]').val(response.frameType);
         $('#widget-updateCatalog-form select[name=utilisation]').val(response.utilisation);
         $('#widget-updateCatalog-form select[name=electric]').val(response.electric);
-
         $('#widget-updateCatalog-form input[name=electric]').val(response.electric);
         $('#widget-updateCatalog-form input[name=buyPrice]').val(response.buyingPrice);
         $('#widget-updateCatalog-form input[name=price]').val(response.portfolioPrice);
-
         $('#widget-updateCatalog-form input[name=stock]').val(response.stock);
         $('#widget-updateCatalog-form input[name=link]').val(response.url);
-
         document.getElementsByClassName("bikeCatalogImage")[0].src="images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
         document.getElementsByClassName("bikeCatalogImageMini")[0].src="images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+"_mini.jpg";
         $('#widget-updateCatalog-form input[name=file]').val('');
         $('#widget-updateCatalog-form input[name=fileMini]').val('');
-
-        if(response.display=='Y'){
-          $('#widget-updateCatalog-form input[name=display]').prop("checked", true);
-        }else{
-          $('#widget-updateCatalog-form input[name=display]').prop("checked", false);
-        }
+        $('#widget-updateCatalog-form input[name=display]').prop("checked", Boolean(response.display=='Y'));
       }
-
     }
   })
 }
 
+//FleetManager: Gérer le catalogue | Reset the form to add a bike to the catalogue
 function initializeCreatePortfolioBike(){
-  document.getElementById('widget-addCatalog-form').reset();
+  document.getElementById('x').reset();
 }
 
-
 </script>
+
 <?php
 
+//{DO EVERYTHING UNDER ONLY IF CONNECTED}
+//Define $company as true if user uses personnal bikes, false if not
 if($connected){
 
   include 'include/connexion.php';
   $sql = "select * from customer_referential aa, customer_bike_access bb where aa.EMAIL='$user' and aa.EMAIL=bb.EMAIL and bb.TYPE='personnel' LIMIT 1";
   $result = mysqli_query($conn, $sql);
   $length = $result->num_rows;
-    
-  $row = mysqli_fetch_assoc($result);    
+
+  $row = mysqli_fetch_assoc($result);
   if ($length>0){
     $company=false;
   }
@@ -630,8 +489,7 @@ if($connected){
 
   var langueJava = "<?php echo $_SESSION['langue']; ?>";
 
-
-
+  //Promise containing Client Conditions
   function loadClientConditions(){
     var email= "<?php echo $user; ?>";
     return $.ajax({
@@ -643,18 +501,17 @@ if($connected){
           console.log(response.message);
         }
       }
-    })
+    });
   }
 
-  // Goal of this function is to delete the block with result of research
+  //Delete results of search
   function hideResearch(){
     document.getElementById('velos').innerHTML = "";
     document.getElementById("velos").style.display = "none";
     document.getElementById("travel_information").style.display = "none";
   }
 
-
-
+  //FleetManager: Nombre d'utilisateurs | Displays the user list <table> by calling get_users_listing.php and creating it
   function get_users_listing(){
     var email= "<?php echo $user; ?>";
     $.ajax({
@@ -662,41 +519,36 @@ if($connected){
       type: 'post',
       data: { "email": email},
       success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
         if(response.response == 'success'){
-          var i=0;
-          var dest="";
-
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addUser\" data-toggle=\"modal\" onclick=\"create_user()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un utilisateur</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th><th></th></tr></thead>";
-          dest=dest.concat(temp);
-
-          while (i < response.usersNumber){
+          var dest="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addUser\" data-toggle=\"modal\" onclick=\"create_user()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un utilisateur</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th><th></th></tr></thead>";
+          for (var i = 0; i < response.usersNumber; i++){
             if(response.user[i].staann=='D'){
               var status="<span class=\"text-red\">Inactif</span>";
             }else{
               var status="Actif";
             }
-            var temp="<tr><td>"+response.user[i].name+"</td><td>"+response.user[i].firstName+"</td><td>"+response.user[i].email+"</td><td>"+status+"</td><td><a  data-target=\"#updateUserInformation\" name=\""+response.user[i].email+"\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"update_user_information('"+response.user[i].email+"')\">Mettre à jour</a></td></tr>";
-            dest=dest.concat(temp);
-
-            i++;
+            dest = dest.concat("<tr><td>"+response.user[i].name+"</td><td>"+response.user[i].firstName+"</td><td>"+response.user[i].email+"</td><td>"+status+"</td><td><a  data-target=\"#updateUserInformation\" name=\""+response.user[i].email+"\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"update_user_information('"+response.user[i].email+"')\">Mettre à jour</a></td></tr>");
           }
           document.getElementById('usersList').innerHTML = dest;
           displayLanguage();
+        }
+        else {
+          console.log(response.response + ': ' + response.message);
         }
       }
     })
   }
 
+/************************************************************************************************************************************************/
+/*** ENTERING WILD ZONE: WHERE NOTHING'S REFACTORED ***/
+/************************************************************************************************************************************************/
 
+  //FleetManager: Nombre d'utilisateurs | Displays the msg to confim user creation
   function confirm_add_user(){
-
-    document.getElementById('confirmAddUser').innerHTML="<p><strong>Attention</strong>, la création d'un compte entraînera l'envoi d'un mail vers la personne en question.<br>\
-    Veuillez confirmer que les informations mentionées précédemment sont correctes.</p><button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Confirmer</button>";
+    document.getElementById('confirmAddUser').innerHTML="<p><strong>Attention</strong>, la création d'un compte entraînera l'envoi d'un mail vers la personne en question.<br>Veuillez confirmer que les informations mentionées précédemment sont correctes.</p><button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Confirmer</button>";
   }
 
+  //XXXXXXXXXXXXXXXX
   function list_condition(){
     var email= "<?php echo $user; ?>";
     $.ajax({
@@ -704,17 +556,10 @@ if($connected){
       type: 'get',
       data: { "email": email},
       success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
         if(response.response == 'success'){
-          var i=0;
-          var dest="";
-          var temp="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Groupes de condition :</h4><h4 class=\"en-inline\">Condition groups:</h4><h4 class=\"nl-inline\">Condition groups:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#companyConditions\" data-toggle=\"modal\" onclick=\"create_condition()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un groupe de conditions</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Nombre d'utilisateurs</span><span class=\"en-inline\">Groupe size</span><span class=\"nl-inline\">Group size</span></th><th></th></tr></thead>";
-          dest=dest.concat(temp);
+          var dest="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Groupes de condition :</h4><h4 class=\"en-inline\">Condition groups:</h4><h4 class=\"nl-inline\">Condition groups:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#companyConditions\" data-toggle=\"modal\" onclick=\"create_condition()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un groupe de conditions</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Nombre d'utilisateurs</span><span class=\"en-inline\">Groupe size</span><span class=\"nl-inline\">Group size</span></th><th></th></tr></thead>";
 
-          while (i < response.conditionNumber){
-
+          for (var i = 0; i < response.conditionNumber; i++){
             if(response.condition[i].name=="generic"){
               var temp="<tr><th>Conditions génériques</th>";
             }
@@ -724,19 +569,18 @@ if($connected){
             dest=dest.concat(temp);
             var temp="<th>"+response.condition[i].length+"</th><th><a  data-target=\"#companyConditions\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"get_company_conditions('"+response.condition[i].id+"')\">Mettre à jour</a></th></tr>";
             dest=dest.concat(temp);
-
-            i++;
           }
           document.getElementById('spanConditionListing').innerHTML = dest;
           displayLanguage();
-
+        }
+        else {
+          console.log(response.response + ': ' + response.message);
         }
       }
-    })
-
+    });
   }
 
-
+  //XXXXXXXXXXXXXXXX
   function get_company_conditions(id){
     var emailArray;
     var email= "<?php echo $user; ?>";
@@ -754,25 +598,24 @@ if($connected){
 
           if(response.update){
             document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
-            document.getElementsByClassName('clientBikesManagerClick')[0].addEventListener('click', function() { get_bikes_listing()}, false);    
-            document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);    
+            document.getElementsByClassName('clientBikesManagerClick')[0].addEventListener('click', function() { get_bikes_listing()}, false);
+            document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);
             document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
             document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
-              
+
             $('.clientManagerClick').click(function(){
                 get_company_listing('*');
                 generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
             });
-              
-              
+
             document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
-              
+
             $('.tasksManagerClick').click(function(){
-                list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');                
+                list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user ?>');
                 generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
             });
             $('#offerManagerClick').click(function(){
-                list_contracts_offers('*');                
+                list_contracts_offers('*');
             });
             $('.ordersManagerClick').click(function(){get_orders_listing()});
             document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
@@ -780,16 +623,13 @@ if($connected){
             document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
             document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
             document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
-              
-              
-            if(email=='julien@kameobikes.com' || email=='antoine@kameobikes.com' || email=='thibaut@kameobikes.com' || email=='pierre-yves@kameobikes.com'){
+
+            if(email=='julien@kameobikes.com' || email=='antoine@kameobikes.com' || email=='thibaut@kameobikes.com' || email=='pierre-yves@kameobikes.com' || email=='test3@kameobikes.com'){
                 document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
                 document.getElementById('cashFlowManagement').classList.remove("hidden");
                 document.getElementById('billsManagement').classList.remove("hidden");
                 $('.billsTitle').removeClass("hidden");
             }
-              
-              
 
             var classname = document.getElementsByClassName('administrationKameo');
             for (var i = 0; i < classname.length; i++) {
@@ -806,10 +646,10 @@ if($connected){
             document.getElementById('maintenanceManagement').classList.remove("hidden");
             document.getElementById('dashBoardManagement').classList.remove("hidden");
           }else if(response.companyConditions.administrator=="Y"){
-              document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);    
-              document.getElementsByClassName('clientBikesManagerClick')[0].addEventListener('click', function() { get_bikes_listing()}, false);    
+              document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);
+              document.getElementsByClassName('clientBikesManagerClick')[0].addEventListener('click', function() { get_bikes_listing()}, false);
               document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
-              
+
               $('.billsTitle').removeClass("hidden");
               document.getElementById('billsManagement').classList.remove("hidden");
               document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
@@ -965,7 +805,7 @@ if($connected){
     })
   }
 
-
+  //XXXXXXXXXXXXXXXX
   function create_condition(){
     var email= "<?php echo $user; ?>";
     $('#widget-updateCompanyConditions-form input[name=name]').val("");
@@ -1015,7 +855,7 @@ if($connected){
 
   }
 
-
+  //FleetManager: Nombre d'utilisateurs | List the building, bikes and display the create button
   function create_user(){
     var email= "<?php echo $user; ?>";
     $.ajax({
@@ -1063,14 +903,13 @@ if($connected){
                 </button>";
               }
             }
-          })
+          });
         }
       }
-    })
+    });
   }
 
-
-
+  //FleetManager: Nombre d'utilisateurs | Display user details when "Mettre à jour" button is pressed
   function update_user_information(email){
     $.ajax({
       url: 'include/get_user_details.php',
@@ -1095,9 +934,6 @@ if($connected){
             var dest="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#reactivateUser\" onclick=\"initializeReactivateUser('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Ré-activer</span><span class=\"en-inline\">Re-activate</span></a>";
             document.getElementById('updateUserSendButton').innerHTML="";
             document.getElementById('deleteUserButton').innerHTML=dest;
-
-
-
           }else{
             $('#widget-updateUser-form-firstname').prop('readonly', false);
             $('#widget-updateUser-form-name').prop('readonly', false);
@@ -1129,37 +965,27 @@ if($connected){
             while(i<response.bikeNumber){
               if(response.bike[i].access==true){
                 temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
-
               }
               else if(response.bike[i].access==false){
                 temp="<input type=\"checkbox\" name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
-
               }
               dest=dest.concat(temp);
               i++;
             }
             document.getElementById('bikeUpdateUser').innerHTML = dest;
-
             var dest="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteUser\" onclick=\"initializeDeleteUser('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Supprimer</span><span class=\"en-inline\">Delete</span></a>";
             document.getElementById('updateUserSendButton').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Envoyer</button><button  class=\"en button small green button-3d rounded icon-left\" type=\"submit\" ><i class=\"fa fa-paper-plane\"></i>Send</button><button  class=\"nl button small green button-3d rounded icon-left\" type=\"submit\" ><i class=\"fa fa-paper-plane\"></i>Verzenden</button>";
-
             document.getElementById('deleteUserButton').innerHTML=dest;
-
           }
         }
-
-
         $('#usersListing').modal('toggle');
         displayLanguage();
-
-
-
       }
-    })
+    });
   }
 
+  //FleetManager: Nombre d'utilisateurs | Display summary of user details when "Supprimer" button is pressed
   function initializeDeleteUser(email){
-
     $.ajax({
       url: 'include/get_user_details.php',
       type: 'post',
@@ -1173,14 +999,12 @@ if($connected){
           document.getElementById('widget-deleteUser-form-name').value = response.user.name;
           document.getElementById('widget-deleteUser-form-mail').value = response.user.email;
         }
-
       }
-    })
+    });
     $('#updateUserInformation').modal('toggle');
-
   }
 
-
+  //FleetManager: Nombre d'utilisateurs | Display summary of user details when "Réactiver" button is pressed
   function initializeReactivateUser(email){
 
     $.ajax({
@@ -1203,12 +1027,7 @@ if($connected){
 
   }
 
-
-
-
-
-
-
+  //XXXXXXXXXXXXXXXX
   function get_address_building(buildingReference){
     return $.ajax({
       url: 'include/get_address_building.php',
@@ -1216,9 +1035,10 @@ if($connected){
       data: { "buildingReference": buildingReference},
       success: function(text){
       }
-    })
+    });
   }
 
+  //XXXXXXXXXXXXXXXX
   function get_address_domicile(){
     <?php include 'include/connexion.php';
     $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY from customer_referential aa where aa.EMAIL='$user'";
@@ -1232,6 +1052,7 @@ if($connected){
     return addressDomicile;
   }
 
+  //XXXXXXXXXXXXXXXX
   function get_address_travail(){
     <?php include 'include/connexion.php';
     $sql = "select aa.EMAIL, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY from customer_referential aa where aa.EMAIL='$user'";
@@ -1246,6 +1067,7 @@ if($connected){
 
   }
 
+  //XXXXXXXXXXXXXXXX
   function get_meteo(date, address){
     return $.ajax({
       url: 'include/meteo.php',
@@ -1254,8 +1076,9 @@ if($connected){
     })
   }
 
+  //XXXXXXXXXXXXXXXX
   function get_travel_time(date, address_start, address_end){
-      
+
     return $.ajax({
       url: 'include/get_directions.php',
       type: 'post',
@@ -1265,6 +1088,7 @@ if($connected){
     });
   }
 
+  //XXXXXXXXXXXXXXXX
   function get_kameo_score(weather, precipitation, temperature, wind_speed, travel_time_bike, travel_time_car){
     /* L'icone du temps est-elle vraiment nécessaire ? ne se baserions nous pas uniquement sur les chances de précipitation etc... ? Surtout que d'autres icones pourraient se rajouter dans le futur */
     var weather_score={clearday:10, rain:4, snow:0, sleet:2, wind:6, fog:6, cloudy:8, partlycloudyday:9, clearnight:10, partlycloudynight:9};
@@ -1324,7 +1148,7 @@ if($connected){
 
   }
 
-
+  //XXXXXXXXXXXXXXXX
   function clickBikeDay(e){
 
     var email="<?php echo $user; ?>";
@@ -1362,7 +1186,7 @@ if($connected){
     }
   }
 
-
+  //XXXXXXXXXXXXXXXX
   function retrieve_cost(ID, action){
     $.ajax({
       url: 'include/costs_management.php',
@@ -1421,17 +1245,18 @@ if($connected){
 
   }
 
+  //XXXXXXXXXXXXXXXX
   function add_offer(company){
     $('#companyHiddenOffer').val(company);
-
     $('#widget-offerManagement-form select[name=type]').val("leasing");
     $('#widget-offerManagement-form input[name=action]').val("add");
     $('#widget-offerManagement-form input').attr("readonly", false);
     $('#widget-offerManagement-form textarea').attr("readonly", false);
     $('#widget-offerManagement-form select').attr("readonly", false);
     document.getElementById('widget-offerManagement-form').reset();
-
   }
+
+  //XXXXXXXXXXXXXXXX
   function edit_contact(contact){
     return $.ajax({
       url: 'include/edit_company_contact.php',
@@ -1446,13 +1271,13 @@ if($connected){
         'bikesStats': $(contact).find('.bikesStats').prop('checked'),
         'companyId': $('#companyIdHidden').val(),
         'email': email
-
       },
       success: function(response){
       }
     });
   }
 
+  //XXXXXXXXXXXXXXXX
   function delete_contact(contact, id){
     return $.ajax({
       url: 'include/delete_company_contact.php',
@@ -1464,6 +1289,8 @@ if($connected){
       }
     });
   }
+
+  //XXXXXXXXXXXXXXXX
   function get_company_contacts(ID){
     $.ajax({
       url: 'include/get_company_contact.php',
@@ -1534,9 +1361,12 @@ if($connected){
 
   }
 
+  //XXXXXXXXXXXXXXXX
   function initialize_company_contacts (){
     $('.clientContactZone').html('');
   }
+
+  //XXXXXXXXXXXXXXXX
   function remove_contact_form(removeContent = false){
     //retrait de l ajout
     $('.contactAddIteration').fadeOut();
@@ -1550,16 +1380,9 @@ if($connected){
     $('.removeContact').addClass('glyphicon-plus').addClass('green').addClass('addContact').removeClass('glyphicon-minus').removeClass('red').removeClass('removeContact');
   }
 
-
-
-
-
+  //XXXXXXXXXXXXXXXX
   function list_kameobikes_member(){
-    $('#widget-addActionCompany-form select[name=owner]')
-    .find('option')
-    .remove()
-    .end()
-    ;
+    $('#widget-addActionCompany-form select[name=owner]').find('option').remove().end();
 
     $.ajax({
       url: 'include/get_kameobikes_members.php',
@@ -1575,16 +1398,12 @@ if($connected){
             i++;
           }
           $('#widget-addActionCompany-form select[name=owner]').val('julien@kameobikes.com');
-
         }
       }
-    })
+    });
   }
 
-
-
-
-
+  //XXXXXXXXXXXXXXXX
   function add_building(company){
     $.ajax({
       url: 'include/get_bikes_listing.php',
@@ -1629,10 +1448,9 @@ if($connected){
       }
     })
     document.getElementById('widget-addBuilding-form-company').value = company;
-
   }
 
-
+  //GENERAL
   function deconnexion(){
     $.ajax({
       url: 'include/logout.php',
@@ -1647,14 +1465,13 @@ if($connected){
     });
 
   }
+
 </script>
 
 <!-- CONTENT -->
 <section class="content">
   <div class="container">
     <div class="row">
-
-
       <!-- post content -->
       <div class="post-content float-right col-md-9">
         <!-- Post item-->
@@ -1663,7 +1480,7 @@ if($connected){
             <div class="heading heading text-left m-b-20">
               <div class="row" style="position: relative;">
                 <h2 class="col-sm-8">MY KAMEO</h2>
-                <div class="notificationHeading">
+                <div class="notificationHeading"> <!-- NOTIFICATIONS -->
                   <div class="col-sm-4" style="padding:0;">
                     <span class="pointerClick notificationsClick">
                       <i class="fa fa-2x fa-bell-o text-green" aria-hidden="true"></i>
@@ -1675,17 +1492,12 @@ if($connected){
                   </div>
                 </div>
               </div>
-
             </div>
             <br />
             <div class="col-md-12">
-
               <span id="assistanceSpan"></span>
-                
-            
               <?php if(!$company){
                 ?>
-
                 <a class="button small green button-3d rounded icon-right" data-target="#calendrier" data-toggle="modal" href="#">
                   <span class="fr-inline">Mon calendrier</span>
                   <span class="en-inline">My calendar</span>
@@ -1698,14 +1510,7 @@ if($connected){
             <br>
             <?php
             if ($company){
-
               ?>
-
-
-              <!--ce form ci permet de ne pas avoir un bug.-->
-              <form action="#" method="post">
-              </form>
-
               <div class="col-md-12">
                 <div id="tabs-05c" class="tabs color tabs radius">
                   <ul id="mainTab" class="tabs-navigation">
@@ -1721,13 +1526,12 @@ if($connected){
                     <li class="fr hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
                     <li class="en hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
                     <li class="nl hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>Fleet manager</a> </li>
-                    <!--                                    <li class="fr"><a href="#routes" class="routes"><i class="fa fa-road"></i>Itinéraires</a> </li>
+                    <!--<li class="fr"><a href="#routes" class="routes"><i class="fa fa-road"></i>Itinéraires</a> </li>
                     <li class="en"><a href="#routes" class="routes"><i class="fa fa-road"></i>Roads</a> </li>
                     <li class="nl"><a href="#routes" class="routes"><i class="fa fa-road"></i>Routes</a> </li>-->
                   </ul>
-
                   <div class="tabs-content">
-                    <div class="tab-pane" id="orderBike">
+                    <div class="tab-pane" id="orderBike"> <!-- TAB1: COMMANDER UN VELO -->
                       <div class="bikeOrdered hidden">
                             <h4 class="text-green fr">Votre commande - Vélo</h4>
                             <h4 class="text-green en">Your order - Bike</h4>
@@ -1792,18 +1596,18 @@ if($connected){
                             </div>
                         </div>
                         <div class="separator"></div>
-                          
+
                         <div id="gridForCatalog" class="gridForCatalog" data-example-id="contextual-table" class="bs-example">
                             <div class="grid">
                             </div>
                         </div>
-                          
+
                         <div class="separator gridForCatalog"></div>
-                          
+
                         <div class="mesgs col-sm-12">
                           <h4 class="text-green fr">Une question sur nos vélos ? Echangez avec notre expert</h4>
                           <h4 class="text-green nl">Any question about our bikes ? Chat with our expert !</h4>
-                          <h4 class="text-green en">Any question about our bikes ? Chat with our expert !</h4>                            
+                          <h4 class="text-green en">Any question about our bikes ? Chat with our expert !</h4>
                           <div class="msg_history">
                               <span id="divChatCommand"></span>
                           </div>
@@ -1814,8 +1618,8 @@ if($connected){
                             </div>
                           </div>
                         </div>
-                    </div>                      
-                    <div class="tab-pane active" id="reserver">
+                    </div>
+                    <div class="tab-pane active" id="reserver"> <!-- TAB2: RÉSERVER UN VELO -->
                       <form id="search-bikes-form" action="include/search-bikes.php" method="post">
                         <div class="form-group">
                           <label for="booking_day_form" class="col-sm-12 fr">A quelle date voulez-vous prendre le vélo ?</label>
@@ -1892,7 +1696,6 @@ if($connected){
                           <button class="button effect fill nl" type="submit">Zoeken</button>
                         </div>
                       </form>
-
                       <script type="text/javascript">
                       var email="<?php echo $user; ?>";
                       loadClientConditions()
@@ -2033,13 +1836,13 @@ if($connected){
                                         document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
                                         document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
                                         document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
-                                          
-                                          
+
+
                                         get_travel_time(text.dateStart, addressStart, addressEnd)
                                         .done(function(response){
                                           travel_time_bike=response.duration_bike;
                                           travel_time_car=response.duration_car;
-                                                                                        
+
                                           document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
                                           document.getElementById('bike_duration_widget1').innerHTML = travel_time_bike+" min";
                                           document.getElementById('car_duration_widget1').innerHTML = travel_time_car+" min";
@@ -2407,30 +2210,18 @@ if($connected){
                         </div>
                       </div>
                     </div>
-
-                    <div class="tab-pane" id="reservations">
-
+                    <div class="tab-pane" id="reservations"> <!-- TAB3: VOS RÉSERVATIONS -->
                       <div data-example-id="contextual-table" class="bs-example">
                         <span id="historicBookings"></span>
                       </div>
-
                       <div class="seperator"></div>
-
                       <div data-example-id="contextual-table" class="bs-example">
                         <span id="futureBookings"></span>
                       </div>
-
                     </div>
-
-
-                    <div class="tab-pane" id="fleetmanager">
-
+                    <div class="tab-pane" id="fleetmanager"> <!-- TAB4: FLEET MANAGET / A CORRIGER -->
                       <tbody>
-                          
-                          
-
-                        <h4 class="fr">Votre flotte</h4><br/><br />
-
+                        <h4 class="fr">Votre flotte</h4><br/><br/>
                         <div class="row">
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
@@ -2439,9 +2230,7 @@ if($connected){
                               <p>Nombre de vélos</p>
                             </div>
                           </div>
-
                           <div class="seperator seperator-small visible-xs"><br/><br/></div>
-
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#usersListing" class="usersManagerClick" href="#" ><i class="fa fa-users"></i></a> </div>
@@ -2449,9 +2238,7 @@ if($connected){
                               <p>Nombre d'utilisateurs</p>
                             </div>
                           </div>
-
                           <div class="seperator seperator-small visible-xs"><br/><br/></div>
-
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite"><a data-toggle="modal" data-target="#ReservationsListing" href="#"><i class="fa fa-calendar-plus-o reservationlisting"></i></a></div>
@@ -2460,13 +2247,10 @@ if($connected){
                             </div>
                           </div>
                         </div>
-
                         <div class="separator"></div>
-
                         <h4 class="fr">Réglages</h4>
                         <h4 class="en">Settings</h4>
                         <h4 class="en">Settings</h4><br/><br />
-
                         <div class="row">
                           <div class="col-md-4">
                             <div class="icon-box medium fancy">
@@ -2476,9 +2260,7 @@ if($connected){
                             </div>
                           </div>
                         </div>
-
                         <div class="separator"></div>
-
                         <h4 class="fr hidden administrationKameo">Administration Kameo</h4>
                         <h4 class="en hidden administrationKameo">Kameo administration</h4>
                         <h4 class="en hidden administrationKameo">Kameo administration</h4><br/><br />
@@ -2530,7 +2312,7 @@ if($connected){
                           <div class="col-md-4 hidden" id="cashFlowManagement">
                             <div class="icon-box medium fancy">
                               <div class="icon bold" data-animation="pulse infinite">
-                                <a data-toggle="modal" data-target="#offersListing" href="#" id="offerManagerClick"><i class="fa fa-money"></i></a>
+                                <a data-toggle="modal" data-target="#cashListing" href="#" id="offerManagerClick"><i class="fa fa-money"></i></a>
                               </div>
                               <div class="counter bold" id="cashFlowSpan" style="color:#3cb395"></div>
                               <p>Vue sur le cash-flow</p>
@@ -2581,18 +2363,12 @@ if($connected){
                             </div>
                           </div>
                         </div>
-
-
-
                         <div class="col-md-12" id="progress-bar-bookings">
                         </div>
                       </tbody>
                     </div>
                   </div>
                 </div>
-
-
-
                 <div class="modal fade" id="futureBooking" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -2611,26 +2387,26 @@ if($connected){
                                 <span id="bookingInformationBike"></span>
                                 <img id='imageNextBooking' class="img-rounded img-responsive" alt="Responsive image">
                             </div>
-                            
-                            
+
+
                             <div class="separator"></div>
-                            
+
                             <div class="col-sm-12">
                                 <h4 class="fr text-green">Personne avant vous:</h4>
                                 <h4 class="nl text-green">Persoon voor jou:</h4>
                                 <h4 class="en text-green">Person before you:</h4>
                                 <span id="futureBookingBefore"></span>
                             </div>
-                            
-                            <div class="separator"></div>                              
-                            
+
+                            <div class="separator"></div>
+
                             <div class="col-sm-12">
                                 <h4 class="fr text-green">Personne après vous:</h4>
                                 <h4 class="nl text-green">Persoon na jou:</h4>
                                 <h4 class="en text-green">Person after you:</h4>
                                 <span id="futureBookingAfter"></span>
                             </div>
-                            
+
                         </div>
                       </div>
                       <div class="modal-footer">
@@ -2643,33 +2419,24 @@ if($connected){
                     </div>
                   </div>
                 </div>
-
-
-
                 <div id="velos" style="display: none;"></div>
               </div>
               <?php
-
             }
             else
             {
-
                 include 'include/connexion.php';
                 $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE, cc.BIKE_NUMBER from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd where aa.EMAIL='$user' and aa.EMAIL=cc.EMAIL and cc.BIKE_NUMBER=bb.FRAME_NUMBER and bb.TYPE=dd.ID";
-                                
-                
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
                     die;
                 }
-                                
                 $result = mysqli_query($conn, $sql);
                 $row = mysqli_fetch_assoc($result);
                 $contractNumber='KAMEO BIKES';
                 $contractStart=$row['CONTRACT_START'];
                 $contractEnd=$row['CONTRACT_END'];
-
               ?>
 
               <div id="travel_information_2" class="hidden">
@@ -2685,11 +2452,9 @@ if($connected){
                       <span class="en-inline text-white"> at </span>
                       <span class="nl-inline text-white"> om </span>
                       <span class="text-white" id="meteoHour1"></span>
-
                     </p>
                   </div>
                 </div>
-
                 <div class="visible-lg">
                   <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
@@ -2719,8 +2484,6 @@ if($connected){
                   </div>
                 </div>
 
-
-
                 <!-- Pour un écran médium -->
                 <div class="visible-md">
                   <div class="col-md-12 backgroundgreen">
@@ -2743,7 +2506,6 @@ if($connected){
                     <div class="col-md-3">
                       <img id="logo_meteo2" alt="image" class="centerimg" />
                     </div>
-
                     <div class="col-md-3">
                       <ul>
                         <li id="temperature_widget2" class="temperature text-center"></li>
@@ -2751,7 +2513,6 @@ if($connected){
                         <li id="wind_widget2" class="vent text-center"></li>
                       </ul>
                     </div>
-
                     <div class="col-md-3">
                       <ul class="bords">
                         <li id="walking_duration_widget2" class="marche grid-col-demo text-center"></li>
@@ -2759,7 +2520,6 @@ if($connected){
                         <li id="bike_duration_widget2" class="bike grid-col-demo text-center"></li>
                       </ul>
                     </div>
-
                     <div class="col-md-3">
                       <img id="score_kameo2" alt="image" class="centerimg" data-toggle="tooltip" data-placement="top" title="L'indice mykameo est une combinaison de la météo et du temps de trajet en vélo par rapport à la voiture"/>
                     </div>
@@ -2781,16 +2541,13 @@ if($connected){
                     </p>
                   </div>
                 </div>
-
                 <div class="visible-sm">
                   <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
 
                     <div class="col-sm-12">
                       <img id="logo_meteo3" alt="image" class="centerimg" />
                     </div>
-
                     <div class="seperator"></div>
-
                     <div class="col-sm-6">
                       <ul>
                         <li id="temperature_widget3" class="temperature2 text-center"></li>
@@ -2798,7 +2555,6 @@ if($connected){
                         <li id="wind_widget3" class="vent2 text-center"></li>
                       </ul>
                     </div>
-
                     <div class="col-sm-6">
                       <ul class="bords">
                         <li id="walking_duration_widget3" class="marche2 grid-col-demo text-center"></li>
@@ -2806,9 +2562,7 @@ if($connected){
                         <li id="bike_duration_widget3" class="bike2 grid-col-demo text-center"></li>
                       </ul>
                     </div>
-
                     <div class="seperator"></div>
-
                     <div class="col-sm-12">
                       <img id="score_kameo3" alt="image" class="centerimg" />
                     </div>
@@ -2832,13 +2586,10 @@ if($connected){
                 </div>
                 <div class="visible-xs">
                   <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <div class="col-xs-12">
                       <img id="logo_meteo4" alt="image" class="centerimg" />
                     </div>
-
                     <div class="seperator"></div>
-
                     <div class="col-xs-12">
                       <ul>
                         <li id="temperature_widget4" class="temperature3 text-center"></li>
@@ -2846,9 +2597,7 @@ if($connected){
                         <li id="wind_widget4" class="vent3 text-center"></li>
                       </ul>
                     </div>
-
                     <div class="seperator"></div>
-
                     <div class="col-xs-12">
                       <ul class="bords">
                         <li id="walking_duration_widget4" class="marche3 grid-col-demo text-center"></li>
@@ -2856,9 +2605,7 @@ if($connected){
                         <li id="bike_duration_widget4" class="bike3 grid-col-demo text-center"></li>
                       </ul>
                     </div>
-
                     <div class="seperator"></div>
-
                     <div class="col-xs-12">
                       <img id="score_kameo4" alt="image" class="centerimg" />
                     </div>
@@ -2890,8 +2637,6 @@ if($connected){
                   </div>
                 </div>
 
-
-
                 <!-- Pour un écran médium -->
                 <div class="visible-md">
                   <div class="col-md-12 backgroundgreen">
@@ -2903,10 +2648,8 @@ if($connected){
                     </p>
                   </div>
                 </div>
-
                 <div class="visible-md">
                   <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <h2 class="text-white text-center">ERROR</h2>
                     <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
                     <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
@@ -2926,15 +2669,12 @@ if($connected){
                     </p>
                   </div>
                 </div>
-
                 <div class="visible-sm">
                   <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <h2 class="text-white text-center">ERROR</h2>
                     <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
                     <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
                     <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
-
                   </div>
                 </div>
 
@@ -2951,12 +2691,10 @@ if($connected){
                 </div>
                 <div class="visible-xs">
                   <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <h2 class="text-white text-center">ERROR</h2>
                     <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
                     <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
                     <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
-
                   </div>
                 </div>
               </div>
@@ -2973,19 +2711,14 @@ if($connected){
                     </p>
                   </div>
                 </div>
-
                 <div class="visible-lg">
                   <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <h2 class="text-white text-center">LOADING</h2>
                     <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
                     <p class="text-white text-center en">Loading of travel time between your house and work place</p>
                     <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-
                   </div>
                 </div>
-
-
 
                 <!-- Pour un écran médium -->
                 <div class="visible-md">
@@ -3001,12 +2734,10 @@ if($connected){
 
                 <div class="visible-md">
                   <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <h2 class="text-white text-center">LOADING</h2>
                     <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
                     <p class="text-white text-center en">Loading of travel time between your house and work place</p>
                     <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-
                   </div>
                 </div>
 
@@ -3024,12 +2755,10 @@ if($connected){
 
                 <div class="visible-sm">
                   <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <h2 class="text-white text-center">LOADING</h2>
                     <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
                     <p class="text-white text-center en">Loading of travel time between your house and work place</p>
                     <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-
                   </div>
                 </div>
 
@@ -3046,20 +2775,18 @@ if($connected){
                 </div>
                 <div class="visible-xs">
                   <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
                     <h2 class="text-white text-center">LOADING</h2>
                     <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
                     <p class="text-white text-center en">Loading of travel time between your house and work place</p>
                     <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-
                   </div>
                 </div>
               </div>
 
-
               <img src="images_bikes/<?php echo $row['BIKE_NUMBER']; ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
 
-              <br />
+              <br/>
+
               <div class="table-responsive">
                 <table class="table table-striped">
                   <caption class="fr"> Descriptif de votre vélo </caption>
@@ -3086,12 +2813,11 @@ if($connected){
                       <td class="nl">Einddatum van het contract</td>
                       <td><?php echo $row["CONTRACT_END"]; ?></td>
                     </tr>
-
-
                   </tbody>
                 </table>
-
               </div>
+
+              <!-- METEO -->
               <script type="text/javascript">
                   $('#travel_information_2_loading').removeClass("hidden");
                   $('#travel_information_2_error').addClass("hidden");
@@ -3123,8 +2849,7 @@ if($connected){
 
                   var timestamp=new Date();
                   timestamp=(timestamp.toISOString().split('T')[0]+" "+timestamp.toISOString().split('T')[1]).split('.')[0];
-                  get_meteo(timestamp, addressDomicile)
-                  .done(function(response){
+                  get_meteo(timestamp, addressDomicile).done(function(response){
                     if(response.response=="success")
                     {
                       var find = '-';
@@ -3152,12 +2877,11 @@ if($connected){
                       document.getElementById('precipitation_widget4').innerHTML = precipitation+" %";
                       document.getElementById('wind_widget4').innerHTML = Math.round(windSpeed*3.6)+" km/h";
 
-                      get_travel_time("now", addressDomicile, addressTravail)
-                      .done(function(response){
+                      get_travel_time("now", addressDomicile, addressTravail).done(function(response){
                           if(response.duration_walking === undefined || response.duration_bike === undefined || response.duration_car === undefined){
                             $('#travel_information_2_loading').addClass("hidden")
                             $('#travel_information_2_error').removeClass("hidden")
-                            $('#travel_information_2').addClass("hidden")                        
+                            $('#travel_information_2').addClass("hidden")
                           }else{
                             document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
                             document.getElementById('bike_duration_widget1').innerHTML = response.duration_bike+" min";
@@ -3182,7 +2906,7 @@ if($connected){
                             img1.onerror = function() {
                                 $('#travel_information_2_loading').addClass("hidden")
                                 $('#travel_information_2_error').removeClass("hidden")
-                                $('#travel_information_2').addClass("hidden")                        
+                                $('#travel_information_2').addClass("hidden")
                             };
                             img1.src=image;
                           }
@@ -3190,37 +2914,21 @@ if($connected){
                     } else{
                       console.log(response.message)
                     }
-
-
-
-
-
-              });
-
+                  });
               </script>
-              <?php
-            }
-            ?>
 
+            <?php }?>
           </div>
-
         </div>
-
       </div>
-
-
       <!-- END: post content -->
-
-
       <!-- Sidebar-->
       <div class="col-md-3 sidebar">
-
         <!--widget blog articles-->
         <div class="widget clearfix widget-blog-articles">
           <h4 class="widget-title fr">Vos informations</h4>
           <h4 class="widget-title en">Your data</h4>
           <h4 class="widget-title nl">Uw gegevens</h4>
-
           <ul class="list-posts list-medium">
             <li class="fr">Nom
               <small><?php echo $row["NOM"] ?></small>
@@ -3244,7 +2952,6 @@ if($connected){
               </li>
               <?php
             } ?>
-
 
             <?php if($row["PHONE"]!=''){
               ?>
@@ -3276,8 +2983,6 @@ if($connected){
               <?php
             } ?>
 
-
-
             <?php if($row["WORK_ADRESS"]!=''){
               ?>
 
@@ -3305,7 +3010,6 @@ if($connected){
             <li class="nl">Wachtwoord
               <small>********</small>
             </li>
-
           </ul>
           <a class="button small green button-3d rounded icon-left" data-target="#update" data-toggle="modal" href="#" onclick="initializeUpdate()">
             <span class="fr">ACTUALISER</span>
@@ -3331,7 +3035,6 @@ if($connected){
               <li> <span class="fr-inline"> Nombre de kms</span><span class="en-inline"> Number of kms</span><span class="nl-inline"> Aantal kms</span>
                 <small id="total_trips"></small>
               </li>
-
             </ul>
 
             <script type="text/javascript">
@@ -3481,14 +3184,10 @@ if($connected){
                     string_calendar=string_calendar.concat(temp);
                     i++;
                   }
-
-
                   while (date_temp<date_end){
                     var start_string="";
                     var end_string="";
-
                     /* First, we construct the new line. If the day is the first one of the month, we must avoir to add the new line insertion as already foreseen in the initialisation part */
-
                     if(date_temp.getDay()==1 && date_temp.getDate()!=1){
                       start_string="<div class=\"row seven-cols\">";
                     }
@@ -3560,107 +3259,85 @@ if($connected){
         <!--end: widget blog articles-->
       </div>
       <!-- END: Sidebar-->
-
-
     </div>
   </div>
 </section>
-<!-- END: SECTION -->
 
-<?php
-}else{
-
-  ?>
-
-  <!-- CONTENT -->
-  <section class="content">
-    <div class="container">
-      <div class="row">
-
-
-        <!-- post content -->
-        <div class="post-content float-right col-md-9">
-          <!-- Post item-->
-          <div class="post-item">
-            <div class="post-content-details">
-              <div class="heading heading text-left m-b-20">
-                <h2 class="fr">Connexion à MyKameo</h2>
-                <h2 class="en">Log-in to MyKameo</h2>
-                <h2 class="nl">Log in op MyKameo</h2>
-
-
-                <form id="re-connexion" class="form-transparent-grey" action="include/access_management.php" role="form" method="post">
-                  <div class="form-group">
-                    <label class="sr-only fr">Adresse mail</label>
-                    <label class="sr-only en">E-mail</label>
-                    <label class="sr-only nl">Mail</label>
-                    <input type="email" name="userID" class="form-control" placeholder="Adresse mail" autocomplete="username">
-                  </div>
-                  <div class="form-group m-b-5">
-                    <label class="sr-only fr">Mot de passe</label>
-                    <label class="sr-only en">Password</label>
-                    <label class="sr-only nl">Wachtwoord</label>
-                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" autocomplete="current-password">
-                  </div>
-                  <div class="form-group form-inline text-left ">
-
-
-                    <a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right fr"><small>Mot de passe oublié?</small></a>
-                    <a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right nl"><small>Wachtwoord kwijt?</small></a>
-                    <a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right en"><small>Password lost?</small></a>
-                  </div>
-                  <div class="text-left form-group">
-                    <button class="button effect fill fr" type="submit">Accéder</button>
-                    <button class="button effect fill en" type="submit">Confirm</button>
-                    <button class="button effect fill nl" type="submit">Bevestingen</button>
-                  </div>
-                </form>
-                <script type="text/javascript">
-                jQuery("#re-connexion").validate({
-
-                  submitHandler: function(form) {
-                    jQuery(form).ajaxSubmit({
-                      success: function(text) {
-                        if (text.response == 'success') {
-                          <?php
-                          if(isset($_GET['feedback'])){
-                            ?>
-                            window.location.href = "<?php echo "mykameo.php?feedback=".$_GET['feedback']; ?>";
-                            <?php
-                          }else{
-                            ?>
-                            window.location.href = "mykameo.php";
-                            <?php
-                          }
+<?php }else{ ?>
+<!-- LOGIN FORM -->
+<section class="content">
+  <div class="container">
+    <div class="row">
+      <!-- post content -->
+      <div class="post-content float-right col-md-9">
+        <!-- Post item-->
+        <div class="post-item">
+          <div class="post-content-details">
+            <div class="heading heading text-left m-b-20">
+              <h2 class="fr">Connexion à MyKameo</h2>
+              <h2 class="en">Log-in to MyKameo</h2>
+              <h2 class="nl">Log in op MyKameo</h2>
+              <form id="re-connexion" class="form-transparent-grey" action="include/access_management.php" role="form" method="post">
+                <div class="form-group">
+                  <label class="sr-only fr">Adresse mail</label>
+                  <label class="sr-only en">E-mail</label>
+                  <label class="sr-only nl">Mail</label>
+                  <input type="email" name="userID" class="form-control" placeholder="Adresse mail" autocomplete="username">
+                </div>
+                <div class="form-group m-b-5">
+                  <label class="sr-only fr">Mot de passe</label>
+                  <label class="sr-only en">Password</label>
+                  <label class="sr-only nl">Wachtwoord</label>
+                  <input type="password" name="password" class="form-control" placeholder="Mot de passe" autocomplete="current-password">
+                </div>
+                <div class="form-group form-inline text-left ">
+                  <a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right fr"><small>Mot de passe oublié?</small></a>
+                  <a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right nl"><small>Wachtwoord kwijt?</small></a>
+                  <a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right en"><small>Password lost?</small></a>
+                </div>
+                <div class="text-left form-group">
+                  <button class="button effect fill fr" type="submit">Accéder</button>
+                  <button class="button effect fill en" type="submit">Confirm</button>
+                  <button class="button effect fill nl" type="submit">Bevestingen</button>
+                </div>
+              </form>
+              <script type="text/javascript">
+              jQuery("#re-connexion").validate({
+                submitHandler: function(form) {
+                  jQuery(form).ajaxSubmit({
+                    success: function(text) {
+                      if (text.response == 'success') {
+                        <?php
+                        if(isset($_GET['feedback'])){
                           ?>
-                        } else {
-                          $.notify({
-                            message: text.message
-                          }, {
-                            type: 'danger'
-                          });
+                          window.location.href = "<?php echo "mykameo.php?feedback=".$_GET['feedback']; ?>";
+                          <?php
+                        }else{
+                          ?>
+                          window.location.href = "mykameo.php";
+                          <?php
                         }
+                        ?>
+                      } else {
+                        $.notify({
+                          message: text.message
+                        }, {
+                          type: 'danger'
+                        });
                       }
-                    });
-                  }
-                });
-
-                </script>
-
-              </div>
+                    }
+                  });
+                }
+              });
+              </script>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <?php
-}
-?>
-
-
-
+  </div>
+</section>
+<?php }?>
 
 <div class="modal fade" id="resume" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
@@ -3809,320 +3486,22 @@ if($connected){
     </script>
 
   </div>
-</div>
-</div>
-
-<div class="modal fade" id="usersListing" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div data-example-id="contextual-table" class="bs-example">
-        <span id="usersList"></span>
-      </div>
-
-      <div class="fr" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-      </div>
-      <div class="en" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-      </div>
-      <div class="nl" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-      </div>
-    </div>
   </div>
 </div>
 
+<!-- USERS WIDGET -->
+<?php
+  //php's $user var is needed here.
+  include 'include/tabs/widgets/users/users.html';
+  include 'include/tabs/widgets/users/add_user.html';
+  include 'include/tabs/widgets/users/delete_user.html';
+  include 'include/tabs/widgets/users/reactivate_user.html';
+  include 'include/tabs/widgets/users/update_user.html';
+?>
+<!-- END: USERS WIDGET -->
 
-
-
-
-<div class="modal fade" id="deleteUser" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <h4 class="fr">Supprimer un utilisateur</h4>
-
-            <form id="widget-deleteUser-form" action="include/delete-user.php" role="form" method="post">
-
-              <div class="form-group col-sm-12">
-                <label for="widget-deleteUser-form-firstname"  class="fr">Prénom</label>
-                <label for="widget-deleteUser-form-firstname"  class="en">Firstname</label>
-                <label for="widget-deleteUser-form-firstname"  class="nl">Voornaam</label>
-                <input type="text" id="widget-deleteUser-form-firstname" readonly="readonly" name="widget-deleteUser-form-firstname" class="form-control required">
-
-                <label for="widget-deleteUser-form-name"  class="fr">Nom</label>
-                <label for="widget-deleteUser-form-name"  class="en">Name</label>
-                <label for="widget-deleteUser-form-name"  class="nl">Achternaam</label>
-                <input type="text" id="widget-deleteUser-form-name" readonly="readonly" name="widget-deleteUser-form-name" class="form-control required">
-
-
-                <label for="widget-deleteUser-form-mail"  class="fr">E-mail</label>
-                <label for="widget-deleteUser-form-mail"  class="en">E-mail</label>
-                <label for="widget-deleteUser-form-mail"  class="nl">E-mail</label>
-                <input type="text" id="widget-deleteUser-form-mail" readonly="readonly" name="widget-deleteUser-form-mail" class="form-control">
-                <input type="text" id="widget-deleteUser-form-requestor" name="widget-deleteUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
-
-
-              </div>
-              <h4>Confirmation de suppression</h4>
-              <label for="widget-deleteUser-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
-              <input type="text" id="widget-deleteUser-form-confirmation" name="widget-deleteUser-form-confirmation" class="form-control">
-
-
-              <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-              <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-              <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-
-            </form>
-            <script type="text/javascript">
-            jQuery("#widget-deleteUser-form").validate({
-              submitHandler: function(form) {
-
-                jQuery(form).ajaxSubmit({
-                  success: function(response) {
-                    if (response.response == 'success') {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'success'
-                      });
-                      $('#usersListing').modal('toggle');
-                      get_users_listing();
-                      $('#deleteUser').modal('toggle');
-
-                    } else {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'danger'
-                      });
-                    }
-                  }
-                });
-              }
-            });
-
-            </script>
-          </div>
-        </div>
-      </div>
-      <div class="fr" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-      </div>
-      <div class="en" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-      </div>
-      <div class="nl" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-<div class="modal fade" id="reactivateUser" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <h4 class="fr">Réactiver un utilisateur</h4>
-
-            <form id="widget-reactivateUser-form" action="include/reactivate-user.php" role="form" method="post">
-
-              <div class="form-group col-sm-12">
-                <label for="widget-reactivateUser-form-firstname"  class="fr">Prénom</label>
-                <label for="widget-reactivateUser-form-firstname"  class="en">Firstname</label>
-                <label for="widget-reactivateUser-form-firstname"  class="nl">Voornaam</label>
-                <input type="text" id="widget-reactivateUser-form-firstname" readonly="readonly" name="widget-reactivateUser-form-firstname" class="form-control required">
-
-                <label for="widget-reactivateUser-form-name"  class="fr">Nom</label>
-                <label for="widget-reactivateUser-form-name"  class="en">Name</label>
-                <label for="widget-reactivateUser-form-name"  class="nl">Achternaam</label>
-                <input type="text" id="widget-reactivateUser-form-name" readonly="readonly" name="widget-reactivateUser-form-name" class="form-control required">
-
-
-                <label for="widget-reactivateUser-form-mail"  class="fr">E-mail</label>
-                <label for="widget-reactivateUser-form-mail"  class="en">E-mail</label>
-                <label for="widget-reactivateUser-form-mail"  class="nl">E-mail</label>
-                <input type="text" id="widget-reactivateUser-form-mail" readonly="readonly" name="widget-reactivateUser-form-mail" class="form-control">
-                <input type="text" id="widget-reactivateUser-form-requestor" name="widget-reactivateUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
-
-
-              </div>
-
-              <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Confirmer</button>
-              <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Confirm</button>
-              <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Confirm</button>
-
-            </form>
-            <script type="text/javascript">
-            jQuery("#widget-reactivateUser-form").validate({
-              submitHandler: function(form) {
-
-                jQuery(form).ajaxSubmit({
-                  success: function(response) {
-                    if (response.response == 'success') {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'success'
-                      });
-                      $('#usersListing').modal('toggle');
-                      $('#reactivateUser').modal('toggle');
-
-                      get_users_listing();
-
-                    } else {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'danger'
-                      });
-                    }
-                  }
-                });
-              }
-            });
-
-            </script>
-          </div>
-        </div>
-      </div>
-      <div class="fr" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-      </div>
-      <div class="en" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-      </div>
-      <div class="nl" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-<div class="modal fade" id="updateUserInformation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <h4 class="fr text-green">Mise à jour des informations</h4>
-
-            <form id="widget-updateUser-form" action="include/updateUserInformation.php" role="form" method="post">
-
-              <div class="form-group col-sm-12">
-                <div class="col-sm-6">
-                  <label for="widget-updateUser-form-firstname"  class="fr">Prénom</label>
-                  <label for="widget-updateUser-form-firstname"  class="en">Firstname</label>
-                  <label for="widget-updateUser-form-firstname"  class="nl">Voornaam</label>
-                  <input type="text" id="widget-updateUser-form-firstname" name="widget-updateUser-form-firstname" class="form-control required">
-                </div>
-
-                <div class="col-sm-6">
-                  <label for="widget-updateUser-form-name"  class="fr">Nom</label>
-                  <label for="widget-updateUser-form-name"  class="en">Name</label>
-                  <label for="widget-updateUser-form-name"  class="nl">Achternaam</label>
-                  <input type="text" id="widget-updateUser-form-name" name="widget-updateUser-form-name" class="form-control required">
-                </div>
-
-                <div class="col-sm-6">
-                  <label for="widget-updateUser-form-mail"  class="fr">E-mail</label>
-                  <label for="widget-updateUser-form-mail"  class="en">E-mail</label>
-                  <label for="widget-updateUser-form-mail"  class="nl">E-mail</label>
-                  <input type="text" id="widget-updateUser-form-mail" name="widget-updateUser-form-mail" readonly="readonly" class="form-control">
-                  <input type="text" id="widget-updateUser-form-requestor" name="widget-updateUser-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
-                </div>
-
-                <div class="col-sm-6">
-                  <label for="widget-updateUser-form-status"  class="fr">Status</label>
-                  <input type="text" id="widget-updateUser-form-status" name="widget-updateUser-form-status" readonly="readonly" class="form-control">
-                </div>
-
-                <div class="col-md-4">
-                  <label for="fleetManager">Fleet manager</label>
-                  <input type="checkbox" name="fleetManager" class="form-control">
-                </div>
-
-              </div>
-              <div class="form-group col-sm-12" id="buildingUpdateUser"></div>
-
-              <div class="form-group col-sm-12" id="bikeUpdateUser"></div>
-              <div id="updateUserSendButton"></div>
-
-
-            </form>
-            <div id="deleteUserButton"></div>
-            <script type="text/javascript">
-            jQuery("#widget-updateUser-form").validate({
-
-              submitHandler: function(form) {
-
-                jQuery(form).ajaxSubmit({
-                  success: function(response) {
-                    if (response.response == 'success') {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'success'
-                      });
-
-                      get_users_listing();
-                      $('#updateUserInformation').modal('toggle');
-                      $('#usersListing').modal('toggle');
-
-                    } else {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'danger'
-                      });
-                    }
-                  }
-                });
-              }
-            });
-
-            </script>
-          </div>
-        </div>
-      </div>
-      <div class="fr" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-      </div>
-      <div class="en" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-      </div>
-      <div class="nl" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
+<!-- IL FAUT AJOUTER LES PERMISSIONS ICI-->
+<!-- GERER LES VELOS -->
 <div class="modal fade" id="BikesListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -4145,7 +3524,7 @@ if($connected){
     </div>
   </div>
 </div>
-
+<!-- GERER LES VELOS ADMIN -->
 <div class="modal fade" id="BikesListingAdmin" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg" style= "width: 1250px">
     <div class="modal-content">
@@ -4169,6 +3548,7 @@ if($connected){
   </div>
 </div>
 
+<!-- XXXXX -->
 <div class="modal fade" id="bikePosition" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg" style= "width: 1250px">
     <div class="modal-content">
@@ -4177,7 +3557,7 @@ if($connected){
       </div>
       <div data-example-id="contextual-table" class="bs-example">
           <h4 class="text-green">Position du vélo</h4>
-          <div id="demoMap" style="height:750px"></div>          
+          <div id="demoMap" style="height:750px"></div>
       </div>
 
       <div class="fr" class="modal-footer">
@@ -4193,63 +3573,52 @@ if($connected){
   </div>
 </div>
 
-<div class="modal fade" id="boxesListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+<!-- BOXES WIDGET -->
+<?php
+  include 'include/tabs/widgets/boxes/boxes.html';
+  include 'include/tabs/widgets/boxes/manage_box.html';
+?>
+<!-- END: BOXES WIDGET -->
+
+<!-- TASKS WIDGET -->
+<?php
+  include 'include/tabs/widgets/tasks/tasks.html';
+  include 'include/tabs/widgets/tasks/manage_task.html';
+?>
+<!-- END: TASKS WIDGET -->
+
+
+<!-- CASH FLOW -->
+<div class="modal fade" id="cashListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
       <div data-example-id="contextual-table" class="bs-example">
-        <span id="boxesListingSpan"></span>
+        <span id="contractsListingSpan"></span>
       </div>
-
-      <div class="fr" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-      </div>
-      <div class="en" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-      </div>
-      <div class="nl" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="tasksListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-
-      <div class="col-md-3">
-        <label for="taskOwnerSelection">Filtrer sur Owner</label>
-        <select class="taskOwnerSelection" name="taskOwnerSelection">
-        </select>
-      </div>
-
       <div class="separator"></div>
-
       <div data-example-id="contextual-table" class="bs-example">
-        <span id="tasksListingSpan"></span>
+        <span id="cashListingSpan"></span>
       </div>
-
       <div class="separator"></div>
-      <h4 class="text-green">Statistiques sur les tâches :</h4>
-      <div class="col-md-3">
-        <label for="taskOwnerSelection2">Filtrer sur Owner</label>
-        <select class="taskOwnerSelection2" name="taskOwnerSelection2">
-        </select>
+      <h4 class="text-green">Vélos Vendus :</h4>
+      <p>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Afficher</button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          <span id="soldBikesListingSpan"></span>
+        </div>
       </div>
-
-      <div class="col-md-3">
-        <label for="numberOfDays">Nombre de jours</label>
-        <input type="text" class="numberOfDays form-control required" name="numberOfDays" value="30">
+      <div class="separator"></div>
+      <div data-example-id="contextual-table" class="bs-example">
+        <span id="costsListingSpan"></span>
       </div>
-
-      <canvas id="myChart2" width="400" height="300"></canvas>
-
+      <div class="separator"></div>
+      <h4 class="text-green">Graphique :</h4>
+      <canvas id="myChart" width="400" height="300"></canvas>
       <div class="fr" class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
       </div>
@@ -4263,83 +3632,17 @@ if($connected){
   </div>
 </div>
 
-
-
-<div class="modal fade" id="offersListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>        
-        
-        
-
-  <div data-example-id="contextual-table" class="bs-example">
-    <span id="contractsListingSpan"></span>
-  </div>
-
-        
-
-  <div class="separator"></div>
-
-  <div data-example-id="contextual-table" class="bs-example">
-    <span id="offersListingSpan"></span>
-  </div>
-
-  <div class="separator"></div>
-        
-        
-    <h4 class="text-green">Vélos Vendus :</h4>
-    <p>
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Afficher
-      </button>
-    </p>        
-
-    <div class="collapse" id="collapseExample">
-      <div class="card card-body">
-        <span id="soldBikesListingSpan"></span>
-      </div>
-    </div>
-    <div class="separator"></div>
-
-  <div data-example-id="contextual-table" class="bs-example">
-    <span id="costsListingSpan"></span>
-  </div>
-
-  <div class="separator"></div>
-  <h4 class="text-green">Graphique :</h4>
-
-
-  <canvas id="myChart" width="400" height="300"></canvas>
-
-
-  <div class="fr" class="modal-footer">
-    <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-  </div>
-  <div class="en" class="modal-footer">
-    <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-  </div>
-  <div class="nl" class="modal-footer">
-    <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-  </div>
-</div>
-</div>
-</div>
-
+<!-- FEEDBACKS -->
 <div class="modal fade" id="feedbacksListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
-
       <div data-example-id="contextual-table" class="bs-example">
         <span id="feedbacksListingSpan"></span>
       </div>
-
       <div class="separator"></div>
-
       <div class="fr" class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
       </div>
@@ -4353,19 +3656,17 @@ if($connected){
   </div>
 </div>
 
+<!-- ENTRETIENS -->
 <div class="modal fade" id="maintenanceListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
-
       <div data-example-id="contextual-table" class="bs-example">
         <span id="maintenanceListingSpan"></span>
       </div>
-
       <div class="separator"></div>
-
       <div class="fr" class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
       </div>
@@ -4378,17 +3679,17 @@ if($connected){
     </div>
   </div>
 </div>
+
+<!-- CONDITIONS -->
 <div class="modal fade" id="conditionListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
-
       <div data-example-id="contextual-table" class="bs-example">
         <span id="spanConditionListing"></span>
       </div>
-
       <div class="fr" class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
       </div>
@@ -4402,9 +3703,7 @@ if($connected){
   </div>
 </div>
 
-
-
-
+<!-- CONDITIONS: METTRE A JOUR -->
 <div class="modal fade" id="companyConditions" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -4418,9 +3717,6 @@ if($connected){
             <h4 class="en-inline text-green">Modify booking settings:</h4>
             <h4 class="nl-inline text-green">Modify booking settings :</h4><br>
             <form id="widget-updateCompanyConditions-form" class="form-inline" action="include/updateCompanyConditions.php" role="form" method="post">
-
-
-
               <span class="fr-inline"> <strong>Nom du groupe : </strong></span>
               <span class="en-inline"> Group name: </span>
               <span class="nl-inline"> Group name: </span>
@@ -4484,647 +3780,460 @@ if($connected){
                           <span class="depositBookingDays"></span>
                         </div>
                       </div>
-                </div>
-
-                      <div class="col-sm-12">
-                        <h4>Accès des utilisateurs à ce groupe de conditions</h4>
-                        <p class="text-red">Attention, attribuer un utilisateur à ce groupe supprimera automatiquement son appartenance à un autre groupe</p>
-                        <span id="groupConditionUsers"></span>
-                      </div>
-
-                      <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
-                      <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
-                      <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Besparen</button>
-                      <input type="text" name="email" value="<?php echo $user; ?>" hidden>
-                      <input type="text" name="id" value="" hidden>
-                      <input type="text" name="action" hidden>
-                    </form>
-                    <script type="text/javascript">
-                    jQuery("#widget-updateCompanyConditions-form").validate({
-                      submitHandler: function(form){
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              $('#companyConditions').modal('toggle');
-                              list_condition();
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    </script>
-
-                  </div>
-                </div>
               </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+              <div class="col-sm-12">
+                <h4>Accès des utilisateurs à ce groupe de conditions</h4>
+                <p class="text-red">Attention, attribuer un utilisateur à ce groupe supprimera automatiquement son appartenance à un autre groupe</p>
+                <span id="groupConditionUsers"></span>
               </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
+              <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
+              <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+              <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Besparen</button>
+              <input type="text" name="email" value="<?php echo $user; ?>" hidden>
+              <input type="text" name="id" value="" hidden>
+              <input type="text" name="action" hidden>
+            </form>
           </div>
         </div>
+      </div>
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery("#widget-updateCompanyConditions-form").validate({
+    submitHandler: function(form){
+      jQuery(form).ajaxSubmit({
+        success: function(response) {
+          if (response.response == 'success') {
+            $.notify({
+              message: response.message
+            }, {
+              type: 'success'
+            });
+            $('#companyConditions').modal('toggle');
+            list_condition();
 
+          } else {
+            $.notify({
+              message: response.message
+            }, {
+              type: 'danger'
+            });
+          }
+        }
+      });
+    }
+  });
+</script>
 
-
-
-        <div class="modal fade" id="companyListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-
-              <div data-example-id="contextual-table" class="bs-example">
-                <span id="companyListingSpan"></span>
-                <span id="companyListingFilter" class="hidden">HEU_MAJ</span>
-              </div>
-              <div class="separator">            </div>
-
-              <h4 class="text-green">Statistiques sur le nombre de clients : </h4>
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="dtp_input3" class="control-label">Date de début</label>
-                  <div class="input-group date form_date_start_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
-                    <input class="form-control" size="16" type="text" value="" readonly>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                  </div>
-                  <input type="hidden" id="dtp_input3" value="" /><br/>
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="dtp_input4" class="control-label">Date de fin</label>
-                  <div class="input-group date form_date_end_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">
-                    <input class="form-control" size="16" type="text" value="" readonly>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                  </div>
-                  <input type="hidden" id="dtp_input4" value="" /><br/>
-                </div>
-              </div>
-
-
-
-              <canvas id="myChart3" style="display: block; width: 800px; height: 400px;" width="800" height="400" class="chartjs-render-monitor"></canvas>
-
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
+<!-- GERER LES CLIENTS -->
+<div class="modal fade" id="companyListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div data-example-id="contextual-table" class="bs-example">
+        <span id="companyListingSpan"></span>
+        <span id="companyListingFilter" class="hidden">HEU_MAJ</span>
+      </div>
+      <div class="separator"></div>
+      <h4 class="text-green">Statistiques sur le nombre de clients : </h4>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="dtp_input3" class="control-label">Date de début</label>
+          <div class="input-group date form_date_start_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+            <input class="form-control" size="16" type="text" value="" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
           </div>
+          <input type="hidden" id="dtp_input3" value="" /><br/>
         </div>
-
-        <script type="text/javascript">
-
-        $('.form_date_start_client').datetimepicker({
-          language:  'fr',
-          weekStart: 1,
-          todayBtn:  1,
-          autoclose: 1,
-          todayHighlight: 1,
-          startView: 2,
-          minView: 2,
-          forceParse: 0
-        });
-
-        $('.form_date_end_client').datetimepicker({
-          language:  'fr',
-          weekStart: 1,
-          todayBtn:  1,
-          autoclose: 1,
-          todayHighlight: 1,
-          startView: 2,
-          minView: 2,
-          forceParse: 0
-        });
-
-
-
-        $('.form_date_start_client').change(function(){
-          generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-        });
-        $('.form_date_end_client').change(function(){
-          generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-        });
-
-        </script>
-
-
-        <div class="modal fade" id="ordersListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-                
-                <h4 class="text-green">Gérer les commandes</h4>
-
-              <div data-example-id="contextual-table" class="bs-example">
-                <span id="ordersListingSpan"></span>
-              </div>
-
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="dtp_input4" class="control-label">Date de fin</label>
+          <div class="input-group date form_date_end_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">
+            <input class="form-control" size="16" type="text" value="" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
           </div>
+          <input type="hidden" id="dtp_input4" value="" /><br/>
         </div>
+      </div>
+      <canvas id="myChart3" style="display: block; width: 800px; height: 400px;" width="800" height="400" class="chartjs-render-monitor"></canvas>
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('.form_date_start_client').datetimepicker({
+    language:  'fr',
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+  });
+  $('.form_date_end_client').datetimepicker({
+    language:  'fr',
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+  });
+  $('.form_date_start_client').change(function(){
+    generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+  });
+  $('.form_date_end_client').change(function(){
+    generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+  });
+</script>
 
-        <script type="text/javascript">
+<!-- GERER LES COMMANDES -->
+<div class="modal fade" id="ordersListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+        <h4 class="text-green">Gérer les commandes</h4>
+      <div data-example-id="contextual-table" class="bs-example">
+        <span id="ordersListingSpan"></span>
+      </div>
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('.form_date_start_client').datetimepicker({
+    language:  'fr',
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+  });
+  $('.form_date_end_client').datetimepicker({
+    language:  'fr',
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+  });
+  $('.form_date_start_client').change(function(){
+    generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+  });
+  $('.form_date_end_client').change(function(){
+    generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+  });
+</script>
 
-        $('.form_date_start_client').datetimepicker({
-          language:  'fr',
-          weekStart: 1,
-          todayBtn:  1,
-          autoclose: 1,
-          todayHighlight: 1,
-          startView: 2,
-          minView: 2,
-          forceParse: 0
-        });
-
-        $('.form_date_end_client').datetimepicker({
-          language:  'fr',
-          weekStart: 1,
-          todayBtn:  1,
-          autoclose: 1,
-          todayHighlight: 1,
-          startView: 2,
-          minView: 2,
-          forceParse: 0
-        });
-
-
-
-        $('.form_date_start_client').change(function(){
-          generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-        });
-        $('.form_date_end_client').change(function(){
-          generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-        });
-
-        </script>
-
-        <div class="modal fade" id="orderManager" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
+<!-- GERER LES COMMANDES: GESTION D'UNE COMMANDE -->
+<div class="modal fade" id="orderManager" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <form id="widget-order-form" action="include/orders_management.php" role="form" method="post">
+                <h4 class="fr text-green">Gestion de la commande client</h4>
+                <h4 class="nl text-green">Management of client order</h4>
+                <h4 class="en text-green">Management of client order</h4>
+                <div class="form-group col-sm-12">
                   <div class="col-sm-12">
+                      <h4 class="fr text-green">Informations techniques</h4>
+                      <h4 class="nl text-green">Technical information</h4>
+                      <h4 class="en text-green">Technical information</h4>
+                    <div class="col-sm-4">
+                      <label for="portfolio">ID commande</label>
+                      <input type="text" name="ID" class="form-control required" readonly>
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="status"  class="fr">Statut</label>
+                      <label for="status"  class="en">Status</label>
+                      <label for="status"  class="nl">Status</label>
+                      <select name="status">
+                        <option value="new">Nouvelle demande</option>
+                        <option value="ongoing">En cours</option>
+                        <option value="closed">Terminée</option>
+                        <option value="cancelled">Annulée</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <h4 class="fr text-green">Caractéristiques du vélo</h4>
+                  <h4 class="nl text-green">Bike characteristics</h4>
+                  <h4 class="en text-green">Bike characteristics</h4>
 
-                    <form id="widget-order-form" action="include/orders_management.php" role="form" method="post">
-                      <h4 class="fr text-green">Gestion de la commande client</h4>
-                      <h4 class="nl text-green">Management of client order</h4>
-                      <h4 class="en text-green">Management of client order</h4>
-                      <div class="form-group col-sm-12">
-                        <div class="col-sm-12">
-                            <h4 class="fr text-green">Informations techniques</h4>
-                            <h4 class="nl text-green">Technical information</h4>
-                            <h4 class="en text-green">Technical information</h4>                            
-                          <div class="col-sm-4">
-                            <label for="portfolio">ID commande</label>
-                            <input type="text" name="ID" class="form-control required" readonly>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="status"  class="fr">Statut</label>
-                            <label for="status"  class="en">Status</label>
-                            <label for="status"  class="nl">Status</label>
-                            <select name="status">
-                              <option value="new">Nouvelle demande</option>
-                              <option value="ongoing">En cours</option>
-                              <option value="closed">Terminée</option>
-                              <option value="cancelled">Annulée</option>
-                            </select>
-                          </div>
-                            
-                        </div>
-                      </div>
-                      <div class="form-group col-sm-12">
-                        <h4 class="fr text-green">Caractéristiques du vélo</h4>
-                        <h4 class="nl text-green">Bike characteristics</h4>
-                        <h4 class="en text-green">Bike characteristics</h4>
-                          
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="portfolioID">ID Portfolio</label>
-                              <select name="portfolioID" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="brand"  class="fr">Marque</label>
-                            <label for="brand"  class="en">Brand</label>
-                            <label for="brand"  class="nl">Brand</label>
-                            <input type="text" name="brand" class="form-control required" disabled>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="model"  class="fr">Modèle</label>
-                            <label for="model"  class="en">Model</label>
-                            <label for="model"  class="nl">Model</label>
-                            <input type="text" name="model" class="form-control required" disabled>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="frameType"  class="fr">Type de cadre</label>
-                            <label for="frameType"  class="en">Frame Type</label>
-                            <label for="frameType"  class="nl">Frame Type</label>
-                            <select name="frameType" class="form-control" disabled>
-                              <option value="H">Homme</option>
-                              <option value="M">Mixte</option>
-                              <option value="F">Femme</option>
-                            </select>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="size"  class="fr">Taille</label>
-                            <label for="size"  class="en">Size</label>
-                            <label for="size"  class="nl">Size</label>
-                            <select name="size">
-                              <option value="XS">XS</option>
-                              <option value="S">S</option>
-                              <option value="M">M</option>
-                              <option value="L">L</option>
-                              <option value="XL">XL</option>
-                            </select>
-                          </div>
-                          <img class="commandBike" width="200" title="vélo commandé" alt="vélo commandé"/>
-                        </div>
-                      </div>
-                      <div class="form-group col-sm-12">
-                        <h4 class="fr text-green">Détails du test</h4>
-                        <h4 class="nl text-green">Delivery details</h4>
-                        <h4 class="en text-green">Delivery details</h4>
-                          
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="testBoolean"  class="fr">Besoin d'un test ?</label>
-                            <label for="testBoolean"  class="en">Need for a test?</label>
-                            <label for="testBoolean"  class="nl">Need for a test?</label>
-                            <input type="checkbox" name="testBoolean" class="form-control">
-                          </div>
-                          <div class="col-sm-4 testDate">
-                            <label for="testDate"  class="fr">Date du test</label>
-                            <label for="testDate"  class="en">Test date</label>
-                            <label for="testDate"  class="nl">Test date</label>
-                            <input type="date" name="testDate" class="form-control">
-                          </div>
-                            
-                          <div class="col-sm-4 testStatus">
-                            <label for="testStatus"  class="fr">Statut du test</label>
-                            <label for="testStatus"  class="en">Test status</label>
-                            <label for="testStatus"  class="nl">Test status</label>
-                            <select name="testStatus">
-                              <option value="not started">Pas commencé</option>
-                              <option value="ongoing">En cours</option>
-                              <option value="closed">Terminée</option>
-                              <option value="cancelled">Annulée</option>
-                            </select>
-                          </div>
-                          <div class="col-sm-12 testAddress">
-                            <label for="testAddress"  class="fr">Adresse pour le test</label>
-                            <label for="testAddress"  class="en">Test address</label>
-                            <label for="testAddress"  class="nl">Test address</label>
-                            <input type="text" name="testAddress" class="form-control">
-                          </div>       
-                          <div class="col-sm-12 testResult">
-                            <label for="testResult"  class="fr">Résultat du test</label>
-                            <label for="testResult"  class="en">Test result</label>
-                            <label for="testResult"  class="nl">Test result</label>
-                            <textarea class="form-control" rows="5" name="testResult"></textarea>
-                          </div>
-                            
-                        </div>
-                      </div>
-                      <div class="form-group col-sm-12">
-                        <h4 class="fr text-green">Détails de la livraison</h4>
-                        <h4 class="nl text-green">Delivery details</h4>
-                        <h4 class="en text-green">Delivery details</h4>
-                          
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="deliveryDate"  class="fr">Date de livraison estimée</label>
-                            <label for="deliveryDate"  class="en">Estimated delivery date</label>
-                            <label for="deliveryDate"  class="nl">Estimated delivery date</label>
-                            <input type="date" name="deliveryDate" class="form-control">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="deliveryAddress"  class="fr">Adresse de livraison</label>
-                            <label for="deliveryAddress"  class="en">Delivery address</label>
-                            <label for="deliveryAddress"  class="nl">Delivery address</label>
-                            <input type="text" name="deliveryAddress" class="form-control">
-                          </div>
-                            <input type="text" name="action" class="form-control hidden" value="update">
-                            <input type="text" name="emailUser" class="form-control hidden">
-                            <input type="text" name="email" class="form-control hidden" value="<?php echo $user; ?>">
-                            <div class="col-sm-12">
-                              <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Mettre à jour</button>
-                              <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Update</button>
-                              <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Update</button>
-                            </div>
-                          </div>
-                        </div>
-                  </form>
-                          
-                    <div class="mesgs col-sm-12">
-                      <div class="msg_history">
-                          <span id="divChatCommandAdmin"></span>
-                      </div>
-                      <div class="type_msg">
-                        <div class="input_msg_write">
-                          <input type="text" class="write_msg" placeholder="Type a message" />
-                          <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                        </div>
+                  <div class="col-sm-12">
+                    <div class="col-sm-4">
+                      <label for="portfolioID">ID Portfolio</label>
+                        <select name="portfolioID" class="form-control"></select>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="col-sm-4">
+                      <label for="brand"  class="fr">Marque</label>
+                      <label for="brand"  class="en">Brand</label>
+                      <label for="brand"  class="nl">Brand</label>
+                      <input type="text" name="brand" class="form-control required" disabled>
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="model"  class="fr">Modèle</label>
+                      <label for="model"  class="en">Model</label>
+                      <label for="model"  class="nl">Model</label>
+                      <input type="text" name="model" class="form-control required" disabled>
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="frameType"  class="fr">Type de cadre</label>
+                      <label for="frameType"  class="en">Frame Type</label>
+                      <label for="frameType"  class="nl">Frame Type</label>
+                      <select name="frameType" class="form-control" disabled>
+                        <option value="H">Homme</option>
+                        <option value="M">Mixte</option>
+                        <option value="F">Femme</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="size"  class="fr">Taille</label>
+                      <label for="size"  class="en">Size</label>
+                      <label for="size"  class="nl">Size</label>
+                      <select name="size">
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                      </select>
+                    </div>
+                    <img class="commandBike" width="200" title="vélo commandé" alt="vélo commandé"/>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <h4 class="fr text-green">Détails du test</h4>
+                  <h4 class="nl text-green">Delivery details</h4>
+                  <h4 class="en text-green">Delivery details</h4>
+
+                  <div class="col-sm-12">
+                    <div class="col-sm-4">
+                      <label for="testBoolean"  class="fr">Besoin d'un test ?</label>
+                      <label for="testBoolean"  class="en">Need for a test?</label>
+                      <label for="testBoolean"  class="nl">Need for a test?</label>
+                      <input type="checkbox" name="testBoolean" class="form-control">
+                    </div>
+                    <div class="col-sm-4 testDate">
+                      <label for="testDate"  class="fr">Date du test</label>
+                      <label for="testDate"  class="en">Test date</label>
+                      <label for="testDate"  class="nl">Test date</label>
+                      <input type="date" name="testDate" class="form-control">
+                    </div>
+
+                    <div class="col-sm-4 testStatus">
+                      <label for="testStatus"  class="fr">Statut du test</label>
+                      <label for="testStatus"  class="en">Test status</label>
+                      <label for="testStatus"  class="nl">Test status</label>
+                      <select name="testStatus">
+                        <option value="not started">Pas commencé</option>
+                        <option value="ongoing">En cours</option>
+                        <option value="closed">Terminée</option>
+                        <option value="cancelled">Annulée</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-12 testAddress">
+                      <label for="testAddress"  class="fr">Adresse pour le test</label>
+                      <label for="testAddress"  class="en">Test address</label>
+                      <label for="testAddress"  class="nl">Test address</label>
+                      <input type="text" name="testAddress" class="form-control">
+                    </div>
+                    <div class="col-sm-12 testResult">
+                      <label for="testResult"  class="fr">Résultat du test</label>
+                      <label for="testResult"  class="en">Test result</label>
+                      <label for="testResult"  class="nl">Test result</label>
+                      <textarea class="form-control" rows="5" name="testResult"></textarea>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="form-group col-sm-12">
+                  <h4 class="fr text-green">Détails de la livraison</h4>
+                  <h4 class="nl text-green">Delivery details</h4>
+                  <h4 class="en text-green">Delivery details</h4>
+
+                  <div class="col-sm-12">
+                    <div class="col-sm-4">
+                      <label for="deliveryDate"  class="fr">Date de livraison estimée</label>
+                      <label for="deliveryDate"  class="en">Estimated delivery date</label>
+                      <label for="deliveryDate"  class="nl">Estimated delivery date</label>
+                      <input type="date" name="deliveryDate" class="form-control">
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="deliveryAddress"  class="fr">Adresse de livraison</label>
+                      <label for="deliveryAddress"  class="en">Delivery address</label>
+                      <label for="deliveryAddress"  class="nl">Delivery address</label>
+                      <input type="text" name="deliveryAddress" class="form-control">
+                    </div>
+                      <input type="text" name="action" class="form-control hidden" value="update">
+                      <input type="text" name="emailUser" class="form-control hidden">
+                      <input type="text" name="email" class="form-control hidden" value="<?php echo $user; ?>">
+                      <div class="col-sm-12">
+                        <button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Mettre à jour</button>
+                        <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Update</button>
+                        <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Update</button>
                       </div>
                     </div>
+                  </div>
+            </form>
+              <div class="mesgs col-sm-12">
+                <div class="msg_history">
+                    <span id="divChatCommandAdmin"></span>
+                </div>
+                <div class="type_msg">
+                  <div class="input_msg_write">
+                    <input type="text" class="write_msg" placeholder="Type a message" />
+                    <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                  </div>
                 </div>
               </div>
-
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-         </div>
-        </div>
-        <script type="text/javascript">
-            jQuery("#widget-order-form").validate({
-              submitHandler: function(form) {
-                jQuery(form).ajaxSubmit({
-                  success: function(response) {
-                    if (response.response == 'success') {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'success'
-                      });
-                      get_orders_listing();
-                      $('#orderManager').modal('toggle');
-                      document.getElementById('widget-order-form').reset();
-                    } else {
-                      $.notify({
-                        message: response.message
-                      }, {
-                        type: 'danger'
-                      });
-                    }
-                  }
-                });
-              }
-            });
-        </script>
-
-
-        <div class="modal fade" id="portfolioManager" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-
-              <div data-example-id="contextual-table" class="bs-example">
-                <span id="portfolioBikesListing"></span>
-              </div>
-
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
           </div>
         </div>
-
-
-        <div class="modal fade" id="billingListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-                
-              <div data-example-id="contextual-table" class="bs-example billsToSendSpan hidden">
-                  <h4 class="text-green">Factures à envoyer</h4>
-                  <span id="billsToSendListing"></span>
-              </div>                
-              <div class="separator billsToSendSpan hidden"></div>
-                
-              <div data-example-id="contextual-table" class="bs-example">
-                <span id="billsListing"></span>
-              </div>
-
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
+        <div class="fr" class="modal-footer">
+          <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
         </div>
-
-
-        <div class="modal fade" id="dashboard" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div id="tabs-05c" class="tabs color tabs radius">
-             		 <h3 class="text-green">Dashboard</h3>
-             		 
-             		 <ul class="tabs-navigation">
-						<li class="active"><a href="#" class="dashboardBikes">Vélos</a> </li>
-						<li><a href="#" class="dashboardBills">Factures</a> </li>
-						<li><a href="#" class="dashboardCompanies">Sociétés</a> </li>                         
-						<li><a href="#" class="dashboardSells">Prospection commerciale</a> </li>
-					</ul>
-					<div class="tabs-content">
-						<div class="tab-pane active" id="">
-							<h4 class="text-green dashboardTitle">Erreurs à corriger - Vélos</h4>
-							<span id="dashboardBodyBikes"></span>
-                            <span id="dashboardBodyBills" style="display: none;"></span>
-                            <span id="dashboardBodyCompanies" style="display: none;"></span>
-                            
-                            
-                            <span id="dashboardBodySells" style="display: none;">
-                            
-                              <div class="col-md-4">
-                                <div class="form-group">
-                                  <label for="dtp_input2" class="control-label">Date de début</label>
-                                  <div class="input-group date form_date_start_sell col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
-                                    <input class="form-control" size="16" type="text" value="" readonly>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                  </div>
-                                  <input type="hidden" id="dtp_input2" value="" /><br/>
-                                </div>
-                              </div>
-
-                              <div class="col-md-4">
-                                <div class="form-group">
-                                  <label for="dtp_input2" class="control-label">Date de fin</label>
-                                  <div class="input-group date form_date_end_sell col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                    <input class="form-control" size="16" type="text" value="" readonly>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                  </div>
-                                  <input type="hidden" id="dtp_input2" value="" /><br/>
-                                </div>
-                              </div>
-                              <div class="col-md-4">
-                                <label for="taskOwnerSalesSelection">Filtrer sur Owner</label>
-                                <select class="taskOwnerSalesSelection" name="taskOwnerSalesSelection">
-                                </select>
-                              </div>
-                                
-                                <span id='dashboardBodySellsTable'></span>
-                            
-                            </span>
-                        </div>
-					</div>             		 
-				  </div>
-				</div>
-			  </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
+        <div class="en" class="modal-footer">
+          <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
         </div>
+        <div class="nl" class="modal-footer">
+          <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    jQuery("#widget-order-form").validate({
+      submitHandler: function(form) {
+        jQuery(form).ajaxSubmit({
+          success: function(response) {
+            if (response.response == 'success') {
+              $.notify({
+                message: response.message
+              }, {
+                type: 'success'
+              });
+              get_orders_listing();
+              $('#orderManager').modal('toggle');
+              document.getElementById('widget-order-form').reset();
+            } else {
+              $.notify({
+                message: response.message
+              }, {
+                type: 'danger'
+              });
+            }
+          }
+        });
+      }
+    });
+</script>
 
-        <script type="text/javascript">
-            
+<!-- GERER LE CATALOGUE -->
+<div class="modal fade" id="portfolioManager" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
 
-            $('.form_date_start_sell').datetimepicker({
-              language:  'fr',
-              weekStart: 1,
-              todayBtn:  1,
-              autoclose: 1,
-              todayHighlight: 1,
-              startView: 2,
-              minView: 2,
-              forceParse: 0
-            });
+      <div data-example-id="contextual-table" class="bs-example">
+        <span id="portfolioBikesListing"></span>
+      </div>
 
-            $('.form_date_end_sell').datetimepicker({
-              language:  'fr',
-              weekStart: 1,
-              todayBtn:  1,
-              autoclose: 1,
-              todayHighlight: 1,
-              startView: 2,
-              minView: 2,
-              forceParse: 0
-            });
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- APERCU DES FACTURES -->
+<div class="modal fade" id="billingListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div data-example-id="contextual-table" class="bs-example billsToSendSpan hidden">
+          <h4 class="text-green">Factures à envoyer</h4>
+          <span id="billsToSendListing"></span>
+      </div>
+      <div class="separator billsToSendSpan hidden"></div>
+      <div data-example-id="contextual-table" class="bs-example">
+        <span id="billsListing"></span>
+      </div>
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- DASHBOARD WIDGET-->
+<?php include 'include/tabs/widgets/dashboard/dashboard.html'; ?>
+<!-- END: DASHBOARD WIDGET -->
 
-            var tempDate=new Date();
-            $(".form_date_end_sell").data("datetimepicker").setDate(tempDate);
-            tempDate.setDate(tempDate.getDate()-7);
-            $(".form_date_start_sell").data("datetimepicker").setDate(tempDate);
-            
-            $('.form_date_start_sell').change(function(){
-                list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
-            });
-            $('.form_date_end_sell').change(function(){
-                list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
-            });
-            $('.taskOwnerSalesSelection').change(function(){
-                list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
-            });
-            
-
-            
-            $( ".dashboardBikes" ).click(function() {
-                    $('#dashboardBodyBills').fadeOut();                    
-                    $('#dashboardBodyBikes').fadeIn();
-                    $('#dashboardBodySells').fadeOut();
-                    $('#dashboardBodyCompanies').fadeOut();
-                    $('.dashboardTitle').html("Erreurs à corriger - Vélos");
-                });            
-                $( ".dashboardBills" ).click(function() {
-                    $('#dashboardBodyBikes').fadeOut();
-                    $('#dashboardBodyBills').fadeIn();
-                    $('#dashboardBodyCompanies').fadeOut();                    
-                    $('#dashboardBodySells').fadeOut();
-                    
-                    $('.dashboardTitle').html("Erreurs à corriger - Factures");
-                });            
-                $( ".dashboardSells" ).click(function() {
-                    $('#dashboardBodyBikes').fadeOut();
-                    $('#dashboardBodyBills').fadeOut();
-                    $('#dashboardBodyCompanies').fadeOut();                    
-                    $('#dashboardBodySells').fadeIn();
-                    $('.dashboardTitle').html("Suivi prospection commerciale");
-                });            
-                $( ".dashboardCompanies" ).click(function() {
-                    $('#dashboardBodyBikes').fadeOut();
-                    $('#dashboardBodyBills').fadeOut();
-                    $('#dashboardBodyCompanies').fadeIn();                    
-                    $('#dashboardBodySells').fadeOut();
-                    $('.dashboardTitle').html("Erreurs à corriger - Sociétés");
-                });            
-
-            
-            
-        </script>
-
-        <div class="modal fade" id="addBill" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="addBill" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -5165,7 +4274,6 @@ if($connected){
                             <span class="widget-addBill-form-company" name="widget-addBill-form-company"></span>
                           </div>
 
-
                           <div class="col-md-4">
                             <label for="beneficiaryCompany"  class="fr">Beneficiaire</label>
                             <label for="beneficiaryCompany"  class="en">Beneficiaire</label>
@@ -5193,7 +4301,6 @@ if($connected){
                             <label for="typeOther" class="hidden">Informations complémentaires (type)</label>
                             <input type="text" class="form-control hidden" name="typeOther">
                           </div>
-
                         </div>
 
 
@@ -5265,9 +4372,9 @@ if($connected){
                               <option value="manual">Import manuel</option>
                             </select>
                           </div>
-                        </div>                            
+                        </div>
                         <div class="separator"></div>
-                          
+
                           <div class="col-md-12 generateBillDetails">
                               <div class="row generateBillBike">
                                 <div class="col-sm-4">
@@ -5357,7 +4464,7 @@ if($connected){
                                   <h4 class="nl text-green">Other accessoires: </h4>
                                 </div>
                                 <div class="col-sm-12 accessoriesButtons">
-                                  <i class="fa fa-calculator"></i> 
+                                  <i class="fa fa-calculator"></i>
                                     <span class="otherAccessoriesNumber">0</span>
                                     <input type="hidden" id="otherAccessoriesNumber" name="otherAccessoriesNumber" value="0" />
                                   <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
@@ -5378,8 +4485,8 @@ if($connected){
                                 </table>
                               </div>
                           </div>
-  
-                          
+
+
                         <h4 class="text-green manualBill" style="display: none;">Informations sur les montants</h4>
                         <div class="col-md-12 manualBill" style="display: none;">
                             <div class="col-md-4">
@@ -5409,10 +4516,10 @@ if($connected){
                                 <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                                 <input type=file size=40 id="widget-addBill-form-file" class="form-control required" name="widget-addBill-form-file">
                             </div>
-                            
+
                         </div>
                     </div>
-                        
+
                       <input type="text" name="communicationHidden" class="hidden">
                       <input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user; ?>" hidden>
                       <div class="separator"></div>
@@ -5532,10 +4639,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-        <div class="modal fade" id="addClient" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="addClient" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -5735,10 +4841,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-        <div class="modal fade" id="ReservationsListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="ReservationsListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -5836,11 +4941,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-
-        <div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -5923,9 +5026,9 @@ if($connected){
 
             </div>
           </div>
-        </div>
+</div>
 
-        <div class="modal fade" id="companyDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+<div class="modal fade" id="companyDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -6167,7 +5270,7 @@ if($connected){
                     <h4 class="text-green">Vélos :</h4>
                     <span id="companyBikes"></span>
                   </div>
-                    
+
                     <div class="col-sm-12" id="clientOrderedBikes">
                         <div class="separator"></div>
                         <h4 class="text-green">Vélos en commande:</h4>
@@ -6175,38 +5278,38 @@ if($connected){
                     </div>
 
                   <div class="col-sm-12" id="clientBoxes">
-                    <div class="separator"></div>                      
+                    <div class="separator"></div>
                     <h4 class="text-green">Bornes :</h4>
                     <p><span id="companyBoxes"></span></p>
                   </div>
 
                   <div class="col-sm-12" id="clientContracts">
-                    <div class="separator"></div>                      
+                    <div class="separator"></div>
                     <h4 class="text-green">Contrats et Offres :</h4>
                     <p><span id="companyContracts"></span></p>
                   </div>
 
                   <div class="col-sm-12">
-                    <div class="separator"></div>                      
+                    <div class="separator"></div>
                     <h4 class="text-green">Historique et actions :</h4>
                     <span id="action_company_log"></span>
 
                   </div>
 
                   <div class="col-sm-12" id="clientBuildings">
-                    <div class="separator"></div>                      
+                    <div class="separator"></div>
                     <h4 class="text-green">Bâtiments:</h4>
                     <p><span id="companyBuildings"></span></p>
                   </div>
 
                   <div class="col-sm-12" id="clientusers">
-                    <div class="separator"></div>                      
+                    <div class="separator"></div>
                     <h4 class="text-green">Utilisateurs:</h4>
                     <span id="companyUsers"></span>
                   </div>
 
                   <div class="col-sm-12" id="clientBills">
-                    <div class="separator"></div>  
+                    <div class="separator"></div>
                     <h4 class="text-green">Factures:</h4>
                     <span id="companyBills"></span>
                   </div>
@@ -6226,11 +5329,9 @@ if($connected){
 
             </div>
           </div>
-        </div>
-
-
-        <script type="text/javascript" src="js/add_company_contact.js"></script>
-        <script type="text/javascript">
+</div>
+<script type="text/javascript" src="js/add_company_contact.js"></script>
+<script type="text/javascript">
         var contactInfo  = [];
         var contactKeys = [];
 
@@ -6318,327 +5419,9 @@ if($connected){
 
           }
         });
-        </script>
+</script>
 
-
-
-        <div class="modal fade" id="addUser" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h4 class="fr text-green">Ajouter un utilisateur</h4>
-
-                    <form id="widget-addUser-form" action="include/add_user.php" role="form" method="post">
-
-                      <div class="form-group col-sm-12">
-                        <div class="col-md-4">
-                          <label for="firstname"  class="fr">Prénom</label>
-                          <label for="firstname"  class="en">Firstname</label>
-                          <label for="firstname"  class="nl">Voornaam</label>
-                          <input type="text" name="firstName" class="form-control required">
-                        </div>
-
-                        <div class="col-md-4">
-                          <label for="name"  class="fr">Nom</label>
-                          <label for="name"  class="en">Name</label>
-                          <label for="name"  class="nl">Achternaam</label>
-                          <input type="text" name="name" class="form-control required">
-                        </div>
-
-                        <div class="col-md-4">
-                          <label for="mail"  class="fr">E-mail</label>
-                          <label for="mail"  class="en">E-mail</label>
-                          <label for="mail"  class="nl">E-mail</label>
-                          <input type="text" name="mail" class="form-control mail required">
-                        </div>
-                        <div class="col-md-4">
-                          <label for="generatePassword"  class="fr">Genérer un password automatiquement</label>
-                          <input type="checkbox" name="generatePassword" class="form-control" checked>
-                        </div>
-                        <div class="col-md-8">
-                          <label for="password"  class="fr hidden">Password</label>
-                          <label for="password"  class="en hidden">Password</label>
-                          <label for="password"  class="nl hidden">Password</label>
-                          <input type="password" name="password" class="form-control required hidden">
-                        </div>
-                        <div class="col-md-4">
-                          <label for="fleetManager">Fleet manager</label>
-                          <input type="checkbox" name="fleetManager" class="form-control">
-                        </div>
-                        <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="company" class="form-control hidden">
-
-                      </div>
-                      <h4>Accès aux bâtiments</h4>
-                      <div class="form-group col-sm-12" id="buildingCreateUser"></div>
-
-                      <h4>Accès aux vélos</h4>
-                      <div class="form-group col-sm-12" id="bikeCreateUser"></div>
-
-                      <div id="confirmAddUser">
-
-                      </div>
-
-                    </form>
-                    <script type="text/javascript">
-                    jQuery("#widget-addUser-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-
-
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              get_users_listing();
-                              $('#addUser').modal('toggle');
-                              document.getElementById('widget-addUser-form').reset();
-                                
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <script type="text/javascript">
-        $('#widget-addUser-form input[name=generatePassword]').change(function(){
-          if($('#widget-addUser-form input[name=generatePassword').is(':checked')){
-            $('#widget-addUser-form label[for=password]').addClass("hidden");
-            $('#widget-addUser-form input[name=password]').addClass("hidden");
-          }else{
-            $('#widget-addUser-form label[for=password]').removeClass("hidden");
-            $('#widget-addUser-form input[name=password]').removeClass("hidden");
-          }
-        })
-        </script>
-
-        <div class="modal fade" id="taskManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h4 class="fr text-green taskManagementTitle">Ajouter une action</h4>
-
-                    <form id="widget-taskManagement-form" action="include/action_company.php" role="form" method="post">
-
-                      <div class="form-group col-sm-12">
-                        <div class="col-md-12">
-
-                          <div class="col-md-4">
-                            <label for="owner">Owner</label>
-                            <select title="owner" class="form-control required" name="owner">
-                            </select>
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="status">Statut :</label>
-                            <select title="Status" class="selectpicker form-control required" name="status">
-                              <option value="TO DO">To do</option>
-                              <option value="DONE">Done</option>
-                            </select>
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="company"  class="fr">Société</label>
-                            <label for="company"  class="en">Company</label>
-                            <label for="company"  class="nl">Company</label>
-                            <select title="company" class="selectpicker form-control required" name="company">
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="col-md-4">
-                            <label for="type"  class="fr">Type</label>
-                            <label for="type"  class="en">Type</label>
-                            <label for="type"  class="nl">Type</label>
-                            <select title="type" class="selectpicker form-control required" name="type">
-                              <option value="contact">Prise de contact</option>
-                              <option value="rappel">Rappel</option>
-                              <option value="plan rdv">Planification de rendez-vous</option>
-                              <option value="rdv">Rendez-vous</option>
-                              <option value="offre">Formulation d'une offre</option>
-                              <option value="offreSigned">Offre signée</option>
-                              <option value="delivery">Livraison vélo</option>
-                              <option value="other">Autre</option>
-                            </select>
-
-                          </div>
-
-                          <div class="col-md-4">
-                            <label for="channel"  class="fr">Canal d'acquisition</label>
-                            <label for="channel"  class="en">Channel</label>
-                            <label for="channel"  class="nl">Channel</label>
-                            <select title="channel" class="form-control required selectpicker" name="channel">
-                              <option value="telephone" selected>Téléphone</option>
-                              <option value="salon">Contact après visite sur salon</option>
-                              <option value="site">Contact sur site internet</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="col-md-4">
-                            <label for="date"  class="fr">Date</label>
-                            <label for="date"  class="en">Date</label>
-                            <label for="date"  class="nl">Date</label>
-                            <input type="date" name="date" class="form-control required">
-                          </div>
-                          <div class="col-md-4">
-                            <label for="reminder"  class="fr">Rappel ?</label>
-                            <label for="reminder"  class="en">Reminder ?</label>
-                            <label for="reminder"  class="nl">Reminder ?</label>
-                            <input type="date" name="date_reminder" class="form-control ">
-                          </div>
-                        </div>
-
-
-                        <div class="col-md-12">
-
-                          <div class="col-md-12">
-                            <label for="reminder"  class="fr">Titre</label>
-                            <label for="reminder"  class="en">Title</label>
-                            <label for="reminder"  class="nl">Title</label>
-                            <input type="text" name="title" class="form-control ">
-                          </div>
-
-                          <div class="col-md-12">
-                            <label for="reminder"  class="fr">Description</label>
-                            <label for="reminder"  class="en">Description</label>
-                            <label for="reminder"  class="nl">Description</label>
-                            <textarea class="form-control" rows="5" name="description"></textarea>
-                          </div>
-
-                        </div>
-
-                        <input type="text" name="requestor" class="form-control hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="action" class="form-control hidden" value="create">
-                        <div class="col-sm-12">
-                          <button  class="button small green button-3d rounded icon-left taskManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
-                        </div>
-
-                      </div>
-
-                    </form>
-                    <script type="text/javascript">
-
-                    var oldChannelValue = $('#widget-taskManagement-form select[name=channel]').val();
-
-                    $('body').on('change', '#widget-taskManagement-form select[name=channel]', function(){
-                      if ($('#widget-taskManagement-form select[name=channel]').val() != null) {
-                        oldChannelValue = $('#widget-taskManagement-form select[name=channel]').val();
-                      }
-                    });
-
-                    $('#widget-taskManagement-form select[name=type]').change(function(){
-                      if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
-                        $('#widget-taskManagement-form select[name=channel]').val(oldChannelValue);
-
-                        $('#widget-taskManagement-form label[for=channel]').addClass("required");
-                        $('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
-
-                        $('#widget-taskManagement-form select[name=channel]').addClass("required");
-                        $('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
-
-                      }else{
-                        $('#widget-taskManagement-form label[for=channel]').removeClass("required");
-                        $('#widget-taskManagement-form label[for=channel]').addClass("hidden");
-
-                        $('#widget-taskManagement-form select[name=channel]').addClass("hidden");
-                        $('#widget-taskManagement-form select[name=channel]').removeClass("required");
-
-                        $('#widget-taskManagement-form select[name=channel]').val(null);
-                      }
-                    });
-
-
-
-                    jQuery("#widget-taskManagement-form").validate({
-                      submitHandler: function(form) {
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user ?>');
-                              $('#taskManagement').modal('toggle');
-                                
-                              get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);   
-                                
-                                
-                              document.getElementById('widget-taskManagement-form').reset();
-
-
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-        <div class="modal fade" id="feedbackManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+<div class="modal fade" id="feedbackManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -6719,7 +5502,7 @@ if($connected){
                             <textarea class="form-control" rows="5" name="comment"></textarea>
                           </div>
                         </div>
-                          
+
                         <input type='int' class="form-control required hidden" name="feedbackID">
                         <input type="text" name="action" class="form-control hidden" value="add">
                         <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
@@ -6776,10 +5559,8 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
-
-
-        <script type="text/javascript">
+</div>
+<script type="text/javascript">
         $('#widget-feedbackManagement-form select[name=note]').change(function() {
           if($('#widget-feedbackManagement-form select[name=note]').val()=="5"){
             $('#widget-feedbackManagement-form input[name=entretien]').prop("checked", false);
@@ -6789,11 +5570,9 @@ if($connected){
             $('.feedbackEntretien').removeClass("hidden");
           }
         });
+</script>
 
-        </script>
-
-
-        <div class="modal fade" id="maintenanceManagementItem" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+<div class="modal fade" id="maintenanceManagementItem" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -6892,10 +5671,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-        <div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -6909,7 +5687,7 @@ if($connected){
                       <h4 class="fr text-green bikeManagementTitle">Ajouter un vélo</h4>
                       <div class="form-group col-sm-12">
                         <h4 class="fr text-green">Caractéristiques du vélo</h4>
-                          
+
                         <div class="col-sm-12">
                           <div class="col-sm-4">
                             <label for="bikeID">ID</label>
@@ -7049,7 +5827,7 @@ if($connected){
                             <label for="estimatedDeliveryDate"  class="en">Arrival estimated date</label>
                             <label for="estimatedDeliveryDate"  class="nl">Arrival estimated date</label>
                             <input type="date" name="estimatedDeliveryDate" class="form-control">
-                          </div>                            
+                          </div>
                           <div class="col-sm-4 deliveryDate">
                             <label for="deliveryDate"  class="fr">Date d'arrivée</label>
                             <label for="deliveryDate"  class="en">Delivery date</label>
@@ -7073,7 +5851,7 @@ if($connected){
                             </select>
                           </div>
                         </div>
-                          
+
                         <div class="separator billingInfos" style="display:none;"></div>
                         <div class="col-sm-12 billingInfos" style="display:none;">
                           <h4 class="fr text-green">Informations relatives à la facturation</h4>
@@ -7105,7 +5883,7 @@ if($connected){
                             <label for="billingGroup"  class="nl">Groupe de facturation</label>
                             <input type="text" name="billingGroup" class="form-control required">
                           </div>
-                            
+
                             <div class="col-sm-12 billingDiv">
                               <div class="col-sm-4">
                                 <label for="billing"  class="fr">Facturation automatique ?</label>
@@ -7114,9 +5892,9 @@ if($connected){
                                 <label><input type="checkbox" name="billing" class="form-control">Oui</label>
                               </div>
                             </div>
-                            
+
                         </div>
-                          
+
                         <div class="form-group col-sm-4" style="display:none;" id="addBike_firstBuilding"></div>
                         <div class="form-group col-sm-12" style="display:none;" id="addBike_buildingListing"></div>
 
@@ -7300,155 +6078,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-
-
-        <div class="modal fade" id="boxManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-
-                    <form id="widget-boxManagement-form" action="include/box_management.php" role="form" method="post">
-
-                      <div class="form-group col-sm-12">
-                        <h4 class="fr text-green" id="widget-boxManagement-form-title">Ajouter une borne</h4>
-
-
-                        <div class="col-sm-4">
-                          <label for="reference"  class="fr">Référence</label>
-                          <label for="reference"  class="en">Reference</label>
-                          <label for="reference"  class="nl">Reference</label>
-                          <input type="text"  name="reference" class="form-control">
-                        </div>
-
-
-                        <div class="col-sm-4">
-                          <label for="boxModel"  class="fr">Modèle</label>
-                          <label for="boxModel"  class="en">Model</label>
-                          <label for="boxModel"  class="nl">Model</label>
-                          <select name="boxModel" class="form-control required">
-                            <option value="5keys" />Box 5 clés<br/>
-                            <option value="10keys" />Box 10 clés<br/>
-                            <option value="20keys" />Box 20 clés<br/>
-                          </select>
-                        </div>
-
-
-                        <div class="separator"></div>
-                        <h4 class="fr text-green">Informations relatives au contrat</h4>
-
-                        <div class="col-sm-4">
-                          <label for="company"  class="fr">Client actuel</label>
-                          <label for="company"  class="en">Current customer</label>
-                          <label for="company"  class="nl">Current customer</label>
-                          <select name="company" class="form-control required">
-                          </select>
-                        </div>
-
-
-                        <div class="col-sm-4">
-                          <label for="contractStart"  class="fr">Début de contrat</label>
-                          <label for="contractStart"  class="en">Contract start</label>
-                          <label for="contractStart"  class="nl">Contract start</label>
-                          <input type="date"  name="contractStart" class="form-control">
-                        </div>
-                        <div class="col-sm-4">
-                          <label for="contractEnd"  class="fr">Fin de contrat</label>
-                          <label for="contractEnd"  class="en">Contract End</label>
-                          <label for="contractEnd"  class="nl">Contract End</label>
-                          <input type="date" name="contractEnd" class="form-control">
-                        </div>
-                        <div class="separator"></div>
-
-                        <h4 class="fr text-green">Informations relatives à la facturation</h4>
-
-                        <div class="col-sm-4">
-                          <label for="billing"  class="fr">Facturation automatique ?</label>
-                          <label for="billing"  class="en">Automatic billing ?</label>
-                          <label for="billing"  class="nl">Automatic billing ?</label>
-                          <label><input type="checkbox" name="billing" class="form-control">Oui</label>
-                        </div>
-
-                        <div class="col-sm-4">
-                          <label for="amount"  class="fr">Montant (par mois)</label>
-                          <label for="amount"  class="en">Amount per month</label>
-                          <label for="amount"  class="nl">Amount per month</label>
-                          <input type="number" min='0' name="amount" class="form-control">
-                        </div>
-
-                        <div class="col-sm-4">
-                          <label for="billingGroup"  class="fr">Groupe de facturation</label>
-                          <label for="billingGroup"  class="en">Groupe de facturation</label>
-                          <label for="billingGroup"  class="nl">Groupe de facturation</label>
-                          <input type="number" min="0" max="10" name="billingGroup" class="form-control required" value="1">
-                        </div>
-
-
-                        <input type="text" name="id" class="form-control hidden">
-                        <input type="text" name="user" class="form-control hidden" value="<?php echo $user; ?>">
-                        <input type="text" name="action" class="form-control hidden">
-
-                      </div>
-
-
-                      <button  id="widget-boxManagement-form-send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
-
-                    </form>
-                    <script type="text/javascript">
-                    jQuery("#widget-boxManagement-form").validate({
-                      submitHandler: function(form) {
-
-                        jQuery(form).ajaxSubmit({
-                          success: function(response) {
-                            if (response.response == 'success') {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'success'
-                              });
-                              get_company_details($('#widget-companyDetails-form input[name=ID]').val(),email);
-                              document.getElementById('widget-boxManagement-form').reset();
-                              $('#boxManagement').modal('toggle');
-                            } else {
-                              $.notify({
-                                message: response.message
-                              }, {
-                                type: 'danger'
-                              });
-                            }
-                          }
-                        });
-                      }
-                    });
-
-
-
-
-                    </script>
-                  </div>
-                </div>
-              </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="command" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="command" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -7483,7 +6115,7 @@ if($connected){
                                     <option value="XL">XL</option>
                                 </select>
                             </div>
-                            
+
                               <div class="col-sm-12"></div>
 
                               <div class="col-sm-4" >
@@ -7563,12 +6195,12 @@ if($connected){
                           <div class="col-sm-12">
                             <img src="" class="commandImage" alt="image" height="400" />
                           </div>
-                          
+
                           <label for="remark" class="fr"> Remarques : </label>
                           <label for="remark" class="en"> Remarks : </label>
                           <label for="remark" class="nl"> Remarks : </label>
                           <textarea class="form-control" rows="5" name="remark"></textarea>
-                          
+
                         <input type="text" name="email" class="form-control hidden" value="<?php echo $user; ?>">
                         <input type="text" name="action" class="form-control hidden" value="command">
 
@@ -7623,10 +6255,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-        <div class="modal fade" id="addBuilding" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="addBuilding" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -7735,9 +6366,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-        <div class="modal fade" id="offerManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="offerManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -7746,7 +6377,6 @@ if($connected){
               <div class="modal-body">
                 <div class="row">
                   <div class="col-sm-12">
-
                     <form id="widget-offerManagement-form" action="include/offer_management.php" role="form" method="post">
 
                       <div class="form-group col-sm-12">
@@ -7841,10 +6471,10 @@ if($connected){
                         <div class="separator offerManagementPDF"></div>
                         <div class="col-sm-12 offerManagementPDF">
                             <h4 class="text-green">Offre PDF</h4>
-                            
-                            <object data="" id='offerManagementPDF' type="application/pdf" width="100%" height="800px"> 
-                              <p>Apparemment vous n'avez pas un plug-in pour lire directement un fichier PDF. Vous pouvez <a href="resume.pdf">cliquer ici pour télécharger le fichier.</a></p>  
-                            </object>                                                      
+
+                            <object data="" id='offerManagementPDF' type="application/pdf" width="100%" height="800px">
+                              <p>Apparemment vous n'avez pas un plug-in pour lire directement un fichier PDF. Vous pouvez <a href="resume.pdf">cliquer ici pour télécharger le fichier.</a></p>
+                            </object>
                         </div>
                         <br>
                         <input type="hidden" id="companyHiddenOffer" name="company" class="form-control required hidden" value="">
@@ -7870,10 +6500,10 @@ if($connected){
                                 type: 'success'
                               });
                               list_contracts_offers('*');
-                              
+
                               document.getElementById('widget-offerManagement-form').reset();
                               if($('#widget-companyDetails-form input[name=ID]').val()!=''){
-                                  get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);   
+                                  get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);
                               }
                               $('#offerManagement').modal('toggle');
 
@@ -7922,8 +6552,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal fade" id="template" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+</div>
+
+<div class="modal fade" id="template" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -8088,7 +6719,7 @@ if($connected){
                             <label for="boxFinalLocationPrice" class="en">boxFinalLocationPrice</label>
                             <label for="boxFinalLocationPrice" class="nl">boxFinalLocationPrice</label>
                           </th>
-                            
+
                           <th class="boxContractPrice">
                             <label for="boxContractPrice" class="fr">Valeur totale</label>
                             <label for="boxContractPrice" class="en">Total value</label>
@@ -8210,12 +6841,12 @@ if($connected){
                     <div class="separator"></div>
                   </div>
                   <div class="row form-group" style="margin-bottom:20px;">
-                    <h4 class="text-green">Signature de l'offre</h4>                      
-                    <div class="col-sm-12">  
-                        <div class="col-sm-12">  
+                    <h4 class="text-green">Signature de l'offre</h4>
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
                                 <label for="probability"  class="fr">Chance de réussite</label>
                                 <label for="probability"  class="en">Chance de réussite</label>
-                                <label for="probability"  class="nl">chance de réussite</label>                        
+                                <label for="probability"  class="nl">chance de réussite</label>
                               <div class="col-sm-3 input-group">
                                 <span class="input-group-addon">%</span>
                                 <input type="number" min="0" max="100" name="probability" class="form-control required">
@@ -8259,9 +6890,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-        <div class="modal fade" id="costsManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="costsManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -8392,10 +7023,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-        <div class="modal fade" id="reservationDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="reservationDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -8471,10 +7101,9 @@ if($connected){
 
             </div>
           </div>
-        </div>
+</div>
 
-
-        <div class="modal fade" id="deleteReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="deleteReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -8563,10 +7192,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-        <div class="modal fade" id="updateReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="updateReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -8655,11 +7283,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-
-        <div class="modal fade" id="updateBikeStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="updateBikeStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -8670,7 +7296,7 @@ if($connected){
                   <form id="widget-updateBikeStatus-form" action="include/updateBikeStatus.php" role="form" method="post">
 
                     <div class="col-sm-12">
-                      <h4 class="text-green">Caractéristiques du vélo</h4>                        
+                      <h4 class="text-green">Caractéristiques du vélo</h4>
                         <div class="col-sm-4">
                             <label for="bikeID" class="fr-inline">Référence du vélo :</label>
                             <label for="bikeID" class="en-inline">Bike Reference :</label>
@@ -8706,7 +7332,7 @@ if($connected){
                         <label for="contractType" class="en">Contract type :</label>
                         <label for="contractType" class="nl">Contract type :</label>
                         <input type="text" disabled name="contractType" class="form-control">
-                          
+
                       </div>
 
                       <div class="col-sm-4">
@@ -8775,8 +7401,8 @@ if($connected){
 
             </div>
           </div>
-        </div>
-        <script type="text/javascript">
+</div>
+<script type="text/javascript">
 
         jQuery("#widget-updateBikeStatus-form").validate({
           submitHandler: function(form) {
@@ -8804,10 +7430,9 @@ if($connected){
           }
         });
 
-        </script>
+</script>
 
-
-        <div class="modal fade" id="updateBillingStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="updateBillingStatus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -9001,8 +7626,8 @@ if($connected){
 
             </div>
           </div>
-        </div>
-        <script type="text/javascript">
+</div>
+<script type="text/javascript">
         $('input[name=widget-updateBillingStatus-form-VAT]').change(function(){
           if($('input[name=widget-updateBillingStatus-form-VAT]').is(':checked')){
             $('input[name=widget-updateBillingStatus-form-amountTVAC]').val((1.21*$('input[name=widget-updateBillingStatus-form-amountHTVA]').val()).toFixed(2));
@@ -9066,11 +7691,9 @@ if($connected){
             });
           }
         });
+</script>
 
-
-        </script>
-
-        <div class="modal fade" id="updateAction" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="updateAction" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -9181,8 +7804,8 @@ if($connected){
 
             </div>
           </div>
-        </div>
-        <script type="text/javascript">
+</div>
+<script type="text/javascript">
         jQuery("#widget-updateAction-form").validate({
           submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
@@ -9209,11 +7832,9 @@ if($connected){
             });
           }
         });
+</script>
 
-        </script>
-
-
-        <div class="modal fade" id="updatePortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="updatePortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -9252,7 +7873,7 @@ if($connected){
                                 <option value="Victoria">Victoria</option>
                                 <option value="Stevens">Stevens</option>
                                 <option value="other">Other</option>
-                                
+
                             </select>
 
                           </div>
@@ -9410,9 +8031,8 @@ if($connected){
 
             </div>
           </div>
-        </div>
-        <script type="text/javascript">
-
+</div>
+<script type="text/javascript">
         jQuery("#widget-updateCatalog-form").validate({
           submitHandler: function(form) {
             jQuery(form).ajaxSubmit({
@@ -9466,11 +8086,9 @@ if($connected){
             });
           }
         });
+</script>
 
-        </script>
-
-
-        <div class="modal fade" id="addPortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="addPortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -9490,14 +8108,14 @@ if($connected){
                           <label for="brand" class="nl"> Brand : </label>
                           <select class="form-control required" name="brand">
                             <option value="Ahooga">Ahooga</option>
-                            <option value="Benno">Benno</option>                              
+                            <option value="Benno">Benno</option>
                             <option value="Bzen">Bzen</option>
                             <option value="Conway">Conway</option>
                             <option value="Douze Cycle">Douze Cycle</option>
                             <option value="HNF Nicolai">HNF Nicolai</option>
                             <option value="Kayza">Kayza</option>
                             <option value="Orbea">Orbea</option>
-                            <option value="Victoria">Victoria</option>                              
+                            <option value="Victoria">Victoria</option>
                             <option value="Stevens">Stevens</option>
                             <option value="other">Other</option>
                           </select>
@@ -9637,8 +8255,8 @@ if($connected){
 
             </div>
           </div>
-        </div>
-        <script type="text/javascript">
+</div>
+<script type="text/javascript">
 
         jQuery("#widget-addCatalog-form").validate({
           submitHandler: function(form) {
@@ -9666,11 +8284,9 @@ if($connected){
             });
           }
         });
+</script>
 
-        </script>
-
-
-        <div class="modal fade" id="tellus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="tellus" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -9749,185 +8365,181 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
-        <?php if($connected){
-          ?>
-          <div class="modal fade" id="update" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+</div>
+
+<?php if($connected){?>
+<div class="modal fade" id="update" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <form id="widget-updateInfo" action="include/updateInfos.php" role="form" method="post">
+              <div class="row">
+                <h4 class="col-md-3 fr">Informations générales</h4>
+                <h4 class="col-md-3 en">General information</h4>
+                <h4 class="col-md-3 nl">Algemene informatie</h4>
+                <div class="form-group col-sm-12">
+                  <label for="firstname"  class="fr">Prénom</label>
+                  <label for="firstname"  class="en">Firstname</label>
+                  <label for="firstname"  class="nl">Voornaam</label>
+                  <input type="text" id="widget-update-form-firstname" name="widget-update-form-firstname" class="form-control required" value="<?php echo $row["PRENOM"] ?>">
+
+                  <label for="firstname"  class="fr">Nom</label>
+                  <label for="firstname"  class="en">Name</label>
+                  <label for="firstname"  class="nl">Achternaam</label>
+                  <input type="text" id="widget-update-form-name" name="widget-update-form-name" class="form-control required" value="<?php echo $row["NOM"] ?>">
+
+
+                  <label for="telephone"  class="fr">Numéro de téléphone</label>
+                  <label for="telephone"  class="en">Phone number</label>
+                  <label for="telephone"  class="nl">Telefoonnumber</label>
+                  <input type="text" id="widget-update-form-phone" name="widget-update-form-phone" class="form-control" value="<?php echo $row["PHONE"] ?>">
                 </div>
-                <div class="modal-body">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <form id="widget-updateInfo" action="include/updateInfos.php" role="form" method="post">
-                        <div class="row">
-                          <h4 class="col-md-3 fr">Informations générales</h4>
-                          <h4 class="col-md-3 en">General information</h4>
-                          <h4 class="col-md-3 nl">Algemene informatie</h4>
-                          <div class="form-group col-sm-12">
-                            <label for="firstname"  class="fr">Prénom</label>
-                            <label for="firstname"  class="en">Firstname</label>
-                            <label for="firstname"  class="nl">Voornaam</label>
-                            <input type="text" id="widget-update-form-firstname" name="widget-update-form-firstname" class="form-control required" value="<?php echo $row["PRENOM"] ?>">
-
-                            <label for="firstname"  class="fr">Nom</label>
-                            <label for="firstname"  class="en">Name</label>
-                            <label for="firstname"  class="nl">Achternaam</label>
-                            <input type="text" id="widget-update-form-name" name="widget-update-form-name" class="form-control required" value="<?php echo $row["NOM"] ?>">
-
-
-                            <label for="telephone"  class="fr">Numéro de téléphone</label>
-                            <label for="telephone"  class="en">Phone number</label>
-                            <label for="telephone"  class="nl">Telefoonnumber</label>
-                            <input type="text" id="widget-update-form-phone" name="widget-update-form-phone" class="form-control" value="<?php echo $row["PHONE"] ?>">
-                          </div>
-                          <h4 class="col-md-3 fr">Domicile</h4>
-                          <h4 class="col-md-3 en">Home</h4>
-                          <h4 class="col-md-3 nl">Thuis</h4>
-                          <div class="form-group col-sm-12">
-                            <label for="email"  class="fr">Adresse</label>
-                            <label for="email"  class="en">Adress</label>
-                            <label for="email"  class="nl">Adres</label>
-                            <input type="text" id="widget-update-form-adress" name="widget-update-form-adress" class="form-control" value="<?php echo $row['ADRESS'] ?>">
-                          </div>
-                          <div class="form-group col-sm-12">
-                            <label for="widget-update-form-post-code"  class="fr">Code Postal</label>
-                            <label for="widget-update-form-post-code"  class="en">Postal Code</label>
-                            <label for="widget-update-form-post-code"  class="nl">Postcode</label>
-                            <input type="text" id="widget-update-form-post-code" name="widget-update-form-post-code" class="form-control" value="<?php echo $row['POSTAL_CODE'] ?>" autocomplete="postal-code">
-                          </div>
-                          <div class="form-group col-sm-12">
-                            <label for="widget-update-form-city"  class="fr">Commune</label>
-                            <label for="widget-update-form-city"  class="en">City</label>
-                            <label for="widget-update-form-city"  class="nl">Gemeente</label>
-                            <input type="text" id="widget-update-form-city" name="widget-update-form-city" class="form-control" value="<?php echo $row['CITY'] ?>" autocomplete="address-level2">
-                          </div>
-                          <h4 class="col-md-3 fr">Lieu de travail</h4>
-                          <h4 class="col-md-3 nl">Werk</h4>
-                          <h4 class="col-md-3 en">Work place</h4>
-                          <div class="form-group col-sm-12">
-                            <label for="widget-update-form-work-adress"  class="fr">Adresse</label>
-                            <label for="widget-update-form-work-adress"  class="en">Adress</label>
-                            <label for="widget-update-form-work-adress"  class="nl">Adres</label>
-                            <input type="text" id="widget-update-form-work-adress" name="widget-update-form-work-adress" class="form-control" value="<?php echo $row['WORK_ADRESS'] ?>" autocomplete="off">
-                          </div>
-                          <div class="form-group col-sm-12">
-                            <label for="widget-update-form-work-post-code"  class="fr">Code Postal</label>
-                            <label for="widget-update-form-work-post-code"  class="en">Postal Code</label>
-                            <label for="widget-update-form-work-post-code"  class="nl">Postcode</label>
-                            <input type="text" id="widget-update-form-work-post-code" name="widget-update-form-work-post-code" class="form-control" value="<?php echo $row['WORK_POSTAL_CODE'] ?>" autocomplete="off">
-                          </div>
-                          <div class="form-group col-sm-12">
-                            <label for="widget-update-form-work-city"  class="fr">Commune</label>
-                            <label for="widget-update-form-work-city"  class="en">City</label>
-                            <label for="widget-update-form-work-city"  class="nl">Gemeente</label>
-                            <input type="text" id="widget-update-form-work-city" name="widget-update-form-work-city" class="form-control" value="<?php echo $row['WORK_CITY'] ?>" autocomplete="off">
-                          </div>
-
-                          <div class="col-sm-3">
-                            <label for="password"  class="fr">Mot de passe</label>
-                            <label for="password"  class="en">Password</label>
-                            <label for="password"  class="nl">Wachtwoord</label>
-                          </div>
-                          <div class="col-sm-9">
-                            <a class="text-green fr" onclick="updatePassword()">Actualiser</a>
-                            <a class="text-green en" onclick="updatePassword()">Update</a>
-                            <a class="text-green nl" onclick="updatePassword()">Update</a>
-                          </div>
-
-                          <div class="col-sm-12">
-                            <span id="widget-update-form-password-text"></span>
-                            <input type="password" id="widget-update-form-password" name="widget-update-form-password" class="form-control" value="********" autocomplete="off" readonly>
-                            <span id="widget-update-form-password-confirmation-text"></span>
-                            <input type="hidden" id="widget-update-form-password-confirmation"  name="widget-update-form-password-confirmation" class="form-control required" autocomplete="off">
-                            <input id="widget-update-form-password-switch" name="widget-update-form-password-switch" type="hidden" value="false">
-                          </div>
-
-                          <input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-updateInfo-antispam" value="" />
-                        </div>
-                        <button  class="fr button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Envoyer</button>
-                        <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-                        <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-
-                      </form>
-                      <script type="text/javascript">
-
-                      function initializeUpdate(){
-                        document.getElementById('widget-update-form-password-text').innerHTML="";
-                        document.getElementById('widget-update-form-password').readOnly = true;
-                        document.getElementById('widget-update-form-password').value="********";
-                        document.getElementById('widget-update-form-password-confirmation-text').innerHTML="";
-                        document.getElementById('widget-update-form-password-confirmation').type='hidden';
-                        document.getElementById('widget-update-form-password-switch').value="false";
-                      }
-
-                      function updatePassword(){
-
-                        document.getElementById('widget-update-form-password-text').innerHTML="<span class=\"fr\">Votre Nouveau mot de passe :</span><span class=\"nl\">Your new password :</span><span class=\"en\">Your new password:</span>";
-                        document.getElementById('widget-update-form-password').removeAttribute('readonly');
-                        document.getElementById('widget-update-form-password').value="";
-                        document.getElementById('widget-update-form-password-confirmation-text').innerHTML="<span class=\"fr\">Veuillez confirmer :</span><span class=\"nl\">Please confirm :</span><span class=\"en\">Please confirm:</span>";
-                        document.getElementById('widget-update-form-password-confirmation').type='password';
-                        document.getElementById('widget-update-form-password-switch').value="true";
-
-                        displayLanguage();
-                        var langue = getLanguage();
-                      }
-                      jQuery("#widget-updateInfo").validate({
-
-                        submitHandler: function(form) {
-
-                          jQuery(form).ajaxSubmit({
-                            success: function(text) {
-                              if (text.response == 'success') {
-                                $.notify({
-                                  message: text.message
-                                }, {
-                                  type: 'success'
-                                });
-                                $('#update').modal('toggle');
-                                var timestamp=Date.now().toString();
-                                addressDomicile="<?php
-                                $address=$row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'];
-                                echo $address;?>";
-                                get_meteo(timestamp.substring(0,10), addressDomicile)
-                              } else {
-                                $.notify({
-                                  message: text.message
-                                }, {
-                                  type: 'danger'
-                                });
-                              }
-                            }
-                          });
-                        }
-                      });
-
-                      </script>
-                    </div>
-                  </div>
+                <h4 class="col-md-3 fr">Domicile</h4>
+                <h4 class="col-md-3 en">Home</h4>
+                <h4 class="col-md-3 nl">Thuis</h4>
+                <div class="form-group col-sm-12">
+                  <label for="email"  class="fr">Adresse</label>
+                  <label for="email"  class="en">Adress</label>
+                  <label for="email"  class="nl">Adres</label>
+                  <input type="text" id="widget-update-form-adress" name="widget-update-form-adress" class="form-control" value="<?php echo $row['ADRESS'] ?>">
                 </div>
-                <div class="fr" class="modal-footer">
-                  <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+                <div class="form-group col-sm-12">
+                  <label for="widget-update-form-post-code"  class="fr">Code Postal</label>
+                  <label for="widget-update-form-post-code"  class="en">Postal Code</label>
+                  <label for="widget-update-form-post-code"  class="nl">Postcode</label>
+                  <input type="text" id="widget-update-form-post-code" name="widget-update-form-post-code" class="form-control" value="<?php echo $row['POSTAL_CODE'] ?>" autocomplete="postal-code">
                 </div>
-                <div class="en" class="modal-footer">
-                  <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+                <div class="form-group col-sm-12">
+                  <label for="widget-update-form-city"  class="fr">Commune</label>
+                  <label for="widget-update-form-city"  class="en">City</label>
+                  <label for="widget-update-form-city"  class="nl">Gemeente</label>
+                  <input type="text" id="widget-update-form-city" name="widget-update-form-city" class="form-control" value="<?php echo $row['CITY'] ?>" autocomplete="address-level2">
                 </div>
-                <div class="nl" class="modal-footer">
-                  <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+                <h4 class="col-md-3 fr">Lieu de travail</h4>
+                <h4 class="col-md-3 nl">Werk</h4>
+                <h4 class="col-md-3 en">Work place</h4>
+                <div class="form-group col-sm-12">
+                  <label for="widget-update-form-work-adress"  class="fr">Adresse</label>
+                  <label for="widget-update-form-work-adress"  class="en">Adress</label>
+                  <label for="widget-update-form-work-adress"  class="nl">Adres</label>
+                  <input type="text" id="widget-update-form-work-adress" name="widget-update-form-work-adress" class="form-control" value="<?php echo $row['WORK_ADRESS'] ?>" autocomplete="off">
                 </div>
+                <div class="form-group col-sm-12">
+                  <label for="widget-update-form-work-post-code"  class="fr">Code Postal</label>
+                  <label for="widget-update-form-work-post-code"  class="en">Postal Code</label>
+                  <label for="widget-update-form-work-post-code"  class="nl">Postcode</label>
+                  <input type="text" id="widget-update-form-work-post-code" name="widget-update-form-work-post-code" class="form-control" value="<?php echo $row['WORK_POSTAL_CODE'] ?>" autocomplete="off">
+                </div>
+                <div class="form-group col-sm-12">
+                  <label for="widget-update-form-work-city"  class="fr">Commune</label>
+                  <label for="widget-update-form-work-city"  class="en">City</label>
+                  <label for="widget-update-form-work-city"  class="nl">Gemeente</label>
+                  <input type="text" id="widget-update-form-work-city" name="widget-update-form-work-city" class="form-control" value="<?php echo $row['WORK_CITY'] ?>" autocomplete="off">
+                </div>
+
+                <div class="col-sm-3">
+                  <label for="password"  class="fr">Mot de passe</label>
+                  <label for="password"  class="en">Password</label>
+                  <label for="password"  class="nl">Wachtwoord</label>
+                </div>
+                <div class="col-sm-9">
+                  <a class="text-green fr" onclick="updatePassword()">Actualiser</a>
+                  <a class="text-green en" onclick="updatePassword()">Update</a>
+                  <a class="text-green nl" onclick="updatePassword()">Update</a>
+                </div>
+
+                <div class="col-sm-12">
+                  <span id="widget-update-form-password-text"></span>
+                  <input type="password" id="widget-update-form-password" name="widget-update-form-password" class="form-control" value="********" autocomplete="off" readonly>
+                  <span id="widget-update-form-password-confirmation-text"></span>
+                  <input type="hidden" id="widget-update-form-password-confirmation"  name="widget-update-form-password-confirmation" class="form-control required" autocomplete="off">
+                  <input id="widget-update-form-password-switch" name="widget-update-form-password-switch" type="hidden" value="false">
+                </div>
+
+                <input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-updateInfo-antispam" value="" />
               </div>
-            </div>
+              <button  class="fr button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Envoyer</button>
+              <button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+              <button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+
+            </form>
+            <script type="text/javascript">
+
+            function initializeUpdate(){
+              document.getElementById('widget-update-form-password-text').innerHTML="";
+              document.getElementById('widget-update-form-password').readOnly = true;
+              document.getElementById('widget-update-form-password').value="********";
+              document.getElementById('widget-update-form-password-confirmation-text').innerHTML="";
+              document.getElementById('widget-update-form-password-confirmation').type='hidden';
+              document.getElementById('widget-update-form-password-switch').value="false";
+            }
+
+            function updatePassword(){
+
+              document.getElementById('widget-update-form-password-text').innerHTML="<span class=\"fr\">Votre Nouveau mot de passe :</span><span class=\"nl\">Your new password :</span><span class=\"en\">Your new password:</span>";
+              document.getElementById('widget-update-form-password').removeAttribute('readonly');
+              document.getElementById('widget-update-form-password').value="";
+              document.getElementById('widget-update-form-password-confirmation-text').innerHTML="<span class=\"fr\">Veuillez confirmer :</span><span class=\"nl\">Please confirm :</span><span class=\"en\">Please confirm:</span>";
+              document.getElementById('widget-update-form-password-confirmation').type='password';
+              document.getElementById('widget-update-form-password-switch').value="true";
+
+              displayLanguage();
+              var langue = getLanguage();
+            }
+            jQuery("#widget-updateInfo").validate({
+
+              submitHandler: function(form) {
+
+                jQuery(form).ajaxSubmit({
+                  success: function(text) {
+                    if (text.response == 'success') {
+                      $.notify({
+                        message: text.message
+                      }, {
+                        type: 'success'
+                      });
+                      $('#update').modal('toggle');
+                      var timestamp=Date.now().toString();
+                      addressDomicile="<?php
+                      $address=$row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'];
+                      echo $address;?>";
+                      get_meteo(timestamp.substring(0,10), addressDomicile)
+                    } else {
+                      $.notify({
+                        message: text.message
+                      }, {
+                        type: 'danger'
+                      });
+                    }
+                  }
+                });
+              }
+            });
+
+            </script>
           </div>
+        </div>
+      </div>
+      <div class="fr" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+      </div>
+      <div class="en" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+      </div>
+      <div class="nl" class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
+<?php }?>
 
-
-          <?php
-        }
-        ?>
-
-        <div class="modal fade" id="assistance" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="assistance" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -9979,12 +8591,9 @@ if($connected){
               </div>
             </div>
           </div>
-        </div>
+</div>
 
-
-
-
-        <div class="modal fade" id="assistance2" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="assistance2" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -10090,9 +8699,15 @@ if($connected){
                 </div>
               </div>
             </div>
-          </div>
+</div>
+<script type="text/javascript">
+  function initializeAssistance2() {
+    document.getElementById('widget-assistance-form-message').value="";
+    document.getElementById('widget-assistance-form-message-attachment').value="";
+  }
+</script>
 
-          <div class="modal fade" id="entretien2" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="entretien2" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -10211,79 +8826,65 @@ if($connected){
               </div>
             </div>
           </div>
+<script  type="text/javascript">
+  function initializeEntretien2(bikeID) {
+    if(!(bikeID)){
+        bikeID="";
+        $('#widget-entretien-form input[name=bikeID]').attr('disabled', false);
 
-          </div>
+    }else{
+        $('#widget-entretien-form input[name=bikeID]').attr('disabled', true);
+    }
+    $('#widget-entretien-form input[name=bikeID]').val(bikeID);
+    document.getElementById('widget-entretien-form-message').value="";
+    document.getElementById('widget-entretien-form-message-attachment').value="";
+  }
+</script>
 
-          <script type="text/javascript">
-          function initializeAssistance2() {
-            document.getElementById('widget-assistance-form-message').value="";
-            document.getElementById('widget-assistance-form-message-attachment').value="";
+<div class="loader"><!-- Place at bottom of page --></div>
 
-          }
-          function initializeEntretien2(bikeID) {
-            if(!(bikeID)){
-                bikeID="";
-                $('#widget-entretien-form input[name=bikeID]').attr('disabled', false);
-                
-            }else{
-                $('#widget-entretien-form input[name=bikeID]').attr('disabled', true);
-            }
-            $('#widget-entretien-form input[name=bikeID]').val(bikeID);
-            document.getElementById('widget-entretien-form-message').value="";
-            document.getElementById('widget-entretien-form-message-attachment').value="";
-
-          }
-          </script>
-
-
-
-
-          <div class="loader"><!-- Place at bottom of page --></div>
-
-          <!-- FOOTER -->
-		<footer class="background-dark text-grey" id="footer">
-	    <div class="footer-content">
-	        <div class="container">
-	        
-	        <br><br>
-	        
-	            <div class="row text-center">
-	            
-	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-						<br>BE 0681.879.712 
-						<br>+32 498 72 75 46 </div>
-						<br>
-	                <div class="social-icons center">
-								<ul>
-									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-									
-									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-									
-								</ul>
-					</div>
-					
-					<div><a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a><!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>--></div>
-					
-					<br>
-					<br>
-					
-	            </div>
-	        </div>
-	    </div>
-	</footer>
-          <!-- END: FOOTER -->
-
+<!-- FOOTER -->
+<footer class="background-dark text-grey" id="footer">
+  <div class="footer-content">
+    <div class="container">
+      <br><br>
+        <div class="row text-center">
+        <div class="copyright-text text-center">
+          <ins>Kameo Bikes SPRL</ins>
+					<br>BE 0681.879.712
+					<br>+32 498 72 75 46
         </div>
-        <!-- END: WRAPPER -->
-        <!-- Theme Base, Components and Settings -->
-        <script src="js/theme-functions.js"></script>
-        <script type="text/javascript">
-        displayLanguage();
-        </script>
+				<br>
+        <div class="social-icons center">
+					<ul>
+						<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+						<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+					</ul>
+			  </div>
+				<div>
+          <a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a>
+          <!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>-->
+        </div>
+			<br>
+			<br>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- END: FOOTER -->
 
-      </body>
-      <?php
-      ob_end_flush();
-      ?>
+</div>
+<!-- END: WRAPPER -->
 
-      </html>
+<!-- Theme Base, Components and Settings -->
+<script src="js/theme-functions.js"></script>
+
+<script type="text/javascript">
+  displayLanguage();
+</script>
+
+</body>
+<?php
+ob_end_flush();
+?>
+</html>

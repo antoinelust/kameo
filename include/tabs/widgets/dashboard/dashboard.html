@@ -1,0 +1,116 @@
+<div class="modal fade" id="dashboard" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div id="tabs-05c" class="tabs color tabs radius">
+						<h3 class="text-green">Dashboard</h3>
+						 <ul class="tabs-navigation">
+							<li class="active"><a href="#" class="dashboardBikes">Vélos</a> </li>
+							<li><a href="#" class="dashboardBills">Factures</a> </li>
+							<li><a href="#" class="dashboardCompanies">Sociétés</a> </li>
+							<li><a href="#" class="dashboardSells">Prospection commerciale</a> </li>
+						</ul>
+					<div class="tabs-content">
+						<div class="tab-pane active" id="">
+							<h4 class="text-green dashboardTitle">Erreurs à corriger - Vélos</h4>
+							<span id="dashboardBodyBikes"></span>
+							<span id="dashboardBodyBills" style="display: none;"></span>
+							<span id="dashboardBodyCompanies" style="display: none;"></span>
+							<span id="dashboardBodySells" style="display: none;">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="dtp_input2" class="control-label">Date de début</label>
+										<div class="input-group date form_date_start_sell col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+											<input class="form-control" size="16" type="text" value="" readonly>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+										<input type="hidden" id="dtp_input2" value="" /><br/>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="dtp_input2" class="control-label">Date de fin</label>
+										<div class="input-group date form_date_end_sell col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+											<input class="form-control" size="16" type="text" value="" readonly>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+										<input type="hidden" id="dtp_input2" value="" /><br/>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<label for="taskOwnerSalesSelection">Filtrer sur Owner</label>
+									<select class="taskOwnerSalesSelection" name="taskOwnerSalesSelection">
+									</select>
+								</div>
+								<span id='dashboardBodySellsTable'></span>
+							</span>
+						</div>
+					</div>
+				  </div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var today=new Date();
+var dashboard_tabs = [$('#dashboardBodyBills'), $('#dashboardBodyBikes'), $('#dashboardBodySells'), $('#dashboardBodyCompanies')];
+
+$('.form_date_start_sell').datetimepicker({language: 'fr', weekStart: 1, todayBtn:  1, autoclose: 1, todayHighlight: 1,
+startView: 2, minView: 2, forceParse: 0
+});
+
+$('.form_date_end_sell').datetimepicker({language: 'fr', weekStart: 1, todayBtn:  1, autoclose: 1, todayHighlight: 1,
+startView: 2, minView: 2, forceParse: 0
+});
+
+$(".form_date_end_sell").data("datetimepicker").setDate(today);
+today.setDate(today.getDate()-7);
+$(".form_date_start_sell").data("datetimepicker").setDate(today);
+
+$('.form_date_start_sell').change(function(){
+	list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
+});
+$('.form_date_end_sell').change(function(){
+	list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
+});
+$('.taskOwnerSalesSelection').change(function(){
+	list_sales($('.taskOwnerSalesSelection').val(), $('.form_date_start_sell').data("datetimepicker").getDate(), $('.form_date_end_sell').data("datetimepicker").getDate())
+});
+$( ".dashboardBikes" ).click(function() {
+	$('.dashboardTitle').html("Erreurs à corriger - Vélos");
+	dashboard_tabs.forEach(tab => tab.fadeOut());
+	$('#dashboardBodyBikes').fadeIn();
+});
+$( ".dashboardBills" ).click(function() {
+	$('.dashboardTitle').html("Erreurs à corriger - Factures");
+	dashboard_tabs.forEach(tab => tab.fadeOut());
+	$('#dashboardBodyBills').fadeIn();
+});
+$( ".dashboardSells" ).click(function() {
+	$('.dashboardTitle').html("Suivi prospection commerciale");
+	dashboard_tabs.forEach(tab => tab.fadeOut());
+	$('#dashboardBodySells').fadeIn();
+});
+$( ".dashboardCompanies" ).click(function() {
+	$('.dashboardTitle').html("Erreurs à corriger - Sociétés");
+	dashboard_tabs.forEach(tab => tab.fadeOut());
+	$('#dashboardBodyCompanies').fadeIn();
+});
+</script>
