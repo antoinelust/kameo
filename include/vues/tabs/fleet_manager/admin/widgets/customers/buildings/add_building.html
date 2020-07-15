@@ -1,0 +1,99 @@
+<div class="modal fade" id="addBuilding" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form id="widget-addBuilding-form" action="include/add_building.php" role="form" method="post">
+							<div class="form-group col-sm-12">
+								<h4 class="fr text-green">Ajouter un bâtiment</h4>
+								<div class="col-sm-4">
+									<label for="widget-addBuilding-form-model"  class="fr">Référence du bâtiment</label>
+									<label for="widget-addBuilding-form-model"  class="en">Building reference</label>
+									<label for="widget-addBuilding-form-model"  class="nl">Building reference</label>
+									<input type="text" id="widget-addBuilding-form-reference" name="widget-addBuilding-form-reference" class="form-control required">
+								</div>
+								<div class="col-sm-12">
+									<label for="widget-addBuilding-form-descriptionFr"  class="fr">Description en français</label>
+									<label for="widget-addBuilding-form-descriptionFr"  class="en">French description</label>
+									<label for="widget-addBuilding-form-descriptionFr"  class="nl">French description</label>
+									<input type="text" id="widget-addBuilding-form-descriptionFr" name="widget-addBuilding-form-descriptionFr" class="form-control required">
+								</div>
+								<div class="col-sm-12">
+									<label for="widget-addBuilding-form-descriptionEn"  class="fr">Description en anglais</label>
+									<label for="widget-addBuilding-form-descriptionEn"  class="en">English description</label>
+									<label for="widget-addBuilding-form-descriptionEn"  class="nl">English description</label>
+									<input type="text" id="widget-addBuilding-form-descriptionEn" name="widget-addBuilding-form-descriptionEn" class="form-control required">
+								</div>
+								<div class="col-sm-12">
+									<label for="widget-addBuilding-form-descriptionNl"  class="fr">Description en néerlandais</label>
+									<label for="widget-addBuilding-form-descriptionNl"  class="en">Dutch description</label>
+									<label for="widget-addBuilding-form-descriptionNl"  class="nl">Dutch description</label>
+									<input type="text" id="widget-addBuilding-form-descriptionNl" name="widget-addBuilding-form-descriptionNl" class="form-control required">
+								</div>
+								<div class="col-sm-12">
+									<label for="widget-addBuilding-form-adress"  class="fr">Adresse</label>
+									<label for="widget-addBuilding-form-adress"  class="en">Adress</label>
+									<label for="widget-addBuilding-form-adress"  class="nl">Adresse</label>
+									<input type="text" id="widget-addBuilding-form-adress" name="widget-addBuilding-form-adress" class="form-control required">
+								</div>
+								<input type="text" id="widget-addBuilding-form-requestor" name="widget-addBuilding-form-requestor" class="form-control required hidden" value="<?php echo $user; ?>">
+								<input type="text" id="widget-addBuilding-form-company" name="widget-addBuilding-form-company" class="form-control required hidden">
+								<div class="separator"></div>
+								<div class="col-sm-12">
+									<h4>Accès des vélos à ce bâtiment</h4>
+								</div>
+								<span id="addBuilding_bikeListing"></span>
+								<div class="col-sm-12">
+									<h4>Accès des utilisateurs à ce bâtiment</h4>
+								</div>
+								<span id="addBuilding_usersListing"></span>
+								<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+								<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
+								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-addBuilding-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'success'
+						});
+						get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);
+						document.getElementById('widget-addBuilding-form').reset();
+						$('#addBuilding').modal('toggle');
+					} else {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+</script>

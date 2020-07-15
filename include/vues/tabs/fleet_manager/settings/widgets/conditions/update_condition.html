@@ -1,0 +1,130 @@
+<div class="modal fade" id="companyConditions" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr-inline text-green">Modifier les réglages des réservations :</h4>
+						<h4 class="en-inline text-green">Modify booking settings:</h4>
+						<h4 class="nl-inline text-green">Modify booking settings :</h4>
+						<br>
+						<form id="widget-updateCompanyConditions-form" class="form-inline" action="include/updateCompanyConditions.php" role="form" method="post">
+							<span class="fr-inline"> <strong>Nom du groupe : </strong></span>
+							<span class="en-inline"> Group name: </span>
+							<span class="nl-inline"> Group name: </span>
+							<input type="test" name="name" class="form-control required" style="width: 20em;"><br/><br/>
+							<span class="fr-inline"> Durée maximale avant prochaine réservation (jours) : </span>
+							<span class="en-inline"> Maximum delay before next booking (days): </span>
+							<span class="nl-inline"> Maximum delay before next booking (days): </span>
+							<input type="number" class="form-control required" name="daysInAdvance" style="width: 7em;"><br/><br/>
+							<span class="fr-inline"> Durée maximale d'une réservation (heures) : </span>
+							<span class="en-inline"> Maximal duration of a booking (hours): </span>
+							<span class="nl-inline"> Maximal duration of a booking (hours): </span>
+							<input type="number" class="form-control required" name="bookingLength" style="width: 7em;"><br/><br/>
+							<span class="fr-inline"> Nombre maximum de réservations par an (9999 pour illimité): </span>
+							<span class="en-inline"> Maximal number of bookings per year: </span>
+							<span class="nl-inline"> Maximal number of bookings per year </span>
+							<input type="number" class="form-control required" name="bookingsPerYear" max="9999" style="width: 7em;"><br/><br/>
+							<span class="fr-inline"> Nombre maximum de réservations par mois (9999 pour illimité): </span>
+							<span class="en-inline"> Maximal number of bookings per month: </span>
+							<span class="nl-inline"> Maximal number of bookings per month </span>
+							<input type="number" class="form-control required" name="bookingsPerMonth" max="9999" style="width: 7em;"><br/><br/>
+							<div class="col-sm-12">
+								<div class="col-sm-6 jumbotron jumbotron-border">
+									<h4>Réglages de début de réservation</h4>
+									<div class="col-sm-12">
+										<p><span class="fr-inline"> Première heure possible pour prendre un vélo : </span>
+											<span class="en-inline"> First possible hour to take a bike: </span>
+											<span class="nl-inline"> First possible hour to take a bike: </span>
+											<input type="number" class="form-control required" name="startIntakeBooking" max="23" style="width: 7em;">
+										<p>
+									</div>
+									<div class="col-sm-12">
+										<p><span class="fr-inline"> Dernière heure possible afin de prendre un vélo : </span>
+											<span class="en-inline"> Last possible hour to take a bike: </span>
+											<span class="nl-inline"> Last possible hour to take a bike: </span>
+											<input type="number" class="form-control required" name="endIntakeBooking" max="23" style="width: 7em;">
+										</p>
+									</div>
+									<div class="col-sm-12">
+										<h5>Début de réservation possible aux jours suivants:</h5>
+										<span class="intakeBookingDays"></span>
+									</div>
+								</div>
+								<div class="col-sm-6 jumbotron jumbotron-border">
+									<h4>Réglages de fin de réservation</h4>
+									<div class="col-sm-12">
+										<p><span class="fr-inline"> Première heure possible pour rendre un vélo : </span>
+											<span class="en-inline"> First possible hour to deposit a bike: </span>
+											<span class="nl-inline"> First possible hour to deposit a bike: </span>
+											<input type="number" class="form-control required" name="startDepositBooking" max="23" style="width: 7em;">
+										<p>
+									</div>
+									<div class="col-sm-12">
+										<p><span class="fr-inline"> Dernière heure possible afin de rendre un vélo : </span>
+											<span class="en-inline"> Last possible hour to deposit a bike: </span>
+											<span class="nl-inline"> Last possible hour to deposit a bike: </span>
+											<input type="number" class="form-control required" name="endDepositBooking" max="23" style="width: 7em;">
+										</p>
+									</div>
+									<div class="col-sm-12">
+										<h5>Fin de réservation possible aux jours suivants:</h5>
+										<span class="depositBookingDays"></span>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<h4>Accès des utilisateurs à ce groupe de conditions</h4>
+								<p class="text-red">Attention, attribuer un utilisateur à ce groupe supprimera automatiquement son appartenance à un autre groupe</p>
+								<span id="groupConditionUsers"></span>
+							</div>
+							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
+							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Besparen</button>
+							<input type="text" name="email" value="<?php echo $user; ?>" hidden>
+							<input type="text" name="id" value="" hidden>
+							<input type="text" name="action" hidden>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-updateCompanyConditions-form").validate({
+		submitHandler: function(form){
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+						message: response.message
+						}, {
+						type: 'success'
+						});
+						$('#companyConditions').modal('toggle');
+						list_condition();
+					} else {
+						$.notify({
+						message: response.message
+						}, {
+						type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+</script>

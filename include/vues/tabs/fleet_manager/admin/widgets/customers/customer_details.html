@@ -1,0 +1,261 @@
+<div class="modal fade" id="companyDetails" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="companyIdHidden" name="companyId" value="" />
+				<div class="row">
+					<form id="widget-companyDetails-form" action="include/update_client.php" role="form" method="post">
+						<div class="col-sm-12 form-group">
+							<div class="col-sm-12">
+								<h4 class="text-green">Informations générales</h4>
+								<a href="#" class="text-red updateClientInformationButton">Update</a>
+								<a href="#" class="text-red cancelUpdateClientInformation hidden">Cancel update</a>
+							</div>
+							<div class="col-sm-12">
+								<label class="fr">Nom de la société :</label>
+								<label class="en">Company Name:</label>
+								<label class="nl">Company Name :</label>
+								<input type="text" id="companyName" class="form-control updateClientInformation" name="widget_companyDetails_companyName" value="" readonly="true"/>
+							</div>
+							<div class="col-sm-4">
+								<label class="fr"> Rue : </label>
+								<label class="en"> Street: </label>
+								<label class="nl"> Street : </label>
+								<input type="text" id="companyStreet" class="form-control updateClientInformation" name="widget_companyDetails_companyStreet" value="" readonly="true"/>
+							</div>
+							<div class="col-sm-4">
+								<label class="fr"> Code postal : </label>
+								<label class="en"> Zip Code: </label>
+								<label class="nl"> Zip Code: </label>
+								<input type="text" id="companyZIPCode" class="form-control updateClientInformation" name="widget_companyDetails_companyZIPCode" value="" readonly="true"/>
+							</div>
+							<div class="col-sm-4">
+								<label class="fr"> Ville: </label>
+								<label class="en"> Town: </label>
+								<label class="nl"> Town : </label>
+								<input type="text" id="companyTown" class="form-control updateClientInformation" name="widget_companyDetails_companyTown" value="" readonly="true"/>
+							</div>
+							<div class="col-sm-5">
+								<label class="fr"> Numéro TVA : </label>
+								<label class="en"> VAT Number: </label>
+								<label class="nl"> VAT Number: </label>
+								<input type="text" id="companyVAT" class="form-control updateClientInformation" name="widget_companyDetails_companyVAT" value="" readonly="true"/>
+							</div>
+							<div class="col-sm-5">
+								<label class="fr"> Type : </label>
+								<label class="en"> Type: </label>
+								<label class="nl"> Type : </label>
+								<select title="Type" class="form-control selectpicker updateClientInformationSelect" disabled name="type">
+									<option value="CLIENT">Client</option>
+									<option value="PROSPECT">Prospect</option>
+									<option value="ANCIEN PROSPECT">Ancien Prospect</option>
+									<option value="ANCIEN CLIENT">Ancien Client</option>
+									<option value="NOT INTERESTED">Pas intéressé</option>
+								</select>
+							</div>
+							<div class="separator"></div>
+							<div class="col-sm-12">
+								<h4 class="text-green">Informations relatives à la facturation</h4>
+							</div>
+							<div class="col-md-3">
+								<label for="email_billing" class="fr"> Email : </label>
+								<label for="email_billing" class="en"> Email: </label>
+								<label for="email_billing" class="nl"> Email : </label>
+								<input type="text" class="form-control" name="email_billing" value="" readonly="true"/>
+							</div>
+							<div class="col-md-3">
+								<label for="lastNameContactBilling" class="fr" >Nom :</label>
+								<label for="lastNameContactBilling" class="en" >Last Name:</label>
+								<label for="lastNameContactBilling" class="nl" >Last Name:</label>
+								<input type="text" class="form-control" name="lastNameContactBilling" value="" readonly="true"/>
+							</div>
+							<div class="col-md-3">
+								<label for="firstNameContactBilling" class="fr" >Prénom :</label>
+								<label for="firstNameContactBilling" class="en" >First Name:</label>
+								<label for="firstNameContactBilling" class="nl" >First Name :</label>
+								<input type="text" class="form-control" name="firstNameContactBilling" value="" readonly="true"/>
+							</div>
+							<div class="col-md-3">
+								<label for="phoneBilling" class="fr" >Téléphone :</label>
+								<label for="phoneBilling" class="en" >Phone:</label>
+								<label for="phoneBilling" class="nl" >Phone :</label>
+								<input type="text" class="form-control" name="phoneBilling" value="" readonly="true"/>
+							</div>
+							<div class="col-sm-4">
+								<label for="billing">Envoyer les factures automatiquement ?</label>
+								<input type="checkbox" name="billing" class="form-control" readonly="true"/>
+							</div>
+							<div class="separator"></div>
+							<div class="col-sm-12">
+								<h4 class="text-green">Options</h4>
+							</div>
+							<div class="col-sm-4">
+								<label for="assistance">Assistance</label>
+								<input type="checkbox" name="assistance" class="form-control" readonly="true"/>
+							</div>
+							<div class="col-sm-4">
+								<label for="locking">Locking</label>
+								<input type="checkbox" name="locking" class="form-control" readonly="true"/>
+							</div>
+							<input type="text" id="widget_companyDetails_requestor" name="widget_companyDetails_requestor" class="form-control hidden" value="<?php echo $user; ?>">
+							<input type="text" name="ID" class="form-control hidden">
+							<input type="text" id="widget_companyDetails_internalReference" name="widget_companyDetails_internalReference" class="form-control hidden">
+							<div class="col-sm-12">
+								<button  class="button small green button-3d rounded icon-left hidden" id="sendButtonClientDetails" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+							</div>
+						</div>
+					</form>
+					<div class="separator"></div>
+					<div class="col-sm-12">
+						<h4 class="text-green">Informations relatives au contact</h4>
+					</div>
+					<div class="col-sm-12 contactAddButtons">
+						<button class="addContact button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+						<label for="addContact">Ajouter un contact</label>
+					</div>
+					<form class="contactAddIteration" style="display:none;" action="#">
+						<div class="col-md-3 form-group">
+							<label for="email_billing" class="fr"> Email : </label>
+							<input disabled type="text" class="form-control emailContact required" name="emailContact" placeholder="email" />
+						</div>
+						<div class="col-md-3 form-group">
+							<label class="fr" >Nom :</label>
+							<input disabled type="text" class="form-control lastNameContact required" name="lastName" placeholder="nom" />
+						</div>
+						<div class="col-md-3 form-group">
+							<label class="fr" >Prénom :</label>
+							<input disabled type="text" class="form-control firstNameContact required" name="firstName" placeholder="prenom" />
+						</div>
+						<div class="col-md-3 form-group">
+							<label class="fr" >Téléphone :</label>
+							<input disabled type="text" class="form-control phoneContact" name="phone" placeholder="téléphone" />
+						</div>
+						<div class="col-md-3 form-group">
+							<label class="fr" >Fonction :</label>
+							<input disabled type="text" name="function" class="form-control functionContact required" placeholder="Fonction" />
+						</div>
+						<div class="col-md-3 form-group">
+							<label class="fr" >Envoyer le rapport de statistiques ?</label>
+							<input disabled type="checkbox" name="bikesStats" class="form-control bikeStatsContact" value="true" />
+						</div>
+						<div class="col-sm-12 form-group" style="margin-top:20px;">
+							<button class="button small green button-3d rounded icon-right addCompanyContact" type="button">
+							<span class="fr-inline" style="display: inline;">
+							<i class="fa fa-plus"></i> Ajouter le contact
+							</span>
+							</button>
+						</div>
+						<div class="separator separator-small"></div>
+					</form>
+					<form class="clientContactZone" action="#">
+						<!--<div class="separator separator-small"></div>-->
+					</form>
+					<div class="separator"></div>
+					<div class="col-sm-12" id="clientBikes">
+						<h4 class="text-green">Vélos :</h4>
+						<span id="companyBikes"></span>
+					</div>
+					<div class="col-sm-12" id="clientOrderedBikes">
+						<div class="separator"></div>
+						<h4 class="text-green">Vélos en commande:</h4>
+						<span id="companyBikesOrder"></span>
+					</div>
+					<div class="col-sm-12" id="clientBoxes">
+						<div class="separator"></div>
+						<h4 class="text-green">Bornes :</h4>
+						<p><span id="companyBoxes"></span></p>
+					</div>
+					<div class="col-sm-12" id="clientContracts">
+						<div class="separator"></div>
+						<h4 class="text-green">Contrats et Offres :</h4>
+						<p><span id="companyContracts"></span></p>
+					</div>
+					<div class="col-sm-12">
+						<div class="separator"></div>
+						<h4 class="text-green">Historique et actions :</h4>
+						<span id="action_company_log"></span>
+					</div>
+					<div class="col-sm-12" id="clientBuildings">
+						<div class="separator"></div>
+						<h4 class="text-green">Bâtiments:</h4>
+						<p><span id="companyBuildings"></span></p>
+					</div>
+					<div class="col-sm-12" id="clientusers">
+						<div class="separator"></div>
+						<h4 class="text-green">Utilisateurs:</h4>
+						<span id="companyUsers"></span>
+					</div>
+					<div class="col-sm-12" id="clientBills">
+						<div class="separator"></div>
+						<h4 class="text-green">Factures:</h4>
+						<span id="companyBills"></span>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-companyDetails-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'success'
+						});
+						document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+						document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
+						document.getElementById("sendButtonClientDetails").classList.add("hidden");
+						document.getElementById("clientBikes").classList.remove("hidden");
+						document.getElementById("clientBuildings").classList.remove("hidden");
+						document.getElementById("clientContracts").classList.remove("hidden");
+						var classname = document.getElementsByClassName('updateClientInformation');
+						$('#widget-companyDetails-form input').attr("readonly", true);
+						$('#widget-companyDetails-form select').prop("disabled", true);
+					} else {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+	document.getElementsByClassName('updateClientInformationButton')[0].addEventListener('click', function() {
+		document.getElementById("sendButtonClientDetails").classList.remove("hidden");
+		document.getElementById("clientBikes").classList.add("hidden");
+		document.getElementById("clientBuildings").classList.add("hidden");
+		document.getElementById("clientContracts").classList.add("hidden");
+		document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.remove("hidden");
+		document.getElementsByClassName("updateClientInformationButton")[0].classList.add("hidden");
+		$('#widget-companyDetails-form input').attr("readonly", false);
+		$('#widget-companyDetails-form select').removeAttr("disabled");
+	});
+	document.getElementsByClassName('cancelUpdateClientInformation')[0].addEventListener('click', function() {
+		document.getElementsByClassName("cancelUpdateClientInformation")[0].classList.add("hidden");
+		document.getElementsByClassName("updateClientInformationButton")[0].classList.remove("hidden");
+		document.getElementById("sendButtonClientDetails").classList.add("hidden");
+		document.getElementById("clientBikes").classList.remove("hidden");
+		document.getElementById("clientContracts").classList.remove("hidden");
+		document.getElementById("clientBuildings").classList.remove("hidden");
+		$('#widget-companyDetails-form input').attr("readonly", true);
+		$('#widget-companyDetails-form select').prop("disabled", true);
+	});
+</script>

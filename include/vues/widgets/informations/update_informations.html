@@ -1,0 +1,155 @@
+<div class="modal fade" id="update" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form id="widget-updateInfo" action="include/updateInfos.php" role="form" method="post">
+							<div class="row">
+								<h4 class="col-md-3 fr">Informations générales</h4>
+								<h4 class="col-md-3 en">General information</h4>
+								<h4 class="col-md-3 nl">Algemene informatie</h4>
+								<div class="form-group col-sm-12">
+									<label for="firstname"  class="fr">Prénom</label>
+									<label for="firstname"  class="en">Firstname</label>
+									<label for="firstname"  class="nl">Voornaam</label>
+									<input type="text" id="widget-update-form-firstname" name="widget-update-form-firstname" class="form-control required" value="<?php echo $row["PRENOM"] ?>">
+									<label for="firstname"  class="fr">Nom</label>
+									<label for="firstname"  class="en">Name</label>
+									<label for="firstname"  class="nl">Achternaam</label>
+									<input type="text" id="widget-update-form-name" name="widget-update-form-name" class="form-control required" value="<?php echo $row["NOM"] ?>">
+									<label for="telephone"  class="fr">Numéro de téléphone</label>
+									<label for="telephone"  class="en">Phone number</label>
+									<label for="telephone"  class="nl">Telefoonnumber</label>
+									<input type="text" id="widget-update-form-phone" name="widget-update-form-phone" class="form-control" value="<?php echo $row["PHONE"] ?>">
+								</div>
+								<h4 class="col-md-3 fr">Domicile</h4>
+								<h4 class="col-md-3 en">Home</h4>
+								<h4 class="col-md-3 nl">Thuis</h4>
+								<div class="form-group col-sm-12">
+									<label for="email"  class="fr">Adresse</label>
+									<label for="email"  class="en">Adress</label>
+									<label for="email"  class="nl">Adres</label>
+									<input type="text" id="widget-update-form-adress" name="widget-update-form-adress" class="form-control" value="<?php echo $row['ADRESS'] ?>">
+								</div>
+								<div class="form-group col-sm-12">
+									<label for="widget-update-form-post-code"  class="fr">Code Postal</label>
+									<label for="widget-update-form-post-code"  class="en">Postal Code</label>
+									<label for="widget-update-form-post-code"  class="nl">Postcode</label>
+									<input type="text" id="widget-update-form-post-code" name="widget-update-form-post-code" class="form-control" value="<?php echo $row['POSTAL_CODE'] ?>" autocomplete="postal-code">
+								</div>
+								<div class="form-group col-sm-12">
+									<label for="widget-update-form-city"  class="fr">Commune</label>
+									<label for="widget-update-form-city"  class="en">City</label>
+									<label for="widget-update-form-city"  class="nl">Gemeente</label>
+									<input type="text" id="widget-update-form-city" name="widget-update-form-city" class="form-control" value="<?php echo $row['CITY'] ?>" autocomplete="address-level2">
+								</div>
+								<h4 class="col-md-3 fr">Lieu de travail</h4>
+								<h4 class="col-md-3 nl">Werk</h4>
+								<h4 class="col-md-3 en">Work place</h4>
+								<div class="form-group col-sm-12">
+									<label for="widget-update-form-work-adress"  class="fr">Adresse</label>
+									<label for="widget-update-form-work-adress"  class="en">Adress</label>
+									<label for="widget-update-form-work-adress"  class="nl">Adres</label>
+									<input type="text" id="widget-update-form-work-adress" name="widget-update-form-work-adress" class="form-control" value="<?php echo $row['WORK_ADRESS'] ?>" autocomplete="off">
+								</div>
+								<div class="form-group col-sm-12">
+									<label for="widget-update-form-work-post-code"  class="fr">Code Postal</label>
+									<label for="widget-update-form-work-post-code"  class="en">Postal Code</label>
+									<label for="widget-update-form-work-post-code"  class="nl">Postcode</label>
+									<input type="text" id="widget-update-form-work-post-code" name="widget-update-form-work-post-code" class="form-control" value="<?php echo $row['WORK_POSTAL_CODE'] ?>" autocomplete="off">
+								</div>
+								<div class="form-group col-sm-12">
+									<label for="widget-update-form-work-city"  class="fr">Commune</label>
+									<label for="widget-update-form-work-city"  class="en">City</label>
+									<label for="widget-update-form-work-city"  class="nl">Gemeente</label>
+									<input type="text" id="widget-update-form-work-city" name="widget-update-form-work-city" class="form-control" value="<?php echo $row['WORK_CITY'] ?>" autocomplete="off">
+								</div>
+								<div class="col-sm-3">
+									<label for="password"  class="fr">Mot de passe</label>
+									<label for="password"  class="en">Password</label>
+									<label for="password"  class="nl">Wachtwoord</label>
+								</div>
+								<div class="col-sm-9">
+									<a class="text-green fr" onclick="updatePassword()">Actualiser</a>
+									<a class="text-green en" onclick="updatePassword()">Update</a>
+									<a class="text-green nl" onclick="updatePassword()">Update</a>
+								</div>
+								<div class="col-sm-12">
+									<span id="widget-update-form-password-text"></span>
+									<input type="password" id="widget-update-form-password" name="widget-update-form-password" class="form-control" value="********" autocomplete="off" readonly>
+									<span id="widget-update-form-password-confirmation-text"></span>
+									<input type="hidden" id="widget-update-form-password-confirmation"  name="widget-update-form-password-confirmation" class="form-control required" autocomplete="off">
+									<input id="widget-update-form-password-switch" name="widget-update-form-password-switch" type="hidden" value="false">
+								</div>
+								<input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-updateInfo-antispam" value="" />
+							</div>
+							<button  class="fr button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Envoyer</button>
+							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function initializeUpdate(){
+		document.getElementById('widget-update-form-password-text').innerHTML="";
+		document.getElementById('widget-update-form-password').readOnly = true;
+		document.getElementById('widget-update-form-password').value="********";
+		document.getElementById('widget-update-form-password-confirmation-text').innerHTML="";
+		document.getElementById('widget-update-form-password-confirmation').type='hidden';
+		document.getElementById('widget-update-form-password-switch').value="false";
+	}
+	function updatePassword(){
+		document.getElementById('widget-update-form-password-text').innerHTML="<span class=\"fr\">Votre Nouveau mot de passe :</span><span class=\"nl\">Your new password :</span><span class=\"en\">Your new password:</span>";
+		document.getElementById('widget-update-form-password').removeAttribute('readonly');
+		document.getElementById('widget-update-form-password').value="";
+		document.getElementById('widget-update-form-password-confirmation-text').innerHTML="<span class=\"fr\">Veuillez confirmer :</span><span class=\"nl\">Please confirm :</span><span class=\"en\">Please confirm:</span>";
+		document.getElementById('widget-update-form-password-confirmation').type='password';
+		document.getElementById('widget-update-form-password-switch').value="true";
+		displayLanguage();
+		var langue = getLanguage();
+	}
+	jQuery("#widget-updateInfo").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(text) {
+					if (text.response == 'success') {
+						$.notify({
+							message: text.message
+						}, {
+							type: 'success'
+						});
+						$('#update').modal('toggle');
+						var timestamp=Date.now().toString();
+						addressDomicile="<?php
+						$address=$row['ADRESS'].", ".$row['POSTAL_CODE'].", ".$row['CITY'];
+						echo $address;?>";
+						get_meteo(timestamp.substring(0,10), addressDomicile);
+					} else {
+						$.notify({
+							message: text.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+</script>

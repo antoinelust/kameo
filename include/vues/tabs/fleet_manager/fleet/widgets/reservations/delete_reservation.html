@@ -1,0 +1,80 @@
+<div class="modal fade" id="deleteReservation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green">Supprimer une réservation</h4>
+						<form id="widget-deleteReservation-form" action="include/delete-reservation.php" role="form" method="post">
+							<div class="form-group col-sm-12">
+								<div class="col-sm-6">
+									<label for="widget-deleteReservation-form-start"  class="fr">Début :</label>
+									<label for="widget-deleteReservation-form-start"  class="en">Start: </label>
+									<label for="widget-deleteReservation-form-start"  class="nl">Start: </label>
+									<input type="text" id="widget-deleteReservation-form-start" readonly="readonly" name="widget-deleteReservation-form-start" class="form-control required">
+								</div>
+								<div class="col-sm-6">
+									<label for="widget-deleteReservation-form-end"  class="fr">Fin :</label>
+									<label for="widget-deleteReservation-form-end"  class="en">End:</label>
+									<label for="widget-deleteReservation-form-end"  class="nl">End:</label>
+									<input type="text" id="widget-deleteReservation-form-end" readonly="readonly" name="widget-deleteReservation-form-end" class="form-control required">
+								</div>
+								<div class="col-sm-6">
+									<label for="widget-deleteReservation-form-user"  class="fr">Utilisateur :</label>
+									<label for="widget-deleteReservation-form-user"  class="en">User:</label>
+									<label for="widget-deleteReservation-form-user"  class="nl">User:</label>
+									<input type="text" id="widget-deleteReservation-form-user" readonly="readonly" name="widget-deleteReservation-form-user" class="form-control">
+									<input type="text" id="widget-deleteReservation-form-requestor" name="widget-deleteReservation-form-requestor" class="form-control hidden" value="<?php echo $user; ?>">
+									<input type="text" id="widget-deleteReservation-form-ID" name="widget-deleteReservation-form-ID" class="form-control hidden">
+								</div>
+							</div>
+							<h4>Confirmation de suppression</h4>
+							<label for="widget-deleteReservation-form-confirmation" class="fr">Veuillez écrire "DELETE" afin de confirmer la suppression</label>
+							<input type="text" id="widget-deleteReservation-form-confirmation" name="widget-deleteReservation-form-confirmation" class="form-control">
+							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-deleteReservation-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'success'
+						});
+						get_reservations_listing(document.getElementsByClassName('bikeSelectionText')[0].innerHTML, new Date($(".form_date_start").data("datetimepicker").getDate()), new Date($(".form_date_end").data("datetimepicker").getDate()));
+						$('#deleteReservation').modal('toggle');
+					} else {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+</script>
