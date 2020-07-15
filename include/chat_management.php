@@ -18,7 +18,7 @@ if(isset($_POST['action'])){
         
         $email=isset($_POST['email']) ? $_POST['email'] : NULL;   
         $emailBeneficiary=isset($_POST['emailBeneficiary']) ? $_POST['emailBeneficiary'] : NULL;   
-        $message=isset($_POST['message']) ? $_POST['message'] : NULL;   
+        $message=isset($_POST['message']) ? addslashes($_POST['message']) : NULL;   
         $type=isset($_POST['type']) ? $_POST['type'] : NULL;   
         $domain = substr($email, -14);
         
