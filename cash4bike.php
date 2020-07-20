@@ -12,7 +12,7 @@ include 'include/header5.php';
 				<p>Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
 				
 				<div class="m-t-30 col-md-12">
-                	<form id="cash4bike-form" action="include/calculate_cash4bike.php" role="form" method="get">
+                	<form id="cash4bike-form" action="apis/Kameo/calculate_cash4bike.php" role="form" method="get">
                     <div class="row">
                         <div class="col-md-6" style= "background-color: #D3EFDD ; height: 500px">
                         <div class="space"></div>

@@ -1,0 +1,294 @@
+<div class="tab-pane active" id="reserver"> <!-- TAB2: RÉSERVER UN VELO -->
+  <form id="search-bikes-form" action="apis/Kameo/search-bikes.php" method="post">
+	<div class="form-group">
+	  <label for="booking_day_form" class="col-sm-12 fr">A quelle date voulez-vous prendre le vélo ?</label>
+	  <label for="booking_day_form" class="col-sm-12 en">When do you want to book a bike ?</label>
+	  <label for="booking_day_form" class="col-sm-12 nl">Wanneer wil je een fiets boeken?</label>
+	  <div class="form-group col-sm-5" id="booking_day_form"></div>
+
+	  <div class="form-group col-sm-5">
+		<select id="search-bikes-form-intake-hour" name="search-bikes-form-intake-hour" class="form-control">
+		  <option value="8h00">8h00</option>
+		  <option value="8h15">8h15</option>
+		  <option value="8h30">8h30</option>
+		  <option value="8h45">8h45</option>
+		  <option value="9h00">9h00</option>
+		  <option value="9h15">9h15</option>
+		  <option value="9h30">9h30</option>
+		  <option value="9h45">9h45</option>
+		  <option value="10h00">10h00</option>
+		  <option value="10h15">10h15</option>
+		  <option value="10h30">10h30</option>
+		  <option value="10h45">10h45</option>
+		  <option value="11h00">11h00</option>
+		  <option value="11h15">11h15</option>
+		  <option value="11h30">11h30</option>
+		  <option value="11h45">11h45</option>
+		  <option value="12h00">12h00</option>
+		  <option value="12h15">12h15</option>
+		  <option value="12h30">12h30</option>
+		  <option value="12h45">12h45</option>
+		  <option value="13h00">13h00</option>
+		  <option value="13h15">13h15</option>
+		  <option value="13h30">13h30</option>
+		  <option value="13h45">13h45</option>
+		  <option value="14h00">14h00</option>
+		  <option value="14h15">14h15</option>
+		  <option value="14h30">14h30</option>
+		  <option value="14h45">14h45</option>
+		  <option value="15h00">15h00</option>
+		  <option value="15h15">15h15</option>
+		  <option value="15h30">15h30</option>
+		  <option value="15h45">15h45</option>
+		  <option value="16h00">16h00</option>
+		  <option value="16h15">16h15</option>
+		  <option value="16h30">16h30</option>
+		  <option value="16h45">16h45</option>
+		  <option value="17h00">17h00</option>
+		  <option value="17h15">17h15</option>
+		  <option value="17h30">17h30</option>
+		  <option value="17h45">17h45</option>
+		  <option value="18h00">18h00</option>
+		  <option value="18h15">18h15</option>
+		  <option value="18h30">18h30</option>
+		  <option value="18h45">18h45</option>
+		</select>
+	  </div>
+	  <label for="booking_day_form_deposit" class="col-sm-12 fr">A quelle date voulez-vous rendre le vélo ?</label>
+	  <label for="booking_day_form_deposit" class="col-sm-12 en">When do you want to deposit the bike?</label>
+	  <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>
+	  <div class="form-group col-sm-5" id="booking_day_form_deposit"></div>
+	  <div class="form-group col-sm-5" id="booking_hour_form_deposit">
+	  </div>
+
+	  <div class="form-group col-sm-5" id="start_building_form"></div>
+	  <div class="form-group col-sm-5" id="deposit_building_form"></div>
+	</div>
+	<input type="text" class="hidden" id="search-bikes-form-email" name="search-bikes-form-email" value="" />
+	<input type="text" class="hidden" id="search-bikes-form-maxBookingPerYear" name="search-bikes-form-maxBookingPerYear" />
+	<input type="text" class="hidden" id="search-bikes-form-maxBookingPerMonth" name="search-bikes-form-maxBookingPerMonth"/>
+
+	<br />
+	<div class="form-group col-sm-6">
+	  <button class="button effect fill fr" type="submit">Rechercher</button>
+	  <button class="button effect fill en" type="submit">Search</button>
+	  <button class="button effect fill nl" type="submit">Zoeken</button>
+	</div>
+  </form>
+  <div id="travel_information" style="display:none">
+	<!-- Pour un écran large -->
+	<div class="visible-lg">
+	  <div class="col-lg-12 backgroundgreen">
+		<p class="text-white down">
+		  <span class="fr-inline text-white">Votre trajet de </span><span class="en-inline text-white">Your trip</span><span class="nl-inline text-white">Uw reis van </span>
+		  <span class="text-white fr-inline" id="meteoStart1FR"></span>
+		  <span class="text-white en-inline" id="meteoStart1EN"></span>
+		  <span class="text-white nl-inline" id="meteoStart1NL"></span>
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
+		  <span class="text-white fr-inline" id="meteoEnd1FR"></span>
+		  <span class="text-white en-inline" id="meteoEnd1EN"></span>
+		  <span class="text-white nl-inline" id="meteoEnd1NL"></span>
+
+		  <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
+		  <span class="text-white" id="meteoDate1"></span>
+
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
+		  <span class="text-white" id="meteoHour1"></span>
+		</p>
+	  </div>
+	</div>
+
+	<div class="visible-lg">
+	  <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+
+		<div class="col-lg-3">
+		  <img id="logo_meteo1" alt="image" class="centerimg" />
+		</div>
+
+		<div class="col-lg-3">
+		  <ul>
+			<li id="temperature_widget1" class="temperature text-center"></li>
+			<li id="precipitation_widget1" class="humidite text-center"></li>
+			<li id="wind_widget1" class="vent text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="col-lg-3">
+		  <ul class="bords">
+			<li id="walking_duration_widget1" class="marche grid-col-demo text-center"></li>
+			<li id="car_duration_widget1" class="voiture grid-col-demo text-center"></li>
+			<li id="bike_duration_widget1" class="bike grid-col-demo text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="col-lg-3">
+		  <img id="score_kameo1" alt="image" class="centerimg" data-toggle="tooltip" data-placement="top" title="L'indice mykameo est une combinaison de la météo et du temps de trajet en vélo par rapport à la voiture" />
+		</div>
+	  </div>
+	</div>
+
+	<!-- Pour un écran médium -->
+	<div class="visible-md">
+	  <div class="col-md-12 backgroundgreen">
+		<p class="text-white down">
+		  <span class="fr-inline text-white">Votre trajet de </span><span class="en-inline text-white">Your trip</span><span class="nl-inline text-white">Uw reis van </span>
+		  <span class="text-white fr-inline" id="meteoStart2FR"></span>
+		  <span class="text-white en-inline" id="meteoStart2EN"></span>
+		  <span class="text-white nl-inline" id="meteoStart2NL"></span>
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
+		  <span class="text-white fr-inline" id="meteoEnd2FR"></span>
+		  <span class="text-white en-inline" id="meteoEnd2EN"></span>
+		  <span class="text-white nl-inline" id="meteoEnd2NL"></span>
+
+		  <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
+		  <span class="text-white" id="meteoDate2"></span>
+
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
+		  <span class="text-white" id="meteoHour2"></span>
+		</p>
+	  </div>
+	</div>
+
+	<div class="visible-md">
+	  <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+
+		<div class="col-md-3">
+		  <img id="logo_meteo2" alt="image" class="centerimg" />
+		</div>
+
+		<div class="col-md-3">
+		  <ul>
+			<li id="temperature_widget2" class="temperature text-center"></li>
+			<li id="precipitation_widget2" class="humidite text-center"></li>
+			<li id="wind_widget2" class="vent text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="col-md-3">
+		  <ul class="bords">
+			<li id="walking_duration_widget2" class="marche grid-col-demo text-center"></li>
+			<li id="car_duration_widget2" class="voiture grid-col-demo text-center"></li>
+			<li id="bike_duration_widget2" class="bike grid-col-demo text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="col-md-3">
+		  <img id="score_kameo2" alt="image" class="centerimg" data-toggle="tooltip" data-placement="top" title="L'indice mykameo est une combinaison de la météo et du temps de trajet en vélo par rapport à la voiture"/>
+		</div>
+	  </div>
+	</div>
+
+	<!-- Pour une tablette -->
+	<div class="visible-sm">
+	  <div class="col-sm-12 backgroundgreen">
+		<p class="text-white down">
+		  <span class="fr-inline text-white">Votre trajet de </span><span class="en-inline text-white">Your trip</span><span class="nl-inline text-white">Uw reis van </span>
+		  <span class="text-white fr-inline" id="meteoStart3FR"></span>
+		  <span class="text-white en-inline" id="meteoStart3EN"></span>
+		  <span class="text-white nl-inline" id="meteoStart3NL"></span>
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
+		  <span class="text-white fr-inline" id="meteoEnd3FR"></span>
+		  <span class="text-white en-inline" id="meteoEnd3EN"></span>
+		  <span class="text-white nl-inline" id="meteoEnd3NL"></span>
+
+		  <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
+		  <span class="text-white" id="meteoDate3"></span>
+
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
+		  <span class="text-white" id="meteoHour3"></span>
+		</p>
+	  </div>
+	</div>
+
+	<div class="visible-sm">
+	  <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+
+		<div class="col-sm-12">
+		  <img id="logo_meteo3" alt="image" class="centerimg" />
+		</div>
+
+		<div class="seperator"></div>
+
+		<div class="col-sm-6">
+		  <ul>
+			<li id="temperature_widget3" class="temperature2 text-center"></li>
+			<li id="precipitation_widget3" class="humidite2 text-center"></li>
+			<li id="wind_widget3" class="vent2 text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="col-sm-6">
+		  <ul class="bords">
+			<li id="walking_duration_widget3" class="marche2 grid-col-demo text-center"></li>
+			<li id="car_duration_widget3" class="voiture2 grid-col-demo text-center"></li>
+			<li id="bike_duration_widget3" class="bike2 grid-col-demo text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="seperator"></div>
+
+		<div class="col-sm-12">
+		  <img id="score_kameo3" alt="image" class="centerimg" />
+		</div>
+	  </div>
+	</div>
+
+	<!-- Pour un smartphone -->
+	<div class="visible-xs">
+	  <div class="col-xs-12 backgroundgreen">
+		<p class="text-white down">
+		  <span class="fr-inline text-white">Votre trajet de </span><span class="en-inline text-white">Your trip</span><span class="nl-inline text-white">Uw reis van </span>
+		  <span class="text-white fr-inline" id="meteoStart4FR"></span>
+		  <span class="text-white en-inline" id="meteoStart4EN"></span>
+		  <span class="text-white nl-inline" id="meteoStart4NL"></span>
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">to </span><span class="nl-inline text-white">naar </span>
+		  <span class="text-white fr-inline" id="meteoEnd4FR"></span>
+		  <span class="text-white en-inline" id="meteoEnd4EN"></span>
+		  <span class="text-white nl-inline" id="meteoEnd4NL"></span>
+
+		  <span class="fr-inline text-white">le </span><span class="en-inline text-white">on </span><span class="nl-inline text-white">op </span>
+		  <span class="text-white" id="meteoDate4"></span>
+
+
+		  <span class="fr-inline text-white">à </span><span class="en-inline text-white">at </span><span class="nl-inline text-white">om </span>
+		  <span class="text-white" id="meteoHour4"></span>
+		</p>
+	  </div>
+	</div>
+
+	<div class="visible-xs">
+	  <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+
+		<div class="col-xs-12">
+		  <img id="logo_meteo4" alt="image" class="centerimg" />
+		</div>
+
+		<div class="seperator"></div>
+
+		<div class="col-xs-12">
+		  <ul>
+			<li id="temperature_widget4" class="temperature3 text-center"></li>
+			<li id="precipitation_widget4" class="humidite3 text-center"></li>
+			<li id="wind_widget4" class="vent3 text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="seperator"></div>
+
+		<div class="col-xs-12">
+		  <ul class="bords">
+			<li id="walking_duration_widget4" class="marche3 grid-col-demo text-center"></li>
+			<li id="car_duration_widget4" class="voiture3 grid-col-demo text-center"></li>
+			<li id="bike_duration_widget4" class="bike3 grid-col-demo text-center"></li>
+		  </ul>
+		</div>
+
+		<div class="seperator"></div>
+
+		<div class="col-xs-12">
+		  <img id="score_kameo4" alt="image" class="centerimg" />
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>

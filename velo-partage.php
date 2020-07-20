@@ -263,9 +263,9 @@ include 'include/header5.php';
 			    <p class="fr">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
 			    <p class="en">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
 			    <p class="nl">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
-		   		<div class="fr"><a class="button large green button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Nous contacter</span></a></div>
-		   		<div class="en"><a class="button large green button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Contact us</span></a></div>
-		   		<div class="nl"><a class="button large green button-3d effect icon-left nl" href="contact2.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a></div>
+		   		<div class="fr"><a class="button large green button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Nous contacter</span></a></div>
+		   		<div class="en"><a class="button large green button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Contact us</span></a></div>
+		   		<div class="nl"><a class="button large green button-3d effect icon-left nl" href="contact.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a></div>
 			</div>
 		</div>
 
@@ -359,9 +359,9 @@ include 'include/header5.php';
 						Contact us, we will come to present our offers to you.</p>
 				    <p class="nl">Wil je met ons fietsen?<br>
 						Neem contact met ons op, wij komen u onze aanbiedingen voorstellen.</p>
-				    <div class="fr"> <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Nous contacter</span></a> </div>
-				    <div class="en"> <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Contact us</span></a> </div>
-				    <div class="nl"><a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a> </div>
+				    <div class="fr"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Nous contacter</span></a> </div>
+				    <div class="en"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Contact us</span></a> </div>
+				    <div class="nl"><a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a> </div>
 				</div>
 			</div>
 

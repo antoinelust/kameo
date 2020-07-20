@@ -1,0 +1,116 @@
+<div class="modal fade" id="boxManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form id="widget-boxManagement-form" action="apis/Kameo/box_management.php" role="form" method="post">
+							<div class="form-group col-sm-12">
+								<h4 class="fr text-green" id="widget-boxManagement-form-title">Ajouter une borne</h4>
+								<div class="col-sm-4">
+									<label for="reference"  class="fr">Référence</label>
+									<label for="reference"  class="en">Reference</label>
+									<label for="reference"  class="nl">Reference</label>
+									<input type="text"  name="reference" class="form-control">
+								</div>
+								<div class="col-sm-4">
+									<label for="boxModel"  class="fr">Modèle</label>
+									<label for="boxModel"  class="en">Model</label>
+									<label for="boxModel"  class="nl">Model</label>
+									<select name="boxModel" class="form-control required">
+										<option value="5keys" />Box 5 clés<br/>
+										<option value="10keys" />Box 10 clés<br/>
+										<option value="20keys" />Box 20 clés<br/>
+									</select>
+								</div>
+								<div class="separator"></div>
+								<h4 class="fr text-green">Informations relatives au contrat</h4>
+								<div class="col-sm-4">
+									<label for="company"  class="fr">Client actuel</label>
+									<label for="company"  class="en">Current customer</label>
+									<label for="company"  class="nl">Current customer</label>
+									<select name="company" class="form-control required">
+									</select>
+								</div>
+								<div class="col-sm-4">
+									<label for="contractStart"  class="fr">Début de contrat</label>
+									<label for="contractStart"  class="en">Contract start</label>
+									<label for="contractStart"  class="nl">Contract start</label>
+									<input type="date"  name="contractStart" class="form-control">
+								</div>
+								<div class="col-sm-4">
+									<label for="contractEnd"  class="fr">Fin de contrat</label>
+									<label for="contractEnd"  class="en">Contract End</label>
+									<label for="contractEnd"  class="nl">Contract End</label>
+									<input type="date" name="contractEnd" class="form-control">
+								</div>
+								<div class="separator"></div>
+								<h4 class="fr text-green">Informations relatives à la facturation</h4>
+								<div class="col-sm-4">
+									<label for="billing"  class="fr">Facturation automatique ?</label>
+									<label for="billing"  class="en">Automatic billing ?</label>
+									<label for="billing"  class="nl">Automatic billing ?</label>
+									<label><input type="checkbox" name="billing" class="form-control">Oui</label>
+								</div>
+								<div class="col-sm-4">
+									<label for="amount"  class="fr">Montant (par mois)</label>
+									<label for="amount"  class="en">Amount per month</label>
+									<label for="amount"  class="nl">Amount per month</label>
+									<input type="number" min='0' name="amount" class="form-control">
+								</div>
+								<div class="col-sm-4">
+									<label for="billingGroup"  class="fr">Groupe de facturation</label>
+									<label for="billingGroup"  class="en">Groupe de facturation</label>
+									<label for="billingGroup"  class="nl">Groupe de facturation</label>
+									<input type="number" min="0" max="10" name="billingGroup" class="form-control required" value="1">
+								</div>
+								<input type="text" name="id" class="form-control hidden">
+								<input type="text" name="user" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
+								<input type="text" name="action" class="form-control hidden">
+							</div>
+							<button  id="widget-boxManagement-form-send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-boxManagement-form").validate({
+	  submitHandler: function(form) {
+		jQuery(form).ajaxSubmit({
+		  success: function(response) {
+			if (response.response == 'success') {
+			  $.notify({
+				message: response.message
+			  }, {
+				type: 'success'
+			  });
+			  get_company_details($('#widget-companyDetails-form input[name=ID]').val(),email);
+			  document.getElementById('widget-boxManagement-form').reset();
+			  $('#boxManagement').modal('toggle');
+			} else {
+			  $.notify({
+				message: response.message
+			  }, {
+				type: 'danger'
+			  });
+			}
+		  }
+		});
+	  }
+	});
+</script>

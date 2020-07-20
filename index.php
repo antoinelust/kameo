@@ -1,63 +1,6 @@
 <?php
 include 'include/header5.php';
 ?>
-<div class="modal fade" id="GDPR" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h2 class="modal-title fr" id="modal-label">Vos données personnelles</h2>
-				<h2 class="modal-title en" id="modal-label">Your personal data</h2>
-				<h2 class="modal-title nl" id="modal-label">Uw persoonlijk gegevens</h2>
-			</div>
-			<div class="modal-body">
-				<div class="row text-center">
-					<div class="col-md-12">
-						<p class="fr" >Dans le but de vous offrir une meilleure expérience utilisateur, nous utilisons des cookies spécifiques.</p>
-						<p class="en" >Dans le but de vous offrir une meilleure expérience utilisateur, nous utilisons des cookies spécifiques.</p>
-						<p class="nl" >Ja zeker.</p>
-						<p class="fr">Veuillez accepter l'utilisation de ceux-ci ou découvrir à quoi ils nous sont utiles.</p>
-						<p class="en">Veuillez accepter l'utilisation de ceux-ci ou découvrir à quoi ils nous sont utiles.</p>
-						<p class="nl">Veuillez accepter l'utilisation de ceux-ci ou découvrir à quoi ils nous sont utiles.</p>
-						<p class="fr">Vous pourrez toujours changer vos paramètres plus tard.</p>
-						<p class="en">Vous pourrez toujours changer vos paramètres plus tard.</p>
-						<p class="nl">Vous pourrez toujours changer vos paramètres plus tard.</p>
-						<!--<p class="text-green">ATTENTION: Antoine doit paramétrer ce popup pour qu'il ne s'ouvre qu'à chaque nouvel utilisateur. Une fois validé il ne s'affichera plus.<br>
-						Voir avec Megge et/ou Désiré les informations légales à y mettre.</p>-->
-						<a class="button green button-3d effect fill-vertical GDPRaccept" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-thumbs-o-up"></i>J'accepte</span></a><br>
-						<a class="button button-3d effect fill-vertical fr" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-info"></i>En savoir plus</span></a>
-						<a class="button button-3d effect fill-vertical en" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-info"></i>Learn more</span></a>
-						<a class="button button-3d effect fill-vertical nl" href="#" data-dismiss="modal" aria-hidden="true"><span><i class="fa fa-info"></i>Leer meer</span></a>
-					</div>
-				</div>
-			</div>
-			<!--
-			<div class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-b">Save Changes</button>
-			</div>
-			-->
-		</div>
-	</div>
-</div>
-<script type='text/javascript'>
-    
-    function set_GDPR_cookie(){
-        $.ajax({
-            url: 'include/cookie_management.php',
-            type: 'post',
-            data: {action:"set", type: "GDPR"},
-            success: function(response){
-              if(response.response == 'error') {
-                console.log(response.message);
-              }
-              if(response.response == 'success'){
-
-              }
-            }
-        })
-    }    
-</script>
   <br>
   <h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
   <h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, your one stop shop for company bikes</h1>

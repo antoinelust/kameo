@@ -187,9 +187,9 @@ include 'include/header5.php';
     <p class="fr">Demandez à nous rencontrer pour connaitre toutes les possibilités et ce que nous pouvons aménager pour vous.</p>
     <p class="en">Demandez à nous rencontrer pour connaitre toutes les possibilités et ce que nous pouvons aménager pour vous.</p>
     <p class="nl">Demandez à nous rencontrer pour connaitre toutes les possibilités et ce que nous pouvons aménager pour vous.</p>
-    <div class="fr"> <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
-    <div class="en"> <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Contact us</span></a> </div>
-    <div class="nl"> <a class="button large black-light button-3d effect icon-left" href="contact2.php"><span><i class="fa fa-cloud"></i>Contacteer ons</span></a> </div>
+    <div class="fr"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
+    <div class="en"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Contact us</span></a> </div>
+    <div class="nl"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Contacteer ons</span></a> </div>
 	</div>
 </div>
 

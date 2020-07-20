@@ -1,6 +1,6 @@
 function list_maintenances() {
   $.ajax({
-      url: 'include/maintenance_management.php',
+      url: 'apis/Kameo/maintenance_management.php',
       method: 'get',
       data: {'action' : 'list'},
       success: function(response){
@@ -66,7 +66,7 @@ function list_maintenances() {
 function get_maintenance(ID){
   document.getElementById('widget-maintenanceManagement-form').reset();
   $.ajax({
-      url: 'include/maintenance_management.php',
+      url: 'apis/Kameo/maintenance_management.php',
       method: 'get',
       data: {'action' : 'getOne', 'ID' : ID},
       success: function(response){

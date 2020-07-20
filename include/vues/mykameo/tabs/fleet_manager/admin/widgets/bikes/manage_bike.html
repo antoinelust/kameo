@@ -1,0 +1,363 @@
+<div class="modal fade" id="bikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form id="widget-bikeManagement-form" action="apis/Kameo/bike_management.php" role="form" method="post">
+							<h4 class="fr text-green bikeManagementTitle">Ajouter un vélo</h4>
+							<div class="form-group col-sm-12">
+								<h4 class="fr text-green">Caractéristiques du vélo</h4>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="bikeID">ID</label>
+										<input type="text" name="bikeID" class="form-control required" readonly>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="portfolioID"  class="fr">Marque - Modèle</label>
+										<label for="portfolioID"  class="en">Marque - Modèle</label>
+										<label for="portfolioID"  class="nl">Marque - Modèle</label>
+										<select name="portfolioID" class="form-control required"></select>
+									</div>
+									<div class="col-sm-4">
+										<label for="size"  class="fr">Taille</label>
+										<label for="size"  class="en">Size</label>
+										<label for="size"  class="nl">Size</label>
+										<input type="text" name="size" class="form-control required">
+									</div>
+									<div class="col-sm-4">
+										<label for="color"  class="fr">Couleur</label>
+										<label for="color"  class="en">Color</label>
+										<label for="color"  class="nl">Color</label>
+										<input type="text" name="color" class="form-control">
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="company"  class="fr">Société</label>
+										<label for="company"  class="en">Company</label>
+										<label for="company"  class="nl">Company</label>
+										<select name="company" class="form-control required"></select>
+									</div>
+									<div class="col-sm-4">
+										<label for="model"  class="fr">Nom pour client</label>
+										<label for="model"  class="en">Bike name for client</label>
+										<label for="model"  class="nl">Bike name for client</label>
+										<input type="text" name="model" class="form-control required">
+									</div>
+									<div class="col-sm-4">
+										<label for="frameNumber"  class="fr">Numéro d'identification</label>
+										<label for="frameNumber"  class="en">Identification number</label>
+										<label for="frameNumber"  class="nl">Identification number</label>
+										<input type="text" name="frameNumberOriginel" class="form-control hidden">
+										<input type="text" name="frameNumber" class="form-control">
+									</div>
+									<div class="col-sm-4">
+										<label for="frameReference"  class="fr">Référence de cadre</label>
+										<label for="frameReference"  class="en">Frame reference</label>
+										<label for="frameReference"  class="nl">Frame reference</label>
+										<input type="text" name="frameReference" class="form-control required">
+									</div>
+									<div class="col-sm-4">
+										<label for="lockerReference"  class="fr">Clé du cadenas</label>
+										<label for="lockerReference"  class="en">Locker key number</label>
+										<label for="lockerReference"  class="nl">Locker key number</label>
+										<input type="text" name="lockerReference" class="form-control">
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-4 bikeManagementPicture">
+										<label for="picture"  class="fr">Image du vélo</label>
+										<label for="picture"  class="en">Bike picture</label>
+										<label for="picture"  class="nl">Bike picture</label>
+										<img id='bikeManagementPicture' alt="image" width='200'>
+									</div>
+								</div>
+								<div class="separator"></div>
+								<h4 class="fr text-green">Type de contrat</h4>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="contractType"  class="fr">Type de contrat</label>
+										<label for="contractType"  class="en">Contract type</label>
+										<label for="contractType"  class="nl">Contract type</label>
+										<select name="contractType" class="form-control required">
+										</select>
+									</div>
+								</div>
+								<div class="separator buyingInfos" style="display:none;"></div>
+								<div class="col-sm-12 buyingInfos" style="display:none;">
+									<h4 class="fr text-green">Informations sur l'achat du vélo</h4>
+									<div class="col-sm-5">
+										<label for="price"  class="fr">Prix d'achat</label>
+										<label for="price"  class="en">Buying price</label>
+										<label for="price"  class="nl">Buying price</label>
+										<div class="input-group">
+											<span class="input-group-addon">€</span>
+											<input type="float" name="price" class="form-control required">
+										</div>
+									</div>
+								</div>
+								<div class="separator contractInfos" style="display:none;"></div>
+								<div class="col-sm-12 contractInfos" style="display:none;">
+									<h4 class="fr text-green">Informations relatives au contrat</h4>
+									<div class="col-sm-4 contractStartBloc">
+										<label for="contractStart"  class="fr">Début de contrat</label>
+										<label for="contractStart"  class="en">Contract start</label>
+										<label for="contractStart"  class="nl">Contract start</label>
+										<input type="date" name="contractStart" class="form-control">
+									</div>
+									<div class="col-sm-4 contractEndBloc">
+										<label for="contractEnd"  class="fr">Fin de contrat</label>
+										<label for="contractEnd"  class="en">Contract End</label>
+										<label for="contractEnd"  class="nl">Contract End</label>
+										<input type="date" name="contractEnd" class="form-control">
+									</div>
+									<div class="col-sm-12">
+										<div class="col-sm-4 insurance">
+											<label for="insurance"  class="fr">Assurance ?</label>
+											<label for="insurance"  class="en">Insurance ?</label>
+											<label for="insurance"  class="nl">Insurance ?</label>
+											<input type="checkbox"name="insurance" id="insuranceBikeCheck" class="form-control">Oui
+										</div>
+										<div class="col-sm-4 soldPrice" style="display:none;">
+											<label for="insurance"  class="fr">Prix de vente du vélo</label>
+											<label for="insurance"  class="en">Bike sold price</label>
+											<label for="insurance"  class="nl">Bike sold price</label>
+											<input type="number" min="0" value="0" name="bikeSoldPrice" id="bikeSoldPrice" class="form-control" disabled />
+										</div>
+									</div>
+								</div>
+								<div class="separator orderInfos" style="display:none;"></div>
+								<div class="col-sm-12 orderInfos" style="display:none;">
+									<h4 class="fr text-green">Informations relatives à la commande</h4>
+									<div class="col-sm-4">
+										<label for="orderingDate"  class="fr">Date de la commande</label>
+										<label for="orderingDate"  class="en">Ordering date</label>
+										<label for="orderingDate"  class="nl">Ordering date</label>
+										<input type="date" name="orderingDate" class="form-control">
+									</div>
+									<div class="col-sm-4 estimatedDeliveryDate">
+										<label for="estimatedDeliveryDate"  class="fr">Date estimée d'arrivée</label>
+										<label for="estimatedDeliveryDate"  class="en">Arrival estimated date</label>
+										<label for="estimatedDeliveryDate"  class="nl">Arrival estimated date</label>
+										<input type="date" name="estimatedDeliveryDate" class="form-control">
+									</div>
+									<div class="col-sm-4 deliveryDate">
+										<label for="deliveryDate"  class="fr">Date d'arrivée</label>
+										<label for="deliveryDate"  class="en">Delivery date</label>
+										<label for="deliveryDate"  class="nl">Delivery date</label>
+										<input type="date" name="deliveryDate" class="form-control">
+									</div>
+									<div class="col-sm-4">
+										<label for="orderNumber"  class="fr">Numéro de commande</label>
+										<label for="orderNumber"  class="en">Numéro de commande</label>
+										<label for="orderNumber"  class="nl">Numéro de commande</label>
+										<input type="text" name="orderNumber" class="form-control">
+									</div>
+									<div class="col-sm-4 offer">
+										<label for="offerReference"  class="offerReference">Offre liée</label>
+										<select name="offerReference" class="form-control offerReference">
+										</select>
+									</div>
+									<div class="col-sm-4 clientReference">
+										<label for="clientReference"  class="clientReference">Utilisateur</label>
+										<select name="clientReference" class="form-control clientReference">
+										</select>
+									</div>
+								</div>
+								<div class="separator billingInfos" style="display:none;"></div>
+								<div class="col-sm-12 billingInfos" style="display:none;">
+									<h4 class="fr text-green">Informations relatives à la facturation</h4>
+									<div class="col-sm-4">
+										<label for="billingType"  class="fr">Type de facturation</label>
+										<label for="billingType"  class="en">Billing type</label>
+										<label for="billingType"  class="nl">Billing type</label>
+										<select name="billingType" class="form-control">
+											<option value="monthly">Mensuelle</option>
+											<option value="paid">Déjà payé</option>
+										</select>
+									</div>
+									<div class="col-sm-4 billingPriceDiv">
+										<label for="billingPrice"  class="fr">Montant de facturation</label>
+										<label for="billingPrice"  class="en">Montant de facturation</label>
+										<label for="billingPrice"  class="nl">Montant de facturation</label>
+										<div class="input-group">
+											<span class="input-group-addon">€/mois</span>
+											<input type="float" name="billingPrice" class="form-control">
+										</div>
+									</div>
+									<div class="col-sm-4 billingGroupDiv">
+										<label for="billingGroup"  class="fr">Groupe de facturation</label>
+										<label for="billingGroup"  class="en">Groupe de facturation</label>
+										<label for="billingGroup"  class="nl">Groupe de facturation</label>
+										<input type="text" name="billingGroup" class="form-control required">
+									</div>
+									<div class="col-sm-12 billingDiv">
+										<div class="col-sm-4">
+											<label for="billing"  class="fr">Facturation automatique ?</label>
+											<label for="billing"  class="en">Automatic billing ?</label>
+											<label for="billing"  class="nl">Automatic billing ?</label>
+											<label><input type="checkbox" name="billing" class="form-control">Oui</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-sm-4" style="display:none;" id="addBike_firstBuilding"></div>
+								<div class="form-group col-sm-12" style="display:none;" id="addBike_buildingListing"></div>
+								<input type="text" name="user" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
+								<input type="text" name="action" class="form-control hidden">
+								<div class="col-sm-12" id='bikeBuildingAccessAdminDiv'style="display:none;">
+									<h4>Accès aux bâtiments de ce vélo</h4>
+								</div>
+								<div class="form-group col-sm-12" id="bikeBuildingAccessAdmin" style="display:none;"></div>
+								<div class="col-sm-12" id='bikeUserAccessAdminDiv' style="display:none;">
+									<h4>Accès des utilisateurs à ce vélo</h4>
+								</div>
+								<div class="form-group col-sm-12" id="bikeUserAccessAdmin" style="display:none;"></div>
+							</div>
+							<div class="col-sm-12">
+								<button  class="fr button small green button-3d rounded icon-left bikeManagementSend" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+							</div>
+						</form>
+						<div class="separator bikeActions" class="hidden"></div>
+						<div class="col-sm-12 bikeActions" class="hidden">
+							<h4 class="fr text-green">Actions prises sur le vélo</h4>
+							<form id="widget-addActionBike-form" action="apis/Kameo/action_bike_management.php" role="form" method="post">
+								<input type="text" name="bikeNumber" class="form-control required hidden">
+								<input type="text" name="widget-addActionBike-form-user" class="form-control required hidden" value="<?php echo $user_data['EMAIL']; ?>">
+								<input type="text" name="widget-addActionBike-form-action" class="form-control required hidden" value="add">
+								<div class="col-sm-12">
+									<div class="col-sm-3">
+										<label for="widget-addActionBike-form-date" class="hidden">Date</label>
+										<input type="date" name="widget-addActionBike-form-date" class="form-control required hidden">
+									</div>
+									<div class="col-sm-6">
+										<label for="widget-addActionBike-form-description" class="hidden">Description</label>
+										<textarea type="text" name="widget-addActionBike-form-description" class="form-control required hidden"></textarea>
+									</div>
+									<div class="col-sm-2">
+										<label for="widget-addActionBike-form-public" class="hidden">Public ?</label>
+										<input type="checkbox" name="widget-addActionBike-form-public" class="form-control hidden">
+									</div>
+									<div class="col-sm-1">
+										<button  class="fr button small green button-3d rounded icon-left hidden addActionConfirmButton" type="submit"><i class="fa fa-plus"></i></button>
+									</div>
+								</div>
+							</form>
+							<span id="action_bike_log"></span>
+						</div>
+						<div class="separator billsInfos" style="display:block;"></div>
+						<div class="col-sm-12 billsInfos" style="display:block;">
+							<h4 class="fr text-green">Factures du vélo</h4>
+							<span id="bills_bike"></span>
+						</div>
+						<div class="right">
+							<form  id="widget-deleteBike-form" action="apis/Kameo/bike_management.php" role="form" method="post">
+								<input type="text" name="user" value="<?php echo $user_data['EMAIL']; ?>" class="hidden">
+								<input type="text" name="action" value="delete" class="hidden">
+								<input type="text" class="hidden" readonly="readonly" name="bikeID">
+								<button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer le vélo</button>
+								<button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
+								<button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete bike</button>
+							</form>
+						</div>
+						<div class="fr" class="modal-footer">
+							<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+						</div>
+						<div class="en" class="modal-footer">
+							<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+						</div>
+						<div class="nl" class="modal-footer">
+							<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="js/add_bike_sell.js"></script>
+<script type="text/javascript">
+	jQuery("#widget-bikeManagement-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'success'
+						});
+						get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);
+						document.getElementById('widget-bikeManagement-form').reset();
+						$('#bikeManagement').modal('toggle');
+						list_bikes_admin();
+					} else {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+	jQuery("#widget-addActionBike-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'success'
+						});
+						$("label[for='widget-addActionBike-form-date']").addClass("hidden");
+						$('input[name=widget-addActionBike-form-date]').addClass("hidden");
+						$("label[for='widget-addActionBike-form-description']").addClass("hidden");
+						$('input[name=widget-addActionBike-form-description]').addClass("hidden");
+						$("label[for='widget-addActionBike-form-public']").addClass("hidden");
+						$('input[name=widget-addActionBike-form-public]').addClass("hidden");
+						$('.addActionConfirmButton').addClass("hidden");
+						construct_form_for_bike_status_updateAdmin($('#widget-addActionBike-form input[name=bikeNumber]').val());
+					} else {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+	jQuery("#widget-deleteBike-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'success'
+						});
+						document.getElementById('widget-bikeManagement-form').reset();
+						list_bikes_admin();
+						$('#bikeManagement').modal('toggle');
+					} else {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+</script>

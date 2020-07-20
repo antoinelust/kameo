@@ -8,7 +8,7 @@ const box_maintenance_year = 500;
 //liste des contacts
 function get_company_contacts_list(ID) {
   return  $.ajax({
-    url: 'include/get_company_contact.php',
+    url: 'apis/Kameo/get_company_contact.php',
     type: 'post',
     data: { 'ID' : ID },
     success: function(response){
@@ -22,7 +22,7 @@ function get_company_contacts_list(ID) {
 //liste des vélos
 function get_all_bikes() {
   return  $.ajax({
-    url: 'include/get_bikes_catalog.php',
+    url: 'apis/Kameo/get_bikes_catalog.php',
     type: 'post',
     data: {},
     success: function(response){
@@ -37,7 +37,7 @@ function get_all_bikes() {
 //récuperation du prix de leasing en fct du prix HTVA
 function get_leasing_price(retailPrice){
   return  $.ajax({
-    url: 'include/get_prices.php',
+    url: 'apis/Kameo/get_prices.php',
     method: 'post',
     data: {'retailPrice' : retailPrice},
     success: function(response){
@@ -51,7 +51,7 @@ function get_leasing_price(retailPrice){
 //liste des boxes
 function get_all_boxes() {
   return  $.ajax({
-    url: 'include/get_boxes_catalog.php',
+    url: 'apis/Kameo/get_boxes_catalog.php',
     type: 'post',
     data: {},
     success: function(response){
@@ -65,7 +65,7 @@ function get_all_boxes() {
 //liste des Accessoires
 function get_all_accessories() {
   return  $.ajax({
-    url: 'include/get_accessories_catalog.php',
+    url: 'apis/Kameo/get_accessories_catalog.php',
     type: 'post',
     data: {},
     success: function(response){

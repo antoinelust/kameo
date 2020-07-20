@@ -156,7 +156,7 @@ body { font-family: sans-serif; }
                 var e=document.getElementById('widget-bike-electric');
                 var electric = e.options[e.selectedIndex].value;
                 $.ajax({
-                    url: 'include/load_portfolio.php',
+                    url: 'apis/Kameo/load_portfolio.php',
                     type: 'get',
                     data: { "action": "list", "frameType": frameType, "utilisation": utilisation, "price": price, "brand": brand, "electric": electric},
                     success: function(response){

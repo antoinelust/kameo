@@ -42,7 +42,7 @@ $('document').ready(function(){
         
         var address=$('#cash4bike-form input[name=domicile]').val();
         $.ajax({
-            url: 'include/API_google_maps/validate_address.php',
+            url: 'apis/Kameo/validate_address.php',
             method: 'get',
             data: {'address': address},
             success: function(response){
@@ -78,7 +78,7 @@ $('document').ready(function(){
         
         var address=$('#cash4bike-form input[name=travail]').val();
         $.ajax({
-            url: 'include/API_google_maps/validate_address.php',
+            url: 'apis/Kameo/validate_address.php',
             method: 'get',
             data: {'address': address},
             success: function(response){
@@ -168,7 +168,7 @@ Array.prototype.unique = function() {
 
 function load_brands(){
   $.ajax({
-    url: 'include/get_bikes_catalog.php',
+    url: 'apis/Kameo/get_bikes_catalog.php',
     method: 'get',
     success: function(response){
         if (response.response == "success") {
@@ -195,7 +195,7 @@ function load_brands(){
 
 function load_models(brand){
   $.ajax({
-      url: 'include/get_bikes_catalog.php',
+      url: 'apis/Kameo/get_bikes_catalog.php',
       data:{'brand': brand},
       method: 'get',
         success: function(response){
@@ -241,7 +241,7 @@ function load_models(brand){
 
 function load_picture(id){
     $.ajax({
-        url: 'include/get_bikes_catalog.php',
+        url: 'apis/Kameo/get_bikes_catalog.php',
         method: 'get',
         data:{'id': id},
 
@@ -254,7 +254,7 @@ function load_picture(id){
                 var frameType=response.bike[0].frameType;
                 
                 $.ajax({
-                    url: 'include/get_prices.php',
+                    url: 'apis/Kameo/get_prices.php',
                     method: 'post',
                     data:{'retailPrice': price},
 

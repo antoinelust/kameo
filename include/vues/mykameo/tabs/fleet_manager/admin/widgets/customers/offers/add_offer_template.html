@@ -1,0 +1,334 @@
+<div class="modal fade" id="template" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+			</div>
+			<div class="modal-body">
+				<form class="isLeasing" id="templateForm" action="apis/Kameo/offer_template.php" method="post" role="form" novalidate="novalidate">
+					<input type="hidden" name="companyIdTemplate" id ="companyIdTemplate" value="" aria-required="true"/>
+					<div class="row buyOrLeasing">
+						<div class="col-sm-4">
+							<h4 class="fr text-green">Général: </h4>
+							<h4 class="en text-green">General: </h4>
+							<h4 class="nl text-green">General: </h4>
+						</div>
+						<div class="col-sm-12">
+							<div class="col-sm-3 form-group">
+								<label for="leasingCheck" class="fr">Type</label>
+								<label for="leasingCheck" class="en">Type</label>
+								<label for="leasingCheck" class="nl">Type</label>
+								<select name="buyOrLeasing" id="buyOrLeasingSelect" class="form-control required" aria-required="true">
+									<option value="leasing" selected>Location</option>
+									<option value="buy">Achat</option>
+									<option value="both"> Achat et Location</option>
+								</select>
+								<!--<input type="checkbox" class="leasingCheck form-control" name="isLeasing" value="leasing" checked />-->
+							</div>
+							<div class="col-sm-4 form-group leasingSpecific">
+								<label for="leasingDuration" class="fr">Durée location (mois)</label>
+								<label for="leasingDuration" class="en">Location duration (months)</label>
+								<label for="leasingDuration" class="nl">Durée location (mois)</label>
+								<input type="number" name="leasingDuration" class="leasingDuration form-control required" aria-required="true" value="36" min="1">
+							</div>
+							<div class="col-sm-3 form-group leasingSpecific">
+								<label for="numberMaintenance" class="fr">Entretiens</label>
+								<label for="numberMaintenance" class="en">Maintenance</label>
+								<label for="numberMaintenance" class="nl">Maintenance</label>
+								<input type="number" name="numberMaintenance" class="numberMaintenance form-control required" aria-required="true" value="4" min="0">
+							</div>
+							<div class="col-sm-2 form-group leasingSpecific">
+								<label for="assuranceCheck" class="fr">Assurance</label>
+								<label for="assuranceCheck" class="en">Assurance</label>
+								<label for="assuranceCheck" class="nl">Assurance</label>
+								<input type="checkbox" class="assuranceCheck form-control" name="assurance" value="true" checked />
+							</div>
+						</div>
+					</div>
+					<div class="separator"></div>
+					<div class="row templateBike">
+						<div class="col-sm-4">
+							<h4 class="fr text-green">Nombre de vélos: </h4>
+							<h4 class="en text-green">Bike number: </h4>
+							<h4 class="nl text-green">Nombre de vélos: </h4>
+						</div>
+						<div class="col-sm-12">
+							<i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span><input type="hidden" id="bikesNumber" name="bikesNumber" value="0" />
+							<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+							<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+						</div>
+						<table class="table table-condensed tableFixed bikeNumberTable hideAt0">
+							<thead>
+								<tr>
+									<th class="bLabel"></th>
+									<th class="bikeBrandModel">
+										<label for="bikeBrandModel" class="fr">Modèle</label>
+										<label for="bikeBrandModel" class="en">Model</label>
+										<label for="bikeBrandModel" class="nl">Model</label>
+									</th>
+									<th class="bikepAchat">
+										<label for="pAchat" class="fr">Prix d'achat</label>
+										<label for="pAchat" class="en">Buying price</label>
+										<label for="pAchat" class="nl">Buying price</label>
+									</th>
+									<th class="bikepCosts">
+										<label for="pAchat" class="fr">Coûts maintenance & assur.</label>
+										<label for="pAchat" class="en">Maintenance costs</label>
+										<label for="pAchat" class="nl">Maintenance costs</label>
+									</th>
+									<th class="bikepCatalog">
+										<label for="pCatalog" class="fr">Prix catalogue</label>
+										<label for="pCatalog" class="en">Catalog price</label>
+										<label for="pCatalog" class="nl">Catalog price</label>
+									</th>
+									<th class="bikepVenteHTVA" style="display:none">
+										<label for="pVenteHTVA" class="fr">Prix de vente</label>
+										<label for="pVenteHTVA" class="en">Selling price</label>
+										<label for="pVenteHTVA" class="nl">Selling price</label>
+									</th>
+									<th class="bikeLeasing">
+										<label for="leasing" class="fr">Location</label>
+										<label for="leasing" class="en">Renting</label>
+										<label for="leasing" class="nl">Renting</label>
+									</th>
+									<th class="contractLeasing">
+										<label for="contractLeasing" class="fr">Valeur totale</label>
+										<label for="contractLeasing" class="en">Total value</label>
+										<label for="contractLeasing" class="nl">Total value</label>
+									</th>
+									<th class="bikeMarge">
+										<label for="marge" class="fr">Marge</label>
+										<label for="marge" class="en">Margin</label>
+										<label for="marge" class="nl">Margin</label>
+									</th>
+									<th class="bikeFinalPrice hidden">
+										<label for="bikeFinalPrice" class="fr">bikeFinalPrice</label>
+										<label for="bikeFinalPrice" class="en">bikeFinalPrice</label>
+										<label for="bikeFinalPrice" class="nl">bikeFinalPrice</label>
+									</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<div class="separator"></div>
+					<div class="row templateBoxes">
+						<div class="col-sm-4">
+							<h4 class="fr text-green">Nombre de boxes: </h4>
+							<h4 class="en text-green">Boxes number: </h4>
+							<h4 class="nl text-green">Nombre de boxes: </h4>
+						</div>
+						<div class="col-sm-12">
+							<i class="fa fa-archive"></i> <span class="boxesNumber">0</span><input type="hidden" id="boxesNumber" name="boxesNumber" value="0" />
+							<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+							<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+						</div>
+						<table class="table table-condensed tableFixed  boxesNumberTable hideAt0">
+							<thead>
+								<tr>
+									<th class="boxLabel">
+									</th>
+									<th class="boxModel">
+										<label for="boxModel" class="fr">Modèle</label>
+										<label for="boxModel" class="en">Model</label>
+										<label for="boxModel" class="nl">Model</label>
+									</th>
+									<th class="boxProdPrice">
+										<label for="boxProdPrice" class="fr">Production</label>
+										<label for="boxProdPrice" class="en">Production</label>
+										<label for="boxProdPrice" class="nl">Production</label>
+									</th>
+									<th class="boxMaintenance">
+										<label for="boxMaintenance" class="fr">Coûts maintenance</label>
+										<label for="boxMaintenance" class="en">Maintenance costs</label>
+										<label for="boxMaintenance" class="nl">Maintenance costs</label>
+									</th>
+									<th class="boxInstallationPrice">
+										<label for="boxInstallationPrice" class="fr">Installation</label>
+										<label for="boxInstallationPrice" class="en">Installation</label>
+										<label for="boxInstallationPrice" class="nl">Installation</label>
+									</th>
+									<th class="boxFinalInstallationPrice hidden">
+										<label for="boxFinalInstallationPrice" class="fr">boxFinalInstallationPrice</label>
+										<label for="boxFinalInstallationPrice" class="en">boxFinalInstallationPrice</label>
+										<label for="boxFinalInstallationPrice" class="nl">boxFinalInstallationPrice</label>
+									</th>
+									<th class="boxLocationPrice">
+										<label for="boxLocationPrice" class="fr">Location</label>
+										<label for="boxLocationPrice" class="en">Renting</label>
+										<label for="boxLocationPrice" class="nl">Renting</label>
+									</th>
+									<th class="boxFinalLocationPrice hidden">
+										<label for="boxFinalLocationPrice" class="fr">boxFinalLocationPrice</label>
+										<label for="boxFinalLocationPrice" class="en">boxFinalLocationPrice</label>
+										<label for="boxFinalLocationPrice" class="nl">boxFinalLocationPrice</label>
+									</th>
+									<th class="boxContractPrice">
+										<label for="boxContractPrice" class="fr">Valeur totale</label>
+										<label for="boxContractPrice" class="en">Total value</label>
+										<label for="boxContractPrice" class="nl">Total value</label>
+									</th>
+									<th class="boxMarge">
+										<label for="boxMarge" class="fr">Marge</label>
+										<label for="boxMarge" class="en">Margin</label>
+										<label for="boxMarge" class="nl">Margin</label>
+									</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<div class="separator"></div>
+					<div class="row templateAccessories">
+						<div class="col-sm-4">
+							<h4 class="fr text-green">Accessoires: </h4>
+							<h4 class="en text-green">Accessories: </h4>
+							<h4 class="nl text-green">Accessoires: </h4>
+						</div>
+						<div class="col-sm-12 accessoriesButtons">
+							<i class="fa fa-calculator"></i> <span class="accessoriesNumber">0</span><input type="hidden" id="accessoriesNumber" name="accessoriesNumber" value="0" />
+							<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+							<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+						</div>
+						<table class="table table-condensed tableFixed otherCostsAccesoiresTable hideAt0">
+							<thead>
+								<th class="accessoriesLabel"></th>
+								<th class="accessoriesCategory">
+									<label for="aCategory" class="fr">Catégorie</label>
+								</th>
+								<th class="accessoriesAccessory">
+									<label for="aAccessory" class="fr">Accessoire</label>
+								</th>
+								<th class="accessoriesBuyingPrice">
+									<label for="aBuyingPrice" class="fr">Prix achat</label>
+								</th>
+								<th class="accessoriesPriceHTVA">
+									<label for="aPriceHTVA" class="fr">Prix Vente HTVA</label>
+								</th>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div class="separator"></div>
+					<div class="row templateOthers">
+						<div class="col-sm-4">
+							<h4 class="fr text-green">Autres: </h4>
+							<h4 class="en text-green">Others: </h4>
+							<h4 class="nl text-green">Others: </h4>
+						</div>
+						<div class="col-sm-12 othersButtons">
+							<i class="fa fa-eur"></i> <span class="othersNumber">0</span><input type="hidden" id="othersNumber" name="othersNumber" value="0" />
+							<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+							<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+						</div>
+						<table class="table table-condensed tableFixed otherTable hideAt0">
+							<thead>
+								<th class="othersLabel"></th>
+								<th class="othersDescription">
+									<label for="oDescription" class="fr">Description</label>
+								</th>
+								<th class="othersBuyingCost">
+									<label for="oBuyingCost" class="fr">Cout achat</label>
+								</th>
+								<th class="othersSellingCost">
+									<label for="oSellingCost" class="fr">Prix vente</label>
+								</th>
+								<th class="othersSellingCostFinal">
+									<label for="oSellingCost" class="fr">Prix vente final</label>
+								</th>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div class="separator"></div>
+					<div class="separator"></div>
+					<div class="row templateTableauRecap">
+						<div class="col-sm-4">
+							<h4 class="fr text-green">Tableau récapitulatif: </h4>
+							<h4 class="en text-green">Summary table: </h4>
+							<h4 class="nl text-green">Summary table: </h4>
+						</div>
+						<div class="col-sm-12">
+							<button type="button" id="generateTableRecap" class="fr button small green button-3d rounded icon-left">Générer / Actualiser</button>
+						</div>
+						<table class="table table-condensed tableFixed summaryTable" style="display:none">
+							<thead>
+								<th><label for="recapLabel fr">Item</label></th>
+								<th><label for="recapPrice fr">Prix de vente</label></th>
+								<th><label for="recapLeasing fr">Location (au mois)</label></th>
+							</thead>
+							<tbody></tbody>
+							<tfoot></tfoot>
+						</table>
+						<div class="separator"></div>
+					</div>
+					<div class="row form-group">
+						<h4 class="text-green">Délais vélos</h4>
+						<div class="col-sm-8">
+							<textarea name="delais" id="delais" class="form-control required" required></textarea>
+						</div>
+						<div class="separator"></div>
+						<h4 class="text-green">Validité de l'offre</h4>
+						<div class="col-sm-4">
+							<input type="date" name="offerValidity" id="offerValidity" class="form-control required" required>
+						</div>
+						<div class="separator"></div>
+					</div>
+					<div class="row form-group" style="margin-bottom:20px;">
+						<h4 class="text-green">Contact société</h4>
+						<div class="col-sm-4 companyContactDiv">
+						</div>
+						<div class="separator"></div>
+					</div>
+					<div class="row form-group" style="margin-bottom:20px;">
+						<h4 class="text-green">Signature de l'offre</h4>
+						<div class="col-sm-12">
+							<div class="col-sm-12">
+								<label for="probability"  class="fr">Chance de réussite</label>
+								<label for="probability"  class="en">Chance de réussite</label>
+								<label for="probability"  class="nl">chance de réussite</label>
+								<div class="col-sm-3 input-group">
+									<span class="input-group-addon">%</span>
+									<input type="number" min="0" max="100" name="probability" class="form-control required">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="col-sm-4">
+								<label for="dateSignature"  class="fr">Date de signature</label>
+								<label for="dateSignature"  class="en">Date de signature</label>
+								<label for="dateSignature"  class="nl">Date de signature</label>
+								<input type="date" name="dateSignature" class="form-control">
+							</div>
+							<div class="col-sm-4">
+								<label for="dateStart"  class="fr">Date de début</label>
+								<label for="dateStart"  class="en">Date de début</label>
+								<label for="dateStart"  class="nl">Date de début</label>
+								<input type="date" name="dateStart" class="form-control">
+							</div>
+							<div class="col-sm-4">
+								<label for="dateEnd"  class="fr">Date de fin</label>
+								<label for="dateEnd"  class="en">Date de fin</label>
+								<label for="dateEnd"  class="nl">Date de fin</label>
+								<input type="date" name="dateEnd" class="form-control">
+							</div>
+						</div>
+					</div>
+					<input type="text" name="email" class="form-control required hidden" value="<?php echo $user_data['EMAIL']; ?>">
+					<br/>
+					<button type="submit" class="fr button small green button-3d rounded icon-left generatePDF">Générer PDF</button>
+				</form>
+			</div>
+			<script src="js/template-offre.js"></script>
+			<div class="modal-footer">
+				<div class="pull-left">
+					<button data-dismiss="modal" class="btn btn-b fr" type="button">Fermer</button>
+					<button data-dismiss="modal" class="btn btn-b en" type="button">Close</button>
+					<button data-dismiss="modal" class="btn btn-b nl" type="button">Sluiten</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

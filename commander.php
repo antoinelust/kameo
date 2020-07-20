@@ -2,9 +2,6 @@
 include 'include/header5.php';
 ?>
 
-		
-
-
  <!-- CONTENT -->
         <section>
             <div class="container">
@@ -24,7 +21,7 @@ include 'include/header5.php';
 						<br>Laat ons uw gegevens achter, wij nemen zo spoedig mogelijk contact met u op.</p>
 						
                         <div class="m-t-30">
-                            <form id="widget-contact-form" action="include/order-form.php" role="form" method="post">
+                            <form id="widget-contact-form" action="apis/Kameo/order-form.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                         <label for="name" id="fr">Nom</label>

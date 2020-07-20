@@ -50,7 +50,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
 
 function load_cafetaria(){
     $.ajax({
-        url: 'include/load_portfolio.php',
+        url: 'apis/Kameo/load_portfolio.php',
         type: 'get',
         data: { "action": "list", "frameType": "*", "utilisation": "*", "price": "*", "brand": "*", "electric": "*"},
         success: function(response){
@@ -144,7 +144,7 @@ function load_cafetaria(){
 function fillCommandDetails(ID){
     console.log(ID);
     $.ajax({
-    url: 'include/load_portfolio.php',
+    url: 'apis/Kameo/load_portfolio.php',
     type: 'get',
     data: { "action": "retrieve", "ID": ID},
     success: function(response){
@@ -169,7 +169,7 @@ function fillCommandDetails(ID){
 
 function get_command_user(email){
     $.ajax({
-    url: 'include/command.php',
+    url: 'apis/Kameo/command.php',
     type: 'get',
     data: { "action": "list", "email": email},
     success: function(response){
@@ -245,7 +245,7 @@ function get_command_user(email){
 
 function get_message_history(){
     $.ajax({
-        url: 'include/chat_management.php',
+        url: 'apis/Kameo/chat_management.php',
         type: 'get',
         data: { "action": "list", "type": "command", "email": email},
         success: function(response){
@@ -319,7 +319,7 @@ function get_message_history(){
 
 function get_message_history_admin(emailUser){
     $.ajax({
-        url: 'include/chat_management.php',
+        url: 'apis/Kameo/chat_management.php',
         type: 'get',
         data: { "action": "list", "type": "command", "email": emailUser},
         success: function(response){
@@ -366,7 +366,7 @@ function get_message_history_admin(emailUser){
 function write_message(message, email, emailBeneficiary, type){
     if(message != ""){
         $.ajax({
-        url: 'include/chat_management.php',
+        url: 'apis/Kameo/chat_management.php',
         type: 'post',
         data: { "action": "add", "message": message, "email": email, "emailBeneficiary": emailBeneficiary, "type": type},
         success: function(response){

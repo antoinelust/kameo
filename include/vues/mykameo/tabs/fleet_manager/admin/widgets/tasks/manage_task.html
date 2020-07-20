@@ -1,0 +1,163 @@
+<div class="modal fade" id="taskManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr text-green taskManagementTitle">Ajouter une action</h4>
+						<form id="widget-taskManagement-form" action="apis/Kameo/action_company.php" role="form" method="post">
+							<div class="form-group col-sm-12">
+								<div class="col-md-12">
+									<div class="col-md-4">
+										<label for="owner">Owner</label>
+										<select title="owner" class="form-control required" name="owner">
+										</select>
+									</div>
+									<div class="col-md-4">
+										<label for="status">Statut :</label>
+										<select title="Status" class="selectpicker form-control required" name="status">
+											<option value="TO DO">To do</option>
+											<option value="DONE">Done</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<label for="company"  class="fr">Société</label>
+										<label for="company"  class="en">Company</label>
+										<label for="company"  class="nl">Company</label>
+										<select title="company" class="selectpicker form-control required" name="company">
+										</select>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="col-md-4">
+										<label for="type"  class="fr">Type</label>
+										<label for="type"  class="en">Type</label>
+										<label for="type"  class="nl">Type</label>
+										<select title="type" class="selectpicker form-control required" name="type">
+											<option value="contact">Prise de contact</option>
+											<option value="rappel">Rappel</option>
+											<option value="plan rdv">Planification de rendez-vous</option>
+											<option value="rdv">Rendez-vous</option>
+											<option value="offre">Formulation d'une offre</option>
+											<option value="offreSigned">Offre signée</option>
+											<option value="delivery">Livraison vélo</option>
+											<option value="other">Autre</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<label for="channel"  class="fr">Canal d'acquisition</label>
+										<label for="channel"  class="en">Channel</label>
+										<label for="channel"  class="nl">Channel</label>
+										<select title="channel" class="form-control required selectpicker" name="channel">
+											<option value="telephone" selected>Téléphone</option>
+											<option value="salon">Contact après visite sur salon</option>
+											<option value="site">Contact sur site internet</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="col-md-4">
+										<label for="date"  class="fr">Date</label>
+										<label for="date"  class="en">Date</label>
+										<label for="date"  class="nl">Date</label>
+										<input type="date" name="date" class="form-control required">
+									</div>
+									<div class="col-md-4">
+										<label for="reminder"  class="fr">Rappel ?</label>
+										<label for="reminder"  class="en">Reminder ?</label>
+										<label for="reminder"  class="nl">Reminder ?</label>
+										<input type="date" name="date_reminder" class="form-control ">
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="col-md-12">
+										<label for="reminder"  class="fr">Titre</label>
+										<label for="reminder"  class="en">Title</label>
+										<label for="reminder"  class="nl">Title</label>
+										<input type="text" name="title" class="form-control ">
+									</div>
+									<div class="col-md-12">
+										<label for="reminder"  class="fr">Description</label>
+										<label for="reminder"  class="en">Description</label>
+										<label for="reminder"  class="nl">Description</label>
+										<textarea class="form-control" rows="5" name="description"></textarea>
+									</div>
+								</div>
+								<input type="text" name="requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
+								<input type="text" name="action" class="form-control hidden" value="create">
+								<div class="col-sm-12">
+									<button  class="button small green button-3d rounded icon-left taskManagementSendButton" type="submit"><i class="fa fa-paper-plane"></i>Créer</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var oldChannelValue = $('#widget-taskManagement-form select[name=channel]').val();
+	$('body').on('change', '#widget-taskManagement-form select[name=channel]', function(){
+	  if ($('#widget-taskManagement-form select[name=channel]').val() != null) {
+		oldChannelValue = $('#widget-taskManagement-form select[name=channel]').val();
+	  }
+	});
+	$('#widget-taskManagement-form select[name=type]').change(function(){
+	  if($('#widget-taskManagement-form select[name=type]').val()=="contact"){
+		$('#widget-taskManagement-form select[name=channel]').val(oldChannelValue);
+
+		$('#widget-taskManagement-form label[for=channel]').addClass("required");
+		$('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
+
+		$('#widget-taskManagement-form select[name=channel]').addClass("required");
+		$('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
+
+	  }else{
+		$('#widget-taskManagement-form label[for=channel]').removeClass("required");
+		$('#widget-taskManagement-form label[for=channel]').addClass("hidden");
+
+		$('#widget-taskManagement-form select[name=channel]').addClass("hidden");
+		$('#widget-taskManagement-form select[name=channel]').removeClass("required");
+
+		$('#widget-taskManagement-form select[name=channel]').val(null);
+	  }
+	});
+	jQuery("#widget-taskManagement-form").validate({
+	  submitHandler: function(form) {
+		jQuery(form).ajaxSubmit({
+		  success: function(response) {
+			if (response.response == 'success') {
+			  $.notify({
+				message: response.message
+			  }, {
+				type: 'success'
+			  });
+			  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user_data['EMAIL'] ?>');
+			  $('#taskManagement').modal('toggle');
+			  get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);
+			  document.getElementById('widget-taskManagement-form').reset();
+			} else {
+			  $.notify({
+				message: response.message
+			  }, {
+				type: 'danger'
+			  });
+			}
+		  }
+		});
+	  }
+	});
+</script>

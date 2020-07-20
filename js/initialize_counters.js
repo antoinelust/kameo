@@ -1,6 +1,6 @@
 function initialize_counters() {
     $.ajax({
-        url: 'include/initialize_counters.php',
+        url: 'apis/Kameo/initialize_counters.php',
         type: 'post',
         data: { "email": email},
         success: function(response){

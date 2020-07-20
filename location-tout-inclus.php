@@ -245,7 +245,7 @@ include 'include/header5.php';
         var price=(ele.value);
         
         $.ajax({
-            url: 'include/get_prices.php',
+            url: 'apis/Kameo/get_prices.php',
             type: 'post',
             data: { "retailPrice": price},
             success: function(response){

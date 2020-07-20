@@ -24,7 +24,7 @@ $('document').ready(function(){
 $('body').on('click', '.markAsRead',function(){
   var that = $(this);
   $.ajax({
-    url: 'include/set_notification_read.php',
+    url: 'apis/Kameo/set_notification_read.php',
     method: 'post',
     data: {
       'ID' : $(this).parents('.notificationItem').find('.notificationId').val()
@@ -56,7 +56,7 @@ function toggle_notifications(){
 }
 function notification_set_as_read(ID){
   $.ajax({
-      url: 'include/update_notification.php',
+      url: 'apis/Kameo/update_notification.php',
       method: 'post',
       data: {
         'action' : 'setAsRead',
@@ -71,7 +71,7 @@ function notification_set_as_read(ID){
 
 function load_notifications(){
   $.ajax({
-    url: 'include/get_notifications.php',
+    url: 'apis/Kameo/get_notifications.php',
     method: 'post',
     data: {'ID': user_ID},
     success: function(response){

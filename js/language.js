@@ -46,6 +46,7 @@ function setFr() {
         data: { "setLangue": "fr"},
         success: function(response) { 
 			displayFr();
+			window.location.reload();
 		}
     });
 }
@@ -56,6 +57,7 @@ function setNl() {
         data: { "setLangue": "nl"},
         success: function(response) { 
 			displayNl();
+			window.location.reload();
 		}
     });
 }
@@ -66,6 +68,7 @@ function setEn() {
         data: { "setLangue": "en"},
         success: function(response) { 
 			displayEn();
+			window.location.reload();
 		}
     });
 }
@@ -148,7 +151,6 @@ function displayEn() {
 	});
 
     selectFirstOption("en");
-
 }
 
 function displayFr() {
@@ -291,5 +293,4 @@ function displayNl() {
     }  
     
     selectFirstOption("nl");
-
 }

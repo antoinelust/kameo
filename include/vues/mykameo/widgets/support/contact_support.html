@@ -1,0 +1,104 @@
+<div class="modal fade" id="assistance2" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="fr">Contacter l'assistance</h4>
+						<h4 class="en">Contact assistance</h4>
+						<h4 class="nl">Neem contact op met hulp</h4>
+						<p class="fr">Appelez le numéro d'urgence de votre assurance P-Vélo <br> <em class="text-green">02 / 642 45 03</em></p>
+						<p class="en">Call the P-Velo number <br> <em class="text-green">02 / 642 45 03</em></p>
+						<p class="nl">Bel het P-Velo-nummer <br> <em class="text-green">02 / 642 45 03</em></p>
+						<br>
+						<p><span class="fr">Donnez votre numéro de contrat </span>
+							<span class="en">Give your contract number </span>
+							<span class="nl">Geef je contractnummer op </span>
+							<em class="text-green" id="ContractReference"><?php
+								if(isset($contractNumber) && $contractNumber!='0' && $contractNumber!='')
+								{
+								  echo "<span style='display:block'>".$contractNumber."</span>";
+								}
+								else{
+								  echo "<span class=\"fr\"> Contactez-nous !</span><span class=\"en\">Please contact us</span><span class=\"nl\">Contacteer ons alsjeblieft</span>";
+								}
+								?></em>
+						</p>
+						<br>
+						<p class="fr">Pour nous aider à suivre votre dossier, veuillez remplir les informations ci-dessous.</p>
+						<p class="en">To help to follow the ticket, please mention the following information.</p>
+						<p class="nl">Volg de volgende informatie om het ticket te volgen.</p>
+						<form id="widget-assistance-form" action="apis/Kameo/assistance-form.php" role="form" method="post">
+							<div class="form-group">
+								<label for="widget-assistance-form-message"  class="fr">Description du problème</label>
+								<label for="widget-assistance-form-message"  class="en">Message</label>
+								<label for="widget-assistance-form-message"  class="nl">Bericht</label>
+								<textarea type="text" id="widget-assistance-form-message" name="widget-assistance-form-message" rows="5" class="form-control required"></textarea>
+							</div>
+							<div class="form-group">
+								<p class="fr">Photo du problème</p>
+								<p class="en">Picture of the issue</p>
+								<p class="nl">Beeld van het probleem</p>
+								<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+								<input type=file size=40 id="widget-assistance-form-message-attachment" name="widget-assistance-form-message-attachment">
+							</div>
+							<?php
+								if(isset($contractNumber) && $contractNumber!='0' && $contractNumber!='')
+								{
+								  echo "<input type=\"text\" class=\"hidden\" name=\"widget-assistance-form-contract\" value=\"".$contractNumber."\" />";
+								}
+								else{
+								  echo "<input type=\"text\" class=\"hidden\" name=\"widget-assistance-form-contract\"/>";
+								}
+								?>
+							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
+							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
+							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function initializeAssistance2() {
+		document.getElementById('widget-assistance-form-message').value="";
+		document.getElementById('widget-assistance-form-message-attachment').value="";
+	}
+	jQuery("#widget-assistance-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(text) {
+					if (text.response == 'success') {
+						$.notify({
+							message: text.message
+						}, {
+							type: 'success'
+						});
+					$('#assistance2').modal('toggle');
+					$('#assistance').modal('toggle');
+					} else {
+						$.notify({
+							message: text.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+</script>

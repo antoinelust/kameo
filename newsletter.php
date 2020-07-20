@@ -2,9 +2,6 @@
 include 'include/header5.php';
 ?>
 
-		
-
-
  <!-- CONTENT -->
         <section>
             <div class="container">
@@ -20,7 +17,7 @@ include 'include/header5.php';
                         
                         <!--Form inline-->
                         <div class="col-md-8 col-md-offset center">
-                            <form id="widget-contact-form" action="include/newsletter-form.php" role="form" method="post" class="form-inline">
+                            <form id="widget-contact-form" action="apis/Kameo/newsletter-form.php" role="form" method="post" class="form-inline">
                                 <div class="row">
                                     <div class="form-group" class="text-left">
                                         <label for="name" id="fr">Nom</label>

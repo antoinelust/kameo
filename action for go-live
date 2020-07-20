@@ -1,6 +1,0 @@
-ALTER TABLE `conditions` ADD `CAFETARIA` VARCHAR(1) NOT NULL AFTER `BOX_BOOKING`;
-ALTER TABLE `conditions` CHANGE `CAFETARIA` `CAFETARIA` VARCHAR(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'N';
-UPDATE conditions SET CAFETARIA='N';
-INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'SM0027', 'Vélo commandé, nous validons la demande et revenons vers vous dès que possible', 'Bike ordered, we validate the command and come back to you', 'Bike ordered, we validate the command and come back to you');
-INSERT INTO `error_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'ES0061', 'Un vélo est déjà en commande.', 'A bike is already under order.', 'A bike is already under order.');
-ALTER TABLE `client_orders` ADD `ESTIMATED_DELIVERY_DATE` DATE NULL DEFAULT NULL AFTER `STATUS`;

@@ -24,8 +24,8 @@
 
 	<link rel="shortcut icon" href="images/favicon.png">
 	<title class="fr">KAMEO Bikes | La solution complète pour vos vélos de société</title>
-	<title class="fr">KAMEO Bikes | Bike solutions for businesses</title>
-	<title class="fr">KAMEO Bikes | Fiets oplossingen voor bedrijven</title>
+	<title class="en">KAMEO Bikes | Bike solutions for businesses</title>
+	<title class="nl">KAMEO Bikes | Fiets oplossingen voor bedrijven</title>
 
 	<!-- Bootstrap Core CSS -->
 	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -218,9 +218,9 @@
                       </li>
                     </ul>
                   </li>
-                  <li class="fr"><a href="contact2.php">Contact</a></li>
-                  <li class="en"><a href="contact2.php">Contact</a></li>
-                  <li class="nl"><a href="contact2.php">Contact</a></li>
+                  <li class="fr"><a href="contact.php">Contact</a></li>
+                  <li class="en"><a href="contact.php">Contact</a></li>
+                  <li class="nl"><a href="contact.php">Contact</a></li>
                   <?php
                     $login = isset($_POST['login']) ? $_POST['login'] : isset($_SESSION['login']) ? $_SESSION['login'] : "false";
                     $userID = isset($_POST['userID']) ? $_POST['userID'] : isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL;
@@ -252,7 +252,7 @@
 						<h3 class="en">Access to My Kameo</h3>
 						<h3 class="nl">Ga naar My Kameo</h3>
 
-							<form id="user_management" class="form-transparent-grey" action="include/access_management.php" role="form" method="post">
+							<form id="user_management" class="form-transparent-grey" action="apis/Kameo/access_management.php" role="form" method="post">
 								<div class="form-group">
 									<label class="sr-only fr">Adresse mail</label>
 									<label class="sr-only en">E-mail</label>
@@ -317,7 +317,7 @@
 						<h3 class="fr">Mot de passe oublié</h3>
 						<h3 class="nl">Wachtwoord kwijt</h3>
 						<h3 class="en">Password lost</h3>
-							<form id="widget-lostPassword" class="form-transparent-grey" action="include/lostPassword.php" role="form" method="post">
+							<form id="widget-lostPassword" class="form-transparent-grey" action="apis/Kameo/lost_password.php" role="form" method="post">
 								<div class="form-group">
 									<label for="widget-update-form-email" class="fr">Adresse mail</label>
 									<label for="widget-update-form-email" class="en">E-mail</label>

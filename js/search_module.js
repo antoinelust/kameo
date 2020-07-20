@@ -328,7 +328,7 @@ function update_deposit_hour_form(){
             // 2nd step: intake and deposit buildings
             var i=0;
             $.ajax({
-                url: 'include/booking_building_form.php',
+                url: 'apis/Kameo/booking_building_form.php',
                 type: 'post',
                 data: { "email": email},
                 success: function(response) {
