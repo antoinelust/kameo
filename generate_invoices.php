@@ -50,7 +50,7 @@ function requireToVar($file){
 
 
 include 'include/connexion.php';
-$sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";
+$sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y' and CONTRACT_TYPE='leasing') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";
 
 
 if(isset($company)){

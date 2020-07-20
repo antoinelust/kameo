@@ -206,7 +206,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $dateAfterString=$dateAfter->format('Y-m-d');
             
             include 'include/connexion.php';
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$dateAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$dateAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and CONTRACT_TYPE='leasing' and STAANN !='D'";
             error_log("SQL6 :".$sql2."\n", 3, "generate_invoices.log");    
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;

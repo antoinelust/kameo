@@ -20,6 +20,7 @@ offres/
 images_bikes/
 images/
 include/logs.txt
+include/meteo.php
 $ git status
 [...]
 # Untracked files:
