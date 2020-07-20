@@ -2,7 +2,6 @@
 	header("Content-Type: text/html");
 	include 'include/alto-router/alto-router.php';
 	$router = new AltoRouter();
-	$router->setBasePath('');
 	
 	/** MATCH ANY EXTENSION ADDED ROUTE USING [ext] **/
 	$router->addMatchTypes(array('ext' => '((\.).+)?$'));
@@ -58,12 +57,14 @@
 	$router->map('GET','/blog[ext]', 'pages/blog.php');
 	$router->map('GET','/blog_Infrastructures-cyclables-a-Liege-et-a-Bruxelles-pendant-le-deconfinement-et-apres[ext]', 'pages/blog_Infrastructures-cyclables-a-Liege-et-a-Bruxelles-pendant-le-deconfinement-et-apres.php');
 	
+	/** 403 **/
+	$router->map('GET','/403[ext]', 'pages/403.php');
+	
 	$match = $router->match();
 	if($match) {
 	  require $match['target'];
 	}
 	else {
-	  header("HTTP/1.0 404 Not Found");
 	  require 'pages/404.php';
 	}
 ?>

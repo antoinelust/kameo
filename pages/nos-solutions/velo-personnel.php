@@ -252,7 +252,7 @@ include 'include/header5.php';
 						<h3 id="fr">Mot de passe oublié</h3>
                         <h3 id="en">Password lost</h3>
                         <h3 id="nl">Wachtwoord kwijt</h3>
-						<form id="widget-lostPassword-form" action="include/lostPassword.php" role="form" method="post">
+						<form id="widget-lostPassword-form" action="apis/Kameo/lostPassword.php" role="form" method="post">
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <label for="subject"  id="fr">Nouveau mot de passe</label>

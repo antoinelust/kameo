@@ -220,7 +220,7 @@ include 'include/header5.php';
 <div class="modal fade" id="detail" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
-            <form id="cash4bike-form-contact" action="include/contact_cash4bike.php" role="form" method="post">
+            <form id="cash4bike-form-contact" action="apis/Kameo/contact_cash4bike.php" role="form" method="post">
             
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

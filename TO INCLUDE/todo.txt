@@ -1,0 +1,8 @@
+generate_bill.php - pour préparer les données et faire l'insert en bdd avec initiate_location_bill.php
+initiate_location_bill - pour générer le pdf
+generate_invoices.php - pour préparer les données et faire l'insert en bdd avec facture.php
+factures.php - pour générer le pdf
+
+booking_send_automatic_mails.php - Feature à inclure pour l'envoi automatique de rappel de booking (à remplacer par notif push desktop, attention au polyfill)
+cookie_management.php - GDPR, feauture pas finie
+question_command.php - pour le chat, tu reçois un mail pour la commande

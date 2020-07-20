@@ -1,8 +1,16 @@
 Options -Indexes
-#ErrorDocument 404 https://www.kameobikes.com/404.php
-#ErrorDocument 403 https://www.kameobikes.com/403.php
+ErrorDocument 404 http://%{SERVER_NAME}/404
+ErrorDocument 403 http://%{SERVER_NAME}/403
+
+#<IfModule mod_headers.c>
+#	Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+#	Header set X-Content-Type-Options "nosniff"
+#</IfModule>
 
 RewriteEngine On
+#RewriteCond %{HTTPS} !=on
+#RewriteRule . https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . /index.php [L]

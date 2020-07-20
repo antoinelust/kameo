@@ -1,4 +1,5 @@
 <?php 
+header("HTTP/1.0 404 Not Found");
 include 'include/header5.php';
 ?>
 		
@@ -6,7 +7,7 @@ include 'include/header5.php';
 window.addEventListener("DOMContentLoaded", function(event) {
     
     $.ajax({
-            url: 'include/get_statistics.php',
+            url: 'apis/Kameo/get_statistics.php',
             type: 'post',
             success: function(response){
                 if (response.response == 'error') {
@@ -113,7 +114,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
 			<div class="modal-body">
 				<div class="row text-left">
 					<div class="col-md-12">
-						<form id="widget-contact-form" action="include/contact-form.php" role="form" method="post">
+						<form id="widget-contact-form" action="apis/contact-form.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                         <label for="name" id="fr">Nom</label>
