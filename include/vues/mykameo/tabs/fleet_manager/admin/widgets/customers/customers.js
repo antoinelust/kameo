@@ -70,7 +70,7 @@ function get_company_listing(type) {
     var email= "<?php echo $user_data['EMAIL']; ?>";
     $.ajax({
       url: 'apis/Kameo/get_companies_listing.php',
-      type: 'post',
+      type: 'get',
       data: {"type": type, "filter": filter},
       success: function(response){
         if(response.response == 'error') {

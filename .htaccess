@@ -13,4 +13,4 @@ RewriteEngine On
 
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule . /index.php [L]
+RewriteRule . kameov3/index.php [L]
