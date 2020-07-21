@@ -25,8 +25,6 @@ $token = getBearerToken(); //Defined in authentication.php
             
             if($action == 'list'){
                 include 'list_companies.php';
-            }else if($action == 'graphic'){
-                include 'graphic_companies.php';
             }
             
 			//if(in_array("fleetmanager", $permissions, TRUE))	//If the array $permissions contains the "fleetmanager" permission

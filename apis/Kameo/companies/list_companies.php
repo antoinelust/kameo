@@ -2,9 +2,10 @@
     include '../connexion.php';   
 
 
-    $company=isset($_GET['company']) ? $mysqli->real_escape_string($_GET['company']) : "*";
-    $type=isset($_GET['type']) ? $mysqli->real_escape_string($_GET['type']) : NULL;    
-    $filter=isset($_GET['filter']) ? $mysqli->real_escape_string($_GET['filter']) : NULL;    
+    $company=isset($_POST['company']) ? $mysqli->real_escape_string($_POST['company']) : "*";
+    $type=isset($_POST['type']) ? $mysqli->real_escape_string($_POST['type']) : NULL;    
+    $filter=isset($_POST['filter']) ? $mysqli->real_escape_string($_POST['filter']) : NULL;    
+
 
     if($type!="*" && $type != NULL){
         $stmt = $mysqli->prepare("SELECT * from companies WHERE 1 AND TYPE='?' ORDER BY INTERNAL_REFERENCE");

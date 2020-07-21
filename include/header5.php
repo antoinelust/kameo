@@ -32,7 +32,7 @@
 	<link href="vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 	<link href="vendor/animateit/animate.min.css" rel="stylesheet">
 
-	<!-- vendor css -->
+	<!-- vendor/ css -->
 	<link href="vendor/owlcarousel/owl.carousel.css" rel="stylesheet">
 	<link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 
