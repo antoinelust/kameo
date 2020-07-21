@@ -13,6 +13,6 @@ RewriteEngine On
 
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
-
 RewriteRule . /index.php [L]
 
+RewriteRule ^pages/(.*)$ /$1 [R=301,NC,L]
