@@ -31,6 +31,15 @@ if (authenticate($token))	//If token exist in databases
                 }
             }
             
+            if($action == 'graphic'){
+                if(in_array("admin", $permissions, TRUE)){
+                    header("HTTP/1.0 200 Ok");                    
+                    include 'graphic_companies.php';
+                }else{
+                    error_message('401');
+                }
+            }
+            
 			//if(in_array("fleetmanager", $permissions, TRUE))	//If the array $permissions contains the "fleetmanager" permission
 				/*if(!empty($_GET["myGETvar"]))
 				{
