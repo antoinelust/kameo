@@ -11,7 +11,7 @@ $userID = $_POST["userID"];
 $UserPassword = $_POST["password"];
 
 
-$sql = "SELECT * FROM customer_referential where EMAIL='$userID'";
+$sql = "SELECT ID, PASSWORD, TOKEN, STAANN FROM customer_referential where EMAIL='$userID'";
 
 if ($conn->query($sql) === FALSE) {
 	$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -36,6 +36,7 @@ if (password_verify($UserPassword, $row["PASSWORD"])) {
 	$_SESSION['ID'] = $row['ID']; 
 	$_SESSION['userID']=$userID;
 	$_SESSION['UserPassword']=$UserPassword;
+	$_SESSION['bearerToken']=$row['TOKEN'];
 }
 else{
 	errorMessage("ES0007");

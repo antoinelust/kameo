@@ -138,4 +138,37 @@ function last_day_month($month){
     return $lastDay[($month-1)];
 }
 
+function handle_error_sql($sql, $conn){
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $sql->error);
+        echo json_encode($response);
+        die;
+    }
+}
+
+function error_message($type){
+	switch($type)
+	{
+		case '401':
+			header("HTTP/1.0 401 Unauthorized");
+            $response = array ('error'=>'invalid_token', 'error_message'=> 'The access token is invalid');
+            echo json_encode($response);
+            die;
+			break;
+		case '403':
+			header("HTTP/1.0 403 Forbidden");
+            $response = array ('error'=>'insufficient_privileges', 'error_message'=> "The access token doesn't allow this right");
+            echo json_encode($response);
+            die;
+			break;
+		case '405':
+			header("HTTP/1.1 405 Method Not Allowed");
+            $response = array ('error'=>'invalid_token', 'error_message'=> 'The access token is invalid');
+            echo json_encode($response);
+            die;            
+			break;
+    }
+}
+
+
 ?>

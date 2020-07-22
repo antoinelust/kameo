@@ -320,6 +320,7 @@ function cancelBooking(bookingID){
 
 
 function getHistoricBookings() {
+    console.log("coucou");
     $.ajax({
         url: 'apis/Kameo/get_historic_bookings.php',
         type: 'post',
