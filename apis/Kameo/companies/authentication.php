@@ -46,16 +46,19 @@ function authenticate($token){
     $mysqli->close();
 }
 
-function get_access_rights($token){
+function get_user_permissions($token){
     include '../connexion.php';
     $stmt = $mysqli->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
     $stmt->bind_param("s", $token);
-    $stmt->execute();
-    $result = $stmt->get_result();  
-    $resultat = $result->mysqli_fetch_assoc();
+    $stmt->execute();    
+    $stmt->bind_result($permissions);
+    $stmt->fetch();
     
-    return ($result->num_rows==1)?$resultat['ACCESS_RIGHTS']:false;
+    $permissions=explode(",", $permissions);
     
+    return $permissions;
+    
+    $stmt->close();    
     $mysqli->close();    
 }
 
