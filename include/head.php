@@ -1,5 +1,6 @@
 <?php if(!isset($_SESSION))
     session_start(); ?>
+<?php header("Content-Security-Policy: default-src "."http://".$_SERVER['SERVER_NAME']." "."https://".$_SERVER['SERVER_NAME']."; script-src 'self' 'unsafe-inline' https://www.google.com/ https://www.googletagmanager.com/ https://www.googletagmanager.com/ https://www.gstatic.com/ https://static.hotjar.com/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self'; font-src 'self' https://fonts.gstatic.com ;"); ?>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">

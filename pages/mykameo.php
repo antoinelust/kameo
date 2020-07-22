@@ -11,7 +11,6 @@ $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
 require_once 'include/i18n/i18n.php';
 include 'apis/Kameo/connexion.php';
-include 'apis/Kameo/authentication.php';
 
 $i18n = new i18n('lang/lang_{LANGUAGE}.ini'); //french by defaut
 $i18n->init();
@@ -37,14 +36,11 @@ echo '<style media="screen">
   const feedback = "'.$feedback.'";
 </script>';
 
-
-$token = getBearerToken(); //Defined in authentication.php
-if (!authenticate($token))	//If token is not defined
-{
+if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected
   //@TODO: Replace email chech with authentication token
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE TOKEN='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE EMAIL='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -57,7 +53,7 @@ if (!authenticate($token))	//If token is not defined
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
   <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
   <script type="text/javascript" src="js/addons/chart.js/dist/Chart.min.js" charset="UTF-8"></script>
-  <script src="js/OpenLayers/OpenLayers.js"></script>
+  <script src="js/addons/openlayers/OpenLayers.js"></script>
   <script type="text/javascript" src="js/global_functions.js"></script>
   <script type="text/javascript" src="js/addons/datatables/datatables.min.js"></script>
   <script type="text/javascript" src="js/load_client_conditions.js"></script>
