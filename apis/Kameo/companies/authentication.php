@@ -36,19 +36,19 @@ function getBearerToken() {
 
 function authenticate($token){
     include '../connexion.php';
-    $stmt = $mysqli->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
+    $stmt = $conn->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
     $stmt->bind_param("s", $token);
     $stmt->execute();
     $result = $stmt->get_result();    
     
     return ($result->num_rows==1)?true:false;
     
-    $mysqli->close();
+    $conn->close();
 }
 
 function get_user_permissions($token){
     include '../connexion.php';
-    $stmt = $mysqli->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
+    $stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
     $stmt->bind_param("s", $token);
     $stmt->execute();    
     $stmt->bind_result($permissions);
@@ -59,7 +59,7 @@ function get_user_permissions($token){
     return $permissions;
     
     $stmt->close();    
-    $mysqli->close();    
+    $conn->close();    
 }
 
 ?>
