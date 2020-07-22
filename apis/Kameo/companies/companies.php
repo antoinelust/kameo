@@ -7,9 +7,9 @@ header('Content-type: application/json');
 header('WWW-Authenticate: Bearer realm="DefaultRealm"');
 header('Expires: ' . gmdate('r', 0));
 
-//include '../globalfunctions.php';
+include '../globalfunctions.php';
 //create and inclure error_messages.php file containing error messages to return as well as headers as for example: header('HTTP/1.1 401 Unauthorized error="invalid_token", error_description="The access token is invalid."');
-include 'authentication.php';
+include '../authentication.php';
 
 //CHECK AUTH AND PERMS HERE:
 $token = getBearerToken(); //Defined in authentication.php
@@ -27,8 +27,7 @@ if (authenticate($token))	//If token exist in databases
                     header("HTTP/1.0 200 Ok");                    
                     include 'list_companies.php';
                 }else{
-                    header("HTTP/1.0 401 Unauthorized");
-                    break;
+                    error_message('401');
                 }
             }
             
@@ -52,9 +51,9 @@ if (authenticate($token))	//If token exist in databases
 				}*/
 			break;
 		default:
-			header("HTTP/1.1 405 Method Not Allowed");
+                    error_message('405');
 			break;
 	}
 }else
-header("HTTP/1.0 403 Forbidden");
+    error_message('401');
 ?>

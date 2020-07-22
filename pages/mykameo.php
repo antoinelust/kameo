@@ -10,6 +10,7 @@ $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 require_once 'include/i18n/i18n.php';
 include 'apis/Kameo/connexion.php';
 include 'include/header5.php';
+include 'apis/Kameo/authentication.php';
 
 $i18n = new i18n('lang/lang_{LANGUAGE}.ini'); //french by defaut
 $i18n->init();
@@ -28,7 +29,10 @@ echo '<style media="screen">
   const feedback = "'.$feedback.'";
 </script>';
 
-if($token==NULL){ //Not connected
+
+$token = getBearerToken(); //Defined in authentication.php
+if (!authenticate($token))	//If token is not defined
+{
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected
   //@TODO: Replace email chech with authentication token

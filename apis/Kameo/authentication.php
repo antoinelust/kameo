@@ -30,24 +30,32 @@ function getBearerToken() {
         if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
             return $matches[1];
         }
+    }else{
+        if(!empty($_SESSION['bearerToken'])){
+            return $_SESSION['bearerToken'];
+        }
     }
     return null;
 }
 
 function authenticate($token){
-    include '../connexion.php';
-    $stmt = $conn->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
-    $stmt->bind_param("s", $token);
-    $stmt->execute();
-    $result = $stmt->get_result();    
-    
-    return ($result->num_rows==1)?true:false;
+    if($token){
+        include 'connexion.php';
+        $stmt = $conn->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $result = $stmt->get_result();    
+
+        return ($result->num_rows==1)?true:false;
+    }else{
+        return false;
+    }
     
     $conn->close();
 }
 
 function get_user_permissions($token){
-    include '../connexion.php';
+    include 'connexion.php';
     $stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
     $stmt->bind_param("s", $token);
     $stmt->execute();    
