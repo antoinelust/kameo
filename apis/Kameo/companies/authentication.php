@@ -33,4 +33,30 @@ function getBearerToken() {
     }
     return null;
 }
+
+function authenticate($token){
+    include '../connexion.php';
+    $stmt = $mysqli->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $result = $stmt->get_result();    
+    
+    return ($result->num_rows==1)?true:false;
+    
+    $mysqli->close();
+}
+
+function get_access_rights($token){
+    include '../connexion.php';
+    $stmt = $mysqli->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $result = $stmt->get_result();  
+    $resultat = $result->mysqli_fetch_assoc();
+    
+    return ($result->num_rows==1)?$resultat['ACCESS_RIGHTS']:false;
+    
+    $mysqli->close();    
+}
+
 ?>

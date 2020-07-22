@@ -1,7 +1,6 @@
 <?php 
     include '../connexion.php';   
 
-
     $company=isset($_POST['company']) ? $mysqli->real_escape_string($_POST['company']) : "*";
     $type=isset($_POST['type']) ? $mysqli->real_escape_string($_POST['type']) : NULL;    
     $filter=isset($_POST['filter']) ? $mysqli->real_escape_string($_POST['filter']) : NULL;    
@@ -18,9 +17,11 @@
 
     $response['companiesNumber'] = $result->num_rows;
 
+
     $i=0;
     $response['response']="success";
     while($row = $result->fetch_assoc()){
+        
         $response['company'][$i]['ID']=$row['ID'];
         $response['company'][$i]['companyName']=$row['COMPANY_NAME'];
         $currentCompany=$row['INTERNAL_REFERENCE'];
@@ -56,6 +57,7 @@
                 $bikeAccessStatus="KO";
             }
         }
+                
 
         $sql3="SELECT * from customer_building_access where EMAIL in (select EMAIL from customer_referential where COMPANY='$internalReference') and BUILDING_CODE in (select BUILDING_REFERENCE FROM building_access where COMPANY='$internalReference')";
         if ($mysqli->query($sql3) === FALSE) {
@@ -108,9 +110,12 @@
             $HEU_MAJ=$resultat6['HEU_MAJ'];
         }
         $response['company'][$i]['HEU_MAJ'] = $HEU_MAJ;
+        
         $i++;
     }
 
+
+    $result->free();
     $stmt->close();
     $mysqli->close();                
 
