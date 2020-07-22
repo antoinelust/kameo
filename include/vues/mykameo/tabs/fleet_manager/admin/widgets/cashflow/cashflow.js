@@ -1,4 +1,25 @@
+	$(".addCost").click(function() {
+		$('#widget-costsManagement-form input').attr("readonly", false);
+		$('#widget-costsManagement-form textarea').attr("readonly", false);
+		$('#widget-costsManagement-form select').attr("readonly", false);
+		$('.costManagementTitle').text("Ajouter un coût");
+		$('.costManagementSendButton').removeClass("hidden");
+		document.getElementById('widget-costsManagement-form').reset();
+		$('.costManagementSendButton').text("Ajouter");
 
+	});
+	$(".retrieveCost").click(function() {
+		retrieve_cost(this.name, "retrieve");
+		$('.costManagementTitle').text("Consulter un coût");
+		$('.costManagementSendButton').addClass("hidden");
+	});
+	$(".updateCost").click(function() {
+		retrieve_cost(this.name, "update");
+		$('.costManagementTitle').text("Mettre à jour un coût");
+		$('.costManagementSendButton').removeClass("hidden");
+		$('.costManagementSendButton').text("Mettre à jour");
+	});
+				
   //Module CASHFLOW ==> Cout ==> retrieve cost
   function retrieve_cost(ID, action){
     $.ajax({
@@ -45,5 +66,80 @@
           }
         }
       }
+    });
+  }
+  function generateCashGraphic()
+  {
+	  $.ajax({
+        url: 'apis/Kameo/offer_management.php',
+        type: 'get',
+        data: { "graphics": "Y", action: "retrieve"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                var threeYearsFromNow = new Date();
+                threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
+                var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Contrats signés',
+                            borderColor: 'rgba(44, 132, 109, 0.5)',
+                            backgroundColor:'rgba(44, 132, 109, 0)',
+                            data: response.arrayContracts
+                        },{
+                            label: 'Offres',
+                            borderColor: 'rgba(145, 145, 145, 0.5)',
+                            backgroundColor:'rgba(145, 145, 145, 0)',
+                            data: response.arrayOffers
+                        },{
+                            label: 'Chiffre d\'affaire',
+                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            backgroundColor:'rgba(60, 179, 149, 0)',
+                            data: response.totalIN
+                        },{
+                            label: 'Frais',
+                            borderColor: 'rgba(176, 0, 0, 0.5)',
+                            backgroundColor:'rgba(176, 0, 0, 0)',
+                            data: response.arrayCosts
+                        },{
+                            label: 'Cash flow',
+                            borderColor: 'rgba(60, 179, 149, 0.5)',
+                            backgroundColor:'rgba(60, 179, 149, 0.5)',
+                            data: response.arrayFreeCashFlow
+                        }],
+                    labels: response.arrayDates
+
+                    },
+
+                    options: {
+                        scales: {
+                            xAxes:[{
+                                ticks:{
+                                    max: "2020-12-19"
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        elements: {
+                            line: {
+                                tension: 0
+                            }
+                        }
+
+                    }
+                });
+				myChart.update();
+            }
+        }
     });
   }

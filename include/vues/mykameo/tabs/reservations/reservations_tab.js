@@ -49,8 +49,6 @@ function initializeUpdateReservation(reservationID){
 function get_reservations_listing(bike, date_start, date_end){
         
     var frameNumber='';
-    
-    
     var d = new Date(date_start),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),

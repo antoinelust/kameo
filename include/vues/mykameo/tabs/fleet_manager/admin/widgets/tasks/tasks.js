@@ -32,10 +32,10 @@ function generateTasksGraphic(company, owner, numberOfDays){
 	  }
 	  else {
         var ctx = document.getElementById('myChart2').getContext('2d');
-        if (myChart2 != undefined)
-          myChart2.destroy();
+        if (typeof myChart4 !== 'undefined')
+          myChart4.destroy();
 
-        myChart2 = new Chart(ctx, {
+        myChart4 = new Chart(ctx, {
           type: 'line',
           data: {
             datasets: [{
@@ -108,23 +108,23 @@ function generateTasksGraphic(company, owner, numberOfDays){
           }
         });
         if(response.presenceContacts=="1")
-          myChart2.data.datasets[1].hidden=false;
+          myChart4.data.datasets[1].hidden=false;
         if(response.presenceReminder=="1")
-          myChart2.data.datasets[2].hidden=false;
+          myChart4.data.datasets[2].hidden=false;
         if(response.presenceRDVPlan=="1")
-          myChart2.data.datasets[3].hidden=false;
+          myChart4.data.datasets[3].hidden=false;
         if(response.presenceRDV=="1")
-          myChart2.data.datasets[4].hidden=false;
+          myChart4.data.datasets[4].hidden=false;
         if(response.presenceOffers=="1")
-          myChart2.data.datasets[5].hidden=false;
+          myChart4.data.datasets[5].hidden=false;
         if(response.presenceOffersSigned=="1")
-          myChart2.data.datasets[6].hidden=false;
+          myChart4.data.datasets[6].hidden=false;
         if(response.presenceDelivery=="1")
-          myChart2.data.datasets[7].hidden=false;
+          myChart4.data.datasets[7].hidden=false;
         if(response.presenceOther=="1")
-          myChart2.data.datasets[8].hidden=false;
+          myChart4.data.datasets[8].hidden=false;
 
-        myChart2.update();
+        myChart4.update();
       }
     }
   });
@@ -335,7 +335,7 @@ function retrieve_task(ID, action = "retrieve"){
                     $('#widget-taskManagement-form select').attr("readonly", false);
 
                 }            
-                console.log(response);
+
                 
                 $('#widget-taskManagement-form input[name=title]').val(response.action.title);
                 $('#widget-taskManagement-form input[name=date]').val(response.action.date.substr(0,10));                
@@ -350,8 +350,6 @@ function retrieve_task(ID, action = "retrieve"){
                 }else{
                     $('#widget-taskManagement-form input[name=date_reminder]').val("");
                 }
-                
-                
                 $('.taskManagementTitle').text("Informations sur l'action");
                 $('.taskManagementSendButton').addClass("hidden");
             }

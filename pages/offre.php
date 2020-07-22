@@ -1,29 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
 <?php 
-include 'include/header5.php';
-
-$brand=$_GET['brand'];
-$model=$_GET['model'];
-$frameType=$_GET['frameType'];
-include 'include/connexion.php';
+	include 'include/head.php';
+	header("HTTP/1.0 404 Not Found");
+?>
+<?php
+$brand=isset($_GET['brand']) ? $_GET['brand']:NULL;
+$model=isset($_GET['model']) ? $_GET['model']:NULL;
+$frameType=isset($_GET['frameType']) ? $_GET['frameType']:NULL;
+include 'apis/Kameo/connexion.php';
 $brandUPPER=strtoupper($brand);
 $modelUPPER=strtoupper($model);
 $frameTypeUPPER=strtoupper($frameType);
 
-$sql="SELECT *  FROM bike_catalog WHERE UPPER(BRAND)='$brandUPPER' AND UPPER(MODEL)='$modelUPPER' AND UPPER(FRAME_TYPE)='$frameTypeUPPER'";
+$sql="SELECT * FROM bike_catalog WHERE UPPER(BRAND)='$brandUPPER' AND UPPER(MODEL)='$modelUPPER' AND UPPER(FRAME_TYPE)='$frameTypeUPPER'";
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
 }
 $result = mysqli_query($conn, $sql);        
 $row = mysqli_fetch_assoc($result);
-
-
 ?>
-
-		
-
-
- <!-- CONTENT -->
+<body class="wide">
+	<!-- WRAPPER -->
+	<div class="wrapper">
+		<?php include 'include/topbar.php'; ?>
+		<?php include 'include/header.php'; ?>
         <section>
             <div class="container">
                 <div class="row">
@@ -34,9 +36,7 @@ $row = mysqli_fetch_assoc($result);
                         <dl class="dl">
 							<dt>Caractéristiques techniques</dt>
 							<dd>Voir le <ins><a href="<?php echo $row['LINK']; ?>" target="_blank">site de la marque</a></ins>.</dd>
-						</dl>
-                        
-                                          
+						</dl>               
                     </div>
                     <div class="col-md-6">
                     	<div class="heading heading text-left m-b-20">
@@ -219,61 +219,21 @@ $row = mysqli_fetch_assoc($result);
                             </script>
 
                             </div>
-                        
                     </div>
                 </div>
             </div>
         </section>
         <!-- END: CONTENT -->
-        
-       
-  
-        
-			<!-- FOOTER -->
-		<footer class="background-dark text-grey" id="footer">
-	    <div class="footer-content">
-	        <div class="container">
-	        
-	        <br><br>
-	        
-	            <div class="row text-center">
-	            
-	           <!--
-					<div class="button green full-rounded"><a href="newsletter.php" class="text-light text-bold">Newsletter</a> | <a href="faq.php" class="text-green text-bold">FAQ</a></div>
-					-->
-	            
-	                <div class="copyright-text text-center"><ins>Kameo Bikes SPRL</ins> 
-						<br>BE 0681.879.712 
-						<br>+32 498 72 75 46 </div>
-						<br>
-	                <div class="social-icons center">
-								<ul>
-									<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-									
-									<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-									
-								</ul>
-					</div>
-					
-					<div class="copyright-text text-center"><a href="blog.php" class="text-green text-bold">Le blog</a> | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a></div>
-					
-					<br>
-					<br>
-					
-	            </div>
-	        </div>
-	    </div>
-	</footer>
-	<!-- END: FOOTER -->
+		<?php include 'include/footer.php'; ?>
 	</div>
 	<!-- END: WRAPPER -->
 
 
 	<!-- Theme Base, Components and Settings -->
-	<script src="js/theme-functions.js"></script>
+	<script src="/js/theme-functions.js"></script>
 
 	<!-- Custom js file -->
-	<script src="js/language.js"></script>
+	<script src="/js/language.js"></script>
 
 
 

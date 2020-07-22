@@ -47,7 +47,7 @@
 	  <div class="col-md-4">
 		<div class="icon-box medium fancy">
 		  <div class="icon bold" data-animation="pulse infinite">
-			<a data-toggle="modal" data-target="#conditionListing" href="#" >
+			<a data-toggle="modal" data-target="#conditionListing" id="settings" href="#" >
 			  <i class="fa fa-cog"></i>
 			</a>
 		  </div>

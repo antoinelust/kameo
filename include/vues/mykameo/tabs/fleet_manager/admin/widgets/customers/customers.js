@@ -1,9 +1,92 @@
+window.addEventListener("DOMContentLoaded", function(event) {
+	document.getElementById('clientManagement').classList.remove("hidden");
+});
+
+$('.clientManagerClick').click(function(){
+      get_company_listing('*');
+      generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
+  });
+  
+  function get_company_boxes(company){
+
+
+    $.ajax({
+        url: 'apis/Kameo/box_management.php',
+        type: 'get',
+        data: {"action": "list", "company": company},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                var i=0;
+                var dest="<a class=\"button small green button-3d rounded icon-right addBox\" name=\""+company+"\" data-target=\"#boxManagement\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une borne</span></a>";
+                if(response.boxesNumber>0){
+                    var temp="<table class=\"table\"><tbody><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Reference</span><span class=\"nl-inline\">Reference</span></th><th scope=\"col\"><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th scope=\"col\"><span class=\"fr-inline\">Facturation automatique</span><span class=\"en-inline\">Automatic billing ?</span><span class=\"nl-inline\">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope=\"col\"><span class=\"fr-inline\">Montant leasing</span><span class=\"en-inline\">Leasing Price</span><span class=\"nl-inline\">Leasing Price</span></th><th></th></tr></thead>";
+                    dest=dest.concat(temp);
+                    while (i < response.boxesNumber){
+                        if(response.box[i].automatic_billing==null || response.box[i].automatic_billing=="N"){
+                            automatic_billing='N';
+                        }else{
+                            automatic_billing='Y';
+                        }
+
+                        if(response.box[i].amount==null){
+                            amount="0 €/mois";
+                        }else{
+                            amount=response.box[i].amount+" €/mois";
+                        }
+                        if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].start != null){
+                            var start="<span>"+response.box[i].start.shortDate()+"</span>";
+                        }else if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].start == null){
+                            var start="<span class=\"text-red\">N/A</span>";
+                        }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].start == null){
+                            var start="<span>N/A</span>";
+                        }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].start != null){
+                            var start="<span class=\"text-red\">"+response.box[i].start.shortDate()+"</span>";
+                        }else{
+                            var start="<span class=\"text-red\">ERROR</span>";
+                        }
+                        if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].end != null){
+                            var end="<span>"+response.box[i].end.shortDate()+"</span>";
+                        }else if(response.box[i].company != 'KAMEO' && response.box[i].company != 'KAMEO VELOS TEST' && response.box[i].end == null){
+                            var end="<span class=\"text-red\">N/A</span>";
+                        }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].end == null){
+                            var end="<span>N/A</span>";
+                        }else if((response.box[i].company == 'KAMEO' && response.box[i].company == 'KAMEO VELOS TEST') && response.box[i].end != null){
+                            var end="<span class=\"text-red\">"+response.box[i].end.shortDate()+"</span>";
+                        }else{
+                            var end="<span class=\"text-red\">ERROR</span>";
+                        }
+                        temp="<tr><td><a href=\"#\" class=\"text-green retrieveBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">"+response.box[i].id+"</a></td><td>"+response.box[i].reference+"</td><td>"+response.box[i].model+"</td><td>"+automatic_billing+"</td><td>"+start+"</td><td>"+end+"</td><td>"+amount+"</td><td><a href=\"#\" class=\"text-green updateBox\" data-target=\"#boxManagement\" name=\""+response.box[i].id+"\" data-toggle=\"modal\">Mettre à jour </a></th></tr>";
+                        dest=dest.concat(temp);
+                        i++;
+                    }
+                    var temp="</tbody></table>";
+                    dest=dest.concat(temp);
+                }
+                $('#companyBoxes').html(dest);
+                $('.addBox').click(function(){
+                    add_box(this.name);
+                });
+                $('.updateBox').click(function(){
+                    update_box(this.name);
+                });
+                $('.retrieveBox').click(function(){
+                    retrieve_box(this.name);
+                });
+            }
+        }
+    })
+
+}
+
 //FleetManager: Gérer les clients | Displays the companies graph by calling get_companies_listing.php and creating it
 function generateCompaniesGraphic(dateStart, dateEnd){
 
   var dateStartString=dateStart.getFullYear()+"-"+("0" + (dateStart.getMonth() + 1)).slice(-2)+"-"+("0" + dateStart.getDate()).slice(-2);
   var dateEndString=dateEnd.getFullYear()+"-"+("0" + (dateEnd.getMonth() + 1)).slice(-2)+"-"+("0" + dateEnd.getDate()).slice(-2);
-
+  
   $.ajax({
     url: 'apis/Kameo/get_companies_listing.php',
     type: 'get',
@@ -16,7 +99,7 @@ function generateCompaniesGraphic(dateStart, dateEnd){
         var ctx = document.getElementById('myChart3').getContext('2d');
         if (myChart3 != undefined)
           myChart3.destroy();
-
+			console.log(myChart3);
         var presets=window.chartColors;
 
         var myChart3 = new Chart(ctx, {
@@ -60,7 +143,7 @@ function generateCompaniesGraphic(dateStart, dateEnd){
         });
         myChart3.update();
       }
-    }
+	}
   });
 }
 function get_company_listing(type) {
@@ -891,7 +974,7 @@ function list_contracts_offers(company) {
                 }
                 var temp="</tobdy></table>";
                 dest=dest.concat(temp);
-                document.getElementById('offersListingSpan').innerHTML = dest;
+                document.getElementById('cashListingSpan').innerHTML = dest;
 
                 var i=0;
                 var dest="";
@@ -938,117 +1021,10 @@ function list_contracts_offers(company) {
                     $('.offerManagementSendButton').text("Mettre à jour")
 
                 });
-
-
-                $(".addCost").click(function() {
-                    $('#widget-costsManagement-form input').attr("readonly", false);
-                    $('#widget-costsManagement-form textarea').attr("readonly", false);
-                    $('#widget-costsManagement-form select').attr("readonly", false);
-                    $('.costManagementTitle').text("Ajouter un coût");
-                    $('.costManagementSendButton').removeClass("hidden");
-                    document.getElementById('widget-costsManagement-form').reset();
-                    $('.costManagementSendButton').text("Ajouter")
-
-                });
-                $(".retrieveCost").click(function() {
-                    retrieve_cost(this.name, "retrieve");
-                    $('.costManagementTitle').text("Consulter un coût");
-                    $('.costManagementSendButton').addClass("hidden");
-                });
-                $(".updateCost").click(function() {
-                    retrieve_cost(this.name, "update");
-                    $('.costManagementTitle').text("Mettre à jour un coût");
-
-                    $('.costManagementSendButton').removeClass("hidden");
-                    $('.costManagementSendButton').text("Mettre à jour")
-
-                });
-
-
                 displayLanguage();
-
             }
         }
     })
-
-
-
-
-
-    $.ajax({
-        url: 'apis/Kameo/offer_management.php',
-        type: 'get',
-        data: { "graphics": "Y", action: "retrieve"},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-                var threeYearsFromNow = new Date();
-                threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
-                var maxXAxis=threeYearsFromNow.toISOString().split('T')[0];
-
-                var ctx = document.getElementById('myChart').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        datasets: [{
-                            label: 'Contrats signés',
-                            borderColor: 'rgba(44, 132, 109, 0.5)',
-                            backgroundColor:'rgba(44, 132, 109, 0)',
-                            data: response.arrayContracts
-                        },{
-                            label: 'Offres',
-                            borderColor: 'rgba(145, 145, 145, 0.5)',
-                            backgroundColor:'rgba(145, 145, 145, 0)',
-                            data: response.arrayOffers
-                        },{
-                            label: 'Chiffre d\'affaire',
-                            borderColor: 'rgba(60, 179, 149, 0.5)',
-                            backgroundColor:'rgba(60, 179, 149, 0)',
-                            data: response.totalIN
-                        },{
-                            label: 'Frais',
-                            borderColor: 'rgba(176, 0, 0, 0.5)',
-                            backgroundColor:'rgba(176, 0, 0, 0)',
-                            data: response.arrayCosts
-                        },{
-                            label: 'Cash flow',
-                            borderColor: 'rgba(60, 179, 149, 0.5)',
-                            backgroundColor:'rgba(60, 179, 149, 0.5)',
-                            data: response.arrayFreeCashFlow
-                        }],
-                    labels: response.arrayDates
-
-                    },
-
-                    options: {
-                        scales: {
-                            xAxes:[{
-                                ticks:{
-                                    max: "2020-12-19"
-                                }
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                        },
-                        elements: {
-                            line: {
-                                tension: 0
-                            }
-                        }
-
-                    }
-                });
-
-            }
-        }
-    })
-
-
 }
 
 
