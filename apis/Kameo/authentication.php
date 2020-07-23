@@ -54,20 +54,31 @@ function authenticate($token){
     $conn->close();
 }
 
-function get_user_permissions($token){
-    include 'connexion.php';
-    $stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
-    $stmt->bind_param("s", $token);
-    $stmt->execute();    
-    $stmt->bind_result($permissions);
-    $stmt->fetch();
+function get_user_permissions($accessDemand, $token){
     
-    $permissions=explode(",", $permissions);
+    if(isset($_SESSION['permissions'])){
+        $permissions=$_SESSION['permissions'];
+    }else{
+        include 'connexion.php';
+        $stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
+        $stmt->bind_param("s", $token);
+        $stmt->execute();    
+        $stmt->bind_result($permissions);
+        $stmt->fetch();
+
+        $permissions=explode(",", $permissions);
+        $_SESSION['permissions']=$permissions;
+
+        return true;
+
+        $stmt->close();    
+        $conn->close();    
+    }
     
-    return $permissions;
+    return (in_array($accessDemand, $permissions, TRUE)) ? true : false;
     
-    $stmt->close();    
-    $conn->close();    
+    
+    
 }
 
 ?>

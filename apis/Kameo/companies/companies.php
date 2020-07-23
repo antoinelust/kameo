@@ -15,15 +15,13 @@ include '../authentication.php';
 $token = getBearerToken(); //Defined in authentication.php
 if (authenticate($token))	//If token exist in databases
 {
-	$permissions = get_user_permissions($token); // Retrieve permissions of the user
-        
 	switch($_SERVER["REQUEST_METHOD"])
 	{
 		case 'GET':
             $action=isset($_GET['action']) ? $_GET['action'] : NULL;
             
             if($action == 'list'){         
-                if(in_array("admin", $permissions, TRUE)){
+                if(get_user_permissions("admin", $token)){
                     header("HTTP/1.0 200 Ok");                    
                     include 'list_companies.php';
                 }else{
@@ -32,7 +30,7 @@ if (authenticate($token))	//If token exist in databases
             }
             
             if($action == 'graphic'){
-                if(in_array("admin", $permissions, TRUE)){
+                if(get_user_permissions("admin", $token)){
                     header("HTTP/1.0 200 Ok");                    
                     include 'graphic_companies.php';
                 }else{
