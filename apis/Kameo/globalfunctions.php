@@ -138,12 +138,15 @@ function last_day_month($month){
     return $lastDay[($month-1)];
 }
 
-function handle_error_sql($sql, $conn){
-    if ($conn->query($sql) === FALSE) {
+function execute_sql_query($sql, $conn){
+    $result = $conn->query($sql);
+    if ($result === FALSE) {
         $response = array ('response'=>'error', 'message'=> $sql->error);
         echo json_encode($response);
         die;
     }
+    
+    return $result->fetch_all();
 }
 
 function error_message($type){

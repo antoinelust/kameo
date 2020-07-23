@@ -9,6 +9,8 @@ header('Expires: ' . gmdate('r', 0));
 
 include '../globalfunctions.php';
 include '../authentication.php';
+include '../connexion.php'; 
+
 
 //CHECK AUTH AND PERMS HERE:
 $token = getBearerToken(); //Defined in authentication.php
@@ -62,6 +64,7 @@ if (authenticate($token))	//If token exist in databases
                     error_message('405');
 			break;
 	}
+    $conn->close();
 }else
     error_message('401');
 ?>
