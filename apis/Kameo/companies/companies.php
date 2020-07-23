@@ -8,7 +8,6 @@ header('WWW-Authenticate: Bearer realm="DefaultRealm"');
 header('Expires: ' . gmdate('r', 0));
 
 include '../globalfunctions.php';
-//create and inclure error_messages.php file containing error messages to return as well as headers as for example: header('HTTP/1.1 401 Unauthorized error="invalid_token", error_description="The access token is invalid."');
 include '../authentication.php';
 
 //CHECK AUTH AND PERMS HERE:
@@ -27,35 +26,37 @@ if (authenticate($token))	//If token exist in databases
                 }else{
                     error_message('401');
                 }
-            }
-            
-            if($action == 'graphic'){
+            }else if($action == 'graphic'){
                 if(get_user_permissions("admin", $token)){
                     header("HTTP/1.0 200 Ok");                    
                     include 'graphic_companies.php';
                 }else{
                     error_message('401');
                 }
-            }
-            
-			//if(in_array("fleetmanager", $permissions, TRUE))	//If the array $permissions contains the "fleetmanager" permission
-				/*if(!empty($_GET["myGETvar"]))
-				{
-					$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_ONLY);	//READ ONLY
-					$mysqli->query("SELECT * FROM mytable");
-					$mysqli->commit();
-					echo json_encode($_GET["myGETvar"]);
-				}*/
+            }else{
+                error_message('405');
+            }    
 			break;
 		case 'POST':
-			//if(in_array("admin", $permissions, TRUE))	//If the array $permissions contains the "admin" permission
-				/*if(!empty($_POST["myPOSTvar"]))
-				{
-					$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE); //READ/WRITE
-					$mysqli->query("UPDATE whatever FROM mytable");
-					$mysqli->commit();
-					do_my_stuff();
-				}*/
+            $action=isset($_POST['action']) ? $_POST['action'] : NULL;
+            
+            if($action == 'addCompanyContact'){
+                if(get_user_permissions("admin", $token)){
+                    header("HTTP/1.0 200 Ok");                    
+                    include 'add_company_contact.php';
+                }else{
+                    error_message('401');
+                }
+            }else if($action == 'editCompanyContact'){
+                if(get_user_permissions("admin", $token)){
+                    header("HTTP/1.0 200 Ok");                    
+                    include 'edit_company_contact.php';
+                }else{
+                    error_message('401');
+                }
+            }else{
+                error_message('405');
+            }    
 			break;
 		default:
                     error_message('405');
