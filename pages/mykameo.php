@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="fr">
 <?php
 ob_start();
 session_start();
@@ -9,11 +11,16 @@ $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
 require_once 'include/i18n/i18n.php';
 include 'apis/Kameo/connexion.php';
-include 'include/header5.php';
-include 'apis/Kameo/authentication.php';
 
 $i18n = new i18n('lang/lang_{LANGUAGE}.ini'); //french by defaut
 $i18n->init();
+
+include 'include/head.php';
+echo '<body class="wide">
+	<!-- WRAPPER -->
+	<div class="wrapper">';
+		include 'include/topbar.php';
+		include 'include/header.php';
 
 echo '<style media="screen">
     .tableFixed {
@@ -29,14 +36,11 @@ echo '<style media="screen">
   const feedback = "'.$feedback.'";
 </script>';
 
-
-$token = getBearerToken(); //Defined in authentication.php
-if (!authenticate($token))	//If token is not defined
-{
+if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected
   //@TODO: Replace email chech with authentication token
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE TOKEN='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE EMAIL='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -49,14 +53,14 @@ if (!authenticate($token))	//If token is not defined
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
   <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
   <script type="text/javascript" src="js/addons/chart.js/dist/Chart.min.js" charset="UTF-8"></script>
-  <script src="js/OpenLayers/OpenLayers.js"></script>
+  <script src="js/addons/openlayers/OpenLayers.js"></script>
   <script type="text/javascript" src="js/global_functions.js"></script>
   <script type="text/javascript" src="js/addons/datatables/datatables.min.js"></script>
   <script type="text/javascript" src="js/load_client_conditions.js"></script>
   <script type="text/javascript" src="js/search_module.js"></script>
   <script type="text/javascript" src="js/notifications.js"></script>
   <script type="text/javascript" src="js/addresses.js"></script>
-	<script type="text/javascript" src="js/weather.js"></script>
+  <script type="text/javascript" src="js/weather.js"></script>
   <script type="text/javascript" src="js/cafetaria.js"></script>
   ';
 
@@ -82,7 +86,10 @@ if (!authenticate($token))	//If token is not defined
             <br/>
             <div class="col-md-12">
               <span id="assistanceSpan"></span>
-              <?php if(!$company) include 'include/vues/mykameo/calendar.html';?>
+              <?php if(!$company)
+				  /** CALENDAR **/
+				  include 'include/vues/mykameo/calendar.html';
+				  include 'include/vues/mykameo/widgets/calendar/main.php';?>
             </div>
             <br/>
             <?php if($company): ?>
@@ -540,10 +547,6 @@ if (!authenticate($token))	//If token is not defined
             </ul>
 			      <!-- Statistics calculation -->
             <script type="text/javascript" src="include/vues/mykameo/statistics.js"></script>
-            <!-- CALENDAR WIDGET -->
-            <?php include 'include/vues/mykameo/widgets/calendar/calendar.html'; ?>
-            <script type="text/javascript" src="include/vues/mykameo/widgets/calendar/calendar.js"></script>
-            <!-- END: CALENDAR WIDGET -->
           <?php endif;?>
           <br>
           <a href="docs/cgvfr.pdf" target="_blank" title="Pdf"><?=L::sidebar_terms;?></a><br><br>
@@ -591,22 +594,26 @@ window.addEventListener("DOMContentLoaded", function(event) {
 
 		hideResearch();
 		var date=new Date();
-		$(".form_date_end_client").data("datetimepicker").setDate(date);
-		date.setMonth(date.getMonth()-6);
-		$(".form_date_start_client").data("datetimepicker").setDate(date);
+		if ($( ".form_date_end_client" ).length)
+			$(".form_date_end_client").data("datetimepicker").setDate(date);
+		if ($( ".form_date_start_client" ).length)
+		{
+			date.setMonth(date.getMonth()-6);
+			$(".form_date_start_client").data("datetimepicker").setDate(date);
+		}
 	});
-  $('.clientManagerClick').click(function(){
-      get_company_listing('*');
-      generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-  });
 	$( ".reservations" ).click(function() {
 		hideResearch();
 		getHistoricBookings(email);
 	});
-    var date=new Date();
-    $(".form_date_end").data("datetimepicker").setDate(date);
-    date.setMonth(date.getMonth()-1);
-    $(".form_date_start").data("datetimepicker").setDate(date);
+  	var date=new Date();
+		if ($( ".form_date_end" ).length)
+    	$(".form_date_end").data("datetimepicker").setDate(date);
+		if ($( ".form_date_start" ).length)
+		{
+	    date.setMonth(date.getMonth()-1);
+    	$(".form_date_start").data("datetimepicker").setDate(date);
+		}
 });
 <?php //@TODO: REFACTOR 'CAUSE USED IN MULTIPLE PART OF THE CODE' ?>
 /** Reservation & fleetManager tabs **/
@@ -615,28 +622,7 @@ function hideResearch(){
   document.getElementById("velos").style.display = "none";
   document.getElementById("travel_information").style.display = "none";
 }
-//tasks_management.js &/company_management.js
-function list_kameobikes_member(){
-  $('#widget-addActionCompany-form select[name=owner]').find('option').remove().end();
 
-  $.ajax({
-    url: 'apis/Kameo/get_kameobikes_members.php',
-    type: 'get',
-    success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
-      if(response.response == 'success'){
-        var i=0;
-        while (i < response.membersNumber){
-          $('#widget-addActionCompany-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
-          i++;
-        }
-        $('#widget-addActionCompany-form select[name=owner]').val('julien@kameobikes.com');
-      }
-    }
-  });
-}
 //Vélo perso + quand tu commande un vélo
 function get_travel_time(date, address_start, address_end){
 
@@ -650,7 +636,6 @@ function get_travel_time(date, address_start, address_end){
 }
 //Vélo perso + quand tu commande un vélo
 function get_kameo_score(weather, precipitation, temperature, wind_speed, travel_time_bike, travel_time_car){
-  /* L'icone du temps est-elle vraiment nécessaire ? ne se baserions nous pas uniquement sur les chances de précipitation etc... ? Surtout que d'autres icones pourraient se rajouter dans le futur */
   var weather_score={clearday:10, rain:4, snow:0, sleet:2, wind:6, fog:6, cloudy:8, partlycloudyday:9, clearnight:10, partlycloudynight:9};
   var difference_travel_time= ( travel_time_car - travel_time_bike ) / (travel_time_bike);
 
@@ -743,49 +728,18 @@ function get_kameo_score(weather, precipitation, temperature, wind_speed, travel
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
   //PORTFOLIO
   /** @TODO: Add a delete confirmation widget **/
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
+  //include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
   //BILLS
   include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
   //DASHBOARD
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
-  
-  /** @TODO: Modify the fact that this widget is used at the same time by customers and cash flow **/
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customer_details.html'; 
 ?>
 
 <?php } ?>
 
 <div class="loader"><!-- Place at bottom of page --></div>
 
-<!-- FOOTER -->
-<footer class="background-dark text-grey" id="footer">
-  <div class="footer-content">
-    <div class="container">
-      <br><br>
-        <div class="row text-center">
-        <div class="copyright-text text-center">
-          <ins>Kameo Bikes SPRL</ins>
-					<br>BE 0681.879.712
-					<br>+32 498 72 75 46
-        </div>
-				<br>
-        <div class="social-icons center">
-					<ul>
-						<li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-						<li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-					</ul>
-			  </div>
-				<div>
-          <a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a>
-          <!-- | <a href="bonsplans.php" class="text-green text-bold">Les bons plans</a>-->
-        </div>
-			<br>
-			<br>
-      </div>
-    </div>
-  </div>
-</footer>
-<!-- END: FOOTER -->
+<?php include 'include/footer.php'; ?>
 
 </div>
 <!-- END: WRAPPER -->

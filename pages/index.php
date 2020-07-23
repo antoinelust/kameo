@@ -1,11 +1,18 @@
-<?php
-include 'include/header5.php';
+<!DOCTYPE html>
+<html lang="fr">
+<?php 
+	include 'include/head.php';
 ?>
+<body class="wide">
+	<!-- WRAPPER -->
+	<div class="wrapper">
+		<?php include 'include/topbar.php'; ?>
+		<?php include 'include/header.php'; ?>
   <br>
   <h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
   <h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, your one stop shop for company bikes</h1>
   <h1 class="text-center text-uppercase text-medium nl" data-animation="fadeInUp">KAMEO Bikes, de volledige oplossing voor uw bedrijfsfietsen</h1>
-  <img src="images/background_new.jpg" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
+  <img src="/images/background_new.jpg" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
   <!-- MISSION & VISSION -->
   <section class="box-fancy section-fullwidth text-light no-padding">
   	<div class="row">
@@ -194,9 +201,6 @@ include 'include/header5.php';
   	</div>
   </section>
 
-  <!-- Language management -->
-  <script type="text/javascript" src="js/language.js"></script>
-
   <!-- SECTION CLIENTS -->
   <section class="p-b-0">
   	<div class="container">
@@ -285,41 +289,15 @@ include 'include/header5.php';
   		</div>
   	</div>
 	</div>
-  <!-- FOOTER -->
-  <footer class="background-dark text-grey" id="footer">
-    <div class="footer-content">
-        <div class="container">
-          <br><br>
-          <div class="row text-center">
-            <div class="copyright-text text-center">
-              <ins>Kameo Bikes SPRL</ins>
-      				<br>BE 0681.879.712
-      				<br>+32 498 72 75 46 </div>
-      				<br>
-              <div class="social-icons center">
-                <ul>
-                  <li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                  <li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <div>
-                <a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a>
-              </div>
-        			<br>
-        			<br>
-            </div>
-        </div>
-    </div>
-  </footer>
-	<!-- END: FOOTER -->
+		<?php include 'include/footer.php'; ?>
 	</div>
 	<!-- END: WRAPPER -->
 
 	<!-- Theme Base, Components and Settings -->
-	<script src="js/theme-functions.js"></script>
+	<script src="/js/theme-functions.js"></script>
 
 	<!-- Language management -->
-	<script type="text/javascript" src="js/language.js"></script>
+	<script type="text/javascript" src="/js/language.js"></script>
 
 <?php
   if(isset($_GET['hash'])){
