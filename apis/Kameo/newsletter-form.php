@@ -9,8 +9,9 @@ if(!isset($_SESSION))
 } 
 
 include 'globalfunctions.php';
+require_once '../../include/api_keys.php';
 
-require_once('php-mailer/PHPMailerAutoload.php');
+require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 
 
@@ -39,15 +40,14 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
             $connected=@fsockopen("www.google.com", 80);
             if($connected){
 
-                    // API to mailchimp ########################################################
-                    $authToken = '22b81aff4753a48217567772c2e46ff6-us20';                
+                    // API to mailchimp ########################################################             
                     $md5hash=md5($email);
                     $ch = curl_init('https://us20.api.mailchimp.com/3.0/lists/982e13f200/members/'.$md5hash);
                     curl_setopt_array($ch, array(
                         CURLOPT_POST => FALSE,
                         CURLOPT_RETURNTRANSFER => TRUE,
                         CURLOPT_HTTPHEADER => array(
-                            'Authorization: apikey '.$authToken,
+                            'Authorization: apikey '.$mailchimp_token,
                             'Content-Type: application/json'
                         )                    
                     ));
@@ -70,7 +70,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
                             CURLOPT_POST => TRUE,
                             CURLOPT_RETURNTRANSFER => TRUE,
                             CURLOPT_HTTPHEADER => array(
-                                'Authorization: apikey '.$authToken,
+                                'Authorization: apikey '.$mailchimp_token,
                                 'Content-Type: application/json'
                             ),
                             CURLOPT_POSTFIELDS => json_encode($postData)
@@ -92,7 +92,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
                             CURLOPT_CUSTOMREQUEST => 'PATCH',
                             CURLOPT_RETURNTRANSFER => TRUE,
                             CURLOPT_HTTPHEADER => array(
-                                'Authorization: apikey '.$authToken,
+                                'Authorization: apikey '.$mailchimp_token,
                                 'Content-Type: application/json'
                             ),
                             CURLOPT_POSTFIELDS => json_encode($postData)

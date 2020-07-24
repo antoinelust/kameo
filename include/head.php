@@ -1,6 +1,6 @@
 <?php if(!isset($_SESSION))
     session_start(); ?>
-<?php header("Content-Security-Policy: default-src "."http://".$_SERVER['SERVER_NAME']." "."https://".$_SERVER['SERVER_NAME']."; script-src 'self' 'unsafe-inline' https://www.google.com/ https://www.googletagmanager.com/ https://www.googletagmanager.com/ https://www.gstatic.com/ https://static.hotjar.com/ https://vars.hotjar.com/ https://www.google-analytics.com/analytics.js https://script.hotjar.com/modules.34bb0d0fa29ee682970a.js; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self'; font-src 'self' https://fonts.gstatic.com ;"); ?>
+<?php header("Content-Security-Policy: default-src 'unsafe-inline' https://www.google.com "."http://".$_SERVER['SERVER_NAME']." "."https://".$_SERVER['SERVER_NAME']." https://fonts.googleapis.com/; script-src 'self' 'unsafe-inline' https://www.google.com/ https://www.googletagmanager.com/ https://www.googletagmanager.com/ https://www.gstatic.com/ https://static.hotjar.com/ https://vars.hotjar.com/ https://www.google-analytics.com/analytics.js https://script.hotjar.com/ https://cdn.jsdelivr.net/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com ;"); ?>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">

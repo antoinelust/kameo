@@ -1,6 +1,6 @@
 function getLanguage(){
        return $.ajax({
-            url: 'include/langues.php',
+            url: '/include/langues.php',
             type: 'post',
             data: { "getLangue": "1"}
         });
