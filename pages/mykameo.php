@@ -2,7 +2,8 @@
 <html lang="fr">
 <?php
 ob_start();
-session_start();
+if(!isset($_SESSION))
+	session_start();
 
 $token=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL; //@TODO: replaced by a token to check if connected
 $user_ID=isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notifications.js

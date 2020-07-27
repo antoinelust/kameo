@@ -129,13 +129,13 @@
 								<label class="sr-only fr">Adresse mail</label>
 								<label class="sr-only en">E-mail</label>
 								<label class="sr-only nl">Mail</label>
-								<input type="email" name="userID" class="form-control" placeholder="Adresse mail" autocomplete="username">
+								<input type="email" name="userID" class="form-control" id="userID" placeholder="Adresse mail" autocomplete="username">
 							</div>
 							<div class="form-group m-b-5">
 								<label class="sr-only fr">Mot de passe</label>
 								<label class="sr-only en">Password</label>
 								<label class="sr-only nl">Wachtwoord</label>
-								<input type="password" name="password" class="form-control" placeholder="Mot de passe" autocomplete="current-password">
+								<input type="password" name="password" id="user_password" class="form-control" placeholder="Mot de passe" autocomplete="current-password">
 							</div>
 							<div class="form-group form-inline text-left ">
 								<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right fr"><small>Mot de passe oublié?</small></a>
@@ -154,23 +154,27 @@
 		</div>
 	</div>
 </div>
-
+<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
+<script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>
 <script type="text/javascript">
 	jQuery("#user_management").validate({
-
 		submitHandler: function(form) {
-			jQuery(form).ajaxSubmit({
-				success: function(text) {
-					if (text.response == 'success') {
-								  window.location.href = "mykameo.php";
-					} else {
-						$.notify({
-							message: text.message
-						}, {
-							type: 'danger'
-						});
+			var url = form.action;
+			$.ajax({
+			 type: "POST",
+			 url: url,
+			 data: { userID: document.getElementById('userID').value, password: nacl.util.encodeBase64(nacl.hash(nacl.util.decodeUTF8(document.getElementById('user_password').value))) },
+			 success: function(text) {
+						if (text.response == 'success') {
+									  window.location.href = "mykameo.php";
+						} else {
+							$.notify({
+								message: text.message
+							}, {
+								type: 'danger'
+							});
+						}
 					}
-				}
 			});
 		}
 	});

@@ -58,19 +58,19 @@ if(!isset($_POST['company']) || $_POST['company']==''){
 
 if($generatePassword){
     $password_unencrypted=uniqid();
-    $pass=password_hash($password_unencrypted, PASSWORD_DEFAULT);
+	$encodedPass = base64_encode(hash('sha512', $password_unencrypted, true));
+    $pass=password_hash($encodedPass, PASSWORD_DEFAULT);
 }else if(isset($_POST['password'])){
     $password_unencrypted=$_POST['password'];
     $pass=password_hash($_POST['password'], PASSWORD_DEFAULT);
 }else{
-    
     errorMessage("ES0012");
 }
 
-    
+$token = random_str();
 
 include 'connexion.php';
-$sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', '', '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '')";
+$sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN, TOKEN, ACCESS_RIGHTS) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', '', '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '', '$token', '')";
 
 
 if ($conn->query($sql) === FALSE) {

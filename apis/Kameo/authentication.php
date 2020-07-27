@@ -45,13 +45,11 @@ function authenticate($token){
         $stmt->bind_param("s", $token);
         $stmt->execute();
         $result = $stmt->get_result();    
-
-        return ($result->num_rows==1)?true:false;
+		$conn->close();
+        return ($result->num_rows===1);
     }else{
         return false;
     }
-    
-    $conn->close();
 }
 
 function get_user_permissions($accessDemand, $token){
@@ -68,17 +66,10 @@ function get_user_permissions($accessDemand, $token){
 
         $permissions=explode(",", $permissions);
         $_SESSION['permissions']=$permissions;
-
-        return true;
-
         $stmt->close();    
         $conn->close();    
     }
-    
-    return (in_array($accessDemand, $permissions, TRUE)) ? true : false;
-    
-    
-    
+    return (in_array($accessDemand, $permissions, TRUE)) ? true : false;   
 }
 
 ?>
