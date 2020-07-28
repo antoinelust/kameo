@@ -378,6 +378,7 @@ function update_deposit_hour_form(){
                         document.getElementById('deposit_building_form').innerHTML=dest;
                         document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
                         document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
+                        $('#search-bikes-form-email').val(email);
                         displayLanguage();
 
                     }else{

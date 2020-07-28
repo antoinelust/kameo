@@ -4,7 +4,9 @@ session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
+
 $connected=@fsockopen("www.google.com", 80);
+
 if($connected){
     
     if(!isset($_SESSION)) 
