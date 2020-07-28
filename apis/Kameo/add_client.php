@@ -28,7 +28,9 @@ $type=$_POST['type'];
 $mailInitialisation=$_POST['mailInitialisation'];
 $nameInitialisation=$_POST['nameInitialisation'];
 $firstNameInitialisation=$_POST['firstNameInitialisation'];
-
+$contactEmail=$_POST['contactEmail'];
+$firstName=$_POST['firstName'];
+$lastName=$_POST['lastName'];
 
 
 if(isset($_POST['passwordInitialisation'])){
@@ -115,7 +117,7 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
         errorMessage("ES0036");
     }
 
-    $sql= "INSERT INTO  companies (USR_MAJ, HEU_MAJ, COMPANY_NAME, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, BILLING_GROUP, STAANN, BILLS_SENDING) VALUES ('$originator', CURRENT_TIMESTAMP, '$description', '$street', '$zipCode', '$city', '$VAT', '$internalReference', '$type', '1', '', 'N')";
+    $sql= "INSERT INTO  companies (USR_MAJ, HEU_MAJ, COMPANY_NAME, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, TYPE, AUTOMATIC_STATISTICS, BILLING_GROUP, STAANN, BILLS_SENDING) VALUES ('$originator', CURRENT_TIMESTAMP, '$description', '$street', '$zipCode', '$city', '$VAT', '$internalReference', '$contactEmail', '$firstName', '$lastName', '$type', '', '1', '', 'N')";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -125,7 +127,7 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
     $compID = $conn->insert_id;
 
     if($type=="CLIENT" && $mailInitialisation != '' && $passwordTechnicalUser != ''){
-        $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN) VALUES ('mykameo', UPPER('$nameInitialisation'), UPPER('$firstNameInitialisation'), '$nameInitialisation', '$firstNameInitialisation', '', '0', '', '', '', '0', '', '$internalReference', '$mailInitialisation', '$passwordTechnicalUser', 'N', '')";
+        $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, TOKEN, ACCESS_RIGHTS, STAANN) VALUES ('mykameo', UPPER('$nameInitialisation'), UPPER('$firstNameInitialisation'), '$nameInitialisation', '$firstNameInitialisation', '', '0', '', '', '', '0', '', '$internalReference', '$mailInitialisation', '$passwordTechnicalUser', 'N', '', '', '')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
     
     $("#orderBike .input_msg_write .write_msg").keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
+        if(keycode == '13'){	
             var message=$("#orderBike .input_msg_write .write_msg").val();
             if(message != ""){
                 write_message(message, email, email, "command");
@@ -41,12 +41,8 @@ window.addEventListener("DOMContentLoaded", function(event) {
                 $("#orderManager .input_msg_write .write_msg").val("");
             }
         }
-    });    
-
-    
+    });
 });
-
-
 
 function load_cafetaria(){
     $.ajax({
@@ -129,15 +125,10 @@ function load_cafetaria(){
                             $( "img.portfolio-img" ).load(function(){
                                 $('.grid').isotope();
                             });
-                            
-                            
                     }                        
             }
         }
-    
     })
-    
-    
 }
 
 

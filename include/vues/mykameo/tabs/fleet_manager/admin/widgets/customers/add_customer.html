@@ -118,7 +118,7 @@
 									<label for="passwordInitialisation"  class="fr addClientTechnicalUser hidden">Mot de passe</label>
 									<label for="passwordInitialisation"  class="en addClientTechnicalUser hidden">Mot de passe</label>
 									<label for="passwordInitialisation"  class="nl addClientTechnicalUser hidden">Mot de passe</label>
-									<input type="password" autocomplete="off" class="form-control addClientTechnicalUser hidden" name="passwordInitialisation" class="form-control required">
+									<input type="password" autocomplete="off" class="form-control addClientTechnicalUser hidden" id="customer_password" name="passwordInitialisation" class="form-control required">
 								</div>
 								<input type="text" class="form-control hidden" name="email" value="<?php echo $user_data['EMAIL']; ?>" hidden>
 							</div>
@@ -142,6 +142,8 @@
 		</div>
 	</div>
 </div>
+<!--<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
+<script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>-->
 <script type="text/javascript">
 	$('#widget-addClient-form select[name=type]').change(function(){
 		if($('#widget-addClient-form select[name=type]').val()=="CLIENT"){
@@ -149,6 +151,16 @@
 		}else{
 			$('.addClientTechnicalUser').addClass("hidden");
 		}
+	});
+	jQuery("#widget-addClient-form").submit(function() {
+	  document.getElementById('customer_password').value = /*nacl.util.encodeBase64(
+		  nacl.hash(
+			  nacl.util.decodeUTF8(*/
+				document.getElementById('customer_password').value
+			  /*)
+		  )
+	  )*/;
+	  return true;
 	});
 	jQuery("#widget-addClient-form").validate({
 		submitHandler: function(form) {

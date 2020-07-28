@@ -35,7 +35,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 		$extension = strrchr($_FILES['widget-assistance-form-message-attachment']['name'], '.');
 		if(!in_array($extension, $extensions))
 		{
-			  errorMessage(ES0022);
+			  errorMessage("ES0022");
 		}
 
 		 
@@ -43,7 +43,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 		$taille = filesize($_FILES['widget-assistance-form-message-attachment']['tmp_name']);
 		if($taille>$taille_maxi)
 		{
-			  errorMessage(ES0023);
+			  errorMessage("ES0023");
 		}
 		
 		$today = getdate();
@@ -58,7 +58,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 		 }
 		 else
 		 {
-			  errorMessage(ES0024);
+			  errorMessage("ES0024");
 		 }
 	}
 
@@ -125,7 +125,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 	echo json_encode($response);
 	
 } else {
-	 errorMessage(ES0008);
+	 errorMessage("ES0008");
 }
     
 }

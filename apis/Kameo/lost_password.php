@@ -2,7 +2,7 @@
 session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
-require_once('php-mailer/PHPMailerAutoload.php');
+require_once('../../include/php-mailer/PHPMailerAutoload.php');
 
 
 include 'globalfunctions.php';
@@ -115,7 +115,7 @@ function writeMail(){
     global $e_mail;
     global $hash;
 	
-	require_once('php-mailer/PHPMailerAutoload.php');
+	require_once('../../include/php-mailer/PHPMailerAutoload.php');
 	$mail = new PHPMailer();
 
 	$mail->IsHTML(true);

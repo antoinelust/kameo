@@ -693,6 +693,32 @@ function get_kameo_score(weather, precipitation, temperature, wind_speed, travel
   return image;
 
 }
+function list_kameobikes_member(){
+    $('#widget-addActionCompany-form select[name=owner]')
+    .find('option')
+    .remove()
+    .end()
+    ;
+
+    $.ajax({
+      url: 'apis/Kameo/get_kameobikes_members.php',
+      type: 'get',
+      success: function(response){
+        if(response.response == 'error') {
+          console.log(response.message);
+        }
+        if(response.response == 'success'){
+          var i=0;
+          while (i < response.membersNumber){
+            $('#widget-addActionCompany-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
+            i++;
+          }
+          $('#widget-addActionCompany-form select[name=owner]').val('julien@kameobikes.com');
+
+        }
+      }
+})
+}
 </script>
 
 <!-- FLEET MANAGER WIDGETS -->

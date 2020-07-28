@@ -10,9 +10,7 @@ function update_deposit_form(){
     var hour=Hours[0];
     var minute=Hours[1];
 
-
     var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
-
 
     var dateTemp = new Date(new Date().getFullYear(), month, day, hour, minute);
 
@@ -225,7 +223,7 @@ function update_deposit_hour_form(){
         if(assistance=="Y"){
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
         }
-        // 1st step: days and month fileds
+        // 1st step: days and month fields
         if(daysToDisplay>0){
             
             var daysFR=['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
@@ -234,7 +232,6 @@ function update_deposit_hour_form(){
             var monthFR=['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
             var monthEN=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var monthNL=['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
-
 
             var startDate = new Date();
             var i=0;
@@ -357,7 +354,6 @@ function update_deposit_hour_form(){
                             }
                             var tempBuilding="</select>";
                             dest = dest.concat(tempBuilding);
-                            document.getElementById('start_building_form').innerHTML=dest;
                             document.getElementById('start_building_form').innerHTML=dest;
 
                             var j=0;

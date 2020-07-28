@@ -6,7 +6,7 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-require_once('php-mailer/PHPMailerAutoload.php');
+require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 
 
@@ -27,7 +27,7 @@ $antispam = $_POST['widget-offer-antispam'];
 
 $length = strlen($phone);
 if ($length<8 or $length>12) {
-	errorMessage(ES0004);
+	errorMessage("ES0004");
 }
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {

@@ -4,7 +4,7 @@ jQuery("#re-connexion").validate({
 		$.ajax({
          type: "POST",
          url: url,
-		 data: { userID: document.getElementById('userID').value, password: nacl.util.encodeBase64(nacl.hash(nacl.util.decodeUTF8(document.getElementById('user_password').value))) },
+		 data: { userID: document.getElementById('user_email2').value, password: /*nacl.util.encodeBase64(nacl.hash(nacl.util.decodeUTF8(*/document.getElementById('user_password2').value/*)))*/ },
          success: function(text) {
 				if (text.response == 'success') {
 					if (feedback != '') {

@@ -26,7 +26,7 @@ if($newPasswordSwitch=="true"){
     $newPasswordConfirmation=$_POST["widget-update-form-password-confirmation"];
     
     if ($newPassword != $newPasswordConfirmation){
-        errorMessage(ES0021);
+        errorMessage("ES0021");
     }
     else
     {

@@ -80,7 +80,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 	echo json_encode($response);
 	
 } else {
-	 errorMessage(ES0008);
+	 errorMessage("ES0008");
 }
     
 }

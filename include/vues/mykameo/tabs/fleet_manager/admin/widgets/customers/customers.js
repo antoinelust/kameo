@@ -1263,7 +1263,7 @@ $.ajax({
             i++;
 
           }
-          document.getElementById('add_bikeListing').innerHTML = dest;
+          document.getElementById('addBuilding_bikeListing').innerHTML = dest;
         }
       }
     })

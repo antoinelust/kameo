@@ -6,7 +6,7 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-require_once('php-mailer/PHPMailerAutoload.php');
+require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 
 
@@ -52,7 +52,7 @@ $conn->close();
 
 $companyName=$resultat['COMPANY_NAME'];
 
-require_once('php-mailer/PHPMailerAutoload.php');
+require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 $mail->IsHTML(true);                                    // Set email format to HTML
 $mail->CharSet = 'UTF-8';

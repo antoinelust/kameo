@@ -66,8 +66,8 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
-<script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>
+<!--<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
+<script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>-->
 <script type="text/javascript">
 	$('#widget-addUser-form input[name=generatePassword]').change(function(){
 	 if($('#widget-addUser-form input[name=generatePassword').is(':checked')){
@@ -79,13 +79,13 @@
 	 }
 	});
 	jQuery("#widget-addUser-form").submit(function() {
-	  document.getElementById('manual_password').value = nacl.util.encodeBase64(
+	  document.getElementById('manual_password').value = /*nacl.util.encodeBase64(
 		  nacl.hash(
-			  nacl.util.decodeUTF8(
+			  nacl.util.decodeUTF8(*/
 				document.getElementById('manual_password').value
-			  )
+			  /*)
 		  )
-	  );
+	  )*/;
 	  return true;
 	});
 	jQuery("#widget-addUser-form").validate({

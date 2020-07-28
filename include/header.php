@@ -154,8 +154,8 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
-<script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>
+<!--<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
+<script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>-->
 <script type="text/javascript">
 	jQuery("#user_management").validate({
 		submitHandler: function(form) {
@@ -163,7 +163,7 @@
 			$.ajax({
 			 type: "POST",
 			 url: url,
-			 data: { userID: document.getElementById('userID').value, password: nacl.util.encodeBase64(nacl.hash(nacl.util.decodeUTF8(document.getElementById('user_password').value))) },
+			 data: { userID: document.getElementById('userID').value, password: /*nacl.util.encodeBase64(nacl.hash(nacl.util.decodeUTF8(*/document.getElementById('user_password').value/*)))*/ },
 			 success: function(text) {
 						if (text.response == 'success') {
 									  window.location.href = "mykameo.php";
