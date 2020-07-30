@@ -4,6 +4,37 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
+			<h4 class="text-green">Gérer les vélos commandables</h4>
+			<div class="table-responsive">
+				<table id="companiesOrderable" class="table" style="width: 100%;"></table>
+			</div>
+			<script>
+			$('.ordersManagerClick').click(function () {
+				$('#companiesOrderable').dataTable({
+					destroy: true,
+					"ajax": {
+						"url" : "apis/Kameo/companies/companies.php",
+						"contentType": "application/json",
+						"type": "GET",
+						"data": {
+							"action": "listCafetariaCompanies"
+						}
+					},
+					"sAjaxDataProp": "",
+					columnDefs: [
+						{ width: "100%", targets: 0 }
+					],
+					"columns": [
+						{ title: "Name", "data": "COMPANY_NAME", 
+							"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+								$(nTd).html("<a href='#' data-target='#manageOrderable' data-toggle='modal' data-company='"+sData+"'>"+sData+"</a>");
+							}
+						},
+					]
+				});
+			});
+			</script>
+			<div class="separator"></div>
 			<h4 class="text-green">Gérer les commandes</h4>
 			<div data-example-id="contextual-table" class="bs-example">
 				<span id="ordersListingSpan"></span>

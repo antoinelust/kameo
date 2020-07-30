@@ -1,2 +1,9 @@
 INSERT INTO `error_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES ('56', 'ES0055', 'Feedback déjà ajouté pour cette réservation', 'Feedback already added for this booking', 'Feedback already added for this booking');
 INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES ('22', 'SM0023', 'Merci pour votre feedback !', 'Thanks for the feedback ! ', 'Thanks for the feedback ! ');
+
+CREATE TABLE IF NOT EXISTS `companies_orderable` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `INTERNAL_REFERENCE` varchar(40) NOT NULL,
+  `BIKE_ID` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

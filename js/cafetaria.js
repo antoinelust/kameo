@@ -46,86 +46,81 @@ window.addEventListener("DOMContentLoaded", function(event) {
 
 function load_cafetaria(){
     $.ajax({
-        url: 'apis/Kameo/load_portfolio.php',
+        url: 'apis/Kameo/orders/orders.php',
         type: 'get',
-        data: { "action": "list", "frameType": "*", "utilisation": "*", "price": "*", "brand": "*", "electric": "*"},
+        data: { "action": "listOrderable"},
         success: function(response){
             if(response.response == 'error'){
               console.log(response.message);
             }
             if(response.response == 'success'){
-                        if(response.response == 'success'){
-                            var $grid = $('.grid').isotope();
-                                                        
-                            var i=0;
-                            while (i<response.bikeNumber){
-                                if(response.bike[i].display=='Y'){
-                                    if(response.bike[i].frameType.toLowerCase()=="h"){
-                                        var frameType = "Homme";
-                                    } else if(response.bike[i].frameType.toLowerCase()=="m"){
-                                        var frameType = "Mixte";
-                                    } else if(response.bike[i].frameType.toLowerCase()=="f"){
-                                        var frameType = "Femme";
-                                    } else{
-                                        var frameType = "undefined";
-                                    }
+				var $grid = $('.grid').isotope();
+				var i=0;
+				while (i<response.bikeNumber){
+						if(response.bike[i].frameType.toLowerCase()=="h"){
+							var frameType = "Homme";
+						} else if(response.bike[i].frameType.toLowerCase()=="m"){
+							var frameType = "Mixte";
+						} else if(response.bike[i].frameType.toLowerCase()=="f"){
+							var frameType = "Femme";
+						} else{
+							var frameType = "undefined";
+						}
 
-                                    if(parseInt(response.bike[i].price)<="2000"){
-                                        var price="2000";
-                                    }else if(parseInt(response.bike[i].price)<="3000"){
-                                        var price="between-2000-3000";
-                                    }else if(parseInt(response.bike[i].price)<="4000"){
-                                        var price="between-3000-4000";
-                                    }else if(parseInt(response.bike[i].price)<="5000"){
-                                        var price="between-4000-5000";
-                                    }else{
-                                        var price="5000";
-                                    }
+						if(parseInt(response.bike[i].price)<="2000"){
+							var price="2000";
+						}else if(parseInt(response.bike[i].price)<="3000"){
+							var price="between-2000-3000";
+						}else if(parseInt(response.bike[i].price)<="4000"){
+							var price="between-3000-4000";
+						}else if(parseInt(response.bike[i].price)<="5000"){
+							var price="between-4000-5000";
+						}else{
+							var price="5000";
+						}
 
-                                    var temp="\
-                                    <div class=\"grid-item\">\
-                                        <div class=\"portfolio-image effect social-links\">\
-                                            <img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
-                                            <div class=\"image-box-content\">\
-                                                <p>\
-                                                    <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
-                                                    <a data-target=\"#command\" class=\"orderBikeClick\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\"><i class=\"fa fa-link\"></i></a>\
-                                                </p>\
-                                            </div>\
-                                        </div>\
-                                        <div class=\"portfolio-description\">\
-                                            <a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
-                                            <p>"+response.bike[i].model+" "+frameType+"\
-                                            <br>"+response.bike[i].utilisation+"\
-                                            <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\">\
-                                                <span class=\"fr\">Commander</span>\
-                                                <span class=\"en\">Order</span>\
-                                                <span class=\"nl\">Order</span>\
-                                            </a>\
-                                            </p>\
-                                        </div>\
-                                    </div>";
+						var temp="\
+						<div class=\"grid-item\">\
+							<div class=\"portfolio-image effect social-links\">\
+								<img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
+								<div class=\"image-box-content\">\
+									<p>\
+										<a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
+										<a data-target=\"#command\" class=\"orderBikeClick\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\"><i class=\"fa fa-link\"></i></a>\
+									</p>\
+								</div>\
+							</div>\
+							<div class=\"portfolio-description\">\
+								<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
+								<p>"+response.bike[i].model+" "+frameType+"\
+								<br>"+response.bike[i].utilisation+"\
+								<br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\">\
+									<span class=\"fr\">Commander</span>\
+									<span class=\"en\">Order</span>\
+									<span class=\"nl\">Order</span>\
+								</a>\
+								</p>\
+							</div>\
+						</div>";
 
-                                  var $item = $(temp);
-                                  // add width and height class
-                                  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
-                                  $grid.append( $item )
-                                    // add and lay out newly appended elements
-                                    .isotope( 'appended', $item );
-                                }
-                                i++;
-                            }
+					  var $item = $(temp);
+					  // add width and height class
+					  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
+					  $grid.append( $item )
+						// add and lay out newly appended elements
+						.isotope( 'appended', $item );
+					i++;
+				}
 
-                            displayLanguage();
+				displayLanguage();
 
-                            $( ".orderBikeClick" ).click(function() {  
-                                fillCommandDetails(this.name);
-                            });
+				$( ".orderBikeClick" ).click(function() {  
+					fillCommandDetails(this.name);
+				});
 
-                            $( "img.portfolio-img" ).load(function(){
-                                $('.grid').isotope();
-                            });
-                    }                        
+				$( "img.portfolio-img" ).load(function(){
+					$('.grid').isotope();
+				});                     
             }
         }
     })
