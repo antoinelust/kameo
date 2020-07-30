@@ -7,7 +7,7 @@ session_start();
 include 'globalfunctions.php';
 require_once '../../include/api_keys.php';
 
-$connected=@fsockopen("www.google.com", 80);
+$connected=@fsockopen("www.google.com", 80, $errno, $errstr, 10);
 if($connected){
 
     $response=array();

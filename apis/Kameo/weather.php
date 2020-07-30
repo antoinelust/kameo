@@ -5,10 +5,10 @@ header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
 
-$connected=@fsockopen("www.google.com", 80);
+$connected=@fsockopen("www.google.com", 80, $errno, $errstr, 10);
+
 
 if($connected){
-    
     if(!isset($_SESSION)) 
     { 
         session_start(); 
@@ -24,22 +24,20 @@ if($connected){
     $address = str_replace(', ', ',', $address);
     $address= str_replace(str_split(' \,'),"+",$address);
 
-
-    $url="https://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyADDgTKivQUzNh2Aatlvdv1W9H1_n7GZro";
+    $url="https://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyADDgTKivQUzNh2Aatlvdv1W9H1_n7GZro";        
     $responseAPI=getAPIData($url);	
     $json_a = json_decode($responseAPI, true);
-
+    
 
     $latitude=$json_a['results']['0']['geometry']['location']['lat'];
-    $longitude=$json_a['results']['0']['geometry']['location']['lng'];
-
+    $longitude=$json_a['results']['0']['geometry']['location']['lng'];    
 
     if($json_a['status']<>"OK")
     {
         errorMessage("ES0009");
     }
 
-    $url="https://api.darksky.net/forecast/15e074760f5f027d4e1857a5668486ae/".$latitude.",".$longitude.",".$timestamp;
+    $url="https://api.darksky.net/forecast/15e074760f5f027d4e1857a5668486ae/".$latitude.",".$longitude.",".$timestamp;    
 
     if(strlen($_SESSION['langue'])==2){
         $url1=$url."?lang=".$_SESSION['langue']."&exclude=daily&units=si";

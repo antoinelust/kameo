@@ -103,7 +103,7 @@ var email=user_data['EMAIL'];
 				document.getElementById("meteoHour3").innerHTML=hours+"h"+minutes;
 				document.getElementById("meteoHour4").innerHTML=hours+"h"+minutes;
 				get_meteo(text.dateStart, addressStart)
-				.done(function(response){
+				.done(function(response){                    
 				  if(response.response=="success")
 				  {
 					var find = '-';
@@ -127,7 +127,7 @@ var email=user_data['EMAIL'];
 					document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
 					document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
 					document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
-					document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
+					document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";                      
 					get_travel_time(text.dateStart, addressStart, addressEnd)
 					.done(function(response){
 					  travel_time_bike=response.duration_bike;
@@ -158,7 +158,8 @@ var email=user_data['EMAIL'];
 					  }
 					})
 				  }else{
-					console.log(response.message);
+                      $("body").removeClass("loading");
+                      console.log(response);
 				  }
 				})
 			  })

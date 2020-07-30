@@ -60,6 +60,7 @@ function successMessage($MSGNUM) {
 }
 
 function getAPIData($url1){
+    
 	$curl_handle=curl_init();
 	curl_setopt($curl_handle, CURLOPT_URL,$url1);
 	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
@@ -70,7 +71,9 @@ function getAPIData($url1){
     curl_setopt($curl_handle, CURLOPT_STDERR, $verbose);
 	$query = curl_exec($curl_handle);
     if(curl_errno($curl_handle)){
-        echo 'Curl error: ' . curl_error($curl_handle);
+		$response = array ('response'=>'error', 'message'=> curl_error($curl_handle));
+		echo json_encode($response);
+		die;
     }
     return $query;
 	curl_close($curl_handle);

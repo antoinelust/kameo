@@ -628,7 +628,7 @@ function hideResearch(){
 function get_travel_time(date, address_start, address_end){
 
   return $.ajax({
-    url: 'include/get_directions.php',
+    url: 'apis/Kameo/get_directions.php',
     type: 'post',
     data: {"date": date, "address_start": address_start, "address_end": address_end},
     success: function(response){
