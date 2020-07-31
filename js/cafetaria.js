@@ -55,64 +55,67 @@ function load_cafetaria(){
             }
             if(response.response == 'success'){
 				var $grid = $('.grid').isotope();
-				var i=0;
-				while (i<response.bikeNumber){
-						if(response.bike[i].frameType.toLowerCase()=="h"){
-							var frameType = "Homme";
-						} else if(response.bike[i].frameType.toLowerCase()=="m"){
-							var frameType = "Mixte";
-						} else if(response.bike[i].frameType.toLowerCase()=="f"){
-							var frameType = "Femme";
-						} else{
-							var frameType = "undefined";
-						}
+				var timeout = 0;
+				//If elements are already in isotope, remove them
+				if ($grid.isotope('getItemElements').length > 0)
+				{
+					$grid.isotope('remove', $grid.isotope('getItemElements'));
+					//Set a timeout to give time to remove elements to isotope
+					timeout = 250;
+				}
+				setTimeout(function(){
+					for (var i=0; i<response.bikeNumber; i++){
+							if(response.bike[i].frameType.toLowerCase()=="h"){
+								var frameType = "Homme";
+							} else if(response.bike[i].frameType.toLowerCase()=="m"){
+								var frameType = "Mixte";
+							} else if(response.bike[i].frameType.toLowerCase()=="f"){
+								var frameType = "Femme";
+							} else{
+								var frameType = "undefined";
+							}
 
-						if(parseInt(response.bike[i].price)<="2000"){
-							var price="2000";
-						}else if(parseInt(response.bike[i].price)<="3000"){
-							var price="between-2000-3000";
-						}else if(parseInt(response.bike[i].price)<="4000"){
-							var price="between-3000-4000";
-						}else if(parseInt(response.bike[i].price)<="5000"){
-							var price="between-4000-5000";
-						}else{
-							var price="5000";
-						}
+							if(parseInt(response.bike[i].price)<="2000"){
+								var price="2000";
+							}else if(parseInt(response.bike[i].price)<="3000"){
+								var price="between-2000-3000";
+							}else if(parseInt(response.bike[i].price)<="4000"){
+								var price="between-3000-4000";
+							}else if(parseInt(response.bike[i].price)<="5000"){
+								var price="between-4000-5000";
+							}else{
+								var price="5000";
+							}
 
-						var temp="\
-						<div class=\"grid-item\">\
-							<div class=\"portfolio-image effect social-links\">\
-								<img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
-								<div class=\"image-box-content\">\
-									<p>\
-										<a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
-										<a data-target=\"#command\" class=\"orderBikeClick\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\"><i class=\"fa fa-link\"></i></a>\
+							var $item=$("\
+							<div class=\"grid-item\">\
+								<div class=\"portfolio-image effect social-links\">\
+									<img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
+									<div class=\"image-box-content\">\
+										<p>\
+											<a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"><i class=\"fa fa-expand\"></i></a>\
+											<a data-target=\"#command\" class=\"orderBikeClick\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\"><i class=\"fa fa-link\"></i></a>\
+										</p>\
+									</div>\
+								</div>\
+								<div class=\"portfolio-description\">\
+									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
+									<p>"+response.bike[i].model+" "+frameType+"\
+									<br>"+response.bike[i].utilisation+"\
+									<br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\">\
+										<span class=\"fr\">Commander</span>\
+										<span class=\"en\">Order</span>\
+										<span class=\"nl\">Order</span>\
+									</a>\
 									</p>\
 								</div>\
-							</div>\
-							<div class=\"portfolio-description\">\
-								<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
-								<p>"+response.bike[i].model+" "+frameType+"\
-								<br>"+response.bike[i].utilisation+"\
-								<br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\">\
-									<span class=\"fr\">Commander</span>\
-									<span class=\"en\">Order</span>\
-									<span class=\"nl\">Order</span>\
-								</a>\
-								</p>\
-							</div>\
-						</div>";
+							</div>");
 
-					  var $item = $(temp);
-					  // add width and height class
-					  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
-					  $grid.append( $item )
-						// add and lay out newly appended elements
-						.isotope( 'appended', $item );
-					i++;
-				}
-
-				displayLanguage();
+						  // add width and height class
+						  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
+						  $grid.isotope( 'insert', $item );
+					}
+				}, timeout);
 
 				$( ".orderBikeClick" ).click(function() {  
 					fillCommandDetails(this.name);
@@ -120,7 +123,12 @@ function load_cafetaria(){
 
 				$( "img.portfolio-img" ).load(function(){
 					$('.grid').isotope();
-				});                     
+				});
+				//Fix Isotope not displayed after insert/append bug
+				setTimeout(function(){
+					$grid.isotope( 'reloadItems' ).isotope();
+					displayLanguage();
+				}, 300+timeout);
             }
         }
     })

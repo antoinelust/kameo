@@ -23,7 +23,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			}
 		}else if($action === 'listCafetariaCompanies'){
 			if(get_user_permissions("admin", $token)){
-				if ($result = $conn->query("SELECT COMPANY_NAME, (SELECT COUNT(*) FROM companies_orderable WHERE INTERNAL_REFERENCE = c.COMPANY_NAME) AS NUM_OF_ORDERABLE FROM companies c, conditions co WHERE c.INTERNAL_REFERENCE=co.COMPANY AND co.CAFETARIA='Y' AND c.STAANN != 'D'")) {
+				if ($result = $conn->query("SELECT COMPANY_NAME, (SELECT COUNT(*) FROM companies_orderable WHERE INTERNAL_REFERENCE = c.INTERNAL_REFERENCE) AS NUM_OF_ORDERABLE FROM companies c, conditions co WHERE c.INTERNAL_REFERENCE=co.COMPANY AND co.CAFETARIA='Y' AND c.STAANN != 'D'")) {
 					echo json_encode(mysqli_fetch_all($result, MYSQLI_ASSOC));
 					$result->close();
 				}

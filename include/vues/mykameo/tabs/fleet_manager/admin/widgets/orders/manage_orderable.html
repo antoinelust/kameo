@@ -100,7 +100,7 @@
 				  return {'name': 'bikesOrderable[]', 'value': this.textContent};
 				}).get();
 				data.push({'name': 'action', 'value': 'updateOrderable'});
-				data.push({'name': 'company', 'value': $('#manageOrderableCompanyName').val()});
+				data.push({'name': 'company', 'value': $('#manageOrderableCompanyName').val()}); //can't use the current_company var here because of a bootstrap modalfade related bug (data passed is gonna be for another company)
 				$.ajax({
 					 type: "POST",
 					 url: url,
