@@ -704,20 +704,42 @@ function list_kameobikes_member(){
       url: 'apis/Kameo/get_kameobikes_members.php',
       type: 'get',
       success: function(response){
-        if(response.response == 'error') {
+        if(response.response == 'error')
           console.log(response.message);
-        }
-        if(response.response == 'success'){
-          var i=0;
-          while (i < response.membersNumber){
+        else if(response.response == 'success'){
+          for (var i = 0; i < response.membersNumber; i++)
             $('#widget-addActionCompany-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
-            i++;
-          }
           $('#widget-addActionCompany-form select[name=owner]').val('julien@kameobikes.com');
-
         }
       }
-})
+});
+}
+function listPortfolioBikes(){
+  $.ajax({
+    url: 'apis/Kameo/load_portfolio.php',
+    type: 'get',
+    data: {"action": "list"},
+    success: function(response){
+      if (response.response == 'error') {
+        console.log(response.message);
+      } else{
+            var i=0;
+            var dest="";
+            var temp="<table class=\"table table-condensed\" id=\"portfolioBikeListing\"><h4 class=\"fr-inline text-green\">Vélos du catalogue:</h4><h4 class=\"en-inline text-green\">Portfolio bikes:</h4><h4 class=\"nl-inline text-green\">Portfolio bikes:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addPortfolioBike\" data-toggle=\"modal\" onclick=\"initializeCreatePortfolioBike()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class=\"fr-inline\">Marque</span><span class=\"en-inline\">Brand</span><span class=\"nl-inline\">Brand</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Utilisation</span><span class=\"en-inline\">Use</span><span class=\"nl-inline\">Use</span></th><th><span class=\"fr-inline\">Electrique ?</span><span class=\"en-inline\">Electric</span><span class=\"nl-inline\">Electric</span></th><th><span class=\"fr-inline\">Cadre</span><span class=\"en-inline\">Frame</span><span class=\"nl-inline\">Frame</span></th><th><span class=\"fr-inline\">Prix</span><span class=\"en-inline\">Price</span><span class=\"nl-inline\">Price</span></th><th>Afficher</th><th></th></tr></thead><tbody>";
+            dest=dest.concat(temp);
+            while(i<response.bikeNumber){
+                var temp="<tr><td>"+response.bike[i].ID+"</td><td>"+response.bike[i].brand+"</td><td>"+response.bike[i].model+"</td><td>"+response.bike[i].utilisation+"</td><td>"+response.bike[i].electric+"</td><td>"+response.bike[i].frameType+"</td><td>"+Math.round(response.bike[i].price)+" €</td><td>"+response.bike[i].display+"<td><a href=\"#\" class=\"text-green updatePortfolioClick\" onclick=\"initializeUpdatePortfolioBike('"+response.bike[i].ID+"')\" data-target=\"#updatePortfolioBike\" data-toggle=\"modal\">Mettre à jour </a></td></tr>";
+                dest=dest.concat(temp);
+                i++;
+            }
+            document.getElementById('portfolioBikesListing').innerHTML=dest.concat("</tbody>");
+            displayLanguage();
+            $('#portfolioBikeListing').DataTable({
+                "paging": false
+            });
+      }
+    }
+  })
 }
 </script>
 
@@ -755,7 +777,7 @@ function list_kameobikes_member(){
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
   //PORTFOLIO
   /** @TODO: Add a delete confirmation widget **/
-  //include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
   //BILLS
   include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
   //DASHBOARD

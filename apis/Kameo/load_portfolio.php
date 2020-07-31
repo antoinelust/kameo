@@ -24,10 +24,8 @@ try{
 
             if($frameType != NULL && $utilisation != NULL && $price != NULL && $brand != NULL && $electric != NULL)
             {
-
-
                 include 'connexion.php';
-                $sql="SELECT *  FROM bike_catalog WHERE STAANN != 'D'";
+                $sql="SELECT * FROM bike_catalog WHERE STAANN != 'D'";
 
                 if($ID != NULL){
                     $sql=$sql." AND ID='".$ID."'";

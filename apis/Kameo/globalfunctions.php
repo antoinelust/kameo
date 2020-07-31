@@ -60,7 +60,6 @@ function successMessage($MSGNUM) {
 }
 
 function getAPIData($url1){
-    
 	$curl_handle=curl_init();
 	curl_setopt($curl_handle, CURLOPT_URL,$url1);
 	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
@@ -163,13 +162,13 @@ function error_message($type){
 			break;
 		case '403':
 			header("HTTP/1.0 403 Forbidden");
-            $response = array ('error'=>'insufficient_privileges', 'error_message'=> "The access token doesn't allow this right");
+            $response = array ('error'=>'insufficient_privileges', 'error_message'=> "Your access token doesn't allow you to perfom this action");
             echo json_encode($response);
             die;
 			break;
 		case '405':
 			header("HTTP/1.1 405 Method Not Allowed");
-            $response = array ('error'=>'invalid_token', 'error_message'=> 'The access token is invalid');
+            $response = array ('error'=>'unallowed_method', 'error_message'=> 'This method is not allowed on this endpoint');
             echo json_encode($response);
             die;            
 			break;

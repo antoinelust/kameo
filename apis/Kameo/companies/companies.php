@@ -2,47 +2,54 @@
 header('Content-type: application/json');
 header('WWW-Authenticate: Bearer');
 header('Expires: ' . gmdate('r', 0));
+header('HTTP/1.0 200 Ok');
 
-require_once 'apis/Kameo/globalfunctions.php';
-require_once 'apis/Kameo/authentication.php';
-require_once 'apis/Kameo/connexion.php'; 
+require_once '../globalfunctions.php';
+require_once '../authentication.php';
+require_once '../connexion.php'; 
+
+$token = getBearerToken();
 
 switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 		
-		if($action == 'list'){         
+		if($action === 'list'){
 			if(get_user_permissions("admin", $token)){
-				header("HTTP/1.0 200 Ok");                    
 				include 'list_companies.php';
 			}else{
 				error_message('401');
 			}
-		}else if($action == 'graphic'){
+		}else if($action === 'listCafetariaCompanies'){
 			if(get_user_permissions("admin", $token)){
-				header("HTTP/1.0 200 Ok");                    
+				if ($result = $conn->query("SELECT COMPANY_NAME, (SELECT COUNT(*) FROM companies_orderable WHERE INTERNAL_REFERENCE = c.COMPANY_NAME) AS NUM_OF_ORDERABLE FROM companies c, conditions co WHERE c.INTERNAL_REFERENCE=co.COMPANY AND co.CAFETARIA='Y' AND c.STAANN != 'D'")) {
+					echo json_encode(mysqli_fetch_all($result, MYSQLI_ASSOC));
+					$result->close();
+				}
+			}else
+				error_message('401');
+		}
+		else if($action === 'graphic'){
+			if(get_user_permissions("admin", $token)){
 				include 'graphic_companies.php';
 			}else{
 				error_message('401');
 			}
-		}else{
+		}else
 			error_message('405');
-		}    
 		break;
 	case 'POST':
 		$action=isset($_POST['action']) ? $_POST['action'] : NULL;
 		
-		if($action == 'addCompanyContact'){
-			if(get_user_permissions("admin", $token)){
-				header("HTTP/1.0 200 Ok");                    
+		if($action === 'addCompanyContact'){
+			if(get_user_permissions("admin", $token)){                   
 				include 'add_company_contact.php';
 			}else{
 				error_message('401');
 			}
-		}else if($action == 'editCompanyContact'){
-			if(get_user_permissions("admin", $token)){
-				header("HTTP/1.0 200 Ok");                    
+		}else if($action === 'editCompanyContact'){
+			if(get_user_permissions("admin", $token)){                   
 				include 'edit_company_contact.php';
 			}else{
 				error_message('401');
