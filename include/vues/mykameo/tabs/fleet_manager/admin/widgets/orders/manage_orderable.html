@@ -22,7 +22,8 @@
 								  </tr>
 								</thead>
 							</table>
-							</div>	
+							</div>
+							<input name="company" id="manageOrderableCompanyName" hidden>
 							<button class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
 						</form>
 					</div>
@@ -43,6 +44,8 @@
 <script type="text/javascript" src="js/addons/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
 <script>
 	$('#manageOrderable').on('show.bs.modal', function (event) {
+	var current_company = $(event.relatedTarget).data('company');
+	$('#manageOrderableCompanyName').val(current_company);
 	if ( $('#manageCompaniesOrderable').DataTable() != null ) {
 	  $('#manageCompaniesOrderable').DataTable().clear();
 	  $('#manageCompaniesOrderable').DataTable().destroy();
@@ -55,7 +58,7 @@
 				"type": "GET",
 				"data": {
 					"action": "listOrderable",
-					"company": encodeURI($(event.relatedTarget).data('company'))
+					"company": encodeURI(current_company)
 				}
 			},
 			"sAjaxDataProp": "",
@@ -97,7 +100,7 @@
 				  return {'name': 'bikesOrderable[]', 'value': this.textContent};
 				}).get();
 				data.push({'name': 'action', 'value': 'updateOrderable'});
-				data.push({'name': 'company', 'value': $(event.relatedTarget).data('company')});
+				data.push({'name': 'company', 'value': $('#manageOrderableCompanyName').val()});
 				$.ajax({
 					 type: "POST",
 					 url: url,
