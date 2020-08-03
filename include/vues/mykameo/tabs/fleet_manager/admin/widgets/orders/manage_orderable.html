@@ -2,28 +2,31 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<div class="row">
+					<h4 class="modal-title fr text-green col-sm-11">Vélos commandables</h4>
+					<button type="button" class="close col-sm-1" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="modal-title fr text-green">Vélos commandables</h4>
-					</div>
-					<br><br>
-					<div class="col-sm-12">
 						<form id="widget-manageCompaniesOrderable-form" action="apis/Kameo/orders/orders.php" role="form" method="post">
+							<div class="row">
+								<div class="col-sm-6" align="center"><label for="company">Name&nbsp;&nbsp;</label><input name="company" id="manageOrderableCompanyName" disabled></div>
+								<div class="col-sm-6" align="center"><label for="cafetaria">Cafetaria&nbsp;&nbsp;</label><input name="cafetaria" id="manageOrderableCafetaria" type="checkbox"></div>
+							</div>
+							<div class="separator"></div>
 							<div class="table-responsive">
 							<table id="manageCompaniesOrderable" class="table" style="width: 100%;">
 								<thead>
 								  <tr>
-									 <th><input type="checkbox" name="select_all" value="1" id="select-all-orderable-bikes"></th>
+									 <th><input type="checkbox" name="select_all" value="1"></th>
 									 <th>ID</th>
 									 <th>Modèle</th>
 								  </tr>
 								</thead>
 							</table>
 							</div>
-							<input name="company" id="manageOrderableCompanyName" hidden>
 							<button class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
 						</form>
 					</div>
@@ -44,8 +47,11 @@
 <script type="text/javascript" src="js/addons/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
 <script>
 	$('#manageOrderable').on('show.bs.modal', function (event) {
+	$('#ordersListing').modal('hide');
 	var current_company = $(event.relatedTarget).data('company');
+	var has_cafetaria = $(event.relatedTarget).data('cafetaria');
 	$('#manageOrderableCompanyName').val(current_company);
+	$('#manageOrderableCafetaria').prop( "checked", has_cafetaria );
 	if ( $('#manageCompaniesOrderable').DataTable() != null ) {
 	  $('#manageCompaniesOrderable').DataTable().clear();
 	  $('#manageCompaniesOrderable').DataTable().destroy();
@@ -70,6 +76,9 @@
 					}).indexes(),
 					0
 				 ).checkboxes.select();
+				 api.cells(api.rows(function(idx, data, node){ return !has_cafetaria; }).indexes(),
+					0
+				 ).checkboxes.disable();
 			  },
 			"language": {
 				"lengthMenu": 'Afficher <select>'+
@@ -93,6 +102,9 @@
 				},
 			]
 		});
+		$("#manageOrderableCafetaria").change(function() {
+			$("#manageCompaniesOrderable").DataTable().rows().nodes().to$().find("input:checkbox").prop( "disabled", !this.checked );
+		});
 		jQuery("#widget-manageCompaniesOrderable-form").validate({
 			submitHandler: function(form){
 				var url = form.action;
@@ -101,6 +113,7 @@
 				}).get();
 				data.push({'name': 'action', 'value': 'updateOrderable'});
 				data.push({'name': 'company', 'value': $('#manageOrderableCompanyName').val()}); //can't use the current_company var here because of a bootstrap modalfade related bug (data passed is gonna be for another company)
+				data.push({'name': 'cafetaria', 'value': $('#manageOrderableCafetaria').is(':checked')}); //same here
 				$.ajax({
 					 type: "POST",
 					 url: url,
@@ -112,6 +125,7 @@
 							}, {
 							type: 'success'
 							});
+							$('#manageOrderable').modal('hide');
 						} else {
 							$.notify({
 							message: response.message
