@@ -3,6 +3,7 @@ if(!isset($_SESSION))
     session_start();
 if(!isset($_SESSION['langue']))
     $_SESSION['langue']="fr";
+require_once __DIR__ . '/../../include/environment.php';
 
 function errorMessage($MSGNUM) {
     include 'connexion.php';
@@ -64,7 +65,7 @@ function getAPIData($url1){
 	curl_setopt($curl_handle, CURLOPT_URL,$url1);
 	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
 	curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-    if(ENVIRONMENT=="local"){
+    if(constant('ENVIRONMENT')=="local"){
         curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
     }
