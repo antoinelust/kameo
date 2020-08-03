@@ -27,11 +27,14 @@
 					"columns": [
 						{ title: "Name", "data": "COMPANY_NAME", 
 							"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-								$(nTd).html("<a href='#' data-target='#manageOrderable' data-toggle='modal' data-company='"+sData+"'>"+sData+"</a>");
+								var cafetaria = (oData.CAFETARIA === "Y") ? true : false;
+								$(nTd).html("<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='"+cafetaria+"' data-company='"+sData+"'>"+sData+"</a>");
 							}
 						},
 						{ title: "Bikes", "data": "NUM_OF_ORDERABLE" },
-					]
+						{ title: "Cafetaria", "data": "CAFETARIA" },
+					],
+					"order": [[ 2, "desc" ], [ 0, "asc" ]]
 				});
 			});
 			</script>

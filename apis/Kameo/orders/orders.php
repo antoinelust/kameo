@@ -63,36 +63,48 @@ switch($_SERVER["REQUEST_METHOD"])
 	
 		if($action === 'updateOrderable')
 		{
-			if(get_user_permissions("admin", $token) && isset($_POST['company'])){
-				$stmt = $conn->prepare("SELECT INTERNAL_REFERENCE FROM companies WHERE COMPANY_NAME= ?");
+			if(get_user_permissions("admin", $token) && isset($_POST['company']) && isset($_POST['cafetaria'])){
+				$stmt = $conn->prepare("SELECT INTERNAL_REFERENCE FROM companies WHERE COMPANY_NAME=?");
 				$stmt->bind_param("s", $_POST['company']);
 				$stmt->execute();
 				$company_reference = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['INTERNAL_REFERENCE'];
+				$cafetaria = ($_POST['cafetaria'] === "true") ? "Y" : "N";
 				$stmt->close();
-				$stmt = $conn->prepare("SELECT co.BIKE_ID FROM bike_catalog bc, companies_orderable co WHERE co.INTERNAL_REFERENCE = ? AND co.BIKE_ID = bc.ID");
-				$stmt->bind_param("s", $company_reference);
+				$stmt = $conn->prepare("UPDATE conditions SET CAFETARIA=? WHERE COMPANY =? AND NAME = 'generic'");
+				$stmt->bind_param("ss", $cafetaria, $company_reference);
 				$stmt->execute();
-				$orderable = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 				$stmt->close();
-				$orderable = array_column($orderable, 'BIKE_ID');
-				$checked = isset($_POST['bikesOrderable']) ? $_POST['bikesOrderable'] : Array();
-				$to_insert = array_diff($checked, $orderable);
-				$to_delete = array_diff($orderable, $checked);
-				$stmt_insert = $conn->prepare("INSERT INTO companies_orderable (ID, INTERNAL_REFERENCE, BIKE_ID) VALUES (null, ?, ?)");
-				$stmt_insert->bind_param("ss", $company_reference, $insert_item);
-				$stmt_delete = $conn->prepare("DELETE FROM companies_orderable WHERE INTERNAL_REFERENCE = ? AND BIKE_ID = ?");
-				$stmt_delete->bind_param("ss", $company_reference, $delete_item);
-				$conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-				foreach ($to_insert as $insert_item)
-					if (!$stmt_insert->execute())
-						errorMessage("ES0012");
-				foreach ($to_delete as $delete_item)
-					if (!$stmt_delete->execute())
-						errorMessage("ES0012");
-				$stmt_insert->close();
-				$stmt_delete->close();
-				if ($conn->commit())
+				if ($_POST['cafetaria'] === "true")
+				{
+					$stmt = $conn->prepare("SELECT co.BIKE_ID FROM bike_catalog bc, companies_orderable co WHERE co.INTERNAL_REFERENCE = ? AND co.BIKE_ID = bc.ID");
+					$stmt->bind_param("s", $company_reference);
+					$stmt->execute();
+					$orderable = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+					$stmt->close();
+					$orderable = array_column($orderable, 'BIKE_ID');
+					$checked = isset($_POST['bikesOrderable']) ? $_POST['bikesOrderable'] : Array();
+					$to_insert = array_diff($checked, $orderable);
+					$to_delete = array_diff($orderable, $checked);
+					$stmt_insert = $conn->prepare("INSERT INTO companies_orderable (ID, INTERNAL_REFERENCE, BIKE_ID) VALUES (null, ?, ?)");
+					$stmt_insert->bind_param("ss", $company_reference, $insert_item);
+					$stmt_delete = $conn->prepare("DELETE FROM companies_orderable WHERE INTERNAL_REFERENCE = ? AND BIKE_ID = ?");
+					$stmt_delete->bind_param("ss", $company_reference, $delete_item);
+					$conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+					foreach ($to_insert as $insert_item)
+						if (!$stmt_insert->execute())
+							errorMessage("ES0012");
+					foreach ($to_delete as $delete_item)
+						if (!$stmt_delete->execute())
+							errorMessage("ES0012");
+					$stmt_insert->close();
+					$stmt_delete->close();
+					if ($conn->commit())
+						successMessage("SM0003");	
+				}
+				else
+				{
 					successMessage("SM0003");
+				}
 			}
 		}
 	break;
