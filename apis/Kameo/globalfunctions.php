@@ -59,15 +59,16 @@ function successMessage($MSGNUM) {
 	die;
 }
 
-function getAPIData($url1){
+function getAPIData($url1){    
 	$curl_handle=curl_init();
 	curl_setopt($curl_handle, CURLOPT_URL,$url1);
 	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
 	curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-    if(ENVIRONMENT=="local"){
+    if(getenv('user')=="local"){
         curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
     }
+    
 	curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Your application name');
     curl_setopt($curl_handle, CURLOPT_VERBOSE, true);
     $verbose = fopen('php://temp', 'w+');
