@@ -1,9 +1,6 @@
 <?php
 session_cache_limiter('nocache');
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET');
-header('Access-Control-Allow-Headers: application/json');
+header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
 session_start();
@@ -27,8 +24,10 @@ try{
 
             if($frameType != NULL && $utilisation != NULL && $price != NULL && $brand != NULL && $electric != NULL)
             {
+
+
                 include 'connexion.php';
-                $sql="SELECT * FROM bike_catalog WHERE STAANN != 'D'";
+                $sql="SELECT *  FROM bike_catalog WHERE STAANN != 'D'";
 
                 if($ID != NULL){
                     $sql=$sql." AND ID='".$ID."'";

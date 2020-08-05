@@ -11,9 +11,7 @@ $feedback=isset($_GET['feedback']) ? $_GET['feedback'] : NULL; //Used by: login_
 $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
 require_once 'include/i18n/i18n.php';
-include 'apis/Kameo/connexion.php';
-include 'include/environment.php';
-    
+include 'apis/Kameo/connexion.php';    
 
 $i18n = new i18n('lang/lang_{LANGUAGE}.ini'); //french by defaut
 $i18n->init();
