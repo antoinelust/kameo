@@ -6,7 +6,7 @@ $( ".fleetmanager" ).click(function() {
 });
 function temp_init(){
 var emailArray;
-var email= "<?php echo $user_data['EMAIL']; ?>";
+var email= "<?php echo $user_data['EMAIL'];?>";
 $.ajax({
   url: 'apis/Kameo/get_company_conditions.php',
   type: 'post',
@@ -53,6 +53,7 @@ $.ajax({
 		document.getElementById('orderManagement').classList.remove("hidden");
 		document.getElementById('portfolioManagement').classList.remove("hidden");
 		document.getElementById('bikesManagement').classList.remove("hidden");
+		document.getElementById('chatsManagement').classList.remove("hidden");
 		document.getElementById('boxesManagement').classList.remove("hidden");
 		document.getElementById('tasksManagement').classList.remove("hidden");
 		document.getElementById('feedbacksManagement').classList.remove("hidden");

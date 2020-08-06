@@ -106,6 +106,17 @@
 		  <p>Gérer les vélos</p>
 		</div>
 	  </div>
+	  <div class="col-md-4 hidden" id="chatsManagement">
+		<div class="icon-box medium fancy">
+		  <div class="icon bold" data-animation="pulse infinite">
+			<a data-toggle="modal" data-target="#chatsListing" href="#" class="chatsManagerClick">
+			  <i class="fa fa-comment"></i>
+			</a>
+		  </div>
+		  <div class="counter bold" id="counterChat" style="color:#3cb395"></div>
+		  <p>Chat</p>
+		</div>
+	  </div>
 	  <div class="col-md-4 hidden" id="boxesManagement">
 		<div class="icon-box medium fancy">
 		  <div class="icon bold" data-animation="pulse infinite">

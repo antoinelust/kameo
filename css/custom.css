@@ -67,6 +67,24 @@ img{ max-width:100%;}
   display: inline-block;
   width: 6%;
 }
+
+.incoming_msg {
+  overflow-wrap: anywhere;
+}
+
+.chat_message_container{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-end;
+	padding: 0 0 15px 0;
+}
+
+.sent_msg_img {
+  display: inline-block;
+  width: 6%;
+}
+
 .received_msg {
   display: inline-block;
   padding: 0 0 0 10px;
@@ -99,14 +117,22 @@ img{ max-width:100%;}
   background: #05728f none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
-  margin: 0; color:#fff;
+  margin: 0; 
+  color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
 }
-.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.outgoing_msg{
+	overflow-wrap: anywhere;
+	max-width: 90%;
+	padding: 0 10px 0 0;
+	min-width: 57%;
+}
+
 .sent_msg {
-  float: right;
-  width: 46%;
+  display: inline-block;
+  width: 100%;
+  text-align: right;
 }
 .input_msg_write input {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -280,63 +306,6 @@ img{ max-width:100%;}
 @media only screen and (max-width: 1019px) {
   .block-process-2 .__block { max-width: 720px; }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -529,26 +498,3 @@ body.loading .loader {
 body.loading .loader {
     display: block;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

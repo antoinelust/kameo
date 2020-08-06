@@ -77,7 +77,7 @@ function list_errors() {
 					} else {
 						var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
 					}
-					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + bike.bikeID + "\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">" + bikeDescription + "</a></td><td>Le vélo " + bikeDescription + " ne peut pas être défini comme vélo de stock en dehors de la société Kameo</td><td></tr>";
+					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + bike.bikeID + "\" data-toggle=\"modal\" href=\"#\">" + bikeDescription + "</a></td><td>Le vélo " + bikeDescription + " ne peut pas être défini comme vélo de stock en dehors de la société Kameo</td><td></tr>"; //onclick=\"set_required_image('false')\"
 					dest = dest.concat(temp);
 					i++;
 					j++;
@@ -93,7 +93,8 @@ function list_errors() {
 					} else {
 						var bikeDescription = bill.bikeID + " - " + bill.bikeNumber;
 					}
-					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + bill.bikeID + "\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">" + bikeDescription + "</a></td><td>" + bill.description + "</td><td></tr>";
+					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + bill.bikeID + "\" data-toggle=\"modal\" href=\"#\">" + bikeDescription + "</a></td><td>" + bill.description + "</td><td></tr>";
+					//onclick=\"set_required_image('false')\"
 					dest = dest.concat(temp);
 					i++;
 				}
@@ -103,7 +104,8 @@ function list_errors() {
 				var dest = "<table class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th>Description</th></thead><tbody>";
 				while (i < response.company.img.number) {
 					var company = response.company.img[i];
-					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + company.id + "\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">" + company.name + "</a></td><td>Image manquante pour la société " + company.name + "</td></tr>";
+					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + company.id + "\" data-toggle=\"modal\" href=\"#\">" + company.name + "</a></td><td>Image manquante pour la société " + company.name + "</td></tr>";
+					//onclick=\"set_required_image('false')\"
 					dest = dest.concat(temp);
 					i++;
 				}

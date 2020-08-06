@@ -10,17 +10,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
             write_message(message, email, email, "command");
             $("#orderBike .input_msg_write .write_msg").val("");
         }
-    });
-    
-    $("#orderManager .mesgs .msg_send_btn").click(function() {  
-        var message=$("#orderManager .input_msg_write .write_msg").val();
-        var emailUser=$("#orderManager input[name=emailUser]").val();
-        if(message != ""){
-            write_message(message, email, emailUser, "command");
-            $("#orderManager .input_msg_write .write_msg").val("");
-        }
-    });
-    
+    });    
     $("#orderBike .input_msg_write .write_msg").keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode == '13'){	
@@ -28,17 +18,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
             if(message != ""){
                 write_message(message, email, email, "command");
                 $("#orderBike .input_msg_write .write_msg").val("");
-            }
-        }
-    });    
-    $("#orderManager .input_msg_write .write_msg").keypress(function(event){
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
-            var message=$("#orderManager .input_msg_write .write_msg").val();
-            var emailUser=$("#orderManager input[name=emailUser]").val();
-            if(message != ""){
-                write_message(message, email, emailUser, "command");
-                $("#orderManager .input_msg_write .write_msg").val("");
             }
         }
     });
@@ -55,15 +34,9 @@ function load_cafetaria(){
             }
             if(response.response == 'success'){
 				var $grid = $('.grid').isotope();
-				var timeout = 0;
-				//If elements are already in isotope, remove them
-				if ($grid.isotope('getItemElements').length > 0)
+				//If elements are already in isotope, do nothing
+				if (($('.grid').isotope('getItemElements').length == 0))
 				{
-					$grid.isotope('remove', $grid.isotope('getItemElements'));
-					//Set a timeout to give time to remove elements to isotope
-					timeout = 250;
-				}
-				setTimeout(function(){
 					for (var i=0; i<response.bikeNumber; i++){
 							if(response.bike[i].frameType.toLowerCase()=="h"){
 								var frameType = "Homme";
@@ -115,20 +88,19 @@ function load_cafetaria(){
 						  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
 						  $grid.isotope( 'insert', $item );
 					}
-				}, timeout);
 
-				$( ".orderBikeClick" ).click(function() {  
-					fillCommandDetails(this.name);
-				});
-
-				$( "img.portfolio-img" ).load(function(){
-					$('.grid').isotope();
-				});
-				//Fix Isotope not displayed after insert/append bug
-				setTimeout(function(){
-					$grid.isotope( 'reloadItems' ).isotope();
-					displayLanguage();
-				}, 300+timeout);
+					//Fix Isotope not displayed after insert/append bug
+					setTimeout(function(){
+						$grid.isotope( 'reloadItems' ).isotope();
+						$( ".orderBikeClick" ).click(function() {  
+							fillCommandDetails(this.name);
+						});
+						$( "img.portfolio-img" ).load(function(){
+							$('.grid').isotope();
+						});
+						displayLanguage();
+					}, 300);
+				}
             }
         }
     })
@@ -146,8 +118,7 @@ function fillCommandDetails(ID){
         console.log(response.message);
       } else{
         $('#widget-command-form input[name=ID]').val(response.ID);
-
-        $('#widget-command-form input[name=brand]').val(response.brand);
+        $('#widget-command-form select[name=brand]').val(response.brand);
         $('#widget-command-form input[name=model]').val(response.model);
         $('#widget-command-form select[name=frame]').val(response.frameType);
         $('#widget-command-form select[name=utilisation]').val(response.utilisation);
@@ -201,9 +172,6 @@ function get_command_user(email){
                   }else{
                       $('#orderBike .testPlace').html(response[i].testAddress);
                   }
-                  
-                  
-                  
                   if(response[i].deliveryDate=="" || response[i].deliveryDate == null){
                       $('#orderBike .fr .deliveryDate').html("A confirmer");
                       $('#orderBike .nl .deliveryDate').html("To be confirmed");
@@ -231,128 +199,77 @@ function get_command_user(email){
 
     }
   });    
-    
-    get_message_history();    
-    
+    get_message_history();
 }
 
 
 function get_message_history(){
     $.ajax({
-        url: 'apis/Kameo/chat_management.php',
+        url: 'apis/Kameo/chats/chats.php',
         type: 'get',
-        data: { "action": "list", "type": "command", "email": email},
+        data: { "action": "retreiveMessages", "type": "command"},
         success: function(response){
-            var i=0;
             var dest="";
-            while(i<response.chatNumber){
-                var isKameoBikes = response.chat[i].emailUser.slice(-14);
-                if( isKameoBikes == "kameobikes.com"){
-                    isKameoBikes = true;
-                }else{
-                    isKameoBikes = false;
-                }
-                
-                if(response.chat[i].img=="none"){
-                    var image = "https://ptetutorials.com/images/user-profile.png";
-                }else{
-                    var image = "./images/images_users/"+response.chat[i].img;
-                }
-                                
-                if(isKameoBikes){
-                    var temp="<div class=\"incoming_msg\">\
-                    <div class=\"incoming_msg_img\">\
-                    <img src=\""+image+"\" alt=\"sunil\"> </div>\
-                      <div class=\"received_msg\">\
-                        <div class=\"received_withd_msg\">";
-                }else{
-                    var temp="<div class=\"outgoing_msg\">\
-                                  <div class=\"sent_msg\">";
-                }
-                dest=dest.concat(temp);
-                var temp = "<p>"+response.chat[i].message+"</p>\
-                      <span class=\"time_date\"> "+response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM    |    "+response.chat[i].messageDate+"</span></div>\
-                  </div>\
-                </div>";
-                dest=dest.concat(temp);
-                i++;
-            }
-            
-            if(response.chatNumber==0){
-                var temp="<div class=\"incoming_msg\">\
-                <div class=\"incoming_msg_img\">\
-                <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>\
-                  <div class=\"received_msg\">\
-                    <div class=\"received_withd_msg\">\
-                        <p>Des questions sur un ou plusieurs de nos vélos ? Je suis à votre disposition pour vous aiguiller.</p>\
-                        <span class=\"time_date\"> Info Kameo Bikes </span></div>\
-                  </div>\
-                </div>";
-                dest=dest.concat(temp);
-            }
-            
-            if(isKameoBikes == false){
-                var temp="<div class=\"incoming_msg\">\
-                <div class=\"incoming_msg_img\">\
-                <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>\
-                  <div class=\"received_msg\">\
-                    <div class=\"received_withd_msg\">\
-                        <p>Nous vous remercions pour votre message. Notre expert vous répondra aussi rapidement que possible.</p>\
-                        <span class=\"time_date\"> Info Kameo Bikes </span></div>\
-                  </div>\
-                </div>";
-                dest=dest.concat(temp);
-            }
-            $('#divChatCommand').html(dest);
-            $('.msg_history').scrollTop($('.msg_history').prop("scrollHeight"));
-            
-            
-        }
-    })
-}
-
-function get_message_history_admin(emailUser){
-    $.ajax({
-        url: 'apis/Kameo/chat_management.php',
-        type: 'get',
-        data: { "action": "list", "type": "command", "email": emailUser},
-        success: function(response){
-            var i=0;
-            var dest="";
-            while(i<response.chatNumber){
-                var isKameoBikes = response.chat[i].emailUser.slice(-14);
-                if( isKameoBikes == "kameobikes.com"){
-                    isKameoBikes = true;
-                }else{
-                    isKameoBikes = false;
-                }
-                
-                if(response.chat[i].img=="none"){
-                    var image = "https://ptetutorials.com/images/user-profile.png";
-                }else{
-                    var image = "./images/images_users/"+response.chat[i].img;
-                }
-                                
-                if(!isKameoBikes){
-                    var temp="<div class=\"incoming_msg\">\
-                    <div class=\"incoming_msg_img\">\
-                    <img src=\""+image+"\" alt=\"sunil\"> </div>\
-                      <div class=\"received_msg\">\
-                        <div class=\"received_withd_msg\">";
-                }else{
-                    var temp="<div class=\"outgoing_msg\">\
-                                  <div class=\"sent_msg\">";
-                }
-                dest=dest.concat(temp);
-                var temp = "<p>"+response.chat[i].message+"</p>\
-                      <span class=\"time_date\"> "+response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM    |    "+response.chat[i].messageDate+"</span></div>\
-                  </div>\
-                </div>";
-                dest=dest.concat(temp);
-                i++;
-            }
-            $('#divChatCommandAdmin').html(dest);
-            $('#orderManager .msg_history').scrollTop($('#orderManager .msg_history').prop("scrollHeight"));
+			$('#divChatCommand').empty();
+			for (var i = 0; i<response.chatNumber; i++){
+			var kameoBikesRegex = new RegExp(/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")(@kameobikes.com){1}$/i);
+				var isKameoBikes = kameoBikesRegex.test(response.chat[i].emailUser);
+				if(response.chat[i].img==null)
+					response.chat[i].img = "https://ptetutorials.com/images/user-profile.png";
+				if(isKameoBikes){
+					$('#divChatCommand').append([
+						$('<div/>',{ "class": "chat_message_container" }).append([
+							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:response.chat[0].img})),
+							$('<div/>',{ "class": "received_msg" }).append([
+								$('<div/>',{ "class": "received_withd_msg" }).append([
+									$( '<p/>' ).text(response.chat[i].message),
+									$('<span/>').addClass('time_date').html(response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM | "+response.chat[i].messageDate)
+								])
+							])
+						])
+					]);
+				}else{
+					$('#divChatCommand').append([
+						$('<div/>',{ "class": "chat_message_container" }).append([
+							$('<div/>',{ "class": "outgoing_msg" }).append([
+								$('<div/>',{ "class": "sent_msg" }).append([
+									$( '<p/>' ).text(response.chat[i].message),
+									$('<span/>').addClass('time_date').html(response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM | "+response.chat[i].messageDate)
+								])
+							]),
+							$('<div/>',{ "class": "sent_msg_img" }).prepend($('<img>',{src:response.chat[0].img}))
+						])
+					]);
+				}
+			}
+			if(response.chatNumber==0){
+				$('#divChatCommand').append([
+						$('<div/>',{ "class": "chat_message_container" }).append([
+							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'})),
+							$('<div/>',{ "class": "received_msg" }).append([
+								$('<div/>',{ "class": "received_withd_msg" }).append([
+									$( '<p/>' ).text('Des questions sur un ou plusieurs de nos vélos ? Je suis à votre disposition pour vous aiguiller.'),
+									$('<span/>').addClass('time_date').html('Info Kameo Bikes')
+								])
+							])
+						])
+					]);
+			}
+			if(isKameoBikes == false){
+				$('#divChatCommand').append([
+						$('<div/>',{ "class": "chat_message_container" }).append([
+							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'})),
+							$('<div/>',{ "class": "received_msg" }).append([
+								$('<div/>',{ "class": "received_withd_msg" }).append([
+									$( '<p/>' ).text('Nous vous remercions pour votre message. Notre expert vous répondra aussi rapidement que possible.'),
+									$('<span/>').addClass('time_date').html('Info Kameo Bikes')
+								])
+							])
+						])
+					]);
+			}
+			$('.msg_history').scrollTop($('.msg_history').prop("scrollHeight"));
+			$('#writeAdminMsg').val(''); 
         }
     })
 }
@@ -360,17 +277,15 @@ function get_message_history_admin(emailUser){
 function write_message(message, email, emailBeneficiary, type){
     if(message != ""){
         $.ajax({
-        url: 'apis/Kameo/chat_management.php',
+        url: 'apis/Kameo/chats/chats.php',
         type: 'post',
-        data: { "action": "add", "message": message, "email": email, "emailBeneficiary": emailBeneficiary, "type": type},
+        data: { "action": "sendMessage", "message": message, "type": type},
         success: function(response){
           if (response.response == 'error') {
             console.log(response.message);
           } else{
               if(email==emailBeneficiary){
                   get_message_history();
-              }else{
-                  get_message_history_admin(emailBeneficiary);
               }
           }
 

@@ -22,7 +22,8 @@ function initialize_counters() {
                 }
 
                 if(response.company=='KAMEO'){
-                    document.getElementById('counterBikeAdmin').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";          
+                    document.getElementById('counterBikeAdmin').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumber+"</span>";         
+					document.getElementById('counterChat').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\"999\" data-from=\"0\" data-seperator=\"true\">999</span>"; 					
                     document.getElementById('counterBikePortfolio').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.bikeNumberPortfolio+"\" data-from=\"0\" data-seperator=\"true\">"+response.bikeNumberPortfolio+"</span>";
                     document.getElementById('counterClients').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.companiesNumberClientOrProspect+"\" data-from=\"0\" data-  seperator=\"true\">"+response.companiesNumberClientOrProspect+"</span>";
 

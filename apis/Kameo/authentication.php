@@ -39,7 +39,7 @@ function getBearerToken() {
 }
 
 function authenticate($token){
-    if($token){
+    if($token != NULL){
         include 'connexion.php';
         $stmt = $conn->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
         $stmt->bind_param("s", $token);
@@ -53,20 +53,29 @@ function authenticate($token){
 }
 
 function get_user_permissions($accessDemand, $token){
-    if(isset($_SESSION['permissions']) && $_SESSION['permissions'] !== ""){
-		return (in_array($accessDemand, $_SESSION['permissions'], TRUE)) ? true : false;   
-    }else{
-        include 'connexion.php';
-        $stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
-        $stmt->bind_param("s", $token);
-        $stmt->execute();    
-		$permissions = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['ACCESS_RIGHTS'];
-        $permissions=explode(",", $permissions);
-        $_SESSION['permissions']=$permissions;
-        $stmt->close();    
-        $conn->close();    
-    }
-    return (in_array($accessDemand, $permissions, TRUE)) ? true : false;   
+	if ($token != NULL)
+		if(isset($_SESSION['permissions']) && $_SESSION['permissions'] !== ""){
+			if (is_array($accessDemand))
+				return !empty(array_diff($accessDemand, $_SESSION['permissions']));
+			else
+				return (in_array($accessDemand, $_SESSION['permissions'], TRUE));
+		}else{
+			include 'connexion.php';
+			$stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
+			$stmt->bind_param("s", $token);
+			$stmt->execute();    
+			$permissions = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['ACCESS_RIGHTS'];
+			$permissions=explode(",", $permissions);
+			$_SESSION['permissions']=$permissions;
+			$stmt->close();    
+			$conn->close();
+			if (is_array($accessDemand))
+				return !empty(array_diff($accessDemand, $_SESSION['permissions']));
+			else
+				return (in_array($accessDemand, $permissions, TRUE));
+		}
+	else
+		return false;
 }
 
 ?>

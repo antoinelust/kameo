@@ -183,9 +183,6 @@ function retrieve_command(ID){
                 if(response.order.estimatedDeliveryDate != null){
                     $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
                 }
-                
-                get_message_history_admin(response.order.email);
-                
             }
           }
         })

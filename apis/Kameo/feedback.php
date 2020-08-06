@@ -15,7 +15,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
  if($user != '') {
             
     include 'connexion.php';
-	$sql = "select * from customer_referential where EMAIL='$user_data['EMAIL']'";
+	$sql = "select * from customer_referential where EMAIL='$user'";
 	$result = mysqli_query($conn, $sql);
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -46,8 +46,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $mail->From = $user;
 	$mail->FromName = $firstName.' '.$name;
-	$mail->AddAddress($sendmail);								  
-	$mail->AddReplyTo($email, $name);
+	//$mail->AddAddress($sendmail);								  
+	//$mail->AddReplyTo($email, $name);
 	
 	
 	$subject = 'Tell us what you fell - bike '.$frameNumber;

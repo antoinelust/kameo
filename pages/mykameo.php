@@ -386,30 +386,8 @@ if($token==NULL){ //Not connected
                   </div>
                 </div>
               </div>
-              <div id="travel_information_2_loading">
-                <!-- Pour un écran large -->
-                <div class="visible-lg">
-                  <div class="col-lg-12 backgroundgreen down">
-                    <p class="text-white down">
-                      <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
-                      <span class="en-inline text-white">Your trip home - work at </span>
-                      <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
-                      <span class="text-white" id="meteoHour1"></span>
-                    </p>
-                  </div>
-                </div>
-                <div class="visible-lg">
-                  <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                    <h2 class="text-white text-center">LOADING</h2>
-                    <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
-                    <p class="text-white text-center en">Loading of travel time between your house and work place</p>
-                    <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-                  </div>
-                </div>
-
-                <!-- Pour un écran médium -->
-                <div class="visible-md">
-                  <div class="col-md-12 backgroundgreen">
+              <div id="travel_information_2_loading" class="backgroundgreen">
+                  <div class="col-12 backgroundgreen">
                     <p class="text-white down">
                       <span class="fr-inline">Votre trajet domicile - travail à </span>
                       <span class="en-inline">Your trip home - work at </span>
@@ -417,59 +395,18 @@ if($token==NULL){ //Not connected
                       <span id="meteoHour2"></span>
                     </p>
                   </div>
-                </div>
-                <div class="visible-md">
-                  <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+                  <div class="col-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
                     <h2 class="text-white text-center">LOADING</h2>
                     <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
                     <p class="text-white text-center en">Loading of travel time between your house and work place</p>
                     <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
                   </div>
-                </div>
-                <!-- Pour une tablette -->
-                <div class="visible-sm">
-                  <div class="col-sm-12 backgroundgreen">
-                    <p class="text-white down">
-                      <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
-                      <span class="en-inline text-white">Your trip home - work at </span>
-                      <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
-                      <span class="text-white" id="meteoHour3"></span>
-                    </p>
-                  </div>
-                </div>
-                <div class="visible-sm">
-                  <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                    <h2 class="text-white text-center">LOADING</h2>
-                    <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
-                    <p class="text-white text-center en">Loading of travel time between your house and work place</p>
-                    <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-                  </div>
-                </div>
-                <!-- Pour un smartphone -->
-                <div class="visible-xs">
-                  <div class="col-xs-12 backgroundgreen">
-                    <p class="text-white down">
-                      <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
-                      <span class="en-inline text-white">Your trip home - work at </span>
-                      <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
-                      <span class="text-white" id="meteoHour4"></span>
-                    </p>
-                  </div>
-                </div>
-                <div class="visible-xs">
-                  <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                    <h2 class="text-white text-center">LOADING</h2>
-                    <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
-                    <p class="text-white text-center en">Loading of travel time between your house and work place</p>
-                    <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-                  </div>
-                </div>
               </div>
 
               <img src="images_bikes/<?php echo $row['BIKE_NUMBER']; ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
               <br/>
               <!-- BIKE DESCRIPTION -->
-			        <div class="table-responsive">
+			  <div class="table-responsive">
                 <table class="table table-striped">
                   <caption> <?=L::bike_description_title;?> </caption>
                   <tbody>
@@ -761,27 +698,29 @@ function listPortfolioBikes(){
   /** ADMIN **/
   //CUSTOMERS
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
-  //MANAGE BIKES
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
-  //BOXES
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
-  //TASKS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
-  //CASHFLOW
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/cashflow.html';
-  //FEEDBACKS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/feedbacks/main.php';
-  //MAINTENANCES
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
   //ORDERS
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
   //PORTFOLIO
   /** @TODO: Add a delete confirmation widget **/
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
-  //BILLS
-  include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
+  //MANAGE BIKES
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
+  //CHATS
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/chats/main.php';
+  //BOXES
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
+  //TASKS
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
+  //CASHFLOW
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
+  //FEEDBACKS
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/feedbacks/main.php';
+  //MAINTENANCES
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
   //DASHBOARD
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
+  //BILLS
+  include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
 ?>
 
 <?php } ?>

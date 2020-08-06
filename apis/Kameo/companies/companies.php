@@ -19,7 +19,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			if(get_user_permissions("admin", $token)){
 				include 'list_companies.php';
 			}else{
-				error_message('401');
+				error_message('403');
 			}
 		}else if($action === 'listCafetariaCompanies'){
 			if(get_user_permissions("admin", $token)){
@@ -28,13 +28,13 @@ switch($_SERVER["REQUEST_METHOD"])
 					$result->close();
 				}
 			}else
-				error_message('401');
+				error_message('403');
 		}
 		else if($action === 'graphic'){
 			if(get_user_permissions("admin", $token)){
 				include 'graphic_companies.php';
 			}else{
-				error_message('401');
+				error_message('403');
 			}
 		}else
 			error_message('405');
@@ -46,13 +46,13 @@ switch($_SERVER["REQUEST_METHOD"])
 			if(get_user_permissions("admin", $token)){                   
 				include 'add_company_contact.php';
 			}else{
-				error_message('401');
+				error_message('403');
 			}
 		}else if($action === 'editCompanyContact'){
 			if(get_user_permissions("admin", $token)){                   
 				include 'edit_company_contact.php';
 			}else{
-				error_message('401');
+				error_message('403');
 			}
 		}else{
 			error_message('405');

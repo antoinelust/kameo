@@ -9,7 +9,7 @@ $response=array();
 $id = isset($_POST['ID']) ? $_POST['ID'] : NULL;
 
   if ($id != NULL) {
-    $sql="SELECT * FROM notifications WHERE USER_ID = '$id' AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY FIELD(`READ`, 'N', 'Y'), DATE DESC LIMIT 10";
+    $sql="SELECT * FROM notifications WHERE USER_ID = '$id' AND `READ` = 'N' AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY DATE DESC LIMIT 10";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);

@@ -36,7 +36,7 @@ switch($_SERVER["REQUEST_METHOD"])
 					echo json_encode($result);
 				}else
 					errorMessage("ES0012");
-			}else if(get_user_permissions("order", $token) || get_user_permissions("admin", $token)){
+			}else if(get_user_permissions(["order", "admin"], $token)){
 				$stmt = $conn->prepare("SELECT COMPANY from customer_referential WHERE TOKEN=?");
 				$stmt->bind_param("s", $token);
 				$stmt->execute();
@@ -53,9 +53,8 @@ switch($_SERVER["REQUEST_METHOD"])
 				$response['bike'] = $orderable;
 				echo json_encode($response);
 			}else
-				error_message('405'); // PLANTAGE ICI
-		}
-		else
+				error_message('403');
+		}else
 			error_message('405');
 		break;
 	case 'POST':
@@ -105,7 +104,8 @@ switch($_SERVER["REQUEST_METHOD"])
 				{
 					successMessage("SM0003");
 				}
-			}
+			}else
+				error_message('403');
 		}
 	break;
 	default:

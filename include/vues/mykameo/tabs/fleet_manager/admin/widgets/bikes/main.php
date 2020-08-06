@@ -1,3 +1,2 @@
 <?php
-	include 'bikes.html';
-	include 'manage_bike.html'; ?>
+	include 'bikes.html';?>

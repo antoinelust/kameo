@@ -8,7 +8,7 @@ var email=user_data['EMAIL'];
 	if (response.clientConditions.administrator == "Y"){
 	  $(".fleetmanager").removeClass("hidden");
 	}
-
+	
   });
   function get_address_building(buildingReference){
     return $.ajax({

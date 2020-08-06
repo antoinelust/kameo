@@ -1,0 +1,121 @@
+<div class="modal fade" id="adminChat" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="row">
+					<h4 class="modal-title fr text-green col-sm-11">Chat</h4>
+					<button type="button" class="close col-sm-1" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+			</div>
+			<br><br>
+			<div class="row">
+				<div class="col-sm-6" align="center"><p>Utilisateur:&nbsp;&nbsp;<span id="adminChatCorrespondent"></span></p></div>
+				<div class="col-sm-6" align="center"><p>Statut de commande:&nbsp;&nbsp;<span id="adminChatCorrespondentOrder"></span></p></div>
+			</div>
+			<div class="separator"></div>
+			<div class="mesgs col-sm-12">
+				<div id="adminChatbox">
+					<span id="divChatCommandAdmin"></span>
+				</div>
+				<div class="type_msg">
+					<div class="input_msg_write">
+						<input type="text" id="writeAdminMsg" placeholder="Type a message" />
+						<button id="adminSendMsgBtn" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$('#adminChat').on('show.bs.modal', function (event) {
+	$('#chatsListing').modal('hide');
+	var correspondent_email = $(event.relatedTarget).data('correspondent');
+	$('#adminChatCorrespondent').text(correspondent_email);
+	$('#adminChatCorrespondentOrder').text($(event.relatedTarget).data('order'));
+	get_message_history_admin(correspondent_email);
+	function get_message_history_admin(emailUser){
+		$.ajax({
+			url: 'apis/Kameo/chats/chats.php',
+			type: 'get',
+			data: { "action": "retreiveMessages", "type": "command", "email": correspondent_email},
+			success: function(response){
+				var dest="";
+				$('#divChatCommandAdmin').empty();
+				for (var i = 0; i<response.chatNumber; i++){
+				var kameoBikesRegex = new RegExp(/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")(@kameobikes.com){1}$/i);
+					var isKameoBikes = kameoBikesRegex.test(response.chat[i].emailUser);
+					if(response.chat[i].img==null)
+						response.chat[i].img = "https://ptetutorials.com/images/user-profile.png";
+					if(!isKameoBikes){
+						$('#divChatCommandAdmin').append([
+							$('<div/>',{ "class": "chat_message_container" }).append([
+								$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:response.chat[0].img})),
+								$('<div/>',{ "class": "received_msg" }).append([
+									$('<div/>',{ "class": "received_withd_msg" }).append([
+										$( '<p/>' ).text(response.chat[i].message),
+										$('<span/>').addClass('time_date').html(response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM | "+response.chat[i].messageDate)
+									])
+								])
+							])
+						]);
+					}else{
+						$('#divChatCommandAdmin').append([
+							$('<div/>',{ "class": "chat_message_container" }).append([
+								$('<div/>',{ "class": "outgoing_msg" }).append([
+									$('<div/>',{ "class": "sent_msg" }).append([
+										$( '<p/>' ).text(response.chat[i].message),
+										$('<span/>').addClass('time_date').html(response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM | "+response.chat[i].messageDate)
+									])
+								]),
+								$('<div/>',{ "class": "sent_msg_img" }).prepend($('<img>',{src:response.chat[0].img}))
+							])
+						]);
+					}
+				}
+				$('#adminChatbox').scrollTop($('#adminChatbox').prop("scrollHeight"));
+				$('#writeAdminMsg').val('');
+			}
+		})
+	}
+	function send_message(message, recipient, type){
+        return $.ajax({
+        url: 'apis/Kameo/chats/chats.php',
+        type: 'post',
+        data: { "action": "sendMessage", "message": message, "recipient": recipient, "type": type}
+      })
+	}
+	$("#adminSendMsgBtn").click(function() {
+        var message=$("#writeAdminMsg").val();
+        if(message != ""){
+			send_message(message, $('#adminChatCorrespondent').text(), "command").done(function(result) {
+				if (result.response === 'success')
+					get_message_history_admin($('#adminChatCorrespondent').text());
+			});
+            $("#writeAdminMsg").val("");
+        }
+    });
+	$("#writeAdminMsg").keypress(function(event){
+		var correspondent_email = $(event.relatedTarget).data('correspondent');
+        if((event.keyCode || event.which)=='13'){
+            var message=$("#writeAdminMsg").val();
+            if(message != ""){
+				send_message(message, $('#adminChatCorrespondent').text(), "command").done(function(result) {
+				if (result.response === 'success')
+					get_message_history_admin($('#adminChatCorrespondent').text());
+			});
+                $("#writeAdminMsg").val("");
+            }
+        }
+	});
+})
+</script>
