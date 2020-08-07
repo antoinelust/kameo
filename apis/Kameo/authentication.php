@@ -56,7 +56,7 @@ function get_user_permissions($accessDemand, $token){
 	if ($token != NULL)
 		if(isset($_SESSION['permissions']) && $_SESSION['permissions'] !== ""){
 			if (is_array($accessDemand))
-				return !empty(array_diff($accessDemand, $_SESSION['permissions']));
+				return !empty(array_intersect($accessDemand, $_SESSION['permissions']));
 			else
 				return (in_array($accessDemand, $_SESSION['permissions'], TRUE));
 		}else{
@@ -70,7 +70,7 @@ function get_user_permissions($accessDemand, $token){
 			$stmt->close();    
 			$conn->close();
 			if (is_array($accessDemand))
-				return !empty(array_diff($accessDemand, $_SESSION['permissions']));
+				return !empty(array_intersect($accessDemand, $_SESSION['permissions']));
 			else
 				return (in_array($accessDemand, $permissions, TRUE));
 		}

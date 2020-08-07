@@ -157,7 +157,8 @@ function execute_sql_query($sql, $conn){
     return $result->fetch_all();
 }
 
-function error_message($type){
+function error_message($type, $message = ""){
+	header("Content-Type: application/problem+json");
 	switch($type)
 	{
 		case '401':
@@ -175,6 +176,13 @@ function error_message($type){
 		case '405':
 			header("HTTP/1.1 405 Method Not Allowed");
             $response = array ('error'=>'unallowed_method', 'error_message'=> 'This method is not allowed on this endpoint');
+            echo json_encode($response);
+            die;            
+			break;
+		case '500':
+			header("HTTP/1.1 500 Internal Server Error");
+			$message = ($message === "") ? "Internal Server Error" : $message;
+            $response = array ('error'=>'internal_error', 'error_message'=> $message);
             echo json_encode($response);
             die;            
 			break;

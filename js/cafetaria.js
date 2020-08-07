@@ -205,9 +205,9 @@ function get_command_user(email){
 
 function get_message_history(){
     $.ajax({
-        url: 'apis/Kameo/chats/chats.php',
+        url: 'api/chats',
         type: 'get',
-        data: { "action": "retreiveMessages", "type": "command"},
+        data: { "action": "retrieveMessages", "type": "command"},
         success: function(response){
             var dest="";
 			$('#divChatCommand').empty();
@@ -277,7 +277,7 @@ function get_message_history(){
 function write_message(message, email, emailBeneficiary, type){
     if(message != ""){
         $.ajax({
-        url: 'apis/Kameo/chats/chats.php',
+        url: 'api/chats',
         type: 'post',
         data: { "action": "sendMessage", "message": message, "type": type},
         success: function(response){

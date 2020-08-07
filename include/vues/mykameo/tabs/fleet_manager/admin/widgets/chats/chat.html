@@ -45,9 +45,9 @@ $('#adminChat').on('show.bs.modal', function (event) {
 	get_message_history_admin(correspondent_email);
 	function get_message_history_admin(emailUser){
 		$.ajax({
-			url: 'apis/Kameo/chats/chats.php',
+			url: 'api/chats',
 			type: 'get',
-			data: { "action": "retreiveMessages", "type": "command", "email": correspondent_email},
+			data: { "action": "retrieveMessages", "type": "command", "email": correspondent_email},
 			success: function(response){
 				var dest="";
 				$('#divChatCommandAdmin').empty();
@@ -89,7 +89,7 @@ $('#adminChat').on('show.bs.modal', function (event) {
 	}
 	function send_message(message, recipient, type){
         return $.ajax({
-        url: 'apis/Kameo/chats/chats.php',
+        url: 'api/chats',
         type: 'post',
         data: { "action": "sendMessage", "message": message, "recipient": recipient, "type": type}
       })

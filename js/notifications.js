@@ -71,11 +71,11 @@ function notification_set_as_read(ID){
 
 function load_notifications(){
   $.ajax({
-    url: 'apis/Kameo/get_notifications.php',
-    method: 'post',
-    data: {'ID': user_ID},
+    url: 'apis/Kameo/notifications/notifications.php',
+    method: 'get',
+    data: {'action': "retrieveNotifications"},
     success: function(response){
-      if (response.response == "success") {
+      if (response.response == "success" & response.notificationsNumber > 0) {
         var content = "";
         var size = response.notification.length;
         var count = 1;
@@ -114,10 +114,6 @@ function load_notifications(){
           content = '<div class="col-sm-12 notificationItem"><span>Pas de notifications</span></div>'
           $('.notificationsBlock').html(content);
         }
-
-
-      }else{
-        console.log(response.message);
       }
     }
   });

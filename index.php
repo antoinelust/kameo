@@ -15,7 +15,7 @@
 	
 	require_once 'include/pages-routes.php';
 	
-	$router->map('GET','@/api/.*', function(){
+	$router->map('GET|POST','@/api/.*', function(){
 		require_once 'include/apis-routes.php';
 	});
 	
