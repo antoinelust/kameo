@@ -19,7 +19,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . /index.php [L]
 
 #Unallow access to pages/ folder and redirect to router
-RewriteRule ^pages/(.*)$ /$1 [R=301,NC,L]
+RewriteRule ^pages/(.*)$ /$1 [R=308,NC,L]
 
 #Redirect direct access to apis to router
-RewriteRule ^apis/Kameo/chats/(.*)$ /api/$1 [R=301,NC,L]
+RewriteRule ^apis/Kameo/chats/(.*)$ /api/$1 [R=308,NC,L]
