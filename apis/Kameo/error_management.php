@@ -16,33 +16,6 @@ if(isset($_GET['action'])){
     if($action=="list"){
         if($item=="bikes"){
             $response=array();
-            /*
-            include 'connexion.php';
-            $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            $conn->close();
-            $dossier="../images_bikes/";
-            $response=array();
-            $i=0;
-            while($row = mysqli_fetch_array($result)){
-                $fichier=$row['FRAME_NUMBER'].'.jpg';
-                $frameNumber=$row['FRAME_NUMBER'];
-                $bikeID=$row['ID'];
-                $fichierMini=$row['FRAME_NUMBER'].'_mini.jpg';
-
-                if (!file_exists($dossier.$fichier) || !file_exists($dossier.$fichierMini)){
-                    $response['bike']['img'][$i]['bikeID']=$bikeID;
-                    $response['bike']['img'][$i]['frameNumber']=$frameNumber;
-                    $response['bike']['img'][$i]['path']=$dossier.$fichier;
-                    $i++;
-                }
-            }
-            $response['bike']['img']['number']=$i;*/
             include 'connexion.php';
             $sql="SELECT * FROM companies WHERE STAANN != 'D'";
             if ($conn->query($sql) === FALSE) {
@@ -97,7 +70,8 @@ if(isset($_GET['action'])){
             }
             $response['bike']['stock']['number']=$i;
             include 'connexion.php';
-            $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START != 'NULL' and STAANN != 'D' and (CONTRACT_TYPE = 'leasing' OR CONTRACT_TYPE = 'renting') and BILLING_TYPE != 'paid'";
+            $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START != NULL and STAANN != 'D' and (CONTRACT_TYPE = 'leasing' OR CONTRACT_TYPE = 'renting') and BILLING_TYPE != 'paid'";
+            
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);

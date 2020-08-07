@@ -8,31 +8,20 @@ include 'globalfunctions.php';
 
 $type=isset($_GET['type']) ? $_GET['type'] : NULL;
 
-if($type=="ownerField"){
-    $response=array();
-    $response['response']="success";
+if($type=="ownerField"){    
+    global $conn;
     include 'connexion.php';
-    $sql="SELECT EMAIL, NOM, PRENOM  FROM customer_referential WHERE COMPANY='KAMEO' AND STAANN != 'D' GROUP BY EMAIL, NOM, PRENOM";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
+    $stmt = $conn->prepare("SELECT OWNER as email, bb.NOM as name, bb.PRENOM as firstName from company_actions aa, customer_referential bb where aa.OWNER=bb.EMAIL and bb.STAANN != 'D' GROUP BY OWNER");
+    if($stmt)
+    {
+        $stmt->execute();
+        echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
+        echo json_encode(Array("reponse" => "success"));
+        $stmt->close();
+        $conn->close();
     }
-    $result = mysqli_query($conn, $sql);
-    $length=$result->num_rows;
-    $response['ownerNumber']=$length;
-    $i=0;
-    while($row = mysqli_fetch_array($result)){
-        $response['owner'][$i]['email']=$row['EMAIL'];
-        $response['owner'][$i]['name']=$row['NOM'];
-        $response['owner'][$i]['firstName']=$row['PRENOM'];
-        $i++;
-    }
-    $conn->close();
-    $response['response']="success";
-    echo json_encode($response);
-    die;
-    
+    else
+        error_message('500', 'Unable to retrieve Actions owners');
 }else{
     errorMessage("ES0012");
 }

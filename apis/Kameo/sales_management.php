@@ -115,43 +115,18 @@ if(isset($_GET['action'])){
             
             
         }else if($item=="owners"){
-            $i=0;
+
+            global $conn;
             include 'connexion.php';
-            $sql="SELECT OWNER from company_actions aa, customer_referential bb where aa.OWNER=bb.EMAIL and bb.STAANN != 'D' GROUP BY OWNER";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
+            $stmt = $conn->prepare("SELECT OWNER as email, bb.NOM as name, bb.PRENOM as firstName from company_actions aa, customer_referential bb where aa.OWNER=bb.EMAIL and bb.STAANN != 'D' GROUP BY OWNER");
+            if($stmt)
+            {
+                $stmt->execute();
+                echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
             }
-            $result = mysqli_query($conn, $sql);
-            $conn->close();
-            
-            $response=array();
-            $response['response']="success";
-            while($row = mysqli_fetch_array($result)){
-                $email=$row['OWNER'];
-                include 'connexion.php';
-                $sql="SELECT * from customer_referential WHERE EMAIL='$email'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $result2 = mysqli_query($conn, $sql);
-                $resultat2=mysqli_fetch_assoc($result2);
-                $conn->close();
-                
-                
-                $response['owner'][$i]['name']=$resultat2['NOM'];
-                $response['owner'][$i]['firstName']=$resultat2['PRENOM'];
-                $response['owner'][$i]['email']=$resultat2['EMAIL'];
-                
-                $i++;
+        else
+            error_message('500', 'Unable to retrieve Actions owners');
             }
-            $response['ownerNumber']=$i;
-            echo json_encode($response);
-            die;
-        }
     }
 }else{
     errorMessage("ES0012");
