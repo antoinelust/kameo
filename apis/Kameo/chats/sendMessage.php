@@ -45,9 +45,7 @@ function notify_message($conn, $sender, $destinary, $insertedID)
 		if ($ownerID == NULL) //If user does not exist, send to administration
 		{
 			$ownerID = 0;
-			$orderStatus = $conn->query("SELECT STATUS FROM client_orders co WHERE co.EMAIL = " . $sender);
-			$orderStatus = ($orderStatus !== FALSE) ? $orderStatus->fetch_object()->STATUS:"error";
-			$notifContent = '<a class="text-green" href="#" data-toggle="modal" data-target="#adminChat" data-correspondent="'.$sender.'" data-order="'.$orderStatus.'">'.$sender.' vous a envoyé un message.</a>';
+			$notifContent = '<a class="text-green" href="#" data-toggle="modal" data-target="#adminChat" data-correspondent="'.$sender.'" data-order="">'.$sender.' vous a envoyé un message.</a>';
 		}
 		else
 			$notifContent = '<span class="text-green">Vous avez reçu un message.</span>'; 
