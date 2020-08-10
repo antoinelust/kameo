@@ -148,19 +148,16 @@ function generateCompaniesGraphic(dateStart, dateEnd){
 }
 function get_company_listing(type) {
 
-  var filter=$('#companyListingFilter').html();
-
-    var email= "<?php echo $user_data['EMAIL']; ?>";
+    var filter=$('#companyListingFilter').html();
+    
     $.ajax({
-      url: 'apis/Kameo/get_companies_listing.php',
-      type: 'post',
-      data: {"type": type, "filter": filter},
+      url: 'apis/Kameo/companies/companies.php',
+      type: 'get',
+      data: {"action": "list", "type": type, "filter": filter},
       success: function(response){
         if(response.response == 'error') {
           console.log(response.message);
         }
-
-
         if(response.response == 'success'){
           var dest="";
           var temp="<table id=\"test\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Clients:</h4><h4 class=\"en-inline text-green\">Clients:</h4><h4 class=\"nl-inline text-green\">Clients:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addClient\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un client</span></a><br/><thead><tr><th><span class=\"fr-inline\">Référence interne</span><span class=\"en-inline\">Internal reference</span><span class=\"nl-inline\">Internal reference</span></th><th><span class=\"fr-inline\">Client</span><span class=\"en-inline\">Client</span><span class=\"nl-inline\">Client</span></th><th><span class=\"fr-inline\"># vélos</span><span class=\"en-inline\"># bikes</span><span class=\"nl-inline\"># bikes</span></th><th>Rappeler ?</th><th>Mise à jour</th><th><span class=\"fr-inline\">Accès vélos</span><span class=\"en-inline\">Bike Access</span><span class=\"nl-inline\">Bike Access</span></th><th><span class=\"fr-inline\">Accès Bâtiments</span><span class=\"en-inline\">Building Access</span><span class=\"nl-inline\">Building Access</span></th><th>Type</th></tr></thead><tbody>";
@@ -268,9 +265,9 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
   var internalReference;    
 
   $.ajax({
-    url: 'apis/Kameo/get_company_details.php',
-    type: 'post',
-    data: {"ID": ID},
+    url: 'apis/Kameo/companies/companies.php',
+    type: 'get',
+    data: {"action": "retrieve", "ID": ID},
     success: function(response){
       if(response.response == 'error') {
         console.log(response.message);

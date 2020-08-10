@@ -164,8 +164,9 @@ body { font-family: sans-serif; }
                 $.ajax({
                     url: 'apis/Kameo/load_portfolio.php',
                     type: 'get',
-                    data: { "action": "list", "frameType": frameType, "utilisation": utilisation, "price": price, "brand": brand, "electric": electric},
+                    data: { "action": "list"},
                     success: function(response){
+                        console.log(response);
                         if (response.response == 'error') {
                             $.notify({
                                 message: response.message

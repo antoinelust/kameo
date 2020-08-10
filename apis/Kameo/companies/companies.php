@@ -15,7 +15,13 @@ switch($_SERVER["REQUEST_METHOD"])
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 		
-		if($action === 'list'){
+        if($action === 'retrieve'){
+			if(get_user_permissions("admin", $token)){
+				include 'get_company_details.php';
+			}else{
+				error_message('403');
+			}
+        }else if($action === 'list'){
 			if(get_user_permissions("admin", $token)){
 				include 'list_companies.php';
 			}else{

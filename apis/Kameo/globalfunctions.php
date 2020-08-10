@@ -147,14 +147,14 @@ function last_day_month($month){
 }
 
 function execute_sql_query($sql, $conn){
-    $result = $conn->query($sql);
-    if ($result === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $sql->error);
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;
     }
     
-    return $result->fetch_all();
+    $result = mysqli_query($conn, $sql);    
+    return $result;
 }
 
 function error_message($type, $message = ""){
