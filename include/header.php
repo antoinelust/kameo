@@ -28,24 +28,24 @@
 				<a class="nl" href="#">Onze Oplossingen <i class="fa fa-angle-down"></i> </a>
 				<ul class="dropdown-menu">
 				  <li>
-					<a class="fr" href="velo-partage">Vélos partagés</a>
-					<a class="en" href="velo-partage">Shared Bikes</a>
-					<a class="nl" href="velo-partage">Deelfietsen</a>
+					<a class="fr" href="/velo-partage">Vélos partagés</a>
+					<a class="en" href="/velo-partage">Shared Bikes</a>
+					<a class="nl" href="/velo-partage">Deelfietsen</a>
 				  </li>
 				  <li>
-					<a class="fr" href="velo-personnel">Vélos personnels</a>
-					<a class="en" href="velo-personnel">Personnal Bikes</a>
-					<a class="nl" href="velo-personnel">Persoonlijke fietsen</a>
+					<a class="fr" href="/velo-personnel">Vélos personnels</a>
+					<a class="en" href="/velo-personnel">Personnal Bikes</a>
+					<a class="nl" href="/velo-personnel">Persoonlijke fietsen</a>
 				  </li>
 				  <li>
-					<a class="fr" href="gestion-flotte">Gestion de flotte</a>
-					<a class="en" href="gestion-flotte">Fleet management</a>
-					<a class="nl" href="gestion-flotte">Vlootbeheer</a>
+					<a class="fr" href="/gestion-flotte">Gestion de flotte</a>
+					<a class="en" href="/gestion-flotte">Fleet management</a>
+					<a class="nl" href="/gestion-flotte">Vlootbeheer</a>
 				  </li>
 				  <li>
-					<a class="fr" href="location-tout-inclus">Location tout inclus & Achat</a>
-					<a class="en" href="location-tout-inclus">All inclusive rental & Purchase</a>
-					<a class="nl" href="location-tout-inclus">All-inclusive verhuur & Aankoop</a>
+					<a class="fr" href="/location-tout-inclus">Location tout inclus & Achat</a>
+					<a class="en" href="/location-tout-inclus">All inclusive rental & Purchase</a>
+					<a class="nl" href="/location-tout-inclus">All-inclusive verhuur & Aankoop</a>
 				  </li>
 				</ul>
 			  </li>
@@ -55,19 +55,19 @@
 				<a class="nl" href="#">Catalogus <i class="fa fa-angle-down"></i> </a>
 				<ul class="dropdown-menu">
 				  <li>
-					<a class="fr" href="achat">Nos Vélos</a>
-					<a class="en" href="achat">Our Bikes</a>
-					<a class="nl" href="achat">Onze Fietsen</a>
+					<a class="fr" href="/achat">Nos Vélos</a>
+					<a class="en" href="/achat">Our Bikes</a>
+					<a class="nl" href="/achat">Onze Fietsen</a>
 				  </li>
 				  <li>
-					<a class="fr" href="accessoires">Nos Accessoires</a>
-					<a class="en" href="accessoires">Our Accessories</a>
-					<a class="nl" href="accessoires">Onze Accessoires</a>
+					<a class="fr" href="/accessoires">Nos Accessoires</a>
+					<a class="en" href="/accessoires">Our Accessories</a>
+					<a class="nl" href="/accessoires">Onze Accessoires</a>
 				  </li>
 				  <li>
-					<a class="fr" href="bons-plans">Nos Bons Plans</a>
-					<a class="en" href="bons-plans">Our Deals</a>
-					<a class="nl" href="bons-plans">Onze Deals</a>
+					<a class="fr" href="/bons-plans">Nos Bons Plans</a>
+					<a class="en" href="/bons-plans">Our Deals</a>
+					<a class="nl" href="/bons-plans">Onze Deals</a>
 				  </li>
 				</ul>
 			  </li>
@@ -77,28 +77,28 @@
 				<a class="nl" href="#">Voordelen <i class="fa fa-angle-down"></i> </a>
 				<ul class="dropdown-menu">
 				  <li>
-					<a class="fr" href="avantages">Avantages liés au vélo</a>
-					<a class="en" href="avantages">Cycling benefits</a>
-					<a class="nl" href="avantages">Fietsvoordelen</a>
+					<a class="fr" href="/avantages">Avantages liés au vélo</a>
+					<a class="en" href="/avantages">Cycling benefits</a>
+					<a class="nl" href="/avantages">Fietsvoordelen</a>
 				  </li>
 				  <li>
-					<a class="fr" href="cash4bike">Calculateur Cash For Bike</a>
-					<a class="en" href="cash4bike">Cash For Bike Calculator</a>
-					<a class="nl" href="cash4bike">Cash For Bike Rekening</a>
+					<a class="fr" href="/cash4bike">Calculateur Cash For Bike</a>
+					<a class="en" href="/cash4bike">Cash For Bike Calculator</a>
+					<a class="nl" href="/cash4bike">Cash For Bike Rekening</a>
 				  </li>
 				</ul>
 			  </li>
-			  <li class="fr"><a href="contact">Contact</a></li>
-			  <li class="en"><a href="contact">Contact</a></li>
-			  <li class="nl"><a href="contact">Contact</a></li>
-			  <li class="fr"><a href="blog">Media/Blog</a></li>
-			  <li class="en"><a href="blog">Media/Blog</a></li>
-			  <li class="nl"><a href="blog">Media/Blog</a></li>
+			  <li class="fr"><a href="/contact">Contact</a></li>
+			  <li class="en"><a href="/contact">Contact</a></li>
+			  <li class="nl"><a href="/contact">Contact</a></li>
+			  <li class="fr"><a href="/blog">Media/Blog</a></li>
+			  <li class="en"><a href="/blog">Media/Blog</a></li>
+			  <li class="nl"><a href="/blog">Media/Blog</a></li>
 			  <?php
 				$login = isset($_POST['login']) ? $_POST['login'] : isset($_SESSION['login']) ? $_SESSION['login'] : "false";
 				$userID = isset($_POST['userID']) ? $_POST['userID'] : isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL;
 				if ($login!="false" || $userID!=NULL)
-					echo '<li><a class="text-red" href="mykameo.php"><span>My Kameo</span></a></li>';
+					echo '<li><a class="text-red" href="/mykameo"><span>My Kameo</span></a></li>';
 				else
 					echo '<li><a class="text-red" data-target="#mykameo" data-toggle="modal" href="#"><span>My Kameo</span></a></li>' . "\n";
 			  ?>

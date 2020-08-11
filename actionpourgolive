@@ -7,3 +7,7 @@ CREATE TABLE IF NOT EXISTS `companies_orderable` (
   `BIKE_ID` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+ALTER TABLE `customer_referential` CHANGE `ACCESS_RIGHTS` `ACCESS_RIGHTS` SET('order','search','fleetManager','chatsManager','admin') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+UPDATE `chat` SET `EMAIL_DESTINARY`='support@kameobikes.com' WHERE `EMAIL_USER`=`EMAIL_DESTINARY`

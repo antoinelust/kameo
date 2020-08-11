@@ -46,7 +46,7 @@
 	
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<?php if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost")
-			include 'include/googleAnalytics.php';?>
+			include __DIR__.'/googleAnalytics.php';?>
 		<!-- Hotjar Tracking Code for www.kameobikes.com -->
 	<script>
 		(function(h,o,t,j,a,r){
