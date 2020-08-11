@@ -417,6 +417,8 @@ function get_bills_listing(company, sent, paid, direction, email) {
             }
             if(response.response == 'success'){
 
+                console.log(response);
+                
                 $('#widget-addBill-form input[name=ID_OUT]').val(parseInt(response.IDMaxBillingOut) +1);
                 $('#widget-addBill-form input[name=ID]').val(parseInt(response.IDMaxBilling) +1);
                 $('#widget-addBill-form input[name=communication]').val(response.communication);
@@ -437,7 +439,6 @@ function get_bills_listing(company, sent, paid, direction, email) {
                 dest=dest.concat(temp);
                 dest3=dest3.concat(temp3);
                 
-
                 while (i < response.billNumber){
                     
                     
@@ -550,40 +551,27 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     if(response.update){
                         if(response.bill[i].sent=='0'){
                             
-                            
-                            var request = new XMLHttpRequest();
-                            
-                            request.open('POST', 'apis/Kameo/get_company_details', false);  // `false` makes the request synchronous
-                            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                            
-                            request.send("company="+response.bill[i].company);
-
-                            if (request.status === 200) {
-                                var json=request.responseText;
-                                var response2 = JSON.parse(json);
                                                                 
-                                var temp3="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\"><i class=\"fa fa-file\"></i></a><input type=\"text\" class=\"form-control required hidden ID\" value=\""+response.bill[i].ID+"\" /></a></td>";
-                                dest3=dest3.concat(temp3);
-                                var temp3="<td>"+response.bill[i].company+"</a></td>";
-                                dest3=dest3.concat(temp3);
-                                var temp3="<td>"+Math.round(response.bill[i].amountHTVA)+" €</td>";
-                                dest3=dest3.concat(temp3);
-                                var temp3="<td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td>";                 
-                                dest3=dest3.concat(temp3);
-                                var temp3="<td><input type=\"text\" class=\"form-control required email\" value=\""+response2.emailContactBilling+"\"/></td>";                 
-                                dest3=dest3.concat(temp3);
-                                var temp3="<td><input type=\"text\" class=\"form-control required firstName\" value=\""+response2.firstNameContactBilling+"\"/></td>";                 
-                                dest3=dest3.concat(temp3);
-                                var temp3="<td><input type=\"text\" class=\"form-control required lastName\" value=\""+response2.lastNameContactBilling+"\"/></td>";                 
-                                dest3=dest3.concat(temp3);
-                                var temp3="<td><input type=\"text\" class=\"form-control required hidden date\" value=\""+response.bill[i].date+"\"/></td>";     
-                                dest3=dest3.concat(temp3);                                
-                                var temp3="<td><input type=\"text\" class=\"form-control required hidden fileName\" value=\""+response.bill[i].fileName+"\"/></td>";
-                                dest3=dest3.concat(temp3);
-                                
-                                dest3=dest3.concat("<td><button  class=\"sendBillButton button small green button-3d rounded icon-left\"><i class=\"fa fa-check\"></i>Envoyer</button></tr>");
-                                
-                            }
+                            var temp3="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\"><i class=\"fa fa-file\"></i></a><input type=\"text\" class=\"form-control required hidden ID\" value=\""+response.bill[i].ID+"\" /></a></td>";
+                            dest3=dest3.concat(temp3);
+                            var temp3="<td>"+response.bill[i].company+"</a></td>";
+                            dest3=dest3.concat(temp3);
+                            var temp3="<td>"+Math.round(response.bill[i].amountHTVA)+" €</td>";
+                            dest3=dest3.concat(temp3);
+                            var temp3="<td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td>";                 
+                            dest3=dest3.concat(temp3);
+                            var temp3="<td><input type=\"text\" class=\"form-control required email\" value=\""+response.emailContactBilling+"\"/></td>";                 
+                            dest3=dest3.concat(temp3);
+                            var temp3="<td><input type=\"text\" class=\"form-control required firstName\" value=\""+response.firstNameContactBilling+"\"/></td>";                 
+                            dest3=dest3.concat(temp3);
+                            var temp3="<td><input type=\"text\" class=\"form-control required lastName\" value=\""+response.lastNameContactBilling+"\"/></td>";                 
+                            dest3=dest3.concat(temp3);
+                            var temp3="<td><input type=\"text\" class=\"form-control required hidden date\" value=\""+response.bill[i].date+"\"/></td>";     
+                            dest3=dest3.concat(temp3);                                
+                            var temp3="<td><input type=\"text\" class=\"form-control required hidden fileName\" value=\""+response.bill[i].fileName+"\"/></td>";
+                            dest3=dest3.concat(temp3);
+
+                            dest3=dest3.concat("<td><button  class=\"sendBillButton button small green button-3d rounded icon-left\"><i class=\"fa fa-check\"></i>Envoyer</button></tr>");
                         }
                     }                    
                     i++;

@@ -20,35 +20,30 @@ if($email != NULL)
 {
 
     include 'connexion.php';
-	$sql="select * from customer_referential where EMAIL = '$email'";
-
-    
-    if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
+    $stmt = $conn->prepare("select COMPANY from customer_referential WHERE EMAIL=?");
+    if ($stmt)
+    {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $company = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['COMPANY'];
+        $stmt->close();
+    }else{
+        $stmt->close();        
+        error_message('500', 'Unable to retrieve your email address');
     }
-	$result = mysqli_query($conn, $sql); 
-    $resultat = mysqli_fetch_assoc($result);
-    $conn->close();
 
-    $company=$resultat['COMPANY'];
-    
-    
-    include 'connexion.php';    
     if($company!='KAMEO'){
         $response['update']=false;
-    	$sql="select * from factures where COMPANY = '$company'";
+    	$sql="select COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, aa.ID as ID, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting, bb.EMAIL_CONTACT_BILLING as emailContactBilling, bb.FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, bb.LASTNAME_CONTACT_BILLING as  lastNameContactBilling from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE and aa.COMPANY = '$company'";
     }else{
         $response['update']=true;
         if($company2!="*" && $company2 != NULL){
-    	   $sql="select * from factures WHERE COMPANY ='$company2'";
+    	$sql="select COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, aa.ID as ID, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting, bb.EMAIL_CONTACT_BILLING as emailContactBilling, bb.FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, bb.LASTNAME_CONTACT_BILLING as  lastNameContactBilling from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE and aa.COMPANY = '$company2'";
         }else{
-    	   $sql="select * from factures WHERE 1 ";
+    	$sql="select COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, aa.ID as ID, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting, bb.EMAIL_CONTACT_BILLING as emailContactBilling, bb.FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, bb.LASTNAME_CONTACT_BILLING as  lastNameContactBilling from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
         } 
     }
         
-    
     
     if($paid!='*' && $paid != NULL){
         $sql=$sql." AND FACTURE_PAID='$paid'";
@@ -64,39 +59,14 @@ if($email != NULL)
         }
     }
     
-    
-    $result = mysqli_query($conn, $sql);   
-    $conn->close();
-    
+    $result=execute_sql_query($sql, $conn);
+    $response['bill']=$result->fetch_all(MYSQLI_ASSOC);
     $length = $result->num_rows;
     $response['response']="success";
 	$response['billNumber']=$length;
 
     
     $i=0;
-    while($row = mysqli_fetch_array($result))
-
-    {
-
-		$response['bill'][$i]['company']=$row['COMPANY'];
-		$response['bill'][$i]['beneficiaryCompany']=$row['BENEFICIARY_COMPANY'];
-		$response['bill'][$i]['ID']=$row['ID'];
-		$response['bill'][$i]['date']=$row['DATE'];            
-		$response['bill'][$i]['amountHTVA']=$row['AMOUNT_HTVA'];
-        $response['bill'][$i]['amountTVAC']=$row['AMOUNT_TVAINC'];
-        $response['bill'][$i]['sent']=$row['FACTURE_SENT'];
-        $response['bill'][$i]['sentDate']=$row['FACTURE_SENT_DATE'];
-        $response['bill'][$i]['paid']=$row['FACTURE_PAID'];
-        $response['bill'][$i]['paidDate']=$row['FACTURE_PAID_DATE'];
-        $response['bill'][$i]['limitPaidDate']=$row['FACTURE_LIMIT_PAID_DATE'];
-        $response['bill'][$i]['fileName']=$row['FILE_NAME'];
-        $response['bill'][$i]['communication']=$row['COMMUNICATION_STRUCTUREE'];
-        $response['bill'][$i]['communicationSentAccounting']=$row['FACTURE_SENT_ACCOUNTING'];
-        $i++;
-
-	}
-    
-    include 'connexion.php';     
     if($company=='KAMEO'){
         $sql="select * from factures";
     }else{
