@@ -3,6 +3,9 @@ header('Content-type: application/json');
 header('WWW-Authenticate: Bearer');
 header('Expires: ' . gmdate('r', 0));
 header('HTTP/1.0 200 Ok');
+header_remove("Set-Cookie");
+header_remove("X-Powered-By");
+header_remove("Content-Security-Policy");
 
 require_once '../globalfunctions.php';
 require_once '../authentication.php';

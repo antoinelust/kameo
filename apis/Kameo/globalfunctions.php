@@ -161,6 +161,13 @@ function error_message($type, $message = ""){
 	header("Content-Type: application/problem+json");
 	switch($type)
 	{
+		case '400':
+			header("HTTP/1.0 400 Bad Request");
+			$message = ($message === "") ? "One or several parameters are missing or malformed" : $message;
+            $response = array ('error'=>'malformed_syntax', 'error_message'=> $message);
+            echo json_encode($response);
+            die;
+			break;
 		case '401':
 			header("HTTP/1.0 401 Unauthorized");
             $response = array ('error'=>'invalid_token', 'error_message'=> 'The access token is invalid');
@@ -174,13 +181,13 @@ function error_message($type, $message = ""){
             die;
 			break;
 		case '405':
-			header("HTTP/1.1 405 Method Not Allowed");
+			header("HTTP/1.0 405 Method Not Allowed");
             $response = array ('error'=>'unallowed_method', 'error_message'=> 'This method is not allowed on this endpoint');
             echo json_encode($response);
             die;            
 			break;
 		case '500':
-			header("HTTP/1.1 500 Internal Server Error");
+			header("HTTP/1.0 500 Internal Server Error");
 			$message = ($message === "") ? "Internal Server Error" : $message;
             $response = array ('error'=>'internal_error', 'error_message'=> $message);
             echo json_encode($response);

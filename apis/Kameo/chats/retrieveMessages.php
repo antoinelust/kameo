@@ -12,11 +12,16 @@ if ($stmt)
 	error_message('500', 'Unable to retrieve your email address');
 if (get_user_permissions("admin", $token))
 	$user=isset($_GET['email']) ? $_GET['email'] : $user;
-$stmt = $conn->prepare("SELECT EMAIL_USER as emailUser, NOM as name, PRENOM as firstName, EMAIL_DESTINARY as emailDestinary, MESSAGE as message, DATE_FORMAT(MESSAGE_TIMESTAMP,'%d/%m') as messageDate, DATE_FORMAT(MESSAGE_TIMESTAMP,'%H:%i') as messageHour FROM chat, customer_referential WHERE EMAIL_USER = EMAIL AND TYPE=? AND (EMAIL_DESTINARY=? OR (EMAIL_USER = ? AND EMAIL_DESTINARY='support@kameobikes.com'))");
-
+$sql = "SELECT EMAIL_USER as emailUser, NOM as name, PRENOM as firstName, EMAIL_DESTINARY as emailDestinary, MESSAGE as message, DATE_FORMAT(MESSAGE_TIMESTAMP,'%d/%m') as messageDate, DATE_FORMAT(MESSAGE_TIMESTAMP,'%H:%i') as messageHour FROM chat, customer_referential WHERE EMAIL_USER = EMAIL AND (EMAIL_DESTINARY=? OR (EMAIL_USER = ? AND EMAIL_DESTINARY='support@kameobikes.com'))";
+if ($type != NULL)
+	$sql = $sql." AND TYPE=?";
+$stmt = $conn->prepare($sql);
 if ($stmt)
 {
-	$stmt->bind_param("sss", $type, $user, $user);
+	if ($type != NULL)
+		$stmt->bind_param("sss", $user, $user, $type);
+	else
+		$stmt->bind_param("ss", $user, $user);
 	$stmt->execute();
 	$messages = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 	$stmt->close();

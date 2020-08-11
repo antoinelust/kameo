@@ -13,6 +13,10 @@ if ($stmt)
 		$recipient= "support@kameobikes.com";
 	$type=isset($_POST['type']) ? $_POST['type'] : NULL;
 	$message=isset($_POST['message']) ? $_POST['message'] : NULL;
+	if ($type == NULL)
+		error_message('400', 'The type of the message must be set');
+	if ($message == NULL)
+		error_message('400', 'You cannot send an empty message');
 	$stmt = $conn->prepare("INSERT INTO chat (USR_MAJ, EMAIL_USER, EMAIL_DESTINARY, TYPE, MESSAGE) VALUES(?, ?, ?, ?, ?)");
 	if ($stmt)
 	{

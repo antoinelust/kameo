@@ -155,8 +155,14 @@
 						  <div class="tab-pane fade" id="parameters_tab">
 							  <h3 class="text-center">Parameters</h3>
 								<br>
-							  <p>Parameters given to an endpoint must be values of simple types (int, string, etc.) <b>GET</b> requests parameters are passed using a "<i>?</i>".<br>Example: <i>https://example.com/api/&lt;endpoint&gt;?&lt;parameter&gt;=&lt;value&gt;&&lt;parameter2&gt;=&lt;value2&gt;</i><br>Where <i>&lt;endpoint&gt;</i> is the name of the endpoint, <i>&lt;parameter&gt;</i> is the name of a parameter given to the endpoint and <i>&lt;value&gt;</i> is the value of the corresponding parameter.</p>
-							  <p>As a general rule of thumb, every endpoint needs at least a value for the <i>action</i> parameter, used to specify which action you want to perform on the requested ressource.<br>
+							  <p>Parameters given to an endpoint must be values of simple types (int, string, etc.)</p><p><b>GET</b> requests parameters are passed using a "<i>?</i>" as follows:</p>
+							  <div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
+								<p style="display: inline;">https://example.com/api/<i>&lt;endpoint&gt;</i>?<i>&lt;parameter&gt;</i>=<i>&lt;value&gt;</i>&<i>&lt;parameter2&gt;</i>=<i>&lt;value2&gt;</i>
+								</p>
+							  </div>
+									<p><br>Where <i>&lt;endpoint&gt;</i> is the name of the endpoint, <i>&lt;parameter&gt;</i> is the name of a parameter given to the endpoint and <i>&lt;value&gt;</i> is the value of the corresponding parameter.</p>
+							  <p><b>POST</b> requests parameters are passed as <i>application/x-www-form-urlencoded</i> or plain data basic value/pair.</p>
+							  <p>As a general rule of thumb, every endpoint needs at least a value for the <i>action</i> parameter, used to specify which action you want to perform on the requested ressource but other parameters may sometimes be ommited.<br>
 							  Further details about any specific endpoint parameter and/or type is available in the corresponding section of this documentation.</p>
 						  </div>
 						  <div class="tab-pane fade" id="responses_tab">
@@ -189,37 +195,50 @@
 										<th scope="col">HTTP status</th>
 										<th scope="col">Body: error</th>
 										<th scope="col">Body: error_message</th>
+										<th scope="col">Recoverability</th>
 										<th scope="col">Description</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td>401 Unauthorized</td>
+										<td>400&nbsp;Bad&nbsp;Request</td>
+										<td>malformed_syntax</td>
+										<td></td>
+										<td>Recoverable</td>
+										<td>This error indicate that one or several parameters are empty, missing or malformed, more informations can be found in the error_message field of the body. You should modify your request prior to retrying.</td>
+									</tr>
+									<tr>
+										<td>401&nbsp;Unauthorized</td>
 										<td>invalid_token</td>
 										<td>The access token is invalid</td>
+										<td>Recoverable</td>
 										<td>This error either means that you forgot to provide your token to the api or that it isn't correct. You should modify your authenticate method prior to retrying.</td>
 									</tr>
 									<tr>
-										<td>403 Forbidden</td>
+										<td>403&nbsp;Forbidden</td>
 										<td>insufficient_privileges</td>
 										<td>Your access token doesn't allow you to perfom this action</td>
-										<td>This error indicate that your token is valid but that you don't have the required permission to perform the requested action or to access the endpoint. You should not retry and if you think that this is not a normal behavior, contact us at support@kameobikes.com</td>
+										<td>Unrecoverable</td>
+										<td>This error indicate that your request has been understood but that you don't have the required permission(s) to perform the requested action or to access the endpoint. You should not retry the same action and if you think that this is not a normal behavior, you can contact us at <i>support@kameobikes.com</i> .</td>
 									</tr>
 									<tr>
-										<td>405 Method Not Allowed</td>
+										<td>405&nbsp;Method&nbsp;Not&nbsp;Allowed</td>
 										<td>unallowed_method</td>
 										<td>This method is not allowed on this endpoint</td>
-										<td>This error means that the requested action as not been found or is unacceptable on the current endpoint.</td>
+										<td>Unrecoverable</td>
+										<td>This error means that the requested action as not been found or is unacceptable on the current endpoint. You should not retry a similar query without changing the <i>action</i> parameter.</td>
 									</tr>
 									<tr>
-										<td>500 Internal Server Error</td>
+										<td>500&nbsp;Internal&nbsp;Server&nbsp;Error</td>
 										<td>internal_error</td>
 										<td></td>
+										<td>Unrecoverable</td>
 										<td>This error means that the server as panicked during execution and was unable to perform the requested action. It is likely that nothing can be done to recover from this error but more informations can be found in the error_message field of the body.</td>
 									</tr>
 								</tbody>
 							</table>
-							<p>More detailed informations about the action-specific error messages on each endpoint can be found in the associated sections of this documentation.</p>
+							<p>The <i>Recoverability</i> field in this table indicates whether you may be able to get a successful endpoint response by modifying your request or not.</p>
+							<p>More detailed informations about the action-specific error messages on each endpoint can be found in the associated sections of this documentation in tables like this one.</p>
 						  </div>
 						  <div class="tab-pane fade" id="chats_tab">
 							  <h3 class="text-center">Chats</h3>
@@ -232,7 +251,7 @@
 								  <div class="card-body">
 									<h4>Description</h4>
 									<br>
-									<p>This action allow you to retrieve the message(s) that you sent or that were sent to you through one of our webchats.</p>
+									<p>This request allow you to retrieve the message(s) that you sent or that were sent to you through one of our webchats.</p>
 									<br>
 									<h4>Permission(s)</h4>
 									<br>
@@ -245,6 +264,7 @@
 											<tr class="d-flex">
 												<th scope="col">Parameter</th>
 												<th scope="col">Type</th>
+												<th scope="col">Required</th>
 												<th scope="col">Value(s)</th>
 												<th scope="col">Description</th>
 											</tr>
@@ -253,12 +273,16 @@
 											<tr>
 												<td>type</td>
 												<td>string</td>
+												<td>false</td>
 												<td>command</td>
-												<td>The type of the message, corresponding to a chat</td>
+												<td>The type of the message, corresponding to a chat. If this parameter is ommited, every message will be retrieved.</td>
 											</tr>
 										</tbody>
 									</table>
-									<br>
+									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
+										<p style="display: inline;">curl -X GET "https://kameobikes.com/api/chats?action=retrieveMessages&type=command" --header "Authorization: Bearer <i>&lt;token&gt;</i>"</p>
+									</div>
+									<br><br>
 									<h4>Response</h4>
 									<br>
 									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
@@ -267,8 +291,8 @@
 									  &nbsp;&nbsp;"response":"success",<br>
 									  &nbsp;&nbsp;"messagesNumber":2,<br>
 									  &nbsp;&nbsp;"messages": [<br>
-									  &nbsp;&nbsp;&nbsp;&nbsp;{ emailUser: "john@example.com", name: "John", firstName: "Doe", emailDestinary: "support@kameobikes.com", message: "Hello", messageDate:"25/01", messageHour: "10:23" },<br>
-									  &nbsp;&nbsp;&nbsp;&nbsp;{ emailUser: "admin@kameobikes.com", name: "Admin", firstName: "Admin", emailDestinary: "john@example.com", message: "Hi", messageDate:"25/01", messageHour: "10:25" }<br>
+									  &nbsp;&nbsp;&nbsp;&nbsp;{ emailUser: "john@example.com", name: "Doe", firstName: "John", emailDestinary: "support@kameobikes.com", message: "Hi", messageDate:"25/01", messageHour: "10:23" },<br>
+									  &nbsp;&nbsp;&nbsp;&nbsp;{ emailUser: "admin@kameobikes.com", name: "Admin", firstName: "Admin", emailDestinary: "john@example.com", message: "Hello, how can I help you ?", messageDate:"25/01", messageHour: "10:25" }<br>
 									  &nbsp;&nbsp;]<br>
 									  }
 									  </p>
@@ -282,14 +306,16 @@
 												<th scope="col">HTTP status</th>
 												<th scope="col">Body: error</th>
 												<th scope="col">Body: error_message</th>
+												<th scope="col">Recoverability</th>
 												<th scope="col">Description</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td>500 Internal Server Error</td>
+												<td>500&nbsp;Internal&nbsp;Server&nbsp;Error</td>
 												<td>internal_error</td>
 												<td>Unable to retrieve messages</td>
+												<td>Unrecoverable</td>
 												<td>The server was not able to retrieve messages in database.</td>
 											</tr>
 										</tbody>
@@ -303,7 +329,7 @@
 								  <div class="card-body">
 									<h4>Description</h4>
 									<br>
-									<p>This action allow you to send a message to KameoBikes through one of our webchat.</p>
+									<p>This request allow you to send a message to KameoBikes through one of our webchat.</p>
 									<br>
 									<h4>Permission(s)</h4>
 									<br>
@@ -316,6 +342,7 @@
 											<tr class="d-flex">
 												<th scope="col">Parameter</th>
 												<th scope="col">Type</th>
+												<th scope="col">Required</th>
 												<th scope="col">Value(s)</th>
 												<th scope="col">Description</th>
 											</tr>
@@ -324,18 +351,23 @@
 											<tr>
 												<td>type</td>
 												<td>string</td>
+												<td>true</td>
 												<td>command</td>
-												<td>The type of the message, corresponding to a chat</td>
+												<td>The type of the message, corresponding to a chat.</td>
 											</tr>
 											<tr>
 												<td>message</td>
 												<td>string</td>
-												<td>Any url encoded string</td>
-												<td>The content of the message to send</td>
+												<td>true</td>
+												<td></td>
+												<td>The content of the message to send.</td>
 											</tr>
 										</tbody>
 									</table>
-									<br>
+									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
+										<p style="display: inline;">curl -X POST "https://kameobikes.com/api/chats" --header "Authorization: Bearer <i>&lt;token&gt;</i>" -d action=sendMessage -d message="My message!" -d type=command</p>
+									</div>
+									<br><br>
 									<h4>Response</h4>
 									<br>
 									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
@@ -352,20 +384,37 @@
 												<th scope="col">HTTP status</th>
 												<th scope="col">Body: error</th>
 												<th scope="col">Body: error_message</th>
+												<th scope="col">Recoverability</th>
 												<th scope="col">Description</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td>500 Internal Server Error</td>
+												<td>400&nbsp;Bad&nbsp;Request</td>
+												<td>malformed_syntax</td>
+												<td>The type of the message must be set</td>
+												<td>Recoverable</td>
+												<td>This error indicate that the parameter <i>type</i> has to be defined.</td>
+											</tr>
+											<tr>
+												<td>400&nbsp;Bad&nbsp;Request</td>
+												<td>malformed_syntax</td>
+												<td>You cannot send an empty message</td>
+												<td>Recoverable</td>
+												<td>This error indicate that the parameter <i>message</i> has to be defined.</td>
+											</tr>
+											<tr>
+												<td>500&nbsp;Internal&nbsp;Server&nbsp;Error</td>
 												<td>internal_error</td>
 												<td>Unable to send your message</td>
+												<td>Unrecoverable</td>
 												<td>The server was not able to record your message in database.</td>
 											</tr>
 											<tr>
-												<td>500 Internal Server Error</td>
+												<td>500&nbsp;Internal&nbsp;Server&nbsp;Error</td>
 												<td>internal_error</td>
 												<td>Unable to send notification of your message, it has been canceled</td>
+												<td>Unrecoverable</td>
 												<td>This error indicate that the server was able to record the message but that it failed to send a notification to the recipient, and therefore, canceled everything to prevent this message from never being read.</td>
 											</tr>
 										</tbody>
@@ -377,21 +426,21 @@
 							<h3 class="text-center">Companies</h3>
 							<br>
 							<div class="alert alert-danger text-center" role="alert" style="border-radius: 10px;">
-							  <b>The routing to this api is currently not implemented.</b>
+							  <b>The routing to this endpoint is currently not implemented.</b>
 							</div>
 						  </div>
 						  <div class="tab-pane fade" id="notifications_tab">
 						    <h3 class="text-center">Notifications</h3>
 							<br>
 							<div class="alert alert-danger text-center" role="alert" style="border-radius: 10px;">
-							  <b>The routing to this api is currently not implemented.</b>
+							  <b>The routing to this endpoint is currently not implemented.</b>
 							</div>
 						  </div>
 						  <div class="tab-pane fade" id="orders_tab">
 						    <h3 class="text-center">Orders</h3>
 							<br>
 							<div class="alert alert-danger text-center" role="alert" style="border-radius: 10px;">
-							  <b>The routing to this api is currently not implemented.</b>
+							  <b>The routing to this endpoint is currently not implemented.</b>
 							</div>
 						  </div>
 						</div>
