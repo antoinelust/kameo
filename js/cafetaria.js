@@ -211,19 +211,19 @@ function get_message_history(){
         success: function(response){
             var dest="";
 			$('#divChatCommand').empty();
-			for (var i = 0; i<response.chatNumber; i++){
+			for (var i = 0; i<response.messagesNumber; i++){
 			var kameoBikesRegex = new RegExp(/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")(@kameobikes.com){1}$/i);
-				var isKameoBikes = kameoBikesRegex.test(response.chat[i].emailUser);
-				if(response.chat[i].img==null)
-					response.chat[i].img = "https://ptetutorials.com/images/user-profile.png";
+				var isKameoBikes = kameoBikesRegex.test(response.messages[i].emailUser);
+				if(response.messages[i].img==null)
+					response.messages[i].img = "https://ptetutorials.com/images/user-profile.png";
 				if(isKameoBikes){
 					$('#divChatCommand').append([
 						$('<div/>',{ "class": "chat_message_container" }).append([
-							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:response.chat[0].img})),
+							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:response.messages[i].img})),
 							$('<div/>',{ "class": "received_msg" }).append([
 								$('<div/>',{ "class": "received_withd_msg" }).append([
-									$( '<p/>' ).text(response.chat[i].message),
-									$('<span/>').addClass('time_date').html(response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM | "+response.chat[i].messageDate)
+									$( '<p/>' ).text(response.messages[i].message),
+									$('<span/>').addClass('time_date').html(response.messages[i].firstName+" "+response.messages[i].name+" | "+response.messages[i].messageHour+" AM | "+response.messages[i].messageDate)
 								])
 							])
 						])
@@ -233,16 +233,16 @@ function get_message_history(){
 						$('<div/>',{ "class": "chat_message_container" }).append([
 							$('<div/>',{ "class": "outgoing_msg" }).append([
 								$('<div/>',{ "class": "sent_msg" }).append([
-									$( '<p/>' ).text(response.chat[i].message),
-									$('<span/>').addClass('time_date').html(response.chat[i].firstName+" "+response.chat[i].name+" | "+response.chat[i].messageHour+" AM | "+response.chat[i].messageDate)
+									$( '<p/>' ).text(response.messages[i].message),
+									$('<span/>').addClass('time_date').html(response.messages[i].firstName+" "+response.messages[i].name+" | "+response.messages[i].messageHour+" AM | "+response.messages[i].messageDate)
 								])
 							]),
-							$('<div/>',{ "class": "sent_msg_img" }).prepend($('<img>',{src:response.chat[0].img}))
+							$('<div/>',{ "class": "sent_msg_img" }).prepend($('<img>',{src:response.messages[i].img}))
 						])
 					]);
 				}
 			}
-			if(response.chatNumber==0){
+			if(response.messagesNumber==0){
 				$('#divChatCommand').append([
 						$('<div/>',{ "class": "chat_message_container" }).append([
 							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'})),

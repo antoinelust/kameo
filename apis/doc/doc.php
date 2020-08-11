@@ -3,6 +3,26 @@
 <?php
 	include '../../include/head.php';
 ?>
+<style>
+	.collapse-title {
+	  position: relative;
+	  flex-grow: 1;
+	  display: inline-block;
+	  margin: auto; /* Important */ 
+	}
+	  
+	.collapse-title::after {
+		content: "\f107";
+		color: #333;
+		right: 0;
+		position: absolute;
+		font-family: "FontAwesome"
+	}
+
+	.collapse-title[aria-expanded="true"]::after {
+		content: "\f106";
+	}
+</style>
 <body class="wide">
 	<!-- WRAPPER -->
 	<div class="wrapper">
@@ -86,16 +106,18 @@
 							<p>To authenticate yourself, a token should be included in every requests made to our APIs, using the <i>Authorization</i> request header with the value <i>Bearer &ltTOKEN&gt</i>, where <i>&ltTOKEN&gt</i> is an access token. If you're not successfully authenticated, every API will return an HTTP error code as well as a JSON error description in the body. Details about errors can be found in the <i>Responses >> Errors</i> section of this documentation.</p>
 							<div style="background-color: #F0F0F0; padding: 20px; margin: 20px; max-width: 50%;">
 								<p>Your developer informations :</p>
-								<p class="text-center" style="background-color: rgba(255,0,0,0.25); border-radius: 10px;">The developer functionalities are currently not activated on your account.You can contact us at support@kameobikes.com for more informations.</p>
+								<p class="text-center" style="padding: 5px; background-color: rgba(255,0,0,0.25); border-radius: 10px;">The developer functionalities are currently not activated on your account. You can contact us at support@kameobikes.com for more informations.</p>
 								<label for="dev-token">Your Dev Token&nbsp</label>
 								<input name="dev-token" value="***************" disabled>
-								<input type="button" value="Show">
+								<input type="button" value="Show"> <?php /* Il faut récupérer le dev-token depuis la database et l'afficher ici lors de l'appui sur le bouton */ ?>
 								<br><br>
 								<p>
 									Token permissions: <span>none</span>
 									<br>
-									Token rate: <span>0 query/h</span>
+									Token maximum rate: <span>0 query/h</span>
 								</p>
+								<?php /* Il faut re-générer un dev-token lors de l'appui sur ce bouton et le laisser masqué */ ?>
+								<div class="text-center"><input type="button" value="Re-Generate"></div>
 							</div>
 						  </div>
 						  <div class="tab-pane fade" id="permissions_tab">
@@ -114,8 +136,8 @@
 								<tbody>
 									<tr>
 										<td>order</td>
-										<td>/orders</td>
-										<td>This permission allow you to order a bike, manage your orders, etc.</td>
+										<td>/orders, /chats</td>
+										<td>This permission allow you to order a bike, manage your orders, ask questions on an order, etc.</td>
 									</tr>
 									<tr>
 										<td>search</td>
@@ -133,14 +155,17 @@
 						  <div class="tab-pane fade" id="parameters_tab">
 							  <h3 class="text-center">Parameters</h3>
 								<br>
-							  <p>Parameters given to an endpoint must be values of simple types (int, string, etc.) <b>GET</b> requests parameters are passed using a "<i>?</i>".<br>Example: <i>https://example.com/api/&lt;endpoint&gt;?&lt;parameter&gt;=&lt;value&gt;&&lt;parameter2&gt;=&lt;value2&gt;</i><br>Where <i>&lt;endpoint&gt;</i> is the name of the endpoint, <i>&lt;parameter&gt;</i> is the name of a parameter given to the API and <i>&lt;value&gt;</i> is the value of the corresponding parameter.</p>
-							  <p>As a general rule of thumb, every endpoint needs at list a value for the <i>action</i> parameter, used to specify which action you want to perform on the requested ressource.<br>
+							  <p>Parameters given to an endpoint must be values of simple types (int, string, etc.) <b>GET</b> requests parameters are passed using a "<i>?</i>".<br>Example: <i>https://example.com/api/&lt;endpoint&gt;?&lt;parameter&gt;=&lt;value&gt;&&lt;parameter2&gt;=&lt;value2&gt;</i><br>Where <i>&lt;endpoint&gt;</i> is the name of the endpoint, <i>&lt;parameter&gt;</i> is the name of a parameter given to the endpoint and <i>&lt;value&gt;</i> is the value of the corresponding parameter.</p>
+							  <p>As a general rule of thumb, every endpoint needs at least a value for the <i>action</i> parameter, used to specify which action you want to perform on the requested ressource.<br>
 							  Further details about any specific endpoint parameter and/or type is available in the corresponding section of this documentation.</p>
 						  </div>
 						  <div class="tab-pane fade" id="responses_tab">
 							  <h3 class="text-center">Responses</h3>
 								<br>
-							  <p>This api will only return data in JSON format. If the request is correct, the standard success response will have the <i>200 OK</i> HTTP code and will usually be of the form:<br>
+							  <div class="alert alert-danger text-center" role="alert" style="border-radius: 10px;">
+								<b>The HTTP status 200 OK on a reply should never be considered as a guarantee that the request was successful. In order to ensure a correct processing, one must check the content of the response field in the body of the reply.</b>
+							  </div>
+							  <p>This api will return data in JSON format. If the request is correct, the standard success response will have the <b>200 OK</b> HTTP code and will usually be of the form:<br>
 							  <div style="background-color: #F0F0F0; padding:20px; width: 50%; border-radius: 1px; display: inline-block;">
 							  {<br>
 							  &nbsp;&nbsp;"response":"success",<br>
@@ -157,7 +182,7 @@
 						  <div class="tab-pane fade" id="errors_tab">
 							  <h3 class="text-center">Errors</h3>
 									<br>
-							  <p>In the event of an error occuring during the processing of an API, different HTTP error codes and messages can be returned to indicated what happened. The following table provides the common error codes and a description of how to interpret them:</p>
+							  <p>In the event of an error occuring during the processing of a query, different HTTP error codes and messages can be returned to indicated what happened. The following table provides the common error codes and a description of how to interpret them:</p>
 							  <table class="table">
 								<thead>
 									<tr class="d-flex">
@@ -194,22 +219,32 @@
 									</tr>
 								</tbody>
 							</table>
+							<p>More detailed informations about the action-specific error messages on each endpoint can be found in the associated sections of this documentation.</p>
 						  </div>
 						  <div class="tab-pane fade" id="chats_tab">
 							  <h3 class="text-center">Chats</h3>
 										<br>
 							  <p>This endpoint controls Kameo's instant message chats.</p>
 							  <p>URL: <a href="http://kameobikes/api/chats">http://kameobikes/api/chats</a><br></p>
-							  <div style="width:80%; background-color: #F0F0F0; border-radius: 5px; border: 1px solid black; padding: 5px;"><p style="vertical-align: middle; display: inline;"><span style="margin-right: 20px; background-color: rgba(255,0,0,0.2); padding: 5px; border-radius: 5px;">GET</span><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="#">/api/chats?action=retrieveMessages</a></p>
+							  <div style="width:80%; background-color: #F0F0F0; border-radius: 5px; border: 1px solid black; padding: 5px; padding-right: 15px; display: flex;"><span style="margin-right: 20px; background-color: rgba(255,0,0,0.2); padding: 5px; border-radius: 5px;">GET</span><a class="collapse-title" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" href="#/">/api/chats?action=retrieveMessages</a>
 							  </div>
 							  <div id="collapseOne" class="collapse" style="width:80%; border: 1px solid black; padding: 10px; border-width: 0px 1px 1px 1px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
 								  <div class="card-body">
-									<h4>Parameters</h4>
+									<h4>Description</h4>
+									<br>
+									<p>This action allow you to retrieve the message(s) that you sent or that were sent to you through one of our webchats.</p>
+									<br>
+									<h4>Permission(s)</h4>
+									<br>
+									<p>The <b>order</b> permission is needed to perform this request.</p>
+									<br>
+									<h4>Parameter(s)</h4>
 									<br>
 									  <table class="table">
 										<thead>
 											<tr class="d-flex">
 												<th scope="col">Parameter</th>
+												<th scope="col">Type</th>
 												<th scope="col">Value(s)</th>
 												<th scope="col">Description</th>
 											</tr>
@@ -217,31 +252,148 @@
 										<tbody>
 											<tr>
 												<td>type</td>
+												<td>string</td>
 												<td>command</td>
 												<td>The type of the message, corresponding to a chat</td>
 											</tr>
 										</tbody>
 									</table>
+									<br>
 									<h4>Response</h4>
 									<br>
 									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
 									<p style="display: inline;">
 									  {<br>
 									  &nbsp;&nbsp;"response":"success",<br>
-									  &nbsp;&nbsp;"chatNumber":2,<br>
-									  &nbsp;&nbsp;"items": [<br>
-									  &nbsp;&nbsp;&nbsp;&nbsp;{ emailUser: "john@example.com", name: "John", firstName: "Doe", emailDestinary: "support@kameobikes.com", message: "Hello", messageDate:"25/01", messageHour: "10:23" }<br>
+									  &nbsp;&nbsp;"messagesNumber":2,<br>
+									  &nbsp;&nbsp;"messages": [<br>
+									  &nbsp;&nbsp;&nbsp;&nbsp;{ emailUser: "john@example.com", name: "John", firstName: "Doe", emailDestinary: "support@kameobikes.com", message: "Hello", messageDate:"25/01", messageHour: "10:23" },<br>
 									  &nbsp;&nbsp;&nbsp;&nbsp;{ emailUser: "admin@kameobikes.com", name: "Admin", firstName: "Admin", emailDestinary: "john@example.com", message: "Hi", messageDate:"25/01", messageHour: "10:25" }<br>
 									  &nbsp;&nbsp;]<br>
 									  }
 									  </p>
 									</div>
+									<br><br>
+									<h4>Error(s)</h4>
+									<br>
+									<table class="table">
+										<thead>
+											<tr class="d-flex">
+												<th scope="col">HTTP status</th>
+												<th scope="col">Body: error</th>
+												<th scope="col">Body: error_message</th>
+												<th scope="col">Description</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>500 Internal Server Error</td>
+												<td>internal_error</td>
+												<td>Unable to retrieve messages</td>
+												<td>The server was not able to retrieve messages in database.</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br>
+							<div style="width:80%; background-color: #F0F0F0; border-radius: 5px; border: 1px solid black; padding: 5px; padding-right: 15px; display: flex;"><span style="margin-right: 20px; background-color: rgba(255,0,0,0.2); padding: 5px; border-radius: 5px;">POST</span><a class="collapse-title" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="#/">/api/chats?action=sendMessage</a>
+							  </div>
+							  <div id="collapseTwo" class="collapse" style="width:80%; border: 1px solid black; padding: 10px; border-width: 0px 1px 1px 1px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+								  <div class="card-body">
+									<h4>Description</h4>
+									<br>
+									<p>This action allow you to send a message to KameoBikes through one of our webchat.</p>
+									<br>
+									<h4>Permission(s)</h4>
+									<br>
+									<p>The <b>order</b> permission is needed to perform this request.</p>
+									<br>
+									<h4>Parameter(s)</h4>
+									<br>
+									  <table class="table">
+										<thead>
+											<tr class="d-flex">
+												<th scope="col">Parameter</th>
+												<th scope="col">Type</th>
+												<th scope="col">Value(s)</th>
+												<th scope="col">Description</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>type</td>
+												<td>string</td>
+												<td>command</td>
+												<td>The type of the message, corresponding to a chat</td>
+											</tr>
+											<tr>
+												<td>message</td>
+												<td>string</td>
+												<td>Any url encoded string</td>
+												<td>The content of the message to send</td>
+											</tr>
+										</tbody>
+									</table>
+									<br>
+									<h4>Response</h4>
+									<br>
+									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
+									<p style="display: inline;">
+									  {&nbsp;&nbsp;"response":"success"&nbsp;&nbsp;}
+									</p>
+									</div>
+									<br><br>
+									<h4>Error(s)</h4>
+									<br>
+									<table class="table">
+										<thead>
+											<tr class="d-flex">
+												<th scope="col">HTTP status</th>
+												<th scope="col">Body: error</th>
+												<th scope="col">Body: error_message</th>
+												<th scope="col">Description</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>500 Internal Server Error</td>
+												<td>internal_error</td>
+												<td>Unable to send your message</td>
+												<td>The server was not able to record your message in database.</td>
+											</tr>
+											<tr>
+												<td>500 Internal Server Error</td>
+												<td>internal_error</td>
+												<td>Unable to send notification of your message, it has been canceled</td>
+												<td>This error indicate that the server was able to record the message but that it failed to send a notification to the recipient, and therefore, canceled everything to prevent this message from never being read.</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						  </div>
-						  <div class="tab-pane fade" id="companies_tab">Companies</div>
-						  <div class="tab-pane fade" id="notifications_tab">Notifications</div>
-						  <div class="tab-pane fade" id="orders_tab">Orders</div>
+						  <div class="tab-pane fade" id="companies_tab">
+							<h3 class="text-center">Companies</h3>
+							<br>
+							<div class="alert alert-danger text-center" role="alert" style="border-radius: 10px;">
+							  <b>The routing to this api is currently not implemented.</b>
+							</div>
+						  </div>
+						  <div class="tab-pane fade" id="notifications_tab">
+						    <h3 class="text-center">Notifications</h3>
+							<br>
+							<div class="alert alert-danger text-center" role="alert" style="border-radius: 10px;">
+							  <b>The routing to this api is currently not implemented.</b>
+							</div>
+						  </div>
+						  <div class="tab-pane fade" id="orders_tab">
+						    <h3 class="text-center">Orders</h3>
+							<br>
+							<div class="alert alert-danger text-center" role="alert" style="border-radius: 10px;">
+							  <b>The routing to this api is currently not implemented.</b>
+							</div>
+						  </div>
 						</div>
 					</div>
 				</div>

@@ -124,7 +124,7 @@
 						<h3 class="fr">Accéder à My Kameo</h3>
 						<h3 class="en">Access to My Kameo</h3>
 						<h3 class="nl">Ga naar My Kameo</h3>
-						<form id="user_management" class="form-transparent-grey" action="apis/Kameo/access_management.php" role="form" method="post">
+						<form id="user_management" class="form-transparent-grey" action="/apis/Kameo/access_management.php" role="form" method="post">
 							<div class="form-group">
 								<label class="sr-only fr">Adresse mail</label>
 								<label class="sr-only en">E-mail</label>
@@ -166,7 +166,7 @@
 			 data: { userID: document.getElementById('userID').value, password: /*nacl.util.encodeBase64(nacl.hash(nacl.util.decodeUTF8(*/document.getElementById('user_password').value/*)))*/ },
 			 success: function(text) {
 						if (text.response == 'success') {
-									  window.location.href = "mykameo.php";
+									  window.location.href = "/mykameo";
 						} else {
 							$.notify({
 								message: text.message

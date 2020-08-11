@@ -24,14 +24,14 @@ if ($stmt)
 	$response['response']="success";
 	if ($messages != null)
 	{
-		$response['chatNumber']=count($messages);
-		$response['chat']=$messages;
-		for ($i = 0; $i < $response['chatNumber']; $i++)
-			if (file_exists('../../images/images_users/'.strtolower($response['chat'][$i]['firstName']." ".$response['chat'][$i]['name'].".jpg")))
-				$response['chat'][$i]['img']=strtolower('/images/images_users/'.$response['chat'][$i]['firstName']." ".$response['chat'][$i]['name'].".jpg");
+		$response['messagesNumber']=count($messages);
+		$response['messages']=$messages;
+		for ($i = 0; $i < $response['messagesNumber']; $i++)
+			if (file_exists('../../images/images_users/'.strtolower($response['messages'][$i]['firstName']." ".$response['messages'][$i]['name'].".jpg")))
+				$response['messages'][$i]['img']=strtolower('/images/images_users/'.$response['messages'][$i]['firstName']." ".$response['messages'][$i]['name'].".jpg");
 	}
 	else
-		$response['chatNumber']=0;
+		$response['messagesNumber']=0;
 	echo json_encode($response);
 }else
 	error_message('500', 'Unable to retrieve messages');
