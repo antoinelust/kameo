@@ -42,6 +42,18 @@ $length=$result->num_rows;
 $response['bikeNumberClient']=$length;
 $conn->close();
 
+//number of unread messages
+
+include 'connexion.php';
+$sql="SELECT COUNT(*) as total FROM (SELECT n.* FROM customer_referential, notifications n WHERE n.READ = 'N' AND (n.STAAN IS NULL or n.STAAN != 'D') AND (customer_referential.ID = n.USER_ID OR n.USER_ID='0') AND customer_referential.EMAIL = '$email') as count";
+$result = $conn->query($sql);
+if (!$result) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$response['messagesNumberUnread']=intval($result->fetch_array(MYSQLI_ASSOC)['total']);
+$conn->close();
 
 // number of bookings for the client, to be done for all companies with fleet manager access
 

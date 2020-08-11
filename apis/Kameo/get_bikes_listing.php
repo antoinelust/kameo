@@ -6,9 +6,6 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-
-
-
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : NULL;
 $admin=isset($_POST['admin']) ? $_POST['admin'] : NULL;

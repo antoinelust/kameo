@@ -50,14 +50,15 @@ if($id != NULL)
     $response['contractType']=$row['CONTRACT_TYPE'];
     $response['contractStart']=$row['CONTRACT_START'];
     $response['contractEnd']=$row['CONTRACT_END'];
-    $response['estimatedDeliveryDate']=$row['ESTIMATED_DELIVERY_DATE'];
     $response['deliveryDate']=$row['DELIVERY_DATE'];    
-    $response['sellingDate']=$row['SELLING_DATE'];
     $response['soldPrice']=$row['SOLD_PRICE'];
     $response['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
     $response['orderNumber']=$row['ORDER_NUMBER'];
     $response['offerID']=$row['OFFER_ID'];
-    $response['userEMAIL']=$row['EMAIL'];
+	/*Cyprien removed 'cause were here but doesn't exist */
+    //$response['userEMAIL']=$row['EMAIL'];
+	//$response['sellingDate']=$row['SELLING_DATE'];
+	//$response['estimatedDeliveryDate']=$row['ESTIMATED_DELIVERY_DATE'];
     if($company == NULL){
         $company=$row['COMPANY'];
     }

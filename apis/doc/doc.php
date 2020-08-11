@@ -37,11 +37,11 @@
 						</div>
 						<ul class="list-unstyled components" role="menu">
 							<p class="text-center">KameoBikes API V1</p>
-							<li class="active">
+							<li>
 								<a href="#generaMenu" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">General</a>
 								<ul class="collapse list-unstyled in" id="generaMenu">
-									<li>
-										<a class="nav-item nav-link active" style="color: #888; margin-left: 15px;" href="#description_tab" data-toggle="tab">Description</a>
+									<li class="active">
+										<a class="nav-item nav-link" style="color: #888; margin-left: 15px;" href="#description_tab" data-toggle="tab">Description</a>
 									</li>
 									<li>
 										<a class="nav-item nav-link" style="color: #888; margin-left: 15px;" href="#authentication_tab" data-toggle="tab">Authentication</a>
@@ -51,11 +51,11 @@
 									</li>
 								</ul>
 							</li>
-							<li class="active">
-								<a href="#dataMenu" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">Data</a>
+							<li>
+								<a href="#dataMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Data</a>
 								<ul class="collapse list-unstyled" id="dataMenu">
 									<li>
-										<a class="nav-item nav-link active" style="color: #888; margin-left: 15px;" href="#parameters_tab" data-toggle="tab">Parameters</a>
+										<a class="nav-item nav-link" style="color: #888; margin-left: 15px;" href="#parameters_tab" data-toggle="tab">Parameters</a>
 									</li>
 									<li>
 										<a class="nav-item nav-link" style="color: #888; margin-left: 15px;" href="#responses_tab" data-toggle="tab">Responses</a>
@@ -162,7 +162,7 @@
 							  </div>
 									<p><br>Where <i>&lt;endpoint&gt;</i> is the name of the endpoint, <i>&lt;parameter&gt;</i> is the name of a parameter given to the endpoint and <i>&lt;value&gt;</i> is the value of the corresponding parameter.</p>
 							  <p><b>POST</b> requests parameters are passed as <i>application/x-www-form-urlencoded</i> or plain data basic value/pair.</p>
-							  <p>As a general rule of thumb, every endpoint needs at least a value for the <i>action</i> parameter, used to specify which action you want to perform on the requested ressource but other parameters may sometimes be ommited.<br>
+							  <p>As a general rule of thumb, every endpoint needs at least a value for the <i>action</i> parameter, used to specify which action you want to perform on the requested ressource, but other parameters may sometimes be ommited.<br>
 							  Further details about any specific endpoint parameter and/or type is available in the corresponding section of this documentation.</p>
 						  </div>
 						  <div class="tab-pane fade" id="responses_tab">
@@ -245,7 +245,7 @@
 										<br>
 							  <p>This endpoint controls Kameo's instant message chats.</p>
 							  <p>URL: <a href="http://kameobikes/api/chats">http://kameobikes/api/chats</a><br></p>
-							  <div style="width:80%; background-color: #F0F0F0; border-radius: 5px; border: 1px solid black; padding: 5px; padding-right: 15px; display: flex;"><span style="margin-right: 20px; background-color: rgba(255,0,0,0.2); padding: 5px; border-radius: 5px;">GET</span><a class="collapse-title" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" href="#/">/api/chats?action=retrieveMessages</a>
+							  <div style="width:80%; background-color: #F0F0F0; border-radius: 5px; border: 1px solid black; padding: 5px; padding-right: 15px; display: flex;"><span style="margin-right: 20px; background-color: rgba(255,0,0,0.2); padding: 5px; border-radius: 5px;">GET</span><a class="collapse-title" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" href="#/">retrieveMessages<span style="display: inline-block; position: absolute; right: 20px;">/api/chats?action=retrieveMessages</span></a>
 							  </div>
 							  <div id="collapseOne" class="collapse" style="width:80%; border: 1px solid black; padding: 10px; border-width: 0px 1px 1px 1px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
 								  <div class="card-body">
@@ -323,7 +323,7 @@
 								</div>
 							</div>
 							<br>
-							<div style="width:80%; background-color: #F0F0F0; border-radius: 5px; border: 1px solid black; padding: 5px; padding-right: 15px; display: flex;"><span style="margin-right: 20px; background-color: rgba(255,0,0,0.2); padding: 5px; border-radius: 5px;">POST</span><a class="collapse-title" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="#/">/api/chats?action=sendMessage</a>
+							<div style="width:80%; background-color: #F0F0F0; border-radius: 5px; border: 1px solid black; padding: 5px; padding-right: 15px; display: flex;"><span style="margin-right: 20px; background-color: rgba(255,0,0,0.2); padding: 5px; border-radius: 5px;">POST</span><a class="collapse-title" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="#/">sendMessage<span style="display: inline-block; position: absolute; right: 20px;">/api/chats</span></a>
 							  </div>
 							  <div id="collapseTwo" class="collapse" style="width:80%; border: 1px solid black; padding: 10px; border-width: 0px 1px 1px 1px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
 								  <div class="card-body">
@@ -447,6 +447,18 @@
 					</div>
 				</div>
 			</div>
+			<script>
+				/*Prevent bug with multiple active classes at the same time in the menu*/
+				$(".nav-item").on('click', function(event){
+					$tab = $(this).attr("href");
+					$("div.in").not($tab).not(this).removeClass("in").delay(500).queue(function() {
+						$(".nav-item").attr("aria-expanded","false").dequeue();
+						$(".active").not($tab).not(this).removeClass("active").dequeue();
+						$($tab).addClass("in").addClass("active").dequeue();
+						$(this).attr("aria-expanded","true").dequeue();
+					});
+				});
+			</script>
 		</section>
 		<!-- END:  404 PAGE -->
 		<?php include '../../include/footer.php'; ?>

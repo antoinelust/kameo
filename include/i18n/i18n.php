@@ -132,10 +132,11 @@ class i18n {
         $this->appliedLang = NULL;
         foreach ($this->userLangs as $priority => $langcode) {
             $this->langFilePath = $this->getConfigFilename($langcode);
-            if (file_exists($this->langFilePath)) {
-                $this->appliedLang = $langcode;
-                break;
-            }
+			foreach ($this->langFilePath as $Lang)
+				if (file_exists($Lang)) {
+					$this->appliedLang = $langcode;
+					break 2;
+				}
         }
         if ($this->appliedLang == NULL) {
             throw new RuntimeException('No language file was found.');
@@ -143,11 +144,21 @@ class i18n {
 
         // search for cache file
         $this->cacheFilePath = $this->cachePath . '/php_i18n_' . md5_file(__FILE__) . '_' . $this->prefix . '_' . $this->appliedLang . '.cache.php';
-
+		
+		$newest = NULL;
+		foreach($this->langFilePath as $path)
+			if (filemtime($path)>$newest || $newest === NULL)
+				$newest = filemtime($path);
+			
+		$newest_fallback = NULL;
+		foreach($this->getConfigFilename($this->fallbackLang) as $path)
+			if (filemtime($path)>$newest_fallback || $newest_fallback === NULL)
+				$newest_fallback = filemtime($path);
+		
         // whether we need to create a new cache file
         $outdated = !file_exists($this->cacheFilePath) ||
-            filemtime($this->cacheFilePath) < filemtime($this->langFilePath) || // the language config was updated
-            ($this->mergeFallback && filemtime($this->cacheFilePath) < filemtime($this->getConfigFilename($this->fallbackLang))); // the fallback language config was updated
+            filemtime($this->cacheFilePath) < $newest || // the language config was updated
+            ($this->mergeFallback && filemtime($this->cacheFilePath) < $newest_fallback); // the fallback language config was updated
 
         if ($outdated) {
             $config = $this->load($this->langFilePath);
@@ -155,8 +166,8 @@ class i18n {
                 $config = array_replace_recursive($this->load($this->getConfigFilename($this->fallbackLang)), $config);
 
             $compiled = "<?php class " . $this->prefix . " {\n"
-            	. $this->compile($config)
-            	. 'public static function __callStatic($string, $args) {' . "\n"
+				. $this->convert_multi_array($this->compile($config)) . "\n"
+				. 'public static function __callStatic($string, $args) {' . "\n"
             	. '    return vsprintf(constant("self::" . $string), $args);'
             	. "\n}\n}\n"
             	. "function ".$this->prefix .'($string, $args=NULL) {'."\n"
@@ -300,42 +311,55 @@ class i18n {
         return str_replace('{LANGUAGE}', $langcode, $this->filePath);
     }
 
-    protected function load($filename) {
-        $ext = substr(strrchr($filename, '.'), 1);
-        switch ($ext) {
-            case 'properties':
-            case 'ini':
-                $config = parse_ini_file($filename, true);
-                break;
-            case 'yml':
-            case 'yaml':
-                $config = spyc_load_file($filename);
-                break;
-            case 'json':
-                $config = json_decode(file_get_contents($filename), true);
-                break;
-            default:
-                throw new InvalidArgumentException($ext . " is not a valid extension!");
-        }
-        return $config;
+    protected function load($filenames) {
+		foreach ($filenames as $filename)
+		{
+			$ext = substr(strrchr($filename, '.'), 1);
+			switch ($ext) {
+				case 'properties':
+				case 'ini':
+					$configs[] = parse_ini_file($filename, true);
+					break;
+				case 'yml':
+				case 'yaml':
+					$configs[] = spyc_load_file($filename);
+					break;
+				case 'json':
+					$configs[] = json_decode(file_get_contents($filename), true);
+					break;
+				default:
+					throw new InvalidArgumentException($ext . " is not a valid extension!");
+			}
+		}
+        return $configs;
     }
 
     /**
      * Recursively compile an associative array to PHP code.
      */
-    protected function compile($config, $prefix = '') {
-        $code = '';
-        foreach ($config as $key => $value) {
-            if (is_array($value)) {
-                $code .= $this->compile($value, $prefix . $key . $this->sectionSeparator);
-            } else {
-                $fullName = $prefix . $key;
-                if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $fullName)) {
-                    throw new InvalidArgumentException(__CLASS__ . ": Cannot compile translation key " . $fullName . " because it is not a valid PHP identifier.");
-                }
-                $code .= 'const ' . $fullName . ' = \'' . str_replace('\'', '\\\'', $value) . "';\n";
-            }
-        }
+    protected function compile($configs, $prefix = '', $first_time = true) {
+        $code = array();
+		if ($first_time)
+			for($i = 0; $i < count($configs); $i+=1)
+				foreach ($configs[$i] as $key => $value)
+					if (is_array($value))
+						$code[] = $this->compile($value, $prefix . $key . $this->sectionSeparator, false);
+					else {
+						$fullName = $prefix . $key;
+						if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $fullName))
+							throw new InvalidArgumentException(__CLASS__ . ": Cannot compile translation key " . $fullName . " because it is not a valid PHP identifier.");
+						$code .= 'const ' . $fullName . ' = \'' . str_replace('\'', '\\\'', $value) . "';\n";
+					}
+		else
+			foreach ($configs as $key => $value)
+				if (is_array($value))
+					$code .= $this->compile($value, $prefix . $key . $this->sectionSeparator, false);
+				else {
+					$fullName = $prefix . $key;
+					if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $fullName))
+						throw new InvalidArgumentException(__CLASS__ . ": Cannot compile translation key " . $fullName . " because it is not a valid PHP identifier.");
+					$code[] = 'const ' . $fullName . ' = \'' . str_replace('\'', '\\\'', $value) . "';\n";
+				}
         return $code;
     }
 
@@ -344,4 +368,9 @@ class i18n {
             throw new BadMethodCallException('This ' . __CLASS__ . ' object is already initalized, so you can not change any settings.');
         }
     }
+	
+	protected function convert_multi_array($array) {
+	  $out = implode("\n",array_map(function($a) {return implode("\n",$a);},$array));
+	  return $out;
+	}
 }

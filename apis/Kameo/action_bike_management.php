@@ -15,7 +15,7 @@ if(isset($_POST["widget-addActionBike-form-action"])){
     $user = isset($_POST["widget-addActionBike-form-user"]) ? $_POST["widget-addActionBike-form-user"] : NULL;
 } else if(isset($_POST["readActionBike-action"])){
     $action = isset($_POST["readActionBike-action"]) ? $_POST["readActionBike-action"] : NULL;
-    $bikeID = isset($_POST["bikeID"]) ? $_POST["bikeID"] : NULL;
+    $bikeID = isset($_POST["readActionBike-bikeNumber"]) ? $_POST["readActionBike-bikeNumber"] : NULL;
     $user = isset($_POST["readActionBike-user"]) ? $_POST["readActionBike-user"] : NULL;
 }
 
