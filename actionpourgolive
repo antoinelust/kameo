@@ -10,4 +10,6 @@ CREATE TABLE IF NOT EXISTS `companies_orderable` (
 
 ALTER TABLE `customer_referential` CHANGE `ACCESS_RIGHTS` `ACCESS_RIGHTS` SET('order','search','fleetManager','chatsManager','admin') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
-UPDATE `chat` SET `EMAIL_DESTINARY`='support@kameobikes.com' WHERE `EMAIL_USER`=`EMAIL_DESTINARY`
+UPDATE `chat` SET `EMAIL_DESTINARY`='support@kameobikes.com' WHERE `EMAIL_USER`=`EMAIL_DESTINARY`;
+
+UPDATE chat SET TYPE='order' WHERE TYPE='command';

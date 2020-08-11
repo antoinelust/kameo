@@ -180,6 +180,12 @@ function error_message($type, $message = ""){
             echo json_encode($response);
             die;
 			break;
+		case '404':
+			header("HTTP/1.0 404 Not Found");
+            $response = array ('error'=>'not_found', 'error_message'=> "The requested endpoint cannot be found");
+            echo json_encode($response);
+            die;
+			break;
 		case '405':
 			header("HTTP/1.0 405 Method Not Allowed");
             $response = array ('error'=>'unallowed_method', 'error_message'=> 'This method is not allowed on this endpoint');

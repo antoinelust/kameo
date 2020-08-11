@@ -21,8 +21,5 @@ if($match&&!is_a($match['target'], "Closure"))
 else if (is_a($match['target'], "Closure"))
 	$match['target']();
 else
-{
-	header("Content-Type: application/problem");
-	header("HTTP/1.0 404 Not Found");
-}
+	error_message('404');
 ?>

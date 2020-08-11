@@ -2,6 +2,8 @@
 <html lang="fr">
 <?php 
 	include 'include/head.php';
+	header_remove("Set-Cookie");
+	header_remove("X-Powered-By");
 ?>
 <body class="wide">
 	<!-- WRAPPER -->

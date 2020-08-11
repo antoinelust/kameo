@@ -222,6 +222,13 @@
 										<td>This error indicate that your request has been understood but that you don't have the required permission(s) to perform the requested action or to access the endpoint. You should not retry the same action and if you think that this is not a normal behavior, you can contact us at <i>support@kameobikes.com</i> .</td>
 									</tr>
 									<tr>
+										<td>404&nbsp;Not&nbsp;Found</td>
+										<td>not_found</td>
+										<td>The requested endpoint cannot be found</td>
+										<td>Unrecoverable</td>
+										<td>This error indicate that your request has been sent to a non existing endpoint.</td>
+									</tr>
+									<tr>
 										<td>405&nbsp;Method&nbsp;Not&nbsp;Allowed</td>
 										<td>unallowed_method</td>
 										<td>This method is not allowed on this endpoint</td>
@@ -274,13 +281,13 @@
 												<td>type</td>
 												<td>string</td>
 												<td>false</td>
-												<td>command</td>
+												<td>order</td>
 												<td>The type of the message, corresponding to a chat. If this parameter is ommited, every message will be retrieved.</td>
 											</tr>
 										</tbody>
 									</table>
 									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
-										<p style="display: inline;">curl -X GET "https://kameobikes.com/api/chats?action=retrieveMessages&type=command" --header "Authorization: Bearer <i>&lt;token&gt;</i>"</p>
+										<p style="display: inline;">curl -X GET "https://kameobikes.com/api/chats?action=retrieveMessages&type=order" --header "Authorization: Bearer <i>&lt;token&gt;</i>"</p>
 									</div>
 									<br><br>
 									<h4>Response</h4>

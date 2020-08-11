@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
     $("#orderBike .mesgs .msg_send_btn").click(function() {  
         var message=$("#orderBike .input_msg_write .write_msg").val();
         if(message != ""){
-            write_message(message, email, email, "command");
+            write_message(message, email, email, "order");
             $("#orderBike .input_msg_write .write_msg").val("");
         }
     });    
@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
         if(keycode == '13'){	
             var message=$("#orderBike .input_msg_write .write_msg").val();
             if(message != ""){
-                write_message(message, email, email, "command");
+                write_message(message, email, email, "order");
                 $("#orderBike .input_msg_write .write_msg").val("");
             }
         }
@@ -207,7 +207,7 @@ function get_message_history(){
     $.ajax({
         url: 'api/chats',
         type: 'get',
-        data: { "action": "retrieveMessages", "type": "command"},
+        data: { "action": "retrieveMessages", "type": "order"},
         success: function(response){
             var dest="";
 			$('#divChatCommand').empty();

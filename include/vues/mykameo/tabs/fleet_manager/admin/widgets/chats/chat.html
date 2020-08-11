@@ -53,7 +53,7 @@ $('#adminChat').on('show.bs.modal', function (event) {
 		$.ajax({
 			url: 'api/chats',
 			type: 'get',
-			data: { "action": "retrieveMessages", "type": "command", "email": correspondent_email},
+			data: { "action": "retrieveMessages", "type": "order", "email": correspondent_email},
 			success: function(response){
 				var dest="";
 				$('#divChatCommandAdmin').empty();
@@ -103,7 +103,7 @@ $('#adminChat').on('show.bs.modal', function (event) {
 	$("#adminSendMsgBtn").click(function() {
         var message=$("#writeAdminMsg").val();
         if(message != ""){
-			send_message(message, $('#adminChatCorrespondent').text(), "command").done(function(result) {
+			send_message(message, $('#adminChatCorrespondent').text(), "order").done(function(result) {
 				if (result.response === 'success')
 					get_message_history_admin($('#adminChatCorrespondent').text());
 			});
@@ -115,7 +115,7 @@ $('#adminChat').on('show.bs.modal', function (event) {
         if((event.keyCode || event.which)=='13'){
             var message=$("#writeAdminMsg").val();
             if(message != ""){
-				send_message(message, $('#adminChatCorrespondent').text(), "command").done(function(result) {
+				send_message(message, $('#adminChatCorrespondent').text(), "order").done(function(result) {
 				if (result.response === 'success')
 					get_message_history_admin($('#adminChatCorrespondent').text());
 			});
