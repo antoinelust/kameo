@@ -119,7 +119,7 @@ if($token==NULL){ //Not connected
             <?php else: ?>
               <?php
                 /** @TODO: REPLACE BY API CALL **/
-                $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE, cc.BIKE_NUMBER from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd where aa.EMAIL='".$user_data['EMAIL']."' and aa.EMAIL=cc.EMAIL and cc.BIKE_NUMBER=bb.FRAME_NUMBER and bb.TYPE=dd.ID";
+                $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd where aa.EMAIL='".$user_data['EMAIL']."' and aa.EMAIL=cc.EMAIL and cc.BIKE_ID=bb.ID and bb.TYPE=dd.ID";
                 if ($conn->query($sql) === FALSE)
                     die;
                 $row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -403,7 +403,7 @@ if($token==NULL){ //Not connected
                   </div>
               </div>
 
-              <img src="images_bikes/<?php echo $row['BIKE_NUMBER']; ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
+              <img src="images_bikes/<?php echo $row['FRAME_NUMBER']; ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
               <br/>
               <!-- BIKE DESCRIPTION -->
 			  <div class="table-responsive">
@@ -707,10 +707,6 @@ function listPortfolioBikes(){
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
   //CHATS
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/chats/main.php';
-  //BOXES
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
-  //TASKS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
   //CASHFLOW
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
   //FEEDBACKS
@@ -721,6 +717,10 @@ function listPortfolioBikes(){
   include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
   //BILLS
   include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
+  //BOXES
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
+  //TASKS
+  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
 ?>
 
 <?php } ?>

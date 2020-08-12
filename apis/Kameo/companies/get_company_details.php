@@ -50,12 +50,13 @@ if($ID != NULL){
     }
 }
 $response['response']="success";
-$response = array_push(($stmt->get_result()->fetch_assoc()));
+$resultat = $stmt->get_result()->fetch_assoc();
+$response = array_merge($response, $resultat);
 $stmt->close();
 
 
 if($company==NULL){
-    $company = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['INTERNAL_REFERENCE'];
+    $company = $resultat['internalReference'];
 }
 
 
@@ -69,12 +70,10 @@ if ($conn->query($sql) === FALSE) {
 
 $result = mysqli_query($conn, $sql);
 $resultat = mysqli_fetch_assoc($result);
-$conn->close();
 
 $response['assistance']=$resultat['ASSISTANCE'];
 $response['locking']=$resultat['LOCKING'];
 
-include 'connexion.php';
 $sql="SELECT * FROM customer_bikes dd where COMPANY='$company' AND STAANN != 'D'";
 
 if ($conn->query($sql) === FALSE) {
@@ -145,7 +144,6 @@ while($row = mysqli_fetch_array($result)){
 
 ///////////////////
 
-include 'connexion.php';
 $sql="SELECT CONTRACT_START, CONTRACT_END, SUM(LEASING_PRICE) as 'PRICE', COUNT(1) as 'BIKE_NUMBER' FROM `customer_bikes` WHERE COMPANY = '$company' AND AUTOMATIC_BILLING='Y' GROUP BY CONTRACT_START, CONTRACT_END";
 
 if ($conn->query($sql) === FALSE) {
@@ -172,7 +170,6 @@ while($row = mysqli_fetch_array($result)){
 
 ///////////////////
 
-include 'connexion.php';
 $sql="SELECT * FROM offers dd where COMPANY='$company' AND STAANN != 'D'";
 
 if ($conn->query($sql) === FALSE) {
@@ -199,7 +196,6 @@ while($row = mysqli_fetch_array($result)){
     $i++;
 }
 
-include 'connexion.php';
 $sql="SELECT * FROM customer_referential dd where COMPANY='$company' AND STAANN != 'D'";
 
 if ($conn->query($sql) === FALSE) {
@@ -218,10 +214,7 @@ while($row = mysqli_fetch_array($result)){
 
 }
 $response['userNumber']=$i;
-$conn->close();
 
-
-include 'connexion.php';
 $sql="SELECT * FROM factures dd where COMPANY='$company'";
 
 if ($conn->query($sql) === FALSE) {
@@ -238,9 +231,7 @@ $conn->close();
 
 $i=0;
 while($row = mysqli_fetch_array($result))
-
 {
-
     $response['bill'][$i]['company']=$row['COMPANY'];
     $response['bill'][$i]['beneficiaryCompany']=$row['BENEFICIARY_COMPANY'];
     $response['bill'][$i]['ID']=$row['ID'];
@@ -256,7 +247,6 @@ while($row = mysqli_fetch_array($result))
     $response['bill'][$i]['communication']=$row['COMMUNICATION_STRUCTUREE'];
     $response['bill'][$i]['communicationSentAccounting']=$row['FACTURE_SENT_ACCOUNTING'];
     $i++;
-
 }
 
 

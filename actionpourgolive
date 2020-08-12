@@ -13,3 +13,6 @@ ALTER TABLE `customer_referential` CHANGE `ACCESS_RIGHTS` `ACCESS_RIGHTS` SET('o
 UPDATE `chat` SET `EMAIL_DESTINARY`='support@kameobikes.com' WHERE `EMAIL_USER`=`EMAIL_DESTINARY`;
 
 UPDATE chat SET TYPE='order' WHERE TYPE='command';
+
+ALTER TABLE `customer_bike_access` DROP INDEX `BIKE_NUMBER`;
+ALTER TABLE `customer_bike_access` DROP `BIKE_NUMBER`;

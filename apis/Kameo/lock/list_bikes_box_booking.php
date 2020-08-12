@@ -22,7 +22,7 @@ $buildingReference=$resultat['BUILDING_REFERENCE'];
 
 
 include '../connexion.php';
-$sql="SELECT aa.EMAIL, aa.COMPANY, cc.FRAME_NUMBER, cc.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bike_access bb, customer_bikes cc, bike_catalog dd WHERE RFID='$rfid' and aa.EMAIL=bb.EMAIL and bb.BIKE_NUMBER=cc.FRAME_NUMBER AND cc.TYPE=dd.ID and aa.STAANN != 'D' AND bb.STAANN != 'D' AND dd.STAANN != 'D' and not exists (select 1 from reservations ee WHERE ee.FRAME_NUMBER=bb.BIKE_NUMBER and ee.DATE_START_2 < CURRENT_TIMESTAMP() and DATE_END_2 > CURRENT_TIMESTAMP() and ee.STAANN !='D')";
+$sql="SELECT aa.EMAIL, aa.COMPANY, cc.FRAME_NUMBER, cc.ID, cc.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bike_access bb, customer_bikes cc, bike_catalog dd WHERE RFID='$rfid' and aa.EMAIL=bb.EMAIL and bb.BIKE_ID=cc.ID AND cc.TYPE=dd.ID and aa.STAANN != 'D' AND bb.STAANN != 'D' AND dd.STAANN != 'D' and not exists (select 1 from reservations ee WHERE ee.BIKE_ID=bb.BIKE_ID and ee.DATE_START_2 < CURRENT_TIMESTAMP() and DATE_END_2 > CURRENT_TIMESTAMP() and ee.STAANN !='D')";
 
 
 if ($conn->query($sql) === FALSE) {

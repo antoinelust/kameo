@@ -103,7 +103,7 @@
 							<br>
 							<p>Our APIs uses a token but are currently not Oauth compatible. You can find your developer token and informations at the bottom of this page.</p>
 							<p>Developer tokens can be re-generated if needed but should be considered <b>as personal as passwords</b>.</p>
-							<p>To authenticate yourself, a token should be included in every requests made to our APIs, using the <i>Authorization</i> request header with the value <i>Bearer &ltTOKEN&gt</i>, where <i>&ltTOKEN&gt</i> is an access token. If you're not successfully authenticated, every API will return an HTTP error code as well as a JSON error description in the body. Details about errors can be found in the <i>Responses >> Errors</i> section of this documentation.</p>
+							<p>To authenticate yourself, a token should be included in every requests made to our APIs, using the <i>Authorization</i> request header with the value <i>Bearer &lt;TOKEN&gt;</i>, where <i>&ltTOKEN&gt</i> is an access token. If you're not successfully authenticated, every API will return an HTTP error code as well as a JSON error description in the body. Details about errors can be found in the <i>Responses >> Errors</i> section of this documentation.</p>
 							<div style="background-color: #F0F0F0; padding: 20px; margin: 20px; max-width: 50%;">
 								<p>Your developer informations :</p>
 								<p class="text-center" style="padding: 5px; background-color: rgba(255,0,0,0.25); border-radius: 10px;">The developer functionalities are currently not activated on your account. You can contact us at support@kameobikes.com for more informations.</p>
@@ -172,7 +172,7 @@
 								<b>The HTTP status 200 OK on a reply should never be considered as a guarantee that the request was successful. In order to ensure a correct processing, one must check the content of the response field in the body of the reply.</b>
 							  </div>
 							  <p>This api will return data in JSON format. If the request is correct, the standard success response will have the <b>200 OK</b> HTTP code and will usually be of the form:<br>
-							  <div style="background-color: #F0F0F0; padding:20px; width: 50%; border-radius: 1px; display: inline-block;">
+							  <span style="background-color: #F0F0F0; padding:20px; width: 50%; border-radius: 1px; display: inline-block;">
 							  {<br>
 							  &nbsp;&nbsp;"response":"success",<br>
 							  &nbsp;&nbsp;"itemsCount":2,<br>
@@ -181,7 +181,7 @@
 							  &nbsp;&nbsp;&nbsp;&nbsp;{ ID: 2, name: "item2", property: "value" }<br>
 							  &nbsp;&nbsp;]<br>
 							  }
-							  </div>
+							  </span>
 							  </p>
 							  <p>This structure may vary in some cases. Please refer to the corresponding documentation of an endpoint for more informations.</p>
 						  </div>

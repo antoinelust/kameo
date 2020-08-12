@@ -73,10 +73,10 @@ if($length=="1"){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
 
-        $frameNumber=$resultat['FRAME_NUMBER'];
+        $bikeID=$resultat['BIKE_ID'];
 
         include '../connexion.php';            
-        $sql = "SELECT * from locking_bikes WHERE FRAME_NUMBER='$frameNumber'";
+        $sql = "SELECT * from locking_bikes WHERE BIKE_ID='$bikeID'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -179,7 +179,7 @@ if($length=="1"){
         $maxLengthCondition=$resultat['BOOKING_LENGTH'];
         
         include '../connexion.php';
-        $sql="SELECT aa.BIKE_NUMBER from customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$client' and aa.STAANN != 'D' and aa.BIKE_NUMBER=bb.FRAME_NUMBER and bb.STAANN != 'D'";
+        $sql="SELECT aa.BIKE_ID from customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$client' and aa.STAANN != 'D' and aa.BIKE_ID=bb.ID and bb.STAANN != 'D'";
         
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -196,10 +196,10 @@ if($length=="1"){
         
         
         while($row = mysqli_fetch_array($result)){
-            $frameNumber=$row['BIKE_NUMBER'];
+            $bikeID=$row['BIKE_ID'];
             
             include '../connexion.php';            
-            $sql2="SELECT aa.DATE_START_2, aa.FRAME_NUMBER FROM reservations aa WHERE FRAME_NUMBER='$frameNumber' AND DATE_START_2 > CURRENT_TIMESTAMP() AND STAANN != 'D' and not exists (select 1 from reservations bb WHERE bb.STAANN != 'D' and bb.DATE_END > CURRENT_TIMESTAMP and bb.DATE_END_2 < aa.DATE_START_2) ORDER BY aa.DATE_START_2";
+            $sql2="SELECT aa.DATE_START_2, aa.BIKE_ID FROM reservations aa WHERE BIKE_ID='$bikeID' AND DATE_START_2 > CURRENT_TIMESTAMP() AND STAANN != 'D' and not exists (select 1 from reservations bb WHERE bb.STAANN != 'D' and bb.DATE_END > CURRENT_TIMESTAMP and bb.DATE_END_2 < aa.DATE_START_2) ORDER BY aa.DATE_START_2";
             
             
             if ($conn->query($sql2) === FALSE) {
@@ -224,12 +224,12 @@ if($length=="1"){
                 if($diffMinutes > $maxLengthBookingMinutes){
                     $diffMinutes = $maxLengthBookingMinutes;
                 }
-                $response[$i]['frameNumber']=$frameNumber;
+                $response[$i]['bikeID']=$bikeID;
                 $response[$i]['bookingMaxLength']=$diffMinutes;
                 $i++;                
             }else{
                 include '../connexion.php';            
-                $sql3="SELECT aa.DATE_START_2, aa.FRAME_NUMBER FROM reservations aa WHERE FRAME_NUMBER='$frameNumber' AND DATE_START_2 < CURRENT_TIMESTAMP() AND DATE_END_2 > CURRENT_TIMESTAMP() AND STAANN != 'D'";
+                $sql3="SELECT aa.DATE_START_2, aa.BIKE_ID FROM reservations aa WHERE BIKE_ID='$bikeID' AND DATE_START_2 < CURRENT_TIMESTAMP() AND DATE_END_2 > CURRENT_TIMESTAMP() AND STAANN != 'D'";
                 if ($conn->query($sql3) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -240,7 +240,7 @@ if($length=="1"){
                 $conn->close(); 
                 if($length==0){
                     $diffMinutes = $maxLengthBookingMinutes;
-                    $response[$i]['frameNumber']=$frameNumber;
+                    $response[$i]['bikeID']=$bikeID;
                     $response[$i]['bookingMaxLength']=$maxLengthBookingMinutes;
                     $i++;                
                 }

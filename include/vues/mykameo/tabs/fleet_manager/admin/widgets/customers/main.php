@@ -2,8 +2,7 @@
 	include 'customers.html';
 	include 'add_customer.html';
 	include 'offers/add_offer_template.html';
-	include 'buildings/add_building.html';
-	include 'add_user.html';?>
+?>
 	
 <script type="text/javascript">
 	<?php include 'customers.js'; ?>

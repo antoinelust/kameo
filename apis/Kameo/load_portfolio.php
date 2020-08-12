@@ -61,23 +61,22 @@ try{
             $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, LINK as url FROM bike_catalog WHERE ID='$ID'";
             $stmt = $conn->prepare($sql);
             if($stmt){
-                $stmt->bind_param('ffi', $marginBike, $marginOther, $leasingDuration);
+                //$stmt->bind_param('ffi', $marginBike, $marginOther, $leasingDuration);
                 $stmt->execute();
                 $response = array("response" => "success");
-                $response.push($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
-                echo json_encode();
+                $response = array_merge($response,$stmt->get_result()->fetch_array(MYSQLI_ASSOC));
             }else{
                 error_message('500', 'Unable to retrieve portfolio bike');
             }
             $stmt->close();
             $conn->close();
 
-            $response['img']=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']);
+            $response['img']=strtolower(str_replace(" ", "-", $response['brand']))."_".strtolower(str_replace(" ", "-", $response['model']))."_".strtolower($response['frameType']);
+			echo json_encode($response);
         }
     }else{
         errorMessage("ES0012");
     }
-
 
 }  catch (Exception $e) {
     $response['response']="error";
