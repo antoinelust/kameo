@@ -1032,7 +1032,7 @@ Merci de simplement répondre 'STOP' à ce mail.
             $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
             echo json_encode($response);
             die;
-        }    
+        } 
     }
     
 

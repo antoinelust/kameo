@@ -16,3 +16,5 @@ UPDATE chat SET TYPE='order' WHERE TYPE='command';
 
 ALTER TABLE `customer_bike_access` DROP INDEX `BIKE_NUMBER`;
 ALTER TABLE `customer_bike_access` DROP `BIKE_NUMBER`;
+
+ALTER TABLE `conditions` CHANGE `COMPANY` `COMPANY` VARCHAR(60) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL; 

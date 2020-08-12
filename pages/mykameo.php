@@ -503,7 +503,8 @@ if($token==NULL){ //Not connected
   </div>
 </div>
 </section>
-
+<!-- BOOK TAB RESUME WIDGET -->
+<?php include 'include/vues/mykameo/tabs/book/widgets/book.html'; ?>
 <!-- INFORMATIONS WIDGETS -->
 <?php include 'include/vues/mykameo/widgets/informations/update_informations.html';?>
 <script type="text/javascript" src="include/vues/mykameo/widgets/informations/update_informations.js"></script>
