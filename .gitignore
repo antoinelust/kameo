@@ -32,3 +32,6 @@ test.pdf
 html2pdfTest.php
 html2pdfTestContent.php
 include/api_keys.php
+include/environment.php
+robots.txt
+sitemap.xml
