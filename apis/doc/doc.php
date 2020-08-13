@@ -359,7 +359,7 @@
 												<td>type</td>
 												<td>string</td>
 												<td>true</td>
-												<td>command</td>
+												<td>order</td>
 												<td>The type of the message, corresponding to a chat.</td>
 											</tr>
 											<tr>
@@ -372,7 +372,7 @@
 										</tbody>
 									</table>
 									<div style="background-color: #F0F0F0; width: 100%; padding: 20px; border-radius: 1px; display: inline-block;">
-										<p style="display: inline;">curl -X POST "https://kameobikes.com/api/chats" --header "Authorization: Bearer <i>&lt;token&gt;</i>" -d action=sendMessage -d message="My message!" -d type=command</p>
+										<p style="display: inline;">curl -X POST "https://kameobikes.com/api/chats" --header "Authorization: Bearer <i>&lt;token&gt;</i>" -d action=sendMessage -d message="My message!" -d type=order</p>
 									</div>
 									<br><br>
 									<h4>Response</h4>
