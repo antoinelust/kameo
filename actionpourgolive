@@ -21,3 +21,11 @@ ALTER TABLE `customer_bike_access` DROP INDEX `BIKE_NUMBER`;
 ALTER TABLE `customer_bike_access` DROP `BIKE_NUMBER`;
 
 ALTER TABLE `conditions` CHANGE `COMPANY` `COMPANY` VARCHAR(60) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL; 
+
+
+UPDATE `customer_referential` SET `ACCESS_RIGHTS` = 'search' WHERE ADMINISTRATOR='N';
+UPDATE `customer_referential` SET `ACCESS_RIGHTS` = 'search,fleetManager' WHERE ADMINISTRATOR='Y';
+UPDATE `customer_referential` SET `ACCESS_RIGHTS` = 'search,fleetManager,admin' WHERE COMPANY='KAMEO';
+
+
+ALTER TABLE `conditions` ADD `DISCOUNT` FLOAT NOT NULL DEFAULT '0' AFTER `CAFETARIA`;

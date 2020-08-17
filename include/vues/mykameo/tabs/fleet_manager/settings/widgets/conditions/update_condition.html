@@ -11,6 +11,7 @@
 						<h4 class="en-inline text-green">Modify booking settings:</h4>
 						<h4 class="nl-inline text-green">Modify booking settings :</h4>
 						<br>
+						<br>
 						<form id="widget-updateCompanyConditions-form" class="form-inline" action="apis/Kameo/update_company_conditions.php" role="form" method="post">
 							<span class="fr-inline"> <strong>Nom du groupe : </strong></span>
 							<span class="en-inline"> Group name: </span>
@@ -77,7 +78,13 @@
 								</div>
 							</div>
 							<div class="col-sm-12">
-								<h4>Accès des utilisateurs à ce groupe de conditions</h4>
+								<h4 class="text-green">Conditions spécifiques</h4>
+                                <input type="checkbox" name="box">Génération de code de réservation ?<br>
+							</div>
+                            <br><br>
+                            
+							<div class="col-sm-12">
+								<h4 class="text-green">Accès des utilisateurs à ce groupe de conditions</h4>
 								<p class="text-red">Attention, attribuer un utilisateur à ce groupe supprimera automatiquement son appartenance à un autre groupe</p>
 								<span id="groupConditionUsers"></span>
 							</div>

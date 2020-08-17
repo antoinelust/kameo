@@ -87,7 +87,9 @@ if($email != NULL)
     $response['companyConditions']['sundayDeposit']=$resultat['SUNDAY_DEPOSIT'];
     $response['companyConditions']['maxBookingsPerYear']=$resultat['MAX_BOOKINGS_YEAR'];
     $response['companyConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
-	
+    $response['companyConditions']['cafeteria']=$resultat['BOX_BOOKING'];
+    $response['companyConditions']['cafeteria']=$resultat['CAFETARIA'];
+
     
     include 'connexion.php';
     

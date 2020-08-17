@@ -415,10 +415,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
             if(response.response == 'error') {
                 console.log(response.message);
             }
-            if(response.response == 'success'){
-
-                console.log(response);
-                
+            if(response.response == 'success'){                
                 $('#widget-addBill-form input[name=ID_OUT]').val(parseInt(response.IDMaxBillingOut) +1);
                 $('#widget-addBill-form input[name=ID]').val(parseInt(response.IDMaxBilling) +1);
                 $('#widget-addBill-form input[name=communication]').val(response.communication);

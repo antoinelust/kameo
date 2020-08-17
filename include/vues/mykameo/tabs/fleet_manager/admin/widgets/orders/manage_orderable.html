@@ -12,8 +12,9 @@
 					<div class="col-sm-12">
 						<form id="widget-manageCompaniesOrderable-form" action="apis/Kameo/orders/orders.php" role="form" method="post">
 							<div class="row">
-								<div class="col-sm-6" align="center"><label for="company">Name&nbsp;&nbsp;</label><input name="company" id="manageOrderableCompanyName" disabled></div>
-								<div class="col-sm-6" align="center"><label for="cafetaria">Cafetaria&nbsp;&nbsp;</label><input name="cafetaria" id="manageOrderableCafetaria" type="checkbox"></div>
+								<div class="col-md-4" align="center"><label for="company">Name&nbsp;&nbsp;</label><input name="company" id="manageOrderableCompanyName" class="form-control" disabled></div>
+								<div class="col-md-4" align="center"><label for="cafetaria">Cafetaria&nbsp;&nbsp;</label><input name="cafetaria" id="manageOrderableCafetaria" type="checkbox"></div>
+								<div class="col-md-4" align="center"><label for="discount">Discount :&nbsp;&nbsp;</label><input name="discount" id="discount" type="number" step="any" class="form-control"></div>
 							</div>
 							<div class="separator"></div>
 							<div class="table-responsive">
@@ -50,8 +51,10 @@
 	$('#ordersListing').modal('hide');
 	var current_company = $(event.relatedTarget).data('company');
 	var has_cafetaria = $(event.relatedTarget).data('cafetaria');
+	var discount = $(event.relatedTarget).data('discount');
 	$('#manageOrderableCompanyName').val(current_company);
 	$('#manageOrderableCafetaria').prop( "checked", has_cafetaria );
+	$('#widget-manageCompaniesOrderable-form input[name=discount]').val( discount );
 	if ( $('#manageCompaniesOrderable').DataTable() != null ) {
 	  $('#manageCompaniesOrderable').DataTable().clear();
 	  $('#manageCompaniesOrderable').DataTable().destroy();
@@ -114,6 +117,7 @@
 				data.push({'name': 'action', 'value': 'updateOrderable'});
 				data.push({'name': 'company', 'value': $('#manageOrderableCompanyName').val()}); //can't use the current_company var here because of a bootstrap modalfade related bug (data passed is gonna be for another company)
 				data.push({'name': 'cafetaria', 'value': $('#manageOrderableCafetaria').is(':checked')}); //same here
+				data.push({'name': 'discount', 'value': $('#widget-manageCompaniesOrderable-form input[name=discount]').val()});
 				$.ajax({
 					 type: "POST",
 					 url: url,

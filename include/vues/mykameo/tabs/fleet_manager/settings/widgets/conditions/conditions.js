@@ -196,6 +196,11 @@ $.ajax({
 		temp="<input type=\"checkbox\" name=\"depositBookingSunday\" value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";
 	  }
 	  dest=dest.concat(temp);
+        
+      if(response.companyConditions.box=="Y")
+          $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', true);
+        else
+          $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', false);
 
 	  if(response.userAccessNumber==0){
 		emailArray=[];

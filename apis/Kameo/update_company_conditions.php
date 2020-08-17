@@ -31,6 +31,7 @@ $depositSunday=isset($_POST['depositBookingSunday']) ? "1" : "0";
 $email=isset($_POST['email']) ? $_POST['email'] : null;
 $maximumBookingsYear=isset($_POST['bookingsPerYear']) ? $_POST['bookingsPerYear'] : null;
 $maximumBookingsMonth=isset($_POST['bookingsPerMonth']) ? $_POST['bookingsPerMonth'] : null;
+$box=isset($_POST['box']) ? "Y" : "N";
 $action=isset($_POST['action']) ? $_POST['action'] : null;
 $id=isset($_POST['id']) ? $_POST['id'] : null;
 $email=isset($_POST['email']) ? $_POST['email'] : null;
@@ -184,7 +185,7 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
             errorMessage("ES0053");
         }else{
             include 'connexion.php';
-            $sql="update conditions set USR_MAJ = 'mykameo', HEU_MAJ = CURRENT_TIMESTAMP, NAME='$name', BOOKING_DAYS='$bookingDays', BOOKING_LENGTH='$bookingLength', HOUR_START_INTAKE_BOOKING = '$startHourIntakeBooking', HOUR_END_INTAKE_BOOKING = '$endHourIntakeBooking', HOUR_START_DEPOSIT_BOOKING = '$startHourDepositBooking', HOUR_END_DEPOSIT_BOOKING = '$endHourDepositBooking', MONDAY_INTAKE = '$intakeMonday', TUESDAY_INTAKE = '$intakeTuesday', WEDNESDAY_INTAKE = '$intakeWednesday', THURSDAY_INTAKE = '$intakeThursday', FRIDAY_INTAKE = '$intakeFriday', SATURDAY_INTAKE = '$intakeSaturday', SUNDAY_INTAKE = '$intakeSunday', MONDAY_DEPOSIT = '$depositMonday', TUESDAY_DEPOSIT = '$depositTuesday', WEDNESDAY_DEPOSIT = '$depositWednesday', THURSDAY_DEPOSIT = '$depositThursday', FRIDAY_DEPOSIT = '$depositFriday', SATURDAY_DEPOSIT = '$depositSaturday', SUNDAY_DEPOSIT = '$depositSunday', MAX_BOOKINGS_YEAR='$maximumBookingsYear', MAX_BOOKINGS_MONTH='$maximumBookingsMonth' WHERE ID = '$id'";
+            $sql="update conditions set USR_MAJ = 'mykameo', HEU_MAJ = CURRENT_TIMESTAMP, NAME='$name', BOOKING_DAYS='$bookingDays', BOOKING_LENGTH='$bookingLength', HOUR_START_INTAKE_BOOKING = '$startHourIntakeBooking', HOUR_END_INTAKE_BOOKING = '$endHourIntakeBooking', HOUR_START_DEPOSIT_BOOKING = '$startHourDepositBooking', HOUR_END_DEPOSIT_BOOKING = '$endHourDepositBooking', MONDAY_INTAKE = '$intakeMonday', TUESDAY_INTAKE = '$intakeTuesday', WEDNESDAY_INTAKE = '$intakeWednesday', THURSDAY_INTAKE = '$intakeThursday', FRIDAY_INTAKE = '$intakeFriday', SATURDAY_INTAKE = '$intakeSaturday', SUNDAY_INTAKE = '$intakeSunday', MONDAY_DEPOSIT = '$depositMonday', TUESDAY_DEPOSIT = '$depositTuesday', WEDNESDAY_DEPOSIT = '$depositWednesday', THURSDAY_DEPOSIT = '$depositThursday', FRIDAY_DEPOSIT = '$depositFriday', SATURDAY_DEPOSIT = '$depositSaturday', SUNDAY_DEPOSIT = '$depositSunday', MAX_BOOKINGS_YEAR='$maximumBookingsYear', MAX_BOOKINGS_MONTH='$maximumBookingsMonth', BOX_BOOKING='$box' WHERE ID = '$id'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);

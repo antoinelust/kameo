@@ -25,6 +25,7 @@ function getAuthorizationHeader(){
  * */
 function getBearerToken() {
     $headers = getAuthorizationHeader();
+    
     // HEADER: Get the access token from the header
     if (!empty($headers)) {
         if (preg_match('/Bearer\s(\S+)/', $headers, $matches))
@@ -32,7 +33,7 @@ function getBearerToken() {
 				return $matches[1];
 			else
 				return null;
-    }else{
+    }else{        
         if(!empty($_SESSION['bearerToken'])){
             return $_SESSION['bearerToken'];
         }

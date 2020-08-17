@@ -37,7 +37,8 @@ function load_cafetaria(){
 				//If elements are already in isotope, do nothing
 				if (($('.grid').isotope('getItemElements').length == 0))
 				{
-					for (var i=0; i<response.bikeNumber; i++){
+					for (var i=0; i<response.bikeNumber; i++){                            
+                        
 							if(response.bike[i].frameType.toLowerCase()=="h"){
 								var frameType = "Homme";
 							} else if(response.bike[i].frameType.toLowerCase()=="m"){
@@ -75,6 +76,7 @@ function load_cafetaria(){
 									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
 									<p>"+response.bike[i].model+" "+frameType+"\
 									<br>"+response.bike[i].utilisation+"\
+									<br>Prix : "+Math.round(response.bike[i].leasingPrice*(1-response.discount/100))+" €/mois\
 									<br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\">\
 										<span class=\"fr\">Commander</span>\
 										<span class=\"en\">Order</span>\

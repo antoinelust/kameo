@@ -28,7 +28,8 @@
 						{ title: "Name", "data": "COMPANY_NAME", 
 							"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 								var cafetaria = (oData.CAFETARIA === "Y") ? true : false;
-								$(nTd).html("<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='"+cafetaria+"' data-company='"+sData+"'>"+sData+"</a>");
+								var discount = oData.DISCOUNT;
+								$(nTd).html("<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='"+cafetaria+"'data-discount='"+discount+"' data-company='"+sData+"'>"+sData+"</a>");
 							}
 						},
 						{ title: "Bikes", "data": "NUM_OF_ORDERABLE" },

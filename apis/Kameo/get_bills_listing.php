@@ -63,7 +63,7 @@ if($email != NULL)
     $response['response']="success";
 	$response['billNumber']=$length;    
 
-    $sql="select LPAD(MAX(ID_OUT_BILL)+1, 3, '0') as reference, MAX(ID) as MAX_TOTAL from factures";
+    $sql="select LPAD(MAX(ID_OUT_BILL)+1, 3, '0') as reference, MAX(ID_OUT_BILL) as MAX_OUT, MAX(ID) as MAX_TOTAL from factures";
     $result=execute_sql_query($sql, $conn);
     $resultat = mysqli_fetch_assoc($result);
     $response['IDMaxBillingOut']=$resultat['MAX_OUT'];    
