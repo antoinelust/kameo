@@ -17,6 +17,8 @@ switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
+        
+        
 		
         if($action === 'retrieve'){
 			if(get_user_permissions("admin", $token)){
@@ -32,7 +34,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			}
 		}else if($action === 'listCafetariaCompanies'){
 			if(get_user_permissions("admin", $token)){
-				if ($result = $conn->query("SELECT c.COMPANY_NAME, (SELECT COUNT(*) FROM companies_orderable co WHERE co.INTERNAL_REFERENCE = c.INTERNAL_REFERENCE) AS NUM_OF_ORDERABLE, co.CAFETARIA, CO.DISCOUNT FROM companies c, conditions co WHERE c.INTERNAL_REFERENCE=co.COMPANY AND co.NAME = 'generic' AND c.STAANN != 'D'")) {
+				if ($result = $conn->query("SELECT c.COMPANY_NAME, (SELECT COUNT(*) FROM companies_orderable co WHERE co.INTERNAL_REFERENCE = c.INTERNAL_REFERENCE) AS NUM_OF_ORDERABLE, co.CAFETARIA, co.DISCOUNT FROM companies c, conditions co WHERE c.INTERNAL_REFERENCE=co.COMPANY AND co.NAME = 'generic' AND c.STAANN != 'D'")) {
 					echo json_encode(mysqli_fetch_all($result, MYSQLI_ASSOC));
 					$result->close();
 				}
