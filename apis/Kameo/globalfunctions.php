@@ -5,9 +5,11 @@ if(!isset($_SESSION['langue']))
     $_SESSION['langue']="fr";
 require_once __DIR__ . '/../../include/environment.php';
 
-function errorMessage($MSGNUM) {
+function errorMessage($MSGNUM) {    
     include 'connexion.php';
 	$sql = "SELECT * FROM error_messages where MSGNUM='$MSGNUM' ";
+        
+    
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -15,9 +17,11 @@ function errorMessage($MSGNUM) {
 	}
     $result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_assoc($result);
+    
 	if ($_SESSION['langue']=='fr')
-	{
+	{        
 		$response = array ('response'=>'error', 'message'=> $row["TEXT_FR"]);
+        
 	}
 	elseif ($_SESSION['langue']=='en')
 	{
@@ -31,6 +35,7 @@ function errorMessage($MSGNUM) {
 	{
 		$response = array ('response'=>'error', 'message'=> $row["TEXT_FR"]);		
 	}
+    
 	echo json_encode($response);
 	die;
 }

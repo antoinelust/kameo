@@ -19,7 +19,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 		
 		if($action === 'retrieveNotifications'){
-			if(get_user_permissions(["order","chatsManager","admin"], $token)){
+			if(get_user_permissions(["search", "order","chatsManager","admin"], $token)){
 				$stmt = $conn->prepare("SELECT ID FROM customer_referential WHERE TOKEN = ?");
 				$stmt->bind_param("s", $token);
 				if ($stmt->execute())

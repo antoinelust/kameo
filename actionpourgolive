@@ -1,25 +1,3 @@
-INSERT INTO `error_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES ('56', 'ES0055', 'Feedback déjà ajouté pour cette réservation', 'Feedback already added for this booking', 'Feedback already added for this booking');
-INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES ('22', 'SM0023', 'Merci pour votre feedback !', 'Thanks for the feedback ! ', 'Thanks for the feedback ! ');
-
-ALTER TABLE `customer_referential` ADD `TOKEN` VARCHAR(50) NULL AFTER `STAANN`, ADD `ACCESS_RIGHTS` SET('order', 'search', 'fleetManager', 'admin') NULL AFTER `TOKEN`;
-
-
-CREATE TABLE IF NOT EXISTS `companies_orderable` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `INTERNAL_REFERENCE` varchar(40) NOT NULL,
-  `BIKE_ID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-ALTER TABLE `customer_referential` CHANGE `ACCESS_RIGHTS` `ACCESS_RIGHTS` SET('order','search','fleetManager','chatsManager','admin') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-
-UPDATE `chat` SET `EMAIL_DESTINARY`='support@kameobikes.com' WHERE `EMAIL_USER`=`EMAIL_DESTINARY`;
-
-UPDATE chat SET TYPE='order' WHERE TYPE='command';
-
-ALTER TABLE `customer_bike_access` DROP INDEX `BIKE_NUMBER`;
-ALTER TABLE `customer_bike_access` DROP `BIKE_NUMBER`;
-
 ALTER TABLE `conditions` CHANGE `COMPANY` `COMPANY` VARCHAR(60) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL; 
 
 

@@ -17,8 +17,6 @@ switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
-        
-        
 		
         if($action === 'retrieve'){
 			if(get_user_permissions("admin", $token)){

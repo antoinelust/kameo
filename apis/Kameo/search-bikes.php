@@ -13,6 +13,7 @@ include 'globalfunctions.php';
 $email=$_POST['search-bikes-form-email'];
 $date=$_POST['search-bikes-form-day'];
 
+
 $intake_hour=$_POST['search-bikes-form-intake-hour'];
 
 if (isset($_POST['search-bikes-form-intake-building']))				/** TEST ! **/
@@ -84,7 +85,6 @@ $dateEndString=$dateEnd->format('Y-m-d H:i');
 
 
 
-
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStart != NULL && $deposit_building != NULL && $dateEnd != NULL ) {
 
 
@@ -127,7 +127,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
 
 
-    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";    
+    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";        
     
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error3', 'message'=> $conn->error);
@@ -260,7 +260,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     }
     
     
+    
     $response['length']=$length;
+    
+        
     if($length==0)
     {
         errorMessage("ES0015");
