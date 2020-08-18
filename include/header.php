@@ -9,7 +9,7 @@
 	  <!--END: LOGO-->
 	  <!--MOBILE MENU -->
 	  <div class="nav-main-menu-responsive">
-		<button class="lines-button x">
+		<button class="lines-button x" aria-label="menu">
 		  <span class="lines"></span>
 		</button>
 	  </div>

@@ -15,22 +15,22 @@
 	<title class="nl">KAMEO Bikes | Fiets oplossingen voor bedrijven</title>
 	
 	<!-- Bootstrap Core CSS -->
-	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-	<link href="/vendor/animateit/animate.min.css" rel="stylesheet">
+	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+	<link href="/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'">
+	<link href="/vendor/animateit/animate.min.css" rel="stylesheet" media="print" onload="this.media='all'">
 	<!-- vendor css -->
 	<link href="/vendor/owlcarousel/owl.carousel.css" rel="stylesheet">
 	<link href="/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 	<!-- Template base -->
-	<link href="/css/theme-base.css" rel="stylesheet">
+	<link href="/css/theme-base.css" rel="stylesheet" media="print" onload="this.media='all'">
 	<!-- Template elements -->
-	<link href="/css/theme-elements.css" rel="stylesheet">
+	<link href="/css/theme-elements.css" rel="stylesheet" media="print" onload="this.media='all'">
     <!-- Template notifications -->
 	<link href="/css/notifications.css" rel="stylesheet">
     <!-- DateTimePicker css -->
-    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="print" onload="this.media='all'">
 	<!-- Responsive classes -->
-	<link href="/css/responsive.css" rel="stylesheet">
+	<link href="/css/responsive.css" rel="stylesheet" media="print" onload="this.media='all'">
 	<!-- Template color -->
 	<link href="/css/color-variations/blue.css" rel="stylesheet" type="text/css" media="screen" title="blue">
 	<!-- LOAD GOOGLE FONTS -->
