@@ -16,42 +16,10 @@
                     
                     <div class="col-md-12">
                         <h1 class="fr text-green">LES BONS PLANS</h1>
-                        <h1 class="en text-green">OUR DEALS</h1>
-                        <h1 class="nl text-green">ONZE DEALS</h1>
                         </div>
                         <!-- SHOP PRODUCTS -->
 								<div class="shop">
 									<div class="row">
-										<div class="col-md-4">
-											<div class="product">
-												<div class="product-image">
-													<a href="bp_conway_ets370_f1.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
-													</a>
-													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-24%</span>
-													<div class="product-overlay">
-														<a href="bp_conway_ets370_f1.php">Aperçu</a>
-													</div>
-												</div>
-						
-												<div class="product-description">
-													<div class="product-category">Réf. : CW-370f1</div>
-													<div class="product-title">
-														<h3><a href="bp_conway_ets370_f1.php">Conway</a></h3>
-														<p>Ets 370</p>
-														<p><strong>Cadre Femme</strong><br>
-														Kilomètres parcourus : 1986 km</p>
-													</div>
-													<div class="product-price">
-														<del>2066€ htva</del><ins class="text-green">1570€ htva</ins>
-													</div>
-													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">79€</strong> / mois</p>
-												</div>
-						
-											</div>
-										</div>
-										
-										<div class="separator visible-xs"></div>
 										
 										<div class="col-md-4">
 											<div class="product">
@@ -59,7 +27,7 @@
 													<a href="bp_conway_ets370_f2.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
 													</a>
 													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-20%</span>
+													<span class="product-sale-off">-25%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_ets370_f2.php">Aperçu</a>
 													</div>
@@ -74,7 +42,7 @@
 														Kilomètres parcourus : 590,4 km</p>
 													</div>
 													<div class="product-price">
-														<del>2066€ htva</del><ins class="text-green">1652€ htva</ins>
+														<del>2066€ htva</del><ins class="text-green">1611€ htva</ins>
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 												</div>
@@ -84,13 +52,14 @@
 										
 										<div class="separator visible-xs"></div>
 										
+										<!--
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
 													<a href="bp_conway_ets370_f3.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
 													</a>
 													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-20%</span>
+													<span class="product-sale-off">-25%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_ets370_f3.php">Aperçu</a>
 													</div>
@@ -105,7 +74,7 @@
 														Kilomètres parcourus : 584,6 km</p>
 													</div>
 													<div class="product-price">
-														<del>2066€ htva</del><ins class="text-green">1652€ htva</ins>
+														<del>2066€ htva</del><ins class="text-green">1611€ htva</ins>
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 												</div>
@@ -114,37 +83,7 @@
 										</div>
 										
 										<div class="separator visible-xs"></div>
-										
-										<div class="col-md-4">
-											<div class="product">
-												<div class="product-image">
-													<a href="bp_conway_ets370_f4.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_ets370_f.jpg">
-													</a>
-													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-22%</span>
-													<div class="product-overlay">
-														<a href="bp_conway_ets370_f4.php">Aperçu</a>
-													</div>
-												</div>
-						
-												<div class="product-description">
-													<div class="product-category">Réf. : CW-370f4</div>
-													<div class="product-title">
-														<h3><a href="bp_conway_ets370_f4.php">Conway</a></h3>
-														<p>Ets 370</p>
-														<p><strong>Cadre Femme</strong><br>
-														Kilomètres parcourus : 1009,1 km</p>
-													</div>
-													<div class="product-price">
-														<del>2066€ htva</del><ins class="text-green">1611€ htva</ins>
-													</div>
-													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">81€</strong> / mois</p>
-												</div>
-						
-											</div>
-										</div>
-										
-										<div class="separator visible-xs"></div>
+										-->
 										
 										
 										
@@ -154,7 +93,7 @@
 													<a href="bp_orbea_gain.php"><img alt="Shop product image!" src="images_bikes/bonsplans/orbea_gain_h.jpg">
 													</a>
 													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-20%</span>
+													<span class="product-sale-off">-7%</span>
 													<div class="product-overlay">
 														<a href="bp_orbea_gain.php">Aperçu</a>
 													</div>
@@ -166,12 +105,12 @@
 														<h3><a href="bp_orbea_gain.php">Orbea</a></h3>
 														<p>Gain</p>
 														<p><strong>Cadre Homme</strong><br>
-														Kilomètres parcourus : -200 km</p>
+														Kilomètres parcourus : 0 km</p>
 													</div>
 													<div class="product-price">
-														<del>2066€ htva</del><ins class="text-green">1652€ htva</ins>
+														<del>2133 htva</del><ins class="text-green">1975 htva</ins>
 													</div>
-													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">92€</strong> / mois</p>
 												</div>
 						
 											</div>
@@ -247,43 +186,10 @@
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
-													<a href="bp_douze_cargo.php"><img alt="Shop product image!" src="images_bikes/bonsplans/douze_cargo.jpg">
-													</a>
-													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-21%</span>
-													<div class="product-overlay">
-														<a href="bp_douze_cargo.php">Aperçu</a>
-													</div>
-												</div>
-						
-												<div class="product-description">
-													<div class="product-category">Réf. : DZ-12</div>
-													<div class="product-title">
-														<h3><a href="bp_douze_cargo.php">Douze Cycles</a></h3>
-														<p>G4 Mixte</p>
-														<p><strong>Vélo Cargo</strong><br>
-														Kilomètres parcourus :  120 km</p>
-													</div>
-													<div class="product-price">
-														<del>4214€ htva</del><ins class="text-green">3305€ htva</ins>
-													</div>
-													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">132€</strong> / mois</p>
-												</div>
-						
-											</div>
-										</div>
-
-										<div class="separator visible-xs"></div>
-										
-										
-										
-										<div class="col-md-4">
-											<div class="product">
-												<div class="product-image">
 													<a href="bp_conway_wme929.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_wme929.jpg">
 													</a>
 													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-17%</span>
+													<span class="product-sale-off">-22%</span>
 													<div class="product-overlay">
 														<a href="bp_conway_wme929.php">Aperçu</a>
 													</div>
@@ -298,9 +204,9 @@
 														VTT Trail Carbonne 140mm</p>
 													</div>
 													<div class="product-price">
-														<del>3471€ htva</del><ins class="text-green">2851€ htva</ins>
+														<del>3471€ htva</del><ins class="text-green">2700€ htva</ins>
 													</div>
-													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">118€</strong> / mois</p>
+													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">117€</strong> / mois</p>
 												</div>
 						
 											</div>

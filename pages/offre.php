@@ -59,34 +59,21 @@ $row = mysqli_fetch_assoc($result);
 						</dl>
 						
 						<div class="col-md-12">
-						<!--
-						<h3>Prix Achat (HTVA): <b class="text-green"><?php echo $row['PRICE_HTVA']; ?></b> <small>€</small></h3>
-						<h3>Prix Achat (TVAC): <b class="text-green"><?php echo $row['PRICE_HTVA']*1.21; ?></b> <small>€</small></h3>
-						-->
                         <?php
         
-                            $priceTemp=($row['PRICE_HTVA']+3*75+4*100+4*100);
+                            $marginBike=0.7;
+                            $marginOther=0.3;
+                            $leasingDuration=36;
 
+                            // Form Fields
+                            $retailPrice = $row['PRICE_HTVA'];
+                            $priceRetailer=$retailPrice*(1-0.27);
+                            $debtCost=$priceRetailer*0.09;
 
-                            // Calculation of coefficiant for leasing price
+                            $otherCost=3*84+4*100;
 
-                            if($priceTemp<2500){
-                                $coefficient=3.289;
-                            }elseif ($priceTemp<=5000){
-                                $coefficient=3.056;
-                            }elseif ($priceTemp<=12500){
-                                $coefficient=2.965;
-                            }elseif ($priceTemp<=25000){
-                                $coefficient=2.921;
-                            }elseif ($priceTemp<=75000){
-                                $coefficient=2.898;
-                            }else{
-                                errorMessage(ES0012);
-                            }
-
-                            // Calculation of leasing price based on coefficient and retail price
-
-                            $leasingPrice=round(($priceTemp)*($coefficient)/100); 	
+                            $totalCost=($priceRetailer+$debtCost+$otherCost);
+                            $leasingPrice=round(($priceRetailer*(1+$marginBike)+$otherCost*(1+$marginOther))/$leasingDuration);
                         ?>
                             
                             <!--<h3>Prix Leasing (HTVA): <b class="text-green"><?php echo $leasingPrice; ?></b> <small>€/mois HTVA</small></h3>-->
