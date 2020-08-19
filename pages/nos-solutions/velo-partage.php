@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
+
+    require_once 'include/i18n/i18n.php';
+    $i18n = new i18n(['lang/lang_velopartage_{LANGUAGE}.ini'/*,'lang/lang_{LANGUAGE}_2.ini'*/]); //french by defaut, as many files as wanted can be added to the array
+    $i18n->init();
+
 ?>
 <body class="wide">
 	<!-- WRAPPER -->
@@ -11,15 +16,11 @@
 			<!-- SECTION SOLUTIONS -->
 			<section class="" style="background: url('images/fond_degrade.jpg');" data-stellar-background-ratio="0.3">
 				<div class="container">
-				<a class="button black-light button-3d effect fill-vertical right fr"  href="velo-personnel.php"><span>Vélos personnels <i class="fa fa-arrow-right"></i></span></a>
-				<a class="button black-light button-3d effect fill-vertical right en"  href="velo-personnel.php"><span>Personnal bikes <i class="fa fa-arrow-right"></i></span></a>
-				<a class="button black-light button-3d effect fill-vertical right nl"  href="velo-personnel.php"><span>Persoonlijke fiesten <i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right"  href="velo-personnel.php"><?=L::btn_personalbikes_btnpbikes;?>&nbsp;<i class="fa fa-arrow-right"></i></a>
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
-							<h1 class="text-dark fr">VÉLOS PARTAGÉS</h1>
-							<h1 class="text-dark en">SHARED BIKES</h1>
-							<h1 class="text-dark nl">DEELFIETSEN</h1>
+                            <h1 class="text-dark"><?=L::description_title;?></h1>
 							<p class="lead text-light text-justify fr">Rendez les déplacements de vos employés plus <strong>dynamiques</strong> et <strong>écologiques</strong>, mettez leur des vélos partagés à disposition.<br> Que ce soit pour : des rendez-vous clients, les trajets domicile-travail, un trajet inter-sites ou se rendre à un lunch, soyez sûr de leur temps de parcours et améliorez leur forme.</p>
 							<p class="lead text-light text-justify en">Make your employees' trips more <strong>dynamic</strong> and <strong>ecological</strong>, make shared bikes available to them.<br> Whether for: client meetings, home-work trips, an inter-site trip or going out for lunch, be sure of their journey time and improve their shape.</p>
 							<p class="lead text-light text-justify nl">Maak de ritten van uw werknemers <strong>dynamischer</strong> en <strong>ecologischer</strong>, stel DEELFIETSEN ter beschikking.<br> Of het nu gaat om: klantbijeenkomsten, huis-werkreizen, een reis tussen de locaties of om te lunchen, wees zeker van hun reistijd en verbeter hun vorm.</p>
@@ -89,9 +90,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green fr">CHOIX DE LA FLOTTE DE VÉLO</h1>
-							<h1 class="text-green en">CHOICE OF THE BICYCLE FLEET<h1>
-							<h1 class="text-green nl">KEUZE VAN DE FIETSVLOOT</h1>
+							<h1 class="text-green"><?=L::fleet_title;?></h1>
 							<p class="text-justify fr">Nous avons l’expérience, laissez nous vous conseiller sur le modèle et le nombre de vélos adéquats pour votre projet.</p>
 							<p class="text-justify en">We have the know how, let us advise you on the model and the number of bikes suitable for your project.</p>
 							<p class="text-justify nl">Wij hebben de ervaring, laat ons u adviseren over het model en het aantal fietsen dat geschikt is voor uw project..</p>
@@ -110,9 +109,7 @@
 
 						<!-- SELECTION -->
 						<div class="col-md-12">
-						<h3 class="text-green fr">NOTRE SELECTION DE VÉLOS PARTAGÉS</h3>
-						<h3 class="text-green en">OUR SELECTION OF SHARED BIKES</h3>
-						<h3 class="text-green nl">ONZE SELECTIE VAN DEELFIETSEN</h3>
+						<h3 class="text-green"><?=L::fleet_selection;?></h3>
 							<div class="carousel" data-lightbox-type="gallery">
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
@@ -124,9 +121,7 @@
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center fr">BZEN Amsterdam</h4>
-										<h4 class="title text-center en">BZEN Amsterdam</h4>
-										<h4 class="title text-center nl">BZEN Amsterdam</h4>
+										<h4 class="title text-center"><?=L::bike_name_bzenamsterdam;?></h4>
 									</div>
 								</div>
 
@@ -141,9 +136,7 @@
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center fr">CONWAY Cairon T 200 Mixte</h4>
-										<h4 class="title text-center en">CONWAY Cairon T 200 Mixed</h4>
-										<h4 class="title text-center nl">CONWAY Cairon T 200 Mixed</h4>
+										<h4 class="title text-center"><?=L::bike_name_conwaycairont200mixed;?></h4>
 									</div>
 								</div>
 
@@ -157,9 +150,7 @@
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center fr">AHOOGA Modular</h4>
-										<h4 class="title text-center en">AHOOGA Modular</h4>
-										<h4 class="title text-center nl">AHOOGA Modular</h4>
+										<h4 class="title text-center"><?=L::bike_name_ahoogamodular;?></h4>
 									</div>
 								</div>
 
@@ -173,9 +164,7 @@
 										</div>
 									</div>
 									<div class="">
-										<h4 class="title text-center fr">CONWAY Cairon T 200 Mixte</h4>
-										<h4 class="title text-center en">CONWAY Cairon T 200 Mixed</h4>
-										<h4 class="title text-center nl">CONWAY Cairon T 200 Mixed</h4>
+                                        <h4 class="title text-center"><?=L::bike_name_conwaycairont200mixed;?></h4>
 									</div>
 								</div>
 
@@ -210,43 +199,19 @@
 							<!-- <h1 class="text-green text-center fr">GESTION DE LA FLOTTE</h1>
 							<h1 class="text-green text-center en">GESTION DE LA FLOTTE</h1>
 							<h1 class="text-green text-center nl">GESTION DE LA FLOTTE</h1>	-->
-			 				<div class="col-md-7 fr"><br><br>
-									<h4 class="col-md-6 text-center">Accès sécurisé</h4><br>
-									<h4 class="col-md-6 text-center">Gestion des clés</h4><br>
-									<h4 class="col-md-6 text-center">Demande d’entretien</h4><br>
-									<h4 class="col-md-6 text-center">Recharge des batteries</h4><br>
-									<h4 class="col-md-6 text-center">Accès aux accessoires</h4><br>
-									<h4 class="col-md-6 text-center">Réservation d’un vélo</h4><br>
-									<h4 class="col-md-6 text-center">Gestion des utilisateurs</h4><br>
-									<h4 class="col-md-6 text-center">Conditions d’utilisation</h4><br>
-									<h4 class="col-md-6 text-center">Monitoring / Contrôle</h4>
-							</div>
-							<div class="col-md-7 en"><br><br>
-								<h4 class="col-md-6 text-center">Secured access</h4><br>
-								<h4 class="col-md-6 text-center">Key management</h4><br>
-								<h4 class="col-md-6 text-center">Maintenance request</h4><br>
-								<h4 class="col-md-6 text-center">Charging of batteries</h4><br>
-								<h4 class="col-md-6 text-center">Access to accessories</h4><br>
-								<h4 class="col-md-6 text-center">Bike reservation</h4><br>
-								<h4 class="col-md-6 text-center">Users management</h4><br>
-								<h4 class="col-md-6 text-center">Terms of use</h4><br>
-								<h4 class="col-md-6 text-center">Monitoring / Control</h4>
-							</div>
-							<div class="col-md-7 nl"><br><br>
-								<h4 class="col-md-6 text-center">Beveiligde toegang</h4><br>
-								<h4 class="col-md-6 text-center">Sleutelbeheer</h4><br>
-								<h4 class="col-md-6 text-center">Onderhoudsaanvraag</h4><br>
-								<h4 class="col-md-6 text-center">Batterijen opladen</h4><br>
-								<h4 class="col-md-6 text-center">Toegang tot accessoires</h4><br>
-								<h4 class="col-md-6 text-center">Fietsreservatie</h4><br>
-								<h4 class="col-md-6 text-center">Gebruikersbeheer</h4><br>
-								<h4 class="col-md-6 text-center">Gebruiksvoorwaarden</h4><br>
-								<h4 class="col-md-6 text-center">Monitoring / Controle</h4>
+			 				<div class="col-md-7"><br><br>
+									<h4 class="col-md-6 text-center"><?=L::manage_fleet_secureacces;?></h4><br>
+                                    <h4 class="col-md-6 text-center"><?=L::manage_fleet_keymanage;?></h4><br>
+									<h4 class="col-md-6 text-center"><?=L::manage_fleet_maintrequest;?></h4><br>
+                                    <h4 class="col-md-6 text-center"><?=L::manage_fleet_batterycharge;?></h4><br>
+									<h4 class="col-md-6 text-center"><?=L::manage_fleet_accessoriesacces;?></h4><br>
+                                    <h4 class="col-md-6 text-center"><?=L::manage_fleet_bikereserve;?></h4><br>
+									<h4 class="col-md-6 text-center"><?=L::manage_fleet_usermanage;?></h4><br>
+                                    <h4 class="col-md-6 text-center"><?=L::manage_fleet_termsofuse;?></h4>
+									<h4 class="col-md-6 text-center"><?=L::manage_fleet_monitoring;?></h4><br>
 							</div>
 							<div class="col-md-5">
-							<h1 class="text-green text-center fr">GESTION DE LA FLOTTE</h1>
-							<h1 class="text-green text-center en">FLEET MANAGEMENT</h1>
-							<h1 class="text-green text-center nl">VLOOTBEHEER</h1>
+							<h1 class="text-green text-center"><?=L::manage_fleet_title;?></h1>
 								<p class="text-justify background-white fr">Vous n’avez pas envie de vous tracasser de tout cela, vous voulez juste pouvoir prendre un vélo et l’utiliser?<br> Ça tombe bien, nous avons développé un système <strong>simple</strong>, <strong>connecté</strong> et <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</p>
 								<p class="text-justify background-white en">You don't want to worry about all of this, you just want to be able to take a bicycle and use it?<br> No problem, we developed a <strong>smart</strong>, <strong>simple</strong> and <strong>connected</strong> system for securing and managing shared bikes.</p>
 								<p class="text-justify background-white nl">U wilt zich hier geen zorgen over maken, u wilt gewoon een fiets kunnen pakken en gebruiken?<br> Geen probleem, we hebben een <strong>eenvoudig</strong>, <strong>slim</strong> en <strong>verbonden</strong> systeem ontwikkelt voor het beveiligen en beheren van deelfietsen.</p>
@@ -264,15 +229,11 @@
 			<!-- CALL TO ACTION -->
 			<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark text-light">
 			  <div class="container">
-			    <h3 class="fr">Testez pendant 1 mois</h3>
-			    <h3 class="en">Test for one month</h3>
-			    <h3 class="nl">Test voor één maand</h3>
+			    <h3><?=L::action_test1month;?></h3>
 			    <p class="fr">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
 			    <p class="en">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
 			    <p class="nl">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
-		   		<div class="fr"><a class="button large green button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Nous contacter</span></a></div>
-		   		<div class="en"><a class="button large green button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Contact us</span></a></div>
-		   		<div class="nl"><a class="button large green button-3d effect icon-left nl" href="contact.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a></div>
+		   		<div><a class="button large green button-3d effect icon-left" href="contact.php"><?=L::action_btncontact;?><span><i class="fa fa-send"></i></span></a></div>
 			</div>
 		</div>
 
@@ -284,12 +245,8 @@
 					<div class="row">
 						<div class="col-md-8">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green fr">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<h1 class="text-green en">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<h1 class="text-green nl">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<p class="text-justify fr">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
-							<p class="text-justify en">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
-							<p class="text-justify nl">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
+							<h1 class="text-green"><?=L::insurance_title;?></h1>
+							<p class="text-justify"><?=L::insurance_uppertext;?></p>
 
 							<p class="text-justify fr">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
 							<p class="text-justify en">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
@@ -316,19 +273,10 @@
 						</div>
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green fr">INSTALLATION D'INFRASTRUCTURES</h1>
-							<h1 class="text-green en">INFRASTRUCTURE INSTALLATION</h1>
-							<h1 class="text-green nl">INFRASTRUCTUUR INSTALLATIE</h1>
-							<p class="text-justify fr">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
-							KAMEO Bikes, fort de son expérience, peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
-							<p class="text-justify en">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
-							KAMEO Bikes, fort de son expérience, peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
-							<p class="text-justify nl">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
-							KAMEO Bikes, fort de son expérience, peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
+							<h1 class="text-green"><?=L::infra_title;?></h1>
+							<p class="text-justify"><?=L::infra_subtitle;?><br><?=L::infra_text;?></p>
 
-							<p class="text-justify fr">N'hésitez pas à nous demander une offre.</p>
-							<p class="text-justify en">Contact us for more information.</p>
-							<p class="text-justify nl">Contacteer ons voor meer informatie.</p>
+							<p class="text-justify"><?=L::infra_contact;?></p>
 
 						</div>
 					</div>
@@ -357,18 +305,9 @@
 			<!-- CALL TO ACTION -->
 				<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
 				  <div class="container">
-				    <h3 class="fr">NOUS RENCONTRER</h3>
-				    <h3 class="en">MEET US</h3>
-				    <h3 class="nl">ONTMOET ONS</h3>
-				    <p class="fr">Envie de pédaler avec nous?<br>
-						Contactez-nous, nous viendrons vous présenter nos offres.</p>
-				    <p class="en">Want to cycle with us?<br>
-						Contact us, we will come to present our offers to you.</p>
-				    <p class="nl">Wil je met ons fietsen?<br>
-						Neem contact met ons op, wij komen u onze aanbiedingen voorstellen.</p>
-				    <div class="fr"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Nous contacter</span></a> </div>
-				    <div class="en"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Contact us</span></a> </div>
-				    <div class="nl"><a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i>Contacteer ons</span></a> </div>
+				    <h3><?=L::meet_title;?></h3>
+				    <p><?=L::meet_pedal;?><br><?=L::meet_contact;?></p>
+				    <div> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-send"></i><?=L::meet_btncontact;?></span></a> </div>
 				</div>
 			</div>
 
