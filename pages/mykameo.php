@@ -10,11 +10,8 @@ $user_ID=isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notificatio
 $feedback=isset($_GET['feedback']) ? $_GET['feedback'] : NULL; //Used by: login_form.js
 $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
-require_once 'include/i18n/i18n.php';
 include 'apis/Kameo/connexion.php';    
 
-$i18n = new i18n(['lang/lang_mykameo_{LANGUAGE}.ini'/*,'lang/lang_{LANGUAGE}_2.ini'*/]); //french by defaut, as many files as wanted can be added to the array
-$i18n->init();
 
 include 'include/head.php';
 echo '<body class="wide">
