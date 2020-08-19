@@ -3,10 +3,6 @@
 <?php
 	include 'include/head.php';
 
-    require_once 'include/i18n/i18n.php';
-    $i18n = new i18n(['lang/lang_velopartage_{LANGUAGE}.ini'/*,'lang/lang_{LANGUAGE}_2.ini'*/]); //french by defaut, as many files as wanted can be added to the array
-    $i18n->init();
-
 ?>
 <body class="wide">
 	<!-- WRAPPER -->
