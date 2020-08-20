@@ -1,8 +1,12 @@
 <?php if(!isset($_SESSION))
-    session_start(); 
+    session_start();
 
-require_once 'include/i18n/i18n.php';
-$i18n = new i18n(['lang/lang_mykameo_{LANGUAGE}.ini', 'lang/lang_velo_partage_{LANGUAGE}.ini']); //french by defaut, as many files as wanted can be added to the array
+require_once 'include/i18n/i18n.php'; //french by defaut, as many files as wanted can be added to the array
+$i18n = new i18n([
+    'lang/lang_mykameo_{LANGUAGE}.ini',
+    'lang/lang_velo_partage_{LANGUAGE}.ini',
+    'lang/lang_index_{LANGUAGE}.ini'
+]);
 $i18n->init();
 
 
