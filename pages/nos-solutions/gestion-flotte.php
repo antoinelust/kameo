@@ -13,9 +13,7 @@
 
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green fr">GESTION DE FLOTTE</h1>
-				<h1 class="text-green en">FLEET MANAGEMENT</h1>
-				<h1 class="text-green nl">VLOOTBEHEER</h1>
+				<h1 class="text-green"><?=L::gestion_flotte_title?></h1>
 				<br>
 				<div class="col-md-12 fr" style="background: url('images/fond_degrade4.jpg');" data-stellar-background-ratio="0.6">
 					<h4 class="col-md-6 text-center">Accès sécurisé</h4><br>
@@ -62,21 +60,13 @@
 				<div class="separator"></div>
 
 				<div class="col-md-6">
-					<h3 class="fr">MyKAMEO</h3>
-					<h3 class="en">MyKAMEO</h3>
-					<h3 class="nl">MyKAMEO</h3>
-					<p class="fr">Vous permet de réserver un vélo et permet la bonne gestion de ceux-ci</p>
-					<p class="en">Vous permet de réserver un vélo et permet la bonne gestion de ceux-ci</p>
-					<p class="nl">Vous permet de réserver un vélo et permet la bonne gestion de ceux-ci</p>
+					<h3><?=L::gestion_flotte_mykameo?></h3>
+					<p><?=L::gestion_flotte_mykameo_description?></p>
 					<img src="images/MyKameo_face.jpg" class="img-responsive img-rounded img-thumbnail" alt="Ecran MyKAMEO">
 				</div>
 				<div class="col-md-6">
-					<h3 class="fr">MyBORNE</h3>
-					<h3 class="en">MyBORNE</h3>
-					<h3 class="nl">MyBORNE</h3>
-					<p class="fr">Sécurise et gère l’accès aux clés des vélos de la flotte.</p>
-					<p class="en">Sécurise et gère l’accès aux clés des vélos de la flotte.</p>
-					<p class="nl">Sécurise et gère l’accès aux clés des vélos de la flotte.</p>
+					<h3><?=L::gestion_flotte_myborne?></h3>
+					<p><?=L::gestion_flotte_myborne_description?></p>
 					<img src="images/Borne_Web_Out.jpg" class="img-responsive img-rounded img-thumbnail" alt="MyBorne">
 				</div>
 
@@ -99,9 +89,7 @@
 					<p class="text-center nl"><strong class="text-red">MyBORNE</strong> est le boitier connecté sécurisant l’accès aux clés. Il est en lien direct avec notre base de données pour donner accès à la clé d’un vélo grâce à un identifiant personnel. Cela pouvant fonctionner via un code à 4 chiffres ou un badge RFID.<br>MyBorne permet donc d’identifier quel utilisateur à pris un vélo et quand.<br> Le boitier est modulaire selon vos besoins, possibilité de gérer de 5 à 100 clés. Il est aussi personnalisable aux couleurs de votre entreprise.</p>
 				</div>
 				<div class="col-md-6">
-					<h4 class="fr">Comme utilisateur, vous pouvez :</h4>
-					<h4 class="en">Comme utilisateur, vous pouvez :</h4>
-					<h4 class="nl">Comme utilisateur, vous pouvez :</h4>
+					<h4><?=L::gestion_flotte_usercan?></h4>
 					<ul>
 						<li class="fr">Vous connecter avec un identifiant unique</li>
 						<li class="en">Vous connecter avec un identifiant unique</li>
@@ -121,9 +109,7 @@
 					</ul>
 				</div>
 				<div class="col-md-6">
-					<h4 class="fr">Vous êtes responsable de la flotte? En plus d’être un utilisateur classique, vous pouvez :</h4>
-					<h4 class="en">Vous êtes responsable de la flotte? En plus d’être un utilisateur classique, vous pouvez :</h4>
-					<h4 class="nl">Vous êtes responsable de la flotte? En plus d’être un utilisateur classique, vous pouvez :</h4>
+					<h4><?=L::gestion_flotte_admin?></h4>
 					<ul>
 						<li class="fr">Gérer les vélos</li>
 						<li class="en">Gérer les vélos</li>
@@ -148,9 +134,7 @@
 				<p class="nl">Vous avez envie d'ajouter des fonctionnalités? <strong>On s'en occupe!</strong> De plus notre système fonctionne aussi pour <strong>vos voitures</strong>, <strong>camionnettes</strong> ou <strong>tout autre véhicule</strong>.</p>
 				<div class="separator"></div>
 
-				<h3 class="fr">Réserver un véhicule</h3>
-				<h3 class="en">Réserver un véhicule</h3>
-				<h3 class="nl">Réserver un véhicule</h3>
+				<h3><?=L::gestion_flotte_reserve_bike?></h3>
 
 				<div class="col-md-3">
 					<img src="images/Mykameo1.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 1">
@@ -187,15 +171,9 @@
 <!-- CALL TO ACTION -->
 <div class="jumbotron jumbotron-center jumbotron-fullwidth background-green text-light">
   <div class="container">
-    <h3 class="fr">ENVIE D'EN SAVOIR PLUS?</h3>
-    <h3 class="en">ENVIE D'EN SAVOIR PLUS?</h3>
-    <h3 class="nl">ENVIE D'EN SAVOIR PLUS?</h3>
-    <p class="fr">Demandez à nous rencontrer pour connaitre toutes les possibilités et ce que nous pouvons aménager pour vous.</p>
-    <p class="en">Demandez à nous rencontrer pour connaitre toutes les possibilités et ce que nous pouvons aménager pour vous.</p>
-    <p class="nl">Demandez à nous rencontrer pour connaitre toutes les possibilités et ce que nous pouvons aménager pour vous.</p>
-    <div class="fr"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
-    <div class="en"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Contact us</span></a> </div>
-    <div class="nl"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Contacteer ons</span></a> </div>
+    <h3><?=L::gestion_flotte_know_more?></h3>
+    <p><?=L::gestion_flotte_know_more_sub?></p>
+    <div> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i><?=L::gestion_flotte_know_more_btn?></span></a> </div>
 	</div>
 </div>
 
