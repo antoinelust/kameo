@@ -5,7 +5,8 @@ require_once 'include/i18n/i18n.php'; //french by defaut, as many files as wante
 $i18n = new i18n([
     'lang/lang_mykameo_{LANGUAGE}.ini',
     'lang/lang_velo_partage_{LANGUAGE}.ini',
-    'lang/lang_index_{LANGUAGE}.ini'
+    'lang/lang_index_{LANGUAGE}.ini',
+    'lang/lang_velo_personnel_{LANGUAGE}.ini'
 ]);
 $i18n->init();
 

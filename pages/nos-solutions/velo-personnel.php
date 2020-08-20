@@ -17,9 +17,7 @@
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
-							<h1 class="text-dark fr">VÉLOS PERSONNELS</h1>
-							<h1 class="text-dark en">VÉLOS PERSONNELS</h1>
-							<h1 class="text-dark nl">VÉLOS PERSONNELS</h1>
+							<h1 class="text-dark"><?=L::personalbike_title;?></h1>
 							<p class="lead text-light fr"><i class="fa fa-heart"></i> Des employés en <strong>meilleure santé</strong>.<br>
 								<i class="fa fa-clock-o"></i> Des employés jamais <strong>coincés dans le trafic</strong>.<br>
 								<i class="fa fa-leaf"></i> Une entreprise <strong> plus durable</strong>.<br>
@@ -32,9 +30,7 @@
 								<i class="fa fa-clock-o"></i> Des employés jamais <strong>coincés dans le trafic</strong>.<br>
 								<i class="fa fa-leaf"></i> Une entreprise <strong> plus durable</strong>.<br>
 								<i class="fa fa-user"></i> Un atout pour attirer des <strong>nouveaux talents</strong>.</p>
-							<p class="lead text-dark fr"><strong>Voilà pourquoi proposer des vélos de société.</strong></p>
-							<p class="lead text-dark en"><strong>Voilà pourquoi proposer des vélos de société.</strong></p>
-							<p class="lead text-dark nl"><strong>Voilà pourquoi proposer des vélos de société.</strong></p>
+							<p class="lead text-dark"><strong><?=L::personalbike_subtitle;?></strong></p>
 
 							<p class="lead text-light fr"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous :<br>
 							- <strong>conseil</strong> sur le vélo adapté,<br>
@@ -100,9 +96,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green fr">CHOIX DU VÉLO</h1>
-							<h1 class="text-green en">CHOIX DU VÉLO</h1>
-							<h1 class="text-green nl">CHOIX DU VÉLO</h1>
+							<h1 class="text-green"><?=L::personalbike_choice;?></h1>
 							<p class="text-justify fr">Soyez sûr que vos employés seront bien conseillés pour rouler avec le vélo qui leur convient. Nos experts prendront le temps d’analyser les besoins de chacun.</p>
 							<p class="text-justify en">Soyez sûr que vos employés seront bien conseillés pour rouler avec le vélo qui leur convient. Nos experts prendront le temps d’analyser les besoins de chacun.</p>
 							<p class="text-justify nl">Soyez sûr que vos employés seront bien conseillés pour rouler avec le vélo qui leur convient. Nos experts prendront le temps d’analyser les besoins de chacun.</p>
@@ -149,17 +143,13 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="col-md-3 visible-sm visible-xs">
-								<h1 class="text-green fr">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-								<h1 class="text-green en">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-								<h1 class="text-green nl">MAINTENANCE SUR SITE ET ASSURANCE</h1>
+								<h1 class="text-green"><?=L::personalbike_maintassur;?></h1>
 							</div>
 							<img src="images/pvelo.png" class="img-responsive img-rounded" alt="PVELO - l'assurance vélo">
 						</div>
 						<div class="col-md-8 visible-lg visible-md">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green fr">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<h1 class="text-green en">MAINTENANCE SUR SITE ET ASSURANCE</h1>
-							<h1 class="text-green nl">MAINTENANCE SUR SITE ET ASSURANCE</h1>
+							<h1 class="text-green"><?=L::personalbike_maintassur;?></h1>
 							<p class="text-justify fr">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
 							<p class="text-justify en">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
 							<p class="text-justify nl">La clé d’une expérience de mobilité réussie est d’avoir en permanence des vélos dans un état irréprochable. C’est pourquoi nous organisons les entretiens sur le site de l’entreprise pendant les heures de travail.</p>
@@ -179,9 +169,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
-							<h1 class="text-green fr">INSTALLATION D'INFRASTRUCTURES</h1>
-							<h1 class="text-green en">INSTALLATION D'INFRASTRUCTURES</h1>
-							<h1 class="text-green nl">INSTALLATION D'INFRASTRUCTURES</h1>
+							<h1 class="text-green"><?=L::personalbike_install_infra;?></h1>
 							<p class="text-justify fr">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
 							KAMEO Bikes, fort de son expérience peut vous conseiller et vous fournir une installation sur mesure pour votre projet.</p>
 							<p class="text-justify en">Votre entreprise n'est pas encore équipée d'un parking vélo?<br>
@@ -207,12 +195,8 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12 text-center">
-							<h1 class="text-green fr">LOCATION TOUT INCLUS OU ACHAT?</h1>
-							<h1 class="text-green en">LOCATION TOUT INCLUS OU ACHAT?</h1>
-							<h1 class="text-green nl">LOCATION TOUT INCLUS OU ACHAT?</h1>
-							<p class="fr">Vous choisirez la formule qui vous convient le mieux.</p>
-							<p class="en">Vous choisirez la formule qui vous convient le mieux.</p>
-							<p class="nl">Vous choisirez la formule qui vous convient le mieux.</p>
+							<h1 class="text-green"><?=L::personalbike_location_buy;?></h1>
+							<p><?=L::personalbike_location_buy_desc;?></p>
 							<a class="button green button-3d effect fill-vertical fr" href="location-tout-inclus.php"><span><i class="fa fa-balance-scale"></i>Comparer</span></a>
 							<a class="button green button-3d effect fill-vertical en" href="location-tout-inclus.php"><span><i class="fa fa-balance-scale"></i>Compare</span></a>
 							<a class="button green button-3d effect fill-vertical nl" href="location-tout-inclus.php"><span><i class="fa fa-balance-scale"></i>Vergelijk</span></a>
@@ -225,18 +209,10 @@
 			<!-- CALL TO ACTION -->
 				<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
 				  <div class="container">
-				    <h3 class="fr">DEMANDEZ UN RENDEZ-VOUS</h3>
-				    <h3 class="en">DEMANDEZ UN RENDEZ-VOUS</h3>
-				    <h3 class="nl">DEMANDEZ UN RENDEZ-VOUS</h3>
-				    <p class="fr">Envie de pédaler avec nous?<br>
-						Contactez-nous, nous viendrons vous rencontrer dans votre entreprise.</p>
-					<p class="en">Envie de pédaler avec nous?<br>
-						Contactez-nous, nous viendrons vous rencontrer dans votre entreprise.</p>
-					<p class="nl">Envie de pédaler avec nous?<br>
-						Contactez-nous, nous viendrons vous rencontrer dans votre entreprise.</p>
-				    <div class="fr"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Nous contacter</span></a> </div>
-				    <div class="en"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Contact us</span></a> </div>
-				    <div class="nl"> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i>Contacteer ons</span></a> </div>
+				    <h3><?=L::personalbike_rdv_title;?></h3>
+				    <p><?=L::personalbike_rdv_sub;?><br>
+                        <?=L::personalbike_rdv_description;?></p>
+				    <div> <a class="button large black-light button-3d effect icon-left" href="contact.php"><span><i class="fa fa-cloud"></i><?=L::personalbike_btn_contact;?></span></a> </div>
 				</div>
 			</div>
 
