@@ -13,9 +13,7 @@
 	
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green fr">LOCATION TOUT INCLUS & ACHAT DE VÉLO</h1>
-				<h1 class="text-green en">ALL INCLUSIVE RENTAL & PURCHASE</h1>
-				<h1 class="text-green nl">ALL-INCLUSIVE VERHUUR & AANKOOP</h1>
+				<h1 class="text-green"><?=L::location_allin_title;?></h1>
 				<br>
 				<p class="fr">KAMEO Bikes se charge de définir le(s) moyen(s) de mobilité urbaine des entreprises selon leurs besoins, qu'il s'agisse de vélos classiques, électriques, pliants ou même de trottinettes électriques. <br /><br />
                 Toutes les dépenses liées à la mobilité douce sont <strong class="text-green text-uppercase">déductibles à 100%</strong>, n'hésitez donc pas à en profiter ! </p>
@@ -26,9 +24,7 @@
 				    <!-- Pricing Table -->
 				    <div class="col-md-6">
 						<div class="form-group">
-							<label class="valeur fr" for="phone">Entrez le prix du vélo souhaité HTVA:</label>
-							<label class="valeur en" for="phone">Bike buying price (excl. VAT):</label>
-							<label class="valeur nl" for="phone">Fiets aankoopprijs (excl. BTW):</label>
+							<label class="valeur" for="phone"><?=L::location_allin_pricehtva;?></label>
 							<input type="number" class="form-control required" name="prix" value="2000" id="prix" aria-required="true" onChange="updatePrices(this)">
 						</div>
 					</div>
@@ -136,9 +132,7 @@
 							<div class="modal-content">
 								<div class="modal-header">
 									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-									<h4 id="modal-label-3" class="modal-title fr">AVANTAGE FISCAL</h4>
-									<h4 id="modal-label-3" class="modal-title en">TAX INCENTIVE</h4>
-									<h4 id="modal-label-3" class="modal-title nl">FISCAAL VOORDEEL</h4>
+									<h4 id="modal-label-3" class="modal-title"><?=L::location_allin_sellmodal_title;?></h4>
 								</div>
 								<div class="modal-body">
 									<div class="row mb20">
@@ -194,9 +188,7 @@
 							<div class="modal-content">
 								<div class="modal-header">
 									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-									<h4 id="modal-label-3" class="modal-title fr">AVANTAGE FISCAL</h4>
-									<h4 id="modal-label-3" class="modal-title en">TAX INCENTIVE</h4>
-									<h4 id="modal-label-3" class="modal-title nl">FISCAAL VOORDEEL</h4>
+									<h4 id="modal-label-3" class="modal-title"><?=L::location_allin_locationmodal_title;?></h4>
 								</div>
 								<div class="modal-body">
 									<div class="row mb20">

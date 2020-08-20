@@ -8,6 +8,7 @@ $i18n = new i18n([
     'lang/lang_index_{LANGUAGE}.ini',
     'lang/lang_velo_personnel_{LANGUAGE}.ini',
     'lang/lang_gestion_flotte_{LANGUAGE}.ini',
+    'lang/lang_location_ttinclus_{LANGUAGE}.ini'
 ]);
 $i18n->init();
 
