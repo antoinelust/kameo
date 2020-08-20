@@ -11,32 +11,22 @@
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header.php'; ?>
   <br>
-  <h1 class="text-center text-uppercase text-medium fr" data-animation="fadeInUp">KAMEO Bikes, votre one stop shop pour vos vélos de société</h1>
-  <h1 class="text-center text-uppercase text-medium en" data-animation="fadeInUp">KAMEO Bikes, your one stop shop for company bikes</h1>
-  <h1 class="text-center text-uppercase text-medium nl" data-animation="fadeInUp">KAMEO Bikes, de volledige oplossing voor uw bedrijfsfietsen</h1>
+  <h1 class="text-center text-uppercase text-medium" data-animation="fadeInUp"><?=L::header_title;?></h1>
   <img src="/images/background_new.jpg" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
   <!-- MISSION & VISSION -->
   <section class="box-fancy section-fullwidth text-light no-padding">
   	<div class="row">
   		<div class="col-md-6 text-center" style="background-color: #3cb395">
-  			<h2 class="fr">JE SUIS UN EMPLOYEUR</h2>
-  			<h2 class="en">I AM AN EMPLOYER</h2>
-  			<h2 class="nl">IK BEN EEN WERKGEVER</h2>
-  			<span class="fr">KAMEO Bikes vous offre des solutions de mobilité urbaine pour entreprises</span>
-  			<span class="en">KAMEO Bikes vous offre des solutions de mobilité urbaine pour entreprises</span>
-  			<span class="nl">KAMEO Bikes vous offre des solutions de mobilité urbaine pour entreprises</span>
+  			<h2><?=L::employer_title;?></h2>
+  			<span><?=L::employer_description;?></span>
   			<a class="button green button-3d effect fill-vertical fr"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Découvrir nos solutions</span></a>
   			<a class="button green button-3d effect fill-vertical en"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Discover our solutions</span></a>
   			<a class="button green button-3d effect fill-vertical nl"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Ontdekt onze oplossingen</span></a>
   		</div>
 
   		<div class="col-md-6 text-center" style="background-color: #1D9377">
-  			<h2 class="fr">JE SUIS UN EMPLOYÉ</h2>
-  			<h2 class="en">I AM AN EMPLOYEE</h2>
-  			<h2 class="nl">IK BEN EEN WERKNEMER</h2>
-  			<span class="fr">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes</span>
-  			<span class="en">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes</span>
-  			<span class="nl">Pédalez complètement équipé sur le vélo de vos rêves avec KAMEO Bikes</span>
+  			<h2><?=L::employee_title;?></h2>
+  			<span><?=L::employee_description;?></span>
   			<a class="button green button-3d effect fill-vertical fr" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
   			<a class="button green button-3d effect fill-vertical en" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>Learn more</span></a>
   			<a class="button green button-3d effect fill-vertical nl" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>Lees meer</span></a>
@@ -45,16 +35,10 @@
   		<!-- CALL TO ACTION -->
   		<div class="jumbotron jumbotron-center jumbotron-fullwidthtext-light" style="background: url('images/Fond_Site_Black.jpg');" data-stellar-background-ratio="0.3">
   			<div class="container">
-  				<h3 class="fr"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-  				<h3 class="en"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-  				<h3 class="nl"> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-  				<p class="fr">Nous avons développé un calculateur permettant de le savoir.</p>
-  				<p class="en">Nous avons développé un calculateur permettant de le savoir.</p>
-  				<p class="nl">Nous avons développé un calculateur permettant de le savoir.</p>
+  				<h3><?=L::calculate_title;?></h3>
+  				<p><?=L::calculate_description;?></p>
   				<a class="button large green button-3d effect icon-left" href="cash4bike.php">
-  					<span class="fr"><i class="fa fa-calculator"></i>Faites le calcul</span>
-  					<span class="en"><i class="fa fa-calculator"></i>Run the simulation</span>
-  					<span class="nl"><i class="fa fa-calculator"></i>Voer de simulatie uit</span>
+  					<span><i class="fa fa-calculator"></i><?=L::calculate_btn_calculate;?></span>
   				</a>
   			</div>
   		</div>
@@ -67,43 +51,29 @@
   		<div class="modal-content">
   			<div class="modal-header">
   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  				<h2 class="modal-title fr" id="modal-label">Je suis un employeur et je recherche</h2>
-  				<h2 class="modal-title en" id="modal-label">Je suis un employeur et je recherche</h2>
-  				<h2 class="modal-title nl" id="modal-label">Je suis un employeur et je recherche</h2>
+  				<h2 class="modal-title" id="modal-label"><?=L::employer_modal_title;?></h2>
   			</div>
   			<div class="modal-body">
   				<div class="row text-center">
   					<div class="col-md-12">
-  						<h4 class="text-green fr">Des vélos partagés</h4>
-  						<h4 class="text-green en">Des vélos partagés</h4>
-  						<h4 class="text-green nl">Des vélos partagés</h4>
-  						<p class="fr">Je souhaite mettre à disposition de mes employés une flotte de vélos.</p>
-  						<p class="en">Je souhaite mettre à disposition de mes employés une flotte de vélos.</p>
-  						<p class="nl">Je souhaite mettre à disposition de mes employés une flotte de vélos.</p>
+  						<h4 class="text-green"><?=L::employer_modal_sharedbike_title;?></h4>
+  						<p><?=L::employer_modal_sharedbike_description;?></p>
   						<a class="button green button-3d effect fill-vertical fr" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
   						<a class="button green button-3d effect fill-vertical en" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
   						<a class="button green button-3d effect fill-vertical nl" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
   					</div>
   					<div class="separator"></div>
   					<div class="col-md-12">
-  						<h4 class="text-green fr">Des vélos personnels</h4>
-  						<h4 class="text-green en">Des vélos personnels</h4>
-  						<h4 class="text-green nl">Des vélos personnels</h4>
-  						<p class="fr">Je souhaite proposer à mes employés d'acheter un vélo via mon entreprise.</p>
-  						<p class="en">Je souhaite proposer à mes employés d'acheter un vélo via mon entreprise.</p>
-  						<p class="nl">Je souhaite proposer à mes employés d'acheter un vélo via mon entreprise.</p>
+  						<h4 class="text-green"><?=L::employer_modal_personalbike_title;?></h4>
+  						<p><?=L::employer_modal_personalbike_description;?></p>
   						<a class="button green button-3d effect fill-vertical fr" href="velo-personnel.php"><span><i class="fa fa-user"></i>En savoir plus</span></a>
   						<a class="button green button-3d effect fill-vertical en" href="velo-personnel.php"><span><i class="fa fa-user"></i>Learn more</span></a>
   						<a class="button green button-3d effect fill-vertical nl" href="velo-personnel.php"><span><i class="fa fa-user"></i>Meer leren</span></a>
   					</div>
   					<div class="separator"></div>
   					<div class="col-md-12">
-  						<h4 class="text-red fr">Un système de gestion de flotte</h4>
-  						<h4 class="text-red en">Un système de gestion de flotte</h4>
-  						<h4 class="text-red nl">Un système de gestion de flotte</h4>
-  						<p class="fr">Je dispose déjà de vélos ou de véhicules mais j'aimerais optimiser leur utilisation avec un système simple et fluide.</p>
-  						<p class="en">Je dispose déjà de vélos ou de véhicules mais j'aimerais optimiser leur utilisation avec un système simple et fluide.</p>
-  						<p class="nl">Je dispose déjà de vélos ou de véhicules mais j'aimerais optimiser leur utilisation avec un système simple et fluide.</p>
+  						<h4 class="text-red"><?=L::employer_modal_managefleet_title;?></h4>
+  						<p><?=L::employer_modal_managefleet_description;?></p>
   						<a class="button red button-3d effect fill-vertical fr" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
   						<a class="button red button-3d effect fill-vertical en" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
   						<a class="button red button-3d effect fill-vertical nl" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
@@ -118,31 +88,21 @@
   		<div class="modal-content">
   			<div class="modal-header">
   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  				<h2 class="modal-title fr" id="modal-label">Je suis un employé et je recherche</h2>
-  				<h2 class="modal-title en" id="modal-label">Je suis un employé et je recherche</h2>
-  				<h2 class="modal-title nl" id="modal-label">Je suis un employé et je recherche</h2>
+  				<h2 class="modal-title" id="modal-label"><?=L::employee_modal_title;?></h2>
   			</div>
   			<div class="modal-body">
   				<div class="row text-center">
   					<div class="col-md-12">
-  						<h4 class="text-green fr">Un vélo</h4>
-  						<h4 class="text-green en">Un vélo</h4>
-  						<h4 class="text-green nl">Un vélo</h4>
-  						<p class="fr">Je souhaite acheter un vélo.</p>
-  						<p class="en">Je souhaite acheter un vélo.</p>
-  						<p class="nl">Je souhaite acheter un vélo.</p>
+  						<h4 class="text-green"><?=L::employee_modal_bike_title;?></h4>
+  						<p><?=L::employee_modal_bike_description;?></p>
   						<a class="button green button-3d effect fill-vertical fr" href="achat.php"><span><i class="fa fa-bicycle"></i>Catalogue vélos</span></a>
   						<a class="button green button-3d effect fill-vertical en" href="achat.php"><span><i class="fa fa-bicycle"></i>Catalogue vélos</span></a>
   						<a class="button green button-3d effect fill-vertical nl" href="achat.php"><span><i class="fa fa-bicycle"></i>Catalogue vélos</span></a>
   					</div>
   					<div class="separator"></div>
   					<div class="col-md-12">
-  						<h4 class="text-green fr">Des accessoires</h4>
-  						<h4 class="text-green en">Des accessoires</h4>
-  						<h4 class="text-green nl">Des accessoires</h4>
-  						<p class="fr">Je souhaite m'équiper d'accessoires.</p>
-  						<p class="en">Je souhaite m'équiper d'accessoires.</p>
-  						<p class="nl">Je souhaite m'équiper d'accessoires.</p>
+  						<h4 class="text-green"><?=L::employee_modal_accessory_title;?></h4>
+  						<p><?=L::employee_modal_accessory_description;?></p>
   						<a class="button green button-3d effect fill-vertical fr" href="accessoires.php"><span><i class="fa fa-diamond"></i>Catalogue accessoires</span></a>
   						<a class="button green button-3d effect fill-vertical en" href="accessoires.php"><span><i class="fa fa-diamond"></i>Catalogue accessoires</span></a>
   						<a class="button green button-3d effect fill-vertical nl" href="accessoires.php"><span><i class="fa fa-diamond"></i>Catalogue accessoires</span></a>
@@ -156,9 +116,7 @@
   	<div class="container">
   		<div class="row">
   			<div class="col-md-6">
-  				<h1 class="text-green fr">POURQUOI CHOISIR KAMEO BIKES?</h1>
-  				<h1 class="text-green en">POURQUOI CHOISIR KAMEO BIKES?</h1>
-  				<h1 class="text-green nl">POURQUOI CHOISIR KAMEO BIKES?</h1>
+  				<h1 class="text-green"><?=L::choose_kameo_title;?></h1>
   				<br>
   				<p class="fr text-justify fr">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
   				<p class="fr text-justify en">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
@@ -206,9 +164,7 @@
   <!-- SECTION CLIENTS -->
   <section class="p-b-0">
   	<div class="container">
-  		<h1 class="text-green fr">ILS NOUS FONT CONFIANCE</h1>
-  		<h1 class="text-green en">ILS NOUS FONT CONFIANCE</h1>
-  		<h1 class="text-green nl">ILS NOUS FONT CONFIANCE</h1>
+  		<h1 class="text-green"><?=L::societes_title;?></h1>
           <ul class="grid grid-4-columns">
             <li style="cursor: default;"><img draggable="false" src="images/clients/afelio.png" alt="Nos clients - Afelio"></li>
             <li style="cursor: default;"><img draggable="false" src="images/clients/atradius.png" alt="Nos clients - Atradius"></li>
