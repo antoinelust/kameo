@@ -124,7 +124,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h2 class="modal-title" id="modal-label">Contact</h2>
+				<h2 class="modal-title" id="modal-label"><?=L::blog_contact_title;?></h2>
 			</div>
 			<div class="modal-body">
 				<div class="row text-left">
@@ -132,57 +132,43 @@
 						<form id="widget-contact-form" action="include/contact-form.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
-                                        <label for="name" id="fr">Nom</label>
-										<label for="name" id="en">Name</label>
-										<label for="name" id="nl">Naam</label>
+                                        <label for="name"><?=L::blog_contact_name;?></label>
                                         <input type="text" aria-required="true" name="name" class="form-control required name">
                                     </div>
                                      <div class="form-group col-sm-6">
-                                        <label for="firstName" id="fr">Prénom</label>
-										<label for="firstName" id="en">First Name</label>
-										<label for="firstName" id="nl">Voornaam</label>
+                                        <label for="firstName"><?=L::blog_contact_prenom;?></label>
                                         <input type="text" aria-required="true" name="firstName" class="form-control required name">
 
 										</div>
                                     <div class="form-group col-sm-6">
-                                        <label for="email"  id="fr">Email</label>
-										<label for="email"  id="en">Email</label>
-										<label for="email"  id="nl">Email</label>
+                                        <label for="email"><?=L::blog_contact_mail;?></label>
                                         <input type="email" aria-required="true" name="email" class="form-control required email">
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="phone"  id="fr">Numéro de téléphone</label>
-										<label for="phone"  id="en">Phone number</label>
-										<label for="phone"  id="nl">Telefoonnumber</label>
+                                        <label for="phone"><?=L::blog_contact_phone;?></label>
                                         <input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
                                     </div>
                                     <div class="form-group col-sm-6">
 		                                <div class="particulier">
-											<label><input type="radio" name="type" value="particulier" checked> Je suis un particulier</label>
+											<label><input type="radio" name="type" value="particulier" checked><?=L::blog_contact_particulier;?></label>
 										</div>
 										<div class="professionnel">
-											<label><input type="radio" name="type" value="professionnel"> Je suis un professionnel</label>
+											<label><input type="radio" name="type" value="professionnel"><?=L::blog_contact_pro;?></label>
 										</div>
 									</div>
 									<div class="form-group col-sm-12 entreprise hidden">
-	                                	<label for="entreprise" id="fr">Nom de votre entreprise</label>
-										<label for="entreprise" id="en">Nom de votre entreprise</label>
-										<label for="entreprise" id="nl">Nom de votre entreprise</label>
+	                                	<label for="entreprise"><?=L::blog_contact_societyname;?></label>
 	                                	<input type="text" aria-required="true" name="entreprise" class="form-control">
 	                                </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-sm-12">
-                                        <label for="subject"  id="fr">Votre sujet</label>
-										<label for="subject"  id="en">Subject</label>
-										<label for="subject"  id="nl">Onderwerp</label>
+                                        <label for="subject"><?=L::blog_contact_subject;?></label>
                                         <input type="text" name="subject" class="form-control required">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="message"  id="fr">Message</label>
-									<label for="message"  id="en">Message</label>
-									<label for="message"  id="nl">Bericht</label>
+                                    <label for="message"><?=L::blog_contact_message;?></label>
                                     <textarea type="text" name="message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
                                 </div>
                                 
@@ -190,9 +176,7 @@
                                 
                                 <input type="text" class="hidden" name="antispam" value="" />
                                 
-                                <button  id="fr" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Envoyer</button>
-								<button  id="en" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Send</button>
-								<button  id="nl" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>
+                                <button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::blog_contact_send_btn;?></button>
                             </form>
                             <script type="text/javascript">
                                 jQuery("#widget-contact-form").validate({

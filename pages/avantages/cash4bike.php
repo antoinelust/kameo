@@ -14,32 +14,32 @@
 	
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green">CALCULATEUR CASH FOR BIKE</h1>
+				<h1 class="text-green"><?=L::cash4bike_title;?></h1>
 				<br>
-				<p>Les informations demandées ci-dessous ne seront en aucun cas enregistrées dans nos bases de données.<br>Elles servent à vous communiquer un montant le plus proche de la réalité.</p>
+				<p><?=L::cash4bike_subtitle;?><br><?=L::cash4bike_subtitle2;?></p>
 				
 				<div class="m-t-30 col-md-12">
                 	<form id="cash4bike-form" action="apis/Kameo/calculate_cash4bike.php" role="form" method="get">
                     <div class="row">
                         <div class="col-md-6" style= "background-color: #D3EFDD ; height: 500px">
                         <div class="space"></div>
-                            <h4 class="text-green">Informations personnelles</h4>
+                            <h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
 
                             <div class="form-group col-md-12 ">
                                 <div class="employe">
-                                    <label><input type="radio" name="type" value="employe" checked> Je suis un employé</label>
+                                    <label><input type="radio" name="type" value="employe" checked><?=L::cash4bike_personalinfo_employee;?></label>
                                 </div>
                                 <div class="ouvrier">
-                                    <label><input type="radio" name="type" value="ouvrier"> Je suis un ouvrier</label>
+                                    <label><input type="radio" name="type" value="ouvrier"><?=L::cash4bike_personalinfo_ouvrier;?></label>
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="form-group col-md-6">
                                     <div class="form-group">
-                                        <label class="revenu" for="phone">Votre revenu mensuel brut :</label>
+                                        <label class="revenu" for="phone"><?=L::cash4bike_personalinfo_brutsalary;?></label>
                                         <div class="input-group">
-                                            <span class="input-group-addon">€/mois</span>
+                                            <span class="input-group-addon"><?=L::cash4bike_personalinfo_permonth;?></span>
                                             <input type="number" class="form-control required" min='0' placeholder="0" name="revenu" id="revenu" aria-required="true">
                                         </div>
                                     </div>
@@ -47,13 +47,13 @@
                             </div>                                
                             <div class="col-md-12">  
                                 <div id="inputHomeAddress" class="form-group has-error has-feedback">							
-                                  <label class="control-label" for="domicile">Adresse du domicile</label>							
+                                  <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
                                   <input type="text" name="domicile" class="form-control" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">							
                                   <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
                                   <span id="inputSuccess1Status" class="sr-only">(success)</span> 
                                 </div>                                
                                 <div id="inputWorkAddress" class="form-group has-error has-feedback">							
-                                  <label class="control-label" for="inputSuccess2">Adresse du lieu de travail</label>							
+                                  <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
                                   <input type="text" name="travail" class="form-control" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">							
                                   <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
                                   <span id="inputSuccess2Status" class="sr-only">(success)</span> 
@@ -63,25 +63,25 @@
                         </div>
                         <div class="col-md-6" style= "background-color: #E6E6E6 ; height: 500px">
                         <div class="space"></div>
-                            <h4 class="text-green">Moyen de transport</h4>
+                            <h4 class="text-green"><?=L::cash4bike_transport_title;?></h4>
                             <div class="form-group col-md-12">
                                 <div class="col-md-6">
-                                    <label for="transport" class="fr">Votre moyen de transport actuel :</label>
+                                    <label for="transport"><?=L::cash4bike_transport_choice;?></label>
                                     <select class="form-control" name="transport">
-                                        <option value="personnalCar" selected>Voiture personnelle</option>
-                                        <option value="companyCar">Voiture de société</option>
-                                        <option value="covoiturage">Covoiturage</option>
-                                        <option value="public transport">Transport en commun</option>
-                                        <option value="personalBike">Vélo personnel</option>
-                                        <option value="walk">Marche</option>
+                                        <option value="personnalCar" selected><?=L::cash4bike_tc_personalcar;?></option>
+                                        <option value="companyCar"><?=L::cash4bike_tc_workcar;?></option>
+                                        <option value="covoiturage"><?=L::cash4bike_tc_covoiturage;?></option>
+                                        <option value="public transport"><?=L::cash4bike_tc_commun;?></option>
+                                        <option value="personalBike"><?=L::cash4bike_tc_personalbike;?></option>
+                                        <option value="walk"><?=L::cash4bike_tc_walk;?></option>
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-6 essence">
                                     <div class="essence">
-                                        <label><input type="radio" name="transportationEssence" value="essence" checked> Essence</label>
+                                        <label><input type="radio" name="transportationEssence" value="essence" checked><?=L::cash4bike_essence;?></label>
                                     </div>
                                     <div class="diesel">
-                                        <label><input type="radio" name="transportationEssence" value="diesel"> Diesel</label>
+                                        <label><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
                                     </div>
                                 </div>
                                 
@@ -92,23 +92,23 @@
                                 
                                 <div class="col-md-12">
                                     <div class="employeurremunere">
-                                        <label><input type="radio" name="prime" value="1" checked> Mon employeur rémunère mes kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="1" checked><?=L::cash4bike_bike_kmpayback;?></label>
                                     </div>
                                     <div class="employeurneremunerepas">
-                                        <label><input type="radio" name="prime" value="0"> Mon employeur ne me rémunère par les kilomètres vélo</label>
+                                        <label><input type="radio" name="prime" value="0"><?=L::cash4bike_bike_kmnopayback;?></label>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="form-group col-md-12">
                                 <div class="col-md-6">
-                                    <label for="frequence" class="fr">Vous comptez aller au vélo :</label>
+                                    <label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
                                     <select class="form-control" name="frequence">
-                                        <option value="1">1 fois par semaine</option>
-                                        <option value="2">2 fois par semaine</option>
-                                        <option value="3">3 fois par semaine</option>
-                                        <option value="4" selected>4 fois par semaine</option>
-                                        <option value="5">5 fois par semaine</option>
+                                        <option value="1"><?=L::cash4bike_tf_once;?></option>
+                                        <option value="2"><?=L::cash4bike_tf_twice;?></option>
+                                        <option value="3"><?=L::cash4bike_tf_three;?></option>
+                                        <option value="4" selected><?=L::cash4bike_tf_four;?></option>
+                                        <option value="5"><?=L::cash4bike_tf_five;?></option>
                                     </select>
                                 </div>
                             </div>
@@ -123,19 +123,19 @@
                         </div>                                                
                         <div class="separator"></div>
                         
-                        <h4 class="text-green">Vélo souhaité</h4>
+                        <h4 class="text-green"><?=L::cash4bike_wantedbike_title;?></h4>
                         
                         <div class="col-md-12">
                             <div class="col-md-4">
-                                <label for="brand">Marque</label>
+                                <label for="brand"><?=L::cash4bike_wantedbike_brand;?></label>
                                 <select class="from-control" name='brand'>
-                                    <option value="selection">Veuillez sélectionner</option>
+                                    <option value="selection"><?=L::cash4bike_wantedbike_choose;?></option>
                                 </select>
                             </div>
                             <div class="col-md-4 model hidden">
-                                <label for="brand">Modèle</label>
+                                <label for="brand"><?=L::cash4bike_wantedbike_model;?></label>
                                 <select class="from-control" name='model'>
-                                    <option value="selection">Veuillez sélectionner</option>
+                                    <option value="selection"><?=L::cash4bike_wantedbike_choose;?></option>
                                 </select>
                             </div>
                             
@@ -153,7 +153,7 @@
 						<div class="separator"></div>
                         
 						<div class="form-group col-md-2 center">
-                            <button class="button green button-3d effect fill-vertical fr " type="submit"><i class="fa fa-calculator"></i>&nbsp;Calculer</button>
+                            <button class="button green button-3d effect fill-vertical" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
                         </div>
                     </div>
                     </form>
@@ -311,25 +311,21 @@
 		
 	</div>
         
-    <h3> Louer un vélo et le payer via mon salaire brut par l’entreprise, un coût ou un gain d’argent ?</h3>
-    <p>En Belgique vous avez la possibilité d'échanger une partie de votre rémunération brute totale pour la placer dans un autre avantage. C’est le principe d’un plan caféteria.<br>
+    <h3><?=L::cash4bike_rent_gain_title;?></h3>
+    <p><?=L::cash4bike_rent_gain_subtitle;?><br>
     Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
-    <p class="fr">Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
-    <p class="en">Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
-    <p class="nl">Nous vous proposons de calculer le gain ou la perte de rémunération net si vous décidez de diminuer votre rémunération mensuelle brute afin de prendre un vélo pour vos trajets domicile-travail.</p>
-    <p class="fr">Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit se faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
-    <p class="en">Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit se faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
-    <p class="nl">Attention, ceci doit se faire à cout équivalent pour l’employeur. Si votre salaire brut est diminué (par exemple) de 50€, vous avez accès à un budget plus important pour le choix de votre vélo. En effet sur vos 50€ brut, l‘employeur paye des taxes supplémentaires. Puisque ceci doit se faire à coût équivalent pour l’employeur, ce montant sera à votre disposition. <strong>C’est un avantage supplémentaire !</strong></p>
+    <p><?=L::cash4bike_rent_gain_text;?></p>
+    <p><?=L::cash4bike_rent_gain_text2;?><strong><?=L::cash4bike_rent_gain_text2sub;?></strong></p>
     <br>
         
     <div class="separator"></div>
         
         
-	<h3>Disclaimer</h3>
-    <p>Cet outil est mis à votre disposition à titre exclusivement informatif et il s'agit d'une simulation de calcul effectuée à titre purement indicatif.</p>
-    <p>L’outil a été élaboré avec le plus grand soin et nous nous efforçons, dans la mesure du raisonnable, à l’actualiser et à maintenir l'exactitude des informations qui s’y trouvent, sachant que les législations changent fréquemment. De plus, pour faciliter l’utilisation de l’outil, certaines données ne sont pas prises en considération pour le calcul. Dès lors, il se peut qu’il y ait une différence entre le montant calculé et le montant réel.</p>
-    <p>Les informations reprises ne remplacent en aucun cas un avis juridique ou l’assistance personnalisée d’un professionnel.</p>
-    <p>Dans la mesure autorisée par la loi, nous ne sommes en aucun cas être tenus responsables de tout dommage, direct ou indirect, de quelque nature et importance qu’il soit, qui pourrait être causé directement ou indirectement par la consultation ou, plus généralement, par toute utilisation quelconque qui serait faite de cet outil et notamment des informations qui s’y trouvent.</p>
+	<h3><?=L::cash4bike_disclaimer_title;?></h3>
+    <p><?=L::cash4bike_disclaimer_text;?></p>
+    <p><?=L::cash4bike_disclaimer_text2;?></p>
+    <p><?=L::cash4bike_disclaimer_text3;?></p>
+    <p><?=L::cash4bike_disclaimer_text4;?></p>
       </div>
 </section>
 

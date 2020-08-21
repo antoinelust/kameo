@@ -8,7 +8,13 @@ $i18n = new i18n([
     'lang/lang_index_{LANGUAGE}.ini',
     'lang/lang_velo_personnel_{LANGUAGE}.ini',
     'lang/lang_gestion_flotte_{LANGUAGE}.ini',
-    'lang/lang_location_ttinclus_{LANGUAGE}.ini'
+    'lang/lang_location_ttinclus_{LANGUAGE}.ini',
+    'lang/lang_accessoires_{LANGUAGE}.ini',
+    'lang/lang_bons_plans_{LANGUAGE}.ini',
+    'lang/lang_avantages_{LANGUAGE}.ini',
+    'lang/lang_cash4bike_{LANGUAGE}.ini',
+    'lang/lang_contact_{LANGUAGE}.ini',
+    'lang/lang_blog_{LANGUAGE}.ini'
 ]);
 $i18n->init();
 

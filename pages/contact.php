@@ -36,69 +36,49 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                    	<h1 class="text-green">NOUS CONTACTER</h1>
-                        <p class="fr">Vous souhaitez un complément d'informations ou nous rencontrer ? Rien de plus simple, remplissez ce formulaire et nous vous contacterons dès que possible.</p>
-						<p class="en">Would you like more information or simply to meet us? It's easy, fill in this form and we will contact you as soon as possible.</p>
-						<p class="nl">Wilt u meer informatie of gewoon ons te ontmoeten? Het is gemakkelijk , vul dit formulier in en we nemen zo snel mogelijk contact met u op.</p>
+                    	<h1 class="text-green"><?=L::contact_title;?></h1>
+                        <p><?=L::contact_subtitle;?></p>
                         <div class="m-t-30">
                             <form id="widget-contact-form" action="apis/Kameo/contact_form.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
-                                        <label for="name" id="fr">Nom</label>
-										<label for="name" id="en">Name</label>
-										<label for="name" id="nl">Naam</label>
+                                        <label for="name"><?=L::contact_name;?></label>
                                         <input type="text" aria-required="true" name="name" class="form-control required name">
                                     </div>
                                      <div class="form-group col-sm-6">
-                                        <label for="firstName" id="fr">Prénom</label>
-										<label for="firstName" id="en">First Name</label>
-										<label for="firstName" id="nl">Voornaam</label>
+                                        <label for="firstName"><?=L::contact_firstname;?></label>
                                         <input type="text" aria-required="true" name="firstName" class="form-control required name">
 
 										</div>
                                     <div class="form-group col-sm-6">
-                                        <label for="email"  id="fr">Email</label>
-										<label for="email"  id="en">Email</label>
-										<label for="email"  id="nl">Email</label>
+                                        <label for="email"><?=L::contact_mail;?></label>
                                         <input type="email" aria-required="true" name="email" class="form-control required email">
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="phone"  id="fr">Numéro de téléphone</label>
-										<label for="phone"  id="en">Phone number</label>
-										<label for="phone"  id="nl">Telefoonnummer</label>
+                                        <label for="phone"><?=L::contact_phone;?></label>
                                         <input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
                                     </div>
                                     <div class="form-group col-sm-6">
 		                                <div class="particulier">
-											<label id="fr"><input type="radio" name="type" value="particulier" checked> Je suis un particulier</label>
-											<label id="en"><input type="radio" name="type" value="particulier" checked> I am an individual</label>
-											<label id="nl"><input type="radio" name="type" value="particulier" checked> Ik ben een individu</label>
+											<label><input type="radio" name="type" value="particulier" checked><?=L::contact_particulier;?></label>
 										</div>
 										<div class="professionnel">
-											<label id="fr"><input type="radio" name="type" value="professionnel"> Je suis un professionnel</label>
-											<label id="en"><input type="radio" name="type" value="professionnel"> I am a professional</label>
-											<label id="nl"><input type="radio" name="type" value="professionnel"> Ik ben een professioneel</label>
+											<label><input type="radio" name="type" value="professionnel"><?=L::contact_pro;?></label>
 										</div>
 									</div>
 									<div class="form-group col-sm-12 entreprise hidden">
-	                                	<label for="entreprise" id="fr">Entreprise</label>
-										<label for="entreprise" id="en">Company</label>
-										<label for="entreprise" id="nl">Bedrijf</label>
+	                                	<label for="entreprise"><?=L::contact_society;?></label>
 	                                	<input type="text" aria-required="true" name="entreprise" class="form-control">
 	                                </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-sm-12">
-                                        <label for="subject"  id="fr">Sujet</label>
-										<label for="subject"  id="en">Subject</label>
-										<label for="subject"  id="nl">Onderwerp</label>
+                                        <label for="subject"><?=L::contact_subject;?></label>
                                         <input type="text" name="subject" class="form-control required">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="message"  id="fr">Message</label>
-									<label for="message"  id="en">Message</label>
-									<label for="message"  id="nl">Bericht</label>
+                                    <label for="message"><?=L::contact_message;?></label>
                                     <textarea type="text" name="message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
                                 </div>
                                 
@@ -106,9 +86,7 @@
                                 
                                 <input type="text" class="hidden" name="antispam" value="" />
                                 
-                                <button  id="fr" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Envoyer</button>
-								<button  id="en" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Send</button>
-								<button  id="nl" class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>
+                                <button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp<?=L::contact_send_btn;?></button>
                             </form>
                             <script type="text/javascript">
                                 jQuery("#widget-contact-form").validate({
@@ -145,9 +123,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                    	<h1 class="fr">NOUS TROUVER</h1>
-                    	<h1 class="en">FIND US</h1>
-                    	<h1 class="nl">VIND ONS</h1>
+                    	<h1><?=L::contact_findus;?></h1>
                         <div class="row">
                             <div class="col-md-6">
                                 <address>
@@ -188,9 +164,7 @@
         <!-- TEAM -->
 		<section id="section5" class="background-grey">
 			<div class="container">
-				<h1 class="text-green" "fr">L'ÉQUIPE</h1>
-				<h1 class="text-green" "en">TEAM</h1>
-				<h1 class="text-green" "nl">TEAM</h1>
+				<h1 class="text-green"><?=L::contact_team;?></h1>
 				<!--
 					<p class="fr">KAMEO Bikes a été créé en 2017 par 4 jeunes désireux de proposer un service complet pour la mobilité en entreprise.<br> Nous constations tous les jours les mêmes problèmes de trafic, retard et ne trouvions pas la solution que nous avions en tête.<br> <strong>Nous avons alors décidé de la créer.</strong></p>
 					<p class="en">KAMEO Bikes was created in 2017 by 4 young people eager to prove that it is possible to design innovative E-Bikes adapted to the tastes and needs of each.</p>
@@ -200,12 +174,8 @@
 					<div class="col-md-3">
 						<div class="image-box circle-image small"> <img class="" src="images/Jams.jpg" alt="Julien - Responsable Technique vélo entretien mobilité"> </div>
 						<div class="image-box-description text-center">
-							<h4 class="fr">Julien</h4>
-							<h4 class="en">Julien</h4>
-							<h4 class="nl">Julien</h4>
-							<p  class="fr" class="subtitle">Gérant</p>
-							<p  class="en" class="subtitle">Manager</p>
-							<p  class="nl" class="subtitle">Manager</p>
+							<h4><?=L::contact_team_julien;?></h4>
+							<p class="subtitle"><?=L::contact_team_manager;?></p>
 							<hr class="line">
 							<!--
 							<div class="fr">Aussi loin qu'on s'en souvienne, Julien a toujours été passionné de vélo. Habile mécanicien et ingénieur industriel, il se tient au courant de toutes les nouveautés afin de pouvoir vous conseiller le vélo qui répondra au mieux à votre besoin.</div>
@@ -218,12 +188,8 @@
 					<div class="col-md-3">
 						<div class="image-box circle-image small"> <img class="" src="images/PY.jpg" alt="Pierre-Yves - Responsable stratégique vélo entretien mobilité"> </div>
 						<div class="image-box-description text-center">
-							<h4 class="fr">Pierre-Yves</h4>
-							<h4 class="en">Pierre-Yves</h4>
-							<h4 class="nl">Pierre-Yves</h4>
-							<p  class="fr" class="subtitle">Responsable stratégique</p>
-							<p  class="en" class="subtitle">Business Manager</p>
-							<p  class="nl" class="subtitle">Business Manager</p>
+							<h4><?=L::contact_team_pierreyves;?></h4>
+							<p class="subtitle"><?=L::contact_team_businessmanager;?></p>
 							<hr class="line">
 							<!--
 							<div class="fr">Quel que soit le sport ou le terrain, Pierre-Yves veut toujours être en mouvement. La monotonie de ses transports urbains lui a donné l'envie de créer KAMEO Bikes. </div>
@@ -236,12 +202,8 @@
 					<div class="col-md-3">
 						<div class="image-box circle-image small"> <img class="" src="images/Lust.jpg" alt="Antoine - Responsable Financier vélo entretien mobilité"> </div>
 						<div class="image-box-description text-center">
-							<h4 class="fr">Antoine</h4>
-							<h4 class="en">Antoine</h4>
-							<h4 class="nl">Antoine</h4>
-							<p  class="fr" class="subtitle">Responsable IT</p>
-							<p  class="en" class="subtitle">IT manager</p>
-							<p  class="nl" class="subtitle">IT manager</p>
+							<h4><?=L::contact_team_antoine;?></h4>
+							<p class="subtitle"><?=L::contact_team_itmanager;?></p>
 							<hr class="line">
 							<!--
 							<div  class="fr">Peu importe la technologie, Antoine est un éternel curieux qui veut tout comprendre et maitriser. Ingénieur civil, il est en charge des aspects financiers du projet. </div>
@@ -254,12 +216,8 @@
 					<div class="col-md-3">
 						<div class="image-box circle-image small"> <img class="" src="images/Thib.jpg" alt="Thibaut - Responsable marketing vélo entretien mobilité"> </div>
 						<div class="image-box-description text-center">
-							<h4 class="fr">Thibaut</h4>
-							<h4 class="en">Thibaut</h4>
-							<h4 class="nl">Thibaut</h4>
-							<p  class="fr" class="subtitle">Responsable marketing</p>
-							<p  class="en" class="subtitle">Marketing manager</p>
-							<p  class="nl" class="subtitle">Marketing manager</p>
+							<h4><?=L::contact_team_thibaut;?></h4>
+							<p class="subtitle"><?=L::contact_team_marketingmanager;?></p>
 							<hr class="line">
 							<!--
 							<div class="fr">En quelques clics sur son ordi, Thibaut transforme n'importe quel schéma en un design simple et élégant. Graphiste, il s'assure que la qualité visuelle de KAMEO Bikes soit à la hauteur de la qualité de son service.</div>
@@ -274,14 +232,11 @@
 					<div class="col-md-6 center">
 					<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
 						<div class="image-box-description text-center">
-							<h4 class="fr">Vous</h4>
-							<h4 class="en">You</h4>
-							<h4 class="nl">U</h4>
+							<h4><?=L::contact_team_you;?></h4>
 							<hr class="line">
 							<div  class="fr">Vous souhaitez intégrer notre équipe ?<br> Ecrivez-nous à <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
 							<div  class="en">Want to join us ?<br> Write us at <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
 							<div  class="nl">Wil je bij ons werken?<br> Schrijf ons <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
-							
 						</div>
 					</div>
 					

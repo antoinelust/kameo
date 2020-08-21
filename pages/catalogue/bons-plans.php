@@ -15,7 +15,7 @@
                                         
                     
                     <div class="col-md-12">
-                        <h1 class="fr text-green">LES BONS PLANS</h1>
+                        <h1 class=" text-green"><?=L::bons_plans_title;?></h1>
                         </div>
                         <!-- SHOP PRODUCTS -->
 								<div class="shop">
