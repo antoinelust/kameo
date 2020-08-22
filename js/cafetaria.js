@@ -110,7 +110,6 @@ function load_cafetaria(){
 
 
 function fillCommandDetails(ID){
-    console.log(ID);
     $.ajax({
     url: 'apis/Kameo/load_portfolio.php',
     type: 'get',

@@ -1,3 +1,28 @@
+$( ".fleetmanager" ).click(function() {
+    initialize_task_owner_sales_selection();
+    
+    $.ajax({
+        url: 'apis/Kameo/initialize_counters.php',
+        type: 'post',
+        data: { "email": email, "type": "tasks"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
+            }
+        }
+    })
+    
+    
+    
+});
+
+
+
+
+
 function add_task(company){
 document.getElementById('widget-taskManagement-form').reset();
 

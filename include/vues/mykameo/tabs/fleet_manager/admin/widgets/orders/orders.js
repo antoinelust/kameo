@@ -1,3 +1,21 @@
+$( ".fleetmanager" ).click(function() {
+    $.ajax({
+        url: 'apis/Kameo/initialize_counters.php',
+        type: 'post',
+        data: { "email": email, "type": "ordersAdmin"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                document.getElementById('counterOrdersAdmin').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.ordersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.ordersNumber+"</span>";
+            }
+        }
+    })
+})
+
+
+
 function get_orders_listing() {
     var email= "<?php echo $user_data['EMAIL']; ?>";
     $.ajax({

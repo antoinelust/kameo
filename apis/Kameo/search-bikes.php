@@ -91,11 +91,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     include 'connexion.php';
     $date1stJanuary=date('Y-01-01');
     $sql="select * from reservations where DATE_START_2>'$date1stJanuary' and EMAIL='$email' and STAANN != 'D'";
-        
-    
+
 
    	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error1', 'message'=> $conn->error);
+		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response); 
 		die;
 	}
@@ -110,7 +109,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     $date1stOfMonth=date('Y-m-01');
     $sql="select * from reservations where DATE_START_2>'$date1stOfMonth' and EMAIL='$email' and STAANN != 'D'";
    	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error2', 'message'=> $conn->error);
+		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
@@ -130,7 +129,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";        
     
     if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error3', 'message'=> $conn->error);
+		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
@@ -156,8 +155,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     include 'connexion.php';
     $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";    
     
+    
    	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error4', 'message'=> $conn->error);
+		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
@@ -180,7 +180,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
 
         if ($conn->query($sql2) === FALSE) {
-            $response = array ('response'=>'error5', 'message'=> $conn->error);
+            $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
@@ -188,14 +188,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
         $result2 = mysqli_query($conn, $sql2);
         $resultat2 = mysqli_fetch_assoc($result2);
         
-        
-
         if($resultat2['BUILDING_END'] == $intake_building){
 
             $sql3="SELECT min(DATE_START_2), BUILDING_START FROM reservations WHERE BIKE_ID='$bikeID' and DATE_START_2 > '$dateEndString' and STAANN!='D' group by BUILDING_START";
 
             if ($conn->query($sql3) === FALSE) {
-                $response = array ('response'=>'error6', 'message'=> $conn->error);
+                $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
                 die;
             }
@@ -212,15 +210,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                 $result4 = mysqli_query($conn, $sql4);
                 $access = $result4->num_rows;
 
-                
-                
-
                 if($access==1){
                     $length++;
 
                     $sql5="SELECT * FROM customer_bikes WHERE ID='$bikeID'";
                     if ($conn->query($sql5) === FALSE) {
-                        $response = array ('response'=>'error8', 'message'=> $conn->error);
+                        $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
                         die;
                     }
@@ -236,7 +231,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                     include 'connexion.php';
                     $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
                     if ($conn->query($sql6) === FALSE) {
-                        $response = array ('response'=>'error9', 'message'=> $conn->error);
+                        $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
                         die;
                     }

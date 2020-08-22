@@ -1,4 +1,29 @@
-	$(".addCost").click(function() {
+$( ".fleetmanager" ).click(function() {    
+    $.ajax({
+        url: 'apis/Kameo/initialize_counters.php',
+        type: 'post',
+        data: { "email": email, "type": "cashFlow"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                if(response.sumContractsCurrent>0){
+                    document.getElementById('cashFlowSpan').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+Math.round(response.sumContractsCurrent)+"\" data-from=\"0\" data-    seperator=\"true\">"+Math.round(response.sumContractsCurrent)+"</span>";
+                    $('#cashFlowSpan').css('color', '#3cb395');                
+                }else{
+                    document.getElementById('cashFlowSpan').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+Math.round(response.sumContractsCurrent)+"\" data-from=\"0\" data-      seperator=\"true\">"+Math.round(response.sumContractsCurrent)+"</span>";
+                    $('#cashFlowSpan').css('color', '#d80000');
+                }
+            }
+        }
+    })
+});
+
+
+
+
+$(".addCost").click(function() {
 		$('#widget-costsManagement-form input').attr("readonly", false);
 		$('#widget-costsManagement-form textarea').attr("readonly", false);
 		$('#widget-costsManagement-form select').attr("readonly", false);

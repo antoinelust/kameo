@@ -1,3 +1,21 @@
+
+$( ".fleetmanager" ).click(function() {    
+    $.ajax({
+        url: 'apis/Kameo/initialize_counters.php',
+        type: 'post',
+        data: { "email": email, "type": "feedback"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                document.getElementById('counterFeedbacks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.feedbacksNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.feedbacksNumber+"</span>";
+            }
+        }
+    })
+});
+
+
 function initiatizeFeedback(id, notificationId = -1){
 
   document.getElementById('widget-feedbackManagement-form').reset();

@@ -1,7 +1,7 @@
 //FONCTION QUI GERE LES PERMISSION (à refaire), SEPARER LA PARTIE QUI GERE LES CONDITIONS
 $( ".fleetmanager" ).click(function() {
 	temp_init();
-	initialize_counters();
+	//initialize_counters();
 	list_maintenances();
 });
 function temp_init(){
@@ -40,30 +40,10 @@ $.ajax({
 		document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 		document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
 		document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
-		if(email=='julien@kameobikes.com' || email=='antoine@kameobikes.com' || email=='thibaut@kameobikes.com' || email=='pierre-yves@kameobikes.com' || email=='test3@kameobikes.com'){
-			document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
-			document.getElementById('cashFlowManagement').classList.remove("hidden");
-			document.getElementById('billsManagement').classList.remove("hidden");
-			$('.billsTitle').removeClass("hidden");
-		}
 		var classname = document.getElementsByClassName('administrationKameo');
 		for (var i = 0; i < classname.length; i++) {
 		  classname[i].classList.remove("hidden");
 		}
-		document.getElementById('orderManagement').classList.remove("hidden");
-		document.getElementById('portfolioManagement').classList.remove("hidden");
-		document.getElementById('bikesManagement').classList.remove("hidden");
-		document.getElementById('chatsManagement').classList.remove("hidden");
-		document.getElementById('boxesManagement').classList.remove("hidden");
-		document.getElementById('tasksManagement').classList.remove("hidden");
-		document.getElementById('feedbacksManagement').classList.remove("hidden");
-		document.getElementById('maintenanceManagement').classList.remove("hidden");
-		document.getElementById('dashBoardManagement').classList.remove("hidden");
-	  }else if(response.companyConditions.administrator=="Y"){
-		  document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);
-		  $('.billsTitle').removeClass("hidden");
-		  document.getElementById('billsManagement').classList.remove("hidden");
-		  document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
 	  }
 	}
   }

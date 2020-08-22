@@ -1,3 +1,12 @@
+$( ".fleetmanager" ).click(function() {
+	initializeFields();
+    list_errors();    
+});
+
+
+
+
+
 var today=new Date();
 var dashboard_tabs = [$('#dashboardBodyBills'), $('#dashboardBodyBikes'), $('#dashboardBodySells'), $('#dashboardBodyCompanies')];
 
@@ -57,19 +66,6 @@ function list_errors() {
 				var i = 0;
 				var j = 0;
 				var dest = "";
-				/*
-				var dest="<table class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th>ID</th><th scope=\"col\"><span class=\"fr-inline\">Référence</span><span class=\"en-inline\">Bike Number</span><span class=\"nl-inline\">Bike Number</span></th><th>Description</th></thead><tbody>";
-				while (i< response.bike.img.number){   
-				    var bike=response.bike.img[i];
-				    if(bike.frameNumber == null){
-				        var bikeDescription = "N/A - " + bike.bikeID;
-				    }else{
-				        var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
-				    }
-				    var temp="<tr><td scope=\"row\">"+(i+1)+"</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\""+bike.bikeID+"\" data-toggle=\"modal\" href=\"#\" onclick=\"set_required_image('false')\">"+bikeDescription+"</a></td><td>Image manquante sur le vélo "+bikeDescription+"</td><td></tr>";
-				    dest=dest.concat(temp);
-				    i++;
-				}*/
 				while (j < response.bike.stock.number) {
 					var bike = response.bike.stock[i];
 					if (bike.frameNumber == null) {

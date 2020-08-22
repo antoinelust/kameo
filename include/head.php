@@ -1,23 +1,7 @@
 <?php if(!isset($_SESSION))
     session_start();
 
-require_once 'include/i18n/i18n.php'; //french by defaut, as many files as wanted can be added to the array
-$i18n = new i18n([
-    'lang/lang_mykameo_{LANGUAGE}.ini',
-    'lang/lang_velo_partage_{LANGUAGE}.ini',
-    'lang/lang_index_{LANGUAGE}.ini',
-    'lang/lang_velo_personnel_{LANGUAGE}.ini',
-    'lang/lang_gestion_flotte_{LANGUAGE}.ini',
-    'lang/lang_location_ttinclus_{LANGUAGE}.ini',
-    'lang/lang_accessoires_{LANGUAGE}.ini',
-    'lang/lang_bons_plans_{LANGUAGE}.ini',
-    'lang/lang_avantages_{LANGUAGE}.ini',
-    'lang/lang_cash4bike_{LANGUAGE}.ini',
-    'lang/lang_contact_{LANGUAGE}.ini',
-    'lang/lang_blog_{LANGUAGE}.ini'
-]);
-$i18n->init();
-
+require_once 'include/lang_management.php';
 
 ?>
 <head>

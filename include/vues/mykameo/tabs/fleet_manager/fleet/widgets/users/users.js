@@ -1,3 +1,22 @@
+$( ".fleetmanager" ).click(function() {
+    $.ajax({
+        url: 'apis/Kameo/initialize_counters.php',
+        type: 'post',
+        data: { "email": email, "type": "users"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                document.getElementById('counterUsers').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.usersNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.usersNumber+"</span>";
+            }
+        }
+    })
+})
+
+
+
+
 //FleetManager: Nombre d'utilisateurs | Displays the user list <table> by calling get_users_listing.php and creating it
   function get_users_listing(){
     var email= "<?php echo $user_data['EMAIL']; ?>";

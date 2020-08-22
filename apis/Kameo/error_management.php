@@ -23,6 +23,7 @@ if(isset($_GET['action'])){
             
             include 'connexion.php';
             $sql="SELECT * FROM company_actions aa WHERE not exists (select 1 from companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE)";
+            
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -42,7 +43,7 @@ if(isset($_GET['action'])){
             $response['company']['action']['number']=$i;
             
             include 'connexion.php';
-            $sql="SELECT * FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'";
+            $sql="SELECT * FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'";            
             if ($conn->query($sql) === FALSE){
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -62,7 +63,7 @@ if(isset($_GET['action'])){
             $response['bike']['stock']['number']=$i;
             
             include 'connexion.php';
-            $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START != 'NULL' and STAANN != 'D' and (CONTRACT_TYPE = 'leasing' OR CONTRACT_TYPE = 'renting') and BILLING_TYPE != 'paid'";
+            $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START is NOT NULL and STAANN != 'D' and (CONTRACT_TYPE = 'leasing' OR CONTRACT_TYPE = 'renting') and BILLING_TYPE != 'paid'";            
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -138,6 +139,7 @@ if(isset($_GET['action'])){
                     
                     include 'connexion.php';
                     $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID' and DATE_START = '$dateTempString2'";
+                    
                     $response['bike']['log'][$j]['bikeID']=$bikeID;
                     $response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
                     $response['bike']['log'][$j]['sql']=$sql;

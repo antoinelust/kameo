@@ -11,6 +11,8 @@ $feedback=isset($_GET['feedback']) ? $_GET['feedback'] : NULL; //Used by: login_
 $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
 include 'apis/Kameo/connexion.php';    
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
+$token = getBearerToken();
 
 
 include 'include/head.php';
@@ -38,7 +40,7 @@ if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected
   //@TODO: Replace email chech with authentication token
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE EMAIL='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -517,16 +519,10 @@ if($token==NULL){ //Not connected
 <?php include 'include/vues/mykameo/widgets/feedback/feedback.html'; /**@TODO: FIX THE API TO SEND MAIL **/
 ?>
 
-<script type="text/javascript" src="js/initialize_counters.js"></script>
 <script type="text/javascript" src="js/maintenance_management.js"></script>
 <script type="text/javascript">
 window.addEventListener("DOMContentLoaded", function(event) {
 	$( ".fleetmanager" ).click(function() {
-    /** DASHBOARD **/
-    list_errors();
-    initialize_task_owner_sales_selection();
-
-		initializeFields();
 
 		hideResearch();
 		var date=new Date();
@@ -681,44 +677,61 @@ function listPortfolioBikes(){
 <!-- FLEET MANAGER WIDGETS -->
 <?php
   /** FLEET **/
+    
   //BIKES
-  include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/bikes/main.php';
+    if(get_user_permissions("fleetManager", $token)){ 
+        include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/bikes/main.php';
+    }
   //USERS
-  include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/users/main.php';
+    if(get_user_permissions("fleetManager", $token)){ 
+        include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/users/main.php';
+    }
+  //ORDERS
+    if(get_user_permissions("fleetManager", $token)){
+        include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/orders/main.php';    
+    }
+    
   //RESERVATIONS
-  include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/reservations/main.php';
+    if(get_user_permissions("fleetManager", $token)){
+        include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/reservations/main.php';
+    }
   /** @TODO: CREATE SCRIPT & include 'include/vues/tabs/fleet_manager/fleet/widgets/reservations/update_reservation.html'; **/
 
   /** SETTINGS **/
   //CONDITIONS
-  include 'include/vues/mykameo/tabs/fleet_manager/settings/widgets/conditions/main.php';
+    if(get_user_permissions("fleetManager", $token)){
+        include 'include/vues/mykameo/tabs/fleet_manager/settings/widgets/conditions/main.php';
+    }
 
   /** ADMIN **/
-  //CUSTOMERS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
-  //ORDERS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
-  //PORTFOLIO
-  /** @TODO: Add a delete confirmation widget **/
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
-  //MANAGE BIKES
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
-  //CHATS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/chats/main.php';
-  //CASHFLOW
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
-  //FEEDBACKS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/feedbacks/main.php';
-  //MAINTENANCES
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
-  //DASHBOARD
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
-  //BILLS
-  include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
-  //BOXES
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
-  //TASKS
-  include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
+    if(get_user_permissions("admin", $token)){
+    
+        //CUSTOMERS
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
+        //ORDERS
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
+        //PORTFOLIO
+        /** @TODO: Add a delete confirmation widget **/
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
+        //MANAGE BIKES
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
+        //CHATS
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/chats/main.php';
+        //CASHFLOW
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
+        //FEEDBACKS
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/feedbacks/main.php';
+        //MAINTENANCES
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
+        //DASHBOARD
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
+        //BILLS
+        include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
+        //BOXES
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
+        //TASKS
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
+    }
 ?>
 
 <?php } ?>

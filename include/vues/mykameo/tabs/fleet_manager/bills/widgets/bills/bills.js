@@ -18,7 +18,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
             $('#widget-addBill-form input[name=widget-addBill-form-file]').removeClass("required");
         }
     });
-    
+    document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
     
 });
 
