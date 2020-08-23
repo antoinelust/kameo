@@ -19,7 +19,7 @@ require_once 'include/lang_management.php';
 	<title class="nl">KAMEO Bikes | Fiets oplossingen voor bedrijven</title>
 	
 	<!-- Bootstrap Core CSS -->
-	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'">
 	<link href="/vendor/animateit/animate.min.css" rel="stylesheet" media="print" onload="this.media='all'">
 	<!-- vendor css -->

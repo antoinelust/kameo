@@ -237,23 +237,22 @@ function retrieve_command_fleet(ID){
                     
                     var element = document.getElementById("confirmCommandButton");
                     element.classList.add("hidden");
-                    
-                    document.getElementById('initializeRefuseCommandButton').addEventListener('click', function() { 
-
-                          var element = document.getElementById("widget-refuseCommand-form");
-                          element.classList.remove("hidden");
-
-                          var element = document.getElementById("initializeRefuseCommandButton");
-                          element.classList.add("hidden");
-
-                          var element = document.getElementById("confirmCommandButton");
-                          element.classList.add("hidden");
-
-                    }, false);
-                    
-                    
                 }
-                
+                    
+                document.getElementById('initializeRefuseCommandButton').addEventListener('click', function() { 
+
+                      var element = document.getElementById("widget-refuseCommand-form");
+                      element.classList.remove("hidden");
+
+                      var element = document.getElementById("initializeRefuseCommandButton");
+                      element.classList.add("hidden");
+
+                      var element = document.getElementById("confirmCommandButton");
+                      element.classList.add("hidden");
+
+                }, false);
+                    
+                                
                 $('#widget-orderFleet-form input[name=emailUser]').val(response.order.email);
                 $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
             }

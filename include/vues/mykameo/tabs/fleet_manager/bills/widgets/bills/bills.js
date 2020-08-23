@@ -22,6 +22,23 @@ window.addEventListener("DOMContentLoaded", function(event) {
     
 });
 
+
+$( ".fleetmanager" ).click(function() {
+    $.ajax({
+        url: 'apis/Kameo/initialize_counters.php',
+        type: 'post',
+        data: { "email": email, "type": "bills"},
+        success: function(response){
+            if(response.response == 'error') {
+                console.log(response.message);
+            }
+            if(response.response == 'success'){
+                document.getElementById('counterBills').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.billsNumber+"\" data-from=\"0\" data-seperator=\"true\">"+response.billsNumber+"</span>";
+            }
+        }
+    })
+})
+
 function construct_form_for_billing_status_update(ID){
   $.ajax({
     url: 'apis/Kameo/get_billing_details.php',
@@ -546,9 +563,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     dest=dest.concat("</tr>");
                     
                     if(response.update){
-                        if(response.bill[i].sent=='0'){
-                            
-                                                                
+                        if(response.bill[i].sent=='0'){                                                                
                             var temp3="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\"><i class=\"fa fa-file\"></i></a><input type=\"text\" class=\"form-control required hidden ID\" value=\""+response.bill[i].ID+"\" /></a></td>";
                             dest3=dest3.concat(temp3);
                             var temp3="<td>"+response.bill[i].company+"</a></td>";

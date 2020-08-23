@@ -10,7 +10,7 @@ if(!isset($_SESSION))
 
 include 'globalfunctions.php';
 
-require_once dirname(__FILE__).'/../../vendor/autoload.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
@@ -86,7 +86,7 @@ if($billType == "manual"){
 
     if(isset($_FILES['widget-addBill-form-file']))
     {     
-        $dossier = '../factures/';
+        $dossier = $_SERVER['DOCUMENT_ROOT'].'/factures/';
 
         $extensions = array('.pdf');
         $extension = strrchr($_FILES['widget-addBill-form-file']['name'], '.');
@@ -120,13 +120,7 @@ if($billType == "manual"){
 
         $fichier = $fileName.".pdf";
 
-         if(move_uploaded_file($_FILES['widget-addBill-form-file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-         {
-            $upload=true;
-            $path= $dossier . $fichier;
-         }
-         else
-         {
+         if(!move_uploaded_file($_FILES['widget-addBill-form-file']['tmp_name'], $dossier . $fichier)){
               errorMessage("ES0024");
          }
 

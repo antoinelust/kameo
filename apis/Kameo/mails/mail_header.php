@@ -1,12 +1,12 @@
 <?php
 
-$body="<!doctype html>
+    $body = "<!doctype html>
     <html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">
         <head>
             <meta charset=\"UTF-8\">
             <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
             <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-            <title>$subject</title>
+            <title>Kameo Bikes - Nouveau mail</title>
 
         <style type=\"text/css\">
             p{
@@ -158,7 +158,7 @@ $body="<!doctype html>
         @section Header Container Style
         */
             #templateHeader{
-                /*@editable*/background-color:#FFFFFF;
+                /*@editable*/background-color:#3cb396;
                 /*@editable*/background-image:none;
                 /*@editable*/background-repeat:no-repeat;
                 /*@editable*/background-position:center;
@@ -479,6 +479,6 @@ $body="<!doctype html>
                 /*@editable*/line-height:150% !important;
             }
 
-    }</style></head>"
+    }</style></head>";
     
 ?>

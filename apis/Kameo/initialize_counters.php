@@ -152,6 +152,20 @@ if($type=="conditions"){
     die;
 }
 
+if($type=="bills"){
+
+    include 'connexion.php';
+    $sql="SELECT COUNT(1) AS 'SOMME' FROM factures WHERE FACTURE_PAID='0' AND COMPANY='$company'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql); 
+    $resultat = mysqli_fetch_assoc($result);
+    $response['billsNumber']=$resultat['SOMME'];
+    $conn->close();
+}
 
 
 if($company=='KAMEO'){
@@ -387,19 +401,6 @@ if($company=='KAMEO'){
     $conn->close();
     $response['maintenancesNumberGlobal']=$result->num_rows;
 
-}else{
-
-    include 'connexion.php';
-    $sql="SELECT COUNT(1) AS 'SOMME' FROM factures WHERE FACTURE_PAID='0' AND COMPANY='$company'";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result = mysqli_query($conn, $sql); 
-    $resultat = mysqli_fetch_assoc($result);
-    $response['billsNumber']=$resultat['SOMME'];
-    $conn->close();
 }
 
 

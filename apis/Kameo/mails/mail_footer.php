@@ -1,6 +1,5 @@
 <?php
-
-$body=$body."<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnTextBlock\" style=\"min-width:100%;\">
+    $body=$body."</table><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnTextBlock\" style=\"min-width:100%;\">
         <tbody class=\"mcnTextBlockOuter\">
             <tr>
                 <td valign=\"top\" class=\"mcnTextBlockInner\" style=\"padding-top:9px;\">
@@ -73,28 +72,29 @@ $body=$body."<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100
                                             <td align=\"center\" valign=\"top\">
                                             <![endif]-->
 
+
                                                 <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"display:inline;\">
-                                                <tbody><tr>
-                                                    <td valign=\"top\" style=\"padding-right:10px; padding-bottom:9px;\" class=\"mcnFollowContentItemContainer\">
-                                                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnFollowContentItem\">
-                                                            <tbody><tr>
-                                                                <td align=\"left\" valign=\"middle\" style=\"padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;\">
-                                                                    <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"\">
-                                                                        <tbody><tr>
-                                                                            
-                                                                                <td align=\"center\" valign=\"middle\" width=\"24\" class=\"mcnFollowIconContent\">
-                                                                                    <a href=\"https://www.facebook.com/tbveloelectrique\" target=\"_blank\"><img src=\"https://cdn-images.mailchimp.com/icons/social-block-v2/outline-color-facebook-48.png\" alt=\"Facebook\" style=\"display:block;\" height=\"24\" width=\"24\" class=\"\"></a>
-                                                                                </td>
-                                                                            
-                                                                            
-                                                                        </tr>
-                                                                    </tbody></table>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody></table>
-                                                    </td>
-                                                </tr>
-                                            </tbody></table>
+                                                    <tbody><tr>
+                                                        <td valign=\"top\" style=\"padding-right:10px; padding-bottom:9px;\" class=\"mcnFollowContentItemContainer\">
+                                                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnFollowContentItem\">
+                                                                <tbody><tr>
+                                                                    <td align=\"left\" valign=\"middle\" style=\"padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;\">
+                                                                        <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"\">
+                                                                            <tbody><tr>
+
+                                                                                    <td align=\"center\" valign=\"middle\" width=\"24\" class=\"mcnFollowIconContent\">
+                                                                                        <a href=\"https://www.facebook.com/kameobikes/\" target=\"_blank\"><img src=\"https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-facebook-48.png\" alt=\"Facebook\" style=\"display:block;\" height=\"24\" width=\"24\" class=\"\"></a>
+                                                                                    </td>
+
+
+                                                                            </tr>
+                                                                        </tbody></table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody></table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
 
                                             <!--[if mso]>
                                             </td>
@@ -104,29 +104,29 @@ $body=$body."<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100
                                             <td align=\"center\" valign=\"top\">
                                             <![endif]-->
 
-                                                
+
                                                 <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"display:inline;\">
-                                                <tbody><tr>
-                                                    <td valign=\"top\" style=\"padding-right:10px; padding-bottom:9px;\" class=\"mcnFollowContentItemContainer\">
-                                                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnFollowContentItem\">
-                                                            <tbody><tr>
-                                                                <td align=\"left\" valign=\"middle\" style=\"padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;\">
-                                                                    <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"\">
-                                                                        <tbody><tr>
-                                                                            
-                                                                                <td align=\"center\" valign=\"middle\" width=\"24\" class=\"mcnFollowIconContent\">
-                                                                                    <a href=\"https://www.instagram.com/tbveloelectrique/\" target=\"_blank\"><img src=\"https://cdn-images.mailchimp.com/icons/social-block-v2/outline-color-instagram-48.png\" alt=\"Instagram\" style=\"display:block;\" height=\"24\" width=\"24\" class=\"\"></a>
-                                                                                </td>
-                                                                            
-                                                                            
-                                                                        </tr>
-                                                                    </tbody></table>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody></table>
-                                                    </td>
-                                                </tr>
-                                            </tbody></table>
+                                                    <tbody><tr>
+                                                        <td valign=\"top\" style=\"padding-right:10px; padding-bottom:9px;\" class=\"mcnFollowContentItemContainer\">
+                                                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnFollowContentItem\">
+                                                                <tbody><tr>
+                                                                    <td align=\"left\" valign=\"middle\" style=\"padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;\">
+                                                                        <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"\">
+                                                                            <tbody><tr>
+
+                                                                                    <td align=\"center\" valign=\"middle\" width=\"24\" class=\"mcnFollowIconContent\">
+                                                                                        <a href=\"https://www.instagram.com/kameobikes/\" target=\"_blank\"><img src=\"https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-instagram-48.png\" alt=\"Link\" style=\"display:block;\" height=\"24\" width=\"24\" class=\"\"></a>
+                                                                                    </td>
+
+
+                                                                            </tr>
+                                                                        </tbody></table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody></table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
 
                                             <!--[if mso]>
                                             </td>
@@ -137,7 +137,28 @@ $body=$body."<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100
                                             <![endif]-->
 
 
-                                               
+                                                <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"display:inline;\">
+                                                    <tbody><tr>
+                                                        <td valign=\"top\" style=\"padding-right:10px; padding-bottom:9px;\" class=\"mcnFollowContentItemContainer\">
+                                                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnFollowContentItem\">
+                                                                <tbody><tr>
+                                                                    <td align=\"left\" valign=\"middle\" style=\"padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;\">
+                                                                        <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"\">
+                                                                            <tbody><tr>
+
+                                                                                    <td align=\"center\" valign=\"middle\" width=\"24\" class=\"mcnFollowIconContent\">
+                                                                                        <a href=\"www.kameobikes.com\" target=\"_blank\"><img src=\"https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-link-48.png\" alt=\"Website\" style=\"display:block;\" height=\"24\" width=\"24\" class=\"\"></a>
+                                                                                    </td>
+
+
+                                                                            </tr>
+                                                                        </tbody></table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody></table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
 
                                             <!--[if mso]>
                                             </td>
@@ -148,7 +169,28 @@ $body=$body."<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100
                                             <![endif]-->
 
 
-                                                
+                                                <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"display:inline;\">
+                                                    <tbody><tr>
+                                                        <td valign=\"top\" style=\"padding-right:0; padding-bottom:9px;\" class=\"mcnFollowContentItemContainer\">
+                                                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnFollowContentItem\">
+                                                                <tbody><tr>
+                                                                    <td align=\"left\" valign=\"middle\" style=\"padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;\">
+                                                                        <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"\">
+                                                                            <tbody><tr>
+
+                                                                                    <td align=\"center\" valign=\"middle\" width=\"24\" class=\"mcnFollowIconContent\">
+                                                                                        <a href=\"https://www.linkedin.com/company/14053262/admin/\" target=\"_blank\"><img src=\"https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-linkedin-48.png\" alt=\"LinkedIn\" style=\"display:block;\" height=\"24\" width=\"24\" class=\"\"></a>
+                                                                                    </td>
+
+
+                                                                            </tr>
+                                                                        </tbody></table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody></table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
 
                                             <!--[if mso]>
                                             </td>
@@ -175,7 +217,7 @@ $body=$body."<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100
         <tbody class=\"mcnDividerBlockOuter\">
             <tr>
                 <td class=\"mcnDividerBlockInner\" style=\"min-width:100%; padding:18px;\">
-                    <table class=\"mcnDividerContent\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"min-width: 100%;border-top: 2px solid #F6E948;\">
+                    <table class=\"mcnDividerContent\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"min-width: 100%;border-top: 2px solid #3CB395;\">
                         <tbody><tr>
                             <td>
                                 <span></span>
@@ -191,33 +233,30 @@ $body=$body."<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100
         </tbody>
     </table><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnTextBlock\" style=\"min-width:100%;\">
         <tbody class=\"mcnTextBlockOuter\">
-            
-                    
-                        <tbody class=\"mcnTextBlockOuter\">
-        <tr>
-            <td valign=\"top\" class=\"mcnTextBlockInner\" style=\"padding-top:9px;\">
-              	<!--[if mso]>
-				<table align=\"left\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" style=\"width:100%;\">
-				<tr>
-				<![endif]-->
-			    
-				<!--[if mso]>
-				<td valign=\"top\" width=\"600\" style=\"width:600px;\">
-				<![endif]-->
-                <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:100%; min-width:100%;\" width=\"100%\" class=\"mcnTextContentContainer\">
-                    <tbody><tr>
-                        
-                        <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
-                        
-                            <em>Copyright © 2020 tb-velo-electrique.be, Tous droits réservés.</em><br>
-<br>
-<strong>info@tb-velo-electrique.be</strong><br>
-<br>
-Vous ne voulez plus recevoir nos mails?<br>
-Merci de nous écrire.
-                        </td>
-                    </tr>
-                </tbody></table>
+            <tr>
+                <td valign=\"top\" class=\"mcnTextBlockInner\" style=\"padding-top:9px;\">
+                    <!--[if mso]>
+                    <table align=\"left\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" style=\"width:100%;\">
+                    <tr>
+                    <![endif]-->
+
+                    <!--[if mso]>
+                    <td valign=\"top\" width=\"600\" style=\"width:600px;\">
+                    <![endif]-->
+                    <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:100%; min-width:100%;\" width=\"100%\" class=\"mcnTextContentContainer\">
+                        <tbody><tr>
+
+                            <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
+
+                                <em>Copyright © 2020 KAMEO Bikes, Tous droits réservés.</em><br>
+    <br>
+    <strong>info@kameobikes.com</strong><br>
+    <br>
+    Vous ne voulez plus recevoir nos mails?<br>
+    Merci de simplement répondre 'STOP' à ce mail.
+                            </td>
+                        </tr>
+                    </tbody></table>
                     <!--[if mso]>
                     </td>
                     <![endif]-->
@@ -247,5 +286,5 @@ Merci de nous écrire.
             </center>
         </body>
     </html>
-    ";     
+    ";
 ?>

@@ -88,13 +88,18 @@ if(isset($_POST['action'])){
             }
             $mail->AddCC('julien@kameobikes.com', 'Julien Jamar');
         }else{
-            $mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
+            $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
         }
+        $mail->IsHTML(true);
+        $mail->CharSet = 'UTF-8';
+        
         
         $mail->From = $email;
         $mail->FromName = $firstName.' '.$name;
         $mail->AddReplyTo($email, $name);
-        $subject="Nouvelle commande de vélo - ".$email;
+        $subject="Nouvelle commande de vélo de la part de ".$firstName.' '.$name;
+        $mail->Subject = $subject;
+        
 
         include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
         
@@ -174,9 +179,9 @@ if(isset($_POST['action'])){
 
                                     <h3>Nouvelle commande !&nbsp;</h3>
 
-        <p>Nouvelle commande de la part de $email:<br>
+        <p>Nouvelle commande de la part de $firstName $name.<br>
         <br>
-        Rendez-vous sur votre interface MyKameo pour plus d'informations.</p>
+        Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo.php\">MyKameo</a> pour plus d'informations.</p>
                                 </td>
                             </tr>
                         </tbody></table>
