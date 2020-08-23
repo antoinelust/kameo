@@ -33,7 +33,21 @@ echo '<style media="screen">
     }
 </style>
 <script type="text/javascript">
-  const feedback = "'.$feedback.'";
+  const feedback = "'.$feedback.'";  
+  
+  window.addEventListener("DOMContentLoaded", (event) => {';
+    if(get_user_permissions("search", $token)){
+        echo '$("#reserver").addClass("active"); ';
+    }else if(get_user_permissions("order", $token)){
+        echo '$("#orderBike").addClass("active"); ';
+        echo '$("#orderBikeID").addClass("active"); ';
+        echo 'get_command_user(email);';
+    }else if(get_user_permissions("fleetManager", $token)){
+        echo '$("#fleetmanager").addClass("active"); '; 
+        echo '$("#fleetmanagerID").addClass("active"); ';
+    }
+
+  echo '});
 </script>';
 
 if($token==NULL){ //Not connected
@@ -49,6 +63,7 @@ if($token==NULL){ //Not connected
   <script type="text/javascript">
     const user_ID = "'.$user_ID.'";
     const user_data = JSON.parse(\''.json_encode($user_data).'\');
+    var email=user_data["EMAIL"];  
   </script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
   <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
@@ -96,19 +111,31 @@ if($token==NULL){ //Not connected
               <div class="col-md-12">
                 <div id="tabs-05c" class="tabs color tabs radius">
                   <ul id="mainTab" class="tabs-navigation">
-                  	<li class="hidden orderBike"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i><?=L::tabs_order_title;?></a></li>
-                  	<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i><?=L::tabs_book_title;?></a> </li>
-                  	<li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i><?=L::tabs_reservations_title;?></a> </li>
-                  	<li class="hidden fleetmanager"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i><?=L::tabs_fleet_title;?></a> </li>
-                  	<?php /**@TODO: <li><a href="#routes" class="routes"><i class="fa fa-road"></i>Itinéraires</a></li>-->**/ ?>
+                      <?php
+                      if(get_user_permissions("order", $token)){
+                  	     echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike"><i class="fa fa-user"></i>'.L::tabs_order_title.'</a></li>';
+                  }
+                      if(get_user_permissions("search", $token)){
+                            echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i><?=L::tabs_book_title;?></a> </li>
+                            <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i><?=L::tabs_reservations_title;?></a> </li>';
+                      }
+                      if(get_user_permissions("fleetManager", $token)){
+                      
+                  	     echo '<li class="fleetmanager" id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>'.L::tabs_fleet_title.'</a> </li>';
+                      }
+                ?>
                   </ul>
                   <div class="tabs-content">
                     <?php
                       include 'include/vues/mykameo/tabs/order/order_tab.html';	//TAB 1 @TODO: REFACTOR
                       /** @TODO: REPARE THE FACT THAT THE BOOK TAB SCRIPT DISPLAYS THE CONTACT ASSISTANCE BUTTON BECAUSE IT'S NOT USED WHEN PERSONNAL BIKE ONLY **/
-          						include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
-                      include 'include/vues/mykameo/tabs/reservations/main.php';	//TAB 3 @TODO: REFACTOR
-          						include 'include/vues/mykameo/tabs/fleet_manager/main.php';	//TAB 4 @TODO: REFACTOR ?>
+                      if(get_user_permissions("search", $token)){
+                          include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
+                          include 'include/vues/mykameo/tabs/reservations/main.php';	//TAB 3 @TODO: REFACTOR
+                      }    
+    
+          		      include 'include/vues/mykameo/tabs/fleet_manager/main.php';	//TAB 4 @TODO: REFACTOR ?>
+                      
                   </div>
                   <?php include 'include/vues/mykameo/tabs/order/widgets/order.html'; ?>
                 </div>

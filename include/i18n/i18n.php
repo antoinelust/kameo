@@ -138,6 +138,10 @@ class i18n {
 					break 2;
 				}
         }
+        
+        //delete once we have all languages available
+        $this->appliedLang="fr";
+        
         if ($this->appliedLang == NULL) {
             throw new RuntimeException('No language file was found.');
         }

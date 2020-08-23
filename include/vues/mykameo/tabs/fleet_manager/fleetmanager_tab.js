@@ -1,53 +1,52 @@
 //FONCTION QUI GERE LES PERMISSION (à refaire), SEPARER LA PARTIE QUI GERE LES CONDITIONS
 $( ".fleetmanager" ).click(function() {
 	temp_init();
-	//initialize_counters();
 	list_maintenances();
 });
 function temp_init(){
-var emailArray;
-var email= "<?php echo $user_data['EMAIL'];?>";
-$.ajax({
-  url: 'apis/Kameo/get_company_conditions.php',
-  type: 'post',
-  data: { "email": email, "id": ""},
+    var emailArray;
+    var email= "<?php echo $user_data['EMAIL'];?>";
+    $.ajax({
+      url: 'apis/Kameo/get_company_conditions.php',
+      type: 'post',
+      data: { "email": email, "id": ""},
 
-  success: function(response){
-	if(response.response == 'error') {
-	  console.log(response.message);
-	}
-	if(response.response == 'success'){
-	  $('#widget-updateCompanyConditions-form input[name=action]').val("update");
+      success: function(response){
+        if(response.response == 'error') {
+          console.log(response.message);
+        }
+        if(response.response == 'success'){
+          $('#widget-updateCompanyConditions-form input[name=action]').val("update");
 
-	  if(response.update){
-		document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
-		document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);
-		document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
-		document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
+          if(response.update){
+            document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
+            document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);
+            document.getElementsByClassName('reservationlisting')[0].addEventListener('click', function () { reservation_listing()}, false);
+            document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
 
-		document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
-		$('.tasksManagerClick').click(function(){
-			list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user_data['EMAIL'] ?>');
-			generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
-		});
-		$('#offerManagerClick').click(function(){
-			list_contracts_offers('*');
-			generateCashGraphic();
-		});
-		$('.ordersManagerClick').click(function(){get_orders_listing()});
-		document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
-		document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
-		document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-		document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-		document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
-		var classname = document.getElementsByClassName('administrationKameo');
-		for (var i = 0; i < classname.length; i++) {
-		  classname[i].classList.remove("hidden");
-		}
-	  }
-	}
-  }
-})
+            document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
+            $('.tasksManagerClick').click(function(){
+                list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user_data['EMAIL'] ?>');
+                generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
+            });
+            $('#offerManagerClick').click(function(){
+                list_contracts_offers('*');
+                generateCashGraphic();
+            });
+            $('.ordersManagerClick').click(function(){get_orders_listing()});
+            document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
+            document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
+            document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+            document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
+            document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
+            var classname = document.getElementsByClassName('administrationKameo');
+            for (var i = 0; i < classname.length; i++) {
+              classname[i].classList.remove("hidden");
+            }
+          }
+        }
+      }
+    })
 }
 function generateCashGraphic()
   {

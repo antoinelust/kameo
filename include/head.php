@@ -20,21 +20,21 @@ require_once 'include/lang_management.php';
 	
 	<!-- Bootstrap Core CSS -->
 	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="print" onload="this.media='all'">
-	<link href="/vendor/animateit/animate.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+	<link href="/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+	<link href="/vendor/animateit/animate.min.css" rel="stylesheet">
 	<!-- vendor css -->
 	<link href="/vendor/owlcarousel/owl.carousel.css" rel="stylesheet">
 	<link href="/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 	<!-- Template base -->
-	<link href="/css/theme-base.css" rel="stylesheet" media="print" onload="this.media='all'">
+	<link href="/css/theme-base.css" rel="stylesheet">
 	<!-- Template elements -->
-	<link href="/css/theme-elements.css" rel="stylesheet" media="print" onload="this.media='all'">
+	<link href="/css/theme-elements.css" rel="stylesheet">
     <!-- Template notifications -->
 	<link href="/css/notifications.css" rel="stylesheet">
     <!-- DateTimePicker css -->
-    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 	<!-- Responsive classes -->
-	<link href="/css/responsive.css" rel="stylesheet" media="print" onload="this.media='all'">
+	<link href="/css/responsive.css" rel="stylesheet">
 	<!-- Template color -->
 	<link href="/css/color-variations/blue.css" rel="stylesheet" type="text/css" media="screen" title="blue">
 	<!-- LOAD GOOGLE FONTS -->

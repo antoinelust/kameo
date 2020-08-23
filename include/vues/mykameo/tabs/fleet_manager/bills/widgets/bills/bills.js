@@ -563,7 +563,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     dest=dest.concat("</tr>");
                     
                     if(response.update){
-                        if(response.bill[i].sent=='0'){                                                                
+                        if(response.bill[i].sent=='0'){       
                             var temp3="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\"><i class=\"fa fa-file\"></i></a><input type=\"text\" class=\"form-control required hidden ID\" value=\""+response.bill[i].ID+"\" /></a></td>";
                             dest3=dest3.concat(temp3);
                             var temp3="<td>"+response.bill[i].company+"</a></td>";
@@ -572,11 +572,11 @@ function get_bills_listing(company, sent, paid, direction, email) {
                             dest3=dest3.concat(temp3);
                             var temp3="<td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td>";                 
                             dest3=dest3.concat(temp3);
-                            var temp3="<td><input type=\"text\" class=\"form-control required email\" value=\""+response.emailContactBilling+"\"/></td>";                 
+                            var temp3="<td><input type=\"text\" class=\"form-control required email\" value=\""+response.bill[i].emailContactBilling+"\"/></td>";                 
                             dest3=dest3.concat(temp3);
-                            var temp3="<td><input type=\"text\" class=\"form-control required firstName\" value=\""+response.firstNameContactBilling+"\"/></td>";                 
+                            var temp3="<td><input type=\"text\" class=\"form-control required firstName\" value=\""+response.bill[i].firstNameContactBilling+"\"/></td>";                 
                             dest3=dest3.concat(temp3);
-                            var temp3="<td><input type=\"text\" class=\"form-control required lastName\" value=\""+response.lastNameContactBilling+"\"/></td>";                 
+                            var temp3="<td><input type=\"text\" class=\"form-control required lastName\" value=\""+response.bill[i].lastNameContactBilling+"\"/></td>";                 
                             dest3=dest3.concat(temp3);
                             var temp3="<td><input type=\"text\" class=\"form-control required hidden date\" value=\""+response.bill[i].date+"\"/></td>";     
                             dest3=dest3.concat(temp3);                                
