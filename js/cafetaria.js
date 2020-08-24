@@ -34,7 +34,6 @@ function load_cafetaria(){
             }
             if(response.response == 'success'){
 				var $grid = $('.grid').isotope();
-				//If elements are already in isotope, do nothing
 				if (($('.grid').isotope('getItemElements').length == 0))
 				{
 					for (var i=0; i<response.bikeNumber; i++){                            

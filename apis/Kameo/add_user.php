@@ -58,7 +58,6 @@ if(!isset($_POST['company']) || $_POST['company']==''){
 
 if($generatePassword){
     $password_unencrypted=uniqid();
-	$encodedPass = base64_encode(hash('sha512', $password_unencrypted, true));
     $pass=password_hash($encodedPass, PASSWORD_DEFAULT);
 }else if(isset($_POST['password'])){
     $password_unencrypted=$_POST['password'];

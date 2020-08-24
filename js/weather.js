@@ -4,7 +4,6 @@ function get_meteo(date, address){
 	  type: 'post',
 	  data: { "date": date, "address": address},
       success: function(text){
-          console.log(text);
       }
         
 	});

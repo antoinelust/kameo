@@ -47,7 +47,7 @@ switch($_SERVER["REQUEST_METHOD"])
                 $leasingDuration=36;                                
                 
                 
-				$stmt = $conn->prepare("SELECT COMPANY from customer_referential WHERE TOKEN=?");
+				$stmt = $conn->prepare("SELECT COMPANY from customer_referential WHERE TOKEN=?");                
 				$stmt->bind_param("s", $token);
 				$stmt->execute();
 				$company_reference = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['COMPANY'];

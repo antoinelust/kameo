@@ -14,6 +14,11 @@ $( ".fleetmanager" ).click(function() {
     })
 })
 
+window.addEventListener("DOMContentLoaded", (event) => {
+    document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);
+});
+
+
 
 
 

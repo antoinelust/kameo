@@ -43,7 +43,7 @@ function getBearerToken() {
 
 function authenticate($token){
     if($token != NULL){
-        include 'connexion.php';
+        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
         $stmt = $conn->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
         $stmt->bind_param("s", $token);
         $stmt->execute();
@@ -63,7 +63,7 @@ function get_user_permissions($accessDemand, $token){
 			else
 				return (in_array($accessDemand, $_SESSION['permissions'], TRUE));
 		}else{
-			include 'connexion.php';
+			include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 			$stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
 			$stmt->bind_param("s", $token);
 			$stmt->execute();    

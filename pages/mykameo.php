@@ -113,11 +113,11 @@ if($token==NULL){ //Not connected
                   <ul id="mainTab" class="tabs-navigation">
                       <?php
                       if(get_user_permissions("order", $token)){
-                  	     echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike"><i class="fa fa-user"></i>'.L::tabs_order_title.'</a></li>';
+                  	     echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>'.L::tabs_order_title.'</a></li>';
                   }
                       if(get_user_permissions("search", $token)){
-                            echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i><?=L::tabs_book_title;?></a> </li>
-                            <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i><?=L::tabs_reservations_title;?></a> </li>';
+                            echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>'.L::tabs_book_title.'</a> </li>
+                            <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>'.L::tabs_reservations_title.'</a> </li>';
                       }
                       if(get_user_permissions("fleetManager", $token)){
                       

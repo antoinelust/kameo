@@ -6,11 +6,6 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-require_once('../../include/php-mailer/PHPMailerAutoload.php');
-$mail = new PHPMailer();
-
-
-
 // Form Fields
 $id = $_POST["id"];
 $firstNameContactBilling = $_POST["firstName"];
@@ -52,7 +47,7 @@ $conn->close();
 
 $companyName=$resultat['COMPANY_NAME'];
 
-require_once('../../include/php-mailer/PHPMailerAutoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 $mail->IsHTML(true);                                    // Set email format to HTML
 $mail->CharSet = 'UTF-8';
@@ -73,7 +68,7 @@ Bien à vous,<br><br>
 
 L'équipe Kameo Bikes";
 
-$file_to_attach = "../factures/".$fileName;
+$file_to_attach = $_SERVER['DOCUMENT_ROOT'].'/factures/'.$fileName;
 
 
 if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
