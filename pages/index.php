@@ -10,6 +10,7 @@
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header.php'; ?>
+        <?php include 'include/cookie_consent.php'; ?>
   <br>
   <h1 class="text-center text-uppercase text-medium" data-animation="fadeInUp"><?=L::header_title;?></h1>
   <img src="/images/background_new.jpg" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
@@ -256,6 +257,9 @@
 
 	<!-- Language management -->
 	<script type="text/javascript" src="/js/language.js"></script>
+
+    <!-- GDPR cookie consent bar -->
+    <script src="/js/cookie_consent.js"></script>
 
 <?php
   if(isset($_GET['hash'])){
