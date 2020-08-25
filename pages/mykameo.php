@@ -752,13 +752,17 @@ function listPortfolioBikes(){
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
         //DASHBOARD
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/dashboard/main.php';
-        //BILLS
-        include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
         //BOXES
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
         //TASKS
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
     }
+    
+    if(get_user_permissions("bills", $token)){
+        //BILLS
+        include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
+    }
+
 ?>
 
 <?php } ?>

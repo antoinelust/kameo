@@ -212,6 +212,7 @@ if(isset($_POST['action'])){
                 $getPrice=get_prices($resultat['PRICE_HTVA']);
                 
                 $response['order'][$i]['leasingPrice']=($getPrice['leasingPrice'])*(1-get_company_conditions($emailCustomer, NULL)['companyConditions']['discount']/100);
+                
 
                 $emailUser=$row['EMAIL'];
                 include 'connexion.php';
@@ -296,6 +297,7 @@ if(isset($_POST['action'])){
         
         $response['order']['priceHTVA']=$getPrice['HTVARetailPrice'];
         $response['order']['leasingPrice']=($getPrice['leasingPrice'])*(1-get_company_conditions($response['order']['email'], NULL)['companyConditions']['discount']/100);
+        $response['order']['discount']=get_company_conditions($response['order']['email'], NULL)['companyConditions']['discount'];
                     
         echo json_encode($response);
         die;

@@ -69,7 +69,7 @@ function get_orders_fleet_listing() {
               }else{
                   var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
               }
-            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManagerFleet\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\">"+response.order[i].ID+"</td></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+status+"</td><td>"+Math.round(response.order[i].leasingPrice*100)/100+" €/mois</td>";
+            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManagerFleet\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\">"+response.order[i].ID+"</td></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+status+"</td><td>"+Math.round(response.order[i].leasingPrice)+" €/mois</td>";
               
             if(response.order[i].status=="new"){
                 temp=temp.concat("<td><a class=\"text-green\" onclick=\"validate_command('"+response.order[i].ID+"')\">Confirmer</a></td>")

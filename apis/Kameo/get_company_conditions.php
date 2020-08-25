@@ -16,12 +16,14 @@ if(isset($_POST['email'])){
     die;
 }
 
-function get_company_conditions($email, $id){
+function get_company_conditions($email, $id, $company = NULL){    
 
+    $response['companyConditions']['administrator']="N";       
+    
+    include 'connexion.php';
+    
     if($email != NULL)
     {
-
-        include 'connexion.php';
         $sql="select * from customer_referential where EMAIL = '$email'";
 
         if ($conn->query($sql) === FALSE) {
@@ -31,26 +33,27 @@ function get_company_conditions($email, $id){
         }
         $result = mysqli_query($conn, $sql); 
         $resultat = mysqli_fetch_assoc($result);
-        $conn->close();   
 
         $company=$resultat['COMPANY'];
+        $response['companyConditions']['administrator']=$resultat['ADMINISTRATOR'];       
+        
+    }
+    if($company || $id){
+    
+    
         if($company!='KAMEO'){
             $response['update']=false;
         } else{
             $response['update']=true;
         }
 
-
-        $response['companyConditions']['administrator']=$resultat['ADMINISTRATOR'];       
-        include 'connexion.php';
-
         if($id){
             $sql="select * from conditions where ID='$id'";
         }else{
-            $sql="select * from conditions where COMPANY = '$company'";
+            $sql="select * from conditions where COMPANY = '$company' and name='generic'";
         }
 
-        if ($conn->query($sql) === FALSE) {
+        if ($conn->query($sql) === FALSE) {            
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
@@ -87,6 +90,7 @@ function get_company_conditions($email, $id){
         $response['companyConditions']['fridayDeposit']=$resultat['FRIDAY_DEPOSIT'];
         $response['companyConditions']['saturdayDeposit']=$resultat['SATURDAY_DEPOSIT'];
         $response['companyConditions']['sundayDeposit']=$resultat['SUNDAY_DEPOSIT'];
+        $response['companyConditions']['booking']=$resultat['BOOKING'];
         $response['companyConditions']['maxBookingsPerYear']=$resultat['MAX_BOOKINGS_YEAR'];
         $response['companyConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
         $response['companyConditions']['box']=$resultat['BOX_BOOKING'];

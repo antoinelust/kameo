@@ -18,47 +18,39 @@ $generatePassword=isset($_POST['generatePassword']) ? $_POST['generatePassword']
 $fleetManager=isset($_POST['fleetManager']) ? "Y" : "N";
 
 
-
-
-
-if(!isset($_POST['firstName']) || !isset($_POST['name']) || ((!isset($_POST['mail'])) && !isset($_POST['company']))){
+if(!isset($_POST['firstName']) || !isset($_POST['name']) || !isset($_POST['mail']) || ((!isset($_POST['requestor'])) && !isset($_POST['company']))){
 
     errorMessage("ES0012");
 }
 
 
 
-if(!isset($_POST['company']) || $_POST['company']==''){
-    $email=$_POST['mail'];
-    $name=$_POST['name'];
-    $firstName=$_POST['firstName'];
-    $requestor=$_POST['requestor'];
-    
-    include 'connexion.php';
-    $sql="select * from customer_referential where EMAIL='$requestor'";
 
-    if ($conn->query($sql) === FALSE) {
-    }
-    
-    $result = mysqli_query($conn, $sql);
-    $resultat = mysqli_fetch_assoc($result);
+$email=$_POST['mail'];
+$name=$_POST['name'];
+$firstName=$_POST['firstName'];
+$requestor=$_POST['requestor'];
 
-    $company=$resultat['COMPANY'];
-    
-}else if(isset($_POST['mail'])){
-    $email=$_POST['mail'];
-    $name=$_POST['name'];
-    $firstName=$_POST['firstName'];
-    $company=$_POST['company'];
-    $requestor=$_POST['requestor'];  
-}else{
+include 'connexion.php';
+$sql="select * from customer_referential where EMAIL='$requestor'";
 
-    errorMessage("ES0012");
+if ($conn->query($sql) === FALSE){
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;   
 }
+
+$result = mysqli_query($conn, $sql);
+$resultat = mysqli_fetch_assoc($result);
+
+$company=$resultat['COMPANY'];
+
+include 'get_company_conditions.php';
+$conditions=get_company_conditions(NULL, NULL, $company);        
 
 if($generatePassword){
     $password_unencrypted=uniqid();
-    $pass=password_hash($encodedPass, PASSWORD_DEFAULT);
+    $pass=password_hash($password_unencrypted, PASSWORD_DEFAULT);
 }else if(isset($_POST['password'])){
     $password_unencrypted=$_POST['password'];
     $pass=password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -66,11 +58,46 @@ if($generatePassword){
     errorMessage("ES0012");
 }
 
-$token = random_str();
+
+$duplicate=true;
+
+while($duplicate){
+    $token = random_str();
+    $sql="SELECT COUNT(1) as SOMME FROM customer_referential WHERE TOKEN='$token'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;   
+    }
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+    if($resultat['SOMME']>0){
+        $duplicate=true;
+    }else{
+        $duplicate=false;
+    }
+}
+
+
+$accessRights='';
+
+
+if($conditions['companyConditions']['cafeteria']=='Y'){
+    $accessRights=$accessRights.',order';
+}
+if($conditions['companyConditions']['booking']=='Y'){
+    $accessRights=$accessRights.',search';
+}
+if($fleetManager=='Y'){
+    $accessRights=$accessRights.',fleetManager';
+}
+if(substr($accessRights, 0, 1)==','){
+    $accessRights=substr($accessRights, 1, strlen($accessRights)-1);
+}
+
 
 include 'connexion.php';
-$sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN, TOKEN, ACCESS_RIGHTS) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', '', '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '', '$token', '')";
-
+$sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN, TOKEN, ACCESS_RIGHTS) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', '', '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '', '$token', '$accessRights')";
 
 if ($conn->query($sql) === FALSE) {
     if($conn->errno=="1062"){
@@ -81,27 +108,23 @@ if ($conn->query($sql) === FALSE) {
         die;   
     }
 }
-$conn->close();   
 
 
 
 foreach($_POST as $name => $value){
     if($name=="buildingAccess"){
         foreach($_POST['buildingAccess'] as $valueInArray) {
-            include 'connexion.php';
             $sql= "INSERT INTO  customer_building_access (USR_MAJ, EMAIL, BUILDING_CODE, STAANN) VALUES ('mykameo','$email', '$valueInArray', '')";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
                 die;
             }
-            $conn->close();   
         }
     }
         
     if($name=="bikeAccess"){
         foreach($_POST['bikeAccess'] as $valueInArray) {
-            include 'connexion.php';
             $sql= "INSERT INTO  customer_bike_access (USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('mykameo','$email', '$valueInArray', 'partage', '')";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);

@@ -8,7 +8,13 @@ include 'globalfunctions.php';
 
 
 // Form Fields
-$user = $_SESSION['userID'];
+
+include 'connexion.php';
+include 'authentication.php';
+$token = getBearerToken();
+
+
+$user = $_SESSION['ID'];
 $firstName = $_POST["widget-update-form-firstname"];
 $name = $_POST["widget-update-form-name"];
 $phone = $_POST["widget-update-form-phone"];
@@ -20,6 +26,8 @@ $workPostCode = $_POST["widget-update-form-work-post-code"];
 $workCity = $_POST["widget-update-form-work-city"];
 
 $newPasswordSwitch = $_POST["widget-update-form-password-switch"];
+
+
 
 if($newPasswordSwitch=="true"){
     $newPassword = $_POST["widget-update-form-password"];
@@ -37,10 +45,12 @@ if($newPasswordSwitch=="true"){
 }
      
 
-
 if( $_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    
 
      if($user != '') {
+                  
 
          //Vérifier pour faire passer connexion.php via une fonction, pour éviter de surcharger des variables telles que $password.
         include 'connexion.php';
@@ -59,9 +69,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
         include 'connexion.php';
 
         if($newPasswordSwitch=="true"){
-            $sql = "update customer_referential set NOM='$name', NOM_INDEX='$name', PRENOM='$firstName', PRENOM_INDEX='$firstName',  PHONE='$phone', ADRESS='$adress', POSTAL_CODE='$postCode', CITY='$city', WORK_ADRESS='$workAdress', WORK_POSTAL_CODE='$workPostCode', WORK_CITY='$workCity', PASSWORD='$new_password_hash' where ID='$ID'";
+            $sql = "update customer_referential set NOM='$name', NOM_INDEX='$name', PRENOM='$firstName', PRENOM_INDEX='$firstName',  PHONE='$phone', ADRESS='$adress', POSTAL_CODE='$postCode', CITY='$city', WORK_ADRESS='$workAdress', WORK_POSTAL_CODE='$workPostCode', WORK_CITY='$workCity', PASSWORD='$new_password_hash' where TOKEN='$token'";
         }else{
-            $sql = "update customer_referential set NOM='$name', NOM_INDEX='$name', PRENOM='$firstName', PRENOM_INDEX='$firstName',  PHONE='$phone', ADRESS='$adress', POSTAL_CODE='$postCode', CITY='$city', WORK_ADRESS='$workAdress', WORK_POSTAL_CODE='$workPostCode', WORK_CITY='$workCity' where ID='$ID'";
+            $sql = "update customer_referential set NOM='$name', NOM_INDEX='$name', PRENOM='$firstName', PRENOM_INDEX='$firstName',  PHONE='$phone', ADRESS='$adress', POSTAL_CODE='$postCode', CITY='$city', WORK_ADRESS='$workAdress', WORK_POSTAL_CODE='$workPostCode', WORK_CITY='$workCity' where TOKEN='$token'";
         }
 
         $result = mysqli_query($conn, $sql);
@@ -75,7 +85,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
          successMessage('SM0003');
 
     } else {
-        $response = array ('response'=>'error');     
+        $response = array ('response'=>'error', "message"=>"User not retrieved");     
         echo json_encode($response);
         die;
     }

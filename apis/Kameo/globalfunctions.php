@@ -3,7 +3,8 @@ if(!isset($_SESSION))
     session_start();
 if(!isset($_SESSION['langue']))
     $_SESSION['langue']="fr";
-require_once __DIR__ . '/../../include/environment.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 
 function errorMessage($MSGNUM) {    
     include 'connexion.php';

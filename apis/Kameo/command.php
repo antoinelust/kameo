@@ -11,7 +11,7 @@ if(!isset($_SESSION))
 require_once 'globalfunctions.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
 $token = getBearerToken();
-    
+
 if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
     if($action == "command"){
@@ -33,16 +33,17 @@ if(isset($_POST['action'])){
             $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
             die;                        
-        }
+        }        
+        
+        
         $resultat=$stmt->get_result()->fetch_assoc();
         $firstName=$resultat['PRENOM'];
         $name=$resultat['NOM'];
 
-        $stmt->close();
+        $stmt->close();        
         
 
-
-        $sql="SELECT * FROM client_orders where EMAIL='$email'";
+        $sql="SELECT * FROM client_orders where EMAIL='$email'";           
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -50,13 +51,10 @@ if(isset($_POST['action'])){
         }
         $result = mysqli_query($conn, $sql);   
         $length = $result->num_rows;
-        $conn->close();   
-
         if($length>0){
             errorMessage("ES0061");
         }
 
-        include 'connexion.php';
         $sql="INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS) VALUES('$email', '$email', '$portoflioID', '$size', '$remark', 'new')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -66,26 +64,26 @@ if(isset($_POST['action'])){
         
         
         require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
-        $mail = new PHPMailer();
+        $mail = new PHPMailer();        
+                
+        
         if(constant('ENVIRONMENT')=="production"){
-            $stmt = $conn->prepare("SELECT aa.* FROM customer_referential aa, customer_referential bb WHERE bb.EMAIL=? and aa.COMPANY=bb.COMPANY and aa.ADMINISTRATOR='Y'");
+            $stmt = $conn->prepare("SELECT aa.* FROM customer_referential aa, customer_referential bb WHERE bb.EMAIL=? and aa.COMPANY=bb.COMPANY and aa.ADMINISTRATOR='Y' and aa.STAANN != 'D'");
             if (!$stmt->bind_param("i", $ID)) {
                 $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
                 echo json_encode($response);
                 die;            
             }
-
             if (!$stmt->execute()) {
                 $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
                 echo json_encode($response);
                 die;                        
-            }
-
-            $stmt->close();
-            
+            }    
             foreach($stmt->get_result()->fetch_all(MYSQLI_ASSOC) as $contact){
                 $mail->AddAddress($contact['EMAIL'], $contact['PRENOM'].' '.$contact['NOM']);
             }
+            $stmt->close();
+            
             $mail->AddCC('julien@kameobikes.com', 'Julien Jamar');
         }else{
             $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
