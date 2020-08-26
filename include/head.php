@@ -2,6 +2,8 @@
     session_start();
 
 require_once 'include/lang_management.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
+
 
 ?>
 <head>
@@ -9,7 +11,7 @@ require_once 'include/lang_management.php';
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<meta name="description" content="KAMEO Bikes, Mobilité urbaine pour entreprises. Vente, Leasing et Location de vélos pour entreprises. Entretien sur votre lieu de travail ou à domicile.">
- 	<meta name="keywords" content="kameo, kameo bikes, vélo électrique, vélo électrique liège, kameos, mobilité, vélos, vélos électriques, VAE, entretiens à domicile, entretiens sur le lieu de travail, Orbea, Ahooga, Conway, Victoria, Tern, i:SY, vélo urbain, vélo cargo, accessoires vélo, casques vélo, cadenas vélo">
+ 	<meta name="keywords" content="kameo, kameo bikes, vélo électrique, vélo de société belgique, vélo électrique liège, kameos, mobilité, vélos, vélos électriques, VAE, entretiens à domicile, entretiens sur le lieu de travail, Orbea, Ahooga, Conway, Victoria, Tern, i:SY, vélo urbain, vélo cargo, accessoires vélo, casques vélo, cadenas vélo">
  	<meta name="author" content="Thibaut Mativa">
  	<meta property="og:image" content="/images/vignette.jpg" />
 

@@ -10,18 +10,18 @@ if(!isset($_SESSION))
 
 include 'globalfunctions.php';
 
-$email=$_POST['search-bikes-form-email'];
-$date=$_POST['search-bikes-form-day'];
+$email=htmlspecialchars($_POST['search-bikes-form-email']);
+$date=htmlspecialchars($_POST['search-bikes-form-day']);
 
 
-$intake_hour=$_POST['search-bikes-form-intake-hour'];
+$intake_hour=htmlspecialchars($_POST['search-bikes-form-intake-hour']);
 
-if (isset($_POST['search-bikes-form-intake-building']))				/** TEST ! **/
-	$intake_building=$_POST['search-bikes-form-intake-building'];
+if (isset($_POST['search-bikes-form-intake-building']))
+	$intake_building=htmlspecialchars($_POST['search-bikes-form-intake-building']);
 else
 	$intake_building=''; 
 if (isset($_POST['search-bikes-form-intake-building']))				/** TEST ! **/
-	$deposit_building=$_POST['search-bikes-form-deposit-building'];
+	$deposit_building=htmlspecialchars($_POST['search-bikes-form-deposit-building']);
 else
 	$deposit_building='';
 
@@ -31,12 +31,12 @@ $month_intake=$dayAndMonth[1];
 $year_intake=$dayAndMonth[2];
 
 
-$date=$_POST['search-bikes-form-day-deposit'];
-$deposit_hour=$_POST['search-bikes-form-deposit-hour'];
+$date=htmlspecialchars($_POST['search-bikes-form-day-deposit']);
+$deposit_hour=htmlspecialchars($_POST['search-bikes-form-deposit-hour']);
 
 
-$maxBookingsPerYear=$_POST['search-bikes-form-maxBookingPerYear'];
-$maxBookingsPerMonth=$_POST['search-bikes-form-maxBookingPerMonth'];
+$maxBookingsPerYear=htmlspecialchars($_POST['search-bikes-form-maxBookingPerYear']);
+$maxBookingsPerMonth=htmlspecialchars($_POST['search-bikes-form-maxBookingPerMonth']);
 
 
 $dayAndMonth=explode("-", $date);
@@ -154,8 +154,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
     include 'connexion.php';
     $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";    
-    
-    
+        
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -167,6 +166,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     if($length == 0){
         errorMessage("ES0015");
     }
+    
 
     $bike=array();
 
@@ -198,7 +198,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                 die;
             }
             $result3 = mysqli_query($conn, $sql3);
-            $resultat3 = mysqli_fetch_assoc($result3);
+            $resultat3 = mysqli_fetch_assoc($result3);            
 
             if($resultat3['BUILDING_START'] == $deposit_building or $resultat3['BUILDING_START'] == NULL){
                 $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";                

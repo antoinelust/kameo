@@ -1,17 +1,19 @@
 <?php
 
-$building=$_GET['building'];
-$emplacement=$_GET['emplacement'];    
-$code=isset($_GET['code']) ? $_GET['code'] : NULL;
-$rfid=isset($_GET['UID']) ? $_GET['UID'] : NULL;
+$building=isset($_GET['building']) ? htmlspecialchars($_GET['building']) : NULL;
+$code=isset($_GET['code']) ? htmlspecialchars($_GET['code']) : NULL;
+$emplacement=isset($_GET['emplacement']) ? htmlspecialchars($_GET['emplacement']) : NULL;
+$rfid=isset($_GET['UID']) ? htmlspecialchars($_GET['UID']) : NULL;
+
     
-if( $code==NULL && $rfid == NULL){
+if( ($code==NULL && $rfid == NULL) || $emplacement == NULL || $building == NULL){
     echo "-1";
 }
 
+
 if($code==NULL){
     
-    include '../connexion.php';
+    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
     $sql="SELECT * from customer_referential WHERE RFID = '$rfid'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -46,7 +48,7 @@ if($code==NULL){
     $reservationID=$resultat['ID'];    
     
 }else{
-    include '../connexion.php';
+    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
     $sql="SELECT ID_reservation from locking_code WHERE BUILDING_START = '$building' AND CODE = '$code' AND VALID='Y'";    
     
     if ($conn->query($sql) === FALSE) {
@@ -64,7 +66,7 @@ if($code==NULL){
     
 }
 
-include '../connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql="UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP(), MOVING='Y', PLACE_IN_BUILDING='-1', RESERVATION_ID='$reservationID' WHERE BUILDING = '$building' AND PLACE_IN_BUILDING = '$emplacement'";
 
 if ($conn->query($sql) === FALSE) {
@@ -75,7 +77,7 @@ if ($conn->query($sql) === FALSE) {
 $result = mysqli_query($conn, $sql);  
 $conn->close();
 
-include '../connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql="UPDATE locking_code SET HEU_MAJ=CURRENT_TIMESTAMP(), VALID='N' WHERE ID_reservation='$reservationID'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);

@@ -7,11 +7,11 @@ session_start();
 
 include 'globalfunctions.php';
 
-$user = $_POST['widget-new-booking-mail-customer'];
-$bikeID=$_POST['bikeID'];
-$buildingStart=$_POST['widget-new-booking-building-start'];
-$buildingEnd=$_POST['widget-new-booking-building-end'];
-$lockingcode=$_POST['widget-new-booking-locking-code'];
+$user = htmlspecialchars($_POST['widget-new-booking-mail-customer']);
+$bikeID=htmlspecialchars($_POST['bikeID']);
+$buildingStart=htmlspecialchars($_POST['widget-new-booking-building-start']);
+$buildingEnd=htmlspecialchars($_POST['widget-new-booking-building-end']);
+$lockingcode=htmlspecialchars($_POST['widget-new-booking-locking-code']);
 
 $temp=new DateTime($_POST['widget-new-booking-date-start']);
 $dateStart=strtotime($temp->format('Y-m-d H:i'));
@@ -31,9 +31,9 @@ $dateEnd_2String=$dateEnd_2->format('Y-m-d H:i');
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
-    $sql= "select * from reservations aa where aa.STAANN!='D' and aa.BIKE_ID = '$bikeID' and not exists (select 1 from reservations bb where bb.STAANN!='D' and aa.ID=bb.BIKE_ID and ((bb.DATE_END_2 > '$dateStart_2String' and bb.DATE_END_2 < '$dateEnd_2String') OR (bb.DATE_START_2>'$dateStart_2String' and bb.DATE_START_2<'$dateEnd_2String')))";
-
-   	if ($conn->query($sql) === FALSE) {
+    $sql= "select * from reservations where STAANN!='D' and BIKE_ID = '$bikeID' AND ((DATE_END_2 >= '$dateStart_2String' and DATE_END_2 <= '$dateEnd_2String') OR (DATE_START_2>='$dateStart_2String' and DATE_START_2 <= '$dateEnd_2String'))";
+    
+   	if ($conn->query($sql) === FALSE) {        
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
@@ -42,12 +42,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
     $length = $result->num_rows;
 
 
-
-	 if($length == 0){
+	 if($length > 0){
         errorMessage("ES0019");
     }
-
-	include 'connexion.php';
 
     $timestamp= time();
     $sql= "INSERT INTO reservations (USR_MAJ, STATUS, BIKE_ID, DATE_START, DATE_START_2, BUILDING_START, DATE_END, DATE_END_2, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$bikeID', '$dateStart', '$dateStart_2String', '$buildingStart', '$dateEnd', '$dateEnd_2String', '$buildingEnd', '$user', '')";    

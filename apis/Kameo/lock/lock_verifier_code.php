@@ -1,5 +1,5 @@
 <?php
-include '../connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
 $is_null = true;
 

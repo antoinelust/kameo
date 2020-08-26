@@ -1,9 +1,14 @@
 <?php
-include '../connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
-$building=$_GET['building'];
-$rfid=$_GET['uid'];
+$building=isset($_GET['building']) ? htmlspecialchars($_GET['building']) : NULL;
+$rfid=isset($_GET['uid']) ? htmlspecialchars($_GET['uid']) : NULL;
 
+
+if($building == NULL || $rfid==NULL){
+    echo "-3";
+    die;
+}
 
 $sql="SELECT * from customer_referential WHERE RFID='$rfid'";
 if ($conn->query($sql) === FALSE) {

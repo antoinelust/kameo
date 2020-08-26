@@ -43,6 +43,18 @@
 	/** AVANTAGES **/
 	$router->map('GET','/avantages[ext]', 'pages/avantages/avantages.php');
 	$router->map('GET','/cash4bike[ext]', 'pages/avantages/cash4bike.php');
+
+
+
+	/** BORNE **/
+	$router->map('GET','/include/lock/lock_verifier_code[ext]', 'apis/Kameo/lock/lock_verifier_code.php');
+	$router->map('GET','/include/lock/lock_verifier_rfid_client[ext]', 'apis/Kameo/lock/lock_verifier_rfid_client.php');
+	$router->map('GET','/include/lock/lock_verifier_rfid[ext]', 'apis/Kameo/lock/lock_verifier_rfid.php');
+	$router->map('GET','/include/lock/lock_update_remise_cle[ext]', 'apis/Kameo/lock/lock_update_remise_cle.php');
+	$router->map('GET','/include/lock/lock_update_prise_cle[ext]', 'apis/Kameo/lock/lock_update_prise_cle.php');
+	$router->map('GET','/include/lock/lock_emplacement_libre_2[ext]', 'apis/Kameo/lock/lock_emplacement_libre_2.php');
+	$router->map('GET','/include/lock/list_bikes_box_booking[ext]', 'apis/Kameo/lock/list_bikes_box_booking.php');
+	$router->map('GET','/include/lock/confirm_bike_booking[ext]', 'apis/Kameo/lock/confirm_bike_booking.php');
 	
 	/** CONTACT **/
 	$router->map('GET','/contact[ext]', 'pages/contact.php');

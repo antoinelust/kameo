@@ -182,7 +182,6 @@ if($connected){
         errorMessage("ES0012");
     }
 
-    //$response['taxRate']=$taxRate;
     $response['leasingAmount']=round($leasingAmount);
     $response['impactOnGrossSalary']=round($impactOnGrossSalary);
     $response['impactBikeAllowance']=round($impactBikeAllowance);
@@ -192,14 +191,14 @@ if($connected){
     $response['totalImpact']=round($impactOnNetSalary-$impactBikeAllowance-$impactCarSavingMoney);
     
     
-    include 'connexion.php';
+    /*include 'connexion.php';
 	$sql = "INSERT INTO cash4bike (USR_MAJ, DOMICILE, TRAVAIL, REVENU, TRANSPORT,  ESSENCE, PRIME, FREQUENCE, MODEL) VALUES ('cash4Bike.php', '$domicile', '$travail', '$revenuEmployee', '$transport', '$transportationEssence', '$prime', '$frequenceBikePerWeek', '$bike')";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-	$conn->close();
+	$conn->close();*/
     
     
     $response['message']="Veuillez trouver le résultat de l'analyse ci-dessous";

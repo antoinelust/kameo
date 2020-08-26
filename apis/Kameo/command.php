@@ -43,7 +43,7 @@ if(isset($_POST['action'])){
         $stmt->close();        
         
 
-        $sql="SELECT * FROM client_orders where EMAIL='$email'";           
+        /*$sql="SELECT * FROM client_orders where EMAIL='$email'";           
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -60,16 +60,15 @@ if(isset($_POST['action'])){
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        }
+        }*/
         
         
         require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
         $mail = new PHPMailer();        
                 
-        
         if(constant('ENVIRONMENT')=="production"){
             $stmt = $conn->prepare("SELECT aa.* FROM customer_referential aa, customer_referential bb WHERE bb.EMAIL=? and aa.COMPANY=bb.COMPANY and aa.ADMINISTRATOR='Y' and aa.STAANN != 'D'");
-            if (!$stmt->bind_param("i", $ID)) {
+            if (!$stmt->bind_param("s", $email)) {
                 $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
                 echo json_encode($response);
                 die;            

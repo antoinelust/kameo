@@ -1,10 +1,15 @@
 <?php
-$rfid=$_GET['uid'];
-$minutes=$_GET['minutes'];
-$building=$_GET['building'];
+$rfid=isset($_GET['UID']) ? htmlspecialchars($_GET['UID']) : NULL;
+$minutes=isset($_GET['minutes']) ? htmlspecialchars($_GET['minutes']) : NULL;
+$building=isset($_GET['building']) ? htmlspecialchars($_GET['building']) : NULL;
+
+if($minutes == NULL || $rfid == NULL || $building == NULL){
+    echo "-1";
+    die;
+}
 
 
-include '../connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql="SELECT * from building_access WHERE BUILDING_CODE='$building'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -21,7 +26,7 @@ $conn->close();
 $buildingReference=$resultat['BUILDING_REFERENCE'];
 
 
-include '../connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql="SELECT aa.EMAIL, aa.COMPANY, cc.FRAME_NUMBER, cc.ID, cc.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bike_access bb, customer_bikes cc, bike_catalog dd WHERE RFID='$rfid' and aa.EMAIL=bb.EMAIL and bb.BIKE_ID=cc.ID AND cc.TYPE=dd.ID and aa.STAANN != 'D' AND bb.STAANN != 'D' AND dd.STAANN != 'D' and not exists (select 1 from reservations ee WHERE ee.BIKE_ID=bb.BIKE_ID and ee.DATE_START_2 < CURRENT_TIMESTAMP() and DATE_END_2 > CURRENT_TIMESTAMP() and ee.STAANN !='D')";
 
 
@@ -51,7 +56,7 @@ if($length > 0){
     while($row = mysqli_fetch_array($result)){
         $frameNumber=$row['FRAME_NUMBER'];
         
-        include '../connexion.php';
+        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
         $sql2="SELECT min(DATE_START_2) as 'minimum' from reservations where FRAME_NUMBER='$frameNumber' AND BUILDING_START='$buildingReference' AND DATE_START_2 > CURRENT_TIMESTAMP() and DATE_START_2 < '$dateEndString'";
         
         if ($conn->query($sql2) === FALSE) {
@@ -67,7 +72,7 @@ if($length > 0){
                 
         
         if($length=0 || $resultat2['minimum'] == NULL){
-            include '../connexion.php';
+            include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
             $sql3="SELECT BUILDING_START from reservations where FRAME_NUMBER='$frameNumber' AND DATE_END_2 < CURRENT_TIMESTAMP()";
             if ($conn->query($sql3) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -107,8 +112,6 @@ if($length > 0){
     }else{
         echo "-3";
     }
-    
-
     
 }else{
     //pas d'utilisateur trouvé

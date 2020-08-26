@@ -118,6 +118,11 @@
 									}, {
 										type: 'success'
 									});
+                                    $('#resume').modal('toggle');
+                                    document.getElementById('velos').innerHTML = "";
+                                    document.getElementById("travel_information").style.display = "none";
+                                    document.getElementById("velos").style.display = "none";
+                                    
 								} else {
 									$.notify({
 										message: response.message
@@ -125,7 +130,6 @@
 										type: 'danger'
 									});
 								}
-								$('#resume').modal("hide");
 							}
 						});
 					}

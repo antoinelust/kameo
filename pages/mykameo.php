@@ -31,29 +31,13 @@ echo '<style media="screen">
       width:60%;
       opacity: 0.5;
     }
-</style>
-<script type="text/javascript">
-  const feedback = "'.$feedback.'";  
-  
-  window.addEventListener("DOMContentLoaded", (event) => {';
-    if(get_user_permissions("search", $token)){
-        echo '$("#reserver").addClass("active"); ';
-    }else if(get_user_permissions("order", $token)){
-        echo '$("#orderBike").addClass("active"); ';
-        echo '$("#orderBikeID").addClass("active"); ';
-        echo 'get_command_user(email);';
-    }else if(get_user_permissions("fleetManager", $token)){
-        echo '$("#fleetmanager").addClass("active"); '; 
-        echo '$("#fleetmanagerID").addClass("active"); ';
-    }
-
-  echo '});
-</script>';
-
+</style>';
 if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected
   //@TODO: Replace email chech with authentication token
+    include 'apis/Kameo/connexion.php';    
+    
   $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
@@ -77,7 +61,25 @@ if($token==NULL){ //Not connected
   <script type="text/javascript" src="js/addresses.js"></script>
   <script type="text/javascript" src="js/weather.js"></script>
   <script type="text/javascript" src="js/cafetaria.js"></script>
-  ';
+    <script type="text/javascript">
+      const feedback = "'.$feedback.'";  
+
+      window.addEventListener("DOMContentLoaded", (event) => {';
+        if(get_user_permissions("search", $token)){
+            echo '$("#reserver").addClass("active"); ';
+        }else if(get_user_permissions("order", $token)){
+            echo '$("#orderBike").addClass("active"); ';
+            echo '$("#orderBikeID").addClass("active"); ';
+            echo 'console.log("test");';
+            echo 'get_command_user(email);';
+        }else if(get_user_permissions("fleetManager", $token)){
+            echo '$("#fleetmanager").addClass("active"); '; 
+            echo '$("#fleetmanagerID").addClass("active"); ';
+        }
+
+      echo '});
+    </script>';
+
 
   $sql="select * from customer_referential aa, customer_bike_access bb where aa.EMAIL='".$user_data['EMAIL']."' and aa.EMAIL=bb.EMAIL and bb.TYPE='personnel' LIMIT 1";
   $result=mysqli_query($conn, $sql);

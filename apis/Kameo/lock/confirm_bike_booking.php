@@ -1,13 +1,19 @@
 <?php
-include '../globalfunctions.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
-$rfid=$_GET['uid'];
-$minutes=$_GET['minutes'];
-$building=$_GET['building'];
-$frameNumber=$_GET['frameNumber'];
+$rfid=isset($_GET['UID']) ? htmlspecialchars($_GET['UID']) : NULL;
+$minutes=isset($_GET['minutes']) ? htmlspecialchars($_GET['minutes']) : NULL;
+$building=isset($_GET['building']) ? htmlspecialchars($_GET['building']) : NULL;
+$frameNumber=isset($_GET['frameNumber']) ? htmlspecialchars($_GET['frameNumber']) : NULL;
+
+if($rfid == NULL || $minutes == NULL || $building == NULL || $frameNumber == NULL){
+    echo "-3";
+    die;
+}
+
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
 
-include '../connexion.php';
 $sql="SELECT ID from customer_bikes WHERE FRAME_NUMBER = '$frame_number'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -16,12 +22,10 @@ if ($conn->query($sql) === FALSE) {
 }
 $result = mysqli_query($conn, $sql);  
 $resultat = mysqli_fetch_assoc($result);  
-$conn->close();
 
 $bike_ID=$resultat['ID'];
 
 
-include '../connexion.php';
 $sql="SELECT * from customer_referential WHERE RFID='$rfid'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -31,14 +35,12 @@ if ($conn->query($sql) === FALSE) {
 $result = mysqli_query($conn, $sql);  
 $resultat = mysqli_fetch_assoc($result);
 $length = $result->num_rows;
-$conn->close();
 
 
 if($length=="1"){
     $client=$resultat['EMAIL'];
     $company=$resultat['COMPANY'];
     
-    include '../connexion.php';
     $sql="SELECT * from building_access WHERE BUILDING_CODE='$building'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -48,7 +50,6 @@ if($length=="1"){
     $result = mysqli_query($conn, $sql);  
     $resultat = mysqli_fetch_assoc($result);
     $length = $result->num_rows;
-    $conn->close();
 
     $buildingReference=$resultat['BUILDING_REFERENCE'];
     
@@ -65,7 +66,6 @@ if($length=="1"){
         
     $test=CallAPI('POST', 'https://www.kameobikes.com/test/include/new_booking.php', $data);
         
-    include '../connexion.php';
     $sql="SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE BIKE_ID LIKE (SELECT BIKE_ID FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START ='$building' AND BIKE_ID='$bike_ID' AND CODE = '0' AND VALID = 'Y' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())))";    
             
     if ($conn->query($sql) === FALSE) {
