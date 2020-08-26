@@ -2,6 +2,7 @@
     session_start();
 
 require_once 'include/lang_management.php';
+require_once 'googleAnalytics.php';
 
 ?>
 <head>
@@ -47,23 +48,15 @@ require_once 'include/lang_management.php';
     <script src="/vendor/plugins-compressed.js"></script>
 	<!-- I am not a robot script -->
 	<script src='https://www.google.com/recaptcha/api.js'></script>
-	
+
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<?php if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost")
 			include __DIR__.'/googleAnalytics.php';?>
-		<!-- Hotjar Tracking Code for www.kameobikes.com -->
-	<script>
-		(function(h,o,t,j,a,r){
-			h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-			h._hjSettings={hjid:1142496,hjsv:6};
-			a=o.getElementsByTagName('head')[0];
-			r=o.createElement('script');r.async=1;
-			r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-			a.appendChild(r);
-		})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-	</script>
 
 	<!--[if lt IE 9]>
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 	<![endif]-->
+
+    <!-- GDPR cookie consent bar -->
+    <script src="/js/cookie_consent.js"></script>
 </head>

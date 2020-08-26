@@ -258,9 +258,6 @@
 	<!-- Language management -->
 	<script type="text/javascript" src="/js/language.js"></script>
 
-    <!-- GDPR cookie consent bar -->
-    <script src="/js/cookie_consent.js"></script>
-
 <?php
   if(isset($_GET['hash'])){
     echo `<script type="text/javascript">

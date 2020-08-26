@@ -519,7 +519,7 @@ body.loading .loader {
         bottom: 0;
     }
 
-    .consent-btn {
-        margin-left: 30px;
+    .cookie-btn {
+        margin-left: 10px;
     }
 }
