@@ -18,7 +18,6 @@ function temp_init(){
         if(response.response == 'success'){
           $('#widget-updateCompanyConditions-form input[name=action]').val("update");
           if(response.update){
-            document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
             document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
 
             document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);

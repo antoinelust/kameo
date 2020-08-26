@@ -8,10 +8,11 @@ include 'globalfunctions.php';
 include 'connexion.php';
 
 $userID = $_POST["userID"];
+$userIDUP=strtoupper($userID);
 $UserPassword = $_POST["password"];
 
 
-$sql = "SELECT ID, PASSWORD, TOKEN, STAANN FROM customer_referential where EMAIL='$userID'";
+$sql = "SELECT ID, PASSWORD, TOKEN, STAANN FROM customer_referential where UPPER(EMAIL)='$userIDUP'";
 
 if ($conn->query($sql) === FALSE) {
 	$response = array ('response'=>'error', 'message'=> $conn->error);

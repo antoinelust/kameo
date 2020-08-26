@@ -36,8 +36,8 @@ function load_cafetaria(){
 				var $grid = $('.grid').isotope();
 				if (($('.grid').isotope('getItemElements').length == 0))
 				{
-					for (var i=0; i<response.bikeNumber; i++){                            
-                        
+					for (var i=0; i<response.bikeNumber; i++){        
+                                                
 							if(response.bike[i].frameType.toLowerCase()=="h"){
 								var frameType = "Homme";
 							} else if(response.bike[i].frameType.toLowerCase()=="m"){

@@ -117,7 +117,7 @@ if($type=="bookings"){
 
 if($type=="ordersFleet"){
     include 'connexion.php';
-    $sql = "select 1 from client_orders co, customer_referential cr WHERE STATUS='new' and co.EMAIL=cr.EMAIL and cr.EMAIL='$company'";
+    $sql = "select 1 from client_orders co, customer_referential cr WHERE STATUS='new' and co.EMAIL=cr.EMAIL and cr.COMPANY='$company'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -251,7 +251,7 @@ if($company=='KAMEO'){
         //number of unread messages
 
         include 'connexion.php';
-        $sql="SELECT COUNT(*) as total FROM (SELECT n.* FROM customer_referential, notifications n WHERE n.READ = 'N' AND (n.STAAN IS NULL or n.STAAN != 'D') AND (customer_referential.ID = n.USER_ID OR n.USER_ID='0') AND customer_referential.EMAIL = '$email') as count";
+        $sql="SELECT COUNT(1) as 'TOTAL' FROM `chat` aa, customer_referential cc where NOT exists (select 1 from chat bb where aa.EMAIL_USER=bb.EMAIL_DESTINARY and aa.MESSAGE_TIMESTAMP<bb.MESSAGE_TIMESTAMP) and aa.EMAIL_USER=cc.EMAIL and cc.COMPANY != 'KAMEO'";
         $result = $conn->query($sql);
         if (!$result) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -259,7 +259,7 @@ if($company=='KAMEO'){
             die;
         }
         $response['response']="success";        
-        $response['messagesNumberUnread']=intval($result->fetch_array(MYSQLI_ASSOC)['total']);
+        $response['messagesNumberUnread']=intval($result->fetch_array(MYSQLI_ASSOC)['TOTAL']);
         $conn->close();
         echo json_encode($response);
         die;
