@@ -14,7 +14,9 @@ include 'apis/Kameo/connexion.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
 $token = getBearerToken();
     
-
+echo '<script type="text/javascript" src="js/language2.js">
+  displayLanguage();
+</script>';
 
 include 'include/head.php';
 echo '<body class="wide">
@@ -780,11 +782,6 @@ function listPortfolioBikes(){
 
 <!-- Theme Base, Components and Settings -->
 <script src="js/theme-functions.js"></script>
-
-<?php //@TODO: TRANSLATE USING i18n AND GET RID OF THAT ?>
-<script type="text/javascript" src="js/language.js">
-  displayLanguage();
-</script>
 
 </body>
 <?php
