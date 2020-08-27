@@ -54,7 +54,7 @@ class i18n {
      *
      * @var string
      */
-    protected $forcedLang = NULL;
+    protected $forcedLang = 'fr';
 
     /**
      * This is the separator used if you use sections in your ini-file.

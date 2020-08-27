@@ -3,7 +3,6 @@
 
 require_once 'include/lang_management.php';
 //require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
-require_once 'googleAnalytics.php';
 
 ?>
 <head>

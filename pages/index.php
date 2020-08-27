@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
 	header_remove("Set-Cookie");
 	header_remove("X-Powered-By");
@@ -20,17 +20,13 @@
   		<div class="col-md-6 text-center" style="background-color: #3cb395">
   			<h2><?=L::employer_title;?></h2>
   			<span><?=L::employer_description;?></span>
-  			<a class="button green button-3d effect fill-vertical fr"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Découvrir nos solutions</span></a>
-  			<a class="button green button-3d effect fill-vertical en"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Discover our solutions</span></a>
-  			<a class="button green button-3d effect fill-vertical nl"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i>Ontdekt onze oplossingen</span></a>
+  			<a class="button green button-3d effect fill-vertical" style="display: block;"  data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i><?=L::employer_btn_solutions;?></span></a>
   		</div>
 
   		<div class="col-md-6 text-center" style="background-color: #1D9377">
   			<h2><?=L::employee_title;?></h2>
   			<span><?=L::employee_description;?></span>
-  			<a class="button green button-3d effect fill-vertical fr" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>En savoir plus</span></a>
-  			<a class="button green button-3d effect fill-vertical en" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>Learn more</span></a>
-  			<a class="button green button-3d effect fill-vertical nl" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i>Lees meer</span></a>
+  			<a class="button green button-3d effect fill-vertical" style="display: block;" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?=L::employee_btn_knowmore;?></span></a>
   		</div>
 
   		<!-- CALL TO ACTION -->
@@ -59,25 +55,19 @@
   					<div class="col-md-12">
   						<h4 class="text-green"><?=L::employer_modal_sharedbike_title;?></h4>
   						<p><?=L::employer_modal_sharedbike_description;?></p>
-  						<a class="button green button-3d effect fill-vertical fr" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
-  						<a class="button green button-3d effect fill-vertical en" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
-  						<a class="button green button-3d effect fill-vertical nl" href="velo-partage.php"><span><i class="fa fa-users"></i>Je découvre</span></a>
+  						<a class="button green button-3d effect fill-vertical" style="display: block;" href="velo-partage.php"><span><i class="fa fa-users"></i><?=L::employer_modal_btn_discover;?></span></a>
   					</div>
   					<div class="separator"></div>
   					<div class="col-md-12">
   						<h4 class="text-green"><?=L::employer_modal_personalbike_title;?></h4>
   						<p><?=L::employer_modal_personalbike_description;?></p>
-  						<a class="button green button-3d effect fill-vertical fr" href="velo-personnel.php"><span><i class="fa fa-user"></i>En savoir plus</span></a>
-  						<a class="button green button-3d effect fill-vertical en" href="velo-personnel.php"><span><i class="fa fa-user"></i>Learn more</span></a>
-  						<a class="button green button-3d effect fill-vertical nl" href="velo-personnel.php"><span><i class="fa fa-user"></i>Meer leren</span></a>
+  						<a class="button green button-3d effect fill-vertical" style="display: block;" href="velo-personnel.php"><span><i class="fa fa-user"></i><?=L::employer_modal_btn_knowmore;?></span></a>
   					</div>
   					<div class="separator"></div>
   					<div class="col-md-12">
   						<h4 class="text-red"><?=L::employer_modal_managefleet_title;?></h4>
   						<p><?=L::employer_modal_managefleet_description;?></p>
-  						<a class="button red button-3d effect fill-vertical fr" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
-  						<a class="button red button-3d effect fill-vertical en" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
-  						<a class="button red button-3d effect fill-vertical nl" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i>On vous propose</span></a>
+  						<a class="button red button-3d effect fill-vertical" style="display: block;" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i><?=L::employer_modal_btn_offer;?></span></a>
   					</div>
   				</div>
   			</div>
@@ -96,17 +86,13 @@
   					<div class="col-md-12">
   						<h4 class="text-green"><?=L::employee_modal_bike_title;?></h4>
   						<p><?=L::employee_modal_bike_description;?></p>
-  						<a class="button green button-3d effect fill-vertical fr" href="achat.php"><span><i class="fa fa-bicycle"></i>Catalogue vélos</span></a>
-  						<a class="button green button-3d effect fill-vertical en" href="achat.php"><span><i class="fa fa-bicycle"></i>Catalogue vélos</span></a>
-  						<a class="button green button-3d effect fill-vertical nl" href="achat.php"><span><i class="fa fa-bicycle"></i>Catalogue vélos</span></a>
+  						<a class="button green button-3d effect fill-vertical" style="display: block;" href="achat.php"><span><i class="fa fa-bicycle"></i><?=L::employee_modal_btn_catalogue;?></span></a>
   					</div>
   					<div class="separator"></div>
   					<div class="col-md-12">
   						<h4 class="text-green"><?=L::employee_modal_accessory_title;?></h4>
   						<p><?=L::employee_modal_accessory_description;?></p>
-  						<a class="button green button-3d effect fill-vertical fr" href="accessoires.php"><span><i class="fa fa-diamond"></i>Catalogue accessoires</span></a>
-  						<a class="button green button-3d effect fill-vertical en" href="accessoires.php"><span><i class="fa fa-diamond"></i>Catalogue accessoires</span></a>
-  						<a class="button green button-3d effect fill-vertical nl" href="accessoires.php"><span><i class="fa fa-diamond"></i>Catalogue accessoires</span></a>
+  						<a class="button green button-3d effect fill-vertical" style="display: block;" href="accessoires.php"><span><i class="fa fa-diamond"></i><?=L::employee_modal_btn_accessories;?></span></a>
   					</div>
   				</div>
   			</div>
@@ -119,44 +105,16 @@
   			<div class="col-md-6">
   				<h1 class="text-green"><?=L::choose_kameo_title;?></h1>
   				<br>
-  				<p class="fr text-justify fr">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
-  				<p class="fr text-justify en">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
-  				<p class="fr text-justify nl">KAMEO Bikes est votre <strong class="text-green">one stop shop</strong> pour vos vélos de société.</p>
-  				<p class="text-justify fr">Nos solutions s’appuient sur <strong>des cycles de qualité</strong>, <strong>une maintenance continue</strong> et <strong>une gestion connectée de vos vélos</strong>. L’ensemble vous garantit une expérience cyclable optimale, quelles que soient les circonstances.</p>
-  				<p class="text-justify en">Nos solutions s’appuient sur <strong>des cycles de qualité</strong>, <strong>une maintenance continue</strong> et <strong>une gestion connectée de vos vélos</strong>. L’ensemble vous garantit une expérience cyclable optimale, quelles que soient les circonstances.</p>
-  				<p class="text-justify nl">Nos solutions s’appuient sur <strong>des cycles de qualité</strong>, <strong>une maintenance continue</strong> et <strong>une gestion connectée de vos vélos</strong>. L’ensemble vous garantit une expérience cyclable optimale, quelles que soient les circonstances.</p>
-  				<p class="text-justify fr">Avec KAMEO, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, vous êtes toujours en mouvement.</p>
-  				<p class="text-justify en">Avec KAMEO, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, vous êtes toujours en mouvement.</p>
-  				<p class="text-justify nl">Avec KAMEO, les entreprises ont accès à une solution de mobilité urbaine complète, flexible et sur mesure. Bref, vous êtes toujours en mouvement.</p>
-  				<p class="fr">Tous les services proposés sont gérés par KAMEO Bikes. On s'occupe de tout, vous restez concentré sur votre activité!</p>
-  				<p class="en">Tous les services proposés sont gérés par KAMEO Bikes. On s'occupe de tout, vous restez concentré sur votre activité!</p>
-  				<p class="nl">Tous les services proposés sont gérés par KAMEO Bikes. On s'occupe de tout, vous restez concentré sur votre activité!</p>
+  				<p class="text-justify"><?=L::choose_kameo_subtitle;?></p>
+  				<p class="text-justify"><?=L::choose_kameo_text;?></p>
+  				<p class="text-justify"><?=L::choose_kameo_text2;?></p>
+  				<p><?=L::choose_kameo_text3;?></p>
   			</div>
   			<div class="col-md-6">
   				<img src="images/RoueKameo.png" class="img-responsive img-rounded" alt="Roue des services KAMEO Bikes">
   			</div>
-  			<div class="col-md-12 text-center" style="background: url('images/fond_degrade2.jpg');" data-stellar-background-ratio="0.6"><br>
-  					<h4 class="fr">Respect de l'environnement</h4>
-  					<h4 class="en">Respect de l'environnement</h4>
-  					<h4 class="nl">Respect de l'environnement</h4>
-  					<h4 class="fr">Incitants fiscaux</h4>
-  					<h4 class="en">Incitants fiscaux</h4>
-  					<h4 class="nl">Incitants fiscaux</h4>
-  					<h4 class="fr">Gain de temps</h4>
-  					<h4 class="en">Gain de temps</h4>
-  					<h4 class="nl">Gain de temps</h4>
-  					<h4 class="fr">Productivité et bien-être des employés</h4>
-  					<h4 class="en">Productivité et bien-être des employés</h4>
-  					<h4 class="nl">Productivité et bien-être des employés</h4>
-  					<h4 class="fr">Combinaison avec la voiture de société</h4>
-  					<h4 class="en">Combinaison avec la voiture de société</h4>
-  					<h4 class="nl">Combinaison avec la voiture de société</h4>
-  					<h4 class="fr">Attirer de nouveaux talents</h4>
-  					<h4 class="en">Attirer de nouveaux talents</h4>
-  					<h4 class="nl">Attirer de nouveaux talents</h4>
-  					<h4 class="fr">Mode de vie sain</h4>
-  					<h4 class="en">Mode de vie sain</h4>
-  					<h4 class="nl">Mode de vie sain</h4>
+			  <div class="col-md-12 text-center" style="background: url('images/fond_degrade2.jpg');" data-stellar-background-ratio="0.6"><br>
+			  <?=L::choose_kameo_list_avantages;?>
   			</div>
   		</div>
   	</div>
@@ -195,15 +153,11 @@
   			<div class="modal-body">
   				<div class="row">
   					<div class="col-sm-12">
-  						<h3 id="fr">Mot de passe oublié</h3>
-              <h3 id="en">Password lost</h3>
-              <h3 id="nl">Wachtwoord kwijt</h3>
+  						<h3><?=L::password_forgotten;?></h3>
   						<form id="widget-lostPassword-form" action="../apis/Kameo/lostPassword.php" role="form" method="post">
                 <div class="row">
                     <div class="form-group col-sm-12">
-                        <label for="subject"  id="fr">Nouveau mot de passe</label>
-                        <label for="subject"  id="en">New pasword</label>
-                        <label for="subject"  id="nl">Nieuw wachtwoord</label>
+                        <label for="subject"><?=L::password_new;?></label>
                         <input type="password" name="widget-lostPassword-form-new-password" class="form-control required" autocomplete="new-password">
                     </div>
                 </div>
@@ -214,9 +168,7 @@
                 else
                     echo '<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash"/>';
                 ?>
-                <button  id="fr" class="button effect fill" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-                <button  id="en" class="button effect fill" type="submit"><i class="fa fa-paper-plane"></i>Confirm</button>
-                <button  id="nl" class="button effect fill" type="submit"><i class="fa fa-paper-plane"></i>Verzenden</button>
+                <button class="button effect fill" type="submit"><i class="fa fa-paper-plane"></i><?=L::password_send;?></button>
               </form>
   						<script type="text/javascript">
                   jQuery("#widget-lostPassword-form").validate({
