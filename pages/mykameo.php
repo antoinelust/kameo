@@ -13,6 +13,7 @@ $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 include 'apis/Kameo/connexion.php';    
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
 $token = getBearerToken();
+    
 
 
 include 'include/head.php';
@@ -32,6 +33,7 @@ echo '<style media="screen">
       opacity: 0.5;
     }
 </style>';
+    
 if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected

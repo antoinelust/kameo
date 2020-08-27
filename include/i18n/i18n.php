@@ -137,10 +137,7 @@ class i18n {
 					$this->appliedLang = $langcode;
 					break 2;
 				}
-        }
-        
-        //delete once we have all languages available
-        $this->appliedLang="fr";
+        }        
         
         if ($this->appliedLang == NULL) {
             throw new RuntimeException('No language file was found.');
@@ -234,7 +231,7 @@ class i18n {
     }
 
     public function setForcedLang($forcedLang) {
-        $this->fail_after_init();
+        $this->fail_after_init();        
         $this->forcedLang = $forcedLang;
     }
 
@@ -268,19 +265,19 @@ class i18n {
         $userLangs = array();
 
         // Highest priority: forced language
-        if ($this->forcedLang != NULL) {
+        /*if ($this->forcedLang != NULL) {
             $userLangs[] = $this->forcedLang;
-        }
-
+        }*/
+        
         // 2nd highest priority: GET parameter 'lang'
         if (isset($_GET['langue']) && is_string($_GET['langue'])) {
             $userLangs[] = $_GET['langue'];
-        }
+        }        
 
         // 3rd highest priority: SESSION parameter 'lang'
         if (isset($_SESSION['langue']) && is_string($_SESSION['langue'])) {
             $userLangs[] = $_SESSION['langue'];
-        }
+        }        
 
         // 4th highest priority: HTTP_ACCEPT_LANGUAGE
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
