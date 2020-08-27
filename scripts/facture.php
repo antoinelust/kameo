@@ -26,7 +26,8 @@ $mktime=mktime(0, 0, 0, $month, $date, $year);
 $currentDate=new DateTime($year.'-'.$month.'-'.$date);
 $currentDateString = $currentDate->format('Y-m-d');
 
-include 'include/connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+
 $sql_reference="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
 error_log("SQL4 :".$sql_reference."\n", 3, "generate_invoices.log");    
 
@@ -49,7 +50,6 @@ $OneMonthAfter=clone $currentDate;
 $OneMonthAfter->add(new DateInterval("P1M"));
 $OneMonthAfterString=$OneMonthAfter->format('Y-m-d');
 
-include 'include/connexion.php';
 $sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
 error_log("SQL5 :".$sql."\n", 3, "generate_invoices.log");    
 
@@ -205,7 +205,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $dateAfter->setDate($yearAfter, $monthAfter, $dayAfter);
             $dateAfterString=$dateAfter->format('Y-m-d');
             
-            include 'include/connexion.php';
             $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$currentDateString' and (CONTRACT_END>='$dateAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
             error_log("SQL6 :".$sql2."\n", 3, "generate_invoices.log");    
             if ($conn->query($sql2) === FALSE) {
@@ -214,7 +213,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             }
             $result2 = mysqli_query($conn, $sql2);   
             $length = $result2->num_rows;
-            $conn->close();
 
             
             $i=1;
@@ -227,7 +225,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 if(file_exists("./images_bikes/".$row2['ID']."_mini.jpg")){
                     $fichier="/images_bikes/".$row2['ID']."_mini.jpg";
                 }else{
-                    include 'include/connexion.php';
                     $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
                     error_log("SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");    
                     
@@ -263,12 +260,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $bikeID=$row2['ID'];
                 
                 if(!$simulation || $simulation == 'N'){
-                    include 'include/connexion.php';
                     $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                     } 
-                    $conn->close();                    
                 }
                 
 
@@ -312,7 +307,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             }
 
-            include 'include/connexion.php';
             $sql2="select * from boxes where COMPANY='$company' and START<='$currentDateString' and (END>='$dateAfterString' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
@@ -320,7 +314,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             }
             $result2 = mysqli_query($conn, $sql2);   
             $length = $result2->num_rows;
-            $conn->close();
 
             
             while($row2 = mysqli_fetch_array($result2)){
@@ -346,12 +339,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $leasingPriceTVAC=1.21*$row2['AMOUNT'];
                 $boxID=$row2['ID'];
                 if(!$simulation || $simulation == 'N'){
-                    include 'include/connexion.php';
                     $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                     } 
-                    $conn->close();
                 }
                 
 
@@ -464,7 +455,6 @@ error_log("Result :".$test1.$test2.$test3."\n", 3, "generate_invoices.log");
 
 $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
 
-include 'include/connexion.php';
 $sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
 if ($conn->query($sql3) === FALSE) {
     echo $conn->error;
@@ -475,7 +465,6 @@ $resultat3 = mysqli_fetch_assoc($result3);
 
 $sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$OneMonthAfterString','leasing', '$today')";
 
-include 'include/connexion.php';
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
 } 
