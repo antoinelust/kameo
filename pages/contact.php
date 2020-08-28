@@ -234,9 +234,7 @@
 						<div class="image-box-description text-center">
 							<h4><?=L::contact_team_you;?></h4>
 							<hr class="line">
-							<div  class="fr">Vous souhaitez intégrer notre équipe ?<br> Ecrivez-nous à <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
-							<div  class="en">Want to join us ?<br> Write us at <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
-							<div  class="nl">Wil je bij ons werken?<br> Schrijf ons <a href="mailto:jobs@kameobikes.com">jobs@kameobikes.com</a>.</div>
+							<div><?=L::contact_join_team;?></div>
 						</div>
 					</div>
 					

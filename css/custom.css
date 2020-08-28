@@ -584,6 +584,7 @@ body.loading .loader {
   display: block;
 }
 
+/* consent bar */
 .consent-bar {
   position: fixed;
   bottom: -100%;

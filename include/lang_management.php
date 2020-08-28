@@ -8,6 +8,7 @@ $i18n = new i18n([
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_velo_personnel_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_gestion_flotte_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_location_ttinclus_{LANGUAGE}.ini',
+    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_achat_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_accessoires_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_bons_plans_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_avantages_{LANGUAGE}.ini',
