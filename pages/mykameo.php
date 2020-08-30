@@ -743,9 +743,16 @@ function listPortfolioBikes(){
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
         //ORDERS
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
-        //PORTFOLIO
+        //PORTFOLIO BIKES
         /** @TODO: Add a delete confirmation widget **/
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
+    }
+    if(get_user_permissions("admin", $token)){
+    
+        //PORTFOLIO ACCESSORIES
+        include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolioAccessories/main.php';
+    }
+    if(get_user_permissions("admin", $token)){    
         //MANAGE BIKES
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
         //CHATS

@@ -1,7 +1,9 @@
 <?php if(!isset($_SESSION))
     session_start();
 
-require_once 'include/lang_management.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/include/lang_management.php';
+
 //require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
 
 ?>

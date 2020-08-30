@@ -3,27 +3,28 @@ ob_start();
 session_start();
 $user=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL;
 $user_ID = isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL;
-include './include/header5.php';
-include './include/environment.php';
-include './include/globalfunctions.php';
+include '../apis/Kameo/environment.php';
+include '../apis/Kameo/globalfunctions.php';
 
 
-require_once dirname(__FILE__).'/vendor/autoload.php';
+require_once dirname(__FILE__).'/../vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 
-?>
-
-<script type="text/javascript" src="./js/language.js"></script>
-<script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-<script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
-<script type="text/javascript" src="./js/addons/datatables.min.js"></script>
-<script type="text/javascript" src="./js/datatable_default.js"></script>
-<script type="text/javascript" src="./js/global_functions.js"></script>
+echo '<script type="text/javascript" src="js/language2.js">
+  displayLanguage();
+</script>';?>
+<script type="text/javascript" src="../js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../js/addons/datatables.min.js"></script>
+<script type="text/javascript" src="../js/datatable_default.js"></script>
+<script type="text/javascript" src="../js/global_functions.js"></script>
 
 <?php
+include '../include/header.php';
+
 
 $now=new DateTime('now');
 

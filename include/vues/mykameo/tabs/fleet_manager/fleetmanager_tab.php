@@ -125,7 +125,18 @@
                 </a>
               </div>
               <div class="counter bold" id="counterBikePortfolio" style="color:#3cb395"></div>
-              <p>Gérer le catalogue</p>
+              <p>Catalogue vélos</p>
+            </div>
+          </div>
+          <div class="col-md-4 " id="portfolioAccessoriesManagement">
+            <div class="icon-box medium fancy">
+              <div class="icon bold" data-animation="pulse infinite">
+                <a data-toggle="modal" data-target="#portfolioAccessoriesManager" href="#" class="portfolioAccessoriesManagerClick">
+                  <i class="fa fa-book"></i>
+                </a>
+              </div>
+              <div class="counter bold" id="counterAccessoriesPortfolio" style="color:#3cb395"></div>
+              <p>Catalogue accessoires</p>
             </div>
           </div>
           <div class="col-md-4 " id="bikesManagement">

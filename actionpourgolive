@@ -1,9 +1,1 @@
-ALTER TABLE `conditions` CHANGE `COMPANY` `COMPANY` VARCHAR(60) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL; 
-
-
-UPDATE `customer_referential` SET `ACCESS_RIGHTS` = 'search' WHERE ADMINISTRATOR='N';
-UPDATE `customer_referential` SET `ACCESS_RIGHTS` = 'search,fleetManager' WHERE ADMINISTRATOR='Y';
-UPDATE `customer_referential` SET `ACCESS_RIGHTS` = 'search,fleetManager,admin' WHERE COMPANY='KAMEO';
-
-
-ALTER TABLE `conditions` ADD `DISCOUNT` FLOAT NOT NULL DEFAULT '0' AFTER `CAFETARIA`;
+INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'SM0028', 'Accessoire rajouté avec succès', 'Accessory added with success', 'Accessory added with success');

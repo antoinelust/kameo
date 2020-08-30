@@ -1,0 +1,102 @@
+<div class="modal fade" id="portfolioAccessoryManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<h4 class="text-green"><?=L::accessories_add_accessory;?></h4>
+					<form id="widget-addCatalogAccessory-form" action="apis/Kameo/accessories/add_catalog_accessory.php" role="form" method="post">
+						<div class="col-sm-12">
+							<h4 class="text-green">Informations sur le modèle</h4>
+							<div class="col-sm-12">
+								<div class="col-sm-4 ID">
+									<label for="ID">ID :</label>
+									<input type="int" class="form-control" name="ID" readonly/>
+								</div>
+								<div class="col-sm-4">
+									<label for="name"><?=L::generic_name;?> :</label>
+									<input type="text" class="form-control required" name="name" />
+								</div>
+								<div class="col-sm-4">
+									<label for="description"> <?=L::generic_description;?> : </label>
+									<input type="text" class="form-control required" name="description" />
+								</div>
+								<div class="col-sm-4">
+									<label for="category"> <?=L::generic_category;?> : </label>
+									<select class="form-control required" name="category"></select>
+								</div>
+							</div>
+							<div class="separator"></div>
+							<h4 class="text-green"><?=L::generic_price_stock;?></h4>
+							<div class="col-sm-12">
+								<div class="col-sm-4">
+									<label for="description"> <?=L::generic_buying_price;?> : </label>
+									<input type="int" class="form-control required" name="buyingPrice" />
+								</div>
+								<div class="col-sm-4">
+									<label for="description"> <?=L::generic_selling_price;?> : </label>
+									<input type="int" class="form-control required" name="sellingPrice" />
+								</div>
+								<div class="col-sm-4">
+									<label for="stock"> <?=L::generic_in_stock;?> ? </label>
+									<input type="text" class="form-control" name="stock" />
+								</div>
+                            </div>
+                            <div class="col-sm-12">
+								<div class="col-sm-4">
+									<label for="display"><?=L::generic_display;?> ? </label>
+                                    <input type="checkbox"  name="display">                                    
+								</div>
+							</div>
+							<div class="separator"></div>
+							<h4 class="text-green"><?=L::generic_picture;?></h4>
+							<div class="form-group addPicture col-sm-6">
+								<label for="file"><?=L::generic_picture;?></label>
+								<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+								<input type=file size=40 class="form-control required" name="file">
+								<img src="" class="accessoryCatalogImage" alt="image" height="200" />
+                            
+							</div>
+				            <input type="text" class="form-control hidden" name="action" />
+						</div>
+						<div class="col-sm-12">
+							<button  class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?=L::generic_send;?></button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?=L::generic_close;?></button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-addCatalogAccessory-form").validate({
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				success: function(response) {
+					if (response.response == 'success') {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'success'
+						});
+						listPortfolioBikes();
+						document.getElementById('widget-addCatalogAccessory-form').reset();
+						$('#portfolioAccessoryManagement').modal('toggle');
+                        listPortfolioAccessories();
+					} else {
+						$.notify({
+							message: response.message
+						}, {
+							type: 'danger'
+						});
+					}
+				}
+			});
+		}
+	});
+</script>

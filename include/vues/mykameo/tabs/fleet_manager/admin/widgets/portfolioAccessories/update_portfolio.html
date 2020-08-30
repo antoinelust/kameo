@@ -1,0 +1,169 @@
+<div class="modal fade" id="updatePortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form id="widget-updateCatalog-form" action="apis/Kameo/update_catalog_bike.php" role="form" method="post">
+							<div class="form-group col-sm-12">
+								<h4 class="fr text-green">Modifier un vélo</h4>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="ID">ID :</label>
+										<input type="text" readonly="readonly" class="form-control" name="ID"/>
+									</div>
+									<div class="col-sm-12"></div>
+									<div class="col-sm-4">
+										<label for="brand" class="fr"> Marque : </label>
+										<label for="brand" class="en"> Brand : </label>
+										<label for="brand" class="nl"> Brand : </label>
+										<select class="form-control required" name="brand">
+											<option value="Ahooga">Ahooga</option>
+											<option value="Benno">Benno</option>
+											<option value="Bzen">Bzen</option>
+											<option value="Conway">Conway</option>
+											<option value="Douze Cycle">Douze Cycle</option>
+											<option value="HNF Nicolai">HNF Nicolai</option>
+											<option value="Kayza">Kayza</option>
+											<option value="Orbea">Orbea</option>
+											<option value="Victoria">Victoria</option>
+											<option value="Stevens">Stevens</option>
+											<option value="other">Other</option>
+										</select>
+									</div>
+									<div class="col-sm-4">
+										<label for="widget-updateCatalog-form-model" class="fr"> Modèle : </label>
+										<label for="widget-updateCatalog-form-model" class="en"> Model : </label>
+										<label for="widget-updateCatalog-form-model" class="nl"> Model : </label>
+										<input type="text" class="form-control required" name="model" />
+									</div>
+									<div class="col-sm-4">
+										<h4><span class="fr"> Type de cadre : </span></h4>
+										<h4><span class="en"> Frame type: </span></h4>
+										<h4><span class="nl"> Frame type: </span></h4>
+										<select class="form-control  required" name="frame">
+											<option value="F">Femme</option>
+											<option value="H">Homme</option>
+											<option value="M">Mixte</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<h4><span class="fr"> Utilisation : </span></h4>
+										<h4><span class="en"> Utilisation: </span></h4>
+										<h4><span class="nl"> Utilisation: </span></h4>
+										<select class="form-control" name="utilisation">
+											<option value="Tout chemin">Tout chemin</option>
+											<option value="Ville et chemin">Ville et chemin</option>
+											<option value="Pliant">Pliant</option>
+											<option value="Ville">Ville</option>
+											<option value="Cargo">Cargo</option>
+											<option value="Gravel">Gravel</option>
+											<option value="VTT">VTT</option>
+											<option value="Speedpedelec">Speedpedelec</option>
+										</select>
+									</div>
+									<div class="col-sm-4">
+										<h4><span class="fr"> Vélo électrique ? </span></h4>
+										<h4><span class="en"> Electric bike? </span></h4>
+										<h4><span class="nl"> Electric bike? </span></h4>
+										<select class="form-control  required" name="electric">
+											<option value="Y">Y</option>
+											<option value="N">N</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="buyPrice" class="fr"> Prix  d'achat :</label>
+										<label for="buyPrice" class="en"> Buy price :</label>
+										<label for="buyPrice" class="nl"> Buy price :</label>
+										<input type="text" class="form-control  required" name="buyPrice" />
+									</div>
+									<div class="col-sm-4">
+										<label for="price" class="fr"> Prix  de vente: </label>
+										<label for="price" class="en"> Selling Price: </label>
+										<label for="price" class="nl"> Selling Price: </label>
+										<input type="text" class="form-control  required" name="price" />
+									</div>
+									<div class="col-sm-4">
+										<label for="stock" class="fr"> En stock ? </label>
+										<label for="stock" class="en"> Sotck? </label>
+										<label for="stock" class="nl"> Stock? </label>
+										<input type="text" class="form-control required" name="stock" />
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="display" class="fr">Afficher ? </label>
+										<label for="display" class="en">Display ? </label>
+										<label for="display" class="nl">Display ? </label>
+										<input type="checkbox" name="display" class="form-control">
+									</div>
+									<div class="col-sm-8">
+										<label for="link" class="fr"> Lien vers le site : </label>
+										<label for="link" class="en"> Vendor link : </label>
+										<label for="link" class="nl"> Vendor link</label>
+										<input type="text" class="form-control  required" name="link" />
+									</div>
+								</div>
+							</div>
+							<h4 class="text-green">Image en taille normale</h4>
+							<div class="col-sm-12">
+								<img src="" class="bikeCatalogImage" alt="image" height="200" />
+								<div class="col-sm-6">
+									<label for="file"  class="fr">Modifier la photo (ne rien uploader si ok)</label>
+									<label for="file"  class="en">Modify the picture (don't do anything if already ok)</label>
+									<label for="file"  class="nl">Modify the picture (don't do anything if already ok)</label>
+									<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+									<input type=file size=40 class="form-control" name="file">
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<h4 class="text-green">Image en taille réduite</h4>
+								<img src="" class="bikeCatalogImageMini" alt="image" height="200" />
+								<div class="col-sm-6">
+									<label for="fileMini"  class="fr">Modifier la photo mini (ne rien uploader si ok)</label>
+									<label for="fileMini"  class="en">Modify the mini picture (don't do anything if already ok)</label>
+									<label for="fileMini"  class="nl">Modify the mini picture (don't do anything if already ok)</label>
+									<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+									<input type=file size=40 class="form-control" name="fileMini">
+								</div>
+							</div>
+							<input type="text" name="user" value="<?php echo $user_data['EMAIL']; ?>" class="hidden"/>
+							<input type="text" name="action" value="update" class="hidden"/>
+							<div class="col-sm-12">
+								<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Sauvegarder</button>
+								<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Save</button>
+							</div>
+						</form>
+						<form id="widget-deletePortfolioBike-form" action="apis/Kameo/update_catalog_bike.php" role="form" method="post">
+							<div class="col-sm-12">
+								<input type="text" name="user" value="<?php echo $user_data['EMAIL']; ?>" class="hidden">
+								<input type="text" name="action" value="delete" class="hidden">
+								<input type="text" class="hidden" readonly="readonly" name="id">
+								<button  class="fr button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Supprimer</button>
+								<button  class="nl button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
+								<button  class="en button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Delete</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="fr" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
+			</div>
+			<div class="en" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
+			</div>
+			<div class="nl" class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			</div>
+		</div>
+	</div>
+</div>
