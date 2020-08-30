@@ -15,47 +15,20 @@
 		<div class="row">
 				<h1 class="text-green"><?=L::gestion_flotte_title?></h1>
 				<br>
-				<div class="col-md-12 fr" style="background: url('images/fond_degrade4.jpg');" data-stellar-background-ratio="0.6">
-					<h4 class="col-md-6 text-center">Accès sécurisé</h4><br>
-					<h4 class="col-md-6 text-center">Gestion des clés</h4><br>
-					<h4 class="col-md-6 text-center">Demande d’entretien</h4><br>
-					<h4 class="col-md-6 text-center">Recharge des batteries</h4><br>
-					<h4 class="col-md-6 text-center">Accès aux accessoires</h4><br>
-					<h4 class="col-md-6 text-center">Réservation d’un vélo</h4><br>
-					<h4 class="col-md-6 text-center">Gestion des utilisateurs</h4><br>
-					<h4 class="col-md-6 text-center">Conditions d’utilisation</h4><br>
-					<h4 class="col-md-6 text-center">Monitoring / Contrôle</h4>
-				</div>
-				<div class="col-md-12 en" style="background: url('images/fond_degrade4.jpg');" data-stellar-background-ratio="0.6">
-					<h4 class="col-md-6 text-center">Secured access</h4><br>
-					<h4 class="col-md-6 text-center">Keys management</h4><br>
-					<h4 class="col-md-6 text-center">On Demand Maintenance</h4><br>
-					<h4 class="col-md-6 text-center">Charging of batteries</h4><br>
-					<h4 class="col-md-6 text-center">Access to accessories</h4><br>
-					<h4 class="col-md-6 text-center">Bike reservation</h4><br>
-					<h4 class="col-md-6 text-center">Users management</h4><br>
-					<h4 class="col-md-6 text-center">Terms of use</h4><br>
-					<h4 class="col-md-6 text-center">Monitoring</h4>
-				</div>
-				<div class="col-md-12 nl" style="background: url('images/fond_degrade4.jpg');" data-stellar-background-ratio="0.6">
-					<h4 class="col-md-6 text-center">Beveiligde toegang</h4><br>
-					<h4 class="col-md-6 text-center">Sleutelsbeheer</h4><br>
-					<h4 class="col-md-6 text-center">Onderhoud op aanvraag</h4><br>
-					<h4 class="col-md-6 text-center">Opladen van batterijen</h4><br>
-					<h4 class="col-md-6 text-center">Toegang tot accessoires</h4><br>
-					<h4 class="col-md-6 text-center">Fietsreservatie</h4><br>
-					<h4 class="col-md-6 text-center">Gebruikers beheer</h4><br>
-					<h4 class="col-md-6 text-center">Gebruiksvoorwaarden</h4><br>
-					<h4 class="col-md-6 text-center">Monitoring</h4>
+				<div class="col-md-12" style="background: url('images/fond_degrade4.jpg');" data-stellar-background-ratio="0.6">
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_1?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_2?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_3?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_4?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_5?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_6?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_7?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_8?></h4><br>
+					<h4 class="col-md-6 text-center"><?=L::gestion_flotte_list1_9?></h4>
 				</div>
 				<div class="space"></div>
-				<h4 class="text-center fr">Face à ces problèmes KAMEO Bikes a élaboré un système <strong class="text-green">simple</strong>, <strong class="text-green">connecté</strong> & <strong class="text-green">intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</h4>
-				<h4 class="text-center en">Face à ces problèmes KAMEO Bikes a élaboré un système <strong class="text-green">simple</strong>, <strong class="text-green">connecté</strong> & <strong class="text-green">intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</h4>
-				<h4 class="text-center nl">Face à ces problèmes KAMEO Bikes a élaboré un système <strong class="text-green">simple</strong>, <strong class="text-green">connecté</strong> & <strong class="text-green">intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</h4>
-
-				<h4 class="text-center fr">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés.</h4>
-				<h4 class="text-center en">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés.</h4>
-				<h4 class="text-center nl">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés.</h4>
+				<h4 class="text-center"><?=L::gestion_flotte_fleet_text1?></h4>
+				<h4 class="text-center"><?=L::gestion_flotte_fleet_text2?></h4>
 
 				<div class="separator"></div>
 
@@ -79,89 +52,47 @@
 				<p class="fr">Par exemple, notre système de gestion de flotte partagées peut intégrer tous vos véhicules et être paramétré en fonction de vos besoins!</p>
 				-->
 				<div class="col-md-6">
-					<p class="text-center fr"><strong class="text-red">MyKAMEO</strong> est la plateforme de réservation en ligne.<br> Dotée d’accès différenciés pour un utilisateur lamda ou pour un responsable de la flotte, vous retrouverez différentes fonctions.</p>
-					<p class="text-center en"><strong class="text-red">MyKAMEO</strong> est la plateforme de réservation en ligne.<br> Dotée d’accès différenciés pour un utilisateur lamda ou pour un responsable de la flotte, vous retrouverez différentes fonctions.</p>
-					<p class="text-center nl"><strong class="text-red">MyKAMEO</strong> est la plateforme de réservation en ligne.<br> Dotée d’accès différenciés pour un utilisateur lamda ou pour un responsable de la flotte, vous retrouverez différentes fonctions.</p>
+					<p class="text-center"><?=L::gestion_flotte_mykameo_text?></p>
 				</div>
 				<div class="col-md-6">
-					<p class="text-center fr"><strong class="text-red">MyBORNE</strong> est le boitier connecté sécurisant l’accès aux clés. Il est en lien direct avec notre base de données pour donner accès à la clé d’un vélo grâce à un identifiant personnel. Cela pouvant fonctionner via un code à 4 chiffres ou un badge RFID.<br>MyBorne permet donc d’identifier quel utilisateur à pris un vélo et quand.<br> Le boitier est modulaire selon vos besoins, possibilité de gérer de 5 à 100 clés. Il est aussi personnalisable aux couleurs de votre entreprise.</p>
-					<p class="text-center en"><strong class="text-red">MyBORNE</strong> est le boitier connecté sécurisant l’accès aux clés. Il est en lien direct avec notre base de données pour donner accès à la clé d’un vélo grâce à un identifiant personnel. Cela pouvant fonctionner via un code à 4 chiffres ou un badge RFID.<br>MyBorne permet donc d’identifier quel utilisateur à pris un vélo et quand.<br> Le boitier est modulaire selon vos besoins, possibilité de gérer de 5 à 100 clés. Il est aussi personnalisable aux couleurs de votre entreprise.</p>
-					<p class="text-center nl"><strong class="text-red">MyBORNE</strong> est le boitier connecté sécurisant l’accès aux clés. Il est en lien direct avec notre base de données pour donner accès à la clé d’un vélo grâce à un identifiant personnel. Cela pouvant fonctionner via un code à 4 chiffres ou un badge RFID.<br>MyBorne permet donc d’identifier quel utilisateur à pris un vélo et quand.<br> Le boitier est modulaire selon vos besoins, possibilité de gérer de 5 à 100 clés. Il est aussi personnalisable aux couleurs de votre entreprise.</p>
+					<p class="text-center"><strong class="text-red"><?=L::gestion_flotte_myborne_text?></p>
 				</div>
 				<div class="col-md-6">
 					<h4><?=L::gestion_flotte_usercan?></h4>
 					<ul>
-						<li class="fr">Vous connecter avec un identifiant unique</li>
-						<li class="en">Vous connecter avec un identifiant unique</li>
-						<li class="nl">Vous connecter avec un identifiant unique</li>
-						<li class="fr">Réserver un vélo</li>
-						<li class="en">Réserver un vélo</li>
-						<li class="nl">Réserver un vélo</li>
-						<li class="fr">Consulter l’historique des réservations</li>
-						<li class="en">Consulter l’historique des réservations</li>
-						<li class="nl">Consulter l’historique des réservations</li>
-						<li class="fr">Choisir le moyen de transport idéal selon le trafic et la météo</li>
-						<li class="en">Choisir le moyen de transport idéal selon le trafic et la météo</li>
-						<li class="nl">Choisir le moyen de transport idéal selon le trafic et la météo</li>
-						<li class="fr">Demander une assistance ou un entretien</li>
-						<li class="en">Demander une assistance ou un entretien</li>
-						<li class="nl">Demander une assistance ou un entretien</li>
+					<?=L::gestion_flotte_usercan_list?>
 					</ul>
 				</div>
 				<div class="col-md-6">
 					<h4><?=L::gestion_flotte_admin?></h4>
 					<ul>
-						<li class="fr">Gérer les vélos</li>
-						<li class="en">Gérer les vélos</li>
-						<li class="nl">Gérer les vélos</li>
-						<li class="fr">Ajouter et modifier des utilisateurs</li>
-						<li class="en">Ajouter et modifier des utilisateurs</li>
-						<li class="nl">Ajouter et modifier des utilisateurs</li>
-						<li class="fr">Paramétrer vos conditions de réservation des vélos</li>
-						<li class="en">Paramétrer vos conditions de réservation des vélos</li>
-						<li class="nl">Paramétrer vos conditions de réservation des vélos</li>
-						<li class="fr">Consulter l’historique et les statistiques d’utilisation</li>
-						<li class="en">Consulter l’historique et les statistiques d’utilisation</li>
-						<li class="nl">Consulter l’historique et les statistiques d’utilisation</li>
-						<li class="fr">Avoir accès à vos factures et à votre contrat</li>
-						<li class="en">Avoir accès à vos factures et à votre contrat</li>
-						<li class="nl">Avoir accès à vos factures et à votre contrat</li>
+					<?=L::gestion_flotte_admin_list?>
 					</ul>
 				</div>
 				<div class="space"></div>
-				<p class="fr">Vous avez envie d'ajouter des fonctionnalités? <strong>On s'en occupe!</strong> De plus notre système fonctionne aussi pour <strong>vos voitures</strong>, <strong>camionnettes</strong> ou <strong>tout autre véhicule</strong>.</p>
-				<p class="en">Vous avez envie d'ajouter des fonctionnalités? <strong>On s'en occupe!</strong> De plus notre système fonctionne aussi pour <strong>vos voitures</strong>, <strong>camionnettes</strong> ou <strong>tout autre véhicule</strong>.</p>
-				<p class="nl">Vous avez envie d'ajouter des fonctionnalités? <strong>On s'en occupe!</strong> De plus notre système fonctionne aussi pour <strong>vos voitures</strong>, <strong>camionnettes</strong> ou <strong>tout autre véhicule</strong>.</p>
+				<p><?=L::gestion_flotte_admin_addfunc?></p>
 				<div class="separator"></div>
 
 				<h3><?=L::gestion_flotte_reserve_bike?></h3>
 
 				<div class="col-md-3">
 					<img src="images/Mykameo1.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 1">
-					<p class="text-center fr">Connectez-vous sur MyKAMEO et réservez votre véhicule.</p>
-					<p class="text-center en">Connectez-vous sur MyKAMEO et réservez votre véhicule.</p>
-					<p class="text-center nl">Connectez-vous sur MyKAMEO et réservez votre véhicule.</p>
+					<p class="text-center"><?=L::gestion_flotte_reserve_connect?></p>
 				</div>
 
 				<div class="col-md-3">
 					<img src="images/Mykameo2.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 2">
-					<p class="text-center fr">Entrez le code reçu par mail pour déverrouiller la borne.</p>
-					<p class="text-center en">Entrez le code reçu par mail pour déverrouiller la borne.</p>
-					<p class="text-center nl">Entrez le code reçu par mail pour déverrouiller la borne.</p>
+					<p class="text-center"><?=L::gestion_flotte_reserve_code?></p>
 				</div>
 
 				<div class="col-md-3">
 					<img src="images/Mykameo3.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 3">
-					<p class="text-center fr">Prenez la clé du cadenas de votre véhicule sous la led illuminée.</p>
-					<p class="text-center en">Prenez la clé du cadenas de votre véhicule sous la led illuminée.</p>
-					<p class="text-center nl">Prenez la clé du cadenas de votre véhicule sous la led illuminée.</p>
+					<p class="text-center"><?=L::gestion_flotte_reserve_key?></p>
 				</div>
 
 				<div class="col-md-3">
 					<img src="images/Mykameo4.png" class="img-responsive img-rounded" alt="Réserver un véhicule - étape 4">
-					<p class="text-center fr">Déverrouillez votre véhicule à l’aide de la clé reçue.</p>
-					<p class="text-center en">Déverrouillez votre véhicule à l’aide de la clé reçue.</p>
-					<p class="text-center nl">Déverrouillez votre véhicule à l’aide de la clé reçue.</p>
+					<p class="text-center"><?=L::gestion_flotte_reserve_unlock?></p>
 				</div>
 
 		</div>

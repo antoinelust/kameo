@@ -17,32 +17,10 @@
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
                             <h1 class="text-dark"><?=L::description_title;?></h1>
-							<p class="lead text-light text-justify fr">Rendez les déplacements de vos employés plus <strong>dynamiques</strong> et <strong>écologiques</strong>, mettez leur des vélos partagés à disposition.<br> Que ce soit pour : des rendez-vous clients, les trajets domicile-travail, un trajet inter-sites ou se rendre à un lunch, soyez sûr de leur temps de parcours et améliorez leur forme.</p>
-							<p class="lead text-light text-justify en">Make your employees' trips more <strong>dynamic</strong> and <strong>ecological</strong>, make shared bikes available to them.<br> Whether for: client meetings, home-work trips, an inter-site trip or going out for lunch, be sure of their journey time and improve their shape.</p>
-							<p class="lead text-light text-justify nl">Maak de ritten van uw werknemers <strong>dynamischer</strong> en <strong>ecologischer</strong>, stel DEELFIETSEN ter beschikking.<br> Of het nu gaat om: klantbijeenkomsten, huis-werkreizen, een reis tussen de locaties of om te lunchen, wees zeker van hun reistijd en verbeter hun vorm.</p>
-							<p class="lead text-light fr"><strong>KAMEO Bikes</strong> s’occupe de tout et se déplace chez vous:<br>
-								- <strong>conseil</strong> sur le vélo adapté,<br>
-								- <strong>maintenance</strong> sur site,<br>
-								- <strong>assurance</strong> et <strong>assistance</strong> dépannage,<br>
-								- <strong>gestion</strong> des vélos simple, connectée et sécurisée,<br>
-								- installation d'<strong>infrastructures</strong>.</p>
-							<p class="lead text-light en"><strong>KAMEO Bikes</strong> takes care of everything and comes to your place:<br>
-								- <strong>advice</strong> for the best bike for your needs,<br>
-								- on site <strong>maintenance</strong>,<br>
-								- <strong>insurance</strong> and <strong>assistance</strong> in case of breakdown,<br>
-								- simple, connected and safe<strong>management</strong> of your bikes,<br>
-								- <strong>infrastructures</strong> installation.</p>
-							<p class="lead text-light nl"><strong>KAMEO Bikes</strong> zorgt voor alles en komt bij uw site:<br>
-								- <strong>advies</strong> voor de beste fiets voor uw behoeften,<br>
-								- ter plaats <strong>onderhoud</strong>,<br>
-								- <strong>verzekering</strong> en <strong>pechbijstand</strong>,<br>
-								- eenvoudig, verbonden en veilig <strong>beheer</strong> van de fietsen,<br>
-								- <strong>infrastructuur</strong> installatie.</p>
+							<p class="lead text-light text-justify"><?=L::description_text1;?></p>
+							<p class="lead text-light"><?=L::description_text2;?></p>
 
-							<a class="button black-light button-3d effect fill-vertical scroll-to fr"  href="#plus"><span>Découvrez notre offre <i class="fa fa-arrow-down"></i></span></a>
-							<a class="button black-light button-3d effect fill-vertical scroll-to en"  href="#plus"><span>Discover our offer <i class="fa fa-arrow-down"></i></span></a>
-							<a class="button black-light button-3d effect fill-vertical scroll-to nl"  href="#plus"><span>Ontdekt onze aanbod <i class="fa fa-arrow-down"></i></span></a>
-
+							<a class="button black-light button-3d effect fill-vertical scroll-to" style="display: block;"  href="#plus"><span><?=L::description_btn_discover_offer;?><i class="fa fa-arrow-down"></i></span></a>
 						</div>
 						<div class="col-md-5">
 							<img src="images/Atradius_Bikes.jpg" class="img-responsive img-rounded" alt="Vélos électriques BZEN brandés aux couleurs d'Atradius">
@@ -87,15 +65,9 @@
 						<div class="col-md-6">
 							<!-- <hr class="space"> -->
 							<h1 class="text-green"><?=L::fleet_title;?></h1>
-							<p class="text-justify fr">Nous avons l’expérience, laissez nous vous conseiller sur le modèle et le nombre de vélos adéquats pour votre projet.</p>
-							<p class="text-justify en">We have the know how, let us advise you on the model and the number of bikes suitable for your project.</p>
-							<p class="text-justify nl">Wij hebben de ervaring, laat ons u adviseren over het model en het aantal fietsen dat geschikt is voor uw project..</p>
-							<p class="text-justify fr">Nous proposons des vélos adaptés pour une flotte partagée et travaillons avec des partenaires de qualité tels que <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
-							<p class="text-justify en">We offer bikes suitable for a shared fleet and work with quality partners such as <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
-							<p class="text-justify nl">Wij bieden geschikte fietsen aan voor een gedeelde vloot en werken samen met kwaliteitspartners zoals <strong class="text-green">BZEN</strong>,<strong class="text-green">CONWAY</strong> et <strong class="text-green">AHOOGA</strong>.
-						    <p class="text-justify fr">Envie de brander vos vélos ? C’est comme si c’était fait !</p>
-						    <p class="text-justify en">Want to brand your bikes ? Consider it done !</p>
-						    <p class="text-justify nl">Zin in een gepersonnaliseerde branding ? Zo goed als klaar !</p>
+							<p class="text-justify"><?=L::fleet_text1;?></p>
+							<p class="text-justify"><?=L::fleet_text2;?></p>
+						    <p class="text-justify"><?=L::fleet_text3;?></p>
 
 
 						</div>
@@ -208,13 +180,8 @@
 							</div>
 							<div class="col-md-5">
 							<h1 class="text-green text-center"><?=L::manage_fleet_title;?></h1>
-								<p class="text-justify background-white fr">Vous n’avez pas envie de vous tracasser de tout cela, vous voulez juste pouvoir prendre un vélo et l’utiliser?<br> Ça tombe bien, nous avons développé un système <strong>simple</strong>, <strong>connecté</strong> et <strong>intelligent</strong> pour la sécurisation et la bonne gestion des vélos partagés.</p>
-								<p class="text-justify background-white en">You don't want to worry about all of this, you just want to be able to take a bicycle and use it?<br> No problem, we developed a <strong>smart</strong>, <strong>simple</strong> and <strong>connected</strong> system for securing and managing shared bikes.</p>
-								<p class="text-justify background-white nl">U wilt zich hier geen zorgen over maken, u wilt gewoon een fiets kunnen pakken en gebruiken?<br> Geen probleem, we hebben een <strong>eenvoudig</strong>, <strong>slim</strong> en <strong>verbonden</strong> systeem ontwikkelt voor het beveiligen en beheren van deelfietsen.</p>
-
-								<p class="text-justify background-white fr">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés. Le tout est paramétrable pour fonctionner selon votre politique interne. Demande d’entretien, monitoring et statistiques d’utilisation, tout y est intégré.</p>
-								<p class="text-justify background-white en">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés. Le tout est paramétrable pour fonctionner selon votre politique interne. Demande d’entretien, monitoring et statistiques d’utilisation, tout y est intégré.</p>
-								<p class="text-justify background-white nl">Celui-ci fonctionne via une plateforme de réservation en ligne et un boitier connecté sécurisant l’accès aux clés. Le tout est paramétrable pour fonctionner selon votre politique interne. Demande d’entretien, monitoring et statistiques d’utilisation, tout y est intégré.</p>
+								<p class="text-justify background-white"><?=L::manage_fleet_text1;?></p>
+								<p class="text-justify background-white"><?=L::manage_fleet_text2;?></p>
 							</div>
 						</div>
 					</div>
@@ -226,9 +193,7 @@
 			<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark text-light">
 			  <div class="container">
 			    <h3><?=L::action_test1month;?></h3>
-			    <p class="fr">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
-			    <p class="en">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
-			    <p class="nl">Nous vous proposons d'essayer nos solutions avant de vous engager.<br>Contactez-nous pour réserver votre essai.</p>
+			    <p><?=L::action_test_subtitle;?></p>
 		   		<div><a class="button large green button-3d effect icon-left" href="contact.php"><?=L::action_btncontact;?><span><i class="fa fa-send"></i></span></a></div>
 			</div>
 		</div>
@@ -244,9 +209,7 @@
 							<h1 class="text-green"><?=L::insurance_title;?></h1>
 							<p class="text-justify"><?=L::insurance_uppertext;?></p>
 
-							<p class="text-justify fr">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
-							<p class="text-justify en">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
-							<p class="text-justify nl">Les vélos ont une valeur non négligeable, il est important d’être couvert contre le vol ou toute autre dégradation. Pour cela, KAMEO Bikes collabore avec Aedes et Dedale afin d’offrir à ses clients l’assurance Omnium la plus complète et la plus flexible actuellement disponible sur le marché : <strong class="text-green">La P-Vélo</strong>.
+							<p class="text-justify"><?=L::insurance_text2;?></p>
 
 						</div>
 						<div class="col-md-4">
@@ -321,15 +284,11 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h3 id="fr">Mot de passe oublié</h3>
-                        <h3 id="en">Password lost</h3>
-                        <h3 id="nl">Wachtwoord kwijt</h3>
+						<h3><?=L::sharedBike_forgotPass;?></h3>
 						<form id="widget-lostPassword-form" action="apis/Kameo/lostPassword.php" role="form" method="post">
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <label for="subject"  id="fr">Nouveau mot de passe</label>
-                                    <label for="subject"  id="en">New pasword</label>
-                                    <label for="subject"  id="nl">Nieuw wachtwoord</label>
+                                    <label for="subject"><?=L::sharedBike_newPass;?></label>
                                     <input type="password" name="widget-lostPassword-form-new-password" class="form-control required" autocomplete="new-password">
                                 </div>
                             </div>
@@ -346,9 +305,7 @@
                                 <?php
                             }
                             ?>
-                            <button  id="fr" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Envoyer</button>
-                            <button  id="en" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Confirm</button>
-                            <button  id="nl" class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>
+                            <button class="button effect fill" type="submit" id="form-submit" style="display: block;"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::sharedBike_send;?></button>
                         </form>
 							<script type="text/javascript">
                                 jQuery("#widget-lostPassword-form").validate({

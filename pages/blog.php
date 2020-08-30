@@ -16,7 +16,7 @@
 	<div class="container">
 		<div class="row">
 								
-				<h1 class="text-green">MÉDIA / BLOG</h1>
+				<h1 class="text-green"><?=L::blog_title;?></h1>
 				<br>
 				
             

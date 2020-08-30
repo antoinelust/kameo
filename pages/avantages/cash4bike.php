@@ -231,24 +231,24 @@
             
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h2 class="modal-title text-green" id="modal-label">Veuillez compléter vos informations de contact</h2>
+				<h2 class="modal-title text-green" id="modal-label"><?=L::cash4bike_md_contact;?></h2>
 			</div>
 			<div class="modal-body">
 				<div class="row text-left">
 					<div class="form-group col-sm-12">
-                    	<label for="firstName" class="fr">Prénom</label>
+                    	<label for="firstName"><?=L::cash4bike_md_surname;?></label>
                         <input type="text" aria-required="true" name="firstName" class="form-control required is-invalid">
                     </div>
 					<div class="form-group col-sm-12">
-                    	<label for="name" class="fr">Nom</label>
+                    	<label for="name"><?=L::cash4bike_md_name;?></label>
                         <input type="text" aria-required="true" name="name" class="form-control required is-invalid">
                     </div>
                     <div class="form-group col-sm-12">
-                    	<label for="email" class="fr">Email</label>
+                    	<label for="email"><?=L::cash4bike_md_mail;?></label>
                         <input type="text" aria-required="true" name="email" class="form-control required is-invalid">
                     </div>
                     <div class="form-group col-sm-12">
-                    	<label for="entreprise" class="fr">Entreprise</label>
+                    	<label for="entreprise"><?=L::cash4bike_md_society;?></label>
                         <input type="text" aria-required="true" name="entreprise" class="form-control required is-invalid">
                     </div>
 				</div>
@@ -263,7 +263,7 @@
             <input type="text" name="model" class="form-control hidden">
             <input type="text" name="prime" class="form-control hidden">
 			<div class="modal-footer">
-				<button type="submit" class="button green button-3d effect fill-vertical">Envoyer</button>
+				<button type="submit" class="button green button-3d effect fill-vertical"><?=L::cash4bike_md_send;?></button>
 			</div>
             </form>
                     
@@ -293,14 +293,8 @@
                 
             </script>
             
-          <div class="fr" class="modal-footer">
-            <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-          </div>
-          <div class="en" class="modal-footer">
-            <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-          </div>
-          <div class="nl" class="modal-footer">
-            <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-b" data-dismiss="modal"><?=L::cash4bike_md_close;?></button>
           </div>
 		</div>
 	</div>
