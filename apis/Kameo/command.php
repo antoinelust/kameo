@@ -33,17 +33,17 @@ if(isset($_POST['action'])){
             $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
             die;                        
-        }        
+        }
         
         
         $resultat=$stmt->get_result()->fetch_assoc();
         $firstName=$resultat['PRENOM'];
         $name=$resultat['NOM'];
 
-        $stmt->close();        
+        $stmt->close();      
         
-
-        /*$sql="SELECT * FROM client_orders where EMAIL='$email'";           
+        
+        $sql="SELECT * FROM client_orders where EMAIL='$email'";           
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -60,7 +60,8 @@ if(isset($_POST['action'])){
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        }*/
+        }
+        
         
         
         require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
