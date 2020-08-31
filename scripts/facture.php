@@ -122,7 +122,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
     <tr>
         <td style="width: 50%">
         
-                <img class="img-responsive" src="'.__DIR__.'/images/logo-dark.png" alt="">
+                <img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images/logo-dark.png" alt="">
 				
 				<p>KAMEO Bikes sprl</p>
 				
@@ -138,7 +138,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
         
         </td>
         <td style="width: 50%">
-				<img class="img-responsive" src="'.__DIR__.'/images/'.$company.'.jpg" alt="">
+				<img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images/'.$company.'.jpg" alt="">
 				
 				<p>'.$companyName.'</p>
 				
@@ -222,8 +222,8 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $catalogID=$row2['TYPE'];
                 
                 error_log("FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");    
-                if(file_exists("./images_bikes/".$row2['ID']."_mini.jpg")){
-                    $fichier="/images_bikes/".$row2['ID']."_mini.jpg";
+                if(file_exists($_SERVER['DOCUMENT_ROOT']."/images_bikes/".$row2['ID']."_mini.jpg")){
+                    $fichier=$_SERVER['DOCUMENT_ROOT']."/images_bikes/".$row2['ID']."_mini.jpg";
                 }else{
                     $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
                     error_log("SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");    
@@ -234,7 +234,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     }
                     $result4 = mysqli_query($conn, $sql);  
                     $resultat4 = mysqli_fetch_assoc($result4);
-                    $fichier = "/images_bikes/".strtolower(str_replace(" ", "-", $resultat4['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat4['MODEL']))."_".strtolower($resultat4['FRAME_TYPE'])."_mini.jpg";
+                    $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".strtolower(str_replace(" ", "-", $resultat4['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat4['MODEL']))."_".strtolower($resultat4['FRAME_TYPE'])."_mini.jpg";
                 }
                 
                 $contractStart= new DateTime();
@@ -292,7 +292,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img class="img-responsive" src="'.__DIR__.$fichier.'" alt=""></td>
+                    <td><img class="img-responsive" src="'.$fichier.'" alt=""></td>
                     ';
                 if(($row2['CONTRACT_END'])){
                     $test2=$test2.'<td>Période '.($monthDifference).'/'.$numberOfMonthContract.'</td></tr>';
@@ -367,7 +367,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img class="img-responsive" src="'.__DIR__.'/images_bikes/'.$row2['MODEL'].'_mini.png" alt=""></td>';
+                    <td><img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$row2['MODEL'].'_mini.png" alt=""></td>';
                 if($row2['END']){
                     $test2=$test2.'<td>Période '.($monthDifference).'/'.($lengthLeasing).'</td></tr>';
                 }else{

@@ -3,7 +3,7 @@ require_once dirname(__FILE__).'/../vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
-include 'globalfunctions.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
 $company=$_POST['company'];
 $dateStart=$_POST['dateStart'];
@@ -26,7 +26,7 @@ $date1monthAfterString=$date1monthAfter->format('Y-m-d');
 
 $simulation='N';
 
-include 'connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql_reference="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
 error_log("SQL4 :".$sql_reference."\n", 3, "generate_invoices.log");    
 
@@ -46,7 +46,7 @@ $newIDOUT=strval($newIDOUT+1);
 
 $today=date('Y-m-d');
 
-include 'connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
 error_log("SQL5 :".$sql."\n", 3, "generate_invoices.log");    
 
@@ -119,7 +119,7 @@ $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet',
 
 
 
-if ((file_exists(__DIR__.'/../images/'.$company.'.jpg'))){
+if ((file_exists($_SERVER['DOCUMENT_ROOT'].'/images/'.$company.'.jpg'))){
     $fichier=$company;
 }else{
     $fichier="default";
@@ -151,7 +151,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
     <tr>
         <td style="width: 50%">
         
-                <img class="img-responsive" src="./images/logo-dark.png" alt="">
+                <img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images/logo-dark.png" alt="">
 				
 				<p>KAMEO Bikes sprl</p>
 				
@@ -167,7 +167,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
         
         </td>
         <td style="width: 50%">
-				<img class="img-responsive" src="./images/'.$fichier.'.jpg" alt="">
+				<img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images/'.$fichier.'.jpg" alt="">
 				
 				<p>'.$companyName.'</p>
 				
@@ -224,7 +224,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 
                 
                 if($type=="bike"){
-                    include 'connexion.php';
+                    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                     $sql="SELECT MODEL, FRAME_REFERENCE, TYPE, substr(CONTRACT_START,9,2) as 'firstDay', FRAME_NUMBER from customer_bikes where ID='$ID'";
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
@@ -239,7 +239,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $contractEnd=$dateEnd;
                     
                     
-                    include 'connexion.php';
+                    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                     $sql2="SELECT * from bike_catalog where ID='$catalogID'";
                     if ($conn->query($sql2) === FALSE) {
                         echo $conn->error;
@@ -249,7 +249,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $resultat2 = mysqli_fetch_assoc($result2);
                     $conn->close();     
                     
-                    $file=__DIR__.'/images_bikes/'.$resultat['ID'].'jpg';
+                    $file=$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$resultat['ID'].'jpg';
                     if ((file_exists($file))){
                         $img=$resultat['ID'];
                     }else{
@@ -281,12 +281,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     </tr>
                     <tr>
                         <td></td>
-                        <td><img class="img-responsive" src="./images_bikes/'.$img.'_mini.jpg" width="200" alt=""></td>
+                        <td><img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$img.'_mini.jpg" width="200" alt=""></td>
                         ';
 
                     $test2=$test2."<td>Location </td></tr>";
                     if(!$simulation || $simulation == 'N'){
-                        include 'connexion.php';
+                        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                         $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID', '$comment', '$contractStartString2', '$contractEndString2', '$price', '$priceTVAC')";
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -298,7 +298,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                     
                 }else if($type=="bikeSell"){
-                    include 'connexion.php';
+                    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                     $sql2="SELECT * from customer_bikes where ID='$ID'";
                     if ($conn->query($sql2) === FALSE) {
                         echo $conn->error;
@@ -309,7 +309,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $conn->close();    
                     $catalogID=$resultat2['TYPE'];
                     
-                    include 'connexion.php';
+                    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                     $sql3="SELECT * from bike_catalog where ID='$catalogID'";
                     if ($conn->query($sql3) === FALSE) {
                         echo $conn->error;
@@ -321,7 +321,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     
                     
                     
-                    $file=__DIR__.'/images_bikes/'.$resultat2['ID'].'jpg';
+                    $file=$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$resultat2['ID'].'jpg';
                     if ((file_exists($file))){
                         $img=$resultat['ID'];
                     }else{
@@ -341,7 +341,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     </tr>
                     <tr>
                         <td></td>
-                        <td><img class="img-responsive" src="./images_bikes/'.$img.'_mini.jpg" alt="" width="200"></td>
+                        <td><img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$img.'_mini.jpg" alt="" width="200"></td>
                         ';
 
                     $test2=$test2."<td>Vente </td></tr>";
@@ -349,7 +349,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $contractStartString=$dateStart->format('Y-m-d');
 
                     if(!$simulation || $simulation == 'N'){
-                        include 'connexion.php';
+                        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                         $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID', '$comment', '$contractStartString', '$contractStartString', '$price', '$priceTVAC')";
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -359,7 +359,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                         $conn->close();
                         
                         
-                        include 'connexion.php';
+                        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                         $sql="UPDATE customer_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, CONTRACT_TYPE='selling', SELLING_DATE='$contractStartString', SOLD_PRICE='$price', COMPANY='$company' WHERE ID='$ID'";
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -371,7 +371,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     }                
                 }else if($type=="accessorySell"){
                     
-                    include 'connexion.php';
+                    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                     $sql2="SELECT * from accessories_catalog where ID='$ID'";
                     if ($conn->query($sql2) === FALSE) {
                         echo $conn->error;
@@ -492,8 +492,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 </page>';
 
-include 'connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$date1monthAfterString','leasing', NULL)";
+
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);

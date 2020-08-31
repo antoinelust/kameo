@@ -607,3 +607,14 @@ body.loading .loader {
 .cookie-btn {
   margin-left: 10px;
 }
+
+
+.background-orange {
+    background-color: #f99367 !important;
+}
+
+
+.background-green {
+    background-color: #3cb395 !important;
+}
+

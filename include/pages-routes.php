@@ -22,6 +22,9 @@
 	
 	/** MYKAMEO **/
 	$router->map('GET','/mykameo[ext]', 'pages/mykameo.php');
+
+	/** BILLS GENERATION **/
+	$router->map('GET','/generate_invoices[ext]', 'include/vues/bills_generation/generate_invoices.php');
 	
 	/** NEWSLETTER **/
 	$router->map('GET','/newsletter[ext]', 'pages/newsletter.php');

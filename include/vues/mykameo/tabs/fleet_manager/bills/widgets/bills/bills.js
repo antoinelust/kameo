@@ -161,6 +161,7 @@ function create_bill(){
             .append(`<tr class="bikesNumberTable`+(bikesNumber)+` bikeRow form-group">
             <td class="bLabel"></td>
             <td class="bikeID"></td>
+            <td class="billType"></td>
             <td class="bikepAchat"></td>
             <td class="bikepCatalog"></td>
             <td contenteditable='true' class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
@@ -170,12 +171,17 @@ function create_bill(){
 
             //label selon la langue
             $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bLabel')
-            .append('<label class="fr">Vélo '+ bikesNumber +'</label>');
+            .append('<label>Vélo '+ bikesNumber +'</label>');
 
             $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bikeID')
             .append(`<select name="bikeID[]" class="select`+bikesNumber+` bikeID form-control required">`+
             bikeModels+
             `</select>`);
+              
+              //type de facture
+            $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.billType')
+            .append("<select><option value='vente'>Vente</option><option value'location'>Location</option></select>");
+              
 
 
             //gestion du select du velo

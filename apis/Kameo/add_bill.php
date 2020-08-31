@@ -8,9 +8,10 @@ if(!isset($_SESSION))
     session_start(); 
 } 
 
-include 'globalfunctions.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
@@ -119,7 +120,6 @@ if($billType == "manual"){
 
 
         $fichier = $fileName.".pdf";
-
          if(!move_uploaded_file($_FILES['widget-addBill-form-file']['tmp_name'], $dossier . $fichier)){
               errorMessage("ES0024");
          }
@@ -178,17 +178,14 @@ if($billType == "manual"){
     $data['billingGroup'] = "1";
         
     
-    if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-        $test=CallAPI('POST', 'https://www.kameobikes.com/include/generate_bill.php', $data);
+    if(constant('ENVIRONMENT')=="production"){
+        $test=CallAPI('POST', 'https://www.kameobikes.com/scripts/generate_bill.php', $data);
     }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
-        $test=CallAPI('POST', 'https://www.kameobikes.com/test/include/generate_bill.php', $data);
+        $test=CallAPI('POST', 'https://www.kameobikes.com/test/scripts/generate_bill.php', $data);
     }else{
-        $test=CallAPI('POST', 'localhost:81/kameo/include/generate_bill.php', $data);
+        $test=CallAPI('POST', 'kameo/kameo/scripts/generate_bill.php', $data);
     }
-    
-    $test=str_replace("./images/", "../images/", $test);
-    $test=str_replace("./images_bikes/", "../images_bikes/", $test);
-    
+        
     error_log("Final result :".$test."\n", 3, "generate_bill.log");    
     
     try {
@@ -196,8 +193,8 @@ if($billType == "manual"){
         $html2pdf->pdf->SetDisplayMode('fullpage');
         $html2pdf->writeHTML($test);        
         
-        $path='/../factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';       
-        $html2pdf->Output(__DIR__ . $path, 'F');
+        $path=$_SERVER['DOCUMENT_ROOT'].'/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';       
+        $html2pdf->Output($path, 'F');
         
     } catch (Html2PdfException $e) {
         $html2pdf->clean();

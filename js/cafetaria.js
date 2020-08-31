@@ -24,6 +24,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function load_cafetaria(){
+    console.log("coucou");
     $.ajax({
         url: 'apis/Kameo/orders/orders.php',
         type: 'get',
@@ -36,7 +37,7 @@ function load_cafetaria(){
 				var $grid = $('.grid').isotope();
 				if (($('.grid').isotope('getItemElements').length == 0))
 				{
-					for (var i=0; i<response.bikeNumber; i++){        
+					for (var i=0; i<response.bikeNumber; i++){    
                                                 
 							if(response.bike[i].frameType.toLowerCase()=="h"){
 								var frameType = "Homme";
@@ -59,8 +60,15 @@ function load_cafetaria(){
 							}else{
 								var price="5000";
 							}
+                        
+                            if((response.bike[i].stock)=="0"){
+                                var stock="commande";
+                            }else{
+                                var stock="stock";
+                            }
+                        
 
-							var $item=$("\
+							var temp="\
 							<div class=\"grid-item\">\
 								<div class=\"portfolio-image effect social-links\">\
 									<img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
@@ -75,15 +83,25 @@ function load_cafetaria(){
 									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
 									<p>"+response.bike[i].model+" "+frameType+"\
 									<br>"+response.bike[i].utilisation+"\
-									<br>Prix : "+Math.round(response.bike[i].leasingPrice*(1-response.discount/100))+" €/mois\
-									<br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\">\
-										<span class=\"fr\">Commander</span>\
-										<span class=\"en\">Order</span>\
-										<span class=\"nl\">Order</span>\
+									<br>Prix : "+Math.round(response.bike[i].leasingPrice*(1-response.discount/100))+" €/mois";
+
+                                    if(stock==="stock"){
+                                        temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
+                                    }else{
+                                        temp=temp+"<br><strong class=\"background-orange text-dark center text-center text-small\">Sous commande</strong>";
+                                    }
+
+                                    temp=temp+"\
+                                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\"\
+                                    href=\"#\" name=\""+response.bike[i].ID+"\">\
+										<span>Commander</span>\
 									</a>\
 									</p>\
 								</div>\
-							</div>");
+							</div>";
+                        
+                          console.log("<?=L::generic_command;?>");
+                          var $item=$(temp);
 
 						  // add width and height class
 						  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
