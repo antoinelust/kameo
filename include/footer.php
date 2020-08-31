@@ -12,8 +12,8 @@
       		<br>
             <div class="social-icons center">
               <ul>
-                <li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank" rel="noopener"><i class="fa fa-facebook"></i></a></li>
-                <li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank" rel="noopener"><i class="fa fa-linkedin"></i></a></li>
+                <li class="social-facebook"><a href="https://www.facebook.com/Kameo-Bikes-123406464990910/" target="_blank" rel="noopener" aria-label="fb-button"><i class="fa fa-facebook"></i></a></li>
+                <li class="social-linkedin"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank" rel="noopener" aria-label="linkedin-button"><i class="fa fa-linkedin"></i></a></li>
               </ul>
             </div>
 		    <div>

@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
 <?php
 	include 'include/head.php';
 	header_remove("Set-Cookie");
 	header_remove("X-Powered-By");
 ?>
+<!DOCTYPE html>
+<html lang="fr">
 <body class="wide">
 	<!-- WRAPPER -->
 	<div class="wrapper">
@@ -12,7 +12,7 @@
 		<?php include 'include/header.php'; ?>
   <br>
   <h1 class="text-center text-uppercase text-medium" data-animation="fadeInUp"><?=L::header_title;?></h1>
-  <img src="/images/background_new.jpg" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
+  <img src="/images/background_new.webp" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
   <!-- MISSION & VISSION -->
   <section class="box-fancy section-fullwidth text-light no-padding">
   	<div class="row">
@@ -42,12 +42,12 @@
   	</div>
   </section>
   <!-- END: MISSION & VISSION -->
-  <div class="modal fade" id="employeur" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+  <div class="modal fade" id="employeur" tabindex="-1" role="modal" aria-labelledby="modal-label-employer" aria-hidden="true" style="display: none;">
   	<div class="modal-dialog">
   		<div class="modal-content">
   			<div class="modal-header">
   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  				<h2 class="modal-title" id="modal-label"><?=L::employer_modal_title;?></h2>
+  				<h2 class="modal-title" id="modal-label-employer"><?=L::employer_modal_title;?></h2>
   			</div>
   			<div class="modal-body">
   				<div class="row text-center">
@@ -73,12 +73,12 @@
   		</div>
   	</div>
   </div>
-  <div class="modal fade" id="employe" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+  <div class="modal fade" id="employe" tabindex="-1" role="modal" aria-labelledby="modal-label-employee" aria-hidden="true" style="display: none;">
   	<div class="modal-dialog">
   		<div class="modal-content">
   			<div class="modal-header">
   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  				<h2 class="modal-title" id="modal-label"><?=L::employee_modal_title;?></h2>
+  				<h2 class="modal-title" id="modal-label-employee"><?=L::employee_modal_title;?></h2>
   			</div>
   			<div class="modal-body">
   				<div class="row text-center">
@@ -112,7 +112,7 @@
   			<div class="col-md-6">
   				<img src="images/RoueKameo.png" class="img-responsive img-rounded" alt="Roue des services KAMEO Bikes">
   			</div>
-			  <div class="col-md-12 text-center" style="background: url('images/fond_degrade2.jpg');" data-stellar-background-ratio="0.6"><br>
+			  <div class="col-md-12 text-center" style="background: url('images/fond_degrade2.webp');" data-stellar-background-ratio="0.6"><br>
 			  <?=L::choose_kameo_list_avantages;?>
   			</div>
   		</div>
@@ -143,7 +143,7 @@
   	</div>
   </section>
   <!-- END: SECTION CLIENTS -->
-	<div class="modal fade" id="newPassword" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal fade" id="newPassword" tabindex="-1" role="modal" aria-labelledby="modal-label-newpass" aria-hidden="true" style="display: none;">
   	<div class="modal-dialog">
   		<div class="modal-content">
   			<div class="modal-header">

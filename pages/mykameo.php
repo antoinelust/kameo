@@ -492,7 +492,7 @@ if($token==NULL){ //Not connected
                 <small><?= $user_data['WORK_ADRESS'].", ".$user_data['WORK_POSTAL_CODE'].", ".$user_data['WORK_CITY'] ?></small>
               </li>
             <?php endif;?>
-            <li class="fr"><?=L::sidebar_password;?>
+            <li><?=L::sidebar_password;?>
               <small>********</small>
             </li>
           </ul>
