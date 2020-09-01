@@ -20,6 +20,7 @@ header_remove("X-Powered-By");
 				<div class="col-md-6 text-center" style="background-color: #3cb395">
 					<h2><?= L::employer_title; ?></h2>
 					<span><?= L::employer_description; ?></span>
+					<br>
 					<a class="button green button-3d effect fill-vertical" data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i><?= L::employer_btn_solutions; ?></span></a>
 
 				</div>
@@ -27,6 +28,7 @@ header_remove("X-Powered-By");
 				<div class="col-md-6 text-center" style="background-color: #1D9377">
 					<h2><?= L::employee_title; ?></h2>
 					<span><?= L::employee_description; ?></span>
+					<br>
 					<a class="button green button-3d effect fill-vertical" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?= L::employee_btn_knowmore; ?></span></a>
 				</div>
 
