@@ -32,10 +32,12 @@ header_remove("X-Powered-By");
 				</div>
 
 				<div class="jumbotron jumbotron-center jumbotron-redirection-tb">
+					<div class="tb-content">
 					<h3>JE SUIS UN PARTICULIER</h3>
 					<h4>Vous cherchez un vélo pour votre compte personnel ?</h4>
 					<a class="button black button-3d effect icon-left" href="https://www.tb-velo-electrique.be/"><span><i class="fa fa-bicycle"></i>KAMEO Bikes pour particuliers</span></a>
-					<img src="images/TB_Velo_Electrique_Icone.svg">
+					</div>
+					<img src="images/TB_Velo_Electrique_Icone.svg" alt="bandeau tb-velo-electrique.be">
 				</div>
 
 				<!-- CALL TO ACTION -->

@@ -611,6 +611,7 @@ body.loading .loader {
 .jumbotron-redirection-tb {
   background-color: #f6e948;
   margin-bottom: 0;
+  position: relative;
 }
 
 .jumbotron-redirection-tb h3,
@@ -618,12 +619,18 @@ body.loading .loader {
   color: black !important;
 }
 
+.jumbotron-redirection-tb .tb-content {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
 .jumbotron-redirection-tb img {
   width: 150px;
-  float: right;
-  position: absolute;
-  right: 27%;
-  top: 10%;
+  margin-left: 40%;
 }
 
 .background-orange {
