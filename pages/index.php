@@ -13,7 +13,7 @@ header_remove("X-Powered-By");
 		<?php include 'include/header.php'; ?>
 		<br>
 		<h1 class="text-center text-uppercase text-medium" data-animation="fadeInUp"><?= L::header_title; ?></h1>
-		<img src="/images/background_new.webp" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
+		<img src="/images/background_new.webP" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
 		<!-- MISSION & VISSION -->
 		<section class="box-fancy section-fullwidth text-light no-padding">
 			<div class="row">
@@ -39,7 +39,7 @@ header_remove("X-Powered-By");
 				</div>
 
 				<!-- CALL TO ACTION -->
-				<div class="jumbotron jumbotron-center jumbotron-fullwidthtext-light" style="background: url('images/Fond_Site_Black.jpg');" data-stellar-background-ratio="0.3">
+				<div class="jumbotron jumbotron-center jumbotron-fullwidthtext-light" style="background: url('images/Fond_Site_Black.webP');" data-stellar-background-ratio="0.3">
 					<div class="container">
 						<h3><?= L::calculate_title; ?></h3>
 						<p><?= L::calculate_description; ?></p>
@@ -122,7 +122,7 @@ header_remove("X-Powered-By");
 					<div class="col-md-6">
 						<img src="images/RoueKameo.png" class="img-responsive img-rounded" alt="Roue des services KAMEO Bikes">
 					</div>
-					<div class="col-md-12 text-center" style="background: url('images/fond_degrade2.webp');" data-stellar-background-ratio="0.6"><br>
+					<div class="col-md-12 text-center" style="background: url('images/fond_degrade2.webP');" data-stellar-background-ratio="0.6"><br>
 						<?= L::choose_kameo_list_avantages; ?>
 					</div>
 				</div>
@@ -147,7 +147,7 @@ header_remove("X-Powered-By");
 					<li style="cursor: default;"><img draggable="false" src="images/clients/epsylon.png" alt="Nos clients - Epsylon"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/infine.png" alt="Nos clients - In Fine"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/idea.png" alt="Nos clients - IDEA"></li>
-					<li style="cursor: default;"><img draggable="false" src="images/clients/bxlville.png" alt="Nos clients - Ville de Bruxelles"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/bxlville.webP" alt="Nos clients - Ville de Bruxelles"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/prefer.png" alt="Nos clients - Prefer"></li>
 				</ul>
 			</div>

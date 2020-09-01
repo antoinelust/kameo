@@ -10,17 +10,18 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="KAMEO Bikes, Mobilité urbaine pour entreprises. Vente, Leasing et Location de vélos pour entreprises. Entretien sur votre lieu de travail ou à domicile.">
+
  	<meta name="keywords" content="kameo, kameo bikes, vélo électrique, vélo de société belgique, vélo électrique liège, kameos, mobilité, vélos, vélos électriques, VAE, entretiens à domicile, entretiens sur le lieu de travail, Orbea, Ahooga, Conway, Victoria, Tern, i:SY, vélo urbain, vélo cargo, accessoires vélo, casques vélo, cadenas vélo">
  	<meta name="author" content="Antoine Lust">
 	<meta property="og:image" content="https://www.kameobikes.com/images/vignette.jpg" />
 	<link rel="shortcut icon" href="https://www.kameobikes.com/images/favicon.png">
 	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>	
+
 	<!-- Bootstrap Core CSS -->
 	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="preload" as="style">
-	<link href="/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/vendor/fontawesome/css/font-awesome.min.css" rel="preload" as="style" onload="this.rel='stylesheet'">
 	<link href="/vendor/animateit/animate.min.css" rel="stylesheet">
 	<!-- vendor css -->
 	<link href="/vendor/owlcarousel/owl.carousel.css" rel="stylesheet">
@@ -39,6 +40,8 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<link href="/css/color-variations/blue.css" rel="stylesheet" type="text/css" media="screen" title="blue">
 	<!-- LOAD GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600%7CRaleway:100,300,600,700,800&display=swap" rel="stylesheet" type="text/css" />
+	<!-- FONT AWESOME WEBFONT PRELOAD -->
+	<link rel="preload" as="font" href="vendor/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" type="font/woff2" crossorigin="anonymous">
 	<!-- CSS CUSTOM STYLE -->
 	<link rel="stylesheet" type="text/css" href="/css/custom.css" media="screen" />
 
