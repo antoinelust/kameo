@@ -20,7 +20,7 @@
 							<p class="lead text-light text-justify"><?=L::description_text1;?></p>
 							<p class="lead text-light"><?=L::description_text2;?></p>
 
-							<a class="button black-light button-3d effect fill-vertical scroll-to" style="display: block;"  href="#plus"><span><?=L::description_btn_discover_offer;?><i class="fa fa-arrow-down"></i></span></a>
+							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span><?=L::description_btn_discover_offer;?><i class="fa fa-arrow-down"></i></span></a>
 						</div>
 						<div class="col-md-5">
 							<img src="images/Atradius_Bikes.jpg" class="img-responsive img-rounded" alt="Vélos électriques BZEN brandés aux couleurs d'Atradius">
@@ -305,7 +305,7 @@
                                 <?php
                             }
                             ?>
-                            <button class="button effect fill" type="submit" id="form-submit" style="display: block;"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::sharedBike_send;?></button>
+                            <button class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::sharedBike_send;?></button>
                         </form>
 							<script type="text/javascript">
                                 jQuery("#widget-lostPassword-form").validate({
