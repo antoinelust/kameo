@@ -51,7 +51,7 @@ include 'include/head.php';
             <div class="col-md-6 col-sm-12 col-xs-12">
               <div class="plan">
                 <div class="plan-header">
-                <?= L::location_allin_leasehtva; ?>
+                  <?= L::location_allin_leasehtva; ?>
                   <div class="plan-price" id="leasingPriceFR"></div>
                 </div>
                 <div class="plan-list">
@@ -83,13 +83,13 @@ include 'include/head.php';
                 <div class="row mb20">
                   <div class="col-sm-12">
 
-                    <p>Toutes les dépenses liées aux vélos et vélos électriques sont déductibles à <strong>100%</strong> fiscalement, profitez-en ! <br />
-                      Sur base d'un achat de vélo d'une valeur de <span class="text-green" id="spanRetailPriceFR"></span>, voici l'avantage fiscal: <br /><br />
-                      <strong>Prix du vélo :</strong> <span id="spanRetailPriceFR2"></span><br />
-                      <strong>TVA :</strong> <span id="spanTVARetailPriceFR"></span><br />
-                      <strong>Prix HTVA :</strong> <span id="spanHTVARetailPriceFR"></span><br />
-                      <strong>Avantage fiscal :</strong> 100 % x <span id="spanHTVARetailPriceFR2"></span> x 34 % = <span id="spanAvantageFiscalRetailPriceFR" class="text-green"></span><br /><br />
-                      Grâce à l'avantage fiscal, le vélo d'une valeur de <span id="spanHTVARetailPriceFR3"></span> HTVA ne coûte réellement à la société que <strong><span id="spanFinalPriceRetailPriceFR" class="text-green"></span></strong> (<span id="spanHTVARetailPriceFR4"></span> - <span id="spanAvantageFiscalRetailPriceFR2"></span>).
+                    <p><?= L::location_allin_sellmodal_sub1; ?>
+                    <?= L::location_allin_sellmodal_sub2; ?><span class="text-green" id="spanRetailPriceFR"></span><?= L::location_allin_sellmodal_sub3; ?><br /><br />
+                    <strong><?= L::location_allin_sellmodal_sellprice; ?></strong> <span id="spanRetailPriceFR2"></span><br />
+                    <strong><?= L::location_allin_sellmodal_tva; ?></strong> <span id="spanTVARetailPriceFR"></span><br />
+                    <strong><?= L::location_allin_sellmodal_htva; ?></strong> <span id="spanHTVARetailPriceFR"></span><br />
+                    <?= L::location_allin_sellmodal_avantfiscal; ?><span id="spanHTVARetailPriceFR2"></span><?= L::location_allin_sellmodal_avantx34; ?><span id="spanAvantageFiscalRetailPriceFR" class="text-green"></span><br /><br />
+                    <?= L::location_allin_sellmodal_avantage1; ?><span id="spanHTVARetailPriceFR3"></span><?= L::location_allin_sellmodal_avantage2; ?><span id="spanFinalPriceRetailPriceFR" class="text-green"></span></strong> (<span id="spanHTVARetailPriceFR4"></span> - <span id="spanAvantageFiscalRetailPriceFR2"></span>).
                     </p>
                   </div>
                 </div>
@@ -111,13 +111,11 @@ include 'include/head.php';
                 <div class="row mb20">
                   <div class="col-sm-12">
 
-                    <p>Toutes les dépenses liées aux vélos et vélos électriques sont déductibles à <strong>100%</strong> fiscalement, profitez-en ! <br />
-                      Sur base d'un achat de vélo d'une valeur de <span class="text-green" id="spanLeasingPriceFR"></span>, voici l'avantage fiscal: <br /><br />
-                      <strong>Montant de la location :</strong> <span id="spanLeasingPriceFR2"></span><br />
-                      <strong>Avantage fiscal :</strong> 100 % x <span id="spanHTVALeasingPriceFR2"></span> x 34 % = <span id="spanAvantageFiscalLeasingPriceFR" class="text-green"></span><br /><br />
-
-
-                      Grâce à l'avantage fiscal, la location d'une valeur de <span id="spanHTVALeasingPriceFR3"></span> HTVA ne coûte réellement à la société que <strong><span id="spanFinalPriceLeasingPriceFR" class="text-green"></span></strong> (<span id="spanHTVALeasingPriceFR4"></span> - <span id="spanAvantageFiscalLeasingPriceFR2"></span>).
+                    <p><?= L::location_allin_leasemodal_sub1; ?>
+                    <?= L::location_allin_leasemodal_sub2; ?><span class="text-green" id="spanLeasingPriceFR"></span><?= L::location_allin_leasemodal_sub3; ?>
+                    <?= L::location_allin_leasemodal_price; ?><span id="spanLeasingPriceFR2"></span><br />
+                    <?= L::location_allin_leasemodal_avantfiscal; ?><span id="spanHTVALeasingPriceFR2"></span><?= L::location_allin_leasemodal_avantx34; ?><span id="spanAvantageFiscalLeasingPriceFR" class="text-green"></span><br /><br />
+                    <?= L::location_allin_leasemodal_avantage1; ?><span id="spanHTVALeasingPriceFR3"></span><?= L::location_allin_leasemodal_avantage2; ?><span id="spanFinalPriceLeasingPriceFR" class="text-green"></span></strong> (<span id="spanHTVALeasingPriceFR4"></span> - <span id="spanAvantageFiscalLeasingPriceFR2"></span>).
                     </p>
                   </div>
                 </div>
