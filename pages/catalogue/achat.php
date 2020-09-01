@@ -25,25 +25,25 @@ include 'include/head.php';
             /* ---- grid ---- */
 
             .grid-item--width3 {
-                width: 250px;
+                width: 200px;
             }
 
             .grid-item--height3 {
-                height: 320px;
+                height: 300px;
             }
         </style>
 
         <!-- CONTENT -->
-        <section class="background-green">
+        <section>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3 background-green">
                         <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
 
                         <div class="m-t-30">
                             <div class="row">
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-12">
                                     <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
                                     <select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
                                         <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
@@ -59,7 +59,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-12">
                                     <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
                                     <select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
                                         <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
@@ -74,7 +74,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-12">
                                     <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
                                     <select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
                                         <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
@@ -84,7 +84,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-12">
                                     <label for="widget-contact-form-electrique"><?= L::achat_searchbar_assist; ?></label>
                                     <select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
                                         <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
@@ -93,7 +93,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-12">
                                     <label for="widget-contact-form-prix"><?= L::achat_searchbar_buyprice; ?></label>
                                     <select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
                                         <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
@@ -105,21 +105,15 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-
+								<br><a class="button black-light button-3d effect fill-vertical" href="bons-plans.php"><span><?= L::achat_searchbar_bonsplans_btn; ?></span></a>	
 
                             </div>
                         </div>
                     </div>
-                </div>
-                <br><a class="button black-light button-3d effect fill-vertical" href="bons-plans.php"><span><?= L::achat_searchbar_bonsplans_btn; ?><i class="fa fa-arrow-right"></i></span></a>
-            </div>
-        </section>
+                
 
 
-        <section>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-9">
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
 
                         <div class="grid">
