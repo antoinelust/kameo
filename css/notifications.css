@@ -1,40 +1,9 @@
-
-.pointerClick:hover{
-  cursor: pointer;
+.pointerClick:hover{cursor:pointer;}
+.notificationsBlock{border:1px solid rgb(221,221,221);width:300px;height:auto;background-color:white;border-radius:8px;}
+.notificationItem{min-height:40px;}
+.notificationBorder{border-bottom:1px solid rgb(221,221,221);}
+.notRead{background-color:rgb(248, 250, 250);font-weight:bold;}
+@media (min-width:0px) and (max-width:991px){.notificationsBlock{position:absolute;z-index:99;left:0;top:90px;}
 }
-.notificationsBlock{
-  border: 1px solid rgb(221,221,221);
-  width:300px;
-  height: auto;
-  background-color:white;
-  border-radius: 8px;
-}
-
-.notificationItem {
-  min-height: 40px;
-}
-.notificationBorder{
-  border-bottom: 1px solid rgb(221,221,221);
-}
-
-.notRead{
-  background-color: rgb(248, 250, 250);
-  font-weight:bold;
-}
-@media (min-width: 0px) and (max-width:991px){
-  .notificationsBlock {
-    position:absolute;
-    z-index:99;
-    left:0;
-    top: 90px;
-  }
-}
-
-@media (min-width: 992px){
-  .notificationsBlock {
-    position:absolute;
-    z-index:99;
-    right:0;
-    top: 40px;
-  }
+@media (min-width:992px){.notificationsBlock{position:absolute;z-index:99;right:0;top:40px;}
 }

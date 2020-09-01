@@ -49,7 +49,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<script src="/vendor/jquery/jquery-1.11.2.min.js"></script>
 	<script src="/vendor/plugins-compressed.js"></script>
 	<!-- I am not a robot script -->
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<script defer src='https://www.google.com/recaptcha/api.js'></script>
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<?php if (substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9) != "localhost")
@@ -60,5 +60,5 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<![endif]-->
 
 	<!-- GDPR cookie consent bar -->
-	<script src="/js/cookie_consent.js"></script>
+	<script defer src="/js/cookie_consent.js"></script>
 </head>
