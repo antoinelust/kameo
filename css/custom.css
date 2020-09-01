@@ -619,6 +619,13 @@ body.loading .loader {
   color: black !important;
 }
 
+.jumbotron-redirection-tb h3::selection,
+.jumbotron-redirection-tb h4::selection,
+.jumbotron-redirection-tb a span::selection {
+  background-color: black;
+  color: #f6e948;
+}
+
 .jumbotron-redirection-tb .tb-content {
   position: absolute;
   margin-left: auto;
