@@ -131,11 +131,11 @@ foreach($_POST as $name => $value){
                 echo json_encode($response);
                 die;
             }        
-            $conn->close(); 
         }
     }
     
 }
+$conn->close(); 
 writeMail();
 
 
