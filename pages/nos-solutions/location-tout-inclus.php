@@ -42,7 +42,7 @@ include 'include/head.php';
                     <li><i class="fa fa-lock"></i><?= L::location_allin_sell_list4; ?></li>
                     <li><i class="fa fa-user"></i><?= L::location_allin_sell_list5; ?></li>
                     <br>
-                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRetailPrice" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::location_allin_btn_sell; ?></span></a>
+                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageRetailPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::location_allin_btn_sell; ?></span></a>
                   </ul>
                 </div>
               </div>
@@ -63,7 +63,7 @@ include 'include/head.php';
                     <li><i class="fa fa-user"></i><?= L::location_allin_lease_list5; ?></li>
                     <li><i class="fa fa-money"></i><?= L::location_allin_lease_list6; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="A la fin de la location, le vélo peut être racheté à hauteur de 15% du prix d'achat du vélo."></i></li>
                     <br>
-                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"  style="display: block;"><span><i class="fa fa-eye"></i><?= L::location_allin_btn_lease; ?></span></a>
+                    <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::location_allin_btn_lease; ?></span></a>
                   </ul>
                 </div>
               </div>

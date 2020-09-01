@@ -20,13 +20,14 @@ header_remove("X-Powered-By");
 				<div class="col-md-6 text-center" style="background-color: #3cb395">
 					<h2><?= L::employer_title; ?></h2>
 					<span><?= L::employer_description; ?></span>
-					<a class="button green button-3d effect fill-vertical" style="display: block;" data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i><?= L::employer_btn_solutions; ?></span></a>
+					<a class="button green button-3d effect fill-vertical" data-target="#employeur" data-toggle="modal" href="#"><span><i class="fa fa-key"></i><?= L::employer_btn_solutions; ?></span></a>
+
 				</div>
 
 				<div class="col-md-6 text-center" style="background-color: #1D9377">
 					<h2><?= L::employee_title; ?></h2>
 					<span><?= L::employee_description; ?></span>
-					<a class="button green button-3d effect fill-vertical" style="display: block;" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?= L::employee_btn_knowmore; ?></span></a>
+					<a class="button green button-3d effect fill-vertical" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?= L::employee_btn_knowmore; ?></span></a>
 				</div>
 
 				<div class="jumbotron jumbotron-center jumbotron-redirection-tb">
@@ -61,19 +62,19 @@ header_remove("X-Powered-By");
 							<div class="col-md-12">
 								<h4 class="text-green"><?= L::employer_modal_sharedbike_title; ?></h4>
 								<p><?= L::employer_modal_sharedbike_description; ?></p>
-								<a class="button green button-3d effect fill-vertical" style="display: block;" href="velo-partage.php"><span><i class="fa fa-users"></i><?= L::employer_modal_btn_discover; ?></span></a>
+								<a class="button green button-3d effect fill-vertical" href="velo-partage.php"><span><i class="fa fa-users"></i><?= L::employer_modal_btn_discover; ?></span></a>
 							</div>
 							<div class="separator"></div>
 							<div class="col-md-12">
 								<h4 class="text-green"><?= L::employer_modal_personalbike_title; ?></h4>
 								<p><?= L::employer_modal_personalbike_description; ?></p>
-								<a class="button green button-3d effect fill-vertical" style="display: block;" href="velo-personnel.php"><span><i class="fa fa-user"></i><?= L::employer_modal_btn_knowmore; ?></span></a>
+								<a class="button green button-3d effect fill-vertical" href="velo-personnel.php"><span><i class="fa fa-user"></i><?= L::employer_modal_btn_knowmore; ?></span></a>
 							</div>
 							<div class="separator"></div>
 							<div class="col-md-12">
 								<h4 class="text-red"><?= L::employer_modal_managefleet_title; ?></h4>
 								<p><?= L::employer_modal_managefleet_description; ?></p>
-								<a class="button red button-3d effect fill-vertical" style="display: block;" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i><?= L::employer_modal_btn_offer; ?></span></a>
+								<a class="button red button-3d effect fill-vertical" href="gestion-flotte.php"><span><i class="fa fa-laptop"></i><?= L::employer_modal_btn_offer; ?></span></a>
 							</div>
 						</div>
 					</div>
@@ -92,13 +93,13 @@ header_remove("X-Powered-By");
 							<div class="col-md-12">
 								<h4 class="text-green"><?= L::employee_modal_bike_title; ?></h4>
 								<p><?= L::employee_modal_bike_description; ?></p>
-								<a class="button green button-3d effect fill-vertical" style="display: block;" href="achat.php"><span><i class="fa fa-bicycle"></i><?= L::employee_modal_btn_catalogue; ?></span></a>
+								<a class="button green button-3d effect fill-vertical" href="achat.php"><span><i class="fa fa-bicycle"></i><?= L::employee_modal_btn_catalogue; ?></span></a>
 							</div>
 							<div class="separator"></div>
 							<div class="col-md-12">
 								<h4 class="text-green"><?= L::employee_modal_accessory_title; ?></h4>
 								<p><?= L::employee_modal_accessory_description; ?></p>
-								<a class="button green button-3d effect fill-vertical" style="display: block;" href="accessoires.php"><span><i class="fa fa-diamond"></i><?= L::employee_modal_btn_accessories; ?></span></a>
+								<a class="button green button-3d effect fill-vertical" href="accessoires.php"><span><i class="fa fa-diamond"></i><?= L::employee_modal_btn_accessories; ?></span></a>
 							</div>
 						</div>
 					</div>

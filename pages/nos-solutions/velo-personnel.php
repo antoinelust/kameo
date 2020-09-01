@@ -11,7 +11,7 @@
 			<!-- SECTION SOLUTIONS -->
 			<section class="" style="background: url('images/fond_degrade.jpg');" data-stellar-background-ratio="0.3">
 				<div class="container">
-				<a class="button black-light button-3d effect fill-vertical right" style="display: block;"  href="velo-partage.php"><span><?=L::personalbike_btn_shared_bikes;?><i class="fa fa-arrow-right"></i></span></a>
+				<a class="button black-light button-3d effect fill-vertical right"  href="velo-partage.php"><span><?=L::personalbike_btn_shared_bikes;?><i class="fa fa-arrow-right"></i></span></a>
 					<div class="row">
 						<div class="col-md-7">
 							<!-- <hr class="space"> -->
@@ -24,7 +24,7 @@
 
 							<p class="lead text-light"><?=L::personalbike_text2;?></p>
 
-							<a class="button black-light button-3d effect fill-vertical scroll-to" style="display: block;"  href="#plus"><span><?=L::personalbike_btn_discover_offer;?><i class="fa fa-arrow-down"></i></span></a>
+							<a class="button black-light button-3d effect fill-vertical scroll-to"  href="#plus"><span><?=L::personalbike_btn_discover_offer;?><i class="fa fa-arrow-down"></i></span></a>
 						</div>
 						<div class="col-md-4">
 							<img src="images/Solution2.png" class="img-responsive img-rounded" alt="Roue des solutions de KAMEO Bikes">
@@ -150,7 +150,7 @@
 						<div class="col-md-12 text-center">
 							<h1 class="text-green"><?=L::personalbike_location_buy;?></h1>
 							<p><?=L::personalbike_location_buy_desc;?></p>
-							<a class="button green button-3d effect fill-vertical" style="display: block;" href="location-tout-inclus.php"><span><i class="fa fa-balance-scale"></i><?=L::personalbike_location_btn_compare;?></span></a>
+							<a class="button green button-3d effect fill-vertical" href="location-tout-inclus.php"><span><i class="fa fa-balance-scale"></i><?=L::personalbike_location_btn_compare;?></span></a>
 						</div>
 					</div>
 				</div>
@@ -204,7 +204,7 @@
                                 <?php
                             }
                             ?>
-                            <button class="button effect fill" type="submit" id="form-submit" style="display: block;"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::personalbike_send;?></button>
+                            <button class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::personalbike_send;?></button>
                         </form>
 							<script type="text/javascript">
                                 jQuery("#widget-lostPassword-form").validate({

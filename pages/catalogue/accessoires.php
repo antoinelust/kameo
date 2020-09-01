@@ -35,7 +35,7 @@ include 'include/head.php';
 						<br />
 						<p><?= L::accessoires_starterpack_subtitle; ?></p>
 
-						<a class="button black-light button-3d effect fill-vertical" data-target="#starterpack" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+						<a class="button black-light button-3d effect fill-vertical" data-target="#starterpack" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 
 					</div>
 
@@ -172,7 +172,7 @@ include 'include/head.php';
 						<br>
 						<p><?= L::accessoires_autorepairpack_subtitle; ?></p>
 
-						<a class="button black-light button-3d effect fill-vertical" data-target="#packoutils" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+						<a class="button black-light button-3d effect fill-vertical" data-target="#packoutils" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 					</div>
 
 					<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/packoutils.jpg" alt="">
@@ -252,7 +252,7 @@ include 'include/head.php';
 						<br>
 						<p><?= L::accessoires_cadenas_subtitle; ?></p>
 
-						<a class="button black-light button-3d effect fill-vertical" data-target="#cadenas" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+						<a class="button black-light button-3d effect fill-vertical" data-target="#cadenas" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 
 					</div>
 
@@ -339,7 +339,7 @@ include 'include/head.php';
 						<br>
 						<p><?= L::accessoires_casques_subtitle; ?></p>
 
-						<a class="button black-light button-3d effect fill-vertical" data-target="#casques" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+						<a class="button black-light button-3d effect fill-vertical" data-target="#casques" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 					</div>
 
 					<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/casques.jpg" alt="">
@@ -424,7 +424,7 @@ include 'include/head.php';
 					<h4><?= L::accessoires_sac_sacoches_title; ?></h4>
 					<br />
 					<p><?= L::accessoires_sac_sacoches_subtitle; ?></p>
-					<a class="button black-light button-3d effect fill-vertical" data-target="#sacoches" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+					<a class="button black-light button-3d effect fill-vertical" data-target="#sacoches" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 
 				</div>
 
@@ -528,7 +528,7 @@ include 'include/head.php';
 					<br>
 					<p><?= L::accessoires_siege_enfants_subtitle; ?></p>
 
-					<a class="button black-light button-3d effect fill-vertical" data-target="#kids" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+					<a class="button black-light button-3d effect fill-vertical" data-target="#kids" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 				</div>
 
 				<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/kids.jpg" alt="">
@@ -600,7 +600,7 @@ include 'include/head.php';
 					<br />
 					<p><?= L::accessoires_textile_gants_subtitle; ?></p>
 
-					<a class="button black-light button-3d effect fill-vertical" data-target="#textile" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+					<a class="button black-light button-3d effect fill-vertical" data-target="#textile" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 
 				</div>
 
@@ -688,7 +688,7 @@ include 'include/head.php';
 					<br>
 					<p><?= L::accessoires_security_subtitle; ?></p>
 
-					<a class="button black-light button-3d effect fill-vertical" data-target="#securite" data-toggle="modal" href="#" style="display: block;"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
+					<a class="button black-light button-3d effect fill-vertical" data-target="#securite" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::accessoires_btn_ourSelection; ?></span></a>
 				</div>
 
 				<img class="col-md-8 visible-sm visible-xs" src="images/accessoires/securite.jpg" alt="Sécurité et visibilité fluo vélo">
