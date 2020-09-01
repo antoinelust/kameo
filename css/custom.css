@@ -610,11 +610,20 @@ body.loading .loader {
 /* Jumbotron redirection tb-vélo-electrique */
 .jumbotron-redirection-tb {
   background-color: #f6e948;
+  margin-bottom: 0;
 }
 
 .jumbotron-redirection-tb h3,
 .jumbotron-redirection-tb h4 {
   color: black !important;
+}
+
+.jumbotron-redirection-tb img {
+  width: 150px;
+  float: right;
+  position: absolute;
+  right: 27%;
+  top: 10%;
 }
 
 .background-orange {
