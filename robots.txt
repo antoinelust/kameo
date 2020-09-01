@@ -1,9 +1,4 @@
 User-Agent: *
-Disallow: /pages/
-Disallow: /apis/
-Disallow: /docs/
-Disallow: /images/
-Disallow: /include/
-Disallow: /langcache/
+Disallow: *
 
-Sitemap: https://kameobikes.com/sitemap.xml
+Sitemap: https://test.kameobikes.com/sitemap.xml
