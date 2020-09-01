@@ -34,7 +34,6 @@ img {
   display: inline-block;
   text-align: right;
   width: 60%;
-  padding: ;
 }
 .headind_srch {
   padding: 10px 29px 10px 20px;
@@ -606,4 +605,14 @@ body.loading .loader {
 
 .cookie-btn {
   margin-left: 10px;
+}
+
+/* Jumbotron redirection tb-vélo-electrique */
+.jumbotron-redirection-tb {
+  background-color: #f6e948;
+}
+
+.jumbotron-redirection-tb h3,
+.jumbotron-redirection-tb h4 {
+  color: black !important;
 }
