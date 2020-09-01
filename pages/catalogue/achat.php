@@ -223,7 +223,7 @@ include 'include/head.php';
                                             <a href=\"offre.php?brand=" + response.bike[i].brand.toLowerCase() + "&model=" + response.bike[i].model.toLowerCase() + "&frameType=" + response.bike[i].frameType.toLowerCase() + "\"><h4 class=\"title\">" + response.bike[i].brand + "</h4></a>\
                                             <p>" + response.bike[i].model + " " + frameType + "\
                                             <br>" + response.bike[i].utilisation + "\
-                                            <br><b class=\"text-green\">Achat :" + response.bike[i].price + "  €</b>\
+                                            <br><b class=\"text-green\">Achat :" + Math.round(response.bike[i].price) + "  €</b>\
                                             <br><b class=\"text-green\">Location :" + response.bike[i].leasingPrice + " €/mois</b></p>\
                                         </div>\
                                     </div>";
