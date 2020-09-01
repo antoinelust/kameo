@@ -101,7 +101,7 @@ $row = mysqli_fetch_assoc($result);
                                         <div class="plan">
                                             <div class="plan-header">
                                                 <h4><?= L::offre_buyprice_htva; ?></h4>
-                                                <h2 class="text-green"><sup>€</sup><?php echo $row['PRICE_HTVA']; ?></h2>
+                                                <h2 class="text-green"><sup>€</sup><?php echo round($row['PRICE_HTVA']); ?></h2>
                                             </div>
                                         </div>
                                     </div>
