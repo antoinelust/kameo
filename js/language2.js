@@ -1,9 +1,9 @@
 function getLanguage(){
-       return $.ajax({
-            url: '/include/langues.php',
-            type: 'post',
-            data: { "getLangue": "1"}
-        });
+      return $.ajax({
+        url: '/include/langues.php',
+        type: 'post',
+        data: {"getLangue": "1"},
+      });   
 }
 
 function displayLanguage(){

@@ -12,13 +12,13 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
 	<meta name="description" content="KAMEO Bikes, Mobilité urbaine pour entreprises. Vente, Leasing et Location de vélos pour entreprises. Entretien sur votre lieu de travail ou à domicile.">
-	<meta name="keywords" content="kameo, kameo bikes, vélo électrique, vélo de société belgique, vélo électrique liège, kameos, mobilité, vélos, vélos électriques, VAE, entretiens à domicile, entretiens sur le lieu de travail, Orbea, Ahooga, Conway, Victoria, Tern, i:SY, vélo urbain, vélo cargo, accessoires vélo, casques vélo, cadenas vélo">
-	<meta name="author" content="Thibaut Mativa">
-	<meta property="og:image" content="/images/vignette.jpg" />
-
-	<link rel="shortcut icon" href="/images/favicon.png">
-	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>
-
+ 	<meta name="keywords" content="kameo, kameo bikes, vélo électrique, vélo de société belgique, vélo électrique liège, kameos, mobilité, vélos, vélos électriques, VAE, entretiens à domicile, entretiens sur le lieu de travail, Orbea, Ahooga, Conway, Victoria, Tern, i:SY, vélo urbain, vélo cargo, accessoires vélo, casques vélo, cadenas vélo">
+ 	<meta name="author" content="Antoine Lust">
+<?php
+    echo '<meta property="og:image" content="'.$_SERVER['DOCUMENT_ROOT'].'/images/vignette.jpg" />';
+	echo '<link rel="shortcut icon" href="'.$_SERVER['DOCUMENT_ROOT'].'/images/favicon.png">';
+?>
+	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>	
 	<!-- Bootstrap Core CSS -->
 	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/vendor/fontawesome/css/font-awesome.min.css" type="text/css" rel="preload" as="style">

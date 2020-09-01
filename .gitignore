@@ -22,7 +22,6 @@ langcache/
 offres/
 images_bikes/
 images_accessories/
-images/
 include/logs.txt
 $ git status
 [...]

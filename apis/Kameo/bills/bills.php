@@ -29,8 +29,9 @@ switch($_SERVER["REQUEST_METHOD"])
 			}else{
 				error_message('403');
 			}
-		}else if($action === 'listCafetariaCompanies'){
+		}else if($action === 'listCompaniesWithLeasing'){
 			if(get_user_permissions("bills", $token)){
+				include 'get_list_of_companies_with_leasing.php';
 			}else
 				error_message('403');
 		}

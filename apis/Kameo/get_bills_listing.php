@@ -31,7 +31,7 @@ if($email != NULL)
         error_message('500', 'Unable to retrieve your email address');
     }
 
-    $sql="select COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, aa.ID as ID, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting, bb.EMAIL_CONTACT_BILLING as emailContactBilling, bb.FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, bb.LASTNAME_CONTACT_BILLING as  lastNameContactBilling from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
+    $sql="select aa.ID as ID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting, bb.EMAIL_CONTACT_BILLING as emailContactBilling, bb.FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, bb.LASTNAME_CONTACT_BILLING as lastNameContactBilling from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
     if($company!=='KAMEO'){
         $response['update']=false;
     	$sql=$sql." and aa.COMPANY = '$company'";
@@ -56,6 +56,8 @@ if($email != NULL)
             $sql=$sql." AND AMOUNT_HTVA<0";
         }
     }
+    
+    $sql=$sql." GROUP BY aa.ID";
     
     $result=execute_sql_query($sql, $conn);
     $response['bill']=$result->fetch_all(MYSQLI_ASSOC);

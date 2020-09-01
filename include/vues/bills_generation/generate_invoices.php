@@ -41,7 +41,8 @@ if($token==NULL){ //Not connected
               <div class="row" style="position: relative;">
                 <h2 class="col-sm-8">MY KAMEO</h2>
                   <div class="col-sm-12">
-                      
+                      <h4 class="text-green">Génération des factures de location Long-terme</h4>                                      
+                      <span class="leasingListing"></span>
                   </div>
               </div>
             </div>

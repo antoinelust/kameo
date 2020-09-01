@@ -616,3 +616,13 @@ body.loading .loader {
 .jumbotron-redirection-tb h4 {
   color: black !important;
 }
+
+.background-orange {
+    background-color: #f99367 !important;
+}
+
+
+.background-green {
+    background-color: #3cb395 !important;
+}
+

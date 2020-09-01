@@ -7,17 +7,12 @@ if(!isset($_SESSION))
 
 $token=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL; //@TODO: replaced by a token to check if connected
 $user_ID=isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notifications.js
-$feedback=isset($_GET['feedback']) ? $_GET['feedback'] : NULL; //Used by: login_form.js
 $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
 include 'apis/Kameo/connexion.php';    
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
 $token = getBearerToken();
     
-echo '<script type="text/javascript" src="js/language2.js">
-  displayLanguage();
-</script>';
-
 include 'include/head.php';
 echo '<body class="wide">
 	<!-- WRAPPER -->
@@ -35,6 +30,11 @@ echo '<style media="screen">
       opacity: 0.5;
     }
 </style>';
+    
+echo '<script type="text/javascript" src="js/language2.js">
+  displayLanguage();
+</script>';
+
     
 if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
@@ -65,8 +65,7 @@ if($token==NULL){ //Not connected
   <script type="text/javascript" src="js/addresses.js"></script>
   <script type="text/javascript" src="js/weather.js"></script>
   <script type="text/javascript" src="js/cafetaria.js"></script>
-    <script type="text/javascript">
-      const feedback = "'.$feedback.'";  
+    <script type="text/javascript"> 
 
       window.addEventListener("DOMContentLoaded", (event) => {';
         if(get_user_permissions("search", $token)){

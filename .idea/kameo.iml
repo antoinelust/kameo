@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/vendor/animsition/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/animsition/js" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap-datetimepicker/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap-datetimepicker/js" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap/fonts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap/js" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/fontawesome/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/fontawesome/fonts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/fontawesome/less" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/fontawesome/scss" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jquery.mb.YTPlayer/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/owlcarousel/assets" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rs-plugin/assets" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rs-plugin/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rs-plugin/examples" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rs-plugin/fonts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rs-plugin/js" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rs-plugin/php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spipu/html2pdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tecnickcom/tcpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vegas/overlays" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
