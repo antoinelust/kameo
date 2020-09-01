@@ -95,7 +95,7 @@ include 'include/head.php';
                 </div>
               </div>
               <div class="modal-footer">
-                <a class="button button-3d rounded effect icon-left" style="display: block;" data-dismiss="modal"><span><i class="fa fa-close"></i><?= L::location_allin_sellmodal_close; ?></span></a>
+                <a class="button button-3d rounded effect icon-left" data-dismiss="modal"><span><i class="fa fa-close"></i><?= L::location_allin_sellmodal_close; ?></span></a>
               </div>
             </div>
           </div>
@@ -123,7 +123,7 @@ include 'include/head.php';
                 </div>
               </div>
               <div class="modal-footer">
-                <a class="button button-3d rounded effect icon-left" style="display: block;" data-dismiss="modal"><span><i class="fa fa-close"></i><?= L::location_allin_locationmodal_close; ?></span></a>
+                <a class="button button-3d rounded effect icon-left" data-dismiss="modal"><span><i class="fa fa-close"></i><?= L::location_allin_locationmodal_close; ?></span></a>
               </div>
             </div>
           </div>
