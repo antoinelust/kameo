@@ -8,6 +8,7 @@ ErrorDocument 403 http://%{SERVER_NAME}/403
 #	Header set X-Content-Type-Options "nosniff"
 #</IfModule>
 
+
 RewriteEngine On
 #Redirect to HTTPS
 #RewriteCond %{HTTPS} !=on

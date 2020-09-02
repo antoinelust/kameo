@@ -24,7 +24,7 @@
 	$router->map('GET','/mykameo[ext]', 'pages/mykameo.php');
 
 	/** BILLS GENERATION **/
-	$router->map('GET','/generate_invoices[ext]', 'include/vues/bills_generation/generate_invoices.php');
+	//$router->map('GET','/generate_invoices[ext]', 'include/vues/bills_generation/generate_invoices.php');
 	
 	/** NEWSLETTER **/
 	$router->map('GET','/newsletter[ext]', 'pages/newsletter.php');
@@ -50,14 +50,14 @@
 
 
 	/** BORNE **/
-	$router->map('GET','/include/lock/lock_verifier_code[ext]', 'apis/Kameo/lock/lock_verifier_code.php');
+	/*$router->map('GET','/include/lock/lock_verifier_code[ext]', 'apis/Kameo/lock/lock_verifier_code.php');
 	$router->map('GET','/include/lock/lock_verifier_rfid_client[ext]', 'apis/Kameo/lock/lock_verifier_rfid_client.php');
 	$router->map('GET','/include/lock/lock_verifier_rfid[ext]', 'apis/Kameo/lock/lock_verifier_rfid.php');
 	$router->map('GET','/include/lock/lock_update_remise_cle[ext]', 'apis/Kameo/lock/lock_update_remise_cle.php');
 	$router->map('GET','/include/lock/lock_update_prise_cle[ext]', 'apis/Kameo/lock/lock_update_prise_cle.php');
 	$router->map('GET','/include/lock/lock_emplacement_libre_2[ext]', 'apis/Kameo/lock/lock_emplacement_libre_2.php');
 	$router->map('GET','/include/lock/list_bikes_box_booking[ext]', 'apis/Kameo/lock/list_bikes_box_booking.php');
-	$router->map('GET','/include/lock/confirm_bike_booking[ext]', 'apis/Kameo/lock/confirm_bike_booking.php');
+	$router->map('GET','/include/lock/confirm_bike_booking[ext]', 'apis/Kameo/lock/confirm_bike_booking.php');*/
 	
 	/** CONTACT **/
 	$router->map('GET','/contact[ext]', 'pages/contact.php');
@@ -65,6 +65,7 @@
 	/** BLOG **/
 	$router->map('GET','/blog[ext]', 'pages/blog.php');
 	$router->map('GET','/blog_Infrastructures-cyclables-a-Liege-et-a-Bruxelles-pendant-le-deconfinement-et-apres[ext]', 'pages/blog_Infrastructures-cyclables-a-Liege-et-a-Bruxelles-pendant-le-deconfinement-et-apres.php');
+	$router->map('GET','/blog_Choisir-son-velo-electrique[ext]', 'pages/blog_Choisir-son-velo-electrique.php');
 	
 	/** 403 **/
 	$router->map('GET','/403[ext]', 'pages/403.php');

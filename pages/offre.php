@@ -140,7 +140,7 @@ $row = mysqli_fetch_assoc($result);
                         <div class="separator"></div>
 
                         <div class="m-t-30">
-                            <form id="widget-offer" action="include/offer_form.php" role="form" method="post">
+                            <form id="widget-offer" action="apis/Kameo/offer_form.php" role="form" method="post">
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                         <label for="name"><?= L::offre_nom; ?></label>

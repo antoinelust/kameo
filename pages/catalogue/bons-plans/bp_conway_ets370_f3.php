@@ -53,7 +53,7 @@
 
 				</div>
 				
-				<a class="read-more" href="bonsplans.php"><i class="fa fa-long-arrow-left"></i> Tous les articles</a>
+				<a class="read-more" href="bons-plans.php"><i class="fa fa-long-arrow-left"></i> Tous les articles</a>
 
 			</div>
 		</div>
