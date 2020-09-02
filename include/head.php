@@ -23,7 +23,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 
 	<!-- Bootstrap Core CSS -->
 	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/vendor/fontawesome/css/font-awesome.min.css" rel="preload" as="style" onload="this.rel='stylesheet'">
+	<link rel="preload" as="style" href="/vendor/fontawesome/css/font-awesome.min.css">
 	<link href="/vendor/animateit/animate.min.css" rel="stylesheet">
 	<!-- vendor css -->
 	<link href="/vendor/owlcarousel/owl.carousel.css" rel="stylesheet">
@@ -43,7 +43,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<!-- LOAD GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600%7CRaleway:100,300,600,700,800&display=swap" rel="stylesheet" type="text/css" />
 	<!-- FONT AWESOME WEBFONT PRELOAD -->
-	<link rel="preload" as="font" href="vendor/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" type="font/woff2" crossorigin="anonymous">
+	<link rel="preload" as="font" type="font/woff2" crossorigin href="vendor/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0">
 	<!-- CSS CUSTOM STYLE -->
 	<link rel="stylesheet" type="text/css" href="/css/custom.css" media="screen" />
 
