@@ -1,5 +1,4 @@
 <!-- COOKIE CONSENT -->
-
 <div class="consent-bar text-center">
     <span> KameoBikes utilise des cookies ou des technologies similaires afin de rendre votre expérience
         utilisateur optimale.</span>

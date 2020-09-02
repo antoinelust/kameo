@@ -2,7 +2,6 @@
 	session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/lang_management.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/include/cookie_consent.php';
 //require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
 header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-analytics.com ajax.googleapis.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net;");
 ?>
@@ -12,12 +11,15 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="KAMEO Bikes, Mobilité urbaine pour entreprises. Vente, Leasing et Location de vélos pour entreprises. Entretien sur votre lieu de travail ou à domicile.">
-
- 	<meta name="keywords" content="kameo, kameo bikes, vélo électrique, vélo de société belgique, vélo électrique liège, kameos, mobilité, vélos, vélos électriques, VAE, entretiens à domicile, entretiens sur le lieu de travail, Orbea, Ahooga, Conway, Victoria, Tern, i:SY, vélo urbain, vélo cargo, accessoires vélo, casques vélo, cadenas vélo">
- 	<meta name="author" content="Antoine Lust">
+	<meta name="keywords" content="kameo, kameo bikes, vélo électrique, vélo de société belgique, vélo électrique liège, kameos, mobilité, vélos, vélos électriques, VAE, entretiens à domicile, entretiens sur le lieu de travail, Orbea, Ahooga, Conway, Victoria, Tern, i:SY, vélo urbain, vélo cargo, accessoires vélo, casques vélo, cadenas vélo">
+	<meta name="author" content="Antoine Lust">
 	<meta property="og:image" content="https://www.kameobikes.com/images/vignette.jpg" />
+
+	<!-- FAVICON -->
 	<link rel="shortcut icon" href="https://www.kameobikes.com/images/favicon.png">
-	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>	
+
+	<!-- TITLE -->
+	<title>KAMEO Bikes | La solution complète pour vos vélos de société</title>
 
 	<!-- Bootstrap Core CSS -->
 	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -62,3 +64,8 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<!-- GDPR cookie consent bar -->
 	<script defer src="/js/cookie_consent.js"></script>
 </head>
+
+<!-- COOKIE CONSENT BAR -->
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/include/cookie_consent.php';
+?>
