@@ -7,18 +7,14 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-12">
-            <h4 class=" text-green fr">Résumé de votre réservation</h3>
-            <h3 class="text-green en">Resume</h3>
-            <h3 class="text-green nl">Geresumeerd</h3>
+            <h4 class=" text-green"><?=L::mk_book_title;?></h3>
 
             <div class="col-sm-10">
-              <h4>Prise en charge du vélo</h4>
+              <h4><?=L::mk_book_prise_en_charge;?></h4>
             </div>
 
             <div class="col-sm-4">
-              <h4><span class="fr"> Jour : </span></h4>
-              <h4><span class="en"> Start : </span></h4>
-              <h4><span class="nl"> Start : </span></h4>
+              <h4><span><?=L::mk_book_jour;?></span></h4>
 
               <p><span id="daySpan"></span>
                 /
@@ -30,31 +26,23 @@
 
 
               <div class="col-sm-4">
-                <h4><span class="fr"> Heure : </span></h4>
-                <h4><span class="en"> at : </span></h4>
-                <h4><span class="nl"> at : </span></h4>
+                <h4><span><?=L::mk_book_heure;?></span></h4>
 
 
                 <p><span id="hourStartSpan"></span></p>
               </div>
 
               <div class="col-sm-4">
-                <h4><span class="fr" >Lieu :</span></h4>
-                <h4><span class="en" >from</span></h4>
-                <h4><span class="nl" >from</span></h4>
+                <h4><span><?=L::mk_book_location;?></span></h4>
 
                 <p><span id="startBuildingSpan"></span></p>
               </div>
 
-
-
               <div class="col-sm-10">
-                <h4>Remise du vélo</h4>
+                <h4><?=L::mk_book_remise_bike;?></h4>
               </div>
               <div class="col-sm-4">
-                <h4><span class="fr"> Jour : </span></h4>
-                <h4><span class="en"> Start : </span></h4>
-                <h4><span class="nl"> Start : </span></h4>
+                <h4><span><?=L::mk_book_jour;?></span></h4>
 
                 <p><span id="dayDepositSpan"></span>
                   /
@@ -63,31 +51,25 @@
                   <span id="yearDepositSpan"></span></p>
                 </div>
                 <div class="col-sm-4">
-                  <h4><span class="fr">Heure : </span></h4>
-                  <h4><span class="en">Bike deposit : </span></h4>
-                  <h4><span class="nl">Bike deposit : </span></h4>
+                  <h4><span><?=L::mk_book_heure;?></span></h4>
 
                   <p><span id="hourEndSpan"></span></p>
                 </div>
 
                 <div class="col-sm-4">
-                  <h4><span class="fr" >Lieu :</span></h4>
-                  <h4><span class="en" >from</span></h4>
-                  <h4><span class="nl" >from</span></h4>
+                  <h4><span><?=L::mk_book_location;?></span></h4>
 
                   <p><span id="endBuildingSpan"></span></p>
                 </div>
 
                 <div class="col-sm-12" id="lockingCodeDiv">
-                  <h4><span class="fr" >Code de réservation :</span></h4>
-                  <h4><span class="en" >Locking code</span></h4>
-                  <h4><span class="nl" >Locking code</span></h4>
+                  <h4><span><?=L::mk_book_reservation_code;?></span></h4>
 
                   <p><span id="lockingCode"></span></p>
                 </div>
 
                 <div class="col-sm-10">
-                  <h4>Vélo: </h4>
+                  <h4><?=L::mk_book_bike;?></h4>
                     <img id='resumeBikeImage' class="img-rounded img-responsive" alt="Responsive image">
                 </div>
                 <form id="widget-new-booking" class="form-transparent-grey" action="apis/Kameo/new_booking.php" role="form" method="post">
@@ -101,9 +83,7 @@
 
                     <br>
                     <div class="text-left form-group">
-                      <button  class="button effect fill fr" type="submit"><i class="fa fa-check"></i>Confirmer</button>
-                      <button  class="button effect fill en" type="submit"><i class="fa fa-check"></i>Confirm</button>
-                      <button  class="button effect fill nl" type="submit"><i class="fa fa-check"></i>Verzenden</button>
+                      <button  class="button effect fill" type="submit"><i class="fa fa-check"></i><?=L::mk_book_confirm_btn;?></button>
 
                     </div>
               </form>
