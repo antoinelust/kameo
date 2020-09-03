@@ -16,8 +16,8 @@ include 'include/head.php';
 		<img src="/images/background_new.webp" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
 		<!-- MISSION & VISSION -->
 		<section class="box-fancy section-fullwidth text-light no-padding">
-			<div class="row">
-				<div class="col-md-6 text-center" style="background-color: #3cb395">
+			<div class="row" style="display: flex;">
+				<div class="col-md-6 text-center" style="background-color: #3cb395;">
 					<h2><?= L::employer_title; ?></h2>
 					<span><?= L::employer_description; ?></span>
 					<br>
@@ -31,28 +31,30 @@ include 'include/head.php';
 					<br>
 					<a class="button green button-3d effect fill-vertical" data-target="#employe" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?= L::employee_btn_knowmore; ?></span></a>
 				</div>
-
-				<div class="jumbotron jumbotron-center jumbotron-redirection-tb">
-					<div class="tb-content">
-						<h3>JE SUIS UN PARTICULIER</h3>
-						<h4>Vous cherchez un vélo pour votre compte personnel ?</h4>
-						<a class="button black button-3d effect icon-left" href="https://www.tb-velo-electrique.be/"><span><i class="fa fa-bicycle"></i>KAMEO Bikes pour particuliers</span></a>
-					</div>
-					<img src="images/TB_Velo_Electrique_Icone.svg" alt="bandeau tb-velo-electrique.be">
-				</div>
-
-				<!-- CALL TO ACTION -->
-				<div class="jumbotron jumbotron-center jumbotron-fullwidthtext-light" style="background: url('images/Fond_Site_Black.webp');" data-stellar-background-ratio="0.3">
-					<div class="container">
-						<h3><?= L::calculate_title; ?></h3>
-						<p><?= L::calculate_description; ?></p>
-						<a class="button large green button-3d effect icon-left" href="cash4bike.php">
-							<span><i class="fa fa-calculator"></i><?= L::calculate_btn_calculate; ?></span>
-						</a>
-					</div>
-				</div>
-				<!--END: CALL TO ACTION -->
 			</div>
+
+			<!-- REDIRECTION TB-VELO-ELECTRIQUE -->
+			<div class="jumbotron jumbotron-center jumbotron-redirection-tb">
+				<div class="tb-content">
+					<h3>JE SUIS UN PARTICULIER</h3>
+					<h4>Vous cherchez un vélo pour votre compte personnel ?</h4>
+					<a class="button black button-3d effect icon-left" href="https://www.tb-velo-electrique.be/"><span><i class="fa fa-bicycle"></i>KAMEO Bikes pour particuliers</span></a>
+				</div>
+				<img src="images/TB_Velo_Electrique_Icone.svg" alt="bandeau tb-velo-electrique.be">
+			</div>
+			<!--END: REDIRECTION TB-VELO-ELECTRIQUE -->
+
+			<!-- CALL TO ACTION -->
+			<div class="jumbotron jumbotron-center jumbotron-fullwidthtext-light" style="background: url('images/Fond_Site_Black.webp');" data-stellar-background-ratio="0.3">
+				<div class="container">
+					<h3><?= L::calculate_title; ?></h3>
+					<p><?= L::calculate_description; ?></p>
+					<a class="button large green button-3d effect icon-left" href="cash4bike.php">
+						<span><i class="fa fa-calculator"></i><?= L::calculate_btn_calculate; ?></span>
+					</a>
+				</div>
+			</div>
+			<!--END: CALL TO ACTION -->
 		</section>
 		<!-- END: MISSION & VISSION -->
 		<div class="modal fade" id="employeur" tabindex="-1" role="modal" aria-labelledby="modal-label-employer" aria-hidden="true" style="display: none;">
