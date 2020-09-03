@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    if (!localStorage.getItem("ConsentAuthorization")) {
+  if (!localStorage.getItem("ConsentAuthorization")) {
+    setTimeout(() => {
       const consentBar = document.querySelector(".consent-bar");
       const consentBtn = document.querySelector(".consent-btn");
       const refuseBtn = document.querySelector(".refuse-btn");
@@ -16,6 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         consentBar.classList.remove("active");
         localStorage.setItem("ConsentAuthorization", "refused");
       });
-    }
-  }, 2000);
+    }, 2000);
+  }
 });

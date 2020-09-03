@@ -42,8 +42,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<!-- LOAD GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600%7CRaleway:100,300,600,700,800&display=swap" rel="stylesheet" type="text/css" />
 	<!-- FONT AWESOME PRELOAD -->
-	<link rel="preload" as="style" type="text/css" crossorigin onload="this.rel='stylesheet'" href="/vendor/fontawesome/css/font-awesome.min.css">
-	<link rel="preload" as="style" type="text/woff2" crossorigin onload="this.rel='stylesheet'" href="/vendor/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0">
+	<link rel="stylesheet" as="style" href="/vendor/fontawesome/css/font-awesome.min.css">
 	<!-- CSS CUSTOM STYLE -->
 	<link rel="stylesheet" type="text/css" href="/css/custom.css" media="screen" />
 
@@ -62,7 +61,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<![endif]-->
 
 	<!-- GDPR cookie consent bar -->
-	<script defer src="/js/cookie_consent.js"></script>
+	<script src="/js/cookie_consent.js"></script>
 </head>
 
 <!-- COOKIE CONSENT BAR -->
