@@ -1,28 +1,16 @@
 <div class="tab-pane" id="orderBike"> <!-- TAB1: COMMANDER UN VELO -->
   <div class="bikeOrdered hidden">
-		<h4 class="text-green fr">Votre commande - Vélo</h4>
-		<h4 class="text-green en">Your order - Bike</h4>
-		<h4 class="text-green nl">Your order - Bike</h4>
+		<h4 class="text-green"><?=L::mk_ordertab_yo_bike_title;?></h4>
 		<div class="col-sm-12">
 			<div class="col-sm-6">
 				<ul>
-					<li class="fr"><strong>Marque :</strong> <span class="brand"></span></li>
-					<li class="nl"><strong>Brand :</strong> <span class="brand"></span></li>
-					<li class="en"><strong>Brand :</strong> <span class="brand"></span></li>
-					<li class="fr"><strong>Modèle :</strong> <span class="model"></span></li>
-					<li class="en"><strong>Model:</strong> <span class="model"></span></li>
-					<li class="nl"><strong>Model:</strong> <span class="model"></span></li>
-					<li class="fr"><strong>Taille :</strong> <span class="size"></span></li>
-					<li class="nl"><strong>Size :</strong> <span class="size"></span></li>
-					<li class="nl"><strong>Size :</strong> <span class="size"></span></li>
-					<li class="fr"><strong>Couleur :</strong> <span class="color"></span></li>
-					<li class="en"><strong>Couleur :</strong> <span class="color"></span></li>
-					<li class="nl"><strong>Couleur :</strong> <span class="color"></span></li>
-					<li class="fr"><strong>Statut :</strong> <span class="status"></span></li>
-					<li class="nl"><strong>Status :</strong> <span class="status"></span></li>
-					<li class="en"><strong>Status :</strong> <span class="status"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_bike_brand;?></strong> <span class="brand"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_bike_model;?></strong> <span class="model"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_bike_size;?></strong> <span class="size"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_bike_color;?></strong> <span class="color"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_bike_status;?></strong> <span class="status"></span></li>
 				</ul>
-				<strong>Remarque : </strong><br/>
+				<strong><?=L::mk_ordertab_yo_bike_note;?></strong><br/>
 				<p class="remark"></p>
 			</div>
 			<div class="col-sm-6">
@@ -30,34 +18,22 @@
 			</div>
 		</div>
 		<div class="seperator"></div>
-		<h4 class="text-green fr">Votre commande - Test</h4>
-		<h4 class="text-green en">Your order - Test</h4>
-		<h4 class="text-green nl">Your order - Test</h4>
+		<h4 class="text-green"><?=L::mk_ordertab_yo_test_title;?></h4>
 		<div class="col-sm-12">
 			<div class="col-sm-6">
 				<ul>
-					<li class="fr"><strong>Date pour le test :</strong> <span class="testDate"></span></li>
-					<li class="nl"><strong>Testing date :</strong> <span class="testDate"></span></li>
-					<li class="en"><strong>Testing date :</strong> <span class="testDate"></span></li>
-					<li class="fr"><strong>Lieu du test :</strong> <span class="testPlace"></span></li>
-					<li class="nl"><strong>Lieu du test :</strong> <span class="testPlace"></span></li>
-					<li class="en"><strong>Lieu du test :</strong> <span class="testPlace"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_test_date;?></strong> <span class="testDate"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_test_place;?></strong> <span class="testPlace"></span></li>
 				</ul>
 			</div>
 		</div>
 		<div class="seperator"></div>
-		<h4 class="text-green fr">Votre commande - Livraison</h4>
-		<h4 class="text-green en">Your order - Livraison</h4>
-		<h4 class="text-green nl">Your order - Livraison</h4>
+		<h4 class="text-green"><?=L::mk_ordertab_yo_ship_title;?></h4>
 		<div class="col-sm-12">
 			<div class="col-sm-6">
 				<ul>
-					<li class="fr"><strong>Date estimée de livraison :</strong> <span class="deliveryDate"></span></li>
-					<li class="nl"><strong>Estimated delivery date :</strong> <span class="deliveryDate"></span></li>
-					<li class="en"><strong>Estimated delivery date :</strong> <span class="deliveryDate"></span></li>
-					<li class="fr"><strong>Lieu de livraison :</strong> <span class="deliveryPlace"></span></li>
-					<li class="nl"><strong>Delivery address :</strong> <span class="deliveryPlace"></span></li>
-					<li class="en"><strong>Delivery address :</strong> <span class="deliveryPlace"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_ship_date;?></strong> <span class="deliveryDate"></span></li>
+					<li><strong><?=L::mk_ordertab_yo_ship_place;?></strong> <span class="deliveryPlace"></span></li>
 				</ul>
 			</div>
 		</div>
@@ -72,9 +48,7 @@
 	<div class="separator gridForCatalog"></div>
 
 	<div class="mesgs col-sm-12">
-	  <h4 class="text-green fr">Une question sur nos vélos ? Echangez avec notre expert</h4>
-	  <h4 class="text-green nl">Any question about our bikes ? Chat with our expert !</h4>
-	  <h4 class="text-green en">Any question about our bikes ? Chat with our expert !</h4>
+	  <h4 class="text-green"><?=L::mk_ordertab_question;?></h4>
 	  <div class="msg_history">
 		  <span id="divChatCommand"></span>
 	  </div>

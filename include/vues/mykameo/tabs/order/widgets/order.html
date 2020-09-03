@@ -1,155 +1,208 @@
-<div class="modal fade" id="command" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-12">
-						<form id="widget-command-form" action="apis/Kameo/command.php" role="form" method="post">
-							<div class="form-group col-sm-12">
-								<h4 class="fr text-green" >Commander un vélo</h4>
-								<h4 class="nl text-green" >Order a bike</h4>
-								<h4 class="en text-green" >Order a bike</h4>
-								<div class="col-sm-12">
-									<div class="col-sm-4 hidden">
-										<label for="ID">ID :</label>
-										<input type="text" readonly="readonly" class="form-control" name="ID"/>
-									</div>
-									<div class="col-sm-4">
-										<label class="fr" for="size">Taille :</label>
-										<label class="en" for="size">Size :</label>
-										<label class="nl" for="size">Size :</label>
-										<select class="form-control required" name="size">
-											<option value="XS">XS</option>
-											<option value="S">S</option>
-											<option value="M" selected>M</option>
-											<option value="L">L</option>
-											<option value="XL">XL</option>
-										</select>
-									</div>
-									<div class="col-sm-12"></div>
-									<div class="col-sm-4" >
-										<label for="brand" class="fr"> Marque : </label>
-										<label for="brand" class="en"> Brand : </label>
-										<label for="brand" class="nl"> Brand : </label>
-										<select class="form-control required" disabled name="brand">
-											<option value="Ahooga">Ahooga</option>
-											<option value="Benno">Benno</option>
-											<option value="Bzen">Bzen</option>
-											<option value="Conway">Conway</option>
-											<option value="Douze Cycle">Douze Cycle</option>
-											<option value="HNF Nicolai">HNF Nicolai</option>
-											<option value="Kayza">Kayza</option>
-											<option value="Orbea">Orbea</option>
-											<option value="Victoria">Victoria</option>
-											<option value="Stevens">Stevens</option>
-											<option value="other">Other</option>
-										</select>
-									</div>
-									<div class="col-sm-4">
-										<label for="model" class="fr"> Modèle : </label>
-										<label for="model" class="en"> Model : </label>
-										<label for="model" class="nl"> Model : </label>
-										<input type="text" class="form-control required" name="model" disabled />
-									</div>
-									<div class="col-sm-4">
-										<h4><span class="fr"> Type de cadre : </span></h4>
-										<h4><span class="en"> Frame type: </span></h4>
-										<h4><span class="nl"> Frame type: </span></h4>
-										<select class="form-control  required" disabled name="frame">
-											<option value="F">Femme</option>
-											<option value="H">Homme</option>
-											<option value="M">Mixte</option>
-										</select>
-									</div>
-									<div class="col-sm-4">
-										<h4><span class="fr"> Utilisation : </span></h4>
-										<h4><span class="en"> Utilisation: </span></h4>
-										<h4><span class="nl"> Utilisation: </span></h4>
-										<select class="form-control" name="utilisation" disabled>
-											<option value="Tout chemin">Tout chemin</option>
-											<option value="Ville et chemin">Ville et chemin</option>
-											<option value="Pliant">Pliant</option>
-											<option value="Ville">Ville</option>
-											<option value="Cargo">Cargo</option>
-											<option value="Gravel">Gravel</option>
-											<option value="VTT">VTT</option>
-											<option value="Speedpedelec">Speedpedelec</option>
-										</select>
-									</div>
-									<div class="col-sm-4">
-										<h4><span class="fr"> Vélo électrique ? </span></h4>
-										<h4><span class="en"> Electric bike? </span></h4>
-										<h4><span class="nl"> Electric bike? </span></h4>
-										<select class="form-control  required" name="electric" disabled>
-											<option value="Y">Y</option>
-											<option value="N">N</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="col-sm-8">
-										<label for="link" class="fr"> Lien vers le site : </label>
-										<label for="link" class="en"> Vendor link : </label>
-										<label for="link" class="nl"> Vendor link</label>
-										<a class="link text-blue" name="link" target="_blank"></a>
-									</div>
-								</div>
-								<div class="separator"></div>
-								<h4 class="text-green">Image </h4>
-								<div class="col-sm-12">
-									<img src="" class="commandImage" alt="image" height="400" />
-								</div>
-								<label for="remark" class="fr"> Remarques : </label>
-								<label for="remark" class="en"> Remarks : </label>
-								<label for="remark" class="nl"> Remarks : </label>
-								<textarea class="form-control" rows="5" name="remark"></textarea>
-								<input type="text" name="email" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
-								<input type="text" name="action" class="form-control hidden" value="command">
-							</div>
-							<button  id="send" class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Commander !</button>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-			</div>
-		</div>
-	</div>
+<div
+  class="modal fade"
+  id="command"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <form
+              id="widget-command-form"
+              action="apis/Kameo/command.php"
+              role="form"
+              method="post"
+            >
+              <div class="form-group col-sm-12">
+                <h4 class="text-green"><?=L::mk_order_title;?></h4>
+                <div class="col-sm-12">
+                  <div class="col-sm-4 hidden">
+                    <label for="ID">ID :</label>
+                    <input
+                      type="text"
+                      readonly="readonly"
+                      class="form-control"
+                      name="ID"
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="size"><?=L::mk_order_taille;?></label>
+                    <select class="form-control required" name="size">
+                      <option value="XS">XS</option>
+                      <option value="S">S</option>
+                      <option value="M" selected>M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-12"></div>
+                  <div class="col-sm-4">
+                    <label for="brand"><?=L::mk_order_brand;?></label>
+                    <select class="form-control required" disabled name="brand">
+                      <option value="Ahooga">Ahooga</option>
+                      <option value="Benno">Benno</option>
+                      <option value="Bzen">Bzen</option>
+                      <option value="Conway">Conway</option>
+                      <option value="Douze Cycle">Douze Cycle</option>
+                      <option value="HNF Nicolai">HNF Nicolai</option>
+                      <option value="Kayza">Kayza</option>
+                      <option value="Orbea">Orbea</option>
+                      <option value="Victoria">Victoria</option>
+                      <option value="Stevens">Stevens</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="model"><?=L::mk_order_model;?></label>
+                    <input
+                      type="text"
+                      class="form-control required"
+                      name="model"
+                      disabled
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <h4>
+                      <span><?=L::mk_order_frame;?></span>
+                    </h4>
+                    <select class="form-control required" disabled name="frame">
+                      <option value="F"><?=L::mk_order_woman;?></option>
+                      <option value="H"><?=L::mk_order_man;?></option>
+                      <option value="M"><?=L::mk_order_mix;?></option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4">
+                    <h4>
+                      <span><?=L::mk_order_usage;?></span>
+                    </h4>
+                    <select class="form-control" name="utilisation" disabled>
+                      <option value="Tout chemin">
+                        <?=L::mk_order_usage_allway;?>
+                      </option>
+                      <option value="Ville et chemin">
+                        <?=L::mk_order_usage_citypath;?>
+                      </option>
+                      <option value="Pliant">
+                        <?=L::mk_order_usage_pliant;?>
+                      </option>
+                      <option value="Ville">
+                        <?=L::mk_order_usage_city;?>
+                      </option>
+                      <option value="Cargo">Cargo</option>
+                      <option value="Gravel">Gravel</option>
+                      <option value="VTT">VTT</option>
+                      <option value="Speedpedelec">Speedpedelec</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4">
+                    <h4>
+                      <span><?=L::mk_order_electric;?></span>
+                    </h4>
+                    <select
+                      class="form-control required"
+                      name="electric"
+                      disabled
+                    >
+                      <option value="Y"><?=L::mk_order_elecyes;?></option>
+                      <option value="N"><?=L::mk_order_elecno;?></option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="col-sm-8">
+                    <label for="link"><?=L::mk_order_sitelink;?></label>
+                    <a class="link text-blue" name="link" target="_blank"></a>
+                  </div>
+                </div>
+                <div class="separator"></div>
+                <h4 class="text-green"><?=L::mk_order_image;?></h4>
+                <div class="col-sm-12">
+                  <img src="" class="commandImage" alt="image" height="400" />
+                </div>
+                <label for="remark"><?=L::mk_order_remarks;?></label>
+                <textarea
+                  class="form-control"
+                  rows="5"
+                  name="remark"
+                ></textarea>
+                <input
+                  type="text"
+                  name="email"
+                  class="form-control hidden"
+                  value="<?php echo $user_data['EMAIL']; ?>"
+                />
+                <input
+                  type="text"
+                  name="action"
+                  class="form-control hidden"
+                  value="command"
+                />
+              </div>
+              <button
+                id="send"
+                class="button small green button-3d rounded icon-left"
+                type="submit"
+              >
+                <i class="fa fa-plus"></i
+                ><?=L::mk_order_orderbtn;?>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          <?=L::mk_order_close;?>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript">
-	jQuery("#widget-command-form").validate({
-		submitHandler: function(form) {
-			jQuery(form).ajaxSubmit({
-				success: function(response) {
-					if (response.response == 'success') {
-						$.notify({
-							message: response.message
-						}, {
-							type: 'success'
-						});
-						$('.grid').isotope('destroy');
-						$('.grid').html("");
-						$('#command').modal('toggle');
-						get_command_user(email);
-					} else {
-						$.notify({
-							message: response.message
-						}, {
-							type: 'danger'
-						});
-					}
-				}
-			});
-		}
-	});
+  jQuery("#widget-command-form").validate({
+    submitHandler: function (form) {
+      jQuery(form).ajaxSubmit({
+        success: function (response) {
+          if (response.response == "success") {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "success",
+              }
+            );
+            $(".grid").isotope("destroy");
+            $(".grid").html("");
+            $("#command").modal("toggle");
+            get_command_user(email);
+          } else {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "danger",
+              }
+            );
+          }
+        },
+      });
+    },
+  });
 </script>

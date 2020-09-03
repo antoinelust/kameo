@@ -1,9 +1,7 @@
 <div class="tab-pane active" id="reserver"> <!-- TAB2: RÉSERVER UN VELO -->
   <form id="search-bikes-form" action="apis/Kameo/search-bikes.php" method="post">
 	<div class="form-group">
-	  <label for="booking_day_form" class="col-sm-12 fr">A quelle date voulez-vous prendre le vélo ?</label>
-	  <label for="booking_day_form" class="col-sm-12 en">When do you want to book a bike ?</label>
-	  <label for="booking_day_form" class="col-sm-12 nl">Wanneer wil je een fiets boeken?</label>
+	  <label for="booking_day_form" class="col-sm-12"><?=L::mk_book_date;?></label>
 	  <div class="form-group col-sm-5" id="booking_day_form"></div>
 
 	  <div class="form-group col-sm-5">
@@ -54,9 +52,7 @@
 		  <option value="18h45">18h45</option>
 		</select>
 	  </div>
-	  <label for="booking_day_form_deposit" class="col-sm-12 fr">A quelle date voulez-vous rendre le vélo ?</label>
-	  <label for="booking_day_form_deposit" class="col-sm-12 en">When do you want to deposit the bike?</label>
-	  <label for="booking_day_form_deposit" class="col-sm-12 nl">Wanneer wil je de fiets storten?</label>
+	  <label for="booking_day_form_deposit" class="col-sm-12"><?=L::mk_book_datereturn;?></label>
 	  <div class="form-group col-sm-5" id="booking_day_form_deposit"></div>
 	  <div class="form-group col-sm-5" id="booking_hour_form_deposit">
 	  </div>
@@ -70,9 +66,7 @@
 
 	<br />
 	<div class="form-group col-sm-6">
-	  <button class="button effect fill fr" type="submit">Rechercher</button>
-	  <button class="button effect fill en" type="submit">Search</button>
-	  <button class="button effect fill nl" type="submit">Zoeken</button>
+	  <button class="button effect fill" type="submit"><?=L::mk_book_search;?></button>
 	</div>
   </form>
   <div id="travel_information" style="display:none">

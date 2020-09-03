@@ -18,7 +18,10 @@ $i18n = new i18n([
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_successMessages_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_header_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_commander_{LANGUAGE}.ini',
-    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_offre_{LANGUAGE}.ini'
+    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_offre_{LANGUAGE}.ini',
+    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_order_{LANGUAGE}.ini',
+    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_ordertab_{LANGUAGE}.ini',
+    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_book_{LANGUAGE}.ini'
 ]);
 
 $i18n->init();
