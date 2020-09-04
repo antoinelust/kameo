@@ -15,11 +15,11 @@ include 'include/head.php';
 		<h1 class="text-center text-uppercase text-medium" data-animation="fadeInUp"><?= L::header_title; ?></h1>
 
 		<picture>
-			<source srcset="/images/background_new.webp" type="image/webp" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
+			<source srcset="/images/background_new.webp" type="image/webp" class="img-responsive" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
 			<source srcset="/images/background_new.jpg" type="image/jpeg">
-			<img src="/images/background_new.jpg" class="img-responsive img-rounded" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
+			<img src="/images/background_new.jpg" class="img-responsive" alt="KAMEO Bikes, votre one stop shop pour vos vélos de société">
 		</picture>
-		
+
 		<!-- MISSION & VISSION -->
 		<section class="box-fancy section-fullwidth text-light no-padding">
 			<div class="row" style="display: flex;">
