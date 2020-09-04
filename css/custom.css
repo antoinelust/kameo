@@ -650,3 +650,30 @@ body.loading .loader {
 .background-green {
   background-color: #3cb395 !important;
 }
+
+/* Modernizr Webp Images */
+.webp .bg_fond_site_black {
+  background: url("/images/Fond_Site_Black.webp");
+}
+
+.no-webp .bg_fond_site_black {
+  background: url("/images/Fond_Site_Black.jpg");
+}
+
+.webp .bg_new {
+  background: url('/images/background_new.webp');
+  background-size: 100%;
+}
+
+.no-webp .bg_new {
+  background: url('/images/background_new.jpg');
+}
+
+.webp .fond_degrade2 {
+  background: url('/images/fond_degrade2.webp');
+  background-size: 100%;
+}
+
+.no-webp .fond_degrade2 {
+  background: url('/images/fond_degrade2.jpg');
+}
