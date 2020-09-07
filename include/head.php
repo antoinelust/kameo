@@ -43,6 +43,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<!-- LOAD GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600%7CRaleway:100,300,600,700,800&display=swap" rel="stylesheet" type="text/css" />
 	<!-- FONT AWESOME PRELOAD -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 	<link rel="stylesheet" as="style" href="/vendor/fontawesome/css/font-awesome.min.css">
 	<!-- CSS CUSTOM STYLE -->
 	<link rel="stylesheet" type="text/css" href="/css/custom.css" media="screen" />

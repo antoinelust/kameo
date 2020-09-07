@@ -104,14 +104,13 @@ include 'include/head.php';
                                         <option data-filter=".5000"><?= L::achat_buyprice_option6; ?></option>
                                     </select>
                                 </div>
+                            </div>
 
-								<br><a class="button black-light button-3d effect fill-vertical" href="bons-plans.php"><span><?= L::achat_searchbar_bonsplans_btn; ?></span></a>	
-
+                            <div class="row background-white" style="text-align: center;">
+                                <a class="row button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; display:block" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
                             </div>
                         </div>
                     </div>
-                
-
 
                     <div class="col-md-9">
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
@@ -122,6 +121,7 @@ include 'include/head.php';
                         <!-- END: Portfolio Items -->
 
                     </div>
+
                 </div>
             </div>
         </section>
