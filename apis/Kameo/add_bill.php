@@ -3,10 +3,10 @@ session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
@@ -86,7 +86,7 @@ if($billType == "manual"){
 
 
     if(isset($_FILES['widget-addBill-form-file']))
-    {     
+    {
         $dossier = $_SERVER['DOCUMENT_ROOT'].'/factures/';
 
         $extensions = array('.pdf');
@@ -129,7 +129,7 @@ if($billType == "manual"){
         errorMessage("ES0035");
     }
 }else{
-    
+
     include 'connexion.php';
     $sql="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
     if ($conn->query($sql) === FALSE) {
@@ -137,15 +137,15 @@ if($billType == "manual"){
         echo json_encode($response);
         die;
     }
-    $result3 = mysqli_query($conn, $sql);   
+    $result3 = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result3);
     $newID=$resultat['MAX_TOTAL'];
     $newID=strval($newID+1);
 
     $newIDOUT=$resultat['MAX_OUT'];
     $newIDOUT=strval($newIDOUT+1);
-    
-    
+
+
     $bikesNumber=isset($_POST['bikesNumber']) ? $_POST['bikesNumber'] : NULL;
     $accessoriesNumber=isset($_POST['accessoriesNumber']) ? $_POST['accessoriesNumber'] : NULL;
     $otherAccessoriesNumber=isset($_POST['otherAccessoriesNumber']) ? $_POST['otherAccessoriesNumber'] : NULL;
@@ -163,7 +163,7 @@ if($billType == "manual"){
         $data['type'.$i] = "accessorySell";
         $j++;
         $i++;
-    }    
+    }
     $j=0;
     while($j<$otherAccessoriesNumber){
         $data['price'.$i] = $_POST['otherAccessoryFinalPrice'][$j];
@@ -176,8 +176,8 @@ if($billType == "manual"){
     $data['company'] = $company;
     $data['dateStart'] = $date;
     $data['billingGroup'] = "1";
-        
-    
+
+
     if(constant('ENVIRONMENT')=="production"){
         $test=CallAPI('POST', 'https://www.kameobikes.com/scripts/generate_bill.php', $data);
     }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
@@ -185,32 +185,32 @@ if($billType == "manual"){
     }else{
         $test=CallAPI('POST', 'kameo/kameo/scripts/generate_bill.php', $data);
     }
-        
-    error_log("Final result :".$test."\n", 3, "generate_bill.log");    
-    
+
+    error_log("Final result :".$test."\n", 3, "generate_bill.log");
+
     try {
         $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
         $html2pdf->pdf->SetDisplayMode('fullpage');
-        $html2pdf->writeHTML($test);        
-        
-        $path=$_SERVER['DOCUMENT_ROOT'].'/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';       
+        $html2pdf->writeHTML($test);
+
+        $path=$_SERVER['DOCUMENT_ROOT'].'/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
         $html2pdf->Output($path, 'F');
-        
+
     } catch (Html2PdfException $e) {
         $html2pdf->clean();
         $formatter = new ExceptionFormatter($e);
         $response = array ('response'=>'error', 'message'=> $formatter->getHtmlMessage());
         echo json_encode($response);
         die;
-        
-        
+
+
     }
-    
+
     $fichier = date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
-    
-    
+
+
 }
-    
+
 
 if($company=="other"){
     $company=$companyOther;
@@ -221,19 +221,19 @@ if($billingSentDate!=NULL){
     $billingSentDate="'".$billingSentDate."'";
 }else{
     $billingSentDate='NULL';
-}       
+}
 
 if($billingPaidDate!=NULL){
     $billingPaidDate="'".$billingPaidDate."'";
 }else{
     $billingPaidDate='NULL';
-}    
+}
 
 if($billingPaidDate!=NULL){
     $billingLimitPaidDate="'".$billingLimitPaidDate."'";
 }else{
     $billingLimitPaidDate='NULL';
-}      
+}
 
 include 'connexion.php';
 if($billType=='manual'){
@@ -241,7 +241,7 @@ if($billType=='manual'){
         $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', '$ID_OUT', '$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
     }else{
         $sql= "INSERT INTO  factures (ID, ID_OUT_BILL, USR_MAJ, HEU_MAJ, COMPANY, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_SENT_DATE, FACTURE_PAID, FACTURE_PAID_DATE, TYPE, FACTURE_LIMIT_PAID_DATE) VALUES ('$ID', NULL, '$email', CURRENT_TIMESTAMP, '$company', '$beneficiaryCompany', '$date', '$amountHTVA', '$amountTVAC', '$communication', '$fichier', '$billingSent', $billingSentDate, '$billingPaid', $billingPaidDate, '$type', $billingLimitPaidDate)";
-    }    
+    }
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -251,7 +251,7 @@ if($billType=='manual'){
 }else{
 }
 
-$conn->close();   
+$conn->close();
 $response['sql']=$sql;
 successMessage("SM0012");
 ?>

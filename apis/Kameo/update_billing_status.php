@@ -6,9 +6,6 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-
-
-
 $response=array();
 
 
@@ -19,8 +16,8 @@ if(isset($_POST['action'])){
 }
 
 if($action=="delete"){
-    
-    
+
+
     if(isset($_POST['reference'])){
         $reference=$_POST['reference'];
         include 'connexion.php';
@@ -31,7 +28,7 @@ if($action=="delete"){
             die;
         }
 
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         if(file_exists('../factures/'.$row['FILE_NAME'])){
             unlink('../factures/'.$row['FILE_NAME']);
@@ -41,21 +38,21 @@ if($action=="delete"){
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        }            
+        }
         $sql="DELETE FROM factures_details where FACTURE_ID='$reference'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        }       
-        $conn->close();        
-        
+        }
+        $conn->close();
+
         successMessage("SM0016");
     }else{
         errorMessage("ES0012");
     }
 }else{
-    
+
 
     $IDBilling=isset($_POST['widget-updateBillingStatus-form-billingReference']) ? $_POST['widget-updateBillingStatus-form-billingReference'] : NULL;
     $originator=isset($_POST['widget-updateBillingStatus-form-billingCompany']) ? $_POST['widget-updateBillingStatus-form-billingCompany'] : NULL;
@@ -69,13 +66,13 @@ if($action=="delete"){
     $billingPaidDate=isset($_POST['widget-updateBillingStatus-form-paymentDate']) ? date($_POST['widget-updateBillingStatus-form-paymentDate']) : "";
     $billingLimitPaidDate=isset($_POST['widget-updateBillingStatus-form-datelimite']) ? date($_POST['widget-updateBillingStatus-form-datelimite']) : "";
     $user=$_POST['widget-updateBillingStatus-form-user'];
-    $communication=$_POST['widget-updateBillingStatus-form-communication'];    
+    $communication=$_POST['widget-updateBillingStatus-form-communication'];
     $accountingSent=isset($_POST['accounting']) ? "1" : "0";
-    
-    
+
+
     if(isset($_FILES['widget-updateBillingStatus-form-file'])){
-        
-        
+
+
 
         $extensions = array('.pdf');
         $extension = strrchr($_FILES['widget-updateBillingStatus-form-file']['name'], '.');
@@ -94,7 +91,7 @@ if($action=="delete"){
 
         //upload of Bike picture
 
-        $dossier = '../factures/'; 
+        $dossier = $_SERVER['DOCUMENT_ROOT'].'/factures/';
 
         if(isset($_POST['widget-updateBillingStatus-form-currentFile']) && $_POST['widget-updateBillingStatus-form-currentFile'] != ''){
             $currentFile=$_POST['widget-updateBillingStatus-form-currentFile'];
@@ -102,24 +99,13 @@ if($action=="delete"){
                 unlink($dossier.$currentFile) or die("Couldn't delete file");
             }
         }
-            
-        
-        
-        $fichier=substr($date, 0, 10)."_".$originator."_".$communication.".pdf";    
-        
-        $response = array ('response'=>'error', 'message'=> $dossier.$fichier);
-        echo json_encode($response);
-        die;
 
-        if(move_uploaded_file($_FILES['widget-updateBillingStatus-form-file']['tmp_name'], $dossier.$fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-        {        }
-        else
+
+        $fichier=$currentFile;
+        if(!move_uploaded_file($_FILES['widget-updateBillingStatus-form-file']['tmp_name'], $dossier.$fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
         {
             errorMessage("ES0024");
         }
-        
-        
-        
 
         include 'connexion.php';
         $sql="UPDATE factures set FILE_NAME='$fichier' where ID='$IDBilling'";
@@ -127,7 +113,7 @@ if($action=="delete"){
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        }       
+        }
         $conn->close();
 
     }
@@ -172,19 +158,19 @@ if($action=="delete"){
             $billingSentDate="'".$billingSentDate."'";
         }else{
             $billingSentDate='NULL';
-        }       
+        }
 
         if($billingPaidDate!=NULL){
             $billingPaidDate="'".$billingPaidDate."'";
         }else{
             $billingPaidDate='NULL';
-        }    
+        }
 
         if($billingPaidDate!=NULL){
             $billingLimitPaidDate="'".$billingLimitPaidDate."'";
         }else{
             $billingLimitPaidDate='NULL';
-        }      
+        }
 
         $sql="update factures set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', COMPANY='$originator', BENEFICIARY_COMPANY='$beneficiary', DATE='$date', AMOUNT_HTVA='$amountHTVA', AMOUNT_TVAINC='$amountTVA', FACTURE_SENT='$billingSent', FACTURE_SENT_DATE=$billingSentDate, FACTURE_PAID='$billingPaid', FACTURE_PAID_DATE=$billingPaidDate, FACTURE_LIMIT_PAID_DATE=$billingLimitPaidDate, COMMUNICATION_STRUCTUREE='$communication', FACTURE_SENT_ACCOUNTING='$accountingSent'  where ID='$IDBilling'";
 
@@ -192,7 +178,7 @@ if($action=="delete"){
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
-        }       
+        }
         $conn->close();
 
         successMessage("SM0003");
