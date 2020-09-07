@@ -23,6 +23,7 @@ offres/
 images_bikes/
 images_accessories/
 include/logs.txt
+robots.txt
 $ git status
 [...]
 # Untracked files:

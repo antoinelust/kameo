@@ -1,6 +1,6 @@
 $( ".fleetmanager" ).click(function() {
 	initializeFields();
-    list_errors();    
+    list_errors();
 });
 
 
@@ -65,9 +65,38 @@ function list_errors() {
 			} else {
 				var i = 0;
 				var j = 0;
-				var dest = "";
+				var dest = "<table class=\"table table-condensed\"  data-order='[[ 0, \"asc\" ]]'><thead><tr><th>ID</th><th scope=\"col\">Référence</th><th>Description</th></thead><tbody>";
+
+				while (j < response.bike.selling.number) {
+					var bike = response.bike.selling[j];
+					if (bike.frameNumber == null) {
+						var bikeDescription = "N/A - " + bike.bikeID;
+					} else {
+						var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
+					}
+					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + bike.bikeID + "\" data-toggle=\"modal\" href=\"#\">" + bikeDescription + "</a></td><td>Le vélo " + bikeDescription + " a été vendu mais la date de vente n'est pas mentionnée</td><td></tr>"; //onclick=\"set_required_image('false')\"
+					dest = dest.concat(temp);
+					i++;
+					j++;
+				}
+				j=0;
+
+				while (j < response.bike.sellingCompany.number) {
+					var bike = response.bike.sellingCompany[j];
+					if (bike.frameNumber == null) {
+						var bikeDescription = "N/A - " + bike.bikeID;
+					} else {
+						var bikeDescription = bike.bikeID + " - " + bike.frameNumber;
+					}
+					var temp = "<tr><td scope=\"row\">" + (i + 1) + "</td><td><a class=\"updateBikeAdmin\" data-target=\"#bikeManagement\" name=\"" + bike.bikeID + "\" data-toggle=\"modal\" href=\"#\">" + bikeDescription + "</a></td><td>Le vélo " + bikeDescription + " a été vendu, il ne peut pas être assigné à Kameo</td><td></tr>"; //onclick=\"set_required_image('false')\"
+					dest = dest.concat(temp);
+					i++;
+					j++;
+				}
+				j=0;
+
 				while (j < response.bike.stock.number) {
-					var bike = response.bike.stock[i];
+					var bike = response.bike.stock[j];
 					if (bike.frameNumber == null) {
 						var bikeDescription = "N/A - " + bike.bikeID;
 					} else {
@@ -118,7 +147,7 @@ function list_errors() {
 				$(".updateAction").click(function() {
 					construct_form_for_action_update(this.name);
 				});
-				$('.dashboardBikes').html("Vélos (0)");
+				$('.dashboardBikes').html("Vélos ("+(response.bike.selling.number + response.bike.sellingCompany.number)+")");
 				$('.dashboardBills').html("Factures (" + response.bike.bill.number + ")");
 				$('.dashboardCompanies').html("Sociétés (" + (response.company.img.number + response.company.action.number) + ")");
 				$(".updateBikeAdmin").click(function() {
@@ -129,11 +158,11 @@ function list_errors() {
 					$('.bikeManagementSend').removeClass('hidden');
 					$('.bikeManagementSend').html('<i class="fa fa-plus"></i>Modifier');
 				});
-				if ((response.bike.bill.number + response.company.img.number + response.company.action.number) == 0) {
+				if ((response.bike.selling.number + response.bike.bill.number + response.company.img.number + response.company.action.number) == 0) {
 					document.getElementById('errorCounter').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\"0\" data-from=\"0\" data-seperator=\"true\">0</span>";
 					$('#errorCounter').css('color', '#3cb395');
 				} else {
-					document.getElementById('errorCounter').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\"" + (response.bike.bill.number + response.company.img.number + response.company.action.number) + "\" data-from=\"0\" data-seperator=\"true\">" + (response.bike.bill.number + response.company.img.number + response.company.action.number) + "</span>";
+					document.getElementById('errorCounter').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\"" + (response.bike.selling.number + response.bike.sellingCompany.number + response.bike.bill.number + response.company.img.number + response.company.action.number) + "\" data-from=\"0\" data-seperator=\"true\">" + (response.bike.selling.number + response.bike.sellingCompany.number + response.bike.bill.number + response.company.img.number + response.company.action.number) + "</span>";
 					$('#errorCounter').css('color', '#d80000');
 				}
 				displayLanguage();

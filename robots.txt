@@ -1,4 +1,10 @@
 User-Agent: *
-Disallow: *
+Disallow: /pages/
+Disallow: /apis/
+Disallow: /docs/
+Disallow: /images/
+Disallow: /include/
+Disallow: /langcache/
+Disallow : automatic_mail_factures.php
 
-Sitemap: https://test.kameobikes.com/sitemap.xml
+Sitemap: https://kameobikes.com/sitemap.xml
