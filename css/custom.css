@@ -677,3 +677,9 @@ body.loading .loader {
 .no-webp .fond_degrade2 {
   background: url('/images/fond_degrade2.jpg');
 }
+
+/* Search Bar Scroll Fixed */
+#achat_sidebar {
+  width: min-content;
+  transition: transform 200ms top;
+}

@@ -12,7 +12,6 @@ include 'include/head.php';
         <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@13.0.1/dist/lazyload.min.js"></script>
         <script src="js/language.js"></script>
 
-
         <style>
             * {
                 box-sizing: border-box;
@@ -37,7 +36,7 @@ include 'include/head.php';
         <section>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 background-green">
+                    <div class="col-md-3 background-green" id="achat_sidebar">
                         <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
 
                         <div class="m-t-30">
@@ -45,7 +44,7 @@ include 'include/head.php';
 
                                 <div class="form-group col-md-12">
                                     <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
-                                    <select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
+                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
                                         <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
                                         <option data-filter=".ahooga"><?= L::achat_brand_option2; ?></option>
                                         <option data-filter=".benno"><?= L::achat_brand_option3; ?></option>
@@ -61,7 +60,7 @@ include 'include/head.php';
 
                                 <div class="form-group col-md-12">
                                     <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
-                                    <select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
+                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
                                         <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
                                         <option data-filter=".villeetchemin"><?= L::achat_use_option2; ?></option>
                                         <option data-filter=".ville"><?= L::achat_use_option3; ?></option>
@@ -76,7 +75,7 @@ include 'include/head.php';
 
                                 <div class="form-group col-md-12">
                                     <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
-                                    <select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
+                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
                                         <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
                                         <option data-filter=".m" value="M"><?= L::achat_cadre_option2; ?></option>
                                         <option data-filter=".f" value="F"><?= L::achat_cadre_option3; ?></option>
@@ -86,7 +85,7 @@ include 'include/head.php';
 
                                 <div class="form-group col-md-12">
                                     <label for="widget-contact-form-electrique"><?= L::achat_searchbar_assist; ?></label>
-                                    <select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
+                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
                                         <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
                                         <option data-filter=".y"><?= L::achat_assist_option2; ?></option>
                                         <option data-filter=".n"><?= L::achat_assist_option3; ?></option>
@@ -95,7 +94,7 @@ include 'include/head.php';
 
                                 <div class="form-group col-md-12">
                                     <label for="widget-contact-form-prix"><?= L::achat_searchbar_buyprice; ?></label>
-                                    <select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
+                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
                                         <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
                                         <option data-filter=".2000"><?= L::achat_buyprice_option2; ?></option>
                                         <option data-filter=".between-2000-3000"><?= L::achat_buyprice_option3; ?></option>
@@ -112,11 +111,10 @@ include 'include/head.php';
                         </div>
                     </div>
 
-                    <div class="col-md-9">
+                    <div class="col-md-9" style="float: right;">
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
 
-                        <div class="grid">
-                        </div>
+                        <div class="grid"></div>
 
                         <!-- END: Portfolio Items -->
 
@@ -150,10 +148,7 @@ include 'include/head.php';
 
             function loadPortfolio() {
 
-
-
                 var $grid = $('.grid').isotope({});
-
 
                 //document.getElementById('bikeCatalog').innerHTML="";
                 var utilisation = document.getElementById('widget-bike-utilisation').value;
@@ -259,16 +254,12 @@ include 'include/head.php';
 
                             $('.grid').isotope("layout");
 
-
                         }
 
                     }
                 });
             }
             loadPortfolio();
-
-
-
 
             function updateBikePicture(brand, model, frameType) {
 
@@ -281,10 +272,10 @@ include 'include/head.php';
     </div>
     <!-- END: WRAPPER -->
 
-
     <!-- Theme Base, Components and Settings -->
     <script src="js/theme-functions.js"></script>
-
+    <!-- Search Bar Scroll Fixed -->
+    <script src="js/achat_scroll.js"></script>
 
 </body>
 
