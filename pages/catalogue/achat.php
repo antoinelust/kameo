@@ -121,6 +121,8 @@ include 'include/head.php';
                     </div>
 
                 </div>
+
+                <button onclick="topFunction()" id="btn_goto_top_catalog" title="Go to top"><i class="fas fa-arrow-circle-up"></i></button>
             </div>
         </section>
         <!-- END: CONTENT -->
@@ -276,6 +278,8 @@ include 'include/head.php';
     <script src="js/theme-functions.js"></script>
     <!-- Search Bar Scroll Fixed -->
     <script src="js/achat_scroll.js"></script>
+    <!-- Scroll to top button -->
+    <script src="js/achat_scroll_to_top.js"></script>
 
 </body>
 

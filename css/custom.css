@@ -661,25 +661,57 @@ body.loading .loader {
 }
 
 .webp .bg_new {
-  background: url('/images/background_new.webp');
+  background: url("/images/background_new.webp");
   background-size: 100%;
 }
 
 .no-webp .bg_new {
-  background: url('/images/background_new.jpg');
+  background: url("/images/background_new.jpg");
 }
 
 .webp .fond_degrade2 {
-  background: url('/images/fond_degrade2.webp');
+  background: url("/images/fond_degrade2.webp");
   background-size: 100%;
 }
 
 .no-webp .fond_degrade2 {
-  background: url('/images/fond_degrade2.jpg');
+  background: url("/images/fond_degrade2.jpg");
 }
 
-/* Search Bar Scroll Fixed */
+/* Search Bar Scroll Fixed on catalog*/
 #achat_sidebar {
   width: min-content;
   transition: transform 200ms top;
+}
+
+/* go to top button on catalog */
+#btn_goto_top_catalog {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 999;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: #3cb395;
+  cursor: pointer;
+  padding: 0;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+
+#btn_goto_top_catalog.active {
+  transition: opacity 0.5s linear;
+  visibility: visible;
+  opacity: 1;
+}
+
+#btn_goto_top_catalog:hover {
+  opacity: 80%;
+  transition: 400ms;
 }
