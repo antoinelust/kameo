@@ -281,7 +281,7 @@ include 'include/head.php';
     <script src="js/achat_scroll.js"></script>
     <!-- Scroll to top button -->
     <script src="js/achat_scroll_to_top.js"></script>
-    <!-- test -->
+    <!-- TB Popup Redirection -->
     <script src="js/tb_popup.js"></script>
 </body>
 
