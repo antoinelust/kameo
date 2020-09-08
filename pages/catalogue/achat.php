@@ -9,6 +9,7 @@ include 'include/head.php';
     <div class="wrapper">
         <?php include 'include/topbar.php'; ?>
         <?php include 'include/header.php'; ?>
+        <?php include 'include/tb_popup.php'; ?>
         <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@13.0.1/dist/lazyload.min.js"></script>
         <script src="js/language.js"></script>
 
@@ -280,7 +281,8 @@ include 'include/head.php';
     <script src="js/achat_scroll.js"></script>
     <!-- Scroll to top button -->
     <script src="js/achat_scroll_to_top.js"></script>
-
+    <!-- test -->
+    <script src="js/tb_popup.js"></script>
 </body>
 
 </html>

@@ -602,7 +602,7 @@ body.loading .loader {
 .consent-bar.active {
   transition: opacity 0.5s linear;
   visibility: visible;
-  opacity: 1;
+  opacity: 0.8;
   bottom: 0;
 }
 
@@ -690,7 +690,7 @@ body.loading .loader {
   opacity: 0;
   position: fixed;
   bottom: 20px;
-  right: 30px;
+  right: 20px;
   z-index: 999;
   border: none;
   outline: none;
@@ -714,4 +714,64 @@ body.loading .loader {
 #btn_goto_top_catalog:hover {
   opacity: 80%;
   transition: 400ms;
+}
+
+/* catalogue popup tb */
+.tb-popup {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+  z-index: 999;
+}
+
+.tb-popup h3::selection,
+.tb-popup p::selection {
+  background-color: yellow;
+  color: black !important;
+}
+
+.tb-popup span::selection {
+  background-color: black;
+  color: #f6e948;
+}
+
+.tb-popup.active {
+  visibility: visible;
+  opacity: 1;
+  transition: 1s;
+}
+
+.tb-popup .popup-head {
+  background-color: #f6e948;
+  padding-top: 5px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+.tb-popup .popup-body {
+  background-color: #0c0c0c;
+  padding: 5%;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.tb-popup .popup-body h3 {
+  color: white;
+  text-align: center;
+}
+
+.tb-popup .popup-body p {
+  color: white;
+  text-align: justify;
+}
+
+.tb-popup .popup-head #popup-closeBtn {
+  right: 8px;
+  top: 8px;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 34px;
 }
