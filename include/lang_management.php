@@ -22,7 +22,8 @@ $i18n = new i18n([
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_order_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_ordertab_{LANGUAGE}.ini',
     $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_book_{LANGUAGE}.ini',
-    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_booktab_{LANGUAGE}.ini'
+    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_mykameo_booktab_{LANGUAGE}.ini',
+    $_SERVER['DOCUMENT_ROOT'].'/lang/lang_search_module_{LANGUAGE}.ini'
 ]);
 
 $i18n->init();
