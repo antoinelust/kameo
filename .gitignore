@@ -38,4 +38,4 @@ include/environment.php
 apis/Kameo/environment.php
 robots.txt
 sitemap.xml
-
+.DS_Store
