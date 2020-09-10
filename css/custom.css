@@ -679,9 +679,21 @@ body.loading .loader {
 }
 
 /* Search Bar Scroll Fixed on catalog*/
+
 #achat_sidebar {
-  width: min-content;
   transition: transform 200ms top;
+  width: 280px;
+  height: 530px;
+}
+
+#achat_sidebar.scroll {
+  top: 0;
+  position: fixed;
+}
+
+#promo-btn-block {
+  padding: 0;
+  width: 280px;
 }
 
 /* go to top button on catalog */
