@@ -87,11 +87,6 @@ $dateEndString=$dateEnd->format('Y-m-d H:i');
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStart != NULL && $deposit_building != NULL && $dateEnd != NULL ) {
 
 
-  $response = array ('response'=>'error', 'message'=> $_SERVER['REQUEST_METHOD']);
-  echo json_encode($response);
-  die;
-
-
     include 'connexion.php';
     $date1stJanuary=date('Y-01-01');
     $sql="select * from reservations where DATE_START_2>'$date1stJanuary' and EMAIL='$email' and STAANN != 'D'";
