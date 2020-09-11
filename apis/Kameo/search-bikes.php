@@ -83,12 +83,13 @@ $dateEndString=$dateEnd->format('Y-m-d H:i');
 
 //gérer le error handling de mktime !
 
-$response = array ('response'=>'error', 'message'=> $_SERVER['REQUEST_METHOD']);
-echo json_encode($response);
-die;
-
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStart != NULL && $deposit_building != NULL && $dateEnd != NULL ) {
+
+
+  $response = array ('response'=>'error', 'message'=> $_SERVER['REQUEST_METHOD']);
+  echo json_encode($response);
+  die;
 
 
     include 'connexion.php';
