@@ -58,7 +58,7 @@ function update_deposit_form(){
         while(i<=numberOfDays){
             if((tempDate.getDay()=="1" && parseInt(response.clientConditions.mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(response.clientConditions.tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(response.clientConditions.wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(response.clientConditions.thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(response.clientConditions.fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(response.clientConditions.saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(response.clientConditions.sundayDeposit))){
                 var dayTrad = daysTrad[tempDate.getDay()];
-                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control fr\">"+dayTrad+" "+tempDate.getDate()+" "+monthTrad[tempDate.getMonth()]+"</option>";
+                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control\">"+dayTrad+" "+tempDate.getDate()+" "+monthTrad[tempDate.getMonth()]+"</option>";
                 dest = dest.concat(bookingDay);
             }
             tempDate.setDate(tempDate.getDate()+1);
