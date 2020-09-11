@@ -65,6 +65,7 @@ loadClientConditions()
 				buildingEndFr=response.building_fr;
 				buildingEndEn=response.building_en;
 				buildingEndNl=response.building_nl;
+				/*
 				document.getElementById("meteoStart1FR").innerHTML=buildingStartFr;
 				document.getElementById("meteoStart2FR").innerHTML=buildingStartFr;
 				document.getElementById("meteoStart3FR").innerHTML=buildingStartFr;
@@ -89,6 +90,7 @@ loadClientConditions()
 				document.getElementById("meteoEnd2NL").innerHTML=buildingEndNl;
 				document.getElementById("meteoEnd3NL").innerHTML=buildingEndNl;
 				document.getElementById("meteoEnd4NL").innerHTML=buildingEndNl;
+				*/
 				date= new Date(text.dateStart);
 				var day=date.getDate();
 				var month=date.getMonth() + 1;
@@ -99,6 +101,7 @@ loadClientConditions()
 				if (minutes.length ==1){
 				  minutes="0"+minutes;
 				}
+				/*
 				document.getElementById('meteoDate1').innerHTML = day+"/"+ month+"/"+year;
 				document.getElementById('meteoDate2').innerHTML = day+"/"+ month+"/"+year;
 				document.getElementById('meteoDate3').innerHTML = day+"/"+ month+"/"+year;
@@ -108,6 +111,7 @@ loadClientConditions()
 				document.getElementById("meteoHour2").innerHTML=hours+"h"+minutes;
 				document.getElementById("meteoHour3").innerHTML=hours+"h"+minutes;
 				document.getElementById("meteoHour4").innerHTML=hours+"h"+minutes;
+				*/
 				get_meteo(text.dateStart, addressStart)
 				.done(function(response){                    
 				  if(response.response=="success")
