@@ -83,7 +83,7 @@ $dateEndString=$dateEnd->format('Y-m-d H:i');
 
 //gérer le error handling de mktime !
 
-$response = array ('response'=>'error', 'message'=> $deposit_building);
+$response = array ('response'=>'error', 'message'=> $_SERVER['REQUEST_METHOD']);
 echo json_encode($response);
 die;
 
