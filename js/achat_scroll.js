@@ -5,7 +5,7 @@ $(document).ready(function () {
     if (
       $(window).scrollTop() > 100 &&
       document.documentElement.scrollHeight > 1920
-      && window.matchMedia("(min-width: 1200px)").matches
+      && window.matchMedia("(min-width: 992px)").matches
     ) {
       sidebar.classList.add("scroll");
 
@@ -40,10 +40,13 @@ $(document).ready(function () {
   });
 });
 
+// reloading when viewport resized, isnt needed anymore
+/*
 var resizeTimeout;
 window.addEventListener('resize', function(event) {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(function(){
-    window.location.reload();
+    
   }, 500);
 });
+*/

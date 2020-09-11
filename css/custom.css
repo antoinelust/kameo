@@ -696,6 +696,13 @@ body.loading .loader {
   width: 280px;
 }
 
+/* catalog */
+@media (min-width: 992px) {
+  .catalog {
+    padding-left: 60px !important;
+  }
+}
+
 /* go to top button on catalog */
 #btn_goto_top_catalog {
   visibility: hidden;

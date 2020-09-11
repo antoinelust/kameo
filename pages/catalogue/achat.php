@@ -110,7 +110,7 @@ include 'include/head.php';
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 catalog">
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
 
                         <div class="grid"></div>
