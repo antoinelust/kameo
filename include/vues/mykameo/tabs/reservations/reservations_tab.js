@@ -229,7 +229,7 @@ function showBooking(bookingID) {
         var ID = response.booking.ID;
         var code = response.booking.code;
 
-        temp = '<li class="fr">Numéro de réservation : ' + ID + "</li>";
+        temp = "<li><?= L::mk_reservations_reservation_nbr; ?>" + ID + "</li>";
         dest = temp;
         if (code) {
           if (code.length == 3) {
@@ -239,19 +239,19 @@ function showBooking(bookingID) {
           } else if (code.length == 1) {
             code = "000" + length;
           }
-          temp = '<li class="fr">Code : ' + code + "</li>";
+          temp = "<li><?= L::mk_reservations_code2; ?>" + code + "</li>";
           dest = dest.concat(temp);
         }
 
         dest = dest.concat(
-          '<li class="fr">Début : ' +
+          "<li><?= L::mk_reservations_start2; ?>" +
             response.booking.start.shortDateHours() +
             " au bâtiment " +
             response.booking.buildingStart +
             "</li>"
         );
         dest = dest.concat(
-          '<li class="fr">Fin : ' +
+          "<li><?= L::mk_reservations_end2; ?>" +
             response.booking.end.shortDateHours() +
             " au bâtiment " +
             response.booking.buildingEnd +
@@ -261,12 +261,14 @@ function showBooking(bookingID) {
 
         var dest = "";
         dest = dest.concat(
-          '<li class="fr">Numéro de vélo : ' +
+          "<li><?= L::mk_reservations_bikeNbr; ?>" +
             response.booking.frameNumber +
             "</li>"
         );
         dest = dest.concat(
-          '<li class="fr">Modèle : ' + response.booking.model + "</li>"
+          "<li><?= L::mk_reservations_model2; ?>" +
+            response.booking.model +
+            "</li>"
         );
         document.getElementById("bookingInformationBike").innerHTML = dest;
 
@@ -284,54 +286,20 @@ function showBooking(bookingID) {
           typeof response.clientBefore.name == "undefined" ||
           response.clientBefore.name == ""
         ) {
-          if (langue == "nl") {
-            var dest = "Niemand.";
-          } else if (langue == "en") {
-            var dest = "Nobody.";
-          } else {
-            var dest = "Personne.";
-          }
+          var dest = "<?= L::mk_reservations_nobody; ?>";
         } else {
-          if (langue == "nl") {
-            var dest =
-              '<li class="nl">Naam: ' +
-              name +
-              " " +
-              surname +
-              '</li><li class="nl">Telefoonnummer:' +
-              phone +
-              '</li><li class="nl">Mail: ' +
-              mail +
-              '</li><li class="nl">Stort fiets op ' +
-              response.clientBefore.end.shortDateHours() +
-              "</li>";
-          } else if (langue == "en") {
-            var dest =
-              '<li class="en">Name: ' +
-              name +
-              " " +
-              surname +
-              '</li><li class="en">Phone Number:' +
-              phone +
-              '</li><li class="en">Mail: ' +
-              mail +
-              '</li><li class="en">Returns bike on ' +
-              response.clientBefore.end.shortDateHours() +
-              "</li>";
-          } else {
-            var dest =
-              '<li class="fr">Nom et prénom: ' +
-              name +
-              " " +
-              surname +
-              '</li><li class="fr">Numéro de téléphone: ' +
-              phone +
-              '</li><li class="fr">Adresse mail: ' +
-              mail +
-              '</li><li class="fr">Dépose le vélo le ' +
-              response.clientBefore.end.shortDateHours() +
-              "</li>";
-          }
+          var dest =
+            "<li><?= L::mk_reservations_nameNfirst; ?>" +
+            name +
+            " " +
+            surname +
+            "</li><li><?= L::mk_reservations_phoneNbr2; ?>" +
+            phone +
+            "</li><li><?= L::mk_reservations_mail2; ?>" +
+            mail +
+            "</li><li><?= L::mk_reservations_returnBikeThe; ?>" +
+            response.clientBefore.end.shortDateHours() +
+            "</li>";
         }
 
         document.getElementById("futureBookingBefore").innerHTML = dest;
@@ -347,54 +315,20 @@ function showBooking(bookingID) {
           typeof response.clientAfter.name == "undefined" ||
           response.clientAfter.name == ""
         ) {
-          if (langue == "nl") {
-            var dest = "Niemand.";
-          } else if (langue == "en") {
-            var dest = "Nobody.";
-          } else {
-            var dest = "Personne.";
-          }
+          var dest = "<?= L::mk_reservations_nobody; ?>";
         } else {
-          if (langue == "nl") {
-            var dest =
-              "<li>Naam: " +
-              name +
-              " " +
-              surname +
-              "</li><li>Telefoonnummer:" +
-              phone +
-              "</li><li>Mail: " +
-              mail +
-              "</li><li>Neem de fiets mee" +
-              response.clientAfter.start.shortDateHours() +
-              "</li>";
-          } else if (langue == "en") {
-            var dest =
-              "<li>Name: " +
-              name +
-              " " +
-              surname +
-              "</li><li>Phone Number:" +
-              phone +
-              "</li><li>Mail: " +
-              mail +
-              "</li><li>Will take bike on" +
-              response.clientAfter.start.shortDateHours() +
-              "</li>";
-          } else {
-            var dest =
-              "<li>Nom et prénom: " +
-              name +
-              " " +
-              surname +
-              "</li><li>Numéro de téléphone:" +
-              phone +
-              "</li><li>Adresse mail: " +
-              mail +
-              "</li><li>Reprendra le vélo le " +
-              response.clientAfter.start.shortDateHours() +
-              "</li>";
-          }
+          var dest =
+            "<li><?= L::mk_reservations_nameNfirst; ?>" +
+            name +
+            " " +
+            surname +
+            "</li><li><?= L::mk_reservations_phoneNbr2; ?>" +
+            phone +
+            "</li><li><?= L::mk_reservations_mail2; ?>" +
+            mail +
+            "</li><li><?= L::mk_reservations_takeBackThe; ?>" +
+            response.clientAfter.start.shortDateHours() +
+            "</li>";
         }
 
         document.getElementById("futureBookingAfter").innerHTML = dest;
@@ -485,7 +419,7 @@ function getHistoricBookings() {
         dest = dest.concat(tempHistoricBookings);
 
         var tempHistoricBookings =
-          '<thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th></th></tr></thead><tbody>';
+          "<thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th></th></tr></thead><tbody>";
         dest = dest.concat(tempHistoricBookings);
 
         while (i < response.previous_bookings) {
@@ -509,7 +443,7 @@ function getHistoricBookings() {
             response.booking[i].start.shortDate() +
             " - " +
             building_start_fr +
-            ' <span><?= L::mk_reservations_at; ?></span> ' +
+            " <span><?= L::mk_reservations_at; ?></span> " +
             response.booking[i].start.shortHours() +
             '</td><td data-sort="' +
             new Date(response.booking[i].start).getTime() +
@@ -517,7 +451,7 @@ function getHistoricBookings() {
             response.booking[i].end.shortDate() +
             " - " +
             building_end_fr +
-            ' <span><?= L::mk_reservations_at; ?></span> ' +
+            " <span><?= L::mk_reservations_at; ?></span> " +
             response.booking[i].end.shortHours() +
             "</td><td>" +
             frame_number +
@@ -583,13 +517,13 @@ function getHistoricBookings() {
               response.booking[i].start.shortDate() +
               " - " +
               building_start_fr +
-              ' <span><?= L::mk_reservations_at; ?></span> ' +
+              " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].start.shortHours() +
               "</td><td>" +
               response.booking[i].end.shortDate() +
               " - " +
               building_end_fr +
-              ' <span><?= L::mk_reservations_at; ?></span> ' +
+              " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].end.shortHours() +
               "</td><td>" +
               frame_number +
@@ -615,13 +549,13 @@ function getHistoricBookings() {
               response.booking[i].start.shortDate() +
               " - " +
               building_start_fr +
-              ' <span><?= L::mk_reservations_at; ?></span> ' +
+              " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].start.shortHours() +
               "</td><td>" +
               response.booking[i].end.shortDate() +
               " - " +
               building_end_fr +
-              ' <span><?= L::mk_reservations_at; ?></span> ' +
+              " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].end.shortHours() +
               "</td><td>" +
               frame_number +
