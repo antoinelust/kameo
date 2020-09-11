@@ -1,7 +1,7 @@
 
 
 document.getElementById('search-bikes-form-intake-hour').addEventListener('change', function () { update_deposit_form()}, false);
-  
+
 
 
 
@@ -14,7 +14,7 @@ loadClientConditions()
 	if (response.clientConditions.administrator == "Y"){
 	  $(".fleetmanager").removeClass("hidden");
 	}
-	
+
   });
   function get_address_building(buildingReference){
     return $.ajax({
@@ -30,7 +30,7 @@ loadClientConditions()
 	  jQuery(form).ajaxSubmit({
 		success: function(text) {
 		  if (text.response == 'error') {
-			
+
 			$.notify({
 			  message: text.message
 			}, {
@@ -65,32 +65,16 @@ loadClientConditions()
 				buildingEndFr=response.building_fr;
 				buildingEndEn=response.building_en;
 				buildingEndNl=response.building_nl;
-				/*
-				document.getElementById("meteoStart1FR").innerHTML=buildingStartFr;
-				document.getElementById("meteoStart2FR").innerHTML=buildingStartFr;
-				document.getElementById("meteoStart3FR").innerHTML=buildingStartFr;
-				document.getElementById("meteoStart4FR").innerHTML=buildingStartFr;
-				document.getElementById("meteoStart1EN").innerHTML=buildingStartEn;
-				document.getElementById("meteoStart2EN").innerHTML=buildingStartEn;
-				document.getElementById("meteoStart3EN").innerHTML=buildingStartEn;
-				document.getElementById("meteoStart4EN").innerHTML=buildingStartEn;
-				document.getElementById("meteoStart1NL").innerHTML=buildingStartNl;
-				document.getElementById("meteoStart2NL").innerHTML=buildingStartNl;
-				document.getElementById("meteoStart3NL").innerHTML=buildingStartNl;
-				document.getElementById("meteoStart4NL").innerHTML=buildingStartNl;
-				document.getElementById("meteoEnd1FR").innerHTML=buildingEndFr;
-				document.getElementById("meteoEnd2FR").innerHTML=buildingEndFr;
-				document.getElementById("meteoEnd3FR").innerHTML=buildingEndFr;
-				document.getElementById("meteoEnd4FR").innerHTML=buildingEndFr;
-				document.getElementById("meteoEnd1EN").innerHTML=buildingEndEn;
-				document.getElementById("meteoEnd2EN").innerHTML=buildingEndEn;
-				document.getElementById("meteoEnd3EN").innerHTML=buildingEndEn;
-				document.getElementById("meteoEnd4EN").innerHTML=buildingEndEn;
-				document.getElementById("meteoEnd1NL").innerHTML=buildingEndNl;
-				document.getElementById("meteoEnd2NL").innerHTML=buildingEndNl;
-				document.getElementById("meteoEnd3NL").innerHTML=buildingEndNl;
-				document.getElementById("meteoEnd4NL").innerHTML=buildingEndNl;
-				*/
+
+				document.getElementById("meteoStart1").innerHTML=buildingStartFr;
+				document.getElementById("meteoStart2").innerHTML=buildingStartFr;
+				document.getElementById("meteoStart3").innerHTML=buildingStartFr;
+				document.getElementById("meteoStart4").innerHTML=buildingStartFr;
+				document.getElementById("meteoEnd1").innerHTML=buildingEndFr;
+				document.getElementById("meteoEnd2").innerHTML=buildingEndFr;
+				document.getElementById("meteoEnd3").innerHTML=buildingEndFr;
+				document.getElementById("meteoEnd4").innerHTML=buildingEndFr;
+
 				date= new Date(text.dateStart);
 				var day=date.getDate();
 				var month=date.getMonth() + 1;
@@ -101,7 +85,7 @@ loadClientConditions()
 				if (minutes.length ==1){
 				  minutes="0"+minutes;
 				}
-				/*
+
 				document.getElementById('meteoDate1').innerHTML = day+"/"+ month+"/"+year;
 				document.getElementById('meteoDate2').innerHTML = day+"/"+ month+"/"+year;
 				document.getElementById('meteoDate3').innerHTML = day+"/"+ month+"/"+year;
@@ -111,9 +95,9 @@ loadClientConditions()
 				document.getElementById("meteoHour2").innerHTML=hours+"h"+minutes;
 				document.getElementById("meteoHour3").innerHTML=hours+"h"+minutes;
 				document.getElementById("meteoHour4").innerHTML=hours+"h"+minutes;
-				*/
+
 				get_meteo(text.dateStart, addressStart)
-				.done(function(response){                    
+				.done(function(response){
 				  if(response.response=="success")
 				  {
 					var find = '-';
@@ -137,7 +121,7 @@ loadClientConditions()
 					document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
 					document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
 					document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
-					document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";                      
+					document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
 					get_travel_time(text.dateStart, addressStart, addressEnd)
 					.done(function(response){
 					  travel_time_bike=response.duration_bike;
