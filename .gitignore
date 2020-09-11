@@ -39,3 +39,4 @@ apis/Kameo/environment.php
 robots.txt
 sitemap.xml
 .DS_Store
+vendor/.DS_Store
