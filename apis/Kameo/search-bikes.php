@@ -19,7 +19,7 @@ $intake_hour=htmlspecialchars($_POST['search-bikes-form-intake-hour']);
 if (isset($_POST['search-bikes-form-intake-building']))
 	$intake_building=htmlspecialchars($_POST['search-bikes-form-intake-building']);
 else
-	$intake_building=''; 
+	$intake_building='';
 if (isset($_POST['search-bikes-form-intake-building']))				/** TEST ! **/
 	$deposit_building=htmlspecialchars($_POST['search-bikes-form-deposit-building']);
 else
@@ -83,6 +83,9 @@ $dateEndString=$dateEnd->format('Y-m-d H:i');
 
 //gérer le error handling de mktime !
 
+$response = array ('response'=>'error', 'message'=> $intake_building);
+echo json_encode($response);
+die;
 
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStart != NULL && $deposit_building != NULL && $dateEnd != NULL ) {
@@ -95,7 +98,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response); 
+		echo json_encode($response);
 		die;
 	}
     $result = mysqli_query($conn, $sql);
@@ -126,8 +129,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
 
 
-    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";        
-    
+    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";
+
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -138,8 +141,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     $length = $result->num_rows;
     if($length == 0){
         errorMessage("ES0027");
-    }        
-    
+    }
+
     if ($dateStart< new DateTime('NOW')){
         errorMessage("ES0016");
     }
@@ -153,8 +156,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     }
 
     include 'connexion.php';
-    $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";    
-        
+    $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
+
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -166,7 +169,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     if($length == 0){
         errorMessage("ES0015");
     }
-    
+
 
     $bike=array();
 
@@ -187,7 +190,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
         $result2 = mysqli_query($conn, $sql2);
         $resultat2 = mysqli_fetch_assoc($result2);
-        
+
         if($resultat2['BUILDING_END'] == $intake_building){
 
             $sql3="SELECT min(DATE_START_2), BUILDING_START FROM reservations WHERE BIKE_ID='$bikeID' and DATE_START_2 > '$dateEndString' and STAANN!='D' group by BUILDING_START";
@@ -198,10 +201,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                 die;
             }
             $result3 = mysqli_query($conn, $sql3);
-            $resultat3 = mysqli_fetch_assoc($result3);            
+            $resultat3 = mysqli_fetch_assoc($result3);
 
             if($resultat3['BUILDING_START'] == $deposit_building or $resultat3['BUILDING_START'] == NULL){
-                $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";                
+                $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
                 if ($conn->query($sql4) === FALSE) {
                     $response = array ('response'=>'error7', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -227,7 +230,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                     $response['bike'][$length]['size']= $resultat5['SIZE'];
                     $type=$resultat5['TYPE'];
                     $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
-                    
+
                     include 'connexion.php';
                     $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
                     if ($conn->query($sql6) === FALSE) {
@@ -242,7 +245,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                         $response['bike'][$length]['model'] = $resultat6['MODEL'];
                         $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
                     }
-                    
+
                     $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
                     if ((file_exists($file))){
                         $response['bike'][$length]['img']=$bikeID;
@@ -253,12 +256,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
             }
         }
     }
-    
-    
-    
+
+
+
     $response['length']=$length;
-    
-        
+
+
     if($length==0)
     {
         errorMessage("ES0015");
