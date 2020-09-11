@@ -1,14 +1,29 @@
 $(document).ready(function () {
   $(window).scroll(function () {
-    if ($(window).scrollTop() > 100 && document.documentElement.scrollHeight > 1920) {
-      $("#achat_sidebar").css("position", "fixed");
-      $("#achat_sidebar").css("top", "0");
-    
+    sidebar = document.getElementById("achat_sidebar");
+    btnPromo = document.getElementById("promo-btn-block");
+    if (
+      $(window).scrollTop() > 100 &&
+      document.documentElement.scrollHeight > 1920
+      && window.matchMedia("(min-width: 992px)").matches
+    ) {
+      sidebar.classList.add("scroll");
+
+      $(btnPromo).css({
+        "position": "fixed",
+        "top": sidebar.offsetHeight
+      });
+
     } else if ($(window).scrollTop() <= 100) {
-      $("#achat_sidebar").css("position", "");
-      $("#achat_sidebar").css("top", "");
+      sidebar.classList.remove("scroll");
+
+      $(btnPromo).css({
+        "position": "",
+        "top": ""
+      });
+
     }
-    
+
     if (
       $("#achat_sidebar").offset().top + $("#achat_sidebar").height() >
       $("#footer").offset().top
@@ -24,3 +39,14 @@ $(document).ready(function () {
     }
   });
 });
+
+// reloading when viewport resized, isnt needed anymore
+/*
+var resizeTimeout;
+window.addEventListener('resize', function(event) {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(function(){
+    
+  }, 500);
+});
+*/

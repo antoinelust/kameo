@@ -37,13 +37,12 @@ include 'include/head.php';
         <section>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 background-green" id="achat_sidebar">
-                        <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
+                    <div class="col-md-3 searchCol">
+                        <div class="row">
+                            <div class="col-md-12 background-green" id="achat_sidebar">
+                                <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
 
-                        <div class="m-t-30">
-                            <div class="row">
-
-                                <div class="form-group col-md-12">
+                                <div class="form-group">
                                     <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
                                     <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
                                         <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
@@ -59,7 +58,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group">
                                     <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
                                     <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
                                         <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
@@ -74,7 +73,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group">
                                     <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
                                     <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
                                         <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
@@ -84,7 +83,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group">
                                     <label for="widget-contact-form-electrique"><?= L::achat_searchbar_assist; ?></label>
                                     <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
                                         <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
@@ -93,7 +92,7 @@ include 'include/head.php';
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group">
                                     <label for="widget-contact-form-prix"><?= L::achat_searchbar_buyprice; ?></label>
                                     <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
                                         <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
@@ -104,15 +103,14 @@ include 'include/head.php';
                                         <option data-filter=".5000"><?= L::achat_buyprice_option6; ?></option>
                                     </select>
                                 </div>
-                            </div>
 
-                            <div class="row background-white" style="text-align: center;">
-                                <a class="row button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; display:block" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
+                            </div>
+                            <div class="col-md-12" id="promo-btn-block">
+                                <a class="button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; display:block; text-align: center;" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-9" style="float: right;">
+                    <div class="col-md-9 catalog">
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
 
                         <div class="grid"></div>
@@ -120,7 +118,6 @@ include 'include/head.php';
                         <!-- END: Portfolio Items -->
 
                     </div>
-
                 </div>
 
                 <button onclick="topFunction()" id="btn_goto_top_catalog" title="Go to top"><i class="fas fa-arrow-circle-up"></i></button>
