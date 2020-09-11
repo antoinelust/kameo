@@ -520,7 +520,7 @@ if($token==NULL){ //Not connected
           <br>
           <a href="docs/cgvfr.pdf" target="_blank" title="Pdf"><?=L::sidebar_terms;?></a><br><br>
           <a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf"><?=L::sidebar_policy;?></a><br><br>
-          <a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf" class="fr"><?=L::sidebar_manual;?></a><br>
+          <a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf"><?=L::sidebar_manual;?></a><br>
           <a class="button small green button-3d rounded icon-left" data-target="#tellus" data-toggle="modal" href="#" onclick="initializeTellUs()">
             <span><?=L::sidebar_feedback_button;?></span>
           </a><br>
