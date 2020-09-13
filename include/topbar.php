@@ -8,7 +8,7 @@
 					<li class="social-linkedin text-light"><a href="https://www.linkedin.com/company/kameobikes/" target="_blank" rel="noopener" aria-label="linkedin-button"><i class="fa fa-linkedin"></i></a></li>
 					<li><a href="#" onClick="setFr()">Fr</a></li>
 					<li><a href="#" onClick="setNl()">Nl</a></li>
-					<li><a href="#" onClick="setEn()">En</a></li>
+					<!--<li><a href="#" onClick="setEn()">En</a></li>-->
 				</ul>
 			</div>
 		</div>
