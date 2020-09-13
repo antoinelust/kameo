@@ -6,7 +6,6 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-
 $company=isset($_POST['company']) ? $_POST['company'] : NULL;
 $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
@@ -46,9 +45,9 @@ if($ID==NULL && $email != NULL){
 }
 if($ID != NULL || $company != NULL)
 {
-    
+
     include 'connexion.php';
-    
+
 
     if($ID != NULL){
         $sql="SELECT * FROM companies dd where ID='$ID'";
@@ -65,7 +64,7 @@ if($ID != NULL || $company != NULL)
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $conn->close();
-    
+
     $ID=$resultat['ID'];
 
     $response['response']="success";
@@ -247,7 +246,7 @@ if($ID != NULL || $company != NULL)
     $response['userNumber']=$i;
     $conn->close();
 
-    
+
     include 'connexion.php';
 	$sql="SELECT * FROM factures dd where COMPANY='$company'";
 
@@ -259,10 +258,10 @@ if($ID != NULL || $company != NULL)
 
     $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
-    
+
 	$response['billNumber']=$length;
     $conn->close();
-    
+
     $i=0;
     while($row = mysqli_fetch_array($result))
 
@@ -271,7 +270,7 @@ if($ID != NULL || $company != NULL)
 		$response['bill'][$i]['company']=$row['COMPANY'];
 		$response['bill'][$i]['beneficiaryCompany']=$row['BENEFICIARY_COMPANY'];
 		$response['bill'][$i]['ID']=$row['ID'];
-		$response['bill'][$i]['date']=$row['DATE'];            
+		$response['bill'][$i]['date']=$row['DATE'];
 		$response['bill'][$i]['amountHTVA']=$row['AMOUNT_HTVA'];
         $response['bill'][$i]['amountTVAC']=$row['AMOUNT_TVAINC'];
         $response['bill'][$i]['sent']=$row['FACTURE_SENT'];
@@ -285,8 +284,8 @@ if($ID != NULL || $company != NULL)
         $i++;
 
 	}
-    
-    
+
+
 	echo json_encode($response);
     die;
 
