@@ -5,6 +5,15 @@
 
 ?>
 <body class="wide">
+
+	<?
+  	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+  	if(constant('ENVIRONMENT')=="production"){
+  		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+  	}
+  ?>
+
+
 	<!-- WRAPPER -->
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>

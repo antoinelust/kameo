@@ -3,7 +3,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/lang_management.php';
 //require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
-header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-analytics.com ajax.googleapis.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net;");
+header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-analytics.com ajax.googleapis.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://connect.facebook.net/en_US/fbevents.js;");
 ?>
 
 <head>
@@ -55,8 +55,15 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<script defer src='https://www.google.com/recaptcha/api.js'></script>
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<?php if (substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9) != "localhost")
-		include __DIR__ . '/googleAnalytics.php'; ?>
+	<?php
+	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+
+
+	if(constant('ENVIRONMENT')=="production"){
+		include $_SERVER['DOCUMENT_ROOT'].'/include/googleAnalytics.php';
+		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManager.php';
+	}
+	?>
 
 	<!--[if lt IE 9]>
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>

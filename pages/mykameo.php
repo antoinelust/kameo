@@ -9,13 +9,20 @@ $token=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL; //@TODO: replace
 $user_ID=isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notifications.js
 $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
-include 'apis/Kameo/connexion.php';    
+include 'apis/Kameo/connexion.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+
 $token = getBearerToken();
-    
+
 include 'include/head.php';
-echo '<body class="wide">
-	<!-- WRAPPER -->
+echo '<body class="wide">';
+
+if(constant('ENVIRONMENT')=="production"){
+	include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+}
+
+echo '<!-- WRAPPER -->
 	<div class="wrapper">';
 		include 'include/topbar.php';
 		include 'include/header.php';
@@ -30,18 +37,18 @@ echo '<style media="screen">
       opacity: 0.5;
     }
 </style>';
-    
+
 echo '<script type="text/javascript" src="js/language2.js">
   displayLanguage();
 </script>';
 
-    
+
 if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected
   //@TODO: Replace email chech with authentication token
-    include 'apis/Kameo/connexion.php';    
-    
+    include 'apis/Kameo/connexion.php';
+
   $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
@@ -51,7 +58,7 @@ if($token==NULL){ //Not connected
   <script type="text/javascript">
     const user_ID = "'.$user_ID.'";
     const user_data = JSON.parse(\''.json_encode($user_data).'\');
-    var email=user_data["EMAIL"];  
+    var email=user_data["EMAIL"];
   </script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
   <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
@@ -65,7 +72,7 @@ if($token==NULL){ //Not connected
   <script type="text/javascript" src="js/addresses.js"></script>
   <script type="text/javascript" src="js/weather.js"></script>
   <script type="text/javascript" src="js/cafetaria.js"></script>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
 
       window.addEventListener("DOMContentLoaded", (event) => {';
         if(get_user_permissions("search", $token)){
@@ -76,7 +83,7 @@ if($token==NULL){ //Not connected
             echo 'console.log("test");';
             echo 'get_command_user(email);';
         }else if(get_user_permissions("fleetManager", $token)){
-            echo '$("#fleetmanager").addClass("active"); '; 
+            echo '$("#fleetmanager").addClass("active"); ';
             echo '$("#fleetmanagerID").addClass("active"); ';
         }
 
@@ -125,7 +132,7 @@ if($token==NULL){ //Not connected
                             <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>'.L::tabs_reservations_title.'</a> </li>';
                       }
                       if(get_user_permissions("fleetManager", $token)){
-                      
+
                   	     echo '<li class="fleetmanager" id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>'.L::tabs_fleet_title.'</a> </li>';
                       }
                 ?>
@@ -137,10 +144,10 @@ if($token==NULL){ //Not connected
                       if(get_user_permissions("search", $token)){
                           include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
                           include 'include/vues/mykameo/tabs/reservations/main.php';	//TAB 3 @TODO: REFACTOR
-                      }    
-    
+                      }
+
           		      include 'include/vues/mykameo/tabs/fleet_manager/main.php';	//TAB 4 @TODO: REFACTOR ?>
-                      
+
                   </div>
                   <?php include 'include/vues/mykameo/tabs/order/widgets/order.html'; ?>
                 </div>
@@ -709,20 +716,20 @@ function listPortfolioBikes(){
 <!-- FLEET MANAGER WIDGETS -->
 <?php
   /** FLEET **/
-    
+
   //BIKES
-    if(get_user_permissions("fleetManager", $token)){ 
+    if(get_user_permissions("fleetManager", $token)){
         include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/bikes/main.php';
     }
   //USERS
-    if(get_user_permissions("fleetManager", $token)){ 
+    if(get_user_permissions("fleetManager", $token)){
         include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/users/main.php';
     }
   //ORDERS
     if(get_user_permissions("fleetManager", $token)){
-        include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/orders/main.php';    
+        include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/orders/main.php';
     }
-    
+
   //RESERVATIONS
     if(get_user_permissions("fleetManager", $token)){
         include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/reservations/main.php';
@@ -737,7 +744,7 @@ function listPortfolioBikes(){
 
   /** ADMIN **/
     if(get_user_permissions("admin", $token)){
-    
+
         //CUSTOMERS
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
         //ORDERS
@@ -747,11 +754,11 @@ function listPortfolioBikes(){
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
     }
     if(get_user_permissions("admin", $token)){
-    
+
         //PORTFOLIO ACCESSORIES
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolioAccessories/main.php';
     }
-    if(get_user_permissions("admin", $token)){    
+    if(get_user_permissions("admin", $token)){
         //MANAGE BIKES
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
         //CHATS
@@ -769,7 +776,7 @@ function listPortfolioBikes(){
         //TASKS
         include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
     }
-    
+
     if(get_user_permissions("bills", $token)){
         //BILLS
         include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';

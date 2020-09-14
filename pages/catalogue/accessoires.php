@@ -5,6 +5,15 @@ include 'include/head.php';
 ?>
 
 <body class="wide">
+
+	<?
+  	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+  	if(constant('ENVIRONMENT')=="production"){
+  		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+  	}
+  ?>
+
+
 	<!-- WRAPPER -->
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>
@@ -20,7 +29,7 @@ include 'include/head.php';
 					<p><?= L::accessoires_subtitle1; ?></p>
 					<p><?= L::accessoires_subtitle2; ?></p>
 
-					<!--	
+					<!--
 		</div>
 	</div>
 	</section>

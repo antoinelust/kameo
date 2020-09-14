@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
 ?>
 <body class="wide">
+
+	<?
+  	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+  	if(constant('ENVIRONMENT')=="production"){
+  		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+  	}
+  ?>
+
+
 	<!-- WRAPPER -->
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>
@@ -12,15 +21,15 @@
         <section>
             <div class="container">
                 <div class="row">
-                                        
-                    
+
+
                     <div class="col-md-12">
                         <h1 class=" text-green"><?=L::bons_plans_title;?></h1>
                         </div>
                         <!-- SHOP PRODUCTS -->
 								<div class="shop">
 									<div class="row">
-										
+
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
@@ -32,7 +41,7 @@
 														<a href="bp_conway_ets370_f2.php">Aperçu</a>
 													</div>
 												</div>
-						
+
 												<div class="product-description">
 													<div class="product-category">Réf. : CW-370f2</div>
 													<div class="product-title">
@@ -46,12 +55,12 @@
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 												</div>
-						
+
 											</div>
 										</div>
-										
+
 										<div class="separator visible-xs"></div>
-										
+
 										<!--
 										<div class="col-md-4">
 											<div class="product">
@@ -64,7 +73,7 @@
 														<a href="bp_conway_ets370_f3.php">Aperçu</a>
 													</div>
 												</div>
-						
+
 												<div class="product-description">
 													<div class="product-category">Réf. : CW-370f3</div>
 													<div class="product-title">
@@ -78,15 +87,15 @@
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">82€</strong> / mois</p>
 												</div>
-						
+
 											</div>
 										</div>
-										
+
 										<div class="separator visible-xs"></div>
 										-->
-										
-										
-										
+
+
+
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
@@ -98,7 +107,7 @@
 														<a href="bp_orbea_gain.php">Aperçu</a>
 													</div>
 												</div>
-						
+
 												<div class="product-description">
 													<div class="product-category">Réf. : OB-F10</div>
 													<div class="product-title">
@@ -112,14 +121,14 @@
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">92€</strong> / mois</p>
 												</div>
-						
+
 											</div>
 										</div>
-										
+
 										<div class="separator visible-xs"></div>
-										
-										
-										
+
+
+
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
@@ -128,7 +137,7 @@
 													<span class="product-sale">Promo</span>
 													<span class="product-sale-off">-18%</span>
 												</div>
-						
+
 												<div class="product-description">
 													<div class="product-category">Réf. : HNF_XD2</div>
 													<div class="product-title">
@@ -142,14 +151,14 @@
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">127€</strong> / mois</p>
 												</div>
-						
+
 											</div>
 										</div>
-										
+
 										<div class="separator visible-xs"></div>
-										
-										
-										
+
+
+
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
@@ -161,7 +170,7 @@
 														<a href="bp_ahooga_folding.php">Aperçu</a>
 													</div>
 												</div>
-						
+
 												<div class="product-description">
 													<div class="product-category">Réf. : AH-165</div>
 													<div class="product-title">
@@ -175,14 +184,14 @@
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">77€</strong> / mois</p>
 												</div>
-						
+
 											</div>
 										</div>
-										
+
 										<div class="separator visible-xs"></div>
-										
-										
-										
+
+
+
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
@@ -194,7 +203,7 @@
 														<a href="bp_conway_wme929.php">Aperçu</a>
 													</div>
 												</div>
-						
+
 												<div class="product-description">
 													<div class="product-category">Réf. : CW-929</div>
 													<div class="product-title">
@@ -208,15 +217,15 @@
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">117€</strong> / mois</p>
 												</div>
-						
+
 											</div>
 										</div>
 
-										<!--										
+										<!--
 										<div class="separator visible-xs"></div>
-										
-										
-										
+
+
+
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
@@ -225,7 +234,7 @@
 													<span class="product-hot">Promo</span>
 													<span class="product-sale-off-red">-46%</span>
 												</div>
-						
+
 												<div class="product-description">
 													<div class="product-category">Réf. : BZ-174</div>
 													<div class="product-title">
@@ -239,18 +248,18 @@
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">74€</strong> / mois</p>
 												</div>
-						
+
 											</div>
 										</div>
 										-->
-										
-										
-										
-										
+
+
+
+
 									</div>
 								</div>
 				        <!-- END: Portfolio Items -->
-                        
+
                     </div>
                 </div>
             </div>
@@ -272,4 +281,3 @@
 </body>
 
 </html>
-

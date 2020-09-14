@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
 ?>
 <body class="wide">
+
+	<?
+  	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+  	if(constant('ENVIRONMENT')=="production"){
+  		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+  	}
+  ?>
+
+
 	<!-- WRAPPER -->
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>
@@ -11,13 +20,13 @@
 <script type="text/javascript" src="js/cash4bike.js"></script>
 		<!--Square icons-->
   <section>
-	
+
 	<div class="container">
 		<div class="row">
 				<h1 class="text-green"><?=L::cash4bike_title;?></h1>
 				<br>
 				<p><?=L::cash4bike_subtitle;?><br><?=L::cash4bike_subtitle2;?></p>
-				
+
 				<div class="m-t-30 col-md-12">
                 	<form id="cash4bike-form" action="apis/Kameo/calculate_cash4bike.php" role="form" method="get">
                     <div class="row">
@@ -44,20 +53,20 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>                                
-                            <div class="col-md-12">  
-                                <div id="inputHomeAddress" class="form-group has-error has-feedback">							
+                            </div>
+                            <div class="col-md-12">
+                                <div id="inputHomeAddress" class="form-group has-error has-feedback">
                                   <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
-                                  <input type="text" name="domicile" class="form-control" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">							
-                                  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
-                                  <span id="inputSuccess1Status" class="sr-only">(success)</span> 
-                                </div>                                
-                                <div id="inputWorkAddress" class="form-group has-error has-feedback">							
+                                  <input type="text" name="domicile" class="form-control" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
+                                  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span>
+                                  <span id="inputSuccess1Status" class="sr-only">(success)</span>
+                                </div>
+                                <div id="inputWorkAddress" class="form-group has-error has-feedback">
                                   <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
-                                  <input type="text" name="travail" class="form-control" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">							
-                                  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span> 
-                                  <span id="inputSuccess2Status" class="sr-only">(success)</span> 
-                                </div>                                
+                                  <input type="text" name="travail" class="form-control" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
+                                  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span>
+                                  <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
                             </div>
                             <div class="space"></div>
                         </div>
@@ -84,12 +93,12 @@
                                         <label><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="form-group col-md-12">
-                                                                
-                                
-                                
+
+
+
                                 <div class="col-md-12">
                                     <div class="employeurremunere">
                                         <label><input type="radio" name="prime" value="1" checked><?=L::cash4bike_bike_kmpayback;?></label>
@@ -99,7 +108,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group col-md-12">
                                 <div class="col-md-6">
                                     <label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
@@ -112,19 +121,19 @@
                                     </select>
                                 </div>
                             </div>
-                            
-                            
-                            
+
+
+
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
                             <div class="space visible-md visible-lg"></div>
                             <br><br>
-                        </div>                                                
+                        </div>
                         <div class="separator"></div>
-                        
+
                         <h4 class="text-green"><?=L::cash4bike_wantedbike_title;?></h4>
-                        
+
                         <div class="col-md-12">
                             <div class="col-md-4">
                                 <label for="brand"><?=L::cash4bike_wantedbike_brand;?></label>
@@ -138,31 +147,31 @@
                                     <option value="selection"><?=L::cash4bike_wantedbike_choose;?></option>
                                 </select>
                             </div>
-                            
+
                         </div>
-                        
+
                         <div class="col-md-12 bike_picture hidden">
                         	<div class="space"></div>
                             <h4 id="bike_price" class="text-center"></h4>
                             <h4 id="bike_leasing_price" class="text-center"></h4>
                             <img id="bike_picture" alt="image" class="centerimg" />
                         </div>
-                        
-                        <input type="int" name="leasingAmount" class="hidden">							
-						
+
+                        <input type="int" name="leasingAmount" class="hidden">
+
 						<div class="separator"></div>
-                        
+
 						<div class="form-group col-md-2 center">
                             <button class="button green button-3d effect fill-vertical" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
                         </div>
                     </div>
                     </form>
-                    
+
                 <script type="text/javascript">
                   jQuery("#cash4bike-form").validate({
 
                     submitHandler: function(form) {
-                      
+
                         jQuery(form).ajaxSubmit({
                             success: function(response) {
                                 if (response.response == 'error'){
@@ -177,20 +186,20 @@
                                     }, {
                                       type: 'success'
                                     });
-                                    
+
                                     $('#resultCash4Bike').removeClass('hidden');
-                                    
+
                                     console.log(response);
-                                    
+
                                     if(response.totalImpact>=0){
                                         $('#impactOnNetSalary').html("Coût réel du vélo : "+response.totalImpact+" €/mois")
                                         $('#impactOnNetSalaryText').html("En souscrivant à une location, cela vous coutera réellement "+response.totalImpact+"€ par mois. <br>Ce montant comprend votre vélo (référence/modèle), une assurance p-vélo et un entretien annuel.")
                                     }else if(response.totalImpact<0){
                                         $('#impactOnNetSalary').html("Gain réalisé grâce au vélo : "+Math.abs(response.totalImpact)+" €/mois")
                                         $('#impactOnNetSalaryText').html("En souscrivant à une location, vous économiserez "+Math.abs(response.totalImpact)+"€ par mois. En d'autre termes, avoir un vélo en leasing vous fera gagner de l'argent !<br>Votre vélo, une assurance p-vélo et un entretien annuel sont inclus.")
-                                        
+
                                     }
-                                    
+
                                     if(response.impactCarSavingCO2>0){
                                         $('#impactOnCO2').html("Gain de CO2 réalisé par mois : "+response.impactCarSavingCO2+" kg.CO2/mois")
                                     }
@@ -200,35 +209,35 @@
                     }
                   })
                 </script>
-                            
-                    
-                    
-                            
+
+
+
+
 				</div>
 		</div>
-		
+
 		<div class="space"></div>
-		
+
 		<!-- RESULTAT -->
 		<div id='resultCash4Bike' class="jumbotron jumbotron-center jumbotron-fullwidth background-green hidden">
 		  <div class="container">
 		    <h3 class="text-light" id='impactOnNetSalary'></h3>
 		    <h3 class="text-light" id='impactOnCO2'></h3>
 		    <p class="text-light" id='impactOnNetSalaryText'></p>
-		  
-		    <a class="button black-light button-3d effect fill-vertical"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
-		</div>            
-            
-		
-            
 
-            
-            
+		    <a class="button black-light button-3d effect fill-vertical"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
+		</div>
+
+
+
+
+
+
 <div class="modal fade" id="detail" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
 		<div class="modal-content">
             <form id="cash4bike-form-contact" action="apis/Kameo/contact_cash4bike.php" role="form" method="post">
-            
+
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				<h2 class="modal-title text-green" id="modal-label"><?=L::cash4bike_md_contact;?></h2>
@@ -266,12 +275,12 @@
 				<button type="submit" class="button green button-3d effect fill-vertical"><?=L::cash4bike_md_send;?></button>
 			</div>
             </form>
-                    
+
             <script type="text/javascript">
-              jQuery("#cash4bike-form-contact").validate({                  
+              jQuery("#cash4bike-form-contact").validate({
                 submitHandler: function(form) {
                   jQuery(form).ajaxSubmit({
-                    success: function(response) {                        
+                    success: function(response) {
                       if (response.response == 'error'){
                             $.notify({
                               message: response.message
@@ -290,9 +299,9 @@
                   })
                 }
               });
-                
+
             </script>
-            
+
           <div class="modal-footer">
             <button type="button" class="btn btn-b" data-dismiss="modal"><?=L::cash4bike_md_close;?></button>
           </div>
@@ -302,19 +311,19 @@
 
 
 		<!--END: RESULTAT -->
-		
+
 	</div>
-        
+
     <h3><?=L::cash4bike_rent_gain_title;?></h3>
     <p><?=L::cash4bike_rent_gain_subtitle;?><br>
     Retrouvez <a href="https://www.securex.be/fr/gestion-du-personnel/couts-salariaux/optimaliser-votre-charge-salariale/plan-cafeteria" class="text-green" target="_blank">ici plus d’information</a> sur ce système.</p>
     <p><?=L::cash4bike_rent_gain_text;?></p>
     <p><?=L::cash4bike_rent_gain_text2;?><strong><?=L::cash4bike_rent_gain_text2sub;?></strong></p>
     <br>
-        
+
     <div class="separator"></div>
-        
-        
+
+
 	<h3><?=L::cash4bike_disclaimer_title;?></h3>
     <p><?=L::cash4bike_disclaimer_text;?></p>
     <p><?=L::cash4bike_disclaimer_text2;?></p>

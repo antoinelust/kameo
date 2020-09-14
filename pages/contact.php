@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
-	header_remove("Set-Cookie");
-	header_remove("X-Powered-By");
 ?>
 <body class="wide">
+
+	<?
+		require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+		if(constant('ENVIRONMENT')=="production"){
+			include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+		}
+	?>
+
 	<!-- WRAPPER -->
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>
@@ -22,13 +28,13 @@
                 $('#widget-contact-form input[name=entreprise]').addClass("required");
             }
         });
-        
-        
+
+
     })
-                            
+
 </script>
 
-		
+
 
 
  <!-- CONTENT -->
@@ -81,11 +87,11 @@
                                     <label for="message"><?=L::contact_message;?></label>
                                     <textarea type="text" name="message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
                                 </div>
-                                
+
                                 <div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
-                                
+
                                 <input type="text" class="hidden" name="antispam" value="" />
-                                
+
                                 <button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp<?=L::contact_send_btn;?></button>
                             </form>
                             <script type="text/javascript">
@@ -101,7 +107,7 @@
                                                         type: 'success'
                                                     });
                                                     $(form)[0].reset();
-                                                    
+
                                                     gtag('event', 'send', {
                                                       'event_category': 'mail',
                                                       'event_label': 'contact.php'
@@ -135,16 +141,16 @@
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1264.7922885746027!2d5.590069958227898!3d50.65340589487594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0fa03fbcae78b%3A0xdb098129a125e630!2sKAMEO%20Bikes!5e0!3m2!1sfr!2sbe!4v1584177978200!5m2!1sfr!2sbe" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                             </div>
                         </div>
-						
+
 						<br>
 						<!--
 						<div id="slider">
 							<div id="slider-carousel">
-							
+
 								<img src="images/shopvelo1.jpg" class="img-responsive img-rounded" alt="">
 								<img src="images/shopvelo2.jpg" class="img-responsive img-rounded" alt="">
 								<img src="images/shopvelo3.jpg" class="img-responsive img-rounded" alt="">
-							
+
 							</div>
 						</div>
 						-->
@@ -160,7 +166,7 @@
             </div>
         </section>
         <!-- END: CONTENT -->
-        
+
         <!-- TEAM -->
 		<section id="section5" class="background-grey">
 			<div class="container">
@@ -182,7 +188,7 @@
 							<div class="en">As far as we can go back, Julien has always been passionate about cycling. Skilled mechanic and industrial engineer, he knows inside out the technical details of each of our bikes and constantly strives to improve them. </div>
 							<div class="nl">Voor zover we terug kunnen gaan, heeft Julien altijd een passie gehad voor fietsen. Bekwaam mechanicus en industriële ingenieur, hij kent de technische details van elk van onze fietsen en streeft om ze te verbeteren. </div>
 							-->
-							
+
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -196,7 +202,7 @@
 							<div class="en">Whatever the sport whatever the field, Pierre-Yves always wants to be in motion. The monotony of his urban transports made him want to create KAMEO Bikes. </div>
 							<div class="nl">Wat de sport of het terrein betreft, zal Pierre-Yves altijd in beweging zijn. De monotoon van zijn stedelijk vervoer zorgde ervoor dat hij KAMEO Bikes wilde maken. </div>
 							-->
-							
+
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -210,7 +216,7 @@
 							<div  class="en">Challenge him on one something and Antoine will want to understand and master it. As a civil engineer, he is in charge of the financial aspects of the project. </div>
 							<div  class="nl">Wat de technologie ook is, Antoine is een eeuwig nieuwsgierig dat alles alles wil begrijpen en beheersen. Hij is verantwoordelijk voor de financiële aspecten van het project. </div>
 							-->
-							
+
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -225,10 +231,10 @@
 							<div class="nl">Met een paar klikken op zijn computer verandert Thibaut elke schets in een schoon en elegant ontwerp. Als graficus, zorgt hij ervoor dat de visuele kwaliteit van KAMEO Bikes-producten aan hun technische kwaliteit voldoet.</div>
 							-->
 							<br>
-							
+
 						</div>
 					</div>
-					
+
 					<div class="col-md-6 center">
 					<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
 						<div class="image-box-description text-center">
@@ -237,7 +243,7 @@
 							<div><?=L::contact_join_team;?></div>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 		</section>

@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
 ?>
 <body class="wide">
+
+	<?
+  	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+  	if(constant('ENVIRONMENT')=="production"){
+  		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+  	}
+  ?>
+
+
 	<!-- WRAPPER -->
 	<div class="wrapper">
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header.php'; ?>
 		<!--Square icons-->
   <section>
-	
+
 	<div class="container">
 		<div class="row">
 				<h1 class="text-green"><?=L::avantages_title;?></h1>
@@ -51,7 +60,7 @@
 			        </div>
 			      </div>
 			    </div>
-			    
+
 			    <h3><?=L::avantages_employee;?></h3>
 				<div class="row">
 			      <div class="col-md-4">
@@ -94,10 +103,10 @@
 			        </div>
 			      </div>
 			    </div>
-			    
+
 			     <h3 class="text-green"><?=L::avantages_whykameo_title;?></h3>
 				<div class="row">
-				
+
 			      <div class="col-md-6">
 			        <div class="icon-box box-type effect medium center color">
 			          <div class="icon"> <a href="#"><i class="fa fa-cogs"></i></a> </div>
@@ -106,7 +115,7 @@
 			          <br>
 			        </div>
 			      </div>
-			      
+
 			      <div class="col-md-6">
 			        <div class="icon-box box-type effect medium center color">
 			          <div class="icon"> <a href="#"><i class="fa fa-sliders"></i></a> </div>
@@ -116,7 +125,7 @@
 			          <br>
 			        </div>
 			      </div>
-			      
+
 			       <div class="col-md-6">
 			        <div class="icon-box box-type effect medium center color">
 			          <div class="icon"> <a href="#"><i class="fa fa-home"></i></a> </div>
@@ -125,7 +134,7 @@
 			          <br>
 			        </div>
 			      </div>
-			      
+
 			      <div class="col-md-6">
 			        <div class="icon-box box-type effect medium center color">
 			          <div class="icon"> <a href="#"><i class="fa fa-cogs"></i></a> </div>
@@ -134,10 +143,10 @@
 			          <br>
 			        </div>
 			      </div>
-				
+
 			    </div>
 
-				
+
 		</div>
 	</div>
 </section>
@@ -156,5 +165,3 @@
 </body>
 
 </html>
-
-

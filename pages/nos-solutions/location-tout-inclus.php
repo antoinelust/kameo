@@ -5,6 +5,15 @@ include 'include/head.php';
 ?>
 
 <body class="wide">
+
+  <?
+  	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+  	if(constant('ENVIRONMENT')=="production"){
+  		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManagerBody.php';
+  	}
+  ?>
+
+
   <!-- WRAPPER -->
   <div class="wrapper">
     <?php include 'include/topbar.php'; ?>
@@ -143,7 +152,7 @@ include 'include/head.php';
               success: function(response) {
                 document.getElementById('retailPrice').innerHTML = "<sup>€</sup>" + response.HTVARetailPrice + "<span></span>";
                 document.getElementById('leasingPriceFR').innerHTML = "<sup>€</sup>" + response.leasingPrice + "<span>/mois</span>";
-                //document.getElementById('rentingPriceFR').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/mois</span>";  
+                //document.getElementById('rentingPriceFR').innerHTML = "<sup>€</sup>"+response.rentingPrice+"<span>/mois</span>";
 
                 document.getElementById('spanRetailPriceFR').innerHTML = response.retailPrice + " € ";
                 document.getElementById('spanRetailPriceFR2').innerHTML = response.retailPrice + " € ";

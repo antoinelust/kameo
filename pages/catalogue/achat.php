@@ -165,7 +165,6 @@ include 'include/head.php';
                         "action": "list"
                     },
                     success: function(response) {
-                        console.log(response);
                         if (response.response == 'error') {
                             $.notify({
                                 message: response.message
