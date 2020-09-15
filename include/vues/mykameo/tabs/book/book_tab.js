@@ -169,6 +169,9 @@ loadClientConditions()
 				var bikeID=text.bike[i].bikeID;
 				var bikeFrameNumber=text.bike[i].frameNumber;
 				var bikeType=text.bike[i].typeDescription;
+				var brand = text.bike[i].brand;
+				var model = text.bike[i].model;
+				var frameType = text.bike[i].frameType;
 				if(text.bike[i].brand && text.bike[i].model && text.bike[i].size){
 				var title= "Marque : "+text.bike[i].brand+" <br/>Modèle : "+text.bike[i].model+" <br/>Taille : "+text.bike[i].size;
 				}else{
@@ -188,7 +191,7 @@ loadClientConditions()
 				<p class=\"subtitle\">"+ title +"</p>\
 				</div>\
 				<div class=\"col-md-2\">\
-				<a class=\"button large green button-3d rounded icon-left\" name=\""+bikeID+"\" id=\"fr\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike(this.name)\"><span>Réserver</span></a>\
+				<a class=\"button large green button-3d rounded icon-left\" name=\""+text.bike[i].brand + text.bike[i].model + text.bike[i].frameType +"\" id=\"fr\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike('" +text.bike[i].brand+ "','" +text.bike[i].model+"','"+text.bike[i].frameType + "')\"><span>Réserver</span></a>\
 				</div>\
 				<div class=\"seperator\"></div>";
 				dest = dest.concat(codeVeloTemporaire);
@@ -258,9 +261,9 @@ loadClientConditions()
 	  });
 	}
   });
-  function bookBike(ID)
+  function bookBike(brand, model, frameType)
   {
-	$('#widget-new-booking input[name=bikeID]').val(ID);
-	document.getElementById("resumeBikeImage").src="images_bikes/"+ID+".jpg";
-
+	//$('#widget-new-booking input[name=bikeID]').val(ID);
+	//document.getElementById('resumeBiketitle').innerHTML = brand + " " + model;
+	document.getElementById("resumeBikeImage").src="images_bikes/" + brand.toLowerCase().replace(/ /g, '-') + "_" + model.toLowerCase().replace(/ /g, '-') + "_" + frameType.toLowerCase() + ".jpg";
   }
