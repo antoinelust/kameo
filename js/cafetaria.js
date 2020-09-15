@@ -1,19 +1,19 @@
 
 window.addEventListener("DOMContentLoaded", function(event) {
-    $( ".orderBike" ).click(function() {  
+    $( ".orderBike" ).click(function() {
         get_command_user(email);
     });
-    
-    $("#orderBike .mesgs .msg_send_btn").click(function() {  
+
+    $("#orderBike .mesgs .msg_send_btn").click(function() {
         var message=$("#orderBike .input_msg_write .write_msg").val();
         if(message != ""){
             write_message(message, email, email, "order");
             $("#orderBike .input_msg_write .write_msg").val("");
         }
-    });    
+    });
     $("#orderBike .input_msg_write .write_msg").keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){	
+        if(keycode == '13'){
             var message=$("#orderBike .input_msg_write .write_msg").val();
             if(message != ""){
                 write_message(message, email, email, "order");
@@ -37,8 +37,8 @@ function load_cafetaria(){
 				var $grid = $('.grid').isotope();
 				if (($('.grid').isotope('getItemElements').length == 0))
 				{
-					for (var i=0; i<response.bikeNumber; i++){    
-                                                
+					for (var i=0; i<response.bikeNumber; i++){
+
 							if(response.bike[i].frameType.toLowerCase()=="h"){
 								var frameType = "Homme";
 							} else if(response.bike[i].frameType.toLowerCase()=="m"){
@@ -60,13 +60,13 @@ function load_cafetaria(){
 							}else{
 								var price="5000";
 							}
-                        
+
                             if((response.bike[i].stock)=="0"){
                                 var stock="commande";
                             }else{
                                 var stock="stock";
                             }
-                        
+
 
 							var temp="\
 							<div class=\"grid-item\">\
@@ -99,9 +99,8 @@ function load_cafetaria(){
 									</p>\
 								</div>\
 							</div>";
-                        
-                          console.log("<?=L::generic_command;?>");
-                          var $item=$(temp);
+
+              var $item=$(temp);
 
 						  // add width and height class
 						  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
@@ -111,7 +110,7 @@ function load_cafetaria(){
 					//Fix Isotope not displayed after insert/append bug
 					setTimeout(function(){
 						$grid.isotope( 'reloadItems' ).isotope();
-						$( ".orderBikeClick" ).click(function() {  
+						$( ".orderBikeClick" ).click(function() {
 							fillCommandDetails(this.name);
 						});
 						$( "img.portfolio-img" ).load(function(){
@@ -141,8 +140,8 @@ function fillCommandDetails(ID){
         $('#widget-command-form select[name=frame]').val(response.frameType);
         $('#widget-command-form select[name=utilisation]').val(response.utilisation);
         $('#widget-command-form select[name=electric]').val(response.electric);
-        $('#widget-command-form .link').attr("href", response.url);          
-        $('#widget-command-form .link').html(response.url);          
+        $('#widget-command-form .link').attr("href", response.url);
+        $('#widget-command-form .link').html(response.url);
         document.getElementsByClassName("commandImage")[0].src="images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
       }
 
@@ -156,12 +155,12 @@ function get_command_user(email){
     type: 'get',
     data: { "action": "list", "email": email},
     success: function(response){
-        
+
       if (response.response == 'error') {
         console.log(response.message);
       } else{
           if(response.commandNumber>0){
-              $('.gridForCatalog').addClass("hidden");              
+              $('.gridForCatalog').addClass("hidden");
               $('.bikeOrdered').removeClass("hidden");
 
               var i = 0;
@@ -175,7 +174,7 @@ function get_command_user(email){
                       $('#orderBike .remark').html("<span class=\"fr\">Pas de remarques spécifiques</span><span class=\"en\">No remark</span><span class=\"nl\">No remark</span>");
                   }else{
                       $('#orderBike .remark').html(response[i].remark);
-                  }                  
+                  }
                   if(response[i].testDate=="" || response[i].testDate == null){
                       $('#orderBike .fr .testDate').html("A confirmer");
                       $('#orderBike .nl .testDate').html("To be confirmed");
@@ -207,16 +206,16 @@ function get_command_user(email){
                   $('#orderBike .image').attr('src', "images_bikes/"+response[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response[i].model.toLowerCase().replace(/ /g, '-')+"_"+response[i].frameType.toLowerCase()+".jpg");
                   i++;
               }
-              
+
               displayLanguage();
-              
+
           }else{
-              load_cafetaria();              
+              load_cafetaria();
           }
       }
 
     }
-  });    
+  });
     get_message_history();
 }
 
@@ -287,7 +286,7 @@ function get_message_history(){
 					]);
 			}
 			$('.msg_history').scrollTop($('.msg_history').prop("scrollHeight"));
-			$('#writeAdminMsg').val(''); 
+			$('#writeAdminMsg').val('');
         }
     })
 }
@@ -311,4 +310,3 @@ function write_message(message, email, emailBeneficiary, type){
       })
     }
 }
-
