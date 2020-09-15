@@ -419,7 +419,7 @@ function getHistoricBookings() {
         dest = dest.concat(tempHistoricBookings);
 
         var tempHistoricBookings =
-          "<thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th></th></tr></thead><tbody>";
+          "<thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th></tr></thead><tbody>";
         dest = dest.concat(tempHistoricBookings);
 
         while (i < response.previous_bookings) {
@@ -455,9 +455,11 @@ function getHistoricBookings() {
             response.booking[i].end.shortHours() +
             "</td><td>" +
             frame_number +
-            '</td><td><a class="button small red rounded effect" data-target="#entretien2" data-toggle="modal" href="#" onclick="initializeEntretien2(\'' +
-            bikeID +
-            '\')"><i class="fa fa-wrench"></i><span><?= L::mk_reservations_maintenance; ?></span></a></td></tr>';
+            '</td></tr>';
+            //<td><a class="button small red rounded effect" data-target="#entretien2" data-toggle="modal" href="#" onclick="initializeEntretien2(\'' +
+            //bikeID +
+            //'\')"><i class="fa fa-wrench"></i><span><?= L::mk_reservations_maintenance; ?></span></a></td>
+
 
           dest = dest.concat(tempHistoricBookings);
           i++;
@@ -608,7 +610,7 @@ function getHistoricBookings() {
                         searching: false,
                         "language": {
                           "emptyTable": "Pas de réservations futures"
-                        }                        
+                        }
                     } );
                 }*/
       } else {
