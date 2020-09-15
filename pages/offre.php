@@ -2,8 +2,6 @@
 <html lang="fr">
 <?php
 include 'include/head.php';
-header_remove("Set-Cookie");
-header_remove("X-Powered-By");
 ?>
 <?php
 $brand = isset($_GET['brand']) ? $_GET['brand'] : NULL;

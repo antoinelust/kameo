@@ -5,7 +5,7 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
-require_once '../../include/api_keys.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/include/api_keys.php';
 
 $connected=@fsockopen("www.google.com", 80, $errno, $errstr, 10);
 if($connected){
@@ -15,7 +15,7 @@ if($connected){
     $address_start=isset($_POST['address_start']) ? $_POST['address_start'] : NULL;
     $address_end=isset($_POST['address_end']) ? $_POST['address_end'] : NULL;
     $timestamp=isset($_POST['timestamp']) ? $_POST['timestamp'] : "now";
-    
+
     $address_start = str_replace(', ', ',', $address_start);
     $address_start= str_replace(str_split(' \,'),"+",$address_start);
 
@@ -24,16 +24,16 @@ if($connected){
 
 
     $url="https://maps.googleapis.com/maps/api/geocode/json?address=".$address_start."&key=".$google_token;
-    
 
-    $responseAPI=getAPIData($url);	
+
+    $responseAPI=getAPIData($url);
     $json_a = json_decode($responseAPI, true);
     $latitude_start=$json_a['results']['0']['geometry']['location']['lat'];
     $longitude_start=$json_a['results']['0']['geometry']['location']['lng'];
 
     $url="https://maps.googleapis.com/maps/api/geocode/json?address=".$address_end."&key=".$google_token;
 
-    $responseAPI=getAPIData($url);	
+    $responseAPI=getAPIData($url);
     $json_a = json_decode($responseAPI, true);
     $latitude_end=$json_a['results']['0']['geometry']['location']['lat'];
     $longitude_end=$json_a['results']['0']['geometry']['location']['lng'];
@@ -41,7 +41,7 @@ if($connected){
     //Then, calculate duration, first by foot
 
     $url="https://maps.googleapis.com/maps/api/directions/json?origin=".$latitude_start.",".$longitude_start."&destination=".$latitude_end.",".$longitude_end."&mode=walking&key=".$google_token;
-    $responseAPI=getAPIData($url);	
+    $responseAPI=getAPIData($url);
     $json_a = json_decode($responseAPI, true);
 
     if($json_a['status']=="OK")
@@ -53,7 +53,7 @@ if($connected){
 
     // Then in Bike
     $url="https://maps.googleapis.com/maps/api/directions/json?origin=".$latitude_start.",".$longitude_start."&destination=".$latitude_end.",".$longitude_end."&departure_time=".$timestamp."&mode=bicycling&key=".$google_token;
-    $responseAPI=getAPIData($url);	
+    $responseAPI=getAPIData($url);
     $json_a = json_decode($responseAPI, true);
 
     if($json_a['status']=="OK")
@@ -68,7 +68,7 @@ if($connected){
     //Then in car
 
     $url="https://maps.googleapis.com/maps/api/directions/json?origin=".$latitude_start.",".$longitude_start."&destination=".$latitude_end.",".$longitude_end."&departure_time=".$timestamp."&key=".$google_token;
-    $responseAPI=getAPIData($url);	
+    $responseAPI=getAPIData($url);
     $json_a = json_decode($responseAPI, true);
 
     if($json_a['status']=="OK")
