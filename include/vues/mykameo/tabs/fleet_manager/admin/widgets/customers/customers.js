@@ -24,7 +24,7 @@ $('.clientManagerClick').click(function(){
       get_company_listing('*');
       generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
   });
-  
+
   function get_company_boxes(company){
 
 
@@ -104,7 +104,7 @@ function generateCompaniesGraphic(dateStart, dateEnd){
 
   var dateStartString=dateStart.getFullYear()+"-"+("0" + (dateStart.getMonth() + 1)).slice(-2)+"-"+("0" + dateStart.getDate()).slice(-2);
   var dateEndString=dateEnd.getFullYear()+"-"+("0" + (dateEnd.getMonth() + 1)).slice(-2)+"-"+("0" + dateEnd.getDate()).slice(-2);
-  
+
   $.ajax({
     url: 'apis/Kameo/get_companies_listing.php',
     type: 'get',
@@ -117,7 +117,6 @@ function generateCompaniesGraphic(dateStart, dateEnd){
         var ctx = document.getElementById('myChart3').getContext('2d');
         if (myChart3 != undefined)
           myChart3.destroy();
-			console.log(myChart3);
         var presets=window.chartColors;
 
         var myChart3 = new Chart(ctx, {
@@ -167,7 +166,7 @@ function generateCompaniesGraphic(dateStart, dateEnd){
 function get_company_listing(type) {
 
     var filter=$('#companyListingFilter').html();
-    
+
     $.ajax({
       url: 'apis/Kameo/companies/companies.php',
       type: 'get',
@@ -268,7 +267,7 @@ function get_company_listing(type) {
                     { "width": "50px" },
                     { "width": "50px" },
                     { "width": "50px" },
-                    { "width": "50px" }                  
+                    { "width": "50px" }
                   ]
             });
         }
@@ -280,7 +279,7 @@ function get_company_listing(type) {
 
 
 function get_company_details(ID, email ,getCompanyContacts = false) {
-  var internalReference;    
+  var internalReference;
 
   $.ajax({
     url: 'apis/Kameo/companies/companies.php',
@@ -364,7 +363,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
                 }else{
                     var contractEnd="<span class=\"text-red\">ERROR</span>";
                 }
-                
+
                 if(response.bike[i].frameNumber == null){
                     var frameNumber = "N/A "+response.bike[i].id;
                 }else{
@@ -394,13 +393,13 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         }
 
         document.getElementById('companyBikes').innerHTML = dest;
-          
+
         $('#bike_company_listing').DataTable({
             "searching": false,
             "paging": false
         });
-          
-          
+
+
 
         var i=0;
         var dest="";
@@ -409,9 +408,9 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
           dest=dest.concat(temp);
           while(i<response.bikeNumber){
               if(response.bike[i].contractType == "order")
-              {                      
-                  
-                  
+              {
+
+
                 if(response.bike[i].frameNumber == null){
                     var frameNumber = "N/A - "+response.bike[i].id;
                 }else{
@@ -426,7 +425,7 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
                     var bikeBuyingDate = "N/A ";
                 }else{
                     var bikeBuyingDate = response.bike[i].bikeBuyingDate.shortDate();
-                }                  
+                }
 
                 var temp="<tr><td scope=\"row\">"+frameNumber+"</td><td>"+response.bike[i].model+"</td><td>"+bikeBuyingDate+"</td><td>"+deliveryDate+"</td><td>"+response.bike[i].orderNumber+"</td>";
                 dest=dest.concat(temp);
@@ -439,14 +438,14 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         }
 
         document.getElementById('companyBikesOrder').innerHTML = dest;
-          
+
         $('#ordered_bike_company_listing').DataTable({
             "searching": false,
             "paging": false
         }
         );
-          
-          
+
+
 
 
         $('.updateBikeAdmin').click(function(){
@@ -557,22 +556,22 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
             }else{
               var status="N/A";
             }
-              
+
             if(response.offer[i].file != '' && response.offer[i].file != null){
                 var offerLink = 'offres/' + response.offer[i].file;
                 var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td><a href="+offerLink+" target=\"_blank\"><i class=\"fa fa-file-pdf-o\" aria-hidden=\"true\"></i></a></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
             }else{
                 var temp="<tr><td><a href=\"#\" class=\"retrieveOffer\" data-target=\"#offerManagement\" data-toggle=\"modal\" name=\""+response.offer[i].id+"\">"+response.offer[i].id+"</a></td><td></td><td>"+date+"</td><td>"+response.offer[i].title+"</td><td>"+response.offer[i].probability+" %</td><td>"+amount+"</td><td>"+start+"</td><td>"+end+"</td><td>"+status+"</td><td><ins><a class=\"text-green offerManagement updateOffer\" data-target=\"#offerManagement\" name=\""+response.offer[i].id+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins></td></tr>";
             }
-              
+
             dest=dest.concat(temp);
             i++;
           }
           dest=dest.concat("</tbody></table>");
         }
         document.getElementById('companyContracts').innerHTML = dest;
-          
-          
+
+
         var dest="<table class=\"table table-condensed\"><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead><tbody>";
 
         var i=0;
@@ -688,8 +687,8 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         for (var i = 0; i < classname.length; i++) {
             classname[i].addEventListener('click', function() {construct_form_for_billing_status_update(this.name)}, false);
         }
-          
-          
+
+
 
         $(".retrieveOffer").click(function() {
           retrieve_offer(this.name, "retrieve");
@@ -784,7 +783,6 @@ function get_company_details(ID, email ,getCompanyContacts = false) {
         displayLanguage();
       }
     },error: function(response){
-
       console.log(response);
     }
   }).done(function(){
@@ -919,19 +917,19 @@ function list_contracts_offers(company) {
                 }
                 var temp="</tobdy></table>";
                 dest=dest.concat(temp);
-                
-                
+
+
 
                 var temp="<p>Valeur actuelle des contrat en cours : <strong>"+Math.round(response.sumContractsCurrent)+" €/mois</strong></p>";
                 dest=dest.concat(temp);
 
                 document.getElementById('contractsListingSpan').innerHTML = dest;
-                
+
                 var classname = document.getElementsByClassName('internalReferenceCompany');
                 for (var i = 0; i < classname.length; i++) {
                     classname[i].addEventListener('click', function() {get_company_details(this.name,email, true)}, false);
                 }
-                
+
 
 
 
@@ -972,7 +970,7 @@ function list_contracts_offers(company) {
                     }else{
                         var probability="<span>"+response.offer[i].probability+" %</span>";
                     }
-                    
+
                     if(response.offer[i].file != '' && response.offer[i].file != null ){
                         var offerLink = 'offres/' + response.offer[i].file;
 
@@ -1050,9 +1048,9 @@ function retrieve_offer(ID, action){
         type: 'get',
         data: {"ID": ID, "action": "retrieve"},
         success: function(response){
-            $('#offerManagementPDF').attr('data','');                    
-            
-            
+            $('#offerManagementPDF').attr('data','');
+
+
             if(response.response == 'error') {
                 console.log(response.message);
             }
@@ -1079,8 +1077,8 @@ function retrieve_offer(ID, action){
                 $('#widget-offerManagement-form input[name=company]').val(response.company);
                 $('#widget-offerManagement-form input[name=action]').val(action);
                 $('#widget-offerManagement-form input[name=ID]').val(ID);
-                
-                
+
+
                 $('#thickBoxProductLists').empty();
                 var i=0;
                 if(response.itemsNumber>0){
@@ -1094,9 +1092,9 @@ function retrieve_offer(ID, action){
                         i++;
                     }
                 }else{
-                    
+
                 }
-                
+
                 if($("#widget-offerManagement-form select[name=type]").val()=="achat"){
                     $("#widget-offerManagement-form input[name=start]").attr("readonly", true);
                     $("#widget-offerManagement-form input[name=end]").attr("readonly", true);
@@ -1129,16 +1127,16 @@ function retrieve_offer(ID, action){
                 if(response.amount){
                     $('#widget-offerManagement-form input[name=amount]').val(response.amount);
                 }
-                
+
                 $('#offerManagement').on('shown.bs.modal', function () {
                     if(response.file != null && response.file != ''){
                         $('.offerManagementPDF').removeClass('hidden');
-                        $('#offerManagementPDF').attr('data','offres/'+response.file+'.pdf');                    
+                        $('#offerManagementPDF').attr('data','offres/'+response.file+'.pdf');
                     }else{
                         $('.offerManagementPDF').addClass('hidden');
-                        $('#offerManagementPDF').attr('data',"");                    
+                        $('#offerManagementPDF').attr('data',"");
                     }
-                })                
+                })
             }
         }
     })

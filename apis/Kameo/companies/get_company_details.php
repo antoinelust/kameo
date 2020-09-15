@@ -1,12 +1,12 @@
 <?php
-if (isset($_GET['ID']) && isset($_GET['email'])){
+
+if (isset($_GET['ID']) || isset($_GET['email'])){
 
   $company=isset($_GET['company']) ? $conn->real_escape_string($_GET['company']) : NULL;
   $ID=isset($_GET['ID']) ? $conn->real_escape_string($_GET['ID']) : NULL;
   $email=isset($_GET['email']) ? $conn->real_escape_string($_GET['email']) : NULL;
 
   $response=array();
-
 
   if($ID==NULL && $email==NULL){
       errorMessage("ES0012");

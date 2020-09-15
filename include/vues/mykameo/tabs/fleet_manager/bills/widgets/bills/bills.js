@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", function(event) {
-    
-    
+
+
     $('#widget-addBill-form select[name=billType]').change(function(){
         console.log($('#widget-addBill-form select[name=billType]').val());
         if($('#widget-addBill-form select[name=billType]').val()=="manual"){
@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
             $('#widget-addBill-form input[name=widget-addBill-form-amountHTVA]').addClass("required");
             $('#widget-addBill-form input[name=widget-addBill-form-amountTVAC]').addClass("required");
             $('#widget-addBill-form input[name=widget-addBill-form-file]').addClass("required");
-            
+
         }else{
             $('.manualBill').fadeOut("slow");
             $('.generateBillDetails').fadeIn("slow");
@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", function(event) {
         }
     });
     document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
-    
+
 });
 
 
@@ -177,11 +177,11 @@ function create_bill(){
             .append(`<select name="bikeID[]" class="select`+bikesNumber+` bikeID form-control required">`+
             bikeModels+
             `</select>`);
-              
+
               //type de facture
             $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.billType')
             .append("<select><option value='vente'>Vente</option><option value'location'>Location</option></select>");
-              
+
 
 
             //gestion du select du velo
@@ -209,7 +209,7 @@ function create_bill(){
                 $(that).parents('.bikeRow').find('.bikepVenteHTVA').attr('data-orig',pVenteHTVA);
                 $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
                 $(that).parents('.bikeRow').find('.bikeFinalPrice').val(bikes[id].priceHTVA);
-            });      
+            });
             checkMinus('.generateBillBike','.bikesNumber');
 
             $('#widget-addBill-form .bikeRow .bikepVenteHTVA').blur(function(){
@@ -225,12 +225,12 @@ function create_bill(){
                 var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
                 $(this).parents('.bikeRow').find('.bikeMarge').html(marge);
                 $(this).parents('.bikeRow').find('.bikeFinalPrice').val(newPrice);
-            });          
+            });
           });
 
           //retrait
             $('.generateBillBike .glyphicon-minus').unbind();
-            
+
           $('.generateBillBike .glyphicon-minus').click(function(){
             bikesNumber = $("#addBill").find('.bikesNumber').html();
             if(bikesNumber > 0){
@@ -358,7 +358,7 @@ function create_bill(){
                 var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
                 $(this).parents('.accessoriesRow').find('.accessoryMarge').html(marge);
                 $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').val(newPrice);
-            });          
+            });
 
           });
 
@@ -376,7 +376,7 @@ function create_bill(){
           });
 
         });
-            
+
             $('.generateBillOtherAccessories .glyphicon-plus').unbind();
           $('.generateBillOtherAccessories .glyphicon-plus').click(function(){
             //gestion accessoriesNumber
@@ -396,10 +396,10 @@ function create_bill(){
             .append('<label class="fr">Accessoire '+ otherAccessoriesNumber +'</label>');
             checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
           });
-            
+
           //retrait
             $('.generateBillOtherAccessories .glyphicon-minus').unbind();
-            
+
           $('.generateBillOtherAccessories .glyphicon-minus').click(function(){
             otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html();
             if(otherAccessoriesNumber > 0){
@@ -411,7 +411,7 @@ function create_bill(){
             checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
           });
 
-            
+
         var dateInOneMonth=new Date();
         dateInOneMonth.setMonth(dateInOneMonth.getMonth()+1);
         var year=dateInOneMonth.getFullYear();
@@ -429,7 +429,7 @@ function create_bill(){
 
 
 
-function get_bills_listing(company, sent, paid, direction, email) {    
+function get_bills_listing(company, sent, paid, direction, email) {
     $.ajax({
         url: 'apis/Kameo/get_bills_listing.php',
         type: 'post',
@@ -438,7 +438,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
             if(response.response == 'error') {
                 console.log(response.message);
             }
-            if(response.response == 'success'){                
+            if(response.response == 'success'){
                 $('#widget-addBill-form input[name=ID_OUT]').val(parseInt(response.IDMaxBillingOut) +1);
                 $('#widget-addBill-form input[name=ID]').val(parseInt(response.IDMaxBilling) +1);
                 $('#widget-addBill-form input[name=communication]').val(response.communication);
@@ -447,8 +447,8 @@ function get_bills_listing(company, sent, paid, direction, email) {
                 var i=0;
                 var dest="";
                 var dest3="";
-                
-                
+
+
                 if(response.update){
 
                     var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><thead><tr><th>Type</th><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoi ?</span><span class=\"en-inline\">Sent</span><span class=\"nl-inline\">Sent</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead><tbody>";
@@ -458,11 +458,11 @@ function get_bills_listing(company, sent, paid, direction, email) {
                 }
                 dest=dest.concat(temp);
                 dest3=dest3.concat(temp3);
-                
+
                 while (i < response.billNumber){
-                    
-                    
-                    
+
+
+
                     if(response.bill[i].sentDate==null){
                         var sendDate="N/A";
                     }else{
@@ -507,7 +507,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                         var paidLimit="<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>";
                     }
 
-                    
+
 
                     if(response.update && response.bill[i].amountHTVA>=0){
                         var temp="<tr><td class=\"text-green\">IN</td>";
@@ -567,48 +567,48 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     }
 
                     dest=dest.concat("</tr>");
-                    
+
                     if(response.update){
-                        if(response.bill[i].sent=='0'){       
+                        if(response.bill[i].sent=='0'){
                             var temp3="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\"><i class=\"fa fa-file\"></i></a><input type=\"text\" class=\"form-control required hidden ID\" value=\""+response.bill[i].ID+"\" /></a></td>";
                             dest3=dest3.concat(temp3);
                             var temp3="<td>"+response.bill[i].company+"</a></td>";
                             dest3=dest3.concat(temp3);
                             var temp3="<td>"+Math.round(response.bill[i].amountHTVA)+" €</td>";
                             dest3=dest3.concat(temp3);
-                            var temp3="<td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td>";                 
+                            var temp3="<td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td>";
                             dest3=dest3.concat(temp3);
-                            var temp3="<td><input type=\"text\" class=\"form-control required email\" value=\""+response.bill[i].emailContactBilling+"\"/></td>";                 
+                            var temp3="<td><input type=\"text\" class=\"form-control required email\" value=\""+response.bill[i].emailContactBilling+"\"/></td>";
                             dest3=dest3.concat(temp3);
-                            var temp3="<td><input type=\"text\" class=\"form-control required firstName\" value=\""+response.bill[i].firstNameContactBilling+"\"/></td>";                 
+                            var temp3="<td><input type=\"text\" class=\"form-control required firstName\" value=\""+response.bill[i].firstNameContactBilling+"\"/></td>";
                             dest3=dest3.concat(temp3);
-                            var temp3="<td><input type=\"text\" class=\"form-control required lastName\" value=\""+response.bill[i].lastNameContactBilling+"\"/></td>";                 
+                            var temp3="<td><input type=\"text\" class=\"form-control required lastName\" value=\""+response.bill[i].lastNameContactBilling+"\"/></td>";
                             dest3=dest3.concat(temp3);
-                            var temp3="<td><input type=\"text\" class=\"form-control required hidden date\" value=\""+response.bill[i].date+"\"/></td>";     
-                            dest3=dest3.concat(temp3);                                
+                            var temp3="<td><input type=\"text\" class=\"form-control required hidden date\" value=\""+response.bill[i].date+"\"/></td>";
+                            dest3=dest3.concat(temp3);
                             var temp3="<td><input type=\"text\" class=\"form-control required hidden fileName\" value=\""+response.bill[i].fileName+"\"/></td>";
                             dest3=dest3.concat(temp3);
 
                             dest3=dest3.concat("<td><button  class=\"sendBillButton button small green button-3d rounded icon-left\"><i class=\"fa fa-check\"></i>Envoyer</button></tr>");
                         }
-                    }                    
+                    }
                     i++;
                 }
                 var temp="</tbody></table>";
                 dest=dest.concat(temp);
                 var temp3="</tbody></table>";
                 dest3=dest3.concat(temp3);
-                
+
                 if(response.update){
                     $('.billsToSendSpan').removeClass("hidden");
                 }else{
                     $('.billsToSendSpan').addClass("hidden");
                 }
-                
+
                 document.getElementById('billsListing').innerHTML = dest;
                 document.getElementById('billsToSendListing').innerHTML = dest3;
-                
-                
+
+
                 $('.sendBillButton').click(function() {
                     var email_client=$(this).parents('tr').find('.email').val();
                     var id=$(this).parents('tr').find('.ID').val();
@@ -616,7 +616,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
                     var firstName=$(this).parents('tr').find('.firstName').val();
                     var date=$(this).parents('tr').find('.date').val();
                     var fileName=$(this).parents('tr').find('.fileName').val();
-                    
+
                     $.ajax({
                         url: 'apis/Kameo/send_bill.php',
                         type: 'post',
@@ -640,19 +640,19 @@ function get_bills_listing(company, sent, paid, direction, email) {
                         }
                     })
 
-                    
-                });                
-                
-                
+
+                });
+
+
                 var classname = document.getElementsByClassName('updateBillingStatus');
                 for (var i = 0; i < classname.length; i++) {
                     classname[i].addEventListener('click', function() {construct_form_for_billing_status_update(this.name)}, false);
                 }
                 displayLanguage();
-                
+
                 $('#billsListingTable').DataTable();
                 //$('#billsToSendListingTable').DataTable();
-                
+
 
             }
         }
@@ -690,8 +690,6 @@ function get_all_accessories() {
 
 //gestion du bouton moins et du tableau
 function checkMinus(select, valueLocation){
-  console.log(select);
-  console.log($(select).find(valueLocation).html());
   if ($(select).find(valueLocation).html() == '0') {
     $(select).find('.glyphicon-minus').fadeOut();
     $(select).find('.hideAt0').hide();
