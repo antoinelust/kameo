@@ -237,16 +237,17 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                     $result6 = mysqli_query($conn, $sql6);
                     if($result6->num_rows == 1){
                         $resultat6 = mysqli_fetch_assoc($result6);
+                        $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
+                        if ((file_exists($file))){
+                            $response['bike'][$length]['img']=$bikeID;
+                          }else{
+                            $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
+                        }
                         $response['bike'][$length]['brand'] = $resultat6['BRAND'];
                         $response['bike'][$length]['model'] = $resultat6['MODEL'];
                         $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
-                    }
-
-                    $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
-                    if ((file_exists($file))){
-                        $response['bike'][$length]['img']=$bikeID;
                     }else{
-                        $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
+                        $length--;
                     }
                 }
             }
