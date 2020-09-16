@@ -15,7 +15,10 @@ if($bookingID != NULL)
 {
 		
     include 'connexion.php';
-	$sql="select aa.BIKE_ID, aa.DATE_START_2, aa.DATE_END_2, bb.BUILDING_FR as 'building_start', cc.BUILDING_FR as 'building_end', dd.FRAME_NUMBER from reservations aa, building_access bb, building_access cc, customer_bikes dd where aa.ID = '$bookingID' and aa.BUILDING_START=bb.BUILDING_REFERENCE and aa.BUILDING_END=cc.BUILDING_REFERENCE and aa.BIKE_ID=dd.ID";
+	$sql="SELECT aa.BIKE_ID, aa.DATE_START_2, aa.DATE_END_2, bb.BUILDING_FR AS 'building_start', cc.BUILDING_FR 
+		AS 'building_end', dd.FRAME_NUMBER, dd.TYPE, ee.BRAND, ee.MODEL, ee.FRAME_TYPE 
+		FROM reservations aa, building_access bb, building_access cc, customer_bikes dd, bike_catalog ee 
+		WHERE aa.ID = '$bookingID' AND aa.BUILDING_START=bb.BUILDING_REFERENCE AND aa.BUILDING_END=cc.BUILDING_REFERENCE AND aa.BIKE_ID=dd.ID AND ee.ID = dd.TYPE";
 
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -38,25 +41,11 @@ if($bookingID != NULL)
     $response['booking']['buildingStart']= $resultat['building_start'];            
     $response['booking']['buildingEnd']= $resultat['building_end'];   
     $response['booking']['start']=$resultat['DATE_START_2'];
-    $response['booking']['end']=$resultat['DATE_END_2'];
-    
-    
-    include 'connexion.php';
-	$sql2="SELECT * FROM customer_bikes WHERE ID='$bikeID'";
-    
-
-    if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
-    
-	$result2 = mysqli_query($conn, $sql2); 
-    $resultat2 = mysqli_fetch_assoc($result2);
-    $conn->close();
-    
-    $response['booking']['frameNumber']=$resultat2['FRAME_NUMBER'];
-    $response['booking']['model']=$resultat2['MODEL'];
+	$response['booking']['end']=$resultat['DATE_END_2'];
+	$response['booking']['frameNumber']=$resultat['FRAME_NUMBER'];
+	$response['booking']['model']=$resultat['MODEL'];
+	$response['booking']['frameType']=$resultat['FRAME_TYPE'];
+	$response['booking']['brand']=$resultat['BRAND'];
     
     
     include 'connexion.php';

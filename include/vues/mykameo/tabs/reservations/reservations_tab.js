@@ -225,7 +225,7 @@ function showBooking(bookingID) {
     success: function (response) {
       if (response.response == "success") {
         //Current Booking
-
+        
         var ID = response.booking.ID;
         var code = response.booking.code;
 
@@ -273,7 +273,7 @@ function showBooking(bookingID) {
         document.getElementById("bookingInformationBike").innerHTML = dest;
 
         document.getElementById("imageNextBooking").src =
-          "images_bikes/" + response.booking.bikeID + ".jpg";
+          "images_bikes/" + response.booking.brand.toLowerCase().replace(/ /g, '-') + "_" + response.booking.model.toLowerCase().replace(/ /g, '-') + "_" + response.booking.frameType.toLowerCase() + ".jpg";
 
         //Client Before
 
