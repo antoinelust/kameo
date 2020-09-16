@@ -243,6 +243,9 @@ function list_sales(owner, start, end) {
 				dest = dest.concat("</tbody></table>");
 				dest = dest.concat("<p>Nombre de points au total : <strong>" + totalPoints + "</strong></p>");
 				$('#dashboardBodySellsTable').html(dest);
+				$(".internalReferenceCompany").click(function() {
+					get_company_details(this.name, email, true);
+				});
 			}
 		}
 	});
