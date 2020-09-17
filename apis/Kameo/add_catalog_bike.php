@@ -20,7 +20,7 @@ $display=isset($_POST['display']) ? "Y" : "N";
 
 
 if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
-    
+
     $extensions = array('.jpg');
     $extension = strrchr($_FILES['file']['name'], '.');
     if(!in_array($extension, $extensions))
@@ -38,7 +38,7 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
 
     //upload of Bike picture
 
-    $dossier = '../images_bikes/';
+    $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';
 
     $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
 
@@ -50,7 +50,7 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
      else
      {
           errorMessage("ES0024");
-     }    
+     }
     $extension = strrchr($_FILES['fileMini']['name'], '.');
     if(!in_array($extension, $extensions))
     {
@@ -67,7 +67,7 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
 
     //upload of Bike picture
 
-    $dossier = '../images_bikes/';
+    $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';
 
     $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
 
@@ -79,8 +79,8 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
      else
      {
           errorMessage("ES0024");
-     }    
-    
+     }
+
 }else{
 	errorMessage("ES0025");
 }
@@ -89,22 +89,22 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
 if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
  if($brand != '' && $model != '' && $frameType != '' && $utilisation != '' && $electric != '' && $price != '' && $stock != '') {
- 
+
     include 'connexion.php';
-     
+
 	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '')";
-     
+
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
 	$conn->close();
-		
+
 	 successMessage("SM0015");
 
     } else {
-        $response = array ('response'=>'error');     
+        $response = array ('response'=>'error');
         echo json_encode($response);
         die;
     }

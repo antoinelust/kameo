@@ -13,48 +13,33 @@ try{
     if(isset($_GET['action'])){
         $action=isset($_GET['action']) ? $_GET['action'] : NULL;
         $ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
-        
-        if($action=="list"){
-            $frameType="*";
-            $utilisation="*";
-            $price="*";
-            $brand="*";
-            $electric="*";
-            $type="*";
-            
-            $response=array();
 
-            if($frameType != NULL && $utilisation != NULL && $price != NULL && $brand != NULL && $electric != NULL)
-            {
-                
-                $marginBike=0.7;
-                $marginOther=0.3;
-                $leasingDuration=36;                                
-                
-                include 'connexion.php';
-                
-                $sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice FROM bike_catalog WHERE STAANN != 'D' ORDER BY BRAND, MODEL";
-                $stmt = $conn->prepare($sql);
-                if($stmt){
-                    $stmt->bind_param('ddi', $marginBike, $marginOther, $leasingDuration);
-                    $stmt->execute();
-                    $response['response']="success";
-                    $bike = ($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
-                    $response['bikeNumber']=count($bike);
-                    $response['bike']=($bike);
-                    echo json_encode($response);
-                }else{
-                    error_message('500', 'Unable to retrieve portfolio bikes');
-                }
-                $stmt->close();        
-                $conn->close();        
-                die;
-                
+        if($action=="list"){
+
+            $response=array();
+            $marginBike=0.7;
+            $marginOther=0.3;
+            $leasingDuration=36;
+
+            include 'connexion.php';
+
+            $sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice FROM bike_catalog WHERE STAANN != 'D' ORDER BY BRAND, MODEL";
+            $stmt = $conn->prepare($sql);
+            if($stmt){
+                $stmt->bind_param('ddi', $marginBike, $marginOther, $leasingDuration);
+                $stmt->execute();
+                $response['response']="success";
+                $bike = ($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
+                $response['bikeNumber']=count($bike);
+                $response['bike']=($bike);
+                echo json_encode($response);
+            }else{
+                error_message('500', 'Unable to retrieve portfolio bikes');
             }
-            else
-            {
-                errorMessage("ES0006");
-            }
+            $stmt->close();
+            $conn->close();
+            die;
+
         }
         if($action=="retrieve"){
             include 'connexion.php';
