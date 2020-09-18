@@ -275,63 +275,6 @@ function showBooking(bookingID) {
         document.getElementById("imageNextBooking").src =
           "images_bikes/" + response.booking.brand.toLowerCase().replace(/ /g, '-') + "_" + response.booking.model.toLowerCase().replace(/ /g, '-') + "_" + response.booking.frameType.toLowerCase() + ".jpg";
 
-        //Client Before
-
-        var name = response.clientBefore.name;
-        var surname = response.clientBefore.surname;
-        var phone = response.clientBefore.phone;
-        var mail = response.clientBefore.mail;
-
-        if (
-          typeof response.clientBefore.name == "undefined" ||
-          response.clientBefore.name == ""
-        ) {
-          var dest = "<?= L::mk_reservations_nobody; ?>";
-        } else {
-          var dest =
-            "<li><?= L::mk_reservations_nameNfirst; ?>" +
-            name +
-            " " +
-            surname +
-            "</li><li><?= L::mk_reservations_phoneNbr2; ?>" +
-            phone +
-            "</li><li><?= L::mk_reservations_mail2; ?>" +
-            mail +
-            "</li><li><?= L::mk_reservations_returnBikeThe; ?>" +
-            response.clientBefore.end.shortDateHours() +
-            "</li>";
-        }
-
-        document.getElementById("futureBookingBefore").innerHTML = dest;
-
-        //Client After
-
-        var name = response.clientAfter.name;
-        var surname = response.clientAfter.surname;
-        var phone = response.clientAfter.phone;
-        var mail = response.clientAfter.mail;
-
-        if (
-          typeof response.clientAfter.name == "undefined" ||
-          response.clientAfter.name == ""
-        ) {
-          var dest = "<?= L::mk_reservations_nobody; ?>";
-        } else {
-          var dest =
-            "<li><?= L::mk_reservations_nameNfirst; ?>" +
-            name +
-            " " +
-            surname +
-            "</li><li><?= L::mk_reservations_phoneNbr2; ?>" +
-            phone +
-            "</li><li><?= L::mk_reservations_mail2; ?>" +
-            mail +
-            "</li><li><?= L::mk_reservations_takeBackThe; ?>" +
-            response.clientAfter.start.shortDateHours() +
-            "</li>";
-        }
-
-        document.getElementById("futureBookingAfter").innerHTML = dest;
         $("#futureBooking").modal("toggle");
       } else {
         console.log(response.message);

@@ -13,6 +13,7 @@ include 'globalfunctions.php';
 global $requestor;
 global $email;
 global $password_unencrypted;
+global $company;
 
 $generatePassword=isset($_POST['generatePassword']) ? $_POST['generatePassword'] : NULL;
 $fleetManager=isset($_POST['fleetManager']) ? "Y" : "N";
@@ -43,7 +44,11 @@ if ($conn->query($sql) === FALSE){
 $result = mysqli_query($conn, $sql);
 $resultat = mysqli_fetch_assoc($result);
 
-$company=$resultat['COMPANY'];
+if(isset($_POST['company']) && !empty($_POST['company'])) {
+    $company = $_POST['company'];
+}else{
+	$company = $resultat['COMPANY'];
+}
 
 include 'get_company_conditions.php';
 $conditions=get_company_conditions(NULL, NULL, $company);        
