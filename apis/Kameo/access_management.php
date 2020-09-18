@@ -34,10 +34,10 @@ if($row["STAANN"]=="D"){
 }
 
 if (password_verify($UserPassword, $row["PASSWORD"])) {
-	$_SESSION['ID'] = $row['ID']; 
+	$_SESSION['ID'] = $row['ID'];
 	$_SESSION['userID']=$userID;
-	$_SESSION['UserPassword']=$UserPassword;    
-	$_SESSION['bearerToken']=$row['TOKEN'];    
+	$_SESSION['UserPassword']=$UserPassword;
+	$_SESSION['bearerToken']=$row['TOKEN'];
 }
 else{
 	errorMessage("ES0007");
