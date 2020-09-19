@@ -183,7 +183,6 @@ $row = mysqli_fetch_assoc($result);
                             <script type="text/javascript">
                                 jQuery("#widget-offer").validate({
                                     submitHandler: function(form) {
-                                        console.log("test");
                                         jQuery(form).ajaxSubmit({
                                             success: function(text) {
                                                 if (text.response == 'success') {

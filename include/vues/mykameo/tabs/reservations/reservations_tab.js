@@ -225,7 +225,7 @@ function showBooking(bookingID) {
     success: function (response) {
       if (response.response == "success") {
         //Current Booking
-        
+
         var ID = response.booking.ID;
         var code = response.booking.code;
 
@@ -242,21 +242,28 @@ function showBooking(bookingID) {
           temp = "<li><?= L::mk_reservations_code2; ?>" + code + "</li>";
           dest = dest.concat(temp);
         }
-
         dest = dest.concat(
           "<li><?= L::mk_reservations_start2; ?>" +
-            response.booking.start.shortDateHours() +
-            " au bâtiment " +
-            response.booking.buildingStart +
-            "</li>"
-        );
+            response.booking.start.shortDateHours());
+            if(response.booking.buildingStart != response.booking.buildingEnd){
+              dest = dest.concat(
+              " au bâtiment " +
+              response.booking.buildingStart +
+              "</li>");
+            }else{
+              dest = dest.concat("</li>");
+            }
         dest = dest.concat(
           "<li><?= L::mk_reservations_end2; ?>" +
-            response.booking.end.shortDateHours() +
-            " au bâtiment " +
-            response.booking.buildingEnd +
-            "</li>"
-        );
+            response.booking.end.shortDateHours());
+            if(response.booking.buildingStart != response.booking.buildingEnd){
+              dest = dest.concat(
+              " au bâtiment " +
+              response.booking.buildingStart +
+              "</li>");
+            }else{
+              dest = dest.concat("</li>");
+            }
         document.getElementById("bookingInformation").innerHTML = dest;
 
         var dest = "";

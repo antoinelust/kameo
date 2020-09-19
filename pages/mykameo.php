@@ -80,7 +80,6 @@ if($token==NULL){ //Not connected
         }else if(get_user_permissions("order", $token)){
             echo '$("#orderBike").addClass("active"); ';
             echo '$("#orderBikeID").addClass("active"); ';
-            echo 'console.log("test");';
             echo 'get_command_user(email);';
         }else if(get_user_permissions("fleetManager", $token)){
             echo '$("#fleetmanager").addClass("active"); ';

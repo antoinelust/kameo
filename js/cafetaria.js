@@ -24,7 +24,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function load_cafetaria(){
-    console.log("coucou");
     $.ajax({
         url: 'apis/Kameo/orders/orders.php',
         type: 'get',
