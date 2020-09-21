@@ -65,6 +65,11 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	}
 	?>
 
+	<!-- COOKIE CONSENT BAR -->
+	<?php
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/include/cookie_consent.php';
+	?>
+
 	<!--[if lt IE 9]>
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 	<![endif]-->
@@ -75,7 +80,4 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<script src="/js/modernizr-custom.js"></script>
 </head>
 
-<!-- COOKIE CONSENT BAR -->
-<?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/include/cookie_consent.php';
-?>
+
