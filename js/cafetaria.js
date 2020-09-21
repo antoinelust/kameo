@@ -229,13 +229,19 @@ function get_message_history(){
 			$('#divChatCommand').empty();
 			for (var i = 0; i<response.messagesNumber; i++){
 			var kameoBikesRegex = new RegExp(/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")(@kameobikes.com){1}$/i);
-				var isKameoBikes = kameoBikesRegex.test(response.messages[i].emailUser);
-				if(response.messages[i].img==null)
-					response.messages[i].img = "https://ptetutorials.com/images/user-profile.png";
+                var isKameoBikes = kameoBikesRegex.test(response.messages[i].emailUser);
+                
 				if(isKameoBikes){
+                    var name_worker= response.messages[i].emailUser.split("@");
+                    name_worker = name_worker[0].toLocaleLowerCase();
+                    if(name_worker.includes(".")){
+                        name_worker = name_worker.replace(".", "_");
+                    }
+                    response.messages[i].img = "/images/" + name_worker +".jpg";
+                    
 					$('#divChatCommand').append([
 						$('<div/>',{ "class": "chat_message_container" }).append([
-							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:response.messages[i].img})),
+							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:response.messages[i].img, style:"border-radius: 50%"})),
 							$('<div/>',{ "class": "received_msg" }).append([
 								$('<div/>',{ "class": "received_withd_msg" }).append([
 									$( '<p/>' ).text(response.messages[i].message),
@@ -253,7 +259,7 @@ function get_message_history(){
 									$('<span/>').addClass('time_date').html(response.messages[i].firstName+" "+response.messages[i].name+" | "+response.messages[i].messageHour+" AM | "+response.messages[i].messageDate)
 								])
 							]),
-							$('<div/>',{ "class": "sent_msg_img" }).prepend($('<img>',{src:response.messages[i].img}))
+							$('<div/>',{ "class": "sent_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'}))
 						])
 					]);
 				}
