@@ -68,7 +68,7 @@ function load_cafetaria(){
 
                             var priceByMonth = Math.round(response.bike[i].leasingPrice*(1-response.discount/100)) ;
                             if(response.bike[i].company == "KAMEO"){
-                                priceByMonth = priceByMonth * 1.21 + " €/mois TVAC";
+                                priceByMonth = Math.round(priceByMonth * 1.21) + " €/mois TVAC";
                             }else{
                                 priceByMonth = priceByMonth + " €/mois";
                             }
@@ -93,7 +93,7 @@ function load_cafetaria(){
                                     if(stock==="stock"){
                                         temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
                                     }else{
-                                        temp=temp+"<br><strong class=\"background-orange text-dark center text-center text-small\">Sous commande</strong>";
+                                        temp=temp+"<br><strong class=\"text-green center text-center text-small\">Précommander</strong>";
                                     }
 
                                     temp=temp+"\
