@@ -66,9 +66,11 @@ function load_cafetaria(){
                                 var stock="stock";
                             }
 
-                            var priceByMonth = Math.round(response.bike[i].leasingPrice*(1-response.discount/100));
+                            var priceByMonth = Math.round(response.bike[i].leasingPrice*(1-response.discount/100)) ;
                             if(response.bike[i].company == "KAMEO"){
-                                priceByMonth = priceByMonth * 1.21 + " TVAC";
+                                priceByMonth = priceByMonth * 1.21 + " €/mois TVAC";
+                            }else{
+                                priceByMonth = priceByMonth + " €/mois";
                             }
                             
 							var temp="\
@@ -86,7 +88,7 @@ function load_cafetaria(){
 									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
 									<p>"+response.bike[i].model+" "+frameType+"\
 									<br>"+response.bike[i].utilisation+"\
-									<br>Prix : "+priceByMonth+" €/mois";
+									<br>Prix : "+priceByMonth;
 
                                     if(stock==="stock"){
                                         temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
