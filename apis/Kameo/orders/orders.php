@@ -52,7 +52,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				$stmt->execute();
 				$company_reference = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['COMPANY'];
 				$stmt->close();
-				$stmt = $conn->prepare("SELECT bc.ID, bc.BRAND as brand, bc.MODEL as model, bc.FRAME_TYPE as frameType, bc.UTILISATION as utilisation, bc.ELECTRIC as electric,bc.PRICE_HTVA as price, bc.LINK as url, STOCK as stock, (round((bc.PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice FROM bike_catalog bc, companies_orderable co WHERE STAANN != 'D' AND bc.ID = co.BIKE_ID AND co.INTERNAL_REFERENCE = ? ORDER BY BRAND, MODEL");
+				$stmt = $conn->prepare("SELECT co.INTERNAL_REFERENCE as company, bc.ID, bc.BRAND as brand, bc.MODEL as model, bc.FRAME_TYPE as frameType, bc.UTILISATION as utilisation, bc.ELECTRIC as electric,bc.PRICE_HTVA as price, bc.LINK as url, STOCK as stock, (round((bc.PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice FROM bike_catalog bc, companies_orderable co WHERE STAANN != 'D' AND bc.ID = co.BIKE_ID AND co.INTERNAL_REFERENCE = ? ORDER BY BRAND, MODEL");
 				$stmt->bind_param("s", $company_reference);
 				$stmt->execute();
 				$orderable = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
