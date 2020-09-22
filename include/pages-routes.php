@@ -25,6 +25,7 @@
 
 	/** BILLS GENERATION **/
 	$router->map('GET','/generate_invoices[ext]', 'generate_invoices.php');
+	$router->map('GET','/initiate_location_bill[ext]', 'initiation_location_bill.php');
 
 	/** NEWSLETTER **/
 	$router->map('GET','/newsletter[ext]', 'pages/newsletter.php');
