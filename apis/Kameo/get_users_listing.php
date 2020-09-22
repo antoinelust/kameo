@@ -10,61 +10,34 @@ include 'globalfunctions.php';
 
 
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
-$company=isset($_POST['company']) ? $_POST['company'] : NULL;
-
+$company=isset($_POST['company']) ? $_POST['company'] : "SELECT COMPANY FROM customer_referential WHERE EMAIL='$email'";
 $response=array();
-if($company==NULL){
-    if($email != NULL){
-        include 'connexion.php';
-        $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);    
-        if($result->num_rows=='0'){
-            errorMessage("ES0039");
-        }        
-        $resultat = mysqli_fetch_assoc($result);        
-        $company=$resultat['COMPANY'];
-        $conn->close();   
-        
-    }else{
-        errorMessage("ES0038");
+
+if($email != NULL){
+    include 'connexion.php';
+    $sql = "SELECT NOM AS name, PRENOM AS firstName, EMAIL AS email, STAANN AS staann FROM customer_referential WHERE COMPANY = ( $company )";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
     }
-}
+    $result = mysqli_query($conn, $sql);
+      
+    if($result->num_rows=='0'){
+        errorMessage("ES0039");
+    }
+    
+    $response['users'] = $result->fetch_all(MYSQLI_ASSOC);
+    $response['usersNumber']=$result->num_rows;
+    $response['response']="success";
 
-
-$timestamp_now=time();
-
-include 'connexion.php';
-$sql="SELECT * FROM customer_referential dd where COMPANY='$company' ORDER BY NOM";
-
-if ($conn->query($sql) === FALSE) {
-    $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
-    die;
+    
+    $result->close();
+}else{
+    errorMessage("ES0038");
 }
 
-$result = mysqli_query($conn, $sql);        
-$length = $result->num_rows;
-$response['usersNumber']=$length;
-
-$response['response']="success";
-
-
-$i=0;
-while($row = mysqli_fetch_array($result))
-{
-    $response['user'][$i]['name']=$row['NOM'];
-    $response['user'][$i]['firstName']=$row['PRENOM'];            
-    $response['user'][$i]['email']=$row['EMAIL'];  
-    $response['user'][$i]['staann']=$row['STAANN'];
-    $i++;
-
-}
-echo json_encode($response);
 die;
 
 ?>

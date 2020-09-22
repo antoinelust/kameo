@@ -33,12 +33,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
         if(response.response == 'success'){
           var dest="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addUser\" data-toggle=\"modal\" onclick=\"create_user()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un utilisateur</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th><th></th></tr></thead>";
           for (var i = 0; i < response.usersNumber; i++){
-            if(response.user[i].staann=='D'){
+            if(response.users[i].staann=='D'){
               var status="<span class=\"text-red\">Inactif</span>";
             }else{
               var status="Actif";
             }
-            dest = dest.concat("<tr><td>"+response.user[i].name+"</td><td>"+response.user[i].firstName+"</td><td>"+response.user[i].email+"</td><td>"+status+"</td><td><a  data-target=\"#updateUserInformation\" name=\""+response.user[i].email+"\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"update_user_information('"+response.user[i].email+"')\">Mettre à jour</a></td></tr>");
+            dest = dest.concat("<tr><td>"+response.users[i].name+"</td><td>"+response.users[i].firstName+"</td><td>"+response.users[i].email+"</td><td>"+status+"</td><td><a  data-target=\"#updateUserInformation\" name=\""+response.users[i].email+"\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"update_user_information('"+response.users[i].email+"')\">Mettre à jour</a></td></tr>");
           }
           document.getElementById('usersList').innerHTML = dest;
           displayLanguage();
