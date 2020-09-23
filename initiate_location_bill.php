@@ -114,7 +114,7 @@ $result = mysqli_query($conn, $sql);
             <div class="col-md-12">
                 <?php
 
-                ob_start();
+                //ob_start();
 
 
                 while($row = mysqli_fetch_array($result)){
@@ -141,6 +141,7 @@ $result = mysqli_query($conn, $sql);
                     if($lastDay==$day || (last_day_month($now->format('m'))==$day && last_day_month($now->format('m'))<$lastDay)){
 
                         echo "<br/>Result: Generation of bill <br/>";
+
 
                         $i=0;
                         $data['company'] = $company;
@@ -191,6 +192,8 @@ $result = mysqli_query($conn, $sql);
 
 
                         $sql="SELECT * from customer_bikes where COMPANY='$company' and BILLING_GROUP='$billingGroup' and CONTRACT_START <= '$date1MonthBeforeString' and  CONTRACT_END is NULL and CONTRACT_TYPE != 'selling'";
+                        error_log("SQL :".$sql."\n", 3, "initiate_location_bill.log");
+
                         if ($conn->query($sql) === FALSE) {
                             echo $conn->error;
                             die;
@@ -205,15 +208,15 @@ $result = mysqli_query($conn, $sql);
                             $i++;
                         }
                         $data['itemNumber'] = $i;
-                        if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-                            $test=CallAPI('POST', 'https://www.kameobikes.com/include/generate_bill.php', $data);
-                        }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
-                            $test=CallAPI('POST', 'https://www.kameobikes.com/test/include/generate_bill.php', $data);
+
+                        require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+                        if(constant('ENVIRONMENT')=="production"){
+                          $test=CallAPI('POST', "http://www.kameobikes.com/include/generate_bill.php", $data);
+                        }else if(constant("ENVIRONMENT")=="test"){
+                          $test=CallAPI('POST', "http://www.test.kameobikes.com/include/generate_bill.php", $data);
                         }else{
-                            $test=CallAPI('POST', 'localhost:81/kameo/include/generate_bill.php', $data);
+
                         }
-
-
 
 
 
@@ -225,7 +228,6 @@ $result = mysqli_query($conn, $sql);
                         $html2pdf->Output(__DIR__ . $path, 'F');
 
 
-                        var_dump($data);
                         var_dump($test);
                     }else{
                         echo "<br/>Result: Passed <br/>";
@@ -236,7 +238,7 @@ $result = mysqli_query($conn, $sql);
                 }
 
 
-                if (ob_get_contents()) ob_end_clean();
+                //if (ob_get_contents()) ob_end_clean();
                 ?>
 
 

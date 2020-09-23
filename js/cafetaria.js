@@ -251,7 +251,7 @@ function get_message_history(){
 							$('<div/>',{ "class": "received_msg" }).append([
 								$('<div/>',{ "class": "received_withd_msg" }).append([
 									$( '<p/>' ).text(response.messages[i].message),
-									$('<span/>').addClass('time_date').html(response.messages[i].firstName+" "+response.messages[i].name+" | "+response.messages[i].messageHour+" AM | "+response.messages[i].messageDate)
+									$('<span/>').addClass('time_date').html(response.messages[i].firstName+" "+response.messages[i].name+" | "+response.messages[i].messageHour+" | "+response.messages[i].messageDate)
 								])
 							])
 						])
