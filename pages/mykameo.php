@@ -42,6 +42,10 @@ echo '<script type="text/javascript" src="js/language2.js">
   displayLanguage();
 </script>';
 
+// Traduction notifications
+require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/notifications/notifications_lang.php';
+
+
 
 if ($token == NULL) { //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
