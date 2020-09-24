@@ -44,11 +44,11 @@ if($admin!="Y"){
 }else{
     include 'connexion.php';
     $sql="SELECT * FROM customer_bikes WHERE STAANN != 'D'";
-    
+
     if($stockAndCommand){
         $sql = $sql." AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";
     }
-    
+
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -83,15 +83,15 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['contractEnd']=$row['CONTRACT_END'];
     $response['bike'][$i]['status']=$row['STATUS'];
     $response['bike'][$i]['insurance']=$row['INSURANCE'];
-    $response['bike'][$i]['bikePrice']=$row['BIKE_PRICE'];    
-    $response['bike'][$i]['GPS_ID']=$row['GPS_ID'];    
+    $response['bike'][$i]['bikePrice']=$row['BIKE_PRICE'];
+    $response['bike'][$i]['GPS_ID']=$row['GPS_ID'];
     $response['bike'][$i]['deliveryDate']=$row['DELIVERY_DATE'];
     $response['bike'][$i]['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
     $response['bike'][$i]['orderNumber']=$row['ORDER_NUMBER'];
     $response['bike'][$i]['size']=$row['SIZE'];
     $response['bike'][$i]['color']=$row['COLOR'];
-    
-    
+
+
     if($row['TYPE']){
         $type=$row['TYPE'];
         include 'connexion.php';
@@ -115,7 +115,7 @@ while($row = mysqli_fetch_array($result))
         $response['bike'][$i]['brand']=null;
         $response['bike'][$i]['modelBike']=null;
     }
-    
+
     if($row['BIKE_PRICE']){
         include 'connexion.php';
         $sql3="select SUM(AMOUNT_HTVA) AS 'SOMME' from factures_details WHERE BIKE_ID='$idBike'";
@@ -128,7 +128,7 @@ while($row = mysqli_fetch_array($result))
         $result3 = mysqli_query($conn, $sql3);
         $resultat3 = mysqli_fetch_assoc($result3);
         $conn->close();
-        
+
         $rentability=round($resultat3['SOMME']/$row['BIKE_PRICE']*100);
         $response['bike'][$i]['rentability']=$rentability;
         $response['bike'][$i]['sql']=$sql3;
@@ -145,9 +145,19 @@ while($row = mysqli_fetch_array($result))
     }
 
     $result4 = mysqli_query($conn, $sql4);
+    if($result4->num_rows=='0'){
+        $sql4="SELECT CONTRACT_TYPE AS 'biketype' from customer_bikes WHERE ID='$idBike'";
+        if ($conn->query($sql4) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result4 = mysqli_query($conn, $sql4);        
+
+    }
     $resultat4 = mysqli_fetch_assoc($result4);
     $conn->close();
-    
+
     $response['bike'][$i]['biketype']=$resultat4['biketype'];
 
     $i++;
