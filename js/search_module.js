@@ -56,6 +56,7 @@ function update_deposit_form(){
 
 
         while(i<=numberOfDays){
+          console.log(tempDate.getDay)
             if((tempDate.getDay()=="1" && parseInt(response.clientConditions.mondayDeposit)) || (tempDate.getDay()=="2" && parseInt(response.clientConditions.tuesdayDeposit)) || (tempDate.getDay()=="3" && parseInt(response.clientConditions.wednesdayDeposit)) || (tempDate.getDay()=="4" && parseInt(response.clientConditions.thursdayDeposit)) || (tempDate.getDay()=="5" && parseInt(response.clientConditions.fridayDeposit)) || (tempDate.getDay()=="6" && parseInt(response.clientConditions.saturdayDeposit)) || (tempDate.getDay()=="0" && parseInt(response.clientConditions.sundayDeposit))){
                 var dayTrad = daysTrad[tempDate.getDay()];
                 var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control\">"+dayTrad+" "+tempDate.getDate()+" "+monthTrad[tempDate.getMonth()]+"</option>";
@@ -226,10 +227,12 @@ function update_deposit_hour_form(){
             var tempDate2=tempDate;
             bookingLength=parseInt(bookingLength);
             while(i<=daysToDisplay){
+                var afterHour=false;
                 if(tempDate.getHours()>=hourEndDepositBooking){
                     tempDate.setHours(hourStartIntakeBooking);
                     tempDate.setMinutes(0);
                     tempDate.setDate(tempDate.getDate()+1);
+                    afterHour=true;
                 }
                 var dayTrad = daysTrad[tempDate.getDay()];
                 if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
@@ -239,7 +242,9 @@ function update_deposit_hour_form(){
                 }
 
                 i++;
-                tempDate.setDate(tempDate.getDate()+1);
+                if(afterHour==false){
+                    tempDate.setDate(tempDate.getDate()+1);
+                }
             }
             var bookingDay="</select>";
             dest = dest.concat(bookingDay);
@@ -272,8 +277,8 @@ function update_deposit_hour_form(){
                 dateTemp.setMonth(dateSearch[1] - 1);
                 dateTemp.setFullYear(dateSearch[2]);
                 dateTemp.setHours(hourStartIntakeBooking);
-                dateTemp.setMinutes(0);            
-            }                
+                dateTemp.setMinutes(0);
+            }
             else if(dateTemp.getHours()>=hourEndDepositBooking){
                 dateTemp.setHours(hourStartIntakeBooking);
                 dateTemp.setMinutes(0);

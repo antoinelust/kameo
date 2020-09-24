@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
-	header_remove("Set-Cookie");
-	header_remove("X-Powered-By");
 ?>
 <body class="wide">
 	<!-- WRAPPER -->
@@ -12,18 +10,18 @@
 		<?php include 'include/header.php'; ?>
 		<!--Square icons-->
    <section>
-	
+
 	<div class="container">
 		<div class="row">
-								
+
 				<h1 class="text-green"><?=L::blog_title;?></h1>
 				<br>
-				
-            
+
+
 				<!-- CONTENT -->
 				        <!-- Blog post-->
 				        <div class="post-content post-3-columns">
-				        
+
 				            <!-- Post OpenRouteService-->
 				            <!--
 				            <div class="post-item">
@@ -38,7 +36,7 @@
 				                    </div>
 				                    <div class="post-description">
 				                        <p>Profitez de la déduction fiscale de 120% jusqu'au 31 décembre 2019.</p>
-				
+
 				                        <div class="post-info">
 				                            <a class="read-more" href="blog_exofiscale.html">Lire plus <i class="fa fa-long-arrow-right"></i></a>
 				                        </div>
@@ -46,7 +44,7 @@
 				                </div>
 				            </div>
 				            -->
-                            
+
 				            <!-- Post Amélioration d'infrastuctures cyclables-->
 				            <div class="post-item">
 				                <div class="post-image">
@@ -60,15 +58,15 @@
 				                    </div>
 				                    <div class="post-description">
 				                        <p>Suivez notre guide pour faire votre meilleur choix.</p>
-				
+
 				                        <div class="post-info">
 				                            <a class="read-more" href="blog_Choisir-son-velo-electrique.html">Lire plus <i class="fa fa-long-arrow-right"></i></a>
 				                        </div>
 				                    </div>
 				                </div>
 				            </div>
-                            
-				            
+
+
 				            <!-- Post Amélioration d'infrastuctures cyclables-->
 				            <div class="post-item">
 				                <div class="post-image">
@@ -82,15 +80,15 @@
 				                    </div>
 				                    <div class="post-description">
 				                        <p>à Liège et à Bruxelles, pendant le déconfinement et après.</p>
-				
+
 				                        <div class="post-info">
 				                            <a class="read-more" href="blog_Infrastructures-cyclables-a-Liege-et-a-Bruxelles-pendant-le-deconfinement-et-apres.html">Lire plus <i class="fa fa-long-arrow-right"></i></a>
 				                        </div>
 				                    </div>
 				                </div>
 				            </div>
-				            
-				            
+
+
 				            <!-- pagination nav -->
 				            <!--
 				            <div class="text-center">
@@ -99,7 +97,7 @@
 											<li>
 												<a aria-label="Previous" href="#">
 													<span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
-				
+
 												</a>
 											</li>
 											<li><a href="#">1</a>
@@ -137,9 +135,9 @@
 
 	<!-- Language management -->
 	<script type="text/javascript" src="js/language.js"></script>
-	
-	<!-- CONTACT --> 
-<a class="gototop gototop-button" href="#" data-target="#contact" data-toggle="modal"><i class="fa fa-envelope-o"></i></a> 
+
+	<!-- CONTACT -->
+<a class="gototop gototop-button" href="#" data-target="#contact" data-toggle="modal"><i class="fa fa-envelope-o"></i></a>
 
 <div class="modal fade" id="contact" tabindex="-1" role="modal" aria-labelledby="modal-label-2" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
@@ -193,11 +191,11 @@
                                     <label for="message"><?=L::blog_contact_message;?></label>
                                     <textarea type="text" name="message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
                                 </div>
-                                
+
                                 <div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
-                                
+
                                 <input type="text" class="hidden" name="antispam" value="" />
-                                
+
                                 <button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::blog_contact_send_btn;?></button>
                             </form>
                             <script type="text/javascript">
@@ -213,7 +211,7 @@
                                                         type: 'success'
                                                     });
                                                     $(form)[0].reset();
-                                                    
+
                                                     gtag('event', 'send', {
                                                       'event_category': 'mail',
                                                       'event_label': 'contact.php'
