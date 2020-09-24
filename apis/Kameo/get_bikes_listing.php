@@ -136,6 +136,20 @@ while($row = mysqli_fetch_array($result))
         $response['bike'][$i]['rentability']="N/A";
     }
 
+    include 'connexion.php';
+    $sql4="SELECT TYPE AS 'biketype' from customer_bike_access WHERE BIKE_ID='$idBike'";
+    if ($conn->query($sql4) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+
+    $result4 = mysqli_query($conn, $sql4);
+    $resultat4 = mysqli_fetch_assoc($result4);
+    $conn->close();
+    
+    $response['bike'][$i]['biketype']=$resultat4['biketype'];
+
     $i++;
 
 }

@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-	include 'include/head.php';
+include 'include/head.php';
+header_remove("Set-Cookie");
+header_remove("X-Powered-By");
 ?>
+
 <body class="wide">
 	<!-- WRAPPER -->
 	<div class="wrapper">
@@ -195,29 +198,32 @@
 										<label for="firstName" id="nl">Voornaam</label>
                                         <input type="text" aria-required="true" name="firstName" class="form-control required name">
 
-										</div>
-                                    <div class="form-group col-sm-3">
-                                        <label for="email"  id="fr">Email</label>
-										<label for="email"  id="en">Email</label>
-										<label for="email"  id="nl">Email</label>
-                                        <input type="email" aria-required="true" name="email" class="form-control required email">
-                                    </div>
-                                    <div class="form-group col-sm-3">
-                                        <label for="phone"  id="fr">Numéro de téléphone</label>
-										<label for="phone"  id="en">Phone number</label>
-										<label for="phone"  id="nl">Telefoonnummer</label>
-                                        <input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
-                                    </div>
-                                    <div class="form-group col-sm-12">
-		                                <div class="particulier col-sm-3">
-											<label id="fr"><input type="radio" name="type" value="particulier" checked> Je suis un particulier</label>
-											<label id="en"><input type="radio" name="type" value="particulier" checked> I am an individual</label>
-											<label id="nl"><input type="radio" name="type" value="particulier" checked> Ik ben een individu</label>
-										</div>
-										<div class="professionnel col-sm-3">
-											<label id="fr"><input type="radio" name="type" value="professionnel"> Je suis un professionnel</label>
-											<label id="en"><input type="radio" name="type" value="professionnel"> I am a professional</label>
-											<label id="nl"><input type="radio" name="type" value="professionnel"> Ik ben een professioneel</label>
+								<p class="text-justify text-dark">À Bruxelles, 40 km de pistes cyclables sécurisées ont été créées sur les axes principaux. En effet, afin de diminuer la demande de la STIB, la ministre de la mobilité Bruxelloise Elke Van Brandt a dû créer des alternatives. Nous souhaiterions bien sûr que cette mesure s’inscrive d'avantage dans le temps mais profitons de ces nouvelles infrastructures tant qu’elles sont réservées aux cyclistes ! </p>
+
+								<div class="portfolio-image effect social-links">
+									<img src="images/blog/infra_velo_map1.jpg" alt="">
+									<div class="image-box-content">
+										<p>
+											<a href="images/blog/infra_velo_map1_big.jpg" data-lightbox-type="image" title=""><i class="fa fa-expand"></i></a>
+										</p>
+									</div>
+								</div>
+
+								<p class="text-justify text-dark">La ville de Liège a également adopté cette stratégie en créant 35km de voiries sécurisées pour les cyclistes. Les initiatives peuvent se regrouper en 3 catégories:
+									<ul>
+										<li class="text-dark">mise en place de couloirs-vélos vers les quartiers périphériques et en centre-ville</li>
+										<li class="text-dark">transformation de rues en pistes cyclables</li>
+										<li class="text-dark">aménagement de stationnements sécurisés et temporaires pour vélos près des pôles d'activité</li>
+									</ul>
+									<p class="text-justify text-dark">Ces mesures permettront de favoriser une mobilité douce respectueuse des mesures de distanciation sociale.</p>
+
+
+									<div class="portfolio-image effect social-links">
+										<img src="images/blog/infra_velo_map2.jpg" alt="">
+										<div class="image-box-content">
+											<p>
+												<a href="images/blog/infra_velo_map2_big.jpg" data-lightbox-type="image" title=""><i class="fa fa-expand"></i></a>
+											</p>
 										</div>
 									</div>
 									<div class="form-group col-sm-6 entreprise hidden">
@@ -256,6 +262,122 @@
 										<button  id="en" class="button green button-3d effect fill-vertical " type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Send</button>
 										<button  id="nl" class="button green button-3d effect fill-vertical " type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;Verzenden</button>
 									</div>
+							</div>
+						</div>
+						<div class="space"></div>
+						<div class="separator"></div>
+						<div class="col-md-12">
+							<p><small>Sources: <br>
+									<a href="https://www.lesoir.be/297567/article/2020-04-29/deconfinement-40-kilometres-de-pistes-cyclables-securisees-bruxelles-carte" target="_blank">https://www.lesoir.be/297567/article/2020-04-29/deconfinement-40-kilometres-de-pistes-cyclables-securisees-bruxelles-carte</a><br>
+									<a href="https://ravel.wallonie.be/home/carte-interactive.html" target="_blank">https://ravel.wallonie.be/home/carte-interactive.html</a><br>
+									<a href="https://mobilite-mobiliteit.brussels/en/node/5" target="_blank">https://mobilite-mobiliteit.brussels/en/node/5</a><br>
+									<a href="https://www.lameuse.be/500481/article/2020-01-12/un-parking-couvert-pour-velos-bientot-liege?fbclid=IwAR0rk2aCRHZICBjTQkIVEECY9IJwQ70o0KnGXZLs9mgtjIiNOH-eka7fUbM" target="_blank">https://www.lameuse.be/500481/article/2020-01-12/un-parking-couvert-pour-velos-bientot-liege?fbclid=IwAR0rk2aCRHZICBjTQkIVEECY9IJwQ70o0KnGXZLs9mgtjIiNOH-eka7fUbM</a><br>
+									<a href="http://mobilite.wallonie.be/files/PUM-LIEGE/PUM-LIEGE-rapport-final-mai-2019.pdf" target="_blank">http://mobilite.wallonie.be/files/PUM-LIEGE/PUM-LIEGE-rapport-final-mai-2019.pdf</a><br>
+									<a href="https://www.dhnet.be/actu/belgique/la-region-wallonne-veut-cinq-autoroutes-pour-velos-vers-bruxelles-5ddd2198d8ad58130db81ca0" target="_blank">https://www.dhnet.be/actu/belgique/la-region-wallonne-veut-cinq-autoroutes-pour-velos-vers-bruxelles-5ddd2198d8ad58130db81ca0</a><br>
+									<a href="https://www.rtbf.be/info/regions/detail_bruxelles-le-nombre-de-cyclistes-a-augmente-en-un-an-et-double-en-cinq-ans?id=10136723" target="_blank">https://www.rtbf.be/info/regions/detail_bruxelles-le-nombre-de-cyclistes-a-augmente-en-un-an-et-double-en-cinq-ans?id=10136723</a><br>
+									<a href="https://www.dhnet.be/actu/belgique/la-region-wallonne-veut-cinq-autoroutes-pour-velos-vers-bruxelles-5ddd2198d8ad58130db81ca0" target="_blank">https://www.dhnet.be/actu/belgique/la-region-wallonne-veut-cinq-autoroutes-pour-velos-vers-bruxelles-5ddd2198d8ad58130db81ca0</a><br>
+									<a href="https://docs.google.com/viewerng/viewer?url=https://www.todayinliege.be/wp-content/uploads/2020/05/COVID-carte-des-cibles.pdf&hl=fr" target="_blank">https://docs.google.com/viewerng/viewer?url=https://www.todayinliege.be/wp-content/uploads/2020/05/COVID-carte-des-cibles.pdf&hl=fr</a><br>
+									<a href="https://www.provelo.org/fr/page/cartes-interactives-itineraires-cyclistes" target="_blank">https://www.provelo.org/fr/page/cartes-interactives-itineraires-cyclistes</a><br>
+								</small></p>
+						</div>
+
+					</div>
+
+					<!-- CALL TO ACTION -->
+					<div class="space"></div>
+					<div class="col-md-12">
+						<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
+							<div class="container">
+								<h3>Vous aussi vous voulez changer la mobilité de nos villes ?<br> Contactez-nous pour en discuter !</h3>
+								<div class="col-md-12 text-left">
+									<form id="widget-contact-form" action="apis/Kameo/contact-form.php" role="form" method="post">
+										<div class="row">
+											<div class="form-group col-sm-3">
+												<label for="name"><?= L::blog_infra_name; ?></label>
+												<input type="text" aria-required="true" name="name" class="form-control required name">
+											</div>
+											<div class="form-group col-sm-3">
+												<label for="firstName"><?= L::blog_infra_firstname; ?></label>
+												<input type="text" aria-required="true" name="firstName" class="form-control required name">
+
+											</div>
+											<div class="form-group col-sm-3">
+												<label for="email"><?= L::blog_infra_mail; ?></label>
+												<input type="email" aria-required="true" name="email" class="form-control required email">
+											</div>
+											<div class="form-group col-sm-3">
+												<label for="phone"><?= L::blog_infra_phone; ?></label>
+												<input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
+											</div>
+											<div class="form-group col-sm-12">
+												<div class="particulier col-sm-3">
+													<label><input type="radio" name="type" value="particulier" checked><?= L::blog_infra_particulier; ?></label>
+												</div>
+												<div class="professionnel col-sm-3">
+													<label><input type="radio" name="type" value="professionnel"><?= L::blog_infra_pro; ?></label>
+												</div>
+											</div>
+											<div class="form-group col-sm-6 entreprise hidden">
+												<label for="entreprise"><?= L::blog_infra_entreprise; ?></label>
+												<input type="text" aria-required="true" name="entreprise" class="form-control">
+											</div>
+										</div>
+										<div class="row col-sm-4">
+											<div class="form-group">
+												<label for="subject"><?= L::blog_infra_subject; ?></label>
+												<input type="text" name="subject" class="form-control required">
+											</div>
+										</div>
+										<div class="form-group  col-sm-8">
+											<label for="message"><?= L::blog_infra_message; ?></label>
+											<textarea type="text" name="message" rows="5" class="form-control required" placeholder="Votre message"></textarea>
+										</div>
+
+										<div class="col-sm-12">
+											<div class="col-sm-4">
+
+												<div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
+
+
+												<input type="text" class="hidden" name="antispam" value="" />
+											</div>
+
+											<div class="col-sm-8">
+												<button class="button green button-3d effect fill-vertical " type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;<?= L::blog_infra_send; ?></button>
+											</div>
+										</div>
+									</form>
+									<script type="text/javascript">
+										jQuery("#widget-contact-form").validate({
+											submitHandler: function(form) {
+
+												jQuery(form).ajaxSubmit({
+													success: function(text) {
+														if (text.response == 'success') {
+															$.notify({
+																message: "Nous avons <strong>bien</strong> reçu votre message et nous reviendrons vers vous dès que possible."
+															}, {
+																type: 'success'
+															});
+															$(form)[0].reset();
+
+															gtag('event', 'send', {
+																'event_category': 'mail',
+																'event_label': 'contact.php'
+															});
+
+														} else {
+															$.notify({
+																message: text.message
+															}, {
+																type: 'danger'
+															});
+														}
+													}
+												});
+											}
+										});
+									</script>
 								</div>
                             </form>
                             <script type="text/javascript">
