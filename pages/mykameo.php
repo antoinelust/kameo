@@ -61,7 +61,7 @@ if ($token == NULL) { //Not connected
   echo '
   <script type="text/javascript">
     const user_ID = "' . $user_ID . '";
-    const user_data = JSON.parse(\'' . json_encode($user_data) . '\');
+    const user_data = JSON.parse(`' . json_encode($user_data) . '`);
     var email=user_data["EMAIL"];
   </script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
@@ -149,7 +149,7 @@ if ($token == NULL) { //Not connected
                         include 'include/vues/mykameo/tabs/reservations/main.php';  //TAB 3 @TODO: REFACTOR
                       }
 
-                      include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR 
+                      include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
                       ?>
 
                     </div>
@@ -599,7 +599,7 @@ if ($token == NULL) { //Not connected
         $(".form_date_start").data("datetimepicker").setDate(date);
       }
     });
-    <?php //@TODO: REFACTOR 'CAUSE USED IN MULTIPLE PART OF THE CODE' 
+    <?php //@TODO: REFACTOR 'CAUSE USED IN MULTIPLE PART OF THE CODE'
     ?>
     /** Reservation & fleetManager tabs **/
     function hideResearch() {

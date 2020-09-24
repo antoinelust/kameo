@@ -125,7 +125,7 @@ if($id != NULL)
     }
 
     include 'connexion.php';
-    $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa, customer_bike_access bb WHERE aa.COMPANY='$company' AND aa.EMAIL=bb.EMAIL and aa.STAANN != 'D' and bb.BIKE_ID='$id' and bb.STAANN!='D' ORDER BY NOM";
+    $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL, bb.TYPE FROM customer_referential aa, customer_bike_access bb WHERE aa.COMPANY='$company' AND aa.EMAIL=bb.EMAIL and aa.STAANN != 'D' and bb.BIKE_ID='$id' and bb.STAANN!='D' ORDER BY NOM";
 
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -139,6 +139,7 @@ if($id != NULL)
         $response['user'][$i]['name']=$row['NOM'];
         $response['user'][$i]['firstName']=$row['PRENOM'];
         $response['user'][$i]['email']=$row['EMAIL'];
+        $response['biketype']=$row['TYPE'];
         $response['user'][$i]['access']=true;
         $i++;
     }

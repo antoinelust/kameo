@@ -18,7 +18,6 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 
 
-
 $email=$_POST['widget-addBill-form-email'];
 $company=$_POST['widget-addBill-form-company'];
 $beneficiaryCompany=$_POST['beneficiaryCompany'];
@@ -180,7 +179,7 @@ if($billType == "manual"){
 
     if(constant('ENVIRONMENT')=="production"){
         $test=CallAPI('POST', 'https://www.kameobikes.com/scripts/generate_bill.php', $data);
-    }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
+    }else if(constant('ENVIRONMENT')=="test"){
         $test=CallAPI('POST', 'https://www.kameobikes.com/test/scripts/generate_bill.php', $data);
     }else{
         $test=CallAPI('POST', 'kameo/kameo/scripts/generate_bill.php', $data);
