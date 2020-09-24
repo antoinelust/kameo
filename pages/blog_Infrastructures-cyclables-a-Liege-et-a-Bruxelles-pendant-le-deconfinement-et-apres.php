@@ -2,8 +2,6 @@
 <html lang="fr">
 <?php
 include 'include/head.php';
-header_remove("Set-Cookie");
-header_remove("X-Powered-By");
 ?>
 
 <body class="wide">
@@ -178,7 +176,7 @@ header_remove("X-Powered-By");
 							<div class="container">
 								<h3>Vous aussi vous voulez changer la mobilité de nos villes ?<br> Contactez-nous pour en discuter !</h3>
 								<div class="col-md-12 text-left">
-									<form id="widget-contact-form" action="apis/Kameo/contact-form.php" role="form" method="post">
+									<form id="widget-contact-form" action="apis/Kameo/contact_form.php" role="form" method="post">
 										<div class="row">
 											<div class="form-group col-sm-3">
 												<label for="name"><?= L::blog_infra_name; ?></label>

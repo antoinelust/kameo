@@ -58,7 +58,6 @@ $( ".fleetmanager" ).click(function() {
 
 
 $('#adminChat').on('show.bs.modal', function (event) {
-	$('#chatsListing').modal('hide');
 	var correspondent_email = $(event.relatedTarget).data('correspondent');
 	$('#adminChatCorrespondent').text(correspondent_email);
 	if ($(event.relatedTarget).data('order') != "")
