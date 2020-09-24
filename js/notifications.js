@@ -86,7 +86,7 @@ function load_notifications(){
           markAsRead = "";
           if (notification.READ == 'N') {
             read = "notRead";
-            markAsRead = '<span class="markAsRead text-green pointerClick" style="text-decoration:undrerline;">Marquer comme lu</span>';
+            markAsRead = '<span class="markAsRead text-green pointerClick" style="text-decoration:underline;">' + notifTrads[0] + '</span>';
             countNew++;
           }
           if (count != size) {
@@ -111,7 +111,7 @@ function load_notifications(){
         } else if (size > 0){
           $('.notificationsBlock').html(content);
         } else{
-          content = '<div class="col-sm-12 notificationItem"><span>Pas de notifications</span></div>'
+          content = '<div class="col-sm-12 notificationItem"><span>' + notifTrads[1] + '</span></div>'
           $('.notificationsBlock').html(content);
         }
       }

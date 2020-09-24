@@ -15,24 +15,21 @@ $token = getBearerToken();
 
 
 $user = $_SESSION['ID'];
-$firstName = $_POST["widget-update-form-firstname"];
-$name = $_POST["widget-update-form-name"];
-$phone = $_POST["widget-update-form-phone"];
-$adress = $_POST["widget-update-form-adress"];
-$postCode = $_POST["widget-update-form-post-code"];
-$city = $_POST["widget-update-form-city"];
-$workAdress = $_POST["widget-update-form-work-adress"];
-$workPostCode = $_POST["widget-update-form-work-post-code"];
-$workCity = $_POST["widget-update-form-work-city"];
-
-$newPasswordSwitch = $_POST["widget-update-form-password-switch"];
-
-
+$firstName = addslashes($_POST["widget-update-form-firstname"]);
+$name = addslashes($_POST["widget-update-form-name"]);
+$phone = addslashes($_POST["widget-update-form-phone"]);
+$adress = addslashes($_POST["widget-update-form-adress"]);
+$postCode = addslashes($_POST["widget-update-form-post-code"]);
+$city = addslashes($_POST["widget-update-form-city"]);
+$workAdress = addslashes($_POST["widget-update-form-work-adress"]);
+$workPostCode = addslashes($_POST["widget-update-form-work-post-code"]);
+$workCity = addslashes($_POST["widget-update-form-work-city"]);
+$newPasswordSwitch = addslashes($_POST["widget-update-form-password-switch"]);
 
 if($newPasswordSwitch=="true"){
-    $newPassword = $_POST["widget-update-form-password"];
-    $newPasswordConfirmation=$_POST["widget-update-form-password-confirmation"];
-    
+    $newPassword = addslashes($_POST["widget-update-form-password"]);
+    $newPasswordConfirmation=addslashes($_POST["widget-update-form-password-confirmation"]);
+
     if ($newPassword != $newPasswordConfirmation){
         errorMessage("ES0021");
     }
@@ -40,17 +37,17 @@ if($newPasswordSwitch=="true"){
     {
         $new_password_hash = password_hash($newPassword, PASSWORD_BCRYPT);
          $_SESSION['UserPassword']=$new_password_hash;
-        
+
     }
 }
-     
+
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST') {
-    
-    
+
+
 
      if($user != '') {
-                  
+
 
          //Vérifier pour faire passer connexion.php via une fonction, pour éviter de surcharger des variables telles que $password.
         include 'connexion.php';
@@ -85,11 +82,11 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
          successMessage('SM0003');
 
     } else {
-        $response = array ('response'=>'error', "message"=>"User not retrieved");     
+        $response = array ('response'=>'error', "message"=>"User not retrieved");
         echo json_encode($response);
         die;
     }
-    
+
 }
 else
 {
