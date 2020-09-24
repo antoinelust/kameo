@@ -113,6 +113,7 @@ if($bikeID != NULL && $status != NULL)
 
     if(!isset(($_POST['buildingAccess']))){
         include 'connexion.php';
+        $type_bike = $_POST['bikeType'];
         $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_ID = '$bikeID'";
 
         if ($conn->query($sql) === FALSE) {
@@ -120,7 +121,36 @@ if($bikeID != NULL && $status != NULL)
             echo json_encode($response);
             die;
         }
-        $conn->close();  
+
+        if( $type_bike == 'partage'){
+            $sql="UPDATE customer_bike_access SET TIMESTAMP=CURRENT_TIMESTAMP, USR_MAJ='$user', TYPE='$type_bike' WHERE BIKE_ID = '$bikeID' AND TYPE= 'personnel'";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+
+        }else{
+            $sql="DELETE FROM customer_bike_access WHERE BIKE_ID = '$bikeID'";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+
+            $email = $_POST['email'];
+
+            $sql="INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES (CURRENT_TIMESTAMP, '$user', '$email', '$bikeID', '$type_bike', '')";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+
+        }
+        $conn->close();
+
+          
 
     }else{
 
