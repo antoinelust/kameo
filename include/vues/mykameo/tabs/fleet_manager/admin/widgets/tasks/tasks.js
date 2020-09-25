@@ -19,10 +19,6 @@ $( ".fleetmanager" ).click(function() {
     
 });
 
-
-
-
-
 function add_task(company){
 document.getElementById('widget-taskManagement-form').reset();
 
@@ -275,12 +271,7 @@ function list_tasks(status, owner2, email) {
     })
 }
 
-
-
-
 function construct_form_for_action_update(id){
-
-
 
         $('#widget-updateAction-form select[name=owner]')
             .find('option')
@@ -336,7 +327,6 @@ function construct_form_for_action_update(id){
 
         })
 }
-
 
 function retrieve_task(ID, action = "retrieve"){
     $.ajax({

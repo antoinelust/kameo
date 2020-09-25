@@ -1,8 +1,8 @@
 <?php
-	include 'bikes.html';?>
+include 'bikes.html'; ?>
 
 <script type="text/javascript">
-<?php
-    include 'bikes.js'; 
-?>
+    <?php
+    include 'bikes.js';
+    ?>
 </script>

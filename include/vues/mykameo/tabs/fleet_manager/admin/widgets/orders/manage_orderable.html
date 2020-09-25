@@ -1,145 +1,249 @@
-<div class="modal fade" id="manageOrderable" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="row">
-					<h4 class="modal-title fr text-green col-sm-11">Vélos commandables</h4>
-					<button type="button" class="close col-sm-1" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-12">
-						<form id="widget-manageCompaniesOrderable-form" action="apis/Kameo/orders/orders.php" role="form" method="post">
-							<div class="row">
-								<div class="col-md-4" align="center"><label for="company">Name&nbsp;&nbsp;</label><input name="company" id="manageOrderableCompanyName" class="form-control" disabled></div>
-								<div class="col-md-4" align="center"><label for="cafetaria">Cafetaria&nbsp;&nbsp;</label><input name="cafetaria" id="manageOrderableCafetaria" type="checkbox"></div>
-								<div class="col-md-4" align="center"><label for="discount">Discount :&nbsp;&nbsp;</label><input name="discount" id="discount" type="number" step="any" class="form-control"></div>
-							</div>
-							<div class="separator"></div>
-							<div class="table-responsive">
-							<table id="manageCompaniesOrderable" class="table" style="width: 100%;">
-								<thead>
-								  <tr>
-									 <th><input type="checkbox" name="select_all" value="1"></th>
-									 <th>ID</th>
-									 <th>Modèle</th>
-								  </tr>
-								</thead>
-							</table>
-							</div>
-							<button class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-			</div>
-		</div>
-	</div>
+<div
+  class="modal fade"
+  id="manageOrderable"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <h4 class="modal-title fr text-green col-sm-11">
+            Vélos commandables
+          </h4>
+          <button
+            type="button"
+            class="close col-sm-1"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <form
+              id="widget-manageCompaniesOrderable-form"
+              action="apis/Kameo/orders/orders.php"
+              role="form"
+              method="post"
+            >
+              <div class="row">
+                <div class="col-md-4" align="center">
+                  <label for="company">Name&nbsp;&nbsp;</label
+                  ><input
+                    name="company"
+                    id="manageOrderableCompanyName"
+                    class="form-control"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4" align="center">
+                  <label for="cafetaria">Cafetaria&nbsp;&nbsp;</label
+                  ><input
+                    name="cafetaria"
+                    id="manageOrderableCafetaria"
+                    type="checkbox"
+                  />
+                </div>
+                <div class="col-md-4" align="center">
+                  <label for="discount">Discount :&nbsp;&nbsp;</label
+                  ><input
+                    name="discount"
+                    id="discount"
+                    type="number"
+                    step="any"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="separator"></div>
+              <div class="table-responsive">
+                <table
+                  id="manageCompaniesOrderable"
+                  class="table"
+                  style="width: 100%"
+                >
+                  <thead>
+                    <tr>
+                      <th>
+                        <input type="checkbox" name="select_all" value="1" />
+                      </th>
+                      <th>ID</th>
+                      <th>Modèle</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <button
+                class="button small green button-3d rounded icon-left"
+                type="submit"
+              >
+                <i class="fa fa-paper-plane"></i>Envoyer
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-<script type="text/javascript" src="js/addons/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
+<script
+  type="text/javascript"
+  src="js/addons/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"
+></script>
 <script>
-	$('#manageOrderable').on('show.bs.modal', function (event) {
-	$('#ordersListing').modal('hide');
-	var current_company = $(event.relatedTarget).data('company');
-	var has_cafetaria = $(event.relatedTarget).data('cafetaria');
-	var discount = $(event.relatedTarget).data('discount');
-	$('#manageOrderableCompanyName').val(current_company);
-	$('#manageOrderableCafetaria').prop( "checked", has_cafetaria );
-	$('#widget-manageCompaniesOrderable-form input[name=discount]').val( discount );
-	if ( $('#manageCompaniesOrderable').DataTable() != null ) {
-	  $('#manageCompaniesOrderable').DataTable().clear();
-	  $('#manageCompaniesOrderable').DataTable().destroy();
-	  $('#manageCompaniesOrderable').text('');
-	}
-	  var CompaniesOrderableDatatable = $('#manageCompaniesOrderable').DataTable({
-			"ajax": {
-				"url" : "apis/Kameo/orders/orders.php",
-				"contentType": "application/json",
-				"type": "GET",
-				"data": {
-					"action": "listOrderable",
-					"company": encodeURI(current_company)
-				}
-			},
-			"sAjaxDataProp": "",
-			'initComplete': function(settings){
-				 var api = this.api();
-				 api.cells(
-					api.rows(function(idx, data, node){
-					   return (data.ORDERABLE === "true") ? true : false;
-					}).indexes(),
-					0
-				 ).checkboxes.select();
-				 api.cells(api.rows(function(idx, data, node){ return !has_cafetaria; }).indexes(),
-					0
-				 ).checkboxes.disable();
-			  },
-			"language": {
-				"lengthMenu": 'Afficher <select>'+
-				  '<option value="10">10</option>'+
-				  '<option value="25">25</option>'+
-				  '<option value="50">50</option>'+
-				  '<option value="-1">All</option>'+
-				  '</select>'
-			},
-			"columns": [
-				{"data": "ID",
-				'checkboxes': {
-					'selectRow': true
-					}
-				},
-				{ "data": "ID" },
-				{ "data": "MODEL",
-					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html(oData.BRAND+" "+oData.MODEL);
-					}
-				},
-			]
-		});
-		$("#manageOrderableCafetaria").change(function() {
-			$("#manageCompaniesOrderable").DataTable().rows().nodes().to$().find("input:checkbox").prop( "disabled", !this.checked );
-		});
-		jQuery("#widget-manageCompaniesOrderable-form").validate({
-			submitHandler: function(form){
-				var url = form.action;
-				var data = $("#manageCompaniesOrderable").DataTable().rows().nodes().to$().find("input:checked").parent().next("td").map(function() {
-				  return {'name': 'bikesOrderable[]', 'value': this.textContent};
-				}).get();
-				data.push({'name': 'action', 'value': 'updateOrderable'});
-				data.push({'name': 'company', 'value': $('#manageOrderableCompanyName').val()}); //can't use the current_company var here because of a bootstrap modalfade related bug (data passed is gonna be for another company)
-				data.push({'name': 'cafetaria', 'value': $('#manageOrderableCafetaria').is(':checked')}); //same here
-				data.push({'name': 'discount', 'value': $('#widget-manageCompaniesOrderable-form input[name=discount]').val()});
-				$.ajax({
-					 type: "POST",
-					 url: url,
-					 data: data,
-					 success: function(response) {
-						if (response.response == 'success') {
-							$.notify({
-							message: response.message
-							}, {
-							type: 'success'
-							});
-							$('#manageOrderable').modal('hide');
-						} else {
-							$.notify({
-							message: response.message
-							}, {
-							type: 'danger'
-							});
-						}
-					 }
-				});
-			}
-		});
-	});
+  $("#manageOrderable").on("show.bs.modal", function (event) {
+    $("#ordersListing").modal("hide");
+    var current_company = $(event.relatedTarget).data("company");
+    var has_cafetaria = $(event.relatedTarget).data("cafetaria");
+    var discount = $(event.relatedTarget).data("discount");
+    $("#manageOrderableCompanyName").val(current_company);
+    $("#manageOrderableCafetaria").prop("checked", has_cafetaria);
+    $("#widget-manageCompaniesOrderable-form input[name=discount]").val(
+      discount
+    );
+    if ($("#manageCompaniesOrderable").DataTable() != null) {
+      $("#manageCompaniesOrderable").DataTable().clear();
+      $("#manageCompaniesOrderable").DataTable().destroy();
+      $("#manageCompaniesOrderable").text("");
+    }
+    var CompaniesOrderableDatatable = $("#manageCompaniesOrderable").DataTable({
+      ajax: {
+        url: "apis/Kameo/orders/orders.php",
+        contentType: "application/json",
+        type: "GET",
+        data: {
+          action: "listOrderable",
+          company: encodeURI(current_company),
+        },
+      },
+      sAjaxDataProp: "",
+      initComplete: function (settings) {
+        var api = this.api();
+        api
+          .cells(
+            api
+              .rows(function (idx, data, node) {
+                return data.ORDERABLE === "true" ? true : false;
+              })
+              .indexes(),
+            0
+          )
+          .checkboxes.select();
+        api
+          .cells(
+            api
+              .rows(function (idx, data, node) {
+                return !has_cafetaria;
+              })
+              .indexes(),
+            0
+          )
+          .checkboxes.disable();
+      },
+      language: {
+        lengthMenu:
+          "Afficher <select>" +
+          '<option value="10">10</option>' +
+          '<option value="25">25</option>' +
+          '<option value="50">50</option>' +
+          '<option value="-1">All</option>' +
+          "</select>",
+      },
+      columns: [
+        {
+          data: "ID",
+          checkboxes: {
+            selectRow: true,
+          },
+        },
+        { data: "ID" },
+        {
+          data: "MODEL",
+          fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+            $(nTd).html(oData.BRAND + " " + oData.MODEL);
+          },
+        },
+      ],
+    });
+    $("#manageOrderableCafetaria").change(function () {
+      $("#manageCompaniesOrderable")
+        .DataTable()
+        .rows()
+        .nodes()
+        .to$()
+        .find("input:checkbox")
+        .prop("disabled", !this.checked);
+    });
+    jQuery("#widget-manageCompaniesOrderable-form").validate({
+      submitHandler: function (form) {
+        var url = form.action;
+        var data = $("#manageCompaniesOrderable")
+          .DataTable()
+          .rows()
+          .nodes()
+          .to$()
+          .find("input:checked")
+          .parent()
+          .next("td")
+          .map(function () {
+            return { name: "bikesOrderable[]", value: this.textContent };
+          })
+          .get();
+        data.push({ name: "action", value: "updateOrderable" });
+        data.push({
+          name: "company",
+          value: $("#manageOrderableCompanyName").val(),
+        }); //can't use the current_company var here because of a bootstrap modalfade related bug (data passed is gonna be for another company)
+        data.push({
+          name: "cafetaria",
+          value: $("#manageOrderableCafetaria").is(":checked"),
+        }); //same here
+        data.push({
+          name: "discount",
+          value: $(
+            "#widget-manageCompaniesOrderable-form input[name=discount]"
+          ).val(),
+        });
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: data,
+          success: function (response) {
+            if (response.response == "success") {
+              $.notify(
+                {
+                  message: response.message,
+                },
+                {
+                  type: "success",
+                }
+              );
+              $("#manageOrderable").modal("hide");
+            } else {
+              $.notify(
+                {
+                  message: response.message,
+                },
+                {
+                  type: "danger",
+                }
+              );
+            }
+          },
+        });
+      },
+    });
+  });
 </script>

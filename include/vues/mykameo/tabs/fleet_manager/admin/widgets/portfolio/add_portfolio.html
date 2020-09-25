@@ -1,174 +1,210 @@
-<div class="modal fade" id="addPortfolioBike" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<h4 class="text-green">Ajouter un vélo au catalogue</h4>
-					<form id="widget-addCatalog-form" action="apis/Kameo/add_catalog_bike.php" role="form" method="post">
-						<div class="col-sm-12">
-							<h4 class="text-green">Informations sur le modèle</h4>
-							<div class="col-sm-12">
-								<div class="col-sm-4">
-									<label for="brand" class="fr"> Marque : </label>
-									<label for="brand" class="en"> Brand: </label>
-									<label for="brand" class="nl"> Brand : </label>
-									<select class="form-control required" name="brand">
-										<option value="Ahooga">Ahooga</option>
-										<option value="Benno">Benno</option>
-										<option value="Bzen">Bzen</option>
-										<option value="Conway">Conway</option>
-										<option value="Douze Cycle">Douze Cycle</option>
-										<option value="HNF Nicolai">HNF Nicolai</option>
-										<option value="Kayza">Kayza</option>
-										<option value="Orbea">Orbea</option>
-										<option value="Victoria">Victoria</option>
-										<option value="Stevens">Stevens</option>
-										<option value="other">Other</option>
-									</select>
-								</div>
-								<div class="col-sm-4">
-									<label for="model" class="fr"> Modèle : </label>
-									<label for="model" class="en"> Model: </label>
-									<label for="model" class="nl"> Model: </label>
-									<input type="text" class="form-control required" name="model" />
-								</div>
-								<div class="col-sm-4">
-									<label for="frame" class="fr"> Type de cadre : </label>
-									<label for="frame" class="en"> Frame type: </label>
-									<label for="frame" class="nl"> Frame type: </label>
-									<select class="form-control required" name="frame">
-										<option value="F">Femme</option>
-										<option value="H">Homme</option>
-										<option value="M">Mixte</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-sm-12">
-								<div class="col-sm-4">
-									<label for="utilisation" class="fr"> Utilisation : </label>
-									<label for="utilisation" class="en"> Utilisation: </label>
-									<label for="utilisation" class="nl"> Utilisation: </label>
-									<select class="form-control required" name="utilisation">
-										<option value="Tout chemin">Tout chemin</option>
-										<option value="Ville et chemin">Ville et chemin</option>
-										<option value="Pliant">Pliant</option>
-										<option value="Ville">Vile</option>
-										<option value="Cargo">Cargo</option>
-										<option value="Gravel">Gravel</option>
-										<option value="VTT">VTT</option>
-										<option value="Speedpedelec">Speedpedelec</option>
-									</select>
-								</div>
-								<div class="col-sm-4">
-									<label for="electric" class="fr"> Vélo électrique ? </label>
-									<label for="electric" class="en"> Electric bike? </label>
-									<label for="electric" class="nl"> Electric bike? </label>
-									<select class="form-control required" name="electric">
-										<option value="Y">Y</option>
-										<option value="N">N</option>
-									</select>
-								</div>
-								<div class="col-sm-4">
-									<label for="link" class="fr"> Lien vers le site : </label>
-									<label for="link" class="en"> Vendor link : </label>
-									<label for="link" class="nl"> Vendor link</label>
-									<input type="text" class="form-control required" name="link" />
-								</div>
-							</div>
-							<div class="separator"></div>
-							<h4 class="text-green">Information financières et stock</h4>
-							<div class="col-sm-12">
-								<div class="col-sm-4">
-									<label for="buyPrice" class="fr">Prix d'achat</label>
-									<label for="buyPrice" class="nl">Buying price</label>
-									<label for="buyPrice" class="en">Buying price</label>
-									<input type="text" class="form-control required" name="buyPrice" />
-								</div>
-								<div class="col-sm-4">
-									<label for="price" class="fr"> Prix : </label>
-									<label for="price" class="en"> Price: </label>
-									<label for="price" class="nl"> Price: </label>
-									<input type="text" class="form-control required" name="price" />
-								</div>
-								<div class="col-sm-4">
-									<label for="stock" class="fr"> En stock ? </label>
-									<label for="stock" class="en"> Sotck? </label>
-									<label for="stock" class="nl"> Stock? </label>
-									<input type="text" class="bikeCatalogStock form-control" name="stock" />
-								</div>
-							</div>
-							<div class="col-sm-12">
-								<div class="col-sm-4">
-									<label for="display" class="fr">Afficher ? </label>
-									<label for="display" class="en">Display ? </label>
-									<label for="display" class="nl">Display ? </label>
-									<input type="checkbox" name="display" class="form-control">
-								</div>
-							</div>
-							<div class="separator"></div>
-							<h4 class="text-green">Photos</h4>
-							<div class="form-group col-sm-6">
-								<label for="file"  class="fr">Photo</label>
-								<label for="file"  class="en">Picture</label>
-								<label for="file"  class="nl">Picture</label>
-								<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-								<input type=file size=40 class="form-control required" name="file">
-							</div>
-							<div class="col-sm-6">
-								<label for="fileMini"  class="fr">Photo mini</label>
-								<label for="fileMini"  class="en">Mini picture</label>
-								<label for="fileMini"  class="nl">Mini picture</label>
-								<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-								<input type=file size=40 class="form-control required" name="fileMini">
-							</div>
-						</div>
-						<input type="text" name="user" value="<?php echo $user_data['EMAIL']; ?>" class="hidden" />
-						<div class="col-sm-12">
-							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-			</div>
-		</div>
-	</div>
+<div
+  class="modal fade"
+  id="addPortfolioBike"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <h4 class="text-green">Ajouter un vélo au catalogue</h4>
+          <form
+            id="widget-addCatalog-form"
+            action="apis/Kameo/add_catalog_bike.php"
+            role="form"
+            method="post"
+          >
+            <div class="col-sm-12">
+              <h4 class="text-green">Informations sur le modèle</h4>
+              <div class="col-sm-12">
+                <div class="col-sm-4">
+                  <label for="brand"> Marque : </label>
+                  <select class="form-control required" name="brand">
+                    <option value="Ahooga">Ahooga</option>
+                    <option value="Benno">Benno</option>
+                    <option value="Bzen">Bzen</option>
+                    <option value="Conway">Conway</option>
+                    <option value="Douze Cycle">Douze Cycle</option>
+                    <option value="HNF Nicolai">HNF Nicolai</option>
+                    <option value="Kayza">Kayza</option>
+                    <option value="Orbea">Orbea</option>
+                    <option value="Victoria">Victoria</option>
+                    <option value="Stevens">Stevens</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="col-sm-4">
+                  <label for="model"> Modèle : </label>
+                  <input
+                    type="text"
+                    class="form-control required"
+                    name="model"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <label for="frame"> Type de cadre : </label>
+                  <select class="form-control required" name="frame">
+                    <option value="F">Femme</option>
+                    <option value="H">Homme</option>
+                    <option value="M">Mixte</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="col-sm-4">
+                  <label for="utilisation"> Utilisation : </label>
+                  <select class="form-control required" name="utilisation">
+                    <option value="Tout chemin">Tout chemin</option>
+                    <option value="Ville et chemin">Ville et chemin</option>
+                    <option value="Pliant">Pliant</option>
+                    <option value="Ville">Vile</option>
+                    <option value="Cargo">Cargo</option>
+                    <option value="Gravel">Gravel</option>
+                    <option value="VTT">VTT</option>
+                    <option value="Speedpedelec">Speedpedelec</option>
+                  </select>
+                </div>
+                <div class="col-sm-4">
+                  <label for="electric"> Vélo électrique ? </label>
+                  <select class="form-control required" name="electric">
+                    <option value="Y">Y</option>
+                    <option value="N">N</option>
+                  </select>
+                </div>
+                <div class="col-sm-4">
+                  <label for="link"> Lien vers le site : </label>
+                  <input
+                    type="text"
+                    class="form-control required"
+                    name="link"
+                  />
+                </div>
+              </div>
+              <div class="separator"></div>
+              <h4 class="text-green">Information financières et stock</h4>
+              <div class="col-sm-12">
+                <div class="col-sm-4">
+                  <label for="buyPrice">Prix d'achat</label>
+                  <input
+                    type="text"
+                    class="form-control required"
+                    name="buyPrice"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <label for="price"> Prix : </label>
+                  <input
+                    type="text"
+                    class="form-control required"
+                    name="price"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <label for="stock"> En stock ? </label>
+                  <input
+                    type="text"
+                    class="bikeCatalogStock form-control"
+                    name="stock"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="col-sm-4">
+                  <label for="display">Afficher ? </label>
+                  <input type="checkbox" name="display" class="form-control" />
+                </div>
+              </div>
+              <div class="separator"></div>
+              <h4 class="text-green">Photos</h4>
+              <div class="form-group col-sm-6">
+                <label for="file">Photo</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                <input
+                  type="file"
+                  size="40"
+                  class="form-control required"
+                  name="file"
+                />
+              </div>
+              <div class="col-sm-6">
+                <label for="fileMini">Photo mini</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
+                <input
+                  type="file"
+                  size="40"
+                  class="form-control required"
+                  name="fileMini"
+                />
+              </div>
+            </div>
+            <input
+              type="text"
+              name="user"
+              value="<?php echo $user_data['EMAIL']; ?>"
+              class="hidden"
+            />
+            <div class="col-sm-12">
+              <button
+                class="button small green button-3d rounded icon-left"
+                type="submit"
+              >
+                <i class="fa fa-paper-plane"></i>Envoyer
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript">
-	jQuery("#widget-addCatalog-form").validate({
-		submitHandler: function(form) {
-			jQuery(form).ajaxSubmit({
-				success: function(response) {
-					if (response.response == 'success') {
-						$.notify({
-							message: response.message
-						}, {
-							type: 'success'
-						});
-						listPortfolioBikes();
-						document.getElementById('widget-addCatalog-form').reset();
-						$('#addPortfolioBike').modal('toggle');
-					} else {
-						$.notify({
-							message: response.message
-						}, {
-							type: 'danger'
-						});
-					}
-				}
-			});
-		}
-	});
+  jQuery("#widget-addCatalog-form").validate({
+    submitHandler: function (form) {
+      jQuery(form).ajaxSubmit({
+        success: function (response) {
+          if (response.response == "success") {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "success",
+              }
+            );
+            listPortfolioBikes();
+            document.getElementById("widget-addCatalog-form").reset();
+            $("#addPortfolioBike").modal("toggle");
+          } else {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "danger",
+              }
+            );
+          }
+        },
+      });
+    },
+  });
 </script>

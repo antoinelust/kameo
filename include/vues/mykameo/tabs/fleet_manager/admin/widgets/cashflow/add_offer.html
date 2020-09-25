@@ -9,35 +9,27 @@
 					<div class="col-sm-12">
 						<form id="widget-offerManagement-form" action="apis/Kameo/offer_management.php" role="form" method="post">
 							<div class="form-group col-sm-12">
-								<h4 class="fr text-green offerManagementTitle">Ajouter une offre</h4>
+								<h4 class="text-green offerManagementTitle">Ajouter une offre</h4>
 								<div class="col-sm-12">
 									<div class="col-sm-12">
-										<label for="title"  class="fr">Titre</label>
-										<label for="title"  class="en">Title</label>
-										<label for="title"  class="nl">Title</label>
+										<label for="title"></label>Titre</label>
 										<input type="text" name="title" class="form-control required">
 									</div>
 									<div class="col-sm-12">
-										<label for="description"  class="fr">Description</label>
-										<label for="description"  class="en">Description</label>
-										<label for="description"  class="nl">Description</label>
+										<label for="description">Description</label>
 										<textarea class="form-control required" rows="5" name="description"></textarea>
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="col-sm-3">
-										<label for="type"  class="fr">Type</label>
-										<label for="type"  class="en">Type</label>
-										<label for="type"  class="nl">Type</label>
+										<label for="type">Type</label>
 										<select name="type" class="form-control required">
 											<option value="leasing">Location</option>
 											<option value="achat">achat</option>
 										</select>
 									</div>
 									<div class="col-sm-3">
-										<label for="status"  class="fr">Status</label>
-										<label for="status"  class="en">Status</label>
-										<label for="status"  class="nl">Status</label>
+										<label for="status">Status</label>
 										<select name="status" class="form-control required">
 											<option value="ongoing">En cours</option>
 											<option value="done">Signé</option>
@@ -45,41 +37,29 @@
 										</select>
 									</div>
 									<div class="col-sm-3">
-										<label for="probability"  class="fr">Chance de réussite</label>
-										<label for="probability"  class="en">Chance de réussite</label>
-										<label for="probability"  class="nl">chance de réussite</label>
+										<label for="probability">Chance de réussite</label>
 										<input type="number" min="0" max="100" name="probability" class="form-control required">
 									</div>
 									<div class="col-sm-3">
-										<label for="amount"  class="fr">Montant</label>
-										<label for="amount"  class="en">Montant</label>
-										<label for="amount"  class="nl">Montant</label>
+										<label for="amount">Montant</label>
 										<input type="number" min="0" name="amount" class="form-control required">
 									</div>
 									<div class="col-sm-3">
-										<label for="margin"  class="fr">Marge</label>
-										<label for="margin"  class="en">Marge</label>
-										<label for="margin"  class="nl">Marge</label>
+										<label for="margin">Marge</label>
 										<input type="number" min="0" name="margin" class="form-control">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="col-sm-4">
-										<label for="date"  class="fr">Date de signature</label>
-										<label for="date"  class="en">Date de signature</label>
-										<label for="date"  class="nl">Date de signature</label>
+										<label for="date">Date de signature</label>
 										<input type="date" name="date" class="form-control">
 									</div>
 									<div class="col-sm-4">
-										<label for="start"  class="fr">Date de début</label>
-										<label for="start"  class="en">Date de début</label>
-										<label for="start"  class="nl">Date de début</label>
+										<label for="start">Date de début</label>
 										<input type="date" name="start" class="form-control">
 									</div>
 									<div class="col-sm-4">
-										<label for="end"  class="fr">Date de fin</label>
-										<label for="end"  class="en">Date de fin</label>
-										<label for="end"  class="nl">Date de fin</label>
+										<label for="end">Date de fin</label>
 										<input type="date" name="end" class="form-control">
 									</div>
 								</div>
@@ -102,20 +82,14 @@
 								<input type="text" name="action" class="form-control required hidden" value="add">
 								<input type="text" name="ID" class="hidden">
 								<div class="separator"></div>
-								<button  class="fr button small green button-3d rounded icon-left offerManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+								<button  class="button small green button-3d rounded icon-left offerManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
-			<div class="fr" class="modal-footer">
+			<div class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
 			</div>
 		</div>
 	</div>

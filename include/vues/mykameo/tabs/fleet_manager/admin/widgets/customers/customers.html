@@ -1,75 +1,123 @@
-<div class="modal fade" id="companyListing" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="z-index: 1041; display: none; overflow-y: auto !important;">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-			<div data-example-id="contextual-table" class="bs-example">
-				<span id="companyListingSpan"></span>
-				<span id="companyListingFilter" class="hidden">HEU_MAJ</span>
-			</div>
-			<div class="separator"></div>
-			<h4 class="text-green">Statistiques sur le nombre de clients : </h4>
-			<div class="col-sm-3">
-				<div class="form-group">
-					<label for="dtp_input3" class="control-label">Date de début</label>
-					<div class="input-group date form_date_start_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
-						<input class="form-control" size="16" type="text" value="" readonly>
-						<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-					</div>
-					<input type="hidden" id="dtp_input3" value="" /><br/>
-				</div>
-			</div>
-			<div class="col-sm-3">
-				<div class="form-group">
-					<label for="dtp_input4" class="control-label">Date de fin</label>
-					<div class="input-group date form_date_end_client col-md-12" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">
-						<input class="form-control" size="16" type="text" value="" readonly>
-						<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-					</div>
-					<input type="hidden" id="dtp_input4" value="" /><br/>
-				</div>
-			</div>
-			<canvas id="myChart3" width="800" height="400"></canvas>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-			</div>
-		</div>
-	</div>
+<div
+  class="modal fade"
+  id="companyListing"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="z-index: 1041; display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div data-example-id="contextual-table" class="bs-example">
+        <span id="companyListingSpan"></span>
+        <span id="companyListingFilter" class="hidden">HEU_MAJ</span>
+      </div>
+      <div class="separator"></div>
+      <h4 class="text-green">Statistiques sur le nombre de clients :</h4>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="dtp_input3" class="control-label">Date de début</label>
+          <div
+            class="input-group date form_date_start_client col-md-12"
+            data-date=""
+            data-date-format="dd/mm/yyyy"
+            data-link-field="dtp_input3"
+            data-link-format="yyyy-mm-dd"
+          >
+            <input
+              class="form-control"
+              size="16"
+              type="text"
+              value=""
+              readonly
+            />
+            <span class="input-group-addon"
+              ><span class="glyphicon glyphicon-remove"></span
+            ></span>
+            <span class="input-group-addon"
+              ><span class="glyphicon glyphicon-calendar"></span
+            ></span>
+          </div>
+          <input type="hidden" id="dtp_input3" value="" /><br />
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="dtp_input4" class="control-label">Date de fin</label>
+          <div
+            class="input-group date form_date_end_client col-md-12"
+            data-date=""
+            data-date-format="dd/mm/yyyy"
+            data-link-field="dtp_input4"
+            data-link-format="yyyy-mm-dd"
+          >
+            <input
+              class="form-control"
+              size="16"
+              type="text"
+              value=""
+              readonly
+            />
+            <span class="input-group-addon"
+              ><span class="glyphicon glyphicon-remove"></span
+            ></span>
+            <span class="input-group-addon"
+              ><span class="glyphicon glyphicon-calendar"></span
+            ></span>
+          </div>
+          <input type="hidden" id="dtp_input4" value="" /><br />
+        </div>
+      </div>
+      <canvas id="myChart3" width="800" height="400"></canvas>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript">
-	$('.form_date_start_client').datetimepicker({
-		language:  'fr',
-		weekStart: 1,
-		todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0
-	});
-		$('.form_date_end_client').datetimepicker({
-		language:  'fr',
-		weekStart: 1,
-		todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0
-	});
-	$('.form_date_start_client').change(function(){
-		generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-	});
-	$('.form_date_end_client').change(function(){
-		generateCompaniesGraphic($('.form_date_start_client').data("datetimepicker").getDate(), $('.form_date_end_client').data("datetimepicker").getDate());
-	});
+  $(".form_date_start_client").datetimepicker({
+    language: "fr",
+    weekStart: 1,
+    todayBtn: 1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0,
+  });
+  $(".form_date_end_client").datetimepicker({
+    language: "fr",
+    weekStart: 1,
+    todayBtn: 1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0,
+  });
+  $(".form_date_start_client").change(function () {
+    generateCompaniesGraphic(
+      $(".form_date_start_client").data("datetimepicker").getDate(),
+      $(".form_date_end_client").data("datetimepicker").getDate()
+    );
+  });
+  $(".form_date_end_client").change(function () {
+    generateCompaniesGraphic(
+      $(".form_date_start_client").data("datetimepicker").getDate(),
+      $(".form_date_end_client").data("datetimepicker").getDate()
+    );
+  });
 </script>

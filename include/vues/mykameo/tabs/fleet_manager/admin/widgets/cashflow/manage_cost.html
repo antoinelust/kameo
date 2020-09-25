@@ -1,89 +1,122 @@
-<div class="modal fade" id="costsManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
+<div
+  class="modal fade"
+  id="costsManagement"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <form
+              id="widget-costsManagement-form"
+              action="include/costs_management.php"
+              role="form"
+              method="post"
+            >
+              <div class="form-group col-sm-12">
+                <h4 class="text-green costManagementTitle">Ajouter un frais</h4>
 
-                    <form id="widget-costsManagement-form" action="include/costs_management.php" role="form" method="post">
+                <div class="col-sm-12">
+                  <label for="title">Titre</label>
+                  <input
+                    type="text"
+                    name="title"
+                    class="form-control required"
+                  />
+                </div>
+                <div class="col-sm-12">
+                  <label for="description">Description</label>
+                  <textarea
+                    class="form-control required"
+                    rows="5"
+                    name="description"
+                  ></textarea>
+                </div>
 
-                      <div class="form-group col-sm-12">
-                        <h4 class="fr text-green costManagementTitle">Ajouter un frais</h4>
+                <div class="col-sm-12">
+                  <div class="col-sm-3">
+                    <label for="type">Type</label>
+                    <select name="type" class="form-control required">
+                      <option value="monthly">Coût mensuel</option>
+                      <option value="one-shot">Coût ponctuel</option>
+                    </select>
+                  </div>
 
-                        <div class="col-sm-12">
-                          <label for="title"  class="fr">Titre</label>
-                          <label for="title"  class="en">Title</label>
-                          <label for="title"  class="nl">Title</label>
-                          <input type="text" name="title" class="form-control required">
-                        </div>
-                        <div class="col-sm-12">
-                          <label for="description"  class="fr">Description</label>
-                          <label for="description"  class="en">Description</label>
-                          <label for="description"  class="nl">Description</label>
-                          <textarea class="form-control required" rows="5" name="description"></textarea>
-                        </div>
-
-                        <div class="col-sm-12">
-                          <div class="col-sm-3">
-                            <label for="type"  class="fr">Type</label>
-                            <label for="type"  class="en">Type</label>
-                            <label for="type"  class="nl">Type</label>
-                            <select name="type" class="form-control required">
-                              <option value="monthly">Coût mensuel</option>
-                              <option value="one-shot">Coût ponctuel</option>
-                            </select>
-                          </div>
-
-                          <div class="col-sm-3">
-                            <label for="amount"  class="fr">Montant</label>
-                            <label for="amount"  class="en">Montant</label>
-                            <label for="amount"  class="nl">Montant</label>
-                            <input type="number" min="0" name="amount" class="form-control required">
-                          </div>
-
-                        </div>
-
-                        <div class="col-sm-12">
-                          <div class="col-sm-4">
-                            <label for="start"  class="fr">Date de début</label>
-                            <label for="start"  class="en">Date de début</label>
-                            <label for="start"  class="nl">Date de début</label>
-                            <input type="date" name="start" class="form-control required">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="end"  class="fr">Date de fin</label>
-                            <label for="end"  class="en">Date de fin</label>
-                            <label for="end"  class="nl">Date de fin</label>
-                            <input type="date" name="end" class="form-control">
-                          </div>
-                        </div>
-
-                        <div class="col-sm-12"></div>
-                        <br>
-
-                        <input type="text" name="requestor" class="form-control required hidden" value="<?php echo $user_data['EMAIL']; ?>">
-                        <input type="text" name="action" class="form-control required hidden" value="add">
-                        <input type="text" name="ID" class="hidden">
-
-                        <div class="separator"></div>
-                        <button  class="fr button small green button-3d rounded icon-left costManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
-                      </div>
-                    </form>
+                  <div class="col-sm-3">
+                    <label for="amount">Montant</label>
+                    <input
+                      type="number"
+                      min="0"
+                      name="amount"
+                      class="form-control required"
+                    />
                   </div>
                 </div>
+
+                <div class="col-sm-12">
+                  <div class="col-sm-4">
+                    <label for="start">Date de début</label>
+                    <input
+                      type="date"
+                      name="start"
+                      class="form-control required"
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="end">Date de fin</label>
+                    <input type="date" name="end" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-sm-12"></div>
+                <br />
+
+                <input
+                  type="text"
+                  name="requestor"
+                  class="form-control required hidden"
+                  value="<?php echo $user_data['EMAIL']; ?>"
+                />
+                <input
+                  type="text"
+                  name="action"
+                  class="form-control required hidden"
+                  value="add"
+                />
+                <input type="text" name="ID" class="hidden" />
+
+                <div class="separator"></div>
+                <button
+                  class="button small green button-3d rounded icon-left costManagementSendButton"
+                  type="submit"
+                >
+                  <i class="fa fa-plus"></i>Ajouter
+                </button>
               </div>
-              <div class="fr" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-              </div>
-              <div class="en" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-              </div>
-              <div class="nl" class="modal-footer">
-                <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-              </div>
-            </div>
+            </form>
           </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

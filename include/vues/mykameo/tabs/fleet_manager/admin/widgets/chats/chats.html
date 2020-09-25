@@ -1,61 +1,85 @@
-<div class="modal fade" id="chatsListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="row">
-					<h4 class="modal-title fr text-green col-sm-11">Chats</h4>
-					<button type="button" class="close col-sm-1" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-			</div>
-			<div class="table-responsive">
-				<table id="chatsList" class="table" style="width: 100%;"></table>
-			</div>
-			<script>
-			$('#chatsManagement').click(function () {
-				$('#chatsList').dataTable({
-					destroy: true,
-					"ajax": {
-						"url" : "api/chats",
-						"contentType": "application/json",
-						"type": "GET",
-						"data": {
-							"action": "listChatUsers"
-						}
-					},
-					"sAjaxDataProp": "",
-					columnDefs: [
-						{ width: "100%", targets: 0 }
-					],
-					"columns": [
-						{ title: "User", "data": "EMAIL",
-							"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-								$(nTd).html("<a href='#' data-target='#adminChat' data-correspondent='"+sData+"' data-order='"+(oData.ORDER_STATUS!==null ? oData.ORDER_STATUS:'none')+"' data-toggle='modal'>"+sData+"</a>");
-							}
-						},
-						{ title: "Number&nbsp;of&nbsp;messages", "data": "NB_MESSAGES" },
-						{ title: "Repondu", "data": "MESSAGE_READ" },
-						{ title: "Statut commande", "data": "ORDER_STATUS",
-							"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-								if (sData !== null)
-									$(nTd).html(sData);
-								else
-									$(nTd).html("none");
-							}
-						},
-					],
-					"order": [[ 0, "asc" ], [ 1, "desc" ]]
-				});
-			});
-			</script>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-			</div>
-		</div>
-	</div>
+<div
+  class="modal fade"
+  id="chatsListing"
+  tabindex="9"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <h4 class="modal-title text-green col-sm-11">Chats</h4>
+          <button
+            type="button"
+            class="close col-sm-1"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table id="chatsList" class="table" style="width: 100%"></table>
+      </div>
+      <script>
+        $("#chatsManagement").click(function () {
+          $("#chatsList").dataTable({
+            destroy: true,
+            ajax: {
+              url: "api/chats",
+              contentType: "application/json",
+              type: "GET",
+              data: {
+                action: "listChatUsers",
+              },
+            },
+            sAjaxDataProp: "",
+            columnDefs: [{ width: "100%", targets: 0 }],
+            columns: [
+              {
+                title: "User",
+                data: "EMAIL",
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                  $(nTd).html(
+                    "<a href='#' data-target='#adminChat' data-correspondent='" +
+                      sData +
+                      "' data-order='" +
+                      (oData.ORDER_STATUS !== null
+                        ? oData.ORDER_STATUS
+                        : "none") +
+                      "' data-toggle='modal'>" +
+                      sData +
+                      "</a>"
+                  );
+                },
+              },
+              { title: "Number&nbsp;of&nbsp;messages", data: "NB_MESSAGES" },
+              { title: "Repondu", data: "MESSAGE_READ" },
+              {
+                title: "Statut commande",
+                data: "ORDER_STATUS",
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                  if (sData !== null) $(nTd).html(sData);
+                  else $(nTd).html("none");
+                },
+              },
+            ],
+            order: [
+              [0, "asc"],
+              [1, "desc"],
+            ],
+          });
+        });
+      </script>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
