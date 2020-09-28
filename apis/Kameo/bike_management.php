@@ -11,6 +11,18 @@ if(!isset($_SESSION))
 include 'globalfunctions.php';
 
 
+function plan_maintenances($start, $end)
+{
+    $maintenances = array();
+    $date = date('Y-m-d', strtotime("+3 months", strtotime($start)));
+    while ($date <= $end) {
+        $maintenances[] = $date;
+        $date = date('Y-m-d', strtotime("+9 months", strtotime($date)));
+    }
+    return $maintenances;
+}
+
+
 if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
     
@@ -168,7 +180,7 @@ if(isset($_POST['action'])){
             $dossier = '../images_bikes/';
             $fichier = $bikeID.".jpg";
             $fichierMini = $bikeID."_mini.jpg";
-/*
+            /*
             if(file_exists($dossier.$fichier)){
                 unlink($dossier.$fichier) or die("Couldn't delete file");
             }
@@ -289,7 +301,7 @@ if(isset($_POST['action'])){
                 imagepng($dst,$fichierMini); // adjust format as needed
                 imagedestroy($dst);            
             }
-*/
+            */
             
 
 
@@ -429,7 +441,7 @@ if(isset($_POST['action'])){
 
 
 
-/*
+        /*
         if(isset($_FILES['picture'])){
 
             $extensions = array('.jpg');
@@ -482,7 +494,7 @@ if(isset($_POST['action'])){
             $fichierMini=$bikeID."_mini".$extension;
             imagejpeg($img, $dossier . $fichierMini);
         }
-*/
+        */
 
         $response=array();
         if($bikeID != NULL && $user != NULL)
@@ -723,6 +735,28 @@ if(isset($_POST['action'])){
             $conn->close();
 
         }
+
+        if(isset($_POST['contractStart']) && $_POST['contractType'] !="stock"){
+            $dates = plan_maintenances($_POST['contractStart'], $_POST['contractEnd']);
+            
+            include 'connexion.php';
+
+            for ($i=0; $i < sizeof($dates); $i++) { 
+                $next_date = $dates[$i];
+                $num_m = array_search($next_date, $dates) + 1;
+
+                $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, COMMENT, NR_ENTR) VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '', '$num_m')";
+
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
+            }
+            
+            $conn->close();
+        }
+
         successMessage("SM0003");
 
     }

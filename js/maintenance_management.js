@@ -26,7 +26,7 @@ function list_maintenances() {
               var date = new Date(response.maintenance[i].date).toLocaleDateString();
               var status = '';
 
-              if (response.maintenance[i].status == 'AUTOMATICLY_PLANNED') {
+              if (response.maintenance[i].status == 'AUTOMATICALY_PLANNED') {
                 status = '<span class="text-red">'+response.maintenance[i].status+'</span>';
               } else if(response.maintenance[i].status == 'DONE'){
                 status = '<span class="text-green">'+response.maintenance[i].status+'</span>';

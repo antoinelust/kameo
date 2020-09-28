@@ -22,7 +22,7 @@ function temp_init(){
 
             document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
             $('.tasksManagerClick').click(function(){
-                list_tasks('*', $('.taskOwnerSelection').val(), '<?php echo $user_data['EMAIL'] ?>');
+                list_tasks('*', $('.taskOwnerSelection').val(), "<?php echo $user_data['EMAIL'] ?>");
                 generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
             });
             $('#offerManagerClick').click(function(){
