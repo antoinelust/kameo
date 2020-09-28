@@ -152,6 +152,21 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     }
 
     include 'connexion.php';
+
+    $sql="select count(1) as SOMME from reservations where EMAIL='$email' and ((DATE_START_2 >= '$dateStartString' and DATE_START_2 <= '$dateEndString') OR (DATE_END_2>='$dateStartString' AND DATE_END_2<='$dateEndString'))";
+
+    if ($conn->query($sql) === FALSE) {
+  		$response = array ('response'=>'error', 'message'=> $conn->error);
+  		echo json_encode($response);
+  		die;
+  	}
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+    if($resultat['SOMME']>0){
+      errorMessage("ES0062");
+    }
+
+
     $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
 
    	if ($conn->query($sql) === FALSE) {
@@ -165,6 +180,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     if($length == 0){
         errorMessage("ES0015");
     }
+
+
 
 
     $bike=array();

@@ -32,8 +32,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 
 	include 'connexion.php';
     $sql= "select * from reservations where STAANN!='D' and BIKE_ID = '$bikeID' AND ((DATE_END_2 >= '$dateStart_2String' and DATE_END_2 <= '$dateEnd_2String') OR (DATE_START_2>='$dateStart_2String' and DATE_START_2 <= '$dateEnd_2String'))";
-    
-   	if ($conn->query($sql) === FALSE) {        
+
+   	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
@@ -47,8 +47,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
     }
 
     $timestamp= time();
-    $sql= "INSERT INTO reservations (USR_MAJ, STATUS, BIKE_ID, DATE_START, DATE_START_2, BUILDING_START, DATE_END, DATE_END_2, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$bikeID', '$dateStart', '$dateStart_2String', '$buildingStart', '$dateEnd', '$dateEnd_2String', '$buildingEnd', '$user', '')";    
-    
+    $sql= "INSERT INTO reservations (USR_MAJ, STATUS, BIKE_ID, DATE_START, DATE_START_2, BUILDING_START, DATE_END, DATE_END_2, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$bikeID', '$dateStart', '$dateStart_2String', '$buildingStart', '$dateEnd', '$dateEnd_2String', '$buildingEnd', '$user', '')";
+
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -139,12 +139,152 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
             echo json_encode($response);
             die;
         }
-
-        $conn->close();
-
     }
+		require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
+		$mail = new PHPMailer();
 
 
+		require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+		if($connected && constant('ENVIRONMENT')!="local"){
+
+			$sql="select aa.FRAME_NUMBER, bb.BRAND, bb.MODEL from customer_bikes aa, bike_catalog bb WHERE aa.ID='$bikeID' and aa.TYPE=bb.ID";
+			if ($conn->query($sql) === FALSE) {
+					$response = array ('response'=>'error', 'message'=> $conn->error);
+					echo json_encode($response);
+					die;
+			}
+			$result = mysqli_query($conn, $sql);
+			$resultat = mysqli_fetch_assoc($result);
+			$frameNumber=$resultat['FRAME_NUMBER'];
+			$brand=$resultat['BRAND'];
+			$model=$resultat['MODEL'];
+
+			$mail->From = 'info@kameobikes.com';
+	    $mail->FromName = "Information Kameo Bikes";
+	    $mail->AddReplyTo('info@kameobikes.com', "Information Kameo Bikes");
+			$mail->AddAddress($email);
+			$mail->IsHTML(true);
+			$mail->CharSet = 'UTF-8';
+			
+
+			$subject="New bike booking - Kameo Bikes";
+			$mail->Subject = $subject;
+			include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
+
+			$body = $body."
+					<body>
+							<!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Mail reçu via la page de contact</span><!--<![endif]-->
+							<!--*|END:IF|*-->
+							<center>
+									<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\">
+											<tr>
+													<td align=\"center\" valign=\"top\" id=\"bodyCell\">
+															<!-- BEGIN TEMPLATE // -->
+															<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">
+																	<tr>
+																			<td align=\"center\" valign=\"top\" id=\"templateHeader\" data-template-container>
+																					<!--[if (gte mso 9)|(IE)]>
+																					<table align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"600\" style=\"width:600px;\">
+																					<tr>
+																					<td align=\"center\" valign=\"top\" width=\"600\" style=\"width:600px;\">
+																					<![endif]-->
+																					<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"templateContainer\">
+																							<tr>
+																									<td valign=\"top\" class=\"headerContainer\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnImageBlock\" style=\"min-width:100%;\">
+					<tbody class=\"mcnImageBlockOuter\">
+									<tr>
+											<td valign=\"top\" style=\"padding:9px\" class=\"mcnImageBlockInner\">
+													<table align=\"left\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"mcnImageContentContainer\" style=\"min-width:100%;\">
+															<tbody><tr>
+																	<td class=\"mcnImageContent\" valign=\"top\" style=\"padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;\">
+
+
+																							<img align=\"center\" alt=\"\" src=\"https://gallery.mailchimp.com/c4664c7c8ed5e2d53dc63720c/images/8b95e5d1-2ce7-4244-a9b0-c5c046bf7e66.png\" width=\"300\" style=\"max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;\" class=\"mcnImage\">
+
+
+																	</td>
+															</tr>
+													</tbody></table>
+											</td>
+									</tr>
+					</tbody>
+			</table></td>
+																							</tr>
+																					</table>
+																					<!--[if (gte mso 9)|(IE)]>
+																					</td>
+																					</tr>
+																					</table>
+																					<![endif]-->
+																			</td>
+																	</tr>
+																	<tr>
+																			<td align=\"center\" valign=\"top\" id=\"templateBody\" data-template-container>
+																					<!--[if (gte mso 9)|(IE)]>
+																					<table align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"600\" style=\"width:600px;\">
+																					<tr>
+																					<td align=\"center\" valign=\"top\" width=\"600\" style=\"width:600px;\">
+																					<![endif]-->
+																					<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"templateContainer\">
+																							<tr>
+																									<td valign=\"top\" class=\"bodyContainer\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"mcnTextBlock\" style=\"min-width:100%;\">
+					<tbody class=\"mcnTextBlockOuter\">
+							<tr>
+									<td valign=\"top\" class=\"mcnTextBlockInner\" style=\"padding-top:9px;\">
+											<!--[if mso]>
+											<table align=\"left\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" style=\"width:100%;\">
+											<tr>
+											<![endif]-->
+
+											<!--[if mso]>
+											<td valign=\"top\" width=\"600\" style=\"width:600px;\">
+											<![endif]-->
+											<table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:100%; min-width:100%;\" width=\"100%\" class=\"mcnTextContentContainer\">
+													<tbody><tr>
+
+															<td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
+
+																	<h3>Nouvelle réservation de vélo !&nbsp;</h3>
+																	<ul>
+																		<li>Date de début: $dateStartString</li>
+																		<li>Date de fin: $dateEndString</li>
+																		<li>Identification du vélo : $frameNumber</li>
+																		<li>Marque : $brand</li>
+																		<li>Modèle : $model</li>
+																	</ul>
+																		Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo.php\">MyKameo</a> pour plus d'informations.</p>
+															</td>
+													</tr>
+											</tbody></table>
+											<!--[if mso]>
+											</td>
+											<![endif]-->
+
+											<!--[if mso]>
+											</tr>
+											</table>
+											<![endif]-->
+									</td>
+							</tr>
+					</tbody>
+			</table>";
+
+
+
+			include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
+
+			$mail->Body = $body;
+
+			if(!$mail->Send()) {
+				 $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
+					echo json_encode($response);
+					die;
+			}
+
+
+		}
+
+		$conn->close();
     successMessage("SM0006");
 }else{
 	errorMessage("ES0012");

@@ -34,9 +34,9 @@ if($captcha == 0){
 }
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
-    
+
  if($email != '') {
-            
+
 
     $mail->IsHTML(true);                                    // Set email format to HTML
     $mail->CharSet = 'UTF-8';
@@ -51,9 +51,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
     }else{
         $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
     }
-     
-     
-     
+
+
+
 
     $mail->From = $email;
     $mail->FromName = $firstName.' '.$name;
@@ -861,7 +861,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
                             </td>
                         </tr>
                     </tbody></table>
-    <!--            
+    <!--
                     <td class=\"mcnDividerBlockInner\" style=\"padding: 18px;\">
                     <hr class=\"mcnDividerContent\" style=\"border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;\" />
     -->
@@ -923,25 +923,25 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
             </center>
         </body>
     </html>
-    ";     
+    ";
 
     $mail->Body = $body;
 
 
     if(!$mail->Send()) {
-       $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
+       $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
 
     }else {
-       $response = array ('response'=>'success');  
+       $response = array ('response'=>'success');
     }
     echo json_encode($response);
     die;
 
 } else {
-	$response = array ('response'=>'error');     
+	$response = array ('response'=>'error');
 	echo json_encode($response);
     die;
 }
-    
+
 }
 ?>

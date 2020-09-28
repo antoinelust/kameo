@@ -30,8 +30,8 @@ if($action=="delete"){
 
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
-        if(file_exists('../factures/'.$row['FILE_NAME'])){
-            unlink('../factures/'.$row['FILE_NAME']);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].'/factures/'.$row['FILE_NAME'])){
+            unlink($_SERVER['DOCUMENT_ROOT'].'/factures/'.$row['FILE_NAME']);
         }
         $sql="DELETE FROM factures where ID='$reference'";
         if ($conn->query($sql) === FALSE) {

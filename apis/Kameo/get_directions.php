@@ -5,11 +5,14 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/include/api_keys.php';
 
 $connected=@fsockopen("www.google.com", 80, $errno, $errstr, 10);
-if($connected){
 
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+
+
+if($connected && constant('ENVIRONMENT')!="local"){
+    require_once $_SERVER['DOCUMENT_ROOT'].'/include/api_keys.php';
     $response=array();
 
     $address_start=isset($_POST['address_start']) ? $_POST['address_start'] : NULL;

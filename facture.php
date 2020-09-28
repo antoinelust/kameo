@@ -222,20 +222,16 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $catalogID=$row2['TYPE'];
 
                 error_log("FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");
-                if(file_exists($_SERVER['DOCUMENT_ROOT']."/images_bikes/".$row2['ID']."_mini.jpg")){
-                    $fichier=$_SERVER['DOCUMENT_ROOT']."/images_bikes/".$row2['ID']."_mini.jpg";
-                }else{
-                    $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
-                    error_log("SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");
+                $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
+                error_log("SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");
 
-                    if ($conn->query($sql) === FALSE) {
-                        echo $conn->error;
-                        die;
-                    }
-                    $result4 = mysqli_query($conn, $sql);
-                    $resultat4 = mysqli_fetch_assoc($result4);
-                    $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".strtolower(str_replace(" ", "-", $resultat4['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat4['MODEL']))."_".strtolower($resultat4['FRAME_TYPE'])."_mini.jpg";
+                if ($conn->query($sql) === FALSE) {
+                    echo $conn->error;
+                    die;
                 }
+                $result4 = mysqli_query($conn, $sql);
+                $resultat4 = mysqli_fetch_assoc($result4);
+                $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".strtolower(str_replace(" ", "-", $resultat4['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat4['MODEL']))."_".strtolower($resultat4['FRAME_TYPE'])."_mini.jpg";
 
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));
@@ -243,10 +239,18 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
                 $dateStart = new DateTime();
-                $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
+                $lastDayMonth= last_day_month( $currentDate->format('m') );
+                if($lastDayMonth < $contractStart->format('d')){
+                    $day=$lastDayMonth;
+                }else{
+                  $day=$contractStart->format('d');
+                }
+
+
+
+                $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $day);
 
                 $temp1=$dateStart->format('d-m-Y');
-
 
                 if($dateStart->format('m')==12){
                     $monthAfter2=1;
