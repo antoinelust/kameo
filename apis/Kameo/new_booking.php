@@ -140,7 +140,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
             die;
         }
     }
-		require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
+		require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php';
 		$mail = new PHPMailer();
 
 
@@ -165,7 +165,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 			$mail->AddAddress($email);
 			$mail->IsHTML(true);
 			$mail->CharSet = 'UTF-8';
-			
+
 
 			$subject="New bike booking - Kameo Bikes";
 			$mail->Subject = $subject;
