@@ -145,7 +145,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 
 
 		require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
-		if($connected && constant('ENVIRONMENT')!="local"){
+
+		if(constant('ENVIRONMENT')!="local"){
 
 			$sql="select aa.FRAME_NUMBER, bb.BRAND, bb.MODEL from customer_bikes aa, bike_catalog bb WHERE aa.ID='$bikeID' and aa.TYPE=bb.ID";
 			if ($conn->query($sql) === FALSE) {
@@ -162,7 +163,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 			$mail->From = 'info@kameobikes.com';
 	    $mail->FromName = "Information Kameo Bikes";
 	    $mail->AddReplyTo('info@kameobikes.com', "Information Kameo Bikes");
-			$mail->AddAddress($email);
+			$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
 			$mail->IsHTML(true);
 			$mail->CharSet = 'UTF-8';
 
@@ -246,11 +247,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 
 																	<h3>Nouvelle réservation de vélo !&nbsp;</h3>
 																	<ul>
-																		<li>Date de début: $dateStartString</li>
-																		<li>Date de fin: $dateEndString</li>
+																		<li>Date de début: $dateStart_2String </li>
+																		<li>Date de fin: $dateEnd_2String </li>
 																		<li>Identification du vélo : $frameNumber</li>
-																		<li>Marque : $brand</li>
-																		<li>Modèle : $model</li>
 																	</ul>
 																		Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo.php\">MyKameo</a> pour plus d'informations.</p>
 															</td>
