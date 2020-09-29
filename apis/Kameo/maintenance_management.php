@@ -11,15 +11,16 @@ if (isset($_GET['action'])) {
   $action = $_GET['action'];
 
   if ($action == "list") {
-    $response = array ();
-    //récupération des entretiens
     include 'connexion.php';
+    $response = array ();
+
+    //récupération des entretiens Confirmed de moins de 2 mois
     $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date, 
             entretiens.STATUS AS status, COMMENT AS comment, FRAME_NUMBER AS frame_number, COMPANY AS company, 
             MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id 
             FROM entretiens 
             INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID 
-            WHERE entretiens.DATE > CURRENT_TIMESTAMP 
+            WHERE entretiens.DATE > CURRENT_TIMESTAMP AND entretiens.DATE < DATE(NOW() + INTERVAL 2 MONTH)  
             GROUP BY BIKE_ID 
             ORDER BY entretiens.DATE;";
     if ($conn->query($sql) === FALSE) {
@@ -30,12 +31,14 @@ if (isset($_GET['action'])) {
     $result = mysqli_query($conn, $sql);
 
     $response['maintenance'] = $result->fetch_all(MYSQLI_ASSOC);
-    $response['maintenancesNumberGlobal']=$result->num_rows;
-    
-    //count des entretiens a valider
-    include 'connexion.php';
-    $sql="SELECT COUNT(ID) FROM entretiens WHERE STATUS = 'AUTOMATICALY_PLANNED';";
 
+    //count des entretiens auto planifiés ET confirmés de moins de 2 mois
+    $sql_auto_plan="SELECT COUNT(ID) FROM entretiens 
+    WHERE STATUS = 'AUTOMATICALY_PLANNED' AND DATE > CURRENT_TIMESTAMP AND DATE < DATE(NOW() + INTERVAL 2 MONTH)";
+    $sql_confirmed = "SELECT COUNT(ID) FROM entretiens 
+    WHERE STATUS = 'CONFIRMED' AND DATE > CURRENT_TIMESTAMP AND DATE < DATE(NOW() + INTERVAL 2 MONTH)";
+
+    $sql = "SELECT ($sql_auto_plan) AS auto_plan, ($sql_confirmed) AS confirmed from entretiens";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);
@@ -44,9 +47,10 @@ if (isset($_GET['action'])) {
     $result = mysqli_query($conn, $sql);
     $row =  mysqli_fetch_array($result);
     $conn->close();
-    $i=0;
+
     $response['response'] = 'success';
-    $response['maintenancesNumberAuto']=$row['COUNT(ID)'];
+    $response['maintenancesNumberGlobal']=$row['confirmed'];
+    $response['maintenancesNumberAuto']=$row['auto_plan'];
 
     echo json_encode($response);
     die;
