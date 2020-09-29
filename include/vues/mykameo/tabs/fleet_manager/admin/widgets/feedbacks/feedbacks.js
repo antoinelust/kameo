@@ -19,61 +19,6 @@ $(".fleetmanager").click(function () {
   });
 });
 
-function initiatizeFeedback(id, notificationId = -1) {
-  document.getElementById("widget-feedbackManagement-form").reset();
-
-  $.ajax({
-    url: "apis/Kameo/feedback_management.php",
-    type: "get",
-    data: { action: "retrieveBooking", ID: id },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        console.log(response);
-
-        $("#feedbackManagement input[name=notificationID]").val(notificationId);
-        $(".feedbackManagementTitle").html("Ajouter un feedback");
-        $("#feedbackManagement input[name=bike]").val(response.bikeNumber);
-        $("#feedbackManagement input[name=startDate]").val(response.start);
-        $("#feedbackManagement input[name=endDate]").val(response.end);
-        $("#feedbackManagement input[name=ID]").val(response.ID);
-        $("#feedbackManagement input[name=utilisateur]").val(response.email);
-        document.getElementsByClassName("feedbackBikeImage")[0].src =
-          "images_bikes/" + response.bikeID + "_mini.jpg";
-        $("#feedbackManagement select[name=note]").attr("readonly", false);
-        $("#feedbackManagement textarea[name=comment]").attr("readonly", false);
-        if (response.status == "DONE") {
-          $("#feedbackManagement select[name=note]").val(response.note);
-
-          $("#feedbackManagement select[name=note]").attr("readonly", true);
-          $("#feedbackManagement textarea[name=comment]").attr(
-            "readonly",
-            "true"
-          );
-
-          if (response.feedback == "1") {
-            $("#feedbackManagement input[name=entretien]").prop(
-              "checked",
-              true
-            );
-          } else {
-            $("#feedbackManagement input[name=entretien]").prop(
-              "checked",
-              false
-            );
-          }
-          $("#feedbackManagement textarea[name=comment]").val(response.comment);
-          $(".feedbackManagementSendButton").addClass("hidden");
-        } else {
-          $(".feedbackManagementSendButton").removeClass("hidden");
-        }
-        $("#feedbackManagement").modal("toggle");
-      }
-    },
-  });
-}
 
 function list_feedbacks() {
   $.ajax({

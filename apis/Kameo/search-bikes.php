@@ -153,7 +153,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
     include 'connexion.php';
 
-    $sql="select count(1) as SOMME from reservations where EMAIL='$email' and ((DATE_START_2 >= '$dateStartString' and DATE_START_2 <= '$dateEndString') OR (DATE_END_2>='$dateStartString' AND DATE_END_2<='$dateEndString'))";
+    $sql="select count(1) as SOMME from reservations where EMAIL='$email' and STAANN != 'D' and ((DATE_START_2 >= '$dateStartString' and DATE_START_2 <= '$dateEndString') OR (DATE_END_2>='$dateStartString' AND DATE_END_2<='$dateEndString'))";
 
     if ($conn->query($sql) === FALSE) {
   		$response = array ('response'=>'error', 'message'=> $conn->error);
