@@ -14,13 +14,14 @@ if (isset($_GET['action'])) {
     $response = array ();
     //récupération des entretiens
     include 'connexion.php';
-    $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date,
+    $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date, 
             entretiens.STATUS AS status, COMMENT AS comment, FRAME_NUMBER AS frame_number, COMPANY AS company, 
-            MODEL AS model, FRAME_REFERENCE AS frame_reference
-            FROM entretiens
-            INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+            MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id 
+            FROM entretiens 
+            INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID 
             WHERE entretiens.DATE > CURRENT_TIMESTAMP 
-            ORDER BY entretiens.DATE LIMIT 1;";
+            GROUP BY BIKE_ID 
+            ORDER BY entretiens.DATE;";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);

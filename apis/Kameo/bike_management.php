@@ -736,7 +736,7 @@ if(isset($_POST['action'])){
 
         }
 
-        if(isset($_POST['contractStart']) && $_POST['contractType'] !="stock"){
+        if(isset($_POST['contractStart']) && isset($_POST['contractEnd'])){
             $dates = plan_maintenances($_POST['contractStart'], $_POST['contractEnd']);
             
             include 'connexion.php';
@@ -745,7 +745,9 @@ if(isset($_POST['action'])){
                 $next_date = $dates[$i];
                 $num_m = array_search($next_date, $dates) + 1;
 
-                $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, COMMENT, NR_ENTR) VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '', '$num_m')";
+                $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, COMMENT, NR_ENTR) 
+                SELECT CURRENT_TIMESTAMP, '$user', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '', '$num_m' 
+                WHERE NOT EXISTS (SELECT * FROM entretiens WHERE BIKE_ID = '$bikeID' AND DATE > '$next_date')";
 
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);

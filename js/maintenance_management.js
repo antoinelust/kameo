@@ -36,7 +36,7 @@ function list_maintenances() {
               dest2 += `
                 <tr>
                 <td>`+response.maintenance[i].id+`</td>
-                <td>`+response.maintenance[i].frame_number+`</td>
+                <td>`+response.maintenance[i].bike_id+`</td>
                 <td>`+response.maintenance[i].company+`</td>
                 <td>`+date+`</td>
                 <td>`+status+`</td>
