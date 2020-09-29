@@ -30,7 +30,7 @@ $(".fleetmanager").click(function () {
   });
 });
 
-$(".addCost").click(function () {
+function addCost () {
   $("#widget-costsManagement-form input").attr("readonly", false);
   $("#widget-costsManagement-form textarea").attr("readonly", false);
   $("#widget-costsManagement-form select").attr("readonly", false);
@@ -38,18 +38,19 @@ $(".addCost").click(function () {
   $(".costManagementSendButton").removeClass("hidden");
   document.getElementById("widget-costsManagement-form").reset();
   $(".costManagementSendButton").text("Ajouter");
-});
-$(".retrieveCost").click(function () {
-  retrieve_cost(this.name, "retrieve");
+};
+function retrieveCost (ID) {
+  retrieve_cost(ID, "retrieve");
   $(".costManagementTitle").text("Consulter un coût");
   $(".costManagementSendButton").addClass("hidden");
-});
-$(".updateCost").click(function () {
-  retrieve_cost(this.name, "update");
+};
+
+function updateCost (ID) {
+  retrieve_cost(ID, "update");
   $(".costManagementTitle").text("Mettre à jour un coût");
   $(".costManagementSendButton").removeClass("hidden");
   $(".costManagementSendButton").text("Mettre à jour");
-});
+};
 
 //Module CASHFLOW ==> Cout ==> retrieve cost
 function retrieve_cost(ID, action) {

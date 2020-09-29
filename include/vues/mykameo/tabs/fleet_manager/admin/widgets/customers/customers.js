@@ -1437,20 +1437,20 @@ function list_contracts_offers(company) {
           dest = dest.concat(temp);
           i++;
         }
-        var temp = "</tobdy></table>";
+        var temp = "</tbody></table>";
         dest = dest.concat(temp);
         document.getElementById("cashListingSpan").innerHTML = dest;
 
         var i = 0;
         var dest = "";
         var temp =
-          '<table class="table table-condensed"><h4 class="fr-inline text-green">Coûts:</h4><h4 class="en-inline text-green">Costs:</h4><h4 class="nl-inline text-green">Costs:</h4><br/><br/><a class="button small green button-3d rounded icon-right addCost" data-target="#costsManagement" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un coût</span></a><div class="seperator seperator-small visible-xs"></div><tbody><thead><tr><th>ID</th><th><span class="fr-inline">Titre</span><span class="en-inline">Title</span><span class="nl-inline">Title</span></th><th><span class="fr-inline">Montant</span><span class="en-inline">Amount</span><span class="nl-inline">Amount</span></th><th><span class="fr-inline">Debut</span><span class="en-inline">Start</span><span class="nl-inline">Start</span></th><th><span class="fr-inline">Fin</span><span class="en-inline">End</span><span class="nl-inline">End</span></th><th>Type</th><th></th></tr></thead>';
+          '<table class="table table-condensed"><h4 class="fr-inline text-green">Coûts :</h4><br/><br/><a class="button small green button-3d rounded icon-right" data-target="#costsManagement" data-toggle="modal" href="#" onclick=\"addCost()\"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un coût</span></a><div class="seperator seperator-small visible-xs"></div><tbody><thead><tr><th>ID</th><th><span class="fr-inline">Titre</span></th><th><span class="fr-inline">Montant</span></th><th><span class="fr-inline">Debut</span></th><th><span class="fr-inline">Fin</span></th><th>Type</th><th></th></tr></thead>';
         dest = dest.concat(temp);
         while (i < response.costsNumber) {
           if (response.cost[i].start != null) {
             var cost_start = response.cost[i].start.shortDate();
           } else {
-            var cost = "N/A";
+            var cost_start = "N/A";
           }
           if (response.cost[i].end != null) {
             var cost_end = response.cost[i].end.shortDate();
@@ -1459,12 +1459,12 @@ function list_contracts_offers(company) {
           }
 
           if (response.cost[i].type == "monthly") {
-            var amount = Math.round(response.cost[i].amount) + "€/mois";
+            var amount = Math.round(response.cost[i].amount) + "€ /mois";
           } else {
-            var amount = Math.round(response.cost[i].amount) + "€";
+            var amount = Math.round(response.cost[i].amount) + " €";
           }
           var temp =
-            '<tr><td><a href="#" class="retrieveCost" data-target="#costsManagement" data-toggle="modal" name="' +
+            '<tr><td><a href="#" onclick=\"retrieveCost(this.name)\" data-target="#costsManagement" data-toggle="modal" name="' +
             response.cost[i].id +
             '">' +
             response.cost[i].id +
@@ -1476,14 +1476,13 @@ function list_contracts_offers(company) {
             cost_start +
             "</td><td>" +
             cost_end +
-            '</td><td><ins><a class="text-green costsManagement updateCost" data-target="#costsManagement" name="' +
+            '</td><td><ins><a class="text-green costsManagement" data-target="#costsManagement" name="' +
             response.cost[i].id +
-            '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
-
+            '" data-toggle="modal" href="#" onclick=\"updateCost(this.name)\">Mettre à jour</a></ins></td></tr>';
           dest = dest.concat(temp);
           i++;
         }
-        var temp = "</tobdy></table>";
+        var temp = "</tbody></table>";
         dest = dest.concat(temp);
         document.getElementById("costsListingSpan").innerHTML = dest;
 
