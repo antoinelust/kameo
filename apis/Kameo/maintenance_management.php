@@ -20,7 +20,7 @@ if (isset($_GET['action'])) {
             MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id 
             FROM entretiens 
             INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID 
-            WHERE entretiens.DATE > CURRENT_TIMESTAMP AND entretiens.DATE < DATE(NOW() + INTERVAL 4 MONTH)  
+            WHERE entretiens.DATE >= CAST(NOW() AS DATE) AND entretiens.DATE < DATE(NOW() + INTERVAL 4 MONTH)  
             GROUP BY BIKE_ID 
             ORDER BY entretiens.DATE;";
     if ($conn->query($sql) === FALSE) {
@@ -34,9 +34,9 @@ if (isset($_GET['action'])) {
 
     //count des entretiens auto planifiés ET confirmés de moins de 2 mois
     $sql_auto_plan="SELECT COUNT(ID) FROM entretiens 
-    WHERE STATUS = 'AUTOMATICALY_PLANNED' AND DATE > CURRENT_TIMESTAMP AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
+    WHERE STATUS = 'AUTOMATICALY_PLANNED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
     $sql_confirmed = "SELECT COUNT(ID) FROM entretiens 
-    WHERE STATUS = 'CONFIRMED' AND DATE > CURRENT_TIMESTAMP AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
+    WHERE STATUS = 'CONFIRMED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
 
     $sql = "SELECT ($sql_auto_plan) AS auto_plan, ($sql_confirmed) AS confirmed from entretiens";
     if ($conn->query($sql) === FALSE) {

@@ -83,6 +83,8 @@ function get_maintenance(ID){
           $('#widget-maintenanceManagement-form select[name=status]').val(response.maintenance.status);
           $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val(date[2] + '-' + date[1] + '-' + date[0]);
           $('#widget-maintenanceManagement-form textarea[name=comment]').val(response.maintenance.comment);
+          
+          $("#widget-maintenanceManagement-form img").attr("src", '../images_entretiens/157_1.jpg')
         }
       }
   });
@@ -98,6 +100,8 @@ $('body').on('click', '.editMaintenance',function(){
   $("#widget-maintenanceManagement-form textarea").attr("readonly", false);
   $(".maintenanceManagementTitle").html("Éditer un entretien");
   $("#widget-maintenanceManagement-form button").show();
+  $("#widget-maintenanceManagement-form img").hide();
+  $("#widget-maintenanceManagement-form div[name=file]").show();
 });
 
 $('body').on('click', '.showMaintenance',function(){
@@ -107,4 +111,6 @@ $('body').on('click', '.showMaintenance',function(){
   $("#widget-maintenanceManagement-form textarea").attr("readonly", true);
   $(".maintenanceManagementTitle").html("Vu sur un entretien");
   $("#widget-maintenanceManagement-form button").hide();
+  $("#widget-maintenanceManagement-form img").show();
+  $("#widget-maintenanceManagement-form div[name=file]").hide();
 });
