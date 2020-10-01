@@ -25,6 +25,14 @@ loadClientConditions()
       }
     });
   }
+  function get_user_address(){
+    return $.ajax({
+      url: 'apis/Kameo/get_user_address.php',
+      type: 'post',
+      success: function(response){
+      }
+    });
+  }
   jQuery("#search-bikes-form").validate({
 	submitHandler: function(form) {
 	  jQuery(form).ajaxSubmit({
@@ -53,27 +61,175 @@ loadClientConditions()
 			var windSpeed;
 			var travel_time_bike;
 			var travel_time_car;
-			get_address_building(text.buildingStart)
-			.done(function(response){
-			  addressStart=response.address;
-			  buildingStartFr=response.building_fr;
-			  buildingStartEn=response.building_en;
-			  buildingStartNl=response.building_nl;
-			  get_address_building(text.buildingEnd)
-			  .done(function(response){
-				addressEnd=response.address;
-				buildingEndFr=response.building_fr;
-				buildingEndEn=response.building_en;
-				buildingEndNl=response.building_nl;
 
-				document.getElementById("meteoStart1").innerHTML=buildingStartFr;
-				document.getElementById("meteoStart2").innerHTML=buildingStartFr;
-				document.getElementById("meteoStart3").innerHTML=buildingStartFr;
-				document.getElementById("meteoStart4").innerHTML=buildingStartFr;
-				document.getElementById("meteoEnd1").innerHTML=buildingEndFr;
-				document.getElementById("meteoEnd2").innerHTML=buildingEndFr;
-				document.getElementById("meteoEnd3").innerHTML=buildingEndFr;
-				document.getElementById("meteoEnd4").innerHTML=buildingEndFr;
+      if(text.buildingStart == text.buildingEnd){
+        get_user_address()
+        .done(function(response){
+          addressStart=response.address;
+  			  buildingStartFr="<?= L::meteo_home; ?>";
+  			  get_address_building(text.buildingEnd)
+  			  .done(function(response){
+  				addressEnd=response.address;
+  				buildingEndFr=response.building_fr;
+          document.getElementById("meteoStart1").innerHTML=buildingStartFr;
+  				document.getElementById("meteoStart2").innerHTML=buildingStartFr;
+  				document.getElementById("meteoStart3").innerHTML=buildingStartFr;
+  				document.getElementById("meteoStart4").innerHTML=buildingStartFr;
+  				document.getElementById("meteoEnd1").innerHTML=buildingEndFr;
+  				document.getElementById("meteoEnd2").innerHTML=buildingEndFr;
+  				document.getElementById("meteoEnd3").innerHTML=buildingEndFr;
+  				document.getElementById("meteoEnd4").innerHTML=buildingEndFr;
+          get_meteo(text.dateStart, addressStart)
+  				.done(function(response){
+  				  if(response.response=="success")
+  				  {
+  					var find = '-';
+  					var re = new RegExp(find, 'g');
+  					weather=response.icon.replace(re,"");
+  					temperature=response.temperature;
+  					precipitation=response.precipProbability;
+  					windSpeed=response.windSpeed;
+  					document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget1').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget1').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget1').innerHTML = windSpeed+" m/s";
+  					document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget2').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget2').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget2').innerHTML = windSpeed+" m/s";
+  					document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget3').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget3').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget3').innerHTML = windSpeed+" m/s";
+  					document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
+  					get_travel_time(text.dateStart, addressStart, addressEnd)
+  					.done(function(response){
+  					  travel_time_bike=response.duration_bike;
+  					  travel_time_car=response.duration_car;
+  					  document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget1').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget1').innerHTML = travel_time_car+" min";
+  					  document.getElementById('walking_duration_widget2').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget2').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget2').innerHTML = travel_time_car+" min";
+  					  document.getElementById('walking_duration_widget3').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget3').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget3').innerHTML = travel_time_car+" min";
+  					  document.getElementById('walking_duration_widget4').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget4').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget4').innerHTML = travel_time_car+" min";
+  					  get_kameo_score(weather, precipitation, temperature, windSpeed, travel_time_bike, travel_time_car);
+  					  loaded1=true;
+  					  if (loaded2){
+  						$.notify({
+  						  message: successMessage
+  						}, {
+  						  type: 'success'
+  						});
+  						document.getElementById("travel_information").style.display = "block";
+  						document.getElementById("velos").style.display = "block";
+  						$("body").removeClass("loading");
+  					  }
+  					})
+  				  }else{
+                $("body").removeClass("loading");
+                console.log(response);
+  				  }
+  			  });
+
+
+          })
+
+
+
+        })
+      }else{
+        get_address_building(text.buildingStart)
+  			.done(function(response){
+  			  addressStart=response.address;
+  			  buildingStartFr=response.building_fr;
+  			  buildingStartEn=response.building_en;
+  			  buildingStartNl=response.building_nl;
+  			  get_address_building(text.buildingEnd)
+  			  .done(function(response){
+  				addressEnd=response.address;
+  				buildingEndFr=response.building_fr;
+          })
+          document.getElementById("meteoStart1").innerHTML=buildingStartFr;
+  				document.getElementById("meteoStart2").innerHTML=buildingStartFr;
+  				document.getElementById("meteoStart3").innerHTML=buildingStartFr;
+  				document.getElementById("meteoStart4").innerHTML=buildingStartFr;
+  				document.getElementById("meteoEnd1").innerHTML=buildingEndFr;
+  				document.getElementById("meteoEnd2").innerHTML=buildingEndFr;
+  				document.getElementById("meteoEnd3").innerHTML=buildingEndFr;
+  				document.getElementById("meteoEnd4").innerHTML=buildingEndFr;
+
+          get_meteo(text.dateStart, addressStart)
+  				.done(function(response){
+  				  if(response.response=="success")
+  				  {
+  					var find = '-';
+  					var re = new RegExp(find, 'g');
+  					weather=response.icon.replace(re,"");
+  					temperature=response.temperature;
+  					precipitation=response.precipProbability;
+  					windSpeed=response.windSpeed;
+  					document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget1').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget1').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget1').innerHTML = windSpeed+" m/s";
+  					document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget2').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget2').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget2').innerHTML = windSpeed+" m/s";
+  					document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget3').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget3').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget3').innerHTML = windSpeed+" m/s";
+  					document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
+  					document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
+  					document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
+  					document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
+  					get_travel_time(text.dateStart, addressStart, addressEnd)
+  					.done(function(response){
+  					  travel_time_bike=response.duration_bike;
+  					  travel_time_car=response.duration_car;
+  					  document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget1').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget1').innerHTML = travel_time_car+" min";
+  					  document.getElementById('walking_duration_widget2').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget2').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget2').innerHTML = travel_time_car+" min";
+  					  document.getElementById('walking_duration_widget3').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget3').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget3').innerHTML = travel_time_car+" min";
+  					  document.getElementById('walking_duration_widget4').innerHTML = response.duration_walking+" min";
+  					  document.getElementById('bike_duration_widget4').innerHTML = travel_time_bike+" min";
+  					  document.getElementById('car_duration_widget4').innerHTML = travel_time_car+" min";
+  					  get_kameo_score(weather, precipitation, temperature, windSpeed, travel_time_bike, travel_time_car);
+  					  loaded1=true;
+  					  if (loaded2){
+  						$.notify({
+  						  message: successMessage
+  						}, {
+  						  type: 'success'
+  						});
+  						document.getElementById("travel_information").style.display = "block";
+  						document.getElementById("velos").style.display = "block";
+  						$("body").removeClass("loading");
+  					  }
+  					})
+  				  }else{
+                $("body").removeClass("loading");
+                console.log(response);
+  				  }
+  			});
+        })
+      }
+
 
 				date= new Date(text.dateStart);
 				var day=date.getDate();
@@ -96,68 +252,6 @@ loadClientConditions()
 				document.getElementById("meteoHour3").innerHTML=hours+"h"+minutes;
 				document.getElementById("meteoHour4").innerHTML=hours+"h"+minutes;
 
-				get_meteo(text.dateStart, addressStart)
-				.done(function(response){
-				  if(response.response=="success")
-				  {
-					var find = '-';
-					var re = new RegExp(find, 'g');
-					weather=response.icon.replace(re,"");
-					temperature=response.temperature;
-					precipitation=response.precipProbability;
-					windSpeed=response.windSpeed;
-					document.getElementById("logo_meteo1").src="images/meteo/"+weather+".png";
-					document.getElementById('temperature_widget1').innerHTML = Math.round(temperature)+" °C";
-					document.getElementById('precipitation_widget1').innerHTML = Math.round(precipitation)+" %";
-					document.getElementById('wind_widget1').innerHTML = windSpeed+" m/s";
-					document.getElementById("logo_meteo2").src="images/meteo/"+weather+".png";
-					document.getElementById('temperature_widget2').innerHTML = Math.round(temperature)+" °C";
-					document.getElementById('precipitation_widget2').innerHTML = Math.round(precipitation)+" %";
-					document.getElementById('wind_widget2').innerHTML = windSpeed+" m/s";
-					document.getElementById("logo_meteo3").src="images/meteo/"+weather+".png";
-					document.getElementById('temperature_widget3').innerHTML = Math.round(temperature)+" °C";
-					document.getElementById('precipitation_widget3').innerHTML = Math.round(precipitation)+" %";
-					document.getElementById('wind_widget3').innerHTML = windSpeed+" m/s";
-					document.getElementById("logo_meteo4").src="images/meteo/"+weather+".png";
-					document.getElementById('temperature_widget4').innerHTML = Math.round(temperature)+" °C";
-					document.getElementById('precipitation_widget4').innerHTML = Math.round(precipitation)+" %";
-					document.getElementById('wind_widget4').innerHTML = windSpeed+" m/s";
-					get_travel_time(text.dateStart, addressStart, addressEnd)
-					.done(function(response){
-					  travel_time_bike=response.duration_bike;
-					  travel_time_car=response.duration_car;
-					  document.getElementById('walking_duration_widget1').innerHTML = response.duration_walking+" min";
-					  document.getElementById('bike_duration_widget1').innerHTML = travel_time_bike+" min";
-					  document.getElementById('car_duration_widget1').innerHTML = travel_time_car+" min";
-					  document.getElementById('walking_duration_widget2').innerHTML = response.duration_walking+" min";
-					  document.getElementById('bike_duration_widget2').innerHTML = travel_time_bike+" min";
-					  document.getElementById('car_duration_widget2').innerHTML = travel_time_car+" min";
-					  document.getElementById('walking_duration_widget3').innerHTML = response.duration_walking+" min";
-					  document.getElementById('bike_duration_widget3').innerHTML = travel_time_bike+" min";
-					  document.getElementById('car_duration_widget3').innerHTML = travel_time_car+" min";
-					  document.getElementById('walking_duration_widget4').innerHTML = response.duration_walking+" min";
-					  document.getElementById('bike_duration_widget4').innerHTML = travel_time_bike+" min";
-					  document.getElementById('car_duration_widget4').innerHTML = travel_time_car+" min";
-					  get_kameo_score(weather, precipitation, temperature, windSpeed, travel_time_bike, travel_time_car);
-					  loaded1=true;
-					  if (loaded2){
-						$.notify({
-						  message: successMessage
-						}, {
-						  type: 'success'
-						});
-						document.getElementById("travel_information").style.display = "block";
-						document.getElementById("velos").style.display = "block";
-						$("body").removeClass("loading");
-					  }
-					})
-				  }else{
-                      $("body").removeClass("loading");
-                      console.log(response);
-				  }
-				})
-			  })
-			});
 			var i=1;
 			var dest = "";
 			while (i <= text.length)

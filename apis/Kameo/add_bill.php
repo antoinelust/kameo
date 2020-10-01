@@ -19,13 +19,13 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 
 $email=$_POST['widget-addBill-form-email'];
-$company=$_POST['widget-addBill-form-company'];
-$beneficiaryCompany=$_POST['beneficiaryCompany'];
+$company=addslashes($_POST['widget-addBill-form-company']);
+$beneficiaryCompany=addslashes($_POST['beneficiaryCompany']);
 $companyOther=$_POST['widget-addBill-form-companyOther'];
 $date=$_POST['widget-addBill-form-date'];
 $type=$_POST['type'];
 $billType=isset($_POST['billType']) ? $_POST['billType'] : NULL;
-$typeOther=isset($_POST['typeOther']) ? $_POST['typeOther'] : NULL;
+$typeOther=isset($_POST['typeOther']) ? addslashes($_POST['typeOther']) : NULL;
 $amountHTVA=$_POST['widget-addBill-form-amountHTVA'];
 $amountTVAC=$_POST['widget-addBill-form-amountTVAC'];
 $billingSent=isset($_POST['widget-addBill-form-sent']) ? "1" : "0";
@@ -35,7 +35,7 @@ $billingSentDate=isset($_POST['widget-addBill-form-sendingDate']) ? date($_POST[
 $billingPaid=isset($_POST['widget-addBill-form-paid']) ? "1" : "0";
 $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST['widget-addBill-form-paymentDate']) : "0";
 $billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
-$communication=$_POST['communication'];
+$communication=addslashes($_POST['communication']);
 
 
 if($amountHTVA<0 && $company!="KAMEO"){

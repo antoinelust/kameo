@@ -56,7 +56,7 @@ if($intake_minute=='0'){
     $intake_hour_2=$intake_hour-1;
     $intake_minute_2=45;
 }else{
-    $intake_minute_2=0;
+    $intake_minute_2=$intake_minute-15;
     $intake_hour_2=$intake_hour;
 }
 
@@ -80,6 +80,7 @@ $dateEnd->setTime($deposit_hour, $deposit_minute);
 $dateStartString=$dateStart->format('Y-m-d H:i');
 $dateStart2String=$dateStart2->format('Y-m-d H:i');
 $dateEndString=$dateEnd->format('Y-m-d H:i');
+
 
 //gérer le error handling de mktime !
 
@@ -165,7 +166,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     if($resultat['SOMME']>0){
       errorMessage("ES0062");
     }
-
 
     $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
 
