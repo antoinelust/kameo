@@ -83,9 +83,26 @@ if (isset($_GET['action'])) {
       $response['maintenance']['model']=$resultat['MODEL'];
       $response['maintenance']['frame_reference']=$resultat['FRAME_REFERENCE'];
 
+      $images = array();
+      $i = 1;
+      $c = 1;
+      $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_entretiens/';
+      $fichier = strtolower(strval($ID)) ."_". strval($i) . '.jpg';
+
+      while( $i == $c ){
+        if (file_exists($dossier . $fichier)) {
+          $images[] = $fichier;
+          $i++;
+          $fichier = strtolower(strval($ID)) ."_". strval($i) . '.jpg';
+        }
+        $c++;
+      }
+
+      $response['maintenance']['images'] = $images;
+
       echo json_encode($response);
       die;
-    } else{
+    }else{
       $response = array('response' => "error", "message" => "Pas d'ID");
       echo json_encode($response);
       die;
