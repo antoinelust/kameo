@@ -7,8 +7,6 @@ session_start();
 include 'globalfunctions.php';
 
 
-
-
 $id=isset($_POST['bikeID']) ? $_POST['bikeID'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : NULL;
 
@@ -29,7 +27,7 @@ if($id != NULL)
 
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    
+
     $response['response']="success";
     $response['id']=$row['ID'];
     $response['frameNumber']=$row['FRAME_NUMBER'];
@@ -50,7 +48,7 @@ if($id != NULL)
     $response['contractType']=$row['CONTRACT_TYPE'];
     $response['contractStart']=$row['CONTRACT_START'];
     $response['contractEnd']=$row['CONTRACT_END'];
-    $response['deliveryDate']=$row['DELIVERY_DATE'];    
+    $response['deliveryDate']=$row['DELIVERY_DATE'];
     $response['soldPrice']=$row['SOLD_PRICE'];
     $response['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
     $response['orderNumber']=$row['ORDER_NUMBER'];
@@ -65,7 +63,7 @@ if($id != NULL)
 	$conn->close();
 
     $catalogID=$row['TYPE'];
-    
+
     include 'connexion.php';
     $sql="SELECT * FROM bike_catalog WHERE ID='$catalogID'";
     if ($conn->query($sql) === FALSE) {
@@ -76,16 +74,18 @@ if($id != NULL)
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
 
-    
+
     $file=__DIR__.'/images_bikes/'.$resultat['ID'].'jpg';
     if ((file_exists($file))){
         $response['img']=__DIR__.'/images_bikes/'.$resultat['ID'];
     }else{
         $response['img']=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']);
-
     }
-    
-    
+
+    $response['brand']=$resultat['BRAND'];
+    $response['modelCatalog']=$resultat['MODEL'];
+    $response['catalogPrice']=$resultat['PRICE_HTVA'];
+
 
     $response['status']=$row['STATUS'];
     include 'connexion.php';
@@ -150,9 +150,9 @@ if($id != NULL)
     if($company){
         $sql=$sql." AND COMPANY='$company'";
     }
-    
-    
-    
+
+
+
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);

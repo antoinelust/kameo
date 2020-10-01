@@ -163,7 +163,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 			$mail->From = 'info@kameobikes.com';
 	    $mail->FromName = "Information Kameo Bikes";
 	    $mail->AddReplyTo('info@kameobikes.com', "Information Kameo Bikes");
-			$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+			$mail->AddAddress($user);
 			$mail->IsHTML(true);
 			$mail->CharSet = 'UTF-8';
 
