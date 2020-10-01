@@ -84,18 +84,12 @@ if (isset($_GET['action'])) {
       $response['maintenance']['frame_reference']=$resultat['FRAME_REFERENCE'];
 
       $images = array();
-      $i = 1;
-      $c = 1;
       $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_entretiens/';
-      $fichier = strtolower(strval($ID)) ."_". strval($i) . '.jpg';
+      $fichier = strtolower(strval($ID)) ."_";
 
-      while( $i == $c ){
-        if (file_exists($dossier . $fichier)) {
-          $images[] = $fichier;
-          $i++;
-          $fichier = strtolower(strval($ID)) ."_". strval($i) . '.jpg';
-        }
-        $c++;
+      foreach (glob($dossier . $fichier . "*") as $filename) {
+        $path = explode("/", $filename);
+        $images[] = end($path);
       }
 
       $response['maintenance']['images'] = $images;
@@ -109,9 +103,11 @@ if (isset($_GET['action'])) {
     }
   }else if($action == "deleteImage"){
     $url=$_GET['url'];
+    $path = explode("/", $url);
+    $id = explode("_", $path[1]);
     if(file_exists( $_SERVER['DOCUMENT_ROOT']."/".$url )){
       unlink($_SERVER['DOCUMENT_ROOT']."/".$url);
-      $response = array('response' => "success", "message" => "Image supprimée");
+      $response = array('response' => "success", 'id' => $id[0], "message" => "Image supprimée");
       echo json_encode($response);
       die;
     }else{

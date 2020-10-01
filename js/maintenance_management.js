@@ -92,42 +92,40 @@ function get_maintenance(ID){
           })
 
           $(function(){
-          $('a.deleteImage').click(function(){
-            console.log('images_entretiens/'+this.name);
-            $.ajax({
-             url:'apis/Kameo/maintenance_management.php',
-             data:{'action' : 'deleteImage', 'url' : 'images_entretiens/'+this.name},
-             method:'GET',
-             success:function(response){
-               if(response.response == "success"){
-                 $.notify(
-                   {
-                     message: response.message,
-                   },
-                   {
-                     type: "success",
-                   }
-                 );
-               }else{
-                 $.notify({
-                   message: response.message,
-                 }, {
-                   type: "danger",
-                 });
-               }
-             }
+            $('a.deleteImage').click(function(){
+              $.ajax({
+              url:'apis/Kameo/maintenance_management.php',
+              data:{'action' : 'deleteImage', 'url' : 'images_entretiens/'+this.name},
+              method:'GET',
+              success:function(response){
+                if(response.response == "success"){
+                  $.notify(
+                    {
+                      message: response.message,
+                    },
+                    {
+                      type: "success",
+                    }
+                  );
+                  get_maintenance(response.id);
+                  $("#maintenanceManagementItem").modal("toggle");
+                  document
+                    .getElementById("widget-maintenanceManagement-form")
+                    .reset();
+                }else{
+                  $.notify({
+                    message: response.message,
+                  }, {
+                    type: "danger",
+                  });
+                }
+              }
+              });
             });
           });
-          });
-
-
-
-
         }
       }
   });
-
-
 }
 
 $('body').on('click', '.editMaintenance',function(){
