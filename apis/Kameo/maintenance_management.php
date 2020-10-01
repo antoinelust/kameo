@@ -15,13 +15,13 @@ if (isset($_GET['action'])) {
     $response = array ();
 
     //récupération des entretiens Confirmed de moins de 2 mois
-    $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date, 
-            entretiens.STATUS AS status, COMMENT AS comment, FRAME_NUMBER AS frame_number, COMPANY AS company, 
-            MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id 
-            FROM entretiens 
-            INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID 
-            WHERE entretiens.DATE >= CAST(NOW() AS DATE) AND entretiens.DATE < DATE(NOW() + INTERVAL 4 MONTH)  
-            GROUP BY BIKE_ID 
+    $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date,
+            entretiens.STATUS AS status, COMMENT AS comment, FRAME_NUMBER AS frame_number, COMPANY AS company,
+            MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id
+            FROM entretiens
+            INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+            WHERE entretiens.DATE >= CAST(NOW() AS DATE) AND entretiens.DATE < DATE(NOW() + INTERVAL 4 MONTH)
+            GROUP BY BIKE_ID
             ORDER BY entretiens.DATE;";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -33,9 +33,9 @@ if (isset($_GET['action'])) {
     $response['maintenance'] = $result->fetch_all(MYSQLI_ASSOC);
 
     //count des entretiens auto planifiés ET confirmés de moins de 2 mois
-    $sql_auto_plan="SELECT COUNT(ID) FROM entretiens 
+    $sql_auto_plan="SELECT COUNT(ID) FROM entretiens
     WHERE STATUS = 'AUTOMATICALY_PLANNED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
-    $sql_confirmed = "SELECT COUNT(ID) FROM entretiens 
+    $sql_confirmed = "SELECT COUNT(ID) FROM entretiens
     WHERE STATUS = 'CONFIRMED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
 
     $sql = "SELECT ($sql_auto_plan) AS auto_plan, ($sql_confirmed) AS confirmed from entretiens";
@@ -104,6 +104,18 @@ if (isset($_GET['action'])) {
       die;
     }else{
       $response = array('response' => "error", "message" => "Pas d'ID");
+      echo json_encode($response);
+      die;
+    }
+  }else if($action == "deleteImage"){
+    $url=$_GET['url'];
+    if(file_exists( $_SERVER['DOCUMENT_ROOT']."/".$url )){
+      unlink($_SERVER['DOCUMENT_ROOT']."/".$url);
+      $response = array('response' => "success", "message" => "Image supprimée");
+      echo json_encode($response);
+      die;
+    }else{
+      $response = array('response' => "error", "message" => "Fichier non trouvé");
       echo json_encode($response);
       die;
     }

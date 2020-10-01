@@ -84,10 +84,45 @@ function get_maintenance(ID){
           $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val(date[2] + '-' + date[1] + '-' + date[0]);
           $('#widget-maintenanceManagement-form textarea[name=comment]').val(response.maintenance.comment);
 
-          for( var image in response.maintenance.images ){
-            $("#widget-maintenanceManagement-form div[name=images]").append('<div class="col-md-4" name="image"> \
-            <button class="button small red button-3d rounded icon-left" type="submit" name="delete"> <i class="fa fa-paper-plane"></i>Supprimer l\'image </button></div>');
-          }
+          response.maintenance.images.forEach(function(image){
+            $("#widget-maintenanceManagement-form div[name=images]").append('<div class="col-md-4" name="image">\
+            <img src="images_entretiens/'+image+'">\
+            <a class="button small red button-3d rounded icon-left deleteImage" name="'+image+'"> \
+            <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
+          })
+
+          $(function(){
+          $('a.deleteImage').click(function(){
+            console.log('images_entretiens/'+this.name);
+            $.ajax({
+             url:'apis/Kameo/maintenance_management.php',
+             data:{'action' : 'deleteImage', 'url' : 'images_entretiens/'+this.name},
+             method:'GET',
+             success:function(response){
+               if(response.response == "success"){
+                 $.notify(
+                   {
+                     message: response.message,
+                   },
+                   {
+                     type: "success",
+                   }
+                 );
+               }else{
+                 $.notify({
+                   message: response.message,
+                 }, {
+                   type: "danger",
+                 });
+               }
+             }
+            });
+          });
+          });
+
+
+
+
         }
       }
   });
