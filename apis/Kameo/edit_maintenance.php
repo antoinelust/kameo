@@ -23,23 +23,13 @@ if (isset($_FILES['file'])){
   $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_entretiens/';
 
   $i = 1;
-  $fichier=strtolower(strval($bike_id)) ."_". strval($i) . '.' . end($temp);
+  $fichier=strtolower(strval($id)) ."_". strval($i) . '.' . end($temp);
   while(file_exists($dossier.$fichier)){
     $i++;
-    $fichier=strtolower(strval($bike_id))."_".strval($i). '.' . end($temp);
+    $fichier=strtolower(strval($id))."_".strval($i). '.' . end($temp);
   }
 
-  /*echo '<script>';
-  echo 'console.log('. json_encode( $dossier ) .')';
-  echo 'console.log('. json_encode( $fichier ) .')';
-  echo '</script>';*/
-
   move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier); //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-  
-  
-
-  
-
 }
 
 include 'connexion.php';
