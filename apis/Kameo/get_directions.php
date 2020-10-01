@@ -85,6 +85,7 @@ if($connected && constant('ENVIRONMENT')!="local"){
         $durationBike=round($durationBike/60);
         $durationCar=round($durationCar/60);
 
+        $response['response']="success";
         $response['duration_walking']=$durationWalking;
         $response['duration_bike']=$durationBike;
         $response['duration_car']=$durationCar;

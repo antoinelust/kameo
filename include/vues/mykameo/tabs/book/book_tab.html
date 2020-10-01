@@ -357,6 +357,91 @@
     </div>
   </div>
 
+  <div id="travel_information_error" class="hidden">
+    <!-- Pour un écran large -->
+    <div class="visible-lg">
+      <div class="col-lg-12 backgroundgreen down">
+        <p class="text-white down">
+          <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
+          <span class="en-inline text-white">Your trip home - work at </span>
+          <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
+          <span class="text-white" id="meteoHour1"></span>
+        </p>
+      </div>
+    </div>
+
+    <div class="visible-lg">
+      <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+
+        <h2 class="text-white text-center">ERROR</h2>
+        <p class="text-white text-center"><?= L::meteo_error_home; ?></p>
+
+      </div>
+    </div>
+
+    <!-- Pour un écran médium -->
+    <div class="visible-md">
+      <div class="col-md-12 backgroundgreen">
+        <p class="text-white down">
+          <span class="fr-inline">Votre trajet domicile - travail à </span>
+          <span class="en-inline">Your trip home - work at </span>
+          <span class="nl-inline">Uw reis naar huis - werk bij </span>
+          <span id="meteoHour2"></span>
+        </p>
+      </div>
+    </div>
+    <div class="visible-md">
+      <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+        <h2 class="text-white text-center">ERROR</h2>
+        <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
+        <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
+        <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
+
+      </div>
+    </div>
+
+    <!-- Pour une tablette -->
+    <div class="visible-sm">
+      <div class="col-sm-12 backgroundgreen">
+        <p class="text-white down">
+          <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
+          <span class="en-inline text-white">Your trip home - work at </span>
+          <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
+          <span class="text-white" id="meteoHour3"></span>
+        </p>
+      </div>
+    </div>
+    <div class="visible-sm">
+      <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+        <h2 class="text-white text-center">ERROR</h2>
+        <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
+        <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
+        <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
+      </div>
+    </div>
+
+    <!-- Pour un smartphone -->
+    <div class="visible-xs">
+      <div class="col-xs-12 backgroundgreen">
+        <p class="text-white down">
+          <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
+          <span class="en-inline text-white">Your trip home - work at </span>
+          <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
+          <span class="text-white" id="meteoHour4"></span>
+        </p>
+      </div>
+    </div>
+    <div class="visible-xs">
+      <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
+        <h2 class="text-white text-center">ERROR</h2>
+        <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
+        <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
+        <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
+      </div>
+    </div>
+  </div>
+
+
   <div id="div_documentation" class="col-sm-12" style="display: block">
     <?php
     include_once 'apis/Kameo/companies/get_company_details.php';

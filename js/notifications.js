@@ -81,6 +81,7 @@ function load_notifications(){
         var count = 1;
         var countNew = 0;
         response.notification.forEach((notification) => {
+          console.log(notification);
           read = "";
           borderBottom = "";
           markAsRead = "";
