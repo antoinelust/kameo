@@ -3,7 +3,7 @@
 	<br/><br/>
 	<div class="row">
         <?php
-        if(get_user_permissions("fleetManager", $token)){ 
+        if(get_user_permissions("fleetManager", $token)){
             echo '
               <div class="col-md-4">
                 <div class="icon-box medium fancy">
@@ -13,12 +13,12 @@
                     </a>
                   </div>
                   <div class="counter bold" id="counterBike" style="color:#3cb395"></div>
-                  <p>Nombre de vélos</p>
+                  <p>'.L::widgetTitle_bikeManager.'</p>
                 </div>
               </div>
               <div class="seperator seperator-small visible-xs"><br/><br/></div>';
         }
-        if(get_user_permissions("fleetManager", $token)){ 
+        if(get_user_permissions("fleetManager", $token)){
             echo '
               <div class="col-md-4">
                 <div class="icon-box medium fancy">
@@ -28,12 +28,13 @@
                     </a>
                   </div>
                   <div class="counter bold" id="counterUsers" style="color:#3cb395"></div>
-                  <p>Nombre d\'utilisateurs</p>
+									<p>'.L::widgetTitle_userManager.'</p>
                 </div>
               </div>';
-            
+
         }
-        if(get_user_permissions("fleetManager", $token)){ 
+        if(get_user_permissions("fleetManager", $token)){
+					if($user_data['CAFETARIA']=='Y'){
             echo '
               <div class="col-md-4">
                 <div class="icon-box medium fancy">
@@ -47,8 +48,9 @@
                 </div>
               </div>
               <div class="seperator seperator-small visible-xs"><br/><br/></div>';
+					}
         }
-        if(get_user_permissions("fleetManager", $token)){ 
+        if(get_user_permissions("fleetManager", $token)){
             echo '
               <div class="col-md-4">
                 <div class="icon-box medium fancy">
@@ -58,15 +60,15 @@
                     </a>
                   </div>
                   <div class="counter bold" id="counterBookings" style="color:#3cb395"></div>
-                  <p>Nombre de réservations sur le mois passé</p>
+									<p>'.L::widgetTitle_bookingManager.'</p>
                 </div>
               </div>';
         }?>
-            
+
 	</div>
 	<div class="separator"></div>
     <?php
-    if(get_user_permissions("fleetManager", $token)){ 
+    if(get_user_permissions("fleetManager", $token)){
         echo '
         <h4 class="fr">Réglages</h4>
         <h4 class="en">Settings</h4>
@@ -87,9 +89,8 @@
         </div>
         <div class="separator"></div>';
     }
-        
-    if(get_user_permissions("admin", $token)){ 
-                
+
+    if(get_user_permissions("admin", $token)){
         echo '<h4 class="fr administrationKameo">Administration Kameo</h4>
         <h4 class="en administrationKameo">Kameo administration</h4>
         <h4 class="en administrationKameo">Kameo administration</h4>
@@ -231,8 +232,8 @@
         </div>
         <div class="separator kameo"></div>';
     }
-    
-    if(get_user_permissions("bills", $token)){    
+
+    if(get_user_permissions("bills", $token)){
         echo '<h4 class="fr billsTitle ">Factures</h4>
         <h4 class="en billsTitle ">Billing</h4>
         <h4 class="nl billsTitle ">Billing</h4><br/><br />
@@ -250,7 +251,7 @@
           </div>
         </div>
         <div class="col-md-12" id="progress-bar-bookings"></div>';
-    }    
-    
+    }
+
     ?>
 </div>

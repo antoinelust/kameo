@@ -239,16 +239,28 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
                 $dateStart = new DateTime();
-                $lastDayMonth= last_day_month( $currentDate->format('m') );
+                $lastDayMonth= last_day_month( $contractStart->format('m') );
                 if($lastDayMonth < $contractStart->format('d')){
                     $day=$lastDayMonth;
                 }else{
                   $day=$contractStart->format('d');
                 }
 
+                if($currentDate->format('d') > $contractStart->format('d')){
+                  if($currentDate->format('m')==12){
+                    $month=1;
+                    $year=($currentDate->format('Y'))+1;
+                  }else{
+                    $month=($currentDate->format('m'))+1;
+                    $year=($currentDate->format('Y'));
+                  }
+                }else{
+                  $month=$currentDate->format('m');
+                  $year=$currentDate->format('Y');
+                }
 
 
-                $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $day);
+                $dateStart->setDate($year, $month, $day);
 
                 $temp1=$dateStart->format('d-m-Y');
 
@@ -358,7 +370,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['START'], 0, 4), substr($row2['START'],5,2), substr($row2['START'], 8,2));
                 $dateStart = new DateTime();
-                $dateStart->setDate($currentDate->format('Y'), $currentDate->format('m'), $contractStart->format('d'));
+                $dateStart->setDate($contractStart->format('Y'), $contractStart->format('m'), $contractStart->format('d'));
                 $temp1=$dateStart->format('d-m-Y');
                 $temp2=$dateAfter->format('d-m-Y');
 

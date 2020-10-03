@@ -380,6 +380,7 @@ function getHistoricBookings() {
           var building_end_en = response.booking[i].building_end_en;
           var building_end_nl = response.booking[i].building_end_nl;
           var frame_number = response.booking[i].frameNumber;
+          var model = response.booking[i].model;
           var bikeID = response.booking[i].bikeID;
 
           var tempHistoricBookings =
@@ -392,7 +393,9 @@ function getHistoricBookings() {
             '">' +
             response.booking[i].start.shortDate() +
             " - " +
-            building_start_fr +
+            "<span class=\"fr-inline\">"+building_start_fr+"</span>\
+            <span class=\"en-inline\">"+building_start_en+"</span>\
+            <span class=\"nl-inline\">"+building_start_nl+"</span>" +
             " <span><?= L::mk_reservations_at; ?></span> " +
             response.booking[i].start.shortHours() +
             '</td><td data-sort="' +
@@ -400,11 +403,13 @@ function getHistoricBookings() {
             '">' +
             response.booking[i].end.shortDate() +
             " - " +
-            building_end_fr +
+            "<span class=\"fr-inline\">"+building_end_fr+"</span>\
+            <span class=\"en-inline\">"+building_end_en+"</span>\
+            <span class=\"nl-inline\">"+building_end_nl+"</span>" +
             " <span><?= L::mk_reservations_at; ?></span> " +
             response.booking[i].end.shortHours() +
             "</td><td>" +
-            frame_number +
+            model +
             '</td></tr>';
             //<td><a class="button small red rounded effect" data-target="#entretien2" data-toggle="modal" href="#" onclick="initializeEntretien2(\'' +
             //bikeID +
@@ -456,6 +461,7 @@ function getHistoricBookings() {
           var building_end_en = response.booking[i].building_end_en;
           var building_end_nl = response.booking[i].building_end_nl;
           var frame_number = response.booking[i].frameNumber;
+          var model = response.booking[i].model;
           var booking_id = response.booking[i].bookingID;
           var annulation = response.booking[i].annulation;
 
@@ -468,7 +474,9 @@ function getHistoricBookings() {
               "</a></td><td>" +
               response.booking[i].start.shortDate() +
               " - " +
-              building_start_fr +
+              "<span class=\"fr-inline\">"+building_start_fr+"</span>\
+              <span class=\"en-inline\">"+building_start_en+"</span>\
+              <span class=\"nl-inline\">"+building_start_nl+"</span>" +
               " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].start.shortHours() +
               "</td><td>" +
@@ -478,7 +486,7 @@ function getHistoricBookings() {
               " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].end.shortHours() +
               "</td><td>" +
-              frame_number +
+              model +
               '</td><td><a class="button small green rounded effect" onclick="showBooking(' +
               booking_id +
               ')"><span>+</span></a></td>';
@@ -500,17 +508,22 @@ function getHistoricBookings() {
               "</a></td><td>" +
               response.booking[i].start.shortDate() +
               " - " +
-              building_start_fr +
+              "<span class=\"fr-inline\">"+building_start_fr+"</span>\
+              <span class=\"en-inline\">"+building_start_en+"</span>\
+              <span class=\"nl-inline\">"+building_start_nl+"</span>" +
               " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].start.shortHours() +
               "</td><td>" +
               response.booking[i].end.shortDate() +
               " - " +
-              building_end_fr +
+              "<span class=\"fr\">"+building_end_fr+"</span>\
+              <span class=\"en-inline\">"+building_end_en+"</span>\
+              <span class=\"nl-inline\">"+building_end_nl+"</span>" +
+              " <span><?= L::mk_reservations_at; ?></span> " +
               " <span><?= L::mk_reservations_at; ?></span> " +
               response.booking[i].end.shortHours() +
               "</td><td>" +
-              frame_number +
+              model +
               "</td><td>" +
               code +
               '</td><td><a class="button small green rounded effect" onclick="showBooking(' +

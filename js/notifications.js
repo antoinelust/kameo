@@ -81,7 +81,9 @@ function load_notifications(){
         var count = 1;
         var countNew = 0;
         response.notification.forEach((notification) => {
-          console.log(notification);
+          if(notification.TYPE){
+            notification.TEXT=feedback_start+notification.TYPE_ITEM+feedback_middle+notification.TYPE_ITEM+','+notification.ID+feedback_end;
+          }
           read = "";
           borderBottom = "";
           markAsRead = "";

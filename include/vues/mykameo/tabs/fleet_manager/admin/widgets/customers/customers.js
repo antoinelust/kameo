@@ -1050,7 +1050,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
 
         //Ajouter un utilisateur
         var dest =
-          '<a class="button small green button-3d rounded icon-right addUser" data-target="#addUser" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un Utilisateur</span></a>';
+          '<a class="button small green button-3d rounded icon-right addUser" data-target="#addUser" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::generic_addUser; ?></a>';
         if (response.userNumber > 0) {
           var i = 0;
           var temp =

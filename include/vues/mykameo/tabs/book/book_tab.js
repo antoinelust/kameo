@@ -33,13 +33,15 @@ loadClientConditions()
       }
     });
   }
-  jQuery("#search-bikes-form").validate({
 
+
+
+  jQuery("#search-bikes-form").validate({
 	submitHandler: function(form) {
     $('#travel_information_loading').removeClass("hidden");
     $('#travel_information_error').addClass("hidden");
     $('#travel_information').addClass("hidden");
-    
+
 	  jQuery(form).ajaxSubmit({
 		success: function(text) {
 		  if (text.response == 'error') {
@@ -70,20 +72,22 @@ loadClientConditions()
       if(text.buildingStart == text.buildingEnd){
         get_user_address()
         .done(function(response){
-          addressStart=response.address;
-  			  buildingStartFr="<?= L::meteo_home; ?>";
-  			  get_address_building(text.buildingEnd)
+          buildingEnd="<?= L::meteo_home; ?>";
+          addressEnd=response.address;
+  			  get_address_building(text.buildingStart)
   			  .done(function(response){
-  				addressEnd=response.address;
-  				buildingEndFr=response.building_fr;
-          document.getElementById("meteoStart1").innerHTML=buildingStartFr;
-  				document.getElementById("meteoStart2").innerHTML=buildingStartFr;
-  				document.getElementById("meteoStart3").innerHTML=buildingStartFr;
-  				document.getElementById("meteoStart4").innerHTML=buildingStartFr;
-  				document.getElementById("meteoEnd1").innerHTML=buildingEndFr;
-  				document.getElementById("meteoEnd2").innerHTML=buildingEndFr;
-  				document.getElementById("meteoEnd3").innerHTML=buildingEndFr;
-  				document.getElementById("meteoEnd4").innerHTML=buildingEndFr;
+  				addressStart=response.address;
+  				buildingStart="<span class=\"fr-inline\">"+response.building_fr+"</span><span class=\"en-inline\">"+response.building_en+"</span><span class=\"nl-inline\">"+response.building_nl+"</span>";
+          document.getElementById("meteoStart1").innerHTML=buildingStart;
+  				document.getElementById("meteoStart2").innerHTML=buildingStart;
+  				document.getElementById("meteoStart3").innerHTML=buildingStart;
+  				document.getElementById("meteoStart4").innerHTML=buildingStart;
+  				document.getElementById("meteoEnd1").innerHTML=buildingEnd;
+  				document.getElementById("meteoEnd2").innerHTML=buildingEnd;
+  				document.getElementById("meteoEnd3").innerHTML=buildingEnd;
+  				document.getElementById("meteoEnd4").innerHTML=buildingEnd;
+          displayLanguage();
+
           get_meteo(text.dateStart, addressStart)
   				.done(function(response){
   				  if(response.response=="success")
@@ -174,16 +178,16 @@ loadClientConditions()
   			  get_address_building(text.buildingEnd)
   			  .done(function(response){
   				addressEnd=response.address;
-  				buildingEndFr=response.building_fr;
+  				buildingEnd=response.building_fr;
           })
           document.getElementById("meteoStart1").innerHTML=buildingStartFr;
   				document.getElementById("meteoStart2").innerHTML=buildingStartFr;
   				document.getElementById("meteoStart3").innerHTML=buildingStartFr;
   				document.getElementById("meteoStart4").innerHTML=buildingStartFr;
-  				document.getElementById("meteoEnd1").innerHTML=buildingEndFr;
-  				document.getElementById("meteoEnd2").innerHTML=buildingEndFr;
-  				document.getElementById("meteoEnd3").innerHTML=buildingEndFr;
-  				document.getElementById("meteoEnd4").innerHTML=buildingEndFr;
+  				document.getElementById("meteoEnd1").innerHTML=buildingEnd;
+  				document.getElementById("meteoEnd2").innerHTML=buildingEnd;
+  				document.getElementById("meteoEnd3").innerHTML=buildingEnd;
+  				document.getElementById("meteoEnd4").innerHTML=buildingEnd;
 
           get_meteo(text.dateStart, addressStart)
   				.done(function(response){
@@ -303,7 +307,7 @@ loadClientConditions()
 				<p class=\"subtitle\">"+ title +"</p>\
 				</div>\
 				<div class=\"col-md-2\">\
-				<a class=\"button large green button-3d rounded icon-left\" name=\""+brand + "','"+ model + "','"+ frameType +"\" id=\"fr\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike('"+ bikeID + "','" + brand+ "','" +model+"','"+frameType + "')\"><span><?= L::reserver_reserver; ?></span></a>\
+				<a class=\"button large green button-3d rounded icon-left\" name=\""+brand + "','"+ model + "','"+ frameType +"\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike('"+ bikeID + "','" + brand+ "','" +model+"','"+frameType + "')\"><span><?= L::reserver_reserver; ?></span></a>\
 				</div>\
 				<div class=\"seperator\"></div>";
 				dest = dest.concat(codeVeloTemporaire);
@@ -393,17 +397,14 @@ function initiatizeFeedback(id, notificationId = -1) {
         console.log(response.message);
       }
       if (response.response == "success") {
-        console.log(response);
-
         $("#feedbackManagement input[name=notificationID]").val(notificationId);
-        $(".feedbackManagementTitle").html("Ajouter un feedback");
         $("#feedbackManagement input[name=bike]").val(response.bikeNumber);
         $("#feedbackManagement input[name=startDate]").val(response.start);
         $("#feedbackManagement input[name=endDate]").val(response.end);
         $("#feedbackManagement input[name=ID]").val(response.ID);
         $("#feedbackManagement input[name=utilisateur]").val(response.email);
         document.getElementsByClassName("feedbackBikeImage")[0].src =
-          "images_bikes/" + response.bikeID + "_mini.jpg";
+          "images_bikes/" + response.img + "_mini.jpg";
         $("#feedbackManagement select[name=note]").attr("readonly", false);
         $("#feedbackManagement textarea[name=comment]").attr("readonly", false);
         if (response.status == "DONE") {
