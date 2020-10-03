@@ -20,6 +20,9 @@
 			  <a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a>
 		    </div>
 				<br><br>
+			<div>
+			  <a href="privacy-policy.php" class=""><p class="text-light">Politique de confidentialité</p></a>
+		    </div>
             </div>
         </div>
     </div>
