@@ -14,13 +14,19 @@ if (isset($_GET['action'])) {
     include 'connexion.php';
     $response = array ();
 
-    //récupération des entretiens Confirmed de moins de 2 mois
+    $date_start = new DateTime($_GET['dateStart']); 
+    $date_start_string=$date_start->format('Y-m-d');
+
+    $date_end = new DateTime($_GET['dateEnd']); 
+    $date_end_string=$date_end->format('Y-m-d');
+
+    //récupération des entretiens de moins de 2 mois
     $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date,
             entretiens.STATUS AS status, COMMENT AS comment, FRAME_NUMBER AS frame_number, COMPANY AS company,
             MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id
             FROM entretiens
             INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
-            WHERE entretiens.DATE >= CAST(NOW() AS DATE) AND entretiens.DATE < DATE(NOW() + INTERVAL 4 MONTH)
+            WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
             GROUP BY BIKE_ID
             ORDER BY entretiens.DATE;";
     if ($conn->query($sql) === FALSE) {

@@ -1,14 +1,31 @@
 function list_maintenances() {
+  var dateStart = $(".form_date_start_maintenance").data("datetimepicker").getDate();
+  var dateEnd = $(".form_date_end_maintenance").data("datetimepicker").getDate();
+  var dateStartString =
+    dateStart.getFullYear() +
+    "-" +
+    ("0" + (dateStart.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + dateStart.getDate()).slice(-2);
+  var dateEndString =
+    dateEnd.getFullYear() +
+    "-" +
+    ("0" + (dateEnd.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + dateEnd.getDate()).slice(-2);
+
   $.ajax({
       url: 'apis/Kameo/maintenance_management.php',
       method: 'get',
-      data: {'action' : 'list'},
+      data: {'action' : 'list', 
+      dateStart: dateStartString,
+      dateEnd: dateEndString,},
       success: function(response){
         if (response.response == "error") {
           console.log(response.message);
         } else {
           if(typeof(response.maintenance) != 'undefined'){
-            var dest2 = `<h4 class="fr-inline text-green" style="display: inline;">Entretiens:</h4>
+            var dest2 = `
                       <table class="table table-condensed">
                         <tbody></tbody>
                         <thead>
@@ -54,7 +71,7 @@ function list_maintenances() {
             $('#counterMaintenance').html(dest);
           }
           else{
-            var dest2 = '<h4 class="fr-inline text-green" style="display: inline;">Entretiens:</h4><div>Pas d\'entretiens.</div>';
+            var dest2 = '<div>Pas d\'entretiens.</div>';
             $('#maintenanceListingSpan').html(dest2);
             var dest = '<span data-speed="1" data-refresh-interval="4" data-to="0" data-from="0" data-seperator="true">0</span>';
             $('#counterMaintenance').html(dest);
@@ -151,4 +168,15 @@ $('body').on('click', '.showMaintenance',function(){
   $("#widget-maintenanceManagement-form button").hide();
   $("#widget-maintenanceManagement-form div[name=file]").hide();
   $("#widget-maintenanceManagement-form button[name=delete]").hide();
+});
+
+$('body').on('change', '.form_date_start_maintenance',function(){
+  var dateStart = $(".form_date_start_maintenance").data("datetimepicker").getDate();
+  var dateStartString = ("0" + dateStart.getDate()).slice(-2) + "/" + ("0" + (dateStart.getMonth() + 1)).slice(-2) + "/" + dateStart.getFullYear();
+  $(".form_date_end_maintenance").datetimepicker('setStartDate', dateStartString);
+});
+
+
+$('body').on('change', '.form_date_end_maintenance',function(){
+  list_maintenances();
 });

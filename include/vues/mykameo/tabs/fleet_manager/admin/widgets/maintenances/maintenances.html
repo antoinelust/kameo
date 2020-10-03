@@ -19,7 +19,62 @@
           ×
         </button>
       </div>
+      <h4 class="fr-inline text-green" style="display: inline;">Entretiens:</h4>
       <div data-example-id="contextual-table" class="bs-example">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="dtp_input3" class="control-label">Date de début</label>
+            <div
+              class="input-group date form_date_start_maintenance col-md-12"
+              data-date=""
+              data-date-format="dd/mm/yyyy"
+              data-link-field="dtp_input3"
+              data-link-format="yyyy-mm-dd"
+            >
+              <input
+                class="form-control"
+                size="16"
+                type="text"
+                value=""
+                readonly
+              />
+              <span class="input-group-addon"
+                ><span class="glyphicon glyphicon-remove"></span
+              ></span>
+              <span class="input-group-addon"
+                ><span class="glyphicon glyphicon-calendar"></span
+              ></span>
+            </div>
+            <input type="hidden" id="dtp_input3" value="" /><br />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="dtp_input4" class="control-label">Date de fin</label>
+            <div
+              class="input-group date form_date_end_maintenance col-md-12"
+              data-date=""
+              data-date-format="dd/mm/yyyy"
+              data-link-field="dtp_input4"
+              data-link-format="yyyy-mm-dd"
+            >
+              <input
+                class="form-control"
+                size="16"
+                type="text"
+                value=""
+                readonly
+              />
+              <span class="input-group-addon"
+                ><span class="glyphicon glyphicon-remove"></span
+              ></span>
+              <span class="input-group-addon"
+                ><span class="glyphicon glyphicon-calendar"></span
+              ></span>
+            </div>
+            <input type="hidden" id="dtp_input4" value="" /><br />
+          </div>
+        </div>
         <span id="maintenanceListingSpan"></span>
       </div>
       <div class="separator"></div>
@@ -31,3 +86,31 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  
+  $(".form_date_start_maintenance").datetimepicker({
+    language: "fr",
+    weekStart: 1,
+    todayBtn: 1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0,
+  });
+  
+  var dateStart = $(".form_date_start_maintenance").data("datetimepicker").getDate();
+  dateStart.setDate(dateStart.getDate() + 120)
+  var dateStartString = ("0" + dateStart.getDate()).slice(-2) + "/" + ("0" + (dateStart.getMonth() + 1)).slice(-2) + "/" + dateStart.getFullYear();
+  $(".form_date_end_maintenance").datetimepicker({
+    language: "fr",
+    weekStart: 1,
+    todayBtn: 1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0,
+    startDate: dateStartString,
+  });
+</script>
