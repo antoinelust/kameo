@@ -41,3 +41,4 @@ sitemap.xml
 .DS_Store
 vendor/.DS_Store
 sql_clean_up_queries.sql
+apis/Kameo/update_client_logs.txt

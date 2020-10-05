@@ -75,6 +75,7 @@ if($ID != NULL || $company != NULL)
     $response['companyTown']=$resultat['TOWN'];
     $response['companyVAT']=$resultat['VAT_NUMBER'];
     $response['type']=$resultat['TYPE'];
+    $response['audience']=$resultat['AUDIENCE'];
     $response['emailContactBilling']=$resultat['EMAIL_CONTACT_BILLING'];
     $response['firstNameContactBilling']=$resultat['FIRSTNAME_CONTACT_BILLING'];
     $response['lastNameContactBilling']=$resultat['LASTNAME_CONTACT_BILLING'];
