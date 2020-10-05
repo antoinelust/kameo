@@ -24,7 +24,7 @@ function list_maintenances() {
         if (response.response == "error") {
           console.log(response.message);
         } else {
-          if(typeof(response.maintenance) != 'undefined'){
+          if(typeof(response.maintenance) != 'undefined' && response.maintenance.length > 0){
             var dest2 = `
                       <table class="table table-condensed">
                         <tbody></tbody>
@@ -176,6 +176,10 @@ $('body').on('change', '.form_date_start_maintenance',function(){
   $(".form_date_end_maintenance").datetimepicker('setStartDate', dateStartString);
 });
 
+
+$('body').on('change', '.form_date_start_maintenance',function(){
+  list_maintenances();
+});
 
 $('body').on('change', '.form_date_end_maintenance',function(){
   list_maintenances();
