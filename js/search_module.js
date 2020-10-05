@@ -180,7 +180,7 @@ function update_deposit_hour_form(){
             }else{
                 minutes=dateTemp2.getMinutes();
             }
-            if(hours>=response.clientConditions.hourStartDepositBooking && hours<response.clientConditions.hourEndDepositBooking && dateTemp2.getDay()==currentDepositDate.getDay()){
+            if(hours>=response.clientConditions.hourStartDepositBooking && hours<response.clientConditions.hourEndDepositBooking && dateTemp2.getDate()==currentDepositDate.getDate() && dateTemp2.getMonth()==currentDepositDate.getMonth()){
                 var hourString=hours+'h'+minutes;
                 Hours.push(hourString);
             }
@@ -211,7 +211,12 @@ function update_deposit_hour_form(){
     // Goal of this function is to construct the reasearch fields
     function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking, mondayIntake, tuesdayIntake, wednesdayIntake, thursdayIntake, fridayIntake, saturdayIntake, sundayIntake, mondayDeposit, tuesdayDeposit, wednesdayDeposit, thursdayDeposit, fridayDeposit, saturdayDeposit, sundayDeposit, maxBookingsPerYear, maxBookingsPerMonth, email){
         if(assistance=="Y"){
+          if(user_data['COMPANY']=="Actiris"){
+            document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance</span><span class=\"en-inline\">Assistance</span><span class=\"nl-inline\">Hulp</span></a>"
+            $('#entretienPopUP').addClass('hidden');
+          }else{
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
+          }
         }
         // 1st step: days and month fields
         if(daysToDisplay>0){

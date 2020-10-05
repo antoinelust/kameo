@@ -20,6 +20,14 @@
 			  <a href="faq.php" class="text-green text-bold"><h3 class="text-green">FAQ</h3></a>
 		    </div>
 				<br><br>
+			<div class="copyright-content">
+			<div class="container">
+				<div class="row">
+					<div class="copyright-text text-center"> &copy; 2020 KAMEO Bikes<br><a href="privacy-policy.php" class="text-green">Politique de confidentialité</a>  |  <a href="terms-and-conditions.php" class="text-green">Conditions générales d'utilisation</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
             </div>
         </div>
     </div>

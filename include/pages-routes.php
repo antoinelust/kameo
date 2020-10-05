@@ -29,6 +29,12 @@
 
 	/** NEWSLETTER **/
 	$router->map('GET','/newsletter[ext]', 'pages/newsletter.php');
+	
+	/** POLITIQUE DE CONFIDENTIALITE **/
+	$router->map('GET','/privacy-policy[ext]', 'pages/privacy-policy.php');
+	
+	/** CONDITIONS GENERALES D'UTILISATION **/
+	$router->map('GET','/terms-and-conditions[ext]', 'pages/terms-and-conditions.php');
 
 	/** OFFRE **/
 	$router->map('GET','/offre[ext]', 'pages/offre.php');

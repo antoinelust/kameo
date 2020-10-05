@@ -53,7 +53,7 @@ if ($token == NULL) { //Not connected
   //@TODO: Replace email chech with authentication token
   include 'apis/Kameo/connexion.php';
 
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE TOKEN='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY and TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -63,6 +63,9 @@ if ($token == NULL) { //Not connected
     const user_ID = "' . $user_ID . '";
     const user_data = JSON.parse(`' . json_encode($user_data) . '`);
     var email=user_data["EMAIL"];
+    var feedback_start = "' .L::notifications_feedback_start. '";
+    var feedback_middle = "' .L::notifications_feedback_middle. '";
+    var feedback_end = "' .L::notifications_feedback_end. '";
   </script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
   <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
@@ -555,6 +558,8 @@ if ($token == NULL) { //Not connected
   </section>
   <!-- BOOK TAB RESUME WIDGET -->
   <?php include 'include/vues/mykameo/tabs/book/widgets/book.html'; ?>
+  <!-- Feedback WIDGET -->
+  <?php include 'include/vues/mykameo/tabs/book/widgets/feedback.html'; ?>
   <!-- INFORMATIONS WIDGETS -->
   <?php include 'include/vues/mykameo/widgets/informations/update_informations.html'; ?>
   <script type="text/javascript" src="include/vues/mykameo/widgets/informations/update_informations.js"></script>

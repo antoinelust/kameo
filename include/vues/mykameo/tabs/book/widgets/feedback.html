@@ -1,0 +1,203 @@
+<div
+  class="modal fade"
+  id="feedbackManagement"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h4 class="text-green feedbackManagementTitle">
+              <?= L::notifications_add_feedback_title; ?>
+            </h4>
+            <form
+              id="widget-feedbackManagement-form"
+              action="apis/Kameo/feedback_management.php"
+              role="form"
+              method="post"
+            >
+              <div class="form-group col-sm-12">
+                <div class="col-md-12">
+                  <div class="col-md-4">
+                    <label for="utilisateur">ID</label>
+                    <input
+                      type="int"
+                      title="ID"
+                      class="form-control required"
+                      name="ID"
+                      readonly="readonly"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label for="utilisateur"><?= L::generic_user; ?></label>
+                    <input
+                      type="text"
+                      title="utilisateur"
+                      class="form-control required"
+                      name="utilisateur"
+                      readonly="readonly"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-4">
+                    <label for="bike"><?= L::generic_bike; ?></label>
+                    <input
+                      type="text"
+                      name="bike"
+                      class="form-control"
+                      readonly="readonly"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label for="StartDate"><?= L::generic_start_date; ?></label>
+                    <input
+                      type="text"
+                      name="startDate"
+                      class="form-control"
+                      readonly="readonly"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label for="endDate"><?= L::generic_end_date; ?></label>
+                    <input
+                      type="text"
+                      name="endDate"
+                      class="form-control"
+                      readonly="readonly"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <img class="feedbackBikeImage" alt="image vélo" />
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-4 spanNote">
+                    <label for="note"><?= L::generic_rate; ?></label>
+                    <select class="form-control" name="note">
+                      <option value="5">5/5</option>
+                      <option value="4">4/5</option>
+                      <option value="3">3/5</option>
+                      <option value="2">2/5</option>
+                      <option value="1">1/5</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 feedbackEntretien hidden">
+                    <label for="entretien"><?= L::notifications_need_maintenance; ?></label><br>
+                    <label><input type="checkbox" name="entretien" class="form-control" /><?= L::generic_yes1; ?></label
+                    >
+                  </div>
+                </div>
+                <div class="col-md-12 textAreaComment">
+                  <div class="col-md-12">
+                    <label for="comment"><?= L::generic_comment; ?></label>
+                    <textarea
+                      class="form-control"
+                      rows="5"
+                      name="comment"
+                    ></textarea>
+                  </div>
+                </div>
+                <input
+                  type="int"
+                  class="form-control required hidden"
+                  name="feedbackID"
+                />
+                <input
+                  type="text"
+                  name="action"
+                  class="form-control hidden"
+                  value="add"
+                />
+                <input
+                  type="text"
+                  name="user"
+                  class="form-control hidden"
+                  value="<?php echo $user_data['EMAIL']; ?>"
+                />
+                <input type="hidden" name="notificationID" />
+                <div class="col-sm-12">
+                  <button
+                    class="button small green button-3d rounded icon-left feedbackManagementSendButton"
+                    type="submit"
+                  >
+                    <i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          <?= L::generic_close; ?>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $("#widget-feedbackManagement-form select[name=note]").change(function () {
+    if ($("#widget-feedbackManagement-form select[name=note]").val() == "5") {
+      $("#widget-feedbackManagement-form input[name=entretien]").prop(
+        "checked",
+        false
+      );
+      $(".feedbackEntretien").addClass("hidden");
+    } else {
+      $(".feedbackEntretien").removeClass("hidden");
+    }
+  });
+  jQuery("#widget-feedbackManagement-form").validate({
+    submitHandler: function (form) {
+      jQuery(form).ajaxSubmit({
+        success: function (response) {
+          if (response.response == "success") {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "success",
+              }
+            );
+            if (
+              $("#feedbackManagement input[name=notificationID]").val() != -1
+            ) {
+              notification_set_as_read(
+                $("#feedbackManagement input[name=notificationID]").val()
+              );
+            }
+            $("#feedbackManagement").modal("toggle");
+            document.getElementById("widget-feedbackManagement-form").reset();
+          } else {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "danger",
+              }
+            );
+          }
+        },
+      });
+    },
+  });
+</script>

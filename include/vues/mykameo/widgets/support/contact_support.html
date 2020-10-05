@@ -7,17 +7,19 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="fr">Contacter l'assistance</h4>
-						<h4 class="en">Contact assistance</h4>
-						<h4 class="nl">Neem contact op met hulp</h4>
-						<p class="fr">Appelez le numéro d'urgence de votre assurance P-Vélo <br> <em class="text-green">02 / 642 45 03</em></p>
-						<p class="en">Call the P-Velo number <br> <em class="text-green">02 / 642 45 03</em></p>
-						<p class="nl">Bel het P-Velo-nummer <br> <em class="text-green">02 / 642 45 03</em></p>
+						<?php if($user_data['COMPANY']=='Actiris'){
+							echo "<h4 class=\"text-green\">".L::generic_contact."Bookabike !</h4>";
+						}else{
+							echo "<h4>".L::assistance_title."</h4>";
+						}
+
+						if($user_data['COMPANY'] != 'Actiris'){
+
+						echo '<p>'.L::assistance_urgence_number.'</p>
 						<br>
-						<p><span class="fr">Donnez votre numéro de contrat </span>
-							<span class="en">Give your contract number </span>
-							<span class="nl">Geef je contractnummer op </span>
-							<em class="text-green" id="ContractReference"><?php
+						<p>
+							<span>'.L::assistance_urgence_number.'</span>
+							<em class="text-green" id="ContractReference">';
 								if(isset($contractNumber) && $contractNumber!='0' && $contractNumber!='')
 								{
 								  echo "<span style='display:block'>".$contractNumber."</span>";
@@ -25,23 +27,19 @@
 								else{
 								  echo "<span class=\"fr\"> Contactez-nous !</span><span class=\"en\">Please contact us</span><span class=\"nl\">Contacteer ons alsjeblieft</span>";
 								}
-								?></em>
+								echo '</em>';
+						}
+						?>
 						</p>
 						<br>
-						<p class="fr">Pour nous aider à suivre votre dossier, veuillez remplir les informations ci-dessous.</p>
-						<p class="en">To help to follow the ticket, please mention the following information.</p>
-						<p class="nl">Volg de volgende informatie om het ticket te volgen.</p>
+						<p><?= L::assistance_information; ?></p>
 						<form id="widget-assistance-form" action="apis/Kameo/assistance-form.php" role="form" method="post">
 							<div class="form-group">
-								<label for="widget-assistance-form-message"  class="fr">Description du problème</label>
-								<label for="widget-assistance-form-message"  class="en">Message</label>
-								<label for="widget-assistance-form-message"  class="nl">Bericht</label>
+								<label for="widget-assistance-form-message"><?= L::assistance_description; ?></label>
 								<textarea type="text" id="widget-assistance-form-message" name="widget-assistance-form-message" rows="5" class="form-control required"></textarea>
 							</div>
 							<div class="form-group">
-								<p class="fr">Photo du problème</p>
-								<p class="en">Picture of the issue</p>
-								<p class="nl">Beeld van het probleem</p>
+								<p><?= L::assistance_picture; ?></p>
 								<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
 								<input type=file size=40 id="widget-assistance-form-message-attachment" name="widget-assistance-form-message-attachment">
 							</div>
