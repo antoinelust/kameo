@@ -1458,13 +1458,22 @@ function list_contracts_offers(company) {
             var cost_end = "N/A";
           }
 
-          if (response.cost[i].type == "monthly") {
+          if (response.cost[i].type == "monthly" || response.cost[i].type == "loan") {
             var amount = Math.round(response.cost[i].amount) + "€ /mois";
           } else {
             var amount = Math.round(response.cost[i].amount) + " €";
           }
+
+          if (response.cost[i].type === "loan") {
+            var updateCostLoan = 'updateLoan(this.name)'
+            var retrieveCostLoan = 'retrieveLoan(this.name)'
+          } else {
+            var updateCostLoan = 'updateCost(this.name)'
+            var retrieveCostLoan = 'retrieveCost(this.name)'
+          }
+
           var temp =
-            '<tr><td><a href="#" onclick=\"retrieveCost(this.name)\" data-target="#costsManagement" data-toggle="modal" name="' +
+            '<tr><td><a href="#" onclick=\"' + retrieveCostLoan + '\" data-target="#costsManagement" data-toggle="modal" name="' +
             response.cost[i].id +
             '">' +
             response.cost[i].id +
@@ -1478,7 +1487,7 @@ function list_contracts_offers(company) {
             cost_end +
             '</td><td><ins><a class="text-green costsManagement" data-target="#costsManagement" name="' +
             response.cost[i].id +
-            '" data-toggle="modal" href="#" onclick=\"updateCost(this.name)\">Mettre à jour</a></ins></td></tr>';
+            '" data-toggle="modal" href="#" onclick=\"' + updateCostLoan + '\">Mettre à jour</a></ins></td></tr>';
           dest = dest.concat(temp);
           i++;
         }

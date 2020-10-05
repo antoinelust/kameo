@@ -30,28 +30,65 @@ $(".fleetmanager").click(function () {
   });
 });
 
-function addCost () {
+function addCost() {
   $("#widget-costsManagement-form input").attr("readonly", false);
   $("#widget-costsManagement-form textarea").attr("readonly", false);
   $("#widget-costsManagement-form select").attr("readonly", false);
+  $("#widget-costsManagement-form select").attr("disabled", false);
   $(".costManagementTitle").text("Ajouter un coût");
   $(".costManagementSendButton").removeClass("hidden");
   document.getElementById("widget-costsManagement-form").reset();
   $(".costManagementSendButton").text("Ajouter");
-};
-function retrieveCost (ID) {
+  $(".loanTotAmount").addClass("hidden");
+  $(".costsManagementBike").addClass("hidden");
+}
+function retrieveCost(ID) {
   retrieve_cost(ID, "retrieve");
   $(".costManagementTitle").text("Consulter un coût");
   $(".costManagementSendButton").addClass("hidden");
-};
+  $(".loanTotAmount").addClass("hidden");
+  $(".costsManagementBike").addClass("hidden");
+}
+function retrieveLoan(ID) {
+  retrieve_cost(ID, "retrieveLoan");
+  $(".costManagementTitle").text("Consulter un coût");
+  $(".costManagementSendButton").addClass("hidden");
+  $(".loanTotAmount").removeClass("hidden");
+  $(".costsManagementBike").removeClass("hidden");
+  $(".addRemoveBikesBtns").addClass("hidden");
+  $(".addRemoveBikes").removeClass("hidden");
+}
 
-function updateCost (ID) {
+function updateCost(ID) {
   retrieve_cost(ID, "update");
   $(".costManagementTitle").text("Mettre à jour un coût");
   $(".costManagementSendButton").removeClass("hidden");
   $(".costManagementSendButton").text("Mettre à jour");
-};
+  $(".loanTotAmount").addClass("hidden");
+  $(".costsManagementBike").addClass("hidden");
+}
 
+function updateLoan(ID) {
+  retrieve_cost(ID, "updateLoan");
+  $(".costManagementTitle").text("Mettre à jour un coût");
+  $(".costManagementSendButton").removeClass("hidden");
+  $(".costManagementSendButton").text("Mettre à jour");
+  $(".loanTotAmount").removeClass("hidden");
+  $(".costsManagementBike").removeClass("hidden");
+  $(".addRemoveBikes").removeClass("hidden");
+  $(".addRemoveBikesBtns").removeClass("hidden");
+}
+
+function toggleLoanUAmount(priceType) {
+  var type = priceType.value;
+  if (type === "loan") {
+    $(".loanTotAmount").removeClass("hidden");
+  } else {
+    $(".loanTotAmount").addClass("hidden");
+  }
+}
+
+var loanBikesNumber = 0;
 //Module CASHFLOW ==> Cout ==> retrieve cost
 function retrieve_cost(ID, action) {
   $.ajax({
@@ -63,14 +100,17 @@ function retrieve_cost(ID, action) {
         console.log(response.message);
       }
       if (response.response == "success") {
-        if (action == "retrieve") {
+        loanBikesNumber = response.loanBikesNumber;
+        if (action == "retrieve" || action == "retrieveLoan") {
           $("#widget-costsManagement-form input").attr("readonly", true);
           $("#widget-costsManagement-form textarea").attr("readonly", true);
           $("#widget-costsManagement-form select").attr("readonly", true);
+          $("#widget-costsManagement-form select").attr("disabled", true);
         } else {
           $("#widget-costsManagement-form input").attr("readonly", false);
           $("#widget-costsManagement-form textarea").attr("readonly", false);
           $("#widget-costsManagement-form select").attr("readonly", false);
+          $("#widget-costsManagement-form select").attr("disabled", false);
         }
         $("#widget-costsManagement-form input[name=title]").val(response.title);
         $("#widget-costsManagement-form textarea[name=description]").val(
@@ -93,7 +133,7 @@ function retrieve_cost(ID, action) {
           );
           $("#widget-costsManagement-form input[name=end]").val("");
         } else {
-          if (action != "retrieve") {
+          if (action != "retrieve" && action != "retrieveLoan") {
             $("#widget-costsManagement-form input[name=start]").attr(
               "readonly",
               false
@@ -115,6 +155,64 @@ function retrieve_cost(ID, action) {
           $("#widget-costsManagement-form input[name=amount]").val(
             response.amount
           );
+        }
+        if (response.amount_total) {
+          $("#widget-costsManagement-form input[name=loanTotAmount]").val(
+            response.amount_total
+          );
+        }
+        if (action === "retrieveLoan" || action === "updateLoan") {
+          if (response.loanResponse === "success") {
+            $(".loanListTable").empty();
+            $(".loanListTable").append(`
+                <table class="table table-condensed tableFixed bikeNumberTable hideAt0">
+                <thead>
+                  <tr>
+                    <th class="bLabel"></th>
+                    <th class="loanBikeID">
+                      <label for="loanBikeID">ID</label>
+                    </th>
+                    <th class="bikeBrandModel">
+                      <label for="bikeBrandModel">Modèle</label>
+                    </th>
+                    <th class="loanFrameNumber">
+                      <label for="loanFrameNumber">Frame Number</label>
+                    </th>
+                    <th class="loanBrand">
+                      <label for="loanBrand">Marque</label>
+                    </th>
+                    <th class="bikepAchat">
+                      <label for="pAchat">Prix d'Achat</label>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>`);
+
+              $("#costsManagement")
+                .find(".bikesNumber")
+                .html(response.loanBikesNumber);
+
+            var i = 0;
+            while (i < response.loanBikesNumber) {
+              $("#costsManagement")
+                .find(".costsManagementBike tbody")
+                .append(
+                  `<tr class="bikesNumberTable` +
+                    response.loanBikesNumber +
+                    ` bikeRow form-group">
+            <td class="bLabel"></td>
+            <td class="loanBikeID">` + response.loan[i].idBike + `</td>
+            <td class="bikeBrandModel">` + response.loan[i].model + `</td>
+            <td class="loanFrameNumber">` + response.loan[i].frameNumber + `</td>
+            <td class="loanBrand">` + response.loan[i].brand + `</td>
+            <td class="bikepAchat">` + response.loan[i].buyPrice + `</td>
+            </tr>`
+                );
+
+              i++;
+            }
+          }
         }
       }
     },
