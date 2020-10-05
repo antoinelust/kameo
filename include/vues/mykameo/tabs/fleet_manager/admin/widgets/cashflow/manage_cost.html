@@ -49,20 +49,34 @@
                 </div>
 
                 <div class="col-sm-12">
-                  <div class="col-sm-3">
+                  <div class="col-sm-4">
                     <label for="type">Type</label>
-                    <select name="type" class="form-control required">
+                    <select
+                      name="type"
+                      class="form-control required"
+                      onchange="toggleLoanUAmount(this)"
+                    >
                       <option value="monthly">Coût mensuel</option>
                       <option value="one-shot">Coût ponctuel</option>
+                      <option value="loan">Prêt</option>
                     </select>
                   </div>
 
-                  <div class="col-sm-3">
+                  <div class="col-sm-4">
                     <label for="amount">Montant</label>
                     <input
                       type="number"
                       min="0"
                       name="amount"
+                      class="form-control required"
+                    />
+                  </div>
+                  <div class="col-sm-4 loanTotAmount hidden">
+                    <label for="loanTotAmount">Montant Prêt</label>
+                    <input
+                      type="number"
+                      min="0"
+                      name="loanTotAmount"
                       class="form-control required"
                     />
                   </div>
@@ -83,7 +97,62 @@
                   </div>
                 </div>
 
-                <div class="col-sm-12"></div>
+                <div class="col-sm-12">
+                  <div class="row costsManagementBike addRemoveBikes hidden">
+                    <br />
+                    <br />
+                    <div class="col-sm-4">
+                      <h4 class="text-green">Nombre de vélos :</h4>
+                    </div>
+                    <div class="col-sm-12">
+                      <i class="fa fa-bicycle"></i>
+                      <span class="bikesNumber">0</span
+                      ><input
+                        type="hidden"
+                        id="bikesNumber"
+                        name="bikesNumber"
+                        value="0"
+                      />
+                      <div class="addRemoveBikesBtns">
+                        <button
+                          class="button small green button-3d rounded icon-right glyphicon glyphicon-plus"
+                          type="button"
+                        ></button>
+                        <button
+                          class="button small red button-3d rounded icon-right glyphicon glyphicon-minus"
+                          type="button"
+                        ></button>
+                      </div>
+                    </div>
+                    <div class="loanListTable">
+                      <table
+                        class="table table-condensed tableFixed bikeNumberTable hideAt0"
+                      >
+                        <thead>
+                          <tr>
+                            <th class="bLabel"></th>
+                            <th class="loanBikeID">
+                              <label for="loanBikeID">ID</label>
+                            </th>
+                            <th class="bikeBrandModel">
+                              <label for="bikeBrandModel">Modèle</label>
+                            </th>
+                            <th class="loanFrameNumber">
+                              <label for="loanFrameNumber">Frame Number</label>
+                            </th>
+                            <th class="loanBrand">
+                              <label for="loanBrand">Marque</label>
+                            </th>
+                            <th class="bikepAchat">
+                              <label for="pAchat">Prix d'Achat</label>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
                 <br />
 
                 <input

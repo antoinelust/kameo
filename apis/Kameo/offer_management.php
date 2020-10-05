@@ -441,7 +441,7 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT * FROM costs WHERE STAANN != 'D' AND END>CURRENT_TIMESTAMP";
+                $sql="SELECT * FROM costs WHERE STAANN != 'D' AND (END>CURRENT_TIMESTAMP OR END IS NULL)";
 
 
                 if ($conn->query($sql) === FALSE) {
@@ -485,5 +485,3 @@ else
 {
     errorMessage("ES0012");
 }
-
-?>
