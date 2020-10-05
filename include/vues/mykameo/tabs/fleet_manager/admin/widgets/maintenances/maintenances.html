@@ -32,7 +32,7 @@
               data-link-format="yyyy-mm-dd"
             >
               <input
-                class="form-control"
+                class="form-control startDate"
                 size="16"
                 type="text"
                 value=""
@@ -59,7 +59,7 @@
               data-link-format="yyyy-mm-dd"
             >
               <input
-                class="form-control"
+                class="form-control endDate"
                 size="16"
                 type="text"
                 value=""
@@ -100,8 +100,11 @@
   });
   
   var dateStart = $(".form_date_start_maintenance").data("datetimepicker").getDate();
-  dateStart.setDate(dateStart.getDate() + 120)
   var dateStartString = ("0" + dateStart.getDate()).slice(-2) + "/" + ("0" + (dateStart.getMonth() + 1)).slice(-2) + "/" + dateStart.getFullYear();
+  dateStart.setDate(dateStart.getDate() + 60);
+  var dateEndString = ("0" + dateStart.getDate()).slice(-2) + "/" + ("0" + (dateStart.getMonth() + 1)).slice(-2) + "/" + dateStart.getFullYear();
+  $('.startDate').val(dateStartString);
+  $('.endDate').val(dateEndString);
   $(".form_date_end_maintenance").datetimepicker({
     language: "fr",
     weekStart: 1,
