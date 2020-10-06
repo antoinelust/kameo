@@ -17,7 +17,7 @@ function list_maintenances() {
   $.ajax({
       url: 'apis/Kameo/maintenance_management.php',
       method: 'get',
-      data: {'action' : 'list', 
+      data: {'action' : 'list',
       dateStart: dateStartString,
       dateEnd: dateEndString,},
       success: function(response){

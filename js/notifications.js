@@ -63,7 +63,6 @@ function notification_set_as_read(ID){
         'ID' : ID
       },
       success: function(response){
-        console.log(response);
         load_notifications();
       }
   });
@@ -81,7 +80,7 @@ function load_notifications(){
         var count = 1;
         var countNew = 0;
         response.notification.forEach((notification) => {
-          if(notification.TYPE){
+          if(notification.TYPE=="feedback"){
             notification.TEXT=feedback_start+notification.TYPE_ITEM+feedback_middle+notification.TYPE_ITEM+','+notification.ID+feedback_end;
           }
           read = "";

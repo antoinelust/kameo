@@ -15,7 +15,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT aa.*, bb.FRAME_NUMBER, cc.BRAND, cc.MODEL, cc.FRAME_TYPE FROM reservations aa, customer_bikes bb, bike_catalog cc where aa.ID='$ID' and aa.BIKE_ID=bb.ID and bb.TYPE=cc.ID";
+        $sql = "SELECT aa.*, bb.FRAME_NUMBER, bb.MODEL as modelBike, cc.BRAND, cc.MODEL as modelCatalog, cc.FRAME_TYPE FROM reservations aa, customer_bikes bb, bike_catalog cc where aa.ID='$ID' and aa.BIKE_ID=bb.ID and bb.TYPE=cc.ID";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -32,8 +32,8 @@ if(isset($_GET['action'])){
         $response['bikeID']=$resultat['BIKE_ID'];
         $response['email']=$resultat['EMAIL'];
         $response['ID']=$resultat['ID'];
-        $response['bikeNumber']=$resultat['FRAME_NUMBER'];
-        $response['img']=strtolower(str_replace(" ", "-", $resultat['BRAND'].'_'.$resultat['MODEL'].'_'.$resultat['FRAME_TYPE']));
+        $response['bike']=$resultat['modelBike'];
+        $response['img']=strtolower(str_replace(" ", "-", $resultat['BRAND'].'_'.$resultat['modelCatalog'].'_'.$resultat['FRAME_TYPE']));
 
         include 'connexion.php';
 
@@ -174,22 +174,6 @@ if(isset($_GET['action'])){
         $user = isset($_POST["user"]) ? $_POST["user"] : NULL;
         $bike = isset($_POST["bike"]) ? $_POST["bike"] : NULL;
         include 'connexion.php';
-        $sql="select * from feedbacks WHERE ID_RESERVATION='$ID' and STATUS='DONE'";
-
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-        $length = $result->num_rows;
-        $conn->close();
-        if($length>0){
-            errorMessage('ES0055');
-        }
-
-        include 'connexion.php';
         $sql="select * from feedbacks WHERE ID_RESERVATION='$ID'";
 
         if ($conn->query($sql) === FALSE) {
@@ -199,24 +183,32 @@ if(isset($_GET['action'])){
         }
         $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
-        $conn->close();
+        $length = $result->num_rows;
         $ID_feedback=$resultat['ID'];
-
-
-
-        if($comment!=NULL){
-            $comment="'".$comment."'";
+        if($commentUpdate!=NULL){
+            $commentUpdate="'".addslashes($comment)."'";
         }else{
-            $comment='NULL';
+            $commentUpdate='NULL';
         }
 
-        include 'connexion.php';
-        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_ID='$ID', ID_RESERVATION='$ID', NOTE='$note', COMMENT=$comment, ENTRETIEN='$entretien', STATUS='DONE' WHERE ID='$ID_feedback'";
+        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_ID='$ID', ID_RESERVATION='$ID', NOTE='$note', COMMENT=$commentUpdate, ENTRETIEN='$entretien', STATUS='DONE' WHERE ID='$ID_feedback'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
+
+        $sql="SELECT COMPANY FROM customer_referential WHERE EMAIL='$user'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
+        $company=$resultat['COMPANY'];
+
         $conn->close();
         ($entretien == '1') ? $entretien = "Oui" : $entretien = "Non";
 
@@ -224,7 +216,11 @@ if(isset($_GET['action'])){
 
         $mail->IsHTML(true);
         $mail->CharSet = 'UTF-8';
-        $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+        if($company=='Actiris'){
+            $mail->AddAddress('bookabike@actiris.be');
+        }else{
+            $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+        }
 
         $mail->From = "info@kameobikes.com";
         $mail->FromName = "Kameo Bikes";
@@ -306,14 +302,14 @@ if(isset($_GET['action'])){
 
                                 <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                                    <h3>Nouvelle commande !&nbsp;</h3>
+                                    <h3>Nouveau feedback !&nbsp;</h3>
 
                                     <strong>$user :</strong><br>
                                     Vélo : $bike <br>
                                     ID de réservation : $ID <br>
                                     Note : $note <br>
                                     Besoin d'entretien ? $entretien <br>
-                                    $comment<br></p>
+                                    Commentaire: $comment<br>
                                 </td>
                             </tr>
                         </tbody></table>

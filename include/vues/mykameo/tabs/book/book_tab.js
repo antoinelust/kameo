@@ -398,7 +398,7 @@ function initiatizeFeedback(id, notificationId = -1) {
       }
       if (response.response == "success") {
         $("#feedbackManagement input[name=notificationID]").val(notificationId);
-        $("#feedbackManagement input[name=bike]").val(response.bikeNumber);
+        $("#feedbackManagement input[name=bike]").val(response.bike);
         $("#feedbackManagement input[name=startDate]").val(response.start);
         $("#feedbackManagement input[name=endDate]").val(response.end);
         $("#feedbackManagement input[name=ID]").val(response.ID);

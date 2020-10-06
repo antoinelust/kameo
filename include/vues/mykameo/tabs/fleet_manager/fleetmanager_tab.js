@@ -1,7 +1,6 @@
 //FONCTION QUI GERE LES PERMISSION (à refaire), SEPARER LA PARTIE QUI GERE LES CONDITIONS
 $( ".fleetmanager" ).click(function() {
 	temp_init();
-	list_maintenances();
 });
 function temp_init(){
     var emailArray;
