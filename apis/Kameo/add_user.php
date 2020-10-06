@@ -130,12 +130,24 @@ foreach($_POST as $name => $value){
         
     if($name=="bikeAccess"){
         foreach($_POST['bikeAccess'] as $valueInArray) {
-            $sql= "INSERT INTO  customer_bike_access (USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('mykameo','$email', '$valueInArray', 'partage', '')";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }        
+			$sql= "SELECT TYPE FROM customer_bike_access WHERE BIKE_ID='$valueInArray'";
+			if ($conn->query($sql) === FALSE) {
+				$response = array ('response'=>'error', 'message'=> $conn->error);
+				echo json_encode($response);
+				die;
+			}
+			$result = mysqli_query($conn, $sql); 
+			$resultat = mysqli_fetch_assoc($result);
+			$type_bike=$resultat['TYPE'];
+
+			if ($type_bike != 'personnel'){
+				$sql= "INSERT INTO  customer_bike_access (USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('mykameo','$email', '$valueInArray', 'partage', '')";
+				if ($conn->query($sql) === FALSE) {
+					$response = array ('response'=>'error', 'message'=> $conn->error);
+					echo json_encode($response);
+					die;
+				}
+			} 
         }
     }
     

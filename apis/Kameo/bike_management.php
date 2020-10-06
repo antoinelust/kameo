@@ -327,8 +327,9 @@ if(isset($_POST['action'])){
             }
 
             if(isset($_POST['userAccess'])){
+                $type_bike = $_POST['bikeType'];
                 foreach($_POST['userAccess'] as $valueInArray){
-                    $sql= "INSERT INTO  customer_bike_access (USR_MAJ, TIMESTAMP, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$bikeID', 'partage', '')";
+                    $sql= "INSERT INTO  customer_bike_access (USR_MAJ, TIMESTAMP, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$bikeID', '$type_bike', '')";
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
@@ -356,6 +357,7 @@ if(isset($_POST['action'])){
         $portfolioID=$_POST['portfolioID'];
         $frameReference=$_POST['frameReference'];
         $lockerReference=$_POST['lockerReference'];
+        $type_bike = $_POST['bikeType'];
 
         $buyingPrice=isset($_POST['price']) ? $_POST['price'] : NULL;
         $buyingDate=isset($_POST['buyingDate']) ? $_POST['buyingDate'] : NULL;
@@ -501,7 +503,7 @@ if(isset($_POST['action'])){
         {
             if($frameNumberOriginel != $frameNumber){
 
-                include'connexion.php';
+                include 'connexion.php';
                 $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', FRAME_NUMBER='$frameNumber' where ID = '$bikeID'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -681,46 +683,65 @@ if(isset($_POST['action'])){
                 }
             }
 
-
-            foreach($_POST['userAccess'] as $valueInArray){
-                include 'connexion.php';
-                $sql="select * FROM customer_bike_access WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID'";
-
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $result = mysqli_query($conn, $sql);
-                $length=$result->num_rows;
-                $conn->close();
-
-                include 'connexion.php';
-
-                if($length==0){
-                    $sql= "INSERT INTO  customer_bike_access (USR_MAJ, TIMESTAMP, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$bikeID', 'partage', '')";
-                }else{
-                    $sql="select * FROM customer_bike_access WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID' and STAANN = 'D'";
-                }
-
-                include 'connexion.php';
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $conn->close();
-                if($length==1){
+            
+            if( $type_bike == 'partage'){
+                foreach($_POST['userAccess'] as $valueInArray){
                     include 'connexion.php';
-                    $sql="update customer_bike_access SET USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP, STAANN='' WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID'";
+                    $sql="select * FROM customer_bike_access WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID'";
+
+                    if ($conn->query($sql) === FALSE) {
+                        $response = array ('response'=>'error', 'message'=> $conn->error);
+                        echo json_encode($response);
+                        die;
+                    }
+                    $result = mysqli_query($conn, $sql);
+                    $length=$result->num_rows;
+                    $conn->close();
+
+                    include 'connexion.php';
+
+                    if($length==0){
+                        $sql= "INSERT INTO  customer_bike_access (USR_MAJ, TIMESTAMP, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$bikeID', '$type_bike', '')";
+                    }else{
+                        $sql="select * FROM customer_bike_access WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID' and STAANN = 'D'";
+                    }
+
+                    include 'connexion.php';
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
                         die;
                     }
                     $conn->close();
+                    if($length==1){
+                        include 'connexion.php';
+                        $sql="update customer_bike_access SET USR_MAJ='$user', TYPE='$type_bike', TIMESTAMP=CURRENT_TIMESTAMP, STAANN='' WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID'";
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        }
+                        $conn->close();
+                    }
+
+                }
+            }else{
+                include 'connexion.php';
+                $sql="DELETE FROM customer_bike_access WHERE BIKE_ID = '$bikeID'";
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
                 }
 
+                $email = $_POST['email'];
+
+                $sql="INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES (CURRENT_TIMESTAMP, '$user', '$email', '$bikeID', '$type_bike', '')";
+                if ($conn->query($sql) === FALSE) {
+                    $response = array ('response'=>'error', 'message'=> $conn->error);
+                    echo json_encode($response);
+                    die;
+                }
             }
 
         }else{
