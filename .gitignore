@@ -14,13 +14,11 @@ $ cat .git/info/exclude
 $ cat Documentation/.gitignore
 # ignore connexion.php files that contain information to connect to db
 *connexion.php
-*.jpg
 *.mp4
 *.log
 factures/
 langcache/
 offres/
-images_bikes/
 images_accessories/
 include/logs.txt
 robots.txt
