@@ -197,9 +197,11 @@
               <div class="counter bold" id="cashFlowSpan" style="color:#3cb395"></div>
               <p>Vue sur le cash-flow</p>
             </div>
-          </div>
-        <div class="separator kameo"></div>
-				<div class="col-md-4 " id="feedbacksManagement">
+          </div>';
+				}
+				if(get_user_permissions("admin", $token)){
+
+				echo '<div class="col-md-4 " id="feedbacksManagement">
 					<div class="icon-box medium fancy">
 						<div class="icon bold" data-animation="pulse infinite">
 							<a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagerClick">

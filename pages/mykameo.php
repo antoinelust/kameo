@@ -810,7 +810,7 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
   }
 
-  if(get_user_permissions("cashlfow", $token)){
+  if(get_user_permissions("cashflow", $token)){
     //CASHFLOW
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
   }
