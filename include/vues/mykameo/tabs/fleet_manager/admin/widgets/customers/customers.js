@@ -417,8 +417,8 @@ function get_company_details(ID, email, getCompanyContacts = false) {
         }
 
         remove_contact_form(true);
-
         $("#widget-companyDetails-form input[name=ID]").val(response.ID);
+        $("#widget-companyDetails-form select[name=audience]").val(response.audience);
         document.getElementById("companyName").value = response.companyName;
         document.getElementById("companyStreet").value = response.companyStreet;
         document.getElementById("companyZIPCode").value =

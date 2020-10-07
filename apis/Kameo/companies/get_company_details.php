@@ -28,7 +28,7 @@ if (isset($_GET['ID']) || isset($_GET['email'])){
 
 
   if($ID != NULL){
-      $stmt = $conn->prepare("SELECT ID, COMPANY_NAME as companyName, STREET as companyStreet, ZIP_CODE as companyZIPCode, TOWN as companyTown, VAT_NUMBER as companyVAT, TYPE as type, EMAIL_CONTACT_BILLING as emailContactBilling, FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, LASTNAME_CONTACT_BILLING as lastNameContactBilling, PHONE_CONTACT_BILLING as phoneContactBilling, BILLS_SENDING as automaticBilling, INTERNAL_REFERENCE as internalReference FROM companies dd where ID=?");
+      $stmt = $conn->prepare("SELECT ID, COMPANY_NAME as companyName, STREET as companyStreet, ZIP_CODE as companyZIPCode, TOWN as companyTown, VAT_NUMBER as companyVAT, TYPE as type, AUDIENCE as audience, EMAIL_CONTACT_BILLING as emailContactBilling, FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, LASTNAME_CONTACT_BILLING as lastNameContactBilling, PHONE_CONTACT_BILLING as phoneContactBilling, BILLS_SENDING as automaticBilling, INTERNAL_REFERENCE as internalReference FROM companies dd where ID=?");
       if ($stmt)
       {
           $stmt->bind_param("i", $ID);
@@ -39,7 +39,7 @@ if (isset($_GET['ID']) || isset($_GET['email'])){
       }
 
   }else{
-      $stmt = $conn->prepare("SELECT ID, COMPANY_NAME as companyName, STREET as companyStreet, ZIP_CODE as companyZIPCode, TOWN as companyTown, VAT_NUMBER as companyVAT, TYPE as type, EMAIL_CONTACT_BILLING as emailContactBilling, FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, LASTNAME_CONTACT_BILLING as lastNameContactBilling, PHONE_CONTACT_BILLING as phoneContactBilling, BILLS_SENDING as automaticBilling, INTERNAL_REFERENCE as internalReference FROM companies dd where INTERNAL_REFERENCE='?'");
+      $stmt = $conn->prepare("SELECT ID, COMPANY_NAME as companyName, STREET as companyStreet, ZIP_CODE as companyZIPCode, TOWN as companyTown, VAT_NUMBER as companyVAT, TYPE as type, AUDIENCE as audience, EMAIL_CONTACT_BILLING as emailContactBilling, FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, LASTNAME_CONTACT_BILLING as lastNameContactBilling, PHONE_CONTACT_BILLING as phoneContactBilling, BILLS_SENDING as automaticBilling, INTERNAL_REFERENCE as internalReference FROM companies dd where INTERNAL_REFERENCE='?'");
       if ($stmt)
       {
           $stmt->bind_param("s", $company);
@@ -270,7 +270,6 @@ function get_company(){
       return $response;
   }else{
       error_message('500', 'Unable to retrieve company');
-      $stmt->close();
   }
 }
 ?>
