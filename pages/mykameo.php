@@ -798,8 +798,6 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
     //CHATS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/chats/main.php';
-    //CASHFLOW
-    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
     //FEEDBACKS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/feedbacks/main.php';
     //MAINTENANCES
@@ -810,6 +808,11 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
     //TASKS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
+  }
+
+  if(get_user_permissions("cashlfow", $token)){
+    //CASHFLOW
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/cashflow/main.php';
   }
 
   if (get_user_permissions("bills", $token)) {

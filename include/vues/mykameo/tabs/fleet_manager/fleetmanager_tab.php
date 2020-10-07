@@ -183,8 +183,11 @@
               <div class="counter bold" id="counterTasks" style="color:#3cb395"></div>
               <p>Gérer les Actions</p>
             </div>
-          </div>
-          <div class="col-md-4 " id="cashFlowManagement">
+          </div>';
+				}
+				if(get_user_permissions("cashflow", $token)){
+
+          echo '<div class="col-md-4 " id="cashFlowManagement">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#cashListing" href="#" id="offerManagerClick">
@@ -195,42 +198,42 @@
               <p>Vue sur le cash-flow</p>
             </div>
           </div>
-          <div class="col-md-4 " id="feedbacksManagement">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagerClick">
-                  <i class="fa fa-comments"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
-              <p>Vue sur les feedbacks</p>
-            </div>
-          </div>
-          <div class="col-md-4 " id="maintenanceManagement">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick">
-                  <i class="fa fa-wrench"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
-              <div class="counter bold" id="counterMaintenance2" style="color:#3cb395"></div>
-              <p>Vue sur les entretiens</p>
-            </div>
-          </div>
-          <div class="col-md-4 " id="dashBoardManagement">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" class="dashboardManagementClick" data-target="#dashboard" href="#" >
-                  <i class="fa fa-dashboard"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="errorCounter" style="color:#3cb395"></div>
-              <p>Dashboard</p>
-            </div>
-          </div>
-        </div>
-        <div class="separator kameo"></div>';
+        <div class="separator kameo"></div>
+				<div class="col-md-4 " id="feedbacksManagement">
+					<div class="icon-box medium fancy">
+						<div class="icon bold" data-animation="pulse infinite">
+							<a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagerClick">
+								<i class="fa fa-comments"></i>
+							</a>
+						</div>
+						<div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
+						<p>Vue sur les feedbacks</p>
+					</div>
+				</div>
+				<div class="col-md-4 " id="maintenanceManagement">
+					<div class="icon-box medium fancy">
+						<div class="icon bold" data-animation="pulse infinite">
+							<a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick">
+								<i class="fa fa-wrench"></i>
+							</a>
+						</div>
+						<div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
+						<div class="counter bold" id="counterMaintenance2" style="color:#3cb395"></div>
+						<p>Vue sur les entretiens</p>
+					</div>
+				</div>
+				<div class="col-md-4 " id="dashBoardManagement">
+					<div class="icon-box medium fancy">
+						<div class="icon bold" data-animation="pulse infinite">
+							<a data-toggle="modal" class="dashboardManagementClick" data-target="#dashboard" href="#" >
+								<i class="fa fa-dashboard"></i>
+							</a>
+						</div>
+						<div class="counter bold" id="errorCounter" style="color:#3cb395"></div>
+						<p>Dashboard</p>
+					</div>
+				</div>
+			</div>';
     }
 
     if(get_user_permissions("bills", $token)){
