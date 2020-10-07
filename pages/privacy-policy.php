@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
-	header_remove("Set-Cookie");
-	header_remove("X-Powered-By");
 ?>
 <body class="wide">
 	<!-- WRAPPER -->
@@ -11,7 +9,7 @@
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header.php'; ?>
 <section>
-	
+
 	<div class="container">
 		<div class="row">
 				<h1 class="text-green">Politique de confidentialité</h1>
@@ -63,10 +61,10 @@
                     In case of purchasing, necessary data will be transferred to the shipping partner in charge of delivering the goods. The same will occur with the financial institution entrusted to execute your payment. These companies may use your data only for the purpose of delivering the goods or for executing the transaction and for no other purposes.
                 </p>
             </p>
-					
 
-	
-				
+
+
+
 		</div>
 	</div>
 </section>

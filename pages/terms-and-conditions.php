@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
-	header_remove("Set-Cookie");
-	header_remove("X-Powered-By");
 ?>
 <body class="wide">
 	<!-- WRAPPER -->
@@ -11,7 +9,7 @@
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header.php'; ?>
 <section>
-	
+
 	<div class="container">
 		<div class="row">
 				<h1 class="text-green text-uppercase">Conditions générales d'utilisation</h1>
@@ -201,10 +199,10 @@
                     KAMEO Bikes is permitted to revise these terms at any time as it sees fit, and by using this Website you are expected to review these Terms on a regular basis.
                 </p>
             </p>
-					
 
-	
-				
+
+
+
 		</div>
 	</div>
 </section>

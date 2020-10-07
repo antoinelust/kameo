@@ -264,7 +264,7 @@ function get_company_listing(type) {
       if (response.response == "success") {
         var dest = "";
         var temp =
-          '<table id="test" data-order=\'[[ 0, "asc" ]]\' data-page-length=\'25\' class="table table-condensed"><h4 class="fr-inline text-green">Clients:</h4><h4 class="en-inline text-green">Clients:</h4><h4 class="nl-inline text-green">Clients:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addClient" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un client</span></a><br/><thead><tr><th><span class="fr-inline">Référence interne</span><span class="en-inline">Internal reference</span><span class="nl-inline">Internal reference</span></th><th><span class="fr-inline">Client</span><span class="en-inline">Client</span><span class="nl-inline">Client</span></th><th><span class="fr-inline"># vélos</span><span class="en-inline"># bikes</span><span class="nl-inline"># bikes</span></th><th>Rappeler ?</th><th>Mise à jour</th><th><span class="fr-inline">Accès vélos</span><span class="en-inline">Bike Access</span><span class="nl-inline">Bike Access</span></th><th><span class="fr-inline">Accès Bâtiments</span><span class="en-inline">Building Access</span><span class="nl-inline">Building Access</span></th><th>Type</th><th>Audience</th></tr></thead><tbody>';
+          '<table id="test" data-order=\'[[ 0, "asc" ]]\' data-page-length=\'25\' class="table table-condensed"><h4 class="fr-inline text-green">Clients:</h4><h4 class="en-inline text-green">Clients:</h4><h4 class="nl-inline text-green">Clients:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addClient" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un client</span></a><br/><thead><tr><th><span class="fr-inline">Référence interne</span><span class="en-inline">Internal reference</span><span class="nl-inline">Internal reference</span></th><th><span class="fr-inline">Client</span><span class="en-inline">Client</span><span class="nl-inline">Client</span></th><th><span class="fr-inline"># vélos</span><span class="en-inline"># bikes</span><span class="nl-inline"># bikes</span></th><th>Audience</th><th>Rappeler ?</th><th>Mise à jour</th><th><span class="fr-inline">Accès vélos</span><span class="en-inline">Bike Access</span><span class="nl-inline">Bike Access</span></th><th><span class="fr-inline">Accès Bâtiments</span><span class="en-inline">Building Access</span><span class="nl-inline">Building Access</span></th><th>Type</th></tr></thead><tbody>';
         dest = dest.concat(temp);
         var i = 0;
 
@@ -288,6 +288,10 @@ function get_company_listing(type) {
             (now.getTime() - heuMaj.getTime()) /
             86400000
           ).toFixed(0);
+
+
+
+          dest = dest.concat("<td>" + response.company[i].audience + "</td>");
 
           if (response.company[i].type == "PROSPECT" && difference >= 60) {
             var rappeler = "Y";
@@ -332,7 +336,6 @@ function get_company_listing(type) {
 
           dest = dest.concat("<td>" + response.company[i].type + "</td>");
 
-          dest = dest.concat("<td>" + response.company[i].audience + "</td>");
 
           var temp = "</tr>";
           dest = dest.concat(temp);

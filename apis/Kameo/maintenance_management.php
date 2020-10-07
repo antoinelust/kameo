@@ -14,10 +14,10 @@ if (isset($_GET['action'])) {
     include 'connexion.php';
     $response = array ();
 
-    $date_start = new DateTime($_GET['dateStart']); 
+    $date_start = new DateTime($_GET['dateStart']);
     $date_start_string=$date_start->format('Y-m-d');
 
-    $date_end = new DateTime($_GET['dateEnd']); 
+    $date_end = new DateTime($_GET['dateEnd']);
     $date_end_string=$date_end->format('Y-m-d');
 
     //récupération des entretiens de moins de 2 mois
