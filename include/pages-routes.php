@@ -54,7 +54,8 @@
 	$router->map('GET','/avantages[ext]', 'pages/avantages/avantages.php');
 	$router->map('GET','/cash4bike[ext]', 'pages/avantages/cash4bike.php');
 
-
+	/** PAGES DIVERES **/
+	$router->map('GET','/prime-velo-wallonne[ext]', 'pages/prime-velo-wallonne.php');
 
 	/** BORNE **/
 	/*$router->map('GET','/include/lock/lock_verifier_code[ext]', 'apis/Kameo/lock/lock_verifier_code.php');

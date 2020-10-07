@@ -44,6 +44,10 @@ function list_bikes_admin() {
                               <span class="fr-inline">Afficher les commandes</span>
                               <span class="en-inline">Display ordered bikes</span>
                             </span>
+                            <span class="button small green button-3d rounded icon-right showStockBikes">
+                              <span class="fr-inline">Afficher les vélos en stock</span>
+                              <span class="en-inline">Display bikes in stock</span>
+                            </span>
                             <br/>
                             <table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
                               <thead>
