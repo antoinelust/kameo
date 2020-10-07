@@ -6,7 +6,7 @@
     if ($result && $result->num_rows>0)
 		$response['companiesNumberClientOrProspect'] = $result->fetch_array(MYSQLI_ASSOC)['count'];
 
-    $sql="SELECT c.ID, COMPANY_NAME AS companyName, INTERNAL_REFERENCE AS internalReference, c.TYPE AS type,
+    $sql="SELECT c.ID, COMPANY_NAME AS companyName, INTERNAL_REFERENCE AS internalReference, c.TYPE AS type, c.AUDIENCE AS audience,
 (SELECT COUNT(*) FROM customer_bikes WHERE c.INTERNAL_REFERENCE = COMPANY) AS companyBikeNumber,
 (SELECT CASE WHEN COUNT(*) > 0 THEN 'OK' ELSE 'KO' END FROM customer_bike_access cba WHERE BIKE_ID IN (SELECT ID FROM customer_bikes cb WHERE cb.COMPANY=c.INTERNAL_REFERENCE) AND STAANN!='D') AS bikeAccessStatus,
 (SELECT CASE WHEN COUNT(*) > 0 THEN 'OK' ELSE 'KO' END FROM customer_building_access WHERE EMAIL IN (SELECT EMAIL FROM customer_referential WHERE COMPANY=c.INTERNAL_REFERENCE) AND BUILDING_CODE IN (SELECT BUILDING_REFERENCE FROM building_access WHERE COMPANY=c.INTERNAL_REFERENCE)) AS customerBuildingAccess,
