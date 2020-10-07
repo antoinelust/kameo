@@ -976,6 +976,35 @@ $('body').on('click','.hideSoldBikes', function(){
 });
 
 
+//Affichage les vélos en stock
+$('body').on('click','.showStockBikes', function(){
+    
+    var titleContent = "Vélos : Stock";
+      var table = $('#bookingAdminTable').DataTable()
+          .column(4)
+          .search( "stock", true, false )
+          .draw();
+      
+      table.column( 4 ).visible( false, true );  
+      table.column( 5 ).visible( false, true );  
+      table.column( 6 ).visible( false, true );  
+      table.column( 7 ).visible( true, true );  
+      table.column( 8 ).visible( false, true );  
+      table.column( 9 ).visible( true, true );  
+      table.column( 10 ).visible( false, true );  
+      table.column( 11 ).visible( true, true );  
+      table.column( 12 ).visible( false, true );  
+      table.column( 13 ).visible( false, true );  
+      table.column( 14 ).visible( false, true );  
+      table.column( 15 ).visible( false, true ); 
+      table.column( 16 ).visible( true, true ); 
+      table.column( 17 ).visible( true, true ); 
+      //$(table.column(5).header()).text('Date de commande');
+      //$(table.column(6).header()).text('Date d\'arrivée');
+      table.draw();
+      $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
+  });
+
 function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleContent){
   //modification du bouton
   $('.'+buttonRemove).removeClass(buttonRemove).addClass(buttonAdd).find('.fr-inline').html(buttonContent);
