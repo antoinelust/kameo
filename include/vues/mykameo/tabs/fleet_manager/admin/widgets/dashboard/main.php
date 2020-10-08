@@ -1,5 +1,4 @@
-<?php include 'dashboard.html';
-include 'manage_bike.html'; ?>
+<?php include 'dashboard.html';?>
 <script type="text/javascript">
 	<?php include 'dashboard.js'; ?>
 </script>

@@ -1,5 +1,6 @@
 <?php
-include 'bikes.html'; ?>
+include 'bikes.html';
+include 'manage_bike.html'?>
 
 <script type="text/javascript">
     <?php
