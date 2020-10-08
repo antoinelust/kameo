@@ -93,6 +93,9 @@ if ($token == NULL) { //Not connected
     echo '$("#fleetmanagerID").addClass("active"); ';
   }
 
+  echo 'initializeFields();';
+
+
   echo '});
     </script>';
 

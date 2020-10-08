@@ -541,7 +541,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                             }
                         }
                         document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
-                        console.log(company);
                         $('#widget-bikeManagement-form select[name=company]').val(company);
                         $('#widget-bikeManagement-form select[name=company]').change(function(){
                             updateAccessAdmin($('#widget-bikeManagement-form input[name=frameNumber]').val(), $('#widget-bikeManagement-form select[name=company]').val());
