@@ -1,6 +1,7 @@
 $(".fleetmanager").click(function () {
   initializeFields();
   list_errors();
+  initialize_task_owner_sales_selection();  
 });
 
 var today = new Date();
@@ -294,6 +295,7 @@ function list_errors() {
   });
 }
 
+
 function initialize_task_owner_sales_selection() {
   $.ajax({
     url: "apis/Kameo/sales_management.php",
@@ -329,6 +331,7 @@ function initialize_task_owner_sales_selection() {
     },
   });
 }
+
 
 function list_sales(owner, start, end) {
   dateStartString =

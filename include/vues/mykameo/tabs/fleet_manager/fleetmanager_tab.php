@@ -223,8 +223,10 @@
 						<div class="counter bold" id="counterMaintenance2" style="color:#3cb395"></div>
 						<p>Vue sur les entretiens</p>
 					</div>
-				</div>
-				<div class="col-md-4 " id="dashBoardManagement">
+				</div>';
+			}if(get_user_permissions("dashboard", $token)){
+
+				echo '<div class="col-md-4 " id="dashBoardManagement">
 					<div class="icon-box medium fancy">
 						<div class="icon bold" data-animation="pulse infinite">
 							<a data-toggle="modal" class="dashboardManagementClick" data-target="#dashboard" href="#" >
@@ -234,9 +236,10 @@
 						<div class="counter bold" id="errorCounter" style="color:#3cb395"></div>
 						<p>Dashboard</p>
 					</div>
-				</div>
-			</div>';
+				</div>';
     }
+
+		echo '</div>';
 
     if(get_user_permissions("bills", $token)){
         echo '<h4 class="fr billsTitle ">Factures</h4>

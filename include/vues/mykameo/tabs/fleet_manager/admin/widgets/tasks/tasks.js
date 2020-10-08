@@ -1,6 +1,5 @@
 $( ".fleetmanager" ).click(function() {
-    initialize_task_owner_sales_selection();
-    
+
     $.ajax({
         url: 'apis/Kameo/initialize_counters.php',
         type: 'post',
@@ -14,10 +13,13 @@ $( ".fleetmanager" ).click(function() {
             }
         }
     })
-    
-    
-    
+
+
+
 });
+
+
+
 
 function add_task(company){
 document.getElementById('widget-taskManagement-form').reset();
@@ -25,7 +27,7 @@ document.getElementById('widget-taskManagement-form').reset();
     $('#widget-taskManagement-form label[for=channel]').addClass("required");
     $('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
     $('#widget-taskManagement-form select[name=channel]').addClass("required");
-    $('#widget-taskManagement-form select[name=channel]').removeClass("hidden");    
+    $('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
     $('#widget-taskManagement-form select[name=company]').val(company);
     $('#widget-taskManagement-form select[name=type]').val("contact");
     $('#widget-taskManagement-form input').attr("readonly", false);
@@ -152,7 +154,7 @@ function generateTasksGraphic(company, owner, numberOfDays){
 }
 
 function list_tasks(status, owner2, email) {
-        
+
     if(!owner2){
         owner2=email;
     }
@@ -233,7 +235,7 @@ function list_tasks(status, owner2, email) {
                     construct_form_for_action_update(this.name);
                     $('.taskManagementSendButton').removeClass("hidden");
                     $('.taskManagementSendButton').text("Modifier")
-                    
+
                 });
                 $(".addTask").click(function() {
                     add_task(this.name);
@@ -241,7 +243,7 @@ function list_tasks(status, owner2, email) {
                     $('.taskManagementSendButton').text("Ajouter")
 
                 });
-                
+
                 if(owner2){
                     $('.taskOwnerSelection').val(owner2);
                 }else{
@@ -263,11 +265,11 @@ function list_tasks(status, owner2, email) {
                     { "width": "100px" },
                     { "width": "100px" },
                     { "width": "100px" },
-                    { "width": "100px" }                          
+                    { "width": "100px" }
                     ]
                 })
             }
-        }      
+        }
     })
 }
 
@@ -349,11 +351,11 @@ function retrieve_task(ID, action = "retrieve"){
                     $('#widget-taskManagement-form textarea').attr("readonly", false);
                     $('#widget-taskManagement-form select').attr("readonly", false);
 
-                }            
+                }
 
-                
+
                 $('#widget-taskManagement-form input[name=title]').val(response.action.title);
-                $('#widget-taskManagement-form input[name=date]').val(response.action.date.substr(0,10));                
+                $('#widget-taskManagement-form input[name=date]').val(response.action.date.substr(0,10));
                 $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
                 $('#widget-taskManagement-form select[name=status]').val(response.action.status);
                 $('#widget-taskManagement-form select[name=company]').val(response.action.company);
