@@ -11,7 +11,7 @@ $token = getBearerToken();
 
 $ID = isset($_POST["ID"]) ? htmlspecialchars($_POST["ID"]) : NULL;
 $action = isset($_POST["name"]) ? htmlspecialchars($_POST["action"]) : NULL;
-$name = isset($_POST["name"]) ? htmlspecialchars($_POST["name"]) : NULL;
+$brand = isset($_POST["brand"]) ? htmlspecialchars($_POST["brand"]) : NULL;
 $description = isset($_POST["description"]) ? htmlspecialchars($_POST["description"]) : NULL;
 $category = isset($_POST["category"]) ? htmlspecialchars($_POST["category"]) : NULL;
 $buyingPrice = isset($_POST["buyingPrice"]) ? htmlspecialchars($_POST["buyingPrice"]) : NULL;
@@ -20,15 +20,15 @@ $stock = isset($_POST["stock"]) ? htmlspecialchars($_POST["stock"]) : NULL;
 $display=isset($_POST['display']) ? "Y" : "N";
 
 
-if($name != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '') {
+if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '') {
 
     include '../connexion.php';
     
     if($action=="add"){
-        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, NAME, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, SHOW_ACCESSORIES) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, SHOW_ACCESSORIES) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiis", $token, $name, $description, $category, $buyingPrice, $sellingPrice, $stock, $display);
+            $stmt->bind_param("sssiiiis", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display);
             $stmt->execute();
             $ID = $conn->insert_id;
             
@@ -39,10 +39,10 @@ if($name != '' && $description != '' && $category != '' && $buyingPrice != '' &&
         
         
         
-        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, NAME=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, SHOW_ACCESSORIES=? WHERE ID=? ");
+        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, SHOW_ACCESSORIES=? WHERE ID=? ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiisi", $token, $name, $description, $category, $buyingPrice, $sellingPrice, $stock, $display,$ID);
+            $stmt->bind_param("sssiiiisi", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display,$ID);
             $stmt->execute();
             $stmt->close();
         }else
