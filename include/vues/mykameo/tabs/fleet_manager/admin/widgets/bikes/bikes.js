@@ -18,9 +18,9 @@ $(".fleetmanager").click(function () {
     },
   });
 
-  
+
   $(".bikeManagerClick").click(function() {
-          
+
       list_bikes_admin();
   });
 
@@ -961,22 +961,18 @@ function list_bikes_admin() {
         $("#load").removeClass('hidden');
         var i = 0;
         var dest = "";
-        var temp = `<h4 class="fr-inline text-green">Vélos: Leasing et autres</h4>
-                            <h4 class="en-inline text-green">Bikes:</h4><h4 class="nl-inline text-green">Fietsen:</h4><br/>
+        var temp = `<h4 class="text-green">Vélos: Leasing et autres</h4>
                             <a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#">
                               <span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span>
                             </a>
                             <span class="button small green button-3d rounded icon-right showSoldBikes">
-                              <span class="fr-inline">Afficher les vélos vendus</span>
-                              <span class="en-inline">Display sold bikes</span>
+                              <span>Afficher les vélos vendus</span>
                             </span>
                             <span class="button small green button-3d rounded icon-right showOrders">
-                              <span class="fr-inline">Afficher les commandes</span>
-                              <span class="en-inline">Display ordered bikes</span>
+                              <span>Afficher les commandes</span>
                             </span>
                             <span class="button small green button-3d rounded icon-right showStockBikes">
-                              <span class="fr-inline">Afficher les vélos en stock</span>
-                              <span class="en-inline">Display bikes in stock</span>
+                              <span">Afficher les vélos en stock</span>
                             </span>
                             <br/>
                             <table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
@@ -986,19 +982,25 @@ function list_bikes_admin() {
                                     ID
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Société</span>
-                                    <th><span class="fr-inline">Vélo</span>
+                                    <span>Société</span>
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Marque - Modèle</span>
-                                    <th><span class="fr-inline">Type de contrat</span>
+                                    <span>Vélo</span>
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Début contrat</span>
+                                    <span>Marque - Modèle</span>
                                   </th>
                                   <th>
-                                    <span class="fr-inline">Fin contrat</span>
-                                    <th><span class="fr-inline">Montant</span>
+                                    <span>Type de contrat</span>
+                                  </th>
+                                  <th>
+                                    <span>Début contrat</span>
+                                  </th>
+                                  <th>
+                                    <span>Fin contrat</span>
+                                  </th>
+                                  <th>
+                                    <span>Montant</span>
                                   </th>
                                   <th>Facturation</th>
                                   <th>

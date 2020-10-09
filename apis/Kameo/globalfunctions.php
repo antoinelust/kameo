@@ -6,11 +6,11 @@ if(!isset($_SESSION['langue']))
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 
-function errorMessage($MSGNUM) {    
+function errorMessage($MSGNUM) {
     include 'connexion.php';
 	$sql = "SELECT * FROM error_messages where MSGNUM='$MSGNUM' ";
-        
-    
+
+
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -18,25 +18,25 @@ function errorMessage($MSGNUM) {
 	}
     $result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_assoc($result);
-    
+
 	if ($_SESSION['langue']=='fr')
-	{        
+	{
 		$response = array ('response'=>'error', 'message'=> $row["TEXT_FR"]);
-        
+
 	}
 	elseif ($_SESSION['langue']=='en')
 	{
-		$response = array ('response'=>'error', 'message'=> $row["TEXT_EN"]);		
+		$response = array ('response'=>'error', 'message'=> $row["TEXT_EN"]);
 	}
 	elseif ($_SESSION['langue']=='nl')
 	{
-		$response = array ('response'=>'error', 'message'=> $row["TEXT_NL"]);		
+		$response = array ('response'=>'error', 'message'=> $row["TEXT_NL"]);
 	}
 	else
 	{
-		$response = array ('response'=>'error', 'message'=> $row["TEXT_FR"]);		
+		$response = array ('response'=>'error', 'message'=> $row["TEXT_FR"]);
 	}
-    
+
 	echo json_encode($response);
 	die;
 }
@@ -52,21 +52,21 @@ function successMessage($MSGNUM) {
 	}
 	elseif ($_SESSION['langue']=='en')
 	{
-		$response = array ('response'=>'success', 'message'=> $row["TEXT_EN"]);		
+		$response = array ('response'=>'success', 'message'=> $row["TEXT_EN"]);
 	}
 	elseif ($_SESSION['langue']=='nl')
 	{
-		$response = array ('response'=>'success', 'message'=> $row["TEXT_NL"]);		
+		$response = array ('response'=>'success', 'message'=> $row["TEXT_NL"]);
 	}
 	else
 	{
-		$response = array ('response'=>'success', 'message'=> $row["TEXT_FR"]);		
+		$response = array ('response'=>'success', 'message'=> $row["TEXT_FR"]);
 	}
 	echo json_encode($response);
 	die;
 }
 
-function getAPIData($url1){    
+function getAPIData($url1){
 	$curl_handle=curl_init();
 	curl_setopt($curl_handle, CURLOPT_URL,$url1);
 	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
@@ -75,7 +75,7 @@ function getAPIData($url1){
         curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
     }
-    
+
 	curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Your application name');
     curl_setopt($curl_handle, CURLOPT_VERBOSE, true);
     $verbose = fopen('php://temp', 'w+');
@@ -116,7 +116,7 @@ function CallAPI($method, $url, $data = false)
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $result = curl_exec($curl);
     $errors = curl_error($curl);
-    $response = curl_getinfo($curl, CURLINFO_HTTP_CODE);        
+    $response = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
     return $result;
 }
@@ -158,8 +158,8 @@ function execute_sql_query($sql, $conn){
         echo json_encode($response);
         die;
     }
-    
-    $result = mysqli_query($conn, $sql);    
+
+    $result = mysqli_query($conn, $sql);
     return $result;
 }
 
@@ -196,28 +196,28 @@ function error_message($type, $message = ""){
 			header("HTTP/1.0 405 Method Not Allowed");
             $response = array ('error'=>'unallowed_method', 'error_message'=> 'This method is not allowed on this endpoint');
             echo json_encode($response);
-            die;            
+            die;
 			break;
 		case '500':
 			header("HTTP/1.0 500 Internal Server Error");
 			$message = ($message === "") ? "Internal Server Error" : $message;
             $response = array ('error'=>'internal_error', 'error_message'=> $message);
             echo json_encode($response);
-            die;            
+            die;
 			break;
     }
 }
 
 /**
- * Generate a random string, using a cryptographically secure 
+ * Generate a random string, using a cryptographically secure
  * pseudorandom number generator (random_int)
  *
  * This function uses type hints now (PHP 7+ only), but it was originally
  * written for PHP 5 as well.
- * 
+ *
  * For PHP 7, random_int is a PHP core function
  * For PHP 5.x, depends on https://github.com/paragonie/random_compat
- * 
+ *
  * @param int $length      How many characters do we want?
  * @param string $keyspace A string of all possible characters
  *                         to select from

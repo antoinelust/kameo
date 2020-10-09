@@ -134,7 +134,9 @@ if ($token == NULL) { //Not connected
                     <ul id="mainTab" class="tabs-navigation">
                       <?php
                       if (get_user_permissions("order", $token)) {
-                        echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>' . L::tabs_order_title . '</a></li>';
+                        if($user_data['CAFETARIA']=='Y'){
+                          echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>' . L::tabs_order_title . '</a></li>';
+                        }
                       }
                       if (get_user_permissions("search", $token)) {
                         echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>' . L::tabs_book_title . '</a> </li>
@@ -765,7 +767,9 @@ if ($token == NULL) { //Not connected
   }
   //ORDERS
   if (get_user_permissions("fleetManager", $token)) {
-    include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/orders/main.php';
+    if($user_data['CAFETARIA']=='Y'){
+      include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/orders/main.php';
+    }
   }
 
   //RESERVATIONS

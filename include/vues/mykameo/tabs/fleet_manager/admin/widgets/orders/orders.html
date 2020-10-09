@@ -48,7 +48,6 @@
                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                   var cafetaria = oData.CAFETARIA === "Y" ? true : false;
                   var discount = oData.DISCOUNT;
-                  console.log(discount);
                   $(nTd).html(
                     "<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='" +
                       cafetaria +
