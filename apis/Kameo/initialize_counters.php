@@ -402,20 +402,28 @@ if($company=='KAMEO'){
 
 
 
+    if($type=="maintenances"){
+        include 'connexion.php';
 
-    include 'connexion.php';
-    $sql = "SELECT 1
-            FROM entretiens
-            INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
-            ORDER BY entretiens.DATE DESC;";
-    if ($conn->query($sql) === FALSE) {
-      $response = array ('response'=>'error', 'message'=> $conn->error);
-      echo json_encode($response);
-      die;
+        $sql_auto_plan="SELECT COUNT(ID) FROM entretiens
+        WHERE STATUS = 'AUTOMATICALY_PLANNED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 2 MONTH)";
+        $sql_confirmed = "SELECT COUNT(ID) FROM entretiens
+        WHERE STATUS = 'CONFIRMED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 2 MONTH)";
+
+        $sql = "SELECT ($sql_auto_plan) AS auto_plan, ($sql_confirmed) AS confirmed from entretiens";
+        if ($conn->query($sql) === FALSE) {
+          $response = array ('response'=>'error', 'message'=> $conn->error);
+          echo json_encode($response);
+          die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $row =  mysqli_fetch_array($result);
+        $conn->close();
+    
+        $response['response'] = 'success';
+        $response['maintenancesNumberGlobal']=$row['confirmed'];
+        $response['maintenancesNumberAuto']=$row['auto_plan'];
     }
-    $result = mysqli_query($conn, $sql);
-    $conn->close();
-    $response['maintenancesNumberGlobal']=$result->num_rows;
 
 }
 

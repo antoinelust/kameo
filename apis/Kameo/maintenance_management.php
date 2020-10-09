@@ -40,23 +40,36 @@ if (isset($_GET['action'])) {
 
     //count des entretiens auto planifiés ET confirmés de moins de 2 mois
     $sql_auto_plan="SELECT COUNT(ID) FROM entretiens
-    WHERE STATUS = 'AUTOMATICALY_PLANNED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
-    $sql_confirmed = "SELECT COUNT(ID) FROM entretiens
-    WHERE STATUS = 'CONFIRMED' AND DATE >= CAST(NOW() AS DATE) AND DATE < DATE(NOW() + INTERVAL 4 MONTH)";
-
-    $sql = "SELECT ($sql_auto_plan) AS auto_plan, ($sql_confirmed) AS confirmed from entretiens";
-    if ($conn->query($sql) === FALSE) {
+    WHERE STATUS = 'AUTOMATICALY_PLANNED' AND DATE >= '$date_start_string' AND DATE < '$date_end_string' GROUP BY entretiens.BIKE_ID
+            ORDER BY entretiens.DATE";
+    if ($conn->query($sql_auto_plan) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);
       die;
     }
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql_auto_plan);
+    $row =  mysqli_fetch_array($result);
+    $response['maintenancesNumberAuto']=$row['COUNT(ID)'];
+    
+    $sql_confirmed = "SELECT COUNT(ID) FROM entretiens
+    WHERE STATUS = 'CONFIRMED' AND DATE >= '$date_start_string' AND DATE < '$date_end_string' GROUP BY entretiens.BIKE_ID
+            ORDER BY entretiens.DATE";
+    if ($conn->query($sql_confirmed) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+    }
+    $result = mysqli_query($conn, $sql_confirmed);
     $row =  mysqli_fetch_array($result);
     $conn->close();
 
+    if($row['COUNT(ID)'] == NULL){
+      $response['maintenancesNumberGlobal']=0;
+    }else{
+      $response['maintenancesNumberGlobal']=$row['COUNT(ID)'];
+    }
     $response['response'] = 'success';
-    $response['maintenancesNumberGlobal']=$row['confirmed'];
-    $response['maintenancesNumberAuto']=$row['auto_plan'];
+    
 
     echo json_encode($response);
     die;
