@@ -18,8 +18,9 @@ $(".fleetmanager").click(function () {
     },
   });
 
-
+  
   $(".bikeManagerClick").click(function() {
+          
       list_bikes_admin();
   });
 
@@ -883,7 +884,7 @@ $('body').on('click','.hideSoldBikes', function(){
 
     table=$('#bookingAdminTable').DataTable()
         .column(4)
-        .search( "test|stock|renting|leasing", true, false )
+        .search( "test|renting|leasing", true, false )
         .draw();
 
     table.column( 4 ).visible( true, true );
@@ -957,6 +958,7 @@ function list_bikes_admin() {
         console.log(response.message);
       }
       if (response.response == "success") {
+        $("#load").removeClass('hidden');
         var i = 0;
         var dest = "";
         var temp = `<h4 class="fr-inline text-green">Vélos: Leasing et autres</h4>
@@ -1448,6 +1450,7 @@ function list_bikes_admin() {
           .search("test|stock|renting|leasing", true, false)
           .draw();
       }
+      $("#load").addClass('hidden');
     },
   });
 }
