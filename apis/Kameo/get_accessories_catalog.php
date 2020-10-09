@@ -10,7 +10,7 @@ $response=array();
 
     include 'connexion.php';
     $sql="SELECT accessories_catalog.id AS ACCESSORIES_ID,
-                 accessories_catalog.NAME,
+                 accessories_catalog.BRAND,
                  accessories_catalog.BUYING_PRICE,
                  accessories_catalog.PRICE_HTVA,
                  accessories_catalog.STOCK,
@@ -43,7 +43,7 @@ while($row = mysqli_fetch_array($result))
 {
 
     $response['accessories'][$i]['id']=$row['ACCESSORIES_ID'];
-    $response['accessories'][$i]['name']=$row['NAME'];
+    $response['accessories'][$i]['brand']=$row['BRAND'];
     $response['accessories'][$i]['buyingPrice']=$row['BUYING_PRICE'];
     $response['accessories'][$i]['priceHTVA']=$row['PRICE_HTVA'];
     $response['accessories'][$i]['stock']=$row['STOCK'];
