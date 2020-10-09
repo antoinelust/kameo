@@ -1,3 +1,23 @@
+$(".fleetmanager").click(function () {
+  $.ajax({
+    url: "apis/Kameo/initialize_counters.php",
+    type: "post",
+    data: { email: email, type: "maintenances" },
+    success: function (response) {
+      if (response.response == "error") {
+        console.log(response.message);
+      }
+      if (response.response == "success") {
+        var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
+        dest += response.maintenancesNumberGlobal + '/</span><span style="color:red; margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
+        dest += response.maintenancesNumberAuto + '</span>';
+        document.getElementById("counterMaintenance").innerHTML = dest;
+        
+      }
+    },
+  });
+});
+
 function list_maintenances() {
   var dateStart = $(".form_date_start_maintenance").data("datetimepicker").getDate();
   var dateEnd = $(".form_date_end_maintenance").data("datetimepicker").getDate();

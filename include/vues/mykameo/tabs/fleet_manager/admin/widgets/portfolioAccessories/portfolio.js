@@ -90,7 +90,7 @@ function listPortfolioAccessories() {
           getPortfolioDetails(this.name);
         });
 
-        $(".updatePortfolioClick").click(function () {
+         $(".updatePortfolioClick").click(function () {
           $("#widget-addCatalogAccessory-form .ID").removeClass("hidden");
           $("#widget-addCatalogAccessory-form input[name=file]").removeClass(
             "required"
