@@ -26,8 +26,8 @@ if($bikeID != NULL && $status != NULL)
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql); 
-    $resultat = mysqli_fetch_assoc($result);    
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
     $conn->close();
 
     $company=$resultat['COMPANY'];
@@ -40,7 +40,7 @@ if($bikeID != NULL && $status != NULL)
             echo json_encode($response);
             die;
         }
-        $conn->close();     
+        $conn->close();
     }
 
     if($model!=$resultat['MODEL']){
@@ -51,13 +51,13 @@ if($bikeID != NULL && $status != NULL)
             echo json_encode($response);
             die;
         }
-        $conn->close();     
-    }    
+        $conn->close();
+    }
 
 
     foreach($_POST as $name => $value){
 
-        if($name=="buildingAccess"){   
+        if($name=="buildingAccess"){
             foreach($_POST['buildingAccess'] as $valueInArray){
                 include 'connexion.php';
                 $sql= "SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$valueInArray'";
@@ -66,9 +66,9 @@ if($bikeID != NULL && $status != NULL)
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $length = $result->num_rows;
-                $conn->close(); 
+                $conn->close();
 
 
 
@@ -81,8 +81,8 @@ if($bikeID != NULL && $status != NULL)
                         echo json_encode($response);
                         die;
                     }
-                    $conn->close();   
-                }           
+                    $conn->close();
+                }
 
                 include 'connexion.php';
                 $sql= "SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$valueInArray' and STAANN='D'";
@@ -91,9 +91,9 @@ if($bikeID != NULL && $status != NULL)
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql);        
+                $result = mysqli_query($conn, $sql);
                 $length = $result->num_rows;
-                $conn->close();   
+                $conn->close();
 
                 if($length==1){
                     include 'connexion.php';
@@ -104,7 +104,7 @@ if($bikeID != NULL && $status != NULL)
                         die;
                     }
                     $conn->close();
-                }                                
+                }
 
 
             }
@@ -150,7 +150,7 @@ if($bikeID != NULL && $status != NULL)
         }
         $conn->close();
 
-          
+
 
     }else{
 
@@ -161,9 +161,9 @@ if($bikeID != NULL && $status != NULL)
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $length = $result->num_rows;
-        $conn->close(); 
+        $conn->close();
 
         while($row = mysqli_fetch_array($result)){
             $presence=false;
@@ -181,9 +181,9 @@ if($bikeID != NULL && $status != NULL)
                     echo json_encode($response);
                     die;
                 }
-                $result2 = mysqli_query($conn, $sql); 
+                $result2 = mysqli_query($conn, $sql);
                 $length = $result2->num_rows;
-                $conn->close();  
+                $conn->close();
                 if($length==1){
                     include 'connexion.php';
                     $sql="update bike_building_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_ID = '$bikeID' and BUILDING_CODE='$building'";
@@ -198,10 +198,10 @@ if($bikeID != NULL && $status != NULL)
 
             }
 
-        }                    
+        }
 
 
-    }    
+    }
 
     successMessage("SM0003");
 

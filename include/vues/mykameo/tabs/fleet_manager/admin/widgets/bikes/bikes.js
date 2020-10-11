@@ -1,4 +1,5 @@
 $(".fleetmanager").click(function () {
+  console.log("click");
   $.ajax({
     url: "apis/Kameo/initialize_counters.php",
     type: "post",

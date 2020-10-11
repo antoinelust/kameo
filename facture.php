@@ -137,10 +137,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
         </td>
-        <td style="width: 50%">
-				<img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images/'.$company.'.jpg" alt="">
+        <td style="width: 50%">';
 
-				<p>'.$companyName.'</p>
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].'/images/'.$company.'.jpg')){
+          $test1.='<img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images/'.$company.'.jpg" alt="">';
+        }else{
+          $test1.= '<img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images/default.jpg" alt="">';
+        }
+
+				$test1.= '<p>'.$companyName.'</p>
 
 				<p>'.$street.'
 				<br>'.$zip.' '.$town.'
@@ -310,6 +315,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $leasingPriceTVAC=1.21*$row2['LEASING_PRICE'];
                 $frameNumber=$row2['FRAME_NUMBER'];
                 $bikeID=$row2['ID'];
+                $commentBilling=$row2['COMMENT_BILLING'];
 
                 if(!$simulation || $simulation == 'N'){
                     $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
@@ -317,6 +323,24 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                         echo $conn->error;
                     }
                 }
+
+                $sql5="SELECT bb.NOM, bb.PRENOM, bb.EMAIL FROM customer_bike_access aa, customer_referential bb WHERE aa.BIKE_ID='$bikeID' and aa.TYPE='personnel' and aa.EMAIL=bb.EMAIL";
+                if ($conn->query($sql5) === FALSE) {
+                    echo $conn->error;
+                    die;
+                }
+                $result5 = mysqli_query($conn, $sql5);
+                if($result5->num_rows>0){
+                    $resultat5 = mysqli_fetch_assoc($result5);
+                    $nameBikeUser=$resultat5['NOM'];
+                    $firstNameBikeUser=$resultat5['PRENOM'];
+                    $emailBikeUser=$resultat5['EMAIL'];
+                }else{
+                  $nameBikeUser = NULL;
+                  $firstNameBikeUser = NULL;
+                  $emailBikeUser = NULL;
+                }
+
 
 
 
@@ -332,24 +356,37 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 }
 
 
-                $test2.='<tr>
+                $test2.='
+                <tr>
                     <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
                     <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'</td>
                     <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['LEASING_PRICE'],2).' € / mois HTVA</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'</td>
-                    <td></td>
+                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
+
+                if($nameBikeUser != NULL){
+                  $test2.='Nom : '.$nameBikeUser."<br>Prenom : ".$firstNameBikeUser."<br>Email : ".$emailBikeUser;
+                }
+
+                if($commentBilling != NULL && $commentBilling != ''){
+                  $test2.='<br/>'.$commentBilling;
+                }
+
+                $test2.='</td>
+                <td></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><img class="img-responsive" src="'.$fichier.'" alt=""></td>
                     ';
                 if(($row2['CONTRACT_END'])){
-                    $test2=$test2.'<td>Période '.($monthDifference).'/'.$numberOfMonthContract.'</td></tr>';
+                    $test2=$test2.'<td>Période '.($monthDifference).'/'.$numberOfMonthContract.'</td>
+                    </tr>';
                 }else{
-                    $test2=$test2."<td>Location</td></tr>";
+                    $test2=$test2."<td>Location</td>
+                    </tr>";
                 }
 
                 $i+=1;

@@ -165,9 +165,6 @@ if(isset($_POST['action'])){
 
             include 'connexion.php';
             $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, COLOR, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, LOCKER_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE, DELIVERY_DATE, ORDER_NUMBER, OFFER_ID, EMAIL) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', $color, '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', $lockerReference, '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice', '$deliveryDate', '$orderNumber', $offerReference, $clientReference)";
-
-
-
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -180,130 +177,6 @@ if(isset($_POST['action'])){
             $dossier = '../images_bikes/';
             $fichier = $bikeID.".jpg";
             $fichierMini = $bikeID."_mini.jpg";
-            /*
-            if(file_exists($dossier.$fichier)){
-                unlink($dossier.$fichier) or die("Couldn't delete file");
-            }
-
-            if(file_exists($dossier.$fichierMini)){
-                unlink($dossier.$fichierMini) or die("Couldn't delete file");
-            }
-
-
-
-            if(isset($_FILES['picture']['name'])){
-                $extensions = array('.jpg');
-                $extension = strrchr($_FILES['picture']['name'], '.');
-                if(!in_array($extension, $extensions))
-                {
-                      errorMessage("ES0041");
-                }
-
-
-                $taille_maxi = 6291456;
-                $taille = filesize($_FILES['picture']['tmp_name']);
-                if($taille>$taille_maxi)
-                {
-                      errorMessage("ES0023");
-                }
-
-                //upload of Bike picture
-
-
-
-
-
-                 if(move_uploaded_file($_FILES['picture']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-                 {
-                    $upload=true;
-                    $path= $dossier . $fichier;
-                 }
-                 else
-                 {
-                      errorMessage("ES0024");
-                 }
-
-                copy($dossier . $fichier, $dossier . $bikeID."".$extension);
-                copy($dossier . $fichier, $dossier . $bikeID."_mini".$extension);
-                $img = resize_image($dossier . $bikeID."_mini".$extension, 100, 100);
-                imagejpeg($img, $dossier. $bikeID."_mini".$extension);
-
-            }else{
-
-                include 'connexion.php';
-                $sql="select * from bike_catalog where ID='$portfolioID'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-
-
-
-                $result = mysqli_query($conn, $sql);
-                $resultat = mysqli_fetch_assoc($result);
-                $conn->close();
-
-
-
-                $brand=$resultat['BRAND'];
-                $model_bike=$resultat['MODEL'];
-                $frameType=$resultat['FRAME_TYPE'];
-
-
-
-                $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model_bike))."_".strtolower($frameType).".jpg";
-
-                copy($dossier . $fichier, $dossier . $bikeID.".jpg");
-                copy($dossier . $fichier, $dossier . $bikeID."_mini.jpg");
-
-
-
-
-                $fichierBig=$dossier . $bikeID.".jpg";
-
-                $fn = $fichierBig;
-                $sizeImage = getimagesize($fn);
-                $ratio = $sizeImage[0]/$sizeImage[1]; // width/height
-                if( $ratio > 1) {
-                    $width = 1000;
-                    $height = 1000/$ratio;
-                }
-                else {
-                    $width = 1000*$ratio;
-                    $height = 1000;
-                }
-                $src = imagecreatefromstring(file_get_contents($fn));
-                $dst = imagecreatetruecolor($width,$height);
-                imagecopyresampled($dst,$src,0,0,0,0,$width,$height,$sizeImage[0],$sizeImage[1]);
-                imagedestroy($src);
-                imagepng($dst,$fichierBig);
-                imagedestroy($dst);
-
-
-                $fichierMini=$dossier . $bikeID."_mini.jpg";
-
-                $fn = $fichierMini;
-                $sizeImage = getimagesize($fn);
-                $ratio = $sizeImage[0]/$sizeImage[1]; // width/height
-                if( $ratio > 1) {
-                    $width = 100;
-                    $height = 100/$ratio;
-                }
-                else {
-                    $width = 100*$ratio;
-                    $height = 100;
-                }
-                $src = imagecreatefromstring(file_get_contents($fn));
-                $dst = imagecreatetruecolor($width,$height);
-                imagecopyresampled($dst,$src,0,0,0,0,$width,$height,$sizeImage[0],$sizeImage[1]);
-                imagedestroy($src);
-                imagepng($dst,$fichierMini); // adjust format as needed
-                imagedestroy($dst);
-            }
-            */
-
-
 
             if($buildingInitialization){
                 $sql= "INSERT INTO  reservations (USR_MAJ, HEU_MAJ, BIKE_ID, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIL, STATUS, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$bikeID', '0', '$buildingInitialization', '0', '$buildingInitialization', '$user', 'Closed','')";
@@ -439,64 +312,6 @@ if(isset($_POST['action'])){
         }else{
             $deliveryDate='NULL';
         }
-
-
-
-
-        /*
-        if(isset($_FILES['picture'])){
-
-            $extensions = array('.jpg');
-            $extension = strrchr($_FILES['picture']['name'], '.');
-            if(!in_array($extension, $extensions))
-            {
-                  errorMessage("ES0041");
-            }
-
-
-            $taille_maxi = 6291456;
-            $taille = filesize($_FILES['picture']['tmp_name']);
-            if($taille>$taille_maxi)
-            {
-                  errorMessage("ES0023");
-            }
-
-
-
-            //upload of Bike picture
-
-            $dossier = '../images_bikes/';
-
-            $fichier=$bikeID.$extension;
-            if (file_exists($dossier.$fichier)){
-                unlink($dossier.$fichier) or die("Couldn't delete file");
-            }
-
-
-
-            $fichierMini=$bikeID."_mini".$extension;
-            if (file_exists($dossier.$fichierMini)){
-                unlink($dossier.$fichierMini) or die("Couldn't delete file");
-            }
-
-
-            $fichier=$bikeID.$extension;
-
-             if(move_uploaded_file($_FILES['picture']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-             {
-                $upload=true;
-                $path= $dossier . $fichier;
-             }
-             else
-             {
-                  errorMessage("ES0024");
-             }
-
-            $img = resize_image($dossier . $fichier, 200, 200);
-            $fichierMini=$bikeID."_mini".$extension;
-            imagejpeg($img, $dossier . $fichierMini);
-        }
-        */
 
         $response=array();
         if($bikeID != NULL && $user != NULL)
@@ -683,7 +498,8 @@ if(isset($_POST['action'])){
                 }
             }
 
-            
+
+
             if( $type_bike == 'partage'){
                 foreach($_POST['userAccess'] as $valueInArray){
                     include 'connexion.php';
@@ -725,25 +541,7 @@ if(isset($_POST['action'])){
                     }
 
                 }
-            }else{
-                include 'connexion.php';
-                $sql="DELETE FROM customer_bike_access WHERE BIKE_ID = '$bikeID'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-
-                $email = $_POST['email'];
-
-                $sql="INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES (CURRENT_TIMESTAMP, '$user', '$email', '$bikeID', '$type_bike', '')";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
             }
-
         }else{
             include 'connexion.php';
             $sql="update customer_bike_access set STAANN='D', USR_MAJ='$user', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_ID='$bikeID' and STAANN != 'D'";
@@ -755,6 +553,25 @@ if(isset($_POST['action'])){
             }
             $conn->close();
 
+        }
+
+        if(isset($_POST['bikeType']) && $_POST['bikeType'] == "personnel"){
+            include 'connexion.php';
+            $sql="DELETE FROM customer_bike_access WHERE BIKE_ID = '$bikeID'";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+
+            $email = $_POST['email'];
+
+            $sql="INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES (CURRENT_TIMESTAMP, '$user', '$email', '$bikeID', '$type_bike', '')";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
         }
 
         if(isset($_POST['contractStart']) && isset($_POST['contractEnd'])){

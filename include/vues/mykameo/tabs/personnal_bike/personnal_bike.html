@@ -1,0 +1,42 @@
+<div class="tab-pane" id="personnalBike">
+  <!-- TAB2: RÉSERVER UN VELO -->
+  <?php
+  /** @TODO: REPLACE BY API CALL **/
+  $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE
+  from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd
+  where aa.EMAIL='" . $user_data['EMAIL'] . "' and aa.EMAIL=cc.EMAIL and cc.BIKE_ID=bb.ID and bb.TYPE=dd.ID and cc.TYPE='personnel'";
+  if ($conn->query($sql) === FALSE)
+    die;
+  $row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+  $contractNumber = 'KAMEO BIKES'; //@TODO: Remove var
+  $contractStart = $row['CONTRACT_START'];
+  $contractEnd = $row['CONTRACT_END'];
+  ?>
+  <?php /**   TRAVEL INFORMATIONS @TODO: NEED REFACTORISATION TO REMOVE BAD DEFINED RESPONSIVITY AND LOAD DATA DYNAMICALLY **/ ?>
+
+  <img src="images_bikes/<?php echo strtolower(str_replace(' ', '-', $row['BRAND']."_".$row['MODEL']."_".$row['FRAME_TYPE'])); ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
+  <br />
+  <!-- BIKE DESCRIPTION -->
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <caption> <?= L::bike_description_title; ?> </caption>
+      <tbody>
+        <tr>
+          <td><?= L::bike_description_model; ?></td>
+          <td><?php echo $row["BRAND"] . " " . $row["MODEL"] ?></td>
+        </tr>
+        <tr>
+          <td><?= L::bike_description_contract_start; ?></td>
+          <td><?php echo $contractStart; ?></td>
+        </tr>
+        <tr>
+          <td><?= L::bike_description_contract_end; ?></td>
+          <td><?php echo $contractEnd; ?></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- METEO -->
+<script type="text/javascript" src="include/vues/mykameo/weather.js"></script>

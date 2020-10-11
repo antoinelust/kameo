@@ -1,15 +1,12 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
-
+require_once dirname(__FILE__).'/vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 ob_start();
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
-
-
+include 'apis/Kameo/globalfunctions.php';
 
 if(isset($_GET['company'])){
     $company=$_GET['company'];
@@ -52,10 +49,8 @@ function requireToVar($file){
 
 
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-
-
-$sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";
+include 'apis/Kameo/connexion.php';
+$sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y' and CONTRACT_TYPE='leasing') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";
 
 
 if(isset($company)){
@@ -158,6 +153,7 @@ while($row = mysqli_fetch_array($result))
                 fwrite($myfile, $test);
                 fclose($myfile);
 
+                include 'apis/Kameo/connexion.php';
                 $sql_reference="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
                 if ($conn->query($sql_reference) === FALSE) {
                     echo $conn->error;
@@ -181,8 +177,8 @@ while($row = mysqli_fetch_array($result))
                 } catch (Html2PdfException $e) {
                     $html2pdf->clean();
                     $formatter = new ExceptionFormatter($e);
-                    echo $formatter->getHtmlMessage();
-                }
+                    error_log("ERROR ---  Erreur génération HTML:".$formatter->getHtmlMessage()."\n", 3, "generate_invoices.log");
+                }  
 
 
                 $file = __DIR__.'/temp/company.txt';

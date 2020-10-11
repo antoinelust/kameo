@@ -91,6 +91,9 @@ if ($token == NULL) { //Not connected
   } else if (get_user_permissions("fleetManager", $token)) {
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
+  } else if (get_user_permissions("personnel", $token)){
+    echo '$("#personnalBike").addClass("active"); ';
+    echo '$("#personnalBikeID").addClass("active"); ';
   }
 
   echo 'initializeFields();';
@@ -128,7 +131,6 @@ if ($token == NULL) { //Not connected
                 include 'include/vues/mykameo/widgets/calendar/main.php'; ?>
               </div>
               <br />
-              <?php if ($company) : ?>
                 <div class="col-md-12">
                   <div id="tabs-05c" class="tabs color tabs radius">
                     <ul id="mainTab" class="tabs-navigation">
@@ -144,20 +146,31 @@ if ($token == NULL) { //Not connected
                       }
                       if (get_user_permissions("fleetManager", $token)) {
 
-                        echo '<li class="fleetmanager" id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>' . L::tabs_fleet_title . '</a> </li>';
+                        echo '<li id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>' . L::tabs_fleet_title . '</a> </li>';
                       }
+                      if (get_user_permissions("personnalBike", $token)) {
+
+                        echo '<li id="personnalBikeID"><a href="#personnalBike" class="personnalBike"><i class="fa fa-user"></i>' . L::tabs_personnal_title . '</a> </li>';
+                      }
+
                       ?>
                     </ul>
                     <div class="tabs-content">
                       <?php
-                      include 'include/vues/mykameo/tabs/order/order_tab.html';  //TAB 1 @TODO: REFACTOR
+                      if (get_user_permissions("order", $token)) {
+                        include 'include/vues/mykameo/tabs/order/order_tab.html';  //TAB 1 @TODO: REFACTOR
+                      }
                       /** @TODO: REPARE THE FACT THAT THE BOOK TAB SCRIPT DISPLAYS THE CONTACT ASSISTANCE BUTTON BECAUSE IT'S NOT USED WHEN PERSONNAL BIKE ONLY **/
                       if (get_user_permissions("search", $token)) {
                         include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
                         include 'include/vues/mykameo/tabs/reservations/main.php';  //TAB 3 @TODO: REFACTOR
                       }
-
-                      include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
+                      if(get_user_permissions("fleetManager", $token)){
+                        include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
+                      }
+                      if(get_user_permissions("personnalBike", $token)){
+                        include 'include/vues/mykameo/tabs/personnal_bike/main.php';  //TAB 4 @TODO: REFACTOR
+                      }
                       ?>
 
                     </div>
@@ -166,318 +179,6 @@ if ($token == NULL) { //Not connected
                   <?php include 'include/vues/mykameo/widgets/future_booking/future_booking.html'; ?>
                   <div id="velos" style="display: none;"></div>
                 </div>
-              <?php else : ?>
-                <?php
-                /** @TODO: REPLACE BY API CALL **/
-                $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd where aa.EMAIL='" . $user_data['EMAIL'] . "' and aa.EMAIL=cc.EMAIL and cc.BIKE_ID=bb.ID and bb.TYPE=dd.ID";
-                if ($conn->query($sql) === FALSE)
-                  die;
-                $row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-                $contractNumber = 'KAMEO BIKES'; //@TODO: Remove var
-                $contractStart = $row['CONTRACT_START'];
-                $contractEnd = $row['CONTRACT_END'];
-                ?>
-                <?php /** TRAVEL INFORMATIONS @TODO: NEED REFACTORISATION TO REMOVE BAD DEFINED RESPONSIVITY AND LOAD DATA DYNAMICALLY **/ ?>
-                <div id="travel_information_2" class="hidden">
-                  <!-- Pour un écran large -->
-                  <div class="visible-lg">
-                    <div class="col-lg-12 backgroundgreen down">
-                      <p class="text-white down">
-                        <span class="fr-inline text-white">Votre trajet domicile - travail le </span>
-                        <span class="en-inline text-white">Your trip home - work on </span>
-                        <span class="nl-inline text-white">Uw reis naar huis - werk op </span>
-                        <span class="text-white" id="meteoDate1"></span>
-                        <span class="fr-inline text-white"> à </span>
-                        <span class="en-inline text-white"> at </span>
-                        <span class="nl-inline text-white"> om </span>
-                        <span class="text-white" id="meteoHour1"></span>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="visible-lg">
-                    <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
-                      <div class="col-lg-3">
-                        <img id="logo_meteo1" alt="image" class="centerimg" />
-                      </div>
-
-                      <div class="col-lg-3">
-                        <ul>
-                          <li id="temperature_widget1" class="temperature text-center"></li>
-                          <li id="precipitation_widget1" class="humidite text-center"></li>
-                          <li id="wind_widget1" class="vent text-center"></li>
-                        </ul>
-                      </div>
-
-                      <div class="col-lg-3">
-                        <ul class="bords">
-                          <li id="walking_duration_widget1" class="marche grid-col-demo text-center"></li>
-                          <li id="car_duration_widget1" class="voiture grid-col-demo text-center"></li>
-                          <li id="bike_duration_widget1" class="bike grid-col-demo text-center"></li>
-                        </ul>
-                      </div>
-
-                      <div class="col-lg-3">
-                        <img id="score_kameo1" alt="image" class="centerimg" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Pour un écran médium -->
-                  <div class="visible-md">
-                    <div class="col-md-12 backgroundgreen">
-                      <p class="text-white down">
-                        <span class="fr-inline text-white">Votre trajet domicile - travail le </span>
-                        <span class="en-inline text-white">Your trip home - work on </span>
-                        <span class="nl-inline text-white">Uw reis naar huis - werk op </span>
-                        <span class="text-white" id="meteoDate2"></span>
-                        <span class="fr-inline text-white"> à </span>
-                        <span class="en-inline text-white"> at </span>
-                        <span class="nl-inline text-white"> om </span>
-                        <span class="text-white" id="meteoHour2"></span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="visible-md">
-                    <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
-                      <div class="col-md-3">
-                        <img id="logo_meteo2" alt="image" class="centerimg" />
-                      </div>
-                      <div class="col-md-3">
-                        <ul>
-                          <li id="temperature_widget2" class="temperature text-center"></li>
-                          <li id="precipitation_widget2" class="humidite text-center"></li>
-                          <li id="wind_widget2" class="vent text-center"></li>
-                        </ul>
-                      </div>
-                      <div class="col-md-3">
-                        <ul class="bords">
-                          <li id="walking_duration_widget2" class="marche grid-col-demo text-center"></li>
-                          <li id="car_duration_widget2" class="voiture grid-col-demo text-center"></li>
-                          <li id="bike_duration_widget2" class="bike grid-col-demo text-center"></li>
-                        </ul>
-                      </div>
-                      <div class="col-md-3">
-                        <img id="score_kameo2" alt="image" class="centerimg" data-toggle="tooltip" data-placement="top" title="L'indice mykameo est une combinaison de la météo et du temps de trajet en vélo par rapport à la voiture" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Pour une tablette -->
-                  <div class="visible-sm">
-                    <div class="col-sm-12 backgroundgreen">
-                      <p class="text-white down">
-                        <span class="fr-inline text-white">Votre trajet domicile - travail le </span>
-                        <span class="en-inline text-white">Your trip home - work on </span>
-                        <span class="nl-inline text-white">Uw reis naar huis - werk op </span>
-                        <span class="text-white" id="meteoDate3"></span>
-                        <span class="fr-inline text-white"> à </span>
-                        <span class="en-inline text-white"> at </span>
-                        <span class="nl-inline text-white"> om </span>
-                        <span class="text-white" id="meteoHour3"></span>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="visible-sm">
-                    <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
-                      <div class="col-sm-12">
-                        <img id="logo_meteo3" alt="image" class="centerimg" />
-                      </div>
-                      <div class="seperator"></div>
-                      <div class="col-sm-6">
-                        <ul>
-                          <li id="temperature_widget3" class="temperature2 text-center"></li>
-                          <li id="precipitation_widget3" class="humidite2 text-center"></li>
-                          <li id="wind_widget3" class="vent2 text-center"></li>
-                        </ul>
-                      </div>
-                      <div class="col-sm-6">
-                        <ul class="bords">
-                          <li id="walking_duration_widget3" class="marche2 grid-col-demo text-center"></li>
-                          <li id="car_duration_widget3" class="voiture2 grid-col-demo text-center"></li>
-                          <li id="bike_duration_widget3" class="bike2 grid-col-demo text-center"></li>
-                        </ul>
-                      </div>
-                      <div class="seperator"></div>
-                      <div class="col-sm-12">
-                        <img id="score_kameo3" alt="image" class="centerimg" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Pour un smartphone -->
-                  <div class="visible-xs">
-                    <div class="col-xs-12 backgroundgreen">
-                      <p class="text-white down">
-                        <span class="fr-inline text-white">Votre trajet domicile - travail le </span>
-                        <span class="en-inline text-white">Your trip home - work on </span>
-                        <span class="nl-inline text-white">Uw reis naar huis - werk op </span>
-                        <span class="text-white" id="meteoDate4"></span>
-                        <span class="fr-inline text-white"> à </span>
-                        <span class="en-inline text-white"> at </span>
-                        <span class="nl-inline text-white"> om </span>
-                        <span class="text-white" id="meteoHour4"></span>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="visible-xs">
-                    <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                      <div class="col-xs-12">
-                        <img id="logo_meteo4" alt="image" class="centerimg" />
-                      </div>
-                      <div class="seperator"></div>
-                      <div class="col-xs-12">
-                        <ul>
-                          <li id="temperature_widget4" class="temperature3 text-center"></li>
-                          <li id="precipitation_widget4" class="humidite3 text-center"></li>
-                          <li id="wind_widget4" class="vent3 text-center"></li>
-                        </ul>
-                      </div>
-                      <div class="seperator"></div>
-                      <div class="col-xs-12">
-                        <ul class="bords">
-                          <li id="walking_duration_widget4" class="marche3 grid-col-demo text-center"></li>
-                          <li id="car_duration_widget4" class="voiture3 grid-col-demo text-center"></li>
-                          <li id="bike_duration_widget4" class="bike3 grid-col-demo text-center"></li>
-                        </ul>
-                      </div>
-                      <div class="seperator"></div>
-                      <div class="col-xs-12">
-                        <img id="score_kameo4" alt="image" class="centerimg" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div id="travel_information_2_error" class="hidden">
-                  <!-- Pour un écran large -->
-                  <div class="visible-lg">
-                    <div class="col-lg-12 backgroundgreen down">
-                      <p class="text-white down">
-                        <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
-                        <span class="en-inline text-white">Your trip home - work at </span>
-                        <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
-                        <span class="text-white" id="meteoHour1"></span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="visible-lg">
-                    <div class="col-lg-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-
-                      <h2 class="text-white text-center">ERROR</h2>
-                      <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
-                      <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
-                      <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
-
-                    </div>
-                  </div>
-
-                  <!-- Pour un écran médium -->
-                  <div class="visible-md">
-                    <div class="col-md-12 backgroundgreen">
-                      <p class="text-white down">
-                        <span class="fr-inline">Votre trajet domicile - travail à </span>
-                        <span class="en-inline">Your trip home - work at </span>
-                        <span class="nl-inline">Uw reis naar huis - werk bij </span>
-                        <span id="meteoHour2"></span>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="visible-md">
-                    <div class="col-md-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                      <h2 class="text-white text-center">ERROR</h2>
-                      <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
-                      <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
-                      <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
-
-                    </div>
-                  </div>
-
-                  <!-- Pour une tablette -->
-                  <div class="visible-sm">
-                    <div class="col-sm-12 backgroundgreen">
-                      <p class="text-white down">
-                        <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
-                        <span class="en-inline text-white">Your trip home - work at </span>
-                        <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
-                        <span class="text-white" id="meteoHour3"></span>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="visible-sm">
-                    <div class="col-sm-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                      <h2 class="text-white text-center">ERROR</h2>
-                      <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
-                      <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
-                      <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
-                    </div>
-                  </div>
-
-                  <!-- Pour un smartphone -->
-                  <div class="visible-xs">
-                    <div class="col-xs-12 backgroundgreen">
-                      <p class="text-white down">
-                        <span class="fr-inline text-white">Votre trajet domicile - travail à </span>
-                        <span class="en-inline text-white">Your trip home - work at </span>
-                        <span class="nl-inline text-white">Uw reis naar huis - werk bij </span>
-                        <span class="text-white" id="meteoHour4"></span>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="visible-xs">
-                    <div class="col-xs-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                      <h2 class="text-white text-center">ERROR</h2>
-                      <p class="text-white text-center fr">Erreur dans le chargement de vos données. Veuillez vérifier votre adresse de domicile et lieu de travail</p>
-                      <p class="text-white text-center en">Error when loading travel information. Please check your work place and house address information.</p>
-                      <p class="text-white text-center nl">Fout bij het laden van reisinformatie. Controleer uw werkplaats en huisadresgegevens.</p>
-                    </div>
-                  </div>
-                </div>
-                <div id="travel_information_2_loading" class="backgroundgreen">
-                  <div class="col-12 backgroundgreen">
-                    <p class="text-white down">
-                      <span class="fr-inline">Votre trajet domicile - travail à </span>
-                      <span class="en-inline">Your trip home - work at </span>
-                      <span class="nl-inline">Uw reis naar huis - werk bij </span>
-                      <span id="meteoHour2"></span>
-                    </p>
-                  </div>
-                  <div class="col-12 backgroundgreen" style="margin-bottom: 20px; margin-top: 0px;">
-                    <h2 class="text-white text-center">LOADING</h2>
-                    <p class="text-white text-center fr">Chargement des informations entre votre domicile et votre lieu de travail</p>
-                    <p class="text-white text-center en">Loading of travel time between your house and work place</p>
-                    <p class="text-white text-center nl">Laden van reistijd tussen uw huis en uw werkplek</p>
-                  </div>
-                </div>
-
-                <img src="images_bikes/<?php echo $row['FRAME_NUMBER']; ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
-                <br />
-                <!-- BIKE DESCRIPTION -->
-                <div class="table-responsive">
-                  <table class="table table-striped">
-                    <caption> <?= L::bike_description_title; ?> </caption>
-                    <tbody>
-                      <tr>
-                        <td><?= L::bike_description_model; ?></td>
-                        <td><?php echo $row["BRAND"] . " " . $row["MODEL"] ?></td>
-                      </tr>
-                      <tr>
-                        <td><?= L::bike_description_contract_start; ?></td>
-                        <td><?php echo $row["CONTRACT_START"]; ?></td>
-                      </tr>
-                      <tr>
-                        <td><?= L::bike_description_contract_end; ?></td>
-                        <td><?php echo $row["CONTRACT_END"]; ?></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- METEO -->
-                <script type="text/javascript" src="include/vues/mykameo/weather.js"></script>
-              <?php endif; ?>
             </div>
           </div>
         </div>
@@ -519,7 +220,7 @@ if ($token == NULL) { //Not connected
               <span><?= L::sidebar_refresh_button; ?></span>
             </a>
             <br>
-            <?php if (!$company) : ?>
+            <?php if (false) : ?>
               <br><br>
               <h4 class="widget-title">
                 <span><?= L::sidebar_statistics_title; ?> </span>
@@ -829,10 +530,8 @@ if ($token == NULL) { //Not connected
     //BILLS
     include 'include/vues/mykameo/tabs/fleet_manager/bills/widgets/bills/main.php';
   }
-
+}
   ?>
-
-<?php } ?>
 
 <div class="loader">
   <!-- Place at bottom of page -->
