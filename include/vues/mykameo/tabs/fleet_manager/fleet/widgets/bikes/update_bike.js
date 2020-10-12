@@ -48,11 +48,12 @@ function construct_form_for_bike_status_update(bikeID){
                         } else {
                             $("#widget-updateBikeStatus-form div[id=user_name]").show();
                             for (var i = 0; i < response.userNumber; i++){
+                                console.log(i);
                                     $("#widget-updateBikeStatus-form option[id=" + i + "]").remove();
                                     $("#widget-updateBikeStatus-form select[name=name]").append("<option id= " + i + " value= " + response.user[i].name + " " + response.user[i].firstName + ">" + response.user[i].name + " " + response.user[i].firstName + "</option>");
                                     if(response.user[i].access == true){
                                         $("#widget-updateBikeStatus-form option[id=" + i + "]").prop("selected", true);
-                                        $("#widget-bikeManagement-form div[id=user_email]").show();
+                                        $("#widget-updateBikeStatus-form div[id=user_email]").show();
                                         $("#widget-updateBikeStatus-form input[name=email").val(response.user[i].email);
                                     }
                                 }
