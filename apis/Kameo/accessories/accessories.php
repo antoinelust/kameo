@@ -9,7 +9,7 @@ header_remove("Content-Security-Policy");
 
 require_once __DIR__ .'/../globalfunctions.php';
 require_once __DIR__ .'/../authentication.php';
-require_once __DIR__ .'/../connexion.php'; 
+require_once __DIR__ .'/../connexion.php';
 
 $token = getBearerToken();
 
@@ -17,7 +17,7 @@ switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
-		
+
 		if($action === 'listCatalog'){
 			if(get_user_permissions("admin", $token)){
 				require_once 'listCatalog.php';
@@ -47,7 +47,7 @@ switch($_SERVER["REQUEST_METHOD"])
         }else{
             error_message('405');
         }
-			
+
 	break;
 	default:
 			error_message('405');
