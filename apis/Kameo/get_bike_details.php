@@ -139,11 +139,19 @@ if($id != NULL)
         $response['user'][$i]['name']=$row['NOM'];
         $response['user'][$i]['firstName']=$row['PRENOM'];
         $response['user'][$i]['email']=$row['EMAIL'];
-        $response['biketype']=$row['TYPE'];
         $response['user'][$i]['access']=true;
         $i++;
     }
 
+    $sql = "SELECT TYPE FROM customer_bike_access WHERE BIKE_ID='$id'";
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+    if($resultat['TYPE']){
+        $response['biketype']=$resultat['TYPE'];
+    }else{
+        $response['biketype']='partage';
+    }
+    
 
     include 'connexion.php';
     $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa WHERE aa.COMPANY='$company' AND NOT EXISTS (select 1 from customer_bike_access bb WHERE aa.EMAIL=bb.EMAIL and bb.BIKE_ID='$id' and bb.STAANN!='D') ORDER BY NOM";
