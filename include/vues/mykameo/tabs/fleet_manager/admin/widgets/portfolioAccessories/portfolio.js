@@ -34,12 +34,12 @@ function listPortfolioAccessories() {
         console.log(response.message);
       } else {
         var dest =
-          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right" data-target="#portfolioAccessoryManagement" data-toggle="modal" onclick="initializeCreatePortfolioAccessories()" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Modèle</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th></th></tr></thead><tbody>';
+          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" onclick="initializeCreatePortfolioAccessories()" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Modèle</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th></th></tr></thead><tbody>';
 
         response.accessories.forEach(
           (accessory) =>
             (dest = dest.concat(
-              '<tr><td><a href="#" class="text-green getPortfolioDetails" data-target="#portfolioAccessoryManagement" name="' +
+              '<tr><td><a href="#" class="text-green getPortfolioDetails retrieveAccessoryAdmin" data-target="#portfolioAccessoryManagement" name="' +
                 accessory.ID +
                 '" data-toggle="modal">' +
                 accessory.ID +
@@ -57,9 +57,9 @@ function listPortfolioAccessories() {
                 accessory.SHOW_ACCESSORIES +
                 "</td><td>" +
                 accessory.CATEGORY +
-                '</td><td><a href="#" class="text-green updatePortfolioClick" data-target="#portfolioAccessoryManagement" name="' +
+                '</td><td><a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" onclick="initializeUpdatePortfolioAccessory(\'' +
                 accessory.ID +
-                '" data-toggle="modal">Mettre à jour </a></td></tr>'
+                '\')" data-toggle="modal" href="#">Mettre à jour </a></td></tr>'
             ))
         );
 
@@ -67,6 +67,33 @@ function listPortfolioAccessories() {
           "portfolioAccessoriesListing"
         ).innerHTML = dest.concat("</tbody></table>");
         displayLanguage();
+
+        $(".updateAccessoryAdmin").click(function () {
+
+          $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+          $("#widget-addCatalogAccessory-form select").attr("readonly", false);
+          $(".accessoryManagementTitle").html("Modifier un accessoire");
+          $(".accessoryManagementSend").removeClass("hidden");
+          $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Modifier');
+        });
+
+        $(".retrieveAccessoryAdmin").click(function () {
+
+          $("#widget-addCatalogAccessory-form input").attr("readonly", true);
+          $("#widget-addCatalogAccessory-form select").attr("readonly", true);
+          $(".accessoryManagementTitle").html("Consulter un accessoire");
+          $(".accessoryManagementSend").addClass("hidden");
+        });
+
+        $(".addCatalogAccessory").click(function () {
+
+          $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+          $("#widget-addCatalogAccessory-form select").attr("readonly", false);
+          $(".accessoryManagementTitle").html("Ajouter un accessoire");
+          $(".accessoryManagementSend").removeClass("hidden");
+          $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
+        });
+
         $("#porfolioAccessoriesListing").DataTable({});
 
         var d = new Date();
@@ -142,18 +169,22 @@ function getPortfolioDetails(ID) {
       },
     });
   }
-  $.ajax({
+}
+
+  function initializeUpdatePortfolioAccessory(ID) {
+    $.ajax({
     url: "apis/Kameo/accessories/accessories.php",
     type: "get",
     data: { action: "retrieve", ID: ID },
     success: function (response) {
-      console.log(response);
       if (response.response == "error") {
         console.log(response.message);
       } else {
         $("#widget-addCatalogAccessory-form [name=brand]").val(
           response.accessory.BRAND
         );
+        console.log("hi");
+        console.log( response.accessory.BRAND);
         $("#widget-addCatalogAccessory-form [name=description]").val(
           response.accessory.DESCRIPTION
         );
@@ -187,7 +218,9 @@ function getPortfolioDetails(ID) {
       }
     },
   });
-}
+  }
+
+
 
 //FleetManager: Gérer le catalogue | Reset the form to add a bike to the catalogue
 function initializeCreatePortfolioAccessories() {
