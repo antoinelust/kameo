@@ -39,7 +39,7 @@ function listPortfolioAccessories() {
         response.accessories.forEach(
           (accessory) =>
             (dest = dest.concat(
-              '<tr><td><a href="#" class="text-green getPortfolioDetails" data-target="#portfolioAccessoryManagement" name="' +
+              '<tr><td><a href="#" class="text-green getPortfolioDetails addCatalogAccessory" data-target="#portfolioAccessoryManagement" name="' +
                 accessory.ID +
                 '" data-toggle="modal">' +
                 accessory.ID +
@@ -59,7 +59,7 @@ function listPortfolioAccessories() {
                 accessory.CATEGORY +
                 '</td><td><a href="#" class="text-green updatePortfolioClick" data-target="#portfolioAccessoryManagement" name="' +
                 accessory.ID +
-                '" data-toggle="modal">Mettre à jour </a></td></tr>'
+                '" data-toggle="modal" class="updateAccessoryAdmin" href="#">Mettre à jour </a></td></tr>'
             ))
         );
 
@@ -67,6 +67,33 @@ function listPortfolioAccessories() {
           "portfolioAccessoriesListing"
         ).innerHTML = dest.concat("</tbody></table>");
         displayLanguage();
+
+        $(".updateAccessoryAdmin").click(function () {
+         
+          $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+          $("#widget-addCatalogAccessory-form select").attr("readonly", false);
+          $(".accessoryManagementTitle").html("Modifier un accessoire");
+          $(".accessoryManagementSend").removeClass("hidden");
+          $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Modifier');
+        });
+
+        $(".retrieveAccessoryAdmin").click(function () {
+         
+          $("#widget-addCatalogAccessory-form input").attr("readonly", true);
+          $("#widget-addCatalogAccessory-form select").attr("readonly", true);
+          $(".accessoryManagementTitle").html("Consulter un accessoire");
+          $(".accessoryManagementSend").addClass("hidden");
+        });
+
+        $(".addCatalogAccessory").click(function () {
+
+          $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+          $("#widget-addCatalogAccessory-form select").attr("readonly", false);
+          $(".accessoryManagementTitle").html("Ajouter un accessoire");
+          $(".accessoryManagementSend").removeClass("hidden");
+          $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
+        });
+
         $("#porfolioAccessoriesListing").DataTable({});
 
         var d = new Date();
