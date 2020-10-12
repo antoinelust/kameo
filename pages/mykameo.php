@@ -91,7 +91,7 @@ if ($token == NULL) { //Not connected
   } else if (get_user_permissions("fleetManager", $token)) {
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
-  } else if (get_user_permissions("personnel", $token)){
+  } else if (get_user_permissions("personnalBike", $token)){
     echo '$("#personnalBike").addClass("active"); ';
     echo '$("#personnalBikeID").addClass("active"); ';
   }

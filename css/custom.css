@@ -10,6 +10,15 @@
 img {
   max-width: 100%;
 }
+
+.grid-item--width3 {
+    width: 200px;
+}
+
+.grid-item--height3 {
+    height: 300px;
+}
+
 .inbox_people {
   background: #f8f8f8 none repeat scroll 0 0;
   float: left;
