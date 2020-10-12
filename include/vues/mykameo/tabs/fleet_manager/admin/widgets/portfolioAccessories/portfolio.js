@@ -57,9 +57,9 @@ function listPortfolioAccessories() {
                 accessory.SHOW_ACCESSORIES +
                 "</td><td>" +
                 accessory.CATEGORY +
-                '</td><td><a href="#" class="text-green updatePortfolioClick" data-target="#portfolioAccessoryManagement" name="' +
+                '</td><td><a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" name="' +
                 accessory.ID +
-                '" data-toggle="modal" class="updateAccessoryAdmin" href="#">Mettre à jour </a></td></tr>'
+                '" data-toggle="modal" href="#">Mettre à jour </a></td></tr>'
             ))
         );
 
@@ -69,7 +69,7 @@ function listPortfolioAccessories() {
         displayLanguage();
 
         $(".updateAccessoryAdmin").click(function () {
-         
+
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
           $("#widget-addCatalogAccessory-form select").attr("readonly", false);
           $(".accessoryManagementTitle").html("Modifier un accessoire");
@@ -78,7 +78,7 @@ function listPortfolioAccessories() {
         });
 
         $(".retrieveAccessoryAdmin").click(function () {
-         
+
           $("#widget-addCatalogAccessory-form input").attr("readonly", true);
           $("#widget-addCatalogAccessory-form select").attr("readonly", true);
           $(".accessoryManagementTitle").html("Consulter un accessoire");

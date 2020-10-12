@@ -224,7 +224,47 @@ if(get_user_permissions("admin", $token)){
               }
 
 
+              $j=0;
+              include 'connexion.php';
+              $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START is NOT NULL and STAANN != 'D' and (CONTRACT_TYPE = 'selling')";
+              if ($conn->query($sql) === FALSE) {
+                  $response = array ('response'=>'error', 'message'=> $conn->error);
+                  echo json_encode($response);
+                  die;
+              }
+              $result = mysqli_query($conn, $sql);
+
+              while($row = mysqli_fetch_array($result)){
+                  $bikeID=$row['ID'];
+                  $bikeNumber=$row['FRAME_NUMBER'];
+                  $dateTempString=$row['CONTRACT_START'];
+
+                  $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID'";
+
+                  $response['bike']['log'][$j]['bikeID']=$bikeID;
+                  $response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
+                  $j++;
+                  if ($conn->query($sql) === FALSE) {
+                      $response = array ('response'=>'error', 'message'=> $conn->error);
+                      echo json_encode($response);
+                      die;
+                  }
+                  $result2 = mysqli_query($conn, $sql);
+                  $length = $result2->num_rows;
+
+                  if($length == 0){
+                      $response['bike']['bill'][$i]['bikeID']=$bikeID;
+                      $response['bike']['bill'][$i]['sql']=$sql;
+                      $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
+                      $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo vendu à la date du $dateTempString";
+                      $i++;
+                  }
+              }
+
+
               $response['bike']['bill']['number']=$i;
+              $conn->close();
+
 
               $response['response']="success";
               echo json_encode($response);
