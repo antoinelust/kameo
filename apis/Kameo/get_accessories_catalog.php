@@ -21,7 +21,7 @@ $response=array();
                  accessories_categories.CATEGORY
           FROM accessories_catalog
           INNER JOIN accessories_categories ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID
-          ORDER BY ACCESSORIES_CATEGORIES ASC, NAME ASC";
+          ORDER BY ACCESSORIES_CATEGORIES ASC, BRAND ASC";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
