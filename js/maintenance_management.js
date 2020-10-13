@@ -93,7 +93,9 @@ function list_maintenances() {
           else{
             var dest2 = '<div>Pas d\'entretiens.</div>';
             $('#maintenanceListingSpan').html(dest2);
-            var dest = '<span data-speed="1" data-refresh-interval="4" data-to="0" data-from="0" data-seperator="true">0</span>';
+            var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
+            dest += response.maintenancesNumberGlobal + '/</span><span style="color:red; margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
+            dest += response.maintenancesNumberAuto + '</span>';
             $('#counterMaintenance').html(dest);
           }
         }

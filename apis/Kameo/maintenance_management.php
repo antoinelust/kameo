@@ -49,7 +49,12 @@ if (isset($_GET['action'])) {
     }
     $result = mysqli_query($conn, $sql_auto_plan);
     $row =  mysqli_fetch_array($result);
-    $response['maintenancesNumberAuto']=$row['COUNT(ID)'];
+    if ($row['COUNT(ID)'] != NULL){
+      $response['maintenancesNumberAuto']=$row['COUNT(ID)'];
+    }else{
+      $response['maintenancesNumberAuto']=0;
+    }
+    
     
     $sql_confirmed = "SELECT COUNT(ID) FROM entretiens
     WHERE STATUS = 'CONFIRMED' AND DATE >= '$date_start_string' AND DATE < '$date_end_string' GROUP BY entretiens.BIKE_ID

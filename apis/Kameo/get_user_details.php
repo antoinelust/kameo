@@ -103,7 +103,7 @@ if($email != NULL)
     // Partie pour les vélos
     
     include 'connexion.php';
-    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and bb.ID=aa.BIKE_ID and aa.STAANN!='D'";
+    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and bb.ID=aa.BIKE_ID and aa.STAANN!='D' and aa.TYPE='partage'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -121,7 +121,7 @@ if($email != NULL)
     
     
     include 'connexion.php';
-    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and aa.BIKE_ID=bb.ID and aa.STAANN='D'";
+    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and aa.BIKE_ID=bb.ID and aa.STAANN='D' and aa.TYPE='partage'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -138,7 +138,7 @@ if($email != NULL)
         
     
     include 'connexion.php';
-    $sql="SELECT aa.ID, FRAME_NUMBER, MODEL FROM customer_bikes aa WHERE COMPANY = '$company' AND not exists (select 1 from customer_bike_access bb where bb.BIKE_ID=aa.ID and bb.EMAIL='$email')";
+    $sql="SELECT aa.ID, FRAME_NUMBER, MODEL FROM customer_bikes aa WHERE COMPANY = '$company' AND exists (select 1 from customer_bike_access bb where bb.BIKE_ID=aa.ID and bb.TYPE='partage')";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);

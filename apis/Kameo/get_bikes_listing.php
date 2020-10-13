@@ -35,7 +35,7 @@ if ($admin != "Y") {
         }
     }
     include 'connexion.php';
-    $sql = "SELECT * FROM customer_bikes where COMPANY='$company' AND STAANN != 'D'";
+    $sql = "SELECT * FROM customer_bikes aa where aa.COMPANY='$company' AND aa.STAANN != 'D' AND exists (select 1 from customer_bike_access bb where bb.BIKE_ID=aa.ID and bb.TYPE='partage')";
     if ($conn->query($sql) === FALSE) {
         $response = array('response' => 'error', 'message' => $conn->error);
         echo json_encode($response);
