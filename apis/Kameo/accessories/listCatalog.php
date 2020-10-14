@@ -6,6 +6,7 @@ if ($stmt)
 	$stmt->execute();
     $response['response']="success";
     $response['accessories']=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $response['ID'] = count($response['accessories']);
     echo json_encode($response);
 	$stmt->close();
 }else
