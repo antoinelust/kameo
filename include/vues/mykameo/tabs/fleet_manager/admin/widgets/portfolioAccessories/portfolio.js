@@ -19,7 +19,7 @@ $(".fleetmanager").click(function () {
   });
 });
 
-console.log(construct_form_for_accessory_status_updateAdmin(ID));
+/* console.log(construct_form_for_accessory_status_updateAdmin(ID));
 function construct_form_for_accessory_status_updateAdmin(ID){
 
     $('#widget-addCatalogAccessory-form input[name=ID').fadeIn();
@@ -113,7 +113,7 @@ function construct_form_for_accessory_status_updateAdmin(ID){
         })
 })
 }
-
+*/
 
 
 
@@ -132,7 +132,7 @@ function listPortfolioAccessories() {
         console.log(response.message);
       } else {
         var dest =
-          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" onclick="initializeCreatePortfolioAccessories()" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Modèle</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th></th></tr></thead><tbody>';
+          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" onclick="initializeCreatePortfolioAccessories()" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Modèle</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th>Fournisseur</th><th>Numéro d\'article</th><th></th></tr></thead><tbody>';
 
         response.accessories.forEach(
           (accessory) =>
@@ -155,6 +155,10 @@ function listPortfolioAccessories() {
                 accessory.SHOW_ACCESSORIES +
                 "</td><td>" +
                 accessory.CATEGORY +
+                "</td><td>" +
+                accessory.PROVIDER +
+                "</td><td>" +
+                accessory.ARTICLE_NBR +
                 '</td><td><a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" onclick="initializeUpdatePortfolioAccessory(\'' +
                 accessory.ID +
                 '\')" data-toggle="modal" href="#">Mettre à jour </a></td></tr>'
@@ -167,7 +171,7 @@ function listPortfolioAccessories() {
         displayLanguage();
 
         $(".updateAccessoryAdmin").click(function () {
-          construct_form_for_accessory_status_updateAdmin(this.name);
+          //construct_form_for_accessory_status_updateAdmin(this.name);
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
           $("#widget-addCatalogAccessory-form select").attr("readonly", false);
           $(".accessoryManagementTitle").html("Modifier un accessoire");
@@ -176,7 +180,7 @@ function listPortfolioAccessories() {
         });
 
         $(".retrieveAccessoryAdmin").click(function () {
-          construct_form_for_accessory_status_updateAdmin(this.name);
+          //construct_form_for_accessory_status_updateAdmin(this.name);
           $("#widget-addCatalogAccessory-form input").attr("readonly", true);
           $("#widget-addCatalogAccessory-form select").attr("readonly", true);
           $(".accessoryManagementTitle").html("Consulter un accessoire");
@@ -295,6 +299,12 @@ function getPortfolioDetails(ID) {
         );
         $("#widget-addCatalogAccessory-form [name=sellingPrice]").val(
           response.accessory.PRICE_HTVA
+        );
+        $("#widget-addCatalogAccessory-form select[name=provider]").val(
+          response.accessory.PROVIDER
+        );
+        $("#widget-addCatalogAccessory-form [name=articleNbr]").val(
+          response.accessory.ARTICLE_NBR
         );
         $("#widget-addCatalogAccessory-form [name=stock]").val(
           response.accessory.STOCK
