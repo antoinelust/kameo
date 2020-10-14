@@ -20,6 +20,42 @@ $stock = isset($_POST["stock"]) ? htmlspecialchars($_POST["stock"]) : NULL;
 $display=isset($_POST['display']) ? "Y" : "N";
 
 
+if(isset($_FILES['file'])){
+
+    $extensions = array('.jpg');
+    $extension = strrchr($_FILES['picture']['name'], '.');
+    if(!in_array($extension, $extensions))
+    {
+          errorMessage("ES0041");
+    }
+
+
+    $taille_maxi = 6291456;
+    $taille = filesize($_FILES['picture']['tmp_name']);
+    if($taille>$taille_maxi)
+    {
+          errorMessage("ES0023");
+    }
+
+    //upload of Accessory picture
+
+    $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
+
+    $fichier = $ID.$extension;
+
+    if(move_uploaded_file($_FILES['picture']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+     {
+        $upload=true;
+        $path= $dossier . $fichier;
+     }
+     else
+     {
+          errorMessage("ES0024");
+     }
+
+}
+
+
 if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '') {
 
     include '../connexion.php';
@@ -57,6 +93,19 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
     die;
 }
 
+if($response['ID'] != $ID){
+
+    $dossier = '../images_accessories/';
+
+    $oldFile=$response['ID'].".jpg";
+    $newFile=$ID.".jpg";
+    
+    copy($dossier . $oldFile, $dossier . $newFile);
+    unlink($dossier . $oldFile);
+
+}
+
+
 
 if(isset($_FILES['file'])){
     
@@ -75,6 +124,39 @@ if(isset($_FILES['file'])){
           errorMessage("ES0023");
     }
     
+    //upload of Bike picture
+
+    $dossier = '../images_accessories/';
+        
+        
+    include 'connexion.php';
+    $sql = "select * from accessoires_catalog where ID='$ID'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);    
+    $conn->close();
+
+    $fichier=$resultat['ID'].$extension;
+
+    if (file_exists($dossier.$fichier)) {   
+        unlink($dossier.$fichier) or die("Couldn't delete file");
+    }    
+
+    $fichier = $ID.$extension;
+
+    if(move_uploaded_file($_FILES['picture']['tmp_name'], $dossier .$fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+    {
+        $upload=true;
+        $path= $dossier. $fichier;
+    }
+    else
+    {
+        errorMessage("ES0024");
+    }
     
     
     if($action=="add"){
@@ -85,7 +167,7 @@ if(isset($_FILES['file'])){
 
         $fichier = $ID.$extension;
 
-         if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier))
+         if(!move_uploaded_file($_FILES['picture']['tmp_name'], $dossier .$fichier))
          {
               errorMessage("ES0024");
          }    
@@ -104,7 +186,7 @@ if(isset($_FILES['file'])){
 
         $fichier = $ID.$extension;
 
-         if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier))
+         if(!move_uploaded_file($_FILES['picture']['tmp_name'], $dossier . $fichier))
          {
               errorMessage("ES0024");
          }    

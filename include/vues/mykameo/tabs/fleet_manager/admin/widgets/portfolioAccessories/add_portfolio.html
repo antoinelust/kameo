@@ -33,7 +33,7 @@
               <div class="col-sm-12">
                 <div class="col-sm-4 ID">
                   <label for="ID">ID :</label>
-                  <input type="int" class="form-control" name="ID" readonly />
+                  <input type="int" class="form-control required" name="ID" readonly />
                 </div>
                 <div class="col-sm-4">
                   <label for="brand"
@@ -62,10 +62,19 @@
                     <?=L::generic_category;?>
                     :
                   </label>
-                  <select
-                    class="form-control required"
-                    name="category"
-                  ></select>
+                    <select class="form-control required" name="category">
+                      <option value="Poignées">Poignées</option>
+                      <option value="Sacoche">Sacoche</option>
+                      <option value="Sac à dos">Sac à dos</option>
+                      <option value="Antivol">Antivol</option>
+                      <option value="Casque">Casque</option>
+                      <option value="Selle">Selle</option>
+                      <option value="Panier">Panier</option>
+                      <option value="Cadenas">Cadenas</option>
+                      <option value="Textiles">Textiles</option>
+                      <option value="Entretien">Entretien</option>
+                      <option value="other">Other</option>
+                    </select>
                 </div>
               </div>
               <div class="separator"></div>
@@ -112,7 +121,7 @@
               </div>
               <div class="separator"></div>
               <h4 class="text-green"><?=L::generic_picture;?></h4>
-              <div class="form-group addPicture col-sm-6">
+              <div class="form-group addPicture col-sm-6" id="addPicture">
                 <label for="file"><?=L::generic_picture;?></label>
                 <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
                 <input
@@ -122,6 +131,8 @@
                   name="file"
                 />
                 <img
+                  id="imageID"
+                  name="picture"
                   src=""
                   class="accessoryCatalogImage"
                   alt="image"
