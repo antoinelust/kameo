@@ -23,9 +23,11 @@ if (isset($_GET['action'])) {
     //récupération des entretiens de moins de 2 mois
     $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date,
             entretiens.STATUS AS status, COMMENT AS comment, FRAME_NUMBER AS frame_number, COMPANY AS company,
-            MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id
+            MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id, STREET AS street, ZIP_CODE AS zip_code, TOWN AS town,
+            EMAIL_CONTACT AS email_contact
             FROM entretiens
             INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+            INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
             WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
             GROUP BY BIKE_ID
             ORDER BY entretiens.DATE;";

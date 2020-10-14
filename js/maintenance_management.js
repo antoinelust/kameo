@@ -52,9 +52,11 @@ function list_maintenances() {
                           <tr>
                             <th>ID</th>
                             <th>Vélo</th>
+                            <th>Model</th>
                             <th>Société</th>
                             <th>Date</th>
                             <th>Status</th>
+                            <th>Adresse</th>
                             <th></th>
                           </tr>
                         </thead>
@@ -75,9 +77,11 @@ function list_maintenances() {
                 <td><a  data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+
                 '" data-toggle="modal" class="showMaintenance" href="#">'+response.maintenance[i].id+`</a></td>
                 <td>`+response.maintenance[i].bike_id+`</td>
+                <td>`+response.maintenance[i].model+`</td>
                 <td>`+response.maintenance[i].company+`</td>
                 <td>`+date+`</td>
                 <td>`+status+`</td>
+                <td>`+response.maintenance[i].street+ ', ' + response.maintenance[i].zip_code + ' ' + response.maintenance[i].town +`</td>
                 <td><a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+`" data-toggle="modal">Modifier</a></td>
                 </tr>
               `;
