@@ -491,7 +491,7 @@ $body="<!doctype html>
 }</style></head>
     <body>
         <!--*|IF:MC_PREVIEW_TEXT|*-->
-        <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">New bike booking</span><!--<![endif]-->
+        <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">New feedback - Booking $ID</span><!--<![endif]-->
         <!--*|END:IF|*-->
         <center>
             <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\">
@@ -562,8 +562,6 @@ $body="<!doctype html>
 
                         <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                            <div style=\"text-align: center;\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\"><span style=\"color:#25539D\"><span style=\"font-size:21px\"><strong>Votre réservation de vélo - Jouw fiets reservering</strong></span></span></span></div>
-
                         </td>
                     </tr>
                 </tbody></table>
@@ -595,14 +593,14 @@ $body="<!doctype html>
 
                         <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                            <div style=\"text-align: justify;\"><br>
-<span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Date de début - Begindatum : <strong>$dateStart_3String</strong><br>
-- Date de fin - Einddatum : <strong>$dateEnd_3String</strong><br>
-- Identification du vélo - Fietsidentificatie : <strong>$customName</strong> </span></span><span style=\"font-size:14px\"></span><br>
-<span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Code d'accès - Toegangscode : <strong>  $lockingcode </strong> </span></span><span style=\"font-size:14px\"></span><br>
-<br>
-<span style=\"font-size:12px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> pour plus d'informations - Meer informatie op je <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> app</span></span><br>
-&nbsp;</div>
+                        <h3>Nouveau feedback !&nbsp;</h3>
+
+                        <strong>$user :</strong><br>
+                        Vélo : $bike <br>
+                        ID de réservation : $ID <br>
+                        Note : $note <br>
+                        Besoin d'entretien ? $entretien <br>
+                        Commentaire: $comment<br>
 
                         </td>
                     </tr>

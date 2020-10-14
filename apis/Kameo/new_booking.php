@@ -164,9 +164,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 			$model=$resultat['MODEL'];
 			$company=$resultat['COMPANY'];
 
-			$mail->From = 'info@kameobikes.com';
-	    $mail->FromName = "Information Kameo Bikes";
-	    $mail->AddReplyTo('info@kameobikes.com', "Information Kameo Bikes");
+			if($company=='Actiris'){
+		    $mail->From = "bookabike@actiris.be";
+		    $mail->FromName = "Book a Bike - Actiris";
+		  }else{
+		    $mail->From = "info@kameobikes.com";
+		    $mail->FromName = "Info Kameo Bikes";
+		  }
 			$mail->AddAddress($user);
 			//$mail->AddAddress("antoine@kameobikes.com");
 			$mail->IsHTML(true);
