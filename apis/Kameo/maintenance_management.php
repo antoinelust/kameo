@@ -49,8 +49,9 @@ if (isset($_GET['action'])) {
     }
     $result = mysqli_query($conn, $sql_auto_plan);
     $row =  mysqli_fetch_array($result);
+
     if ($row['COUNT(ID)'] != NULL){
-      $response['maintenancesNumberAuto']=$row['COUNT(ID)'];
+      $response['maintenancesNumberAuto']=$result->num_rows;
     }else{
       $response['maintenancesNumberAuto']=0;
     }
@@ -71,7 +72,7 @@ if (isset($_GET['action'])) {
     if($row['COUNT(ID)'] == NULL){
       $response['maintenancesNumberGlobal']=0;
     }else{
-      $response['maintenancesNumberGlobal']=$row['COUNT(ID)'];
+      $response['maintenancesNumberGlobal']=$result->num_rows;
     }
     $response['response'] = 'success';
     

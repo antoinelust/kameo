@@ -575,23 +575,40 @@ if(isset($_POST['action'])){
         }
 
         if(isset($_POST['contractStart']) && isset($_POST['contractEnd'])){
-            $dates = plan_maintenances($_POST['contractStart'], $_POST['contractEnd']);
 
             include 'connexion.php';
 
-            for ($i=0; $i < sizeof($dates); $i++) {
-                $next_date = $dates[$i];
-                $num_m = array_search($next_date, $dates) + 1;
-
-                $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, COMMENT, NR_ENTR)
-                SELECT CURRENT_TIMESTAMP, '$user', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '', '$num_m'
-                FROM DUAL WHERE NOT EXISTS (SELECT * FROM entretiens WHERE BIKE_ID = '$bikeID' AND DATE >= '$next_date')";
-
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
+            if(isset($_POST['contractType'])){
+                if ($_POST['contractType'] == 'leasing'){
+                    $dates = plan_maintenances($_POST['contractStart'], $_POST['contractEnd']);
+                    
+                    for ($i=0; $i < sizeof($dates); $i++) {
+                        $next_date = $dates[$i];
+                        $num_m = array_search($next_date, $dates) + 1;
+        
+                        $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR)
+                        SELECT CURRENT_TIMESTAMP, '$user', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '$num_m'
+                        FROM DUAL WHERE NOT EXISTS (SELECT * FROM entretiens WHERE BIKE_ID = '$bikeID' AND DATE(DATE + INTERVAL 3 MONTH) >= '$dates[$i]')";
+        
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        }
+                    }
                 }
+                if ($_POST['contractType'] == 'selling') {
+                    $date = date('Y-m-d', strtotime("+3 months", strtotime($_POST['contractStart'])));
+                    $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR) 
+                    VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$date', 'AUTOMATICALY_PLANNED', 1)";
+    
+                    if ($conn->query($sql) === FALSE) {
+                        $response = array ('response'=>'error', 'message'=> $conn->error);
+                        echo json_encode($response);
+                        die;
+                    }
+                }
+                
             }
 
             $conn->close();
