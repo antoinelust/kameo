@@ -39,9 +39,9 @@ function listPortfolioAccessories() {
         response.accessories.forEach(
           (accessory) =>
             (dest = dest.concat(
-              '<tr><td><a href="#" class="text-green getPortfolioDetails retrieveAccessoryAdmin" data-target="#portfolioAccessoryManagement" name="' +
+              '<tr><td><a href="#" class="text-green getPortfolioDetails retrieveAccessoryAdmin" data-target="#portfolioAccessoryManagement" onclick="initializeUpdatePortfolioAccessory(\'' +
                 accessory.ID +
-                '" data-toggle="modal">' +
+                '\')" data-toggle="modal">' +
                 accessory.ID +
                 " </a></td><td>" +
                 accessory.BRAND +
@@ -69,6 +69,7 @@ function listPortfolioAccessories() {
         displayLanguage();
 
         $(".updateAccessoryAdmin").click(function () {
+
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
           $("#widget-addCatalogAccessory-form select").attr("readonly", false);
           $(".accessoryManagementTitle").html("Modifier un accessoire");
@@ -77,7 +78,7 @@ function listPortfolioAccessories() {
         });
 
         $(".retrieveAccessoryAdmin").click(function () {
-
+          
           $("#widget-addCatalogAccessory-form input").attr("readonly", true);
           $("#widget-addCatalogAccessory-form select").attr("readonly", true);
           $(".accessoryManagementTitle").html("Consulter un accessoire");
