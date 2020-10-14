@@ -122,7 +122,8 @@ function get_maintenance(ID){
           $('#widget-maintenanceManagement-form input[name=ID]').val(response.maintenance.id);
           $('#widget-maintenanceManagement-form input[name=velo]').val(response.maintenance.bike_id);
           $('#widget-maintenanceManagement-form input[name=company]').val(response.maintenance.company);
-
+          $('#widget-maintenanceManagement-form input[name=model]').val(response.maintenance.model);
+          $('#widget-maintenanceManagement-form input[name=address]').val(response.maintenance.street+ ', ' + response.maintenance.zip_code + ' ' + response.maintenance.town);
           $('#widget-maintenanceManagement-form select[name=status]').val(response.maintenance.status);
           $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val(date[2] + '-' + date[1] + '-' + date[0]);
           $('#widget-maintenanceManagement-form textarea[name=comment]').val(response.maintenance.comment);
