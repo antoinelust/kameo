@@ -34,7 +34,7 @@
             >
               <div class="form-group col-sm-12">
                 <div class="col-md-12">
-                  <div class="col-md-4">
+                  <div class="col-md-4" name="id">
                     <label for="ID">ID</label>
                     <input
                       type="int"
@@ -45,22 +45,20 @@
                     />
                   </div>
                   <div class="col-md-4">
-                    <label for="utilisateur">Vélo</label>
+                    <label for="utilisateur">Société</label>
+                    <select
+                      title="company"
+                      class="form-control required form_company"
+                      name="company"
+                    ></select>
+                  </div>
+                  <div class="col-md-4">
+                    <label id="velo" for="utilisateur">Vélo</label>
                     <input
                       type="text"
                       title="velo"
                       class="form-control required"
                       name="velo"
-                      readonly="readonly"
-                    />
-                  </div>
-                  <div class="col-md-4">
-                    <label for="utilisateur">Société</label>
-                    <input
-                      type="text"
-                      title="company"
-                      class="form-control required"
-                      name="company"
                       readonly="readonly"
                     />
                   </div>
@@ -99,6 +97,7 @@
                       <option value="AUTOMATICALY_PLANNED">
                         AUTOMATICALY_PLANNED
                       </option>
+                      <option value="MANUALLY_PLANNED">MANUALLY_PLANNED</option>
                       <option value="DONE">DONE</option>
                       <option value="CANCELLED">CANCELLED</option>
                     </select>
