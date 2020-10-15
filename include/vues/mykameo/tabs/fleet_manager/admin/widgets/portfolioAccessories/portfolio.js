@@ -18,8 +18,8 @@ $(".fleetmanager").click(function () {
     },
   });
 });
-
-/* console.log(construct_form_for_accessory_status_updateAdmin(ID));
+/*
+ console.log(construct_form_for_accessory_status_updateAdmin(ID));
 function construct_form_for_accessory_status_updateAdmin(ID){
 
     $('#widget-addCatalogAccessory-form input[name=ID').fadeIn();
@@ -44,6 +44,8 @@ function construct_form_for_accessory_status_updateAdmin(ID){
 
     
     $('#widget-addCatalogAccessory-form select[name=category]')
+    $('.accessoryAction').removeClass('hidden');
+    $('#widget-addCatalogAccessory-form input[name=action]').val("update")
         .find('option')
         .remove()
         .end()
@@ -51,8 +53,9 @@ function construct_form_for_accessory_status_updateAdmin(ID){
     $('#widget-addCatalogAccessory-form select[name=category]').unbind();
 
     $.ajax({
-      url: 'apis/Kameo/accessories/listCatalog.php',
+      url: 'apis/Kameo/accessories/retrieveAccessory.php',
       type: 'get',
+      data: {"ID": ID},
       success: function(response){
           if (response.response == 'error') {
               console.log(response.message);
@@ -114,6 +117,75 @@ function construct_form_for_accessory_status_updateAdmin(ID){
 })
 }
 */
+
+
+function add_accessory(ID){
+
+    $('#widget-addCatalogAccessory-form select[name=category')
+        .find('option')
+        .remove()
+        .end()
+    ;
+
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Poignées\">Poignées</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Sacoche\">Sacoche</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Sac à dos\">Sac à dos</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Antivol\">Antivol</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Casque\">Casque</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Selle\">Selle</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Panier\">Panier</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Cadenas\">Cadenas</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Textiles\">Textiles</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Entretien\">Entretien</option>");
+
+    $('.imageID').addClass('hidden');
+    $('.accessoryActions').addClass('hidden');
+    document.getElementById('widget-addCatalogAccessory-form').reset();
+
+    $('#widget-addCatalogAccessory-form input[name=action]').val("add");
+    $('#widget-addCatalogAccessory-form select[name=category]').val("");
+    $('#widget-addCatalogAccessory-form input[name=brand]').val("");
+    $('#widget-addCatalogAccessory-form input[name=description]').val("");
+    $('#widget-addCatalogAccessory-form select[name=provider]').val("");
+    $('#widget-addCatalogAccessory-form input[name=articleNbr]').val("");
+    $('#widget-addCatalogAccessory-form input[name=stock]').val("");
+    $('#widget-addCatalogAccessory-form input[name=display]').val("");
+    $('#widget-addCatalogAccessory-form input[name=buyingPrice]').val("");
+    $('#widget-addCatalogAccessory-form input[name=sellingPrice]').val("");
+  
+
+    $('#widget-bikeManagement-form input[name=brand]').change(function(){
+      $.ajax({
+          url: 'apis/Kameo/accessories/accessories.php',
+          type: 'get',
+          data: { "action": "retrieve"},
+          success: function(response){
+              if (response.response == 'error') {
+                  console.log(response.message);
+              } else{
+                  $('#widget-addCatalogAccessory-form input[name=description]').val(response.DESCRIPTION);
+                  $('#widget-addCatalogAccessory-form select[name=category]').val(response.CATEGORY);
+                  $('#widget-addCatalogAccessory-form select[name=provider]').val(response.PROVIDER);
+                  $('#widget-addCatalogAccessory-form input[name=articleNbr]').val(response.ARTICLE_NBR);
+                  $('#widget-addCatalogAccessory-form input[name=buyingPrice]').val(response.BUYING_PRICE);
+                  $('#widget-addCatalogAccessory-form input[name=sellingPrice]').val(response.PRICE_HTVA);
+                  $('#widget-addCatalogAccessory-form input[name=stock]').val(response.STOCK);
+                  $('#widget-addCatalogAccessory-form input[name=display]').val(response.DISPLAY);
+
+                  $('#addPicture').attr('src', "images_accessories/"+response.img+".jpg");
+                  $('.imageID').removeClass('hidden');
+
+
+              }
+          }
+      })
+  });
+
+    $('#widget-addCatalogAccessory-form input[name=ID').val("");
+    $('#widget-addCatalogAccessory-form input[name=ID').fadeOut();
+    $('#widget-addCatalogAccessory-form label[for=ID').fadeOut();
+}
+
 
 
 

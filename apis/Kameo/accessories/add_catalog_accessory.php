@@ -9,6 +9,7 @@ require_once __DIR__ .'/../globalfunctions.php';
 $token = getBearerToken();
 
 
+
 $ID = isset($_POST["ID"]) ? htmlspecialchars($_POST["ID"]) : NULL;
 $action = isset($_POST["name"]) ? htmlspecialchars($_POST["action"]) : NULL;
 $brand = isset($_POST["brand"]) ? htmlspecialchars($_POST["brand"]) : NULL;
@@ -16,20 +17,25 @@ $description = isset($_POST["description"]) ? htmlspecialchars($_POST["descripti
 $category = isset($_POST["category"]) ? htmlspecialchars($_POST["category"]) : NULL;
 $buyingPrice = isset($_POST["buyingPrice"]) ? htmlspecialchars($_POST["buyingPrice"]) : NULL;
 $sellingPrice = isset($_POST["sellingPrice"]) ? htmlspecialchars($_POST["sellingPrice"]) : NULL;
+$provider = isset($_POST["provider"]) ? htmlspecialchars($_POST["provider"]) : NULL;
+$articleNbr = isset($_POST["articleNbr"]) ? htmlspecialchars($_POST["articleNbr"]) : NULL;
 $stock = isset($_POST["stock"]) ? htmlspecialchars($_POST["stock"]) : NULL;
 $display=isset($_POST['display']) ? "Y" : "N";
 
 
 
-if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '') {
+if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '' && $provider != '' && $articleNbr != '') {
+$response = array ('response'=>'error', 'message'=> $brand,$description,$category,$buyingPrice,$sellingPrice,$provider,$articleNbr,$stock,$display);
+    echo json_encode($response);
+    die;
 
     include '../connexion.php';
 
     if($action=="add"){
-        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, SHOW_ACCESSORIES) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, SHOW_ACCESSORIES, PROVIDER, ARTICLE_NBR) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiis", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display);
+            $stmt->bind_param("sssiiiis", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr);
             $stmt->execute();
             $ID = $conn->insert_id;
         }else
@@ -38,10 +44,12 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
 
 
 
-        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, SHOW_ACCESSORIES=? WHERE ID=? ");
+        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, SHOW_ACCESSORIES=?, PROVIDER=?, ARTICLE_NBR=? WHERE ID=? ");
         if ($stmt)
-        {
-            $stmt->bind_param("sssiiiisi", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display,$ID);
+        {  
+            
+
+            $stmt->bind_param("sssiiiisi", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $ID);
             $stmt->execute();
         }else
             error_message('500', 'Unable to add an accessory');
