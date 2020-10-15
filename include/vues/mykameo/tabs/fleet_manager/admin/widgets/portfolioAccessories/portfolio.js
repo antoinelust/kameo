@@ -42,7 +42,7 @@ function construct_form_for_accessory_status_updateAdmin(ID){
     $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Entretien\">Entretien</option>");
     $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"other\">Other</option>");
 
-    
+
     $('#widget-addCatalogAccessory-form select[name=category]')
     $('.accessoryAction').removeClass('hidden');
     $('#widget-addCatalogAccessory-form input[name=action]').val("update")
@@ -68,7 +68,7 @@ function construct_form_for_accessory_status_updateAdmin(ID){
           }
       }
 }).done(function(){
-  
+
       var id;
 
       $.ajax({
@@ -152,7 +152,7 @@ function add_accessory(ID){
     $('#widget-addCatalogAccessory-form input[name=display]').val("");
     $('#widget-addCatalogAccessory-form input[name=buyingPrice]').val("");
     $('#widget-addCatalogAccessory-form input[name=sellingPrice]').val("");
-  
+
 
     $('#widget-bikeManagement-form input[name=brand]').change(function(){
       $.ajax({
@@ -177,7 +177,7 @@ function add_accessory(ID){
               }
           }
       })
-      
+
   });
 
     $('#widget-addCatalogAccessory-form input[name=ID').val("");
@@ -411,6 +411,7 @@ function getPortfolioDetails(ID) {
 function initializeCreatePortfolioAccessories() {
   document.getElementById("widget-addCatalogAccessory-form").reset();
   $("#widget-addCatalogAccessory-form .ID").addClass("hidden");
+  $("#widget-addCatalogAccessory-form input[name=action]").val("add");  
   $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
     "hidden"
   );
