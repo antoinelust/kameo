@@ -36,8 +36,6 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
             error_message('500', 'Unable to add an accessory');
     }else if($action=="update"){
 
-
-
         $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, SHOW_ACCESSORIES=? WHERE ID=? ");
         if ($stmt)
         {
@@ -173,7 +171,5 @@ if(isset($_FILES['file'])){
 }
 
 successMessage("SM0028");
-
-
 
 ?>

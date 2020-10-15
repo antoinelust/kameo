@@ -169,7 +169,7 @@ if ($token == NULL) { //Not connected
                       }
                       if(get_user_permissions("personnalBike", $token)){
                         include 'include/vues/mykameo/tabs/personnal_bike/main.php';  //TAB 4 @TODO: REFACTOR
-                      }                      
+                      }
                       if(get_user_permissions("fleetManager", $token)){
                         include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
                       }
@@ -246,10 +246,14 @@ if ($token == NULL) { //Not connected
             if ($contactDetails['contact']['company'] != "Actiris"){
               echo '<a href="docs/cgvfr.pdf" target="_blank" title="Pdf">' . L::sidebar_terms . '</a><br>';
             }
-            ?>
 
-            <a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf"><?= L::sidebar_policy; ?></a><br><br>
-            <?php if ($contactDetails['contact']['company'] == "Actiris"){
+            if ($contactDetails['contact']['company'] == "Actiris"){
+              echo '<a href="docs/'.L::sidebar_bike_policy_link_actiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br>';
+            }else{
+              echo '<a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br>';
+            }
+
+            if ($contactDetails['contact']['company'] == "Actiris"){
               echo '<a href="docs/'.L::sidebar_manualActiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br>';
             }else{
               echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf"><'.L::sidebar_manual.'></a><br>';
