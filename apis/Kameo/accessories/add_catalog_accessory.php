@@ -25,6 +25,11 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
 
     include '../connexion.php';
 
+    $response = array ('response'=>'error', 'message'=> "test");
+    echo json_encode($response);
+    die;
+
+
     if($action=="add"){
         $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, SHOW_ACCESSORIES) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
