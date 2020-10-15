@@ -56,6 +56,7 @@
 
 	/** PAGES DIVERES **/
 	$router->map('GET','/prime-velo-wallonne[ext]', 'pages/prime-velo-wallonne.php');
+	$router->map('GET','/ebook_Leasing_Velo_Entreprise[ext]', 'pages/ebook_Leasing_Velo_Entreprise.php');
 
 	/** BORNE **/
 	/*$router->map('GET','/include/lock/lock_verifier_code[ext]', 'apis/Kameo/lock/lock_verifier_code.php');

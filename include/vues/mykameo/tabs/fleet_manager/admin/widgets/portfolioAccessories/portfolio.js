@@ -19,6 +19,104 @@ $(".fleetmanager").click(function () {
   });
 });
 
+/* console.log(construct_form_for_accessory_status_updateAdmin(ID));
+function construct_form_for_accessory_status_updateAdmin(ID){
+
+    $('#widget-addCatalogAccessory-form input[name=ID').fadeIn();
+    $('#widget-addCatalogAccessory-form label[for=ID').fadeIn();
+
+    $('#widget-addCatalogAccessory-form select[name=category')
+        .find('option')
+        .remove()
+        .end()
+    ;
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Poignées\">Poignées</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Sacoche\">Sacoche</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Sac à dos\">Sac à dos</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Antivol\">Antivol</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Casque\">Casque</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Selle\">Selle</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Panier\">Panier</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Cadenas\">Cadenas</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Textiles\">Textiles</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"Entretien\">Entretien</option>");
+    $('#widget-addCatalogAccessory-form select[name=category').append("<option value=\"other\">Other</option>");
+
+    
+    $('#widget-addCatalogAccessory-form select[name=category]')
+        .find('option')
+        .remove()
+        .end()
+    ;
+    $('#widget-addCatalogAccessory-form select[name=category]').unbind();
+
+    $.ajax({
+      url: 'apis/Kameo/accessories/listCatalog.php',
+      type: 'get',
+      success: function(response){
+          if (response.response == 'error') {
+              console.log(response.message);
+          } else{
+              var i=0;
+              while(i<response.ID){
+                  $('#widget-addCatalogAccessory-form select[name=category]').append("<option value="+response.bike[i].ID+">"+response.bike[i].BRAND+"<br>");
+                  i++;
+              }
+          }
+      }
+}).done(function(){
+  
+      var id;
+
+      $.ajax({
+        url: 'apis/Kameo/accessories/add_catalog_accessory.php',
+        type: 'post',
+        data: { ID: ID, "action": "update"},
+        success: function(response){
+            if (response.response == 'error') {
+                console.log(response.message);
+            } else{
+                document.getElementById("imageID").src="images_accessories/"+response.img+".jpg";
+                $('.imageID').removeClass('hidden');
+                id=response.id;
+
+                $('#widget-addCatalogAccessory-form input[name=ID]').val(ID);
+                $('#widget-addCatalogAccessory-form input[name=brand]').val(response.BRAND);
+                $('#widget-addCatalogAccessory-form input[name=description]').val(response.DESCRIPTION);
+                $('#widget-addCatalogAccessory-form select[name=category]').val(response.CATEGORY);
+                $('#widget-addCatalogAccessory-form input[name=buyingPrice]').val(response.BUYING_PRICE);
+                $('#widget-addCatalogAccessory-form input[name=sellingPrice]').val(response.PRICE_HTVA);
+                $('#widget-addCatalogAccessory-form input[name=stock]').val(response.STOCK);
+                $('#widget-addCatalogAccessory-form input[name=display]').val(response.DISPLAY);
+
+                document.getElementsByClassName("picture")[0].src="images_accessories/"+response.img+".jpg";
+
+                $('#widget-addCatalogAccessory-form input[name=ID]').change(function(){
+                  $.ajax({
+                      url: 'apis/Kameo/accessories/listCatalog.php',
+                      type: 'get',
+                      data: {"ID": $('#widget-addCatalogAccessory-form input[name=ID]').val()},
+                      success: function(response){
+                          if (response.response == 'error') {
+                              console.log(response.message);
+                          } else{
+                              $('#addPicture').attr('src', "images_accessories/"+response.img+".jpg");
+                              $('.imageID').removeClass('hidden');
+
+
+                          }
+                      }
+                  })
+              });
+            }
+          }
+        })
+})
+}
+*/
+
+
+
 $(".portfolioAccessoriesManagerClick").click(function () {
   listPortfolioAccessories();
 });
@@ -34,14 +132,14 @@ function listPortfolioAccessories() {
         console.log(response.message);
       } else {
         var dest =
-          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" onclick="initializeCreatePortfolioAccessories()" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Modèle</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th></th></tr></thead><tbody>';
+          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" onclick="initializeCreatePortfolioAccessories()" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Modèle</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th>Fournisseur</th><th>Numéro d\'article</th><th></th></tr></thead><tbody>';
 
         response.accessories.forEach(
           (accessory) =>
             (dest = dest.concat(
-              '<tr><td><a href="#" class="text-green getPortfolioDetails retrieveAccessoryAdmin" data-target="#portfolioAccessoryManagement" name="' +
+              '<tr><td><a href="#" class="text-green getPortfolioDetails retrieveAccessoryAdmin" data-target="#portfolioAccessoryManagement" onclick="initializeUpdatePortfolioAccessory(\'' +
                 accessory.ID +
-                '" data-toggle="modal">' +
+                '\')" data-toggle="modal">' +
                 accessory.ID +
                 " </a></td><td>" +
                 accessory.BRAND +
@@ -57,6 +155,10 @@ function listPortfolioAccessories() {
                 accessory.SHOW_ACCESSORIES +
                 "</td><td>" +
                 accessory.CATEGORY +
+                "</td><td>" +
+                accessory.PROVIDER +
+                "</td><td>" +
+                accessory.ARTICLE_NBR +
                 '</td><td><a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" onclick="initializeUpdatePortfolioAccessory(\'' +
                 accessory.ID +
                 '\')" data-toggle="modal" href="#">Mettre à jour </a></td></tr>'
@@ -69,6 +171,7 @@ function listPortfolioAccessories() {
         displayLanguage();
 
         $(".updateAccessoryAdmin").click(function () {
+          //construct_form_for_accessory_status_updateAdmin(this.name);
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
           $("#widget-addCatalogAccessory-form select").attr("readonly", false);
           $(".accessoryManagementTitle").html("Modifier un accessoire");
@@ -77,7 +180,7 @@ function listPortfolioAccessories() {
         });
 
         $(".retrieveAccessoryAdmin").click(function () {
-
+          //construct_form_for_accessory_status_updateAdmin(this.name);
           $("#widget-addCatalogAccessory-form input").attr("readonly", true);
           $("#widget-addCatalogAccessory-form select").attr("readonly", true);
           $(".accessoryManagementTitle").html("Consulter un accessoire");
@@ -85,7 +188,7 @@ function listPortfolioAccessories() {
         });
 
         $(".addCatalogAccessory").click(function () {
-
+          //add_accessory(this.name);
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
           $("#widget-addCatalogAccessory-form select").attr("readonly", false);
           $(".accessoryManagementTitle").html("Ajouter un accessoire");
@@ -197,6 +300,12 @@ function getPortfolioDetails(ID) {
         $("#widget-addCatalogAccessory-form [name=sellingPrice]").val(
           response.accessory.PRICE_HTVA
         );
+        $("#widget-addCatalogAccessory-form select[name=provider]").val(
+          response.accessory.PROVIDER
+        );
+        $("#widget-addCatalogAccessory-form [name=articleNbr]").val(
+          response.accessory.ARTICLE_NBR
+        );
         $("#widget-addCatalogAccessory-form [name=stock]").val(
           response.accessory.STOCK
         );
@@ -235,7 +344,7 @@ function initializeCreatePortfolioAccessories() {
     "hidden"
   );
   $("#widget-addCatalogAccessory-form input[name=action]").val("add");
-  $("#widget-addCatalogAccessory-form input[name=file]").addClass("required");
+  //$("#widget-addCatalogAccessory-form input[name=file]").addClass("required");
   $("#widget-addCatalogAccessory-form .accessoryCatalogImage").addClass(
     "hidden"
   );

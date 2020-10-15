@@ -23,9 +23,10 @@ if (isset($_GET['action'])) {
     //récupération des entretiens de moins de 2 mois
     $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date,
             entretiens.STATUS AS status, COMMENT AS comment, FRAME_NUMBER AS frame_number, COMPANY AS company,
-            MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id
+            MODEL AS model, FRAME_REFERENCE AS frame_reference, BIKE_ID AS bike_id, STREET AS street, ZIP_CODE AS zip_code, TOWN AS town
             FROM entretiens
             INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+            INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
             WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
             GROUP BY BIKE_ID
             ORDER BY entretiens.DATE;";
@@ -49,8 +50,9 @@ if (isset($_GET['action'])) {
     }
     $result = mysqli_query($conn, $sql_auto_plan);
     $row =  mysqli_fetch_array($result);
+
     if ($row['COUNT(ID)'] != NULL){
-      $response['maintenancesNumberAuto']=$row['COUNT(ID)'];
+      $response['maintenancesNumberAuto']=$result->num_rows;
     }else{
       $response['maintenancesNumberAuto']=0;
     }
@@ -71,7 +73,7 @@ if (isset($_GET['action'])) {
     if($row['COUNT(ID)'] == NULL){
       $response['maintenancesNumberGlobal']=0;
     }else{
-      $response['maintenancesNumberGlobal']=$row['COUNT(ID)'];
+      $response['maintenancesNumberGlobal']=$result->num_rows;
     }
     $response['response'] = 'success';
     
@@ -84,9 +86,11 @@ if (isset($_GET['action'])) {
       $ID = $_GET['ID'];
       include 'connexion.php';
       $sql = "SELECT entretiens.ID AS MAINTENANCE_ID, entretiens.BIKE_ID AS BIKE_ID, entretiens.DATE AS MAINTENANCE_DATE,
-              entretiens.STATUS AS MAINTENANCE_STATUS, COMMENT, FRAME_NUMBER, COMPANY, MODEL, FRAME_REFERENCE
+              entretiens.STATUS AS MAINTENANCE_STATUS, COMMENT, FRAME_NUMBER, COMPANY, MODEL, FRAME_REFERENCE, 
+              STREET, ZIP_CODE, TOWN
               FROM entretiens
               INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+              INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
               WHERE entretiens.ID = $ID;";
       if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -105,6 +109,9 @@ if (isset($_GET['action'])) {
       $response['maintenance']['frame_number']=$resultat['FRAME_NUMBER'];
       $response['maintenance']['company']=$resultat['COMPANY'];
       $response['maintenance']['model']=$resultat['MODEL'];
+      $response['maintenance']['street']=$resultat['STREET'];
+      $response['maintenance']['town']=$resultat['TOWN'];
+      $response['maintenance']['zip_code']=$resultat['ZIP_CODE'];
       $response['maintenance']['frame_reference']=$resultat['FRAME_REFERENCE'];
 
       $images = array();
