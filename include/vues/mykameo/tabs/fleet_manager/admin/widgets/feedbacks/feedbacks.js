@@ -17,6 +17,7 @@ $(".fleetmanager").click(function () {
       }
     },
   });
+  document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});  
 });
 
 

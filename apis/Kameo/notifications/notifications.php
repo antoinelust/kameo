@@ -9,7 +9,7 @@ header_remove("Content-Security-Policy");
 
 require_once '../globalfunctions.php';
 require_once '../authentication.php';
-require_once '../connexion.php'; 
+require_once '../connexion.php';
 
 $token = getBearerToken();
 
@@ -17,9 +17,9 @@ switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
-		
+
 		if($action === 'retrieveNotifications'){
-			if(get_user_permissions(["search", "order","chatsManager","admin"], $token)){
+			if(get_user_permissions(["search", "order","chatsManager","admin", 'fleetManager', 'personnalBike'], $token)){
 				$stmt = $conn->prepare("SELECT ID FROM customer_referential WHERE TOKEN = ?");
 				$stmt->bind_param("s", $token);
 				if ($stmt->execute())

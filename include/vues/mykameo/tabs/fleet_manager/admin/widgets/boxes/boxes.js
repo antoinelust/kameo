@@ -17,6 +17,7 @@ $(".fleetmanager").click(function () {
       }
     },
   });
+  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);  
 });
 
 function list_boxes(company) {
