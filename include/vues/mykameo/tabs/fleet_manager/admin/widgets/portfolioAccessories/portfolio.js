@@ -174,11 +174,10 @@ function add_accessory(ID){
 
                   $('#addPicture').attr('src', "images_accessories/"+response.img+".jpg");
                   $('.imageID').removeClass('hidden');
-
-
               }
           }
       })
+      
   });
 
     $('#widget-addCatalogAccessory-form input[name=ID').val("");

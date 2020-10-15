@@ -25,9 +25,9 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
 
     include '../connexion.php';
 
-    $response = array ('response'=>'error', 'message'=> "test");
-    echo json_encode($response);
-    die;
+   // $response = array ('response'=>'error', 'message'=> "test");
+    //echo json_encode($response);
+    //die;
 
 
     if($action=="add"){
