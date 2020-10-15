@@ -20,38 +20,6 @@ $stock = isset($_POST["stock"]) ? htmlspecialchars($_POST["stock"]) : NULL;
 $display=isset($_POST['display']) ? "Y" : "N";
 
 
-if(isset($_FILES['file'])){
-
-    $extensions = array('.jpg');
-    $extension = strrchr($_FILES['file']['name'], '.');
-    if(!in_array($extension, $extensions))
-    {
-          errorMessage("ES0041");
-    }
-
-
-    $taille_maxi = 6291456;
-    $taille = filesize($_FILES['file']['tmp_name']);
-    if($taille>$taille_maxi)
-    {
-          errorMessage("ES0023");
-    }
-
-    //upload of Accessory picture
-
-    $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
-
-    $fichier = $ID.$extension;
-
-    if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)){
-        $upload=true;
-        $path= $dossier . $fichier;
-     }else{
-          errorMessage("ES0024");
-     }
-
-}
-
 
 if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '') {
 
@@ -84,6 +52,37 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
     die;
 }
 
+if(isset($_FILES['file'])){
+
+    $extensions = array('.jpg');
+    $extension = strrchr($_FILES['file']['name'], '.');
+    if(!in_array($extension, $extensions))
+    {
+          errorMessage("ES0041");
+    }
+
+
+    $taille_maxi = 6291456;
+    $taille = filesize($_FILES['file']['tmp_name']);
+    if($taille>$taille_maxi)
+    {
+          errorMessage("ES0023");
+    }
+
+    //upload of Accessory picture
+
+    $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
+
+    $fichier = $ID.$extension;
+
+    if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)){
+        $upload=true;
+        $path= $dossier . $fichier;
+     }else{
+          errorMessage("ES0024");
+     }
+
+}
 
 if(isset($_FILES['file'])){
 
@@ -102,7 +101,7 @@ if(isset($_FILES['file'])){
           errorMessage("ES0023");
     }
 
-    //upload of Bike picture
+    //upload of Accessory picture
 
     $dossier = '../images_accessories/';
 
