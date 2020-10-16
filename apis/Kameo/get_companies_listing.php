@@ -100,6 +100,23 @@ if($action=="graphic"){
     echo json_encode($response);
     die;
     
+}else if($action=="name"){
+    if (isset($_GET['company'])) {
+        include 'connexion.php';
+        $response = array();
+        $company =$_GET['company'];
+        $sql="SELECT STREET, ZIP_CODE, TOWN FROM companies WHERE INTERNAL_REFERENCE='$company'";
+        $result = $conn->query($sql);
+        $resultat = mysqli_fetch_assoc($result);
+        $response['street'] = $resultat['STREET'];
+        $response['zip_code'] = $resultat['ZIP_CODE'];
+        $response['town'] = $resultat['TOWN'];
+        $response['response']="success";
+        
+        echo json_encode($response);
+        die;
+    }
+    
 }else{
     include 'connexion.php';
 	$response = array();

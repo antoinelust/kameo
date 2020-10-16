@@ -39,6 +39,10 @@ function initializeFields() {
     .find("option")
     .remove()
     .end();
+  $("#widget-maintenanceManagement-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
 
   $.ajax({
     url: "apis/Kameo/get_companies_listing.php",
@@ -81,6 +85,12 @@ function initializeFields() {
               response.company[i].companyName +
               "<br>"
           );
+          $("#widget-maintenanceManagement-form select[name=company]").append(
+            '<option id= "'+ response.company[i].ID + '" value= "' +
+             response.company[i].internalReference +  
+            '">' + 
+            response.company[i].companyName +  "<br>"
+            );
         }
       } else {
         console.log(response.response + ": " + response.message);
