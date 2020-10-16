@@ -292,7 +292,6 @@ if ($token == NULL) { //Not connected
   /**@TODO: FIX THE API TO SEND MAIL **/
   ?>
 
-  <script type="text/javascript" src="js/maintenance_management.js"></script>
   <script type="text/javascript">
     window.addEventListener("DOMContentLoaded", function(event) {
       $(".fleetmanager").click(function() {
