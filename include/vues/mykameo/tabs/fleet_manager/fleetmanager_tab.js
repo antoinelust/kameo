@@ -2,6 +2,9 @@
 $( ".fleetmanager" ).click(function() {
 	temp_init();
 });
+
+
+
 function temp_init(){
     var emailArray;
     var email= "<?php echo $user_data['EMAIL'];?>";
@@ -17,9 +20,6 @@ function temp_init(){
         if(response.response == 'success'){
           $('#widget-updateCompanyConditions-form input[name=action]').val("update");
           if(response.update){
-            document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
-
-            document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
             $('.tasksManagerClick').click(function(){
                 list_tasks('*', $('.taskOwnerSelection').val(), "<?php echo $user_data['EMAIL'] ?>");
                 generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
@@ -29,11 +29,6 @@ function temp_init(){
                 generateCashGraphic();
             });
             $('.ordersManagerClick').click(function(){get_orders_listing()});
-            document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
-            document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
-            document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-            document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-            document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
             var classname = document.getElementsByClassName('administrationKameo');
             for (var i = 0; i < classname.length; i++) {
               classname[i].classList.remove("hidden");

@@ -91,6 +91,8 @@ if ($token == NULL) { //Not connected
   } else if (get_user_permissions("fleetManager", $token)) {
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
+    echo '$( ".fleetmanager" ).trigger( "click" );';
+    echo 'displayLanguage();';
   } else if (get_user_permissions("personnalBike", $token)){
     echo '$("#personnalBike").addClass("active"); ';
     echo '$("#personnalBikeID").addClass("active"); ';
@@ -165,11 +167,11 @@ if ($token == NULL) { //Not connected
                         include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
                         include 'include/vues/mykameo/tabs/reservations/main.php';  //TAB 3 @TODO: REFACTOR
                       }
-                      if(get_user_permissions("fleetManager", $token)){
-                        include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
-                      }
                       if(get_user_permissions("personnalBike", $token)){
                         include 'include/vues/mykameo/tabs/personnal_bike/main.php';  //TAB 4 @TODO: REFACTOR
+                      }
+                      if(get_user_permissions("fleetManager", $token)){
+                        include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
                       }
                       ?>
 
@@ -244,13 +246,17 @@ if ($token == NULL) { //Not connected
             if ($contactDetails['contact']['company'] != "Actiris"){
               echo '<a href="docs/cgvfr.pdf" target="_blank" title="Pdf">' . L::sidebar_terms . '</a><br>';
             }
-            ?>
 
-            <a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf"><?= L::sidebar_policy; ?></a><br><br>
-            <?php if ($contactDetails['contact']['company'] == "Actiris"){
-              echo '<a href="docs/'.L::sidebar_manualActiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br>';
+            if ($contactDetails['contact']['company'] == "Actiris"){
+              echo '<a href="docs/'.L::sidebar_bike_policy_link_actiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
             }else{
-              echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf"><'.L::sidebar_manual.'></a><br>';
+              echo '<a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
+            }
+
+            if ($contactDetails['contact']['company'] == "Actiris"){
+              echo '<a href="docs/'.L::sidebar_manualActiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
+            }else{
+              echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf"><'.L::sidebar_manual.'></a><br><br>';
             }
             ?>
             <a class="button small green button-3d rounded icon-left" data-target="#tellus" data-toggle="modal" href="#" onclick="initializeTellUs()">
@@ -278,8 +284,6 @@ if ($token == NULL) { //Not connected
   //php's $contractNumber var is needed here
   include 'include/vues/mykameo/widgets/support/support.html';
   include 'include/vues/mykameo/widgets/support/contact_support.html';
-  /**@TODO: FIX THE API TO SEND MAIL **/
-  include 'include/vues/mykameo/widgets/support/contact_maintenance.html';
   /**@TODO: FIX THE API TO SEND MAIL **/
   ?>
 
@@ -318,9 +322,15 @@ if ($token == NULL) { //Not connected
     ?>
     /** Reservation & fleetManager tabs **/
     function hideResearch() {
-      document.getElementById('velos').innerHTML = "";
-      document.getElementById("velos").style.display = "none";
-      document.getElementById("travel_information").style.display = "none";
+      var myEle = document.getElementById("velos");
+      if(myEle){
+        document.getElementById('velos').innerHTML = "";
+        document.getElementById("velos").style.display = "none";
+      }
+      var myEle = document.getElementById("travel_information");
+      if(myEle){
+        document.getElementById("travel_information").style.display = "none";
+      }
     }
 
     //Vélo perso + quand tu commande un vélo
@@ -518,6 +528,9 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
     //TASKS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
+    //MAINTENANCE
+    include 'include/vues/mykameo/widgets/support/contact_maintenance.html';
+
   }
 
   if(get_user_permissions("cashflow", $token)){

@@ -17,6 +17,8 @@ $(".fleetmanager").click(function () {
       }
     },
   });
+  document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
+  
 });
 
 //FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it

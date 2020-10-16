@@ -236,12 +236,21 @@
 					</div>
 
 					<div class="col-md-6 center">
-					<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
-						<div class="image-box-description text-center">
-							<h4><?=L::contact_team_you;?></h4>
-							<hr class="line">
-							<div><?=L::contact_join_team;?></div>
-						</div>
+						<div class="image-box circle-image small"> <img class="" src="images/Justine.jpg" alt=""> </div>
+							<div class="image-box-description text-center">
+								<h4><?=L::contact_team_justine;?></h4>
+								<hr class="line">
+								<div><?=L::contact_team_responsableadmin;?></div>
+							</div>
+					</div>
+					
+					<div class="col-md-6 center">
+						<div class="image-box circle-image small"> <img class="" src="images/you.jpg" alt=""> </div>
+							<div class="image-box-description text-center">
+								<h4><?=L::contact_team_you;?></h4>
+								<hr class="line">
+								<div><?=L::contact_join_team;?></div>
+							</div>
 					</div>
 
 				</div>
