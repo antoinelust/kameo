@@ -14,7 +14,7 @@ $response=array();
                  accessories_catalog.BUYING_PRICE,
                  accessories_catalog.PRICE_HTVA,
                  accessories_catalog.STOCK,
-                 accessories_catalog.SHOW_ACCESSORIES,
+                 accessories_catalog.DISPLAY,
                  accessories_catalog.DESCRIPTION,
                  accessories_catalog.ACCESSORIES_CATEGORIES,
                  accessories_categories.ID AS CATEGORIES_ID,
@@ -47,7 +47,7 @@ while($row = mysqli_fetch_array($result))
     $response['accessories'][$i]['buyingPrice']=$row['BUYING_PRICE'];
     $response['accessories'][$i]['priceHTVA']=$row['PRICE_HTVA'];
     $response['accessories'][$i]['stock']=$row['STOCK'];
-    $response['accessories'][$i]['showAccessories']=$row['SHOW_ACCESSORIES'];
+    $response['accessories'][$i]['showAccessories']=$row['DISPLAY'];
     $response['accessories'][$i]['description']=$row['DESCRIPTION'];
     $response['accessories'][$i]['accessoriesCategories']=$row['ACCESSORIES_CATEGORIES'];
     $response['accessories'][$i]['categoryId']=$row['CATEGORIES_ID'];

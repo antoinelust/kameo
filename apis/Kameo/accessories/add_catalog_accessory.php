@@ -41,7 +41,7 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
             error_message('500', 'Unable to add an accessory');
     }else if($action=="update"){
 
-        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, SHOW_ACCESSORIES=? WHERE ID=? ");
+        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=? WHERE ID=? ");
         if ($stmt)
         {
             $stmt->bind_param("sssiiiisi", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display,$ID);
