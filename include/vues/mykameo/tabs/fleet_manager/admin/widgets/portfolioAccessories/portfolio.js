@@ -159,12 +159,15 @@ $(".portfolioAccessoriesManagerClick").click(function () {
                       new Option(accessory.CATEGORY, accessory.ID)
                     )
                   );
+                  $("#widget-addCatalogAccessory-form [name=category]").val("");                  
                 }
               },
             });
           }
 
           $("#widget-addCatalogAccessory-form [name=category]").val("");
+          $("#widget-addCatalogAccessory-form [name=provider]").val("");
+
 
 
 
@@ -206,7 +209,6 @@ function getPortfolioDetails(ID) {
   type: "get",
   data: { action: "retrieve", ID: ID },
   success: function (response) {
-    console.log(response);
     if (response.response == "error") {
       console.log(response.message);
     } else {
