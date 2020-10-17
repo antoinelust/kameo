@@ -70,9 +70,7 @@
     <?php
     if(get_user_permissions("fleetManager", $token)){
         echo '
-        <h4 class="fr">Réglages</h4>
-        <h4 class="en">Settings</h4>
-        <h4 class="en">Settings</h4>
+        <h4>Réglages</h4>
         <br/><br/>
         <div class="row">
           <div class="col-md-4">
@@ -91,9 +89,7 @@
     }
 
     if(get_user_permissions("admin", $token)){
-        echo '<h4 class="fr administrationKameo">Administration Kameo</h4>
-        <h4 class="en administrationKameo">Kameo administration</h4>
-        <h4 class="en administrationKameo">Kameo administration</h4>
+        echo '<h4 class="administrationKameo">Administration Kameo</h4>
         <br/><br/>
         <div class="row">
           <div class="col-md-4 " id="clientManagement">
@@ -239,12 +235,12 @@
 				</div>';
     }
 
-		echo '</div>';
+		if(get_user_permissions("admin", $token)){
+			echo '</div>';
+		}
 
     if(get_user_permissions("bills", $token)){
-        echo '<h4 class="fr billsTitle ">Factures</h4>
-        <h4 class="en billsTitle ">Billing</h4>
-        <h4 class="nl billsTitle ">Billing</h4><br/><br />
+        echo '<h4 class="billsTitle ">Factures</h4>
         <div class="row">
           <div class="col-md-4 " id="billsManagement">
             <div class="icon-box medium fancy">
@@ -257,8 +253,8 @@
               <p>Aperçu des factures</p>
             </div>
           </div>
-        </div>
-        <div class="col-md-12" id="progress-bar-bookings"></div>';
+				</div>';
     }
 
     ?>
+	</div>
