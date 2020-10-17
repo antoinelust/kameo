@@ -216,7 +216,6 @@
 							</a>
 						</div>
 						<div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
-						<div class="counter bold" id="counterMaintenance2" style="color:#3cb395"></div>
 						<p>Vue sur les entretiens</p>
 					</div>
 				</div>';
