@@ -415,7 +415,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                               $("#widget-bikeManagement-form div[id=user_name]").show();
 
                               for (var i = 0; i < response.userNumber; i++){
-                                $("#widget-bikeManagement-form select[name=name]").append('<option id= "' + i + '" value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
+                                $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
                               }
                               if($("#widget-bikeManagement-form select[name=name]").has('option').length > 0){
                                 $("#widget-bikeManagement-form input[name=email]").val(response.user[0].email);
