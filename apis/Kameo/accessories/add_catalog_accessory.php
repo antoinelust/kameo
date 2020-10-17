@@ -18,6 +18,8 @@ $buyingPrice = isset($_POST["buyingPrice"]) ? addslashes($_POST["buyingPrice"]) 
 $sellingPrice = isset($_POST["sellingPrice"]) ? addslashes($_POST["sellingPrice"]) : NULL;
 $stock = isset($_POST["stock"]) ? addslashes($_POST["stock"]) : NULL;
 $display=isset($_POST['display']) ? "Y" : "N";
+$provider = isset($_POST["provider"]) ? addslashes($_POST["provider"]) : NULL;
+$articleNbr = isset($_POST["articleNbr"]) ? addslashes($_POST["articleNbr"]) : NULL;
 
 
 
@@ -30,10 +32,10 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
     if($action=="add"){
 
 
-        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, DISPLAY) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, DISPLAY, PROVIDER, REFERENCE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiis", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display);
+            $stmt->bind_param("sssiiiisss", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr);
             $stmt->execute();
             $ID = $conn->insert_id;
 
@@ -41,10 +43,10 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
             error_message('500', 'Unable to add an accessory');
     }else if($action=="update"){
 
-        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=? WHERE ID=? ");
+        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=?, PROVIDER=?, REFERENCE=? WHERE ID=? ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiisi", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display,$ID);
+            $stmt->bind_param("sssiiiisssi", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $ID);
             $stmt->execute();
         }else
             error_message('500', 'Unable to add an accessory');

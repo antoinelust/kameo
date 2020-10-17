@@ -11,10 +11,9 @@ $(".fleetmanager").click(function () {
       }
       if (response.response == "success") {
         var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
-        dest += response.maintenancesNumberGlobal + '/</span><span style="color:red; margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
+        dest += response.maintenancesNumberGlobal + '/</span><span style="color: rgb(216, 0, 0); margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
         dest += response.maintenancesNumberAuto + '</span>';
         document.getElementById("counterMaintenance").innerHTML = dest;
-
       }
     },
   });
@@ -94,7 +93,7 @@ function list_maintenances() {
             $('#maintenanceListingSpan').html(dest2);
 
             var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
-            dest += response.maintenancesNumberGlobal + '/</span><span style="color:red; margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
+            dest += response.maintenancesNumberGlobal + '/</span><span style="color: rgb(216, 0, 0); margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
             dest += response.maintenancesNumberAuto + '</span>';
             $('#counterMaintenance').html(dest);
           }
@@ -102,7 +101,7 @@ function list_maintenances() {
             var dest2 = '<div>Pas d\'entretiens.</div>';
             $('#maintenanceListingSpan').html(dest2);
             var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
-            dest += response.maintenancesNumberGlobal + '/</span><span style="color:red; margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
+            dest += response.maintenancesNumberGlobal + '/</span><span style="color: rgb(216, 0, 0); margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
             dest += response.maintenancesNumberAuto + '</span>';
             $('#counterMaintenance').html(dest);
           }
@@ -260,7 +259,7 @@ function empty_form(){
 $('body').on('change', '.form_company',function(){
   $('#widget-maintenanceManagement-form input[name=model]').val("");
   $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", false);
-  
+
   $.ajax({
     url: "apis/Kameo/get_bikes_listing.php",
     type: "post",
@@ -273,7 +272,7 @@ $('body').on('change', '.form_company',function(){
           .find("option")
           .remove()
           .end();
-        
+
         for (var i = 0; i < response.bikeNumber; i++) {
           $("#widget-maintenanceManagement-form select[name=velo]").append(
             '<option value="' +
