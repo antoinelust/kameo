@@ -53,10 +53,6 @@ if($id != NULL)
     $response['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
     $response['orderNumber']=$row['ORDER_NUMBER'];
     $response['offerID']=$row['OFFER_ID'];
-	/*Cyprien removed 'cause were here but doesn't exist */
-    //$response['userEMAIL']=$row['EMAIL'];
-	//$response['sellingDate']=$row['SELLING_DATE'];
-	//$response['estimatedDeliveryDate']=$row['ESTIMATED_DELIVERY_DATE'];
     if($company == NULL){
         $company=$row['COMPANY'];
     }
@@ -151,7 +147,7 @@ if($id != NULL)
     }else{
         $response['biketype']='partage';
     }
-    
+
 
     include 'connexion.php';
     $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa WHERE aa.COMPANY='$company' AND NOT EXISTS (select 1 from customer_bike_access bb WHERE aa.EMAIL=bb.EMAIL and bb.BIKE_ID='$id' and bb.STAANN!='D') ORDER BY NOM";

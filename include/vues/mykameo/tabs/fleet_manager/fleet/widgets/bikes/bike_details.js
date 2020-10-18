@@ -9,8 +9,13 @@ function fillBikeDetails(element) {
         console.log(response.message);
       } else {
         document.getElementsByClassName("bikeID")[0].innerHTML = bikeID;
+        document.getElementsByClassName("bikeBrandCatalog")[0].innerHTML = response.brand;
+        document.getElementsByClassName("bikeModelCatalog")[0].innerHTML = response.modelCatalog;
+        document.getElementsByClassName("bikeNumber")[0].innerHTML = response.frameNumber;
         document.getElementsByClassName("bikeModel")[0].innerHTML =
           response.model;
+        document.getElementsByClassName("bikePrice")[0].innerHTML = Math.round(response.catalogPrice*1.21) + " €";
+
         document.getElementsByClassName("frameReference")[0].innerHTML =
           response.frameReference;
         document.getElementsByClassName("contractType")[0].innerHTML =

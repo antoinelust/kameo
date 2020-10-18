@@ -7,42 +7,55 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="fr-inline text-green">Référence du vélo :</h4>
-						<h4 class="en-inline text-green">Bike Reference:</h4>
-						<h4 class="nl-inline text-green">Bike Reference :</h4>
-						<p span class="bikeID"></p>
+						<h4 class="text-green">Informations relatives au vélo:</h4>
 					</div>
-					<div class="col-sm-5">
-						<h4><span class="fr"> Modèle : </span></h4>
-						<h4><span class="en"> Model: </span></h4>
-						<h4><span class="nl"> Model : </span></h4>
-						<p span class="bikeModel"></p>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<h4>ID : </h4>
+							<p span class="bikeID"></p>
+						</div>
+						<div class="col-sm-4">
+							<h4>Marque : </h4>
+							<p span class="bikeBrandCatalog"></p>
+						</div>
+						<div class="col-sm-4">
+							<h4>Modèle : </h4>
+							<p span class="bikeModelCatalog"></p>
+						</div>
 					</div>
-					<div class="col-sm-5">
-						<h4><span class="fr"> Référence du cadre : </span></h4>
-						<h4><span class="en"> Frame reference: </span></h4>
-						<h4><span class="nl"> Frame reference: </span></h4>
-						<p span class="frameReference"></p>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<h4>Identification technique : </h4>
+							<p span class="bikeNumber"></p>
+						</div>
+						<div class="col-sm-4">
+							<h4>Identification pour utilisateurs :</h4>
+							<p span class="bikeModel"></p>
+						</div>
+						<div class="col-sm-4">
+							<h4>Référence du cadre : </h4>
+							<p span class="frameReference"></p>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<h4>Valeur catalogue (TVAC) : </h4>
+							<p span class="bikePrice"></p>
+						</div>
 					</div>
 					<div class="col-sm-10">
 						<h4 class="text-green">Informations relatives au contrat</h4>
 					</div>
 					<div class="col-sm-4">
-						<h4><span class="fr"> Type de contrat : </span></h4>
-						<h4><span class="en"> Contract type: </span></h4>
-						<h4><span class="nl"> Contract type : </span></h4>
+						<h4>Type de contrat : </h4>
 						<p><span class="contractType"></span></p>
 					</div>
 					<div class="col-sm-4">
-						<h4><span class="fr" >Date de début :</span></h4>
-						<h4><span class="en" >Start date:</span></h4>
-						<h4><span class="nl" >Start date :</span></h4>
+						<h4><span>Date de début : </h4>
 						<p><span class="startDateContract"></span></p>
 					</div>
 					<div class="col-sm-4">
-						<h4><span class="fr" >Date de fin :</span></h4>
-						<h4><span class="en" >End date:</span></h4>
-						<h4><span class="nl" >End date :</span></h4>
+						<h4><span>Date de fin : </h4>
 						<p><span class="endDateContract"></span></p>
 					</div>
 					<div class="col-sm-10">
@@ -52,19 +65,13 @@
 						</div>
 					</div>
 					<div class="separator"></div>
-					<h4 class="fr text-green">Historique du vélo</h4>
+					<h4 class="text-green">Historique du vélo</h4>
 					<span id="action_bike_log_user">
 					</span>
 				</div>
 			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
 	</div>
