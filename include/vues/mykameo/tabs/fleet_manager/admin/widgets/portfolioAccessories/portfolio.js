@@ -73,14 +73,8 @@ $(".portfolioAccessoriesManagerClick").click(function () {
         $(".getPortfolioDetails").click(function () {
           $("#widget-addCatalogAccessory-form input").attr("readonly", true);
           $("#widget-addCatalogAccessory-form select").attr("disabled", true);
-          $("#widget-addCatalogAccessory-form input[name=display]").attr(
-            "disabled",
-            true
-          );
-
           $(".accessoryManagementTitle").html("Consulter un accessoire");
           $(".accessoryManagementSend").addClass("hidden");
-
           $("#widget-addCatalogAccessory-form .ID").removeClass("hidden");
           $("#widget-addCatalogAccessory-form input[name=ID]").val(this.name);
           $("#widget-addCatalogAccessory-form button[type=submit]").addClass(
@@ -90,12 +84,15 @@ $(".portfolioAccessoriesManagerClick").click(function () {
             "src",
             "images_accessories/" + this.name + ".jpg?" + d.getTime()
           );
+          $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
+
           getPortfolioDetails(this.name);
         });
 
 
         $(".updateAccessoryAdmin").click(function () {
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+          $("#widget-addCatalogAccessory-form select").attr("disabled", false);
           $(".accessoryManagementTitle").html("Modifier un accessoire");
           $(".accessoryManagementSend").removeClass("hidden");
           $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Modifier');
@@ -107,6 +104,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
           $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
             "hidden"
           );
+
           $("#widget-addCatalogAccessory-form input[name=action]").val(
             "update"
           );
@@ -116,20 +114,14 @@ $(".portfolioAccessoriesManagerClick").click(function () {
             "src",
             "images_accessories/" + this.name + ".jpg?" + d.getTime()
           );
-          $("#widget-addCatalogAccessory-form input").attr("readonly", false);
-          $("#widget-addCatalogAccessory-form select").attr("disabled", false);
-          $("#widget-addCatalogAccessory-form input[name=display]").attr(
-            "disabled",
-            false
-          );
+          $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
+
           getPortfolioDetails(this.name);
         });
 
         $(".addCatalogAccessory").click(function () {
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
-          $("#widget-addCatalogAccessory-form input").attr("disabled", false);
           $("#widget-addCatalogAccessory-form select").attr("disabled", false);
-
           $(".accessoryManagementTitle").html("Ajouter un accessoire");
           $(".accessoryManagementSend").removeClass("hidden");
           $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
@@ -159,7 +151,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
                       new Option(accessory.CATEGORY, accessory.ID)
                     )
                   );
-                  $("#widget-addCatalogAccessory-form [name=category]").val("");                  
+                  $("#widget-addCatalogAccessory-form [name=category]").val("");
                 }
               },
             });
@@ -236,11 +228,6 @@ function getPortfolioDetails(ID) {
       $("#widget-addCatalogAccessory-form [name=stock]").val(
         response.accessory.STOCK
       );
-      document.getElementsByClassName("accessoryCatalogImage")[0].src =
-        "/images_accessories/" +
-        ID +
-        ".jpg";
-
       if (response.accessory.DISPLAY == "Y") {
         $("#widget-addCatalogAccessory-form [name=display]").prop(
           "checked",

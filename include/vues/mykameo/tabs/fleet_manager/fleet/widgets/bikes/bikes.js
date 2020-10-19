@@ -35,7 +35,7 @@ function get_bikes_listing() {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp="<h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Fiet</span></th><th><span class=\"fr-inline\">Modèle</span><span class=\"en-inline\">Model</span><span class=\"nl-inline\">Model</span></th><th><span class=\"fr-inline\">Type du vélo</span><span class=\"en-inline\">Bike type</span><span class=\"nl-inline\">Bike type</span></th><th><span class=\"fr-inline\">Début du contrat</span><span class=\"en-inline\">Contract start</span><span class=\"nl-inline\">Contract start</span></th><th><span class=\"fr-inline\">Fin du contrat</span><span class=\"en-inline\">Contract End</span><span class=\"nl-inline\">Contract End</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead><tbody>";
+                var temp="<h4 class=\"fr-inline text-green\">Vos vélos:</h4><h4 class=\"en-inline text-green\">Your Bikes:</h4><h4 class=\"nl-inline text-green\">Jouw fietsen:</h4><table class=\"table table-condensed\"><thead><tr><th>Id. Techn.</th><th>Id. fonct.</th><th><span class=\"fr-inline\">Type du vélo</span><span class=\"en-inline\">Bike type</span><span class=\"nl-inline\">Bike type</span></th><th><span class=\"fr-inline\">Début du contrat</span><span class=\"en-inline\">Contract start</span><span class=\"nl-inline\">Contract start</span></th><th><span class=\"fr-inline\">Fin du contrat</span><span class=\"en-inline\">Contract End</span><span class=\"nl-inline\">Contract End</span></th><th><span class=\"fr-inline\">Etat du vélo</span><span class=\"en-inline\">Bike status</span><span class=\"nl-inline\">Bike status</span></th><th></th></tr></thead><tbody>";
                 dest=dest.concat(temp);
                 while (i < response.bikeNumber){
 
@@ -49,7 +49,7 @@ function get_bikes_listing() {
                     }else{
                         var contractEnd="<td>N/A</td>";
                     }
-					
+
                     if(response.bike[i].status==null || response.bike[i].status=="KO"){
                         status="<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>";
                     }else{
