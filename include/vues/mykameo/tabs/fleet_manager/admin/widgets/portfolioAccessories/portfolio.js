@@ -32,7 +32,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
         console.log(response.message);
       } else {
         var dest =
-          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Modèle</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th>Fournisseur</th><th>Numéro d\'article</th><th></th></tr></thead><tbody>';
+          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Marque</th><th><?=L::accessories_description;?></th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th>Fournisseur</th><th>Numéro d\'article</th><th></th></tr></thead><tbody>';
 
         response.accessories.forEach(
           (accessory) =>
@@ -92,6 +92,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
 
         $(".updateAccessoryAdmin").click(function () {
           $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+          $("#widget-addCatalogAccessory-form input[name=ID]").attr("readonly", true);
           $("#widget-addCatalogAccessory-form select").attr("disabled", false);
           $(".accessoryManagementTitle").html("Modifier un accessoire");
           $(".accessoryManagementSend").removeClass("hidden");
@@ -104,7 +105,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
           $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
             "hidden"
           );
-
+            
           $("#widget-addCatalogAccessory-form input[name=action]").val(
             "update"
           );
@@ -206,6 +207,9 @@ function getPortfolioDetails(ID) {
     } else {
       $("#widget-addCatalogAccessory-form [name=brand]").val(
         response.accessory.BRAND
+      );
+      $("#widget-addCatalogAccessory-form [name=model]").val(
+        response.accessory.MODEL
       );
       $("#widget-addCatalogAccessory-form [name=description]").val(
         response.accessory.DESCRIPTION

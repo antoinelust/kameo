@@ -12,6 +12,7 @@ $token = getBearerToken();
 $ID = isset($_POST["ID"]) ? addslashes($_POST["ID"]) : NULL;
 $action = isset($_POST["action"]) ? addslashes($_POST["action"]) : NULL;
 $brand = isset($_POST["brand"]) ? addslashes($_POST["brand"]) : NULL;
+$model = isset($_POST["model"]) ? addslashes($_POST["model"]) : NULL;
 $description = isset($_POST["description"]) ? addslashes($_POST["description"]) : NULL;
 $category = isset($_POST["category"]) ? addslashes($_POST["category"]) : NULL;
 $buyingPrice = isset($_POST["buyingPrice"]) ? addslashes($_POST["buyingPrice"]) : NULL;
@@ -22,20 +23,17 @@ $provider = isset($_POST["provider"]) ? addslashes($_POST["provider"]) : NULL;
 $articleNbr = isset($_POST["articleNbr"]) ? addslashes($_POST["articleNbr"]) : NULL;
 
 
-if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '') {
+
+if($brand != '' && $model != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '' && $provider != '' && $articleNbr != '') {
 
     include '../connexion.php';
 
-
-
-
-
     if($action=="add"){
 
-        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, DISPLAY, PROVIDER, REFERENCE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+        $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, MODEL, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, DISPLAY, PROVIDER, REFERENCE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiisss", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr);
+            $stmt->bind_param("ssssiiiisss", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr);
             $stmt->execute();
             $ID = $conn->insert_id;
 
@@ -43,10 +41,10 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
             error_message('500', 'Unable to add an accessory');
     }else if($action=="update"){
 
-        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=?, PROVIDER=?, REFERENCE=? WHERE ID=? ");
+        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, MODEL=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=?, PROVIDER=?, REFERENCE=? WHERE ID=? ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiisssi", $token, $brand, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $ID);
+            $stmt->bind_param("ssssiiiisssi", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $ID);
             $stmt->execute();
         }else
             error_message('500', 'Unable to add an accessory');
@@ -91,12 +89,12 @@ if(isset($_FILES['file'])){
            echo json_encode($response);
            die;
 
-
               errorMessage("ES0024");
          }
 
 
-    }else if($action=="update"){
+    }successMessage("SM0028");
+      if($action=="update"){
 
 
         if (file_exists($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.$extension)) {
@@ -113,12 +111,10 @@ if(isset($_FILES['file'])){
          {
               errorMessage("ES0024");
          }
-
-
     }
 
 }
+successMessage("SM0029");
 
-successMessage("SM0028");
 
 ?>
