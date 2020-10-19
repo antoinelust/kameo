@@ -36,6 +36,11 @@
             ></span>
           </p>
         </div>
+        <div class="col-sm-6" align="center">
+          <p>
+            Numéro de téléphone:&nbsp;&nbsp;<span id="adminChatCorrespondentPhone"></span>
+          </p>
+        </div>
       </div>
       <div class="separator"></div>
       <div class="mesgs col-sm-12">
@@ -99,6 +104,10 @@
         $(event.relatedTarget).data("order")
       );
     } else $("#adminChatCorrespondentOrder").parent().hide();
+    console.log(event.relatedTarget);
+    $("#adminChatCorrespondentPhone").text(
+      $(event.relatedTarget).data("phone")
+      );
     get_message_history_admin(correspondent_email);
     function get_message_history_admin(emailUser) {
       $.ajax({

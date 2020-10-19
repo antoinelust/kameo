@@ -63,6 +63,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
           document.getElementById('widget-updateUser-form-firstname').value = response.user.firstName;
           document.getElementById('widget-updateUser-form-name').value = response.user.name;
           document.getElementById('widget-updateUser-form-mail').value = response.user.email;
+          document.getElementById('widget-updateUser-form-phone').value = response.user.phone;
           var dest="";
           if(response.user.staann=='D'){
             document.getElementById('widget-updateUser-form-status').value = "Inactif";

@@ -32,7 +32,8 @@ if($email != NULL)
     $response['response']="success";
     $response['user']['name']=$resultat['NOM'];
     $response['user']['firstName']=$resultat['PRENOM'];            
-    $response['user']['email']=$resultat['EMAIL'];  
+    $response['user']['email']=$resultat['EMAIL'];
+    $response['user']['phone']=$resultat['PHONE'];
     $response['user']['staann']=$resultat['STAANN'];
     if($resultat['ADMINISTRATOR']==''){
         $response['user']['administrator']='N';
