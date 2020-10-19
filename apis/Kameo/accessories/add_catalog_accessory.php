@@ -33,7 +33,7 @@ if($brand != '' && $model != '' && $description != '' && $category != '' && $buy
         $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, MODEL, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, DISPLAY, PROVIDER, REFERENCE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiisss", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr);
+            $stmt->bind_param("ssssiiiisss", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr);
             $stmt->execute();
             $ID = $conn->insert_id;
 
@@ -44,7 +44,7 @@ if($brand != '' && $model != '' && $description != '' && $category != '' && $buy
         $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, MODEL=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=?, PROVIDER=?, REFERENCE=? WHERE ID=? ");
         if ($stmt)
         {
-            $stmt->bind_param("sssiiiisssi", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $ID);
+            $stmt->bind_param("ssssiiiisssi", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $ID);
             $stmt->execute();
         }else
             error_message('500', 'Unable to add an accessory');
