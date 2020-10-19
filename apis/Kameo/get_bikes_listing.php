@@ -158,19 +158,16 @@ while ($row = mysqli_fetch_array($result)) {
     }
 
     $result4 = mysqli_query($conn, $sql4);
-    if ($result4->num_rows == '0') {
-        $sql4 = "SELECT CONTRACT_TYPE AS 'biketype' from customer_bikes WHERE ID='$idBike'";
-        if ($conn->query($sql4) === FALSE) {
-            $response = array('response' => 'error', 'message' => $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result4 = mysqli_query($conn, $sql4);
-    }
     $resultat4 = mysqli_fetch_assoc($result4);
+    if ($result4->num_rows == '0') {
+        $response['bike'][$i]['biketype'] = 'partage';
+    }else{
+        $response['bike'][$i]['biketype'] = $resultat4['biketype'];
+    }
+    
     $conn->close();
 
-    $response['bike'][$i]['biketype'] = $resultat4['biketype'];
+    
 
     $i++;
 }

@@ -204,10 +204,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
                 var i=0;
                 var dest="";
                 while (i < response.bikeNumber){
-                  temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
-                  dest=dest.concat(temp);
+                  if(response.bike[i].biketype == 'partage'){
+                    temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
+                    dest=dest.concat(temp);
+                  }
                   i++;
-
                 }
                 document.getElementById('bikeCreateUser').innerHTML = dest;
                 $('#widget-addUser-form input[name=company]').val("");
