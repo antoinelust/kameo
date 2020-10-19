@@ -22,15 +22,15 @@ $provider = isset($_POST["provider"]) ? addslashes($_POST["provider"]) : NULL;
 $articleNbr = isset($_POST["articleNbr"]) ? addslashes($_POST["articleNbr"]) : NULL;
 
 
-
 if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' && $sellingPrice != '' && $stock != '' && $display != '') {
 
     include '../connexion.php';
 
 
 
-    if($action=="add"){
 
+
+    if($action=="add"){
 
         $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, STOCK, DISPLAY, PROVIDER, REFERENCE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
@@ -52,6 +52,7 @@ if($brand != '' && $description != '' && $category != '' && $buyingPrice != '' &
             error_message('500', 'Unable to add an accessory');
     }
 } else {
+
     $response = array ('response'=>'error');
     echo json_encode($response);
     die;
