@@ -262,9 +262,10 @@ if(isset($_POST['action'])){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
         $response=array();
+        $email = $resultat['EMAIL'];
         $response['response']="success";
         $response['order']['ID']=$resultat['ID'];
-        $response['order']['email']=$resultat['EMAIL'];
+        $response['order']['email']=$email;
         $response['order']['size']=$resultat['SIZE'];
         $response['order']['status']=$resultat['STATUS'];
         $response['order']['testBoolean']=$resultat['TEST_BOOLEAN'];
@@ -301,6 +302,9 @@ if(isset($_POST['action'])){
         $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
         $company=$resultat['COMPANY'];
+        $response['order']['name']=$resultat['NOM'];
+        $response['order']['firstname']=$resultat['PRENOM'];
+        $response['order']['phone']=$resultat['PHONE'];
 
 
 
