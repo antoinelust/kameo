@@ -302,6 +302,9 @@ if(isset($_POST['action'])){
         $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
         $company=$resultat['COMPANY'];
+        $response['order']['name']=$resultat['NOM'];
+        $response['order']['firstname']=$resultat['PRENOM'];
+        $response['order']['phone']=$resultat['PHONE'];
 
 
 
