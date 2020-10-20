@@ -65,7 +65,7 @@ if(isset($_GET['action'])){
 
         
         include 'connexion.php';
-        $sql = "SELECT aa.*, bb.FRAME_NUMBER FROM feedbacks aa, customer_bikes bb where ID_RESERVATION='$ID' and aa.BIKE_ID=bb.ID";
+        $sql = "SELECT aa.*, bb.ID, bb.FRAME_NUMBER FROM feedbacks aa, customer_bikes bb where ID_RESERVATION='$ID' and aa.BIKE_ID=bb.ID";
         
 
         //error_log('in function');
@@ -112,7 +112,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT bb.EMAIL, cc.DATE_START_2, cc.DATE_END_2, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_ID FROM feedbacks aa, customer_referential bb, reservations cc WHERE cc.EMAIL=bb.EMAIL AND aa.ID_RESERVATION=cc.ID and aa.STATUS != 'CANCELLED' ORDER BY aa.HEU_MAJ DESC";
+        $sql = "SELECT dd.FRAME_NUMBER, dd.ID, bb.EMAIL, cc.DATE_START_2, cc.DATE_END_2, bb.NOM, bb.PRENOM, bb.COMPANY, aa.STATUS, aa.ENTRETIEN, aa.COMMENT, aa.NOTE, aa.ID_RESERVATION, aa.BIKE_ID FROM feedbacks aa, customer_referential bb, reservations cc, customer_bikes dd WHERE cc.EMAIL=bb.EMAIL AND dd.ID=aa.BIKE_ID AND aa.ID_RESERVATION=cc.ID AND aa.STATUS != 'CANCELLED' ORDER BY aa.HEU_MAJ DESC";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -129,6 +129,7 @@ if(isset($_GET['action'])){
         {
             $IDReservation=$row['ID_RESERVATION'];
             $response['feedback'][$i]['bikeID']=$row['BIKE_ID'];
+            $response['feedback'][$i]['bike']=$row['FRAME_NUMBER'];
             $response['feedback'][$i]['IDReservation']=$row['ID_RESERVATION'];
             $response['feedback'][$i]['note']=$row['NOTE'];
             $response['feedback'][$i]['comment']=$row['COMMENT'];

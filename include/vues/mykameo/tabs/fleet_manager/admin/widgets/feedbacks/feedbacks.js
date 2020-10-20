@@ -65,7 +65,7 @@ function list_feedbacks() {
             "</a></td><td>" +
             response.feedback[i].company +
             "</td><td>" +
-            response.feedback[i].bikeNumber +
+            response.feedback[i].bike +
             "<td>" +
             response.feedback[i].start.shortDateHours() +
             "</td><td>" +

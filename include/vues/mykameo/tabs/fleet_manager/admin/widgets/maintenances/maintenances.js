@@ -121,16 +121,16 @@ function get_maintenance(ID){
       if (response.response == "error") {
         console.log(response.message);
       } else{
-        $("#widget-maintenanceManagement-form select[name=velo]").remove();
-        $("#widget-maintenanceManagement-form input[name=velo]").remove();
-        $("#widget-maintenanceManagement-form label[id=velo]").append('<input type="text" title="velo" class="form-control required" name="velo" readonly="readonly"/>');
+        $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", true);
+
+        //$("#widget-maintenanceManagement-form label[id=velo]").append('<select title="velo" class="form-control required" name="velo" readonly="readonly"></select>');
         $("#widget-maintenanceManagement-form div[name=image]").remove();
         $("#widget-maintenanceManagement-form select[name=company]").attr("disabled", true);
 
         var date = new Date(response.maintenance.dateMaintenance).toLocaleDateString();
         date = date.split("/");
         $('#widget-maintenanceManagement-form input[name=ID]').val(response.maintenance.id);
-        $('#widget-maintenanceManagement-form input[name=velo]').val(response.maintenance.bike_id);
+        $('#widget-maintenanceManagement-form select[name=velo]').val(response.maintenance.bike_id);
         $('#widget-maintenanceManagement-form select[name=company]').val(response.maintenance.company);
         $('#widget-maintenanceManagement-form input[name=model]').val(response.maintenance.model);
         $('#widget-maintenanceManagement-form input[name=address]').val(response.maintenance.street+ ', ' + response.maintenance.zip_code + ' ' + response.maintenance.town);
@@ -217,10 +217,10 @@ $('body').on('click', '.addMaintenance',function(){
   $("#widget-maintenanceManagement-form div[name=image]").remove();
   empty_form();
   $("#widget-maintenanceManagement-form input[name=action]").val("add");
-  $("#widget-maintenanceManagement-form input").attr("readonly", true);
+  $("#widget-maintenanceManagement-form input").attr("readonly", false);
   $("#widget-maintenanceManagement-form select").attr("disabled", false);
   $("#widget-maintenanceManagement-form textarea").attr("readonly", false);
-  $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", true);
+  $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", false);
   $("#widget-maintenanceManagement-form input[name=dateMaintenance]").attr("readonly", false);
   $(".maintenanceManagementTitle").html("Ajouter un entretien");
   $("#widget-maintenanceManagement-form button").show();
@@ -247,7 +247,7 @@ $('body').on('change', '.form_date_end_maintenance',function(){
 
 function empty_form(){
   $('#widget-maintenanceManagement-form input[name=ID]').val("");
-  $('#widget-maintenanceManagement-form input[name=velo]').val("");
+  $('#widget-maintenanceManagement-form select[name=velo]').val("");
   $('#widget-maintenanceManagement-form input[name=model]').val("");
   $('#widget-maintenanceManagement-form select[name=company]').val("");
   $('#widget-maintenanceManagement-form input[name=address]').val("");

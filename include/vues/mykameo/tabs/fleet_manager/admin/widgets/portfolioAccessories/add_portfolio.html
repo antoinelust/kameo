@@ -58,17 +58,6 @@
                   />
                 </div>
                 <div class="col-sm-4">
-                  <label for="description">
-                    <?=L::generic_description;?>
-                    :
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control required "
-                    name="description"
-                  />
-                </div>
-                <div class="col-sm-4">
                   <label for="category">
                     <?=L::generic_category;?>
                     :
@@ -94,6 +83,18 @@
                     class="form-control required"
                     name="articleNbr"
                   />
+                </div>
+                <div class="col-sm-12">
+                  <label for="description">
+                    <?=L::generic_description;?>
+                    :
+                  </label>
+                  <textarea
+                    class="form-control required"
+                    rows="5"
+                    name="description"
+                  >
+                  </textarea>
                 </div>
               </div>
               <div class="separator"></div>
