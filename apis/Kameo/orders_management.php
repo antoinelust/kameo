@@ -16,43 +16,43 @@ $token = getBearerToken();
 
 
 if(isset($_POST['action'])){
-    
-    
-    $action=isset($_POST['action']) ? $_POST['action'] : NULL;    
+
+
+    $action=isset($_POST['action']) ? $_POST['action'] : NULL;
     if($action=='add'){
     }else if($action=='update'){
-        
-        $email=isset($_POST['email']) ? $_POST['email'] : NULL;   
-        $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;   
-        $status=isset($_POST['status']) ? $_POST['status'] : NULL;   
-        $portfolioID=isset($_POST['portfolioID']) ? $_POST['portfolioID'] : NULL;   
-        $size=isset($_POST['size']) ? $_POST['size'] : NULL;   
+
+        $email=isset($_POST['email']) ? $_POST['email'] : NULL;
+        $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
+        $status=isset($_POST['status']) ? $_POST['status'] : NULL;
+        $portfolioID=isset($_POST['portfolioID']) ? $_POST['portfolioID'] : NULL;
+        $size=isset($_POST['size']) ? $_POST['size'] : NULL;
         $testBoolean=isset($_POST['testBoolean']) ? "Y" : "N";
-        $testDate=isset($_POST['testDate']) ? $_POST['testDate'] : NULL;   
-        $testStatus=isset($_POST['testStatus']) ? $_POST['testStatus'] : NULL;   
-        $testAddress=isset($_POST['testAddress']) ? addslashes($_POST['testAddress']) : NULL;   
-        $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;   
-        $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;   
-        $deliveryAddress=isset($_POST['deliveryAddress']) ? addslashes($_POST['deliveryAddress']) : NULL;   
-        
-        
+        $testDate=isset($_POST['testDate']) ? $_POST['testDate'] : NULL;
+        $testStatus=isset($_POST['testStatus']) ? $_POST['testStatus'] : NULL;
+        $testAddress=isset($_POST['testAddress']) ? addslashes($_POST['testAddress']) : NULL;
+        $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;
+        $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
+        $deliveryAddress=isset($_POST['deliveryAddress']) ? addslashes($_POST['deliveryAddress']) : NULL;
+
+
         if($deliveryAddress!=NULL){
             $deliveryAddress="'".$deliveryAddress."'";
         }else{
             $deliveryAddress='NULL';
         }
-        
-        
+
+
         include 'connexion.php';
         $sql= "UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STATUS='$status', PORTFOLIO_ID='$portfolioID', SIZE='$size', DELIVERY_ADDRESS=$deliveryAddress WHERE ID='$ID'";
-                
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
         $conn->close();
-        
+
         if($deliveryDate != NULL){
             include 'connexion.php';
             $sql= "UPDATE client_orders  SET ESTIMATED_DELIVERY_DATE='$deliveryDate' WHERE ID='$ID'";
@@ -63,10 +63,10 @@ if(isset($_POST['action'])){
             }
             $conn->close();
         }
-        
+
         if($testBoolean=="Y"){
             include 'connexion.php';
-            
+
             if($testDate!=NULL){
                 $testDate="'".$testDate."'";
             }else{
@@ -87,7 +87,7 @@ if(isset($_POST['action'])){
             }else{
                 $deliveryAddress='NULL';
             }
-        
+
             $sql= "UPDATE client_orders  SET TEST_BOOLEAN='Y', TEST_DATE=$testDate, TEST_ADDRESS=$testAddress, TEST_RESULT=$testResult WHERE ID='$ID'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -96,65 +96,65 @@ if(isset($_POST['action'])){
             }
             $conn->close();
         }
-        successMessage("SM0003");        
+        successMessage("SM0003");
     }else if($action=="confirmCommand"){
         include 'connexion.php';
         $ID=isset($_POST['ID']) ? $conn->real_escape_string($_POST['ID']) : NULL;
-        
+
         $stmt = $conn->prepare("UPDATE client_orders SET STATUS='confirmed' WHERE ID=?");
-        
+
         if (!$stmt->bind_param("i", $ID)) {
             $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
-            die;            
+            die;
         }
-        
+
         if (!$stmt->execute()) {
             $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
-            die;                        
+            die;
         }
-        
+
         $stmt->close();
         $response = array ('response'=>'success', 'message'=> L::successMessages_orderConfirmation);
         echo json_encode($response);
         die;
-    
+
     }else if($action=="refuse"){
         include 'connexion.php';
         $ID=isset($_POST['ID']) ? $conn->real_escape_string($_POST['ID']) : NULL;
         $reasonOfRefusal=isset($_POST['reasonOfRefusal']) ? $conn->real_escape_string($_POST['reasonOfRefusal']) : NULL;
-        
+
         $stmt = $conn->prepare("update client_orders set STATUS='refused', REMARK  = CONCAT(REMARK, 'Refusé par votre fleet manager pour la raison suivante: $reasonOfRefusal <br>') WHERE ID=?");
-        
+
         if (!$stmt->bind_param("i", $ID)) {
             $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
-            die;            
+            die;
         }
-        
+
         if (!$stmt->execute()) {
             $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
-            die;                        
+            die;
         }
-        
+
         $stmt->close();
         $response = array ('response'=>'success', 'message'=> L::successMessages_orderRefusalConfirmation);
         echo json_encode($response);
         die;
     }else if($action=="delete"){
     }
-    
-    
+
+
 }else if(isset($_GET['action'])){
-    
+
     $action=isset($_GET['action']) ? $_GET['action'] : NULL;
-    
+
     if($action=='list'){
 		if(get_user_permissions(["admin", "fleetManager"], $token)){
-        
-            include 'connexion.php';          
+
+            include 'connexion.php';
             $sql="SELECT * FROM customer_referential WHERE TOKEN='$token'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -164,10 +164,10 @@ if(isset($_POST['action'])){
             $result = mysqli_query($conn, $sql);
             $resultat=mysqli_fetch_assoc($result);
             $company=$resultat['COMPANY'];
-            
-            
+
+
             if($company=="KAMEO"){
-                $sql= "SELECT * FROM client_orders";
+                $sql= "SELECT *  FROM client_orders";
             }else{
                 $sql="SELECT co.* FROM client_orders co, customer_referential cr WHERE cr.COMPANY='$company' AND cr.EMAIL=co.EMAIL";
             }
@@ -206,13 +206,11 @@ if(isset($_POST['action'])){
                 $conn->close();
                 $response['order'][$i]['brand']=$resultat['BRAND'];
                 $response['order'][$i]['model']=$resultat['MODEL'];
-                
+
                 require_once $_SERVER['DOCUMENT_ROOT']."/apis/Kameo/get_prices.php";
                 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/get_company_conditions.php';
-                $getPrice=get_prices($resultat['PRICE_HTVA']);
-                
-                $response['order'][$i]['leasingPrice']=($getPrice['leasingPrice'])*(1-get_company_conditions($emailCustomer, NULL)['companyConditions']['discount']/100);
-                
+                $priceHTVA=$resultat['PRICE_HTVA'];
+
 
                 $emailUser=$row['EMAIL'];
                 include 'connexion.php';
@@ -227,6 +225,9 @@ if(isset($_POST['action'])){
                 $conn->close();
                 $response['order'][$i]['user']=$resultat['PRENOM']." ".$resultat['NOM'];
                 $company=$resultat['COMPANY'];
+                $getPrice=get_prices($priceHTVA, $company);
+                $response['order'][$i]['leasingPrice']=($getPrice['leasingPrice']);
+
 
                 include 'connexion.php';
                 $sql= "SELECT * FROM companies WHERE INTERNAL_REFERENCE='$company'";
@@ -243,13 +244,13 @@ if(isset($_POST['action'])){
                 $i++;
             }
         }
-        
+
         echo json_encode($response);
         die;
-        
+
     }else if($action=='retrieve'){
-        $ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;   
-        
+        $ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
+
         include 'connexion.php';
         $sql= "SELECT * FROM client_orders WHERE ID='$ID'";
         if ($conn->query($sql) === FALSE) {
@@ -272,9 +273,10 @@ if(isset($_POST['action'])){
         $response['order']['testAddress']=$resultat['TEST_ADDRESS'];
         $response['order']['testStatus']=$resultat['TEST_STATUS'];
         $response['order']['testResult']=$resultat['TEST_RESULT'];
-        
+        $email=$resultat['EMAIL'];
+
         $portfolioID=$resultat['PORTFOLIO_ID'];
-        
+
         include 'connexion.php';
         $sql= "SELECT * FROM bike_catalog WHERE ID='$portfolioID'";
         if ($conn->query($sql) === FALSE) {
@@ -284,24 +286,14 @@ if(isset($_POST['action'])){
         }
         $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
-        $conn->close();
-        
         $response['order']['portfolioID']=$portfolioID;
         $response['order']['brand']=$resultat['BRAND'];
         $response['order']['model']=$resultat['MODEL'];
         $response['order']['frameType']=$resultat['FRAME_TYPE'];
-        
-        require_once $_SERVER['DOCUMENT_ROOT']."/apis/Kameo/get_prices.php";
-        require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/get_company_conditions.php';
-        
-        $getPrice=get_prices($resultat['PRICE_HTVA']);
-        
-        $response['order']['priceHTVA']=$getPrice['HTVARetailPrice'];
-        $response['order']['leasingPrice']=($getPrice['leasingPrice'])*(1-get_company_conditions($response['order']['email'], NULL)['companyConditions']['discount']/100);
-        $response['order']['discount']=get_company_conditions($response['order']['email'], NULL)['companyConditions']['discount'];
-        
-        include 'connexion.php';
-        $sql= "SELECT NOM, PRENOM, PHONE, EMAIL FROM customer_referential WHERE EMAIL='$email'";
+        $priceHTVA=$resultat['PRICE_HTVA'];
+
+
+        $sql= "SELECT * FROM customer_referential WHERE EMAIL='$email'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -309,16 +301,21 @@ if(isset($_POST['action'])){
         }
         $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
-        $conn->close();
+        $company=$resultat['COMPANY'];
 
-        $response['order']['name']=$resultat['NOM'];
-        $response['order']['firstname']=$resultat['PRENOM'];
-        $response['order']['phone']=$resultat['PHONE'];
+
+
+        require_once $_SERVER['DOCUMENT_ROOT']."/apis/Kameo/get_prices.php";
+
+        $getPrice=get_prices($priceHTVA, $company);
+
+        $response['order']['priceHTVA']=$priceHTVA;
+        $response['order']['leasingPrice']=$getPrice['leasingPrice'];
 
         echo json_encode($response);
         die;
     }
-    
+
 }
 else{
     errorMessage("ES0012");
