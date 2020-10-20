@@ -19,6 +19,7 @@ if(isset($_POST['action'])){
         $email=isset($_POST['email']) ? $_POST['email'] : NULL;
         $size=isset($_POST['size']) ? $_POST['size'] : NULL;
         $remark=isset($_POST['remark']) ? nl2br($_POST['remark']) : NULL;
+        $leasing_price = isset($_POST['leasing_price']) ? $_POST['leasing_price'] : NULL;
         
         include 'connexion.php';
 
@@ -55,7 +56,7 @@ if(isset($_POST['action'])){
             errorMessage("ES0061");
         }
 
-        $sql="INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS) VALUES('$email', '$email', '$portoflioID', '$size', '$remark', 'new')";
+        $sql="INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE) VALUES('$email', '$email', '$portoflioID', '$size', '$remark', 'new', '$leasing_price')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
