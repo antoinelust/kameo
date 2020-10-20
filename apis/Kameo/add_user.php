@@ -25,6 +25,7 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
 
   $generatePassword=isset($_POST['generatePassword']) ? $_POST['generatePassword'] : NULL;
   $fleetManager=isset($_POST['fleetManager']) ? "Y" : "N";
+  $send_mail=isset($_POST['sendMail']) ? "Y" : "N";
 
 
   if(!isset($_POST['firstName']) || !isset($_POST['name']) || !isset($_POST['mail']) || ((!isset($_POST['requestor'])) && !isset($_POST['company']))){
@@ -162,49 +163,51 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
       }
   }
 
-  require_once('../../include/php-mailer/PHPMailerAutoload.php');
-  $mail = new PHPMailer();
+  if($send_mail == "Y"){
+    require_once('../../include/php-mailer/PHPMailerAutoload.php');
+    $mail = new PHPMailer();
 
-  $mail->IsHTML(true);
-  $mail->CharSet = 'UTF-8';
+    $mail->IsHTML(true);
+    $mail->CharSet = 'UTF-8';
 
 
 
-  $mail->AddAddress($email);
+    $mail->AddAddress($email);
 
-  if($company=='Actiris'){
-    $mail->From = "bookabike@actiris.be";
-    $mail->FromName = "Book a Bike - Actiris";
-  }else{
-    $mail->From = "info@kameobikes.com";
-    $mail->FromName = "Info Kameo Bikes";
-  }
+    if($company=='Actiris'){
+        $mail->From = "bookabike@actiris.be";
+        $mail->FromName = "Book a Bike - Actiris";
+    }else{
+        $mail->From = "info@kameobikes.com";
+        $mail->FromName = "Info Kameo Bikes";
+    }
 
-  $mail->AddReplyTo("info@kameobikes.com");
-  $mail->AddAddress($email);
+    $mail->AddReplyTo("info@kameobikes.com");
+    $mail->AddAddress($email);
 
-  $subject = "Accès MyKameo - Toegang tot MyKameo";
-  $mail->Subject = $subject;
+    $subject = "Accès MyKameo - Toegang tot MyKameo";
+    $mail->Subject = $subject;
 
-  if($company=='Actiris'){
-    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_new_user_actiris.php';
-  }else{
-    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
-    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_body_new_user.php';
-    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
-  }
-  $mail->Body = $body;
+    if($company=='Actiris'){
+        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_new_user_actiris.php';
+    }else{
+        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
+        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_body_new_user.php';
+        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
+    }
+    $mail->Body = $body;
 
-  require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 
-  if(constant('ENVIRONMENT')!="local"){
-      if(!$mail->Send()) {
-         $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
-          echo json_encode($response);
-          die;
-      }
-  }
-  successMessage("SM0008");
+    if(constant('ENVIRONMENT')!="local"){
+        if(!$mail->Send()) {
+            $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
+            echo json_encode($response);
+            die;
+        }
+    }
+    successMessage("SM0008");
+    }
 
 }else{
   error_message('403');
