@@ -526,6 +526,10 @@ a.read-more{text-transform:uppercase;font-weight:700;-webkit-transition:all 0.2s
 .linetriangle .tabs-navigation > li.active > a:before{border:medium outset transparent;content:"";height:0;left:50%;pointer-events:none;position:absolute;top:100%;width:0;z-index:1;}
 .linetriangle .tabs-navigation > li.active > a:after{border-top-color:#fafafa;border-width:10px;margin-left:-10px;}
 .linetriangle .tabs-navigation > li.active > a:before{border-top-color:rgba(0, 0, 0, 0.7);border-width:11px;margin-left:-11px;}
+
+.color .tabs-navigation li.active_blue a{color:rgb(255, 255, 255);background:#003855;}
+.color .tabs-navigation li.active_blue a::after{background:none;}
+
 .linetriangle.triangle-simple .tabs-content{background:#ffffff;border-color:#dddddd;border-width:1px 0 0;}
 @media screen and (max-width:991px){.tabs-navigation,
 .tabs-vertical .tabs-content,
