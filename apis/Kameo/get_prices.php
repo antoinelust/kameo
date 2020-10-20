@@ -13,20 +13,37 @@ $leasingDuration=36;
 $otherCost=3*84+4*100;
 
 
-function get_prices($retailPrice){
+function get_prices($retailPrice, $company){
+
+
+  if($company != NULL){
+    include 'connexion.php';
+    $sql="SELECT * FROM conditions WHERE COMPANY='$company' AND NAME='generic'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+    if($result->num_rows == 1){
+      $discount=$resultat['DISCOUNT'];
+      $remainingPriceIncludedInLeasing=$resultat['REMAINING_PRICE_INCLUDED_IN_LEASING'];
+    }else{
+      $discount=0;
+      $remainingPriceIncludedInLeasing="N";
+    }
+  }
+
+
     // Form Fields
     global $marginBike, $marginOther, $leasingDuration, $otherCost;
     $priceRetailer=$retailPrice*(1-0.27);
-    $debtCost=$priceRetailer*0.09;
+    $leasingPrice=(($priceRetailer*(1+$marginBike)+$otherCost*(1+$marginOther))/$leasingDuration)*(100-$discount)/100;
 
-
-    $totalCost=($priceRetailer+$debtCost+$otherCost);
-
-    $bikeEndSell=0.15*$retailPrice;
-
-    $leasingPrice=($priceRetailer*(1+$marginBike)+$otherCost*(1+$marginOther))/$leasingDuration;
-
-    $rentabilite=($leasingPrice*$leasingDuration+$bikeEndSell-$totalCost)/$totalCost;
+    if($remainingPriceIncludedInLeasing=="Y"){
+      $leasingPrice=$leasingPrice + ($retailPrice*0.16/$leasingDuration);
+    }
 
     $response['response']="success";
     $response['retailPrice']=$retailPrice;
@@ -40,16 +57,15 @@ function get_prices($retailPrice){
     $response['HTVALeasingPrice']=round($leasingPrice);
     $response['avantageFiscalLeasingPrice']=round(0.34*$leasingPrice);
     $response['finalPriceLeasingPrice']=round($leasingPrice-0.34*$leasingPrice);
-
     return $response;
-
 }
 
 
 
 if(isset($_POST["retailPrice"])){
     $retailPrice = $_POST["retailPrice"];
-    $response=get_prices($_POST["retailPrice"]);
+    $company = isset($_POST['company']) ? addslashes($_POST['company']) : NULL;
+    $response=get_prices($_POST["retailPrice"], $company);
     echo json_encode($response);
     die;
 }

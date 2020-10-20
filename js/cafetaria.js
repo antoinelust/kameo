@@ -60,18 +60,21 @@ function load_cafetaria(){
 								var price="5000";
 							}
 
-                            if((response.bike[i].stock)=="0"){
-                                var stock="commande";
-                            }else{
-                                var stock="stock";
-                            }
+              if((response.bike[i].stock)=="0"){
+                  var stock="commande";
+              }else{
+                  var stock="stock";
+              }
 
-                            var priceByMonth = Math.round(response.bike[i].leasingPrice*(1-response.discount/100)) ;
-                            if(response.bike[i].company == "City Dev"){
-                                priceByMonth = Math.round(priceByMonth * 1.21) + " €/mois TVAC";
-                            }else{
-                                priceByMonth = priceByMonth + " €/mois";
-                            }
+              var priceByMonth = response.bike[i].leasingPrice;
+
+              if(response.bike[i].company == "City Dev"){
+                  priceByMonth = Math.round(priceByMonth * 1.21) + " €/mois TVAC";
+              }else{
+                  priceByMonth = priceByMonth + " €/mois";
+              }
+
+
 
 							var temp="\
 							<div class=\"grid-item\">\
@@ -90,15 +93,15 @@ function load_cafetaria(){
 									<br>"+response.bike[i].utilisation+"\
 									<br>Prix : "+priceByMonth;
 
-                                    if(stock==="stock"){
-                                        temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
-                                    }else{
-                                        temp=temp+"<br><strong class=\"text-green center text-center text-small\">Précommander</strong>";
-                                    }
+                    if(stock==="stock"){
+                        temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
+                    }else{
+                        temp=temp+"<br><strong class=\"text-green center text-center text-small\">Précommander</strong>";
+                    }
 
-                                    temp=temp+"\
-                                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\"\
-                                    href=\"#\" name=\""+response.bike[i].ID+"\">\
+                    temp=temp+"\
+                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\"\
+                    href=\"#\" name=\""+response.bike[i].ID+"\">\
 										<span>Commander</span>\
 									</a>\
 									</p>\
@@ -211,7 +214,6 @@ function get_command_user(email){
                   $('#orderBike .image').attr('src', "images_bikes/"+response[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response[i].model.toLowerCase().replace(/ /g, '-')+"_"+response[i].frameType.toLowerCase()+".jpg");
                   i++;
               }
-
               displayLanguage();
 
           }else{

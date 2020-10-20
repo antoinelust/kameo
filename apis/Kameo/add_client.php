@@ -103,9 +103,6 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
 
 
     $sql="select * from companies where INTERNAL_REFERENCE='$internalReference'";
-
-
-
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -126,6 +123,13 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
     }
     $compID = $conn->insert_id;
 
+    $sql="INSERT INTO conditions (USR_MAJ, HEU_MAJ, BOOKING_DAYS, BOOKING_LENGTH, HOUR_START_INTAKE_BOOKING, HOUR_END_INTAKE_BOOKING, HOUR_START_DEPOSIT_BOOKING, HOUR_END_DEPOSIT_BOOKING, MONDAY_INTAKE, TUESDAY_INTAKE, WEDNESDAY_INTAKE, THURSDAY_INTAKE, FRIDAY_INTAKE, SATURDAY_INTAKE, SUNDAY_INTAKE, MONDAY_DEPOSIT, TUESDAY_DEPOSIT, WEDNESDAY_DEPOSIT, THURSDAY_DEPOSIT, FRIDAY_DEPOSIT, SATURDAY_DEPOSIT, SUNDAY_DEPOSIT, COMPANY, ASSISTANCE, LOCKING, MAX_BOOKINGS_YEAR, MAX_BOOKINGS_MONTH, NAME) VALUE('$originator', CURRENT_TIMESTAMP, '2', '24', '7', '19', '7', '19', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1', '1', '1', '0', '0', '$internalReference', 'N', 'N', '9999', '9999', 'generic')";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+
     if($type=="CLIENT" && $mailInitialisation != '' && $passwordTechnicalUser != ''){
         $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, TOKEN, ACCESS_RIGHTS, STAANN) VALUES ('mykameo', UPPER('$nameInitialisation'), UPPER('$firstNameInitialisation'), '$nameInitialisation', '$firstNameInitialisation', '', '0', '', '', '', '0', '', '$internalReference', '$mailInitialisation', '$passwordTechnicalUser', 'N', '', '', '')";
         if ($conn->query($sql) === FALSE) {
@@ -136,9 +140,7 @@ if($internalReference != NULL && $description != NULL && $VAT != NULL && $street
     $conn->close();
     }
 
-  //  if($companyId != NULL){
-      include 'add_company_contact.php';
-    //}
+    include 'add_company_contact.php';
     successMessage("SM0008");
 
 }else{
