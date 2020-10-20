@@ -20,7 +20,7 @@ $firstName = isset($_POST["firstName"]) ? $conn->real_escape_string($_POST["firs
 $lastName = isset($_POST["lastName"]) ? $conn->real_escape_string($_POST["lastName"]) : NULL;
 $phone = isset($_POST["phone"]) ? $conn->real_escape_string($_POST["phone"]) : NULL;
 $function = isset($_POST["function"]) ? $conn->real_escape_string($_POST["function"]) : NULL;
-$bikesStats = isset($_POST["bikesStats"]) ? (($_POST["bikesStats"] == 'true')) ? 'Y' : 'N')  : 'N';
+$bikesStats = isset($_POST["bikesStats"]) ? (($_POST["bikesStats"] == 'true')) ? 'Y' : 'N'  : 'N';
 $USRemail = isset($_POST["email"]) ? $conn->real_escape_string($_POST["email"]) : NULL;
 
 if(isset($addClient) && $addClient == true){

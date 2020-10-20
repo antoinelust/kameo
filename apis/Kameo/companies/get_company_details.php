@@ -13,7 +13,7 @@ if (isset($_GET['ID']) || isset($_GET['email'])){
   }
 
   if($ID==NULL && $email != NULL){
-      $stmt = $conn->prepare("SELECT ID FROM customer_referential, companies dd where aa.EMAIL=? and aa.COMPANY=bb.INTERNAL_REFERENCE");
+      $stmt = $conn->prepare("SELECT ID FROM customer_referential aa, companies bb where aa.EMAIL=? and aa.COMPANY=bb.INTERNAL_REFERENCE");
       if ($stmt)
       {
           $stmt->bind_param("s", $email);
