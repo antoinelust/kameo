@@ -149,7 +149,7 @@ if(isset($_POST['action'])){
     
 }else if(isset($_GET['action'])){
     
-    $action=isset($_GET['action']) ? $_GET['action'] : NULL;   
+    $action=isset($_GET['action']) ? $_GET['action'] : NULL;
     
     if($action=='list'){
 		if(get_user_permissions(["admin", "fleetManager"], $token)){
@@ -261,9 +261,10 @@ if(isset($_POST['action'])){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
         $response=array();
+        $email = $resultat['EMAIL'];
         $response['response']="success";
         $response['order']['ID']=$resultat['ID'];
-        $response['order']['email']=$resultat['EMAIL'];
+        $response['order']['email']=$email;
         $response['order']['size']=$resultat['SIZE'];
         $response['order']['status']=$resultat['STATUS'];
         $response['order']['testBoolean']=$resultat['TEST_BOOLEAN'];
@@ -298,7 +299,22 @@ if(isset($_POST['action'])){
         $response['order']['priceHTVA']=$getPrice['HTVARetailPrice'];
         $response['order']['leasingPrice']=($getPrice['leasingPrice'])*(1-get_company_conditions($response['order']['email'], NULL)['companyConditions']['discount']/100);
         $response['order']['discount']=get_company_conditions($response['order']['email'], NULL)['companyConditions']['discount'];
-                    
+        
+        include 'connexion.php';
+        $sql= "SELECT NOM, PRENOM, PHONE, EMAIL FROM customer_referential WHERE EMAIL='$email'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
+        $conn->close();
+
+        $response['order']['name']=$resultat['NOM'];
+        $response['order']['firstname']=$resultat['PRENOM'];
+        $response['order']['phone']=$resultat['PHONE'];
+
         echo json_encode($response);
         die;
     }

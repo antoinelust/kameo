@@ -215,6 +215,10 @@ function retrieve_command_fleet(ID){
                 $('#widget-orderFleet-form select[name=status]').val(response.order.status);
                 $('#widget-orderFleet-form input[name=retailPrice]').val(response.order.priceHTVA+" €");
                 $('#widget-orderFleet-form input[name=leasingPrice]').val(response.order.leasingPrice+" €/mois");
+                $('#widget-orderFleet-form input[name=name]').val(response.order.name);
+                $('#widget-orderFleet-form input[name=firstName]').val(response.order.firstname);
+                $('#widget-orderFleet-form input[name=mail]').val(response.order.email);
+                $('#widget-orderFleet-form input[name=phone]').val(response.order.phone);
                 
                 
                 var element = document.getElementById("widget-refuseCommand-form");

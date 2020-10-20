@@ -170,6 +170,10 @@ function retrieve_command(ID){
                 $('#widget-order-form select[name=frameType]').val(response.order.frameType);
                 $('#widget-order-form select[name=size]').val(response.order.size);
                 $('#widget-order-form select[name=status]').val(response.order.status);
+                $('#widget-order-form input[name=name]').val(response.order.name).attr('disabled', true);
+                $('#widget-order-form input[name=firstName]').val(response.order.firstname).attr('disabled', true);
+                $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', true);
+                $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', true);
                 
                 if(response.order.testBoolean=="Y"){
                     $('#widget-order-form input[name=testBoolean]').prop('checked', true);
