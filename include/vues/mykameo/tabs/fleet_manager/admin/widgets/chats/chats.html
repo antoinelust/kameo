@@ -50,6 +50,9 @@
                       "' data-order='" +
                       (oData.ORDER_STATUS !== null
                         ? oData.ORDER_STATUS
+                        : "none") + "' data-phone='" +
+                      (oData.PHONE !== null
+                        ? oData.PHONE
                         : "none") +
                       "' data-toggle='modal'>" +
                       sData +
@@ -59,6 +62,14 @@
               },
               { title: "Number&nbsp;of&nbsp;messages", data: "NB_MESSAGES" },
               { title: "Repondu", data: "MESSAGE_READ" },
+              { 
+                title: "Telephone", 
+                data: "PHONE",
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol){
+                  if (sData !== null) $(nTd).html(sData);
+                  else $(nTd).html("none");
+                },
+              },
               {
                 title: "Statut commande",
                 data: "ORDER_STATUS",
