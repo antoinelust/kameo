@@ -66,12 +66,12 @@ function load_cafetaria(){
                   var stock="stock";
               }
 
-              var priceByMonth = response.bike[i].leasingPrice;
+              var leasing_price = response.bike[i].leasingPrice;
 
               if(response.bike[i].company == "City Dev"){
-                  priceByMonth = Math.round(priceByMonth * 1.21) + " €/mois TVAC";
+                  priceByMonth = Math.round(leasing_price * 1.21) + " €/mois TVAC";
               }else{
-                  priceByMonth = priceByMonth + " €/mois";
+                  priceByMonth = leasing_price + " €/mois";
               }
 
 
@@ -100,7 +100,7 @@ function load_cafetaria(){
                     }
 
                     temp=temp+"\
-                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-toggle=\"modal\"\
+                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-id=\""+leasing_price+"\" data-toggle=\"modal\"\
                     href=\"#\" name=\""+response.bike[i].ID+"\">\
 										<span>Commander</span>\
 									</a>\
@@ -119,7 +119,8 @@ function load_cafetaria(){
 					setTimeout(function(){
 						$grid.isotope( 'reloadItems' ).isotope();
 						$( ".orderBikeClick" ).click(function() {
-							fillCommandDetails(this.name);
+                            var leasing_price = $(this).data('id');
+							fillCommandDetails(this.name, leasing_price);
 						});
 						$( "img.portfolio-img" ).load(function(){
 							$('.grid').isotope();
@@ -133,7 +134,7 @@ function load_cafetaria(){
 }
 
 
-function fillCommandDetails(ID){
+function fillCommandDetails(ID, leasing_price){
     $.ajax({
     url: 'apis/Kameo/load_portfolio.php',
     type: 'get',
@@ -143,6 +144,7 @@ function fillCommandDetails(ID){
         console.log(response.message);
       } else{
         $('#widget-command-form input[name=ID]').val(response.ID);
+        $('#widget-command-form input[name=leasing_price]').val(leasing_price);
         $('#widget-command-form select[name=brand]').val(response.brand);
         $('#widget-command-form input[name=model]').val(response.model);
         $('#widget-command-form select[name=frame]').val(response.frameType);
