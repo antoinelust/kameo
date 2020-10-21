@@ -124,6 +124,9 @@ while ($row = mysqli_fetch_array($result)) {
         $response['bike'][$i]['frameType'] = $resultat2['FRAME_TYPE'];
         $response['bike'][$i]['buyingPrice'] = $resultat2['BUYING_PRICE'];
         $response['bike'][$i]['priceHTVA'] = $resultat2['PRICE_HTVA'];
+        $response['bike'][$i]['motor'] = $resultat2['MOTOR'];
+        $response['bike'][$i]['battery'] = $resultat2['BATTERY'];
+        $response['bike'][$i]['transmission'] = $resultat2['TRANSMISSION'];
     } else {
         $response['bike'][$i]['brand'] = null;
         $response['bike'][$i]['modelBike'] = null;

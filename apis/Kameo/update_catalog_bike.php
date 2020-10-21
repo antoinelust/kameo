@@ -24,6 +24,9 @@ if($action=="update"){
     $stock = $_POST["stock"];
     $link = $_POST["link"];
     $display=isset($_POST['display']) ? "Y" : "N";
+    $motor = $_POST["motor"];
+    $battery = $_POST["battery"];
+    $transmission = $_POST["transmission"];
     
     include 'connexion.php';
     $sql = "select * from bike_catalog where ID='$ID'";
@@ -168,7 +171,7 @@ if($action=="update"){
      if($ID != '' && $brand != '' && $model != '' && $frameType != '' && $utilisation != '' && $electric != '' && $price != '' && $stock != '') {
 
         include 'connexion.php';
-        $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link' WHERE ID='$ID'";
+        $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link', MOTOR='$motor', BATTERY='$battery', TRANSMISSION='$transmission' WHERE ID='$ID'";
 
          if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

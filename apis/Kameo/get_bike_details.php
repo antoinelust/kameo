@@ -81,6 +81,10 @@ if($id != NULL)
     $response['brand']=$resultat['BRAND'];
     $response['modelCatalog']=$resultat['MODEL'];
     $response['catalogPrice']=$resultat['PRICE_HTVA'];
+    $response['motor']=$resultat['MOTOR'];
+    $response['battery']=$resultat['BATTERY'];
+    $response['transmission']=$resultat['TRANSMISSION'];
+
 
 
     $response['status']=$row['STATUS'];

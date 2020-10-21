@@ -101,6 +101,9 @@ function initializeUpdatePortfolioBike(ID) {
         );
         $("#widget-updateCatalog-form input[name=stock]").val(response.stock);
         $("#widget-updateCatalog-form input[name=link]").val(response.url);
+        $("#widget-updateCatalog-form input[name=motor]").val(response.motor);
+        $("#widget-updateCatalog-form input[name=battery]").val(response.battery);
+        $("#widget-updateCatalog-form input[name=transmission]").val(response.transmission);
         document.getElementsByClassName("bikeCatalogImage")[0].src =
           "images_bikes/" +
           response.brand.toLowerCase().replace(/ /g, "-") +
