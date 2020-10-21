@@ -222,6 +222,7 @@ function retrieve_box(id) {
   $("#widget-boxManagement-form input").attr("readonly", true);
   $("#widget-boxManagement-form textarea").attr("readonly", true);
   $("#widget-boxManagement-form select").attr("readonly", true);
+  $("#widget-boxManagement-form div[name=key]").remove();
 
   $.ajax({
     url: "apis/Kameo/box_management.php",
@@ -271,6 +272,19 @@ function retrieve_box(id) {
             "checked",
             false
           );
+        }
+        box_keys = parseInt(response.model.substr(0, 1));
+        for (let i = 0; i < box_keys; i++) {
+          if (typeof response.keys[i] !=='undefined' && response.keys[i].place != "-1" && response.keys[i].place == i+1) {
+            $("#widget-boxManagement-form div[name=keys]").append('<div class="col-md-2" name="key">\
+            <center><B>'+ response.keys[i].place +'</B></br><img src="images/key_in.png">\
+            </br><B>'+response.keys[i].frame_number +' </B></center></div>');
+          }else{
+            $("#widget-boxManagement-form div[name=keys]").append('<div class="col-md-2" name="key">\
+            <center><B>'+ (i + 1) +'</B></br><img src="images/key_out.png"></br><B>NO</B></center></div>');
+          }
+          
+          
         }
       }
     },

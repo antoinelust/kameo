@@ -102,18 +102,33 @@ if(isset($_POST['action']))
 
             $result = mysqli_query($conn, $sql);        
             $resultat = mysqli_fetch_assoc($result);
-            $conn->close();  
-            
+
+            $company = $resultat['COMPANY'];
             $response['response']="success";
             $response['id']=$resultat['ID'];
             $response['model']=$resultat['MODEL'];
             $response['reference']=$resultat['REFERENCE'];
-            $response['company']=$resultat['COMPANY'];
+            $response['company']=$company;
             $response['start']=$resultat['START'];
             $response['end']=$resultat['END'];
             $response['automatic_billing']=$resultat['AUTOMATIC_BILLING'];
             $response['amount']=$resultat['AMOUNT'];
             $response['billing_group']=$resultat['BILLING_GROUP'];
+
+            $sql="SELECT bb.FRAME_NUMBER as frame_number, cc.PLACE_IN_BUILDING  as place 
+            FROM boxes aa INNER JOIN customer_bikes bb ON aa.COMPANY=bb.COMPANY 
+            INNER JOIN locking_bikes cc ON bb.FRAME_NUMBER=cc.FRAME_NUMBER where aa.COMPANY='$company' ORDER BY cc.PLACE_IN_BUILDING";
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result = mysqli_query($conn, $sql);        
+            $response['keys'] = $result->fetch_all(MYSQLI_ASSOC);
+
+            $conn->close();  
+            
+            
             echo json_encode($response);
             die;
         }else{
