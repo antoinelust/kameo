@@ -4,7 +4,7 @@
 	<div class="container">
 	  <!--LOGO-->
 	  <div id="logo">
-		<a href="/"><img src="/images/aedes.png" alt="Aedes Logo"></a>
+		<img src="/images/aedes_logo.png" alt="Aedes Logo">
 	  </div>
 	  <!--END: LOGO-->
 	  <!--MOBILE MENU -->
