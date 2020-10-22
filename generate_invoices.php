@@ -74,7 +74,7 @@ while($row = mysqli_fetch_array($result))
     $internalReference=$row['COMPANY'];
     $currentDate=date('Y-m-d');
     $billingGroup=$row['BILLING_GROUP'];
-    $sql_dateStart="SELECT * from ((select min(CONTRACT_START) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$currentDate' and (aa.CONTRACT_END>'$currentDate' or aa.CONTRACT_END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$currentDate' and (aa.END>'$currentDate' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup')) AS T1 WHERE start is NOT NULL";
+    $sql_dateStart="SELECT * from ((select min(SUBSTR(CONTRACT_START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$currentDate' and (aa.CONTRACT_END>'$currentDate' or aa.CONTRACT_END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$currentDate' and (aa.END>'$currentDate' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup')) AS T1 WHERE start is NOT NULL";
     error_log("SQL2 :".$sql_dateStart."\n", 3, "generate_invoices.log");
 
 
@@ -91,7 +91,7 @@ while($row = mysqli_fetch_array($result))
 
         if($resultat_dateStart['start'])
         {
-            $firstDay=substr($resultat_dateStart['start'], 8, 2);
+            $firstDay=$resultat_dateStart['start'];
             $today=substr($currentDate, 8 ,2);
 
 
@@ -178,7 +178,7 @@ while($row = mysqli_fetch_array($result))
                     $html2pdf->clean();
                     $formatter = new ExceptionFormatter($e);
                     error_log("ERROR ---  Erreur génération HTML:".$formatter->getHtmlMessage()."\n", 3, "generate_invoices.log");
-                }  
+                }
 
 
                 $file = __DIR__.'/temp/company.txt';

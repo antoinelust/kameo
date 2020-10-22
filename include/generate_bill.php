@@ -73,19 +73,11 @@ $zip=$resultat['ZIP_CODE'];
 $town=$resultat['TOWN'];
 $vat=$resultat['VAT_NUMBER'];
 
-$length=strlen($newID);
-$i=(3-$length);
-$reference=$newID;
-while($i>0){
-    $i-=1;
-    $reference="0".$reference;
-}
-
-
-$base_modulo=$dateStart->format('m').substr($dateStart->format('Y'),2,2).$reference;
+$base_modulo=date('d').date('m').$newID;
 $modulo_check=($base_modulo % 97);
+$reference=substr('0000'.$base_modulo.$modulo_check, -12);
+$reference=substr($reference, 0,3).'/'.substr($reference, 3,4).'/'.substr($reference, 7,5);
 
-$reference='000/'.$dateStart->format('m').substr($dateStart->format('Y'),2,2).'/'.$reference.$modulo_check;
 
 
 if($dateEnd && $dateEnd != NULL){
@@ -224,6 +216,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                 if($type=="bike"){
                     $sql="SELECT MODEL, FRAME_REFERENCE, TYPE, substr(CONTRACT_START,9,2) as 'firstDay', FRAME_NUMBER from customer_bikes where ID='$ID'";
+
+                    error_log("------------------------------------\n", 3, "generate_bill.log");
+                    error_log(date("Y-m-d H:i:s")." - ID BIKE :".$ID."\n", 3, "generate_bill.log");
+
                     if ($conn->query($sql) === FALSE) {
                         echo $conn->error;
                         die;
@@ -234,10 +230,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $contractStart=$dateStart;
                     $contractEnd=$dateEnd;
 
-
                     $sql2="SELECT * from bike_catalog where ID='$catalogID'";
-                    error_log("img :".$sql2."\n", 3, "generate_bill.log");
-
                     if ($conn->query($sql2) === FALSE) {
                         echo $conn->error;
                         die;
@@ -245,13 +238,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $result2 = mysqli_query($conn, $sql2);
                     $resultat2 = mysqli_fetch_assoc($result2);
 
-                    $file=__DIR__.'/images_bikes/'.$resultat['ID'].'jpg';
-                    if ((file_exists($file))){
-                        $img=$resultat['ID'];
-                    }else{
-                        $img=strtolower(str_replace(" ", "-", $resultat2['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat2['MODEL']))."_".strtolower($resultat2['FRAME_TYPE']);
-                    }
-                    error_log("img :".$img."\n", 3, "generate_bill.log");
+                    $img=strtolower(str_replace(" ", "-", $resultat2['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat2['MODEL']))."_".strtolower($resultat2['FRAME_TYPE']);
+
+                    error_log(date("Y-m-d H:i:s")." - img :".$img."\n", 3, "generate_bill.log");
 
 
                     $contractStart->setDate($dateStart->format('Y'), $dateStart->format('m'), $resultat['firstDay']);
@@ -308,15 +297,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     }
                     $result3 = mysqli_query($conn, $sql3);
                     $resultat3 = mysqli_fetch_assoc($result3);
-
-
-
-                    $file=__DIR__.'/images_bikes/'.$resultat2['ID'].'jpg';
-                    if ((file_exists($file))){
-                        $img=$resultat['ID'];
-                    }else{
-                        $img=strtolower(str_replace(" ", "-", $resultat3['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat3['MODEL']))."_".strtolower($resultat3['FRAME_TYPE']);
-                    }
+                    $img=strtolower(str_replace(" ", "-", $resultat3['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat3['MODEL']))."_".strtolower($resultat3['FRAME_TYPE']);
                     $comment='Vente au '.$dateStart->format('d-m-Y');
 
                     $test2.='<tr>

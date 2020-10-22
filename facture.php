@@ -29,7 +29,7 @@ $currentDateString = $currentDate->format('Y-m-d');
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
 $sql_reference="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
-error_log("SQL4 :".$sql_reference."\n", 3, "generate_invoices.log");
+error_log(date("Y-m-d H:i:s")." - SQL4 :".$sql_reference."\n", 3, "generate_invoices.log");
 
 if ($conn->query($sql_reference) === FALSE) {
     echo $conn->error;
@@ -51,7 +51,7 @@ $OneMonthAfter->add(new DateInterval("P1M"));
 $OneMonthAfterString=$OneMonthAfter->format('Y-m-d');
 
 $sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
-error_log("SQL5 :".$sql."\n", 3, "generate_invoices.log");
+error_log(date("Y-m-d H:i:s")." - SQL5 :".$sql."\n", 3, "generate_invoices.log");
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
@@ -77,23 +77,14 @@ $vat=$resultat['VAT_NUMBER'];
 $email=$resultat['EMAIL_CONTACT'];
 $nom=$resultat['NOM_CONTACT'];
 $prenom=$resultat['PRENOM_CONTACT'];
-
-$length=strlen($newID);
-$i=(3-$length);
 $reference=$newID;
-while($i>0){
-    $i-=1;
-    $reference="0".$reference;
-}
-
 $month=$currentDate->format('m');
 $year=$currentDate->format('Y');
 
-
-$base_modulo=$month.substr($year,2,2).$reference;
+$base_modulo=date('d').date('m').$reference;
 $modulo_check=($base_modulo % 97);
-
-$reference='000/'.$month.substr($year,2,2).'/'.$reference.$modulo_check;
+$reference=substr('0000'.$base_modulo.$modulo_check, -12);
+$reference=substr($reference, 0,3).'/'.substr($reference, 3,4).'/'.substr($reference, 7,5);
 
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
 
@@ -211,7 +202,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $dateAfterString=$dateAfter->format('Y-m-d');
 
             $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<'$dateAfterString' and (CONTRACT_END>='$dateAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
-            error_log("SQL6 :".$sql2."\n", 3, "generate_invoices.log");
+            error_log(date("Y-m-d H:i:s")."SQL6 :".$sql2."\n", 3, "generate_invoices.log");
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -226,9 +217,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             while($row2 = mysqli_fetch_array($result2)){
                 $catalogID=$row2['TYPE'];
 
-                error_log("FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");
+                error_log(date("Y-m-d H:i:s")." - FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");
                 $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
-                error_log("SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");
+                error_log(date("Y-m-d H:i:s")." - SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");
 
                 if ($conn->query($sql) === FALSE) {
                     echo $conn->error;
@@ -277,14 +268,14 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $yearAfter2=$dateStart->format('Y');
                 }
                 $dayAfter2=$contractStart->format('d');
-                error_log("dayAfter2 :".$dayAfter2."\n", 3, "generate_invoices.log");
+                error_log(date("Y-m-d H:i:s")." - dayAfter2 :".$dayAfter2."\n", 3, "generate_invoices.log");
 
 
                 $lastDayMonth= last_day_month( $monthAfter2 );
                 if($lastDayMonth < $dayAfter2){
                     $dayAfter2=$lastDayMonth;
                 }
-                error_log("dayAfter3 :".$dayAfter2."\n", 3, "generate_invoices.log");
+                error_log(date("Y-m-d H:i:s")." - dayAfter3 :".$dayAfter2."\n", 3, "generate_invoices.log");
 
 
 
@@ -294,13 +285,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 if(strlen($dayAfter2)==1){
                     $dayAfter2='0'.$dayAfter2;
                 }
-                error_log("dayAfter4 :".$dayAfter2."\n", 3, "generate_invoices.log");
+                error_log(date("Y-m-d H:i:s")." - dayAfter4 :".$dayAfter2."\n", 3, "generate_invoices.log");
 
 
 
                 $dateAfter2=new DateTime();
                 $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
-                error_log("dayAfter5 :".$dayAfter2."\n", 3, "generate_invoices.log");
+                error_log(date("Y-m-d H:i:s")." - dayAfter5 :".$dayAfter2."\n", 3, "generate_invoices.log");
 
 
                 $temp2=$dateAfter2->format('d-m-Y');
@@ -534,7 +525,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 echo $test1.$test2.$test3;
 
 
-error_log("Result :".$test1.$test2.$test3."\n", 3, "generate_invoices.log");
+error_log(date("Y-m-d H:i:s")." - <Result :".$test1.$test2.$test3."\n", 3, "generate_invoices.log");
 
 
 

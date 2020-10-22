@@ -226,7 +226,7 @@ if(get_user_permissions("admin", $token)){
 
               $j=0;
               include 'connexion.php';
-              $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START is NOT NULL and STAANN != 'D' and (CONTRACT_TYPE = 'selling')";
+              $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START is NOT NULL and STAANN != 'D' and (CONTRACT_TYPE = 'selling') and SOLD_PRICE != '0'";
               if ($conn->query($sql) === FALSE) {
                   $response = array ('response'=>'error', 'message'=> $conn->error);
                   echo json_encode($response);
