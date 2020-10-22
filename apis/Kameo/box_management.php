@@ -115,7 +115,7 @@ if(isset($_POST['action']))
             $response['amount']=$resultat['AMOUNT'];
             $response['billing_group']=$resultat['BILLING_GROUP'];
 
-            $sql="SELECT bb.FRAME_NUMBER as frame_number, cc.PLACE_IN_BUILDING  as place
+            $sql="SELECT bb.ID as id, bb.MODEL as model, cc.PLACE_IN_BUILDING  as place
             FROM boxes aa INNER JOIN customer_bikes bb ON aa.COMPANY=bb.COMPANY
             INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID where aa.COMPANY='$company' ORDER BY cc.PLACE_IN_BUILDING";
             if ($conn->query($sql) === FALSE) {
