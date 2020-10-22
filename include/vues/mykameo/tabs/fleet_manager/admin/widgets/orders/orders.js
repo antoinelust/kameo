@@ -179,12 +179,12 @@ function retrieve_command(ID){
             }
             if(response.response == 'success'){
                 $('#widget-order-form input[name=ID]').val(ID);
-                $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID);
-                $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);;
-                $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);;
-                $('#widget-order-form select[name=frameType]').val(response.order.frameType).attr('disabled', false);;
-                $('#widget-order-form select[name=size]').val(response.order.size).attr('disabled', false);;
-                $('#widget-order-form select[name=status]').val(response.order.status).attr('disabled', false);;
+                $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID).attr('disabled', false);
+                $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);
+                $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);
+                $('#widget-order-form select[name=frameType]').val(response.order.frameType).attr('disabled', false);
+                $('#widget-order-form select[name=size]').val(response.order.size).attr('disabled', false);
+                $('#widget-order-form select[name=status]').val(response.order.status).attr('disabled', false);
                 $('#widget-order-form input[name=name]').val(response.order.name).attr('disabled', false);
                 $('#widget-order-form input[name=firstName]').val(response.order.firstname).attr('disabled', false);
                 $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
