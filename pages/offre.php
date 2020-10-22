@@ -45,7 +45,7 @@ $row = mysqli_fetch_assoc($result);
                             <dt><?= L::offre_technical_characs; ?></dt><br>
                             <dt>
                                 <div class="pricing-table col-no-margin">
-                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="col-md-4 col-sm-12 col-xs-4">
                                         <div class="plan">
                                             <div class="plan-header">
                                                 <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-power" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +62,7 @@ $row = mysqli_fetch_assoc($result);
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="col-md-4 col-sm-12 col-xs-4">
                                         <div class="plan">
                                             <div class="plan-header">
                                                 <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-battery-full" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -79,7 +79,7 @@ $row = mysqli_fetch_assoc($result);
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="col-md-4 col-sm-12 col-xs-4">
                                         <div class="plan">
                                             <div class="plan-header">
                                                 <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-gear-wide-connected" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -158,27 +158,27 @@ $row = mysqli_fetch_assoc($result);
                             <!-- Pricing Table Colored -->
                             <div class="row">
                                 <div class="pricing-table col-no-margin">
-                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="col-md-4 col-sm-12 col-xs-4">
                                         <div class="plan">
-                                            <div class="plan-header">
+                                            <div class="plan-header" style="min-height:182px !important">
                                                 <h4><?= L::offre_buyprice_htva; ?></h4>
                                                 <h2 class="text-green"><sup>€</sup><?php echo round($row['PRICE_HTVA']); ?></h2>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="col-md-4 col-sm-12 col-xs-4">
                                         <div class="plan">
-                                            <div class="plan-header">
+                                            <div class="plan-header" style="min-height:182px !important">
                                                 <h4><?= L::offre_buyprice_tvac; ?></h4>
                                                 <h2 class="text-green"><sup>€</sup><?php echo round($row['PRICE_HTVA'] * 1.21); ?></h2>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="col-md-4 col-sm-12 col-xs-4">
                                         <div class="plan">
-                                            <div class="plan-header">
+                                            <div class="plan-header" style="min-height:182px !important">
                                                 <h4><?= L::offre_price_leasing_htva; ?></h4>
                                                 <h2 class="text-green"><sup>€</sup><?php echo $leasingPrice; ?><span><small><?= L::offre_permonth; ?></small></span></h2>
 

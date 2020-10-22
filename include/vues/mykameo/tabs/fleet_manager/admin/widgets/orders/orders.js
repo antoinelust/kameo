@@ -86,11 +86,25 @@ function get_orders_listing() {
         $('.updateCommand').click(function(){
           construct_form_for_command_update(this.name);
         });
+
+        var classname = document.getElementsByClassName(
+            "internalReferenceCompany"
+          );
+          for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener(
+              "click",
+              function () {
+                get_company_details(this.name, email, true);
+              },
+              false
+            );
+          }
             
             
         }
       }
     })
+
 }
 
 
@@ -132,6 +146,7 @@ function construct_form_for_command_update(ID){
         });
     
     })
+
 }
 
 function retrieve_command(ID){
@@ -165,16 +180,16 @@ function retrieve_command(ID){
             if(response.response == 'success'){
                 $('#widget-order-form input[name=ID]').val(ID);
                 $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID);
-                $('#widget-order-form input[name=brand]').val(response.order.brand);
-                $('#widget-order-form input[name=model]').val(response.order.model);
-                $('#widget-order-form select[name=frameType]').val(response.order.frameType);
-                $('#widget-order-form select[name=size]').val(response.order.size);
-                $('#widget-order-form select[name=status]').val(response.order.status);
-                $('#widget-order-form input[name=name]').val(response.order.name).attr('disabled', true);
-                $('#widget-order-form input[name=firstName]').val(response.order.firstname).attr('disabled', true);
-                $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', true);
-                $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', true);
-                
+                $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);;
+                $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);;
+                $('#widget-order-form select[name=frameType]').val(response.order.frameType).attr('disabled', false);;
+                $('#widget-order-form select[name=size]').val(response.order.size).attr('disabled', false);;
+                $('#widget-order-form select[name=status]').val(response.order.status).attr('disabled', false);;
+                $('#widget-order-form input[name=name]').val(response.order.name).attr('disabled', false);
+                $('#widget-order-form input[name=firstName]').val(response.order.firstname).attr('disabled', false);
+                $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
+                $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
+        
                 if(response.order.testBoolean=="Y"){
                     $('#widget-order-form input[name=testBoolean]').prop('checked', true);
                     $('#widget-order-form .testAddress').removeClass("hidden");
@@ -210,4 +225,3 @@ function retrieve_command(ID){
         })
     })
 }
-
