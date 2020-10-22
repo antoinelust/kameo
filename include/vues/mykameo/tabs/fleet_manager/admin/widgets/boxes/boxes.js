@@ -273,7 +273,7 @@ function retrieve_box(id) {
             false
           );
         }
-        box_keys = 20;
+        box_keys = parseInt(response.model.substr(0, 1));
         row = 0;
         var classe, md, range, size, space;
 
