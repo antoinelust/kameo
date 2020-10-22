@@ -70,7 +70,35 @@
 					</div>
 					<div class="tab-pane" id="declaration">
 						<h2 class="text-blue">Déclarer un sinistre ou un vol</h2>
-						<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+							<div class="col-sm-12">
+							<form id="widget-updateInfo" action="" role="form" method="post">
+								<div class="row">
+									<div class="form-group col-md-4">
+										<label for="firstname"  class="fr">Je déclare avoir subi</label>
+										<input type="radio" name="optionsRadios" id="optionsRadios1" value="sinistre" checked> un sinistre<br>
+										<input type="radio" name="optionsRadios" id="optionsRadios2" value="vol"> un vol	
+									</div>
+									
+									<div class="form-group col-md-4">
+										<label for="lieu"  class="fr">Ce dernier a eu lieu</label>
+										<input type="date" class="" name="">
+									</div>
+									
+									<div class="form-group col-md-4">
+										<label for="lieu"  class="fr">Lieu</label>
+										<input type="text" id="" name="" class="form-control">
+									</div>
+									
+									<div class="form-group col-md-12">
+										<label for="explications"  class="fr">Explications</label>
+										<textarea class="form-control required" name="" rows="9" placeholder="Enter comment" id="comment2" aria-required="true"></textarea>
+									</div>
+									
+									<input type="text" class="hidden" id="widget-contact-form-antispam" name="widget-updateInfo-antispam" value="" />
+								</div>
+								<button  class=" button small color button-3d rounded icon-left text-light" type="submit" ><i class="fa fa-paper-plane"></i>Envoyer</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>	
@@ -97,7 +125,7 @@
 	</div>
 </div>
 
-<?php include 'include/footer.php' ?>
+<?php include 'include/footer_aedes.php' ?>
 
 	</div>
 	<!-- END: WRAPPER -->

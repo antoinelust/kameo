@@ -32,9 +32,9 @@
 	                <p class="text-justify text-dark" style="font-size: 18px;">
 	                    En outre, vous recevrez une <strong>indemnité kilométrique</strong> allant jusqu'à <strong class="text-green">0,24 € par kilomètre</strong>. Si vous parcourez 10 km à vélo chaque jour, vous bénéficierez de 2,4 € par jour, soit environ 48€ par mois !
 	                </p>
-	                <strong class="text-justify text-dark" style="font-size: 18px;">Téléchargez maintenant notre E-Book 100% Gratuit ! 👇🏼</strong>
+	                <strong class="text-justify text-dark" style="font-size: 18px;">Téléchargez maintenant notre E-Book 100% Gratuit ! 👇🏼</strong><br>
 	                
-	                <a class="button green button-3d rounded effect" style="border-radius: 50px; margin-top: 40px" href="/docs/E-book_Leasing_KAMEO.pdf"><span><i class="fas fa-file-download"></i>Télécharger l'E-Book Gratuit</span></a>
+	                <a class="button green button-3d rounded effect" style="border-radius: 50px; margin-top: 40px" href="/docs/E-book_Leasing_KAMEO.pdf" target="_blank"><span><i class="fas fa-file-download"></i>Télécharger l'E-Book Gratuit</span></a>
                 </div>
                 <div class="col-md-1 "></div>
 
