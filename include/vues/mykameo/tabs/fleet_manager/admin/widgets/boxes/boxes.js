@@ -273,7 +273,7 @@ function retrieve_box(id) {
             false
           );
         }
-        box_keys = parseInt(response.model.substr(0, 1));
+        box_keys = 20;
         row = 0;
         var classe, md, range, size, space;
 
@@ -281,27 +281,28 @@ function retrieve_box(id) {
           range = 5;
           md ="2";
           size = "100%";
-          space = "</Br></Br>";
+          space = "</Br></Br></Br>";
         }else{
           range = 10;
           md = "1";
           size = "70%";
-          space = "</Br></Br></Br>";
+          space = "</Br></Br></Br></Br></Br>";
         }
 
+        place = 0;
         for (let i = 0; i < box_keys; i++) {
-          count = 0;
+          
           if (row == range || row == 0) {
             classe = "col-md-"+md+" col-md-offset-1";
             row = 0;
           }else{
             classe = "col-md-"+md;
           }
-          if (typeof response.keys[count] !=='undefined' && response.keys[count].place != "-1" && response.keys[count].place == i+1) {
+          if (typeof response.keys[place] !=='undefined' && response.keys[place].place != "-1" && response.keys[place].place == i+1) {
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
-            <p><center><B>'+ response.keys[i].place +'</B></br><img src="images/key_in.png">\
-            </br><p style="font-size:'+size+';"><B>'+response.keys[i].id + ' - ' + response.keys[i].model +'</B></p></center></p></div>');
-            count++;
+            <p><center><B>'+ response.keys[place].place +'</B></br><img src="images/key_in.png">\
+            </br><p style="font-size:'+size+';"><B>'+response.keys[place].id + ' - ' + response.keys[place].model +'</B></p></center></p></div>');
+            place++;
           }else{
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
             <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out.png"></br><p style="font-size:'+size+';"><B>NO'+ space +'</B></p></center></p></div>');
