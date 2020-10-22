@@ -17,7 +17,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<meta property="og:image" content="https://www.kameobikes.com/images/vignette.jpg" />
 
 	<!-- FAVICON -->
-	<link rel="shortcut icon" href="https://www.kameobikes.com/images/favicon.png">
+	<link rel="shortcut icon" href="https://www.kameobikes.com/images/aedes/favicon.png">
 
 	<!-- TITLE -->
 	<title>AEDES</title>
@@ -47,6 +47,8 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<link rel="stylesheet" as="style" href="/vendor/fontawesome/css/font-awesome.min.css">
 	<!-- CSS CUSTOM STYLE -->
 	<link rel="stylesheet" type="text/css" href="/css/custom.css" media="screen" />
+	<!-- AEDES  STYLE -->
+	<link href="/css/aedes.css" rel="stylesheet">
 
 	<!--VENDOR SCRIPT-->
 	<script src="/vendor/jquery/jquery-1.11.2.min.js"></script>
