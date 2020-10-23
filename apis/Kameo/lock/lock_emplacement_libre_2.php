@@ -26,7 +26,7 @@ if($emplacement > $_GET['max_empl'])
 }
 else
 {
-	echo $emplacement;	
+	echo $emplacement;
 }
 
 $reponse->closeCursor();
