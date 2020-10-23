@@ -67,7 +67,7 @@
               <div class="col-sm-12">
                 <div class="col-sm-4">
                   <label for="utilisation"> Utilisation : </label>
-                  <select class="form-control required" name="utilisation">
+                  <select class="form-control required" name="utilisation" onchange="showDivLicense(this)">
                     <option value="Tout chemin">Tout chemin</option>
                     <option value="Ville et chemin">Ville et chemin</option>
                     <option value="Pliant">Pliant</option>
@@ -75,7 +75,7 @@
                     <option value="Cargo">Cargo</option>
                     <option value="Gravel">Gravel</option>
                     <option value="VTT">VTT</option>
-                    <option value="Speedpedelec">Speedpedelec</option>
+                    <option value="Speedpedelec" id="speedPedelec">Speedpedelec</option>
                   </select>
                 </div>
                 <div class="col-sm-4">
@@ -85,7 +85,26 @@
                     <option value="N">N</option>
                   </select>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4" id="license" style="display:none;">
+                  <label for="license" name="license"> Plaque d'immatriculation : </label>
+                  <input
+                    type="text"
+                    class="form-control required"
+                    name="license"
+                  />
+                </div>
+
+                <script type="text/javascript">
+                  function showDivLicense(select){
+                    if(select.value=="Speedpedelec"){
+                      document.getElementById('license').style.display = "block";
+                    } else{
+                      document.getElementById('license').style.display = "none";
+                    }
+                  } 
+                </script>
+
+                <div class="col-sm-12">
                   <label for="link"> Lien vers le site : </label>
                   <input
                     type="text"
@@ -216,6 +235,7 @@
                 type: "success",
               }
             );
+            
             listPortfolioBikes();
             document.getElementById("widget-addCatalog-form").reset();
             $("#addPortfolioBike").modal("toggle");

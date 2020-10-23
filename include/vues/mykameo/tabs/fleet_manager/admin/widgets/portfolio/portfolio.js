@@ -93,6 +93,9 @@ function initializeUpdatePortfolioBike(ID) {
         $("#widget-updateCatalog-form input[name=electric]").val(
           response.electric
         );
+        $("#widget-updateCatalog-form input[name=license]").val(
+          response.license
+        );
         $("#widget-updateCatalog-form input[name=buyPrice]").val(
           response.buyingPrice
         );
@@ -125,6 +128,7 @@ function initializeUpdatePortfolioBike(ID) {
         $("#widget-updateCatalog-form input[name=display]").prop(
           "checked",
           Boolean(response.display == "Y")
+
         );
       }
     },
@@ -134,4 +138,8 @@ function initializeUpdatePortfolioBike(ID) {
 //FleetManager: Gérer le catalogue | Reset the form to add a bike to the catalogue
 function initializeCreatePortfolioBike() {
   document.getElementById("widget-addCatalog-form").reset();
+
+
+
 }
+  

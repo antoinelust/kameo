@@ -84,6 +84,7 @@ if($id != NULL)
     $response['motor']=$resultat['MOTOR'];
     $response['battery']=$resultat['BATTERY'];
     $response['transmission']=$resultat['TRANSMISSION'];
+    $response['license']=$resultat['LICENSE'];
 
 
 

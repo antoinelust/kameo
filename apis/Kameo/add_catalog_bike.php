@@ -20,6 +20,7 @@ $display=isset($_POST['display']) ? "Y" : "N";
 $motor = $_POST["motor"];
 $battery = $_POST["battery"];
 $transmission = $_POST["transmission"];
+$license = $_POST["license"];
 
 
 if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
@@ -95,7 +96,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     include 'connexion.php';
 
-	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN, MOTOR, BATTERY, TRANSMISSION) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '', '$motor', '$battery', '$transmission')";
+	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN, MOTOR, BATTERY, TRANSMISSION, LICENSE) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '', '$motor', '$battery', '$transmission', '$license')";
 
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
