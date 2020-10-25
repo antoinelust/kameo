@@ -79,10 +79,10 @@ function get_orders_listing() {
                     }
                 });
             });
-            
+
             var table=$('#ordersListingTable').DataTable({
             });
-            
+
         $('.updateCommand').click(function(){
           construct_form_for_command_update(this.name);
         });
@@ -99,8 +99,8 @@ function get_orders_listing() {
               false
             );
           }
-            
-            
+
+
         }
       }
     })
@@ -110,12 +110,12 @@ function get_orders_listing() {
 
 function construct_form_for_command_update(ID){
     retrieve_command(ID);
-    
+
     $('#widget-order-form input[name=testBoolean]').change(function(){
         if($('#widget-order-form input[name=testBoolean]').is(':checked')){
             $('#widget-order-form .testAddress').removeClass("hidden");
             $('#widget-order-form .testDate').removeClass("hidden");
-            $('#widget-order-form .testStatus').removeClass("hidden");            
+            $('#widget-order-form .testStatus').removeClass("hidden");
             $('#widget-order-form .testResult').removeClass("hidden");
         }else{
             $('#widget-order-form .testAddress').addClass("hidden");
@@ -124,7 +124,7 @@ function construct_form_for_command_update(ID){
             $('#widget-order-form .testResult').addClass("hidden");
         }
     });
-    
+
     $('#widget-order-form select[name=portfolioID]').change(function(){
         $.ajax({
           url: 'apis/Kameo/load_portfolio.php',
@@ -140,11 +140,11 @@ function construct_form_for_command_update(ID){
                     $('#widget-order-form input[name=model]').val(response.model);
                     $('#widget-order-form select[name=frameType]').val(response.frameType);
                     $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-    ')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg");
-                    
+
                 }
           }
         });
-    
+
     })
 
 }
@@ -168,7 +168,7 @@ function retrieve_command(ID){
             }
       }
     }).done(function(){
-    
+
         $.ajax({
           url: 'apis/Kameo/orders_management.php',
           type: 'get',
@@ -189,34 +189,34 @@ function retrieve_command(ID){
                 $('#widget-order-form input[name=firstName]').val(response.order.firstname).attr('disabled', false);
                 $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
                 $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
-        
+
                 if(response.order.testBoolean=="Y"){
                     $('#widget-order-form input[name=testBoolean]').prop('checked', true);
                     $('#widget-order-form .testAddress').removeClass("hidden");
-                    $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);                    
+                    $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
                     $('#widget-order-form .testDate').removeClass("hidden");
-                    $('#widget-order-form input[name=testDate]').val(response.order.testDate);                    
-                    $('#widget-order-form .testStatus').removeClass("hidden");  
-                    $('#widget-order-form select[name=testStatus]').val(response.order.testStatus);                    
+                    $('#widget-order-form input[name=testDate]').val(response.order.testDate);
+                    $('#widget-order-form .testStatus').removeClass("hidden");
+                    $('#widget-order-form select[name=testStatus]').val(response.order.testStatus);
                     $('#widget-order-form .testResult').removeClass("hidden");
-                    $('#widget-order-form textarea[name=testResult]').val(response.order.testResult);                    
+                    $('#widget-order-form textarea[name=testResult]').val(response.order.testResult);
                 }else{
                     $('#widget-order-form input[name=testBoolean]').prop('checked', false);
                     $('#widget-order-form .testAddress').addClass("hidden");
-                    $('#widget-order-form input[name=testAddress]').val("");                                        
+                    $('#widget-order-form input[name=testAddress]').val("");
                     $('#widget-order-form .testDate').addClass("hidden");
-                    $('#widget-order-form input[name=testDate]').val("");                    
+                    $('#widget-order-form input[name=testDate]').val("");
                     $('#widget-order-form .testStatus').addClass("hidden");
                     $('#widget-order-form select[name=testStatus]').val("");
                     $('#widget-order-form .testResult').addClass("hidden");
-                    $('#widget-order-form textarea[name=testResult]').val("");                    
+                    $('#widget-order-form textarea[name=testResult]').val("");
                 }
                 $('#widget-order-form input[name=testDate]').val(response.order.testDate);
                 $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
                 $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-                $('#widget-order-form input[name=emailUser]').val(response.order.email);
+                $('#widget-order-form input[name=emailUser]').val(response.order.email);                
                 $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
-                
+
                 if(response.order.estimatedDeliveryDate != null){
                     $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
                 }

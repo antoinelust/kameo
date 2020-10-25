@@ -16,9 +16,6 @@ catch(Exception $e)
 
 $reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE BIKE_ID LIKE (SELECT BIKE_ID FROM reservations WHERE ID = (SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = '.$_GET['code'].' AND VALID = \'Y\' AND DATE_BEGIN <= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) AND DATE_END >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP())));');
 
-
-//print_r($bdd->errorInfo());
-
 while ($donnees = $reponse->fetch())
 {
 	$is_null = false;
