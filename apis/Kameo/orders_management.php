@@ -34,6 +34,7 @@ if(isset($_POST['action'])){
         $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;
         $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
         $deliveryAddress=isset($_POST['deliveryAddress']) ? addslashes($_POST['deliveryAddress']) : NULL;
+        $leasingPrice=isset($_POST['leasingPrice']) ? $_POST['leasingPrice'] : NULL;
 
 
         if($deliveryAddress!=NULL){
@@ -44,7 +45,7 @@ if(isset($_POST['action'])){
 
 
         include 'connexion.php';
-        $sql= "UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STATUS='$status', PORTFOLIO_ID='$portfolioID', SIZE='$size', DELIVERY_ADDRESS=$deliveryAddress WHERE ID='$ID'";
+        $sql= "UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STATUS='$status', PORTFOLIO_ID='$portfolioID', SIZE='$size', DELIVERY_ADDRESS=$deliveryAddress, LEASING_PRICE='$leasingPrice' WHERE ID='$ID'";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -193,6 +194,8 @@ if(isset($_POST['action'])){
                 $response['order'][$i]['testStatus']=$row['TEST_STATUS'];
                 $response['order'][$i]['testDate']=$row['TEST_DATE'];
                 $response['order'][$i]['testBoolean']=$row['TEST_BOOLEAN'];
+                $response['order'][$i]['leasingPrice']=$row['LEASING_PRICE'];
+
                 $portfolioID=$row['PORTFOLIO_ID'];
                 include 'connexion.php';
                 $sql= "SELECT * FROM bike_catalog WHERE ID='$portfolioID'";
@@ -206,9 +209,6 @@ if(isset($_POST['action'])){
                 $conn->close();
                 $response['order'][$i]['brand']=$resultat['BRAND'];
                 $response['order'][$i]['model']=$resultat['MODEL'];
-
-                require_once $_SERVER['DOCUMENT_ROOT']."/apis/Kameo/get_prices.php";
-                require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/get_company_conditions.php';
                 $priceHTVA=$resultat['PRICE_HTVA'];
 
 
@@ -225,9 +225,6 @@ if(isset($_POST['action'])){
                 $conn->close();
                 $response['order'][$i]['user']=$resultat['PRENOM']." ".$resultat['NOM'];
                 $company=$resultat['COMPANY'];
-                $getPrice=get_prices($priceHTVA, $company);
-                $response['order'][$i]['leasingPrice']=($getPrice['leasingPrice']);
-
 
                 include 'connexion.php';
                 $sql= "SELECT * FROM companies WHERE INTERNAL_REFERENCE='$company'";
@@ -273,6 +270,8 @@ if(isset($_POST['action'])){
         $response['order']['testAddress']=$resultat['TEST_ADDRESS'];
         $response['order']['testStatus']=$resultat['TEST_STATUS'];
         $response['order']['testResult']=$resultat['TEST_RESULT'];
+        $response['order']['leasingPrice']=$resultat['LEASING_PRICE'];
+
         $email=$resultat['EMAIL'];
 
         $portfolioID=$resultat['PORTFOLIO_ID'];
@@ -305,15 +304,7 @@ if(isset($_POST['action'])){
         $response['order']['name']=$resultat['NOM'];
         $response['order']['firstname']=$resultat['PRENOM'];
         $response['order']['phone']=$resultat['PHONE'];
-
-
-
-        require_once $_SERVER['DOCUMENT_ROOT']."/apis/Kameo/get_prices.php";
-
-        $getPrice=get_prices($priceHTVA, $company);
-
         $response['order']['priceHTVA']=$priceHTVA;
-        $response['order']['leasingPrice']=$getPrice['leasingPrice'];
 
         echo json_encode($response);
         die;

@@ -3,10 +3,10 @@ session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
 require_once 'globalfunctions.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
@@ -20,37 +20,37 @@ if(isset($_POST['action'])){
         $size=isset($_POST['size']) ? $_POST['size'] : NULL;
         $remark=isset($_POST['remark']) ? nl2br($_POST['remark']) : NULL;
         $leasing_price = isset($_POST['leasing_price']) ? $_POST['leasing_price'] : NULL;
-        
+
         include 'connexion.php';
 
         $stmt = $conn->prepare("SELECT * FROM customer_referential WHERE EMAIL=?");
         if (!$stmt->bind_param("s", $email)) {
             $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
-            die;            
+            die;
         }
 
         if (!$stmt->execute()) {
             $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
-            die;                        
+            die;
         }
-        
-        
+
+
         $resultat=$stmt->get_result()->fetch_assoc();
         $firstName=$resultat['PRENOM'];
         $name=$resultat['NOM'];
 
-        $stmt->close();      
-        
-        
-        $sql="SELECT * FROM client_orders where EMAIL='$email'";           
+        $stmt->close();
+
+
+        $sql="SELECT * FROM client_orders where EMAIL='$email'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);   
+        $result = mysqli_query($conn, $sql);
         $length = $result->num_rows;
         if($length>0){
             errorMessage("ES0061");
@@ -62,47 +62,49 @@ if(isset($_POST['action'])){
             echo json_encode($response);
             die;
         }
-        
-        
-        
+
+
+
         require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
-        $mail = new PHPMailer();        
-                
+        $mail = new PHPMailer();
+
         if(constant('ENVIRONMENT')=="production"){
             $stmt = $conn->prepare("SELECT aa.* FROM customer_referential aa, customer_referential bb WHERE bb.EMAIL=? and aa.COMPANY=bb.COMPANY and aa.ADMINISTRATOR='Y' and aa.STAANN != 'D'");
             if (!$stmt->bind_param("s", $email)) {
                 $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
                 echo json_encode($response);
-                die;            
+                die;
             }
             if (!$stmt->execute()) {
                 $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
                 echo json_encode($response);
-                die;                        
-            }    
+                die;
+            }
             foreach($stmt->get_result()->fetch_all(MYSQLI_ASSOC) as $contact){
+              if($contact['COMPANY'] != 'KAMEO'){
                 $mail->AddAddress($contact['EMAIL'], $contact['PRENOM'].' '.$contact['NOM']);
+              }
             }
             $stmt->close();
-            
+
             $mail->AddCC('julien@kameobikes.com', 'Julien Jamar');
         }else{
             $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
         }
         $mail->IsHTML(true);
         $mail->CharSet = 'UTF-8';
-        
-        
+
+
         $mail->From = $email;
         $mail->FromName = $firstName.' '.$name;
         $mail->AddReplyTo($email, $name);
         $subject="Nouvelle commande de vélo de la part de ".$firstName.' '.$name;
         $mail->Subject = $subject;
-        
+
 
         include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
-        
-        
+
+
         $body = $body."
             <body>
                 <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Mail reçu via la page de contact</span><!--<![endif]-->
@@ -202,25 +204,25 @@ if(isset($_POST['action'])){
         include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
 
         $mail->Body = $body;
-        
+
         if(constant('ENVIRONMENT')=="test" || constant('ENVIRONMENT')=='production'){
             if(!$mail->Send()) {
-               $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
+               $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
                 echo json_encode($response);
                 die;
             }
         }
-        
-        $conn->close();   
+
+        $conn->close();
         $response['sql']=$sql;
         successMessage("SM0027");
     }
 }else if(isset($_GET['action'])){
-    
+
     $action=isset($_GET['action']) ? $_GET['action'] : NULL;
-    
+
     if($action=="list"){
-        
+
 
         $email=isset($_GET['email']) ? $_GET['email'] : NULL;
         $response=array();
@@ -233,7 +235,7 @@ if(isset($_POST['action'])){
         }
         $result = mysqli_query($conn, $sql);
         $conn->close();
-        $length = $result->num_rows;    
+        $length = $result->num_rows;
 
         $response['commandNumber']=$length;
 
@@ -271,7 +273,7 @@ if(isset($_POST['action'])){
         $response['response']="success";
         echo json_encode($response);
         die;
-        
+
     }
 }
 ?>

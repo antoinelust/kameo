@@ -69,7 +69,7 @@ function load_cafetaria(){
               var leasing_price = response.bike[i].leasingPrice;
 
               if(response.bike[i].company == "City Dev"){
-                  priceByMonth = Math.round(leasing_price * 1.21) + " €/mois TVAC";
+                  priceByMonth = Math.round((leasing_price + (response.bike[i].price - 2000)/(4312-2000)*(142-135)) * 1.21) + " €/mois TVAC";
               }else{
                   priceByMonth = leasing_price + " €/mois";
               }

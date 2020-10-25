@@ -28,7 +28,7 @@ function get_orders_listing() {
         }
         if(response.response == 'success'){
           var dest="";
-          var temp="<table id=\"ordersListingTable\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Test ?</th><th>Date Livraison</th></tr></thead><tbody>";
+          var temp="<table id=\"ordersListingTable\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Test ?</th><th>Date Livraison</th><th>Montant</th></tr></thead><tbody>";
           dest=dest.concat(temp);
           var i=0;
 
@@ -53,7 +53,7 @@ function get_orders_listing() {
               }else{
                   var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
               }
-            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td></tr>";
+            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].leasingPrice+" €/mois</td></tr>";
             dest=dest.concat(temp);
             i++;
 
@@ -179,6 +179,7 @@ function retrieve_command(ID){
             }
             if(response.response == 'success'){
                 $('#widget-order-form input[name=ID]').val(ID);
+                $('#widget-order-form input[name=leasingPrice]').val(response.order.leasingPrice);
                 $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID).attr('disabled', false);
                 $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);
                 $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);
@@ -214,7 +215,7 @@ function retrieve_command(ID){
                 $('#widget-order-form input[name=testDate]').val(response.order.testDate);
                 $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
                 $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-                $('#widget-order-form input[name=emailUser]').val(response.order.email);                
+                $('#widget-order-form input[name=emailUser]').val(response.order.email);
                 $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
 
                 if(response.order.estimatedDeliveryDate != null){
