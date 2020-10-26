@@ -18,7 +18,7 @@ $(".fleetmanager").click(function () {
     },
   });
   document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
-  
+
 });
 
 //FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it
@@ -70,7 +70,6 @@ function listPortfolioBikes() {
 //FleetManager: Gérer le catalogue | Displays the bike information when "Mettre à jour" is pressed
 function initializeUpdatePortfolioBike(ID) {
 
-  
 
   $.ajax({
     url: "apis/Kameo/load_portfolio.php",
@@ -91,15 +90,21 @@ function initializeUpdatePortfolioBike(ID) {
           response.utilisation
         );
 
-        console.log("test");
-        document.getElementsByClassName('updatePortfolioClick')[0].addEventListener("click", function() {
-          console.log("test1");
-        if($("#widget-updateCatalog-form select[name=utilisation]").val()=="Speedpedelec"){
-          $("#widget-updateCatalog-form div[name=licenseUpdate]").style.display = "block";
-        } else{
-          $("#widget-updateCatalog-form div[name=licenseUpdate]").style.display = "none";
+
+        //document.getElementsByClassName('updatePortfolioClick')[0].addEventListener("click", function() {
+        if(response.utilisation == "Speedpedelec"){
+          $("#licenseUpdate").removeClass("hidden");
+        }else{
+          $("#licenseUpdate").addClass("hidden");
         }
-      });
+
+        $("#widget-updateCatalog-form select[name=utilisation]").change(function () {
+          if($("#widget-updateCatalog-form select[name=utilisation]").val()=="Speedpedelec"){
+            $("#licenseUpdate").removeClass("hidden");
+          } else{
+            $("#licenseUpdate").addClass("hidden");
+          }
+        });
 
         $("#widget-updateCatalog-form select[name=electric]").val(
           response.electric
@@ -145,7 +150,7 @@ function initializeUpdatePortfolioBike(ID) {
 
         );
       }
-      
+
     },
   });
 }
@@ -157,4 +162,3 @@ function initializeCreatePortfolioBike() {
 
 
 }
-  
