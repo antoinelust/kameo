@@ -102,13 +102,11 @@ if(isset($_POST['action']))
 
             $result = mysqli_query($conn, $sql);
             $resultat = mysqli_fetch_assoc($result);
-
-            $company = $resultat['COMPANY'];
             $response['response']="success";
             $response['id']=$resultat['ID'];
             $response['model']=$resultat['MODEL'];
             $response['reference']=$resultat['REFERENCE'];
-            $response['company']=$company;
+            $response['company']=$resultat['COMPANY'];
             $response['start']=$resultat['START'];
             $response['end']=$resultat['END'];
             $response['automatic_billing']=$resultat['AUTOMATIC_BILLING'];
@@ -117,7 +115,7 @@ if(isset($_POST['action']))
 
             $sql="SELECT bb.ID as id, bb.MODEL as model, cc.PLACE_IN_BUILDING  as place
             FROM boxes aa INNER JOIN customer_bikes bb ON aa.COMPANY=bb.COMPANY
-            INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID where aa.COMPANY='$company' and cc.PLACE_IN_BUILDING !='-1' ORDER BY cc.PLACE_IN_BUILDING";
+            INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID where aa.ID='$id' and aa.BUILDING=cc.BUILDING and cc.PLACE_IN_BUILDING !='-1' ORDER BY cc.PLACE_IN_BUILDING";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -126,12 +124,15 @@ if(isset($_POST['action']))
             $result = mysqli_query($conn, $sql);
             $response['keys_in'] = $result->fetch_all(MYSQLI_ASSOC);
 
-            $sql="SELECT bb.ID as id, bb.TYPE as type, bb.MODEL as model, cc.PLACE_IN_BUILDING as place
-            FROM boxes aa 
+            $sql="SELECT bb.ID as id, bb.TYPE as type, bb.MODEL as model, cc.PLACE_IN_BUILDING as place, ee.EMAIL
+            FROM boxes aa
             INNER JOIN customer_bikes bb ON aa.COMPANY=bb.COMPANY
-            INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID 
-            INNER JOIN bike_catalog dd ON dd.ID=bb.TYPE 
-            WHERE aa.COMPANY='$company' and cc.PLACE_IN_BUILDING ='-1' ORDER BY cc.PLACE_IN_BUILDING";
+            INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID
+            INNER JOIN bike_catalog dd ON dd.ID=bb.TYPE
+            INNER JOIN reservations ee
+            WHERE aa.ID='$id' and aa.BUILDING=cc.BUILDING and cc.PLACE_IN_BUILDING ='-1' and cc.RESERVATION_ID=ee.ID ORDER BY bb.FRAME_NUMBER";
+
+
 
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -147,6 +148,7 @@ if(isset($_POST['action']))
                 $response['keys_out'][$i]['model']=$row['model'];
                 $response['keys_out'][$i]['place']=$row['place'];
                 $response['keys_out'][$i]['img'] = get_image($row['type']);
+                $response['keys_out'][$i]['email'] = $row['EMAIL'];
                 $i++;
             }
 

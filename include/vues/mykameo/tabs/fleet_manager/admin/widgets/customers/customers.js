@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
   document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
   document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
   document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-  
+
 });
 
 $(".fleetmanager").click(function () {
@@ -1846,7 +1846,7 @@ function add_building(company) {
         while (i < response.bikeNumber) {
           temp =
             '<input type="checkbox" name="bikeAccess[]" checked value="' +
-            response.bike[i].frameNumber +
+            response.bike[i].id +
             '">' +
             response.bike[i].frameNumber +
             " - " +

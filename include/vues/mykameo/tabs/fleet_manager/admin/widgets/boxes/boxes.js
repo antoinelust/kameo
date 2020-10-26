@@ -319,7 +319,7 @@ function retrieve_box(id) {
           response.keys_out.forEach(key => {
             $("#widget-boxManagement-form div[name=bikes]").append('<div class="col-md-4" name="bike">\
             <img src="images_bikes/'+key.img+'_mini.jpg">\
-            <p><center><B>'+ key.id + ' - ' + key.model + '</B></center></p></div>');
+            <p><center><B>'+ key.model + '</B><br>' + key.email + '</center></p></div>');
           });
         }
       }

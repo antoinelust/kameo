@@ -3,10 +3,10 @@ session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
 include 'globalfunctions.php';
 
@@ -30,7 +30,7 @@ if($reference != NULL && $descriptionFr != NULL && $descriptionEn != NULL && $de
     }
     $result = mysqli_query($conn, $sql);
     if($result->num_rows!='0'){
-        $conn->close();   
+        $conn->close();
         errorMessage("ES0036");
     }
 
@@ -39,33 +39,33 @@ if($reference != NULL && $descriptionFr != NULL && $descriptionEn != NULL && $de
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
-        die;   
+        die;
     }
-    
+
     if(isset($_POST['bikeAccess'])){
         foreach($_POST['bikeAccess'] as $valueInArray){
-            $sql= "INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BIKE_NUMBER, BUILDING_CODE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$reference', '')";
+            $sql= "INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BIKE_ID, BUILDING_CODE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$reference', '')";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
-                die;   
-            }        
+                die;
+            }
         }
     }
-    
+
     if(isset($_POST['userAccess'])){
         foreach($_POST['userAccess'] as $valueInArray){
             $sql= "INSERT INTO  customer_building_access (USR_MAJ, TIMESTAMP, EMAIL, BUILDING_CODE, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$valueInArray', '$reference', '')";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
-                die;   
-            }        
+                die;
+            }
         }
     }
-    
-    
-    $conn->close();   
+
+
+    $conn->close();
 
     successMessage("SM0014");
 }else{
