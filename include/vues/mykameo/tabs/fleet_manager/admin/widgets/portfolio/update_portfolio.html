@@ -79,7 +79,7 @@
                 <div class="col-sm-12">
                   <div class="col-sm-4">
                     <h4><span> Utilisation : </span></h4>
-                    <select class="form-control" name="utilisation" id="hi" onchange="showwDivLicense(this)">
+                    <select class="form-control" name="utilisation" id="hi">
                       <option value="Tout chemin">Tout chemin</option>
                       <option value="Ville et chemin">Ville et chemin</option>
                       <option value="Pliant">Pliant</option>
@@ -106,7 +106,7 @@
                     />
                   </div>
 
-                    <script type="text/javascript">
+                <!--    <script type="text/javascript">
                     function showwDivLicense(select){
                       if(select.value=="Speedpedelec"){
                         document.getElementById('licenseUpdate').style.display = "block";
@@ -115,7 +115,18 @@
                       }
                     } 
                   </script>
+                
 
+                <script>
+                  ("#updatePortfolioClick").addEventListener("click", function() {
+                    if(document.getElementById('hi').val()=="Speedpedelec"){
+                      document.getElementById('licenseUpdate').style.display = "block";
+                    } else{
+                      document.getElementById('licenseUpdate').style.display = "none";
+                    }
+                  });
+                </script>
+-->
                 </div>
                 <div class="col-sm-12">
                   <div class="col-sm-4">

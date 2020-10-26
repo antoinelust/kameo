@@ -69,6 +69,9 @@ function listPortfolioBikes() {
 }
 //FleetManager: Gérer le catalogue | Displays the bike information when "Mettre à jour" is pressed
 function initializeUpdatePortfolioBike(ID) {
+
+  
+
   $.ajax({
     url: "apis/Kameo/load_portfolio.php",
     type: "get",
@@ -87,6 +90,17 @@ function initializeUpdatePortfolioBike(ID) {
         $("#widget-updateCatalog-form select[name=utilisation]").val(
           response.utilisation
         );
+
+        console.log("test");
+        document.getElementsByClassName('updatePortfolioClick')[0].addEventListener("click", function() {
+          console.log("test1");
+        if($("#widget-updateCatalog-form select[name=utilisation]").val()=="Speedpedelec"){
+          $("#widget-updateCatalog-form div[name=licenseUpdate]").style.display = "block";
+        } else{
+          $("#widget-updateCatalog-form div[name=licenseUpdate]").style.display = "none";
+        }
+      });
+
         $("#widget-updateCatalog-form select[name=electric]").val(
           response.electric
         );
@@ -131,6 +145,7 @@ function initializeUpdatePortfolioBike(ID) {
 
         );
       }
+      
     },
   });
 }
