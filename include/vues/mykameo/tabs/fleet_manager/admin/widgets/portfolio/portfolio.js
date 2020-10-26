@@ -99,7 +99,6 @@ function initializeUpdatePortfolioBike(ID) {
         }
 
         $("#widget-updateCatalog-form select[name=utilisation]").change(function () {
-          console.log($("#widget-updateCatalog-form select[name=utilisation]").val());
           if($("#widget-updateCatalog-form select[name=utilisation]").val()=="Speedpedelec"){
             $("#licenseUpdate").removeClass("hidden");
           } else{
