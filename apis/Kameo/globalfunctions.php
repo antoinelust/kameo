@@ -208,6 +208,30 @@ function error_message($type, $message = ""){
     }
 }
 
+function get_image($id){
+    include 'connexion.php';
+    $image_url = "";
+
+    $sql="SELECT ID, BRAND, MODEL, FRAME_TYPE FROM bike_catalog WHERE ID='$id'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+
+
+    $file=__DIR__.'/images_bikes/'.$resultat['ID'].'jpg';
+    if ((file_exists($file))){
+        $image_url =__DIR__.'/images_bikes/'.$resultat['ID'];
+    }else{
+        $image_url = strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']);
+    }
+
+    return $image_url;
+}
+
 /**
  * Generate a random string, using a cryptographically secure
  * pseudorandom number generator (random_int)

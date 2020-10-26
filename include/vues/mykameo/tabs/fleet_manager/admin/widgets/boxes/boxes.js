@@ -223,6 +223,7 @@ function retrieve_box(id) {
   $("#widget-boxManagement-form textarea").attr("readonly", true);
   $("#widget-boxManagement-form select").attr("readonly", true);
   $("#widget-boxManagement-form div[name=key]").remove();
+  $("#widget-boxManagement-form div[name=bike]").remove();
 
   $.ajax({
     url: "apis/Kameo/box_management.php",
@@ -274,8 +275,9 @@ function retrieve_box(id) {
           );
         }
 
+
+        // Placement des clés
         box_keys = parseInt(response.model.split("k")[0]);
-        console.log(box_keys);
         row = 0;
         var classe, md, range, size, space;
 
@@ -300,18 +302,25 @@ function retrieve_box(id) {
           }else{
             classe = "col-md-"+md;
           }
-          if (typeof response.keys[place] !=='undefined' && response.keys[place].place != "-1" && response.keys[place].place == i+1) {
+          if (typeof response.keys_in[place] !=='undefined' && response.keys_in[place].place == i+1) {
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
-            <p><center><B>'+ response.keys[place].place +'</B></br><img src="images/key_in.png">\
-            </br><p style="font-size:'+size+';"><B>'+response.keys[place].id + ' - ' + response.keys[place].model +'</B></p></center></p></div>');
+            <p><center><B>'+ response.keys_in[place].place +'</B></br><img src="images/key_in.png">\
+            </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].id + ' - ' + response.keys_in[place].model +'</B></p></center></p></div>');
             place++;
           }else{
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
             <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out.png"></br><p style="font-size:'+size+';"><B>NO'+ space +'</B></p></center></p></div>');
           }
           row++;
-          
-          
+        }
+
+        // Vélos en déplacement
+        if(response.keys_out){
+          response.keys_out.forEach(key => {
+            $("#widget-boxManagement-form div[name=bikes]").append('<div class="col-md-4" name="bike">\
+            <img src="images_bikes/'+key.img+'_mini.jpg">\
+            <p><center><B>'+ key.id + ' - ' + key.model + '</B></center></p></div>');
+          });
         }
       }
     },
