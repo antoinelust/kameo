@@ -309,7 +309,7 @@ function retrieve_box(id) {
             place++;
           }else{
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
-            <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out.png"></br><p style="font-size:'+size+';"><B>NO'+ space +'</B></p></center></p></div>');
+            <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
           }
           row++;
         }
