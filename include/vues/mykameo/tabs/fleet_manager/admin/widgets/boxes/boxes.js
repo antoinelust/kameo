@@ -17,7 +17,7 @@ $(".fleetmanager").click(function () {
       }
     },
   });
-  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);  
+  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
 });
 
 function list_boxes(company) {
@@ -295,7 +295,7 @@ function retrieve_box(id) {
 
         place = 0;
         for (let i = 0; i < box_keys; i++) {
-          
+
           if (row == range || row == 0) {
             classe = "col-md-"+md+" col-md-offset-1";
             row = 0;
@@ -303,9 +303,9 @@ function retrieve_box(id) {
             classe = "col-md-"+md;
           }
           if (typeof response.keys_in[place] !=='undefined' && response.keys_in[place].place == i+1) {
-            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
+            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;">\
             <p><center><B>'+ response.keys_in[place].place +'</B></br><img src="images/key_in.png">\
-            </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].id + ' - ' + response.keys_in[place].model +'</B></p></center></p></div>');
+            </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].model +'</B></p></center></p></div>');
             place++;
           }else{
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
