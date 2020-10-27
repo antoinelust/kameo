@@ -102,7 +102,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
             document.getElementById('buildingUpdateUser').innerHTML = dest;
 
             var i=0;
-            var dest="<h4>Accès aux vélos</h4>";
+            var dest="<h4>Accès aux vélos</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" /><br>";
             while(i<response.bikeNumber){
               if(response.bike[i].access==true){
                 temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
@@ -117,6 +117,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
             var dest="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteUser\" onclick=\"initializeDeleteUser('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Supprimer</span><span class=\"en-inline\">Delete</span></a>";
             document.getElementById('updateUserSendButton').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Envoyer</button><button  class=\"en button small green button-3d rounded icon-left\" type=\"submit\" ><i class=\"fa fa-paper-plane\"></i>Send</button><button  class=\"nl button small green button-3d rounded icon-left\" type=\"submit\" ><i class=\"fa fa-paper-plane\"></i>Verzenden</button>";
             document.getElementById('deleteUserButton').innerHTML=dest;
+
+            document.getElementById('select-all-update').onclick = function() {
+              var checkboxes = document.getElementsByName('bikeAccess[]');
+              for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+              }
+            }
           }
         }
         $('#usersListing').modal('toggle');
@@ -218,6 +225,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
                 </i>\
                 Confirmer\
                 </button>";
+
+
+                document.getElementById('select-all').onclick = function() {
+                  var checkboxes = document.getElementsByName('bikeAccess[]');
+                  for (var checkbox of checkboxes) {
+                    checkbox.checked = this.checked;
+                  }
+                }
               }
             }
           });
