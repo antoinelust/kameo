@@ -40,7 +40,7 @@ document.getElementById('widget-taskManagement-form').reset();
 
 //FleetManager: Gérer les Actions | List user task on <select> call
 function taskFilter(e){
-  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user_data['EMAIL'] ?>');
+  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user_data["EMAIL"] ?>');
 }
 
 //FleetManager: Gérer les Actions | Displays the task graph by calling action_company.php and creating it
@@ -318,7 +318,6 @@ function construct_form_for_action_update(id){
                         if(response.action.date_reminder != null){
                             $('#widget-updateAction-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
                         }
-
                         $('#widget-updateAction-form select[name=company]').val(response.action.company);
                         $('#widget-updateAction-form select[name=status]').val(response.action.status);
                         $('#widget-updateAction-form select[name=owner]').val(response.action.owner);
@@ -328,6 +327,7 @@ function construct_form_for_action_update(id){
             })
 
         })
+        
 }
 
 function retrieve_task(ID, action = "retrieve"){

@@ -198,7 +198,7 @@
   		  }, {
   			type: 'success'
   		  });
-  		  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user_data['EMAIL'] ?>');
+  		  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user_data["EMAIL"] ?>');
   		  $('#taskManagement').modal('toggle');
   		  get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);
   		  document.getElementById('widget-taskManagement-form').reset();
