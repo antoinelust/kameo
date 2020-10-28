@@ -17,8 +17,8 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);  
-$resultat = mysqli_fetch_assoc($result);  
+$result = mysqli_query($conn, $sql);
+$resultat = mysqli_fetch_assoc($result);
 $conn->close();
 
 $bike_ID=$resultat['ID'];
@@ -31,8 +31,8 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);  
-$resultat = mysqli_fetch_assoc($result);  
+$result = mysqli_query($conn, $sql);
+$resultat = mysqli_fetch_assoc($result);
 $conn->close();
 
 $reservationID=$resultat['RESERVATION_ID'];
@@ -44,16 +44,16 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);  
+$result = mysqli_query($conn, $sql);
 $conn->close();
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-$sql="UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='mykameo', MOVING='N', PLACE_IN_BUILDING='$emplacement', BUILDING='$building' WHERE BIKE_ID='$bike_ID'";
+$sql="UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='mykameo', MOVING='N', PLACE_IN_BUILDING='$emplacement', BUILDING='$building' WHERE BIKE_ID='$bike_ID' AND BUILDING='$building'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);  
+$result = mysqli_query($conn, $sql);
 $conn->close();
 ?>
