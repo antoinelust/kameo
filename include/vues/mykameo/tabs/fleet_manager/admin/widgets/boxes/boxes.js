@@ -303,13 +303,13 @@ function retrieve_box(id) {
             classe = "col-md-"+md;
           }
           if (typeof response.keys_in[place] !=='undefined' && response.keys_in[place].place == i+1) {
-            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;">\
+            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;" draggable="true" ondragstart="drag(event)" id="'+ response.keys_in[place].id + '_' + id +'">\
             <p><center><B>'+ response.keys_in[place].place +'</B></br><img src="images/key_in.png">\
             </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].model +'</B></p></center></p></div>');
             place++;
           }else{
-            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key">\
-            <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
+            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop_in(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
+            <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out2.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
           }
           row++;
         }
@@ -317,11 +317,100 @@ function retrieve_box(id) {
         // Vélos en déplacement
         if(response.keys_out){
           response.keys_out.forEach(key => {
-            $("#widget-boxManagement-form div[name=bikes]").append('<div class="col-md-4" name="bike">\
+            $("#widget-boxManagement-form div[name=bikes]").append('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
             <img src="images_bikes/'+key.img+'_mini.jpg">\
             <p><center><B>'+ key.model + '</B><br>' + key.email + '</center></p></div>');
           });
         }
+      }
+    },
+  });
+}
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop_out(ev) {
+  ev.preventDefault();
+  var ids = ev.dataTransfer.getData("text");
+  var id= ids.split("_")[0];
+  var box_id= ids.split("_")[1];
+
+  $.ajax({
+    url: "apis/Kameo/box_management.php",
+    type: "post",
+    data: { action: "switch_out", id: id},
+    success: function (response) {
+      if (response.response == "error") {
+        $.notify(
+          {
+            message: response.message,
+          },
+          {
+            type: "error",
+          }
+        );
+      }
+      if (response.response == "success") {
+        $.notify(
+          {
+            message: response.message,
+          },
+          {
+            type: "success",
+          }
+        );
+        retrieve_box(box_id);
+        $("#widget-boxManagement-form").modal("toggle");
+        document
+          .getElementById("widget-boxManagement-form")
+          .reset();
+      }
+    },
+  });
+}
+
+function drop_in(ev, target) {
+  ev.preventDefault();
+  var ids = ev.dataTransfer.getData("text");
+  var id= ids.split("_")[0];
+  var box_id= ids.split("_")[1];
+  var place = target.id;
+
+  $.ajax({
+    url: "apis/Kameo/box_management.php",
+    type: "post",
+    data: { action: "switch_in", id: id, place: place},
+    success: function (response) {
+      if (response.response == "error") {
+        $.notify(
+          {
+            message: response.message,
+          },
+          {
+            type: "error",
+          }
+        );
+      }
+      if (response.response == "success") {
+        $.notify(
+          {
+            message: response.message,
+          },
+          {
+            type: "success",
+          }
+        );
+        retrieve_box(box_id);
+        $("#widget-boxManagement-form").modal("toggle");
+        document
+          .getElementById("widget-boxManagement-form")
+          .reset();
       }
     },
   });
