@@ -266,6 +266,16 @@ include 'include/head.php';
                 document.getElementById('bikePictureImage').src = "images_bikes/" + brand.toLowerCase().replace(/ /g, '-') + "_" + model.toLowerCase().replace(/ /g, '-') + "_" + frameType.toLowerCase() + ".jpg";
 
             }
+
+            window.addEventListener( "pageshow", function ( event ) {
+                var reloadPage = event.persisted || 
+                                ( typeof window.performance != "undefined" && 
+                                    window.performance.navigation.type === 2 );
+                if ( reloadPage ) {
+                    // Handle page restore.
+                    window.location.reload();
+                }
+            });
         </script>
         <?php include 'include/footer.php'; ?>
     </div>
