@@ -51,6 +51,7 @@
 					}
         }
         if(get_user_permissions("fleetManager", $token)){
+					if($user_data['BOOKING']=='Y'){
             echo '
               <div class="col-md-4">
                 <div class="icon-box medium fancy">
@@ -63,6 +64,7 @@
 									<p>'.L::widgetTitle_bookingManager.'</p>
                 </div>
               </div>';
+						}
         }?>
 
 	</div>

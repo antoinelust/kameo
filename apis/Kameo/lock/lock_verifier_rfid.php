@@ -2,6 +2,7 @@
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
 $frameNumber=$_GET['frame_number'];
+$building=$_GET['building'];
 
 $sql="SELECT ID FROM customer_bikes where FRAME_NUMBER='$frameNumber'";
 if ($conn->query($sql) === FALSE) {
@@ -9,9 +10,9 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql); 
+$result = mysqli_query($conn, $sql);
 $resultat = mysqli_fetch_assoc($result);
-$conn->close();   
+$conn->close();
 
 $bikeID=$resultat['ID'];
 
@@ -24,7 +25,7 @@ catch(Exception $e)
         die('Erreur : '.$e->getMessage());
 }
 
-$reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE MOVING = \'Y\' AND BIKE_ID = \''.$bikeID.'\';');
+$reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE MOVING = \'Y\' AND BIKE_ID = \''.$bikeID.'\' AND BUILDING = \''.$building.'\';');
 
 //print_r($bdd->errorInfo());
 
