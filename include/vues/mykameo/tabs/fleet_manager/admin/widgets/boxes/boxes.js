@@ -304,12 +304,12 @@ function retrieve_box(id) {
           }
           if (typeof response.keys_in[place] !=='undefined' && response.keys_in[place].place == i+1) {
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;" draggable="true" ondragstart="drag(event)" id="'+ response.keys_in[place].id + '_' + id +'">\
-            <p><center><B>'+ response.keys_in[place].place +'</B></br><img src="images/key_in.png">\
+            <p><center><B>'+ response.keys_in[place].place +'</B></br><img draggable="false" src="images/key_in.png">\
             </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].model +'</B></p></center></p></div>');
             place++;
           }else{
             $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
-            <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out2.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
+            <p><center><B>'+ (i + 1) +'</B></br><img draggable="false" src="images/key_out2.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
           }
           row++;
         }
@@ -317,8 +317,8 @@ function retrieve_box(id) {
         // Vélos en déplacement
         if(response.keys_out){
           response.keys_out.forEach(key => {
-            $("#widget-boxManagement-form div[name=bikes]").append('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
-            <img src="images_bikes/'+key.img+'_mini.jpg">\
+            $("#widget-boxManagement-form div[name=in]").before('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
+            <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
             <p><center><B>'+ key.model + '</B><br>' + key.email + '</center></p></div>');
           });
         }
