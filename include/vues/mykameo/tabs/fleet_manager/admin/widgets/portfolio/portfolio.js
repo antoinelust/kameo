@@ -90,8 +90,6 @@ function initializeUpdatePortfolioBike(ID) {
           response.utilisation
         );
 
-
-        //document.getElementsByClassName('updatePortfolioClick')[0].addEventListener("click", function() {
         if(response.utilisation == "Speedpedelec"){
           $("#licenseUpdate").removeClass("hidden");
         }else{

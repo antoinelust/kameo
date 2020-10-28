@@ -83,8 +83,9 @@
 							<h4>Accès aux bâtiments</h4>
 							<div class="form-group col-sm-12" id="buildingCreateUser"></div>
 							<h4>Accès aux vélos</h4>
-							<div class="form-group col-sm-12" id="bikeCreateUser"></div>
-							<div id="confirmAddUser"></div>
+								<input type="checkbox" id="select-all" name="select_all" value="1" />
+								<div class="form-group col-sm-12" id="bikeCreateUser"></div>
+								<div id="confirmAddUser"></div>
 						</form>
 					</div>
 				</div>
@@ -101,6 +102,10 @@
 		</div>
 	</div>
 </div>
+<script
+  type="text/javascript"
+  src="js/addons/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"
+></script>
 <!--<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
 <script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>-->
 <script type="text/javascript">
@@ -136,6 +141,7 @@
 			 get_users_listing();
 			 $('#addUser').modal('toggle');
 			 document.getElementById('widget-addUser-form').reset();
+
 			} else {
 			 $.notify({
 				message: response.message
