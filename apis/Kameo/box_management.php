@@ -79,24 +79,10 @@ if(isset($_POST['action']))
         $response['sql']=$sql;
         successMessage("SM0022");
 
-    }else if($_POST["action"]=="switch_out"){
-        include 'connexion.php';
-        $sql="UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, PLACE_IN_BUILDING='-1' WHERE BIKE_ID='$id'";
-
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-
-        $conn->close();
-        $response['sql']=$sql;
-        successMessage("SM0022");
-
-    }else if($_POST["action"]=="switch_in"){
+    }else if($_POST["action"]=="switch"){
         include 'connexion.php';
         $place = $_POST["place"];
-        
+
         $sql="UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, PLACE_IN_BUILDING='$place' WHERE BIKE_ID='$id'";
         
         if ($conn->query($sql) === FALSE) {

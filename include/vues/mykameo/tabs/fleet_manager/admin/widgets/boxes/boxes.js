@@ -308,7 +308,7 @@ function retrieve_box(id) {
             </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].model +'</B></p></center></p></div>');
             place++;
           }else{
-            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop_in(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
+            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
             <p><center><B>'+ (i + 1) +'</B></br><img src="images/key_out2.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
           }
           row++;
@@ -335,57 +335,20 @@ function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
-function drop_out(ev) {
-  ev.preventDefault();
-  var ids = ev.dataTransfer.getData("text");
-  var id= ids.split("_")[0];
-  var box_id= ids.split("_")[1];
-
-  $.ajax({
-    url: "apis/Kameo/box_management.php",
-    type: "post",
-    data: { action: "switch_out", id: id},
-    success: function (response) {
-      if (response.response == "error") {
-        $.notify(
-          {
-            message: response.message,
-          },
-          {
-            type: "error",
-          }
-        );
-      }
-      if (response.response == "success") {
-        $.notify(
-          {
-            message: response.message,
-          },
-          {
-            type: "success",
-          }
-        );
-        retrieve_box(box_id);
-        $("#widget-boxManagement-form").modal("toggle");
-        document
-          .getElementById("widget-boxManagement-form")
-          .reset();
-      }
-    },
-  });
-}
-
-function drop_in(ev, target) {
+function drop(ev, target) {
   ev.preventDefault();
   var ids = ev.dataTransfer.getData("text");
   var id= ids.split("_")[0];
   var box_id= ids.split("_")[1];
   var place = target.id;
+  if(!place){
+    place = "-1";
+  }
 
   $.ajax({
     url: "apis/Kameo/box_management.php",
     type: "post",
-    data: { action: "switch_in", id: id, place: place},
+    data: { action: "switch", id: id, place: place},
     success: function (response) {
       if (response.response == "error") {
         $.notify(
@@ -393,7 +356,7 @@ function drop_in(ev, target) {
             message: response.message,
           },
           {
-            type: "error",
+            type: "danger",
           }
         );
       }
@@ -407,7 +370,6 @@ function drop_in(ev, target) {
           }
         );
         retrieve_box(box_id);
-        $("#widget-boxManagement-form").modal("toggle");
         document
           .getElementById("widget-boxManagement-form")
           .reset();
