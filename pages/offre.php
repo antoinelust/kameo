@@ -234,7 +234,7 @@ $row = mysqli_fetch_assoc($result);
 
                                 <input type="text" class="hidden" id="widget-offer-brand" name="widget-offer-brand" value="<?php echo $brand; ?>" />
                                 <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-model" value="<?php echo $model; ?>" />
-                                <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-frame-type" value="<?php echo $frameType; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-frame-type" name="widget-offer-frame-type" value="<?php echo $frameType; ?>" />
                                 <input type="text" class="hidden" id="widget-offer-antispam" name="widget-offer-antispam" value="" />
                                 <button class="button green button-3d rounded effect" type="submit" id="form-submit"><?= L::offre_askoffer_btn; ?></button>
                             </form>
@@ -243,17 +243,19 @@ $row = mysqli_fetch_assoc($result);
                                     submitHandler: function(form) {
                                         jQuery(form).ajaxSubmit({
                                             success: function(text) {
+                                                console.log(text);
                                                 if (text.response == 'success') {
                                                     $.notify({
-                                                        message: "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible."
+                                                        message: text.message
                                                     }, {
                                                         type: 'success'
                                                     });
                                                     $(form)[0].reset();
-
+                                                    
                                                     gtag('event', 'send', {
                                                         'event_category': 'mail',
-                                                        'event_label': 'offre.php'
+                                                        'event_label': 'offre.php',
+                                                        'config': 'UA-108429655-1'
                                                     });
 
                                                 } else {
@@ -267,6 +269,7 @@ $row = mysqli_fetch_assoc($result);
                                         });
                                     }
                                 });
+
                             </script>
 
                         </div>
