@@ -71,7 +71,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
             $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);  
                 
             }else {
-            $response = array ('response'=>'success');  
+            $response = array ('response'=>'success', 'message'=> "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible.");  
             }
         }else{
             $response = array ('response'=>'success', 'message'=> "Environnement local, mail non envoyé");
