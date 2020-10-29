@@ -58,63 +58,49 @@ if($brand != '' && $model != '' && $description != '' && $category != '' && $buy
 
 
 if(isset($_FILES['file'])){
+  $extensions = array('.jpg');
+  $extension = strrchr($_FILES['file']['name'], '.');
+  if(!in_array($extension, $extensions))
+  {
+    errorMessage("ES0041");
+  }
 
-    $extensions = array('.jpg');
-    $extension = strrchr($_FILES['file']['name'], '.');
-    if(!in_array($extension, $extensions))
+
+  $taille_maxi = 6291456;
+  $taille = filesize($_FILES['file']['tmp_name']);
+  if($taille>$taille_maxi)
+  {
+    errorMessage("ES0023");
+  }
+
+  if($action=="add"){
+
+    //upload of Bike picture
+
+    $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
+
+    $fichier = $ID.$extension;
+
+    if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier .$fichier))
     {
-          errorMessage("ES0041");
+      errorMessage("ES0024");
+    }
+    successMessage("SM0028");
+  }
+  if($action=="update"){
+    if (file_exists($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.$extension)) {
+        unlink($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.$extension) or die("Couldn't delete file");
     }
 
+    //upload of Bike picture
 
-    $taille_maxi = 6291456;
-    $taille = filesize($_FILES['file']['tmp_name']);
-    if($taille>$taille_maxi)
+    $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
+    $fichier = $ID.$extension;
+    if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier))
     {
-          errorMessage("ES0023");
+      errorMessage("ES0024");
     }
-
-    if($action=="add"){
-
-        //upload of Bike picture
-
-        $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
-
-        $fichier = $ID.$extension;
-
-         if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier .$fichier))
-         {
-
-           $response = array ('response'=>'error', 'message'=> $_FILES["file"]["error"]);
-           echo json_encode($response);
-           die;
-
-              errorMessage("ES0024");
-         }
-
-
-    }successMessage("SM0028");
-      if($action=="update"){
-
-
-        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.$extension)) {
-            unlink($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.$extension) or die("Couldn't delete file");
-        }
-
-        //upload of Bike picture
-
-        $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
-
-        $fichier = $ID.$extension;
-
-         if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier))
-         {
-              errorMessage("ES0024");
-         }
-    }
-
+    successMessage("SM0029");
+  }
 }
-successMessage("SM0029");
-
-
 ?>
