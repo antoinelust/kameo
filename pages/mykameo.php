@@ -88,7 +88,7 @@ if ($token == NULL) { //Not connected
     echo '$("#orderBike").addClass("active"); ';
     echo '$("#orderBikeID").addClass("active"); ';
     echo 'get_command_user(email);';
-  } else if (get_user_permissions("fleetManager", $token)) {
+  } else if (get_user_permissions(["fleetManager", "admin"], $token)) {
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
     echo '$( ".fleetmanager" ).trigger( "click" );';
@@ -146,7 +146,7 @@ if ($token == NULL) { //Not connected
                         echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>' . L::tabs_book_title . '</a> </li>
                             <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>' . L::tabs_reservations_title . '</a> </li>';
                       }
-                      if (get_user_permissions("fleetManager", $token)) {
+                      if (get_user_permissions(["fleetManager", "admin"], $token)) {
 
                         echo '<li id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>' . L::tabs_fleet_title . '</a> </li>';
                       }
@@ -170,7 +170,7 @@ if ($token == NULL) { //Not connected
                       if(get_user_permissions("personnalBike", $token)){
                         include 'include/vues/mykameo/tabs/personnal_bike/main.php';  //TAB 4 @TODO: REFACTOR
                       }
-                      if(get_user_permissions("fleetManager", $token)){
+                      if(get_user_permissions(["fleetManager", "admin"] , $token)){
                         include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
                       }
                       ?>
@@ -490,7 +490,9 @@ if ($token == NULL) { //Not connected
 
   //RESERVATIONS
   if (get_user_permissions("fleetManager", $token)) {
-    include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/reservations/main.php';
+    if($user_data['BOOKING']=="Y"){
+      include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/reservations/main.php';
+    }
   }
   /** @TODO: CREATE SCRIPT & include 'include/vues/tabs/fleet_manager/fleet/widgets/reservations/update_reservation.html'; **/
 

@@ -1,8 +1,11 @@
 <div class="tab-pane" id="fleetmanager"> <!-- TAB4: FLEET MANAGET -->
-	<h4 class="fr">Votre flotte</h4>
-	<br/><br/>
 	<div class="row">
         <?php
+
+				if(get_user_permissions("fleetManager", $token)){
+					echo '<h4 class="fr">Votre flotte</h4><br><br>';
+				}
+
         if(get_user_permissions("fleetManager", $token)){
             echo '
               <div class="col-md-4">
@@ -65,10 +68,13 @@
                 </div>
               </div>';
 						}
-        }?>
+        }
 
+				if(get_user_permissions("fleetManager", $token)){
+					echo '<div class="separator"></div>';
+				}
+				?>
 	</div>
-	<div class="separator"></div>
     <?php
     if(get_user_permissions("fleetManager", $token)){
         echo '
@@ -241,7 +247,7 @@
 		}
 
     if(get_user_permissions("bills", $token)){
-        echo '<h4 class="billsTitle ">Factures</h4>
+        echo '<h4 class="billsTitle ">Factures</h4><br><br>
         <div class="row">
           <div class="col-md-4 " id="billsManagement">
             <div class="icon-box medium fancy">
