@@ -128,7 +128,6 @@ switch($_SERVER["REQUEST_METHOD"])
 				}
 				$result = mysqli_query($conn, $sql);
 				$i = 0;
-				//$response['keys_out'] = $result->fetch_all(MYSQLI_ASSOC);
 				while($row = mysqli_fetch_array($result))
 				{
 						$response['keys_out'][$i]['id']=$row['id'];

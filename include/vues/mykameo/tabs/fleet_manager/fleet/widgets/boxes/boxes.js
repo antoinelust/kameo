@@ -235,7 +235,7 @@ function retrieve_box(id) {
           row++;
         }
 
-        // Vélos en déplacement
+
         if(response.keys_out){
           response.keys_out.forEach(key => {
             $("#widget-boxManagement-form div[name=in]").before('<div class="col-md-4" name="bike">\

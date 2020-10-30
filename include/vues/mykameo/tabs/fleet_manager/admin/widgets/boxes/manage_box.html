@@ -7,7 +7,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<form id="widget_boxManagementAdmin-form" action="apis/Kameo/box_management.php" role="form" method="post">
+						<form id="widget_boxManagementAdmin-form" action="apis/Kameo/boxes/box_management.php" role="form" method="post">
 							<div class="form-group col-sm-12">
 								<h4 class="text-green" id="widget-boxManagement-form-title">Ajouter une borne</h4>
 								<div class="col-sm-4">
@@ -84,7 +84,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-	jQuery("#widget-boxManagement-form").validate({
+	jQuery("#widget_boxManagementAdmin-form").validate({
 	  submitHandler: function(form) {
 		jQuery(form).ajaxSubmit({
 		  success: function(response) {
