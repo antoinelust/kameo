@@ -541,7 +541,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
         </table>
     </div>
     <br><br>
-    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
+    <p>Par ce paiement, vous adhérez à nos conditions générales de vente.<br>
+    Les conditions générales de vente sont disponibles à l’URL suivante : <a href="https://www.kameobikes.com/docs/KAMEO-CGV.pdf">Lien</a>.<br>
+    Elles sont supposées avoir été lues et acceptées par le client</p>
 
 
 
