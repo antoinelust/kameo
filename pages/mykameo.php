@@ -53,7 +53,7 @@ if ($token == NULL) { //Not connected
   //@TODO: Replace email chech with authentication token
   include 'apis/Kameo/connexion.php';
 
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY and TOKEN='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY and TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -487,14 +487,18 @@ if ($token == NULL) { //Not connected
       include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/orders/main.php';
     }
   }
-
   //RESERVATIONS
   if (get_user_permissions("fleetManager", $token)) {
     if($user_data['BOOKING']=="Y"){
       include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/reservations/main.php';
     }
   }
-  /** @TODO: CREATE SCRIPT & include 'include/vues/tabs/fleet_manager/fleet/widgets/reservations/update_reservation.html'; **/
+  //LOCKING
+  if (get_user_permissions("fleetManager", $token)) {
+    if($user_data['LOCKING']=="Y"){
+      include 'include/vues/mykameo/tabs/fleet_manager/fleet/widgets/boxes/main.php';
+    }
+  }
 
   /** SETTINGS **/
   //CONDITIONS

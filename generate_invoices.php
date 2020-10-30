@@ -8,34 +8,11 @@ ob_start();
 
 include 'apis/Kameo/globalfunctions.php';
 
-if(isset($_GET['company'])){
-    $company=$_GET['company'];
-}
-
-if(isset($_GET['date'])){
-    $date=$_GET['date'];
-}else{
-    $date=null;
-}
-
-if(isset($_GET['month'])){
-    $month=$_GET['month'];
-}else{
-    $month=null;
-}
-
-if(isset($_GET['year'])){
-    $year=$_GET['year'];
-}else{
-    $year=null;
-}
-if(isset($_GET['simulation'])){
-    $simulation=$_GET['simulation'];
-}else{
-    $simulation=null;
-}
-
-
+$simulation = isset($_GET["simulation"]) ? addslashes($_GET["simulation"]) : NULL;
+$forced = isset($_GET["forced"]) ? addslashes($_GET["forced"]) : NULL;
+$company = isset($_GET["company"]) ? addslashes($_GET["company"]) : NULL;
+$dateStart = isset($_GET["dateStart"]) ? addslashes($_GET["dateStart"]) : NULL;
+$dateEnd = isset($_GET["dateStart"]) ? addslashes($_GET["dateEnd"]) : NULL;
 
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
 
@@ -93,10 +70,7 @@ while($row = mysqli_fetch_array($result))
         {
             $firstDay=$resultat_dateStart['start'];
             $today=substr($currentDate, 8 ,2);
-
-
-
-            if($today==$firstDay || $firstDay==$date)
+            if($today==$firstDay || $firstDay==substr($dateStart, 10, 2) || $forced)
             {
 
                 $sql_companyDetails="select COMPANY_NAME from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
@@ -120,22 +94,16 @@ while($row = mysqli_fetch_array($result))
                 fwrite($myfile, $billingGroup);
                 fclose($myfile);
 
-                if($date){
-                    $file = __DIR__.'/temp/date.txt';
+                if($dateStart){
+                    $file = __DIR__.'/temp/dateStart.txt';
                     $myfile = fopen($file, "w")  or die("Unable to open file!");
-                    fwrite($myfile, $date);
+                    fwrite($myfile, $dateStart);
                     fclose($myfile);
                 }
-                if($month){
-                    $file = __DIR__.'/temp/month.txt';
+                if($dateEnd){
+                    $file = __DIR__.'/temp/dateEnd.txt';
                     $myfile = fopen($file, "w")  or die("Unable to open file!");
-                    fwrite($myfile, $month);
-                    fclose($myfile);
-                }
-                if($year){
-                    $file = __DIR__.'/temp/year.txt';
-                    $myfile = fopen($file, "w")  or die("Unable to open file!");
-                    fwrite($myfile, $year);
+                    fwrite($myfile, $dateEnd);
                     fclose($myfile);
                 }
                 if($simulation){
@@ -144,7 +112,6 @@ while($row = mysqli_fetch_array($result))
                     fwrite($myfile, $simulation);
                     fclose($myfile);
                 }
-
 
 
                 $test=requireToVar(__DIR__.'/facture.php');
@@ -190,18 +157,16 @@ while($row = mysqli_fetch_array($result))
                     unlink($file);
                 }
 
-                $file = __DIR__.'/temp/date.txt';
+                $file = __DIR__.'/temp/dateStart.txt';
                 if ((file_exists($file))){
                     unlink($file);
                 }
-                $file = __DIR__.'/temp/month.txt';
+
+                $file = __DIR__.'/temp/dateEnd.txt';
                 if ((file_exists($file))){
                     unlink($file);
                 }
-                $file = __DIR__.'/temp/year.txt';
-                if ((file_exists($file))){
-                    unlink($file);
-                }
+
                 $file = __DIR__.'/temp/simulation.txt';
                 if ((file_exists($file))){
                     unlink($file);

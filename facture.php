@@ -4,27 +4,30 @@ $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
 
 
 
-if ((file_exists(__DIR__.'/temp/date.txt'))) {
-   $date = file_get_contents(__DIR__.'/temp/date.txt');
+if ((file_exists(__DIR__.'/temp/dateStart.txt'))) {
+   $dateStart = file_get_contents(__DIR__.'/temp/dateStart.txt');
 }else{
-    $date=date("d");
-}if ((file_exists(__DIR__.'/temp/month.txt'))) {
-    $month = file_get_contents(__DIR__.'/temp/month.txt');
+   $dateStart=date("Y-m-d");
+}
+$dateStartObject=new DateTime($dateStart);
+$dateStartObject->setTime(0, 0);
+
+if ((file_exists(__DIR__.'/temp/dateEnd.txt'))) {
+   $dateEnd = file_get_contents(__DIR__.'/temp/dateEnd.txt');
 }else{
-    $month=date("m");
-}if ((file_exists(__DIR__.'/temp/year.txt'))) {
-    $year = file_get_contents(__DIR__.'/temp/year.txt');
-}else{
-    $year=date("Y");
-}if ((file_exists(__DIR__.'/temp/simulation.txt'))) {
+    $dateEnd=date("Y-m-d");
+}
+$dateEndObject=new DateTime($dateEnd);
+$dateEndObject->setTime(23, 59);
+
+
+if ((file_exists(__DIR__.'/temp/simulation.txt'))) {
    $simulation = file_get_contents(__DIR__.'/temp/simulation.txt');
 }else{
     $simulation=null;
 }
 
-$mktime=mktime(0, 0, 0, $month, $date, $year);
-$currentDate=new DateTime($year.'-'.$month.'-'.$date);
-$currentDateString = $currentDate->format('Y-m-d');
+$currentDateObject=new DateTime($dateStart);
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
@@ -44,11 +47,33 @@ $newIDOUT=$resultat_reference['MAX_OUT'];
 $newIDOUT=strval($newIDOUT+1);
 
 
-$today=date('Y-m-d');
-$OneMonthAfter=clone $currentDate;
+$today=new DateTime();
+$todayString=date("Y-m-d");
+if($today->format('m')==12){
+    $monthAfter=1;
+    $yearAfter=(($today->format('Y'))+1);
+}else{
+    $monthAfter=(($today->format('m'))+1);
+    $yearAfter=$today->format('Y');
+}
+$dayAfter=$today->format('d');
 
-$OneMonthAfter->add(new DateInterval("P1M"));
-$OneMonthAfterString=$OneMonthAfter->format('Y-m-d');
+$lastDayMonth= last_day_month( $monthAfter );
+if($lastDayMonth < $dayAfter){
+    $dayAfter=$lastDayMonth;
+}
+
+if(strlen($monthAfter)==1){
+    $monthAfter='0'.$monthAfter;
+}
+if(strlen($dayAfter)==1){
+    $dayAfter='0'.$dayAfter;
+}
+
+$inOneMonth=new DateTime();
+$inOneMonth->setDate($yearAfter, $monthAfter, $dayAfter);
+$inOneMonthString=$inOneMonth->format("Y-m-d");
+
 
 $sql="select * from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
 error_log(date("Y-m-d H:i:s")." - SQL5 :".$sql."\n", 3, "generate_invoices.log");
@@ -78,9 +103,6 @@ $email=$resultat['EMAIL_CONTACT'];
 $nom=$resultat['NOM_CONTACT'];
 $prenom=$resultat['PRENOM_CONTACT'];
 $reference=$newID;
-$month=$currentDate->format('m');
-$year=$currentDate->format('Y');
-
 $base_modulo=date('d').date('m').$reference;
 $modulo_check=($base_modulo % 97);
 $reference=substr('0000'.$base_modulo.$modulo_check, -12);
@@ -176,14 +198,14 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 	        <tbody>';
             $test2='';
 
-            if($currentDate->format('m')==12){
+            if($currentDateObject->format('m')==12){
                 $monthAfter=1;
-                $yearAfter=(($currentDate->format('Y'))+1);
+                $yearAfter=(($currentDateObject->format('Y'))+1);
             }else{
-                $monthAfter=(($currentDate->format('m'))+1);
-                $yearAfter=$currentDate->format('Y');
+                $monthAfter=(($currentDateObject->format('m'))+1);
+                $yearAfter=$currentDateObject->format('Y');
             }
-            $dayAfter=$currentDate->format('d');
+            $dayAfter=$currentDateObject->format('d');
 
             $lastDayMonth= last_day_month( $monthAfter );
             if($lastDayMonth < $dayAfter){
@@ -201,9 +223,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $dateAfter->setDate($yearAfter, $monthAfter, $dayAfter);
             $dateAfterString=$dateAfter->format('Y-m-d');
 
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<'$dateAfterString' and (CONTRACT_END>='$dateAfterString' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$dateEnd' and (CONTRACT_END>='$dateEnd' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
             error_log(date("Y-m-d H:i:s")."SQL6 :".$sql2."\n", 3, "generate_invoices.log");
-            if ($conn->query($sql2) === FALSE) {
+            if ($conn->query($sql2) === FALSE){
                 echo $conn->error;
                 die;
             }
@@ -234,157 +256,146 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
 
-                $dateStart = new DateTime();
-                $lastDayMonth= last_day_month( $contractStart->format('m') );
-                if($lastDayMonth < $contractStart->format('d')){
-                    $day=$lastDayMonth;
-                }else{
-                  $day=$contractStart->format('d');
-                }
+                $dateStartTemp = new DateTime();
+                $dateStartTemp->setDate($currentDateObject->format("Y"), $currentDateObject->format("m"), $contractStart->format("d"));
 
-                if($currentDate->format('d') > $contractStart->format('d')){
-                  if($currentDate->format('m')==12){
-                    $month=1;
-                    $year=($currentDate->format('Y'))+1;
+                $temp1=$dateStartTemp->format('d-m-Y');
+
+                if($dateStartTemp <= $dateEndObject){
+                  error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y")."\n", 3, "generate_invoices.log");
+                }
+                error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
+                error_log(" Date Start : ".$dateStartObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
+                error_log(" DateEnd : ".$dateEndObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
+
+
+                if($dateStartTemp >= $dateStartObject && ($dateStartTemp <= $dateEndObject || $dateStartTemp == $dateEndObject)){
+
+                  if($dateStartTemp->format('m')==12){
+                      $monthAfter2=1;
+                      $yearAfter2=(($dateStartTemp->format('Y'))+1);
                   }else{
-                    $month=($currentDate->format('m'))+1;
-                    $year=($currentDate->format('Y'));
+                      $monthAfter2=(($dateStartTemp->format('m'))+1);
+                      $yearAfter2=$dateStartTemp->format('Y');
                   }
-                }else{
-                  $month=$currentDate->format('m');
-                  $year=$currentDate->format('Y');
+                  $dayAfter2=$contractStart->format('d');
+                  error_log(date("Y-m-d H:i:s")." - dayAfter2 :".$dayAfter2."\n", 3, "generate_invoices.log");
+
+
+                  $lastDayMonth= last_day_month( $monthAfter2 );
+                  if($lastDayMonth < $dayAfter2){
+                      $dayAfter2=$lastDayMonth;
+                  }
+                  error_log(date("Y-m-d H:i:s")." - dayAfter3 :".$dayAfter2."\n", 3, "generate_invoices.log");
+
+
+
+                  if(strlen($monthAfter2)==1){
+                      $monthAfter2='0'.$monthAfter2;
+                  }
+                  if(strlen($dayAfter2)==1){
+                      $dayAfter2='0'.$dayAfter2;
+                  }
+                  error_log(date("Y-m-d H:i:s")." - dayAfter4 :".$dayAfter2."\n", 3, "generate_invoices.log");
+
+
+
+                  $dateAfter2=new DateTime();
+                  $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
+                  error_log(date("Y-m-d H:i:s")." - dayAfter5 :".$dayAfter2."\n", 3, "generate_invoices.log");
+
+
+                  $temp2=$dateAfter2->format('d-m-Y');
+                  $temp3=$dateStartTemp->format('Y-m-d');
+                  $temp4=$dateAfter2->format('Y-m-d');
+
+
+
+                  $comment='Période du '.$temp1.' au '.$temp2;
+                  $leasingPrice=$row2['LEASING_PRICE'];
+                  $leasingPriceTVAC=1.21*$row2['LEASING_PRICE'];
+                  $frameNumber=$row2['FRAME_NUMBER'];
+                  $bikeID=$row2['ID'];
+                  $commentBilling=$row2['COMMENT_BILLING'];
+
+                  if(!$simulation || $simulation == 'N'){
+                      $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
+                      if ($conn->query($sql) === FALSE) {
+                          echo $conn->error;
+                      }
+                  }
+
+                  $sql5="SELECT bb.NOM, bb.PRENOM, bb.EMAIL FROM customer_bike_access aa, customer_referential bb WHERE aa.BIKE_ID='$bikeID' and aa.TYPE='personnel' and aa.EMAIL=bb.EMAIL";
+                  if ($conn->query($sql5) === FALSE) {
+                      echo $conn->error;
+                      die;
+                  }
+                  $result5 = mysqli_query($conn, $sql5);
+                  if($result5->num_rows>0){
+                      $resultat5 = mysqli_fetch_assoc($result5);
+                      $nameBikeUser=$resultat5['NOM'];
+                      $firstNameBikeUser=$resultat5['PRENOM'];
+                      $emailBikeUser=$resultat5['EMAIL'];
+                  }else{
+                    $nameBikeUser = NULL;
+                    $firstNameBikeUser = NULL;
+                    $emailBikeUser = NULL;
+                  }
+
+
+
+
+                  $difference=$dateStartTemp->diff($contractStart);
+
+                  $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
+
+                  if($row2['CONTRACT_END']){
+                      $contractEnd= new DateTime();
+                      $contractEnd->setDate(substr($row2['CONTRACT_END'], 0, 4), substr($row2['CONTRACT_END'],5,2), substr($row2['CONTRACT_END'], 8,2));
+                      $numberOfMonthContract=$contractEnd->diff($contractStart);
+                      $numberOfMonthContract=(($numberOfMonthContract->format('%y'))*12+$numberOfMonthContract->format('%m'));
+                  }
+
+
+                  $test2.='
+                  <tr>
+                      <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
+                      <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'</td>
+                      <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['LEASING_PRICE'],2).' € / mois HTVA</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td style="color: grey">Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
+
+                  if($nameBikeUser != NULL){
+                    $test2.='Nom : '.$nameBikeUser."<br>Prenom : ".$firstNameBikeUser."<br>Email : ".$emailBikeUser;
+                  }
+
+                  if($commentBilling != NULL && $commentBilling != ''){
+                    $test2.='<br/>'.$commentBilling;
+                  }
+
+                  $test2.='</td>
+                  <td></td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td><img class="img-responsive" src="'.$fichier.'" alt=""></td>
+                      ';
+                  if(($row2['CONTRACT_END'])){
+                      $test2=$test2.'<td>Période '.($monthDifference).'/'.$numberOfMonthContract.'</td>
+                      </tr>';
+                  }else{
+                      $test2=$test2."<td>Location</td>
+                      </tr>";
+                  }
+
+                  $i+=1;
+                  $total+=$row2['LEASING_PRICE'];
                 }
-
-
-                $dateStart->setDate($year, $month, $day);
-
-                $temp1=$dateStart->format('d-m-Y');
-
-                if($dateStart->format('m')==12){
-                    $monthAfter2=1;
-                    $yearAfter2=(($dateStart->format('Y'))+1);
-                }else{
-                    $monthAfter2=(($dateStart->format('m'))+1);
-                    $yearAfter2=$dateStart->format('Y');
-                }
-                $dayAfter2=$contractStart->format('d');
-                error_log(date("Y-m-d H:i:s")." - dayAfter2 :".$dayAfter2."\n", 3, "generate_invoices.log");
-
-
-                $lastDayMonth= last_day_month( $monthAfter2 );
-                if($lastDayMonth < $dayAfter2){
-                    $dayAfter2=$lastDayMonth;
-                }
-                error_log(date("Y-m-d H:i:s")." - dayAfter3 :".$dayAfter2."\n", 3, "generate_invoices.log");
-
-
-
-                if(strlen($monthAfter2)==1){
-                    $monthAfter2='0'.$monthAfter2;
-                }
-                if(strlen($dayAfter2)==1){
-                    $dayAfter2='0'.$dayAfter2;
-                }
-                error_log(date("Y-m-d H:i:s")." - dayAfter4 :".$dayAfter2."\n", 3, "generate_invoices.log");
-
-
-
-                $dateAfter2=new DateTime();
-                $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
-                error_log(date("Y-m-d H:i:s")." - dayAfter5 :".$dayAfter2."\n", 3, "generate_invoices.log");
-
-
-                $temp2=$dateAfter2->format('d-m-Y');
-
-                $temp3=$dateStart->format('Y-m-d');
-                $temp4=$dateAfter2->format('Y-m-d');
-
-
-
-                $comment='Période du '.$temp1.' au '.$temp2;
-                $leasingPrice=$row2['LEASING_PRICE'];
-                $leasingPriceTVAC=1.21*$row2['LEASING_PRICE'];
-                $frameNumber=$row2['FRAME_NUMBER'];
-                $bikeID=$row2['ID'];
-                $commentBilling=$row2['COMMENT_BILLING'];
-
-                if(!$simulation || $simulation == 'N'){
-                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
-                    if ($conn->query($sql) === FALSE) {
-                        echo $conn->error;
-                    }
-                }
-
-                $sql5="SELECT bb.NOM, bb.PRENOM, bb.EMAIL FROM customer_bike_access aa, customer_referential bb WHERE aa.BIKE_ID='$bikeID' and aa.TYPE='personnel' and aa.EMAIL=bb.EMAIL";
-                if ($conn->query($sql5) === FALSE) {
-                    echo $conn->error;
-                    die;
-                }
-                $result5 = mysqli_query($conn, $sql5);
-                if($result5->num_rows>0){
-                    $resultat5 = mysqli_fetch_assoc($result5);
-                    $nameBikeUser=$resultat5['NOM'];
-                    $firstNameBikeUser=$resultat5['PRENOM'];
-                    $emailBikeUser=$resultat5['EMAIL'];
-                }else{
-                  $nameBikeUser = NULL;
-                  $firstNameBikeUser = NULL;
-                  $emailBikeUser = NULL;
-                }
-
-
-
-
-                $difference=$dateStart->diff($contractStart);
-
-                $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
-
-                if($row2['CONTRACT_END']){
-                    $contractEnd= new DateTime();
-                    $contractEnd->setDate(substr($row2['CONTRACT_END'], 0, 4), substr($row2['CONTRACT_END'],5,2), substr($row2['CONTRACT_END'], 8,2));
-                    $numberOfMonthContract=$contractEnd->diff($contractStart);
-                    $numberOfMonthContract=(($numberOfMonthContract->format('%y'))*12+$numberOfMonthContract->format('%m'));
-                }
-
-
-                $test2.='
-                <tr>
-                    <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
-                    <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'</td>
-                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['LEASING_PRICE'],2).' € / mois HTVA</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
-
-                if($nameBikeUser != NULL){
-                  $test2.='Nom : '.$nameBikeUser."<br>Prenom : ".$firstNameBikeUser."<br>Email : ".$emailBikeUser;
-                }
-
-                if($commentBilling != NULL && $commentBilling != ''){
-                  $test2.='<br/>'.$commentBilling;
-                }
-
-                $test2.='</td>
-                <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><img class="img-responsive" src="'.$fichier.'" alt=""></td>
-                    ';
-                if(($row2['CONTRACT_END'])){
-                    $test2=$test2.'<td>Période '.($monthDifference).'/'.$numberOfMonthContract.'</td>
-                    </tr>';
-                }else{
-                    $test2=$test2."<td>Location</td>
-                    </tr>";
-                }
-
-                $i+=1;
-                $total+=$row2['LEASING_PRICE'];
             }
 
-            $sql2="select * from boxes where COMPANY='$company' and START<='$currentDateString' and (END>='$dateAfterString' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
+            $sql2="select * from boxes where COMPANY='$company' and START<='$dateStart' and (END>='$dateAfterString' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -397,13 +408,27 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['START'], 0, 4), substr($row2['START'],5,2), substr($row2['START'], 8,2));
-                $dateStart = new DateTime();
-                $dateStart->setDate($contractStart->format('Y'), $contractStart->format('m'), $contractStart->format('d'));
-                $temp1=$dateStart->format('d-m-Y');
-                $temp2=$dateAfter->format('d-m-Y');
+                $dateStartTemp = new DateTime();
+                $dateStartTemp->setDate($contractStart->format('Y'), $contractStart->format('m'), $contractStart->format('d'));
+                $temp1=$dateStartTemp->format('d-m-Y');
 
-                $temp3=$dateStart->format('Y-m-d');
-                $temp4=$dateAfter->format('Y-m-d');
+                if($dateStartTemp->format('m')==12){
+                    $monthAfter2=1;
+                    $yearAfter2=(($dateStartTemp->format('Y'))+1);
+                }else{
+                    $monthAfter2=(($dateStartTemp->format('m'))+1);
+                    $yearAfter2=$dateStartTemp->format('Y');
+                }
+                $dayAfter2=$contractStart->format('d');
+                $dateAfter2=new DateTime();
+                $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
+
+
+
+                $temp2=$dateAfter2->format('d-m-Y');
+
+                $temp3=$dateStartTemp->format('Y-m-d');
+                $temp4=$dateAfter2->format('Y-m-d');
 
                 if($row2['END']){
                     $contractEnd= new DateTime();
@@ -540,7 +565,7 @@ if ($conn->query($sql3) === FALSE) {
 $result3 = mysqli_query($conn, $sql3);
 $resultat3 = mysqli_fetch_assoc($result3);
 
-$sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$OneMonthAfterString','leasing', '$today')";
+$sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$todayString', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$inOneMonthString','leasing', '$todayString')";
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
