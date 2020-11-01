@@ -268,13 +268,11 @@ include 'include/head.php';
             }
 
             window.addEventListener( "pageshow", function ( event ) {
-                var reloadPage = event.persisted || 
-                                ( typeof window.performance != "undefined" && 
-                                    window.performance.navigation.type === 2 );
-                if ( reloadPage ) {
-                    // Handle page restore.
-                    window.location.reload();
-                }
+              $("#widget-bike-brand").val("*");
+              $("#widget-bike-utilisation").val("*");
+              $("#widget-contact-form-cadre").val("*");
+              $("#widget-bike-electric").val("*");
+              $("#widget-contact-form-prix").val("*");
             });
         </script>
         <?php include 'include/footer.php'; ?>

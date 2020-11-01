@@ -81,7 +81,7 @@ if(isset($_FILES['picture']) && !empty($_FILES['picture'])){
 }
 
 
-if($internalReference != NULL && $description != NULL && $VAT != NULL && $street != NULL && $zipCode != NULL && $city != NULL ){
+if($internalReference != NULL && $description){
     include 'connexion.php';
 
     if($type=="CLIENT" && $mailInitialisation != '' && $passwordTechnicalUser != ''){

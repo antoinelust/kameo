@@ -1,8 +1,11 @@
 <div class="tab-pane" id="fleetmanager"> <!-- TAB4: FLEET MANAGET -->
-	<h4 class="fr">Votre flotte</h4>
-	<br/><br/>
-	<div class="row">
+	<div class="row left">
         <?php
+
+				if(get_user_permissions("fleetManager", $token)){
+					echo '<h4 class="fr">Votre flotte</h4><br><br>';
+				}
+
         if(get_user_permissions("fleetManager", $token)){
             echo '
               <div class="col-md-4">
@@ -50,7 +53,22 @@
               <div class="seperator seperator-small visible-xs"><br/><br/></div>';
 					}
         }
-        if(get_user_permissions("fleetManager", $token)){
+				if(get_user_permissions("fleetManager", $token)){
+					if($user_data['LOCKING']=='Y'){
+						echo '<div class="col-md-4 " id="boxView">
+	            <div class="icon-box medium fancy">
+	              <div class="icon bold" data-animation="pulse infinite">
+	                <a data-toggle="modal" data-target="#boxesListing" href="#" class="boxViewClick">
+	                  <i class="fa fa-cube"></i>
+	                </a>
+	              </div>
+	              <div class="counter bold" id="counterBoxesFleet" style="color:#3cb395"></div>
+	              <p>Gérer les Bornes</p>
+	            </div>
+	          </div>';
+						}
+        }
+				if(get_user_permissions("fleetManager", $token)){
 					if($user_data['BOOKING']=='Y'){
             echo '
               <div class="col-md-4">
@@ -65,10 +83,13 @@
                 </div>
               </div>';
 						}
-        }?>
+        }
 
+				if(get_user_permissions("fleetManager", $token)){
+					echo '<div class="separator"></div>';
+				}
+				?>
 	</div>
-	<div class="separator"></div>
     <?php
     if(get_user_permissions("fleetManager", $token)){
         echo '
@@ -163,7 +184,7 @@
           <div class="col-md-4 " id="boxesManagement">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#boxesListing" href="#" class="boxManagerClick">
+                <a data-toggle="modal" data-target="#boxesListingAdmin" href="#" class="boxManagerClick">
                   <i class="fa fa-cube"></i>
                 </a>
               </div>
@@ -241,7 +262,7 @@
 		}
 
     if(get_user_permissions("bills", $token)){
-        echo '<h4 class="billsTitle ">Factures</h4>
+        echo '<h4 class="billsTitle ">Factures</h4><br><br>
         <div class="row">
           <div class="col-md-4 " id="billsManagement">
             <div class="icon-box medium fancy">

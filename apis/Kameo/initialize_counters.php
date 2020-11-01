@@ -5,32 +5,30 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+require_once __DIR__ .'/authentication.php';
+$token = getBearerToken();
+
 
 $email=isset($_POST['email']) ? htmlspecialchars($_POST['email']) : NULL;
 $type=$_POST['type'];
 
 $response=array();
 
-if($email){
-    include 'connexion.php';
-    $sql="SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result = mysqli_query($conn, $sql);
-    if($result->num_rows=='0'){
-        errorMessage("ES0039");
-    }
-    $resultat = mysqli_fetch_assoc($result);
-    $company=$resultat['COMPANY'];
-    $conn->close();
-    $response['company']=$company;
-    
+include 'connexion.php';
+$sql="SELECT COMPANY  FROM customer_referential WHERE TOKEN = '$token'";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
 }
-
-
+$result = mysqli_query($conn, $sql);
+if($result->num_rows=='0'){
+    errorMessage("ES0039");
+}
+$resultat = mysqli_fetch_assoc($result);
+$company=$resultat['COMPANY'];
+$conn->close();
+$response['company']=$company;
 
 
 if($type=="users"){
@@ -44,7 +42,7 @@ if($type=="users"){
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     $response['usersNumber']=$length;
     $conn->close();
@@ -68,11 +66,11 @@ if($type=="bikes"){
     $length=$result->num_rows;
     $response['bikeNumberClient']=$length;
     $response['response']="success";
-    
+
     $conn->close();
     echo json_encode($response);
     die;
-    
+
 }
 
 // number of bookings for the client, to be done for all companies with fleet manager access
@@ -102,7 +100,7 @@ $dateStartString=$dateStart->format('Y-m-d');
 $dateEndString=$dateEnd->format('Y-m-d');
 
 if($type=="bookings"){
-    
+
     include 'connexion.php';
     $sql="SELECT 1 FROM customer_bikes cc, reservations dd where cc.COMPANY='$company' AND cc.ID=dd.BIKE_ID and dd.STAANN!='D' and dd.DATE_START_2>'$dateStartString' and dd.DATE_END_2<='$dateEndString'";
     if ($conn->query($sql) === FALSE) {
@@ -113,7 +111,7 @@ if($type=="bookings"){
     $result = mysqli_query($conn, $sql);
     $response['bookingNumber']=$result->num_rows;
     $response['response']="success";
-    
+
     $conn->close();
     echo json_encode($response);
     die;
@@ -127,7 +125,6 @@ if($type=="ordersFleet"){
         echo json_encode($response);
         die;
     }
-
     $result = mysqli_query($conn, $sql);
     $length=$result->num_rows;
 
@@ -138,6 +135,26 @@ if($type=="ordersFleet"){
     echo json_encode($response);
     die;
 }
+
+if($type=="boxesFleet"){
+  if(get_user_permissions("fleetManager", $token)){
+    include 'connexion.php';
+    $sql="SELECT COUNT(1) AS 'SOMME' FROM boxes WHERE COMPANY='$company' and STAANN != 'D'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+    $response['boxesNumberTotal']=$resultat['SOMME'];
+    $response['response']="success";
+    $conn->close();
+    echo json_encode($response);
+    die;
+  }
+}
+
 
 if($type=="conditions"){
     include 'connexion.php';
@@ -165,7 +182,7 @@ if($type=="bills"){
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql); 
+    $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $response['billsNumber']=$resultat['SOMME'];
     $conn->close();
@@ -194,7 +211,7 @@ if($company=='KAMEO'){
         echo json_encode($response);
         die;
     }
-    
+
     if($type=="bikesAdmin"){
         include 'connexion.php';
         $sql = "select 1 from customer_bikes where STAANN != 'D' AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE = 'test' OR CONTRACT_TYPE='leasing' OR CONTRACT_TYPE='renting')";
@@ -214,7 +231,7 @@ if($company=='KAMEO'){
         echo json_encode($response);
         die;
     }
-    
+
     if($type=="portfolio"){
         include 'connexion.php';
         $sql = "select 1 from bike_catalog where STAANN != 'D'";
@@ -248,21 +265,21 @@ if($company=='KAMEO'){
 
     if($type=="customers"){
         include 'connexion.php';
-        $sql="SELECT * from companies WHERE TYPE='PROSPECT' OR TYPE='CLIENT' AND STAANN != 'D'";    
+        $sql="SELECT * from companies WHERE TYPE='PROSPECT' OR TYPE='CLIENT' AND STAANN != 'D'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $response['companiesNumberClientOrProspect'] = $result->num_rows;
         $response['response']="success";
         $conn->close();
         echo json_encode($response);
         die;
     }
-    
-    
+
+
     if($type=="chat"){
         //number of unread messages
 
@@ -274,14 +291,14 @@ if($company=='KAMEO'){
             echo json_encode($response);
             die;
         }
-        $response['response']="success";        
+        $response['response']="success";
         $response['messagesNumberUnread']=intval($result->fetch_array(MYSQLI_ASSOC)['TOTAL']);
         $conn->close();
         echo json_encode($response);
         die;
 
     }
-    
+
     if($type=="boxes"){
         include 'connexion.php';
         $sql="SELECT COUNT(1) AS 'SOMME' FROM boxes WHERE STAANN != 'D'";
@@ -290,7 +307,7 @@ if($company=='KAMEO'){
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql); 
+        $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
         $response['boxesNumberTotal']=$resultat['SOMME'];
         $response['response']="success";
@@ -298,30 +315,30 @@ if($company=='KAMEO'){
         echo json_encode($response);
         die;
     }
-    
+
     if($type=="cashFlow"){
 
         include 'connexion.php';
-        $sql="SELECT SUM(LEASING_PRICE) as 'SOMME' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";    
+        $sql="SELECT SUM(LEASING_PRICE) as 'SOMME' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
         $response['sumContractsCurrent'] = $resultat['SOMME'];
         $conn->close();
 
 
         include 'connexion.php';
-        $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";    
+        $sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
         $response['sumContractsCurrent'] += $resultat['PRICE'];
         $conn->close();
@@ -336,31 +353,31 @@ if($company=='KAMEO'){
         }
         $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
-        $response['sumContractsCurrent']-=$resultat['PRICE'];  
+        $response['sumContractsCurrent']-=$resultat['PRICE'];
         $response['response']="success";
         $conn->close();
         echo json_encode($response);
         die;
-        
+
     }
 
     if($type=="tasks"){
-        
+
         include 'connexion.php';
-        $sql="SELECT 1 from company_actions WHERE OWNER = '$email' AND STATUS = 'TO DO'";    
+        $sql="SELECT 1 from company_actions WHERE OWNER = '$email' AND STATUS = 'TO DO'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $length=$result->num_rows;
         $response['actionNumberNotDone'] = $length;
         $response['response']="success";
         $conn->close();
         echo json_encode($response);
         die;
-        
+
     }
 
 
@@ -371,15 +388,15 @@ if($company=='KAMEO'){
         echo json_encode($response);
         die;
     }
-    $result = mysqli_query($conn, $sql); 
+    $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $response['billsNumber']=$resultat['SOMME'];
     $conn->close();
 
 
     if($type=="feedback"){
-        
-    
+
+
         include 'connexion.php';
 
 
@@ -419,7 +436,7 @@ if($company=='KAMEO'){
         $result = mysqli_query($conn, $sql);
         $row =  mysqli_fetch_array($result);
         $conn->close();
-    
+
         $response['response'] = 'success';
         $response['maintenancesNumberGlobal']=$row['confirmed'];
         $response['maintenancesNumberAuto']=$row['auto_plan'];

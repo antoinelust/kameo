@@ -17,14 +17,14 @@ $(".fleetmanager").click(function () {
       }
     },
   });
-  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes('*')}, false);
+  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes_admin()}, false);
 });
 
-function list_boxes(company) {
+function list_boxes_admin(company) {
   $.ajax({
-    url: "apis/Kameo/box_management.php",
+    url: "apis/Kameo/boxes/box_management.php",
     type: "get",
-    data: { action: "list", company: company },
+    data: { action: "list"},
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);
@@ -37,7 +37,7 @@ function list_boxes(company) {
           '" data-target="#boxManagement" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter une borne</span></a>';
         if (response.boxesNumber > 0) {
           var temp =
-            '<table id="boxesListingTable" class="table"><thead><tr><th>ID</th><th scope="col"><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Reference</span><span class="nl-inline">Reference</span></th><th scope="col"><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th scope="col"><span class="fr-inline">Facturation</span><span class="en-inline">Automatic billing ?</span><span class="nl-inline">Automatic billing ?</span></th><th scope="col"><span class="fr-inline">Montant leasing</span><span class="en-inline">Leasing Price</span><span class="nl-inline">Leasing Price</span></th><th>Début de contrat</th><th>Fin de contrat</th><th></th></tr></thead><tbody>';
+            '<table id="boxesListingAdminTable" class="table"><thead><tr><th>ID</th><th scope="col"><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Reference</span><span class="nl-inline">Reference</span></th><th scope="col"><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th scope="col"><span class="fr-inline">Facturation</span><span class="en-inline">Automatic billing ?</span><span class="nl-inline">Automatic billing ?</span></th><th scope="col"><span class="fr-inline">Montant leasing</span><span class="en-inline">Leasing Price</span><span class="nl-inline">Leasing Price</span></th><th>Début de contrat</th><th>Fin de contrat</th><th></th></tr></thead><tbody>';
           dest = dest.concat(temp);
 
           while (i < response.boxesNumber) {
@@ -127,7 +127,7 @@ function list_boxes(company) {
             }
 
             temp =
-              '<tr><td><a href="#" class="text-green retrieveBox" data-target="#boxManagement" name="' +
+              '<tr><td><a href="#" class="text-green retrieveBoxAdmin" data-target="#boxManagementAdmin" name="' +
               response.box[i].id +
               '" data-toggle="modal">' +
               response.box[i].id +
@@ -145,7 +145,7 @@ function list_boxes(company) {
               start +
               "</td><td>" +
               end +
-              '</td><td><a href="#" class="text-green updateBox" data-target="#boxManagement" name="' +
+              '</td><td><a href="#" class="text-green updateBox" data-target="#boxManagementAdmin" name="' +
               response.box[i].id +
               '" data-toggle="modal">Mettre à jour </a></th></tr>';
             dest = dest.concat(temp);
@@ -155,18 +155,10 @@ function list_boxes(company) {
           var temp = "</tbody></table>";
           dest = dest.concat(temp);
         }
-        if (company == "*") {
-          document.getElementById("counterBoxes").innerHTML =
-            '<span data-speed="1" data-refresh-interval="4" data-to="' +
-            response.boxesNumberTotal +
-            '" data-from="0" data-seperator="true">' +
-            response.boxesNumberTotal +
-            "</span>";
-        }
 
-        $("#boxesListingSpan").html(dest);
+        $("#boxesListingAdminSpan").html(dest);
 
-        $("#boxesListingTable").DataTable({
+        $("#boxesListingAdminTable").DataTable({
           searching: false,
           paging: false,
           info: false,
@@ -180,8 +172,8 @@ function list_boxes(company) {
         $(".updateBox").click(function () {
           update_box(this.name);
         });
-        $(".retrieveBox").click(function () {
-          retrieve_box(this.name);
+        $(".retrieveBoxAdmin").click(function () {
+          retrieve_box_admin(this.name);
         });
       }
     },
@@ -189,44 +181,44 @@ function list_boxes(company) {
 }
 
 function add_box(company) {
-  document.getElementById("widget-boxManagement-form").reset();
-  $("#widget-boxManagement-form input").attr("readonly", false);
-  $("#widget-boxManagement-form textarea").attr("readonly", false);
-  $("#widget-boxManagement-form select").attr("readonly", false);
+  document.getElementById("widget_boxManagementAdmin-form").reset();
+  $("#widget_boxManagementAdmin-form input").attr("readonly", false);
+  $("#widget_boxManagementAdmin-form textarea").attr("readonly", false);
+  $("#widget_boxManagementAdmin-form select").attr("readonly", false);
 
-  $("#widget-boxManagement-form input[name=action]").val("add");
-  $("#widget-boxManagement-form-title").text("Ajouter une borne");
+  $("#widget_boxManagementAdmin-form input[name=action]").val("add");
+  $("#widget_boxManagementAdmin-form-title").text("Ajouter une borne");
 
-  $("#widget-boxManagement-form-send").text("Ajouter");
-  $("#widget-boxManagement-form-send").removeClass("hidden");
-  $("#widget-boxManagement-form select[name=company]").val(company);
+  $("#widget_boxManagementAdmin-form-send").text("Ajouter");
+  $("#widget_boxManagementAdmin-form-send").removeClass("hidden");
+  $("#widget_boxManagementAdmin-form select[name=company]").val(company);
 }
 
 function update_box(id) {
-  retrieve_box(id);
-  $("#widget-boxManagement-form-send").removeClass("hidden");
+  retrieve_box_admin(id);
+  $("#widget_boxManagementAdmin-form-send").removeClass("hidden");
 
-  $("#widget-boxManagement-form input").attr("readonly", false);
-  $("#widget-boxManagement-form textarea").attr("readonly", false);
-  $("#widget-boxManagement-form select").attr("readonly", false);
-  $("#widget-boxManagement-form input[name=action]").val("update");
+  $("#widget_boxManagementAdmin-form input").attr("readonly", false);
+  $("#widget_boxManagementAdmin-form textarea").attr("readonly", false);
+  $("#widget_boxManagementAdmin-form select").attr("readonly", false);
+  $("#widget_boxManagementAdmin-form input[name=action]").val("update");
 
-  $("#widget-boxManagement-form input[name=action]").val("update");
-  $("#widget-boxManagement-form-title").text("Modifier une borne");
-  $("#widget-boxManagement-form-send").text("Modifier");
+  $("#widget_boxManagementAdmin-form input[name=action]").val("update");
+  $("#widget_boxManagementAdmin-form-title").text("Modifier une borne");
+  $("#widget_boxManagementAdmin-form-send").text("Modifier");
 }
 
-function retrieve_box(id) {
-  $("#widget-boxManagement-form-title").text("Informations de la borne");
-  $("#widget-boxManagement-form-send").addClass("hidden");
-  $("#widget-boxManagement-form input").attr("readonly", true);
-  $("#widget-boxManagement-form textarea").attr("readonly", true);
-  $("#widget-boxManagement-form select").attr("readonly", true);
-  $("#widget-boxManagement-form div[name=key]").remove();
-  $("#widget-boxManagement-form div[name=bike]").remove();
+function retrieve_box_admin(id) {
+  $("#widget_boxManagementAdmin-form-title").text("Informations de la borne");
+  $("#widget_boxManagementAdmin-form-send").addClass("hidden");
+  $("#widget_boxManagementAdmin-form input").attr("readonly", true);
+  $("#widget_boxManagementAdmin-form textarea").attr("readonly", true);
+  $("#widget_boxManagementAdmin-form select").attr("readonly", true);
+  $("#widget_boxManagementAdmin-form div[name=key]").remove();
+  $("#widget_boxManagementAdmin-form div[name=bike]").remove();
 
   $.ajax({
-    url: "apis/Kameo/box_management.php",
+    url: "apis/Kameo/boxes/box_management.php",
     type: "get",
     data: { action: "retrieve", id: id },
     success: function (response) {
@@ -234,42 +226,42 @@ function retrieve_box(id) {
         console.log(response.message);
       }
       if (response.response == "success") {
-        $("#widget-boxManagement-form input[name=id]").val(response.id);
-        $("#widget-boxManagement-form input[name=reference]").val(
+        $("#widget_boxManagementAdmin-form input[name=id]").val(response.id);
+        $("#widget_boxManagementAdmin-form input[name=reference]").val(
           response.reference
         );
-        $("#widget-boxManagement-form select[name=boxModel]").val(
+        $("#widget_boxManagementAdmin-form select[name=boxModel]").val(
           response.model
         );
-        $("#widget-boxManagement-form select[name=company]").val(
+        $("#widget_boxManagementAdmin-form select[name=company]").val(
           response.company
         );
-        $("#widget-boxManagement-form input[name=amount]").val(response.amount);
-        $("#widget-boxManagement-form input[name=billingGroup]").val(
+        $("#widget_boxManagementAdmin-form input[name=amount]").val(response.amount);
+        $("#widget_boxManagementAdmin-form input[name=billingGroup]").val(
           response.billing_group
         );
         if (response.start) {
-          $("#widget-boxManagement-form input[name=contractStart]").val(
+          $("#widget_boxManagementAdmin-form input[name=contractStart]").val(
             response.start.substr(0, 10)
           );
         } else {
-          $("#widget-boxManagement-form input[name=contractStart]").val("");
+          $("#widget_boxManagementAdmin-form input[name=contractStart]").val("");
         }
         if (response.end) {
-          $("#widget-boxManagement-form input[name=contractEnd]").val(
+          $("#widget_boxManagementAdmin-form input[name=contractEnd]").val(
             response.end.substr(0, 10)
           );
         } else {
-          $("#widget-boxManagement-form input[name=contractEnd]").val("");
+          $("#widget_boxManagementAdmin-form input[name=contractEnd]").val("");
         }
 
         if (response.automatic_billing == "Y") {
-          $("#widget-boxManagement-form input[name=billing]").prop(
+          $("#widget_boxManagementAdmin-form input[name=billing]").prop(
             "checked",
             true
           );
         } else {
-          $("#widget-boxManagement-form input[name=billing]").prop(
+          $("#widget_boxManagementAdmin-form input[name=billing]").prop(
             "checked",
             false
           );
@@ -303,12 +295,12 @@ function retrieve_box(id) {
             classe = "col-md-"+md;
           }
           if (typeof response.keys_in[place] !=='undefined' && response.keys_in[place].place == i+1) {
-            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;" draggable="true" ondragstart="drag(event)" id="'+ response.keys_in[place].id + '_' + id +'">\
+            $("#widget_boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;" draggable="true" ondragstart="drag(event)" id="'+ response.keys_in[place].id + '_' + id +'">\
             <p><center><B>'+ response.keys_in[place].place +'</B></br><img draggable="false" src="images/key_in.png">\
             </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].model +'</B></p></center></p></div>');
             place++;
           }else{
-            $("#widget-boxManagement-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
+            $("#widget_boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
             <p><center><B>'+ (i + 1) +'</B></br><img draggable="false" src="images/key_out2.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
           }
           row++;
@@ -317,7 +309,7 @@ function retrieve_box(id) {
         // Vélos en déplacement
         if(response.keys_out){
           response.keys_out.forEach(key => {
-            $("#widget-boxManagement-form div[name=in]").before('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
+            $("#widget_boxManagementAdmin-form div[name=in]").before('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
             <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
             <p><center><B>'+ key.model + '</B><br>' + key.email + '</center></p></div>');
           });
@@ -346,7 +338,7 @@ function drop(ev, target) {
   }
 
   $.ajax({
-    url: "apis/Kameo/box_management.php",
+    url: "apis/Kameo/boxes/box_management.php",
     type: "post",
     data: { action: "switch", id: id, place: place},
     success: function (response) {
@@ -369,9 +361,9 @@ function drop(ev, target) {
             type: "success",
           }
         );
-        retrieve_box(box_id);
+        retrieve_box_admin(box_id);
         document
-          .getElementById("widget-boxManagement-form")
+          .getElementById("widget_boxManagementAdmin-form")
           .reset();
       }
     },

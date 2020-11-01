@@ -4,7 +4,7 @@ header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
 session_start();
-include 'globalfunctions.php';
+include '../globalfunctions.php';
 
 
 if(isset($_POST['action']))
@@ -48,7 +48,7 @@ if(isset($_POST['action']))
 
 
     if($action=="add"){
-        include 'connexion.php';
+        include '../connexion.php';
 
 
 
@@ -66,7 +66,7 @@ if(isset($_POST['action']))
 
     }else if($_POST["action"]=="update"){
 
-        include 'connexion.php';
+        include '../connexion.php';
         $sql="UPDATE boxes SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', REFERENCE='$reference', MODEL='$boxModel', COMPANY='$company', START=$contractStart, END=$contractEnd, AMOUNT=$amount, BILLING_GROUP='$billingGroup', AUTOMATIC_BILLING='$automaticBilling' WHERE ID='$id'";
 
         if ($conn->query($sql) === FALSE) {
@@ -80,11 +80,11 @@ if(isset($_POST['action']))
         successMessage("SM0022");
 
     }else if($_POST["action"]=="switch"){
-        include 'connexion.php';
+        include '../connexion.php';
         $place = $_POST["place"];
 
         $sql="UPDATE locking_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, PLACE_IN_BUILDING='$place' WHERE BIKE_ID='$id'";
-        
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -102,12 +102,10 @@ if(isset($_POST['action']))
 }else if(isset($_GET['action'])){
     $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
     $id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-    $company = isset($_GET["company"]) ? $_GET["company"] : NULL;
-
 
     if($action=="retrieve"){
         if($id){
-            include 'connexion.php';
+            include '../connexion.php';
             $sql="SELECT * FROM boxes WHERE ID='$id'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -178,13 +176,8 @@ if(isset($_POST['action']))
 
 
     }else if($action=="list"){
-        include 'connexion.php';
-        if($company=="*"){
-            $sql="SELECT * FROM boxes WHERE 1";
-        }else{
-            $sql="SELECT * FROM boxes WHERE STAANN != 'D' AND COMPANY='$company'";
-        }
-        $sql=$sql." ORDER BY COMPANY";
+        include '../connexion.php';
+        $sql="SELECT * FROM boxes ORDER BY COMPANY";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -192,14 +185,11 @@ if(isset($_POST['action']))
             die;
         }
         $result = mysqli_query($conn, $sql);
-        $conn->close();
         $response['response']="success";
         $response['boxesNumber'] = $result->num_rows;
         $i=0;
-
         while($row = mysqli_fetch_array($result))
         {
-
             $response['box'][$i]['id']=$row['ID'];
             $response['box'][$i]['model']=$row['MODEL'];
             $response['box'][$i]['reference']=$row['REFERENCE'];
@@ -211,15 +201,7 @@ if(isset($_POST['action']))
             $response['box'][$i]['billing_group']=$row['BILLING_GROUP'];
             $i++;
         }
-
-        if($company=="*"){
-            include 'connexion.php';
-            $sql="SELECT COUNT(1) AS 'SOMME' FROM boxes WHERE STAANN != 'D'";
-            $result = mysqli_query($conn, $sql);
-            $resultat = mysqli_fetch_assoc($result);
-            $response['boxesNumberTotal']=$resultat['SOMME'];
-            $conn->close();
-        }
+        $conn->close();
         echo json_encode($response);
         die;
     }else{

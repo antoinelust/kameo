@@ -52,7 +52,7 @@ $row = mysqli_fetch_assoc($result);
                                                     <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z"/>
                                                     <path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z"/>
                                                 </svg>
-                                                <h2 class="text-green"><?php 
+                                                <h2 class="text-green"><?php
                                                                             echo $row['MOTOR'];
                                                                             if($row['MOTOR']=='')
                                                                             {
@@ -69,7 +69,7 @@ $row = mysqli_fetch_assoc($result);
                                                     <path fill-rule="evenodd" d="M12 5H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zM2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2z"/>
                                                     <path d="M2 6h10v4H2V6zm12.5 3.5a1.5 1.5 0 0 0 0-3v3z"/>
                                                 </svg>
-                                                <h2 class="text-green"><?php 
+                                                <h2 class="text-green"><?php
                                                                             echo $row['BATTERY'];
                                                                             if($row['BATTERY']=='')
                                                                             {
@@ -86,7 +86,7 @@ $row = mysqli_fetch_assoc($result);
                                                     <path fill-rule="evenodd" d="M8.932.727c-.243-.97-1.62-.97-1.864 0l-.071.286a.96.96 0 0 1-1.622.434l-.205-.211c-.695-.719-1.888-.03-1.613.931l.08.284a.96.96 0 0 1-1.186 1.187l-.284-.081c-.96-.275-1.65.918-.931 1.613l.211.205a.96.96 0 0 1-.434 1.622l-.286.071c-.97.243-.97 1.62 0 1.864l.286.071a.96.96 0 0 1 .434 1.622l-.211.205c-.719.695-.03 1.888.931 1.613l.284-.08a.96.96 0 0 1 1.187 1.187l-.081.283c-.275.96.918 1.65 1.613.931l.205-.211a.96.96 0 0 1 1.622.434l.071.286c.243.97 1.62.97 1.864 0l.071-.286a.96.96 0 0 1 1.622-.434l.205.211c.695.719 1.888.03 1.613-.931l-.08-.284a.96.96 0 0 1 1.187-1.187l.283.081c.96.275 1.65-.918.931-1.613l-.211-.205a.96.96 0 0 1 .434-1.622l.286-.071c.97-.243.97-1.62 0-1.864l-.286-.071a.96.96 0 0 1-.434-1.622l.211-.205c.719-.695.03-1.888-.931-1.613l-.284.08a.96.96 0 0 1-1.187-1.186l.081-.284c.275-.96-.918-1.65-1.613-.931l-.205.211a.96.96 0 0 1-1.622-.434L8.932.727zM8 12.997a4.998 4.998 0 1 0 0-9.995 4.998 4.998 0 0 0 0 9.996z"/>
                                                     <path fill-rule="evenodd" d="M7.375 8L4.602 4.302l.8-.6L8.25 7.5h4.748v1H8.25L5.4 12.298l-.8-.6L7.376 8z"/>
                                                 </svg>
-                                                <h2 class="text-green"><?php 
+                                                <h2 class="text-green"><?php
                                                                             echo $row['TRANSMISSION'];
                                                                             if($row['TRANSMISSION']=='')
                                                                             {
@@ -191,7 +191,7 @@ $row = mysqli_fetch_assoc($result);
 
                             <!-- END: Pricing Table Colored -->
 
-                            
+
 
                             <!-- ---------- -->
 
@@ -234,7 +234,7 @@ $row = mysqli_fetch_assoc($result);
 
                                 <input type="text" class="hidden" id="widget-offer-brand" name="widget-offer-brand" value="<?php echo $brand; ?>" />
                                 <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-model" value="<?php echo $model; ?>" />
-                                <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-frame-type" value="<?php echo $frameType; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-frame-type" name="widget-offer-frame-type" value="<?php echo $frameType; ?>" />
                                 <input type="text" class="hidden" id="widget-offer-antispam" name="widget-offer-antispam" value="" />
                                 <button class="button green button-3d rounded effect" type="submit" id="form-submit"><?= L::offre_askoffer_btn; ?></button>
                             </form>
@@ -245,7 +245,7 @@ $row = mysqli_fetch_assoc($result);
                                             success: function(text) {
                                                 if (text.response == 'success') {
                                                     $.notify({
-                                                        message: "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible."
+                                                        message: text.message
                                                     }, {
                                                         type: 'success'
                                                     });
@@ -253,7 +253,8 @@ $row = mysqli_fetch_assoc($result);
 
                                                     gtag('event', 'send', {
                                                         'event_category': 'mail',
-                                                        'event_label': 'offre.php'
+                                                        'event_label': 'offre.php',
+                                                        'config': 'UA-108429655-1'
                                                     });
 
                                                 } else {
@@ -267,6 +268,7 @@ $row = mysqli_fetch_assoc($result);
                                         });
                                     }
                                 });
+
                             </script>
 
                         </div>
