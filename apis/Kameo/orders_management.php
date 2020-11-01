@@ -19,30 +19,70 @@ if(isset($_POST['action'])){
 
 
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
+    $email=isset($_POST['email']) ? $_POST['email'] : NULL;
+    $mail=isset($_POST['mail']) ? $_POST['mail'] : NULL;
+    $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
+    $status=isset($_POST['status']) ? $_POST['status'] : NULL;
+    $portfolioID=isset($_POST['portfolioID']) ? $_POST['portfolioID'] : NULL;
+    $size=isset($_POST['size']) ? $_POST['size'] : NULL;
+    $testBoolean=isset($_POST['testBoolean']) ? "Y" : "N";
+    $testDate=isset($_POST['testDate']) ? $_POST['testDate'] : NULL;
+    $testStatus=isset($_POST['testStatus']) ? $_POST['testStatus'] : NULL;
+    $testAddress=isset($_POST['testAddress']) ? addslashes($_POST['testAddress']) : NULL;
+    $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;
+    $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
+    $deliveryAddress=isset($_POST['deliveryAddress']) ? addslashes($_POST['deliveryAddress']) : NULL;
+    $leasingPrice=isset($_POST['leasingPrice']) ? $_POST['leasingPrice'] : NULL;
+
+    /*if($deliveryAddress!=NULL){
+        $deliveryAddress="'".$deliveryAddress."'";
+    }else{
+        $deliveryAddress='NULL';
+    }*/
+
     if($action=='add'){
+        include 'connexion.php';
+        /*if($testBoolean=="Y"){
+            include 'connexion.php';
+
+            if($testDate!=NULL){
+                $testDate="'".$testDate."'";
+            }else{
+                $testDate='NULL';
+            }
+            if($testAddress!=NULL){
+                $testAddress="'".$testAddress."'";
+            }else{
+                $testAddress='NULL';
+            }
+            if($testResult!=NULL){
+                $testResult="'".$testResult."'";
+            }else{
+                $testResult='NULL';
+            }
+            if($deliveryAddress!=NULL){
+                $deliveryAddress="'".$deliveryAddress."'";
+            }else{
+                $deliveryAddress='NULL';
+            }
+        }*/
+
+        $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE) 
+        VALUES(CURRENT_TIMESTAMP, '$email', '$mail','$portfolioID', '$size', '$status', '$testBoolean', '$testDate', '$testAddress', '$testStatus', '$testResult', '$deliveryDate', '$deliveryAddress', '$leasingPrice')";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $conn->close();
+        
+        successMessage("SM0003");
     }else if($action=='update'){
-
-        $email=isset($_POST['email']) ? $_POST['email'] : NULL;
-        $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
-        $status=isset($_POST['status']) ? $_POST['status'] : NULL;
-        $portfolioID=isset($_POST['portfolioID']) ? $_POST['portfolioID'] : NULL;
-        $size=isset($_POST['size']) ? $_POST['size'] : NULL;
-        $testBoolean=isset($_POST['testBoolean']) ? "Y" : "N";
-        $testDate=isset($_POST['testDate']) ? $_POST['testDate'] : NULL;
-        $testStatus=isset($_POST['testStatus']) ? $_POST['testStatus'] : NULL;
-        $testAddress=isset($_POST['testAddress']) ? addslashes($_POST['testAddress']) : NULL;
-        $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;
-        $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
-        $deliveryAddress=isset($_POST['deliveryAddress']) ? addslashes($_POST['deliveryAddress']) : NULL;
-        $leasingPrice=isset($_POST['leasingPrice']) ? $_POST['leasingPrice'] : NULL;
-
-
         if($deliveryAddress!=NULL){
             $deliveryAddress="'".$deliveryAddress."'";
         }else{
             $deliveryAddress='NULL';
         }
-
 
         include 'connexion.php';
         $sql= "UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STATUS='$status', PORTFOLIO_ID='$portfolioID', SIZE='$size', DELIVERY_ADDRESS=$deliveryAddress, LEASING_PRICE='$leasingPrice' WHERE ID='$ID'";
