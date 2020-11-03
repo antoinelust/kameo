@@ -103,6 +103,12 @@ function initializeFields() {
             '">' +
             response.company[i].companyName +  "<br>"
             );
+          $("#widget-order-form select[name=company]").append(
+            '<option value= "' +
+            response.company[i].ID +  
+            '">' + 
+            response.company[i].companyName +  "<br>"
+            );
         }
       } else {
         console.log(response.response + ": " + response.message);

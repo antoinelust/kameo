@@ -210,6 +210,7 @@ if (isset($_GET['ID']) || isset($_GET['email'])){
       $response['user'][$i]['name']=$row['NOM'];
       $response['user'][$i]['firstName']=$row['PRENOM'];
       $response['user'][$i]['email']=$row['EMAIL'];
+      $response['user'][$i]['phone']=$row['PHONE'];
       $i++;
 
   }

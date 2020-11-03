@@ -28,11 +28,11 @@
               role="form"
               method="post"
             >
-              <h4 class="text-green">Gestion de la commande client</h4>
+              <h4 class="text-green orderManagementTitle">Gestion de la commande client</h4>
               <div class="form-group col-sm-12">
                 <div class="col-sm-12">
                   <h4 class="text-green">Informations techniques</h4>
-                  <div class="col-sm-4">
+                  <div class="col-sm-4" name="ID">
                     <label for="portfolio">ID commande</label>
                     <input
                       type="text"
@@ -110,31 +110,42 @@
                 </div>
               </div>
               <div class="form-group col-sm-12">
-								<h4 class="text-green">Informations sur l'employé</h4>
-								<div class="col-md-4">
-									<label for="firstname" class="fr">Prénom</label>
-									<label for="firstname" class="en">Firstname</label>
-									<label for="firstname" class="nl">Voornaam</label>
-									<input type="text" name="firstName" class="form-control">
-								</div>
-								<div class="col-md-4">
-									<label for="name" class="fr">Nom</label>
-									<label for="name" class="en">Name</label>
-									<label for="name" class="nl">Achternaam</label>
-									<input type="text" name="name" class="form-control">
-								</div>
-								<div class="col-md-4">
-									<label for="mail" class="fr">E-mail</label>
-									<label for="mail" class="en">E-mail</label>
-									<label for="mail" class="nl">E-mail</label>
-									<input type="text" name="mail" class="form-control mail">
-								</div>
-								<div class="col-md-4">
-									<label for="phone" class="fr">Numéro de téléphone</label>
-									<label for="phone" class="en">Phone number</label>
-									<label for="phone" class="nl">Phone number</label>
-									<input type="text" name="phone" class="form-control phone">
-								</div>
+                <h4 class="text-green">Informations sur l'employé</h4>
+                <div class="col-sm-12">
+                  <div class="col-sm-4" name="company">
+                    <label for="company">Compagnies</label>
+                    <select name="company" class="form-control">
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="name" class="fr">Nom</label>
+                    <label for="name" class="en">Name</label>
+                    <label for="name" class="nl">Achternaam</label>
+                    <input type="text" name="name" class="form-control">
+                    <select name="name" class="form-control">
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="firstname" class="fr">Prénom</label>
+                    <label for="firstname" class="en">Firstname</label>
+                    <label for="firstname" class="nl">Voornaam</label>
+                    <input type="text" name="firstName" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="col-md-4">
+                    <label for="mail" class="fr">E-mail</label>
+                    <label for="mail" class="en">E-mail</label>
+                    <label for="mail" class="nl">E-mail</label>
+                    <input type="text" name="mail" class="form-control mail">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="phone" class="fr">Numéro de téléphone</label>
+                    <label for="phone" class="en">Phone number</label>
+                    <label for="phone" class="nl">Phone number</label>
+                    <input type="text" name="phone" class="form-control phone">
+                  </div>
+                </div>
 							</div>
               <div class="form-group col-sm-12">
                 <h4 class="text-green">Détails du test</h4>
@@ -145,6 +156,7 @@
                       type="checkbox"
                       name="testBoolean"
                       class="form-control"
+                      checked
                     />
                   </div>
                   <div class="col-sm-4 testDate">
@@ -219,7 +231,7 @@
                       class="button small green button-3d rounded icon-left"
                       type="submit"
                     >
-                      <i class="fa fa-paper-plane"></i>Mettre à jour
+                      <i class="fa fa-paper-plane"></i>Envoyer
                     </button>
                   </div>
                 </div>
