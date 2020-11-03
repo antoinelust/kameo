@@ -14,7 +14,6 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/include/lang_management.php'; //french 
 
 $token = getBearerToken();
 
-
 if(isset($_POST['action'])){
 
 
@@ -40,47 +39,10 @@ if(isset($_POST['action'])){
     $buyingPrice=isset($_POST['aBuyingPrice']) ? $_POST['aBuyingPrice'] : NULL;
     $sellingPrice=isset($_POST['aPriceHTVA']) ? $_POST['aPriceHTVA'] : NULL;
 
-    $response = array ('response'=>'error', 'message'=> $categoryAccessory);
-    echo json_encode($response);
-    die;
-
-    /*$accessoryID=isset($_POST['accessoryID']) ? $_POST['accessoryID'] : NULL;
-    $descriptionAccessory=isset($_POST['description']) ? $_POST['description'] : NULL;*/
-
-    /*if($deliveryAddress!=NULL){
-        $deliveryAddress="'".$deliveryAddress."'";
-    }else{
-        $deliveryAddress='NULL';
-    }*/
-
+    
     if($action=='add'){
         include 'connexion.php';
-        /*if($testBoolean=="Y"){
-            include 'connexion.php';
-
-            if($testDate!=NULL){
-                $testDate="'".$testDate."'";
-            }else{
-                $testDate='NULL';
-            }
-            if($testAddress!=NULL){
-                $testAddress="'".$testAddress."'";
-            }else{
-                $testAddress='NULL';
-            }
-            if($testResult!=NULL){
-                $testResult="'".$testResult."'";
-            }else{
-                $testResult='NULL';
-            }
-            if($deliveryAddress!=NULL){
-                $deliveryAddress="'".$deliveryAddress."'";
-            }else{
-                $deliveryAddress='NULL';
-            }
-        }*/
-
-        $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE) 
+        $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE)
         VALUES(CURRENT_TIMESTAMP, '$email', '$mail','$portfolioID', '$size', '$status', '$testBoolean', '$testDate', '$testAddress', '$testStatus', '$testResult', '$deliveryDate', '$deliveryAddress', '$leasingPrice')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -156,7 +118,7 @@ if(isset($_POST['action'])){
         if($addAccessory!='' && $typeAccessory != '' && $categoryAccessory != '' && $buyingPrice != '' && $sellingPrice != '')
         {
             include 'connexion.php';
-                
+
                 $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES('$typeAccessory', '$categoryAccessory', '$buyingPrice', '$sellingPrice', 'test','$ID')";
                 if ($conn->query($sql2) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -168,7 +130,7 @@ if(isset($_POST['action'])){
         /*else if(isset($deleteAccessory))
         {
             include 'connexion.php';
-                
+
                 $sql2 = "DELETE FROM order_accessories WHERE ORDER_ID='$ID')";
                 if ($conn->query($sql2) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -177,12 +139,12 @@ if(isset($_POST['action'])){
                 }
             $conn->close();
         }*/
-        
+
 
             /*if($brandAccessory != '' && $categoryAccessory != '' && $buyingPrice != '' && $sellingPrice != '' && $descriptionAccessory != '')
-            {   
+            {
                 include 'connexion.php';
-                
+
                 $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES('$brandAccessory', '$categoryAccessory', '$buyingPrice', '$sellingPrice', '$descriptionAccessory','$ID') ON DUPLICATE KEY UPDATE BRAND='$brandAccessory', CATEGORY='$categoryAccessory', BUYING_PRICE='$buyingPrice', PRICE_HTVA='$sellingPrice', DESCRIPTION='$descriptionAccessory', ORDER_ID='$ID'";
                 if ($conn->query($sql2) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -414,7 +376,7 @@ if(isset($_POST['action'])){
         $response['order']['aCategory']=$resultat['CATEGORY'];
         $response['order']['aBuyingPrice']=$resultat['BUYING_PRICE'];
         $response['order']['aPriceHTVA']=$resultat['PRICE_HTVA'];
-        
+
 
         echo json_encode($response);
         die;
