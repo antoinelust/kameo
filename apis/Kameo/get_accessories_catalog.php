@@ -8,29 +8,30 @@ include 'globalfunctions.php';
 
 $response=array();
 
-    include 'connexion.php';
-    $sql="SELECT accessories_catalog.id AS ACCESSORIES_ID,
-                 accessories_catalog.BRAND,
-                 accessories_catalog.BUYING_PRICE,
-                 accessories_catalog.PRICE_HTVA,
-                 accessories_catalog.STOCK,
-                 accessories_catalog.DISPLAY,
-                 accessories_catalog.DESCRIPTION,
-                 accessories_catalog.ACCESSORIES_CATEGORIES,
-                 accessories_categories.ID AS CATEGORIES_ID,
-                 accessories_categories.CATEGORY
-          FROM accessories_catalog
-          INNER JOIN accessories_categories ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID
-          ORDER BY ACCESSORIES_CATEGORIES ASC, BRAND ASC";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result = mysqli_query($conn, $sql);
-    if($result->num_rows=='0'){
-        errorMessage("ES0039");
-    }
+include 'connexion.php';
+$sql="SELECT accessories_catalog.id AS ACCESSORIES_ID,
+             accessories_catalog.BRAND,
+             accessories_catalog.MODEL,
+             accessories_catalog.BUYING_PRICE,
+             accessories_catalog.PRICE_HTVA,
+             accessories_catalog.STOCK,
+             accessories_catalog.DISPLAY,
+             accessories_catalog.DESCRIPTION,
+             accessories_catalog.ACCESSORIES_CATEGORIES,
+             accessories_categories.ID AS CATEGORIES_ID,
+             accessories_categories.CATEGORY
+      FROM accessories_catalog
+      INNER JOIN accessories_categories ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID
+      ORDER BY ACCESSORIES_CATEGORIES ASC, BRAND ASC";
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$result = mysqli_query($conn, $sql);
+if($result->num_rows=='0'){
+    errorMessage("ES0039");
+}
 
 
 
@@ -41,9 +42,9 @@ $i=0;
 while($row = mysqli_fetch_array($result))
 
 {
-
     $response['accessories'][$i]['id']=$row['ACCESSORIES_ID'];
     $response['accessories'][$i]['brand']=$row['BRAND'];
+    $response['accessories'][$i]['model']=$row['MODEL'];    
     $response['accessories'][$i]['buyingPrice']=$row['BUYING_PRICE'];
     $response['accessories'][$i]['priceHTVA']=$row['PRICE_HTVA'];
     $response['accessories'][$i]['stock']=$row['STOCK'];
@@ -52,10 +53,7 @@ while($row = mysqli_fetch_array($result))
     $response['accessories'][$i]['accessoriesCategories']=$row['ACCESSORIES_CATEGORIES'];
     $response['accessories'][$i]['categoryId']=$row['CATEGORIES_ID'];
     $response['accessories'][$i]['category']=$row['CATEGORY'];
-
-
     $i++;
-
 }
 
 

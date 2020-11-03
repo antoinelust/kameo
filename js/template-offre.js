@@ -609,7 +609,7 @@ get_all_accessories().done(function(response){
       //ne garde que les accessoires de cette catégorie
       accessories.forEach((accessory) => {
         if (categoryId == accessory.categoryId) {
-          accessoriesOption += '<option value="'+accessory.id+'">'+accessory.name+'</option>';
+          accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
         }
       });
       //place les accessoires dans le select
