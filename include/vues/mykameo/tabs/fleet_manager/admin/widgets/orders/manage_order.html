@@ -226,16 +226,118 @@
                     class="form-control hidden"
                     value="<?php echo $user_data['EMAIL']; ?>"
                   />
-                  <div class="col-sm-12">
-                    <button
-                      class="button small green button-3d rounded icon-left"
-                      type="submit"
-                    >
-                      <i class="fa fa-paper-plane"></i>Envoyer
-                    </button>
-                  </div>
                 </div>
               </div>
+              <div class="separator"></div>
+              <div class="form-group col-sm-12">
+                <div class="row orderAccessories">
+                  <div class="col-sm-4">
+                    <h4 class="text-green">Accessoires</h4>
+                  </div>
+                  <div class="col-sm-12 accessoriesButtons">
+                    <i class="fa fa-calculator"></i>
+                    <span class="accessoriesNumber">0</span
+                    ><input
+                      type="hidden"
+                      id="accessoriesNumber"
+                      name="accessoriesNumber"
+                      value="0"
+                    />
+                    <button
+                      class="button small green button-3d rounded icon-right glyphicon glyphicon-plus"
+                      type="button"
+                    ></button>
+                    <button
+                      class="button small red button-3d rounded icon-right glyphicon glyphicon-minus"
+                      type="button"
+                    ></button>
+                  </div>
+                  <table
+                    class="table table-condensed tableFixed otherCostsAccesoiresTable hideAt0"
+                  >
+                    <thead>
+                      <th class="accessoriesLabel"></th>
+                      <th class="accessoriesCategory">
+                        <label for="aCategory">Catégorie</label>
+                      </th>
+                      <th class="accessoriesAccessory">
+                        <label for="aAccessory">Accessoire</label>
+                      </th>
+                      <th class="accessoriesBuyingPrice">
+                        <label for="aBuyingPrice">Prix achat</label>
+                      </th>
+                      <th class="accessoriesPriceHTVA">
+                        <label for="aPriceHTVA">Prix Vente HTVA</label>
+                      </th>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <button
+                  class="button small green button-3d rounded icon-left"
+                  type="submit"
+                >
+                  <i class="fa fa-paper-plane"></i>Envoyer
+                </button>
+              </div>
+          <!--<div class="form-group col-sm-12">
+                <h4 class="text-green">Ajouter un accessoire</h4>
+                <div class="col-sm-12">
+                  <div class="col-sm-4">
+                    <label for="accessoryID">Accessory ID</label>
+                    <input
+                      type="text"
+                      name="accessoryID"
+                      class="form-control"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="brandAccessory">Marque accessoire</label>
+                    <input
+                      type="text"
+                      name="brandAccessory"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="category">Catégorie</label>
+                    <input
+                      type="text"
+                      name="category"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="col-sm-4">
+                    <label for="buyingPrice">Prix d'achat</label>
+                    <input type="text" name="buyingPrice" class="form-control" />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="sellingPrice">Prix HTVA</label>
+                    <input type="text" name="sellingPrice" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="description">Description</label>
+                    <textarea
+                      class="form-control"
+                      rows="5"
+                      name="description"
+                    ></textarea>
+                </div>
+                <div class="col-sm-12">
+                  <button
+                    class="button small green button-3d rounded icon-left"
+                    type="submit"
+                  >
+                    <i class="fa fa-paper-plane"></i>Envoyer
+                  </button>
+                </div>
+              </div> -->
             </form>
           </div>
         </div>

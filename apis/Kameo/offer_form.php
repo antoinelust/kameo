@@ -154,13 +154,21 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 
         include 'connexion.php';
 
-    $sql = "INSERT INTO companies(USR_MAJ, COMPANY_NAME, AUDIENCE,BILLING_GROUP,STREET,ZIP_CODE,TOWN,VAT_NUMBER,INTERNAL_REFERENCE,EMAIL_CONTACT,NOM_CONTACT, PRENOM_CONTACT,TYPE,AUTOMATIC_STATISTICS,BILLS_SENDING,STAANN) SELECT '$email','$firstName"." "."$name', 'B2B',1,' ',0,' ','/','$firstName"." "."$name',' ','$name ','$firstName','Prospect','N','N','N' FROM DUAL WHERE NOT EXISTS(SELECT COMPANY_NAME FROM companies WHERE COMPANY_NAME='$firstName"." "."$name')";
+        $sql = "INSERT INTO companies(USR_MAJ, COMPANY_NAME, AUDIENCE,BILLING_GROUP,STREET,ZIP_CODE,TOWN,VAT_NUMBER,INTERNAL_REFERENCE,EMAIL_CONTACT,NOM_CONTACT, PRENOM_CONTACT,TYPE,AUTOMATIC_STATISTICS,BILLS_SENDING,STAANN) SELECT '$email','$firstName"." "."$name', 'B2B',1,' ',0,' ','/','$firstName"." "."$name',' ','$name ','$firstName','Prospect','N','N','N' FROM DUAL WHERE NOT EXISTS(SELECT COMPANY_NAME FROM companies WHERE COMPANY_NAME='$firstName"." "."$name')";
 
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+
+        $sql1 = "INSERT INTO company_actions(USR_MAJ, TYPE, CHANNEL, COMPANY, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES('$email', ' Prise de contact', ' ', '$firstName"." "."$name', CURDATE(), CURDATE() , ' Demande d\'offre', ' Demande d\'offre du site Kameo bikes', 'DONE', 'quentin@tb-velo-electrique.com')";
+        
+        if ($conn->query($sql1) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
         $conn->close();
 
         if(constant('ENVIRONMENT')=="test" || constant('ENVIRONMENT')=="production"){

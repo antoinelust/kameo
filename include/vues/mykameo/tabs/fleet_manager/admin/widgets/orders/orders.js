@@ -213,7 +213,12 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=testDate]').val(response.order.testDate);
           $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-          $('#widget-order-form input[name=emailUser]').val(response.order.email);
+          //$('#widget-order-form input[name=accessoryID]').val(response.order.accessoryID);
+          $('#widget-order-form select[name=aAccessory]').val(response.order.typeAccessory);
+          $('#widget-order-form [name=aBuyingPrice]').val(response.order.aBuyingPrice);
+          $('#widget-order-form [name=aPriceHTVA]').val(response.order.aPriceHTVA);
+          $('#widget-order-form select[name=aCategory]').val(response.order.aCategory);
+          /*$('#widget-order-form textarea[name=description]').val(response.order.description); */
           $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
 
           if(response.order.estimatedDeliveryDate != null){
@@ -224,6 +229,116 @@ function retrieve_command(ID){
     });
   })
 }
+
+//Accessoires
+get_all_accessories().done(function(response){
+  //gestion du moins au lancement de la page
+  checkMinus('.orderAccessories','.accessoriesNumber');
+  //variables
+  var accessories = response.accessories;
+  if(accessories == undefined){
+    accessories =[];
+    console.log('accessories => table vide');
+  }
+  var categories = [];
+
+  //generation du tableau de catégories
+  accessories.forEach((accessory) => {
+    var newCategory = true;
+    categories.forEach((category) => {
+      if (category.name === accessory.category) {
+        newCategory = false;
+      }
+    });
+    if (newCategory === true) {
+      categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+    }
+  });
+
+  $('.orderAccessories .glyphicon-plus')[0].addEventListener("click",function(){
+    //gestion accessoriesNumber
+    accessoriesNumber = $("#orderManager").find('.accessoriesNumber').html()*1+1;
+    $('#orderManager').find('.accessoriesNumber').html(accessoriesNumber);
+    $('#accessoriesNumber').val(accessoriesNumber);
+
+    //ajout des options du select pour les catégories
+    var categoriesOption = "<option hidden disabled selected value></option>";
+    categories.forEach((category) => {
+      categoriesOption += '<option value="'+category.id+'">'+category.name+'</option>';
+    });
+
+    //ajout d'une ligne au tableau des accessoires
+    $('#orderManager').find('.otherCostsAccesoiresTable tbody')
+    .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
+    <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td>
+    <td class="aBuyingPrice"></td><td class="aPriceHTVA"></td>
+    </tr>`);
+    //label selon la langue
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
+    .append('<label class="fr">Accessoire '+ accessoriesNumber +'</label>');
+
+    //select catégorie
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
+    .append(`<select name="accessoryCategory`+accessoriesNumber+`" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
+    categoriesOption+`
+    </select>`);
+    //select Accessoire
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
+    .append('<select name="accessoryAccessory'+accessoriesNumber+'" id="selectAccessory'+
+    accessoriesNumber+
+    '"class="selectAccessory form-control required"></select>');
+
+    checkMinus('.orderAccessories','.accessoriesNumber');
+
+    //on change de la catégorie
+    $('.orderAccessories').find('.selectCategory').on("change",function(){
+      var that = '#' + $(this).attr('id');
+      var categoryId =$(that).val();
+      var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
+
+      //ne garde que les accessoires de cette catégorie
+      accessories.forEach((accessory) => {
+        if (categoryId == accessory.categoryId) {
+          accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+        }
+      });
+      //place les accessoires dans le select
+      $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
+
+      //retire l'affichage d'éventuels prix
+      $(that).parents('.accessoriesRow').find('.aBuyingPrice').html('');
+      $(that).parents('.accessoriesRow').find('.aPriceHTVA').html('').removeClass('inRecapVenteAccessory');
+    });
+
+    $('.orderAccessories').find('.selectAccessory').on("change",function(){
+      var that = '#' + $(this).attr('id');
+      var accessoryId =$(that).val();
+
+      //récupère le bon index même si le tableau est désordonné
+      accessoryId = getIndex(accessories, accessoryId);
+
+      var buyingPrice = accessories[accessoryId].buyingPrice + '€';
+      var priceHTVA = accessories[accessoryId].priceHTVA + '€';
+
+      $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
+      $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA).addClass('inRecapVenteAccessory');
+    });
+  });
+});
+
+  //retrait
+  $('.orderAccessories .glyphicon-minus')[0].addEventListener("click",function(){
+    accessoriesNumber = $("#orderManager").find('.accessoriesNumber').html();
+    if(accessoriesNumber > 0){
+      $('#orderManager').find('.accessoriesNumber').html(accessoriesNumber*1 - 1);
+      $('#accessoriesNumber').val(accessoriesNumber*1 - 1);
+      $('#orderManager').find('.otherCostsAccesoiresTable'+accessoriesNumber).slideUp().remove();
+      accessoriesNumber--;
+    }
+    checkMinus('.orderAccessories','.accessoriesNumber');
+});
+
+
 
 $('body').on('change', '#widget-order-form input[name=testBoolean]',function(){
   if($('#widget-order-form input[name=testBoolean]').is(':checked')){
