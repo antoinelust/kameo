@@ -69,8 +69,6 @@ function listPortfolioBikes() {
 }
 //FleetManager: Gérer le catalogue | Displays the bike information when "Mettre à jour" is pressed
 function initializeUpdatePortfolioBike(ID) {
-
-
   $.ajax({
     url: "apis/Kameo/load_portfolio.php",
     type: "get",

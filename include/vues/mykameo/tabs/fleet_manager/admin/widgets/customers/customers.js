@@ -185,7 +185,6 @@ function generateCompaniesGraphic(dateStart, dateEnd) {
     ("0" + (dateEnd.getMonth() + 1)).slice(-2) +
     "-" +
     ("0" + dateEnd.getDate()).slice(-2);
-
   $.ajax({
     url: "apis/Kameo/get_companies_listing.php",
     type: "get",
@@ -1240,7 +1239,6 @@ function get_company_details(ID, email, getCompanyContacts = false) {
               false
             );
           }
-          list_kameobikes_member();
         }
       },
     });

@@ -275,6 +275,8 @@ function list_tasks(status, owner2, email) {
 
 function construct_form_for_action_update(id){
 
+        console.log("call");
+
         $('#widget-updateAction-form select[name=owner]')
             .find('option')
             .remove()
@@ -327,7 +329,7 @@ function construct_form_for_action_update(id){
             })
 
         })
-        
+
 }
 
 function retrieve_task(ID, action = "retrieve"){
@@ -340,8 +342,6 @@ function retrieve_task(ID, action = "retrieve"){
                 console.log(response.message);
             }
             if(response.response == 'success'){
-              initializeFields();
-              list_kameobikes_member();
                 if(action=="retrieve"){
                     $('#widget-taskManagement-form input').attr("readonly", true);
                     $('#widget-taskManagement-form textarea').attr("readonly", true);
@@ -350,10 +350,7 @@ function retrieve_task(ID, action = "retrieve"){
                     $('#widget-taskManagement-form input').attr("readonly", false);
                     $('#widget-taskManagement-form textarea').attr("readonly", false);
                     $('#widget-taskManagement-form select').attr("readonly", false);
-
                 }
-
-
                 $('#widget-taskManagement-form input[name=title]').val(response.action.title);
                 $('#widget-taskManagement-form input[name=date]').val(response.action.date.substr(0,10));
                 $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);

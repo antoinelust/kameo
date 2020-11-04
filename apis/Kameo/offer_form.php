@@ -47,6 +47,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
         $mail->Subject = $subject;
 				include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
 
+        $message='Nouvelle demande de commande de la part de '.$firstName.' '.$name.'<br>
+				Numéro de téléphone: '.$phone.'<br>
+				Marque: '.$brand.'<br>
+				Modèle: '.$model.'<br>
+				Mode de financement souhaité:'.$leasing;
+
 
         $body = $body."
             <body>
@@ -123,11 +129,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 
                                     <h3>Nouvelle demande de commande !&nbsp;</h3>
 
-														        <p>Nouvelle demande de commande de la part de $firstName $name.<br>
-																		Numéro de téléphone: $phone<br>
-																		Marque: $brand<br>
-																		Modèle: $model<br>
-																		Mode de financement souhaité:$leasing <br>
+														        <p>$message<br>
 																		<br>
 														        Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo.php\">MyKameo</a> pour plus d'informations.</p>
                                 </td>
@@ -155,16 +157,22 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
         include 'connexion.php';
 
         $sql = "INSERT INTO companies(USR_MAJ, COMPANY_NAME, AUDIENCE,BILLING_GROUP,STREET,ZIP_CODE,TOWN,VAT_NUMBER,INTERNAL_REFERENCE,EMAIL_CONTACT,NOM_CONTACT, PRENOM_CONTACT,TYPE,AUTOMATIC_STATISTICS,BILLS_SENDING,STAANN) SELECT '$email','$firstName"." "."$name', 'B2B',1,' ',0,' ','/','$firstName"." "."$name',' ','$name ','$firstName','Prospect','N','N','N' FROM DUAL WHERE NOT EXISTS(SELECT COMPANY_NAME FROM companies WHERE COMPANY_NAME='$firstName"." "."$name')";
-
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
 
-        $sql1 = "INSERT INTO company_actions(USR_MAJ, TYPE, CHANNEL, COMPANY, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES('$email', ' Prise de contact', ' ', '$firstName"." "."$name', CURDATE(), CURDATE() , ' Demande d\'offre', ' Demande d\'offre du site Kameo bikes', 'DONE', 'quentin@tb-velo-electrique.com')";
-        
-        if ($conn->query($sql1) === FALSE) {
+				$companyID=$conn->insert_id;
+				$sql = "INSERT INTO companies_contact(USR_MAJ, NOM, PRENOM,EMAIL,PHONE,ID_COMPANY,BIKES_STATS) SELECT '$email','$name', '$firstName', '$email','$phone','$companyID','N' FROM DUAL WHERE NOT EXISTS(SELECT 1 FROM companies_contact WHERE ID_COMPANY='$companyID' AND EMAIL='$email')";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+
+        $sql = "INSERT INTO company_actions(USR_MAJ, TYPE, CHANNEL, COMPANY, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES('$email', 'contact', 'site', '$firstName"." "."$name', CURDATE(), CURDATE() , ' $subject', ' $message', 'TO DO', 'julien@kameobikes.com')";
+        if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;

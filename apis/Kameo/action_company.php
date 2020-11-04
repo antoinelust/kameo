@@ -6,11 +6,6 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-
-
-
-
-
 $action=isset($_GET["action"]) ? $_GET["action"] : NULL;
 $owner=isset($_GET["owner"]) ? $_GET["owner"] : NULL;
 
@@ -420,8 +415,8 @@ if($action=="graphic"){
     $response['action']['id']=$resultat['ID'];
     $response['action']['date']=$resultat['DATE'];
     $response['action']['type']=$resultat['TYPE'];
-    $response['action']['title']=$resultat['TITLE'];
-    $response['action']['description']=$resultat['DESCRIPTION'];
+    $response['action']['title']=strip_tags($resultat['TITLE']);
+    $response['action']['description']=strip_tags($resultat['DESCRIPTION']);
     $response['action']['company']=$resultat['COMPANY'];
     $response['action']['date_reminder']=$resultat['DATE_REMINDER'];
     $response['action']['status']=$resultat['STATUS'];
