@@ -23,14 +23,14 @@ if($company==NULL){
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);    
+        $result = mysqli_query($conn, $sql);
         if($result->num_rows=='0'){
             errorMessage("ES0039");
-        }        
-        $resultat = mysqli_fetch_assoc($result);        
+        }
+        $resultat = mysqli_fetch_assoc($result);
         $company=$resultat['COMPANY'];
-        $conn->close();   
-        
+        $conn->close();
+
     }else{
         errorMessage("ES0038");
     }
@@ -44,7 +44,7 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);        
+$result = mysqli_query($conn, $sql);
 $response['buildingNumber'] = $result->num_rows;
 $i=0;
 $response['response']="success";
@@ -53,7 +53,7 @@ while($row = mysqli_fetch_array($result)){
     $response['building'][$i]['descriptionFR']=$row['BUILDING_FR'];
     $i++;
 }
-$conn->close();   
+$conn->close();
 
 
 echo json_encode($response);

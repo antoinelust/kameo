@@ -90,7 +90,7 @@ function initializeFields() {
               response.company[i].companyName +
               "<br>"
           );
-          $("#widget_boxManagementAdmin-form select[name=company]").append(
+          $("#widget-boxManagementAdmin-form select[name=company]").append(
             '<option value="' +
               response.company[i].internalReference +
               '">' +

@@ -1059,7 +1059,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
 
         //Ajouter un utilisateur
         var dest =
-          '<a class="button small green button-3d rounded icon-right addUser" data-target="#addUser" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::generic_addUser; ?></a>';
+          '<a class="button small green button-3d rounded icon-right addUserAdmin" data-target="#addUserAdmin" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::generic_addUser; ?></a>';
         if (response.userNumber > 0) {
           var i = 0;
           var temp =
@@ -1080,6 +1080,11 @@ function get_company_details(ID, email, getCompanyContacts = false) {
           dest = dest.concat("</tbody></table>");
         }
         document.getElementById("companyUsers").innerHTML = dest;
+
+        $('.addUserAdmin').click(function() {
+          create_userAdmin();
+        });
+
 
         $(".addUser").click(function () {
           $("#widget-addUser-form input[name=company]").val(

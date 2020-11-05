@@ -1,27 +1,4 @@
-<div class="modal fade" id="usersListing" tabindex="2" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="z-index: 1043; display: none; overflow-y: auto !important;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div data-example-id="contextual-table" class="bs-example">
-        <span id="usersList"></span>
-      </div>
-      <div class="fr" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-      </div>
-      <div class="en" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-      </div>
-      <div class="nl" class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="addUser" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="z-index: 2000; display: none; overflow-y: auto !important;">
+<div class="modal fade" id="addUserAdmin" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="z-index: 2000; display: none; overflow-y: auto !important;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -31,7 +8,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="text-green"><?= L::generic_addUser; ?></h4>
-            <form id="widget-addUser-form" action="apis/Kameo/add_user.php" role="form" method="post">
+						<form id="widget-addUserAdmin-form" action="apis/Kameo/add_user.php" role="form" method="post">
 							<div class="form-group col-sm-12">
                 <div class="row">
   								<div class="col-md-4">
@@ -87,11 +64,11 @@
 								<input type="text" name="company" class="form-control hidden">
 							</div>
 							<h4>Accès aux bâtiments</h4>
-							<div class="form-group col-sm-12" id="buildingCreateUser"></div>
+							<div class="form-group col-sm-12" id="buildingCreateUserAdmin"></div>
 							<h4>Accès aux vélos</h4>
-								<div class="col-sm-12"><input type="checkbox" id="select-all" name="select_all" checked /> <strong>Tout sélectionner / déselectionner</strong></div>
-								<div class="form-group col-sm-12" id="bikeCreateUser"></div>
-								<div id="confirmAddUser"></div>
+								<div class="col-sm-12"><input type="checkbox" id="select-allAdmin" name="select_all" value="1" /> <strong>Tout sélectionner / déselectionner</strong></div>
+								<div class="form-group col-sm-12" id="bikeCreateUserAdmin"></div>
+								<div id="confirmAddUserAdmin"></div>
 						</form>
 					</div>
 				</div>
@@ -115,16 +92,16 @@
 <!--<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
 <script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>-->
 <script type="text/javascript">
-	$('#widget-addUser-form input[name=generatePassword]').change(function(){
-	 if($('#widget-addUser-form input[name=generatePassword').is(':checked')){
-		$('#widget-addUser-form label[for=password]').addClass("hidden");
-		$('#widget-addUser-form input[name=password]').addClass("hidden");
+	$('#widget-addUserAdmin-form input[name=generatePassword]').change(function(){
+	 if($('#widget-addUserAdmin-form input[name=generatePassword').is(':checked')){
+		$('#widget-addUserAdmin-form label[for=password]').addClass("hidden");
+		$('#widget-addUserAdmin-form input[name=password]').addClass("hidden");
 	 }else{
-		$('#widget-addUser-form label[for=password]').removeClass("hidden");
-		$('#widget-addUser-form input[name=password]').removeClass("hidden");
+		$('#widget-addUserAdmin-form label[for=password]').removeClass("hidden");
+		$('#widget-addUserAdmin-form input[name=password]').removeClass("hidden");
 	 }
 	});
-	jQuery("#widget-addUser-form").submit(function() {
+	jQuery("#widget-addUserAdmin-form").submit(function() {
 	  document.getElementById('manual_password').value = /*nacl.util.encodeBase64(
 		  nacl.hash(
 			  nacl.util.decodeUTF8(*/
@@ -134,7 +111,7 @@
 	  )*/;
 	  return true;
 	});
-	jQuery("#widget-addUser-form").validate({
+	jQuery("#widget-addUserAdmin-form").validate({
 	 submitHandler: function(form) {
 		jQuery(form).ajaxSubmit({
 		 success: function(response) {
@@ -146,7 +123,7 @@
 			 });
 			 get_users_listing();
 			 $('#addUser').modal('toggle');
-			 document.getElementById('widget-addUser-form').reset();
+			 document.getElementById('widget-addUserAdmin-form').reset();
 
 			} else {
 			 $.notify({

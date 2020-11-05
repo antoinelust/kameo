@@ -6,9 +6,6 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
-
-
-
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : "SELECT COMPANY FROM customer_referential WHERE EMAIL='$email'";
 $response=array();
@@ -22,17 +19,17 @@ if($email != NULL){
         die;
     }
     $result = mysqli_query($conn, $sql);
-      
+
     if($result->num_rows=='0'){
         errorMessage("ES0039");
     }
-    
+
     $response['users'] = $result->fetch_all(MYSQLI_ASSOC);
     $response['usersNumber']=$result->num_rows;
     $response['response']="success";
 
     echo json_encode($response);
-    
+
     $result->close();
 }else{
     errorMessage("ES0038");

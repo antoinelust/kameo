@@ -7,9 +7,9 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<form id="widget_boxManagementAdmin-form" action="apis/Kameo/boxes/box_management.php" role="form" method="post">
+						<form id="widget-boxManagementAdmin-form" action="apis/Kameo/boxes/box_management.php" role="form" method="post">
 							<div class="form-group col-sm-12">
-								<h4 class="text-green" id="widget-boxManagement-form-title">Ajouter une borne</h4>
+								<h4 class="text-green" id="widget-boxManagementAdmin-form-title">Ajouter une borne</h4>
 								<div class="col-sm-4">
 									<label for="reference">Référence</label>
 									<input type="text"  name="reference" class="form-control">
@@ -66,13 +66,13 @@
 								<h4 class="text-green">Vélos en déplacement</h4>
 								<div class="row">
 									<div class="form-group col-sm-12" name="bikes">
-										<div class="col-sm-4" style="border: 1px solid #3CB295; height: 200px;" name="in" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+										<div class="col-sm-4" style="border: 1px solid #3CB295; height: 200px;" name="in" class="hidden" ondrop="drop(event, this)" ondragover="allowDrop(event)">
 											<center><B class="text-green" style="vertical-align: middle; line-height: 200px;">Drop me here</B></center>
 										</div>
 									</div>
 								</div>
 							</div>
-							<button  id="widget-boxManagement-form-send" class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+							<button  id="widget-boxManagementAdmin-form-send" class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
 						</form>
 					</div>
 				</div>
@@ -95,8 +95,8 @@
 				type: 'success'
 			  });
 			  get_company_details($('#widget-companyDetails-form input[name=ID]').val(),email);
-			  document.getElementById('widget-boxManagement-form').reset();
-			  $('#boxManagement').modal('toggle');
+			  document.getElementById('widget-boxManagementAdmin-form').reset();
+			  $('#boxManagementAdmin').modal('toggle');
 			} else {
 			  $.notify({
 				message: response.message

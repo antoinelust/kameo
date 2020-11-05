@@ -181,41 +181,39 @@ function list_boxes_admin(company) {
 }
 
 function add_box(company) {
-  document.getElementById("widget_boxManagementAdmin-form").reset();
-  $("#widget_boxManagementAdmin-form input").attr("readonly", false);
-  $("#widget_boxManagementAdmin-form textarea").attr("readonly", false);
-  $("#widget_boxManagementAdmin-form select").attr("readonly", false);
-
-  $("#widget_boxManagementAdmin-form input[name=action]").val("add");
-  $("#widget_boxManagementAdmin-form-title").text("Ajouter une borne");
-
-  $("#widget_boxManagementAdmin-form-send").text("Ajouter");
-  $("#widget_boxManagementAdmin-form-send").removeClass("hidden");
-  $("#widget_boxManagementAdmin-form select[name=company]").val(company);
+  document.getElementById("widget-boxManagementAdmin-form").reset();
+  $("#widget-boxManagementAdmin-form input").attr("readonly", false);
+  $("#widget-boxManagementAdmin-form textarea").attr("readonly", false);
+  $("#widget-boxManagementAdmin-form select").attr("readonly", false);
+  $("#widget-boxManagementAdmin-form input[name=action]").val("add");
+  $("#widget-boxManagementAdmin-form-title").text("Ajouter une borne");
+  $("#widget-boxManagementAdmin-form-send").text("Ajouter");
+  $("#widget-boxManagementAdmin-form-send").removeClass("hidden");
+  $("#widget-boxManagementAdmin-form select[name=company]").val(company);
 }
 
 function update_box(id) {
   retrieve_box_admin(id);
-  $("#widget_boxManagementAdmin-form-send").removeClass("hidden");
-
-  $("#widget_boxManagementAdmin-form input").attr("readonly", false);
-  $("#widget_boxManagementAdmin-form textarea").attr("readonly", false);
-  $("#widget_boxManagementAdmin-form select").attr("readonly", false);
-  $("#widget_boxManagementAdmin-form input[name=action]").val("update");
-
-  $("#widget_boxManagementAdmin-form input[name=action]").val("update");
-  $("#widget_boxManagementAdmin-form-title").text("Modifier une borne");
-  $("#widget_boxManagementAdmin-form-send").text("Modifier");
+  $("#widget-boxManagementAdmin-form-send").removeClass("hidden");
+  $("#widget-boxManagementAdmin-form input").attr("readonly", false);
+  $("#widget-boxManagementAdmin-form textarea").attr("readonly", false);
+  $("#widget-boxManagementAdmin-form select").attr("readonly", false);
+  $("#widget-boxManagementAdmin-form input[name=action]").val("update");
+  $("#widget-boxManagementAdmin-form input[name=action]").val("update");
+  $("#widget-boxManagementAdmin-form-title").text("Modifier une borne");
+  $("#widget-boxManagementAdmin-form-send").text("Modifier");
+  $("#widget-boxManagementAdmin-form div[name=in]").removeClass("hidden");
 }
 
 function retrieve_box_admin(id) {
-  $("#widget_boxManagementAdmin-form-title").text("Informations de la borne");
-  $("#widget_boxManagementAdmin-form-send").addClass("hidden");
-  $("#widget_boxManagementAdmin-form input").attr("readonly", true);
-  $("#widget_boxManagementAdmin-form textarea").attr("readonly", true);
-  $("#widget_boxManagementAdmin-form select").attr("readonly", true);
-  $("#widget_boxManagementAdmin-form div[name=key]").remove();
-  $("#widget_boxManagementAdmin-form div[name=bike]").remove();
+  $("#widget-boxManagementAdmin-form-title").text("Informations de la borne");
+  $("#widget-boxManagementAdmin-form-send").addClass("hidden");
+  $("#widget-boxManagementAdmin-form input").attr("readonly", true);
+  $("#widget-boxManagementAdmin-form textarea").attr("readonly", true);
+  $("#widget-boxManagementAdmin-form select").attr("readonly", true);
+  $("#widget-boxManagementAdmin-form div[name=key]").remove();
+  $("#widget-boxManagementAdmin-form div[name=bike]").remove();
+  $("#widget-boxManagementAdmin-form div[name=in]").addClass("hidden");
 
   $.ajax({
     url: "apis/Kameo/boxes/box_management.php",
@@ -226,42 +224,42 @@ function retrieve_box_admin(id) {
         console.log(response.message);
       }
       if (response.response == "success") {
-        $("#widget_boxManagementAdmin-form input[name=id]").val(response.id);
-        $("#widget_boxManagementAdmin-form input[name=reference]").val(
+        $("#widget-boxManagementAdmin-form input[name=id]").val(response.id);
+        $("#widget-boxManagementAdmin-form input[name=reference]").val(
           response.reference
         );
-        $("#widget_boxManagementAdmin-form select[name=boxModel]").val(
+        $("#widget-boxManagementAdmin-form select[name=boxModel]").val(
           response.model
         );
-        $("#widget_boxManagementAdmin-form select[name=company]").val(
+        $("#widget-boxManagementAdmin-form select[name=company]").val(
           response.company
         );
-        $("#widget_boxManagementAdmin-form input[name=amount]").val(response.amount);
-        $("#widget_boxManagementAdmin-form input[name=billingGroup]").val(
+        $("#widget-boxManagementAdmin-form input[name=amount]").val(response.amount);
+        $("#widget-boxManagementAdmin-form input[name=billingGroup]").val(
           response.billing_group
         );
         if (response.start) {
-          $("#widget_boxManagementAdmin-form input[name=contractStart]").val(
+          $("#widget-boxManagementAdmin-form input[name=contractStart]").val(
             response.start.substr(0, 10)
           );
         } else {
-          $("#widget_boxManagementAdmin-form input[name=contractStart]").val("");
+          $("#widget-boxManagementAdmin-form input[name=contractStart]").val("");
         }
         if (response.end) {
-          $("#widget_boxManagementAdmin-form input[name=contractEnd]").val(
+          $("#widget-boxManagementAdmin-form input[name=contractEnd]").val(
             response.end.substr(0, 10)
           );
         } else {
-          $("#widget_boxManagementAdmin-form input[name=contractEnd]").val("");
+          $("#widget-boxManagementAdmin-form input[name=contractEnd]").val("");
         }
 
         if (response.automatic_billing == "Y") {
-          $("#widget_boxManagementAdmin-form input[name=billing]").prop(
+          $("#widget-boxManagementAdmin-form input[name=billing]").prop(
             "checked",
             true
           );
         } else {
-          $("#widget_boxManagementAdmin-form input[name=billing]").prop(
+          $("#widget-boxManagementAdmin-form input[name=billing]").prop(
             "checked",
             false
           );
@@ -295,12 +293,12 @@ function retrieve_box_admin(id) {
             classe = "col-md-"+md;
           }
           if (typeof response.keys_in[place] !=='undefined' && response.keys_in[place].place == i+1) {
-            $("#widget_boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;" draggable="true" ondragstart="drag(event)" id="'+ response.keys_in[place].id + '_' + id +'">\
+            $("#widget-boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;" draggable="true" ondragstart="drag(event)" id="'+ response.keys_in[place].id + '_' + id +'">\
             <p><center><B>'+ response.keys_in[place].place +'</B></br><img draggable="false" src="images/key_in.png">\
             </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].model +'</B></p></center></p></div>');
             place++;
           }else{
-            $("#widget_boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
+            $("#widget-boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
             <p><center><B>'+ (i + 1) +'</B></br><img draggable="false" src="images/key_out2.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
           }
           row++;
@@ -309,7 +307,7 @@ function retrieve_box_admin(id) {
         // Vélos en déplacement
         if(response.keys_out){
           response.keys_out.forEach(key => {
-            $("#widget_boxManagementAdmin-form div[name=in]").before('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
+            $("#widget-boxManagementAdmin-form div[name=in]").before('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
             <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
             <p><center><B>'+ key.model + '</B><br>' + key.email + '</center></p></div>');
           });
@@ -363,7 +361,7 @@ function drop(ev, target) {
         );
         retrieve_box_admin(box_id);
         document
-          .getElementById("widget_boxManagementAdmin-form")
+          .getElementById("widget-boxManagementAdmin-form")
           .reset();
       }
     },

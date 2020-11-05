@@ -167,10 +167,10 @@ while ($row = mysqli_fetch_array($result)) {
     }else{
         $response['bike'][$i]['biketype'] = $resultat4['biketype'];
     }
-    
+
     $conn->close();
 
-    
+
 
     $i++;
 }
