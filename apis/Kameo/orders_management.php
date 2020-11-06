@@ -34,12 +34,22 @@ if(isset($_POST['action'])){
     $leasingPrice=isset($_POST['leasingPrice']) ? $_POST['leasingPrice'] : NULL;
     $addAccessory=isset($_POST['glyphicon-plus']) ? ($_POST['glyphicon-plus']) : NULL;
     $deleteAccessory=isset($_POST['glyphicon-minus']) ? ($_POST['glyphicon-minus']) : NULL;
-    $categoryAccessory=isset($_POST['aCategory']) ? $_POST['aCategory'] : NULL;
-    $typeAccessory=isset($_POST['aAccessory']) ? $_POST['aAccessory'] : NULL;
-    $buyingPrice=isset($_POST['aBuyingPrice']) ? $_POST['aBuyingPrice'] : NULL;
-    $sellingPrice=isset($_POST['aPriceHTVA']) ? $_POST['aPriceHTVA'] : NULL;
-
+    $accessoriesNumber=isset($_POST['accessoriesNumber']) ? $_POST['accessoriesNumber'] : NULL;
+    $categoryAccessory[]=isset($_POST['accessoryCategory']) ? $_POST['accessoryCategory'] : NULL;
+    $typeAccessory[]=isset($_POST['accessoryAccessory']) ? $_POST['accessoryAccessory'] : NULL;
+    $buyingPrice[]=isset($_POST['buyingPriceAcc']) ? $_POST['buyingPriceAcc'] : NULL;
+    $sellingPrice[]=isset($_POST['sellingPriceAcc']) ? $_POST['sellingPriceAcc'] : NULL;
     
+  
+    /*$accessoryID=isset($_POST['accessoryID']) ? $_POST['accessoryID'] : NULL;
+    $descriptionAccessory=isset($_POST['description']) ? $_POST['description'] : NULL;*/
+
+    /*if($deliveryAddress!=NULL){
+        $deliveryAddress="'".$deliveryAddress."'";
+    }else{
+        $deliveryAddress='NULL';
+    }*/
+
     if($action=='add'){
         include 'connexion.php';
         $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE)
@@ -112,21 +122,54 @@ if(isset($_POST['action'])){
             }
             $conn->close();
         }
-        $response = array ('response'=>'error', 'message'=>$addAccessory,$typeAccessory,$categoryAccessory,$buyingPrice,$sellingPrice);
-        echo json_encode($response);
-        die;
-        if($addAccessory!='' && $typeAccessory != '' && $categoryAccessory != '' && $buyingPrice != '' && $sellingPrice != '')
+        
+        
+        /*if(isset($_POST['accessoryCategory']) && isset($_POST['accessoryAccessory']) && $_POST['buyingPriceAcc'] != '' && $_POST['sellingPriceAcc'] != '')
         {
             include 'connexion.php';
-
-                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES('$typeAccessory', '$categoryAccessory', '$buyingPrice', '$sellingPrice', 'test','$ID')";
+            
+            foreach ($_POST['accessoryCategory'] as $val) 
+            {
+                $category = $_POST['accessoryCategory'][$val];
+                $accessory = $_POST['accessoryAccessory'][$val];
+                $buyingP = $_POST['buyingPriceAcc'][$val];
+                $sellingP = $_POST['sellingPriceAcc'][$val];
+            
+                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES ('$category', '$accessory', '$buyingP', '$sellingP', '//', '$ID')";
+                mysqli_query($conn, $sql2);
+                $val++;
+            } 
+            
+            $conn->close();
+        }*/
+        
+        if(isset($_POST['accessoryCategory']) && isset($_POST['accessoryAccessory']))
+        {
+            include 'connexion.php';
+            
+            foreach( $categoryAccessory as $index => $categoryAccessory) 
+            { 
+                $category = json_encode($categoryAccessory[$index]);
+                $accessory = json_encode($typeAccessory[$index]);
+                $buyingP = json_encode($buyingPrice[$index]);
+                $sellingP = json_encode($sellingPrice[$index]);
+                $response = array ('response'=>'error', 'message'=> $buyingP,$sellingP);
+                echo json_encode($response);
+                die;
+                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES ('$category', '$accessory', '$buyingP', '$sellingP', '//', '$ID')";
                 if ($conn->query($sql2) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
                     die;
                 }
+            } 
+            
             $conn->close();
         }
+        
+
+          
+            
         /*else if(isset($deleteAccessory))
         {
             include 'connexion.php';

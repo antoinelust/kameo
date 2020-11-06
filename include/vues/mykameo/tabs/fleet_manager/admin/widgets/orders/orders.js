@@ -214,10 +214,10 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
           //$('#widget-order-form input[name=accessoryID]').val(response.order.accessoryID);
-          $('#widget-order-form select[name=aAccessory]').val(response.order.typeAccessory);
-          $('#widget-order-form [name=aBuyingPrice]').val(response.order.aBuyingPrice);
-          $('#widget-order-form [name=aPriceHTVA]').val(response.order.aPriceHTVA);
-          $('#widget-order-form select[name=aCategory]').val(response.order.aCategory);
+          $('#widget-order-form select[name=accessoryAccessory]').val(response.order.typeAccessory);
+          $('#widget-order-form [name=buyingPriceAcc]').val(response.order.aBuyingPrice);
+          $('#widget-order-form [name=sellingPriceAcc]').val(response.order.aPriceHTVA);
+          $('#widget-order-form select[name=accessoryCategory]').val(response.order.aCategory);
           /*$('#widget-order-form textarea[name=description]').val(response.order.description); */
           $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
 
@@ -279,15 +279,18 @@ get_all_accessories().done(function(response){
 
     //select catégorie
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
-    .append(`<select name="accessoryCategory`+accessoriesNumber+`" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
+    .append('<select name="accessoryCategory[]" id="selectCategory'+accessoriesNumber+`" class="selectCategory form-control required">`+
     categoriesOption+`
     </select>`);
     //select Accessoire
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
-    .append('<select name="accessoryAccessory'+accessoriesNumber+'" id="selectAccessory'+
+    .append('<select name="accessoryAccessory[]" id="selectAccessory'+
     accessoriesNumber+
     '"class="selectAccessory form-control required"></select>');
 
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aBuyingPrice').append('<input name="buyingPriceAcc[]" class="buyingPriceInput form-control required">');
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aPriceHTVA').append('<input name="sellingPriceAcc[]" class="sellingPriceInput form-control required">');
+    
     checkMinus('.orderAccessories','.accessoriesNumber');
 
     //on change de la catégorie
@@ -303,25 +306,23 @@ get_all_accessories().done(function(response){
         }
       });
       //place les accessoires dans le select
-      $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
-
-      //retire l'affichage d'éventuels prix
-      $(that).parents('.accessoriesRow').find('.aBuyingPrice').html('');
-      $(that).parents('.accessoriesRow').find('.aPriceHTVA').html('').removeClass('inRecapVenteAccessory');
+      $(that).parents('tr').find('.selectAccessory').html(accessoriesOption); 
     });
 
-    $('.orderAccessories').find('.selectAccessory').on("change",function(){
+    $('.orderAccessories').find('.selectAccessory').on("change",function(){ 
       var that = '#' + $(this).attr('id');
       var accessoryId =$(that).val();
 
       //récupère le bon index même si le tableau est désordonné
       accessoryId = getIndex(accessories, accessoryId);
 
-      var buyingPrice = accessories[accessoryId].buyingPrice + '€';
-      var priceHTVA = accessories[accessoryId].priceHTVA + '€';
+      var buyingPrice = accessories[accessoryId].buyingPrice;
+      var priceHTVA = accessories[accessoryId].priceHTVA ;
 
-      $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
-      $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA).addClass('inRecapVenteAccessory');
+      //affichage des champs buying price et selling price
+      $(that).parents('tr').find('.aBuyingPrice input').val(buyingPrice);
+      $(that).parents('tr').find('.aPriceHTVA input').val(priceHTVA);
+
     });
   });
 });
