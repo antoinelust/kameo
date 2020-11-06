@@ -176,6 +176,7 @@ include 'include/head.php';
                             var $grid = $('.grid').isotope({
                                 itemSelector: '.grid-item',
                             });
+                            console.log(response);
 
                             var i = 0;
                             while (i < response.bikeNumber) {
@@ -215,10 +216,11 @@ include 'include/head.php';
                                         </div>\
                                         <div class=\"portfolio-description\">\
                                             <a href=\"offre.php?brand=" + response.bike[i].brand.toLowerCase() + "&model=" + response.bike[i].model.toLowerCase() + "&frameType=" + response.bike[i].frameType.toLowerCase() + "\"><h4 class=\"title\">" + response.bike[i].brand + "</h4></a>\
-                                            <p>" + response.bike[i].model + " " + frameType + "\
+                                            <p>" + (response.bike[i].model + " " + frameType).substr(0, 25) + "\
                                             <br>" + response.bike[i].utilisation + "\
-                                            <br><b class=\"text-green\">Achat :" + Math.round(response.bike[i].price) + "  €</b>\
-                                            <br><b class=\"text-green\">Location :" + response.bike[i].leasingPrice + " €/mois</b></p>\
+                                            <br><b>Achat :" + Math.round(response.bike[i].price) + "  €</b>\
+                                            <br>Coût brut :" + response.bike[i].leasingPrice + " €/mois\
+                                            <br><b class=\"text-green\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois</b></p>\
                                         </div>\
                                     </div>";
 

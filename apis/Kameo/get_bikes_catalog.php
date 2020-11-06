@@ -16,10 +16,10 @@ include 'connexion.php';
 $sql="SELECT *  FROM bike_catalog WHERE STAANN != 'D'";
 
 if($brand){
-    $sql=$sql." AND BRAND='$brand'";    
+    $sql=$sql." AND BRAND='$brand'";
 }
 if($id){
-    $sql=$sql." AND ID='$id'";    
+    $sql=$sql." AND ID='$id'";
 }
 
 
@@ -60,10 +60,7 @@ while($row = mysqli_fetch_array($result))
     $response['bike'][$i]['display']=$row['DISPLAY'];
     $response['bike'][$i]['motor']=$row['MOTOR'];
     $response['bike'][$i]['battery']=$row['BATTERY'];
-    $response['bike'][$i]['transmission']=$row['TRANSMISSION'];
-    $response['bike'][$i]['license']=$row['LICENSE'];
-    
-
+    $response['bike'][$i]['transmission']=$row['TRANSMISSION'];    
     $i++;
 
 }

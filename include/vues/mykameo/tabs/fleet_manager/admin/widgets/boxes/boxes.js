@@ -206,6 +206,7 @@ function update_box(id) {
 }
 
 function retrieve_box_admin(id) {
+  console.log(id);
   $("#widget-boxManagementAdmin-form-title").text("Informations de la borne");
   $("#widget-boxManagementAdmin-form-send").addClass("hidden");
   $("#widget-boxManagementAdmin-form input").attr("readonly", true);
@@ -269,41 +270,102 @@ function retrieve_box_admin(id) {
         // Placement des clés
         box_keys = parseInt(response.model.split("k")[0]);
         row = 0;
-        var classe, md, range, size, space;
+        var classe, md, range, size;
 
         if (box_keys == 5 || box_keys == 10) {
           range = 5;
           md ="2";
           size = "100%";
-          space = "</Br></Br></Br>";
         }else{
           range = 10;
           md = "1";
           size = "70%";
-          space = "</Br></Br></Br></Br></Br>";
         }
 
         place = 0;
         for (let i = 0; i < box_keys; i++) {
 
           if (row == range || row == 0) {
+            var new_row = document.createElement('div');
+            new_row.className = "row";
             classe = "col-md-"+md+" col-md-offset-1";
             row = 0;
           }else{
             classe = "col-md-"+md;
           }
           if (typeof response.keys_in[place] !=='undefined' && response.keys_in[place].place == i+1) {
-            $("#widget-boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" style="height: 161px;" draggable="true" ondragstart="drag(event)" id="'+ response.keys_in[place].id + '_' + id +'">\
-            <p><center><B>'+ response.keys_in[place].place +'</B></br><img draggable="false" src="images/key_in.png">\
-            </br><p style="font-size:'+size+';"><B>'+response.keys_in[place].model +'</B></p></center></p></div>');
+            var new_div=document.createElement('div');
+            new_div.className = classe;
+            new_div.style.textAlign = "center";
+            new_div.setAttribute('name', 'key');
+            new_div.setAttribute('style', 'height: 161px;');
+            new_div.setAttribute('draggable', 'true');
+            new_div.setAttribute('ondragstart', 'drag(event)');
+            new_div.setAttribute('id', response.keys_in[place].id + '_' + id);
+
+            var new_paragraph=document.createElement('p');
+            new_paragraph.style.textAlign = "center";
+            new_paragraph.style.fontWeight = "900";
+            new_paragraph.appendChild(document.createTextNode(response.keys_in[place].place));
+            new_paragraph.appendChild(document.createElement("br"));
+
+            var image = document.createElement("img");
+            image.setAttribute('draggable', 'false');
+            image.src = 'images/key_in.png';
+
+            new_paragraph.appendChild(image);
+
+            var new_paragraph2=document.createElement('p');
+            new_paragraph2.setAttribute('style', 'font-size:'+size+';');
+            new_paragraph2.style.textAlign = "center";
+            new_paragraph2.style.fontWeight = "700";
+            new_paragraph2.appendChild(document.createTextNode(response.keys_in[place].model));
+
+            new_paragraph.appendChild(new_paragraph2);
+
+            new_div.appendChild(new_paragraph);
+            new_row.appendChild(new_div);
             place++;
           }else{
-            $("#widget-boxManagementAdmin-form div[name=keys]").append('<div class="'+ classe + '" name="key" ondrop="drop(event, this)" ondragover="allowDrop(event)" id="'+ (i + 1) +'">\
-            <p><center><B>'+ (i + 1) +'</B></br><img draggable="false" src="images/key_out2.png"></br><p style="font-size:'+size+';"><B>LIBRE'+ space +'</B></p></center></p></div>');
+            var new_div=document.createElement('div');
+            new_div.className = classe;
+            new_div.style.textAlign = "center";
+            new_div.setAttribute('name', 'key');
+            new_div.setAttribute('style', 'height: 161px;');
+            new_div.setAttribute('ondrop', 'drop(event, this)');
+            new_div.setAttribute('ondragover', 'allowDrop(event)');
+            new_div.setAttribute('id', i+1);
+
+            var new_paragraph=document.createElement('p');
+            new_paragraph.style.textAlign = "center";
+            new_paragraph.style.fontWeight = "900";
+            new_paragraph.appendChild(document.createTextNode(i+1));
+            new_paragraph.appendChild(document.createElement("br"));
+            
+            var image = document.createElement("img");
+            image.setAttribute('draggable', 'false');
+            image.src = 'images/key_out2.png';
+
+            new_paragraph.appendChild(image);
+
+            var new_paragraph2=document.createElement('p');
+            new_paragraph2.setAttribute('style', 'font-size:'+size+';');
+            new_paragraph2.style.textAlign = "center";
+            new_paragraph2.style.fontWeight = "700";
+            new_paragraph2.appendChild(document.createTextNode('LIBRE'));
+            new_paragraph.appendChild(new_paragraph2);
+
+            new_div.appendChild(new_paragraph);
+            new_row.appendChild(new_div);
           }
+
+          if(row == (range-1) || i == (box_keys -1)){
+            $("#widget-boxManagementAdmin-form div[name=keys]").append(new_row);
+          }
+
+
           row++;
         }
-
         // Vélos en déplacement
         if(response.keys_out){
           response.keys_out.forEach(key => {

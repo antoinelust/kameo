@@ -1,17 +1,3 @@
-//liste des vélos
-function get_all_bikes() {
-  return $.ajax({
-    url: "apis/Kameo/get_bikes_catalog.php",
-    type: "post",
-    data: {},
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-    },
-  });
-}
-
 // get customers bikes
 function get_customers_bikes() {
   return $.ajax({
