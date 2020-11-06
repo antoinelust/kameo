@@ -3,8 +3,6 @@ const PRIX_ENTRETIEN = 100;
 const PRIX_ASSURANCE = 84;
 const box_maintenance_year = 500;
 
-//AJAX
-
 //liste des contacts
 function get_company_contacts_list(ID) {
   return  $.ajax({
