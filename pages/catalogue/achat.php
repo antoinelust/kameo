@@ -112,7 +112,6 @@ include 'include/head.php';
                     </div>
                     <div class="col-md-9 catalog">
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
-
                         <div class="grid"></div>
 
                         <!-- END: Portfolio Items -->
@@ -176,7 +175,6 @@ include 'include/head.php';
                             var $grid = $('.grid').isotope({
                                 itemSelector: '.grid-item',
                             });
-                            console.log(response);
 
                             var i = 0;
                             while (i < response.bikeNumber) {
@@ -219,11 +217,31 @@ include 'include/head.php';
                                             <p>" + (response.bike[i].model + " " + frameType).substr(0, 25) + "\
                                             <br>" + response.bike[i].utilisation + "\
                                             <br><b>Achat :" + Math.round(response.bike[i].price) + "  €</b>\
-                                            <br>Coût brut :" + response.bike[i].leasingPrice + " €/mois\
-                                            <br><b class=\"text-green\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois</b></p>\
-                                        </div>\
-                                    </div>";
+                                            <br>Coût brut :" + response.bike[i].leasingPrice + " €/mois";
+                                    var textExplanation="Montant du leasing : "+response.bike[i].leasingPrice+" €/mois<br/>Impact salaire brut : "+Math.round(response.bike[i].impactOnGrossSalary*10)/10+" €/mois<br/><b>Impact salaire net : "+Math.round(response.bike[i].impactOnNetSalary*10)/10+" €/mois</b>";
+                                    if(response.bike[i].impactBikeAllowance != 0 || response.bike[i].impactCarSavingMoney != 0){
+                                      textExplanation = textExplanation.concat("<hr/>");
+                                    }
+                                    if(response.bike[i].impactBikeAllowance != 0){
+                                      textExplanation = textExplanation.concat("<br/>Impact prime vélo : "+Math.round(response.bike[i].impactBikeAllowance*10)/10+" €/mois")
+                                    }
+                                    if(response.bike[i].impactCarSavingMoney != 0){
+                                      textExplanation = textExplanation.concat("<br/>Economie véhicule : "+Math.round(response.bike[i].impactCarSavingMoney*10)/10+" €/mois")
+                                    }
+                                    if(response.bike[i].impactBikeAllowance != 0 || response.bike[i].impactCarSavingMoney != 0){
+                                      textExplanation = textExplanation.concat("<hr/>");
+                                    }
+                                    if(response.bike[i].realImpact > 0){
+                                      textExplanation = textExplanation.concat("<b>Coût réel : "+Math.round(response.bike[i].realImpact)+" €/mois</b>");
+                                    }else{
+                                      textExplanation = textExplanation.concat("<b class='text-green'>Gain réel : "+Math.abs(Math.round(response.bike[i].realImpact))+" €/mois</b>");
+                                    }
 
+                                    if(response.bike[i].realImpact > 0){
+                                      temp=temp.concat("<br><b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois</b></p></div></div>");
+                                    }else{
+                                      temp=temp.concat("<br><b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Cout réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois</b></p></div></div>");
+                                    }
                                     var $item = $(temp);
                                     // add width and height class
                                     $item.addClass('grid-item--width3').addClass('grid-item--height3');
@@ -233,6 +251,10 @@ include 'include/head.php';
                                 }
                                 i++;
                             }
+                            $(function () {
+                              $('[data-toggle="popover"]').popover()
+                            })
+
                             var filters = {};
 
                             $('.portfolio').on('change', function(event) {

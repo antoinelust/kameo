@@ -22,11 +22,15 @@ try{
             $marginOther=0.3;
             $leasingDuration=36;
 
-            $revenuEmployee=3000;
-            $frequenceBikePerWeek=3;
-            $distanceBike=5000;
-            $type="employé";
-            $prime=1;
+
+            $revenuEmployee=isset($_GET['revenuEmployee']) ? addslashes($_GET['revenuEmployee']) : 3000;
+            $frequenceBikePerWeek=isset($_GET['frequenceBikePerWeek']) ? addslashes($_GET['frequenceBikePerWeek']) : 3;
+            $distanceBike=isset($_GET['distanceBike']) ? addslashes($_GET['distanceBike']) : 5000;
+            $type=isset($_GET['type']) ? addslashes($_GET['type']) : "employé";
+            $prime=isset($_GET['prime']) ? addslashes($_GET['prime']) : true;
+            $transport=isset($_GET['transport']) ? addslashes($_GET['transport']) : "personnalCar";
+            $transportationEssence=isset($_GET['transportationEssence']) ? addslashes($_GET['transportationEssence']) : "essence";
+
 
             if($revenuEmployee<636.49){
                 $taxRate=0;
@@ -39,15 +43,38 @@ try{
             }else{
                 $taxRate=(($revenuEmployee-2908.05)*0.5 + (2908.05-1680.32)*0.44 + (1680.32-951.87)*0.4+ (951.87-636.49)*0.4)/$revenuEmployee;
             }
-
-
-            if($prime=='0'){
+            if(!$prime){
                 $impactBikeAllowance=0;
             }else{
                 $primeForBike=0.24;
                 $impactBikeAllowance=($primeForBike*$frequenceBikePerWeek*2*$distanceBike/1000*4);
             }
 
+            if($transportationEssence=="essence"){
+                $consomation=7;
+                $CO2PerKM=167.44;
+                $GazPrice=0.98;
+            }else if($transportationEssence=="diesel"){
+                $consomation=5.8;
+                $CO2PerKM=153.12;
+                $GazPrice=1.27;
+            }else{
+                $consomation=0;
+                $CO2PerKM=0;
+                $GazPrice=0;
+            }
+
+
+            if($transport=='personnalCar'){
+                $impactCarSavingMoney=($consomation*$GazPrice/100*$distanceBike*2*$frequenceBikePerWeek*4/1000);
+                $impactCarSavingCO2=($CO2PerKM*$consomation*$frequenceBikePerWeek*2*4);
+            }else if($transport=="companyCar"){
+                $impactCarSavingMoney=0;
+                $impactCarSavingCO2=($CO2PerKM*$consomation/100*$frequenceBikePerWeek*2*4);
+            }else{
+                $impactCarSavingMoney=0;
+                $impactCarSavingCO2=0;
+            }
 
 
             include 'connexion.php';
@@ -81,8 +108,11 @@ try{
 
                   $taxes=$basisForTaxes*$taxRate;
                   $impactOnNetSalary=($basisForTaxes-$taxes);
-
-                  $bikes[$index]["realImpact"]=($impactOnNetSalary-$impactBikeAllowance);
+                  $bikes[$index]["impactOnGrossSalary"]=$impactOnGrossSalary;
+                  $bikes[$index]["impactOnNetSalary"]=$impactOnNetSalary;
+                  $bikes[$index]["impactBikeAllowance"]=$impactBikeAllowance;
+                  $bikes[$index]["impactCarSavingMoney"]=$impactCarSavingMoney;
+                  $bikes[$index]["realImpact"]=($impactOnNetSalary-$impactBikeAllowance-$impactCarSavingMoney);
                 }
 
 
