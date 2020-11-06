@@ -137,7 +137,6 @@ loadClientConditions()
                 $('#travel_information_error').addClass("hidden");
                 $('#travel_information').removeClass("hidden");
               }else{
-                console.log(response);
                 $('#travel_information_loading').addClass("hidden");
                 $('#travel_information_error').removeClass("hidden");
                 $('#travel_information').addClass("hidden");
@@ -342,7 +341,11 @@ loadClientConditions()
 				var i;
 				var temp="";
 				for(i=0; i<4; i++){
-				  temp=temp.concat(Math.floor(Math.random() * 10).toString());
+          var number=Math.floor(Math.random() * 10).toString();
+          while(document.getElementById('search-bikes-form-intake-building').options[document.getElementById('search-bikes-form-intake-building').selectedIndex].value == "infrabelnamur" && number == "3"){
+            number=Math.floor(Math.random() * 10).toString();
+          }
+				  temp=temp.concat(number);
 				}
 				document.getElementById('lockingCodeDiv').style.display="block";
 				document.getElementById('lockingCode').innerHTML=temp;

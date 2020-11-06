@@ -78,6 +78,5 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<script src="/js/cookie_consent.js"></script>
 	<!-- Modernizr WebP -->
 	<script src="/js/modernizr-custom.js"></script>
+
 </head>
-
-
