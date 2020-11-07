@@ -38,7 +38,7 @@ include 'include/head.php';
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 searchCol">
-                        <div class="row">
+                        <div class="row">						
                             <div class="col-md-12 background-green" id="achat_sidebar">
                                 <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
 
@@ -111,6 +111,118 @@ include 'include/head.php';
                         </div>
                     </div>
                     <div class="col-md-9 catalog">
+						<div style="background-color: #D3EFDD">
+							<h3 class="text-dark text-center">Afin de calculer au mieux le coût réel de votre vélo, merci de renseigner les champs ci-dessous avec vos informations.</h3>
+							<div class="accordion color">
+								<div class="ac-item" style= "background-color: #D3EFDD">
+									<h1 class="ac-title">Calcul de coût réel</h1>
+									<div class="ac-content">
+										
+										<form id="cash4bike-form" action="apis/Kameo/calculate_cash4bike.php" role="form" method="get">
+										<div class="row">
+											<div class="col-md-12" style= "background-color: #D3EFDD">
+												<h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
+
+												<div class="form-group col-md-12 ">
+													<div class="employe">
+														<label><input type="radio" name="type" value="employe" checked><?=L::cash4bike_personalinfo_employee;?></label>
+													</div>
+													<div class="ouvrier">
+														<label><input type="radio" name="type" value="ouvrier"><?=L::cash4bike_personalinfo_ouvrier;?></label>
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group col-md-6">
+														<div class="form-group">
+															<label class="revenu" for="phone"><?=L::cash4bike_personalinfo_brutsalary;?></label>
+															<div class="input-group">
+																<span class="input-group-addon"><?=L::cash4bike_personalinfo_permonth;?></span>
+																<input type="number" class="form-control required" min='0' placeholder="0" name="revenu" id="revenu" aria-required="true">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div id="inputHomeAddress" class="form-group has-error has-feedback">
+													  <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
+													  <input type="text" name="domicile" class="form-control" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
+													  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span>
+													  <span id="inputSuccess1Status" class="sr-only">(success)</span>
+													</div>
+													<div id="inputWorkAddress" class="form-group has-error has-feedback">
+													  <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
+													  <input type="text" name="travail" class="form-control" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
+													  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span>
+													  <span id="inputSuccess2Status" class="sr-only">(success)</span>
+													</div>
+												</div>
+												<div class="space"></div>
+											</div>
+											<div class="col-md-12" style= "background-color: #D3EFDD">
+											<div class="space"></div>
+												<h4 class="text-green"><?=L::cash4bike_transport_title;?></h4>
+												<div class="form-group col-md-12">
+													<div class="col-md-6">
+														<label for="transport"><?=L::cash4bike_transport_choice;?></label>
+														<select class="form-control" name="transport">
+															<option value="personnalCar" selected><?=L::cash4bike_tc_personalcar;?></option>
+															<option value="companyCar"><?=L::cash4bike_tc_workcar;?></option>
+															<option value="covoiturage"><?=L::cash4bike_tc_covoiturage;?></option>
+															<option value="public transport"><?=L::cash4bike_tc_commun;?></option>
+															<option value="personalBike"><?=L::cash4bike_tc_personalbike;?></option>
+															<option value="walk"><?=L::cash4bike_tc_walk;?></option>
+														</select>
+													</div>
+													<div class="form-group col-sm-6 essence">
+														<div class="essence">
+															<label><input type="radio" name="transportationEssence" value="essence" checked><?=L::cash4bike_essence;?></label>
+														</div>
+														<div class="diesel">
+															<label><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
+														</div>
+													</div>
+
+												</div>
+												<div class="form-group col-md-12">
+
+
+
+													<div class="col-md-12">
+														<div class="employeurremunere">
+															<label><input type="radio" name="prime" value="1" checked><?=L::cash4bike_bike_kmpayback;?></label>
+														</div>
+														<div class="employeurneremunerepas">
+															<label><input type="radio" name="prime" value="0"><?=L::cash4bike_bike_kmnopayback;?></label>
+														</div>
+													</div>
+												</div>
+
+												<div class="form-group col-md-12">
+													<div class="col-md-6">
+														<label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
+														<select class="form-control" name="frequence">
+															<option value="1"><?=L::cash4bike_tf_once;?></option>
+															<option value="2"><?=L::cash4bike_tf_twice;?></option>
+															<option value="3"><?=L::cash4bike_tf_three;?></option>
+															<option value="4" selected><?=L::cash4bike_tf_four;?></option>
+															<option value="5"><?=L::cash4bike_tf_five;?></option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group col-md-2 center" >
+												<button class="button green button-3d effect fill-vertical" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
+											</div>
+										</div>
+										</form>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
                         <div class="grid"></div>
 
@@ -223,7 +335,7 @@ include 'include/head.php';
                                       textExplanation = textExplanation.concat("<hr/>");
                                     }
                                     if(response.bike[i].impactBikeAllowance != 0){
-                                      textExplanation = textExplanation.concat("<br/>Impact prime vélo : "+Math.round(response.bike[i].impactBikeAllowance*10)/10+" €/mois")
+                                      textExplanation = textExplanation.concat("Impact prime vélo : "+Math.round(response.bike[i].impactBikeAllowance*10)/10+" €/mois")
                                     }
                                     if(response.bike[i].impactCarSavingMoney != 0){
                                       textExplanation = textExplanation.concat("<br/>Economie véhicule : "+Math.round(response.bike[i].impactCarSavingMoney*10)/10+" €/mois")
@@ -238,9 +350,9 @@ include 'include/head.php';
                                     }
 
                                     if(response.bike[i].realImpact > 0){
-                                      temp=temp.concat("<br><b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois</b></p></div></div>");
+                                      temp=temp.concat("<br><b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
                                     }else{
-                                      temp=temp.concat("<br><b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois</b></p></div></div>");
+                                      temp=temp.concat("<br><b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
                                     }
                                     var $item = $(temp);
                                     // add width and height class
