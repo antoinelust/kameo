@@ -38,7 +38,7 @@ include 'include/head.php';
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 searchCol">
-                        <div class="row">						
+                        <div class="row">
                             <div class="col-md-12 background-green" id="achat_sidebar">
                                 <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
 
@@ -113,12 +113,14 @@ include 'include/head.php';
                     <div class="col-md-9 catalog">
 						<div style="background-color: #D3EFDD">
 							<h3 class="text-dark text-center">Afin de calculer au mieux le coût réel de votre vélo, merci de renseigner les champs ci-dessous avec vos informations.</h3>
+              <a data-target="#informationsCalcul" data-toggle="modal" href="#">En savoir plus</a>
+
 							<div class="accordion color">
 								<div class="ac-item" style= "background-color: #D3EFDD">
 									<h1 class="ac-title">Calcul de coût réel</h1>
 									<div class="ac-content">
-										
-										<form id="cash4bike-form" action="apis/Kameo/calculate_cash4bike.php" role="form" method="get">
+
+										<form id="cash4bike-form" role="form" method="get">
 										<div class="row">
 											<div class="col-md-12" style= "background-color: #D3EFDD">
 												<h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
@@ -146,13 +148,13 @@ include 'include/head.php';
 												<div class="col-md-12">
 													<div id="inputHomeAddress" class="form-group has-error has-feedback">
 													  <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
-													  <input type="text" name="domicile" class="form-control" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
+													  <input type="text" name="domicile" class="form-control required" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
 													  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span>
 													  <span id="inputSuccess1Status" class="sr-only">(success)</span>
 													</div>
 													<div id="inputWorkAddress" class="form-group has-error has-feedback">
 													  <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
-													  <input type="text" name="travail" class="form-control" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
+													  <input type="text" name="travail" class="form-control required" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
 													  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span>
 													  <span id="inputSuccess2Status" class="sr-only">(success)</span>
 													</div>
@@ -217,12 +219,12 @@ include 'include/head.php';
 											</div>
 										</div>
 										</form>
-										
+
 									</div>
 								</div>
 							</div>
 						</div>
-					
+
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
                         <div class="grid"></div>
 
@@ -257,30 +259,32 @@ include 'include/head.php';
         <script type="text/javascript">
             var bikes;
 
-            function loadPortfolio() {
+            function loadPortfolio(revenuEmployee = null, type = null, homeAddress = null, workAddress = null, prime = null, transport = null, transportationEssence = null, frequenceBikePerWeek = null) {
 
+                $('.grid').html("");
                 var $grid = $('.grid').isotope({});
+                $grid.isotope('destroy');
 
-                //document.getElementById('bikeCatalog').innerHTML="";
-                var utilisation = document.getElementById('widget-bike-utilisation').value;
-                var frameType = document.getElementById('widget-bike-frame-type').value;
-                var e = document.getElementById('widget-bike-price');
-                var price = e.options[e.selectedIndex].value;
-                var brand = document.getElementById('widget-bike-brand').options[document.getElementById('widget-bike-brand').selectedIndex].value;
-                var e = document.getElementById('widget-bike-electric');
-                var electric = e.options[e.selectedIndex].value;
                 $.ajax({
                     url: 'apis/Kameo/load_portfolio.php',
                     type: 'get',
                     data: {
-                        "action": "list"
+                        "action": "list",
+                        "revenuEmployee" : revenuEmployee,
+                        "frequenceBikePerWeek" : frequenceBikePerWeek,
+                        "homeAddress" : homeAddress,
+                        "workAddress" : workAddress,
+                        "type" : type,
+                        "prime" : prime,
+                        "transport" : transport,
+                        "transportationEssence" : transportationEssence
                     },
                     success: function(response) {
                         if (response.response == 'error') {
                             $.notify({
                                 message: response.message
                             }, {
-                                type: 'danger'
+                                type: 'error'
                             });
                         }
                         if (response.response == 'success') {
@@ -325,34 +329,39 @@ include 'include/head.php';
                                             </div>\
                                         </div>\
                                         <div class=\"portfolio-description\">\
-                                            <a href=\"offre.php?brand=" + response.bike[i].brand.toLowerCase() + "&model=" + response.bike[i].model.toLowerCase() + "&frameType=" + response.bike[i].frameType.toLowerCase() + "\"><h4 class=\"title\">" + response.bike[i].brand + "</h4></a>\
-                                            <p>" + (response.bike[i].model + " " + frameType).substr(0, 25) + "\
-                                            <br>" + response.bike[i].utilisation + "\
-                                            <br><b>Achat : " + Math.round(response.bike[i].price) + "  €</b>\
-                                            <br>Coût brut : " + response.bike[i].leasingPrice + " €/mois";
-                                    var textExplanation="Montant du leasing : "+response.bike[i].leasingPrice+" €/mois<br/>Impact salaire brut : "+Math.round(response.bike[i].impactOnGrossSalary*10)/10+" €/mois<br/><b>Impact salaire net : "+Math.round(response.bike[i].impactOnNetSalary*10)/10+" €/mois</b>";
-                                    if(response.bike[i].impactBikeAllowance != 0 || response.bike[i].impactCarSavingMoney != 0){
-                                      textExplanation = textExplanation.concat("<hr/>");
-                                    }
-                                    if(response.bike[i].impactBikeAllowance != 0){
-                                      textExplanation = textExplanation.concat("Impact prime vélo : "+Math.round(response.bike[i].impactBikeAllowance*10)/10+" €/mois")
-                                    }
-                                    if(response.bike[i].impactCarSavingMoney != 0){
-                                      textExplanation = textExplanation.concat("<br/>Economie véhicule : "+Math.round(response.bike[i].impactCarSavingMoney*10)/10+" €/mois")
-                                    }
-                                    if(response.bike[i].impactBikeAllowance != 0 || response.bike[i].impactCarSavingMoney != 0){
-                                      textExplanation = textExplanation.concat("<hr/>");
-                                    }
-                                    if(response.bike[i].realImpact > 0){
-                                      textExplanation = textExplanation.concat("<b>Coût réel : "+Math.round(response.bike[i].realImpact)+" €/mois</b>");
-                                    }else{
-                                      textExplanation = textExplanation.concat("<b class='text-green'>Gain réel : "+Math.abs(Math.round(response.bike[i].realImpact))+" €/mois</b>");
-                                    }
+                                          <a href=\"offre.php?brand=" + response.bike[i].brand.toLowerCase() + "&model=" + response.bike[i].model.toLowerCase() + "&frameType=" + response.bike[i].frameType.toLowerCase() + "\"><h4 class=\"title\">" + response.bike[i].brand + "</h4></a>\
+                                          <p>" + (response.bike[i].model + " " + frameType).substr(0, 25) + "\
+                                          <br>" + response.bike[i].utilisation + "\
+                                          <br><b>Achat : " + Math.round(response.bike[i].price) + "  €</b>\
+                                          <br>Coût brut : " + response.bike[i].leasingPrice + " €/mois";
+                                    if (typeof response.bike[i].impactOnNetSalary !== 'undefined' && typeof response.bike[i].impactOnGrossSalary != 'undefined') {
+                                      var textExplanation="Montant du leasing : "+response.bike[i].leasingPrice+" €/mois<br/>Impact salaire brut : "+Math.round(response.bike[i].impactOnGrossSalary*10)/10+" €/mois<br/>\
+                                      <b>Impact salaire net : "+Math.round(response.bike[i].impactOnNetSalary*10)/10+" €/mois</b>";
+                                      if(response.bike[i].impactBikeAllowance != 0 || response.bike[i].impactCarSavingMoney != 0){
+                                        textExplanation = textExplanation.concat("<hr/>");
+                                      }
+                                      if(response.bike[i].impactBikeAllowance != 0){
+                                        textExplanation = textExplanation.concat("Impact prime vélo : "+Math.round(response.bike[i].impactBikeAllowance*10)/10+" €/mois")
+                                      }
+                                      if(response.bike[i].impactCarSavingMoney != 0){
+                                        textExplanation = textExplanation.concat("<br/>Economie véhicule : "+Math.round(response.bike[i].impactCarSavingMoney*10)/10+" €/mois")
+                                      }
+                                      if(response.bike[i].impactBikeAllowance != 0 || response.bike[i].impactCarSavingMoney != 0){
+                                        textExplanation = textExplanation.concat("<hr/>");
+                                      }
+                                      if(response.bike[i].realImpact > 0){
+                                        textExplanation = textExplanation.concat("<b>Votre vélo vous coûtera réellement "+Math.round(response.bike[i].realImpact)+" €/mois</b>");
+                                      }else{
+                                        textExplanation = textExplanation.concat("<span class='text-green'>Votre vélo vous rapportera <br/><b>"+Math.abs(Math.round(response.bike[i].realImpact))+" €/mois !</b>");
+                                      }
 
-                                    if(response.bike[i].realImpact > 0){
-                                      temp=temp.concat("<br><b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                      if(response.bike[i].realImpact > 0){
+                                        temp=temp.concat("<br><b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                      }else{
+                                        temp=temp.concat("<br><b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                      }
                                     }else{
-                                      temp=temp.concat("<br><b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                      temp=temp.concat("<br><span class=\"text-red\">Cout réel : Veuillez remplir le formulaire</span></p></div></div>");
                                     }
                                     var $item = $(temp);
                                     // add width and height class
@@ -363,6 +372,17 @@ include 'include/head.php';
                                 }
                                 i++;
                             }
+
+                            if(response.realImpactCalculated=="Y"){
+                              $.notify({
+                                  message: "Catalogue actualisé avec vos informations"
+                              }, {
+                                  type: 'success'
+                              });
+                              $('.ac-content').css("display","none");
+                            }
+
+
                             $(function () {
                               $('[data-toggle="popover"]').popover()
                             })
@@ -388,7 +408,6 @@ include 'include/head.php';
                             }
 
                             $('.grid').isotope("layout");
-
                         }
 
                     }
@@ -424,5 +443,137 @@ include 'include/head.php';
     <!-- TB Popup Redirection -->
     <script src="js/tb_popup.js"></script>
 </body>
+
+
+<div
+  class="modal fade"
+  id="informationsCalcul"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="z-index: 1500; display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="companyIdHidden" name="companyId" value="" />
+        <div class="row">
+          <div class="col-sm-12">
+            <h4 class="text-green">Informations calcul de coût réel</h4>
+            <p><strong>Le module de calcul de coût réel n'est valable que dans le cadre d'un vélo acquis via le salaire brut de l'employé ou de l'ouvrier.</strong><br/>
+            Dans un premier temps, nous identifions l'impact sur votre salaire net d'une diminution de votre salaire brut à hauteur du montant du leasing.<br/>
+            Ensuite, nous calculons la distance entre votre domicile et votre travail, permettant de calculer le montant des primes kilométriques versées chaque mois (24 cents / km).<br/>
+            Enfin, si vous utilisez votre voiture personnelle, nous calculons le montant économisé via l'utilisation du carburant (essence).</p>
+            <p>L'acquisition d'un vélo comme moyen de déplacement entre votre domicile et votre travail est très avantageux d'un point de vue fiscal en Belgique, étant déductible à 100%.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  jQuery("#cash4bike-form").validate({
+    submitHandler: function(form) {
+      loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]').val(), $('#cash4bike-form select[name=frequence]').val());
+    }
+  });
+
+
+  $('#cash4bike-form input[name=domicile]').change(function(){
+      $('#inputHomeAddress').removeClass('has-error');
+      $('#inputHomeAddress').removeClass('has-success');
+      $('#inputHomeAddress').addClass('has-warning');
+      $('#inputHomeAddress2').removeClass('fa-check');
+      $('#inputHomeAddress2').addClass('fa-info-circle');
+      $('#inputHomeAddress2').removeClass('fa-close');
+
+      var address=$('#cash4bike-form input[name=domicile]').val();
+      $.ajax({
+          url: 'apis/Kameo/validate_address.php',
+          method: 'get',
+          data: {'address': address},
+          success: function(response){
+              if (response.response == "success") {
+                  $('#inputHomeAddress').removeClass('has-error');
+                  $('#inputHomeAddress').addClass('has-success');
+                  $('#inputHomeAddress').removeClass('has-warning');
+                  $('#inputHomeAddress2').addClass('fa-check');
+                  $('#inputHomeAddress2').removeClass('fa-info-circle');
+                  $('#inputHomeAddress2').removeClass('fa-close');
+
+              }
+              else{
+                  $('#inputHomeAddress').addClass('has-error');
+                  $('#inputHomeAddress').removeClass('has-success');
+                  $('#inputHomeAddress').removeClass('has-warning');
+                  $('#inputHomeAddress2').removeClass('fa-check');
+                  $('#inputHomeAddress2').removeClass('fa-info-circle');
+                  $('#inputHomeAddress2').addClass('fa-close');
+
+              }
+          }
+      });
+  });
+  $('#cash4bike-form input[name=travail]').change(function(){
+      $('#inputWorkAddress').removeClass('has-error');
+      $('#inputWorkAddress').removeClass('has-success');
+      $('#inputWorkAddress').addClass('has-warning');
+      $('#inputWorkAddress2').removeClass('fa-check');
+      $('#inputWorkAddress2').addClass('fa-info-circle');
+      $('#inputWorkAddress2').removeClass('fa-close');
+
+
+      var address=$('#cash4bike-form input[name=travail]').val();
+      $.ajax({
+          url: 'apis/Kameo/validate_address.php',
+          method: 'get',
+          data: {'address': address},
+          success: function(response){
+              if (response.response == "success") {
+
+                  $('#inputWorkAddress').removeClass('has-error');
+                  $('#inputWorkAddress').addClass('has-success');
+                  $('#inputWorkAddress').removeClass('has-warning');
+                  $('#inputWorkAddress2').addClass('fa-check');
+                  $('#inputWorkAddress2').removeClass('fa-info-circle');
+                  $('#inputWorkAddress2').removeClass('fa-close');
+
+              }
+              else{
+
+                  $('#inputWorkAddress').addClass('has-error');
+                  $('#inputWorkAddress').removeClass('has-success');
+                  $('#inputWorkAddress').removeClass('has-warning');
+                  $('#inputWorkAddress2').removeClass('fa-check');
+                  $('#inputWorkAddress2').removeClass('fa-info-circle');
+                  $('#inputWorkAddress2').addClass('fa-close');
+
+
+              }
+          }
+      });
+  });
+
+
+
+</script>
 
 </html>
