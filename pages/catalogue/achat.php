@@ -331,9 +331,7 @@ include 'include/head.php';
                                         <div class=\"portfolio-description\">\
                                           <a href=\"offre.php?brand=" + response.bike[i].brand.toLowerCase() + "&model=" + response.bike[i].model.toLowerCase() + "&frameType=" + response.bike[i].frameType.toLowerCase() + "\"><h4 class=\"title\">" + response.bike[i].brand + "</h4></a>\
                                           <p>" + (response.bike[i].model + " " + frameType).substr(0, 25) + "\
-                                          <br>" + response.bike[i].utilisation + "\
-                                          <br><b>Achat : " + Math.round(response.bike[i].price) + "  €</b>\
-                                          <br>Coût brut : " + response.bike[i].leasingPrice + " €/mois";
+                                          <br>" + response.bike[i].utilisation;
                                     if (typeof response.bike[i].impactOnNetSalary !== 'undefined' && typeof response.bike[i].impactOnGrossSalary != 'undefined') {
                                       var textExplanation="Montant du leasing : "+response.bike[i].leasingPrice+" €/mois<br/>Impact salaire brut : "+Math.round(response.bike[i].impactOnGrossSalary*10)/10+" €/mois<br/>\
                                       <b>Impact salaire net : "+Math.round(response.bike[i].impactOnNetSalary*10)/10+" €/mois</b>";
@@ -356,12 +354,19 @@ include 'include/head.php';
                                       }
 
                                       if(response.bike[i].realImpact > 0){
-                                        temp=temp.concat("<br><b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                        temp=temp.concat("<br><b>Achat : " + Math.round(response.bike[i].price) + "  €</b>\
+                                        <br>Coût brut : " + response.bike[i].leasingPrice + " €/mois<br>\
+                                        <b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">\
+                                        Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
                                       }else{
-                                        temp=temp.concat("<br><b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                        temp=temp.concat("<br><b>Achat : " + Math.round(response.bike[i].price) + "  €</b>\
+                                        <br>Coût brut : " + response.bike[i].leasingPrice + " €/mois<br>\
+                                        <b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">\
+                                        Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
                                       }
                                     }else{
-                                      temp=temp.concat("<br><span class=\"text-red\">Cout réel : Veuillez remplir le formulaire</span></p></div></div>");
+                                      temp=temp.concat("<br>Achat : " + Math.round(response.bike[i].price) + "  €\
+                                      <br><b>Leasing : " + response.bike[i].leasingPrice + " €/mois</b></p></div></div>");
                                     }
                                     var $item = $(temp);
                                     // add width and height class
