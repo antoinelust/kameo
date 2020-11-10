@@ -109,10 +109,17 @@
                     } else{
                       document.getElementById('license').style.display = "none";
                     }
-                  } 
+                  }
                 </script>
-
-                <div class="col-sm-8">
+                <div class="col-sm-4">
+                  <label for="priority"> Afficher ? </label>
+                  <input
+                    type="checkbox"
+                    class="form-control"
+                    name="display"
+                  />
+                </div>
+                <div class="col-sm-4">
                   <label for="link"> Lien vers le site : </label>
                   <input
                     type="text"
@@ -123,7 +130,9 @@
                 <div class="col-sm-4">
                   <label for="priority"> Priorité : </label>
                   <input
-                    type="text"
+                    type="number"
+                    min='0'
+                    max='0'
                     class="form-control required"
                     name="priority"
                   />
@@ -251,7 +260,7 @@
                 type: "success",
               }
             );
-            
+
             listPortfolioBikes();
             document.getElementById("widget-addCatalog-form").reset();
             $("#addPortfolioBike").modal("toggle");

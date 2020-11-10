@@ -154,7 +154,7 @@ try{
 
             include 'connexion.php';
 
-              $sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE STAANN != 'D' ORDER BY STOCK DESC, BRAND, MODEL";
+            $sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE STAANN != 'D' ORDER BY STOCK DESC, BRAND, MODEL";
 
             $stmt = $conn->prepare($sql);
             if($stmt){
@@ -188,7 +188,7 @@ try{
                 $response['bike']=($bikes);
                 echo json_encode($response);
             }else{
-                error_message('500', 'Unable to retrieve portfolio bikes');
+                error_message('500', 'Unable to list portfolio bikes');
             }
             $stmt->close();
             $conn->close();
@@ -197,7 +197,7 @@ try{
         }
         if($action=="retrieve"){
             include 'connexion.php';
-            $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, LINK as url, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, LICENSE as license, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE ID='$ID'";
+            $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, LINK as url, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE ID='$ID'";
             $stmt = $conn->prepare($sql);
             if($stmt){
                 //$stmt->bind_param('ffi', $marginBike, $marginOther, $leasingDuration);
