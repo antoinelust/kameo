@@ -12,7 +12,6 @@ include 'globalfunctions.php';
 try{
     if(isset($_GET['action'])){
         $action=isset($_GET['action']) ? $_GET['action'] : NULL;
-        $comingFrom=isset($_GET['comingFrom']) ? $_GET['comingFrom'] : NULL;
         $ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
         if($action=="list"){
@@ -155,14 +154,7 @@ try{
 
             include 'connexion.php';
 
-            if($comingFrom)
-            {
-                $sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, LICENSE as license, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE STAANN != 'D' ORDER BY STOCK DESC, MODEL";
-            }
-            else
-            {
-                $sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE STAANN != 'D' ORDER BY BRAND, MODEL";
-            }
+              $sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE STAANN != 'D' ORDER BY STOCK DESC, BRAND, MODEL";
 
             $stmt = $conn->prepare($sql);
             if($stmt){

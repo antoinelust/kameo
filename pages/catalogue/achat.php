@@ -113,7 +113,7 @@ include 'include/head.php';
                     <div class="col-md-9 catalog">
 						<div style="background-color: #D3EFDD">
 							<h3 class="text-dark text-center">Afin de calculer au mieux le coût réel de votre vélo, merci de renseigner les champs ci-dessous avec vos informations.</h3>
-              <a data-target="#informationsCalcul" data-toggle="modal" href="#">En savoir plus</a>
+              <a data-target="#informationsCalcul" data-toggle="modal" href="#" class="text-green"><ins><i class="fas fa-plus"></i> En savoir plus</ins></a>
 
 							<div class="accordion color">
 								<div class="ac-item" style= "background-color: #D3EFDD">
@@ -123,7 +123,9 @@ include 'include/head.php';
 										<form id="cash4bike-form" role="form" method="get">
 										<div class="row">
 											<div class="col-md-12" style= "background-color: #D3EFDD">
+												<small class="text-dark">*Les informations seront utilisées à des fins commerciales uniquement par KAMEO Bikes et non communiquées à des tiers.</small>
 												<h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
+
 
 												<div class="form-group col-md-12 ">
 													<div class="employe">
