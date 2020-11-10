@@ -20,8 +20,9 @@ $display=isset($_POST['display']) ? "Y" : "N";
 $motor = $_POST["motor"];
 $battery = $_POST["battery"];
 $transmission = $_POST["transmission"];
-$license = $_POST["license"];
-
+//$license = $_POST["license"];
+$season = $_POST["season"];
+$priority = $_POST["priority"];
 
 if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
 
@@ -96,21 +97,27 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     include 'connexion.php';
 
-	$sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN, MOTOR, BATTERY, TRANSMISSION, LICENSE) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '', '$motor', '$battery', '$transmission', '$license')";
+      if($priority<0 || $priority>100)
+      {
+            errorMessage("ES0063");
+      }
+      else
+      {
+            $sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN, MOTOR, BATTERY, TRANSMISSION, SEASON, PRIORITY) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '', '$motor', '$battery', '$transmission', '$season', '$priority')";
 
-	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
-	$conn->close();
+            if ($conn->query($sql) === FALSE) {
+                  $response = array ('response'=>'error', 'message'=> $conn->error);
+                  echo json_encode($response);
+                  die;
+            }
+            $conn->close();
 
-	 successMessage("SM0015");
-
+            successMessage("SM0015");
+      }
     } else {
-        $response = array ('response'=>'error');
-        echo json_encode($response);
-        die;
+      $response = array ('response'=>'error');
+      echo json_encode($response);
+      die;
     }
 
 }

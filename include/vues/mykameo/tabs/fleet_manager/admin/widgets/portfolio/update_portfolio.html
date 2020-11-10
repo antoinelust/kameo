@@ -97,14 +97,22 @@
                       <option value="N">N</option>
                     </select>
                   </div>
-                  <div class="col-sm-4" id="licenseUpdate" name="licenseUpdate">
+                  <div class="col-sm-4">
+                    <h4><span> Saison : </span></h4>
+                    <select class="form-control required" name="season">
+                      <option value="2019-2020">2019-2020</option>
+                      <option value="2020-2021">2020-2021</option>
+                      <option value="2021-2022">2021-2022</option>
+                    </select>
+                  </div>
+                  <!--<div class="col-sm-4" id="licenseUpdate" name="licenseUpdate">
                     <label for="license" name="license"> Plaque d'immatriculation : </label>
                     <input
                       type="text"
                       class="form-control required"
                       name="license"
                     />
-                  </div>
+                  </div>  -->
                 </div>
                 <div class="col-sm-12">
                   <div class="col-sm-4">
@@ -141,12 +149,20 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-8">
+                  <div class="col-sm-4">
                     <label for="link"> Lien vers le site : </label>
                     <input
                       type="text"
                       class="form-control required"
                       name="link"
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="priority"> Priorité : </label>
+                    <input
+                      type="text"
+                      class="form-control required"
+                      name="priority"
                     />
                   </div>
                 </div>

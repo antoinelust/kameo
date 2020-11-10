@@ -230,7 +230,7 @@
               </div>
               <div class="separator"></div>
               <div class="form-group col-sm-12">
-                <div class="row orderAccessories">
+                <div class="row orderAccessories" id="orderAccessories">
                   <div class="col-sm-4">
                     <h4 class="text-green">Accessoires</h4>
                   </div>
@@ -252,8 +252,10 @@
                       type="button"
                     ></button>
                   </div>
+                  <span id="ExistingAccessory"></span>
                   <table
                     class="table table-condensed tableFixed otherCostsAccesoiresTable hideAt0"
+                    id="otherCostsAccesoiresTable"
                   >
                     <thead>
                       <th class="accessoriesLabel"></th>
@@ -282,62 +284,6 @@
                   <i class="fa fa-paper-plane"></i>Envoyer
                 </button>
               </div>
-          <!--<div class="form-group col-sm-12">
-                <h4 class="text-green">Ajouter un accessoire</h4>
-                <div class="col-sm-12">
-                  <div class="col-sm-4">
-                    <label for="accessoryID">Accessory ID</label>
-                    <input
-                      type="text"
-                      name="accessoryID"
-                      class="form-control"
-                      readonly
-                    />
-                  </div>
-                  <div class="col-sm-4">
-                    <label for="brandAccessory">Marque accessoire</label>
-                    <input
-                      type="text"
-                      name="brandAccessory"
-                      class="form-control"
-                    />
-                  </div>
-                  <div class="col-sm-4">
-                    <label for="category">Catégorie</label>
-                    <input
-                      type="text"
-                      name="category"
-                      class="form-control"
-                    />
-                  </div>
-                </div>
-                <div class="col-sm-12">
-                  <div class="col-sm-4">
-                    <label for="buyingPrice">Prix d'achat</label>
-                    <input type="text" name="buyingPrice" class="form-control" />
-                  </div>
-                  <div class="col-sm-4">
-                    <label for="sellingPrice">Prix HTVA</label>
-                    <input type="text" name="sellingPrice" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="description">Description</label>
-                    <textarea
-                      class="form-control"
-                      rows="5"
-                      name="description"
-                    ></textarea>
-                </div>
-                <div class="col-sm-12">
-                  <button
-                    class="button small green button-3d rounded icon-left"
-                    type="submit"
-                  >
-                    <i class="fa fa-paper-plane"></i>Envoyer
-                  </button>
-                </div>
-              </div> -->
             </form>
           </div>
         </div>

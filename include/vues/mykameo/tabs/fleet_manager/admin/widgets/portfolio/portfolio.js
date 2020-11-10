@@ -88,7 +88,7 @@ function initializeUpdatePortfolioBike(ID) {
           response.utilisation
         );
 
-        if(response.utilisation == "Speedpedelec"){
+        /*if(response.utilisation == "Speedpedelec"){
           $("#licenseUpdate").removeClass("hidden");
         }else{
           $("#licenseUpdate").addClass("hidden");
@@ -100,7 +100,7 @@ function initializeUpdatePortfolioBike(ID) {
           } else{
             $("#licenseUpdate").addClass("hidden");
           }
-        });
+        });*/
 
         $("#widget-updateCatalog-form select[name=electric]").val(
           response.electric
@@ -108,8 +108,11 @@ function initializeUpdatePortfolioBike(ID) {
         $("#widget-updateCatalog-form input[name=electric]").val(
           response.electric
         );
-        $("#widget-updateCatalog-form input[name=license]").val(
+        /*$("#widget-updateCatalog-form input[name=license]").val(
           response.license
+        );*/
+        $("#widget-updateCatalog-form select[name=season]").val(
+          response.season
         );
         $("#widget-updateCatalog-form input[name=buyPrice]").val(
           response.buyingPrice
@@ -122,6 +125,8 @@ function initializeUpdatePortfolioBike(ID) {
         $("#widget-updateCatalog-form input[name=motor]").val(response.motor);
         $("#widget-updateCatalog-form input[name=battery]").val(response.battery);
         $("#widget-updateCatalog-form input[name=transmission]").val(response.transmission);
+        $("#widget-updateCatalog-form input[name=priority]").val(response.priority);
+          
         document.getElementsByClassName("bikeCatalogImage")[0].src =
           "images_bikes/" +
           response.brand.toLowerCase().replace(/ /g, "-") +

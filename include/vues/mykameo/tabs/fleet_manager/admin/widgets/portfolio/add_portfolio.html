@@ -85,14 +85,22 @@
                     <option value="N">N</option>
                   </select>
                 </div>
-                <div class="col-sm-4" id="license" style="display:none;">
+                <div class="col-sm-4">
+                  <label for="season"> Saison : </label>
+                  <select class="form-control required" name="season">
+                    <option value="2019-2020">2019-2020</option>
+                    <option value="2020-2021">2020-2021</option>
+                    <option value="2021-2022">2021-2022</option>
+                  </select>
+                </div>
+                <!--<div class="col-sm-4" id="license" style="display:none;">
                   <label for="license" name="license"> Plaque d'immatriculation : </label>
                   <input
                     type="text"
                     class="form-control required"
                     name="license"
                   />
-                </div>
+                </div> -->
 
                 <script type="text/javascript">
                   function showDivLicense(select){
@@ -104,12 +112,20 @@
                   } 
                 </script>
 
-                <div class="col-sm-12">
+                <div class="col-sm-8">
                   <label for="link"> Lien vers le site : </label>
                   <input
                     type="text"
                     class="form-control required"
                     name="link"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <label for="priority"> Priorité : </label>
+                  <input
+                    type="text"
+                    class="form-control required"
+                    name="priority"
                   />
                 </div>
               </div>

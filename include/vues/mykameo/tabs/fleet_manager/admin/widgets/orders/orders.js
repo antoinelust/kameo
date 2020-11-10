@@ -151,6 +151,8 @@ function list_bikes(){
 }
 
 function retrieve_command(ID){
+  $('.otherCostsAccesoiresTable thead').html('');
+  $('.otherCostsAccesoiresTable tbody').html('');
   list_bikes();
   $.ajax({
     url: 'apis/Kameo/companies/companies.php',
@@ -213,21 +215,77 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=testDate]').val(response.order.testDate);
           $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-          //$('#widget-order-form input[name=accessoryID]').val(response.order.accessoryID);
-          $('#widget-order-form select[name=accessoryAccessory]').val(response.order.typeAccessory);
-          $('#widget-order-form [name=buyingPriceAcc]').val(response.order.aBuyingPrice);
-          $('#widget-order-form [name=sellingPriceAcc]').val(response.order.aPriceHTVA);
-          $('#widget-order-form select[name=accessoryCategory]').val(response.order.aCategory);
-          /*$('#widget-order-form textarea[name=description]').val(response.order.description); */
           $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
 
           if(response.order.estimatedDeliveryDate != null){
               $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
           }
+
+          //Afficher les accessoires
+          var dest ="";
+          
+          if (response.accessoryNumber > 0) {
+            var i = 0;
+            var temp =
+              '<table class="table"><tbody><thead><tr><th scope="col"><span class="fr-inline">Catégorie</span></th><th scope="col"><span class="fr-inline">Accessoire</span></th><th scope="col"><span class="fr-inline">Prix d\'Achat</span></th><th scope="col"><span class="fr-inline">Prix vente HTVA</span></th><th></th></tr></thead>';
+            dest = dest.concat(temp);
+            while (i < response.accessoryNumber) {
+              var temp =
+                '<tr><td scope="row" name="categoryAcc" id="categoryAcc">' +
+                response.order[i].aCategory +
+                '</td><td name="accessoryAcc" id="accessoryAcc">' +
+                response.order[i].typeAccessory +
+                "</td><td>" +
+                response.order[i].aBuyingPrice +
+                "</td><td>" +
+                response.order[i].aPriceHTVA +
+                "</td><td>" +
+                '<a href="#" class="deleteAccessory" style="color:red" name="'+response.order[i].accessoryID+'">Delete</a>' +
+                "</td></tr>";
+              dest = dest.concat(temp);
+              i++;
+            }
+            dest = dest.concat("</tbody></table>");
+          }
+          document.getElementById("ExistingAccessory").innerHTML = dest;
+
+
+          $(".deleteAccessory").click(function () {
+            $.ajax({
+              url: 'apis/Kameo/orders_management.php',
+              type: 'get',
+              data: {'action': 'delete', 'ID': this.name, 'email': email, },
+              success: function(response){
+                if(response.response == 'success'){
+                  $.notify(
+                    {
+                      message: response.message,
+                    },
+                    {
+                      type: "success",
+                    }
+                  );
+                  retrieve_command(ID);
+                  //document.getElementById("ExistingAccessory").reset();
+                }else {
+                  $.notify(
+                    {
+                      message: response.message,
+                    },
+                    {
+                      type: "danger",
+                    }
+                  );
+                }
+              }
+            });
+          });
         }
       }
-    });
+    });   
   })
+
+  
 }
 
 //Accessoires
@@ -254,6 +312,7 @@ get_all_accessories().done(function(response){
       categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
     }
   });
+
 
   $('.orderAccessories .glyphicon-plus')[0].addEventListener("click",function(){
     //gestion accessoriesNumber
@@ -369,7 +428,6 @@ $('body').on('change', '#widget-order-form select[name=portfolioID]',function(){
               $('#widget-order-form input[name=model]').val(response.model);
               $('#widget-order-form select[name=frameType]').val(response.frameType);
               $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-    ')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg");
-
           }
     }
   });

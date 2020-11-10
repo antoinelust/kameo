@@ -123,26 +123,6 @@ if(isset($_POST['action'])){
             $conn->close();
         }
 
-
-        /*if(isset($_POST['accessoryCategory']) && isset($_POST['accessoryAccessory']) && $_POST['buyingPriceAcc'] != '' && $_POST['sellingPriceAcc'] != '')
-        {
-            include 'connexion.php';
-
-            foreach ($_POST['accessoryCategory'] as $val)
-            {
-                $category = $_POST['accessoryCategory'][$val];
-                $accessory = $_POST['accessoryAccessory'][$val];
-                $buyingP = $_POST['buyingPriceAcc'][$val];
-                $sellingP = $_POST['sellingPriceAcc'][$val];
-
-                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES ('$category', '$accessory', '$buyingP', '$sellingP', '//', '$ID')";
-                mysqli_query($conn, $sql2);
-                $val++;
-            }
-
-            $conn->close();
-        }*/
-
         if(isset($_POST['accessoryCategory']) && isset($_POST['accessoryAccessory']))
         {
             include 'connexion.php';
@@ -164,35 +144,18 @@ if(isset($_POST['action'])){
             $conn->close();
         }
 
-
-
-
-        /*else if(isset($deleteAccessory))
+        /*if($brandAccessory != '' && $categoryAccessory != '' && $buyingPrice != '' && $sellingPrice != '' && $descriptionAccessory != '')
         {
             include 'connexion.php';
 
-                $sql2 = "DELETE FROM order_accessories WHERE ORDER_ID='$ID')";
-                if ($conn->query($sql2) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
+            $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES('$brandAccessory', '$categoryAccessory', '$buyingPrice', '$sellingPrice', '$descriptionAccessory','$ID') ON DUPLICATE KEY UPDATE BRAND='$brandAccessory', CATEGORY='$categoryAccessory', BUYING_PRICE='$buyingPrice', PRICE_HTVA='$sellingPrice', DESCRIPTION='$descriptionAccessory', ORDER_ID='$ID'";
+            if ($conn->query($sql2) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
             $conn->close();
         }*/
-
-
-            /*if($brandAccessory != '' && $categoryAccessory != '' && $buyingPrice != '' && $sellingPrice != '' && $descriptionAccessory != '')
-            {
-                include 'connexion.php';
-
-                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES('$brandAccessory', '$categoryAccessory', '$buyingPrice', '$sellingPrice', '$descriptionAccessory','$ID') ON DUPLICATE KEY UPDATE BRAND='$brandAccessory', CATEGORY='$categoryAccessory', BUYING_PRICE='$buyingPrice', PRICE_HTVA='$sellingPrice', DESCRIPTION='$descriptionAccessory', ORDER_ID='$ID'";
-                if ($conn->query($sql2) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $conn->close();
-            }*/
 
         successMessage("SM0003");
     }else if($action=="confirmCommand"){
@@ -411,17 +374,42 @@ if(isset($_POST['action'])){
             die;
         }
         $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-        $response['order']['typeAccessory']=$resultat['BRAND'];
-        $response['order']['aCategory']=$resultat['CATEGORY'];
-        $response['order']['aBuyingPrice']=$resultat['BUYING_PRICE'];
-        $response['order']['aPriceHTVA']=$resultat['PRICE_HTVA'];
 
+        $i=0;
+        
+        while($resultat = mysqli_fetch_array($result)){
+            $response['order'][$i]['typeAccessory']=$resultat['BRAND'];
+            $response['order'][$i]['aCategory']=$resultat['CATEGORY'];
+            $response['order'][$i]['aBuyingPrice']=$resultat['BUYING_PRICE'];
+            $response['order'][$i]['aPriceHTVA']=$resultat['PRICE_HTVA'];
+            $response['order'][$i]['accessoryID']=$resultat['ID'];
+            $i++;
+        }
+        $response['accessoryNumber']=$i;
+        $result = mysqli_query($conn, $sql);
 
         echo json_encode($response);
         die;
     }
 
+    if($action=='delete')
+    {
+        include 'connexion.php';
+        $ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
+
+        $sql = "DELETE FROM order_accessories WHERE ID='$ID'";
+        if ($conn->query($sql) === FALSE) {
+            
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $response = array ('response'=>'success', 'message'=> "Successfully Deleted!");
+
+        echo json_encode($response);
+        die;
+    }
 }
 else{
     errorMessage("ES0012");

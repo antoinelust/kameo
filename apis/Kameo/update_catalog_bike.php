@@ -27,7 +27,9 @@ if($action=="update"){
     $motor = $_POST["motor"];
     $battery = $_POST["battery"];
     $transmission = $_POST["transmission"];
-    $license = $_POST["license"];
+    //$license = $_POST["license"];
+    $season = $_POST["season"];
+    $priority = $_POST["priority"];
     
     include 'connexion.php';
     $sql = "select * from bike_catalog where ID='$ID'";
@@ -172,23 +174,30 @@ if($action=="update"){
      if($ID != '' && $brand != '' && $model != '' && $frameType != '' && $utilisation != '' && $electric != '' && $price != '' && $stock != '') {
 
         include 'connexion.php';
-        $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link', MOTOR='$motor', BATTERY='$battery', TRANSMISSION='$transmission', LICENSE='$license' WHERE ID='$ID'";
 
-         if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
+        if($priority<0 || $priority>100)
+        {
+            errorMessage("ES0063");
         }
-        $result = mysqli_query($conn, $sql);
-        $conn->close();
+        else{
+            $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link', MOTOR='$motor', BATTERY='$battery', TRANSMISSION='$transmission', SEASON='$season', PRIORITY='$priority' WHERE ID='$ID'";
 
-         successMessage("SM0003");
+            if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result = mysqli_query($conn, $sql);
+            $conn->close();
 
-        } else {
-            $response = array ('response'=>'error');     
-            echo json_encode($response);
-            die;
+            successMessage("SM0003");
         }
+        
+    } else {
+        $response = array ('response'=>'error');     
+        echo json_encode($response);
+        die;
+    }
 
     }
     else
