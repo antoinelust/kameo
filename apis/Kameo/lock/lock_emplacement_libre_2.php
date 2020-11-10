@@ -1,6 +1,13 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 
+
+error_log("--------------------------------------------------------------------------------------- \n", 3, "logs/logs_boxes.log");
+error_log(date("Y-m-d H:i:s")." - lock_emplacement_libre_2.php - INPUT - building :".$_GET['building']."\n", 3, "logs/logs_boxes.log");
+error_log(date("Y-m-d H:i:s")." - lock_emplacement_libre_2.php - INPUT - max_empl :".$_GET['max_empl']."\n", 3, "logs/logs_boxes.log");
+
+
+
 try
 {
 	$bdd = new PDO('mysql:host='.$servername.';dbname='.$dbname.';charset=utf8', $username, $password);
@@ -26,6 +33,8 @@ if($emplacement > $_GET['max_empl'])
 }
 else
 {
+	error_log(date("Y-m-d H:i:s")." - lock_emplacement_libre_2.php- OUTPUT - Emplacement :".$emplacement."\n", 3, "logs/logs_boxes.log");
+
 	echo $emplacement;
 }
 

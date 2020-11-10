@@ -33,6 +33,9 @@ function get_prices($retailPrice, $company){
       $discount=0;
       $remainingPriceIncludedInLeasing="N";
     }
+  }else{
+    $discount=0;
+    $remainingPriceIncludedInLeasing='N';
   }
 
 

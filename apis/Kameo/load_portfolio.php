@@ -36,6 +36,16 @@ try{
 
             if($revenuEmployee != NULL && $frequenceBikePerWeek != NULL && $homeAddress != NULL && $workAddress != NULL && $type != NULL && $prime != NULL && $transport != NULL && $transportationEssence != NULL){
 
+              include 'connexion.php';
+              $sql = "INSERT INTO cash4bike (USR_MAJ, DOMICILE, TRAVAIL, REVENU, TRANSPORT,  ESSENCE, PRIME, FREQUENCE, MODEL) VALUES ('cash4Bike.php', '$homeAddress', '$workAddress', '$revenuEmployee', '$transport', '$transportationEssence', '$prime', '$frequenceBikePerWeek', '0')";
+              if ($conn->query($sql) === FALSE) {
+                $response = array ('response'=>'error', 'message'=> $conn->error);
+                echo json_encode($response);
+                die;
+              }
+              $conn->close();
+
+
               if($revenuEmployee<636.49){
                   $taxRate=0;
               }else if($revenuEmployee>=636.49 && $revenuEmployee < 951.87){
@@ -197,7 +207,11 @@ try{
         }
         if($action=="retrieve"){
             include 'connexion.php';
+<<<<<<< Updated upstream
             $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, LINK as url, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE ID='$ID'";
+=======
+            $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, LINK as url, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission FROM bike_catalog WHERE ID='$ID'";
+>>>>>>> Stashed changes
             $stmt = $conn->prepare($sql);
             if($stmt){
                 //$stmt->bind_param('ffi', $marginBike, $marginOther, $leasingDuration);

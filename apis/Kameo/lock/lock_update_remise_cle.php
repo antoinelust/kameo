@@ -4,6 +4,12 @@ $building=isset($_GET['building']) ? htmlspecialchars($_GET['building']) : NULL;
 $frame_number=isset($_GET['frame_number']) ? htmlspecialchars($_GET['frame_number']) : NULL;
 $emplacement=isset($_GET['emplacement']) ? htmlspecialchars($_GET['emplacement']) : NULL;
 
+error_log("--------------------------------------------------------------------------------------- \n", 3, "logs/logs_boxes.log");
+error_log(date("Y-m-d H:i:s")." - lock_update_remise_cle.php - INPUT building :".$_GET['building']."\n", 3, "logs/logs_boxes.log");
+error_log(date("Y-m-d H:i:s")." - lock_update_remise_cle.php - lock_update_remise_cle.php - INPUT frame_number :".$_GET['frame_number']."\n", 3, "logs/logs_boxes.log");
+error_log(date("Y-m-d H:i:s")." - lock_update_remise_cle.php - INPUT emplacement :".$_GET['emplacement']."\n", 3, "logs/logs_boxes.log");
+
+
 if($building == NULL || $frame_number == NULL || $emplacement == NULL){
     echo "-1";
     die;
@@ -36,6 +42,8 @@ $resultat = mysqli_fetch_assoc($result);
 $conn->close();
 
 $reservationID=$resultat['RESERVATION_ID'];
+error_log(date("Y-m-d H:i:s")." - lock_update_remise_cle.php - reservations :".$reservationID."\n", 3, "logs/logs_boxes.log");
+
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='mykameo', STATUS='Closed' WHERE ID='$reservationID'";

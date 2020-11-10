@@ -192,9 +192,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     {
         $bikeID=$row['ID'];
 
-        $sql2="SELECT max(DATE_END_2), BUILDING_END FROM reservations WHERE BIKE_ID='$bikeID' and DATE_END_2 < '$dateEndString' and STAANN!='D' group by BUILDING_END";
-
-
+        $sql2="SELECT DATE_END_2, BUILDING_END FROM reservations WHERE BIKE_ID='$bikeID' and DATE_END_2 < '$dateEndString' and STAANN!='D' ORDER BY DATE_END_2 DESC LIMIT 1";
         if ($conn->query($sql2) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -206,8 +204,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
         if($resultat2['BUILDING_END'] == $intake_building){
 
-            $sql3="SELECT min(DATE_START_2), BUILDING_START FROM reservations WHERE BIKE_ID='$bikeID' and DATE_START_2 > '$dateEndString' and STAANN!='D' group by BUILDING_START";
-
+            $sql3="SELECT DATE_START_2, BUILDING_START FROM reservations WHERE BIKE_ID='$bikeID' and DATE_START_2 > '$dateEndString' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
             if ($conn->query($sql3) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
