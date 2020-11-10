@@ -207,11 +207,7 @@ try{
         }
         if($action=="retrieve"){
             include 'connexion.php';
-<<<<<<< Updated upstream
             $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, LINK as url, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE ID='$ID'";
-=======
-            $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, LINK as url, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission FROM bike_catalog WHERE ID='$ID'";
->>>>>>> Stashed changes
             $stmt = $conn->prepare($sql);
             if($stmt){
                 //$stmt->bind_param('ffi', $marginBike, $marginOther, $leasingDuration);
