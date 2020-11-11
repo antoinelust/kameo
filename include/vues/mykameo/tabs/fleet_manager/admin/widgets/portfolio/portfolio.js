@@ -150,7 +150,6 @@ function initializeUpdatePortfolioBike(ID) {
         $("#widget-updateCatalog-form input[name=display]").prop(
           "checked",
           Boolean(response.display == "Y")
-
         );
       }
 
