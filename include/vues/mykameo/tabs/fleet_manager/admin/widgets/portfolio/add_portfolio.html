@@ -132,7 +132,7 @@
                   <input
                     type="number"
                     min='0'
-                    max='0'
+                    max='100'
                     class="form-control required"
                     name="priority"
                   />
@@ -163,6 +163,17 @@
                     name="transmission"
                   />
                 </div>
+                <div class="col-sm-4">
+                  <label for="sizes"> Tailles disponibles : </label>
+                  <select name="sizes[]" class="form-control" id="sizes" size = 6 multiple>
+                    <option value="unique">Unique</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                  </select>
+                </div>
               </div>
               <div class="separator"></div>
               <h4 class="text-green">Information financières et stock</h4>
@@ -190,12 +201,6 @@
                     class="bikeCatalogStock form-control"
                     name="stock"
                   />
-                </div>
-              </div>
-              <div class="col-sm-12">
-                <div class="col-sm-4">
-                  <label for="display">Afficher ? </label>
-                  <input type="checkbox" name="display" class="form-control" />
                 </div>
               </div>
               <div class="separator"></div>

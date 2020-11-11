@@ -32,7 +32,7 @@ function listPortfolioBikes() {
         console.log(response.message);
       } else {
         var dest =
-          '<table class="table table-condensed" id="portfolioBikeListing"><h4 class="fr-inline text-green">Vélos du catalogue:</h4><h4 class="en-inline text-green">Portfolio bikes:</h4><h4 class="nl-inline text-green">Portfolio bikes:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addPortfolioBike" data-toggle="modal" onclick="initializeCreatePortfolioBike()" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class="fr-inline">Marque</span><span class="en-inline">Brand</span><span class="nl-inline">Brand</span></th><th><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th><span class="fr-inline">Utilisation</span><span class="en-inline">Use</span><span class="nl-inline">Use</span></th><th><span class="fr-inline">Electrique ?</span><span class="en-inline">Electric</span><span class="nl-inline">Electric</span></th><th><span class="fr-inline">Cadre</span><span class="en-inline">Frame</span><span class="nl-inline">Frame</span></th><th><span class="fr-inline">Prix</span><span class="en-inline">Price</span><span class="nl-inline">Price</span></th><th>Afficher</th><th>Saison</th><th></th></tr></thead><tbody>';
+          '<table class="table table-condensed" id="portfolioBikeListing"><h4 class="fr-inline text-green">Vélos du catalogue:</h4><h4 class="en-inline text-green">Portfolio bikes:</h4><h4 class="nl-inline text-green">Portfolio bikes:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addPortfolioBike" data-toggle="modal" onclick="initializeCreatePortfolioBike()" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class="fr-inline">Marque</span><span class="en-inline">Brand</span><span class="nl-inline">Brand</span></th><th><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th><span class="fr-inline">Utilisation</span><span class="en-inline">Use</span><span class="nl-inline">Use</span></th><th><span class="fr-inline">Electrique ?</span><span class="en-inline">Electric</span><span class="nl-inline">Electric</span></th><th><span class="fr-inline">Cadre</span><span class="en-inline">Frame</span><span class="nl-inline">Frame</span></th><th><span class="fr-inline">Prix</span><span class="en-inline">Price</span><span class="nl-inline">Price</span></th><th>Afficher</th><th>Saison</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>Uni</th><th>Total</th><th></th></tr></thead><tbody>';
         for (i = 0; i < response.bikeNumber; i++) {
           dest = dest.concat(
             "<tr><td>" +
@@ -53,7 +53,7 @@ function listPortfolioBikes() {
               response.bike[i].display +
               "</td><td>" +
               response.bike[i].season +
-              "</td><td><a href='#' class='text-green updatePortfolioClick' onclick='initializeUpdatePortfolioBike(\"" +
+              "</td><td>"+response.bike[i].stockXS+"</td><td>"+response.bike[i].stockS+"</td><td>"+response.bike[i].stockM+"</td><td>"+response.bike[i].stockL+"</td><td>"+response.bike[i].stockXL+"</td><td>"+response.bike[i].stockUni+"</td><td>"+response.bike[i].stockTotal+"</td><td><a href='#' class='text-green updatePortfolioClick' onclick='initializeUpdatePortfolioBike(\"" +
               response.bike[i].ID +
               "\")' data-target='#updatePortfolioBike' data-toggle='modal'>Mettre à jour </a></td></tr>"
           );
@@ -76,6 +76,31 @@ function initializeUpdatePortfolioBike(ID) {
     type: "get",
     data: { action: "retrieve", ID: ID },
     success: function (response) {
+      if(response.sizes != null){
+        console.log(response.sizes);
+        var sizes = response.sizes.split(",");
+        const selectValues = [1, 2];
+        const select = document.getElementById('sizes');
+
+        /* Iterate options of select element */
+        for (const option of document.querySelectorAll('#sizes option')){
+
+          /* Parse value to integer */
+          const value = option.value;
+          console.log(value);
+
+          /* If option value contained in values, set selected attribute */
+          if (sizes.indexOf(value) !== -1) {
+            option.setAttribute('selected', 'selected');
+          }
+          /* Otherwise ensure no selected attribute on option */
+          else {
+            option.removeAttribute('selected');
+          }
+        }
+      }
+
+
       if (response.response == "error") {
         console.log(response.message);
       } else {

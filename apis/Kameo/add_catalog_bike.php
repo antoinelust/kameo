@@ -23,6 +23,7 @@ $transmission = $_POST["transmission"];
 //$license = $_POST["license"];
 $season = $_POST["season"];
 $priority = $_POST["priority"];
+$sizes="";
 
 if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
 
@@ -101,19 +102,26 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
       {
             errorMessage("ES0063");
       }
-      else
-      {
-            $sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN, MOTOR, BATTERY, TRANSMISSION, SEASON, PRIORITY) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '', '$motor', '$battery', '$transmission', '$season', '$priority')";
 
-            if ($conn->query($sql) === FALSE) {
-                  $response = array ('response'=>'error', 'message'=> $conn->error);
-                  echo json_encode($response);
-                  die;
-            }
-            $conn->close();
 
-            successMessage("SM0015");
+      if(isset($_POST['sizes'])){
+        foreach($_POST['sizes'] as $size){
+          $sizes=$sizes.$size.",";
+        }
+        $sizes=substr($sizes, 0, -1);
       }
+
+      $sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN, MOTOR, BATTERY, TRANSMISSION, SIZES, SEASON, PRIORITY) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '', '$motor', '$battery', '$transmission', '$sizes', '$season', '$priority')";
+
+      if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+      }
+      $conn->close();
+
+      successMessage("SM0015");
+
     } else {
       $response = array ('response'=>'error');
       echo json_encode($response);

@@ -38,6 +38,7 @@ if(isset($_POST['action'])){
         $buyingPrice=$_POST['price'];
         $frameReference=$_POST['frameReference'];
         $lockerReference=$_POST['lockerReference'];
+        $gpsID=$_POST['gpsID'];
         $user=$_POST['user'];
         $company=$_POST['company'];
         $buyingDate=isset($_POST['orderingDate']) ? $_POST['orderingDate'] : NULL;
@@ -141,6 +142,11 @@ if(isset($_POST['action'])){
             }else{
                 $lockerReference='NULL';
             }
+            if($gpsID!=NULL){
+                $gpsID="'".$gpsID."'";
+            }else{
+                $gpsID='NULL';
+            }
             if($offerReference!=NULL){
                 $offerReference="'".$offerReference."'";
             }else{
@@ -164,7 +170,7 @@ if(isset($_POST['action'])){
             }
 
             include 'connexion.php';
-            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, COLOR, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, LOCKER_REFERENCE, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE, DELIVERY_DATE, ORDER_NUMBER, OFFER_ID, EMAIL) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', $color, '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', $lockerReference, '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice', '$deliveryDate', '$orderNumber', $offerReference, $clientReference)";
+            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, COLOR, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, LOCKER_REFERENCE, GPS_ID, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE, DELIVERY_DATE, ORDER_NUMBER, OFFER_ID, EMAIL) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', $color, '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', $lockerReference, $gpsID, '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice', '$deliveryDate', '$orderNumber', $offerReference, $clientReference)";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -230,6 +236,7 @@ if(isset($_POST['action'])){
         $portfolioID=$_POST['portfolioID'];
         $frameReference=$_POST['frameReference'];
         $lockerReference=$_POST['lockerReference'];
+        $gpsID=$_POST['gpsID'];
         $type_bike = $_POST['bikeType'];
 
         $buyingPrice=isset($_POST['price']) ? $_POST['price'] : NULL;
@@ -292,6 +299,11 @@ if(isset($_POST['action'])){
         }else{
             $lockerReference='NULL';
         }
+        if($gpsID!=NULL){
+            $gpsID="'".$gpsID."'";
+        }else{
+            $gpsID='NULL';
+        }
         if($offerReference!=NULL){
             $offerReference="'".$offerReference."'";
         }else{
@@ -332,9 +344,9 @@ if(isset($_POST['action'])){
             include 'connexion.php';
 
             if($contractType=="order"){
-                $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', COLOR=$color,  CONTRACT_TYPE='$contractType', COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, BIKE_BUYING_DATE='$orderingDate', ESTIMATED_DELIVERY_DATE=$estimatedDeliveryDate, DELIVERY_DATE=$deliveryDate, ORDER_NUMBER='$orderNumber', OFFER_ID=$offerReference, EMAIL=$clientReference where ID = '$bikeID'";
+                $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', COLOR=$color,  CONTRACT_TYPE='$contractType', COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, GPS_ID=$gpsID, BIKE_BUYING_DATE='$orderingDate', ESTIMATED_DELIVERY_DATE=$estimatedDeliveryDate, DELIVERY_DATE=$deliveryDate, ORDER_NUMBER='$orderNumber', OFFER_ID=$offerReference, EMAIL=$clientReference where ID = '$bikeID'";
             }else{
-                $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', COLOR=$color, CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', SOLD_PRICE = $sellPrice, EMAIL=$clientReference where ID = '$bikeID'";
+                $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', COLOR=$color, CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, GPS_ID=$gpsID, AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', SOLD_PRICE = $sellPrice, EMAIL=$clientReference where ID = '$bikeID'";
             }
 
             if ($conn->query($sql) === FALSE) {
@@ -581,15 +593,15 @@ if(isset($_POST['action'])){
             if(isset($_POST['contractType'])){
                 if ($_POST['contractType'] == 'leasing'){
                     $dates = plan_maintenances($_POST['contractStart'], $_POST['contractEnd']);
-                    
+
                     for ($i=0; $i < sizeof($dates); $i++) {
                         $next_date = $dates[$i];
                         $num_m = array_search($next_date, $dates) + 1;
-        
+
                         $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR)
                         SELECT CURRENT_TIMESTAMP, '$user', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '$num_m'
                         FROM DUAL WHERE NOT EXISTS (SELECT * FROM entretiens WHERE BIKE_ID = '$bikeID' AND DATE(DATE + INTERVAL 3 MONTH) >= '$dates[$i]')";
-        
+
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
                             echo json_encode($response);
@@ -599,16 +611,16 @@ if(isset($_POST['action'])){
                 }
                 if ($_POST['contractType'] == 'selling') {
                     $date = date('Y-m-d', strtotime("+3 months", strtotime($_POST['contractStart'])));
-                    $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR) 
+                    $sql="INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR)
                     VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$date', 'AUTOMATICALY_PLANNED', 1)";
-    
+
                     if ($conn->query($sql) === FALSE) {
                         $response = array ('response'=>'error', 'message'=> $conn->error);
                         echo json_encode($response);
                         die;
                     }
                 }
-                
+
             }
 
             $conn->close();

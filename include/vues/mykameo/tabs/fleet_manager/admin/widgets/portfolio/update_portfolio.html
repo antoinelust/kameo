@@ -193,6 +193,17 @@
                       name="transmission"
                     />
                   </div>
+                  <div class="col-sm-4">
+                    <label for="sizes"> Tailles disponibles : </label>
+                    <select name="sizes[]" class="form-control" id="sizes" size = 6 multiple>
+                      <option value="unique">Unique</option>
+                      <option value="XS">XS</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <h4 class="text-green">Image en taille normale</h4>
@@ -245,8 +256,6 @@
                   type="submit"
                 >
                   <i class="fa fa-paper-plane"></i>Sauvegarder
-                </button>
-                  <i class="fa fa-paper-plane"></i>Save
                 </button>
               </div>
             </form>

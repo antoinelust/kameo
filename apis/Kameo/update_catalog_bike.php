@@ -27,10 +27,10 @@ if($action=="update"){
     $motor = $_POST["motor"];
     $battery = $_POST["battery"];
     $transmission = $_POST["transmission"];
-    //$license = $_POST["license"];
     $season = $_POST["season"];
     $priority = $_POST["priority"];
-    
+    $sizes="";
+
     include 'connexion.php';
     $sql = "select * from bike_catalog where ID='$ID'";
     if ($conn->query($sql) === FALSE) {
@@ -39,7 +39,7 @@ if($action=="update"){
         die;
     }
     $result = mysqli_query($conn, $sql);
-    $resultat = mysqli_fetch_assoc($result);    
+    $resultat = mysqli_fetch_assoc($result);
     $conn->close();
     if($resultat['BRAND'] != $brand || $resultat['MODEL'] != $model){
 
@@ -47,7 +47,7 @@ if($action=="update"){
 
         $oldFile=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']).".jpg";
         $newFile=strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).".jpg";
-        
+
         copy($dossier . $oldFile, $dossier . $newFile);
         unlink($dossier . $oldFile);
 
@@ -79,8 +79,8 @@ if($action=="update"){
         //upload of Bike picture
 
         $dossier = '../images_bikes/';
-        
-        
+
+
         include 'connexion.php';
         $sql = "select * from bike_catalog where ID='$ID'";
         if ($conn->query($sql) === FALSE) {
@@ -89,14 +89,14 @@ if($action=="update"){
             die;
         }
         $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);    
+        $resultat = mysqli_fetch_assoc($result);
         $conn->close();
 
         $fichier=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($frameType).$extension;
 
-        if (file_exists($dossier.$fichier)) {   
+        if (file_exists($dossier.$fichier)) {
             unlink($dossier.$fichier) or die("Couldn't delete file");
-        }    
+        }
 
         $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
 
@@ -137,7 +137,7 @@ if($action=="update"){
 
         $dossier = '../images_bikes/';
 
-        
+
         include 'connexion.php';
         $sql = "select * from bike_catalog where ID='$ID'";
         if ($conn->query($sql) === FALSE) {
@@ -146,11 +146,11 @@ if($action=="update"){
             die;
         }
         $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);    
+        $resultat = mysqli_fetch_assoc($result);
 
         $fichier=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($frameType)."_mini".$extension;
 
-        if (file_exists($dossier.$fichier)) {   
+        if (file_exists($dossier.$fichier)) {
             unlink($dossier.$fichier) or die("Couldn't delete file");
         }
 
@@ -179,22 +179,28 @@ if($action=="update"){
         {
             errorMessage("ES0063");
         }
-        else{
-            $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link', MOTOR='$motor', BATTERY='$battery', TRANSMISSION='$transmission', SEASON='$season', PRIORITY='$priority' WHERE ID='$ID'";
 
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            $conn->close();
-
-            successMessage("SM0003");
+        if(isset($_POST['sizes'])){
+          foreach($_POST['sizes'] as $size){
+            $sizes=$sizes.$size.",";
+          }
+          $sizes=substr($sizes, 0, -1);
         }
-        
+
+        $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link', MOTOR='$motor', BATTERY='$battery', TRANSMISSION='$transmission', SEASON='$season', PRIORITY='$priority', SIZES='$sizes' WHERE ID='$ID'";
+
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $conn->close();
+
+        successMessage("SM0003");
+
     } else {
-        $response = array ('response'=>'error');     
+        $response = array ('response'=>'error');
         echo json_encode($response);
         die;
     }
@@ -207,7 +213,7 @@ if($action=="update"){
 }else if($action=="delete"){
     $id = $_POST["id"];
     $user = $_POST["user"];
-    
+
     include 'connexion.php';
     $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', STAANN='D' WHERE ID='$id'";
 
@@ -220,8 +226,8 @@ if($action=="update"){
     $conn->close();
 
      successMessage("SM0018");
-    
-    
+
+
 }else{
     errorMessage("ES0012");
 }

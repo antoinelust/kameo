@@ -395,6 +395,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                         $('#widget-bikeManagement-form input[name=color]').val(response.color);
                         $('#widget-bikeManagement-form input[name=frameReference]').val(response.frameReference);
                         $('#widget-bikeManagement-form input[name=lockerReference]').val(response.lockerReference);
+                        $('#widget-bikeManagement-form input[name=gpsID]').val(response.gpsID);
                         $('#widget-bikeManagement-form input[name=price]').val(response.bikePrice);
                         $('#widget-bikeManagement-form input[name=buyingDate]').val(response.buyingDate);
                         $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);

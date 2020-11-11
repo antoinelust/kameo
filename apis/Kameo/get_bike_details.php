@@ -53,6 +53,7 @@ if($id != NULL)
     $response['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
     $response['orderNumber']=$row['ORDER_NUMBER'];
     $response['offerID']=$row['OFFER_ID'];
+    $response['gpsID']=$row['GPS_ID'];
     if($company == NULL){
         $company=$row['COMPANY'];
     }
@@ -84,9 +85,6 @@ if($id != NULL)
     $response['motor']=$resultat['MOTOR'];
     $response['battery']=$resultat['BATTERY'];
     $response['transmission']=$resultat['TRANSMISSION'];
-    $response['license']=$resultat['LICENSE'];
-
-
 
     $response['status']=$row['STATUS'];
     include 'connexion.php';
