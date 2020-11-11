@@ -151,8 +151,9 @@ function list_bikes(){
 }
 
 function retrieve_command(ID){
-  $('.otherCostsAccesoiresTable thead').html('');
+  $('.accessoriesNumber').html('');
   $('.otherCostsAccesoiresTable tbody').html('');
+  $('.otherCostsAccesoiresTable thead').html('');
   list_bikes();
   $.ajax({
     url: 'apis/Kameo/companies/companies.php',

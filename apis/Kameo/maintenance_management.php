@@ -91,12 +91,13 @@ if (isset($_GET['action'])) {
               FROM entretiens
               INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
               INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
-              WHERE entretiens.ID = $ID;";
+              WHERE entretiens.ID = $ID";
       if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;
       }
+      
       $result = mysqli_query($conn, $sql);
       $resultat = mysqli_fetch_assoc($result);
       $conn->close();

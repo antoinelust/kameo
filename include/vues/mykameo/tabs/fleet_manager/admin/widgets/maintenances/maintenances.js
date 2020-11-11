@@ -121,9 +121,8 @@ function get_maintenance(ID){
       if (response.response == "error") {
         console.log(response.message);
       } else{
+        $('#widget-maintenanceManagement-form select[name=velo]').append('<option valeur="'+response.maintenance.bike_id+'">'+response.maintenance.bike_id+'</option>');
         $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", true);
-
-        //$("#widget-maintenanceManagement-form label[id=velo]").append('<select title="velo" class="form-control required" name="velo" readonly="readonly"></select>');
         $("#widget-maintenanceManagement-form div[name=image]").remove();
         $("#widget-maintenanceManagement-form select[name=company]").attr("disabled", true);
 
@@ -211,9 +210,6 @@ $('body').on('click', '.showMaintenance',function(){
 });
 
 $('body').on('click', '.addMaintenance',function(){
-  $("#widget-maintenanceManagement-form input[name=velo]").remove();
-  $("#widget-maintenanceManagement-form select[name=velo]").remove();
-  $("#widget-maintenanceManagement-form label[id=velo]").append('<select title="velo" class="form-control required form_velo" name="velo"></select>');
   $("#widget-maintenanceManagement-form div[name=image]").remove();
   empty_form();
   $("#widget-maintenanceManagement-form input[name=action]").val("add");
@@ -274,7 +270,7 @@ $('body').on('change', '.form_company',function(){
           .end();
 
         for (var i = 0; i < response.bikeNumber; i++) {
-          $("#widget-maintenanceManagement-form select[name=velo]").append(
+          $('#widget-maintenanceManagement-form select[name=velo]').append(
             '<option value="' +
               response.bike[i].id +
               '">' +
