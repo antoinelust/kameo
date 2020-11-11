@@ -10,7 +10,7 @@ error_log("---------------------------------------------------------------------
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - building :".$_GET['building']."\n", 3, "logs/logs_boxes.log");
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - frame_number :".$_GET['frame_number']."\n", 3, "logs/logs_boxes.log");
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - emplacement :".$_GET['emplacement']."\n", 3, "logs/logs_boxes.log");
-error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - RFID :".$_GET['UID']."\n", 3, "logs/logs_boxes.log");
+error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - RFID :".$rfid."\n", 3, "logs/logs_boxes.log");
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - code :".$_GET['code']."\n", 3, "logs/logs_boxes.log");
 
 if( ($code==NULL && $rfid == NULL) || $emplacement == NULL || $building == NULL){
@@ -51,13 +51,11 @@ if($code==NULL){
 
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
-    $conn->close();
     $reservationID=$resultat['ID'];
 
 }else{
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
     $sql="SELECT ID_reservation from locking_code WHERE BUILDING_START = '$building' AND CODE = '$code' AND VALID='Y'";
-
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -66,7 +64,6 @@ if($code==NULL){
 
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
-    $conn->close();
     $reservationID=$resultat['ID_reservation'];
 
 

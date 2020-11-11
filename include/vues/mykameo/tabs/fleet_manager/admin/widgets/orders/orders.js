@@ -224,7 +224,7 @@ function retrieve_command(ID){
 
           //Afficher les accessoires
           var dest ="";
-          
+
           if (response.accessoryNumber > 0) {
             var i = 0;
             var temp =
@@ -283,10 +283,10 @@ function retrieve_command(ID){
           });
         }
       }
-    });   
+    });
   })
 
-  
+
 }
 
 //Accessoires
@@ -294,15 +294,15 @@ get_all_accessories().done(function(response){
   //gestion du moins au lancement de la page
   checkMinus('.orderAccessories','.accessoriesNumber');
   //variables
-  var accessories = response.accessories;
-  if(accessories == undefined){
-    accessories =[];
+  var accessoriesOrder = response.accessories;
+  if(accessoriesOrder == undefined){
+    accessoriesOrder =[];
     console.log('accessories => table vide');
   }
   var categories = [];
 
   //generation du tableau de catégories
-  accessories.forEach((accessory) => {
+  accessoriesOrder.forEach((accessory) => {
     var newCategory = true;
     categories.forEach((category) => {
       if (category.name === accessory.category) {
@@ -317,9 +317,9 @@ get_all_accessories().done(function(response){
 
   $('.orderAccessories .glyphicon-plus')[0].addEventListener("click",function(){
     //gestion accessoriesNumber
-    accessoriesNumber = $("#orderManager").find('.accessoriesNumber').html()*1+1;
-    $('#orderManager').find('.accessoriesNumber').html(accessoriesNumber);
-    $('#accessoriesNumber').val(accessoriesNumber);
+    accessoriesOrderNumber = $("#orderManager").find('.accessoriesNumber').html()*1+1;
+    $('#orderManager').find('.accessoriesNumber').html(accessoriesOrderNumber);
+    $('#accessoriesNumber').val(accessoriesOrderNumber);
 
     //ajout des options du select pour les catégories
     var categoriesOption = "<option hidden disabled selected value></option>";
@@ -329,55 +329,55 @@ get_all_accessories().done(function(response){
 
     //ajout d'une ligne au tableau des accessoires
     $('#orderManager').find('.otherCostsAccesoiresTable tbody')
-    .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
+    .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesOrderNumber)+` accessoriesRow form-group">
     <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td>
     <td class="aBuyingPrice"></td><td class="aPriceHTVA"></td>
     </tr>`);
     //label selon la langue
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
-    .append('<label class="fr">Accessoire '+ accessoriesNumber +'</label>');
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aLabel')
+    .append('<label class="fr">Accessoire '+ accessoriesOrderNumber +'</label>');
 
     //select catégorie
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
-    .append('<select name="accessoryCategory[]" id="selectCategory'+accessoriesNumber+`" class="selectCategory form-control required">`+
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aCategory')
+    .append('<select name="accessoryCategory[]" id="selectCategory'+accessoriesOrderNumber+`" class="selectCategory form-control required">`+
     categoriesOption+`
     </select>`);
     //select Accessoire
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aAccessory')
     .append('<select name="accessoryAccessory[]" id="selectAccessory'+
-    accessoriesNumber+
+    accessoriesOrderNumber+
     '"class="selectAccessory form-control required"></select>');
 
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aBuyingPrice').append('<input name="buyingPriceAcc[]" class="buyingPriceInput form-control required">');
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aPriceHTVA').append('<input name="sellingPriceAcc[]" class="sellingPriceInput form-control required">');
-    
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aBuyingPrice').append('<input name="buyingPriceAcc[]" class="buyingPriceInput form-control required">');
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aPriceHTVA').append('<input name="sellingPriceAcc[]" class="sellingPriceInput form-control required">');
+
     checkMinus('.orderAccessories','.accessoriesNumber');
 
     //on change de la catégorie
     $('.orderAccessories').find('.selectCategory').on("change",function(){
       var that = '#' + $(this).attr('id');
       var categoryId =$(that).val();
-      var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
+      var accessoriesOrderOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
 
       //ne garde que les accessoires de cette catégorie
-      accessories.forEach((accessory) => {
+      accessoriesOrder.forEach((accessory) => {
         if (categoryId == accessory.categoryId) {
-          accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+          accessoriesOrderOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
         }
       });
       //place les accessoires dans le select
-      $(that).parents('tr').find('.selectAccessory').html(accessoriesOption); 
+      $(that).parents('tr').find('.selectAccessory').html(accessoriesOrderOption);
     });
 
-    $('.orderAccessories').find('.selectAccessory').on("change",function(){ 
+    $('.orderAccessories').find('.selectAccessory').on("change",function(){
       var that = '#' + $(this).attr('id');
       var accessoryId =$(that).val();
 
       //récupère le bon index même si le tableau est désordonné
-      accessoryId = getIndex(accessories, accessoryId);
+      accessoryId = getIndex(accessoriesOrder, accessoryId);
 
-      var buyingPrice = accessories[accessoryId].buyingPrice;
-      var priceHTVA = accessories[accessoryId].priceHTVA ;
+      var buyingPrice = accessoriesOrder[accessoryId].buyingPrice;
+      var priceHTVA = accessoriesOrder[accessoryId].priceHTVA ;
 
       //affichage des champs buying price et selling price
       $(that).parents('tr').find('.aBuyingPrice input').val(buyingPrice);
@@ -389,12 +389,12 @@ get_all_accessories().done(function(response){
 
   //retrait
   $('.orderAccessories .glyphicon-minus')[0].addEventListener("click",function(){
-    accessoriesNumber = $("#orderManager").find('.accessoriesNumber').html();
-    if(accessoriesNumber > 0){
-      $('#orderManager').find('.accessoriesNumber').html(accessoriesNumber*1 - 1);
-      $('#accessoriesNumber').val(accessoriesNumber*1 - 1);
-      $('#orderManager').find('.otherCostsAccesoiresTable'+accessoriesNumber).slideUp().remove();
-      accessoriesNumber--;
+    accessoriesOrderNumber = $("#orderManager").find('.accessoriesNumber').html();
+    if(accessoriesOrderNumber > 0){
+      $('#orderManager').find('.accessoriesNumber').html(accessoriesOrderNumber*1 - 1);
+      $('#accessoriesNumber').val(accessoriesOrderNumber*1 - 1);
+      $('#orderManager').find('.otherCostsAccesoiresTable'+accessoriesOrderNumber).slideUp().remove();
+      accessoriesOrderNumber--;
     }
     checkMinus('.orderAccessories','.accessoriesNumber');
 });

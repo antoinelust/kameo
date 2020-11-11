@@ -7,8 +7,38 @@ if(!isset($_SESSION))
 {
     session_start();
 }
+require_once __DIR__ .'/globalfunctions.php';
+require_once __DIR__ .'/authentication.php';
+require_once __DIR__ .'/connexion.php';
 
-include 'globalfunctions.php';
+$token = getBearerToken();
+if(!get_user_permissions("search", $token)){
+  error_message('403');
+}
+
+
+$sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY AND bb.NAME='generic' and TOKEN='$token' LIMIT 1";
+if ($conn->query($sql) === FALSE) {
+  $response = array ('response'=>'error', 'message'=> $conn->error);
+  echo json_encode($response);
+  die;
+ }
+$user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+
+if($user_data['LOCKING'] == 'Y'){
+  $sql = "SELECT COUNT(1) as SOMME from boxes aa, customer_referential bb WHERE aa.COMPANY=bb.COMPANY and bb.TOKEN='$token'";
+  if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+   }
+  $result = mysqli_query($conn, $sql);
+  $resultat = mysqli_fetch_assoc($result);
+  $boxesNumber = $resultat['SOMME'];
+}else{
+  $boxesNumber = 0;
+}
+
 
 $email=htmlspecialchars($_POST['search-bikes-form-email']);
 $date=htmlspecialchars($_POST['search-bikes-form-day']);
@@ -64,11 +94,11 @@ $x = explode('h', $deposit_hour);
 $deposit_hour=$x[0];
 $deposit_minute=$x[1];
 
-$dateStart=new DateTime();
+$dateStart=new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $dateStart->setDate($year_intake, $month_intake, $day_intake);
 $dateStart->setTime($intake_hour, $intake_minute);
 
-$dateStart2=new DateTime();
+$dateStart2=new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $dateStart2->setDate($year_intake, $month_intake, $day_intake);
 $dateStart2->setTime($intake_hour_2, $intake_minute_2);
 
@@ -109,10 +139,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     $date1stOfMonth=date('Y-m-01');
     $sql="select * from reservations where DATE_START_2>'$date1stOfMonth' and EMAIL='$email' and STAANN != 'D'";
    	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+  		$response = array ('response'=>'error', 'message'=> $conn->error);
+  		echo json_encode($response);
+  		die;
+	   }
 
 
 
@@ -140,11 +170,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
         errorMessage("ES0027");
     }
 
-    if ($dateStart< new DateTime('NOW')){
+
+    if ($dateStart < (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
         errorMessage("ES0016");
     }
 
-    if ($dateEnd<new DateTime('NOW')){
+    if ($dateEnd< (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
         errorMessage("ES0017");
     }
 
@@ -163,17 +194,23 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
   	}
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
-    if($resultat['SOMME']>0){
+    /*if($resultat['SOMME']>0){
       errorMessage("ES0062");
+    }*/
+
+
+    if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
+      $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS != 'Closed') group by ID";
+    }else{
+      $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
     }
 
-    $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
-
    	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+  		$response = array ('response'=>'error', 'message'=> $conn->error);
+  		echo json_encode($response);
+  		die;
+	  }
+
     $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
 
@@ -204,71 +241,122 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
         if($resultat2['BUILDING_END'] == $intake_building){
 
-            $sql3="SELECT DATE_START_2, BUILDING_START FROM reservations WHERE BIKE_ID='$bikeID' and DATE_START_2 > '$dateEndString' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
-            if ($conn->query($sql3) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result3 = mysqli_query($conn, $sql3);
-            $resultat3 = mysqli_fetch_assoc($result3);
+            if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
+              $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
+              if ($conn->query($sql4) === FALSE) {
+                  $response = array ('response'=>'error7', 'message'=> $conn->error);
+                  echo json_encode($response);
+                  die;
+              }
+              $result4 = mysqli_query($conn, $sql4);
+              $access = $result4->num_rows;
 
-            if($resultat3['BUILDING_START'] == $deposit_building or $resultat3['BUILDING_START'] == NULL){
-                $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
-                if ($conn->query($sql4) === FALSE) {
-                    $response = array ('response'=>'error7', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $result4 = mysqli_query($conn, $sql4);
-                $access = $result4->num_rows;
+              if($access==1){
+                  $length++;
 
-                if($access==1){
-                    $length++;
+                  $sql5="SELECT * FROM customer_bikes WHERE ID='$bikeID'";
+                  if ($conn->query($sql5) === FALSE) {
+                      $response = array ('response'=>'error', 'message'=> $conn->error);
+                      echo json_encode($response);
+                      die;
+                  }
+                  $result5 = mysqli_query($conn, $sql5);
+                  $resultat5 = mysqli_fetch_assoc($result5);
+                  $response['bike'][$length]['bikeID'] = $bikeID;
+                  $response['bike'][$length]['frameNumber'] = $resultat5['FRAME_NUMBER'];
+                  $response['bike'][$length]['type']= $resultat5['TYPE'];
+                  $response['bike'][$length]['size']= $resultat5['SIZE'];
+                  $type=$resultat5['TYPE'];
+                  $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
 
-                    $sql5="SELECT * FROM customer_bikes WHERE ID='$bikeID'";
-                    if ($conn->query($sql5) === FALSE) {
-                        $response = array ('response'=>'error', 'message'=> $conn->error);
-                        echo json_encode($response);
-                        die;
-                    }
-                    $result5 = mysqli_query($conn, $sql5);
-                    $resultat5 = mysqli_fetch_assoc($result5);
-                    $response['bike'][$length]['bikeID'] = $bikeID;
-                    $response['bike'][$length]['frameNumber'] = $resultat5['FRAME_NUMBER'];
-                    $response['bike'][$length]['type']= $resultat5['TYPE'];
-                    $response['bike'][$length]['size']= $resultat5['SIZE'];
-                    $type=$resultat5['TYPE'];
-                    $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
+                  include 'connexion.php';
+                  $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
+                  if ($conn->query($sql6) === FALSE) {
+                      $response = array ('response'=>'error', 'message'=> $conn->error);
+                      echo json_encode($response);
+                      die;
+                  }
+                  $result6 = mysqli_query($conn, $sql6);
+                  if($result6->num_rows == 1){
+                      $resultat6 = mysqli_fetch_assoc($result6);
+                      $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
+                      if ((file_exists($file))){
+                          $response['bike'][$length]['img']=$bikeID;
+                        }else{
+                          $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
+                      }
+                      $response['bike'][$length]['brand'] = $resultat6['BRAND'];
+                      $response['bike'][$length]['model'] = $resultat6['MODEL'];
+                      $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
+                  }else{
+                      $length--;
+                  }
+              }
+            }else{
+              $sql3="SELECT DATE_START_2, BUILDING_START FROM reservations WHERE BIKE_ID='$bikeID' and DATE_START_2 > '$dateEndString' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
+              if ($conn->query($sql3) === FALSE) {
+                  $response = array ('response'=>'error', 'message'=> $conn->error);
+                  echo json_encode($response);
+                  die;
+              }
+              $result3 = mysqli_query($conn, $sql3);
+              $resultat3 = mysqli_fetch_assoc($result3);
 
-                    include 'connexion.php';
-                    $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
-                    if ($conn->query($sql6) === FALSE) {
-                        $response = array ('response'=>'error', 'message'=> $conn->error);
-                        echo json_encode($response);
-                        die;
-                    }
-                    $result6 = mysqli_query($conn, $sql6);
-                    if($result6->num_rows == 1){
-                        $resultat6 = mysqli_fetch_assoc($result6);
-                        $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
-                        if ((file_exists($file))){
-                            $response['bike'][$length]['img']=$bikeID;
-                          }else{
-                            $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
-                        }
-                        $response['bike'][$length]['brand'] = $resultat6['BRAND'];
-                        $response['bike'][$length]['model'] = $resultat6['MODEL'];
-                        $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
-                    }else{
-                        $length--;
-                    }
-                }
+              if($resultat3['BUILDING_START'] == $deposit_building or $resultat3['BUILDING_START'] == NULL){
+                  $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
+                  if ($conn->query($sql4) === FALSE) {
+                      $response = array ('response'=>'error7', 'message'=> $conn->error);
+                      echo json_encode($response);
+                      die;
+                  }
+                  $result4 = mysqli_query($conn, $sql4);
+                  $access = $result4->num_rows;
+
+                  if($access==1){
+                      $length++;
+
+                      $sql5="SELECT * FROM customer_bikes WHERE ID='$bikeID'";
+                      if ($conn->query($sql5) === FALSE) {
+                          $response = array ('response'=>'error', 'message'=> $conn->error);
+                          echo json_encode($response);
+                          die;
+                      }
+                      $result5 = mysqli_query($conn, $sql5);
+                      $resultat5 = mysqli_fetch_assoc($result5);
+                      $response['bike'][$length]['bikeID'] = $bikeID;
+                      $response['bike'][$length]['frameNumber'] = $resultat5['FRAME_NUMBER'];
+                      $response['bike'][$length]['type']= $resultat5['TYPE'];
+                      $response['bike'][$length]['size']= $resultat5['SIZE'];
+                      $type=$resultat5['TYPE'];
+                      $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
+
+                      include 'connexion.php';
+                      $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
+                      if ($conn->query($sql6) === FALSE) {
+                          $response = array ('response'=>'error', 'message'=> $conn->error);
+                          echo json_encode($response);
+                          die;
+                      }
+                      $result6 = mysqli_query($conn, $sql6);
+                      if($result6->num_rows == 1){
+                          $resultat6 = mysqli_fetch_assoc($result6);
+                          $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
+                          if ((file_exists($file))){
+                              $response['bike'][$length]['img']=$bikeID;
+                            }else{
+                              $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
+                          }
+                          $response['bike'][$length]['brand'] = $resultat6['BRAND'];
+                          $response['bike'][$length]['model'] = $resultat6['MODEL'];
+                          $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
+                      }else{
+                          $length--;
+                      }
+                  }
+              }
             }
         }
     }
-
-
 
     $response['length']=$length;
 

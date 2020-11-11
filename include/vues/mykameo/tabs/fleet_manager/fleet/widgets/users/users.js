@@ -102,7 +102,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
             document.getElementById('buildingUpdateUser').innerHTML = dest;
 
             var i=0;
-            var dest="<h4>Accès aux vélos</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" /><br>";
+            var dest="<h4>Accès aux vélos</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" /><strong>Tout sélectionner / déselectionner</strong><br>";
             while(i<response.bikeNumber){
               if(response.bike[i].access==true){
                 temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";

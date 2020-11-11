@@ -36,8 +36,7 @@ if ($is_null)
 	if($reponse->fetch())
 	{
 		echo "-1";	// Hors delai
-		error_log(date("Y-m-d H:i:s")." OUTPUT - Hors délai \n", 3, "logs/lock_verifier_code.log");
-
+		error_log(date("Y-m-d H:i:s")." OUTPUT - Hors délai \n", 3, "logs/logs_boxes.log");
 		$is_null = false;
 	}
 }
@@ -47,7 +46,7 @@ if ($is_null)
 	if($reponse->fetch())
 	{
 		echo "-2";	// Code deja utilise ou annule
-		error_log(date("Y-m-d H:i:s")." OUTPUT - Code déjà utilisé ou annulé \n", 3, "logs/lock_verifier_code.log");
+		error_log(date("Y-m-d H:i:s")." OUTPUT - Code déjà utilisé ou annulé \n", 3, "logs/logs_boxes.log");
 
 		$is_null = false;
 	}

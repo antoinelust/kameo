@@ -13,18 +13,18 @@ $buildingStart=htmlspecialchars($_POST['widget-new-booking-building-start']);
 $buildingEnd=htmlspecialchars($_POST['widget-new-booking-building-end']);
 $lockingcode=htmlspecialchars($_POST['widget-new-booking-locking-code']);
 
-$temp=new DateTime($_POST['widget-new-booking-date-start']);
-$dateStart=strtotime($temp->format('Y-m-d H:i'));
+$temp=new DateTime($_POST['widget-new-booking-date-start'], new DateTimeZone('Europe/Brussels'));
+$dateStart=$temp->format('U');
 $dateStart_2=$temp;
 $dateStart_2String=$dateStart_2->format('Y-m-d H:i');
 $dateStart_3String=$dateStart_2->format('d/m/Y');
 
 $temp->sub(new DateInterval('PT15M'));
-$dateStart2=strtotime($temp->format('Y-m-d H:i'));
+$dateStart2=$temp->format('U');
 
 
-$temp=new DateTime($_POST['widget-new-booking-date-end']);
-$dateEnd=strtotime($temp->format('Y-m-d H:i'));
+$temp=new DateTime($_POST['widget-new-booking-date-end'], new DateTimeZone('Europe/Brussels'));
+$dateEnd=$temp->format('U');
 $dateEnd_2=$temp;
 $dateEnd_2String=$dateEnd_2->format('Y-m-d H:i');
 $dateEnd_3String=$dateEnd_2->format('d/m/Y');
