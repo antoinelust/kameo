@@ -6,6 +6,7 @@ header('Content-type: application/json');
 session_start();
 
 include 'globalfunctions.php';
+log_inputs();
 
 $user = htmlspecialchars($_POST['widget-new-booking-mail-customer']);
 $bikeID=htmlspecialchars($_POST['bikeID']);

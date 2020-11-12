@@ -10,6 +10,7 @@ header_remove("Content-Security-Policy");
 require_once '../globalfunctions.php';
 require_once '../authentication.php';
 require_once '../connexion.php';
+log_inputs();
 
 $token = getBearerToken();
 

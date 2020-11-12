@@ -5,9 +5,7 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
-
-
-
+log_inputs();
 
 $email=$_POST['email'];
 $dateStart=isset( $_POST['dateStart'] ) ? new DateTime($_POST['dateStart']) : NULL;

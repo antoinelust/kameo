@@ -5,6 +5,7 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+log_inputs();
 
 
 
