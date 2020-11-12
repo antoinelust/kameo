@@ -261,4 +261,22 @@ function random_str(
     }
     return implode('', $pieces);
 }
+
+
+function log_inputs(){
+  error_log("\n \n ----------------------------------------------------------------------\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach($_POST as $key => $value)
+    {
+    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+    }
+  }else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+    foreach($_GET as $key => $value)
+    {
+    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+    }
+
+  }
+}
+
 ?>

@@ -11,7 +11,6 @@ $userID = $_POST["userID"];
 $userIDUP=strtoupper($userID);
 $UserPassword = $_POST["password"];
 
-
 $sql = "SELECT ID, PASSWORD, TOKEN, STAANN FROM customer_referential where UPPER(EMAIL)='$userIDUP'";
 
 if ($conn->query($sql) === FALSE) {
