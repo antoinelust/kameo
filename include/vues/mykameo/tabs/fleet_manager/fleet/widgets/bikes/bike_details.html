@@ -8,68 +8,83 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="text-green">Informations relatives au vélo:</h4>
-					</div>
-					<div class="col-sm-12">
-						<div class="col-sm-4">
-							<h4>ID : </h4>
-							<p span class="bikeID"></p>
-						</div>
-						<div class="col-sm-4">
-							<h4>Marque : </h4>
-							<p span class="bikeBrandCatalog"></p>
-						</div>
-						<div class="col-sm-4">
-							<h4>Modèle : </h4>
-							<p span class="bikeModelCatalog"></p>
-						</div>
-					</div>
-					<div class="col-sm-12">
-						<div class="col-sm-4">
-							<h4>Identification technique : </h4>
-							<p span class="bikeNumber"></p>
-						</div>
-						<div class="col-sm-4">
-							<h4>Identification pour utilisateurs :</h4>
-							<p span class="bikeModel"></p>
-						</div>
-						<div class="col-sm-4">
-							<h4>Référence du cadre : </h4>
-							<p span class="frameReference"></p>
-						</div>
-					</div>
-					<div class="col-sm-12">
-						<div class="col-sm-4">
-							<h4>Valeur catalogue (TVAC) : </h4>
-							<p span class="bikePrice"></p>
-						</div>
-					</div>
-					<div class="col-sm-10">
+							<div class="col-sm-4">
+								<label for="bikeID" class="fr-inline">ID :</label>
+								<label for="bikeID" class="en-inline">ID :</label>
+								<label for="bikeID" class="nl-inline">ID :</label>
+								<input type="text" name="bikeID" class="form-control bikeID" readonly/>
+							</div>
+							<div class="col-sm-12"></div>
+							<div class="col-sm-4">
+								<label for="bikeBrandCatalog" class="fr-inline">Marque :</label>
+								<label for="bikeBrandCatalog" class="en-inline">Brand :</label>
+								<label for="bikeBrandCatalog" class="nl-inline">Brand :</label>
+								<input type="text" name="bikeBrandCatalog" class="form-control bikeBrandCatalog" readonly/>
+							</div>
+							<div class="col-sm-4">
+								<label for="bikeModelCatalog" class="fr-inline">Modèle :</label>
+								<label for="bikeModelCatalog" class="en-inline">Model: </label>
+								<label for="bikeModelCatalog" class="nl-inline">Model: </label>
+								<input type="text" name="bikeModelCatalog" class="form-control bikeModelCatalog" readonly/>
+							</div>
+							<div class="col-sm-4">
+								<label for="bikeNumber" class="fr-inline">Identification technique :</label>
+								<label for="bikeNumber" class="en-inline">Bike Number : </label>
+								<label for="bikeNumber" class="nl-inline">Bike Number : </label>
+								<input type="text" name="bikeNumber" class="form-control bikeNumber" readonly/>
+							</div>
+							<div class="col-sm-4">
+								<label for="bikeModel" class="fr-inline">Identification pour utilisateurs :</label>
+								<label for="bikeModel" class="en-inline">User Identification : </label>
+								<label for="bikeModel" class="nl-inline">User Identification : </label>
+								<input type="text" name="bikeModel" class="form-control bikeModel" readonly/>
+							</div>
+							<div class="col-sm-4">
+								<label for="frameReference" class="fr-inline">Référence du cadre :</label>
+								<label for="frameReference" class="en-inline">Frame reference : </label>
+								<label for="frameReference" class="nl-inline">Frame reference : </label>
+								<input type="text" name="frameReference" class="form-control frameReference" readonly/>
+							</div>
+							<div class="col-sm-4">
+								<label for="bikePrice" class="fr-inline">Valeur catalogue (TVAC) :</label>
+								<label for="bikePrice" class="en-inline">Price TVAC : </label>
+								<label for="bikePrice" class="nl-inline">Price TVAC : </label>
+								<input type="text" name="bikePrice" class="form-control bikePrice" readonly/>
+							</div>
+						<div class="separator"></div>
 						<h4 class="text-green">Informations relatives au contrat</h4>
-					</div>
-					<div class="col-sm-4">
-						<h4>Type de contrat : </h4>
-						<p><span class="contractType"></span></p>
-					</div>
-					<div class="col-sm-4">
-						<h4><span>Date de début : </h4>
-						<p><span class="startDateContract"></span></p>
-					</div>
-					<div class="col-sm-4">
-						<h4><span>Date de fin : </h4>
-						<p><span class="endDateContract"></span></p>
-					</div>
-					<div class="col-sm-10">
-						<h4>Votre vélo: </h4>
+							<div class="col-sm-4">
+								<label for="contractType" class="fr-inline">Type de contrat :</label>
+								<label for="contractType" class="en-inline">Contract Type : </label>
+								<label for="contractType" class="nl-inline">Contract Type : </label>
+								<input type="text" name="contractType" class="form-control contractType" readonly/>
+							</div>
+							<div class="col-sm-4">
+								<label for="startDateContract" class="fr-inline">Date de début :</label>
+								<label for="startDateContract" class="en-inline">Start date : </label>
+								<label for="startDateContract" class="nl-inline">Start date : </label>
+								<input type="text" name="startDateContract" class="form-control startDateContract" readonly/>
+							</div>
+							<div class="col-sm-4">
+								<label for="endDateContract" class="fr-inline">Date de fin :</label>
+								<label for="endDateContract" class="en-inline">End date : </label>
+								<label for="endDateContract" class="nl-inline">End date : </label>
+								<input type="text" name="endDateContract" class="form-control endDateContract" readonly/>
+							</div>
+						<div class="separator"></div>
+						<h4 class="text-green">Informations relatives au vélo</h4>
 						<div class="col-md-4">
 							<img src="" class="bikeImage" alt="image" />
 						</div>
+						<div class="separator"></div>
+						<h4 class="text-green">Historique du vélo</h4>
+						<div class="col-sm-12">
+							<span id="action_bike_log_user"></span>
+						</div>
 					</div>
-					<div class="separator"></div>
-					<h4 class="text-green">Historique du vélo</h4>
-					<span id="action_bike_log_user">
-					</span>
 				</div>
 			</div>
+			
 			<div class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
