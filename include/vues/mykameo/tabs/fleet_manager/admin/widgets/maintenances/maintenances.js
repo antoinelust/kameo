@@ -121,7 +121,7 @@ function get_maintenance(ID){
       if (response.response == "error") {
         console.log(response.message);
       } else{
-        $('#widget-maintenanceManagement-form select[name=velo]').append('<option valeur="'+response.maintenance.bike_id+'">'+response.maintenance.bike_id+'</option>');
+        $('#widget-maintenanceManagement-form select[name=velo]').append('<option value="'+response.maintenance.bike_id+'">'+response.maintenance.bike_id + " - " + response.maintenance.model+'</option>');
         $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", true);
         $("#widget-maintenanceManagement-form div[name=image]").remove();
         $("#widget-maintenanceManagement-form select[name=company]").attr("disabled", true);

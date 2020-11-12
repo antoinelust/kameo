@@ -255,7 +255,7 @@ function retrieve_command(ID){
             $.ajax({
               url: 'apis/Kameo/orders_management.php',
               type: 'get',
-              data: {'action': 'delete', 'ID': this.name, 'email': email, },
+              data: {"action": "delete", "ID": this.name, "email": email, },
               success: function(response){
                 if(response.response == 'success'){
                   $.notify(

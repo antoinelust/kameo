@@ -129,11 +129,12 @@ if(isset($_POST['action'])){
 
             foreach( $categoryAccessory as $index => $categoryAccessory)
             {
-                $category = $categoryAccessory[$index];
+                $category = $categoryAccessory;
                 $accessory = $typeAccessory[$index];
                 $buyingP = $buyingPrice[$index];
                 $sellingP = $sellingPrice[$index];
-                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES ('$category', '$accessory', '$buyingP', '$sellingP', '//', '$ID')";
+                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES ('$accessory', '$category', '$buyingP', '$sellingP', '//', '$ID')";
+                
                 if ($conn->query($sql2) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -367,7 +368,8 @@ if(isset($_POST['action'])){
         $response['order']['priceHTVA']=$priceHTVA;
 
 
-        $sql= "SELECT * FROM order_accessories WHERE ORDER_ID='$ID'";
+        $sql= "SELECT *, order_accessories.ID as orderID FROM order_accessories INNER JOIN accessories_categories ON order_accessories.CATEGORY = accessories_categories.ID INNER JOIN accessories_catalog ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID WHERE order_accessories.ORDER_ID='$ID' AND accessories_catalog.ID=order_accessories.BRAND";
+        
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -378,11 +380,11 @@ if(isset($_POST['action'])){
         $i=0;
         
         while($resultat = mysqli_fetch_array($result)){
-            $response['order'][$i]['typeAccessory']=$resultat['BRAND'];
+            $response['order'][$i]['typeAccessory']=$resultat['MODEL'];
             $response['order'][$i]['aCategory']=$resultat['CATEGORY'];
             $response['order'][$i]['aBuyingPrice']=$resultat['BUYING_PRICE'];
             $response['order'][$i]['aPriceHTVA']=$resultat['PRICE_HTVA'];
-            $response['order'][$i]['accessoryID']=$resultat['ID'];
+            $response['order'][$i]['accessoryID']=$resultat['orderID'];
             $i++;
         }
         $response['accessoryNumber']=$i;
@@ -398,6 +400,7 @@ if(isset($_POST['action'])){
         $ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
         $sql = "DELETE FROM order_accessories WHERE ID='$ID'";
+
         if ($conn->query($sql) === FALSE) {
             
             $response = array ('response'=>'error', 'message'=> $conn->error);
