@@ -8,7 +8,20 @@ function fillBikeDetails(element) {
       if (response.response == "error") {
         console.log(response.message);
       } else {
-        document.getElementsByClassName("bikeID")[0].innerHTML = bikeID;
+        
+        $('#bikeDetailsFull input[name=bikeID]').val(bikeID);
+        $('#bikeDetailsFull input[name=bikeModel]').val(response.model);
+        $('#bikeDetailsFull input[name=bikeNumber]').val(response.frameNumber);
+        $('#bikeDetailsFull input[name=frameReference]').val(response.frameReference);
+        $('#bikeDetailsFull input[name=contractType]').val(response.contractType);
+        $('#bikeDetailsFull input[name=startDateContract]').val(response.contractStart);
+        $('#bikeDetailsFull input[name=endDateContract]').val(response.contractEnd);
+        $('#bikeDetailsFull input[name=bikeBrandCatalog]').val(response.brand);
+        $('#bikeDetailsFull input[name=bikeModelCatalog]').val(response.modelCatalog);
+        $('#bikeDetailsFull input[name=bikePrice]').val(response.catalogPrice);
+
+
+        /*document.getElementsByClassName("bikeID")[0].innerHTML = bikeID;
         document.getElementsByClassName("bikeBrandCatalog")[0].innerHTML = response.brand;
         document.getElementsByClassName("bikeModelCatalog")[0].innerHTML = response.modelCatalog;
         document.getElementsByClassName("bikeNumber")[0].innerHTML = response.frameNumber;
@@ -23,7 +36,7 @@ function fillBikeDetails(element) {
         document.getElementsByClassName("startDateContract")[0].innerHTML =
           response.contractStart;
         document.getElementsByClassName("endDateContract")[0].innerHTML =
-          response.contractEnd;
+          response.contractEnd; */
         document.getElementsByClassName("bikeImage")[0].src =
           "images_bikes/" + response.img + "_mini.jpg";
       }
