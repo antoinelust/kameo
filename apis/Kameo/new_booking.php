@@ -6,7 +6,14 @@ header('Content-type: application/json');
 session_start();
 
 include 'globalfunctions.php';
-log_inputs();
+
+require_once __DIR__ .'/authentication.php';
+$token = getBearerToken();
+log_inputs($token);
+
+if(!get_user_permissions("search", $token)){
+  error_message('403');
+}
 
 $user = htmlspecialchars($_POST['widget-new-booking-mail-customer']);
 $bikeID=htmlspecialchars($_POST['bikeID']);
@@ -173,7 +180,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 		    $mail->FromName = "Info Kameo Bikes";
 		  }
 			$mail->AddAddress($user);
-			//$mail->AddAddress("antoine@kameobikes.com");
 			$mail->IsHTML(true);
 			$mail->CharSet = 'UTF-8';
 
@@ -196,8 +202,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 					echo json_encode($response);
 					die;
 			}
-
-
 		}
 
 		$conn->close();

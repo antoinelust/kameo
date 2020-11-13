@@ -36,13 +36,13 @@ function errorMessage($MSGNUM) {
 	{
 		$response = array ('response'=>'error', 'message'=> $row["TEXT_FR"]);
 	}
-
+  error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - ERROR_MESSAGE - ".$row["TEXT_FR"]."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
 	echo json_encode($response);
 	die;
 }
 
 function successMessage($MSGNUM) {
-    include 'connexion.php';
+  include 'connexion.php';
 	$sql = "SELECT * FROM success_messages where MSGNUM='$MSGNUM' ";
 	$result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_assoc($result);
@@ -62,6 +62,8 @@ function successMessage($MSGNUM) {
 	{
 		$response = array ('response'=>'success', 'message'=> $row["TEXT_FR"]);
 	}
+  error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - SUCCESS_MESSAGE - ".$row["TEXT_FR"]."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+
 	echo json_encode($response);
 	die;
 }
@@ -165,6 +167,8 @@ function execute_sql_query($sql, $conn){
 
 function error_message($type, $message = ""){
 	header("Content-Type: application/problem+json");
+  error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - ERROR_MESSAGE_AUTHORIZATION - ".$type." : ".$message."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+
 	switch($type)
 	{
 		case '400':
@@ -263,19 +267,29 @@ function random_str(
 }
 
 
-function log_inputs(){
+function log_inputs($token = null){
   error_log("\n \n ----------------------------------------------------------------------\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+
+  if($token != null){
+    error_log(date("Y-m-d H:i:s")." - TOKEN : ".$token."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+  }
+
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach($_POST as $key => $value)
     {
-    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - INPUT - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
     }
   }else if($_SERVER['REQUEST_METHOD'] === 'GET'){
     foreach($_GET as $key => $value)
     {
-    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - INPUT - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
     }
 
+  }
+}
+function log_output($response = null){
+  if($response != null){
+  	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - SUCCESS - Response: ".count($response, COUNT_RECURSIVE)."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
   }
 }
 

@@ -10,9 +10,9 @@ header_remove("Content-Security-Policy");
 require_once '../globalfunctions.php';
 require_once '../authentication.php';
 require_once '../connexion.php';
-log_inputs();
 
 $token = getBearerToken();
+log_inputs($token);
 
 switch($_SERVER["REQUEST_METHOD"])
 {

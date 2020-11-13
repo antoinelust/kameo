@@ -4,11 +4,15 @@ header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
 session_start();
-include 'globalfunctions.php';
-log_inputs();
+include_once 'globalfunctions.php';
+require_once __DIR__ .'/authentication.php';
+$token = getBearerToken();
 
+if(!get_user_permissions("search", $token)){
+  error_message('403');
+}
 
-
+log_inputs($token);
 
 $user=$_POST['user'];
 $response=array();
@@ -227,7 +231,8 @@ if($user != NULL)
 	}
 
     $response['response']="success";
-	echo json_encode($response);
+    log_output($response);
+	  echo json_encode($response);
     die;
 
 }

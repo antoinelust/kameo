@@ -54,7 +54,7 @@ if ($is_null)
 if ($is_null)
 {
 	echo "-3"; 	// Mauvais code
-	error_log(date("Y-m-d H:i:s")." OUTPUT - -Mauvais code \n", 3, "logs/lock_verifier_code.log");
+	error_log(date("Y-m-d H:i:s")." OUTPUT - -Mauvais code \n", 3, "logs/logs_boxes.log");
 
 }
 

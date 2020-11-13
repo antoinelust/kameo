@@ -16,7 +16,7 @@ if(!get_user_permissions("search", $token)){
   error_message('403');
 }
 
-log_inputs();
+log_inputs($token);
 
 $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY AND bb.NAME='generic' and TOKEN='$token' LIMIT 1";
 if ($conn->query($sql) === FALSE) {
@@ -123,12 +123,11 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     $date1stJanuary=date('Y-01-01');
     $sql="select * from reservations where DATE_START_2>'$date1stJanuary' and EMAIL='$email' and STAANN != 'D'";
 
-
    	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+  		$response = array ('response'=>'error', 'message'=> $conn->error);
+  		echo json_encode($response);
+  		die;
+	  }
     $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     if($length>=$maxBookingsPerYear && $maxBookingsPerYear!='9999'){
@@ -160,28 +159,28 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";
 
     if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+  		$response = array ('response'=>'error', 'message'=> $conn->error);
+  		echo json_encode($response);
+  		die;
+	  }
 
     $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
     if($length == 0){
-        errorMessage("ES0027");
+      errorMessage("ES0027");
     }
 
 
     if ($dateStart < (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
-        errorMessage("ES0016");
+      errorMessage("ES0016");
     }
 
     if ($dateEnd< (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
-        errorMessage("ES0017");
+      errorMessage("ES0017");
     }
 
     if ($dateEnd<=$dateStart){
-        errorMessage("ES0018");
+      errorMessage("ES0018");
     }
 
     include 'connexion.php';
@@ -195,9 +194,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
   	}
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
-    /*if($resultat['SOMME']>0){
+    if($resultat['SOMME']>0){
       errorMessage("ES0062");
-    }*/
+    }
 
 
     if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
@@ -369,27 +368,25 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
 
     if ($_SESSION['langue']=='fr')
-	{
-		$response['message']= "Veuillez choisir votre vélo ci-dessous.";
-	}
-	elseif ($_SESSION['langue']=='en')
-	{
-		$response['message']= "Please select your bike here below.";
-	}
-	elseif ($_SESSION['langue']=='nl')
-	{
-		$response['message']= "Selecteer hieronder je fiets.";
-	}
-	else
-	{
-		$response['message']= "Veuillez choisir votre vélo ci-dessous.";
-	}
-
+  	{
+  		$response['message']= "Veuillez choisir votre vélo ci-dessous.";
+  	}
+  	elseif ($_SESSION['langue']=='en')
+  	{
+  		$response['message']= "Please select your bike here below.";
+  	}
+  	elseif ($_SESSION['langue']=='nl')
+  	{
+  		$response['message']= "Selecteer hieronder je fiets.";
+  	}
+  	else
+  	{
+  		$response['message']= "Veuillez choisir votre vélo ci-dessous.";
+  	}
+    log_output($response);
     echo json_encode($response);
     die;
-
-}
-else{
+}else{
     errorMessage("ES0012");
 }
 

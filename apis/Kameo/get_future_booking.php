@@ -5,9 +5,13 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
-log_inputs();
+require_once __DIR__ .'/authentication.php';
+$token = getBearerToken();
 
-
+if(!get_user_permissions("search", $token)){
+  error_message('403');
+}
+log_inputs($token);
 
 $bookingID=$_POST['bookingID'];
 
@@ -74,7 +78,8 @@ if($bookingID != NULL)
     }
 
     $response['response']="success";
-	echo json_encode($response);
+		log_output($response);
+		echo json_encode($response);
     die;
 
 }
