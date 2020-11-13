@@ -177,6 +177,7 @@
 						}, {
 							type: 'success'
 						});
+            $("#lostPassword").modal("toggle");
 					} else {
 						$.notify({
 							message: text.message

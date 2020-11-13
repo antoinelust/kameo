@@ -184,37 +184,31 @@ include 'include/head.php';
 						<div class="row">
 							<div class="col-sm-12">
 								<h3><?= L::password_forgotten; ?></h3>
-								<form id="widget-lostPassword-form" action="../apis/Kameo/lostPassword.php" role="form" method="post">
+								<form id="widget-lostPassword-form" action="apis/Kameo/lost_password.php" role="form" method="post">
 									<div class="row">
 										<div class="form-group col-sm-12">
 											<label for="subject"><?= L::password_new; ?></label>
 											<input type="password" name="widget-lostPassword-form-new-password" class="form-control required" autocomplete="new-password">
 										</div>
 									</div>
-									<input type="text" class="hidden" id="widget-lostPassword-form-antispam" name="widget-lostPassword-form-antispam" value="" />
-									<?php
-									if (isset($_GET['hash']))
-										echo '<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash" value="' . $_GET['hash'] . '"/>';
-									else
-										echo '<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash"/>';
-									?>
+									<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash" value="<?php echo $_GET['hash']; ?>"/>';
 									<button class="button effect fill" type="submit"><i class="fa fa-paper-plane"></i><?= L::password_send; ?></button>
 								</form>
 								<script type="text/javascript">
 									jQuery("#widget-lostPassword-form").validate({
 										submitHandler: function(form) {
 											jQuery(form).ajaxSubmit({
-												success: function(text) {
-													console.log(text);
-													if (text.response == 'success') {
+												success: function(response) {
+													if (response.response == 'success') {
 														$.notify({
-															message: text.message
+															message: response.message
 														}, {
 															type: 'success'
 														});
+														$("#newPassword").modal("toggle");
 													} else {
 														$.notify({
-															message: text.message
+															message: response.message
 														}, {
 															type: 'danger'
 														});
@@ -241,10 +235,11 @@ include 'include/head.php';
 
 	<?php
 	if (isset($_GET['hash'])) {
-		echo `<script type="text/javascript">
-      $('#newPassword').modal('toggle');
-    </script>`;
-		checkHash($GET['HASH']);
+		echo "coucou";
+		echo $_GET['hash'];
+		echo '<script type="text/javascript">
+      $("#newPassword").modal("toggle");
+    </script>';
 	}
 	?>
 

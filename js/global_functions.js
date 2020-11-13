@@ -20,8 +20,6 @@ function get_dateNow_string(){
 
 }
 
-
-
 function initializeFields() {
   $("#widget-bikeManagement-form select[name=company]")
     .find("option")

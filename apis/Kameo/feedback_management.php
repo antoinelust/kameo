@@ -63,10 +63,10 @@ if(isset($_GET['action'])){
     else if($action=='retrieveFeedback'){
         $ID = $_GET["ID"];
 
-        
+
         include 'connexion.php';
         $sql = "SELECT aa.*, bb.ID, bb.FRAME_NUMBER FROM feedbacks aa, customer_bikes bb where ID_RESERVATION='$ID' and aa.BIKE_ID=bb.ID";
-        
+
 
         //error_log('in function');
 

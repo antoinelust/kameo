@@ -284,71 +284,6 @@
 <!-- Language management -->
 <script type="text/javascript" src="js/language.js"></script>
 
-	<div class="modal fade" id="newPassword" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-12">
-						<h3><?=L::sharedBike_forgotPass;?></h3>
-						<form id="widget-lostPassword-form" action="apis/Kameo/lostPassword.php" role="form" method="post">
-                            <div class="row">
-                                <div class="form-group col-sm-12">
-                                    <label for="subject"><?=L::sharedBike_newPass;?></label>
-                                    <input type="password" name="widget-lostPassword-form-new-password" class="form-control required" autocomplete="new-password">
-                                </div>
-                            </div>
-                            <input type="text" class="hidden" id="widget-lostPassword-form-antispam" name="widget-lostPassword-form-antispam" value="" />
-                            <?php
-                            if(isset($_GET['hash'])){
-                                ?>
-                                <input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash" value="<?php echo $_GET['hash'] ?>" />
-                                <?php
-                            }
-                            else{
-                                ?>
-                                <input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash"/>
-                                <?php
-                            }
-                            ?>
-                            <button class="button effect fill" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp;<?=L::sharedBike_send;?></button>
-                        </form>
-							<script type="text/javascript">
-                                jQuery("#widget-lostPassword-form").validate({
-
-                                    submitHandler: function(form) {
-
-                                        jQuery(form).ajaxSubmit({
-                                            success: function(text) {
-                                                console.log(text);
-                                                if (text.response == 'success') {
-                                                    $.notify({
-                                                        message: text.message
-                                                    }, {
-                                                        type: 'success'
-                                                    });
-                                                } else {
-                                                    $.notify({
-                                                        message: text.message
-                                                    }, {
-                                                        type: 'danger'
-                                                    });
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-
-                            </script>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
 	<?php include 'include/footer.php'; ?>
 	</div>
 	<!-- END: WRAPPER -->
@@ -358,48 +293,6 @@
 
 	<!-- Language management -->
 	<script type="text/javascript" src="js/language.js"></script>
-
-<?php
-    if(isset($_GET['hash'])){
-	?>
-	<script type="text/javascript">
-	$('#newPassword').modal('toggle');
-	</script>
-
-<?php
-	checkHash($GET['HASH']);
-}
-?>
-
-
-<?php
-    if(isset($_GET['deconnexion']) && $_GET['deconnexion']==true ){
-		if ($_SESSION['langue']=='en')
-		{
-			$message = "You have been disconnected due to inactivity";
-		}
-		elseif ($_SESSION['langue']=='nl')
-		{
-			$message = "U bent afgesloten vanwege inactiviteit";
-		}
-		else
-		{
-			$message = "Vous avez été déconnecté pour cause d\'inactivité";
-		}
-	?>
-        <script type="text/javascript">
-			test="<?php echo $message;?>";
-			console.log("deconnexion:"+test);
-            $.notify({
-                message: '<?php echo $message; ?>'
-            }, {
-                type: 'danger'
-            });
-        </script>
-
-<?php
-}
-?>
 
 </body>
 
