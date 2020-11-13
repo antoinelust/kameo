@@ -303,7 +303,7 @@ function retrieve_box(id) {
           response.keys_out.forEach(key => {
             $("#widget-boxManagement-form div[name=in]").before('<div class="col-md-4" name="bike">\
             <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
-            <p><center><B>'+ key.model + '</B><br>' + key.email + '</center></p></div>');
+            <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>Début : ' + key.dateStart + '<br>Fin : ' + key.dateEnd + '</center></p></div>');
           });
         }
       }

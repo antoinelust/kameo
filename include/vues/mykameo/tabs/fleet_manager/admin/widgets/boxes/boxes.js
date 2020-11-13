@@ -341,7 +341,7 @@ function retrieve_box_admin(id) {
             new_paragraph.style.fontWeight = "900";
             new_paragraph.appendChild(document.createTextNode(i+1));
             new_paragraph.appendChild(document.createElement("br"));
-            
+
             var image = document.createElement("img");
             image.setAttribute('draggable', 'false');
             image.src = 'images/key_out2.png';
@@ -371,7 +371,7 @@ function retrieve_box_admin(id) {
           response.keys_out.forEach(key => {
             $("#widget-boxManagementAdmin-form div[name=in]").before('<div class="col-md-4" name="bike" draggable="true" ondragstart="drag(event)" id="'+ key.id + '_' + id + '">\
             <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
-            <p><center><B>'+ key.model + '</B><br>' + key.email + '</center></p></div>');
+            <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>Début : ' + key.dateStart + '<br>Fin : ' + key.dateEnd + '</center></p></div>');
           });
         }
       }

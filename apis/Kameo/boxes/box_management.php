@@ -137,7 +137,7 @@ if(isset($_POST['action']))
             $result = mysqli_query($conn, $sql);
             $response['keys_in'] = $result->fetch_all(MYSQLI_ASSOC);
 
-            $sql="SELECT bb.ID as id, bb.TYPE as type, bb.MODEL as model, cc.PLACE_IN_BUILDING as place, ee.EMAIL
+            $sql="SELECT bb.ID as id, bb.TYPE as type, bb.MODEL as model, cc.PLACE_IN_BUILDING as place, ee.EMAIL, ee.DATE_START_2, ee.DATE_END_2
             FROM boxes aa
             INNER JOIN customer_bikes bb ON aa.COMPANY=bb.COMPANY
             INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID
@@ -162,6 +162,8 @@ if(isset($_POST['action']))
                 $response['keys_out'][$i]['place']=$row['place'];
                 $response['keys_out'][$i]['img'] = get_image($row['type']);
                 $response['keys_out'][$i]['email'] = $row['EMAIL'];
+                $response['keys_out'][$i]['dateStart'] = $row['DATE_START_2'];
+                $response['keys_out'][$i]['dateEnd'] = $row['DATE_END_2'];
                 $i++;
             }
 
