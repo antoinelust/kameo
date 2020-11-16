@@ -81,7 +81,11 @@ if($ID != NULL || $company != NULL)
     $response['lastNameContactBilling']=$resultat['LASTNAME_CONTACT_BILLING'];
     $response['phoneContactBilling']=$resultat['PHONE_CONTACT_BILLING'];
     $response['automaticBilling']=$resultat['BILLS_SENDING'];
+    $response['emailContact']=$resultat['EMAIL_CONTACT'];
+    $response['nameContact']=$resultat['NOM_CONTACT'];
+    $response['firstNameContact']=$resultat['PRENOM_CONTACT'];
     $response['internalReference']=$resultat['INTERNAL_REFERENCE'];
+
     if($company==NULL){
         $company=$resultat['INTERNAL_REFERENCE'];
     }

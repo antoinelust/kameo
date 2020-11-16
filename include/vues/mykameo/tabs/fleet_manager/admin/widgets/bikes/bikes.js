@@ -137,8 +137,53 @@ function updateDisplayBikeManagement(type){
 }
 
 function add_bike(ID){
+var company;
+  $.ajax({
+    url: 'apis/Kameo/get_company_details.php',
+    type: 'post',
+    data: { "ID": ID},
+    success: function(response){
+        if (response.response == 'error') {
+            console.log(response.message);
+        } else if(response.response == 'success'){
+          company=response.companyName;
+          
+          $("#widget-bikeManagement-form select[name=bikeType]").change(function() {
+            if ($(this).val() == "partage") {
+              $("#widget-bikeManagement-form div[id=user_name]").hide();
+              $("#widget-bikeManagement-form div[id=user_email]").hide();
+              $("#widget-bikeManagement-form div[id=utilisateur_bike]").hide();
+            } else {
+              $('#widget-bikeManagement-form input[name=email]').val("");
+              $("#widget-bikeManagement-form select[name=name]").find("option")
+              .remove()
+              .end();
 
+              $("#widget-bikeManagement-form div[id=user_name]").show();
+              $("#widget-bikeManagement-form div[id=utilisateur_bike]").show();
 
+              for (var i = 0; i < response.userNumber; i++){
+                $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
+                $("#widget-bikeManagement-form input[name=email]").val(response.user[i].email);
+                $("#widget-bikeManagement-form select[name=clientReference]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
+              }
+              if($("#widget-bikeManagement-form select[name=name]").has('option').length > 0){
+                $("#widget-bikeManagement-form input[name=email]").val(response.user[0].email);
+                $("#widget-bikeManagement-form div[id=user_email]").show();
+              }else{
+                $("#widget-bikeManagement-form div[id=user_email]").hide();
+              }
+
+              $("#widget-bikeManagement-form select[name=name]").change(function(){
+                  var user_email = $(this).children("option:selected").val();
+                  $('#widget-bikeManagement-form input[name=email]').val(user_email);
+              });
+            }
+          }).trigger("change");
+        }
+      }
+    })
+  
     $('#widget-bikeManagement-form select[name=contractType')
         .find('option')
         .remove()
@@ -240,14 +285,6 @@ function add_bike(ID){
                     buildingNumber=response.buildingNumber;
                     company=response.internalReference;
                     $('#widget-boxManagement-form select[name=company]').val(company);
-
-                    if(buildingNumber==0){
-                        $.notify({
-                            message: "Si vous définissez un vélo en leasing, veuillez d'abord définir un bâtiment"
-                        }, {
-                            type: 'danger'
-                        });
-                    }
                 }
             }
         }).done(function(){
@@ -291,21 +328,21 @@ function add_bike(ID){
                         var i=0;
                         var dest="";
                         while (i < response.usersNumber){
-                            temp="<input type=\"checkbox\" name=\"userAccess[]\" checked value=\""+response.user[i].email+"\">"+response.user[i].firstName+" - "+response.user[i].name+"<br>";
+                            $('#widget-bikeManagement-form select[name=name]').append("<option value="+response.users[i].email+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
+                            $('#widget-bikeManagement-form input[name=email]').val(response.users[i].email);
+                            temp="<input type=\"checkbox\" name=\"userAccess[]\" checked value=\""+response.users[i].email+"\">"+response.users[i].firstName+" - "+response.users[i].name+"<br>";
                             dest=dest.concat(temp);
                             i++;
-
                         }
                         document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
                     }
                 }
-            })
+              });
+
             $('#widget-bikeManagement-form select[name=company]').val(company);
             update_offer_list(company);
             update_users_list(company);
-
-
-        })
+      })
     }
 
 
@@ -407,6 +444,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                             if ($(this).val() == "partage") {
                               $("#widget-bikeManagement-form div[id=user_name]").hide();
                               $("#widget-bikeManagement-form div[id=user_email]").hide();
+                              $("#widget-bikeManagement-form div[id=utilisateur_bike]").hide();
                             } else {
                               $('#widget-bikeManagement-form input[name=email]').val("");
                               $("#widget-bikeManagement-form select[name=name]").find("option")
@@ -414,6 +452,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                               .end();
 
                               $("#widget-bikeManagement-form div[id=user_name]").show();
+                              $("#widget-bikeManagement-form div[id=utilisateur_bike]").show();
 
                               for (var i = 0; i < response.userNumber; i++){
                                 $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
@@ -717,9 +756,15 @@ function update_users_list(company, userEMAIL = null){
                     .remove()
                     .end()
                 ;
+                $('#widget-bikeManagement-form select[name=name]')
+                    .find('option')
+                    .remove()
+                    .end()
+                ;
                 var i=0;
                 while (i < response.usersNumber){
-                    $('#widget-bikeManagement-form select[name=clientReference]').append("<option value="+response.user[i].email+">"+response.user[i].firstName+" - "+response.user[i].name+"<br>");
+                    $('#widget-bikeManagement-form select[name=clientReference]').append("<option value="+response.users[i].email+">"+response.users[i].firstName+" - "+response.users[i].name+"<br>");
+                    $('#widget-bikeManagement-form select[name=name]').append("<option value="+response.users[i].email+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
                     i++;
                 }
 
