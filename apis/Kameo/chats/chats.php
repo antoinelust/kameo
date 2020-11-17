@@ -9,15 +9,17 @@ header_remove("Content-Security-Policy");
 
 require_once __DIR__ .'/../globalfunctions.php';
 require_once __DIR__ .'/../authentication.php';
-require_once __DIR__ .'/../connexion.php'; 
+require_once __DIR__ .'/../connexion.php';
 
 $token = getBearerToken();
+
+log_inputs($token);
 
 switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
-		
+
 		if($action === 'listChatUsers'){
 			if(get_user_permissions("admin", $token)){
 				require_once 'listChatUsers.php';

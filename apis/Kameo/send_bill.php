@@ -5,6 +5,14 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+include_once 'authentication.php';
+
+$token = getBearerToken();
+log_inputs($token);
+if(!get_user_permissions("admin", $token)){
+  error_message('403');
+}
+
 
 // Form Fields
 $id = $_POST["id"];
@@ -23,7 +31,7 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);   
+$result = mysqli_query($conn, $sql);
 $resultat = mysqli_fetch_assoc($result);
 $conn->close();
 
@@ -40,7 +48,7 @@ if ($conn->query($sql) === FALSE) {
     echo json_encode($response);
     die;
 }
-$result = mysqli_query($conn, $sql);   
+$result = mysqli_query($conn, $sql);
 $resultat = mysqli_fetch_assoc($result);
 $conn->close();
 
@@ -78,7 +86,7 @@ $mail->Body = $message;
 if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
     $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
     $mail->AddBCC("antoine@kameobikes.com", "Antoine Lust");
-    $mail->AddBCC("julien@kameobikes.com", "Julien Jamar");                        
+    $mail->AddBCC("julien@kameobikes.com", "Julien Jamar");
 }else{
     $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
 }
@@ -87,8 +95,8 @@ if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST
 if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
     if(!$mail->Send()) {
        $response=array();
-       $response['response']="error";  
-       $response['message']=error_get_last()['message'];  
+       $response['response']="error";
+       $response['message']=error_get_last()['message'];
     }else{
         $now=new DateTime('now');
         $nowString=$now->format('Y-m-d H:i');
@@ -99,14 +107,14 @@ if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);   
+        $result = mysqli_query($conn, $sql);
         $conn->close();
         successMessage("SM0026");
     }
 }else{
 		$response = array ('response'=>'success', 'message'=> "Société ".$companyName."<br><strong>environnement localhost, mail non envoyé</strong>");
 		echo json_encode($response);
-		die;    
+		die;
 }
 
 

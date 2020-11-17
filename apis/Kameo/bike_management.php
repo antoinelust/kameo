@@ -9,7 +9,10 @@ if(!isset($_SESSION))
 }
 
 include 'globalfunctions.php';
+require_once 'authentication.php';
+$token = getBearerToken();
 
+log_inputs($token);
 
 function plan_maintenances($start, $end)
 {

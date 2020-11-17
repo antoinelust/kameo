@@ -5,6 +5,10 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+include_once 'authentication.php';
+
+$token = getBearerToken();
+log_inputs($token);
 
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : "SELECT COMPANY FROM customer_referential WHERE EMAIL='$email'";

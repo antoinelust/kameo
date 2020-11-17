@@ -5,6 +5,10 @@ if(!isset($_SESSION))
     session_start();
 }
 include 'globalfunctions.php';
+require_once 'authentication.php';
+$token = getBearerToken();
+
+log_inputs($token);
 
 $id = isset($_POST["id"]) ? $_POST["id"] : NULL;
 

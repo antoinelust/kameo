@@ -5,6 +5,11 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+include_once 'authentication.php';
+
+$token = getBearerToken();
+log_inputs($token);
+
 
 if(isset($_POST["widget-addActionBike-form-action"])){
     $action = isset($_POST["widget-addActionBike-form-action"]) ? $_POST["widget-addActionBike-form-action"] : NULL;
@@ -21,11 +26,11 @@ if(isset($_POST["widget-addActionBike-form-action"])){
 
 
 if($action == "add" && $user != NULL){
-     
+
     include 'connexion.php';
-     
+
 	$sql = "INSERT INTO action_log (USR_MAJ, BIKE_ID, DATE, DESCRIPTION, PUBLIC) VALUES ('$user', '$bikeID', '$date', '$description', '$public')";
-    
+
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -33,9 +38,9 @@ if($action == "add" && $user != NULL){
 	}
 	$conn->close();
     successMessage("SM0003");
-    
-} else if($action == "read" && $user != NULL && $bikeID != NULL){ 
-    
+
+} else if($action == "read" && $user != NULL && $bikeID != NULL){
+
     include 'connexion.php';
     $sql = "SELECT * from action_log WHERE BIKE_ID='$bikeID' ORDER BY DATE DESC";
 	if ($conn->query($sql) === FALSE) {
@@ -43,9 +48,9 @@ if($action == "add" && $user != NULL){
 		echo json_encode($response);
 		die;
 	}
-    $result = mysqli_query($conn, $sql);        
+    $result = mysqli_query($conn, $sql);
     $length = $result->num_rows;
-    
+
     $i=0;
     while($row = mysqli_fetch_array($result))
     {
@@ -55,15 +60,15 @@ if($action == "add" && $user != NULL){
         $response['action'][$i]['bikeID']=$row['BIKE_ID'];
         $i++;
     }
-    
+
     $sql = "SELECT DATE, COMMENT from entretiens WHERE BIKE_ID='$bikeID' and STATUS='DONE' ORDER BY DATE DESC";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-    $result = mysqli_query($conn, $sql);  
-    
+    $result = mysqli_query($conn, $sql);
+
     while($row = mysqli_fetch_array($result))
     {
         $response['action'][$i]['date']=$row['DATE'];
@@ -76,10 +81,10 @@ if($action == "add" && $user != NULL){
     $response['response']="success";
 
     $conn->close();
-    
+
     echo json_encode($response);
     die;
-    
+
 
 }
 else

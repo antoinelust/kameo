@@ -769,7 +769,7 @@ if ($assurance == true) { ?>
                 }else{
                     echo  " Location:<br/> {$box['LOCATION_PRICE']} € HTVA/mois  <span class='green bold'> x{$box['count']}</span></div><br/>";
                 }
-                
+
               } ?>
             </td>
           </tr>
@@ -862,6 +862,8 @@ if ($assurance == true) { ?>
           </tr>
         </thead>
         <tbody>
+          <?php if($leasingDuration==36)
+          {?>
           <tr>
             <td style="width:50%;" class="light">1-12 mois</td>
             <td style="width:50%;" class="light">12 mois</td>
@@ -880,8 +882,26 @@ if ($assurance == true) { ?>
           </tr>
           <tr>
             <td style="width:50%;" class="light">36 mois</td>
-            <td style="width:50%;" class="light">A la valeur de marché du vélo, environ 16% du prix initial dans la plupart des cas</td>
+            <td style="width:50%;" class="light">16% de la valeur marchande neuve du vélo au moment du début du contrat de location</td>
           </tr>
+        <?php }else if($leasingDuration==24){?>
+          <tr>
+            <td style="width:50%;" class="light">1-12 mois</td>
+            <td style="width:50%;" class="light">9 mois</td>
+          </tr>
+          <tr>
+            <td style="width:50%;" class="light">12-24 mois</td>
+            <td style="width:50%;" class="light">4 mois</td>
+          </tr>
+          <tr>
+            <td style="width:50%;" class="bold">A l’échéance </td>
+            <td style="width:50%;" class="bold">Possibilité d’achat</td>
+          </tr>
+          <tr>
+            <td style="width:50%;" class="light">24 mois</td>
+            <td style="width:50%;" class="light">16% de la valeur marchande neuve du vélo au moment du début du contrat de location</td>
+          </tr>
+        <?php } ?>
         </tbody>
       </table>
     </div>

@@ -4,7 +4,11 @@ header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
 session_start();
-include 'globalfunctions.php';
+require_once 'globalfunctions.php';
+require_once 'authentication.php';
+$token = getBearerToken();
+
+log_inputs($token);
 
 $email = isset($_POST['email']) ? $_POST['email'] : NULL;
 $company = isset($_POST['company']) ? $_POST['company'] : NULL;

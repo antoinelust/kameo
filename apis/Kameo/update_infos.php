@@ -12,7 +12,7 @@ include 'globalfunctions.php';
 include 'connexion.php';
 include 'authentication.php';
 $token = getBearerToken();
-
+log_inputs($token);
 
 $user = $_SESSION['ID'];
 $firstName = addslashes($_POST["widget-update-form-firstname"]);

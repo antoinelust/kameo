@@ -13,11 +13,12 @@ require_once __DIR__ .'/../connexion.php';
 
 $token = getBearerToken();
 
+log_inputs($token);
+
 switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
-
 		if($action === 'listBoxes'){
 			$company = isset($_GET["company"]) ? $_GET["company"] : NULL;
 			if(get_user_permissions("fleetManager", $token)){

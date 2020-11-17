@@ -27,12 +27,15 @@
 	$router->map('GET','/generate_invoices[ext]', 'generate_invoices.php');
 	$router->map('GET','/initiate_location_bill[ext]', 'initiation_location_bill.php');
 
+	/** Generation valeur du stock de vélo **/
+	$router->map('GET','/automatic_mail_bikes[ext]', 'scripts/automatic_mail_bikes.php');
+
 	/** NEWSLETTER **/
 	$router->map('GET','/newsletter[ext]', 'pages/newsletter.php');
-	
+
 	/** POLITIQUE DE CONFIDENTIALITE **/
 	$router->map('GET','/privacy-policy[ext]', 'pages/privacy-policy.php');
-	
+
 	/** CONDITIONS GENERALES D'UTILISATION **/
 	$router->map('GET','/terms-and-conditions[ext]', 'pages/terms-and-conditions.php');
 
@@ -57,7 +60,7 @@
 	/** PAGES DIVERSES **/
 	$router->map('GET','/prime-velo-wallonne[ext]', 'pages/prime-velo-wallonne.php');
 	$router->map('GET','/ebook_Leasing_Velo_Entreprise[ext]', 'pages/ebook_Leasing_Velo_Entreprise.php');
-	
+
 	/**MyAedes**/
 	$router->map('GET','/myaedes[ext]', 'pages/myaedes.php');
 

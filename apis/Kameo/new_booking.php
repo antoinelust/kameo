@@ -37,7 +37,6 @@ $dateEnd_2=$temp;
 $dateEnd_2String=$dateEnd_2->format('Y-m-d H:i');
 $dateEnd_3String=$dateEnd_2->format('d/m/Y');
 
-
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
@@ -194,8 +193,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 				include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_body_new_booking.php';
 				include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
 			}
-
 			$mail->Body = $body;
+
+      error_log(date("Y-m-d H:i:s")." - BODY  - ".$mail->Body."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+
 
 			if(!$mail->Send()) {
 				 $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);

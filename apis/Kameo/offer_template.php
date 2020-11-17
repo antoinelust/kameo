@@ -88,10 +88,6 @@
 
   $pdfTitle = strtolower(str_replace(" ", "-", $company['INTERNAL_REFERENCE'])).'_'.$currentDate['year'].'_'.$currentDate['mon'].'_'.$currentDate['mday'].'_temp';
 
-  //affichage de la réponse en front (debug, a supprimer en prod)
-  //header('Content-type: application/json');
-  //echo json_encode($response);
-
   require_once 	$_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
   use Spipu\Html2Pdf\Html2Pdf;
   use Spipu\Html2Pdf\Exception\Html2PdfException;

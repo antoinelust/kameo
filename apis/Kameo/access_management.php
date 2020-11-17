@@ -6,6 +6,11 @@ header('Content-type: application/json');
 
 include 'globalfunctions.php';
 include 'connexion.php';
+include_once 'authentication.php';
+
+$token = getBearerToken();
+log_inputs($token);
+
 
 $userID = $_POST["userID"];
 $userIDUP=strtoupper($userID);

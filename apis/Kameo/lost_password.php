@@ -6,7 +6,10 @@ require_once('../../include/php-mailer/PHPMailerAutoload.php');
 
 
 include_once 'globalfunctions.php';
-log_inputs();
+require_once 'authentication.php';
+$token = getBearerToken();
+
+log_inputs($token);
 
 //corresponds to the request for the mail, to have the link for reseting the mail
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['widget-update-form-email'])){
@@ -117,9 +120,9 @@ function writeMail(){
 	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 
   if(constant('ENVIRONMENT') == "production"){
-     $link = 'http://www.kameobikes.com/index.php?hash='. $hash;
+     $link = 'https://www.kameobikes.com/index?hash='. $hash;
   }else if(constant("ENVIRONMENT") == "test"){
-     $link = 'http://www.test.kameobikes.com/index.php?hash='. $hash;
+     $link = 'https://www.test.kameobikes.com/index?hash='. $hash;
   }else{
       $link='';
   }

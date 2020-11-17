@@ -235,7 +235,7 @@ get_all_bikes().done(function(response){
   $('.templateBike .glyphicon-plus')[0].addEventListener("click",function(){
     bikesNumber = $("#template").find('.bikesNumber').html()*1+1;
     $('#template').find('.bikesNumber').html(bikesNumber);
-    $('#bikesNumber').val(bikesNumber);
+    $('#bikesNumberTemplate').val(bikesNumber);
 
     var hideBikepVenteHTVA;
     var hideBikeLeasing ='';
@@ -345,7 +345,7 @@ get_all_bikes().done(function(response){
     bikesNumber = $("#template").find('.bikesNumber').html();
     if(bikesNumber > 0){
       $('#template').find('.bikesNumber').html(bikesNumber*1 - 1);
-      $('#bikesNumber').val(bikesNumber*1 - 1);
+      $('#bikesNumberTemplate').val(bikesNumber*1 - 1);
       $('#template').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
       bikesNumber--;
     }

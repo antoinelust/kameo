@@ -5,6 +5,11 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+include_once 'authentication.php';
+
+$token = getBearerToken();
+log_inputs($token);
+
 
 $user = $_POST["user"];
 $brand = $_POST["brand"];

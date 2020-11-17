@@ -243,6 +243,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
             if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
               $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
+
               if ($conn->query($sql4) === FALSE) {
                   $response = array ('response'=>'error7', 'message'=> $conn->error);
                   echo json_encode($response);

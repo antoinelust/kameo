@@ -5,6 +5,14 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+include_once 'authentication.php';
+
+$token = getBearerToken();
+log_inputs($token);
+if(!get_user_permissions("admin", $token)){
+  error_message('403');
+}
+
 
 
 if(isset($_POST['action']))
@@ -235,7 +243,7 @@ if(isset($_POST['action']))
                 $response['end']=$resultat['END'];
                 $response['status']=$resultat['STATUS'];
                 $response['file']=$resultat['FILE_NAME'];
-                
+
                 include 'connexion.php';
                 $sql="SELECT * FROM offers_details WHERE OFFER_ID='$id' AND STAANN != 'D'";
                 if ($conn->query($sql) === FALSE) {
@@ -255,8 +263,8 @@ if(isset($_POST['action']))
                     $itemID=$row['ITEM_ID'];;
                     $response['item'][$i]['locationPrice']=$row['ITEM_LOCATION_PRICE'];
                     $response['item'][$i]['installationPrice']=$row['ITEM_INSTALLATION_PRICE'];
-                    
-                    
+
+
                     if($response['item'][$i]['type'] == 'box'){
                         include 'connexion.php';
                         $sql2="SELECT * FROM boxes_catalog WHERE ID='$itemID'";
@@ -283,12 +291,12 @@ if(isset($_POST['action']))
                         $response['item'][$i]['brand']=$resultat2['BRAND'];
                         $response['item'][$i]['model']=$resultat2['MODEL'];
                     }
-                    
+
                     $i++;
                 }
-                
-                
-                
+
+
+
                 echo json_encode($response);
                 die;
 
@@ -369,7 +377,7 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";    
+                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
