@@ -5,8 +5,49 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       </div>
       <div data-example-id="contextual-table" class="bs-example">
-        <span id="usersList"></span>
+        <table class="table" id="usersList" style='width: 100%;'></table>
       </div>
+
+      <script>
+        $(".usersManagerClick").click(function () {
+          $.ajax({
+                 url: "apis/Kameo/get_users_listing",
+                 success : function(data) {
+                     $('#usersList').dataTable( {
+                       destroy: true,
+                       sAjaxDataProp: "",
+                       data : data.users,
+                       columns: [
+                         { title: "Nom", data: "name" },
+                         { title: "Prénom", data: "firstName" },
+                         { className: "hidden-xs", title: "E-Mail", data: "email" },
+                         {
+                           title: "Statut",
+                           data: "staann",
+                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                             if (sData !== null) $(nTd).html("Actif");
+                             else $(nTd).html("Inactif");
+                           },
+                         },
+                         {
+                           data: "email",
+                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                             $(nTd).html("<a href='#' data-target='#updateUserInformation' onclick=\"update_user_information('" +
+                               sData +
+                               "')\" class='text-green' data-toggle='modal'> Mettre à jour </a>");
+                             },
+                          }
+
+                       ],
+                       order: [
+                         [0, "asc"]
+                       ]
+                     });
+                 }
+             });
+          });
+      </script>
+
       <div class="fr" class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
       </div>

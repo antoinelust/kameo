@@ -14,41 +14,6 @@ $( ".fleetmanager" ).click(function() {
     })
 })
 
-window.addEventListener("DOMContentLoaded", (event) => {
-    document.getElementsByClassName('usersManagerClick')[0].addEventListener('click', function() { get_users_listing()}, false);
-});
-
-
-
-
-
-//FleetManager: Nombre d'utilisateurs | Displays the user list <table> by calling get_users_listing.php and creating it
-  function get_users_listing(){
-    var email= "<?php echo $user_data['EMAIL']; ?>";
-    $.ajax({
-      url: 'apis/Kameo/get_users_listing.php',
-      type: 'post',
-      data: { "email": email},
-      success: function(response){
-        if(response.response == 'success'){
-          var dest="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Utilisateurs :</h4><h4 class=\"en-inline\">Users:</h4><h4 class=\"nl-inline\">Gebruikers:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addUser\" data-toggle=\"modal\" onclick=\"create_user()\" href=\"#\"><i class=\"fa fa-plus\"></i><?= L::generic_addUser; ?></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Prénom</span><span class=\"en-inline\">Firstname</span><span class=\"nl-inline\">Voorname</span></th><th><span class=\"fr-inline\">e-mail</span><span class=\"en-inline\">mail</span><span class=\"nl-inline\">mail</span></th><th>Status</th><th></th></tr></thead>";
-          for (var i = 0; i < response.usersNumber; i++){
-            if(response.users[i].staann=='D'){
-              var status="<span class=\"text-red\">Inactif</span>";
-            }else{
-              var status="Actif";
-            }
-            dest = dest.concat("<tr><td>"+response.users[i].name+"</td><td>"+response.users[i].firstName+"</td><td>"+response.users[i].email+"</td><td>"+status+"</td><td><a  data-target=\"#updateUserInformation\" name=\""+response.users[i].email+"\" data-toggle=\"modal\" class=\"text-green\" href=\"#\" onclick=\"update_user_information('"+response.users[i].email+"')\">Mettre à jour</a></td></tr>");
-          }
-          document.getElementById('usersList').innerHTML = dest;
-          displayLanguage();
-        }
-        else {
-          console.log(response.response + ': ' + response.message);
-        }
-      }
-    })
-  }
   //FleetManager: Nombre d'utilisateurs | Display user details when "Mettre à jour" button is pressed
   function update_user_information(email){
     $.ajax({
@@ -126,7 +91,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
             }
           }
         }
-        $('#usersListing').modal('toggle');
         displayLanguage();
       }
     });

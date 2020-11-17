@@ -442,17 +442,26 @@ function getHistoricBookings() {
         //Booking futurs
 
         var dest = "";
+        var dest2 = "";
         if (response.booking.codePresence == false) {
           var tempFutureBookings =
-            '<table class="table table-condensed" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><h4><?= L::mk_reservations_futur_reservations; ?></h4><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th></tr></thead><tbody>';
+            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th></tr></thead><tbody>';
         } else {
           var tempFutureBookings =
-            '<table class="table table-condensed" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><h4><?= L::mk_reservations_futur_reservations; ?></h4><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th><?= L::mk_reservations_code; ?></th></tr></thead><tbody>';
+            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><h4><?= L::mk_reservations_futur_reservations; ?></h4><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th><?= L::mk_reservations_code; ?></th></tr></thead><tbody>';
         }
         dest = dest.concat(tempFutureBookings);
         var length =
           parseInt(response.future_bookings) +
           parseInt(response.previous_bookings);
+
+          if(response.future_bookings == 0){
+            $("#futureBookingsSmartphone").addClass("hidden");
+          }else{
+            $("#futureBookingsSmartphone").removeClass("hidden");
+          }
+
+
         while (i < length) {
           var building_start_fr = response.booking[i].building_start_fr;
           var building_start_en = response.booking[i].building_start_en;
@@ -466,7 +475,7 @@ function getHistoricBookings() {
           var annulation = response.booking[i].annulation;
 
           if (response.booking.codePresence == false) {
-            var tempFutureBookings =
+            var tempFutureBookingsTable =
               '<tr><td><a href="#" name="' +
               response.booking[i].bookingID +
               '" class="showBooking">' +
@@ -500,7 +509,7 @@ function getHistoricBookings() {
               code = "000" + length;
             }
 
-            var tempFutureBookings =
+            var tempFutureBookingsTable =
               '<tr><td><a href="#" name="' +
               response.booking[i].bookingID +
               '" class="showBooking">' +
@@ -535,12 +544,39 @@ function getHistoricBookings() {
               '<td><a class="button small red rounded effect" onclick="cancelBooking(' +
               booking_id +
               ')"><i class="fa fa-times"></i><span>annuler</span></a></td></td></tr>';
-            tempFutureBookings = tempFutureBookings.concat(tempAnnulation);
+            tempFutureBookingsTable = tempFutureBookingsTable.concat(tempAnnulation);
           } else {
             var tempAnnulation = "</td></tr>";
-            tempFutureBookings = tempFutureBookings.concat(tempAnnulation);
+            tempFutureBookingsTable = tempFutureBookingsTable.concat(tempAnnulation);
           }
-          dest = dest.concat(tempFutureBookings);
+          dest = dest.concat(tempFutureBookingsTable);
+
+          var temp="<p class='text-dark'><strong>ID :</strong> "+
+          response.booking[i].bookingID
+          +"<br><strong>Départ : </strong>"+
+          response.booking[i].start.shortDate()
+          +"<span><?= L::mk_reservations_at; ?></span> " +
+          response.booking[i].start.shortHours()
+          +" "+
+          building_start_fr
+          +"<br><strong>Arrivée : </strong>"+
+          response.booking[i].end.shortDate()
+          +"<span><?= L::mk_reservations_at; ?></span> " +
+          response.booking[i].end.shortHours()
+          +" "+
+          building_end_fr
+          +"<br><strong>Vélo :</strong> "+
+          model;
+
+          if(response.booking.codePresence){
+            temp=temp.concat("<br><strong>Code : </strong>"+code+"</p>");
+          }
+          temp=temp.concat("<a class='button small green rounded effect' onclick=\"showBooking('"+booking_id +"')\"><span>+</span></a>");
+          if (annulation) {
+            temp=temp.concat("&nbsp;<a class=\"button small red rounded effect\" onclick=\"cancelBooking(' "+booking_id +"')\"><i class=\"fa fa-times\"></i><span>annuler</span></a>");
+          }
+          dest2=dest2.concat(temp);
+
 
           i++;
         }
@@ -549,6 +585,7 @@ function getHistoricBookings() {
 
         //affichage du résultat de la recherche
         document.getElementById("futureBookings").innerHTML = dest;
+        document.getElementById("futureBookingsSmartphone").innerHTML = dest2;
 
         displayLanguage();
 
@@ -562,20 +599,6 @@ function getHistoricBookings() {
             false
           );
         }
-
-        /*if ( $.fn.dataTable.isDataTable( '#futureBookingsTable' ) ) {
-                    table = $('#futureBookingsTable').DataTable();
-                }
-                else {
-                    table = $('#futureBookingsTable').DataTable( {
-                        paging: true,
-                        "lengthChange": false,
-                        searching: false,
-                        "language": {
-                          "emptyTable": "Pas de réservations futures"
-                        }
-                    } );
-                }*/
       } else {
         console.log(response.message);
       }

@@ -15,10 +15,20 @@ $token = getBearerToken();
 log_inputs($token);
 
 
-if($email != NULL || $company != NULL){
+
+if($email != NULL || $company != NULL || $token != NULL){
+
   include 'connexion.php';
+
   if($company == NULL){
-    $sql = "SELECT COMPANY from customer_referential WHERE EMAIL = '$email'";
+    if($token != NULL){
+      $sql = "SELECT COMPANY from customer_referential WHERE TOKEN = '$token'";
+    }else if ($email != NULL){
+      $sql = "SELECT COMPANY from customer_referential WHERE EMAIL = '$email'";
+    }else{
+      errorMessage("ES0038");
+    }
+    
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
