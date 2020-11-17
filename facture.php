@@ -144,7 +144,8 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 				<br>Belgium</p>
 
 				<p>TVA/VAT : BE0681.879.712
-				<br>BE38 0689 0775 9672</p>
+				<br>BE38 0689 0775 9672
+        <br>RPM Liège</p>
 
 				<p>Liège, le '.date('d/m/Y').'</p>
 
@@ -395,7 +396,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 }
             }
 
-            $sql2="select * from boxes where COMPANY='$company' and START<='$dateStart' and (END>='$dateAfterString' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
+            $sql2="select * from boxes where COMPANY='$company' and START<='$dateEnd' and (END>='$dateEnd' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
             if ($conn->query($sql2) === FALSE) {
                 echo $conn->error;
                 die;
@@ -403,13 +404,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $result2 = mysqli_query($conn, $sql2);
             $length = $result2->num_rows;
 
-
             while($row2 = mysqli_fetch_array($result2)){
 
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['START'], 0, 4), substr($row2['START'],5,2), substr($row2['START'], 8,2));
                 $dateStartTemp = new DateTime();
-                $dateStartTemp->setDate($contractStart->format('Y'), $contractStart->format('m'), $contractStart->format('d'));
+                $dateStartTemp->setDate($currentDateObject->format("Y"), $currentDateObject->format("m"), $contractStart->format("d"));
                 $temp1=$dateStartTemp->format('d-m-Y');
 
                 if($dateStartTemp->format('m')==12){
@@ -423,6 +423,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $dateAfter2=new DateTime();
                 $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
 
+                if($dateStartTemp >= $dateStartObject && ($dateStartTemp <= $dateEndObject || $dateStartTemp == $dateEndObject)){
 
 
                 $temp2=$dateAfter2->format('d-m-Y');
@@ -449,7 +450,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
 
-                $difference=$dateStart->diff($contractStart);
+                $difference=$dateStartTemp->diff($contractStart);
 
                 $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
 
@@ -464,7 +465,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="color: grey">Période du '.$dateStart->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'</td>
+                    <td style="color: grey">Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -477,6 +478,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 }
                 $i+=1;
                 $total+=$row2['AMOUNT'];
+              }
             }
 
             $tva=($total*0.21);

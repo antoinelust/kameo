@@ -332,6 +332,7 @@ if(isset($_POST['action'])){
         $response['order']['testStatus']=$resultat['TEST_STATUS'];
         $response['order']['testResult']=$resultat['TEST_RESULT'];
         $response['order']['leasingPrice']=$resultat['LEASING_PRICE'];
+        $response['order']['comment']=br2nl($resultat['REMARK']);
 
         $email=$resultat['EMAIL'];
 

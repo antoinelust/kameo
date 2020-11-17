@@ -191,6 +191,7 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=firstName]').val(response.order.firstname).attr('disabled', false);
           $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
           $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
+          $('#widget-order-form textarea[name=comment]').val(response.order.comment);
 
           if(response.order.testBoolean=="Y"){
               $('#widget-order-form input[name=testBoolean]').prop('checked', true);
