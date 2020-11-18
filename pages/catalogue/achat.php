@@ -483,7 +483,10 @@ include 'include/head.php';
             Ensuite, nous calculons la distance entre votre domicile et votre travail, permettant de calculer le montant des primes kilométriques versées chaque mois (24 cents / km).<br/>
             Enfin, si vous utilisez votre voiture personnelle, nous calculons le montant économisé via l'utilisation du carburant (essence).</p>
             <p>L'acquisition d'un vélo comme moyen de déplacement entre votre domicile et votre travail est très avantageux d'un point de vue fiscal en Belgique, étant déductible à 100%.</p>
-          </div>
+          
+			<iframe id="ytplayer" type="text/html" width="720" height="405" src="https://www.youtube.com/embed/e6_4e5RlSGo?controls=0&color=white" frameborder="0" allowfullscreen>
+		  
+		  </div>
         </div>
       </div>
       <div class="modal-footer">
