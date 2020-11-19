@@ -68,10 +68,12 @@ function list_maintenances() {
               var date = new Date(response.maintenance[i].date).toLocaleDateString();
               var status = '';
 
-              if (response.maintenance[i].status == 'AUTOMATICALY_PLANNED') {
+              if (response.maintenance[i].status == 'AUTOMATICALY_PLANNED' || response.maintenance[i].status == 'MANUALLY_PLANNED') {
                 status = '<span class="text-red">'+response.maintenance[i].status+'</span>';
-              } else if(response.maintenance[i].status == 'DONE'){
+              }else if(response.maintenance[i].status == 'DONE'){
                 status = '<span class="text-green">'+response.maintenance[i].status+'</span>';
+              }else if(response.maintenance[i].status == 'CONFIRMED'){
+                status = '<span class="text-light" style="background: #3CB195;">'+response.maintenance[i].status+'</span>';
               }else{
                 status = response.maintenance[i].status;
               }

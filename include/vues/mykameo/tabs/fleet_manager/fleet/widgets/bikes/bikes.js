@@ -24,7 +24,7 @@ $( ".fleetmanager" ).click(function() {
 
 
 function get_bikes_listing() {
-    $.ajax({
+		$.ajax({
         url: 'apis/Kameo/get_bikes_listing.php',
         type: 'post',
         data: { "email": email},
@@ -75,12 +75,12 @@ function get_bikes_listing() {
                 }
                 var temp="</tbody></table>";
                 dest=dest.concat(temp);
-                document.getElementById('bikeDetails').innerHTML = dest;
+                //document.getElementById('bikeDetails').innerHTML = dest;
                 displayLanguage();
-                var classname = document.getElementsByClassName('updateBikeStatus');
-                for (var i = 0; i < classname.length; i++) {
-                    classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
-                }
+                //var classname = document.getElementsByClassName('updateBikeStatus');
+                //for (var i = 0; i < classname.length; i++) {
+                  //  classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
+                //}
             }
         }
     });

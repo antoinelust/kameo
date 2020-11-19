@@ -179,7 +179,6 @@ if ($token == NULL) { //Not connected
                     <?php include 'include/vues/mykameo/tabs/order/widgets/order.html'; ?>
                   </div>
                   <?php include 'include/vues/mykameo/widgets/future_booking/future_booking.html'; ?>
-                  <div id="velos" style="display: none;"></div>
                 </div>
             </div>
           </div>

@@ -901,7 +901,20 @@ if ($assurance == true) { ?>
             <td style="width:50%;" class="light">24 mois</td>
             <td style="width:50%;" class="light">16% de la valeur marchande neuve du vélo au moment du début du contrat de location</td>
           </tr>
-        <?php } ?>
+        <?php }else if($leasingDuration==12){?>
+        <tr>
+          <td style="width:50%;" class="light">1-12 mois</td>
+          <td style="width:50%;" class="light">6 mois</td>
+        </tr>
+        <tr>
+          <td style="width:50%;" class="bold">A l’échéance </td>
+          <td style="width:50%;" class="bold">Possibilité d’achat</td>
+        </tr>
+        <tr>
+          <td style="width:50%;" class="light">12 mois</td>
+          <td style="width:50%;" class="light">Dans le contrat d'un contrat de location court, il n'y a pas de possibilité de rachat</td>
+        </tr>
+      <?php } ?>
         </tbody>
       </table>
     </div>

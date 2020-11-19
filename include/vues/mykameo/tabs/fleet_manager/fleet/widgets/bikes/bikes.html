@@ -1,13 +1,80 @@
 <div class="modal fade" id="BikesListing" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
-
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
 			<div data-example-id="contextual-table" class="bs-example">
-				<span id="bikeDetails"></span>
+				<table class="table" id="bikeDetails" style='width: 100%;'></table>
 			</div>
+			<script>
+        $(".clientBikesManagerClick").click(function () {
+          $.ajax({
+                 url: "apis/Kameo/get_bikes_listing",
+                 success : function(data) {
+                     $('#bikeDetails').dataTable( {
+                       destroy: true,
+                       sAjaxDataProp: "",
+                       data : data.bike,
+                       columns: [
+                         { title: "ID", data: "id" },
+                         { className: "hidden-xs", title: "Identification", data: "frameNumber" },
+                         { title: "Modèle", data: "model" },
+												 {
+                           className: "hidden-xs",
+													 title: "Début contrat",
+                           data: "contractStart",
+                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                             if (sData !== null) $(nTd).html(sData);
+                             else $(nTd).html("N/A");
+                           },
+                         },
+												 {
+                           className: "hidden-xs",
+													 title: "Fin contrat",
+                           data: "contractEnd",
+                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                             if (sData !== null) $(nTd).html(sData);
+                             else $(nTd).html("N/A");
+                           },
+                         },
+												 {
+                           className: "hidden-xs",
+													 title: "Montant location",
+                           data: "leasingPrice",
+                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                             if (sData !== null) $(nTd).html(sData + "€/mois");
+                             else $(nTd).html("0 €/mois");
+                           },
+                         },
+												 {
+                           title: "Statut",
+                           data: "status",
+                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                             if (sData == null || sData == "KO") $(nTd).html("<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>");
+                             else $(nTd).html("<i class=\"fa fa-check\" style=\"color:green\" aria-hidden=\"true\"></i>");
+                           },
+                         },
+                         {
+                           data: "id",
+                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                             $(nTd).html("<ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+sData+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins>");
+                             },
+                          }
+                       ],
+                       order: [
+                         [0, "asc"]
+                       ]
+                     });
+										 var classname = document.getElementsByClassName('updateBikeStatus');
+										 for (var i = 0; i < classname.length; i++) {
+											 classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
+										 }
+
+                 }
+             });
+          });
+      </script>
 			<div class="fr" class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>

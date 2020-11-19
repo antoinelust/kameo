@@ -28,7 +28,6 @@ if (isset($_GET['action'])) {
             INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
             INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
             WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
-            GROUP BY BIKE_ID
             ORDER BY entretiens.DATE;";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -38,6 +37,7 @@ if (isset($_GET['action'])) {
     $result = mysqli_query($conn, $sql);
 
     $response['maintenance'] = $result->fetch_all(MYSQLI_ASSOC);
+    $response['sql'] = $sql;
 
     //count des entretiens auto planifiés ET confirmés de moins de 2 mois
     $sql_auto_plan="SELECT COUNT(ID) FROM entretiens
@@ -56,8 +56,8 @@ if (isset($_GET['action'])) {
     }else{
       $response['maintenancesNumberAuto']=0;
     }
-    
-    
+
+
     $sql_confirmed = "SELECT COUNT(ID) FROM entretiens
     WHERE STATUS = 'CONFIRMED' AND DATE >= '$date_start_string' AND DATE < '$date_end_string' GROUP BY entretiens.BIKE_ID
             ORDER BY entretiens.DATE";
@@ -76,7 +76,7 @@ if (isset($_GET['action'])) {
       $response['maintenancesNumberGlobal']=$result->num_rows;
     }
     $response['response'] = 'success';
-    
+
 
     echo json_encode($response);
     die;
@@ -86,7 +86,7 @@ if (isset($_GET['action'])) {
       $ID = $_GET['ID'];
       include 'connexion.php';
       $sql = "SELECT entretiens.ID AS MAINTENANCE_ID, entretiens.BIKE_ID AS BIKE_ID, entretiens.DATE AS MAINTENANCE_DATE,
-              entretiens.STATUS AS MAINTENANCE_STATUS, COMMENT, FRAME_NUMBER, COMPANY, MODEL, FRAME_REFERENCE, 
+              entretiens.STATUS AS MAINTENANCE_STATUS, COMMENT, FRAME_NUMBER, COMPANY, MODEL, FRAME_REFERENCE,
               STREET, ZIP_CODE, TOWN
               FROM entretiens
               INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
@@ -97,7 +97,7 @@ if (isset($_GET['action'])) {
         echo json_encode($response);
         die;
       }
-      
+
       $result = mysqli_query($conn, $sql);
       $resultat = mysqli_fetch_assoc($result);
       $conn->close();

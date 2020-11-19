@@ -19,26 +19,19 @@ $customersCompanies = isset($_POST['customersCompanies']) ? $_POST['customersCom
 $response = array();
 
 if ($admin != "Y") {
-    if ($company == NULL) {
-        if ($email != NULL) {
-            include 'connexion.php';
-            $sql = "SELECT COMPANY  FROM customer_referential WHERE EMAIL = '$email'";
-            if ($conn->query($sql) === FALSE) {
-                $response = array('response' => 'error', 'message' => $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            if ($result->num_rows == '0') {
-                errorMessage("ES0039");
-            }
-            $resultat = mysqli_fetch_assoc($result);
-            $company = $resultat['COMPANY'];
-        } else {
-            errorMessage("ES0038");
-        }
-    }
     include 'connexion.php';
+    $sql = "SELECT COMPANY  FROM customer_referential WHERE TOKEN = '$token'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array('response' => 'error', 'message' => $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);
+    if ($result->num_rows == '0') {
+        errorMessage("ES0039");
+    }
+    $resultat = mysqli_fetch_assoc($result);
+    $company = $resultat['COMPANY'];
     $sql = "SELECT * FROM customer_bikes aa where aa.COMPANY='$company' AND aa.STAANN != 'D'";
     if ($conn->query($sql) === FALSE) {
         $response = array('response' => 'error', 'message' => $conn->error);
