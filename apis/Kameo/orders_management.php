@@ -13,7 +13,7 @@ require_once 'authentication.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/include/lang_management.php'; //french by defaut, as many files as wanted can be added to the array
 
 $token = getBearerToken();
-log_inputs();
+log_inputs($token);
 
 if(isset($_POST['action'])){
 
@@ -40,17 +40,10 @@ if(isset($_POST['action'])){
     $buyingPrice=isset($_POST['buyingPriceAcc']) ? $_POST['buyingPriceAcc'] : NULL;
     $sellingPrice=isset($_POST['sellingPriceAcc']) ? $_POST['sellingPriceAcc'] : NULL;
 
-
-    /*$accessoryID=isset($_POST['accessoryID']) ? $_POST['accessoryID'] : NULL;
-    $descriptionAccessory=isset($_POST['description']) ? $_POST['description'] : NULL;*/
-
-    /*if($deliveryAddress!=NULL){
-        $deliveryAddress="'".$deliveryAddress."'";
-    }else{
-        $deliveryAddress='NULL';
-    }*/
-
     if($action=='add'){
+        if(!get_user_permissions("admin", $token)){
+          error_message('403');
+        }
         include 'connexion.php';
         $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE)
         VALUES(CURRENT_TIMESTAMP, '$email', '$mail','$portfolioID', '$size', '$status', '$testBoolean', '$testDate', '$testAddress', '$testStatus', '$testResult', '$deliveryDate', '$deliveryAddress', '$leasingPrice')";
@@ -160,6 +153,9 @@ if(isset($_POST['action'])){
 
         successMessage("SM0003");
     }else if($action=="confirmCommand"){
+        if(!get_user_permissions("fleeManager", $token)){
+          error_message('403');
+        }
         include 'connexion.php';
         $ID=isset($_POST['ID']) ? $conn->real_escape_string($_POST['ID']) : NULL;
 
@@ -183,6 +179,10 @@ if(isset($_POST['action'])){
         die;
 
     }else if($action=="refuse"){
+        if(!get_user_permissions("fleetManager", $token)){
+          error_message('403');
+        }
+
         include 'connexion.php';
         $ID=isset($_POST['ID']) ? $conn->real_escape_string($_POST['ID']) : NULL;
         $reasonOfRefusal=isset($_POST['reasonOfRefusal']) ? $conn->real_escape_string($_POST['reasonOfRefusal']) : NULL;
@@ -302,7 +302,7 @@ if(isset($_POST['action'])){
                 $i++;
             }
         }
-
+        log_output($response);
         echo json_encode($response);
         die;
 

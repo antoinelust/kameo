@@ -17,9 +17,15 @@
                        sAjaxDataProp: "",
                        data : data.bike,
                        columns: [
-                         { title: "ID", data: "id" },
-                         { className: "hidden-xs", title: "Identification", data: "frameNumber" },
-                         { title: "Modèle", data: "model" },
+                         {
+												 	 title: "ID",
+												 	 data: "id",
+													 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+														 $(nTd).html("<a data-target=\"#bikeDetailsFull\" class=\"text-green retrieveBikeDetails\" name=\""+sData+"\" data-toggle=\"modal\" href=\"#\">"+sData+"</a>");
+													 }
+												 },
+                         { className: "hidden-xs", title: "Tech. ID", data: "frameNumber" },
+                         { title: "Funct. ID", data: "model" },
 												 {
                            className: "hidden-xs",
 													 title: "Début contrat",
@@ -66,9 +72,60 @@
                          [0, "asc"]
                        ]
                      });
+
+										 $(".retrieveBikeDetails").click(function () {
+	 					          $.ajax({
+	 					                 url: "apis/Kameo/action_bike_management.php",
+	 													 type: "post",
+	 													 data: {
+	 											       "readActionBike-action": "read",
+	 											       "readActionBike-bikeNumber": this.name,
+	 											     },
+	 					                 success : function(data) {
+	 					                     $('#action_bike_log_user').dataTable( {
+	 					                       destroy: true,
+																	 paging: false,
+																	 searching: false,
+	 					                       sAjaxDataProp: "",
+	 					                       data : data.action,
+	 					                       columns: [
+	 																	 {
+	 																		 title: "Date",
+	 					                           data: "date",
+	 					                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+	 					                             $(nTd).html(sData.substring(0, 10));
+	 					                           },
+	 					                         },
+	 																	 {
+	 																		 title: "Description",
+	 					                           data: "description",
+	 					                         },
+	 					                       ],
+	 					                       order: [
+	 					                         [0, "desc"]
+	 					                       ]
+	 					                     });
+	 															 var classname = document.getElementsByClassName('updateBikeStatus');
+	 															 for (var i = 0; i < classname.length; i++) {
+	 																 classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
+	 															 }
+	 															 var classname = document.getElementsByClassName('retrieveBikeDetails');
+	 															 for (var i = 0; i < classname.length; i++) {
+	 																 classname[i].addEventListener('click', function() {fillBikeDetails(this.name)}, false);
+	 															 }
+
+	 					                 }
+	 					             });
+	 					          });
+
+
 										 var classname = document.getElementsByClassName('updateBikeStatus');
 										 for (var i = 0; i < classname.length; i++) {
 											 classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
+										 }
+										 var classname = document.getElementsByClassName('retrieveBikeDetails');
+										 for (var i = 0; i < classname.length; i++) {
+											 classname[i].addEventListener('click', function() {fillBikeDetails(this.name)}, false);
 										 }
 
                  }

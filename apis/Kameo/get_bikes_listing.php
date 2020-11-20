@@ -187,5 +187,6 @@ $resultat2 = mysqli_fetch_assoc($result2);
 
 $response['numberOfBookings'] = $resultat2['count(1)'];
 
+log_output($response);
 echo json_encode($response);
 die;

@@ -142,15 +142,16 @@ if($id != NULL)
         $i++;
     }
 
-    $sql = "SELECT TYPE FROM customer_bike_access WHERE BIKE_ID='$id'";
+    $sql = "SELECT EMAIL FROM customer_bike_access WHERE TYPE='personnel' AND TYPE!='D' AND BIKE_ID='$id'";
     $result = mysqli_query($conn, $sql);
-    $resultat = mysqli_fetch_assoc($result);
-    if($resultat['TYPE']){
-        $response['biketype']=$resultat['TYPE'];
+    $personnelBool = $result->num_rows;
+    if($personnelBool>0){
+      $resultat = mysqli_fetch_assoc($result);
+      $response['biketype']='personnel';
+      $response['bikeOwner']=$resultat['EMAIL'];
     }else{
-        $response['biketype']='partage';
+      $response['biketype']="partage";
     }
-
 
     include 'connexion.php';
     $sql="SELECT aa.NOM, aa.PRENOM, aa.EMAIL FROM customer_referential aa WHERE aa.COMPANY='$company' AND NOT EXISTS (select 1 from customer_bike_access bb WHERE aa.EMAIL=bb.EMAIL and bb.BIKE_ID='$id' and bb.STAANN!='D') ORDER BY NOM";
