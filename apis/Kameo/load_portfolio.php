@@ -9,6 +9,8 @@ header('Content-type: application/json');
 session_start();
 include 'globalfunctions.php';
 
+log_inputs();
+
 try{
     if(isset($_GET['action'])){
         $action=isset($_GET['action']) ? $_GET['action'] : NULL;
@@ -207,6 +209,7 @@ try{
                 }
                 $response['bike']=($bikes);
                 echo json_encode($response);
+                log_output($response);
             }else{
                 error_message('500', 'Unable to list portfolio bikes');
             }
