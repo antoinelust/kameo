@@ -53,11 +53,10 @@ if ($token == NULL) { //Not connected
   //@TODO: Replace email chech with authentication token
   include 'apis/Kameo/connexion.php';
 
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY and TOKEN='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, aa.EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING, cc.* from customer_referential aa, conditions bb, (SELECT CASE WHEN COUNT(1) =1 THEN 'TRUE' ELSE 'FALSE' END as personnalBike FROM customer_bike_access WHERE customer_bike_access.EMAIL=(SELECT EMAIL FROM customer_referential WHERE TOKEN='$token') AND TYPE='personnel') cc WHERE aa.COMPANY=bb.COMPANY and aa.TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-
   echo '
   <script type="text/javascript">
     const user_ID = "' . $user_ID . '";
@@ -93,7 +92,7 @@ if ($token == NULL) { //Not connected
     echo '$("#fleetmanagerID").addClass("active"); ';
     echo '$( ".fleetmanager" ).trigger( "click" );';
     echo 'displayLanguage();';
-  } else if (get_user_permissions("personnalBike", $token)){
+  } else if ($user_data["personnalBike"]=="TRUE"){
     echo '$("#personnalBike").addClass("active"); ';
     echo '$("#personnalBikeID").addClass("active"); ';
   }
@@ -150,11 +149,9 @@ if ($token == NULL) { //Not connected
 
                         echo '<li id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>' . L::tabs_fleet_title . '</a> </li>';
                       }
-                      if (get_user_permissions("personnalBike", $token)) {
-
+                      if($user_data['personnalBike']=="TRUE"){
                         echo '<li id="personnalBikeID"><a href="#personnalBike" class="personnalBike"><i class="fa fa-user"></i>' . L::tabs_personnal_title . '</a> </li>';
                       }
-
                       ?>
                     </ul>
                     <div class="tabs-content">
@@ -167,7 +164,7 @@ if ($token == NULL) { //Not connected
                         include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
                         include 'include/vues/mykameo/tabs/reservations/main.php';  //TAB 3 @TODO: REFACTOR
                       }
-                      if(get_user_permissions("personnalBike", $token)){
+                      if($user_data['personnalBike']=="TRUE"){
                         include 'include/vues/mykameo/tabs/personnal_bike/main.php';  //TAB 4 @TODO: REFACTOR
                       }
                       if(get_user_permissions(["fleetManager", "admin"] , $token)){

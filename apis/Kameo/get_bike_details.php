@@ -5,19 +5,35 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+require_once 'authentication.php';
+$token = getBearerToken();
+
+log_inputs($token);
 
 
-$id=isset($_POST['bikeID']) ? $_POST['bikeID'] : NULL;
-$company=isset($_POST['company']) ? $_POST['company'] : NULL;
+$id=isset($_POST['bikeID']) ? addslashes($_POST['bikeID']) : NULL;
+$company=isset($_POST['company']) ? addslashes($_POST['company']) : NULL;
 
 $response=array();
+include 'connexion.php';
+
+if($id == null){
+  $sql="SELECT BIKE_ID FROM customer_referential, customer_bike_access WHERE TOKEN='$token' AND customer_referential.EMAIL=customer_bike_access.EMAIL AND customer_referential.STAANN != 'D' AND customer_bike_access.STAANN != 'D'";
+  if ($conn->query($sql) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+  }
+  $result = mysqli_query($conn, $sql);
+  $resultat = mysqli_fetch_assoc($result);
+  $id=$resultat['BIKE_ID'];
+}
 
 
 if($id != NULL)
 {
 
 
-    include 'connexion.php';
     $sql="SELECT * FROM customer_bikes  WHERE ID = '$id'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);

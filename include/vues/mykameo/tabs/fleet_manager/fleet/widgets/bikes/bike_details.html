@@ -1,4 +1,4 @@
-<div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="bikeDetailsFull" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -68,31 +68,32 @@
 
 						<div class="separator"></div>
 						<h4 class="text-green">Informations relatives au contrat</h4>
-							<div class="col-sm-4">
-								<label for="contractType" class="fr-inline">Type de contrat :</label>
-								<label for="contractType" class="en-inline">Contract Type : </label>
-								<label for="contractType" class="nl-inline">Contract Type : </label>
-								<input type="text" name="contractType" class="form-control contractType" readonly/>
-							</div>
-							<div class="col-sm-4">
-								<label for="startDateContract" class="fr-inline">Date de début :</label>
-								<label for="startDateContract" class="en-inline">Start date : </label>
-								<label for="startDateContract" class="nl-inline">Start date : </label>
-								<input type="text" name="startDateContract" class="form-control startDateContract" readonly/>
-							</div>
-							<div class="col-sm-4">
-								<label for="endDateContract" class="fr-inline">Date de fin :</label>
-								<label for="endDateContract" class="en-inline">End date : </label>
-								<label for="endDateContract" class="nl-inline">End date : </label>
-								<input type="text" name="endDateContract" class="form-control endDateContract" readonly/>
-							</div>
-							<div class="col-sm-4">
-								<label for="leasingAmount" class="leasingAmount">Montant leasing :</label>
-								<div class="input-group">
-									<span class="input-group-addon leasingAmount">€/mois</span>
-									<input type="int" step="0.01" name="leasingAmount" class="form-control leasingAmount" readonly/>
-							</div>
+						<div class="col-sm-4">
+							<label for="contractType" class="fr-inline">Type de contrat :</label>
+							<label for="contractType" class="en-inline">Contract Type : </label>
+							<label for="contractType" class="nl-inline">Contract Type : </label>
+							<input type="text" name="contractType" class="form-control contractType" readonly/>
 						</div>
+						<div class="col-sm-4">
+							<label for="startDateContract" class="fr-inline">Date de début :</label>
+							<label for="startDateContract" class="en-inline">Start date : </label>
+							<label for="startDateContract" class="nl-inline">Start date : </label>
+							<input type="text" name="startDateContract" class="form-control startDateContract" readonly/>
+						</div>
+						<div class="col-sm-4">
+							<label for="endDateContract" class="fr-inline">Date de fin :</label>
+							<label for="endDateContract" class="en-inline">End date : </label>
+							<label for="endDateContract" class="nl-inline">End date : </label>
+							<input type="text" name="endDateContract" class="form-control endDateContract" readonly/>
+						</div>
+						<div class="col-sm-4">
+							<label for="leasingAmount" class="leasingAmount">Montant leasing :</label>
+							<div class="input-group">
+								<span class="input-group-addon leasingAmount">€/mois</span>
+								<input type="int" step="0.01" name="leasingAmount" class="form-control leasingAmount" readonly/>
+						  </div>
+							<a data-target="#calculRachatVelo" class="text-green" data-toggle="modal" href="#">informations rachat du vélo</a>
+					  </div>
 						<div class="separator"></div>
 						<h4 class="text-green">Informations relatives au vélo</h4>
 						<div class="col-md-4">
@@ -101,8 +102,61 @@
 						<div class="separator"></div>
 						<h4 class="text-green">Historique du vélo</h4>
 						<div class="col-sm-12">
-							<table id="action_bike_log_user" style='width: 100%;'></table>
+							<table id="action_bike_log_user"  class="table" style='width: 100%;'></table>
 						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="calculRachatVelo" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="text-green">Informations relatives au rachat du vélo</h4>
+						<div class="col-sm-12">
+							<p>Vous bénéficiez actuellement d’un vélo avec KAMEO Bikes lié à votre contrat de travail chez votre employeur ? Votre location de 36 mois arrive à terme et vous souhaitez acquérir votre vélo ? Vous quittez votre emploi et souhaitez conserver votre vélo ?<br>
+							Ce document va répondre à ces questions et définit vos droits et devoirs concernant votre vélo de société.</p>
+						</div>
+						<h4 class="text-green">Votre location de 36 mois se termine, que faire ?</h4>
+						<ul>
+							<li>Si vous souhaitez conserver le vélo, vous pouvez racheter votre vélo pour 16% de sa valeur catalogue</li>
+							<li>Vous souhaitez obtenir un nouveau vélo ?</li>
+							<ul>
+								<li>KAMEO Bikes récupère votre ancien vélo en état conforme à l’usure normale d’un vélo électrique au bout de 36 mois</li>
+								<li>Vous recommencer une location sur une durée de 36 mois avec un nouveau vélo fournit par KAMEO Bikes</li>
+							</ul>
+						</ul>
+						<h4 class="text-green">Vous quittez votre société, que faire ?</h4>
+						<ul>
+							<li>Vous ne souhaitez pas conserver votre vélo :</li>
+							<ul>
+								<li>KAMEO Bikes récupère votre ancien vélo en état conforme à l’usure normale d’un vélo électrique suivant la durée de location</li>
+							</ul>
+							<li>Vous souhaitez racheter votre vélo :</li>
+							<ul>
+								<li>Vous rachetez votre vélo à KAMEO Bikes selon la valeur définie ci-après :</li>
+								<br><br>
+								<div class="col-sm-6 center">
+									<table id="valeurRachatTable" class="table">
+										<th>Mois</th><th>Valeur de rachat (TVAC)</th>
+									</table>
+								</div>
+							</ul>
+						</ul>
 					</div>
 				</div>
 			</div>

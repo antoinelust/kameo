@@ -26,7 +26,7 @@
         <table id="chatsList" class="table" style="width: 100%"></table>
       </div>
       <script>
-        $("#chatsManagement").click(function () {
+        $("#chatsManagement").click(function (){
           $("#chatsList").dataTable({
             destroy: true,
             ajax: {
@@ -62,8 +62,8 @@
               },
               { title: "Number&nbsp;of&nbsp;messages", data: "NB_MESSAGES" },
               { title: "Repondu", data: "MESSAGE_READ" },
-              { 
-                title: "Telephone", 
+              {
+                title: "Telephone",
                 data: "PHONE",
                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol){
                   if (sData !== null) $(nTd).html(sData);
