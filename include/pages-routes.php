@@ -84,4 +84,7 @@
 
 	/** 403 **/
 	$router->map('GET','/403[ext]', 'pages/403.php');
+	
+	/** NAVIGATEUR **/
+	$router->map('GET','/navigateur[ext]', 'pages/navigateur.php');
 ?>
