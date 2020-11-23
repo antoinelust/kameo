@@ -120,7 +120,7 @@ include 'include/head.php';
 									<h1 class="ac-title">Calcul de coût réel</h1>
 									<div class="ac-content">
 
-										<form id="cash4bike-form" role="form" method="get">
+										<form id="cash4bike-form" action="apis/Kameo/load_portfolio" role="form" method="get">
 										<div class="row">
 											<div class="col-md-12" style= "background-color: #D3EFDD">
 												<small class="text-dark">*Les informations seront utilisées à des fins commerciales uniquement par KAMEO Bikes et non communiquées à des tiers.</small>
@@ -262,7 +262,6 @@ include 'include/head.php';
             var bikes;
 
             function loadPortfolio(revenuEmployee = null, type = null, homeAddress = null, workAddress = null, prime = null, transport = null, transportationEssence = null, frequenceBikePerWeek = null) {
-
                 $('.grid').html("");
                 var $grid = $('.grid').isotope({});
                 $grid.isotope('destroy');
@@ -346,9 +345,7 @@ include 'include/head.php';
                                       if(response.bike[i].impactCarSavingMoney != 0){
                                         textExplanation = textExplanation.concat("<br/>Economie véhicule : "+Math.round(response.bike[i].impactCarSavingMoney*10)/10+" €/mois")
                                       }
-                                      if(response.bike[i].impactBikeAllowance != 0 || response.bike[i].impactCarSavingMoney != 0){
-                                        textExplanation = textExplanation.concat("<hr/>");
-                                      }
+                                      textExplanation = textExplanation.concat("<hr/>");
                                       if(response.bike[i].realImpact > 0){
                                         textExplanation = textExplanation.concat("<b>Votre vélo vous coûtera réellement "+Math.round(response.bike[i].realImpact)+" €/mois</b>");
                                       }else{
@@ -422,6 +419,14 @@ include 'include/head.php';
             }
             loadPortfolio();
 
+
+            jQuery("#cash4bike-form").validate({
+              submitHandler: function(form) {
+                loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]:checked').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]:checked').val(), $('#cash4bike-form select[name=frequence]').val());
+              }
+            });
+
+
             function updateBikePicture(brand, model, frameType) {
 
                 document.getElementById('bikePicturetitle').innerHTML = brand + " " + model;
@@ -483,9 +488,9 @@ include 'include/head.php';
             Ensuite, nous calculons la distance entre votre domicile et votre travail, permettant de calculer le montant des primes kilométriques versées chaque mois (24 cents / km).<br/>
             Enfin, si vous utilisez votre voiture personnelle, nous calculons le montant économisé via l'utilisation du carburant (essence).</p>
             <p>L'acquisition d'un vélo comme moyen de déplacement entre votre domicile et votre travail est très avantageux d'un point de vue fiscal en Belgique, étant déductible à 100%.</p>
-          
+
 			<iframe id="ytplayer" type="text/html" width="720" height="405" src="https://www.youtube.com/embed/e6_4e5RlSGo?controls=0&color=white" frameborder="0" allowfullscreen>
-		  
+
 		  </div>
         </div>
       </div>
@@ -500,12 +505,6 @@ include 'include/head.php';
 
 
 <script type="text/javascript">
-  jQuery("#cash4bike-form").validate({
-    submitHandler: function(form) {
-      loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]').val(), $('#cash4bike-form select[name=frequence]').val());
-    }
-  });
-
 
   $('#cash4bike-form input[name=domicile]').change(function(){
       $('#inputHomeAddress').removeClass('has-error');
