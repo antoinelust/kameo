@@ -14,6 +14,45 @@ $( ".fleetmanager" ).click(function() {
     })
 })
 
+function get_users_listing(){
+  $.ajax({
+         url: "apis/Kameo/get_users_listing",
+         success : function(data) {
+            $('#usersList').dataTable( {
+              destroy: true,
+              sAjaxDataProp: "",
+              data : data.users,
+              columns: [
+               { title: "Nom", data: "name" },
+               { title: "Prénom", data: "firstName" },
+               { className: "hidden-xs", title: "E-Mail", data: "email" },
+               {
+                 title: "Statut",
+                 data: "staann",
+                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                   if (sData !== null) $(nTd).html("Actif");
+                   else $(nTd).html("Inactif");
+                 },
+               },
+               {
+                 data: "email",
+                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                   $(nTd).html("<a href='#' data-target='#updateUserInformation' onclick=\"update_user_information('" +
+                     sData +
+                     "')\" class='text-green' data-toggle='modal'> Mettre à jour </a>");
+                   },
+                }
+
+              ],
+              order: [
+               [0, "asc"]
+              ]
+            });
+         }
+     });
+}
+
+
   //FleetManager: Nombre d'utilisateurs | Display user details when "Mettre à jour" button is pressed
   function update_user_information(email){
     $.ajax({

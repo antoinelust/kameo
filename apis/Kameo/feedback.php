@@ -29,7 +29,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
-    $company=$row['COMPANY'];
+  $company=$row['COMPANY'];
 	$firstName=$row["PRENOM"];
 	$name=$row["NOM"];
 	$phone=$row["PHONE"];

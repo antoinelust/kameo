@@ -39,7 +39,7 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
 
   $email=$_POST['mail'];
   $name=$_POST['name'];
-  $phone = $_POST['phone'];
+  $phone = isset($_POST["phone"]) ? $_POST["phone"] : NULL;
   $firstName=$_POST['firstName'];
   $requestor=$_POST['requestor'];
 
@@ -111,9 +111,14 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
       $accessRights=substr($accessRights, 1, strlen($accessRights)-1);
   }
 
+  if($phone!=NULL && $phone != ""){
+    $phone="'$phone'";
+  }else{
+    $phone="NULL";
+  }
 
   include 'connexion.php';
-  $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN, TOKEN, ACCESS_RIGHTS) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', '$phone', '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '', '$token', '$accessRights')";
+  $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN, TOKEN, ACCESS_RIGHTS) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', $phone, '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '', '$token', '$accessRights')";
 
   if ($conn->query($sql) === FALSE) {
       if($conn->errno=="1062"){

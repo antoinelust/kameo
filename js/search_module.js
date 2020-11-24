@@ -211,10 +211,11 @@ function update_deposit_hour_form(){
     // Goal of this function is to construct the reasearch fields
     function constructSearchForm(daysToDisplay, bookingLength, administrator, assistance, hourStartIntakeBooking, hourEndIntakeBooking, hourStartDepositBooking, hourEndDepositBooking, mondayIntake, tuesdayIntake, wednesdayIntake, thursdayIntake, fridayIntake, saturdayIntake, sundayIntake, mondayDeposit, tuesdayDeposit, wednesdayDeposit, thursdayDeposit, fridayDeposit, saturdayDeposit, sundayDeposit, maxBookingsPerYear, maxBookingsPerMonth, email){
         if(assistance=="Y"){
-          if(user_data['COMPANY']=="Actiris"){
-            document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance</span><span class=\"en-inline\">Assistance</span><span class=\"nl-inline\">Hulp</span></a>"
+          if(user_data['COMPANY']=="Actiris" || user_data['COMPANY']==""){
             $('#entretienPopUP').addClass('hidden');
+            document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance</span><span class=\"en-inline\">Assistance</span><span class=\"nl-inline\">Hulp</span></a>"
           }else{
+            $('#entretienPopUP').removeClass('hidden');
             document.getElementById('assistanceSpan').innerHTML="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#assistance\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Assistance et Entretien</span><span class=\"en-inline\">Assistance and Maintenance</span><span class=\"nl-inline\">Hulp en Onderhoud</span></a>"
           }
         }

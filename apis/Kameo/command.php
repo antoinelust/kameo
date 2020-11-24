@@ -15,6 +15,7 @@ $token = getBearerToken();
 if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
     if($action == "command"){
+
         $portoflioID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
         $email=isset($_POST['email']) ? $_POST['email'] : NULL;
         $size=isset($_POST['size']) ? $_POST['size'] : NULL;
@@ -22,7 +23,6 @@ if(isset($_POST['action'])){
         $leasing_price = isset($_POST['leasing_price']) ? $_POST['leasing_price'] : NULL;
 
         include 'connexion.php';
-
         $stmt = $conn->prepare("SELECT * FROM customer_referential WHERE EMAIL=?");
         if (!$stmt->bind_param("s", $email)) {
             $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
@@ -36,11 +36,9 @@ if(isset($_POST['action'])){
             die;
         }
 
-
         $resultat=$stmt->get_result()->fetch_assoc();
         $firstName=$resultat['PRENOM'];
         $name=$resultat['NOM'];
-
         $stmt->close();
 
 

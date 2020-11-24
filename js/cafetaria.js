@@ -69,11 +69,16 @@ function load_cafetaria(){
               var leasing_price = response.bike[i].leasingPrice;
 
               if(response.bike[i].company == "City Dev"){
-                  priceByMonth = Math.round((leasing_price + (response.bike[i].price - 2000)/(4312-2000)*(142-135)) * 1.21) + " €/mois TVAC";
-              }else{
-                  priceByMonth = leasing_price + " €/mois";
+                  leasing_price = Math.round(leasing_price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
               }
 
+              if(response.bike[i].company == "City Dev"){
+                var priceByMonth = Math.round(leasing_price*1.21);
+                leasing_price = Math.round(priceByMonth/1.21*100)/100;
+                priceByMonth = priceByMonth + "€/mois TVAC";
+              }else{
+                var priceByMonth = leasingPrice + "€/mois"
+              }
 
 
 							var temp="\

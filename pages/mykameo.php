@@ -5,6 +5,23 @@ ob_start();
 if (!isset($_SESSION))
   session_start();
 
+
+echo '
+<!-- For IE <= 9 -->
+<!--[if IE]>
+<script type="text/javascript">
+    window.location = "navigateur.php";
+</script>
+<![endif]-->
+
+<!-- For IE > 9 -->
+<script type="text/javascript">
+    if (window.navigator.msPointerEnabled) {
+        window.location = "navigateur.php";
+    }
+</script>
+';
+
 $token = isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL; //@TODO: replaced by a token to check if connected
 $user_ID = isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notifications.js
 $langue = isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';

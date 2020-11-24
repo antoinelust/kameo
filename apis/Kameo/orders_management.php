@@ -153,15 +153,14 @@ if(isset($_POST['action'])){
 
         successMessage("SM0003");
     }else if($action=="confirmCommand"){
-        if(!get_user_permissions("fleeManager", $token)){
+        if(!get_user_permissions("fleetManager", $token)){
           error_message('403');
         }
         include 'connexion.php';
         $ID=isset($_POST['ID']) ? $conn->real_escape_string($_POST['ID']) : NULL;
+        $stmt = $conn->prepare("UPDATE client_orders SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ= ?, STATUS='confirmed' WHERE ID=?");
 
-        $stmt = $conn->prepare("UPDATE client_orders SET STATUS='confirmed' WHERE ID=?");
-
-        if (!$stmt->bind_param("i", $ID)) {
+        if (!$stmt->bind_param("si", $token, $ID)) {
             $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
             die;

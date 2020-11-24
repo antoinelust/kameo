@@ -147,7 +147,7 @@ var company;
             console.log(response.message);
         } else if(response.response == 'success'){
           company=response.companyName;
-          
+
           $("#widget-bikeManagement-form select[name=bikeType]").change(function() {
             if ($(this).val() == "partage") {
               $("#widget-bikeManagement-form div[id=user_name]").hide();
@@ -183,7 +183,7 @@ var company;
         }
       }
     })
-  
+
     $('#widget-bikeManagement-form select[name=contractType')
         .find('option')
         .remove()
@@ -1359,11 +1359,11 @@ function list_bikes_admin() {
           }
 
           if (response.bike[i].GPS_ID != null) {
-            temp =
-              temp +
-              '<a data-target="#bikePosition" name="' +
+            var GPS = '<a data-target="#bikePosition" name="' +
               response.bike[i].id +
               '" data-toggle="modal" class="clickBikePosition" href="#"><i class="fa fa-map-pin" aria-hidden="true"></i> </a>';
+          }else{
+            var GPS = "";
           }
 
           if (response.bike[i].bikeBuyingDate == null) {
@@ -1390,7 +1390,9 @@ function list_bikes_admin() {
           }
 
           temp =
-            '<tr><td><a  data-target="#bikeManagement" name="' +
+            '<tr><td>'+
+            GPS+
+            '<a  data-target="#bikeManagement" name="' +
             response.bike[i].id +
             '" data-toggle="modal" class="updateBikeAdmin" href="#">' +
             response.bike[i].id +
