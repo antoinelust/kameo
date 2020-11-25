@@ -152,7 +152,7 @@ include 'include/head.php';
 			<div class="container">
 				<h1 class="text-green"><?= L::societes_title; ?></h1>
 				<ul class="grid grid-4-columns">
-					<li style="cursor: default;"><img draggable="false" src="images/clients/bpost.png" alt="Nos clients - BPost"></li>
+					<!-- <li style="cursor: default;"><img draggable="false" src="images/clients/bpost.png" alt="Nos clients - BPost"></li> -->
 					<li style="cursor: default;"><img draggable="false" src="images/clients/actiris.png" alt="Nos clients - Actiris"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/infrabel.png" alt="Nos clients - Infrabel"></li>
 					<li style="cursor: default;"><img draggable="false" src="images/clients/afelio.png" alt="Nos clients - Afelio"></li>
