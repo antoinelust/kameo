@@ -448,7 +448,7 @@ function getHistoricBookings() {
             '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th></tr></thead><tbody>';
         } else {
           var tempFutureBookings =
-            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><h4><?= L::mk_reservations_futur_reservations; ?></h4><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th><?= L::mk_reservations_code; ?></th></tr></thead><tbody>';
+            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th><?= L::mk_reservations_code; ?></th></tr></thead><tbody>';
         }
         dest = dest.concat(tempFutureBookings);
         var length =

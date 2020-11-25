@@ -77,7 +77,7 @@ function load_cafetaria(){
                 leasing_price = Math.round(priceByMonth/1.21*100)/100;
                 priceByMonth = priceByMonth + "€/mois TVAC";
               }else{
-                var priceByMonth = leasingPrice + "€/mois"
+                var priceByMonth = leasing_price + "€/mois"
               }
 
 

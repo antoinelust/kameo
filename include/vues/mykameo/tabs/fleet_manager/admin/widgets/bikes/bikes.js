@@ -60,6 +60,53 @@ $(".fleetmanager").click(function () {
   });
 });
 
+
+$("#bikePositionAdmin").on('shown', function(){
+  console.log("test");
+  $.ajax({
+    url: "apis/Kameo/get_position.php",
+    type: "get",
+    data: { bikeId: this.name },
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: {
+      Authorization: "Basic " + btoa("antoine@kameobikes.com:test"),
+    },
+
+    success: function (response) {
+      if (response.response == "error") {
+        console.log(response.message);
+      } else {
+        $("#demoMapAdmin").html("");
+        console.log(response);
+        //var lon = response.longitude;
+        //var lat = response.latitude;
+        var lon = "5";
+        var lat = "50";
+        var zoom = 15;
+        var position = new OpenLayers.LonLat(lat, lon);
+        var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+        var position = new OpenLayers.LonLat(lon, lat).transform(
+          fromProjection,
+          toProjection
+        );
+
+        map = new OpenLayers.Map("demoMapAdmin");
+        var mapnik = new OpenLayers.Layer.OSM();
+        map.addLayer(mapnik);
+        var markers = new OpenLayers.Layer.Markers("Markers");
+        map.addLayer(markers);
+        markers.addMarker(new OpenLayers.Marker(position));
+
+        map.setCenter(position, zoom);
+      }
+    },
+  });
+});
+
+
 function updateDisplayBikeManagement(type){
     if(type=="selling"){
         $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
@@ -1359,7 +1406,7 @@ function list_bikes_admin() {
           }
 
           if (response.bike[i].GPS_ID != null) {
-            var GPS = '<a data-target="#bikePosition" name="' +
+            var GPS = '<a data-target="#bikePositionAdmin" name="' +
               response.bike[i].id +
               '" data-toggle="modal" class="clickBikePosition" href="#"><i class="fa fa-map-pin" aria-hidden="true"></i> </a>';
           }else{
@@ -1468,52 +1515,6 @@ function list_bikes_admin() {
           $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
         });
 
-        $("#bikePosition").on("shown.bs.modal", function () {
-          if (!mapInitialisation) {
-          }
-        });
-
-        $(".clickBikePosition").on("click", function () {
-          $.ajax({
-            url: "api/get_position.php",
-            type: "get",
-            data: { bikeId: this.name },
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: "Basic " + btoa("antoine@kameobikes.com:test"),
-            },
-
-            success: function (response) {
-              if (response.response == "error") {
-                console.log(response.message);
-              } else {
-                $("#demoMap").html("");
-                var lon = response.longitude;
-                var lat = response.latitude;
-                var zoom = 15;
-
-                var position = new OpenLayers.LonLat(lat, lon);
-                var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
-                var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-                var position = new OpenLayers.LonLat(lon, lat).transform(
-                  fromProjection,
-                  toProjection
-                );
-
-                map = new OpenLayers.Map("demoMap");
-                var mapnik = new OpenLayers.Layer.OSM();
-                map.addLayer(mapnik);
-                var markers = new OpenLayers.Layer.Markers("Markers");
-                map.addLayer(markers);
-                markers.addMarker(new OpenLayers.Marker(position));
-
-                map.setCenter(position, zoom);
-              }
-            },
-          });
-        });
 
         table = $("#bookingAdminTable").DataTable({
           paging: true,

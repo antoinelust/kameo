@@ -174,92 +174,71 @@ function construct_form_for_command_validation(ID){
 }
 
 function retrieve_command_fleet(ID){
-    $.ajax({
-      url: 'apis/Kameo/load_portfolio.php',
-      type: 'get',
-      data: {"action": "retrieve", "ID": ID},
-      success: function(response){
-            if(response.response == 'error') {
-              console.log(response.message);
-            }
-            if(response.response == 'success'){
-                $('#widget-orderFleet-form select[name=portfolioID]').empty();
-                var i=0;
-                while(i<response.bikeNumber){
-                    $('#widget-orderFleet-form select[name=portfolioID]').append('<option value='+response.bike.ID+'>'+response.bike.ID+' - '+response.bike.brand+' '+response.bike.model+' - '+response.bike.frameType+'</option>');
-                    i++;
-                }
-            }
+  $.ajax({
+    url: 'apis/Kameo/orders_management.php',
+    type: 'get',
+    data: {"action": "retrieve", "ID": ID, "email": email},
+    success: function(response){
+      if(response.response == 'error') {
+        console.log(response.message);
       }
-    }).done(function(){
+      if(response.response == 'success'){
 
-        $.ajax({
-          url: 'apis/Kameo/orders_management.php',
-          type: 'get',
-          data: {"action": "retrieve", "ID": ID, "email": email},
-          success: function(response){
-            if(response.response == 'error') {
-              console.log(response.message);
-            }
-            if(response.response == 'success'){
+          document.getElementById('widget-orderFleet-form').reset();
+          $('#widget-orderFleet-form input[name=ID]').val(ID);
+          $('#widget-refuseCommand-form input[name=ID]').val(ID);
+          $('#widget-orderFleet-form input[name=brand]').val(response.order.brand);
+          $('#widget-orderFleet-form input[name=model]').val(response.order.model);
+          $('#widget-orderFleet-form select[name=frameType]').val(response.order.frameType);
+          $('#widget-orderFleet-form select[name=size]').val(response.order.size);
+          $('#widget-orderFleet-form select[name=status]').val(response.order.status);
+          $('#widget-orderFleet-form input[name=retailPrice]').val(response.order.priceHTVA+" €");
+          $('#widget-orderFleet-form input[name=leasingPrice]').val(response.order.leasingPrice+" €/mois");
+          $('#widget-orderFleet-form input[name=name]').val(response.order.name);
+          $('#widget-orderFleet-form input[name=firstName]').val(response.order.firstname);
+          $('#widget-orderFleet-form input[name=mail]').val(response.order.email);
+          $('#widget-orderFleet-form input[name=phone]').val(response.order.phone);
 
-                document.getElementById('widget-orderFleet-form').reset();
 
-                $('#widget-orderFleet-form input[name=ID]').val(ID);
-                $('#widget-refuseCommand-form input[name=ID]').val(ID);
-                $('#widget-orderFleet-form input[name=brand]').val(response.order.brand);
-                $('#widget-orderFleet-form input[name=model]').val(response.order.model);
-                $('#widget-orderFleet-form select[name=frameType]').val(response.order.frameType);
-                $('#widget-orderFleet-form select[name=size]').val(response.order.size);
-                $('#widget-orderFleet-form select[name=status]').val(response.order.status);
-                $('#widget-orderFleet-form input[name=retailPrice]').val(response.order.priceHTVA+" €");
-                $('#widget-orderFleet-form input[name=leasingPrice]').val(response.order.leasingPrice+" €/mois");
-                $('#widget-orderFleet-form input[name=name]').val(response.order.name);
-                $('#widget-orderFleet-form input[name=firstName]').val(response.order.firstname);
-                $('#widget-orderFleet-form input[name=mail]').val(response.order.email);
-                $('#widget-orderFleet-form input[name=phone]').val(response.order.phone);
+          var element = document.getElementById("widget-refuseCommand-form");
+          element.classList.add("hidden");
 
+
+          if(response.order.status=="new"){
+
+              var element = document.getElementById("initializeRefuseCommandButton");
+              element.classList.remove("hidden");
+
+              var element = document.getElementById("confirmCommandButton");
+              element.classList.remove("hidden");
+
+
+          }else{
+
+              var element = document.getElementById("initializeRefuseCommandButton");
+              element.classList.add("hidden");
+
+              var element = document.getElementById("confirmCommandButton");
+              element.classList.add("hidden");
+          }
+
+          document.getElementById('initializeRefuseCommandButton').addEventListener('click', function() {
 
                 var element = document.getElementById("widget-refuseCommand-form");
+                element.classList.remove("hidden");
+
+                var element = document.getElementById("initializeRefuseCommandButton");
                 element.classList.add("hidden");
 
+                var element = document.getElementById("confirmCommandButton");
+                element.classList.add("hidden");
 
-                if(response.order.status=="new"){
-
-                    var element = document.getElementById("initializeRefuseCommandButton");
-                    element.classList.remove("hidden");
-
-                    var element = document.getElementById("confirmCommandButton");
-                    element.classList.remove("hidden");
+          }, false);
 
 
-                }else{
-
-                    var element = document.getElementById("initializeRefuseCommandButton");
-                    element.classList.add("hidden");
-
-                    var element = document.getElementById("confirmCommandButton");
-                    element.classList.add("hidden");
-                }
-
-                document.getElementById('initializeRefuseCommandButton').addEventListener('click', function() {
-
-                      var element = document.getElementById("widget-refuseCommand-form");
-                      element.classList.remove("hidden");
-
-                      var element = document.getElementById("initializeRefuseCommandButton");
-                      element.classList.add("hidden");
-
-                      var element = document.getElementById("confirmCommandButton");
-                      element.classList.add("hidden");
-
-                }, false);
-
-
-                $('#widget-orderFleet-form input[name=emailUser]').val(response.order.email);
-                $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
-            }
-          }
-        })
-    })
+          $('#widget-orderFleet-form input[name=emailUser]').val(response.order.email);
+          $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
+      }
+    }
+  })
 }

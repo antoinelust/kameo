@@ -595,7 +595,7 @@
                             <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
                                 <div style=\"text-align: justify;\"><br>
-    <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Date de début - Begindatut : <strong>$dateStart_3String</strong><br>
+    <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Date de début - Begindatum : <strong>$dateStart_3String</strong><br>
     - Date de fin - Einddatum : <strong>$dateEnd_3String</strong><br>
     - Identification du vélo - Fietsidentificatie : <strong>$customName</strong> </span><br>
     <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Code d'accès - Toegangscode : <strong>$lockingcode</strong> </span></span><br>
@@ -677,13 +677,13 @@
                                 <div style=\"text-align: center;\"><br>
     Un problème avec votre réservation ? Contactez <a href=\"mailto:bookabike@actiris.be\" target=\"_blank\"><span style=\"color:#25539D\">bookabike@actiris.be</span></a><br>
     -<br>
-    Een probleem met je reservering ? Contacteer <a href=\"mailto:bookabike@actiris.be\" target=\"_blank\"><span style=\"color:#25539D\">bookabike@actiris.be</span></a><br>
+    Een probleem met uw reservering ? Contacteer <a href=\"mailto:bookabike@actiris.be\" target=\"_blank\"><span style=\"color:#25539D\">bookabike@actiris.be</span></a><br>
     <br>
-    Tu désires te désinscrire de MyKameo ? Réponds STOP C  cet email - Wil je je uitschrijven van MyKameo ? Antwoord STOP op deze email</div>
+    Tu désires te désinscrire de MyKameo ? Répondez STOP à ce email - Wil je je uitschrijven van MyKameo ? Antwoord STOP aan deze email</div>
     <br>
     <br>
     &nbsp;
-    <div style=\"text-align: center;\"><em>Copyright B) 2020 KAMEO Bikes, Tous droits réservés.</em></div>
+    <div style=\"text-align: center;\"><em>Copyright 2020 KAMEO Bikes, Tous droits réservés.</em></div>
     <br>
     <br>
     <br>
