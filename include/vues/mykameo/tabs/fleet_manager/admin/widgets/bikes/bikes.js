@@ -21,7 +21,6 @@ $(".fleetmanager").click(function () {
 
 
   $(".bikeManagerClick").click(function() {
-
       list_bikes_admin();
   });
 
@@ -36,6 +35,7 @@ $(".fleetmanager").click(function () {
           $('.billingDiv').fadeIn("slow");
       }
   });
+
   $('#widget-bikeManagement-form select[name=contractType]').change(function(){
       updateDisplayBikeManagement($('#widget-bikeManagement-form select[name=contractType]').val());
   });
@@ -60,49 +60,50 @@ $(".fleetmanager").click(function () {
   });
 });
 
+$( document ).ready(function() {
+  $("#bikePositionAdmin").on('shown', function(){
+    console.log("test");
+    $.ajax({
+      url: "apis/Kameo/get_position.php",
+      type: "get",
+      data: { bikeId: this.name },
+      xhrFields: {
+        withCredentials: true,
+      },
+      headers: {
+        Authorization: "Basic " + btoa("antoine@kameobikes.com:test"),
+      },
 
-$("#bikePositionAdmin").on('shown', function(){
-  console.log("test");
-  $.ajax({
-    url: "apis/Kameo/get_position.php",
-    type: "get",
-    data: { bikeId: this.name },
-    xhrFields: {
-      withCredentials: true,
-    },
-    headers: {
-      Authorization: "Basic " + btoa("antoine@kameobikes.com:test"),
-    },
+      success: function (response) {
+        if (response.response == "error") {
+          console.log(response.message);
+        } else {
+          $("#demoMapAdmin").html("");
+          console.log(response);
+          //var lon = response.longitude;
+          //var lat = response.latitude;
+          var lon = "5";
+          var lat = "50";
+          var zoom = 15;
+          var position = new OpenLayers.LonLat(lat, lon);
+          var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+          var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+          var position = new OpenLayers.LonLat(lon, lat).transform(
+            fromProjection,
+            toProjection
+          );
 
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      } else {
-        $("#demoMapAdmin").html("");
-        console.log(response);
-        //var lon = response.longitude;
-        //var lat = response.latitude;
-        var lon = "5";
-        var lat = "50";
-        var zoom = 15;
-        var position = new OpenLayers.LonLat(lat, lon);
-        var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
-        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-        var position = new OpenLayers.LonLat(lon, lat).transform(
-          fromProjection,
-          toProjection
-        );
+          map = new OpenLayers.Map("demoMapAdmin");
+          var mapnik = new OpenLayers.Layer.OSM();
+          map.addLayer(mapnik);
+          var markers = new OpenLayers.Layer.Markers("Markers");
+          map.addLayer(markers);
+          markers.addMarker(new OpenLayers.Marker(position));
 
-        map = new OpenLayers.Map("demoMapAdmin");
-        var mapnik = new OpenLayers.Layer.OSM();
-        map.addLayer(mapnik);
-        var markers = new OpenLayers.Layer.Markers("Markers");
-        map.addLayer(markers);
-        markers.addMarker(new OpenLayers.Marker(position));
-
-        map.setCenter(position, zoom);
-      }
-    },
+          map.setCenter(position, zoom);
+        }
+      },
+    });
   });
 });
 

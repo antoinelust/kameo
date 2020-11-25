@@ -32,6 +32,12 @@ if ($admin != "Y") {
     }
     $resultat = mysqli_fetch_assoc($result);
     $company = $resultat['COMPANY'];
+
+    if($company == "KAMEO"){
+      $company = isset($_POST['company']) ? $_POST['company'] : $company;
+    }
+
+
     $sql = "SELECT * FROM customer_bikes aa where aa.COMPANY='$company' AND aa.STAANN != 'D'";
     if ($conn->query($sql) === FALSE) {
         $response = array('response' => 'error', 'message' => $conn->error);
@@ -53,7 +59,7 @@ if ($admin != "Y") {
             echo json_encode($response);
             die;
         }
-    } else {
+    }else{
         include 'connexion.php';
         $sql = "SELECT * FROM customer_bikes WHERE STAANN != 'D'";
 
