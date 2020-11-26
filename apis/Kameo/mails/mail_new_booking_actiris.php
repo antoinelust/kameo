@@ -516,7 +516,7 @@
                             <tbody><tr>
                                 <td class=\"mcnImageContent\" valign=\"top\" style=\"padding-right: 0px; padding-left: 0px; padding-top: 0; padding-bottom: 0; text-align:center;\">
 
-
+                                <img align=\"center\" alt=\"\" src=\"https://mcusercontent.com/c4664c7c8ed5e2d53dc63720c/images/320554e5-a952-4769-a23e-59e8bf618fd4.jpg\" width=\"110.5\" style=\"max-width:221px; padding-bottom: 0; display: inline !important; vertical-align: bottom;\" class=\"mcnRetinaImage\">
 
 
                                 </td>
@@ -600,11 +600,10 @@
     - Identification du vélo - Fietsidentificatie : <strong>$customName</strong> </span><br>
     <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Code d'accès - Toegangscode : <strong>$lockingcode</strong> </span></span><br>
     <br>
-    <span style=\"font-size:12px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> pour plus d'informations - Meer informatie op je <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> app</span></span><br>
+    <span style=\"font-size:12px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> pour plus d'informations - Meer informatie op je <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> app</span></span><br><br><br>
+    <span style=\"font-size:16px\"><strong>Lorsque vous arrivez devant la borne et introduisez votre code, voici comment  récupérer votre clé <br> Wanneer u voor de terminal aankomt en uw code invoert, kunt u uw sleutel ophalen zoals volgt</strong><br></span>
     &nbsp;</div>
-
-
-
+    <img align=\"center\" alt=\"\" src=\"https://kameobikes.com/images/keyProcedure.jpg\" width=\"564\" style=\"max-width:1080px; padding-bottom: 0; display: inline !important; vertical-align: bottom;\" class=\"mcnImage\">
 
 
                             </td>
@@ -629,8 +628,7 @@
                             <tbody><tr>
                                 <td class=\"mcnImageContent\" valign=\"top\" style=\"padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;\">
 
-
-
+                                <img align=\"center\" alt=\"\" src=\"https://mcusercontent.com/c4664c7c8ed5e2d53dc63720c/images/77168c20-84ad-4a1c-b7d3-4cb2ce28cdfc.jpg\" width=\"564\" style=\"max-width:1080px; padding-bottom: 0; display: inline !important; vertical-align: bottom;\" class=\"mcnImage\">
 
                                 </td>
                             </tr>

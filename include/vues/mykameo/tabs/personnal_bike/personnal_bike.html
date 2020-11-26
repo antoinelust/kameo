@@ -14,12 +14,12 @@
   ?>
   <?php /**   TRAVEL INFORMATIONS @TODO: NEED REFACTORISATION TO REMOVE BAD DEFINED RESPONSIVITY AND LOAD DATA DYNAMICALLY **/ ?>
 
-  <img src="images_bikes/<?php echo strtolower(str_replace(' ', '-', $row['BRAND']."_".$row['MODEL']."_".$row['FRAME_TYPE'])); ?>.jpg" class="img-responsive img-rounded center" alt="Image of Bike">
+  <img class="img-responsive img-rounded center" id='personnalBikeImg' alt="Image of Bike">
   <br />
   <!-- BIKE DESCRIPTION -->
   <div class="table-responsive">
     <table class="table table-striped" id="personnalBikeDataTable">
-      <caption> <?= L::bike_description_title; ?> </caption>
+      <h4 class="text-green"> <?= L::bike_description_title; ?> </h4>
       <tbody>
         <tr>
           <td><?= L::bike_description_model; ?></td>
@@ -35,8 +35,15 @@
         </tr>
       </tbody>
     </table>
-    <a data-target="#calculRachatVeloPersonalTab" class='calculRachatVeloPersonalTabLink' class="text-green" data-toggle="modal" href="#">informations rachat du vélo</a>
+    <a data-target="#calculRachatVeloPersonalTab" class='calculRachatVeloPersonalTabLink' class="text-green" data-toggle="modal" href="#">informations rachat du vélo</a><br><br>
   </div>
+  <hr>
+
+  <h4 class="text-green"> Actions prises sur le vélo</h4>
+  <table class="table table-striped" id="personnalBikeActionTable" style="width:100%" >
+  </table>
+
+
 
 
   <div class="modal fade" id="calculRachatVeloPersonalTab" tabindex="-1" role="modal" aria-labelledby="modal-label">
@@ -110,9 +117,54 @@
           $('.contractEndPersonnalbike').html(response.contractEnd);
           $('.calculRachatVeloPersonalTabLink').attr("leasingPrice", response.leasingPrice);
           $('.calculRachatVeloPersonalTabLink').attr("catalogprice", response.catalogPrice);
+          $('.calculRachatVeloPersonalTabLink').attr("catalogprice", response.catalogPrice);
+          $('#personnalBikeImg').attr('src', "images_bikes/"+response.img+".jpg");
+
         }
       }
-    })
+    });
+
+
+    $.ajax({
+       url: "apis/Kameo/action_bike_management.php",
+       type: "post",
+       data: {
+         "readActionBike-action": "read",
+       },
+       success : function(data) {
+         $('#personnalBikeActionTable').dataTable( {
+         destroy: true,
+         responsive: true,
+         bInfo : false,
+         paging: false,
+         searching: false,
+         data : data.action,
+         columns: [
+         {
+            title: "Date",
+            data: "date",
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+              $(nTd).html(sData.substring(0, 10));
+            },
+          },
+          {
+             title: "Description",
+             data: "title",
+             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+               if (sData == 'maintenance') $(nTd).html("Entretien fait");
+               else if(sData == 'maintenance')$(nTd).html(description);
+             },
+           }
+         ],
+         order: [
+           [0, "desc"]
+         ]
+        });
+       }
+     });
+
+
+
   }
   load_personnal_bike();
 

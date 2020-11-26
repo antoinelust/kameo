@@ -27,8 +27,19 @@ if($id == null){
   $result = mysqli_query($conn, $sql);
   $resultat = mysqli_fetch_assoc($result);
   $id=$resultat['BIKE_ID'];
+}else{
+  $sql="SELECT CASE WHEN aa.COMPANY=bb.COMPANY THEN 'true' WHEN bb.COMPANY='KAMEO' THEN 'true' ELSE 'false' END as 'bikeAccess'  FROM customer_bikes aa, customer_referential bb WHERE bb.TOKEN='$token' AND aa.ID='$id'";
+  if ($conn->query($sql) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+  }
+  $result = mysqli_query($conn, $sql);
+  $resultat = mysqli_fetch_assoc($result);
+  if($resultat['bikeAccess'] == 'false'){
+    error_message('403', 'Insufficient privilegies to consult that bike');
+  }
 }
-
 
 if($id != NULL)
 {

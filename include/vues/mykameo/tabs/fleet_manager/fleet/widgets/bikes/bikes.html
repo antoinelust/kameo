@@ -14,6 +14,8 @@
                  success : function(data) {
                      $('#bikeDetails').dataTable( {
                        destroy: true,
+											 bInfo : false,
+											 paging: false,
                        sAjaxDataProp: "",
                        data : data.bike,
                        columns: [
@@ -75,58 +77,51 @@
 
 										 $(".retrieveBikeDetails").click(function () {
 	 					          $.ajax({
-	 					                 url: "apis/Kameo/action_bike_management.php",
-	 													 type: "post",
-	 													 data: {
-	 											       "readActionBike-action": "read",
-	 											       "readActionBike-bikeNumber": this.name,
-	 											     },
-	 					                 success : function(data) {
-	 					                     $('#action_bike_log_user').dataTable( {
-	 					                       destroy: true,
-																	 paging: false,
-																	 searching: false,
-	 					                       sAjaxDataProp: "",
-	 					                       data : data.action,
-	 					                       columns: [
-	 																	 {
-	 																		 title: "Date",
-	 					                           data: "date",
-	 					                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-	 					                             $(nTd).html(sData.substring(0, 10));
-	 					                           },
-	 					                         },
-	 																	 {
-	 																		 title: "Description",
-	 					                           data: "description",
-	 					                         },
-	 					                       ],
-	 					                       order: [
-	 					                         [0, "desc"]
-	 					                       ]
-	 					                     });
-	 															 var classname = document.getElementsByClassName('updateBikeStatus');
-	 															 for (var i = 0; i < classname.length; i++) {
-	 																 classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
-	 															 }
-	 															 var classname = document.getElementsByClassName('retrieveBikeDetails');
-	 															 for (var i = 0; i < classname.length; i++) {
-	 																 classname[i].addEventListener('click', function() {fillBikeDetails(this.name)}, false);
-	 															 }
-
-	 					                 }
-	 					             });
+				                 url: "apis/Kameo/action_bike_management.php",
+												 type: "post",
+												 data: {
+										       "readActionBike-action": "read",
+										       "readActionBike-bikeNumber": this.name,
+										     },
+				                 success : function(data) {
+			                     $('#action_bike_log_user').dataTable( {
+			                     destroy: true,
+													 bInfo : false,
+													 paging: false,
+													 searching: false,
+			                     sAjaxDataProp: "",
+			                     data : data.action,
+			                     columns: [
+													 {
+															title: "Date",
+															data: "date",
+															fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+																$(nTd).html(sData.substring(0, 10));
+															},
+														},
+														{
+															 title: "Description",
+		                           data: "title",
+		                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+																 if (sData == 'maintenance') $(nTd).html("Entretien fait");
+																 else if(sData == 'maintenance')$(nTd).html(description);
+		                           },
+		                         }
+		                       ],
+		                       order: [
+		                         [0, "desc"]
+		                       ]
+			                    });
+				                 }
+ 					             });
 	 					          });
 
-
-										 var classname = document.getElementsByClassName('updateBikeStatus');
-										 for (var i = 0; i < classname.length; i++) {
-											 classname[i].addEventListener('click', function() {construct_form_for_bike_status_update(this.name)}, false);
-										 }
-										 var classname = document.getElementsByClassName('retrieveBikeDetails');
-										 for (var i = 0; i < classname.length; i++) {
-											 classname[i].addEventListener('click', function() {fillBikeDetails(this.name)}, false);
-										 }
+										 $('.retrieveBikeDetails').click(function () {
+											 fillBikeDetails(this.name);
+										 });
+										 $('.updateBikeStatus').click(function () {
+											 construct_form_for_bike_status_update(this.name);
+										 });
 
                  }
              });

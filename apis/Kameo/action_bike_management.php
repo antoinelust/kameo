@@ -39,39 +39,55 @@ if($action == "add" && $user != NULL){
 	$conn->close();
     successMessage("SM0003");
 
-} else if($action == "read" && $user != NULL && $bikeID != NULL){
+} else if($action == "read" && $token != NULL){
 
-    include 'connexion.php';
-    $sql = "SELECT * from action_log WHERE BIKE_ID='$bikeID' ORDER BY DATE DESC";
+  include 'connexion.php';
+
+
+  if($bikeID == NULL){
+    $sql="SELECT BIKE_ID from customer_bike_access WHERE EMAIL = (SELECT EMAIL FROM customer_referential WHERE TOKEN='$token')";
+    if ($conn->query($sql) === FALSE) {
+  		$response = array ('response'=>'error', 'message'=> $conn->error);
+  		echo json_encode($response);
+  		die;
+  	}
+    $result = mysqli_query($conn, $sql);
+    $resultat = mysqli_fetch_assoc($result);
+    $bikeID = $resultat['BIKE_ID'];
+  }
+
+  $sql = "SELECT * from action_log WHERE BIKE_ID='$bikeID' ORDER BY DATE DESC";
+	if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+  $result = mysqli_query($conn, $sql);
+  $length = $result->num_rows;
+
+  $i=0;
+  while($row = mysqli_fetch_array($result))
+  {
+      $response['action'][$i]['date']=$row['DATE'];
+      $response['action'][$i]['title']="action".
+      $response['action'][$i]['description']=$row['DESCRIPTION'];
+      $response['action'][$i]['public']=$row['PUBLIC'];
+      $response['action'][$i]['bikeID']=$row['BIKE_ID'];
+      $i++;
+  }
+
+  $sql = "SELECT DATE, COMMENT from entretiens WHERE BIKE_ID='$bikeID' and STATUS='DONE' ORDER BY DATE DESC";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
     $result = mysqli_query($conn, $sql);
-    $length = $result->num_rows;
-
-    $i=0;
-    while($row = mysqli_fetch_array($result))
-    {
-        $response['action'][$i]['date']=$row['DATE'];
-        $response['action'][$i]['description']=$row['DESCRIPTION'];
-        $response['action'][$i]['public']=$row['PUBLIC'];
-        $response['action'][$i]['bikeID']=$row['BIKE_ID'];
-        $i++;
-    }
-
-    $sql = "SELECT DATE, COMMENT from entretiens WHERE BIKE_ID='$bikeID' and STATUS='DONE' ORDER BY DATE DESC";
-	if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
-    $result = mysqli_query($conn, $sql);
 
     while($row = mysqli_fetch_array($result))
     {
         $response['action'][$i]['date']=$row['DATE'];
+        $response['action'][$i]['title']="maintenance";
         $response['action'][$i]['description']=$row['COMMENT'];
         $response['action'][$i]['public']= "1";
         $i++;
