@@ -135,6 +135,10 @@ function create_bill(){
 
           //gestion du moins au lancement de la page
           checkMinus('.generateBillBike','.bikesNumber');
+          checkMinus('.generateBillAccessories','.accessoriesNumber');
+          checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
+          checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+
 
           //velo
 
@@ -144,7 +148,7 @@ function create_bill(){
 
           //a chaque modification du nombre de vélo
           //ajout
-            $('.generateBillBike .glyphicon-plus').unbind();
+          $('.generateBillBike .glyphicon-plus').unbind();
           $('.generateBillBike .glyphicon-plus').click(function(){
             bikesNumber = $("#addBill").find('.bikesNumber').html()*1+1;
             $('#addBill').find('.bikesNumber').html(bikesNumber);
@@ -181,8 +185,6 @@ function create_bill(){
               //type de facture
             $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.billType')
             .append("<select><option value='vente'>Vente</option><option value'location'>Location</option></select>");
-
-
 
             //gestion du select du velo
             $('.generateBillBike select').on('change',function(){
@@ -229,7 +231,7 @@ function create_bill(){
           });
 
           //retrait
-            $('.generateBillBike .glyphicon-minus').unbind();
+          $('.generateBillBike .glyphicon-minus').unbind();
 
           $('.generateBillBike .glyphicon-minus').click(function(){
             bikesNumber = $("#addBill").find('.bikesNumber').html();
@@ -245,8 +247,6 @@ function create_bill(){
 
         //Accessoires
         get_all_accessories().done(function(response){
-          //gestion du moins au lancement de la page
-          checkMinus('.generateBillAccessories','.accessoriesNumber');
           //variables
           var accessories = response.accessories;
           if(accessories == undefined){
@@ -363,7 +363,7 @@ function create_bill(){
           });
 
           //retrait
-            $('.generateBillAccessories .glyphicon-minus').unbind();
+          $('.generateBillAccessories .glyphicon-minus').unbind();
           $('.generateBillAccessories .glyphicon-minus').click(function(){
             accessoriesNumber = $("#addBill").find('.accessoriesNumber').html();
             if(accessoriesNumber > 0){
@@ -377,29 +377,28 @@ function create_bill(){
 
         });
 
-            $('.generateBillOtherAccessories .glyphicon-plus').unbind();
-          $('.generateBillOtherAccessories .glyphicon-plus').click(function(){
-            //gestion accessoriesNumber
-            otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html()*1+1;
-            $('#addBill').find('.otherAccessoriesNumber').html(otherAccessoriesNumber);
-            $('#otherAccessoriesNumber').val(otherAccessoriesNumber);
+        $('.generateBillOtherAccessories .glyphicon-plus').unbind();
+        $('.generateBillOtherAccessories .glyphicon-plus').click(function(){
+          //gestion accessoriesNumber
+          otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html()*1+1;
+          $('#addBill').find('.otherAccessoriesNumber').html(otherAccessoriesNumber);
+          $('#otherAccessoriesNumber').val(otherAccessoriesNumber);
 
-            //ajout d'une ligne au tableau des accessoires
-            $('#addBill').find('.otherCostsOtherAccesoiresTable tbody')
-            .append(`<tr class="otherCostsOtherAccesoiresTable`+(otherAccessoriesNumber)+` otherAccessoriesRow form-group">
-            <td class="aLabel"></td>
-            <td class="aAccessory"><input type="text" class="otherAccessoryDescription form-control required" name="otherAccessoryDescription[]" /></td>
-            <td><input type="number" class="otherAccessoryFinalPrice form-control required" name="otherAccessoryFinalPrice[]" /></td>
-            </tr>`);
-            //label selon la langue
-            $('#addBill').find('.otherCostsOtherAccesoiresTable'+(otherAccessoriesNumber)+'>.aLabel')
-            .append('<label class="fr">Accessoire '+ otherAccessoriesNumber +'</label>');
-            checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
-          });
+          //ajout d'une ligne au tableau des accessoires
+          $('#addBill').find('.otherCostsOtherAccesoiresTable tbody')
+          .append(`<tr class="otherCostsOtherAccesoiresTable`+(otherAccessoriesNumber)+` otherAccessoriesRow form-group">
+          <td class="aLabel"></td>
+          <td class="aAccessory"><input type="text" class="otherAccessoryDescription form-control required" name="otherAccessoryDescription[]" /></td>
+          <td><input type="number" class="otherAccessoryFinalPrice form-control required" name="otherAccessoryFinalPrice[]" /></td>
+          </tr>`);
+          //label selon la langue
+          $('#addBill').find('.otherCostsOtherAccesoiresTable'+(otherAccessoriesNumber)+'>.aLabel')
+          .append('<label class="fr">Accessoire '+ otherAccessoriesNumber +'</label>');
+          checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
+        });
 
           //retrait
-            $('.generateBillOtherAccessories .glyphicon-minus').unbind();
-
+          $('.generateBillOtherAccessories .glyphicon-minus').unbind();
           $('.generateBillOtherAccessories .glyphicon-minus').click(function(){
             otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html();
             if(otherAccessoriesNumber > 0){
@@ -409,6 +408,50 @@ function create_bill(){
               otherAccessoriesNumber--;
             }
             checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
+          });
+
+
+          $('.generateBillManualWorkload .glyphicon-plus').unbind();
+          $('.generateBillManualWorkload .glyphicon-plus').click(function(){
+            //gestion travail manuel
+            manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html()*1+1;
+            $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber);
+            $('#manualWorkloadNumber').val(manualWorkloadNumber);
+
+            //ajout d'une ligne au tableau de la main d'oeuvre
+            $('#addBill').find('.otherCostsManualWorkloadTable tbody')
+            .append(`<tr class="otherCostsManualWorkloadTable`+(manualWorkloadNumber)+` manualWorkloadRow form-group">
+            <td class="aLabel"></td>
+            <td class="aDescription"><input type="text" class="manualWorkloadDescription form-control required" name="manualWorkladDescription[]" /></td>
+            <td><input type="number" class="manualWorkloadLength form-control required" name="manualWorkloadLength[]" value="0" /></td>
+            <td><input type="number" class="manualWorkloadRate form-control required" name="manualWorkloadRate[]" value="45" /></td>
+            <td><input type="number" class="manualWorkloadTotal form-control required" name="manualWorkloadTotal[]" value="0" readonly /></td>
+            </tr>`);
+            //label selon la langue
+            $('#addBill').find('.otherCostsManualWorkloadTable'+(manualWorkloadNumber)+'>.aLabel')
+            .append('<label class="fr">Main d\'oeuvre '+ manualWorkloadNumber +'</label>');
+            checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+
+
+            $('#widget-addBill-form .manualWorkloadRow .manualWorkloadLength, #widget-addBill-form .manualWorkloadRow .manualWorkloadRate').change(function(){
+                $(this).parents('.manualWorkloadRow').find('.manualWorkloadTotal').val(($(this).parents('.manualWorkloadRow').find('.manualWorkloadLength').val()*$(this).parents('.manualWorkloadRow').find('.manualWorkloadRate').val()/60));
+            });
+
+
+
+          });
+
+          //retrait
+          $('.generateBillManualWorkload .glyphicon-minus').unbind();
+          $('.generateBillManualWorkload .glyphicon-minus').click(function(){
+            manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html();
+            if(manualWorkloadNumber > 0){
+              $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber*1 - 1);
+              $('#manualWorkloadNumber').val(manualWorkloadNumber*1 - 1);
+              $('#addBill').find('.otherCostsManualWorkloadTable'+manualWorkloadNumber).slideUp().remove();
+              otherAccessoriesNumber--;
+            }
+            checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
           });
 
 

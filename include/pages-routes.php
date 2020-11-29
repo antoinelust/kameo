@@ -58,7 +58,7 @@
 	$router->map('GET','/cash4bike[ext]', 'pages/avantages/cash4bike.php');
 
 	/** PAGES DIVERSES **/
-	$router->map('GET','/prime-velo-wallonnie[ext]', 'pages/prime-velo-wallonnie.php');
+	$router->map('GET','/prime-velo-wallonie[ext]', 'pages/prime-velo-wallonie.php');
 	$router->map('GET','/ebook_Leasing_Velo_Entreprise[ext]', 'pages/ebook_Leasing_Velo_Entreprise.php');
 
 	/**MyAedes**/
@@ -84,7 +84,7 @@
 
 	/** 403 **/
 	$router->map('GET','/403[ext]', 'pages/403.php');
-	
+
 	/** NAVIGATEUR **/
 	$router->map('GET','/navigateur[ext]', 'pages/navigateur.php');
 ?>

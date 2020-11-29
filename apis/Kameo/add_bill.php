@@ -16,8 +16,6 @@ use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
-
-
 $email=$_POST['widget-addBill-form-email'];
 $company=addslashes($_POST['widget-addBill-form-company']);
 $beneficiaryCompany=addslashes($_POST['beneficiaryCompany']);
@@ -153,6 +151,7 @@ if($billType == "manual"){
         $data['ID'.$i] = $_POST['bikeID'][$i];
         $data['price'.$i] = $_POST['bikeFinalPrice'][$i];
         $data['type'.$i] = "bikeSell";
+        $data['TVA'.$i] = "21";
         $i++;
     }
     $j=0;
@@ -160,6 +159,7 @@ if($billType == "manual"){
         $data['ID'.$i] = $_POST['accessoryID'][$j];
         $data['price'.$i] = $_POST['accessoryFinalPrice'][$j];
         $data['type'.$i] = "accessorySell";
+        $data['TVA'.$i] = "21";
         $j++;
         $i++;
     }
@@ -168,8 +168,16 @@ if($billType == "manual"){
         $data['price'.$i] = $_POST['otherAccessoryFinalPrice'][$j];
         $data['description'.$i] = $_POST['otherAccessoryDescription'][$j];
         $data['type'.$i] = "otherAccessorySell";
+        $data['TVA'.$i] = "21";
         $j++;
         $i++;
+    }
+    foreach ($_POST['manualWorkladDescription'] as $key=>$value) {
+      $data['price'.$i] = $_POST['manualWorkloadTotal'][$key];
+      $data['description'.$i] = $_POST['manualWorkladDescription'][$key];
+      $data['type'.$i] = "maintenance";
+      $data['TVA'.$i] = "6";
+      $i++;
     }
     $data['itemNumber'] = $i;
     $data['company'] = $company;
@@ -177,15 +185,15 @@ if($billType == "manual"){
     $data['billingGroup'] = "1";
 
 
+    error_log("Final result2 :".constant('ENVIRONMENT')."\n", 3, "generate_bill.log");
+
     if(constant('ENVIRONMENT')=="production"){
         $test=CallAPI('POST', 'https://www.kameobikes.com/scripts/generate_bill.php', $data);
     }else if(constant('ENVIRONMENT')=="test"){
         $test=CallAPI('POST', 'https://www.kameobikes.com/test/scripts/generate_bill.php', $data);
     }else{
-        $test=CallAPI('POST', 'kameo/kameo/scripts/generate_bill.php', $data);
+        $test=CallAPI('POST', 'http://kameobikes/scripts/generate_bill.php', $data);
     }
-
-    error_log("Final result :".$test."\n", 3, "generate_bill.log");
 
     try {
         $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);

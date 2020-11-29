@@ -132,9 +132,9 @@
 										<div class="col-sm-12">
 											<i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span><input type="hidden" id="bikesNumberBill" name="bikesNumber" value="0" />
 											<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
-											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" style="display: none;" type="button"></button>
 										</div>
-										<table class="table table-condensed tableFixed bikeNumberTable hideAt0">
+										<table class="table table-condensed tableFixed bikeNumberTable hideAt0" style="display: none;">
 											<thead>
 												<tr>
 													<th class="bLabel"></th>
@@ -185,9 +185,9 @@
 										<div class="col-sm-12 accessoriesButtons">
 											<i class="fa fa-calculator"></i> <span class="accessoriesNumber">0</span><input type="hidden" id="accessoriesNumber" name="accessoriesNumber" value="0" />
 											<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
-											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" style="display: none;" type="button"></button>
 										</div>
-										<table class="table table-condensed tableFixed otherCostsAccesoiresTable hideAt0">
+										<table class="table table-condensed tableFixed otherCostsAccesoiresTable hideAt0" style="display: none;">
 											<thead>
 												<th class="accessoriesLabel"></th>
 												<th class="accessoriesCategory">
@@ -219,9 +219,9 @@
 											<span class="otherAccessoriesNumber">0</span>
 											<input type="hidden" id="otherAccessoriesNumber" name="otherAccessoriesNumber" value="0" />
 											<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
-											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" style="display: none;" type="button"></button>
 										</div>
-										<table class="table table-condensed tableFixed otherCostsOtherAccesoiresTable hideAt0">
+										<table class="table table-condensed tableFixed otherCostsOtherAccesoiresTable hideAt0" style="display: none;">
 											<thead>
 												<th class="otherAccessoriesLabel"></th>
 												<th class="accessoriesAccessory">
@@ -235,6 +235,40 @@
 											</tbody>
 										</table>
 									</div>
+									<div class="separator"></div>
+
+									<div class="row generateBillManualWorkload">
+										<div class="col-sm-4">
+											<h4 class="text-green">Main d'oeuvre : </h4>
+										</div>
+										<div class="col-sm-12">
+											<i class="fa fa-calculator"></i>
+											<span class="manualWorkloadNumber">0</span>
+											<input type="hidden" id="manualWorkloadNumber" name="manualWorkloadNumber" value="0" />
+											<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" style="display: none;" type="button"></button>
+										</div>
+										<table class="table table-condensed tableFixed otherCostsManualWorkloadTable hideAt0" style="display: none;">
+											<thead>
+												<th class="manualWorkloadLabel"></th>
+												<th class="manualWorkloadDescription">
+													<label for="aDescription">Description</label>
+												</th>
+												<th class="manualWorkloadLength">
+													<label for="aDuration">Durée (min)</label>
+												</th>
+												<th class="manualWorkloadRate">
+													<label for="aRate">Taux (€/h)</label>
+												</th>
+												<th class="manualWorkloadTotal">
+													<label for="aTotal">Total (€/h)</label>
+												</th>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+
 								</div>
 								<h4 class="text-green manualBill" style="display: none;">Informations sur les montants</h4>
 								<div class="col-md-12 manualBill" style="display: none;">
