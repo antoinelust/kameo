@@ -10,6 +10,10 @@ log_inputs();
 $email=$_POST['email'];
 $dateStart=isset( $_POST['dateStart'] ) ? new DateTime($_POST['dateStart']) : NULL;
 $dateEnd=isset( $_POST['dateEnd'] ) ? new DateTime($_POST['dateEnd']) : NULL;
+
+$dateEnd->setTime(23, 59);
+
+
 $bikeValue=isset( $_POST['bikeValue'] ) ? $_POST['bikeValue'] : NULL;
 
 

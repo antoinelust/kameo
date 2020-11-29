@@ -177,7 +177,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
         </td>
         <td>
-            <h4 style="color: #C72C28">Référence : '.$reference.'</h4>
+            <h4 style="color: #C72C28">Référence : +++'.$reference.'+++</h4>
 			<p>'.$monthFR[(date('n')-1)].' '.date('Y').'</p>
 
         </td>
@@ -514,11 +514,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
         <table style="border-collapse: collapse">
            <tbody>
                <tr>
-                    <td width="400" height="35"><strong>Communication libre lors du paiements</strong></td>
+                    <td width="400" height="35"><strong>Communication structurée lors du paiement</strong></td>
                     <td width="200" height="35"><strong>Délai de paiement</strong></td>
                 </tr>
                 <tr>
-                    <td height="35"><strong>'.$reference.'</strong></td>
+                    <td height="35"><strong>+++'.$reference.'+++</strong></td>
                     <td style="color: #3CB195" height="35"><strong>30 jours</strong></td>
                 </tr>
             </tbody>
