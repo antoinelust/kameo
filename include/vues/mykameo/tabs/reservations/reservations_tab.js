@@ -204,7 +204,6 @@ function fillReservationDetails(element) {
           response.reservationEmail;
         document.getElementsByClassName("reservationBikeImage")[0].src =
           "images_bikes/" + response.bikeID + "_mini.jpg";
-
         document.getElementById("deleteReservationdiv").innerHTML =
           '<a class="button small red-dark button-3d rounded icon-right" data-target="#deleteReservation" onclick="initializeDeleteReservation(\'' +
           reservationID +

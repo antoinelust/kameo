@@ -293,6 +293,11 @@ if ($token == NULL) { //Not connected
   <?php include 'include/vues/mykameo/tabs/book/widgets/feedback.html'; ?>
   <!-- INFORMATIONS WIDGETS -->
   <?php include 'include/vues/mykameo/widgets/informations/update_informations.html'; ?>
+
+  <?php if ($user_data["personnalBike"]=="TRUE"){
+    include 'include/vues/mykameo/tabs/personnal_bike/widget/rachatBike.html';
+  }?>
+
   <script type="text/javascript" src="include/vues/mykameo/widgets/informations/update_informations.js"></script>
   <!-- SUPPORT WIDGET -->
   <?php
