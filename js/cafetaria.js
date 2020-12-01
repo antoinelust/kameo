@@ -66,18 +66,27 @@ function load_cafetaria(){
                   var stock="stock";
               }
 
-              var leasing_price = response.bike[i].leasingPrice;
+              if(response.cafeteriaType=="leasing"){
+                var price = response.bike[i].leasingPrice;
+                if(response.bike[i].company == "City Dev"){
+                    price = Math.round(price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
+                }
 
-              if(response.bike[i].company == "City Dev"){
-                  leasing_price = Math.round(leasing_price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
-              }
+                if(response.tvaIncluded == "Y"){
+                  var priceWithLabel = Math.round(price*1.21*100)/100;
+                  priceWithLabel = priceWithLabel + "€/mois TVAC";
+                }else{
+                  var priceWithLabel = price + "€/mois HTVA"
+                }
+              }else if(response.cafeteriaType=="achat"){
+                var price = response.bike[i].price;
 
-              if(response.bike[i].company == "City Dev"){
-                var priceByMonth = Math.round(leasing_price*1.21);
-                leasing_price = Math.round(priceByMonth/1.21*100)/100;
-                priceByMonth = priceByMonth + "€/mois TVAC";
-              }else{
-                var priceByMonth = leasing_price + "€/mois"
+                if(response.tvaIncluded == "Y"){
+                  var priceWithLabel = Math.round(price*1.21*100)/100;
+                  priceWithLabel = priceWithLabel + "€ TVAC";
+                }else{
+                  var priceWithLabel = price + "€ HTVA"
+                }
               }
 
 
@@ -96,7 +105,7 @@ function load_cafetaria(){
 									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
 									<p>"+response.bike[i].model+" "+frameType+"\
 									<br>"+response.bike[i].utilisation+"\
-									<br>Prix : "+priceByMonth;
+									<br>Prix : "+priceWithLabel;
 
                     if(stock==="stock"){
                         temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
@@ -105,7 +114,7 @@ function load_cafetaria(){
                     }
 
                     temp=temp+"\
-                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-id=\""+leasing_price+"\" data-toggle=\"modal\"\
+                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-amount=\""+price+"\" data-type=\""+response.cafeteriaType+"\" data-toggle=\"modal\"\
                     href=\"#\" name=\""+response.bike[i].ID+"\">\
 										<span>Commander</span>\
 									</a>\
@@ -124,8 +133,7 @@ function load_cafetaria(){
 					setTimeout(function(){
 						$grid.isotope( 'reloadItems' ).isotope();
 						$( ".orderBikeClick" ).click(function() {
-                            var leasing_price = $(this).data('id');
-							fillCommandDetails(this.name, leasing_price);
+							fillCommandDetails(this.name, $(this).data('amount'), $(this).data('type'));
 						});
 						$( "img.portfolio-img" ).load(function(){
 							$('.grid').isotope();
@@ -139,7 +147,7 @@ function load_cafetaria(){
 }
 
 
-function fillCommandDetails(ID, leasing_price){
+function fillCommandDetails(ID, price, type){
     $.ajax({
     url: 'apis/Kameo/load_portfolio.php',
     type: 'get',
@@ -149,14 +157,13 @@ function fillCommandDetails(ID, leasing_price){
         console.log(response.message);
       } else{
         $('#widget-command-form input[name=ID]').val(response.ID);
-        $('#widget-command-form input[name=leasing_price]').val(leasing_price);
+        $('#widget-command-form input[name=price]').val(price);
+        $('#widget-command-form input[name=type]').val(type);
         $('#widget-command-form select[name=brand]').val(response.brand);
         $('#widget-command-form input[name=model]').val(response.model);
         $('#widget-command-form select[name=frame]').val(response.frameType);
         $('#widget-command-form select[name=utilisation]').val(response.utilisation);
         $('#widget-command-form select[name=electric]').val(response.electric);
-        $('#widget-command-form .link').attr("href", response.url);
-        $('#widget-command-form .link').html(response.url);
         document.getElementsByClassName("commandImage")[0].src="images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
       }
 

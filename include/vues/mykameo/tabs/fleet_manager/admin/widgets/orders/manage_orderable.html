@@ -43,23 +43,41 @@
                     disabled
                   />
                 </div>
-                <div class="col-md-4" align="center">
-                  <label for="cafetaria">Cafetaria&nbsp;&nbsp;</label
-                  ><input
-                    name="cafetaria"
+                <div class="col-md-2" align="center">
+                  <label for="cafetaria">Cafetaria&nbsp;&nbsp;</label><br>
+                  <input
+                    name="cafeteria"
                     id="manageOrderableCafetaria"
                     type="checkbox"
                   />
                 </div>
-                <div class="col-md-4" align="center">
-                  <label for="discount">Discount :&nbsp;&nbsp;</label
-                  ><input
-                    name="discount"
-                    id="discount"
-                    type="number"
-                    step="any"
-                    class="form-control"
+                <div class="col-md-2" align="center">
+                  <label for="discount">Discount :&nbsp;&nbsp;</label>
+                    <div class="input-group">
+                    <span class="input-group-addon">%</span>
+                      <input
+                        name="discount"
+                        id="discount"
+                        type="number"
+                        step="any"
+                        class="form-control"
+                      />
+                    </div>
+                </div>
+                <div class="col-md-2" align="center">
+                  <label for="tva">TVA ?</label><br>
+                  <input
+                    name="tva"
+                    id="manageOrderableTVA"
+                    type="checkbox"
                   />
+                </div>
+                <div class="col-md-2" align="center">
+                  <label for="type">Type</label><br>
+                  <select name="type" class="form-control required">
+                    <option value="leasing">Leasing</option>
+                    <option value="achat">Achat</option>
+                  </select>
                 </div>
               </div>
               <div class="separator"></div>
@@ -107,9 +125,14 @@
     $("#ordersListing").modal("hide");
     var current_company = $(event.relatedTarget).data("company");
     var has_cafetaria = $(event.relatedTarget).data("cafetaria");
+    var type = $(event.relatedTarget).data("type");
+    var has_tva = $(event.relatedTarget).data("tva");
     var discount = $(event.relatedTarget).data("discount");
     $("#manageOrderableCompanyName").val(current_company);
     $("#manageOrderableCafetaria").prop("checked", has_cafetaria);
+    $("#manageOrderableTVA").prop("checked", has_tva);
+    $('#widget-manageCompaniesOrderable-form select[name=type]').val(type);
+
     $("#widget-manageCompaniesOrderable-form input[name=discount]").val(
       discount
     );
@@ -207,13 +230,23 @@
           value: $("#manageOrderableCompanyName").val(),
         }); //can't use the current_company var here because of a bootstrap modalfade related bug (data passed is gonna be for another company)
         data.push({
-          name: "cafetaria",
+          name: "cafeteria",
           value: $("#manageOrderableCafetaria").is(":checked"),
+        }); //same here
+        data.push({
+          name: "tva",
+          value: $("#manageOrderableTVA").is(":checked"),
         }); //same here
         data.push({
           name: "discount",
           value: $(
             "#widget-manageCompaniesOrderable-form input[name=discount]"
+          ).val(),
+        });
+        data.push({
+          name: "type",
+          value: $(
+            "#widget-manageCompaniesOrderable-form select[name=type]"
           ).val(),
         });
         $.ajax({

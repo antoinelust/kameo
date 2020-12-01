@@ -76,9 +76,9 @@
                     />
                   </div>
                   <div class="col-sm-4">
-                    <h4>
+                    <label>
                       <span><?=L::mk_order_frame;?></span>
-                    </h4>
+                    </label>
                     <select class="form-control required" disabled name="frame">
                       <option value="F"><?=L::mk_order_woman;?></option>
                       <option value="H"><?=L::mk_order_man;?></option>
@@ -86,9 +86,9 @@
                     </select>
                   </div>
                   <div class="col-sm-4">
-                    <h4>
+                    <label>
                       <span><?=L::mk_order_usage;?></span>
-                    </h4>
+                    </label>
                     <select class="form-control" name="utilisation" disabled>
                       <option value="Tout chemin">
                         <?=L::mk_order_usage_allway;?>
@@ -109,9 +109,9 @@
                     </select>
                   </div>
                   <div class="col-sm-4">
-                    <h4>
+                    <label for="electric">
                       <span><?=L::mk_order_electric;?></span>
-                    </h4>
+                    </label>
                     <select
                       class="form-control required"
                       name="electric"
@@ -120,12 +120,6 @@
                       <option value="Y"><?=L::mk_order_elecyes;?></option>
                       <option value="N"><?=L::mk_order_elecno;?></option>
                     </select>
-                  </div>
-                </div>
-                <div class="col-sm-12">
-                  <div class="col-sm-8">
-                    <label for="link"><?=L::mk_order_sitelink;?></label>
-                    <a class="link text-blue" name="link" target="_blank"></a>
                   </div>
                 </div>
                 <div class="separator"></div>
@@ -152,8 +146,14 @@
                   value="command"
                 />
                 <input
+                  type="number"
+                  step="0.01"
+                  name="price"
+                  class="form-control hidden"
+                />
+                <input
                   type="text"
-                  name="leasing_price"
+                  name="type"
                   class="form-control hidden"
                 />
               </div>

@@ -48,12 +48,19 @@ function get_orders_listing() {
             }else{
                     var test = "N";
             }
-              if(response.order[i].estimatedDeliveryDate == null){
-                  var estimatedDeliveryDate = "TBC";
-              }else{
-                  var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
-              }
-            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].leasingPrice+" €/mois</td></tr>";
+            if(response.order[i].estimatedDeliveryDate == null){
+                var estimatedDeliveryDate = "TBC";
+            }else{
+                var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
+            }
+
+            if(response.order[i].type=="leasing"){
+              var price = response.order[i].price + " €/mois";
+            }else{
+              var price = response.order[i].price + " €";
+            }
+
+            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
             dest=dest.concat(temp);
             i++;
 
@@ -180,7 +187,8 @@ function retrieve_command(ID){
         }
         if(response.response == 'success'){
           $('#widget-order-form input[name=ID]').val(ID);
-          $('#widget-order-form input[name=leasingPrice]').val(response.order.leasingPrice);
+          $('#widget-order-form select[name=type]').val(response.order.type);
+          $('#widget-order-form input[name=price]').val(response.order.price);
           $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID).attr('disabled', false);
           $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);
           $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);

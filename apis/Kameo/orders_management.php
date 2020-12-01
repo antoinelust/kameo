@@ -31,7 +31,8 @@ if(isset($_POST['action'])){
     $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;
     $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
     $deliveryAddress=isset($_POST['deliveryAddress']) ? addslashes($_POST['deliveryAddress']) : NULL;
-    $leasingPrice=isset($_POST['leasingPrice']) ? $_POST['leasingPrice'] : NULL;
+    $price=isset($_POST['price']) ? $_POST['price'] : NULL;
+    $type=isset($_POST['type']) ? $_POST['type'] : "leasing";
     $addAccessory=isset($_POST['glyphicon-plus']) ? ($_POST['glyphicon-plus']) : NULL;
     $deleteAccessory=isset($_POST['glyphicon-minus']) ? ($_POST['glyphicon-minus']) : NULL;
     $accessoriesNumber=isset($_POST['accessoriesNumber']) ? $_POST['accessoriesNumber'] : NULL;
@@ -45,8 +46,8 @@ if(isset($_POST['action'])){
           error_message('403');
         }
         include 'connexion.php';
-        $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE)
-        VALUES(CURRENT_TIMESTAMP, '$email', '$mail','$portfolioID', '$size', '$status', '$testBoolean', '$testDate', '$testAddress', '$testStatus', '$testResult', '$deliveryDate', '$deliveryAddress', '$leasingPrice')";
+        $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE)
+        VALUES(CURRENT_TIMESTAMP, '$email', '$mail','$portfolioID', '$size', '$status', '$testBoolean', '$testDate', '$testAddress', '$testStatus', '$testResult', '$deliveryDate', '$deliveryAddress', '$price', '$type')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -63,7 +64,7 @@ if(isset($_POST['action'])){
         }
 
         include 'connexion.php';
-        $sql= "UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STATUS='$status', PORTFOLIO_ID='$portfolioID', SIZE='$size', DELIVERY_ADDRESS=$deliveryAddress, LEASING_PRICE='$leasingPrice' WHERE ID='$ID'";
+        $sql= "UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STATUS='$status', PORTFOLIO_ID='$portfolioID', SIZE='$size', DELIVERY_ADDRESS=$deliveryAddress, LEASING_PRICE='$price', TYPE='$type' WHERE ID='$ID'";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -254,7 +255,9 @@ if(isset($_POST['action'])){
                 $response['order'][$i]['testStatus']=$row['TEST_STATUS'];
                 $response['order'][$i]['testDate']=$row['TEST_DATE'];
                 $response['order'][$i]['testBoolean']=$row['TEST_BOOLEAN'];
-                $response['order'][$i]['leasingPrice']=$row['LEASING_PRICE'];
+                $response['order'][$i]['price']=$row['LEASING_PRICE'];
+                $response['order'][$i]['type']=$row['TYPE'];
+
 
                 $portfolioID=$row['PORTFOLIO_ID'];
                 include 'connexion.php';
@@ -330,7 +333,8 @@ if(isset($_POST['action'])){
         $response['order']['testAddress']=$resultat['TEST_ADDRESS'];
         $response['order']['testStatus']=$resultat['TEST_STATUS'];
         $response['order']['testResult']=$resultat['TEST_RESULT'];
-        $response['order']['leasingPrice']=$resultat['LEASING_PRICE'];
+        $response['order']['price']=$resultat['LEASING_PRICE'];
+        $response['order']['type']=$resultat['TYPE'];
         $response['order']['comment']=br2nl($resultat['REMARK']);
 
         $email=$resultat['EMAIL'];

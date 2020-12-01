@@ -37,19 +37,19 @@
 							<h4 class="nl text-green">Management of client order</h4>
 							<h4 class="en text-green">Management of client order</h4>
 							<div class="form-group col-sm-12">
-								<div class="col-sm-12">
-									<h4 class="fr text-green">Informations techniques</h4>
-									<h4 class="nl text-green">Technical information</h4>
-									<h4 class="en text-green">Technical information</h4>
+								<h4 class="fr text-green">Informations techniques</h4>
+								<h4 class="nl text-green">Technical information</h4>
+								<h4 class="en text-green">Technical information</h4>
+								<div class="row">
 									<div class="col-sm-4">
 										<label for="ID">ID commande</label>
 										<input type="text" name="ID" class="form-control required" readonly>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-6">
 										<label for="status"  class="fr">Statut</label>
 										<label for="status"  class="en">Status</label>
 										<label for="status"  class="nl">Status</label>
-										<select name="status" disabled>
+										<select name="status" class="form-control">
 											<option value="new">Nouvelle demande</option>
 											<option value="ongoing">En cours</option>
 											<option value="confirmed">Confirmée</option>
@@ -62,7 +62,7 @@
 								<h4 class="fr text-green">Caractéristiques du vélo</h4>
 								<h4 class="nl text-green">Bike characteristics</h4>
 								<h4 class="en text-green">Bike characteristics</h4>
-								<div class="col-sm-12">
+								<div class="row">
 									<div class="col-sm-4">
 										<label for="brand"  class="fr">Marque</label>
 										<label for="brand"  class="en">Brand</label>
@@ -89,7 +89,7 @@
 										<label for="size"  class="fr">Taille</label>
 										<label for="size"  class="en">Size</label>
 										<label for="size"  class="nl">Size</label>
-										<select name="size">
+										<select name="size" class="form-control">
 											<option value="XS">XS</option>
 											<option value="S">S</option>
 											<option value="M">M</option>
@@ -102,62 +102,67 @@
 							</div>
 							<div class="form-group col-sm-12">
 								<h4 class="text-green">Informations sur l'employé</h4>
-								<div class="col-md-4">
+								<div class="col-sm-4">
 									<label for="firstname" class="fr">Prénom</label>
 									<label for="firstname" class="en">Firstname</label>
 									<label for="firstname" class="nl">Voornaam</label>
 									<input type="text" name="firstName" class="form-control required">
 								</div>
-								<div class="col-md-4">
+								<div class="col-sm-4">
 									<label for="name" class="fr">Nom</label>
 									<label for="name" class="en">Name</label>
 									<label for="name" class="nl">Achternaam</label>
 									<input type="text" name="name" class="form-control required">
 								</div>
-								<div class="col-md-4">
+								<div class="col-sm-4">
 									<label for="mail" class="fr">E-mail</label>
 									<label for="mail" class="en">E-mail</label>
 									<label for="mail" class="nl">E-mail</label>
 									<input type="text" name="mail" class="form-control mail required">
 								</div>
-								<div class="col-md-4">
+								<div class="col-sm-4">
 									<label for="phone" class="fr">Numéro de téléphone</label>
 									<label for="phone" class="en">Phone number</label>
 									<label for="phone" class="nl">Phone number</label>
-									<input type="text" name="phone" class="form-control phone required">
+									<input type="text" name="phone" class="form-control phone">
 								</div>
 							</div>
 							<div class="form-group col-sm-12">
-                                <h4 class="text-green">Montant de facturation</h4>
-                                <div class="col-sm-4">
-                                    <label for="brand">Valeur marchande (HTVA)</label>
-                                    <input type="text" name="retailPrice" class="form-control required" disabled>
-                                    
-                                </div>
-                                <div class="col-sm-4">
-                                    <label for="model"  class="fr">Montant leasing</label>
-                                    <input type="text" name="leasingPrice" class="form-control required" disabled>                                    
-                                </div>
-                            </div>
-                              
-                            </fieldset>
-                            
-                            <div class="col-sm-12">
-                                <a class="button small red-dark button-3d rounded icon-right\" ID="initializeRefuseCommandButton"><span>Refuser</span></a>       
-                                <button  class="button small green button-3d rounded icon-left" ID="confirmCommandButton" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
-                            </div>                           
-                            
-                            <input type="text" name="action" class="hidden" value="confirmCommand">
-                            
+	                <h4 class="text-green">Montant de facturation</h4>
+	                <div class="col-sm-4">
+	                    <label for="brand">Valeur marchande (HTVA)</label>
+	                    <input type="text" name="retailPrice" class="form-control required" disabled>
+	                </div>
+									<div class="col-sm-4">
+                    <label for="type">Type</label>
+										<select name="type" class="form-control required">
+											<option value="leasing">Leasing</option>
+											<option value="achat">Achat</option>
+										</select>
+	                </div>
+									<div class="col-sm-4">
+                    <label for="model"  class="fr">Montant leasing</label>
+                    <input type="text" name="price" class="form-control required" disabled>
+	                </div>
+	            </div>
+	            </fieldset>
+
+	            <div class="col-sm-12">
+	                <a class="button small red-dark button-3d rounded icon-right\" ID="initializeRefuseCommandButton"><span>Refuser</span></a>
+	                <button  class="button small green button-3d rounded icon-left" ID="confirmCommandButton" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
+	            </div>
+
+	            <input type="text" name="action" class="hidden" value="confirmCommand">
+
 						</form>
 						<form id="widget-refuseCommand-form" class="hidden" action="apis/Kameo/orders_management.php" role="form" method="post">
-                            <h4 class="text-green">Raison du refus</h4>
-                            <textarea type="text" name="reasonOfRefusal" rows="5" class="form-control required" placeholder="Votre message"></textarea>
-                            <input type="text" name="action" class="hidden" value="refuse">
-                            <input type="text" name="ID" ID="ID" class="hidden" value="refuse">
-                            <button  class="button small green button-3d rounded icon-left" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
-                        </form>
-                        
+                <h4 class="text-green">Raison du refus</h4>
+                <textarea type="text" name="reasonOfRefusal" rows="5" class="form-control required" placeholder="Votre message"></textarea>
+                <input type="text" name="action" class="hidden" value="refuse">
+                <input type="text" name="ID" ID="ID" class="hidden" value="refuse">
+                <button  class="button small green button-3d rounded icon-left" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
+            </form>
+
 					</div>
 				</div>
 				<div class="fr" class="modal-footer">
@@ -211,7 +216,7 @@
 						get_orders_fleet_listing();
 						$('#orderManagerFleet').modal('toggle');
 						document.getElementById('widget-orderFleet-form').reset();
-                        
+
                           var element = document.getElementById("widget-refuseCommand-form");
                           element.classList.add("hidden");
 
@@ -220,9 +225,9 @@
 
                           var element = document.getElementById("confirmCommandButton");
                           element.classList.remove("hidden");
-                        
-                        
-                        
+
+
+
 					} else {
 						$.notify({
 							message: response.message

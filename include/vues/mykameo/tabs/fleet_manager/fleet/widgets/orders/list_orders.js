@@ -63,12 +63,20 @@ function get_orders_fleet_listing() {
             }else{
                     var test = "N";
             }
-              if(response.order[i].estimatedDeliveryDate == null){
-                  var estimatedDeliveryDate = "TBC";
-              }else{
-                  var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
-              }
-            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManagerFleet\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\">"+response.order[i].ID+"</td></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+status+"</td><td>"+Math.round(response.order[i].leasingPrice)+" €/mois</td>";
+            if(response.order[i].estimatedDeliveryDate == null){
+                var estimatedDeliveryDate = "TBC";
+            }else{
+                var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
+            }
+
+						if(response.order[i].type=="leasing"){
+							var price= Math.round(response.order[i].price*100)/100 + "€/mois";
+						}else{
+							var price= Math.round(response.order[i].price*100)/100 + "€";
+						}
+
+
+          	temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManagerFleet\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\">"+response.order[i].ID+"</td></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+status+"</td><td>"+price+"</td>";
 
             if(response.order[i].status=="new"){
                 temp=temp.concat("<td><a class=\"text-green\" onclick=\"validate_command('"+response.order[i].ID+"')\">Confirmer</a></td>")
@@ -193,7 +201,12 @@ function retrieve_command_fleet(ID){
           $('#widget-orderFleet-form select[name=size]').val(response.order.size);
           $('#widget-orderFleet-form select[name=status]').val(response.order.status);
           $('#widget-orderFleet-form input[name=retailPrice]').val(response.order.priceHTVA+" €");
-          $('#widget-orderFleet-form input[name=leasingPrice]').val(response.order.leasingPrice+" €/mois");
+					$('#widget-orderFleet-form select[name=type]').val(response.order.type);
+					if(response.order.type=="leasing"){
+						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/mois");
+					}else{
+						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €");
+					}
           $('#widget-orderFleet-form input[name=name]').val(response.order.name);
           $('#widget-orderFleet-form input[name=firstName]').val(response.order.firstname);
           $('#widget-orderFleet-form input[name=mail]').val(response.order.email);

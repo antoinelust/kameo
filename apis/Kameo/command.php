@@ -16,11 +16,12 @@ if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
     if($action == "command"){
 
-        $portoflioID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
+        $portfolioID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
         $email=isset($_POST['email']) ? $_POST['email'] : NULL;
         $size=isset($_POST['size']) ? $_POST['size'] : NULL;
         $remark=isset($_POST['remark']) ? nl2br($_POST['remark']) : NULL;
-        $leasing_price = isset($_POST['leasing_price']) ? $_POST['leasing_price'] : NULL;
+        $price = isset($_POST['price']) ? $_POST['price'] : NULL;
+        $type = isset($_POST['type']) ? $_POST['type'] : "leasing";
 
         include 'connexion.php';
         $stmt = $conn->prepare("SELECT * FROM customer_referential WHERE EMAIL=?");
@@ -54,12 +55,10 @@ if(isset($_POST['action'])){
             errorMessage("ES0061");
         }
 
-        $sql="INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE) VALUES('$email', '$email', '$portoflioID', '$size', '$remark', 'new', '$leasing_price')";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
+        $stmt = $conn->prepare("INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE) VALUES(?, ?, ?, ?, ?, 'new', ?, ?)") or die($mysqli->error);
+				$stmt->bind_param("ssissis", $email, $email, $portfolioID, $size, $remark, $price, $type);
+				$stmt->execute();
+        $stmt->close();
 
 
 

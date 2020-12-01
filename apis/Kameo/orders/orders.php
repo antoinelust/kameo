@@ -12,7 +12,6 @@ require_once '../authentication.php';
 require_once '../connexion.php';
 
 $token = getBearerToken();
-log_inputs($token);
 
 switch($_SERVER["REQUEST_METHOD"])
 {
@@ -73,11 +72,13 @@ switch($_SERVER["REQUEST_METHOD"])
 				$stmt->close();
 				$response['bikeNumber'] = count($orderable);
 
-				$stmt = $conn->prepare("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING from conditions WHERE COMPANY=? AND NAME='generic'");
+				$stmt = $conn->prepare("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPE, TVA_INCLUDED from conditions WHERE COMPANY=? AND NAME='generic'");
 				$stmt->bind_param("s", $company_reference);
 				$stmt->execute();
 				$reponse=$stmt->get_result()->fetch_array(MYSQLI_ASSOC);
 				$response['discount']=$reponse['DISCOUNT'];
+				$response['cafeteriaType']=$reponse['CAFETERIA_TYPE'];
+				$response['tvaIncluded']=$reponse['TVA_INCLUDED'];
 				$response['remainingPriceIncludedInLeasing']=$reponse['REMAINING_PRICE_INCLUDED_IN_LEASING'];
 				$stmt->close();
 				echo json_encode($response);
@@ -91,19 +92,21 @@ switch($_SERVER["REQUEST_METHOD"])
 
 		if($action === 'updateOrderable')
 		{
-			if(get_user_permissions("admin", $token) && isset($_POST['company']) && isset($_POST['cafetaria'])){
+			if(get_user_permissions("admin", $token) && isset($_POST['company']) && isset($_POST['cafeteria'])){
 				$stmt = $conn->prepare("SELECT INTERNAL_REFERENCE FROM companies WHERE COMPANY_NAME=?");
 				$stmt->bind_param("s", $_POST['company']);
 				$stmt->execute();
 				$company_reference = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['INTERNAL_REFERENCE'];
-				$cafetaria = ($_POST['cafetaria'] === "true") ? "Y" : "N";
-                $discount=isset($_POST['discount']) ? $conn->real_escape_string($_POST['discount']) : NULL;
+				$cafeteria = ($_POST['cafeteria'] === "true") ? "Y" : "N";
+				$tva = ($_POST['tva'] === "true") ? "Y" : "N";
+				$type = isset($_POST['type']) ? $_POST['type'] : "leasing";
+        $discount=isset($_POST['discount']) ? $conn->real_escape_string($_POST['discount']) : NULL;
 				$stmt->close();
-				$stmt = $conn->prepare("UPDATE conditions SET HEU_MAJ=CURRENT_TIMESTAMP, CAFETARIA=?, DISCOUNT=? WHERE COMPANY =? AND NAME = 'generic'");
-				$stmt->bind_param("sds", $cafetaria, $discount, $company_reference);
+				$stmt = $conn->prepare("UPDATE conditions SET HEU_MAJ=CURRENT_TIMESTAMP, CAFETARIA=?, DISCOUNT=?, CAFETERIA_TYPE=?, TVA_INCLUDED=? WHERE COMPANY =? AND NAME = 'generic'");
+				$stmt->bind_param("sdsss", $cafeteria, $discount, $type, $tva, $company_reference);
 				$stmt->execute();
 				$stmt->close();
-				if ($_POST['cafetaria'] === "true")
+				if ($_POST['cafeteria'] === "true")
 				{
 					$stmt = $conn->prepare("SELECT co.BIKE_ID FROM bike_catalog bc, companies_orderable co WHERE co.INTERNAL_REFERENCE = ? AND co.BIKE_ID = bc.ID");
 					$stmt->bind_param("s", $company_reference);

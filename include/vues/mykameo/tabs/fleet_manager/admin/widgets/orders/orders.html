@@ -48,11 +48,17 @@
                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                   var cafetaria = oData.CAFETARIA === "Y" ? true : false;
                   var discount = oData.DISCOUNT;
+                  var tva = oData.TVA_INCLUDED === "Y" ? true : false;
+                  var type = oData.CAFETERIA_TYPE;
                   $(nTd).html(
                     "<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='" +
                       cafetaria +
                       "'data-discount='" +
                       discount +
+                      "'data-tva='" +
+                      tva +
+                      "'data-type='" +
+                      type +
                       "' data-company='" +
                       sData +
                       "'>" +
@@ -76,7 +82,7 @@
       <a class="button small green button-3d rounded icon-right addOrder" data-target="#orderManager" data-toggle="modal" href="#">
         <span class="fr-inline"><i class="fa fa-plus"></i> Ajouter une commande</span>
       </a>
-      </br>
+      <br>
       <div data-example-id="contextual-table" class="bs-example">
         <span id="ordersListingSpan"></span>
       </div>
