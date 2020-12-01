@@ -172,12 +172,14 @@ if($billType == "manual"){
         $j++;
         $i++;
     }
-    foreach ($_POST['manualWorkladDescription'] as $key=>$value) {
-      $data['price'.$i] = $_POST['manualWorkloadTotal'][$key];
-      $data['description'.$i] = $_POST['manualWorkladDescription'][$key];
-      $data['type'.$i] = "maintenance";
-      $data['TVA'.$i] = "6";
-      $i++;
+    if(isset($_POST['manualWorkladDescription'])){
+      foreach ($_POST['manualWorkladDescription'] as $key=>$value) {
+        $data['price'.$i] = $_POST['manualWorkloadTotal'][$key];
+        $data['description'.$i] = $_POST['manualWorkladDescription'][$key];
+        $data['type'.$i] = "maintenance";
+        $data['TVA'.$i] = "6";
+        $i++;
+      }
     }
     $data['itemNumber'] = $i;
     $data['company'] = $company;

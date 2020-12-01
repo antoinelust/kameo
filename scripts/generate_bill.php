@@ -380,7 +380,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                     $test2.='<tr>
                         <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
-                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$resultat2['DESCRIPTION'].'</td>
+                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$resultat2['BRAND'].' - '.$resultat2['MODEL'].'</td>
                         <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($price).' € HTVA</td>
                     </tr>
                     <tr>
@@ -392,7 +392,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                         <td></td>
                         <td></td>
                         ';
-                    $test2=$test2."<td>Vente</td></tr>";
+                    $test2=$test2."<td></td></tr>";
                 }else if($type=="otherAccessorySell"){
 
                     $comment='Vente au '.$dateStart->format('d-m-Y');

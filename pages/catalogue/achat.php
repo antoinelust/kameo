@@ -70,6 +70,7 @@ include 'include/head.php';
                                         <option data-filter=".gravel"><?= L::achat_use_option7; ?></option>
                                         <option data-filter=".vtt"><?= L::achat_use_option8; ?></option>
                                         <option data-filter=".cargo"><?= L::achat_use_option9; ?></option>
+                                        <option data-filter=".enfant"><?= L::achat_use_option10; ?></option>
                                     </select>
                                 </div>
 
@@ -77,9 +78,10 @@ include 'include/head.php';
                                     <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
                                     <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
                                         <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
-                                        <option data-filter=".m" value="M"><?= L::achat_cadre_option2; ?></option>
-                                        <option data-filter=".f" value="F"><?= L::achat_cadre_option3; ?></option>
-                                        <option data-filter=".h" value="H"><?= L::achat_cadre_option4; ?></option>
+                                        <option data-filter=".m"><?= L::achat_cadre_option2; ?></option>
+                                        <option data-filter=".f"><?= L::achat_cadre_option3; ?></option>
+                                        <option data-filter=".h"><?= L::achat_cadre_option4; ?></option>
+                                        <option data-filter=".unisex"><?= L::achat_cadre_option5; ?></option>
                                     </select>
                                 </div>
 
@@ -302,8 +304,10 @@ include 'include/head.php';
                                         var frameType = "Mixte";
                                     } else if (response.bike[i].frameType.toLowerCase() == "f") {
                                         var frameType = "Femme";
+                                    } else if (response.bike[i].frameType.toLowerCase() == "Unisex") {
+                                        var frameType = "Unisex";
                                     } else {
-                                        var frameType = "undefined";
+                                      var frameType = "undefined";
                                     }
 
                                     if (parseInt(response.bike[i].price) <= "2000") {

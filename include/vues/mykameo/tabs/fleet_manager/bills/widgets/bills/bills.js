@@ -255,7 +255,6 @@ function create_bill(){
           }
           var categories = [];
 
-
           //generation du tableau de catégories
           accessories.forEach((accessory) => {
             var newCategory = true;
@@ -318,7 +317,7 @@ function create_bill(){
               //ne garde que les accessoires de cette catégorie
               accessories.forEach((accessory) => {
                 if (categoryId == accessory.categoryId) {
-                  accessoriesOption += '<option value="'+accessory.id+'">'+accessory.name+'</option>';
+                  accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
                 }
               });
               //place les accessoires dans le select
@@ -694,8 +693,6 @@ function get_bills_listing(company, sent, paid, direction, email) {
                 displayLanguage();
 
                 $('#billsListingTable').DataTable();
-                //$('#billsToSendListingTable').DataTable();
-
 
             }
         }
