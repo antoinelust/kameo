@@ -201,17 +201,22 @@ function retrieve_cost(ID, action) {
                   `<tr class="bikesNumberTable` +
                     response.loanBikesNumber +
                     ` bikeRow form-group">
-            <td class="bLabel"></td>
-            <td class="loanBikeID">` + response.loan[i].idBike + `</td>
-            <td class="bikeBrandModel">` + response.loan[i].model + `</td>
-            <td class="loanFrameNumber">` + response.loan[i].frameNumber + `</td>
-            <td class="loanBrand">` + response.loan[i].brand + `</td>
-            <td class="bikepAchat">` + response.loan[i].buyPrice + `</td>
-            </tr>`
+                    <td class="bLabel"></td>
+                    <td class="loanBikeID">` + response.loan[i].idBike + `</td>
+                    <td class="bikeBrandModel">` + response.loan[i].model + `</td>
+                    <td class="loanFrameNumber">` + response.loan[i].frameNumber + `</td>
+                    <td class="loanBrand">` + response.loan[i].brand + `</td>
+                    <td class="bikepAchat">` + response.loan[i].buyPrice + `</td>
+                  </tr>`
                 );
 
               i++;
             }
+
+            $("#widget-costsManagement-form input[name=sumBuyBikes]").val(
+              response.sumBikesIncluded
+            );
+
           }
         }
       }

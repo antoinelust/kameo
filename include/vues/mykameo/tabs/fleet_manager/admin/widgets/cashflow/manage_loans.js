@@ -63,9 +63,9 @@ get_customers_bikes().done(function (response) {
   //a chaque modification du nombre de vélo
   //ajout
   $(".costsManagementBike .glyphicon-plus").on("click", function () {
-    bikesNumber = $("#costsManagement").find(".bikesNumber").html() * 1 + 1;
-    $("#costsManagement").find(".bikesNumber").html(bikesNumber);
-    $("#bikesNumber").val(bikesNumber);
+    bikesNumber = $("#costsManagement").find(".bikesNumberLoan").html() * 1 + 1;
+    $("#costsManagement").find(".bikesNumberLoan").html(bikesNumber);
+    $("#bikesNumberLoan").val(bikesNumber);
 
     //creation du div contenant
     $("#costsManagement")

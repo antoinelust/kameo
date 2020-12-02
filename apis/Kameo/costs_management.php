@@ -94,13 +94,6 @@ if (isset($_POST['action'])) {
                         $i++;
                     }
                 }
-
-                $sql = "UPDATE costs SET AMOUNT=(SELECT SUM(BUY_PRICE) FROM loan_belfius) WHERE ID='$id'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array('response' => 'error', 'message' => $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
             } else {
                 $sql = "UPDATE costs SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$requestor', TITLE='$title', DESCRIPTION='$description', AMOUNT='$amount', START=$start, END=$end, TYPE='$type' WHERE ID='$id'";
                 if ($conn->query($sql) === FALSE) {
@@ -155,7 +148,6 @@ if (isset($_POST['action'])) {
                 die;
             }
             $result = mysqli_query($conn, $sql);
-            $conn->close();
 
             $response['loanBikesNumber'] = $result->num_rows;
             $i = 0;
@@ -170,6 +162,23 @@ if (isset($_POST['action'])) {
 
                 $i++;
             }
+            $sql = "SELECT SUM(BUY_PRICE) as 'totalBuyPrice' FROM loan_belfius";
+            if ($conn->query($sql) === FALSE) {
+                $response = array('response' => 'error', 'message' => $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $result = mysqli_query($conn, $sql);
+            $resultat = mysqli_fetch_assoc($result);
+            if ($conn->query($sql) === FALSE) {
+                $response = array('response' => 'error', 'message' => $conn->error);
+                echo json_encode($response);
+                die;
+            }
+            $response['sumBikesIncluded'] = round($resultat['totalBuyPrice'], 2);
+
+            $conn->close();
+
 
             echo json_encode($response);
 

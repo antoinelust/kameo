@@ -106,10 +106,10 @@
                     </div>
                     <div class="col-sm-12">
                       <i class="fa fa-bicycle"></i>
-                      <span class="bikesNumber">0</span
+                      <span class="bikesNumberLoan">0</span
                       ><input
                         type="hidden"
-                        name="bikesNumber"
+                        name="bikesNumberLoan"
                         value="0"
                       />
                       <div class="addRemoveBikesBtns">
@@ -153,6 +153,17 @@
                   </div>
                 </div>
                 <br />
+                <div class="col-sm-6">
+                  <label for="sumBuyBikes">Montant d'achat total des vélos</label>
+                  <input
+                    type="amount"
+                    step="0.01"
+                    name="sumBuyBikes"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+
 
                 <input
                   type="text"
