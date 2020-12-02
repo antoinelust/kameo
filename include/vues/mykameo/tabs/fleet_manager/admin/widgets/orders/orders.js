@@ -56,6 +56,8 @@ function get_orders_listing() {
 
             if(response.order[i].type=="leasing"){
               var price = response.order[i].price + " €/mois";
+            }else if(response.order[i].type=="annualLeasing"){
+              var price = response.order[i].price + " €/an";
             }else{
               var price = response.order[i].price + " €";
             }

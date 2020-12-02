@@ -78,7 +78,16 @@ function load_cafetaria(){
                 }else{
                   var priceWithLabel = price + "€/mois HTVA"
                 }
-              }else if(response.cafeteriaType=="achat"){
+              }else if(response.cafeteriaType=="annualLeasing"){
+                  var price = (response.bike[i].leasingPrice)*12;
+                  console.log(price);
+                  if(response.tvaIncluded == "Y"){
+                    var priceWithLabel = Math.round(price*1.21*100)/100;
+                    priceWithLabel = priceWithLabel + "€/an TVAC";
+                  }else{
+                    var priceWithLabel = price + "€/an HTVA"
+                  }
+               }else if(response.cafeteriaType=="achat"){
                 var price = response.bike[i].price;
 
                 if(response.tvaIncluded == "Y"){

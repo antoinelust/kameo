@@ -71,6 +71,8 @@ function get_orders_fleet_listing() {
 
 						if(response.order[i].type=="leasing"){
 							var price= Math.round(response.order[i].price*100)/100 + "€/mois";
+						}else if(response.order[i].type=="annualLeasing"){
+							var price= Math.round(response.order[i].price*100)/100 + "€/an";
 						}else{
 							var price= Math.round(response.order[i].price*100)/100 + "€";
 						}
@@ -200,10 +202,13 @@ function retrieve_command_fleet(ID){
           $('#widget-orderFleet-form select[name=frameType]').val(response.order.frameType);
           $('#widget-orderFleet-form select[name=size]').val(response.order.size);
           $('#widget-orderFleet-form select[name=status]').val(response.order.status);
-          $('#widget-orderFleet-form input[name=retailPrice]').val(response.order.priceHTVA+" €");
+          $('#widget-orderFleet-form input[name=retailPrice]').val((Math.round(response.order.priceHTVA*1.21*100)/100)+" €");
 					$('#widget-orderFleet-form select[name=type]').val(response.order.type);
+					console.log(response.order.type);
 					if(response.order.type=="leasing"){
 						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/mois");
+					}else	if(response.order.type=="annualLeasing"){
+						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/an");
 					}else{
 						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €");
 					}
