@@ -190,7 +190,7 @@ function retrieve_cost(ID, action) {
               </table>`);
 
               $("#costsManagement")
-                .find(".bikesNumber")
+                .find(".bikesNumberLoan")
                 .html(response.loanBikesNumber);
 
             var i = 0;

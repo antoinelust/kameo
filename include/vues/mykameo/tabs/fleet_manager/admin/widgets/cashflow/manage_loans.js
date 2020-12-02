@@ -65,7 +65,7 @@ get_customers_bikes().done(function (response) {
   $(".costsManagementBike .glyphicon-plus").on("click", function () {
     bikesNumber = $("#costsManagement").find(".bikesNumberLoan").html() * 1 + 1;
     $("#costsManagement").find(".bikesNumberLoan").html(bikesNumber);
-    $("#bikesNumberLoan").val(bikesNumber);
+    $("#widget-costsManagement-form input[name=bikesNumberLoan]").val(bikesNumber);
 
     //creation du div contenant
     $("#costsManagement")
@@ -87,12 +87,6 @@ get_customers_bikes().done(function (response) {
     $("#costsManagement")
       .find(".bikesNumberTable" + bikesNumber + ">.bLabel")
       .append('<label class="fr">Vélo ' + bikesNumber + "</label>");
-    /*$('#costsManagement').find('.bikesNumberTable'+bikesNumber+'>.bLabel').append('<span class="en">Bike '+ bikesNumber +'</span>');
-      $('#costsManagement').find('.bikesNumberTable'+bikesNumber+'>.bLabel').append('<span class="nl">Vélo '+ bikesNumber +'</span>');*/
-
-    // $("#costsManagement")
-    //   .find(".bikesNumberTable" + bikesNumber + ">.loanBikeID")
-    //   .append();
 
     $("#costsManagement")
       .find(".bikesNumberTable" + bikesNumber + ">.bikeBrandModel")
@@ -157,34 +151,44 @@ get_customers_bikes().done(function (response) {
               response.catalogPrice +
               '"/>'
           );
+
+          var sumValue=0;
+          $('#widget-costsManagement-form td.bikepAchat').each(function(i){
+            sumValue= (sumValue*1 + ($(this).text())*1 );
+          })
+
+          $('#widget-costsManagement-form td.bikepAchat input').each(function(i){
+            console.log( $(this).val() );
+            sumValue = (sumValue*1 + ($(this).val())*1);
+          })
+
+          $('#widget-costsManagement-form input[name=sumBuyBikes]').val(Math.round(sumValue));
+
+
+
+
       });
 
-      // var pAchat = bikes[id].buyingPrice + "€ ";
-      // $(that)
-      //   .parents(".bikeRow")
-      //   .find(".bikepAchat")
-      //   .html(pAchat + ' <span class="text-red">(-)</span>');
-
-      // update_elements_price();
     });
     checkMinus(".costsManagementBike", ".bikesNumber");
   });
 
   //retrait
   $(".costsManagementBike .glyphicon-minus").on("click", function () {
-    bikesNumber = $("#costsManagement").find(".bikesNumber").html();
+    bikesNumber = $("#costsManagement").find(".bikesNumberLoan").html();
     if (bikesNumber > 0 && bikesNumber > loanBikesNumber) {
       $("#costsManagement")
-        .find(".bikesNumber")
+        .find(".bikesNumberLoan")
         .html(bikesNumber * 1 - 1);
-      $("#bikesNumber").val(bikesNumber * 1 - 1);
+      $("#widget-costsManagement-form input[name=bikesNumberLoan]").val(bikesNumber * 1 - 1);
+
       $("#costsManagement")
         .find(".bikesNumberTable" + bikesNumber)
         .slideUp()
         .remove();
       bikesNumber--;
     }
-    checkMinus(".costsManagementBike", ".bikesNumber");
+    checkMinus(".costsManagementBike", ".bikesNumberLoan");
   });
 });
 

@@ -155,15 +155,18 @@
                 <br />
                 <div class="col-sm-6">
                   <label for="sumBuyBikes">Montant d'achat total des vélos</label>
-                  <input
-                    type="amount"
-                    step="0.01"
-                    name="sumBuyBikes"
-                    class="form-control"
-                    readonly
-                  />
+                  <div class="input-group">
+                    <span class="input-group-addon">€</span>
+                    <input
+                      type="amount"
+                      step="0.01"
+                      name="sumBuyBikes"
+                      class="form-control"
+                      readonly
+                      disabled
+                    />
+                  </div>
                 </div>
-
 
                 <input
                   type="text"
