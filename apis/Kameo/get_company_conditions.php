@@ -16,12 +16,12 @@ if(isset($_POST['email'])){
     die;
 }
 
-function get_company_conditions($email, $id, $company = NULL){    
+function get_company_conditions($email, $id, $company = NULL){
 
-    $response['companyConditions']['administrator']="N";       
-    
+    $response['companyConditions']['administrator']="N";
+
     include 'connexion.php';
-    
+
     if($email != NULL)
     {
         $sql="select * from customer_referential where EMAIL = '$email'";
@@ -31,16 +31,16 @@ function get_company_conditions($email, $id, $company = NULL){
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql); 
+        $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
 
         $company=$resultat['COMPANY'];
-        $response['companyConditions']['administrator']=$resultat['ADMINISTRATOR'];       
-        
+        $response['companyConditions']['administrator']=$resultat['ADMINISTRATOR'];
+
     }
     if($company || $id){
-    
-    
+
+
         if($company!='KAMEO'){
             $response['update']=false;
         } else{
@@ -53,24 +53,24 @@ function get_company_conditions($email, $id, $company = NULL){
             $sql="select * from conditions where COMPANY = '$company' and name='generic'";
         }
 
-        if ($conn->query($sql) === FALSE) {            
+        if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql); 
+        $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
-        $conn->close();   
+        $conn->close();
 
 
 
         //vérifier nom du champ SQL
         $response['response']="success";
         $name=$resultat['NAME'];
-        $response['companyConditions']['name']=$resultat['NAME']; 
-        $response['companyConditions']['bookingDays']=$resultat['BOOKING_DAYS']; 
-        $response['companyConditions']['bookingLength']=$resultat['BOOKING_LENGTH']; 
-        $response['companyConditions']['assistance']=$resultat['ASSISTANCE']; 
+        $response['companyConditions']['name']=$resultat['NAME'];
+        $response['companyConditions']['bookingDays']=$resultat['BOOKING_DAYS'];
+        $response['companyConditions']['bookingLength']=$resultat['BOOKING_LENGTH'];
+        $response['companyConditions']['assistance']=$resultat['ASSISTANCE'];
         $response['companyConditions']['hourStartIntakeBooking']=$resultat['HOUR_START_INTAKE_BOOKING'];
         $response['companyConditions']['hourEndIntakeBooking']=$resultat['HOUR_END_INTAKE_BOOKING'];
         $response['companyConditions']['hourStartDepositBooking']=$resultat['HOUR_START_DEPOSIT_BOOKING'];
@@ -93,6 +93,7 @@ function get_company_conditions($email, $id, $company = NULL){
         $response['companyConditions']['booking']=$resultat['BOOKING'];
         $response['companyConditions']['maxBookingsPerYear']=$resultat['MAX_BOOKINGS_YEAR'];
         $response['companyConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
+        $response['companyConditions']['minutesBeforeCancellation']=$resultat['MINUTES_FOR_AUTOMATIC_CANCEL'];
         $response['companyConditions']['box']=$resultat['BOX_BOOKING'];
         $response['companyConditions']['cafeteria']=$resultat['CAFETARIA'];
         $response['companyConditions']['discount']=$resultat['DISCOUNT'];
@@ -119,8 +120,8 @@ function get_company_conditions($email, $id, $company = NULL){
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql); 
-        $conn->close();   
+        $result = mysqli_query($conn, $sql);
+        $conn->close();
         $response['userAccessNumber']=$result->num_rows;
 
         $i=0;
@@ -129,7 +130,7 @@ function get_company_conditions($email, $id, $company = NULL){
             $response['companyConditions']['email'][$i]=$row['EMAIL'];
             $i++;
         }
-        
+
         return $response;
 
     }

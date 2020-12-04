@@ -43,7 +43,7 @@ if($action=="update"){
     $conn->close();
     if($resultat['BRAND'] != $brand || $resultat['MODEL'] != $model){
 
-        $dossier = '../images_bikes/';
+        $dossier = '../../images_bikes/';
 
         $oldFile=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']).".jpg";
         $newFile=strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).".jpg";
@@ -78,7 +78,7 @@ if($action=="update"){
 
         //upload of Bike picture
 
-        $dossier = '../images_bikes/';
+        $dossier = '../../images_bikes/';
 
 
         include 'connexion.php';
@@ -135,7 +135,7 @@ if($action=="update"){
 
         //upload of Bike picture
 
-        $dossier = '../images_bikes/';
+        $dossier = '../../images_bikes/';
 
 
         include 'connexion.php';

@@ -33,6 +33,8 @@
 							<span class="en-inline"> Maximal number of bookings per month: </span>
 							<span class="nl-inline"> Maximal number of bookings per month </span>
 							<input type="number" class="form-control required" name="bookingsPerMonth" max="9999" style="width: 7em;"><br/><br/>
+							<span> Nombre de minutes avant annulation automatique : </span>
+							<input type="number" class="form-control required" name="minutesBeforeCancellation" min='0' max="9999" style="width: 7em;"><br/><br/>
 							<div class="col-sm-12">
 								<div class="col-sm-6 jumbotron jumbotron-border">
 									<h4>Réglages de début de réservation</h4>
@@ -82,7 +84,7 @@
                                 <input type="checkbox" name="box">Génération de code de réservation ?<br>
 							</div>
                             <br><br>
-                            
+
 							<div class="col-sm-12">
 								<h4 class="text-green">Accès des utilisateurs à ce groupe de conditions</h4>
 								<p class="text-red">Attention, attribuer un utilisateur à ce groupe supprimera automatiquement son appartenance à un autre groupe</p>

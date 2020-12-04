@@ -3,7 +3,7 @@ function get_customers_bikes() {
   return $.ajax({
     url: "apis/Kameo/get_bikes_listing.php",
     type: "post",
-    data: { admin: "Y", customersCompanies: "Y" },
+    data: { admin: "Y", customersCompaniesToIncludeInLoan: "Y"},
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);
@@ -41,9 +41,6 @@ get_customers_bikes().done(function (response) {
   var bikeModels =
     '<option hidden disabled selected value id ="bikeBrandModelSel" name="bikeBrandModelSel"></option>';
 
-  //tri du tableau par marques
-  bikes.sort(compare);
-
   //gestion du moins au lancement de la page
   checkMinus(".costsManagementBike", ".bikesNumber");
 
@@ -55,9 +52,7 @@ get_customers_bikes().done(function (response) {
       '<option value="' +
       bikes[i].id +
       '">' +
-      bikes[i].model +
-      " - " +
-      bikes[i].frameType +
+      bikes[i].id + " - " + bikes[i].company + " - " + bikes[i].model +
       "</option>";
   }
   //a chaque modification du nombre de vélo
@@ -201,21 +196,6 @@ function checkMinus(select, valueLocation) {
     $(select).find(".glyphicon-minus").fadeIn();
     $(select).find(".hideAt0").show();
   }
-}
-
-//tri de tableau d'objets via une propriété string_calendar
-function compare(a, b) {
-  // Use toUpperCase() to ignore character casing
-  const varA = a.brand.toUpperCase();
-  const varB = b.brand.toUpperCase();
-
-  let comparison = 0;
-  if (varA > varB) {
-    comparison = 1;
-  } else if (varA < varB) {
-    comparison = -1;
-  }
-  return comparison;
 }
 
 //récupère l'index de l'item dont l'id correspond

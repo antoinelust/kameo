@@ -29,6 +29,7 @@ $( "#settings" ).click(function() {
     $('#widget-updateCompanyConditions-form input[name=bookingLength]').val("");
     $('#widget-updateCompanyConditions-form input[name=bookingsPerYear]').val("");
     $('#widget-updateCompanyConditions-form input[name=bookingsPerMonth]').val("");
+    $('#widget-updateCompanyConditions-form input[name=minutesBeforeCancellation]').val("");
     $('#widget-updateCompanyConditions-form input[name=startIntakeBooking]').val("");
     $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val("");
     $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val("");
@@ -119,7 +120,8 @@ $.ajax({
 	  $('#widget-updateCompanyConditions-form input[name=daysInAdvance]').val(response.companyConditions.bookingDays);
 	  $('#widget-updateCompanyConditions-form input[name=bookingLength]').val(response.companyConditions.bookingLength);
 	  $('#widget-updateCompanyConditions-form input[name=bookingsPerYear]').val(response.companyConditions.maxBookingsPerYear);
-	  $('#widget-updateCompanyConditions-form input[name=bookingsPerMonth]').val(response.companyConditions.maxBookingsPerMonth);
+    $('#widget-updateCompanyConditions-form input[name=bookingsPerMonth]').val(response.companyConditions.maxBookingsPerMonth);
+    $('#widget-updateCompanyConditions-form input[name=minutesBeforeCancellation]').val(response.companyConditions.minutesBeforeCancellation);
 	  $('#widget-updateCompanyConditions-form input[name=startIntakeBooking]').val(response.companyConditions.hourStartIntakeBooking);
 	  $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val(response.companyConditions.hourEndIntakeBooking);
 	  $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val(response.companyConditions.hourStartDepositBooking);
@@ -214,7 +216,7 @@ $.ajax({
 		temp="<input type=\"checkbox\" name=\"depositBookingSunday\" value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";
 	  }
 	  dest=dest.concat(temp);
-        
+
       if(response.companyConditions.box=="Y")
           $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', true);
         else

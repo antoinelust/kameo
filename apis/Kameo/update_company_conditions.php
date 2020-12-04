@@ -31,6 +31,7 @@ $depositSunday=isset($_POST['depositBookingSunday']) ? "1" : "0";
 $email=isset($_POST['email']) ? $_POST['email'] : null;
 $maximumBookingsYear=isset($_POST['bookingsPerYear']) ? $_POST['bookingsPerYear'] : null;
 $maximumBookingsMonth=isset($_POST['bookingsPerMonth']) ? $_POST['bookingsPerMonth'] : null;
+$minutesBeforeCancellation=isset($_POST['minutesBeforeCancellation']) ? $_POST['minutesBeforeCancellation'] : NULL;
 $box=isset($_POST['box']) ? "Y" : "N";
 $action=isset($_POST['action']) ? $_POST['action'] : null;
 $id=isset($_POST['id']) ? $_POST['id'] : null;
@@ -49,12 +50,12 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
 		echo json_encode($response);
 		die;
     }
-	$result = mysqli_query($conn, $sql); 
+	$result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
-    $conn->close();   
+    $conn->close();
 
     $company=$resultat['COMPANY'];
-    
+
     if($action=="create"){
         include 'connexion.php';
         $sql="select * from conditions where COMPANY = '$company' and name='$name'";
@@ -64,9 +65,9 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql); 
-        $length=$result->num_rows;      
-        $conn->close();   
+        $result = mysqli_query($conn, $sql);
+        $length=$result->num_rows;
+        $conn->close();
 
         if($length>0){
             errorMessage("ES0052");
@@ -81,8 +82,8 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
             echo json_encode($response);
             die;
         }
-        $conn->close();     
-        
+        $conn->close();
+
         include 'connexion.php';
         $sql="select ID from conditions where COMPANY='$company' and NAME='$name'";
         if ($conn->query($sql) === FALSE) {
@@ -90,10 +91,10 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
-        $conn->close();   
-        $id=$resultat['ID'];    
+        $conn->close();
+        $id=$resultat['ID'];
 
 
         if(isset($_POST['userAccess'])){
@@ -105,7 +106,7 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                     echo json_encode($response);
                     die;
                 }
-                $conn->close();     
+                $conn->close();
 
                 include 'connexion.php';
                 $sql="INSERT INTO specific_conditions (USR_MAJ, HEU_MAJ, COMPANY, EMAIL, CONDITION_REFERENCE, STAANN) VALUE('$email', CURRENT_TIMESTAMP, '$company', '$valueInArray', '$id', '')";
@@ -114,31 +115,31 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                     echo json_encode($response);
                     die;
                 }
-                $conn->close();     
+                $conn->close();
 
             }
         }
 
-        
-        
-        
-        
-        
+
+
+
+
+
     }else if($action=='update'){
-        
-        
+
+
         include 'connexion.php';
         $sql= "SELECT * FROM specific_conditions WHERE CONDITION_REFERENCE='$id' AND STAANN!='D'";
-        
-        
+
+
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $length = $result->num_rows;
-        $conn->close(); 
+        $conn->close();
 
         while($row = mysqli_fetch_array($result)){
             $presence=false;
@@ -149,8 +150,8 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                         $presence=true;
                     }
                 }
-            }      
-            
+            }
+
             if($presence==false){
                 include 'connexion.php';
                 $sql="update specific_conditions set STAANN='D', USR_MAJ='$email', HEU_MAJ=CURRENT_TIMESTAMP where CONDITION_REFERENCE = '$id' and EMAIL='$emailtemp'";
@@ -162,12 +163,12 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                 }
                 $conn->close();
             }
-        }             
-        
-        
-        
-        
-        
+        }
+
+
+
+
+
         include 'connexion.php';
         $sql="select * from conditions where ID='$id'";
         if ($conn->query($sql) === FALSE) {
@@ -175,24 +176,24 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql); 
+        $result = mysqli_query($conn, $sql);
         $length = $result->num_rows;
         $resultat = mysqli_fetch_assoc($result);
         $name=$resultat['NAME'];
-        $conn->close();     
-        
+        $conn->close();
+
         if($length == 0){
             errorMessage("ES0053");
         }else{
             include 'connexion.php';
-            $sql="update conditions set USR_MAJ = 'mykameo', HEU_MAJ = CURRENT_TIMESTAMP, NAME='$name', BOOKING_DAYS='$bookingDays', BOOKING_LENGTH='$bookingLength', HOUR_START_INTAKE_BOOKING = '$startHourIntakeBooking', HOUR_END_INTAKE_BOOKING = '$endHourIntakeBooking', HOUR_START_DEPOSIT_BOOKING = '$startHourDepositBooking', HOUR_END_DEPOSIT_BOOKING = '$endHourDepositBooking', MONDAY_INTAKE = '$intakeMonday', TUESDAY_INTAKE = '$intakeTuesday', WEDNESDAY_INTAKE = '$intakeWednesday', THURSDAY_INTAKE = '$intakeThursday', FRIDAY_INTAKE = '$intakeFriday', SATURDAY_INTAKE = '$intakeSaturday', SUNDAY_INTAKE = '$intakeSunday', MONDAY_DEPOSIT = '$depositMonday', TUESDAY_DEPOSIT = '$depositTuesday', WEDNESDAY_DEPOSIT = '$depositWednesday', THURSDAY_DEPOSIT = '$depositThursday', FRIDAY_DEPOSIT = '$depositFriday', SATURDAY_DEPOSIT = '$depositSaturday', SUNDAY_DEPOSIT = '$depositSunday', MAX_BOOKINGS_YEAR='$maximumBookingsYear', MAX_BOOKINGS_MONTH='$maximumBookingsMonth', BOX_BOOKING='$box' WHERE ID = '$id'";
+            $sql="update conditions set USR_MAJ = 'mykameo', HEU_MAJ = CURRENT_TIMESTAMP, NAME='$name', BOOKING_DAYS='$bookingDays', BOOKING_LENGTH='$bookingLength', HOUR_START_INTAKE_BOOKING = '$startHourIntakeBooking', HOUR_END_INTAKE_BOOKING = '$endHourIntakeBooking', HOUR_START_DEPOSIT_BOOKING = '$startHourDepositBooking', HOUR_END_DEPOSIT_BOOKING = '$endHourDepositBooking', MONDAY_INTAKE = '$intakeMonday', TUESDAY_INTAKE = '$intakeTuesday', WEDNESDAY_INTAKE = '$intakeWednesday', THURSDAY_INTAKE = '$intakeThursday', FRIDAY_INTAKE = '$intakeFriday', SATURDAY_INTAKE = '$intakeSaturday', SUNDAY_INTAKE = '$intakeSunday', MONDAY_DEPOSIT = '$depositMonday', TUESDAY_DEPOSIT = '$depositTuesday', WEDNESDAY_DEPOSIT = '$depositWednesday', THURSDAY_DEPOSIT = '$depositThursday', FRIDAY_DEPOSIT = '$depositFriday', SATURDAY_DEPOSIT = '$depositSaturday', SUNDAY_DEPOSIT = '$depositSunday', MAX_BOOKINGS_YEAR='$maximumBookingsYear', MAX_BOOKINGS_MONTH='$maximumBookingsMonth', BOX_BOOKING='$box', MINUTES_FOR_AUTOMATIC_CANCEL='$minutesBeforeCancellation' WHERE ID = '$id'";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
                 die;
             }
-            $conn->close();     
-            
+            $conn->close();
+
         }
 
 
@@ -205,7 +206,7 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                     echo json_encode($response);
                     die;
                 }
-                $conn->close();     
+                $conn->close();
                 include 'connexion.php';
                 $sql="select * from specific_conditions WHERE email='$valueInArray' and CONDITION_REFERENCE='$id'";
                 if ($conn->query($sql) === FALSE) {
@@ -213,9 +214,9 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                     echo json_encode($response);
                     die;
                 }
-                $result = mysqli_query($conn, $sql); 
+                $result = mysqli_query($conn, $sql);
                 $length = $result->num_rows;
-                $conn->close();     
+                $conn->close();
                 if($length==0){
                     include 'connexion.php';
                     $sql="INSERT INTO specific_conditions (USR_MAJ, HEU_MAJ, COMPANY, EMAIL, CONDITION_REFERENCE, STAANN) VALUE('$email', CURRENT_TIMESTAMP, '$company', '$valueInArray', '$id', '')";
@@ -224,7 +225,7 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                         echo json_encode($response);
                         die;
                     }
-                    $conn->close();     
+                    $conn->close();
                 }else{
                     include 'connexion.php';
                     $sql="UPDATE specific_conditions SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STAANN='' WHERE CONDITION_REFERENCE='$id' AND EMAIL='$valueInArray' AND COMPANY='$company'";
@@ -233,18 +234,18 @@ if($name != NULL && $bookingDays != NULL && $bookingLength != NULL && $startHour
                         echo json_encode($response);
                         die;
                     }
-                    $conn->close();     
+                    $conn->close();
                 }
 
             }
         }
-        
+
     }
 
 
 
-        
-        
+
+
 
     successMessage("SM0003");
 

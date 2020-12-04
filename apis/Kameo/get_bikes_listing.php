@@ -14,7 +14,7 @@ $email = isset($_POST['email']) ? $_POST['email'] : NULL;
 $company = isset($_POST['company']) ? $_POST['company'] : NULL;
 $admin = isset($_POST['admin']) ? $_POST['admin'] : NULL;
 $stockAndCommand = isset($_POST['stockAndCommand']) ? $_POST['stockAndCommand'] : FALSE;
-$customersCompanies = isset($_POST['customersCompanies']) ? $_POST['customersCompanies'] : NULL;
+$customersCompaniesToIncludeInLoan = isset($_POST['customersCompaniesToIncludeInLoan']) ? $_POST['customersCompaniesToIncludeInLoan'] : NULL;
 
 $response = array();
 
@@ -45,10 +45,9 @@ if ($admin != "Y") {
         die;
     }
 } else {
-
-    if ($customersCompanies == "Y") {
+    if ($customersCompaniesToIncludeInLoan == "Y") {
         include 'connexion.php';
-        $sql = "SELECT * FROM customer_bikes WHERE COMPANY != 'KAMEO' AND STAANN != 'D'";
+        $sql = "SELECT * FROM customer_bikes WHERE COMPANY != 'KAMEO' AND CONTRACT_TYPE = 'leasing' AND STAANN != 'D' AND NOT EXISTS (SELECT 1 FROM loan_belfius WHERE ID_BIKE=customer_bikes.ID)";
 
         if ($stockAndCommand) {
             $sql = $sql . " AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";

@@ -18,6 +18,39 @@ if(!get_user_permissions("search", $token)){
 
 log_inputs($token);
 
+
+$conditions=getCondition();
+$minutesToAdd=$conditions['conditions']['MINUTES_FOR_AUTOMATIC_CANCEL'];
+
+$time = new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
+$time->add(new DateInterval('PT' . $minutesToAdd . 'M'));
+$stamp = $time->format('Y-m-d H:i');
+
+$sql="SELECT aa.ID, aa.DATE_END_2, aa.DATE_START_2, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.DATE_END_2 < '$stamp' AND aa.BIKE_ID=bb.ID AND aa.STAANN != 'D' AND aa.STATUS='Open' AND bb.COMPANY = (select COMPANY from customer_referential WHERE TOKEN='$token') AND NOT EXISTS (select 1 FROM locking_bikes WHERE RESERVATION_ID=aa.ID AND PLACE_IN_BUILDING='-1')";
+if ($conn->query($sql) === FALSE) {
+  $response = array ('response'=>'error', 'message'=> $conn->error);
+  echo json_encode($response);
+  die;
+}
+$resultSendMail=mysqli_query($conn, $sql);
+while($row = mysqli_fetch_array($resultSendMail)){
+  $ID=$row['ID'];
+  $temp=new DateTime($row['DATE_START_2'], new DateTimeZone('Europe/Brussels'));
+  $dateStart=$temp->format('d/m/Y');
+  $temp=new DateTime($row['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
+  $dateEnd=$temp->format('d/m/Y');
+
+  $dateEnd = $row['DATE_END_2'];
+  $customName = $row['MODEL'];
+  $sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, STAANN = 'D', USR_MAJ='script' WHERE ID='$ID'";
+  if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+  }
+  include 'sendMailCancellation.php';
+}
+
 $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY AND bb.NAME='generic' and TOKEN='$token' LIMIT 1";
 if ($conn->query($sql) === FALSE) {
   $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -185,7 +218,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
     include 'connexion.php';
 
-    $sql="select count(1) as SOMME from reservations where EMAIL='$email' and STAANN != 'D' and ((DATE_START_2 <= '$dateStartString' and DATE_END_2 >= '$dateStartString') OR (DATE_START_2<='$dateEndString' AND DATE_END_2>='$dateEndString'))";
+    $sql="select count(1) as SOMME from reservations where EMAIL='$email' and STAANN != 'D' and STATUS='Open' and ((DATE_START_2 <= '$dateStartString' and DATE_END_2 >= '$dateStartString') OR (DATE_START_2<='$dateEndString' AND DATE_END_2>='$dateEndString'))";
 
     if ($conn->query($sql) === FALSE) {
   		$response = array ('response'=>'error', 'message'=> $conn->error);

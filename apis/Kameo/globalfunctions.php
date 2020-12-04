@@ -5,6 +5,8 @@ if(!isset($_SESSION['langue']))
     $_SESSION['langue']="fr";
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
+
 
 function errorMessage($MSGNUM) {
     include 'connexion.php';
@@ -296,6 +298,47 @@ function log_output($response = null){
 
 function br2nl( $input ) {
     return preg_replace('/<br\s?\/?>/ius', "\n", str_replace("\n","",str_replace("\r","", htmlspecialchars_decode($input))));
+}
+
+
+function getCondition(){
+  $token = getBearerToken();
+  require $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+  $sql = "SELECT aa.ID from specific_conditions aa, customer_referential bb WHERE aa.EMAIL=bb.EMAIL and TOKEN='$token' AND aa.STAANN != 'D'";
+  if ($conn->query($sql) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+  }
+  $result = mysqli_query($conn, $sql);
+  $length = $result->num_rows;
+  if($length>0){
+    $resultat=mysqli_fetch_assoc($result);
+    $ID=$resultat['ID'];
+    $stmt = $conn->prepare("SELECT * from conditions WHERE ID=?");
+    if ($stmt)
+    {
+      $stmt->bind_param("i", $ID);
+      $stmt->execute();
+      $response['response']="success";
+      $response['conditions']=$stmt->get_result()->fetch_array(MYSQLI_ASSOC);
+      $stmt->close();
+      return $response;
+    } else
+          error_message('500', 'Error occured while changing data');
+  }else{
+    $stmt = $conn->prepare("SELECT * from conditions WHERE NAME='generic' AND COMPANY = (SELECT COMPANY FROM customer_referential WHERE TOKEN=?)");
+    if ($stmt)
+    {
+      $stmt->bind_param("s", $token);
+      $stmt->execute();
+      $response['response']="success";
+      $response['conditions']=$stmt->get_result()->fetch_array(MYSQLI_ASSOC);
+      $stmt->close();
+      return $response;
+    } else
+          error_message('500', 'Error occured while changing data');
+  }
 }
 
 ?>

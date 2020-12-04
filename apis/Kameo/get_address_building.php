@@ -4,10 +4,10 @@ header('Expires: ' . gmdate('r', 0));
 header('Content-type: application/json');
 
 
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
 include 'globalfunctions.php';
 
@@ -23,7 +23,7 @@ if ($conn->query($sql) === FALSE) {
 
 }
 
-$result = mysqli_query($conn, $sql);        
+$result = mysqli_query($conn, $sql);
 $resultat = mysqli_fetch_assoc($result);
 $length = $result->num_rows;
 $address=$resultat['ADDRESS'];
