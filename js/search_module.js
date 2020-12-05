@@ -222,13 +222,13 @@ function update_deposit_hour_form(){
         // 1st step: days and month fields
         if(daysToDisplay>0){
 
-            var startDate = new Date();
             var i=0;
             var j=0;
             var dest ="<select id=\"search-bikes-form-day\" name=\"search-bikes-form-day\"  class=\"form-control\">";
             var dest2 ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";
 
             var tempDate = new Date();
+
             var tempDate2=tempDate;
             bookingLength=parseInt(bookingLength);
             while(i<=daysToDisplay){
@@ -263,9 +263,8 @@ function update_deposit_hour_form(){
             var hours=currentDate.getHours();
             var minutes=currentDate.getMinutes();
 
-            var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
+            var m = (((minutes + 15)/15 | 0) * 15) % 60;
             var h = ((((minutes/105) + .5) | 0) + hours) % 24;
-
             var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
 
 
