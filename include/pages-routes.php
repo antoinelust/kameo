@@ -87,4 +87,8 @@
 
 	/** NAVIGATEUR **/
 	$router->map('GET','/navigateur[ext]', 'pages/navigateur.php');
+	
+	/** SECUREX **/
+	$router->map('GET','/login_securex[ext]', 'pages/login_securex.php');
+	
 ?>
