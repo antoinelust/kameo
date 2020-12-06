@@ -20,6 +20,12 @@ function get_dateNow_string(){
 
 }
 
+// generic comparison function
+cmp = function(x, y){
+    return x > y ? 1 : x < y ? -1 : 0;
+};
+
+
 function initializeFields() {
   $("#widget-bikeManagement-form select[name=company]")
     .find("option")

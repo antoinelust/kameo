@@ -28,7 +28,7 @@ function get_orders_listing() {
         }
         if(response.response == 'success'){
           var dest="";
-          var temp="<table id=\"ordersListingTable\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Test ?</th><th>Date Livraison</th><th>Montant</th></tr></thead><tbody>";
+          var temp="<table id=\"ordersListingTable\" data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Test ?</th><th>Date Livraison</th><th>Montant</th></tr></thead><tbody>";
           dest=dest.concat(temp);
           var i=0;
 
@@ -90,6 +90,7 @@ function get_orders_listing() {
             });
 
             var table=$('#ordersListingTable').DataTable({
+              "aaSorting": []
             });
 
         var classname = document.getElementsByClassName(
@@ -148,12 +149,20 @@ function list_bikes(){
             console.log(response.message);
           }
           if(response.response == 'success'){
-              $('#widget-order-form select[name=portfolioID]').empty();
-              var i=0;
-              while(i<response.bikeNumber){
-                  $('#widget-order-form select[name=portfolioID]').append('<option value='+response.bike[i].ID+'>'+response.bike[i].ID+' - '+response.bike[i].brand+' '+response.bike[i].model+' - '+response.bike[i].frameType+'<br>');
-                  i++;
-              }
+            const portfolioSorted=response.bike.sort(function(a, b){
+                //note the minus before -cmp, for descending order
+                return cmp(
+                    [cmp(a.brand, b.brand), cmp(a.model, b.model)],
+                    [cmp(b.brand, a.brand), cmp(b.model, a.model)]
+                );
+            });
+            
+            $('#widget-order-form select[name=portfolioID]').empty();
+            var i=0;
+            while(i<response.bikeNumber){
+                $('#widget-order-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+'>'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
+                i++;
+            }
           }
     }
   });

@@ -19,17 +19,18 @@ if(isset($_POST['action'])){
 
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
     $email=isset($_POST['email']) ? $_POST['email'] : NULL;
+    $company=isset($_POST['company']) ? $_POST['company'] : NULL;
     $mail=isset($_POST['mail']) ? $_POST['mail'] : NULL;
     $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
     $status=isset($_POST['status']) ? $_POST['status'] : NULL;
     $portfolioID=isset($_POST['portfolioID']) ? $_POST['portfolioID'] : NULL;
     $size=isset($_POST['size']) ? $_POST['size'] : NULL;
     $testBoolean=isset($_POST['testBoolean']) ? "Y" : "N";
-    $testDate=isset($_POST['testDate']) ? $_POST['testDate'] : NULL;
+    $testDate=isset($_POST['testDate']) ? ($_POST['testDate'] == "" ? NULL : $_POST['testDate']) : NULL;
     $testStatus=isset($_POST['testStatus']) ? $_POST['testStatus'] : NULL;
     $testAddress=isset($_POST['testAddress']) ? addslashes($_POST['testAddress']) : NULL;
     $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;
-    $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
+    $deliveryDate=isset($_POST['deliveryDate']) ? ($_POST['deliveryDate'] == "" ? NULL : $_POST['deliveryDate']) : NULL;
     $deliveryAddress=isset($_POST['deliveryAddress']) ? addslashes($_POST['deliveryAddress']) : NULL;
     $price=isset($_POST['price']) ? $_POST['price'] : NULL;
     $type=isset($_POST['type']) ? $_POST['type'] : "leasing";
@@ -46,13 +47,17 @@ if(isset($_POST['action'])){
           error_message('403');
         }
         include 'connexion.php';
-        $sql= "INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE)
-        VALUES(CURRENT_TIMESTAMP, '$email', '$mail','$portfolioID', '$size', '$status', '$testBoolean', '$testDate', '$testAddress', '$testStatus', '$testResult', '$deliveryDate', '$deliveryAddress', '$price', '$type')";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
+        $stmt = $conn->prepare("INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE, COMPANY)
+        VALUES(CURRENT_TIMESTAMP, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if ($stmt)
+        {
+          $stmt->bind_param("ssisssssssssdsi", $email, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $company );
+          $stmt->execute();
+          $response['response']="success";
+          $stmt->close();
+        } else
+              error_message('500', 'Error occured while changing data');
+
         $conn->close();
 
         successMessage("SM0003");
@@ -138,20 +143,6 @@ if(isset($_POST['action'])){
 
             $conn->close();
         }
-
-        /*if($brandAccessory != '' && $categoryAccessory != '' && $buyingPrice != '' && $sellingPrice != '' && $descriptionAccessory != '')
-        {
-            include 'connexion.php';
-
-            $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES('$brandAccessory', '$categoryAccessory', '$buyingPrice', '$sellingPrice', '$descriptionAccessory','$ID') ON DUPLICATE KEY UPDATE BRAND='$brandAccessory', CATEGORY='$categoryAccessory', BUYING_PRICE='$buyingPrice', PRICE_HTVA='$sellingPrice', DESCRIPTION='$descriptionAccessory', ORDER_ID='$ID'";
-            if ($conn->query($sql2) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $conn->close();
-        }*/
-
         successMessage("SM0003");
     }else if($action=="confirmCommand"){
         if(!get_user_permissions("fleetManager", $token)){
@@ -227,12 +218,12 @@ if(isset($_POST['action'])){
             $resultat=mysqli_fetch_assoc($result);
             $company=$resultat['COMPANY'];
 
-
             if($company=="KAMEO"){
-                $sql= "SELECT *  FROM client_orders";
+                $sql= "SELECT *  FROM client_orders ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
             }else{
-                $sql="SELECT co.* FROM client_orders co, customer_referential cr WHERE cr.COMPANY='$company' AND cr.EMAIL=co.EMAIL";
+                $sql="SELECT co.* FROM client_orders co, customer_referential cr WHERE cr.COMPANY='$company' AND cr.EMAIL=co.EMAIL ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
             }
+
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -269,15 +260,13 @@ if(isset($_POST['action'])){
                 }
                 $result = mysqli_query($conn, $sql);
                 $resultat=mysqli_fetch_assoc($result);
-                $conn->close();
                 $response['order'][$i]['brand']=$resultat['BRAND'];
                 $response['order'][$i]['model']=$resultat['MODEL'];
                 $priceHTVA=$resultat['PRICE_HTVA'];
 
 
-                $emailUser=$row['EMAIL'];
-                include 'connexion.php';
-                $sql= "SELECT * FROM customer_referential WHERE EMAIL='$emailUser'";
+                $companyID=$row['COMPANY'];
+                $sql="select COMPANY_NAME FROM companies WHERE ID='$companyID'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -285,22 +274,24 @@ if(isset($_POST['action'])){
                 }
                 $result = mysqli_query($conn, $sql);
                 $resultat=mysqli_fetch_assoc($result);
-                $conn->close();
-                $response['order'][$i]['user']=$resultat['PRENOM']." ".$resultat['NOM'];
-                $company=$resultat['COMPANY'];
-
-                include 'connexion.php';
-                $sql= "SELECT * FROM companies WHERE INTERNAL_REFERENCE='$company'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $result = mysqli_query($conn, $sql);
-                $resultat=mysqli_fetch_assoc($result);
-                $conn->close();
-                $response['order'][$i]['companyID']=$resultat['ID'];
+                $response['order'][$i]['companyID']=$companyID;
                 $response['order'][$i]['companyName']=$resultat['COMPANY_NAME'];
+
+                $emailUser=$row['EMAIL'];
+                if($emailUser != ""){
+                  include 'connexion.php';
+                  $sql= "SELECT * FROM customer_referential WHERE EMAIL='$emailUser'";
+                  if ($conn->query($sql) === FALSE) {
+                      $response = array ('response'=>'error', 'message'=> $conn->error);
+                      echo json_encode($response);
+                      die;
+                  }
+                  $result = mysqli_query($conn, $sql);
+                  $resultat=mysqli_fetch_assoc($result);
+                  $response['order'][$i]['user']=$resultat['PRENOM']." ".$resultat['NOM'];
+                }else{
+                  $response['order'][$i]['user']="N/A";
+                }
                 $i++;
             }
         }
