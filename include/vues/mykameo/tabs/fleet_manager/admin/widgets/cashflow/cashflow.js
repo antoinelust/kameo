@@ -77,6 +77,7 @@ function updateLoan(ID) {
   $(".costsManagementBike").removeClass("hidden");
   $(".addRemoveBikes").removeClass("hidden");
   $(".addRemoveBikesBtns").removeClass("hidden");
+  $('#widget-costsManagement-form input[name=ID]').val(ID);
 }
 
 function toggleLoanUAmount(priceType) {

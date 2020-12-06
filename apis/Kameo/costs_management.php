@@ -85,7 +85,7 @@ if (isset($_POST['action'])) {
                 $i = 0;
                 if ($loanBikeID) {
                     while ($i < count($loanBikeID)) {
-                        $sql = "REPLACE INTO loan_belfius (ID_BIKE, MODEL, FRAME_NUMBER, BRAND, BUY_PRICE) VALUES ($loanBikeID[$i], '$loanbikeModel[$i]', '$loanFrameNumber[$i]', '$loanBrand[$i]', $loanBikeBuyPrice[$i])";
+                        $sql = "REPLACE INTO loan_belfius (ID_BIKE, MODEL, FRAME_NUMBER, BRAND, BUY_PRICE, COST_ID) VALUES ($loanBikeID[$i], '$loanbikeModel[$i]', '$loanFrameNumber[$i]', '$loanBrand[$i]', $loanBikeBuyPrice[$i], $id)";
                         if ($conn->query($sql) === FALSE) {
                             $response = array('response' => 'error', 'message' => $conn->error);
                             echo json_encode($response);
@@ -141,7 +141,7 @@ if (isset($_POST['action'])) {
 
             // retrieve loan data
             include 'connexion.php';
-            $sql = "SELECT * FROM loan_belfius";
+            $sql = "SELECT * FROM loan_belfius WHERE COST_ID='$id'";
             if ($conn->query($sql) === FALSE) {
                 $response = array('response' => 'error', 'message' => $conn->error);
                 echo json_encode($response);
@@ -162,7 +162,7 @@ if (isset($_POST['action'])) {
 
                 $i++;
             }
-            $sql = "SELECT SUM(BUY_PRICE) as 'totalBuyPrice' FROM loan_belfius";
+            $sql = "SELECT SUM(BUY_PRICE) as 'totalBuyPrice' FROM loan_belfius WHERE COST_ID='$id'";
             if ($conn->query($sql) === FALSE) {
                 $response = array('response' => 'error', 'message' => $conn->error);
                 echo json_encode($response);
