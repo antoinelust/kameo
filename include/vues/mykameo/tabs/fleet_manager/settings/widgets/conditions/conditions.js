@@ -217,7 +217,7 @@ $.ajax({
 	  }
 	  dest=dest.concat(temp);
 
-      if(response.companyConditions.box=="Y")
+      if(response.companyConditions.locking=="Y")
           $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', true);
         else
           $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', false);
@@ -257,3 +257,14 @@ $.ajax({
   }
 })
 }
+
+$('#widget-updateCompanyConditions-form input[name=booking]').change(function(){
+  var is_checked = $('#widget-updateCompanyConditions-form input[name=booking]').is(":checked");
+  console.log(is_checked);
+  if(is_checked){
+    $('.booking').removeClass("hidden");
+  }
+  else {
+    $('.booking').addClass("hidden");
+  }
+})

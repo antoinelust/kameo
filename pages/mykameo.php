@@ -70,10 +70,11 @@ if ($token == NULL) { //Not connected
   //@TODO: Replace email chech with authentication token
   include 'apis/Kameo/connexion.php';
 
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, aa.EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING, cc.* from customer_referential aa, conditions bb, (SELECT CASE WHEN COUNT(1) =1 THEN 'TRUE' ELSE 'FALSE' END as personnalBike FROM customer_bike_access WHERE customer_bike_access.EMAIL=(SELECT EMAIL FROM customer_referential WHERE TOKEN='$token') AND TYPE='personnel') cc WHERE aa.COMPANY=bb.COMPANY and aa.TOKEN='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, aa.EMAIL, bb.* from customer_referential aa, (SELECT CASE WHEN COUNT(1) =1 THEN 'TRUE' ELSE 'FALSE' END as personnalBike FROM customer_bike_access WHERE customer_bike_access.EMAIL=(SELECT EMAIL FROM customer_referential WHERE TOKEN='$token') AND TYPE='personnel') bb WHERE aa.TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+  $user_data = array_merge($user_data, getCondition()['conditions']);
   echo '
   <script type="text/javascript">
     const user_ID = "' . $user_ID . '";

@@ -29,7 +29,7 @@
             method="post"
           >
             <div class="col-sm-12 form-group">
-              <div class="col-sm-12">
+              <div class="row">
                 <h4 class="text-green">Informations générales</h4>
                 <a href="#" class="text-red updateClientInformationButton"
                   >Update</a
@@ -123,7 +123,7 @@
                 </select>
               </div>
               <div class="separator"></div>
-              <div class="col-sm-12">
+              <div class="row">
                 <h4 class="text-green">
                   Informations relatives à la facturation
                 </h4>
@@ -178,26 +178,35 @@
                 />
               </div>
               <div class="separator"></div>
-              <div class="col-sm-12">
+              <div class="row">
                 <h4 class="text-green">Options</h4>
-              </div>
-              <div class="col-sm-4">
-                <label for="assistance">Assistance</label>
-                <input
-                  type="checkbox"
-                  name="assistance"
-                  class="form-control"
-                  readonly="true"
-                />
-              </div>
-              <div class="col-sm-4">
-                <label for="locking">Locking</label>
-                <input
-                  type="checkbox"
-                  name="locking"
-                  class="form-control"
-                  readonly="true"
-                />
+                <div class="col-sm-4">
+                  <label for="booking">Réservation de vélo ?</label>
+                  <input
+                    type="checkbox"
+                    name="booking"
+                    class="form-control"
+                    readonly="true"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <label for="assistance">Assistance</label>
+                  <input
+                    type="checkbox"
+                    name="assistance"
+                    class="form-control"
+                    readonly="true"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <label for="locking">Locking</label>
+                  <input
+                    type="checkbox"
+                    name="locking"
+                    class="form-control"
+                    readonly="true"
+                  />
+                </div>
               </div>
               <input
                 type="text"

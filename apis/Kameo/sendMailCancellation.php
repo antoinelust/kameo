@@ -13,8 +13,12 @@ $result=mysqli_query($conn, $sql);
 $resultat=mysqli_fetch_assoc($result);
 $email=$resultat['EMAIL'];
 $company=$resultat['COMPANY'];
-$dateStart=$resultat['DATE_START_2'];
-$dateEnd=$resultat['DATE_END_2'];
+
+$customName = $row['MODEL'];
+$temp=new DateTime($row['DATE_START_2'], new DateTimeZone('Europe/Brussels'));
+$dateStart=$temp->format('d/m/Y');
+$temp=new DateTime($row['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
+$dateEnd=$temp->format('d/m/Y');
 
 require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
@@ -23,7 +27,7 @@ $mail->CharSet = 'UTF-8';
 
 if(constant('ENVIRONMENT') == "production"){
   $mail->AddAddress($email);
-  $message->addBcc("antoine@kameobikes.com");
+  $mail->addBcc("antoine@kameobikes.com");
 }else if(constant('ENVIRONMENT') == "test"){
   $mail->AddAddress("antoine@kameobikes.com");
   $mail->addBcc("antoine@kameobikes.com");

@@ -208,7 +208,6 @@ var company;
 
               $("#widget-bikeManagement-form div[id=user_name]").show();
               $("#widget-bikeManagement-form div[id=utilisateur_bike]").show();
-
               for (var i = 0; i < response.userNumber; i++){
                 $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
                 $("#widget-bikeManagement-form input[name=email]").val(response.user[i].email);
@@ -498,35 +497,35 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                         $('#widget-bikeManagement-form input[name=orderNumber]').val(response.orderNumber);
                         $("#widget-bikeManagement-form select[name=bikeType]").val(response.biketype);
                         $("#widget-bikeManagement-form select[name=bikeType]").change(function() {
-                            if ($(this).val() == "partage") {
-                              $("#widget-bikeManagement-form div[id=user_name]").hide();
-                              $("#widget-bikeManagement-form div[id=user_email]").hide();
-                              $("#widget-bikeManagement-form div[id=utilisateur_bike]").hide();
-                            } else {
-                              $('#widget-bikeManagement-form input[name=email]').val("");
-                              $("#widget-bikeManagement-form select[name=name]").find("option")
-                              .remove()
-                              .end();
+                          if ($(this).val() == "partage") {
+                            $("#widget-bikeManagement-form div[id=user_name]").hide();
+                            $("#widget-bikeManagement-form div[id=user_email]").hide();
+                            $("#widget-bikeManagement-form div[id=utilisateur_bike]").hide();
+                          } else {
+                            $('#widget-bikeManagement-form input[name=email]').val("");
+                            $("#widget-bikeManagement-form select[name=name]").find("option")
+                            .remove()
+                            .end();
 
-                              $("#widget-bikeManagement-form div[id=user_name]").show();
-                              $("#widget-bikeManagement-form div[id=utilisateur_bike]").show();
+                            $("#widget-bikeManagement-form div[id=user_name]").show();
+                            $("#widget-bikeManagement-form div[id=utilisateur_bike]").show();
 
-                              for (var i = 0; i < response.userNumber; i++){
-                                $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
-                              }
-                              if($("#widget-bikeManagement-form select[name=name]").has('option').length > 0){
-                                $("#widget-bikeManagement-form input[name=email]").val(response.user[0].email);
-                                $("#widget-bikeManagement-form div[id=user_email]").show();
-                              }else{
-                                $("#widget-bikeManagement-form div[id=user_email]").hide();
-                              }
-
-                              $("#widget-bikeManagement-form select[name=name]").change(function(){
-                                  var user_email = $(this).children("option:selected").val();
-                                  $('#widget-bikeManagement-form input[name=email]').val(user_email);
-                              });
-
+                            for (var i = 0; i < response.userNumber; i++){
+                              $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
                             }
+                            if($("#widget-bikeManagement-form select[name=name]").has('option').length > 0){
+                              $("#widget-bikeManagement-form input[name=email]").val(response.user[0].email);
+                              $("#widget-bikeManagement-form div[id=user_email]").show();
+                            }else{
+                              $("#widget-bikeManagement-form div[id=user_email]").hide();
+                            }
+
+                            $("#widget-bikeManagement-form select[name=name]").change(function(){
+                                var user_email = $(this).children("option:selected").val();
+                                $('#widget-bikeManagement-form input[name=email]').val(user_email);
+                            });
+
+                          }
                         }).trigger("change");
 
                         if(response.contractStart){

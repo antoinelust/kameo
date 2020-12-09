@@ -474,6 +474,17 @@ function get_company_details(ID, email, getCompanyContacts = false) {
             false
           );
         }
+        if (response.booking == "Y") {
+          $("#widget-companyDetails-form input[name=booking]").prop(
+            "checked",
+            true
+          );
+        } else {
+          $("#widget-companyDetails-form input[name=booking]").prop(
+            "checked",
+            false
+          );
+        }
         if (response.assistance == "Y") {
           $("#widget-companyDetails-form input[name=assistance]").prop(
             "checked",

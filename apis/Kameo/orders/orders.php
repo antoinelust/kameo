@@ -13,6 +13,8 @@ require_once '../connexion.php';
 
 $token = getBearerToken();
 
+log_inputs($token);
+
 switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
@@ -38,6 +40,7 @@ switch($_SERVER["REQUEST_METHOD"])
 						$result[] = $bike;
 					}
 					echo json_encode($result);
+					log_output($result);
 				}else
 					errorMessage("ES0012");
 			}else if(get_user_permissions(["order", "admin"], $token)){
@@ -82,6 +85,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				$response['remainingPriceIncludedInLeasing']=$reponse['REMAINING_PRICE_INCLUDED_IN_LEASING'];
 				$stmt->close();
 				echo json_encode($response);
+				log_output($response);
 			}else
 				error_message('403');
 		}else
@@ -97,13 +101,16 @@ switch($_SERVER["REQUEST_METHOD"])
 				$stmt->bind_param("s", $_POST['company']);
 				$stmt->execute();
 				$company_reference = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['INTERNAL_REFERENCE'];
+				$conditionID = isset($_POST['conditionID']) ? $_POST['conditionID'] : NULL;
 				$cafeteria = ($_POST['cafeteria'] === "true") ? "Y" : "N";
+				$remainingPriceIncluded = ($_POST['includedLeasingPrice'] === "true") ? "Y" : "N";
 				$tva = ($_POST['tva'] === "true") ? "Y" : "N";
 				$type = isset($_POST['type']) ? $_POST['type'] : "leasing";
-        $discount=isset($_POST['discount']) ? $conn->real_escape_string($_POST['discount']) : NULL;
+				$discount=isset($_POST['discount']) ? $_POST['discount'] : NULL;
+				$sellingPorcentage=isset($_POST['sellingPorcentage']) ? $_POST['sellingPorcentage'] : NULL;
 				$stmt->close();
-				$stmt = $conn->prepare("UPDATE conditions SET HEU_MAJ=CURRENT_TIMESTAMP, CAFETARIA=?, DISCOUNT=?, CAFETERIA_TYPE=?, TVA_INCLUDED=? WHERE COMPANY =? AND NAME = 'generic'");
-				$stmt->bind_param("sdsss", $cafeteria, $discount, $type, $tva, $company_reference);
+				$stmt = $conn->prepare("UPDATE conditions SET HEU_MAJ=CURRENT_TIMESTAMP, CAFETARIA=?, DISCOUNT=?, CAFETERIA_TYPE=?, TVA_INCLUDED=?, REMAINING_PRICE_INCLUDED_IN_LEASING	=?, SELLING_PRICE=? WHERE ID = ?");
+				$stmt->bind_param("sdssddi", $cafeteria, $discount, $type, $tva, $remainingPriceIncluded, $sellingPorcentage, $conditionID);
 				$stmt->execute();
 				$stmt->close();
 				if ($_POST['cafeteria'] === "true")

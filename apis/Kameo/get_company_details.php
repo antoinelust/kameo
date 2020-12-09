@@ -11,12 +11,11 @@ $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $response=array();
 
-
 if($ID==NULL && $email != NULL){
-    include 'connexion.php';
+  include 'connexion.php';
 	$sql="SELECT * FROM customer_referential dd where EMAIL='$email'";
 
-    if ($conn->query($sql) === FALSE) {
+  if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;

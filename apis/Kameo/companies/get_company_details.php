@@ -59,8 +59,7 @@ if (isset($_GET['ID']) || isset($_GET['email'])){
       $company = $resultat['internalReference'];
   }
 
-
-  $sql="SELECT * FROM conditions dd where COMPANY='$company'";
+  $sql="SELECT * FROM conditions dd where COMPANY='$company' AND NAME='generic'";
 
   if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -71,6 +70,7 @@ if (isset($_GET['ID']) || isset($_GET['email'])){
   $result = mysqli_query($conn, $sql);
   $resultat = mysqli_fetch_assoc($result);
 
+  $response['booking']=$resultat['BOOKING'];
   $response['assistance']=$resultat['ASSISTANCE'];
   $response['locking']=$resultat['LOCKING'];
 

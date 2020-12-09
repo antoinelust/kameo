@@ -1,11 +1,10 @@
 <div class="tab-pane" id="fleetmanager"> <!-- TAB4: FLEET MANAGET -->
-	<div class="row left">
+	<div class="row">
         <?php
 
 				if(get_user_permissions("fleetManager", $token)){
 					echo '<h4 class="fr">Votre flotte</h4><br><br>';
 				}
-
         if(get_user_permissions("fleetManager", $token)){
             echo '
               <div class="col-md-4">
@@ -55,7 +54,8 @@
         }
 				if(get_user_permissions("fleetManager", $token)){
 					if($user_data['LOCKING']=='Y'){
-						echo '<div class="col-md-4 " id="boxView">
+						echo '
+						<div class="col-md-4 " id="boxView">
 	            <div class="icon-box medium fancy">
 	              <div class="icon bold" data-animation="pulse infinite">
 	                <a data-toggle="modal" data-target="#boxesListing" href="#" class="boxViewClick">
@@ -84,15 +84,16 @@
               </div>';
 						}
         }
-
 				if(get_user_permissions("fleetManager", $token)){
 					echo '<div class="separator"></div>';
 				}
 				?>
 	</div>
+	<div class="row">
     <?php
     if(get_user_permissions("fleetManager", $token)){
         echo '
+				<div class="col-md-12">
         <h4>Réglages</h4>
         <br/><br/>
         <div class="row">
@@ -108,9 +109,12 @@
             </div>
           </div>
         </div>
+				</div>
         <div class="separator"></div>';
-    }
+    }?>
+		</div>
 
+		<?php
     if(get_user_permissions("admin", $token)){
         echo '<h4 class="administrationKameo">Administration Kameo</h4>
         <br/><br/>

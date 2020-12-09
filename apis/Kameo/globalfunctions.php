@@ -279,12 +279,16 @@ function log_inputs($token = null){
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach($_POST as $key => $value)
     {
-    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - INPUT - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+      if($value != ''){
+        error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - INPUT - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+      }
     }
   }else if($_SERVER['REQUEST_METHOD'] === 'GET'){
     foreach($_GET as $key => $value)
     {
-    	error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - INPUT - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+      if($value != ''){
+        error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - INPUT - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
+      }
     }
 
   }
@@ -304,7 +308,7 @@ function br2nl( $input ) {
 function getCondition(){
   $token = getBearerToken();
   require $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-  $sql = "SELECT aa.ID from specific_conditions aa, customer_referential bb WHERE aa.EMAIL=bb.EMAIL and TOKEN='$token' AND aa.STAANN != 'D'";
+  $sql = "SELECT aa.CONDITION_REFERENCE from specific_conditions aa, customer_referential bb WHERE aa.EMAIL=bb.EMAIL and TOKEN='$token' AND aa.STAANN != 'D'";
   if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);
@@ -314,14 +318,14 @@ function getCondition(){
   $length = $result->num_rows;
   if($length>0){
     $resultat=mysqli_fetch_assoc($result);
-    $ID=$resultat['ID'];
+    $ID=$resultat['CONDITION_REFERENCE'];
     $stmt = $conn->prepare("SELECT * from conditions WHERE ID=?");
     if ($stmt)
     {
       $stmt->bind_param("i", $ID);
       $stmt->execute();
       $response['response']="success";
-      $response['conditions']=$stmt->get_result()->fetch_array(MYSQLI_ASSOC);
+      $response['conditions']=$stmt->get_result()->fetch_assoc();
       $stmt->close();
       return $response;
     } else
@@ -333,7 +337,7 @@ function getCondition(){
       $stmt->bind_param("s", $token);
       $stmt->execute();
       $response['response']="success";
-      $response['conditions']=$stmt->get_result()->fetch_array(MYSQLI_ASSOC);
+      $response['conditions']=$stmt->get_result()->fetch_assoc();
       $stmt->close();
       return $response;
     } else

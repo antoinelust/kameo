@@ -11,15 +11,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <h4 class="modal-title fr text-green col-sm-11">
-            Vélos commandables
-          </h4>
           <button
             type="button"
             class="close col-sm-1"
             data-dismiss="modal"
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             &times;
           </button>
         </div>
@@ -27,84 +23,132 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-12">
+            <h4 class=" text-green">Informations sur la société</h4>
             <form
               id="widget-manageCompaniesOrderable-form"
               action="apis/Kameo/orders/orders.php"
               role="form"
               method="post"
             >
-              <div class="row">
-                <div class="col-md-4" align="center">
-                  <label for="company">Name&nbsp;&nbsp;</label
-                  ><input
-                    name="company"
-                    id="manageOrderableCompanyName"
+            <div class="row">
+              <div class="col-md-4" align="center">
+                <label for="company">Name&nbsp;&nbsp;</label
+                ><input
+                  name="company"
+                  id="manageOrderableCompanyName"
+                  class="form-control"
+                  disabled
+                />
+              </div>
+              <div class="col-md-4" align="center">
+                <label for="condition">Condition</label>
+                <select name="condition">
+                </select>
+              </div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <h4 class="text-green">
+                Informations plan cafétéria
+              </h4>
+              <div class="col-md-1" align="center">
+                <label for="cafetaria">Cafetaria&nbsp;&nbsp;</label><br>
+                <input
+                  name="cafeteria"
+                  id="manageOrderableCafetaria"
+                  type="checkbox"
+                />
+              </div>
+              <div class="col-md-3 align-self-center" align="center">
+                <label class="form-check-label" for="tva">TVA incluse ?</label><br>
+                <input
+                  name="tva"
+                  id="manageOrderableTVA"
+                  type="checkbox"
+                />
+              </div>
+              <div class="col-md-3 includedLeasingPrice" align="center">
+                <label for="includedLeasingPrice">Revente incluse ?</label><br>
+                <input
+                  name="includedLeasingPrice"
+                  type="checkbox"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3" align="center">
+                <label for="type">Type</label><br>
+                <select name="type" class="form-control required">
+                  <option value="leasing">Leasing Mensuel</option>
+                  <option value="annualLeasing">Leasing Annuel</option>
+                  <option value="achat">Achat sans service</option>
+                  <option value="achatWithService">Achat avec service</option>
+                </select>
+              </div>
+              <div class="col-md-3" align="center">
+                <label for="discount">Discount :&nbsp;&nbsp;</label>
+                  <div class="input-group">
+                  <span class="input-group-addon">%</span>
+                    <input
+                      name="discount"
+                      id="discount"
+                      type="number"
+                      step="any"
+                      class="form-control"
+                    />
+                  </div>
+              </div>
+              <div class="col-md-3" align="center">
+                <label for="sellingPorcentage">Revente:&nbsp;&nbsp;</label>
+                <div class="input-group">
+                <span class="input-group-addon">%</span>
+                  <input
+                    name="sellingPorcentage"
                     class="form-control"
-                    disabled
+                    type="number"
+                    min="0"
+                    max="30"
+                    id="endContractValue"
+                    value="16"
                   />
-                </div>
-                <div class="col-md-2" align="center">
-                  <label for="cafetaria">Cafetaria&nbsp;&nbsp;</label><br>
-                  <input
-                    name="cafeteria"
-                    id="manageOrderableCafetaria"
-                    type="checkbox"
-                  />
-                </div>
-                <div class="col-md-2" align="center">
-                  <label for="discount">Discount :&nbsp;&nbsp;</label>
-                    <div class="input-group">
-                    <span class="input-group-addon">%</span>
-                      <input
-                        name="discount"
-                        id="discount"
-                        type="number"
-                        step="any"
-                        class="form-control"
-                      />
-                    </div>
-                </div>
-                <div class="col-md-2" align="center">
-                  <label for="tva">TVA ?</label><br>
-                  <input
-                    name="tva"
-                    id="manageOrderableTVA"
-                    type="checkbox"
-                  />
-                </div>
-                <div class="col-md-2" align="center">
-                  <label for="type">Type</label><br>
-                  <select name="type" class="form-control required">
-                    <option value="leasing">Leasing Mensuel</option>
-                    <option value="annualLeasing">Leasing Annuel</option>
-                    <option value="achat">Achat</option>
-                  </select>
                 </div>
               </div>
-              <div class="separator"></div>
-              <div class="table-responsive">
-                <table
-                  id="manageCompaniesOrderable"
-                  class="table"
-                  style="width: 100%"
-                >
-                  <thead>
-                    <tr>
-                      <th>
-                        <input type="checkbox" name="select_all" value="1" />
-                      </th>
-                      <th>ID</th>
-                      <th>Modèle</th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-              <button
-                class="button small green button-3d rounded icon-left"
-                type="submit"
+            </div>
+            <div class="separator"></div>
+            <div class="table-responsive">
+              <h4 class="text-green">
+                Sélection des vélos
+              </h4>
+              <table
+                id="manageCompaniesOrderable"
+                class="table"
+                style="width: 100%"
               >
-                <i class="fa fa-paper-plane"></i>Envoyer
-              </button>
+                <thead>
+                  <tr>
+                    <th>
+                      <input type="checkbox" name="select_all" value="1" />
+                    </th>
+                    <th>ID</th>
+                    <th>Modèle</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="seperator"></div>
+            <h4 class="text-green">
+              Utilisateurs compris dans la condition
+            </h4>
+            <ul class="list-group row usersOrderManageable">
+            </ul>
+            <br><br><br>
+            </div>
+            <button
+              class="button small green button-3d rounded icon-left"
+              type="submit"
+            >
+            <i class="fa fa-paper-plane"></i>Envoyer
+            </button>
             </form>
           </div>
         </div>
@@ -117,14 +161,78 @@
     </div>
   </div>
 </div>
+
 <script
   type="text/javascript"
   src="js/addons/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"
 ></script>
 <script>
+
+
+  $('#widget-manageCompaniesOrderable-form select[name=condition]').change(function () {
+    $.ajax({
+      url: "apis/Kameo/conditions/conditions.php",
+      type: "get",
+      data: { ID: $(this).val(), action: "get_condition_details" },
+      success: function (response) {
+        var has_cafetaria = response.CAFETARIA == "Y" ? true : false;
+        $("#manageOrderableCafetaria").prop("checked", has_cafetaria);
+
+        var has_tva = response.TVA_INCLUDED == "Y" ? true : false;
+        $("#manageOrderableTVA").prop("checked", has_tva);
+
+        var has_included_selling_price = response.REMAINING_PRICE_INCLUDED_IN_LEASING == "Y" ? true : false;
+        $("#widget-manageCompaniesOrderable-form input[name=includedLeasingPrice]").prop("checked", has_included_selling_price);
+
+        $('#widget-manageCompaniesOrderable-form select[name=type]').val(response.CAFETERIA_TYPE);
+        $("#widget-manageCompaniesOrderable-form input[name=discount]").val(response.DISCOUNT);
+        $("#widget-manageCompaniesOrderable-form input[name=sellingPorcentage]").val(response.SELLING_PRICE);
+
+        $('#widget-manageCompaniesOrderable-form input[name=discount]').prop("disabled", !has_cafetaria);
+        $('#widget-manageCompaniesOrderable-form input[name=tva]').prop("disabled", !has_cafetaria);
+        $('#widget-manageCompaniesOrderable-form select[name=type]').prop("disabled", !has_cafetaria);
+        $('#widget-manageCompaniesOrderable-form input[name=sellingPorcentage]').prop("disabled", !has_cafetaria);
+        $('#widget-manageCompaniesOrderable-form input[name=includedLeasingPrice]').prop("disabled", !has_cafetaria);
+        $('#widget-manageCompaniesOrderable-form input[name=type]').prop("disabled", !has_cafetaria);
+
+        $('.usersOrderManageable').html('');
+        response.emails.forEach(function(email){
+          var newLi = document.createElement('li');
+          newLi.className = "list-group-item col-xs-4";
+          newLi.innerHTML = email.PRENOM + " " + email.NOM;
+          $('.usersOrderManageable').append(newLi);
+        })
+
+      },
+    });
+  });
+
+
+
   $("#manageOrderable").on("show.bs.modal", function (event) {
-    $("#ordersListing").modal("hide");
     var current_company = $(event.relatedTarget).data("company");
+    $.ajax({
+      url: "apis/Kameo/conditions/conditions.php",
+      type: "get",
+      data: { company: current_company, action: "get_conditions_list" },
+      success: function (response) {
+        $("#widget-manageCompaniesOrderable-form select[name='condition'] option").remove();
+        response.conditions.forEach(function(item){
+          $('#widget-manageCompaniesOrderable-form select[name=condition]').append(new Option(item.NAME, item.ID));
+        });
+
+        $('.usersOrderManageable').html('');
+        response.emails.forEach(function(email){
+          var newLi = document.createElement('li');
+          newLi.className = "list-group-item col-xs-4";
+          newLi.innerHTML = email.PRENOM + " " + email.NOM;
+          $('.usersOrderManageable').append(newLi);
+        })
+
+
+      },
+    });
+
     var has_cafetaria = $(event.relatedTarget).data("cafetaria");
     var type = $(event.relatedTarget).data("type");
     var has_tva = $(event.relatedTarget).data("tva");
@@ -133,10 +241,17 @@
     $("#manageOrderableCafetaria").prop("checked", has_cafetaria);
     $("#manageOrderableTVA").prop("checked", has_tva);
     $('#widget-manageCompaniesOrderable-form select[name=type]').val(type);
-
     $("#widget-manageCompaniesOrderable-form input[name=discount]").val(
       discount
     );
+
+    $('#widget-manageCompaniesOrderable-form input[name=discount]').prop("disabled", !has_cafetaria);
+    $('#widget-manageCompaniesOrderable-form input[name=tva]').prop("disabled", !has_cafetaria);
+    $('#widget-manageCompaniesOrderable-form select[name=type]').prop("disabled", !has_cafetaria);
+    $('#widget-manageCompaniesOrderable-form input[name=sellingPorcentage]').prop("disabled", !has_cafetaria);
+    $('#widget-manageCompaniesOrderable-form input[name=includedLeasingPrice]').prop("disabled", !has_cafetaria);
+    $('#widget-manageCompaniesOrderable-form input[name=type]').prop("disabled", !has_cafetaria);
+
     if ($("#manageCompaniesOrderable").DataTable() != null) {
       $("#manageCompaniesOrderable").DataTable().clear();
       $("#manageCompaniesOrderable").DataTable().destroy();
@@ -209,7 +324,22 @@
         .to$()
         .find("input:checkbox")
         .prop("disabled", !this.checked);
+
+      $('#widget-manageCompaniesOrderable-form input[name=discount]').prop("disabled", !this.checked);
+      $('#widget-manageCompaniesOrderable-form input[name=tva]').prop("disabled", !this.checked);
+      $('#widget-manageCompaniesOrderable-form select[name=type]').prop("disabled", !this.checked);
+      $('#widget-manageCompaniesOrderable-form input[name=sellingPorcentage]').prop("disabled", !this.checked);
+      $('#widget-manageCompaniesOrderable-form input[name=type]').prop("disabled", !this.checked);
+      $('#widget-manageCompaniesOrderable-form input[name=includedLeasingPrice]').prop("disabled", !this.checked);
+
     });
+    $('#widget-manageCompaniesOrderable-form select[name=type]').change(function(){
+      if( $('#widget-manageCompaniesOrderable-form select[name=type]').val()=="leasing" || $('#widget-manageCompaniesOrderable-form select[name=type]').val()=="annualLeasing" ){
+        $('#widget-manageCompaniesOrderable-form .includedLeasingPrice').removeClass("hidden");
+      }else{
+        $('#widget-manageCompaniesOrderable-form .includedLeasingPrice').addClass("hidden");
+      }
+    })
     jQuery("#widget-manageCompaniesOrderable-form").validate({
       submitHandler: function (form) {
         var url = form.action;
@@ -231,6 +361,10 @@
           value: $("#manageOrderableCompanyName").val(),
         }); //can't use the current_company var here because of a bootstrap modalfade related bug (data passed is gonna be for another company)
         data.push({
+          name: "conditionID",
+          value: $("#widget-manageCompaniesOrderable-form select[name=condition]").val(),
+        });
+        data.push({
           name: "cafeteria",
           value: $("#manageOrderableCafetaria").is(":checked"),
         }); //same here
@@ -239,9 +373,19 @@
           value: $("#manageOrderableTVA").is(":checked"),
         }); //same here
         data.push({
+          name: "includedLeasingPrice",
+          value: $("#widget-manageCompaniesOrderable-form input[name=includedLeasingPrice]").is(":checked"),
+        });
+        data.push({
           name: "discount",
           value: $(
             "#widget-manageCompaniesOrderable-form input[name=discount]"
+          ).val(),
+        });
+        data.push({
+          name: "sellingPorcentage",
+          value: $(
+            "#widget-manageCompaniesOrderable-form input[name=sellingPorcentage]"
           ).val(),
         });
         data.push({

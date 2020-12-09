@@ -94,7 +94,6 @@ function get_company_conditions($email, $id, $company = NULL){
         $response['companyConditions']['maxBookingsPerYear']=$resultat['MAX_BOOKINGS_YEAR'];
         $response['companyConditions']['maxBookingsPerMonth']=$resultat['MAX_BOOKINGS_MONTH'];
         $response['companyConditions']['minutesBeforeCancellation']=$resultat['MINUTES_FOR_AUTOMATIC_CANCEL'];
-        $response['companyConditions']['box']=$resultat['BOX_BOOKING'];
         $response['companyConditions']['cafeteria']=$resultat['CAFETARIA'];
         $response['companyConditions']['discount']=$resultat['DISCOUNT'];
 
