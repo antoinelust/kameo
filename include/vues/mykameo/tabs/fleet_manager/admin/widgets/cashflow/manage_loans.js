@@ -71,6 +71,7 @@ get_customers_bikes().done(function (response) {
           ` bikeRow form-group">
       <td class="bLabel"></td>
       <td class="loanBikeID"></td>
+      <td class="companyID"></td>
       <td class="bikeBrandModel"></td>
       <td class="loanFrameNumber"></td>
       <td class="loanBrand"></td>
@@ -111,6 +112,16 @@ get_customers_bikes().done(function (response) {
             '"/>'
         );
 
+        $(that)
+          .parents(".bikeRow")
+          .find(".companyID")
+          .html(
+            '<input readonly style="all: unset;" type="text" value="' +
+              bikes[id].company +
+              '"/>'
+          );
+
+
       $(that)
         .parents(".bikeRow")
         .find(".loanFrameNumber")
@@ -119,6 +130,16 @@ get_customers_bikes().done(function (response) {
             bikes[id].frameNumber +
             '"/>'
         );
+
+        $(that)
+          .parents(".bikeRow")
+          .find(".bikepAchat")
+          .html(
+            '<input readonly style="all: unset;" type="text" value="' +
+              bikes[id].bikePrice +
+              '"/>'
+          );
+
 
       get_bike_details($(that).val()).done(function (response) {
         $(that)
@@ -138,14 +159,6 @@ get_customers_bikes().done(function (response) {
               '"/>'
           );
 
-        $(that)
-          .parents(".bikeRow")
-          .find(".bikepAchat")
-          .html(
-            '<input readonly style="all: unset;" type="text" name="bikepAchat[]" value="' +
-              response.catalogPrice +
-              '"/>'
-          );
 
           var sumValue=0;
           $('#widget-costsManagement-form td.bikepAchat').each(function(i){
@@ -153,14 +166,10 @@ get_customers_bikes().done(function (response) {
           })
 
           $('#widget-costsManagement-form td.bikepAchat input').each(function(i){
-            console.log( $(this).val() );
             sumValue = (sumValue*1 + ($(this).val())*1);
           })
 
           $('#widget-costsManagement-form input[name=sumBuyBikes]').val(Math.round(sumValue));
-
-
-
 
       });
 

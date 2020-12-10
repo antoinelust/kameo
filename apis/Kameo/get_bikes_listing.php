@@ -47,7 +47,7 @@ if ($admin != "Y") {
 } else {
     if ($customersCompaniesToIncludeInLoan == "Y") {
         include 'connexion.php';
-        $sql = "SELECT * FROM customer_bikes WHERE COMPANY != 'KAMEO' AND CONTRACT_TYPE = 'leasing' AND STAANN != 'D' AND NOT EXISTS (SELECT 1 FROM loan_belfius WHERE ID_BIKE=customer_bikes.ID)";
+        $sql = "SELECT * FROM customer_bikes WHERE COMPANY != 'KAMEO' AND ((CONTRACT_TYPE = 'leasing' AND LEASING_PRICE != '0') OR CONTRACT_TYPE = 'location' OR CONTRACT_TYPE = 'order') AND STAANN != 'D' AND NOT EXISTS (SELECT 1 FROM loan_belfius WHERE ID_BIKE=customer_bikes.ID)";
 
         if ($stockAndCommand) {
             $sql = $sql . " AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";

@@ -20,10 +20,6 @@ if (isset($_POST['action'])) {
     $end = isset($_POST["end"]) ? date($_POST["end"]) : NULL;
 
     $loanBikeID = isset($_POST["loanBikeID"]) ? $_POST["loanBikeID"] : NULL;
-    $loanbikeModel = isset($_POST["bikeBrandModelSel"]) ? $_POST["bikeBrandModelSel"] : NULL;
-    $loanFrameNumber = isset($_POST["loanFrameNumber"]) ? $_POST["loanFrameNumber"] : NULL;
-    $loanBrand = isset($_POST["loanBrand"]) ? $_POST["loanBrand"] : NULL;
-    $loanBikeBuyPrice = isset($_POST["bikepAchat"]) ? $_POST["bikepAchat"] : NULL;
 
     if (isset($_POST["action"])) {
 
@@ -85,7 +81,7 @@ if (isset($_POST['action'])) {
                 $i = 0;
                 if ($loanBikeID) {
                     while ($i < count($loanBikeID)) {
-                        $sql = "REPLACE INTO loan_belfius (ID_BIKE, MODEL, FRAME_NUMBER, BRAND, BUY_PRICE, COST_ID) VALUES ($loanBikeID[$i], '$loanbikeModel[$i]', '$loanFrameNumber[$i]', '$loanBrand[$i]', $loanBikeBuyPrice[$i], $id)";
+                        $sql = "REPLACE INTO loan_belfius (ID_BIKE, COST_ID) VALUES ($loanBikeID[$i], $id)";
                         if ($conn->query($sql) === FALSE) {
                             $response = array('response' => 'error', 'message' => $conn->error);
                             echo json_encode($response);
@@ -141,7 +137,7 @@ if (isset($_POST['action'])) {
 
             // retrieve loan data
             include 'connexion.php';
-            $sql = "SELECT * FROM loan_belfius WHERE COST_ID='$id'";
+            $sql = "SELECT aa.ID_BIKE, bb.COMPANY, bb.BIKE_PRICE, bb.FRAME_NUMBER, cc.BRAND, cc.MODEL  FROM loan_belfius aa, customer_bikes bb, bike_catalog cc WHERE COST_ID='$id' AND aa.ID_BIKE=bb.ID AND bb.TYPE=cc.ID";
             if ($conn->query($sql) === FALSE) {
                 $response = array('response' => 'error', 'message' => $conn->error);
                 echo json_encode($response);
@@ -155,14 +151,15 @@ if (isset($_POST['action'])) {
 
                 $response['loanResponse'] = "success";
                 $response['loan'][$i]['idBike'] = $row['ID_BIKE'];
+                $response['loan'][$i]['company'] = $row['COMPANY'];
                 $response['loan'][$i]['model'] = $row['MODEL'];
                 $response['loan'][$i]['frameNumber'] = $row['FRAME_NUMBER'];
                 $response['loan'][$i]['brand'] = $row['BRAND'];
-                $response['loan'][$i]['buyPrice'] = $row['BUY_PRICE'];
+                $response['loan'][$i]['buyPrice'] = $row['BIKE_PRICE'];
 
                 $i++;
             }
-            $sql = "SELECT SUM(BUY_PRICE) as 'totalBuyPrice' FROM loan_belfius WHERE COST_ID='$id'";
+            $sql = "SELECT SUM(BIKE_PRICE) as 'totalBuyPrice' FROM loan_belfius aa, customer_bikes bb WHERE COST_ID='$id' AND aa.ID_BIKE=bb.ID";
             if ($conn->query($sql) === FALSE) {
                 $response = array('response' => 'error', 'message' => $conn->error);
                 echo json_encode($response);

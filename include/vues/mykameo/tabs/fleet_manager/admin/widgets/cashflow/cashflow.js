@@ -173,6 +173,9 @@ function retrieve_cost(ID, action) {
                     <th class="loanBikeID">
                       <label for="loanBikeID">ID</label>
                     </th>
+                    <th class="company">
+                      <label for="company">Société</label>
+                    </th>
                     <th class="bikeBrandModel">
                       <label for="bikeBrandModel">Modèle</label>
                     </th>
@@ -204,6 +207,7 @@ function retrieve_cost(ID, action) {
                     ` bikeRow form-group">
                     <td class="bLabel"></td>
                     <td class="loanBikeID">` + response.loan[i].idBike + `</td>
+                    <td class="company">` + response.loan[i].company + `</td>
                     <td class="bikeBrandModel">` + response.loan[i].model + `</td>
                     <td class="loanFrameNumber">` + response.loan[i].frameNumber + `</td>
                     <td class="loanBrand">` + response.loan[i].brand + `</td>
