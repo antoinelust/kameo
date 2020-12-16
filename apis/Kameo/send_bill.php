@@ -61,9 +61,9 @@ $mail->IsHTML(true);                                    // Set email format to H
 $mail->CharSet = 'UTF-8';
 
 
-$mail->From = 'info@kameobikes.com';
-$mail->FromName = 'Information Kameo Bikes';
-$mail->AddReplyTo('info@kameobikes.com', 'Information Kameo Bikes');
+$mail->From = 'invoices@kameobikes.com';
+$mail->FromName = 'Invoices Kameo Bikes';
+$mail->AddReplyTo('invoices@kameobikes.com', 'Invoices Kameo Bikes');
 $mail->Subject = 'Kameo Bikes - '. $companyName .' - Facture de '.$monthFR[($date->format('m')-1)].' '.$date->format('Y');
 
 $temp=$monthFR[($date->format('m')-1)].' '.$date->format('Y');
@@ -85,8 +85,7 @@ if(substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
 $mail->Body = $message;
 if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
     $mail->AddAddress($emailContactBilling, $lastNameContactBilling." ".$firstNameContactBilling);
-    $mail->AddBCC("antoine@kameobikes.com", "Antoine Lust");
-    $mail->AddBCC("julien@kameobikes.com", "Julien Jamar");
+    $mail->AddBCC("invoices@kameobikes.com", "Invoices Kameo Bikes");
 }else{
     $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
 }

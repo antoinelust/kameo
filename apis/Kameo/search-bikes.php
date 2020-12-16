@@ -22,27 +22,29 @@ $conditions=getCondition();
 $minutesToAdd=$conditions['conditions']['MINUTES_FOR_AUTOMATIC_CANCEL'];
 
 $time = new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
-$time->add(new DateInterval('PT' . $minutesToAdd . 'M'));
+$time->sub(new DateInterval('PT' . $minutesToAdd . 'M'));
 $stamp = $time->format('Y-m-d H:i');
 
-$sql="SELECT aa.ID, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.DATE_START_2 < '$stamp' AND aa.BIKE_ID=bb.ID AND aa.STAANN != 'D' AND aa.STATUS='Open' AND bb.COMPANY = (select COMPANY from customer_referential WHERE TOKEN='$token') AND NOT EXISTS (select 1 FROM locking_bikes WHERE RESERVATION_ID=aa.ID AND PLACE_IN_BUILDING='-1')";
-if ($conn->query($sql) === FALSE) {
-  $response = array ('response'=>'error', 'message'=> $conn->error);
-  echo json_encode($response);
-  die;
-}
-
-$resultSendMail=mysqli_query($conn, $sql);
-while($row = mysqli_fetch_array($resultSendMail)){
-  $ID=$row['ID'];
-  $customName = $row['MODEL'];
-  $sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, STAANN = 'D', USR_MAJ='script' WHERE ID='$ID'";
+if($user_data['LOCKING'] == "Y"){
+  $sql="SELECT aa.ID, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.DATE_START_2 < '$stamp' AND aa.BIKE_ID=bb.ID AND aa.STAANN != 'D' AND aa.STATUS='Open' AND bb.COMPANY = (select COMPANY from customer_referential WHERE TOKEN='$token') AND NOT EXISTS (select 1 FROM locking_bikes WHERE RESERVATION_ID=aa.ID AND PLACE_IN_BUILDING='-1')";
   if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
     die;
   }
-  include 'sendMailCancellation.php';
+
+  $resultSendMail=mysqli_query($conn, $sql);
+  while($row = mysqli_fetch_array($resultSendMail)){
+    $ID=$row['ID'];
+    $customName = $row['MODEL'];
+    $sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, STAANN = 'D', USR_MAJ='script' WHERE ID='$ID'";
+    if ($conn->query($sql) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+    }
+    include 'sendMailCancellation.php';
+  }
 }
 
 $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY AND bb.NAME='generic' and TOKEN='$token' LIMIT 1";
@@ -213,7 +215,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
     include 'connexion.php';
 
-    $sql="select count(1) as SOMME from reservations where EMAIL='$email' and STAANN != 'D' and STATUS='Open' and ((DATE_START_2 <= '$dateStartString' and DATE_END_2 >= '$dateStartString') OR (DATE_START_2<='$dateEndString' AND DATE_END_2>='$dateEndString'))";
+    if($user_data['LOCKING'] == "Y"){
+      $sql="select count(1) as SOMME from reservations where EMAIL='$email' and STAANN != 'D' and STATUS='Open' and ((DATE_START_2 <= '$dateStartString' and DATE_END_2 >= '$dateStartString') OR (DATE_START_2<='$dateEndString' AND DATE_END_2>='$dateEndString'))";
+    }
 
     if ($conn->query($sql) === FALSE) {
   		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -226,9 +230,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
       errorMessage("ES0062");
     }
 
-
-    if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
-      $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS != 'Closed') group by ID";
+    if($user_data['LOCKING']=="Y"){
+      if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
+        $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS != 'Closed') group by ID";
+      }else{
+        $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS ='Open' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
+      }
     }else{
       $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
     }

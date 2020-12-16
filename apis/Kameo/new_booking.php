@@ -40,7 +40,7 @@ $dateEnd_3String=$dateEnd_2->format('d/m/Y');
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != NULL && $buildingEnd != NULL && $dateStart != NULL && $dateEnd != NULL && $user!= NULL ) {
 
 	include 'connexion.php';
-    $sql= "select * from reservations where STAANN!='D' and BIKE_ID = '$bikeID' AND ((DATE_END_2 >= '$dateStart_2String' and DATE_END_2 <= '$dateEnd_2String') OR (DATE_START_2>='$dateStart_2String' and DATE_START_2 <= '$dateEnd_2String'))";
+    $sql= "select * from reservations where STAANN!='D' and BIKE_ID = '$bikeID' AND (STATUS='No box' OR STATUS='Open') AND ((DATE_END_2 >= '$dateStart_2String' and DATE_END_2 <= '$dateEnd_2String') OR (DATE_START_2>='$dateStart_2String' and DATE_START_2 <= '$dateEnd_2String'))";
 
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
