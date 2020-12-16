@@ -25,17 +25,17 @@ include 'include/head.php';
             /* ---- grid ---- */
 
             .grid-item--width3 {
-                width: 200px;
+                width: 270px;
             }
 
             .grid-item--height3 {
-                height: 300px;
+                height: 340px;
             }
         </style>
 
         <!-- CONTENT -->
         <section>
-            <div class="container">
+            <div class="container-fullwidth">
                 <div class="row">
                     <div class="col-md-3 searchCol">
                         <div class="row">
@@ -228,6 +228,7 @@ include 'include/head.php';
 								</div>
 							</div>
 						</div>
+						
 
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
                         <div class="grid"></div>
