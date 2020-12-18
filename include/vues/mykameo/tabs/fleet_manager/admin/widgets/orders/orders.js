@@ -156,7 +156,7 @@ function list_bikes(){
                     [cmp(b.brand, a.brand), cmp(b.model, a.model)]
                 );
             });
-            
+
             $('#widget-order-form select[name=portfolioID]').empty();
             var i=0;
             while(i<response.bikeNumber){
@@ -236,7 +236,7 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=testDate]').val(response.order.testDate);
           $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-          $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
+          $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg?date="+Date.now());
 
           if(response.order.estimatedDeliveryDate != null){
               $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
@@ -448,7 +448,7 @@ $('body').on('change', '#widget-order-form select[name=portfolioID]',function(){
               $('#widget-order-form input[name=brand]').val(response.brand);
               $('#widget-order-form input[name=model]').val(response.model);
               $('#widget-order-form select[name=frameType]').val(response.frameType);
-              $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-    ')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg");
+              $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
           }
     }
   });

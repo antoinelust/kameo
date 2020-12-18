@@ -233,7 +233,7 @@ try{
             $stmt->close();
             $conn->close();
 
-            $response['img']=strtolower(str_replace(" ", "-", $response['brand']))."_".strtolower(str_replace(" ", "-", $response['model']))."_".strtolower($response['frameType']);
+            $response['img']=$response['ID'];
 			echo json_encode($response);
         }
     }else{

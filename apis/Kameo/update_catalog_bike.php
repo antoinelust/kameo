@@ -41,24 +41,6 @@ if($action=="update"){
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $conn->close();
-    if($resultat['BRAND'] != $brand || $resultat['MODEL'] != $model){
-
-        $dossier = '../../images_bikes/';
-
-        $oldFile=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']).".jpg";
-        $newFile=strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).".jpg";
-
-        copy($dossier . $oldFile, $dossier . $newFile);
-        unlink($dossier . $oldFile);
-
-
-        $oldFile=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE'])."_mini.jpg";
-        $newFile=strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini.jpg";
-
-        copy($dossier . $oldFile, $dossier . $newFile);
-        unlink($dossier . $oldFile);
-    }
-
     if(isset($_FILES['file'])){
 
         $extensions = array('.jpg');
@@ -92,13 +74,11 @@ if($action=="update"){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
 
-        $fichier=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($frameType).$extension;
+        $fichier=$ID.$extension;
 
         if (file_exists($dossier.$fichier)) {
             unlink($dossier.$fichier) or die("Couldn't delete file");
         }
-
-        $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
 
          if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
          {
@@ -109,10 +89,6 @@ if($action=="update"){
          {
               errorMessage("ES0024");
          }
-
-        /*$img = resize_image($dossier . $fichier, 200, 200);
-        $fichierMini = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
-        imagejpeg($img, $dossier . $fichierMini);*/
     }
 
 
@@ -137,26 +113,11 @@ if($action=="update"){
 
         $dossier = '../../images_bikes/';
 
-
-        include 'connexion.php';
-        $sql = "select * from bike_catalog where ID='$ID'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-
-        $fichier=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($frameType)."_mini".$extension;
+        $fichier=$ID."_mini".$extension;
 
         if (file_exists($dossier.$fichier)) {
             unlink($dossier.$fichier) or die("Couldn't delete file");
         }
-
-
-        $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
-
          if(move_uploaded_file($_FILES['fileMini']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
          {
             $upload=true;

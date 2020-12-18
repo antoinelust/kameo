@@ -42,11 +42,12 @@ if($bookingID != NULL)
 
 	$frameNumber = $resultat['FRAME_NUMBER'];
 	$bikeID = $resultat['BIKE_ID'];
-    $response['booking']['ID']=$bookingID;
-    $response['booking']['bikeID']=$bikeID;
-    $response['booking']['buildingStart']= $resultat['building_start'];
-    $response['booking']['buildingEnd']= $resultat['building_end'];
-    $response['booking']['start']=$resultat['DATE_START_2'];
+  $response['booking']['ID']=$bookingID;
+  $response['booking']['bikeID']=$bikeID;
+  $response['booking']['img']=$resultat['TYPE'].".jpg";
+  $response['booking']['buildingStart']= $resultat['building_start'];
+  $response['booking']['buildingEnd']= $resultat['building_end'];
+  $response['booking']['start']=$resultat['DATE_START_2'];
 	$response['booking']['end']=$resultat['DATE_END_2'];
 	$response['booking']['frameNumber']=$resultat['FRAME_NUMBER'];
 	$response['booking']['model']=$resultat['MODEL'];
@@ -54,33 +55,31 @@ if($bookingID != NULL)
 	$response['booking']['brand']=$resultat['BRAND'];
 
 
-    include 'connexion.php';
-    $sql="select * from locking_code where ID_reservation='$bookingID'";
+  include 'connexion.php';
+  $sql="select * from locking_code where ID_reservation='$bookingID'";
+  if ($conn->query($sql) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+  }
+
+  $result = mysqli_query($conn, $sql);
+  $length = $result->num_rows;
+  $resultat = mysqli_fetch_assoc($result);
+  $conn->close();
 
 
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
+  if ($length == 0){
+      $response['booking']['code']=false;
+  }
+  else{
+      $response['booking']['code']=$resultat['CODE'];
+  }
 
-    $result = mysqli_query($conn, $sql);
-    $length = $result->num_rows;
-    $resultat = mysqli_fetch_assoc($result);
-    $conn->close();
-
-
-    if ($length == 0){
-        $response['booking']['code']=false;
-    }
-    else{
-        $response['booking']['code']=$resultat['CODE'];
-    }
-
-    $response['response']="success";
-		log_output($response);
-		echo json_encode($response);
-    die;
+  $response['response']="success";
+	log_output($response);
+	echo json_encode($response);
+  die;
 
 }
 else

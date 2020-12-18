@@ -203,7 +203,7 @@ function fillReservationDetails(element) {
         document.getElementsByClassName("reservationEmail")[0].innerHTML =
           response.reservationEmail;
         document.getElementsByClassName("reservationBikeImage")[0].src =
-          "images_bikes/" + response.bikeID + "_mini.jpg";
+          "images_bikes/" + response.img + "_mini.jpg";
         document.getElementById("deleteReservationdiv").innerHTML =
           '<a class="button small red-dark button-3d rounded icon-right" data-target="#deleteReservation" onclick="initializeDeleteReservation(\'' +
           reservationID +
@@ -279,7 +279,7 @@ function showBooking(bookingID) {
         document.getElementById("bookingInformationBike").innerHTML = dest;
 
         document.getElementById("imageNextBooking").src =
-          "images_bikes/" + response.booking.brand.toLowerCase().replace(/ /g, '-') + "_" + response.booking.model.toLowerCase().replace(/ /g, '-') + "_" + response.booking.frameType.toLowerCase() + ".jpg";
+          "images_bikes/" + response.booking.img + "?date="+Date.now();
 
         $("#futureBooking").modal("toggle");
       } else {

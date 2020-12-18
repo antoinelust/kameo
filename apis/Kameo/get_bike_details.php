@@ -98,13 +98,7 @@ if($id != NULL)
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
 
-
-    $file=__DIR__.'/images_bikes/'.$resultat['ID'].'jpg';
-    if ((file_exists($file))){
-        $response['img']=__DIR__.'/images_bikes/'.$resultat['ID'];
-    }else{
-        $response['img']=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']);
-    }
+    $response['img']=$resultat['ID'];
 
     $response['brand']=$resultat['BRAND'];
     $response['modelCatalog']=$resultat['MODEL'];

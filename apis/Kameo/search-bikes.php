@@ -21,6 +21,9 @@ log_inputs($token);
 $conditions=getCondition();
 $minutesToAdd=$conditions['conditions']['MINUTES_FOR_AUTOMATIC_CANCEL'];
 
+$user_data = getCondition()['conditions'];
+
+
 $time = new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $time->sub(new DateInterval('PT' . $minutesToAdd . 'M'));
 $stamp = $time->format('Y-m-d H:i');
@@ -132,7 +135,7 @@ $dateStart2=new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $dateStart2->setDate($year_intake, $month_intake, $day_intake);
 $dateStart2->setTime($intake_hour_2, $intake_minute_2);
 
-$dateEnd=new DateTime();
+$dateEnd=new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $dateEnd->setDate($year_deposit, $month_deposit, $day_deposit);
 $dateEnd->setTime($deposit_hour, $deposit_minute);
 
@@ -208,6 +211,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     if ($dateEnd< (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
       errorMessage("ES0017");
     }
+
 
     if ($dateEnd<=$dateStart){
       errorMessage("ES0018");
@@ -315,12 +319,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                   $result6 = mysqli_query($conn, $sql6);
                   if($result6->num_rows == 1){
                       $resultat6 = mysqli_fetch_assoc($result6);
-                      $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
-                      if ((file_exists($file))){
-                          $response['bike'][$length]['img']=$bikeID;
-                        }else{
-                          $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
-                      }
+                      $response['bike'][$length]['img']=$resultat6['ID'];
                       $response['bike'][$length]['brand'] = $resultat6['BRAND'];
                       $response['bike'][$length]['model'] = $resultat6['MODEL'];
                       $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
@@ -376,12 +375,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                       $result6 = mysqli_query($conn, $sql6);
                       if($result6->num_rows == 1){
                           $resultat6 = mysqli_fetch_assoc($result6);
-                          $file=__DIR__.'/images_bikes/'.$bikeID.'jpg';
-                          if ((file_exists($file))){
-                              $response['bike'][$length]['img']=$bikeID;
-                            }else{
-                              $response['bike'][$length]['img']=strtolower(str_replace(" ", "-", $resultat6['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat6['MODEL']))."_".strtolower($resultat6['FRAME_TYPE']);
-                          }
+                          $file=__DIR__.'/images_bikes/'.$resultat6['ID'].'jpg';
+                          $response['bike'][$length]['img']=$resultat6['ID'];
                           $response['bike'][$length]['brand'] = $resultat6['BRAND'];
                           $response['bike'][$length]['model'] = $resultat6['MODEL'];
                           $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];

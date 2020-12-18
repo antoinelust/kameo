@@ -327,6 +327,7 @@ if(isset($_POST['action'])){
         $response['order']['price']=$resultat['LEASING_PRICE'];
         $response['order']['type']=$resultat['TYPE'];
         $response['order']['comment']=br2nl($resultat['REMARK']);
+        $response['order']['img']=br2nl($resultat['PORTFOLIO_ID']);
 
         $email=$resultat['EMAIL'];
 

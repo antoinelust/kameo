@@ -38,6 +38,11 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
     {
           errorMessage("ES0041");
     }
+    $extension = strrchr($_FILES['fileMini']['name'], '.');
+    if(!in_array($extension, $extensions))
+    {
+          errorMessage("ES0041");
+    }
 
 
     $taille_maxi = 6291456;
@@ -47,27 +52,6 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
           errorMessage("ES0023");
     }
 
-    //upload of Bike picture
-
-    $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';
-
-    $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
-
-     if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-     {
-        $upload=true;
-        $path= $dossier . $fichier;
-     }
-     else
-     {
-          errorMessage("ES0024");
-     }
-    $extension = strrchr($_FILES['fileMini']['name'], '.');
-    if(!in_array($extension, $extensions))
-    {
-          errorMessage("ES0041");
-    }
-
 
     $taille_maxi = 6291456;
     $taille = filesize($_FILES['fileMini']['tmp_name']);
@@ -75,22 +59,6 @@ if(isset($_FILES['file']) && isset($_FILES['fileMini'])){
     {
           errorMessage("ES0023");
     }
-
-    //upload of Bike picture
-
-    $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';
-
-    $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
-
-     if(move_uploaded_file($_FILES['fileMini']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-     {
-        $upload=true;
-        $path= $dossier . $fichier;
-     }
-     else
-     {
-          errorMessage("ES0024");
-     }
 
 }else{
 	errorMessage("ES0025");
@@ -124,6 +92,33 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
             die;
       }
       $conn->close();
+
+      $ID=$conn->insert_id
+      //upload of Bike picture
+
+      $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';
+      $fichier = $ID.$extension;
+
+       if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+       {
+          $upload=true;
+          $path= $dossier . $fichier;
+       }
+       else
+       {
+            errorMessage("ES0024");
+       }
+       $fichier = $ID."_mini".$extension;
+
+      if(move_uploaded_file($_FILES['fileMini']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+      {
+         $upload=true;
+         $path= $dossier . $fichier;
+      }
+      else
+      {
+           errorMessage("ES0024");
+      }
 
       successMessage("SM0015");
 

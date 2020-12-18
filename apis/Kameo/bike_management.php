@@ -183,10 +183,6 @@ if(isset($_POST['action'])){
             $bikeID = $conn->insert_id;
             $conn->close();
 
-            $dossier = '../images_bikes/';
-            $fichier = $bikeID.".jpg";
-            $fichierMini = $bikeID."_mini.jpg";
-
             if($buildingInitialization){
                 $sql= "INSERT INTO  reservations (USR_MAJ, HEU_MAJ, BIKE_ID, DATE_START, BUILDING_START, DATE_END, BUILDING_END, EMAIL, STATUS, STAANN) VALUES ('$user', CURRENT_TIMESTAMP, '$bikeID', '0', '$buildingInitialization', '0', '$buildingInitialization', '$user', 'Closed','')";
 

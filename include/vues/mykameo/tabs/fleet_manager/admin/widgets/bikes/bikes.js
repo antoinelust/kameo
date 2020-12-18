@@ -312,9 +312,8 @@ var company;
                 } else{
                     $('#widget-bikeManagement-form input[name=price]').val(response.buyingPrice);
                     $('#widget-bikeManagement-form input[name=model]').val(response.model);
-                    $('#bikeManagementPicture').attr('src', "images_bikes/"+response.img+"_mini.jpg");
+                    $('#bikeManagementPicture').attr('src', "images_bikes/"+response.img+"_mini.jpg?date="+Date.now());
                     $('.bikeManagementPicture').removeClass('hidden');
-
 
                 }
             }
@@ -474,7 +473,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                     if (response.response == 'error') {
                         console.log(response.message);
                     } else{
-                        document.getElementById("bikeManagementPicture").src="images_bikes/"+response.img+"_mini.jpg";
+                        document.getElementById("bikeManagementPicture").src="images_bikes/"+response.img+"_mini.jpg?date="+Date.now();
                         $('.bikeManagementPicture').removeClass('hidden');
                         id=response.id;
                         company=response.company;
@@ -584,7 +583,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                         $('#widget-bikeManagement-form input[name=billingGroup]').val(response.billingGroup);
 
 
-                        document.getElementsByClassName("bikeManagementPicture")[0].src="images_bikes/"+response.img+"_mini.jpg";
+                        document.getElementsByClassName("bikeManagementPicture")[0].src="images_bikes/"+response.img+"_mini.jpg?date="+Date.now();
 
                         if(response.status=="OK"){
                             $('#widget-bikeManagement-form input[name=bikeStatus]').val('OK');
@@ -654,7 +653,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                                     if (response.response == 'error') {
                                         console.log(response.message);
                                     } else{
-                                        $('#bikeManagementPicture').attr('src', "images_bikes/"+response.img+"_mini.jpg");
+                                        $('#bikeManagementPicture').attr('src', "images_bikes/"+response.img+"_mini.jpg?date="+Date.now());
                                         $('.bikeManagementPicture').removeClass('hidden');
 
 
