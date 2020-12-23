@@ -41,8 +41,8 @@ if($email != NULL)
     	   $sql=$sql." and aa.COMPANY = '$company2'";
         }
     }
-        
-    
+
+
     if($paid!=='*' && $paid !== NULL){
         $sql=$sql." AND FACTURE_PAID='$paid'";
     }
@@ -56,22 +56,22 @@ if($email != NULL)
             $sql=$sql." AND AMOUNT_HTVA<0";
         }
     }
-    
+
     $sql=$sql." GROUP BY aa.ID";
-    
+
     $result=execute_sql_query($sql, $conn);
     $response['bill']=$result->fetch_all(MYSQLI_ASSOC);
     $length = $result->num_rows;
     $response['response']="success";
-	$response['billNumber']=$length;    
+	  $response['billNumber']=$length;    
 
     $sql="select LPAD(MAX(ID_OUT_BILL)+1, 3, '0') as reference, MAX(ID_OUT_BILL) as MAX_OUT, MAX(ID) as MAX_TOTAL from factures";
     $result=execute_sql_query($sql, $conn);
     $resultat = mysqli_fetch_assoc($result);
-    $response['IDMaxBillingOut']=$resultat['MAX_OUT'];    
+    $response['IDMaxBillingOut']=$resultat['MAX_OUT'];
     $conn->close();
 
-    
+
     $newID=$resultat['MAX_TOTAL'];
     $newID=strval($newID+1);
     $length=strlen($newID);
@@ -83,16 +83,16 @@ if($email != NULL)
     $base_modulo=$month.substr($year,2,2).$reference;
     $modulo_check=($base_modulo % 97);
     $reference='000/'.$month.substr($year,2,2).'/'.$reference.$modulo_check;
-    
+
     $response['communication']=$reference;
     $response['IDMaxBilling']=$resultat['MAX_TOTAL'];
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     echo json_encode($response);
     die;
 

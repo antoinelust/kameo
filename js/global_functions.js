@@ -10,14 +10,13 @@ String.prototype.shortHours=function(){
 };
 
 
-function get_dateNow_string(){
-    var dateNow=new Date(Date.now());
-    var year=dateNow.getFullYear();
-    var month=("0" + (dateNow.getMonth()+1)).slice(-2)
-    var day=("0" + dateNow.getDate()).slice(-2)
-    var dateNowString=year+"-"+month+"-"+day;
-    return dateNowString;
-
+function get_date_string(date = Date.now()){
+  var dateNow=new Date(date);
+  var year=dateNow.getFullYear();
+  var month=("0" + (dateNow.getMonth()+1)).slice(-2)
+  var day=("0" + dateNow.getDate()).slice(-2)
+  var dateNowString=year+"-"+month+"-"+day;
+  return dateNowString;
 }
 
 // generic comparison function

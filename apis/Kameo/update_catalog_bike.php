@@ -22,7 +22,7 @@ if($action=="update"){
     $buyPrice = $_POST["buyPrice"];
     $price = $_POST["price"];
     $stock = $_POST["stock"];
-    $link = $_POST["link"];
+    $link=isset($_POST['$link']) ? $_POST['$link'] : NULL;
     $display=isset($_POST['display']) ? "Y" : "N";
     $motor = $_POST["motor"];
     $battery = $_POST["battery"];
@@ -41,24 +41,6 @@ if($action=="update"){
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $conn->close();
-    if($resultat['BRAND'] != $brand || $resultat['MODEL'] != $model){
-
-        $dossier = '../../images_bikes/';
-
-        $oldFile=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE']).".jpg";
-        $newFile=strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).".jpg";
-
-        copy($dossier . $oldFile, $dossier . $newFile);
-        unlink($dossier . $oldFile);
-
-
-        $oldFile=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($resultat['FRAME_TYPE'])."_mini.jpg";
-        $newFile=strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini.jpg";
-
-        copy($dossier . $oldFile, $dossier . $newFile);
-        unlink($dossier . $oldFile);
-    }
-
     if(isset($_FILES['file'])){
 
         $extensions = array('.jpg');
@@ -92,13 +74,11 @@ if($action=="update"){
         $resultat = mysqli_fetch_assoc($result);
         $conn->close();
 
-        $fichier=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($frameType).$extension;
+        $fichier=$ID.$extension;
 
         if (file_exists($dossier.$fichier)) {
             unlink($dossier.$fichier) or die("Couldn't delete file");
         }
-
-        $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
 
          if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
          {
@@ -109,10 +89,6 @@ if($action=="update"){
          {
               errorMessage("ES0024");
          }
-
-        /*$img = resize_image($dossier . $fichier, 200, 200);
-        $fichierMini = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
-        imagejpeg($img, $dossier . $fichierMini);*/
     }
 
 
@@ -137,26 +113,11 @@ if($action=="update"){
 
         $dossier = '../../images_bikes/';
 
-
-        include 'connexion.php';
-        $sql = "select * from bike_catalog where ID='$ID'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-
-        $fichier=strtolower(str_replace(" ", "-", $resultat['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat['MODEL']))."_".strtolower($frameType)."_mini".$extension;
+        $fichier=$ID."_mini".$extension;
 
         if (file_exists($dossier.$fichier)) {
             unlink($dossier.$fichier) or die("Couldn't delete file");
         }
-
-
-        $fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType)."_mini".$extension;
-
          if(move_uploaded_file($_FILES['fileMini']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
          {
             $upload=true;
@@ -186,16 +147,15 @@ if($action=="update"){
           }
           $sizes=substr($sizes, 0, -1);
         }
-
-        $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link', MOTOR='$motor', BATTERY='$battery', TRANSMISSION='$transmission', SEASON='$season', PRIORITY='$priority', SIZES='$sizes' WHERE ID='$ID'";
-
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
+        $stmt = $conn->prepare("update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, BRAND=?, MODEL=?, FRAME_TYPE=?, UTILISATION=?,  ELECTRIC=?, BUYING_PRICE=?, PRICE_HTVA=?, STOCK=?, DISPLAY=?, LINK=?, MOTOR=?, BATTERY=?, TRANSMISSION=?, SEASON=?, PRIORITY=?, SIZES=? WHERE ID=?");
+        if ($stmt)
+        {
+            $stmt->bind_param("ssssssddissssssisi", $user, $brand, $model, $frameType, $utilisation, $electric, $buyPrice, $price, $stock, $display, $link, $motor, $battery, $transmission, $season, $priority, $sizes, $ID);
+            $stmt->execute();
+            $stmt->close();
+        }else{
+            error_message('500', 'Unable to update catalog bike');
         }
-        $result = mysqli_query($conn, $sql);
-        $conn->close();
 
         successMessage("SM0003");
 

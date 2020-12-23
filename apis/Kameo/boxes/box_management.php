@@ -160,7 +160,7 @@ if(isset($_POST['action']))
                 $response['keys_out'][$i]['id']=$row['id'];
                 $response['keys_out'][$i]['model']=$row['model'];
                 $response['keys_out'][$i]['place']=$row['place'];
-                $response['keys_out'][$i]['img'] = get_image($row['type']);
+                $response['keys_out'][$i]['img'] = $row['type'];
                 $response['keys_out'][$i]['email'] = $row['EMAIL'];
                 $response['keys_out'][$i]['dateStart'] = $row['DATE_START_2'];
                 $response['keys_out'][$i]['dateEnd'] = $row['DATE_END_2'];

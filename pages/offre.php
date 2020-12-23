@@ -4,21 +4,16 @@
 include 'include/head.php';
 ?>
 <?php
-$brand = isset($_GET['brand']) ? $_GET['brand'] : NULL;
-$model = isset($_GET['model']) ? $_GET['model'] : NULL;
-$frameType = isset($_GET['frameType']) ? $_GET['frameType'] : NULL;
+$ID = isset($_GET['ID']) ? $_GET['ID'] : NULL;
 include 'apis/Kameo/connexion.php';
-$brandUPPER = strtoupper($brand);
-$modelUPPER = strtoupper($model);
-$frameTypeUPPER = strtoupper($frameType);
 
-$sql = "SELECT * FROM bike_catalog WHERE UPPER(BRAND)='$brandUPPER' AND UPPER(MODEL)='$modelUPPER' AND UPPER(FRAME_TYPE)='$frameTypeUPPER'";
+$sql = "SELECT * FROM bike_catalog WHERE ID='$ID'";
 
 if ($conn->query($sql) === FALSE) {
     echo $conn->error;
 }
 $result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
+$resultat = mysqli_fetch_assoc($result);
 ?>
 
 <body class="wide">
@@ -39,7 +34,7 @@ $row = mysqli_fetch_assoc($result);
                 <div class="row">
                     <div class="col-md-6">
 
-                        <img src="images_bikes/<?php echo str_replace(' ', '-', $brand) . '_' . str_replace(' ', '-', $model) . '_' . $frameType; ?>.jpg" class="img-responsive img-rounded" alt="">
+                        <img src="images_bikes/<?php echo $ID; ?>.jpg" class="img-responsive img-rounded" alt="">
                         <br>
                         <dl class="dl">
                             <dt><?= L::offre_technical_characs; ?></dt><br>
@@ -53,8 +48,8 @@ $row = mysqli_fetch_assoc($result);
                                                     <path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z"/>
                                                 </svg>
                                                 <p class="text-green"><?php
-                                                  echo $row['MOTOR'];
-                                                  if($row['MOTOR']=='')
+                                                  echo $resultat['MOTOR'];
+                                                  if($resultat['MOTOR']=='')
                                                   {
                                                       echo 'N/A';
                                                   }
@@ -70,8 +65,8 @@ $row = mysqli_fetch_assoc($result);
                                                     <path d="M2 6h10v4H2V6zm12.5 3.5a1.5 1.5 0 0 0 0-3v3z"/>
                                                 </svg>
                                                 <p class="text-green"><?php
-                                                  echo $row['BATTERY'];
-                                                  if($row['BATTERY']=='')
+                                                  echo $resultat['BATTERY'];
+                                                  if($resultat['BATTERY']=='')
                                                   {
                                                       echo 'N/A';
                                                   }
@@ -87,8 +82,8 @@ $row = mysqli_fetch_assoc($result);
                                                     <path fill-rule="evenodd" d="M7.375 8L4.602 4.302l.8-.6L8.25 7.5h4.748v1H8.25L5.4 12.298l-.8-.6L7.376 8z"/>
                                                 </svg>
                                                 <p class="text-green"><?php
-                                                    echo $row['TRANSMISSION'];
-                                                    if($row['TRANSMISSION']=='')
+                                                    echo $resultat['TRANSMISSION'];
+                                                    if($resultat['TRANSMISSION']=='')
                                                     {
                                                         echo 'N/A';
                                                     }
@@ -103,19 +98,19 @@ $row = mysqli_fetch_assoc($result);
 
                     <div class="col-md-6">
                         <div class="heading heading text-left m-b-20">
-                            <h2><?php echo $brand . ' ' . $model; ?></h2>
+                            <h2><?php echo $resultat['BRAND'] . ' ' . $resultat['MODEL']; ?></h2>
                         </div>
 
                         <dl class="dl col-md-6">
                             <dt><?= L::offre_usage; ?></dt>
-                            <dd><?php echo $row['UTILISATION']; ?></dd>
+                            <dd><?php echo $resultat['UTILISATION']; ?></dd>
                             <br>
                             <dt><?= L::offre_cadre_type; ?></dt>
-                            <dd><?php if ($row['FRAME_TYPE'] == "H") {
+                            <dd><?php if ($resultat['FRAME_TYPE'] == "H") {
                                     echo "Homme";
-                                } else if ($row['FRAME_TYPE'] == "M") {
+                                } else if ($resultat['FRAME_TYPE'] == "M") {
                                     echo "Mixte";
-                                } else if ($row['FRAME_TYPE'] == "F") {
+                                } else if ($resultat['FRAME_TYPE'] == "F") {
                                     echo "Femme";
                                 } else {
                                     echo "undefined";
@@ -124,9 +119,9 @@ $row = mysqli_fetch_assoc($result);
 
                         <dl class="dl col-md-6">
                             <dt><?= L::offre_electric_assist; ?></dt>
-                            <dd><?php if ($row['ELECTRIC'] == "Y") {
+                            <dd><?php if ($resultat['ELECTRIC'] == "Y") {
                                     echo "Oui";
-                                } else if ($row['ELECTRIC'] == "N") {
+                                } else if ($resultat['ELECTRIC'] == "N") {
                                     echo "Non";
                                 } else {
                                     echo "undefined";
@@ -142,7 +137,7 @@ $row = mysqli_fetch_assoc($result);
                             $leasingDuration = 36;
 
                             // Form Fields
-                            $retailPrice = $row['PRICE_HTVA'];
+                            $retailPrice = $resultat['PRICE_HTVA'];
                             $priceRetailer = $retailPrice * (1 - 0.27);
                             $debtCost = $priceRetailer * 0.09;
 
@@ -162,7 +157,7 @@ $row = mysqli_fetch_assoc($result);
                                         <div class="plan">
                                             <div class="plan-header" style="min-height:182px !important ; cursor : default">
                                                 <h4><?= L::offre_buyprice_htva; ?></h4>
-                                                <h2 class="text-green"><sup>€</sup><?php echo round($row['PRICE_HTVA']); ?></h2>
+                                                <h2 class="text-green"><sup>€</sup><?php echo round($resultat['PRICE_HTVA']); ?></h2>
                                             </div>
                                         </div>
                                     </div>
@@ -171,7 +166,7 @@ $row = mysqli_fetch_assoc($result);
                                         <div class="plan">
                                             <div class="plan-header" style="min-height:182px !important ; cursor : default">
                                                 <h4><?= L::offre_buyprice_tvac; ?></h4>
-                                                <h2 class="text-green"><sup>€</sup><?php echo round($row['PRICE_HTVA'] * 1.21); ?></h2>
+                                                <h2 class="text-green"><sup>€</sup><?php echo round($resultat['PRICE_HTVA'] * 1.21); ?></h2>
                                             </div>
                                         </div>
                                     </div>
@@ -232,9 +227,9 @@ $row = mysqli_fetch_assoc($result);
                                     </div>
                                 </div>
 
-                                <input type="text" class="hidden" id="widget-offer-brand" name="widget-offer-brand" value="<?php echo $brand; ?>" />
-                                <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-model" value="<?php echo $model; ?>" />
-                                <input type="text" class="hidden" id="widget-offer-frame-type" name="widget-offer-frame-type" value="<?php echo $frameType; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-brand" name="widget-offer-brand" value="<?php echo $resultat['BRAND']; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-model" name="widget-offer-model" value="<?php echo $resultat['MODEL']; ?>" />
+                                <input type="text" class="hidden" id="widget-offer-frame-type" name="widget-offer-frame-type" value="<?php echo $resultat['FRAME_TYPE']; ?>" />
                                 <input type="text" class="hidden" id="widget-offer-antispam" name="widget-offer-antispam" value="" />
                                 <button class="button green button-3d rounded effect" type="submit" id="form-submit"><?= L::offre_askoffer_btn; ?></button>
                             </form>

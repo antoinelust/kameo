@@ -162,6 +162,7 @@ function retrieve_box(id) {
   $("#widget-boxManagement-form select").attr("readonly", true);
   $("#widget-boxManagement-form div[name=key]").remove();
   $("#widget-boxManagement-form div[name=bike]").remove();
+  $("#widget-boxManagement-form div[name=severalBoxes]").html("");
 
   $.ajax({
     url: "apis/Kameo/boxes/boxes.php",
@@ -298,13 +299,25 @@ function retrieve_box(id) {
           row++;
         }
 
-        // Vélos en déplacement
-        if(response.keys_out){
-          response.keys_out.forEach(key => {
-            $("#widget-boxManagement-form div[name=in]").before('<div class="col-md-4" name="bike">\
-            <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
-            <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>Début : ' + key.dateStart + '<br>Fin : ' + key.dateEnd + '</center></p></div>');
-          });
+          // Vélos en déplacement
+          if(response.keys_out){
+            response.keys_out.forEach(key => {
+              $("#widget-boxManagement-form div[name=in]").before('<div class="col-md-4" name="bike">\
+              <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
+              <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>Début : ' + key.dateStart + '<br>Fin : ' + key.dateEnd + '</center></p></div>');
+            });
+
+          if(response.keys_other_box){
+            $('.severalBoxes').removeClass("hidden");
+            $("#widget-boxManagement-form div[name=severalBoxes]").removeClass("hidden");
+            response.keys_other_box.forEach(key => {
+              $("#widget-boxManagement-form div[name=severalBoxes]").append('<div class="col-md-4">\
+              <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
+              <p><center><B>'+ key.model + '</B><br>Bâtiment : ' + key.building + '</center></p></div>');
+            });
+          }else{
+            $('.severalBoxes').addClass("hidden");
+          }
         }
       }
     },

@@ -10,7 +10,6 @@ include 'globalfunctions.php';
 // Form Fields
 
 include 'connexion.php';
-include 'authentication.php';
 $token = getBearerToken();
 log_inputs($token);
 
@@ -71,12 +70,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "update customer_referential set NOM='$name', NOM_INDEX='$name', PRENOM='$firstName', PRENOM_INDEX='$firstName',  PHONE='$phone', ADRESS='$adress', POSTAL_CODE='$postCode', CITY='$city', WORK_ADRESS='$workAdress', WORK_POSTAL_CODE='$workPostCode', WORK_CITY='$workCity' where TOKEN='$token'";
         }
 
-        $result = mysqli_query($conn, $sql);
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
+        $result = mysqli_query($conn, $sql);
         $conn->close();
 
          successMessage('SM0003');

@@ -9,17 +9,17 @@ $token=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL; //@TODO: replace
 $user_ID=isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notifications.js
 $langue=isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
-include 'apis/Kameo/connexion.php';
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
 $token = getBearerToken();
 
-include 'include/head.php';
+include $_SERVER['DOCUMENT_ROOT'].'/include/head.php';
 echo '<body class="wide">
 	<!-- WRAPPER -->
 	<div class="wrapper">';
-		include 'include/topbar.php';
-		include 'include/header.php';
-    require_once('include/php-mailer/PHPMailerAutoload.php');
+		include $_SERVER['DOCUMENT_ROOT'].'/include/topbar.php';
+		include $_SERVER['DOCUMENT_ROOT'].'/include/header.php';
+    require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
     ?>
 
 
@@ -57,7 +57,7 @@ echo '<body class="wide">
                             $mail->IsHTML(true);
                             $mail->CharSet = 'UTF-8';
 
-                            include_once 'apis/Kameo/environment.php';
+                            include_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 
                             if(constant('ENVIRONMENT') == 'production'){
                                 $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
@@ -74,8 +74,8 @@ echo '<body class="wide">
                             $mail->AddReplyTo("info@kameobikes.com");
                             $mail->Subject = "Mail automatique - Aperçu des vélos";
 
-                            include 'apis/Kameo/connexion.php';
-                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID)/BIKE_PRICE*100 AS 'RETURN_BIKE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY, aa.BIKE_PRICE, aa.BIKE_BUYING_DATE, aa.CONTRACT_TYPE FROM customer_bikes aa WHERE CONTRACT_TYPE in ('stock', 'leasing', 'renting')  AND BIKE_PRICE is not NULL GROUP BY aa.ID ORDER BY RETURN_BIKE DESC";
+														include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+                            $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID)/BIKE_PRICE*100 AS 'RETURN_BIKE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY, aa.BIKE_PRICE, aa.BIKE_BUYING_DATE, aa.CONTRACT_TYPE FROM customer_bikes aa WHERE CONTRACT_TYPE in ('stock', 'leasing', 'renting')  AND BIKE_PRICE is not NULL AND STAANN != 'D' GROUP BY aa.ID ORDER BY RETURN_BIKE DESC";
 
                             if ($conn->query($sql) === FALSE) {
                                 $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -90,7 +90,7 @@ echo '<body class="wide">
 
                             $sumBuyingPrice=0;
                             $sumBuyingPriceNow=0;
-                            $dateTimeNow=new DateTime("now");
+                            $dateTimeNow=new DateTime("2020-11-30");
 
                             $total=0;
 
@@ -123,7 +123,7 @@ echo '<body class="wide">
                             $part2=$part2."</table><br><ul><li>Valeur des vélos à l'achat: ".round($sumBuyingPrice)." €</li><li>Valeur des vélos actualisée: ".round($sumBuyingPriceNow)." €</li><li>Valeur totale de facturation pour ces vélos : ".round($total)." €</li></ul><div class=\"separator\"></div>";
                             $part2=$part2."<br><br><h3>Inventaire des vélos, prix d'achat du vélo non défini :</h3>";
 
-                            include 'apis/Kameo/connexion.php';
+														include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                             $sql= "SELECT aa.ID, (SELECT SUM(AMOUNT_HTVA) FROM factures_details bb where bb.BIKE_ID=aa.ID GROUP BY bb.BIKE_ID) AS 'INVOICE', aa.MODEL, aa.FRAME_NUMBER,aa.COMPANY FROM customer_bikes aa WHERE BIKE_PRICE IS NULL AND STATUS != 'test' GROUP BY aa.ID";
 
                             if ($conn->query($sql) === FALSE) {

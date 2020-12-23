@@ -101,7 +101,7 @@ function load_cafetaria(){
 							var temp="\
 							<div class=\"grid-item\">\
 								<div class=\"portfolio-image effect social-links\">\
-									<img src=\"images_bikes/"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
+									<img src=\"images_bikes/"+response.bike[i].ID+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
 									<div class=\"image-box-content\">\
 										<p>\
 											<a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"></a>\
@@ -172,7 +172,7 @@ function fillCommandDetails(ID, price, type){
         $('#widget-command-form select[name=frame]').val(response.frameType);
         $('#widget-command-form select[name=utilisation]').val(response.utilisation);
         $('#widget-command-form select[name=electric]').val(response.electric);
-        document.getElementsByClassName("commandImage")[0].src="images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg";
+        document.getElementsByClassName("commandImage")[0].src="images_bikes/"+response.ID+".jpg";
       }
 
     }
@@ -233,7 +233,7 @@ function get_command_user(email){
                   }else{
                       $('#orderBike .deliveryPlace').html(response[i].deliveryAddress);
                   }
-                  $('#orderBike .image').attr('src', "images_bikes/"+response[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response[i].model.toLowerCase().replace(/ /g, '-')+"_"+response[i].frameType.toLowerCase()+".jpg");
+                  $('#orderBike .image').attr('src', "images_bikes/"+response[i].catalogID+".jpg");
                   i++;
               }
               displayLanguage();

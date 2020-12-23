@@ -204,8 +204,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 					die;
 			}
 		}
-
-		$conn->close();
     successMessage("SM0006");
 }else{
 	errorMessage("ES0012");

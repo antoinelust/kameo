@@ -250,7 +250,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 }
                 $result4 = mysqli_query($conn, $sql);
                 $resultat4 = mysqli_fetch_assoc($result4);
-                $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".strtolower(str_replace(" ", "-", $resultat4['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat4['MODEL']))."_".strtolower($resultat4['FRAME_TYPE'])."_mini.jpg";
+                $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".$catalogID."_mini.jpg";
 
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));

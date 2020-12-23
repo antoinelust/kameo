@@ -27,46 +27,23 @@
       <div class="col-sm-3">
         <div class="form-group">
           <label for="dtp_input3" class="control-label">Date de début</label>
-          <div
-            class="input-group date form_date_start_client col-md-12"
-            data-date=""
-            data-date-format="dd/mm/yyyy"
-            data-link-field="dtp_input3"
-            data-link-format="yyyy-mm-dd"
-          >
             <input
-              class="form-control"
-              size="16"
-              type="text"
-              value=""
-              readonly
+              class="form-control form_date_start_client"
+              type="date"
+              value="2020-01-01"
             />
-            <span class="input-group-addon"
-              ><span class="glyphicon glyphicon-remove"></span
-            ></span>
-            <span class="input-group-addon"
-              ><span class="glyphicon glyphicon-calendar"></span
-            ></span>
           </div>
           <input type="hidden" id="dtp_input3" value="" /><br />
-        </div>
       </div>
       <div class="col-sm-3">
         <div class="form-group">
           <label for="dtp_input4" class="control-label">Date de fin</label>
           <div
-            class="input-group date form_date_end_client col-md-12"
-            data-date=""
-            data-date-format="dd/mm/yyyy"
-            data-link-field="dtp_input4"
-            data-link-format="yyyy-mm-dd"
-          >
+            class="input-group date col-md-12">
             <input
-              class="form-control"
-              size="16"
-              type="text"
-              value=""
-              readonly
+              class="form-control form_date_end_client"
+              type="date"
+              value="2020-12-19"
             />
             <span class="input-group-addon"
               ><span class="glyphicon glyphicon-remove"></span
@@ -88,36 +65,22 @@
   </div>
 </div>
 <script type="text/javascript">
-  $(".form_date_start_client").datetimepicker({
-    language: "fr",
-    weekStart: 1,
-    todayBtn: 1,
-    autoclose: 1,
-    todayHighlight: 1,
-    startView: 2,
-    minView: 2,
-    forceParse: 0,
-  });
-  $(".form_date_end_client").datetimepicker({
-    language: "fr",
-    weekStart: 1,
-    todayBtn: 1,
-    autoclose: 1,
-    todayHighlight: 1,
-    startView: 2,
-    minView: 2,
-    forceParse: 0,
-  });
+  var d = new Date();
+  d.setMonth(d.getMonth() - 6);
+  $(".form_date_start_client").val(get_date_string(d));
+  $(".form_date_end_client").val(get_date_string());
+
+
   $(".form_date_start_client").change(function () {
     generateCompaniesGraphic(
-      $(".form_date_start_client").data("datetimepicker").getDate(),
-      $(".form_date_end_client").data("datetimepicker").getDate()
+      $(".form_date_start_client").val(),
+      $(".form_date_end_client").val()
     );
   });
   $(".form_date_end_client").change(function () {
     generateCompaniesGraphic(
-      $(".form_date_start_client").data("datetimepicker").getDate(),
-      $(".form_date_end_client").data("datetimepicker").getDate()
+    $(".form_date_start_client").val(),
+    $(".form_date_end_client").val()
     );
   });
 </script>

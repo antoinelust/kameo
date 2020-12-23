@@ -282,6 +282,7 @@ loadClientConditions()
 				timestampEnd=text.timestampEndBooking;
 				buildingEnd=text.buildingEnd;
 				var bikeID=text.bike[i].bikeID;
+        var catalogID=text.bike[i].type;
 				var bikeFrameNumber=text.bike[i].frameNumber;
 				var bikeType=text.bike[i].typeDescription;
 				var brand = text.bike[i].brand;
@@ -306,7 +307,7 @@ loadClientConditions()
 				<p class=\"subtitle\">"+ title +"</p>\
 				</div>\
 				<div class=\"col-md-2\">\
-				<a class=\"button large green button-3d rounded icon-left\" name=\""+brand + "','"+ model + "','"+ frameType +"\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike('"+ bikeID + "','" + brand+ "','" +model+"','"+frameType + "')\"><span><?= L::reserver_reserver; ?></span></a>\
+				<a class=\"button large green button-3d rounded icon-left\" name=\""+brand + "','"+ model + "','"+ frameType +"\" data-target=\"#resume\" data-toggle=\"modal\" href=\"#\" onclick=\"bookBike('"+ bikeID + "','" + catalogID + "')\"><span><?= L::reserver_reserver; ?></span></a>\
 				</div>\
 				<div class=\"seperator\"></div>";
 				dest = dest.concat(codeVeloTemporaire);
@@ -380,11 +381,10 @@ loadClientConditions()
 	  });
 	}
   });
-  function bookBike(ID, brand, model, frameType)
+  function bookBike(ID, catalogID)
   {
 	$('#widget-new-booking input[name=bikeID]').val(ID);
-	//document.getElementById('resumeBiketitle').innerHTML = brand + " " + model;
-	document.getElementById("resumeBikeImage").src="images_bikes/" + brand.toLowerCase().replace(/ /g, '-') + "_" + model.toLowerCase().replace(/ /g, '-') + "_" + frameType.toLowerCase() + ".jpg";
+	document.getElementById("resumeBikeImage").src="images_bikes/" + catalogID + ".jpg";
   }
 
 

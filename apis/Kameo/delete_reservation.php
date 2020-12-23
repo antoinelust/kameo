@@ -5,6 +5,9 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+include_once 'authentication.php';
+$token = getBearerToken();
+
 
 
 
@@ -29,19 +32,19 @@ if($ID != NULL)
 		echo json_encode($response);
 		die;
 	}
-	
-    $result = mysqli_query($conn, $sql);        
+
+    $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    $conn->close();  
+    $conn->close();
 
     $dateEnd=$row['DATE_END_2'];
     $buildingStart=$row['BUILDING_START'];
     $buildingEnd=$row['BUILDING_END'];
-    $frameNumber=$row['FRAME_NUMBER'];
-    
+    $bikeID=$row['BIKE_ID'];
+
     if($buildingStart!=$buildingEnd){
         include 'connexion.php';
-        $sql="select * from reservations WHERE DATE_START_2>'$dateEnd' and FRAME_NUMBER='$frameNumber' and STAANN != 'D' ORDER BY DATE_START_2";
+        $sql="select * from reservations WHERE DATE_START_2>'$dateEnd' and BIKE_ID='$bikeID' and STAANN != 'D' ORDER BY DATE_START_2";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -49,26 +52,35 @@ if($ID != NULL)
             die;
         }
 
-        $result = mysqli_query($conn, $sql);        
+        $result = mysqli_query($conn, $sql);
         $length = $result->num_rows;
         if($length>0){
             errorMessage("ES0030");
         }
-        $conn->close();  
+        $conn->close();
 
-        
+
     }
-    
-    include 'connexion.php';
-	$sql="update reservations set STAANN='D', USR_MAJ='mykameo', HEU_MAJ=CURRENT_TIMESTAMP WHERE ID = '$ID'";
 
+    include 'connexion.php';
+	  $sql="update reservations set STAANN='D', USR_MAJ='mykameo', HEU_MAJ=CURRENT_TIMESTAMP WHERE ID = '$ID'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
     }
-    $conn->close();  
-    
+    $conn->close();
+
+    include 'connexion.php';
+    $sql="update locking_code set STAANN='D', VALID='N', USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP WHERE ID_RESERVATION = '$ID'";
+    if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+    }
+    $conn->close();
+
+
     successMessage("SM0011");
 
 }

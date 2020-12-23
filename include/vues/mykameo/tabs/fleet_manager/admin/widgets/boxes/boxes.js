@@ -206,7 +206,6 @@ function update_box(id) {
 }
 
 function retrieve_box_admin(id) {
-  console.log(id);
   $("#widget-boxManagementAdmin-form-title").text("Informations de la borne");
   $("#widget-boxManagementAdmin-form-send").addClass("hidden");
   $("#widget-boxManagementAdmin-form input").attr("readonly", true);

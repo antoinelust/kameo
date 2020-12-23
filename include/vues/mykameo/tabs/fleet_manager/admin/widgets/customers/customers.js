@@ -27,11 +27,11 @@ $(".fleetmanager").click(function () {
   });
 });
 
-$(".clientManagerClick").click(function () {
+$(".clientManagerClick").click(function (){
   get_company_listing("*");
   generateCompaniesGraphic(
-    $(".form_date_start_client").data("datetimepicker").getDate(),
-    $(".form_date_end_client").data("datetimepicker").getDate()
+    $(".form_date_start_client").val(),
+    $(".form_date_end_client").val()
   );
 });
 
@@ -173,26 +173,14 @@ function get_company_boxes(company) {
 
 //FleetManager: Gérer les clients | Displays the companies graph by calling get_companies_listing.php and creating it
 function generateCompaniesGraphic(dateStart, dateEnd) {
-  var dateStartString =
-    dateStart.getFullYear() +
-    "-" +
-    ("0" + (dateStart.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + dateStart.getDate()).slice(-2);
-  var dateEndString =
-    dateEnd.getFullYear() +
-    "-" +
-    ("0" + (dateEnd.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + dateEnd.getDate()).slice(-2);
   $.ajax({
     url: "apis/Kameo/get_companies_listing.php",
     type: "get",
     data: {
       action: "graphic",
       numberOfDays: "30",
-      dateStart: dateStartString,
-      dateEnd: dateEndString,
+      dateStart: dateStart,
+      dateEnd: dateEnd,
     },
     success: function (response) {
       if (response.response == "error") {

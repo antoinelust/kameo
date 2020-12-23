@@ -5,14 +5,15 @@ function update_deposit_form(){
     var Date1=date.split('-');
     var day=Date1[0];
     var month=(Date1[1]-1);
+    var year=Date1[2];
     var Hours=hour.split('h');
 
     var hour=Hours[0];
     var minute=Hours[1];
 
-    var dateStart = new Date(new Date().getFullYear(), month, day, hour, minute);
+    var dateStart = new Date(year, month, day, hour, minute);
 
-    var dateTemp = new Date(new Date().getFullYear(), month, day, hour, minute);
+    var dateTemp = new Date(year, month, day, hour, minute);
 
     loadClientConditions()
     .done(function(response){
@@ -26,12 +27,13 @@ function update_deposit_form(){
         var Date1=date.split('-');
         var day=Date1[0];
         var month=(Date1[1]-1);
+        var year=Date1[2];
 
 
-        var dateEnd = new Date(new Date().getFullYear(), month, day, hour, minute);
+        var dateEnd = new Date(year, month, day, hour, minute);
         dateEnd.setHours(dateEnd.getHours()+bookingLength);
 
-        var currentDate = new Date(new Date().getFullYear(), month, day, hour, minute);
+        var currentDate = new Date(year, month, day, hour, minute);
 
 
 
@@ -45,11 +47,12 @@ function update_deposit_form(){
         var Date1=date.split('-');
         var day=Date1[0];
         var month=(Date1[1]-1);
+        var year=Date1[2];
         var Hours1=hour.split('h');
         var hour=Hours1[0];
         var minute=Hours1[1];
 
-        var tempDate = new Date(new Date().getFullYear(), month, day, hour, minute);
+        var tempDate = new Date(year, month, day, hour, minute);
         var i=0;
         var j=0;
         var dest ="<select id=\"search-bikes-form-day-deposit\" name=\"search-bikes-form-day-deposit\"  class=\"form-control\">";

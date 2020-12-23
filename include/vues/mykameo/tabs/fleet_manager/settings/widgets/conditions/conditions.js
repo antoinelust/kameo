@@ -96,137 +96,145 @@ function get_company_conditions(id){
 var emailArray;
 var email= "<?php echo $user_data['EMAIL']; ?>";
 $.ajax({
-  url: 'apis/Kameo/get_company_conditions.php',
-  type: 'post',
-  data: { "email": email, "id": id},
+  url: 'apis/Kameo/conditions/conditions.php',
+  type: 'get',
+  data: { "action": "get_condition_details", "ID": id},
 
   success: function(response){
 	if(response.response == 'error') {
 	  console.log(response.message);
-	}
-	if(response.response == 'success'){
+	}else	if(response.response == 'success'){
 	  $('#widget-updateCompanyConditions-form input[name=action]').val("update");
 
 	  $('#widget-updateCompanyConditions-form input[name=id]').val(id);
-	  if(response.companyConditions.name=="generic"){
+	  if(response.name=="generic"){
 		$('#widget-updateCompanyConditions-form input[name=name]').val("Conditions génériques");
 		$('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', true);
 
 	  }else{
-		$('#widget-updateCompanyConditions-form input[name=name]').val(response.companyConditions.name);
+		$('#widget-updateCompanyConditions-form input[name=name]').val(response.NAME);
 		$('#widget-updateCompanyConditions-form input[name=name]').prop('readonly', false);
 
 	  }
-	  $('#widget-updateCompanyConditions-form input[name=daysInAdvance]').val(response.companyConditions.bookingDays);
-	  $('#widget-updateCompanyConditions-form input[name=bookingLength]').val(response.companyConditions.bookingLength);
-	  $('#widget-updateCompanyConditions-form input[name=bookingsPerYear]').val(response.companyConditions.maxBookingsPerYear);
-    $('#widget-updateCompanyConditions-form input[name=bookingsPerMonth]').val(response.companyConditions.maxBookingsPerMonth);
-    $('#widget-updateCompanyConditions-form input[name=minutesBeforeCancellation]').val(response.companyConditions.minutesBeforeCancellation);
-	  $('#widget-updateCompanyConditions-form input[name=startIntakeBooking]').val(response.companyConditions.hourStartIntakeBooking);
-	  $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val(response.companyConditions.hourEndIntakeBooking);
-	  $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val(response.companyConditions.hourStartDepositBooking);
-	  $('#widget-updateCompanyConditions-form input[name=endDepositBooking]').val(response.companyConditions.hourEndDepositBooking);
+	  $('#widget-updateCompanyConditions-form input[name=daysInAdvance]').val(response.BOOKING_DAYS);
+	  $('#widget-updateCompanyConditions-form input[name=bookingLength]').val(response.BOOKING_LENGTH);
+	  $('#widget-updateCompanyConditions-form input[name=bookingsPerYear]').val(response.MAX_BOOKINGS_YEAR);
+    $('#widget-updateCompanyConditions-form input[name=bookingsPerMonth]').val(response.MAX_BOOKINGS_MONTH);
+    $('#widget-updateCompanyConditions-form input[name=minutesBeforeCancellation]').val(response.MINUTES_FOR_AUTOMATIC_CANCEL);
+	  $('#widget-updateCompanyConditions-form input[name=startIntakeBooking]').val(response.HOUR_START_INTAKE_BOOKING);
+	  $('#widget-updateCompanyConditions-form input[name=endIntakeBooking]').val(response.HOUR_END_INTAKE_BOOKING);
+	  $('#widget-updateCompanyConditions-form input[name=startDepositBooking]').val(response.HOUR_START_DEPOSIT_BOOKING);
+	  $('#widget-updateCompanyConditions-form input[name=endDepositBooking]').val(response.HOUR_END_DEPOSIT_BOOKING);
+
+
+    if(response.BOOKING='Y'){
+      $('#widget-updateCompanyConditions-form input[name=booking]').prop("checked", true);
+      $('.booking').removeClass("hidden");
+    }else{
+      $('#widget-updateCompanyConditions-form input[name=booking]').prop("checked", false);
+      $('.booking').addClass("hidden");
+    }
+
 
 	  var dest="";
-	  if(response.companyConditions.mondayIntake==1){
-		temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" checked value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";
+	  if(response.MONDAY_INTAKE==1){
+		temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" checked value=\""+response.MONDAY_INTAKE+"\">Lundi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" value=\""+response.companyConditions.mondayIntake+"\">Lundi<br>";
+		temp="<input type=\"checkbox\" name=\"intakeBookingMonday\" value=\""+response.MONDAY_INTAKE+"\">Lundi<br>";
 	  }
 	  dest=dest.concat(temp);
 
-	  if(response.companyConditions.tuesdayIntake==1){
-		temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" checked value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";
+	  if(response.TUESDAY_INTAKE==1){
+		temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" checked value=\""+response.TUESDAY_INTAKE+"\">Mardi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" value=\""+response.companyConditions.tuesdayIntake+"\">Mardi<br>";
+		temp="<input type=\"checkbox\" name=\"intakeBookingTuesday\" value=\""+response.TUESDAY_INTAKE+"\">Mardi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.wednesdayIntake==1){
-		temp="<input type=\"checkbox\" name=\"intakeBookingWednesday\" checked value=\""+response.companyConditions.wednesdayIntake+"\">Mercredi<br>";
+	  if(response.WEDNESDAY_INTAKE==1){
+		temp="<input type=\"checkbox\" name=\"intakeBookingWednesday\" checked value=\""+response.WEDNESDAY_INTAKE+"\">Mercredi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"intakeBookingWednesday\" value=\""+response.companyConditions.wednesdayIntake+"\">Mercredi<br>";
+		temp="<input type=\"checkbox\" name=\"intakeBookingWednesday\" value=\""+response.WEDNESDAY_INTAKE+"\">Mercredi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.thursdayIntake==1){
-		temp="<input type=\"checkbox\" name=\"intakeBookingThursday\" checked value=\""+response.companyConditions.thursdayIntake+"\">Jeudi<br>";
+	  if(response.THURSDAY_INTAKE==1){
+		temp="<input type=\"checkbox\" name=\"intakeBookingThursday\" checked value=\""+response.THURSDAY_INTAKE+"\">Jeudi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"intakeBookingThursday\" value=\""+response.companyConditions.thursdayIntake+"\">Jeudi<br>";
+		temp="<input type=\"checkbox\" name=\"intakeBookingThursday\" value=\""+response.THURSDAY_INTAKE+"\">Jeudi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.fridayIntake==1){
-		temp="<input type=\"checkbox\" name=\"intakeBookingFriday\" checked value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";
+	  if(response.FRIDAY_INTAKE==1){
+		temp="<input type=\"checkbox\" name=\"intakeBookingFriday\" checked value=\""+response.FRIDAY_INTAKE+"\">Vendredi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"intakeBookingFriday\"  value=\""+response.companyConditions.fridayIntake+"\">Vendredi<br>";
+		temp="<input type=\"checkbox\" name=\"intakeBookingFriday\"  value=\""+response.FRIDAY_INTAKE+"\">Vendredi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.saturdayIntake==1){
-		temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" checked value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
+	  if(response.SATURDAY_INTAKE==1){
+		temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" checked value=\""+response.SATURDAY_INTAKE+"\">Samedi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" value=\""+response.companyConditions.saturdayIntake+"\">Samedi<br>";
+		temp="<input type=\"checkbox\" name=\"intakeBookingSaturday\" value=\""+response.SATURDAY_INTAKE+"\">Samedi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.sundayIntake==1){
-		temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" checked value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
+	  if(response.SUNDAY_INTAKE==1){
+		temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" checked value=\""+response.SUNDAY_INTAKE+"\">Dimanche<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" value=\""+response.companyConditions.sundayIntake+"\">Dimanche<br>";
+		temp="<input type=\"checkbox\" name=\"intakeBookingSunday\" value=\""+response.SUNDAY_INTAKE+"\">Dimanche<br>";
 	  }
 	  dest=dest.concat(temp);
 	  document.getElementsByClassName('intakeBookingDays')[0].innerHTML = dest;
 
 	  var dest="";
-	  if(response.companyConditions.mondayDeposit==1){
-		temp="<input type=\"checkbox\" name=\"depositBookingMonday\" checked value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";
+	  if(response.MONDAY_DEPOSIT==1){
+		temp="<input type=\"checkbox\" name=\"depositBookingMonday\" checked value=\""+response.MONDAY_DEPOSIT+"\">Lundi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\""+response.companyConditions.mondayDeposit+"\">Lundi<br>";
+		temp="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\""+response.MONDAY_DEPOSIT+"\">Lundi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.tuesdayDeposit==1){
-		temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" checked value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";
+	  if(response.TUESDAY_DEPOSIT==1){
+		temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" checked value=\""+response.TUESDAY_DEPOSIT+"\">Mardi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" value=\""+response.companyConditions.tuesdayDeposit+"\">Mardi<br>";
+		temp="<input type=\"checkbox\" name=\"depositBookingTuesday\" value=\""+response.TUESDAY_DEPOSIT+"\">Mardi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.wednesdayDeposit==1){
-		temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" checked value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";
+	  if(response.WEDNESDAY_DEPOSIT==1){
+		temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" checked value=\""+response.WEDNESDAY_DEPOSIT+"\">Mercredi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" value=\""+response.companyConditions.wednesdayDeposit+"\">Mercredi<br>";
+		temp="<input type=\"checkbox\" name=\"depositBookingWednesday\" value=\""+response.WEDNESDAY_DEPOSIT+"\">Mercredi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.thursdayDeposit==1){
-		temp="<input type=\"checkbox\" name=\"depositBookingThursday\" checked value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";
+	  if(response.THURSDAY_DEPOSIT==1){
+		temp="<input type=\"checkbox\" name=\"depositBookingThursday\" checked value=\""+response.THURSDAY_DEPOSIT+"\">Jeudi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"depositBookingThursday\" value=\""+response.companyConditions.thursdayDeposit+"\">Jeudi<br>";
+		temp="<input type=\"checkbox\" name=\"depositBookingThursday\" value=\""+response.THURSDAY_DEPOSIT+"\">Jeudi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.fridayDeposit==1){
-		temp="<input type=\"checkbox\" name=\"depositBookingFriday\" checked value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";
+	  if(response.FRIDAY_DEPOSIT==1){
+		temp="<input type=\"checkbox\" name=\"depositBookingFriday\" checked value=\""+response.FRIDAY_DEPOSIT+"\">Vendredi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"depositBookingFriday\" value=\""+response.companyConditions.fridayDeposit+"\">Vendredi<br>";
+		temp="<input type=\"checkbox\" name=\"depositBookingFriday\" value=\""+response.FRIDAY_DEPOSIT+"\">Vendredi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.saturdayDeposit==1){
-		temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" checked value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";
+	  if(response.SATURDAY_DEPOSIT==1){
+		temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" checked value=\""+response.SATURDAY_DEPOSIT+"\">Samedi<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" value=\""+response.companyConditions.saturdayDeposit+"\">Samedi<br>";
+		temp="<input type=\"checkbox\" name=\"depositBookingSaturday\" value=\""+response.SATURDAY_DEPOSIT+"\">Samedi<br>";
 	  }
 	  dest=dest.concat(temp);
-	  if(response.companyConditions.sundayDeposit==1){
-		temp="<input type=\"checkbox\" name=\"depositBookingSunday\" checked value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";
+	  if(response.SUNDAY_DEPOSIT==1){
+		temp="<input type=\"checkbox\" name=\"depositBookingSunday\" checked value=\""+response.SUNDAY_DEPOSIT+"\">Dimanche<br>";
 	  }else{
-		temp="<input type=\"checkbox\" name=\"depositBookingSunday\" value=\""+response.companyConditions.sundayDeposit+"\">Dimanche<br>";
+		temp="<input type=\"checkbox\" name=\"depositBookingSunday\" value=\""+response.SUNDAY_DEPOSIT+"\">Dimanche<br>";
 	  }
 	  dest=dest.concat(temp);
 
-      if(response.companyConditions.locking=="Y")
-          $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', true);
-        else
-          $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', false);
+    if(response.LOCKING=="Y")
+      $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', true);
+    else
+      $("#widget-updateCompanyConditions-form input[name=box]").prop('checked', false);
 
-	  if(response.userAccessNumber==0){
 		emailArray=[];
-	  }else{
-		emailArray=response.companyConditions.email;
-	  }
+    response.emails.forEach(function (value, i) {
+      emailArray.push(value.EMAIL);
+    });
 	  $.ajax({
 		url: 'apis/Kameo/get_company_details.php',
 		type: 'post',
@@ -246,7 +254,6 @@ $.ajax({
 			  }
 			  dest=dest.concat(temp);
 			  i++;
-
 			}
 			document.getElementById('groupConditionUsers').innerHTML = dest;
 		  }
@@ -260,7 +267,6 @@ $.ajax({
 
 $('#widget-updateCompanyConditions-form input[name=booking]').change(function(){
   var is_checked = $('#widget-updateCompanyConditions-form input[name=booking]').is(":checked");
-  console.log(is_checked);
   if(is_checked){
     $('.booking').removeClass("hidden");
   }

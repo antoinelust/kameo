@@ -53,6 +53,7 @@ include 'include/head.php';
                                         <option data-filter=".douze"><?= L::achat_brand_option6; ?></option>
                                         <option data-filter=".hnf"><?= L::achat_brand_option7; ?></option>
                                         <option data-filter=".kayza"><?= L::achat_brand_option8; ?></option>
+                                        <option data-filter=".moustache">Moustache</option>
                                         <option data-filter=".orbea"><?= L::achat_brand_option9; ?></option>
                                         <option data-filter=".victoria"><?= L::achat_brand_option10; ?></option>
                                     </select>
@@ -229,7 +230,7 @@ include 'include/head.php';
 								</div>
 							</div>
 						</div>
-						
+
 
                         <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
                         <div class="grid"></div>
@@ -327,11 +328,11 @@ include 'include/head.php';
                                     var temp = "\
                                     <div class=\"grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
                                         <div class=\"portfolio-image effect social-links\">\
-                                            <img src=\"images_bikes/" + response.bike[i].brand.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].model.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].frameType.toLowerCase() + "_mini.jpg\" alt=\"image_" + response.bike[i].brand.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].model.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].frameType.toLowerCase() + "\" class=\"lazy\">\
+                                            <img src=\"images_bikes/" + response.bike[i].ID + "_mini.jpg\" alt=\"image_" + response.bike[i].brand.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].model.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].frameType.toLowerCase() + "\" class=\"lazy\">\
                                             <div class=\"image-box-content\">\
                                                 <p>\
-                                                    <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('" + response.bike[i].brand + "', '" + response.bike[i].model + "', '" + response.bike[i].frameType + "')\"><i class=\"fa fa-expand\"></i></a>\
-                                                    <a href=\"offre.php?brand=" + response.bike[i].brand.toLowerCase() + "&model=" + response.bike[i].model.toLowerCase() + "&frameType=" + response.bike[i].frameType.toLowerCase() + "\"><i class=\"fa fa-link\"></i></a>\
+                                                    <a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('" + response.bike[i].ID + "', '" + response.bike[i].brand + "', '" + response.bike[i].model + "')\"><i class=\"fa fa-expand\"></i></a>\
+                                                    <a href=\"offre.php?ID=" + response.bike[i].ID + "\"><i class=\"fa fa-link\"></i></a>\
                                                 </p>\
                                             </div>\
                                         </div>\
@@ -433,10 +434,10 @@ include 'include/head.php';
             });
 
 
-            function updateBikePicture(brand, model, frameType) {
+            function updateBikePicture(ID, brand, model) {
 
                 document.getElementById('bikePicturetitle').innerHTML = brand + " " + model;
-                document.getElementById('bikePictureImage').src = "images_bikes/" + brand.toLowerCase().replace(/ /g, '-') + "_" + model.toLowerCase().replace(/ /g, '-') + "_" + frameType.toLowerCase() + ".jpg";
+                document.getElementById('bikePictureImage').src = "images_bikes/" + ID + ".jpg";
 
             }
 

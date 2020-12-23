@@ -77,7 +77,6 @@ function initializeUpdatePortfolioBike(ID) {
     data: { action: "retrieve", ID: ID },
     success: function (response) {
       if(response.sizes != null){
-        console.log(response.sizes);
         var sizes = response.sizes.split(",");
         const selectValues = [1, 2];
         const select = document.getElementById('sizes');
@@ -87,7 +86,6 @@ function initializeUpdatePortfolioBike(ID) {
 
           /* Parse value to integer */
           const value = option.value;
-          console.log(value);
 
           /* If option value contained in values, set selected attribute */
           if (sizes.indexOf(value) !== -1) {
@@ -156,20 +154,12 @@ function initializeUpdatePortfolioBike(ID) {
 
         document.getElementsByClassName("bikeCatalogImage")[0].src =
           "images_bikes/" +
-          response.brand.toLowerCase().replace(/ /g, "-") +
-          "_" +
-          response.model.toLowerCase().replace(/ /g, "-") +
-          "_" +
-          response.frameType.toLowerCase() +
-          ".jpg";
+          response.img +
+          ".jpg?date="+Date.now();;
         document.getElementsByClassName("bikeCatalogImageMini")[0].src =
           "images_bikes/" +
-          response.brand.toLowerCase().replace(/ /g, "-") +
-          "_" +
-          response.model.toLowerCase().replace(/ /g, "-") +
-          "_" +
-          response.frameType.toLowerCase() +
-          "_mini.jpg";
+          response.img +
+          "_mini.jpg?date="+Date.now();;
         $("#widget-updateCatalog-form input[name=file]").val("");
         $("#widget-updateCatalog-form input[name=fileMini]").val("");
         $("#widget-updateCatalog-form input[name=display]").prop(
