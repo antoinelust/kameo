@@ -19,6 +19,11 @@ $( ".fleetmanager" ).click(function() {
 });
 
 
+$('.tasksManagerClick').click(function(){
+    list_tasks('*', $('.taskOwnerSelection').val(), "<?php echo $user_data['EMAIL'] ?>");
+    generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
+});
+
 
 
 function add_task(company){
@@ -35,7 +40,7 @@ document.getElementById('widget-taskManagement-form').reset();
     $('#widget-taskManagement-form select').attr("readonly", false);
     $('.taskManagementTitle').text("Ajouter une action");
     $('#widget-taskManagement-form select[name=owner]').val(email);
-    $('#widget-taskManagement-form input[name=date]').val(get_dateNow_string());
+    $('#widget-taskManagement-form input[name=date]').val(get_date_string());
 }
 
 //FleetManager: Gérer les Actions | List user task on <select> call

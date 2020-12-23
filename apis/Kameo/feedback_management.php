@@ -15,7 +15,7 @@ if(isset($_GET['action'])){
         include 'connexion.php';
 
 
-        $sql = "SELECT aa.*, bb.FRAME_NUMBER, bb.MODEL as modelBike, cc.BRAND, cc.MODEL as modelCatalog, cc.FRAME_TYPE FROM reservations aa, customer_bikes bb, bike_catalog cc where aa.ID='$ID' and aa.BIKE_ID=bb.ID and bb.TYPE=cc.ID";
+        $sql = "SELECT aa.*, bb.FRAME_NUMBER, bb.MODEL as modelBike, cc.BRAND, cc.MODEL as modelCatalog, cc.FRAME_TYPE, cc.ID as 'catalogID' FROM reservations aa, customer_bikes bb, bike_catalog cc where aa.ID='$ID' and aa.BIKE_ID=bb.ID and bb.TYPE=cc.ID";
 
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -33,7 +33,7 @@ if(isset($_GET['action'])){
         $response['email']=$resultat['EMAIL'];
         $response['ID']=$resultat['ID'];
         $response['bike']=$resultat['modelBike'];
-        $response['img']=strtolower(str_replace(" ", "-", $resultat['BRAND'].'_'.$resultat['modelCatalog'].'_'.$resultat['FRAME_TYPE']));
+        $response['img']=$resultat['catalogID'];
 
         include 'connexion.php';
 
@@ -65,7 +65,7 @@ if(isset($_GET['action'])){
 
 
         include 'connexion.php';
-        $sql = "SELECT aa.*, bb.ID, bb.FRAME_NUMBER FROM feedbacks aa, customer_bikes bb where ID_RESERVATION='$ID' and aa.BIKE_ID=bb.ID";
+        $sql = "SELECT aa.*, bb.ID, bb.FRAME_NUMBER, bb.TYPE as 'catalogID' FROM feedbacks aa, customer_bikes bb where ID_RESERVATION='$ID' and aa.BIKE_ID=bb.ID";
 
 
         //error_log('in function');
@@ -84,6 +84,7 @@ if(isset($_GET['action'])){
         $response['ID']=$resultat['ID'];
         $response['bike']=$resultat['FRAME_NUMBER'];
         $response['bikeID']=$resultat['BIKE_ID'];
+        $response['catalogID']=$resultat['catalogID'];
         $response['note']=$resultat['NOTE'];
         $response['comment']=$resultat['COMMENT'];
         $response['entretien']=$resultat['ENTRETIEN'];

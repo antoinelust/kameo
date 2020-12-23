@@ -17,7 +17,7 @@ $(".fleetmanager").click(function () {
       }
     },
   });
-  document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});  
+  document.getElementsByClassName('feedbackManagerClick')[0].addEventListener('click', function() {list_feedbacks()});
 });
 
 
@@ -152,7 +152,7 @@ function retrieve_feedback(ID) {
           $(".textAreaComment").removeClass("hidden");
         }
         document.getElementsByClassName("feedbackBikeImage")[0].src =
-          "images_bikes/" + response.bikeID + "_mini.jpg";
+          "images_bikes/" + response.catalogID + "_mini.jpg";
 
         if (response.entretien == null) {
           $(".spanEntretien").addClass("hidden");

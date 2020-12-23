@@ -30,6 +30,13 @@ $(".fleetmanager").click(function () {
   });
 });
 
+
+$('#offerManagerClick').click(function(){
+    list_contracts_offers('*');
+    generateCashGraphic();
+});
+
+
 function addCost() {
   $("#widget-costsManagement-form input").attr("readonly", false);
   $("#widget-costsManagement-form textarea").attr("readonly", false);

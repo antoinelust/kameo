@@ -129,35 +129,6 @@
 
 
 
-										<div class="col-md-4">
-											<div class="product">
-												<div class="product-image">
-													<a href="bp_hnf.php"><img alt="Shop product image!" src="images_bikes/bonsplans/hnf_xd2_h.jpg">
-													</a>
-													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-18%</span>
-												</div>
-
-												<div class="product-description">
-													<div class="product-category">Réf. : HNF_XD2</div>
-													<div class="product-title">
-														<h3><a href="#">HNF Nicolai</a></h3>
-														<p>XD2</p>
-														<p><strong>Cadre Homme</strong><br>
-														Kilomètres parcourus : 202 km</p>
-													</div>
-													<div class="product-price">
-														<del>3842€ htva</del><ins class="text-green">3140€ htva</ins>
-													</div>
-													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">127€</strong> / mois</p>
-												</div>
-
-											</div>
-										</div>
-
-										<div class="separator visible-xs"></div>
-
-
 
 										<div class="col-md-4">
 											<div class="product">
@@ -183,39 +154,6 @@
 														<del>1834€ htva</del><ins class="text-green">1487€ htva</ins>
 													</div>
 													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">77€</strong> / mois</p>
-												</div>
-
-											</div>
-										</div>
-
-										<div class="separator visible-xs"></div>
-
-
-
-										<div class="col-md-4">
-											<div class="product">
-												<div class="product-image">
-													<a href="bp_conway_wme929.php"><img alt="Shop product image!" src="images_bikes/bonsplans/conway_wme929.jpg">
-													</a>
-													<span class="product-sale">Promo</span>
-													<span class="product-sale-off">-22%</span>
-													<div class="product-overlay">
-														<a href="bp_conway_wme929.php">Aperçu</a>
-													</div>
-												</div>
-
-												<div class="product-description">
-													<div class="product-category">Réf. : CW-929</div>
-													<div class="product-title">
-														<h3><a href="bp_conway_wme929.php">Conway</a></h3>
-														<p>Wme 929 </p>
-														<p><strong>Cadre Homme</strong><br>
-														VTT Trail Carbonne 140mm</p>
-													</div>
-													<div class="product-price">
-														<del>3471€ htva</del><ins class="text-green">2700€ htva</ins>
-													</div>
-													<p class="right text-right">Location tout inclus:<br> <strong class="text-green">117€</strong> / mois</p>
 												</div>
 
 											</div>

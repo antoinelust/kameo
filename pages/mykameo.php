@@ -21,8 +21,6 @@ echo '
     }
 </script>
 ';
-
-$token = isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL; //@TODO: replaced by a token to check if connected
 $user_ID = isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notifications.js
 $langue = isset($_SESSION['langue']) ? $_SESSION['langue'] : 'fr';
 
@@ -31,6 +29,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/authentication.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/environment.php';
 
 $token = getBearerToken();
+
 
 include 'include/head.php';
 echo '<body class="wide">';

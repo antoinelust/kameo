@@ -22,7 +22,7 @@ if($action=="update"){
     $buyPrice = $_POST["buyPrice"];
     $price = $_POST["price"];
     $stock = $_POST["stock"];
-    $link = $_POST["link"];
+    $link=isset($_POST['$link']) ? $_POST['$link'] : NULL;
     $display=isset($_POST['display']) ? "Y" : "N";
     $motor = $_POST["motor"];
     $battery = $_POST["battery"];
@@ -147,16 +147,15 @@ if($action=="update"){
           }
           $sizes=substr($sizes, 0, -1);
         }
-
-        $sql = "update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$user', BRAND='$brand', MODEL='$model', FRAME_TYPE='$frameType', UTILISATION='$utilisation',  ELECTRIC='$electric', BUYING_PRICE='$buyPrice', PRICE_HTVA='$price', STOCK='$stock', DISPLAY='$display', LINK='$link', MOTOR='$motor', BATTERY='$battery', TRANSMISSION='$transmission', SEASON='$season', PRIORITY='$priority', SIZES='$sizes' WHERE ID='$ID'";
-
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
+        $stmt = $conn->prepare("update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, BRAND=?, MODEL=?, FRAME_TYPE=?, UTILISATION=?,  ELECTRIC=?, BUYING_PRICE=?, PRICE_HTVA=?, STOCK=?, DISPLAY=?, LINK=?, MOTOR=?, BATTERY=?, TRANSMISSION=?, SEASON=?, PRIORITY=?, SIZES=? WHERE ID=?");
+        if ($stmt)
+        {
+            $stmt->bind_param("ssssssddissssssisi", $user, $brand, $model, $frameType, $utilisation, $electric, $buyPrice, $price, $stock, $display, $link, $motor, $battery, $transmission, $season, $priority, $sizes, $ID);
+            $stmt->execute();
+            $stmt->close();
+        }else{
+            error_message('500', 'Unable to update catalog bike');
         }
-        $result = mysqli_query($conn, $sql);
-        $conn->close();
 
         successMessage("SM0003");
 

@@ -5,6 +5,9 @@ header('Content-type: application/json');
 
 session_start();
 include 'globalfunctions.php';
+include_once 'authentication.php';
+$token = getBearerToken();
+
 
 
 
@@ -60,14 +63,23 @@ if($ID != NULL)
     }
 
     include 'connexion.php';
-	$sql="update reservations set STAANN='D', USR_MAJ='mykameo', HEU_MAJ=CURRENT_TIMESTAMP WHERE ID = '$ID'";
-
+	  $sql="update reservations set STAANN='D', USR_MAJ='mykameo', HEU_MAJ=CURRENT_TIMESTAMP WHERE ID = '$ID'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
     }
     $conn->close();
+
+    include 'connexion.php';
+    $sql="update locking_code set STAANN='D', VALID='N', USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP WHERE ID_RESERVATION = '$ID'";
+    if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+    }
+    $conn->close();
+
 
     successMessage("SM0011");
 

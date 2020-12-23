@@ -15,6 +15,10 @@ $( ".fleetmanager" ).click(function() {
 })
 
 
+$('.ordersManagerClick').click(function(){get_orders_listing()});
+
+
+
 
 function get_orders_listing() {
     var email= "<?php echo $user_data['EMAIL']; ?>";

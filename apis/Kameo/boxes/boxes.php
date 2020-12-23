@@ -120,7 +120,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID
 				INNER JOIN bike_catalog dd ON dd.ID=bb.TYPE
 				INNER JOIN reservations ee
-				WHERE aa.ID='$id' and aa.BUILDING=cc.BUILDING and cc.PLACE_IN_BUILDING ='-1' and cc.RESERVATION_ID=ee.ID ORDER BY bb.FRAME_NUMBER";
+				WHERE aa.ID='$id' and aa.BUILDING=cc.BUILDING and cc.PLACE_IN_BUILDING ='-1' and cc.RESERVATION_ID=ee.ID and NOT EXISTS (SELECT 1 FROM locking_bikes ff WHERE cc.BIKE_ID=ff.BIKE_ID and ff.PLACE_IN_BUILDING != '-1') ORDER BY bb.FRAME_NUMBER";
 
 				if ($conn->query($sql) === FALSE) {
 						$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -134,10 +134,35 @@ switch($_SERVER["REQUEST_METHOD"])
 						$response['keys_out'][$i]['id']=$row['id'];
 						$response['keys_out'][$i]['model']=$row['model'];
 						$response['keys_out'][$i]['place']=$row['place'];
-						$response['keys_out'][$i]['img'] = get_image($row['type']);
+						$response['keys_out'][$i]['img'] = $row['type'];
 						$response['keys_out'][$i]['email'] = $row['EMAIL'];
 						$response['keys_out'][$i]['dateStart'] = $row['DATE_START_2'];
 						$response['keys_out'][$i]['dateEnd'] = $row['DATE_END_2'];
+						$i++;
+				}
+
+				$sql="SELECT bb.ID as id, bb.TYPE as type, bb.MODEL as model, ff.BUILDING_FR
+				FROM boxes aa
+				INNER JOIN customer_bikes bb ON aa.COMPANY=bb.COMPANY
+				INNER JOIN locking_bikes cc ON bb.ID=cc.BIKE_ID
+				INNER JOIN bike_catalog dd ON dd.ID=bb.TYPE
+				INNER JOIN locking_bikes ee ON cc.BIKE_ID=ee.BIKE_ID AND ee.PLACE_IN_BUILDING != '-1'
+        INNER JOIN building_access ff ON ff.BUILDING_CODE=ee.BUILDING
+				WHERE aa.ID='$id' and aa.BUILDING=cc.BUILDING and cc.PLACE_IN_BUILDING ='-1' ORDER BY bb.FRAME_NUMBER";
+
+				if ($conn->query($sql) === FALSE) {
+						$response = array ('response'=>'error', 'message'=> $conn->error);
+						echo json_encode($response);
+						die;
+				}
+				$result = mysqli_query($conn, $sql);
+				$i = 0;
+				while($row = mysqli_fetch_array($result))
+				{
+						$response['keys_other_box'][$i]['id']=$row['id'];
+						$response['keys_other_box'][$i]['model']=$row['model'];
+						$response['keys_other_box'][$i]['img'] = $row['type'];
+						$response['keys_other_box'][$i]['building'] = $row['BUILDING_FR'];
 						$i++;
 				}
 				$conn->close();

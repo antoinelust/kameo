@@ -174,7 +174,7 @@ function construct_form_for_command_validation(ID){
                     $('#widget-orderFleet-form input[name=brand]').val(response.brand);
                     $('#widget-orderFleet-form input[name=model]').val(response.model);
                     $('#widget-orderFleet-form select[name=frameType]').val(response.frameType);
-                    $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.brand.toLowerCase().replace(/ /g, '-    ')+"_"+response.model.toLowerCase().replace(/ /g, '-')+"_"+response.frameType.toLowerCase()+".jpg");
+                    $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg");
 
                 }
           }
@@ -255,7 +255,7 @@ function retrieve_command_fleet(ID){
 
 
           $('#widget-orderFleet-form input[name=emailUser]').val(response.order.email);
-          $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.brand.toLowerCase().replace(/ /g, '-')+"_"+response.order.model.toLowerCase().replace(/ /g, '-')+"_"+response.order.frameType.toLowerCase()+".jpg");
+          $('#widget-orderFleet-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg");
       }
     }
   })

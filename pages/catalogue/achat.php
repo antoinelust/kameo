@@ -53,6 +53,7 @@ include 'include/head.php';
                                         <option data-filter=".douze"><?= L::achat_brand_option6; ?></option>
                                         <option data-filter=".hnf"><?= L::achat_brand_option7; ?></option>
                                         <option data-filter=".kayza"><?= L::achat_brand_option8; ?></option>
+                                        <option data-filter=".moustache">Moustache</option>
                                         <option data-filter=".orbea"><?= L::achat_brand_option9; ?></option>
                                         <option data-filter=".victoria"><?= L::achat_brand_option10; ?></option>
                                     </select>

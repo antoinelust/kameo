@@ -33,8 +33,6 @@ catch(Exception $e)
 
 $reponse = $bdd->query('SELECT PLACE_IN_BUILDING FROM locking_bikes WHERE MOVING = \'Y\' AND BIKE_ID = \''.$bikeID.'\' AND BUILDING = \''.$building.'\';');
 
-//print_r($bdd->errorInfo());
-
 while ($donnees = $reponse->fetch())
 {
   error_log(date("Y-m-d H:i:s")." - lock_verifier_rfid.php - OUTPUT emplacement :".$donnees['PLACE_IN_BUILDING']."\n", 3, "logs/logs_boxes.log");
