@@ -810,3 +810,8 @@ body.loading .loader {
   color: white;
   text-align: justify;
 }
+
+.box_grey {
+  text-align: center;
+  padding-top: 1em;
+}
