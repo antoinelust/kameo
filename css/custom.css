@@ -3,7 +3,7 @@
 	padding-bottom: 25px; /* taille de la margin top et de lataille de police de la description */
 }
 #progression > * {
-	background: #DEDEDE;
+	background: #9d9d9c;
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -22,14 +22,16 @@
 	position: relative;
 }
 #progression .etape .desc {
-	color: #DEDEDE;
+	color: #9d9d9c;
 	position: absolute;
 	top: 100%;
 	margin-top: 5px;
+	margin-left : -25px;
 	left: 50%;
 	font-size: 9px;
 	width: 50px;
 	line-height: 1;
+	text-align : center;
 }
 #progression .fait .desc, #progression .fait + .etape .desc {
 	color: #3cb395;
