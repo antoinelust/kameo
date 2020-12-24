@@ -20,6 +20,7 @@ $( ".fleetmanager" ).click(function() {
 
 
 function get_orders_fleet_listing() {
+		document.getElementById('ordersFleetListingSpan').innerHTML='';
     var email= "<?php echo $user_data['EMAIL']; ?>";
     $.ajax({
       url: 'apis/Kameo/orders_management.php',
@@ -31,73 +32,171 @@ function get_orders_fleet_listing() {
         }
         if(response.response == 'success'){
           var dest="";
-          var temp="<table id=\"ordersFleetListingTable\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Montant</th><th></th></tr></thead><tbody>";
-          dest=dest.concat(temp);
+          //var temp="<table id=\"ordersFleetListingTable\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Montant</th><th></th></tr></thead><tbody>";
+          //dest=dest.concat(temp);
           var i=0;
 
           while (i < response.ordersNumber){
 
-            if(response.order[i].status=="new"){
-                var status="A confirmer";
-            }else if(response.order[i].status=="confirmed"){
-                var status="Commande confirmée";
-            }else if(response.order[i].status=="refused"){
-                var status="Refusée";
-            }else{
-                var status=response.order[i].status;
-            }
+						if(response.order[i].status != 'closed'){
+
+	            if(response.order[i].status=="new"){
+	                var status="A confirmer";
+	            }else if(response.order[i].status=="confirmed"){
+	                var status="En attente de livraison";
+	            }else if(response.order[i].status=="refused"){
+	                var status="Refusée";
+	            }else{
+	                var status=response.order[i].status;
+	            }
 
 
-            if(response.order[i].testBoolean){
-                if(response.order[i].testStatus=="done"){
-                    var test = "Done";
-                }else if(response.order[i].testStatus=="cancelled"){
-                    var test = "Cancelled";
-                }else{
-                    if(response.order[i].testDate){
-                        var test = response.order[i].testDate.shortDate();
-                    }else{
-                        var test = "TBC";
-                    }
-                }
-            }else{
-                    var test = "N";
-            }
-            if(response.order[i].estimatedDeliveryDate == null){
-                var estimatedDeliveryDate = "TBC";
-            }else{
-                var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
-            }
+	            if(response.order[i].testBoolean){
+	                if(response.order[i].testStatus=="done"){
+	                    var test = "Done";
+	                }else if(response.order[i].testStatus=="cancelled"){
+	                    var test = "Cancelled";
+	                }else{
+	                    if(response.order[i].testDate){
+	                        var test = response.order[i].testDate.shortDate();
+	                    }else{
+	                        var test = "TBC";
+	                    }
+	                }
+	            }else{
+	                    var test = "N";
+	            }
+	            if(response.order[i].estimatedDeliveryDate == null){
+	                var estimatedDeliveryDate = "TBC";
+	            }else{
+	                var estimatedDeliveryDate = response.order[i].estimatedDeliveryDate.shortDate();
+	            }
 
-						if(response.order[i].type=="leasing"){
-							var price= Math.round(response.order[i].price*100)/100 + "€/mois";
-						}else if(response.order[i].type=="annualLeasing"){
-							var price= Math.round(response.order[i].price*100)/100 + "€/an";
-						}else{
-							var price= Math.round(response.order[i].price*100)/100 + "€";
+							if(response.order[i].type=="leasing"){
+								var price= Math.round(response.order[i].price*100)/100 + "€/mois";
+							}else if(response.order[i].type=="annualLeasing"){
+								var price= Math.round(response.order[i].price*100)/100 + "€/an";
+							}else{
+								var price= Math.round(response.order[i].price*100)/100 + "€";
+							}
+
+							var newDiv = document.createElement("div");
+							newDiv.setAttribute("id", "progression");
+							var newSpan = document.createElement("span");
+							newSpan.setAttribute("class", "etape fait");
+							var newDivDesc = document.createElement("div");
+							newDivDesc.setAttribute("class", "desc");
+							var newContent = document.createTextNode('Nouvelle commande');
+							newDivDesc.appendChild(newContent);
+							newSpan.appendChild(newDivDesc);
+							newDiv.appendChild(newSpan);
+
+
+							var newSpan = document.createElement("span");
+
+							if(response.order[i].status=="new"){
+								newSpan.setAttribute("class", "ligne");
+							}else{
+								newSpan.setAttribute("class", "ligne fait");
+							}
+
+
+							newDiv.appendChild(newSpan);
+
+							var newSpan = document.createElement("span");
+							if(response.order[i].status=="confirmed"){
+								newSpan.setAttribute("class", "etape fait");
+							}else{
+								newSpan.setAttribute("class", "etape");
+							}
+							var newDivDesc = document.createElement("div");
+							newDivDesc.setAttribute("class", "desc");
+							var newContent = document.createTextNode('Commande confirmée');
+							newDivDesc.appendChild(newContent);
+							newSpan.appendChild(newDivDesc);
+							newDiv.appendChild(newSpan);
+
+							var newSpan = document.createElement("span");
+							newSpan.setAttribute("class", "ligne");
+
+							newDiv.appendChild(newSpan);
+
+							var newSpan = document.createElement("span");
+							newSpan.setAttribute("class", "etape");
+							var newDivDesc = document.createElement("div");
+							newDivDesc.setAttribute("class", "desc");
+							var newContent = document.createTextNode('En attente de livraison');
+							newDivDesc.appendChild(newContent);
+							newSpan.appendChild(newDivDesc);
+							newDiv.appendChild(newSpan);
+
+
+							var ligne=document.createElement("tr");
+							var column=document.createElement("td");
+							var link=document.createElement("a");
+							link.setAttribute("class", "updateCommand");
+							link.setAttribute("data-target", "#orderManagerFleet");
+							link.setAttribute("data-toggle", "modal");
+							link.setAttribute("href", "#");
+							link.setAttribute("name", response.order[i].ID);
+							var newContent = document.createTextNode(response.order[i].ID);
+							link.appendChild(newContent);
+							column.appendChild(link);
+							ligne.appendChild(column);
+
+							var column=document.createElement("td");
+							var newContent = document.createTextNode(response.order[i].user);
+							column.appendChild(newContent);
+							ligne.appendChild(column);
+							var column=document.createElement("td");
+							var newContent = document.createTextNode(response.order[i].brand+" - "+response.order[i].model);
+							column.appendChild(newContent);
+							ligne.appendChild(column);
+							var column=document.createElement("td");
+							var newContent = document.createTextNode(response.order[i].size);
+							column.appendChild(newContent);
+							ligne.appendChild(column);
+							var column=document.createElement("td");
+							var newContent = document.createTextNode(price);
+							column.appendChild(newContent);
+							ligne.appendChild(column);
+
+							var column=document.createElement("td");
+							column.appendChild(newDiv);
+							ligne.appendChild(column);
+
+							if(response.order[i].status=="new"){
+									var column=document.createElement("td");
+									column.setAttribute("class", "text-green");
+									column.setAttribute("onclick", "validate_command('"+response.order[i].ID+"')");
+									var newContent = document.createTextNode('Confirmer');
+									column.appendChild(newContent);
+							}else{
+								var column=document.createElement("td");
+							}
+							ligne.appendChild(column);
+/*
+	            if(response.order[i].status=="new"){
+	                temp=temp.concat("<td><a class=\"text-green\" onclick=\"validate_command('"+response.order[i].ID+"')\">Confirmer</a></td>")
+	            }else{
+	                temp=temp.concat("<td></td>")
+	            }
+	            temp=temp.concat("</tr>");
+							dest=dest.concat(temp);
+*/
+							document.getElementById('ordersFleetListingSpan').append(ligne);
+
 						}
-
-
-          	temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManagerFleet\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\">"+response.order[i].ID+"</td></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+status+"</td><td>"+price+"</td>";
-
-            if(response.order[i].status=="new"){
-                temp=temp.concat("<td><a class=\"text-green\" onclick=\"validate_command('"+response.order[i].ID+"')\">Confirmer</a></td>")
-            }else{
-                temp=temp.concat("<td></td>")
-            }
-            temp=temp.concat("</tr>");
-
-            dest=dest.concat(temp);
 
             i++;
 
           }
-          var temp="</tobdy></table>";
-          dest=dest.concat(temp);
-          document.getElementById('ordersFleetListingSpan').innerHTML = dest;
+          //var temp="</tobdy></table>";
+          //dest=dest.concat(temp);
+          //document.getElementById('ordersFleetListingSpan').innerHTML = dest;
 
           displayLanguage();
-
+/*
             $('#ordersFleetListingTable thead tr').clone(true).appendTo('#test thead');
 
             $('#ordersFleetListingTable thead tr:eq(1) th').each(function(i){
@@ -115,7 +214,7 @@ function get_orders_fleet_listing() {
             });
 
             var table=$('#ordersFleetListingTable').DataTable({
-            });
+            });*/
 
         $('.updateCommand').click(function(){
           construct_form_for_command_validation(this.name);
@@ -204,7 +303,6 @@ function retrieve_command_fleet(ID){
           $('#widget-orderFleet-form select[name=status]').val(response.order.status);
           $('#widget-orderFleet-form input[name=retailPrice]').val((Math.round(response.order.priceHTVA*1.21*100)/100)+" €");
 					$('#widget-orderFleet-form select[name=type]').val(response.order.type);
-					console.log(response.order.type);
 					if(response.order.type=="leasing"){
 						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/mois");
 					}else	if(response.order.type=="annualLeasing"){

@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * Get header Authorization
  * */
 function getAuthorizationHeader(){
@@ -25,7 +25,7 @@ function getAuthorizationHeader(){
  * */
 function getBearerToken() {
     $headers = getAuthorizationHeader();
-    
+
     // HEADER: Get the access token from the header
     if (!empty($headers)) {
         if (preg_match('/Bearer\s(\S+)/', $headers, $matches))
@@ -33,7 +33,7 @@ function getBearerToken() {
 				return $matches[1];
 			else
 				return null;
-    }else{        
+    }else{
         if(!empty($_SESSION['bearerToken'])){
             return $_SESSION['bearerToken'];
         }
@@ -47,7 +47,7 @@ function authenticate($token){
         $stmt = $conn->prepare("SELECT * from customer_referential WHERE TOKEN = ?");
         $stmt->bind_param("s", $token);
         $stmt->execute();
-        $result = $stmt->get_result();    
+        $result = $stmt->get_result();
 		$conn->close();
         return ($result->num_rows===1);
     }else{
@@ -56,8 +56,9 @@ function authenticate($token){
 }
 
 function get_user_permissions($accessDemand, $token){
+
 	if ($token != NULL)
-		if(isset($_SESSION['permissions']) && $_SESSION['permissions'] !== ""){
+		if(isset($_SESSION['permissions']) && $_SESSION['permissions'][0] !== ""){
 			if (is_array($accessDemand))
 				return !empty(array_intersect($accessDemand, $_SESSION['permissions']));
 			else
@@ -66,11 +67,11 @@ function get_user_permissions($accessDemand, $token){
 			include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 			$stmt = $conn->prepare("SELECT ACCESS_RIGHTS from customer_referential WHERE TOKEN = ?");
 			$stmt->bind_param("s", $token);
-			$stmt->execute();    
+			$stmt->execute();
 			$permissions = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['ACCESS_RIGHTS'];
 			$permissions=explode(",", $permissions);
 			$_SESSION['permissions']=$permissions;
-			$stmt->close();    
+			$stmt->close();
 			$conn->close();
 			if (is_array($accessDemand))
 				return !empty(array_intersect($accessDemand, $_SESSION['permissions']));

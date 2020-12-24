@@ -69,7 +69,7 @@ if ($token == NULL) { //Not connected
   //@TODO: Replace email chech with authentication token
   include 'apis/Kameo/connexion.php';
 
-  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, aa.EMAIL, bb.* from customer_referential aa, (SELECT CASE WHEN COUNT(1) =1 THEN 'TRUE' ELSE 'FALSE' END as personnalBike FROM customer_bike_access WHERE customer_bike_access.EMAIL=(SELECT EMAIL FROM customer_referential WHERE TOKEN='$token') AND TYPE='personnel') bb WHERE aa.TOKEN='$token' LIMIT 1";
+  $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, aa.EMAIL, bb.* from customer_referential aa, (SELECT CASE WHEN COUNT(1) =1 THEN 'TRUE' ELSE 'FALSE' END as personnalBike FROM customer_bike_access WHERE customer_bike_access.EMAIL=(SELECT EMAIL FROM customer_referential WHERE TOKEN='$token') AND TYPE='personnel' AND STAANN != 'D') bb WHERE aa.TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
   $user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
@@ -258,6 +258,7 @@ if ($token == NULL) { //Not connected
             $contactDetails = get_company();
             if ($contactDetails['contact']['company'] != "Actiris"){
               echo '<a href="docs/cgvfr.pdf" target="_blank" title="Pdf">' . L::sidebar_terms . '</a><br><br>';
+              echo '<a href="docs/'.L::sidebar_insurance_link.'.pdf" target="_blank" title="Pdf">'.L::sidebar_insurance.'</a><br><br>';
             }
 
             if ($contactDetails['contact']['company'] == "Actiris"){
@@ -471,7 +472,9 @@ if ($token == NULL) { //Not connected
   /** SETTINGS **/
   //CONDITIONS
   if (get_user_permissions("fleetManager", $token)) {
-    include 'include/vues/mykameo/tabs/fleet_manager/settings/widgets/conditions/main.php';
+    if($user_data['BOOKING']=='Y'){
+      include 'include/vues/mykameo/tabs/fleet_manager/settings/widgets/conditions/main.php';
+    }
   }
 
   /** ADMIN **/

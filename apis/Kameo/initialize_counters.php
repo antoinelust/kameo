@@ -119,7 +119,7 @@ if($type=="bookings"){
 
 if($type=="ordersFleet"){
     include 'connexion.php';
-    $sql = "select 1 from client_orders co, customer_referential cr WHERE STATUS='new' and co.EMAIL=cr.EMAIL and cr.COMPANY='$company'";
+    $sql = "select 1 from client_orders co, customer_referential cr WHERE (STATUS='new' or STATUS='confirmed') and co.EMAIL=cr.EMAIL and cr.COMPANY='$company'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);

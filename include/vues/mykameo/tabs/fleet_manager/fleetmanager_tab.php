@@ -84,14 +84,13 @@
               </div>';
 						}
         }
-				if(get_user_permissions("fleetManager", $token)){
-					echo '<div class="separator"></div>';
-				}
 				?>
 	</div>
 	<div class="row">
     <?php
     if(get_user_permissions("fleetManager", $token)){
+			if($user_data['BOOKING']=='Y'){
+				echo '<div class="separator"></div>';
         echo '
 				<div class="col-md-12">
         <h4>Réglages</h4>
@@ -111,6 +110,7 @@
         </div>
 				</div>
         <div class="separator"></div>';
+			}
     }?>
 		</div>
 
