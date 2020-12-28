@@ -59,7 +59,20 @@ echo '<script type="text/javascript" src="js/language2.js">
 </script>';
 
 // Traduction notifications
-require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/notifications/notifications_lang.php';
+//require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/notifications/notifications_lang.php';
+
+
+function get_class_consts($class_name)
+{
+    $c = new ReflectionClass($class_name);
+    return ($c->getConstants());
+}
+
+
+echo '<script type="text/javascript">
+var traduction = '.json_encode(get_class_consts("L")).';
+console.log(traduction);
+</script>';
 
 
 
@@ -79,9 +92,6 @@ if ($token == NULL) { //Not connected
     const user_ID = "' . $user_ID . '";
     const user_data = JSON.parse(`' . json_encode($user_data) . '`);
     var email=user_data["EMAIL"];
-    var feedback_start = "' .L::notifications_feedback_start. '";
-    var feedback_middle = "' .L::notifications_feedback_middle. '";
-    var feedback_end = "' .L::notifications_feedback_end. '";
   </script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
   <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
@@ -127,6 +137,9 @@ if ($token == NULL) { //Not connected
   /** TEST VARIABLE @TODO: REMOVE **/
   //$company = '';
 ?>
+
+
+
   <section class="content">
     <div class="container">
       <div class="row">

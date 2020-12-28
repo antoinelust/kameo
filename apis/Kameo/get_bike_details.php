@@ -70,6 +70,7 @@ if($id != NULL)
     $response['leasingPrice']=$row['LEASING_PRICE'];
     $response['bikePrice']=$row['BIKE_PRICE'];
     $response['buyingDate']=$row['BIKE_BUYING_DATE'];
+    $response['sellingDate']=$row['SELLING_DATE'];
     $response['billingGroup']=$row['BILLING_GROUP'];
     $response['billingType']=$row['BILLING_TYPE'];
     $response['contractType']=$row['CONTRACT_TYPE'];

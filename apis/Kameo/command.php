@@ -14,17 +14,18 @@ $token = getBearerToken();
 
 if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
+
     if($action == "command"){
 
         $portfolioID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
         $email=isset($_POST['email']) ? $_POST['email'] : NULL;
         $size=isset($_POST['size']) ? $_POST['size'] : NULL;
         $remark=isset($_POST['remark']) ? nl2br($_POST['remark']) : NULL;
-        $price = isset($_POST['price']) ? $_POST['price'] : NULL;
-        $type = isset($_POST['type']) ? $_POST['type'] : "leasing";
+        $order_amount = isset($_POST['order_amount']) ? $_POST['order_amount'] : NULL;
+        $leasing_type = isset($_POST['leasing_type']) ? $_POST['leasing_type'] : "leasing";
 
         include 'connexion.php';
-        $stmt = $conn->prepare("SELECT * FROM customer_referential WHERE EMAIL=?");
+        $stmt = $conn->prepare("SELECT PRENOM, NOM, bb.ID FROM customer_referential aa, companies bb WHERE EMAIL=? and aa.COMPANY=bb.INTERNAL_REFERENCE");
         if (!$stmt->bind_param("s", $email)) {
             $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
             echo json_encode($response);
@@ -40,6 +41,7 @@ if(isset($_POST['action'])){
         $resultat=$stmt->get_result()->fetch_assoc();
         $firstName=$resultat['PRENOM'];
         $name=$resultat['NOM'];
+        $companyID=$resultat['ID'];
         $stmt->close();
 
 
@@ -55,12 +57,10 @@ if(isset($_POST['action'])){
             errorMessage("ES0061");
         }
 
-        $stmt = $conn->prepare("INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE) VALUES(?, ?, ?, ?, ?, 'new', ?, ?)") or die($mysqli->error);
-				$stmt->bind_param("ssissis", $email, $email, $portfolioID, $size, $remark, $price, $type);
+        $stmt = $conn->prepare("INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, COMPANY) VALUES(?, ?, ?, ?, ?, 'new', ?, ?, ?)") or die($mysqli->error);
+				$stmt->bind_param("ssissdss", $email, $email, $portfolioID, $size, $remark, $order_amount, $leasing_type, $companyID);
 				$stmt->execute();
         $stmt->close();
-
-
 
         require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
         $mail = new PHPMailer();

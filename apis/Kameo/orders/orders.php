@@ -75,12 +75,12 @@ switch($_SERVER["REQUEST_METHOD"])
 				$stmt->close();
 				$response['bikeNumber'] = count($orderable);
 
-				$stmt = $conn->prepare("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPE, TVA_INCLUDED from conditions WHERE COMPANY=? AND NAME='generic'");
+				$stmt = $conn->prepare("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPES, TVA_INCLUDED from conditions WHERE COMPANY=? AND NAME='generic'");
 				$stmt->bind_param("s", $company_reference);
 				$stmt->execute();
 				$reponse=$stmt->get_result()->fetch_array(MYSQLI_ASSOC);
 				$response['discount']=$reponse['DISCOUNT'];
-				$response['cafeteriaType']=$reponse['CAFETERIA_TYPE'];
+				$response['cafeteriaTypes']=explode(',', $reponse['CAFETERIA_TYPES']);
 				$response['tvaIncluded']=$reponse['TVA_INCLUDED'];
 				$response['remainingPriceIncludedInLeasing']=$reponse['REMAINING_PRICE_INCLUDED_IN_LEASING'];
 				$stmt->close();
@@ -105,12 +105,12 @@ switch($_SERVER["REQUEST_METHOD"])
 				$cafeteria = ($_POST['cafeteria'] === "true") ? "Y" : "N";
 				$remainingPriceIncluded = ($_POST['includedLeasingPrice'] === "true") ? "Y" : "N";
 				$tva = ($_POST['tva'] === "true") ? "Y" : "N";
-				$type = isset($_POST['type']) ? $_POST['type'] : "leasing";
+				$types = isset($_POST['types']) ? $_POST['types'] : NULL;
 				$discount=isset($_POST['discount']) ? $_POST['discount'] : NULL;
 				$sellingPorcentage=isset($_POST['sellingPorcentage']) ? $_POST['sellingPorcentage'] : NULL;
 				$stmt->close();
-				$stmt = $conn->prepare("UPDATE conditions SET HEU_MAJ=CURRENT_TIMESTAMP, CAFETARIA=?, DISCOUNT=?, CAFETERIA_TYPE=?, TVA_INCLUDED=?, REMAINING_PRICE_INCLUDED_IN_LEASING	=?, SELLING_PRICE=? WHERE ID = ?");
-				$stmt->bind_param("sdssddi", $cafeteria, $discount, $type, $tva, $remainingPriceIncluded, $sellingPorcentage, $conditionID);
+				$stmt = $conn->prepare("UPDATE conditions SET HEU_MAJ=CURRENT_TIMESTAMP, CAFETARIA=?, DISCOUNT=?, CAFETERIA_TYPES=?, TVA_INCLUDED=?, REMAINING_PRICE_INCLUDED_IN_LEASING	=?, SELLING_PRICE=? WHERE ID = ?");
+				$stmt->bind_param("sdssddi", $cafeteria, $discount, $types, $tva, $remainingPriceIncluded, $sellingPorcentage, $conditionID);
 				$stmt->execute();
 				$stmt->close();
 				if ($_POST['cafeteria'] === "true")

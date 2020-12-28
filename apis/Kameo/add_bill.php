@@ -215,7 +215,6 @@ if($billType == "manual"){
         $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
         $html2pdf->pdf->SetDisplayMode('fullpage');
         $html2pdf->writeHTML($test);
-
         $path=$_SERVER['DOCUMENT_ROOT'].'/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
         $html2pdf->Output($path, 'F');
 
@@ -225,13 +224,8 @@ if($billType == "manual"){
         $response = array ('response'=>'error', 'message'=> $formatter->getHtmlMessage());
         echo json_encode($response);
         die;
-
-
     }
-
     $fichier = date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
-
-
 }
 
 
@@ -273,6 +267,10 @@ if($billType=='manual'){
     }
 }else{
 }
+
+echo json_encode($billType);
+die;
+
 
 $conn->close();
 $response['sql']=$sql;

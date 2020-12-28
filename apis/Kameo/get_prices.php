@@ -13,7 +13,7 @@ $leasingDuration=36;
 $otherCost=3*84+4*100;
 
 
-function get_prices($retailPrice, $company){
+function get_prices($retailPrice, $company = NULL){
 
 
   if($company != NULL){

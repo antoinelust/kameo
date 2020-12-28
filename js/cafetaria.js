@@ -34,6 +34,8 @@ function load_cafetaria(){
             }
             if(response.response == 'success'){
 				var $grid = $('.grid').isotope();
+
+
 				if (($('.grid').isotope('getItemElements').length == 0))
 				{
 					for (var i=0; i<response.bikeNumber; i++){
@@ -66,7 +68,9 @@ function load_cafetaria(){
                   var stock="stock";
               }
 
-              if(response.cafeteriaType=="leasing"){
+              var prices="";
+              var dataprop="";
+              if(response.cafeteriaTypes.includes("leasing")){
                 var price = response.bike[i].leasingPrice;
                 if(response.bike[i].company == "City Dev"){
                     price = Math.round(price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
@@ -78,7 +82,13 @@ function load_cafetaria(){
                 }else{
                   var priceWithLabel = price + "€/mois HTVA"
                 }
-              }else if(response.cafeteriaType=="annualLeasing"){
+
+                prices = prices + "Leasing men. : "+priceWithLabel+"<br>";
+                dataprop += "data-leasing="+price+" ";
+
+              }
+
+              if(response.cafeteriaTypes.includes("annualleasing")){
                   var price = (response.bike[i].leasingPrice)*12;
                   if(response.tvaIncluded == "Y"){
                     var priceWithLabel = Math.round(price*1.21*100)/100;
@@ -86,7 +96,12 @@ function load_cafetaria(){
                   }else{
                     var priceWithLabel = price + "€/an HTVA"
                   }
-               }else if(response.cafeteriaType=="achat"){
+                  prices = prices + "Leasing an. : "+priceWithLabel+"<br>";
+                  dataprop += "data-annualleasing="+price+" ";
+
+              }
+
+              if(response.cafeteriaTypes.includes("achat")){
                 var price = response.bike[i].price;
 
                 if(response.tvaIncluded == "Y"){
@@ -95,6 +110,10 @@ function load_cafetaria(){
                 }else{
                   var priceWithLabel = price + "€ HTVA"
                 }
+
+                prices = prices + "Achat : "+priceWithLabel+"<br>";
+                dataprop += "data-achat="+price+" ";
+
               }
 
 
@@ -113,7 +132,7 @@ function load_cafetaria(){
 									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
 									<p>"+response.bike[i].model+" "+frameType+"\
 									<br>"+response.bike[i].utilisation+"\
-									<br>Prix : "+priceWithLabel;
+									<br>"+prices;
 
                     if(stock==="stock"){
                         temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
@@ -123,7 +142,7 @@ function load_cafetaria(){
 
                     temp=temp+"\
                     <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-amount=\""+price+"\" data-type=\""+response.cafeteriaType+"\" data-toggle=\"modal\"\
-                    href=\"#\" name=\""+response.bike[i].ID+"\">\
+                    href=\"#\" name=\""+response.bike[i].ID+"\" "+dataprop+">\
 										<span>Commander</span>\
 									</a>\
 									</p>\
@@ -133,7 +152,7 @@ function load_cafetaria(){
               var $item=$(temp);
 
 						  // add width and height class
-						  $item.addClass( 'grid-item--width3').addClass('grid-item--height3');
+						  $item.addClass( 'grid-item--width3').addClass('grid-item--height4').addClass("plan");
 						  $grid.isotope( 'insert', $item );
 					}
 
@@ -141,7 +160,7 @@ function load_cafetaria(){
 					setTimeout(function(){
 						$grid.isotope( 'reloadItems' ).isotope();
 						$( ".orderBikeClick" ).click(function() {
-							fillCommandDetails(this.name, $(this).data('amount'), $(this).data('type'));
+							fillCommandDetails(this.name, $(this).data('amount'), $(this).data('type'), $(this).data('leasing'), $(this).data('annualleasing'), $(this).data('achat'));
 						});
 						$( "img.portfolio-img" ).load(function(){
 							$('.grid').isotope();
@@ -155,7 +174,60 @@ function load_cafetaria(){
 }
 
 
-function fillCommandDetails(ID, price, type){
+function fillCommandDetails(ID, price, type, leasing, annualleasing, achat){
+    $('#widget-command-form select[name=leasing_type]')
+        .find('option')
+        .remove()
+        .end()
+    ;
+
+    var count=0;
+    if(leasing){
+      $('#widget-command-form select[name=leasing_type]')
+        .append('<option value="leasing">Leasing</option>');
+      $('.order_amount_order').html("€/mois");
+      $('#widget-command-form input[name=order_amount]').val(leasing);
+      count++;
+    }
+    if(annualleasing){
+      $('#widget-command-form select[name=leasing_type]')
+        .append('<option value="annualleasing">annualLeasing</option>');
+      $('#widget-command-form input[name=order_amount]').val(annualleasing);
+      $('.order_amount_order').html("€/mois");
+      count++;
+    }
+    if(achat){
+      $('#widget-command-form select[name=leasing_type]')
+        .append('<option value="achat">Achat</option>');
+      $('#widget-command-form input[name=order_amount]').val(achat);
+      $('.order_amount_order').html("€/mois");
+      count++;
+    }
+    if(count>1){
+      $('#widget-command-form select[name=leasing_type]').val("");
+      $('.order_amount_order').html("");
+    }else{
+      $('#widget-command-form select[name=leasing_type]').attr('readonly', true);
+    }
+
+    $('#widget-command-form select[name=leasing_type]').change(function(){
+      if($('#widget-command-form select[name=leasing_type]').val()=="leasing"){
+        $('.order_amount_order').html("€/mois");
+        $('#widget-command-form input[name=order_amount]').val(leasing);
+      }else if($('#widget-command-form select[name=leasing_type]').val()=="annualleasing"){
+        $('.order_amount_order').html("€/mois");
+        $('#widget-command-form input[name=order_amount]').val(annualleasing);
+      }else if($('#widget-command-form select[name=leasing_type]').val()=="achat"){
+        $('.order_amount_order').html("€");
+        $('#widget-command-form input[name=order_amount]').val(achat);
+      }else{
+        $('#widget-command-form input[name=order_amount]').val('');
+      }
+    })
+    if(count>1){
+      $('#widget-command-form input[name=order_amount]').val('');
+    }
+
     $.ajax({
     url: 'apis/Kameo/load_portfolio.php',
     type: 'get',
@@ -165,8 +237,6 @@ function fillCommandDetails(ID, price, type){
         console.log(response.message);
       } else{
         $('#widget-command-form input[name=ID]').val(response.ID);
-        $('#widget-command-form input[name=price]').val(price);
-        $('#widget-command-form input[name=type]').val(type);
         $('#widget-command-form select[name=brand]').val(response.brand);
         $('#widget-command-form input[name=model]').val(response.model);
         $('#widget-command-form select[name=frame]').val(response.frameType);

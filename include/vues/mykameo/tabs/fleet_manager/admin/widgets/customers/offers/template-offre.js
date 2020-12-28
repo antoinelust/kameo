@@ -678,6 +678,31 @@ $('body').on('click','.getTemplate', function(){
   });
 })
 
+//Kameo contactsTable
+try{
+  $('#templateForm select[name=offer_template_kameo_contact]')
+    .find('option')
+    .remove()
+    .end();
+
+  $.ajax({
+    url: 'apis/Kameo/get_kameobikes_members.php',
+    type: 'get',
+    success: function(response){
+      if (response.response == 'error')
+        console.log(response.message);
+      else if (response.response == 'success') {
+        for (var i = 0; i < response.membersNumber; i++)
+        $('#templateForm select[name=offer_template_kameo_contact]')
+          .append("<option value=" + response.member[i].email + ">" + response.member[i].firstName + " " + response.member[i].name + "<br>");
+
+        $('#templateForm select[name=offer_template_kameo_contact]').val(email);
+      }
+    }
+  });
+}catch(error){
+  console.log(error);
+}
 
 //Autres
 

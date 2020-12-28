@@ -526,11 +526,14 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
 
                           }
                         }).trigger("change");
-
-                        if(response.contractStart){
-                            $('#widget-bikeManagement-form input[name=contractStart]').val(response.contractStart.substr(0,10));
+                        if(response.contractType=="selling"){
+                          $('#widget-bikeManagement-form input[name=contractStart]').val(response.sellingDate.substr(0,10));
                         }else{
-                            $('#widget-bikeManagement-form input[name=contractStart]').val("");
+                          if(response.contractStart){
+                              $('#widget-bikeManagement-form input[name=contractStart]').val(response.contractStart.substr(0,10));
+                          }else{
+                              $('#widget-bikeManagement-form input[name=contractStart]').val("");
+                          }
                         }
                         if(response.contractEnd){
                             $('#widget-bikeManagement-form input[name=contractEnd]').val(response.contractEnd.substr(0,10));

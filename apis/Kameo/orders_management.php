@@ -263,8 +263,6 @@ if(isset($_POST['action'])){
                 $response['order'][$i]['brand']=$resultat['BRAND'];
                 $response['order'][$i]['model']=$resultat['MODEL'];
                 $priceHTVA=$resultat['PRICE_HTVA'];
-
-
                 $companyID=$row['COMPANY'];
                 $sql="select COMPANY_NAME FROM companies WHERE ID='$companyID'";
                 if ($conn->query($sql) === FALSE) {

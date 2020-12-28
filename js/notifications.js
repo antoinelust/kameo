@@ -74,6 +74,7 @@ function load_notifications(){
     method: 'get',
     data: {'action': "retrieveNotifications"},
     success: function(response){
+      console.log(response);
       if (response.response == "success" & response.notificationsNumber > 0) {
         var content = "";
         var size = response.notification.length;
@@ -81,14 +82,16 @@ function load_notifications(){
         var countNew = 0;
         response.notification.forEach((notification) => {
           if(notification.TYPE=="feedback"){
-            notification.TEXT=feedback_start+notification.TYPE_ITEM+feedback_middle+notification.TYPE_ITEM+','+notification.ID+feedback_end;
+            notification.TEXT=traduction.notifications_feedback_start+notification.TYPE_ITEM+traduction.notifications_feedback_middle+notification.TYPE_ITEM+','+notification.ID+traduction.notifications_feedback_end;
+          }else if(notification.TYPE=="lateBooking"){
+            notification.TEXT=traduction.notifications_lateBooking_1+notification.TYPE_ITEM+traduction.notifications_lateBooking_2+"<a data-toggle='modal' data-target='#lateBookingNotification' href='#' data-ID='"+notification.TYPE_ITEM+"' data-sart='"+notification.start+"' data-end='"+notification.end+"' data-bike='"+notification.model+"' class='text-green'> "+traduction.notifications_lateBooking_3+"</a>.";
           }
           read = "";
           borderBottom = "";
           markAsRead = "";
           if (notification.READ == 'N') {
             read = "notRead";
-            markAsRead = '<span class="markAsRead text-green pointerClick" style="text-decoration:underline;">' + notifTrads[0] + '</span>';
+            markAsRead = '<span class="markAsRead text-green pointerClick" style="text-decoration:underline;">' + traduction.notif_mark_as_read + '</span>';
             countNew++;
           }
           if (count != size) {
@@ -113,7 +116,7 @@ function load_notifications(){
         } else if (size > 0){
           $('.notificationsBlock').html(content);
         } else{
-          content = '<div class="col-sm-12 notificationItem"><span>' + notifTrads[1] + '</span></div>'
+          content = '<div class="col-sm-12 notificationItem"><span>' + traduction.notif_no_notif + '</span></div>'
           $('.notificationsBlock').html(content);
         }
       }

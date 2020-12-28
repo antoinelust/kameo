@@ -279,7 +279,7 @@ function log_inputs($token = null){
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach($_POST as $key => $value)
     {
-      if($value != ''){
+      if($value != '' && gettype($value) != 'array'){
         error_log(date("Y-m-d H:i:s")." - ".$_SERVER['REQUEST_URI']." - INPUT - ".$key." : ".$value."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
       }
     }
@@ -343,6 +343,67 @@ function getCondition(){
     } else
           error_message('500', 'Error occured while changing data');
   }
+}
+
+/*Exemples to use for next function:
+
+execSQL("SELECT * FROM table WHERE id = ?", array('i', $id), false);
+
+execSQL("SELECT * FROM table", array(), false);
+
+execSQL("INSERT INTO table(id, name) VALUES (?,?)", array('ss', $id, $name), true);
+
+*/
+
+
+function execSQL($sql, $params, $close){
+  include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+  $stmt = $conn->prepare($sql) or die ("Failed to prepared the statement!");
+  if($params){
+    call_user_func_array(array($stmt, 'bind_param'), refValues($params));
+  }
+
+  $stmt->execute();
+
+  if($close){
+     $result = $conn->affected_rows;
+  } else {
+    $meta = $stmt->result_metadata();
+
+    while ( $field = $meta->fetch_field() ) {
+      $parameters[] = &$row[$field->name];
+    }
+
+    call_user_func_array(array($stmt, 'bind_result'), refValues($parameters));
+
+    while ( $stmt->fetch() ) {
+       $x = array();
+       foreach( $row as $key => $val ) {
+          $x[$key] = $val;
+       }
+       $results[] = $x;
+    }
+    if(isset($results)){
+      $result = $results;
+    }else{
+      $result = NULL;
+    }
+  }
+
+  $stmt->close();
+  $conn->close();
+  return  $result;
+}
+
+function refValues($arr){
+  if (strnatcmp(phpversion(),'5.3') >= 0) //Reference is required for PHP 5.3+
+  {
+      $refs = array();
+      foreach($arr as $key => $value)
+          $refs[$key] = &$arr[$key];
+      return $refs;
+  }
+  return $arr;
 }
 
 ?>

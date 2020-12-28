@@ -18,6 +18,7 @@
   $accessoriesNumber = isset($_POST["accessoriesNumber"]) ? $_POST["accessoriesNumber"] : NULL;
   $othersNumber = isset($_POST["othersNumber"]) ? $_POST["othersNumber"] : NULL;
   $contact['id'] = isset($_POST["contactSelect"]) ? $_POST["contactSelect"] : NULL;
+  $contactKameo = isset($_POST["offer_template_kameo_contact"]) ? $_POST["offer_template_kameo_contact"] : NULL;
   $delais = isset($_POST["delais"]) ? $_POST["delais"] : NULL;
   $offerValidity = isset($_POST["offerValidity"]) ? $_POST["offerValidity"] : NULL;
   $bikeFinalPrice = isset($_POST["bikeFinalPrice"]) ? $_POST["bikeFinalPrice"] : NULL;
@@ -46,6 +47,19 @@
   $others = $othersNumber > 0 ? getOthers($othersNumber) : array();
 
 
+  include 'connexion.php';
+  $sql = "SELECT * FROM customer_referential WHERE EMAIL='$contactKameo'";
+  if ($conn->query($sql) === FALSE) {
+      $response = array ('response'=>'error', 'message'=> $conn->error);
+      echo json_encode($response);
+      die;
+  }
+  $result=mysqli_query($conn, $sql);
+  $resultat=mysqli_fetch_assoc($result);
+  $prenomKameo=$resultat['PRENOM'];
+  $nomKameo=$resultat['NOM'];
+  $phoneKameo=$resultat['PHONE'];
+
 
   $bikes = array();
   $boxes = array();
@@ -56,6 +70,7 @@
 
   $accessories = getItemsInDatabase($accessoriesId, 'accessories_catalog');
   $contact = getItemInDatabase($contact['id'], 'companies_contact');
+
 
     for ($i=0; $i < $boxesNumber ; $i++) {
 
@@ -79,9 +94,10 @@
   $accessories = distinct($accessories);
 
   $company = getCompany($companyId);
-
+  include 'get_prices.php';
   for ($i=0; $i < count($bikes) ; $i++) {
-    $bikes[$i]['LEASING_PRICE'] = leasingPrice($bikes[$i]['PRICE_HTVA']);
+    $response=get_prices($bikes[$i]['PRICE_HTVA']);
+    $bikes[$i]['LEASING_PRICE'] = $response['leasingPrice'];
   }
 
   $currentDate = getDate();
@@ -225,25 +241,6 @@
     $conn->close();
     return $res;
   }
-
-  function leasingPrice($retailPrice){
-    $data=array("retailPrice" => $retailPrice);
-
-    if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-        $url='https://www.kameobikes.com/include/get_prices.php';
-    }else if(substr($_SERVER['REQUEST_URI'], 1, 4) == "test"){
-        $url='https://www.kameobikes.com/test/include/get_prices.php';
-    }else{
-        $url='localhost:81/kameo/include/get_prices.php';
-    }
-
-    $test=CallAPI('POST', $url, $data);
-    $response = json_decode($test);
-
-
-    return $response->leasingPrice;
-  }
-
   function distinct($arr){
     $temp = $arr;
     //parcours le tableau

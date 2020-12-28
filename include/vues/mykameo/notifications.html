@@ -9,3 +9,128 @@
   <div class="notificationsBlock row" style="display:none; overflow:hidden;">
   </div>
 </div>
+
+
+<div
+  class="modal fade"
+  id="lateBookingNotification"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <button
+            type="button"
+            class="close col-sm-1"
+            data-dismiss="modal"
+            aria-hidden="true">
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h4 class="text-green">Informations sur la réservation</h4>
+            <form
+              id="widget_updateDepositHour_notification"
+              action="apis/Kameo/bookings/updateBooking.php"
+              role="form"
+              method="post"
+            >
+            <div class="row">
+              <div class="col-md-4" align="center">
+                <label for="ID">ID&nbsp;&nbsp;</label
+                ><input
+                  type="number"
+                  name="ID"
+                  class="form-control required"
+                  readonly
+                />
+              </div>
+              <div class="col-md-4" align="center">
+                <label for="condition">Début de réservation</label>
+                <input
+                  type="datetime-local"
+                  name="start"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+              <div class="col-md-4" align="center">
+                <label for="condition">Fin de réservation</label>
+                <input
+                  type="datetime-local"
+                  name="end"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <h4 class="text-green">
+                Quand pensez-vous pouvoir rendre le vélo ?
+              </h4>
+              <div class="col-md-4" align="center">
+                <label for="condition">Nouvelle Fin de réservation</label>
+                <input
+                  name="newEndDate"
+                  type="datetime-local"
+                  class="form-control required"
+                />
+              </div>
+
+            </div>
+            <div class="separator"></div>
+            <button
+              class="button small green button-3d rounded icon-left"
+              type="submit"
+            >
+            <i class="fa fa-paper-plane"></i>Envoyer
+            </button>
+            </form>
+            </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+var hh = today.getHours();
+var minutes = today.getMinutes();
+if(dd<10){
+    dd='0'+dd
+}
+if(mm<10){
+    mm='0'+mm
+}
+if(hh<10){
+  hh='0'+hh;
+}
+if(minutes<10){
+  minutes='0'+minutes;
+}
+
+today = yyyy+'-'+mm+'-'+dd;
+todayWithHours =today+'T'+hh+':'+mm+':00';
+$("#widget_updateDepositHour_notification input[name=newEndDate]").attr("min",todayWithHours);
+
+</script>

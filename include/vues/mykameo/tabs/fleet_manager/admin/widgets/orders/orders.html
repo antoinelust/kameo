@@ -50,6 +50,7 @@
                   var discount = oData.DISCOUNT;
                   var tva = oData.TVA_INCLUDED === "Y" ? true : false;
                   var type = oData.CAFETERIA_TYPE;
+                  var types = oData.CAFETERIA_TYPES;
                   $(nTd).html(
                     "<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='" +
                       cafetaria +
@@ -57,6 +58,8 @@
                       discount +
                       "'data-tva='" +
                       tva +
+                      "'data-types='" +
+                      types +
                       "'data-type='" +
                       type +
                       "' data-company='" +

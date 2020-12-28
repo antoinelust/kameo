@@ -78,9 +78,9 @@
             <div class="row">
               <div class="col-md-3" align="center">
                 <label for="type">Type</label><br>
-                <select name="type" class="form-control required">
+                <select name="types[]" class="form-control required" id="types" size="4" multiple="">
                   <option value="leasing">Leasing Mensuel</option>
-                  <option value="annualLeasing">Leasing Annuel</option>
+                  <option value="annualleasing">Leasing Annuel</option>
                   <option value="achat">Achat sans service</option>
                   <option value="achatWithService">Achat avec service</option>
                 </select>
@@ -228,22 +228,33 @@
           newLi.innerHTML = email.PRENOM + " " + email.NOM;
           $('.usersOrderManageable').append(newLi);
         })
-
-
       },
     });
 
     var has_cafetaria = $(event.relatedTarget).data("cafetaria");
     var type = $(event.relatedTarget).data("type");
+    var types = $(event.relatedTarget).data("types");
     var has_tva = $(event.relatedTarget).data("tva");
     var discount = $(event.relatedTarget).data("discount");
     $("#manageOrderableCompanyName").val(current_company);
     $("#manageOrderableCafetaria").prop("checked", has_cafetaria);
     $("#manageOrderableTVA").prop("checked", has_tva);
-    $('#widget-manageCompaniesOrderable-form select[name=type]').val(type);
+
+    $('#types').val(types);
+    console.log(types);
+
     $("#widget-manageCompaniesOrderable-form input[name=discount]").val(
       discount
     );
+
+    if(types != null){
+      var values=types;
+      $.each(values.split(","), function(i,e){
+          $("#types option[value='" + e + "']").prop("selected", true);
+          console.log(e);
+      });
+    }
+
 
     $('#widget-manageCompaniesOrderable-form input[name=discount]').prop("disabled", !has_cafetaria);
     $('#widget-manageCompaniesOrderable-form input[name=tva]').prop("disabled", !has_cafetaria);
@@ -394,6 +405,13 @@
             "#widget-manageCompaniesOrderable-form select[name=type]"
           ).val(),
         });
+        data.push({
+          name: "types",
+          value: $(
+            "#types"
+          ).val(),
+        });
+
         $.ajax({
           type: "POST",
           url: url,

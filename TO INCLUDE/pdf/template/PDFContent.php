@@ -203,7 +203,7 @@ h2{
   <table class="maxWidth" >
     <tr>
       <td style="text-align:left; padding-left:0; margin-left:0; width:50%;">
-        <span class="arcamajora" style="color:#efefef; font-size:25px;">KAMEO Bikes sprl</span><br/><br/>
+        <span class="arcamajora" style="color:#efefef; font-size:25px;">KAMEO Bikes SRL</span><br/><br/>
         Rue de la Brasserie, 8<br/>
         4000 Liège<br/>
       </td>
@@ -216,9 +216,9 @@ h2{
   <table class="maxWidth" style="margin-top:10mm;">
     <tr>
       <td style="text-align:left; padding-left:0; margin-left:0;  width:50%;">
-        <div class="arcamajora" style="color:#efefef; font-size:25px;">Julien JAMAR DE BOLSEE</div><br/><br/>
-        julien.jamar@kameobikes.com<br/>
-        0498 72 75 46
+        <div class="arcamajora" style="color:#efefef; font-size:25px;"><?php echo $prenomKameo.' '.$nomKameo; ?></div><br/>
+        <?php echo $contactKameo; ?><br/>
+        <?php echo $phoneKameo; ?>
       </td>
       <td style="text-align:right; padding-right:0; margin-right:0;  width:50%;">
         <span class="arcamajora" style="color:#efefef; font-size:25px;"><?php echo $contact['PRENOM']; ?> <?php echo strtoupper($contact['NOM']); ?></span><br/><br/>
@@ -238,7 +238,7 @@ h2{
     <table class="maxWidth">
       <tr>
         <td><img src="<?php echo __DIR__ ; ?>/img/logo_black.png" alt="kameo" class="logo-xsm"></td>
-        <td style="font-size:13px;">Kameo bikes SPRL<br/>Rue de la Brasserie, 8<br/>B-4000 Liège<br/>Belgium</td>
+        <td style="font-size:13px;">Kameo bikes SRL<br/>Rue de la Brasserie, 8<br/>B-4000 Liège<br/>Belgium</td>
         <td style="width:33%; text-align:right; padding-right:0; margin-right:0;"><span>Page [[page_cu]]</span></td>
       </tr>
     </table>
@@ -246,9 +246,9 @@ h2{
   <div>
     <h1>Introduction</h1>
     <p>
-      <span class="bold">KAMEO BIKES</span> est une entreprise active dans la mobilité urbaine qui propose,
+      <span class="bold">KAMEO BIKES</span> est une entreprise active dans la mobilité qui propose,
       aux entreprises, des solutions complètes de mobilité basées sur le vélo.
-      Nous sommes convaincus que le vélo est le mode de transport urbain de demain mais,
+      Nous sommes convaincus que le vélo est le mode de transport de demain mais,
       surtout d’aujourd’hui, et nous travaillons tous les jours pour le démontrer à nos clients.
     </p>
     <p>
@@ -273,7 +273,7 @@ h2{
 <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
   <h2>Objet</h2>
   <p>
-    Le présent document est, avec ses annexes, l’offre détaillée de KAMEO Bikes SPRL (appelé KAMEO dans la
+    Le présent document est, avec ses annexes, l’offre détaillée de KAMEO Bikes SRL (appelé KAMEO dans la
     suite du document) pour <?php echo $company['COMPANY_NAME']; ?> pour l’acquisition
     <?php if($buyOrLeasing =="leasing" || $buyOrLeasing =="both"){echo "sous forme de location tout inclus";} ?>
     de
@@ -289,7 +289,7 @@ h2{
   </p>
   <h2>Documents de référence et contacts</h2>
   <p>
-    Cette offre est basée sur les échanges entre, M./Mme. <?php echo $contact['NOM']; ?> de <?php echo $company['COMPANY_NAME'] ?> et M. Jamar de KAMEO.
+    Cette offre est basée sur les échanges entre, M./Mme. <?php echo $contact['NOM']; ?> de <?php echo $company['COMPANY_NAME'] ?> et M./Mme <?php echo $prenomKameo.' '.$nomKameo ?>.
   </p>
   <p>
     La solution proposée est cependant définie entièrement et uniquement par ce document et ses annexes
@@ -390,18 +390,16 @@ h2{
 if (count($bikes) > 0) {
   foreach ($bikes as $bike) { ?>
     <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
-      <?php echo <<<BIKETITLE
-      <table class="maxWidth">
+      <?php echo '<table class="maxWidth">
         <tbody>
           <tr>
-            <td style="width:70%;"><span><h2>Le vélo: {$bike['BRAND']} {$bike['MODEL']}</h2></span></td>
-            <td class="green" style:"width:30%; text-align:center;"><div class="count-border" style="width:auto;"><span style="font-size:30px;">x </span><span style="font-size:25mm;">{$bike['count']}</span></div></td>
+            <td style="width:70%;"><span><h2>Le vélo: '.$bike['BRAND'].' '.$bike['MODEL'].'</h2></span></td>
+            <td class="green" style:"width:30%; text-align:center;"><div class="count-border" style="width:auto;"><span style="font-size:30px;">x </span><span style="font-size:25mm;">'.$bike['count'].'</span></div></td>
           </tr>
         </tbody>
-      </table>
-BIKETITLE;
-      $temp = $bike['BRAND'] . '_' . $bike['MODEL'] . '_' . $bike['FRAME_TYPE'];
-      $temp = strtolower(str_replace(' ','-',$temp));
+      </table>';
+
+      $temp = $bike['ID'];
       $bikeImg =  __DIR__ .'/../../../images_bikes/'.$temp.'.jpg' ;
       ?>
       <table class="maxWidth tableBorder tableMargins" style="margin-top:10mm; margin-bottom:10mm;">
@@ -415,10 +413,11 @@ BIKETITLE;
         </thead>
         <tbody>
           <tr>
-            <td style="width:25%"><span class="lMargin"><?php echo $bike['BRAND'] ?></span></td>
-            <td style="width:25%"><span class="lMargin"><?php echo $bike['MODEL'] ?></span></td>
-            <td style="width:25%"><span class="lMargin"><?php echo $bike['UTILISATION'] ?></span></td>
-            <td style="width:25%"><?php if($bike['ELECTRIC'] == "Y"){ echo "<span class='green lMargin'>Oui</span>";}else{echo "<span class='red lMargin'>Non</span>";}   ?></td>
+            <td><span class="lMargin"><?php echo $bike['BRAND'] ?></span></td>
+            <td><span class="lMargin"><?php echo $bike['MODEL'] ?></span></td>
+            <td><span class="lMargin"><?php echo $bike['UTILISATION'] ?></span></td>
+            <td><?php if($bike['ELECTRIC'] == "Y"){ echo "<span class='green lMargin'>Oui</span>";}else{echo "<span class='red lMargin'>Non</span>";}   ?></td>
+
           </tr>
         </tbody>
       </table>
@@ -514,8 +513,6 @@ if($numberMaintenance > 0){ ?>
         </tr>
       </tbody>
     </table>
-  </page>
-  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
     <p>
       Les éléments suivants ne sont pas couverts par l’entretien :
     </p>
@@ -619,45 +616,10 @@ if ($assurance == true) { ?>
     <h3>Procédure en cas de besoin d’assistance</h3>
     <p>Si vous ne savez pas continuer à rouler :</p>
     <div class="list">
-      <div class="subListItem">• Téléphoner à Aedes, le numéro d’appel se trouve sur le sticker KAMEO sur le cadre de votre vélo ( 02 642 45 03 ) ;</div>
+      <div class="subListItem">• Téléphoner à Aedes, le numéro d’appel se trouve sur le sticker KAMEO sur le cadre de votre vélo ( 04 340 56 23 ) ;</div>
       <div class="subListItem">• Prendre un maximum de photo de votre problème ;</div>
       <div class="subListItem">• Contacter KAMEO Bikes via l’adresse suivante <a href="mailto:sav@kameobikes.com" class="bold" style="color:black">sav@kameobikes.com</a> décrire votre problème et joindre vos photos.</div>
     </div>
-    <h3>Quelques exemples</h3>
-    <table class="maxWidth tableBorder">
-      <tbody>
-        <tr>
-          <td style="width:50%; height: 10mm;">
-            <div style="margin-left:3mm;">Vélo fixé sur un parking vélo en rue avec le cadenas proposé par KAMEO</div>
-          </td>
-          <td style="width:50%; height: 10mm; text-align:center;"><span class="green">COUVERT</span></td>
-        </tr>
-        <tr>
-          <td style="width:50%; height: 10mm;">
-            <div style="margin-left:3mm;">Vélo fixé sur un parking vélo en rue avec un cadenas acheté 59 € de 6h à 22h</div>
-          </td>
-          <td style="width:50%; height: 10mm; text-align:center;"><span class="red">PAS COUVERT</span></td>
-        </tr>
-        <tr>
-          <td style="width:50%; height: 10mm;">
-            <div style="margin-left:3mm;">Vélo à l’intérieur de votre domicile avec ou sans cadenas</div>
-          </td>
-          <td style="width:50%; height: 10mm; text-align:center;"><span class="green">COUVERT</span></td>
-        </tr>
-        <tr>
-          <td style="width:50%; height: 10mm;">
-            <div style="margin-left:3mm;">Vélo laissé en rue sans cadenas</div>
-          </td>
-          <td style="width:50%; height: 10mm; text-align:center;"><span class="red">PAS COUVERT</span></td>
-        </tr>
-        <tr>
-          <td style="width:50%; height: 10mm;">
-            <div style="margin-left:3mm;">Vélo cadenassé à lui-même sans fixation à un point fixe, en rue, avec le cadenas fourni par KAMEO </div>
-          </td>
-          <td style="width:50%; height: 10mm; text-align:center;"><span class="red">PAS COUVERT</span></td>
-        </tr>
-      </tbody>
-    </table>
   </page>
 <?php } ?>
 
@@ -845,13 +807,13 @@ if ($assurance == true) { ?>
     <h2>Facturation</h2>
     <div class="light">
       La facturation s’effectuera de façon mensuelle chaque 1er du mois pour les locations et lors de la livraison pour les achats.<br/>
-      Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SPRL.
+      Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SRL.
     </div>
     <h2>Conditions de paiement</h2>
     <div class="light">30 jours à partir de la date de la facture. Prélèvement automatique par domiciliation.</div>
   </page>
   <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
-    <h2>Rupture du contrat – possibilié d’achat</h2>
+    <h2>Rupture du contrat</h2>
     <div class="light">
       En cas de rupture unilatérale du contrat de location de la part du client, les indemnités suivantes seront dues :<br/>
       <table class="maxWidth tableBorder tableMargins">
@@ -918,6 +880,18 @@ if ($assurance == true) { ?>
         </tbody>
       </table>
     </div>
+    <h2>Rachat du vélo en cours de contrat</h2>
+    <div class="light">
+      Dans le cas où la société cliente et/ou l’employé, souhaite(nt) arrêter le contrat mais devenir propriétaire du vélo, cela est possible après 12 mois de contrat.
+      Le montant dû est égal à la somme de :
+      <ul>
+        <li> 60% de la valeur restante du contrat</li>
+        <li> La valeur résiduelle du vélo</li>
+      </ul>
+      <strong>Ce montant n’est pas cumulable avec l’indemnité de rupture décrite en début de page, une procédure ou l'autre s'applique, jamais les deux. Après
+      le paiement de la valeur de rachat, le vélo n'est plus la propriété de la KAMEO.</strong>
+
+    </div>
   </page>
   <page backcolor="#2fa37c" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
     <page_footer>
@@ -925,16 +899,17 @@ if ($assurance == true) { ?>
         <img src="<?php echo __DIR__ ; ?>/img/logo_black_low_opacity.png" alt="logo" class="logo" /><br/>
       </div>
         <div class="light white" style="margin-bottom:10mm; text-align:center;">
-            <span class="bold">KAMEO Bikes SPRL <br/></span>
+            <span class="bold">KAMEO Bikes SRL <br/></span>
             Rue de la Brasserie, 8<br/>
             4000 Liège <br/>
             BE 0681.879.712
           </div>
 
           <div class="light white" style="margin-bottom:10mm; text-align:center;">
-            <span class="bold">Julien JAMAR DE BOLSEE <br/></span>
-            julien.jamar@kameobikes.com <br/>
-            0498 72 75 46 <br/>
+            <span class="bold"><?php echo $prenomKameo." ".$nomKameo; ?> <br/></span>
+            <?php echo $contactKameo;?>
+             <br/>
+            <?php echo $phoneKameo; ?><br/>
           </div>
 
     </page_footer>

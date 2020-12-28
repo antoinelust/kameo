@@ -244,12 +244,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $resultat2 = mysqli_fetch_assoc($result2);
                     $conn->close();
 
-                    $file=$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$resultat['ID'].'jpg';
-                    if ((file_exists($file))){
-                        $img=$resultat['ID'];
-                    }else{
-                        $img=strtolower(str_replace(" ", "-", $resultat2['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat2['MODEL']))."_".strtolower($resultat2['FRAME_TYPE']);
-                    }
+                    $img=$resultat2['ID'];
 
 
 
@@ -316,12 +311,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
 
-                    $file=$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$resultat2['ID'].'jpg';
-                    if ((file_exists($file))){
-                        $img=$resultat['ID'];
-                    }else{
-                        $img=strtolower(str_replace(" ", "-", $resultat3['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat3['MODEL']))."_".strtolower($resultat3['FRAME_TYPE']);
-                    }
+                    $img=$resultat3['ID'];
                     $comment='Vente au '.$dateStart->format('d-m-Y');
 
                     $test2.='<tr>
@@ -540,6 +530,9 @@ if ($conn->query($sql) === FALSE) {
 $conn->close();
 
 echo $test1.$test2.$test3;
+
+error_log(date("Y-m-d H:i:s")." - <Result :".$test1.$test2.$test3."\n", 3, "generate_bill.log");
+
 
 
 ?>
