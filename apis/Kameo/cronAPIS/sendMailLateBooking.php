@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $reservationID=$lateBooking['reservationID'];
-$informations = execSQL("SELECT aa.EMAIL, bb.COMPANY, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL from reservations aa, customer_referential bb, customer_bikes cc WHERE aa.ID='$reservationID' AND aa.EMAIL=bb.EMAIL AND aa.BIKE_ID=cc.ID", array(), false);
+$informations = execSQL("SELECT aa.EMAIL, aa.BIKE_ID, bb.COMPANY, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL from reservations aa, customer_referential bb, customer_bikes cc WHERE aa.ID='$reservationID' AND aa.EMAIL=bb.EMAIL AND aa.BIKE_ID=cc.ID", array(), false);
 $email=$informations[0]['EMAIL'];
 $company=$informations[0]['COMPANY'];
 $customName=$informations[0]['MODEL'];
@@ -12,6 +12,21 @@ $temp=new DateTime($informations[0]['DATE_START_2'], new DateTimeZone('Europe/Br
 $dateStart=$temp->format('d/m/Y h:i');
 $temp=new DateTime($informations[0]['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
 $dateEnd=$temp->format('d/m/Y h:i');
+
+$bikeID=$informations[0]['bikeID'];
+$dateStart=$informations[0]['DATE_START_2'];
+
+$nextBooking = execSQL("select * from reservations WHERE BIKE_ID='$bikeID' AND DATE_START_2 > '$dateStart' AND STAANN != 'D'", array(), false);
+if($nextBooking != NULL){
+  $nextBookingStart=new DateTime($nextBooking[0]['DATE_START_2'], new DateTimeZone('Europe/Brussels'));
+  $nextBookingStartString=$nextBookingStart->format('d/m/Y h:i');
+  $now=new DateTime("now", new DateTimeZone('Europe/Brussels')),
+  $interval = $now->diff($nextBookingStart);
+  $intervalHours = $interval->format('%h');
+}
+
+
+
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();

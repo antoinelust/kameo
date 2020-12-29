@@ -217,7 +217,6 @@ if($billType == "manual"){
         $html2pdf->writeHTML($test);
         $path=$_SERVER['DOCUMENT_ROOT'].'/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
         $html2pdf->Output($path, 'F');
-
     } catch (Html2PdfException $e) {
         $html2pdf->clean();
         $formatter = new ExceptionFormatter($e);

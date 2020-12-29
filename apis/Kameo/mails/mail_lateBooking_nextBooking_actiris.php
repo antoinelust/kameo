@@ -596,23 +596,16 @@
 
                                 <div style=\"text-align: justify;\"><br>
                                   <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
-                                  Votre réservation $reservationID est terminée mais vous n'avez pas encore rendu la clé, veuillez le faire aussi vite que possible.<br>
+                                  Votre réservation $nextBookingID commence bientôt mais la clé du vélo lié à la réservation précédente n'est pas encore rendue.<br>
                                   Uw reservering is geannuleerd omdat u de sleutel niet binnen de gestelde tijd heeft gepakt<br><br>
-                                  - Date de début - Begindatum : <strong>$dateStart</strong><br>
-                                  - Date de fin - Einddatum : <strong>$dateEnd</strong><br>
+                                  - Date de début - Begindatum : <strong>$nextBookingStart</strong><br>
+                                  - Date de fin - Einddatum : <strong>$nextBookingEnd</strong><br>
                                   - Identification du vélo - Fietsidentificatie : <strong>$customName</strong>
                                   </span>
                                   <br>
-                                  <br>";
-                                  if($nextBooking != NULL){
-                                    $body=$body."Attention ! Une autre réservation commence à la date suivante :  ".$nextBookingStartString."<br>
-                                    Il est important que vous rendiez le vélo à temps pour la prochaine réservation !<br><br>";
-                                  }
-
-                                  $body=$body."<span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
-                                    Merci de nous indiquer aussi vite que possible l'heure à laquelle vous pouvez rendre votre vélo via l'application <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a><br><br><br>
-                                  </span>
-                                </div>
+                                  <br>Un mail a également été envoyé à la personne ayant toujours la clé du vélo
+                                   afin de l'inviter à la rendre aussi vite que possible. Nous vous mettrons à jour dès que nous avons un retour de cette personne.
+                                 </div>
                             </td>
                         </tr>
                     </tbody></table>

@@ -84,7 +84,10 @@ function load_notifications(){
           if(notification.TYPE=="feedback"){
             notification.TEXT=traduction.notifications_feedback_start+notification.TYPE_ITEM+traduction.notifications_feedback_middle+notification.TYPE_ITEM+','+notification.ID+traduction.notifications_feedback_end;
           }else if(notification.TYPE=="lateBooking"){
-            notification.TEXT=traduction.notifications_lateBooking_1+notification.TYPE_ITEM+traduction.notifications_lateBooking_2+"<a data-toggle='modal' data-target='#lateBookingNotification' href='#' data-ID='"+notification.TYPE_ITEM+"' data-sart='"+notification.start+"' data-end='"+notification.end+"' data-bike='"+notification.model+"' class='text-green'> "+traduction.notifications_lateBooking_3+"</a>.";
+            if(typeof notification.nextBookingStart === "undefined"){
+              notification.nextBookingStart = null;
+            }
+            notification.TEXT=traduction.notifications_lateBooking_1+notification.TYPE_ITEM+traduction.notifications_lateBooking_2+"<a data-toggle='modal' data-target='#lateBookingNotification' href='#' data-ID='"+notification.TYPE_ITEM+"' data-start='"+notification.start+"' data-end='"+notification.end+"' data-bike='"+notification.model+"' data-next-booking = '"+notification.nextBookingStart+"' class='lateBookingNotification text-green'> "+traduction.notifications_lateBooking_3+"</a>.";
           }
           read = "";
           borderBottom = "";
@@ -119,6 +122,22 @@ function load_notifications(){
           content = '<div class="col-sm-12 notificationItem"><span>' + traduction.notif_no_notif + '</span></div>'
           $('.notificationsBlock').html(content);
         }
+
+        $('.lateBookingNotification').click(function(){
+          $('#widget_updateDepositHour_notification input[name=ID]').val($(this).data("id"));
+          $('#widget_updateDepositHour_notification input[name=model]').val($(this).data("bike"));
+          $('#widget_updateDepositHour_notification input[name=start]').val($(this).data("start").replace(' ', 'T'));
+          $('#widget_updateDepositHour_notification input[name=end]').val($(this).data("end").replace(' ', 'T'));
+          $('#widget_updateDepositHour_notification input[name=newEndDate]').val($(this).data("end").replace(' ', 'T'));
+          console.log($(this).data("next-booking"));
+          if($(this).data("next-booking") == null){
+            $('#widget_updateDepositHour_notification .nextBooking').addClass("hidden");
+          }else{
+            $('#widget_updateDepositHour_notification .nextBooking').removeClass("hidden");
+            $('#widget_updateDepositHour_notification strong[name=nextBookingDate]').html($(this).data("next-booking").shortDate()+" à "+$(this).data("next-booking").shortHours());
+          }
+        })
+
       }
     }
   });

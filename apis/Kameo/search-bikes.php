@@ -420,5 +420,4 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 }else{
     errorMessage("ES0012");
 }
-
 ?>

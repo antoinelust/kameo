@@ -36,14 +36,19 @@ switch($_SERVER["REQUEST_METHOD"])
 						$response['response']="success";
 						$response['notificationsNumber']=count($notifications);
 						$response['notification']=$notifications;
-
 						foreach($response['notification'] as $index=>$notification){
 							if($notification['TYPE']=='lateBooking'){
 								$reservationID=$notification['TYPE_ITEM'];
-								$informations = execSQL("SELECT aa.DATE_START_2, aa.DATE_END_2, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.ID='$reservationID' AND  aa.BIKE_ID=bb.ID", array(), false);
+								$informations = execSQL("SELECT aa.DATE_START_2, aa.BIKE_ID, aa.DATE_END_2, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.ID='$reservationID' AND  aa.BIKE_ID=bb.ID", array(), false);
 								$response['notification'][$index]['start']=$informations[0]['DATE_START_2'];
 								$response['notification'][$index]['end']=$informations[0]['DATE_END_2'];
 								$response['notification'][$index]['model']=$informations[0]['MODEL'];
+								$bikeID=$informations[0]['BIKE_ID'];
+								$dateEnd=$informations[0]['DATE_END_2'];
+								$nextBooking = execSQL("SELECT aa.DATE_START_2 from reservations aa WHERE aa.BIKE_ID='$bikeID' AND  aa.DATE_START_2>'$dateEnd'", array(), false);
+								if($nextBooking != NULL){
+									$response['notification'][$index]['nextBookingStart']=$nextBooking[0]['DATE_START_2'];
+								}
 							}
 						}
 					}else {

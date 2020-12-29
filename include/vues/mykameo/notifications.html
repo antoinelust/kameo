@@ -39,12 +39,12 @@
             <h4 class="text-green">Informations sur la réservation</h4>
             <form
               id="widget_updateDepositHour_notification"
-              action="apis/Kameo/bookings/updateBooking.php"
+              action="apis/Kameo/bookings/bookings.php"
               role="form"
               method="post"
             >
             <div class="row">
-              <div class="col-md-4" align="center">
+              <div class="col-md-2" align="center">
                 <label for="ID">ID&nbsp;&nbsp;</label
                 ><input
                   type="number"
@@ -53,6 +53,16 @@
                   readonly
                 />
               </div>
+              <div class="col-md-2" align="center">
+                <label for="condition">Vélo</label>
+                <input
+                  type="text"
+                  name="model"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+
               <div class="col-md-4" align="center">
                 <label for="condition">Début de réservation</label>
                 <input
@@ -75,9 +85,9 @@
             <div class="separator"></div>
             <div class="row">
               <h4 class="text-green">
-                Quand pensez-vous pouvoir rendre le vélo ?
+                Quand rendez-vous le vélo ?
               </h4>
-              <div class="col-md-4" align="center">
+              <div class="col-md-4">
                 <label for="condition">Nouvelle Fin de réservation</label>
                 <input
                   name="newEndDate"
@@ -85,9 +95,23 @@
                   class="form-control required"
                 />
               </div>
-
+              <div class="col-md-12">
+                <label for="condition">Envie de communiquer la raison du retard ou prévenir le prochain utilisateur ?</label>
+                <textarea type="text" name="messageForNextBooking" rows="5" class="form-control" placeholder="Votre message"></textarea>
+              </div>
+              <div class="separator nextBooking"></div>
+              <div class="col-sm-12 nextBooking">
+                <span class="label label-danger">Attention ! </span>
+                <span class="text-red">
+                  &nbsp;&nbsp;&nbsp;Une prochaine réservation est programmée sur ce vélo le
+                  <strong name="nextBookingDate">
+                  </strong>. <br>
+                  Il est important de remettre les clés avant cette heure là !
+                  <br><br>
+                </span>
+              </div>
+              <input name="action" value="updateEndBooking" type="text" class="form-control required hidden" />
             </div>
-            <div class="separator"></div>
             <button
               class="button small green button-3d rounded icon-left"
               type="submit"

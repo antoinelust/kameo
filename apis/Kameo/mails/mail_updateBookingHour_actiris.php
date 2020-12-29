@@ -595,23 +595,22 @@
                             <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
                                 <div style=\"text-align: justify;\"><br>
-                                  <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
-                                  Votre réservation $reservationID est terminée mais vous n'avez pas encore rendu la clé, veuillez le faire aussi vite que possible.<br>
-                                  Uw reservering is geannuleerd omdat u de sleutel niet binnen de gestelde tijd heeft gepakt<br><br>
-                                  - Date de début - Begindatum : <strong>$dateStart</strong><br>
-                                  - Date de fin - Einddatum : <strong>$dateEnd</strong><br>
-                                  - Identification du vélo - Fietsidentificatie : <strong>$customName</strong>
-                                  </span>
-                                  <br>
-                                  <br>";
-                                  if($nextBooking != NULL){
-                                    $body=$body."Attention ! Une autre réservation commence à la date suivante :  ".$nextBookingStartString."<br>
-                                    Il est important que vous rendiez le vélo à temps pour la prochaine réservation !<br><br>";
+                                  <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">";
+                                  if($warnNextBooking){
+                                    $body=$body."Votre réservation $nextBookingID commence bientôt mais l'utilisateur précédent n'a toujours pas rendu la clé. Il vient de nous indiquer que celle-ci devrait être rendu pour $newDateEnd.<br><br>";
+                                    if($messageForNextBooking != NULL){
+                                      $body=$body."Message de l'utilisateur précédent lié au retard de la réservation précédente :  ".$messageForNextBooking."<br><br>";
+                                    }
+                                  }else{
+                                    $body=$body."La réservation $nextBookingID commence dans plus de 24h et l'utilisateur précédent n'a toujours pas rendu la clé. Il vient de nous indiquer que celle-ci devrait être rendue pour $newDateEnd.<br><br>";
+                                    if($messageForNextBooking != NULL){
+                                      $body=$body."<br>Message de l'utilisateur précédent lié au retard de la réservation précédente :  ".$messageForNextBooking."<br><br>
+                                      Nous n'avons pas envoyé ce message à l'utilisateur suivant car la réservation est dans plus de 24h.<br>";
+                                    }
                                   }
-
-                                  $body=$body."<span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
-                                    Merci de nous indiquer aussi vite que possible l'heure à laquelle vous pouvez rendre votre vélo via l'application <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a><br><br><br>
-                                  </span>
+                                  $body=$body."</span>
+                                  <br>
+                                  <br>
                                 </div>
                             </td>
                         </tr>
