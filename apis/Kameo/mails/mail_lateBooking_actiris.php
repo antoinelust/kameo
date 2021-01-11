@@ -597,20 +597,21 @@
                                 <div style=\"text-align: justify;\"><br>
                                   <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
                                   Votre réservation $reservationID est terminée mais vous n'avez pas encore rendu la clé, veuillez le faire aussi vite que possible.<br>
-                                  Uw reservering is geannuleerd omdat u de sleutel niet binnen de gestelde tijd heeft gepakt<br><br>
-                                  - Date de début - Begindatum : <strong>$dateStart</strong><br>
-                                  - Date de fin - Einddatum : <strong>$dateEnd</strong><br>
+                                  Uw reservering $reservationID is compleet, maar u heeft de sleutel nog niet teruggegeven. Doe het alstublieft zo snel mogelijk<br><br>
+                                  - Date de début - Begindatum : <strong>$dateStartString</strong><br>
+                                  - Date de fin - Einddatum : <strong>$dateEndString</strong><br>
                                   - Identification du vélo - Fietsidentificatie : <strong>$customName</strong>
                                   </span>
                                   <br>
                                   <br>";
                                   if($nextBooking != NULL){
-                                    $body=$body."Attention ! Une autre réservation commence à la date suivante :  ".$nextBookingStartString."<br>
-                                    Il est important que vous rendiez le vélo à temps pour la prochaine réservation !<br><br>";
+                                    $body=$body."Attention ! Une autre réservation commence à la date suivante :  ".$nextBookingStartString.". Il est important que vous rendiez le vélo à temps pour la prochaine réservation !<br>
+                                    Kijk uit! Een andere reservering begint op de volgende datum: ".$nextBookingStartString.". Het is belangrijk dat u de fiets op tijd terugbrengt voor de volgende reservering!<br><br>";
                                   }
 
                                   $body=$body."<span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
-                                    Merci de nous indiquer aussi vite que possible l'heure à laquelle vous pouvez rendre votre vélo via l'application <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a><br><br><br>
+                                    Merci de nous indiquer aussi vite que possible l'heure à laquelle vous pouvez rendre votre vélo via l'application <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a><br>
+                                    Laat ons zo snel mogelijk weten om hoe laat u uw fiets kunt inleveren via de <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> applicatie.<br><br><br>
                                   </span>
                                 </div>
                             </td>

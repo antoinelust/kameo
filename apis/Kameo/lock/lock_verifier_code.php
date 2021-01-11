@@ -35,7 +35,7 @@ if ($is_null)
 	$reponse = $bdd->query('SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = '.$_GET['code'].' AND VALID = \'Y\';');
 	if($reponse->fetch())
 	{
-		echo "-1";	// Hors delai
+		echo "-4";	// Hors delai
 		error_log(date("Y-m-d H:i:s")." OUTPUT - Hors délai \n", 3, "logs/logs_boxes.log");
 		$is_null = false;
 	}

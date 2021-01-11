@@ -11,19 +11,16 @@ require_once __DIR__ .'/globalfunctions.php';
 require_once __DIR__ .'/authentication.php';
 require_once __DIR__ .'/connexion.php';
 
+$action = isset($_POST['action']) ? $_POST['action'] : NULL;
+
 $token = getBearerToken();
 if(!get_user_permissions("search", $token)){
   error_message('403');
 }
-
 log_inputs($token);
 
-$conditions=getCondition();
-$minutesToAdd=$conditions['conditions']['MINUTES_FOR_AUTOMATIC_CANCEL'];
-
-$user_data = getCondition()['conditions'];
-
-
+$user_data=getCondition()['conditions'];
+$minutesToAdd=$user_data['MINUTES_FOR_AUTOMATIC_CANCEL'];
 $time = new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $time->sub(new DateInterval('PT' . $minutesToAdd . 'M'));
 $stamp = $time->format('Y-m-d H:i');
@@ -35,7 +32,6 @@ if($user_data['LOCKING'] == "Y"){
     echo json_encode($response);
     die;
   }
-
   $resultSendMail=mysqli_query($conn, $sql);
   while($row = mysqli_fetch_array($resultSendMail)){
     $ID=$row['ID'];
@@ -49,15 +45,6 @@ if($user_data['LOCKING'] == "Y"){
     include 'sendMailCancellation.php';
   }
 }
-
-$sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, aa.COMPANY, EMAIL, bb.CAFETARIA, bb.BOOKING, bb.LOCKING from customer_referential aa, conditions bb WHERE aa.COMPANY=bb.COMPANY AND bb.NAME='generic' and TOKEN='$token' LIMIT 1";
-if ($conn->query($sql) === FALSE) {
-  $response = array ('response'=>'error', 'message'=> $conn->error);
-  echo json_encode($response);
-  die;
- }
-$user_data = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-
 if($user_data['LOCKING'] == 'Y'){
   $sql = "SELECT COUNT(1) as SOMME from boxes aa, customer_referential bb WHERE aa.COMPANY=bb.COMPANY and bb.TOKEN='$token'";
   if ($conn->query($sql) === FALSE) {
@@ -72,19 +59,17 @@ if($user_data['LOCKING'] == 'Y'){
   $boxesNumber = 0;
 }
 
+$resultat = execSQL("SELECT EMAIL FROM customer_referential WHERE TOKEN='$token'", array(), false);
+$email = $resultat[0]['EMAIL'];
+$date=htmlspecialchars($_POST['intakeDay']);
+$intake_hour=htmlspecialchars($_POST['intakeHour']);
 
-$email=htmlspecialchars($_POST['search-bikes-form-email']);
-$date=htmlspecialchars($_POST['search-bikes-form-day']);
-
-
-$intake_hour=htmlspecialchars($_POST['search-bikes-form-intake-hour']);
-
-if (isset($_POST['search-bikes-form-intake-building']))
-	$intake_building=htmlspecialchars($_POST['search-bikes-form-intake-building']);
+if (isset($_POST['intakeBuilding']))
+	$intake_building=htmlspecialchars($_POST['intakeBuilding']);
 else
 	$intake_building='';
-if (isset($_POST['search-bikes-form-intake-building']))				/** TEST ! **/
-	$deposit_building=htmlspecialchars($_POST['search-bikes-form-deposit-building']);
+if (isset($_POST['depositBuilding']))
+	$deposit_building=htmlspecialchars($_POST['depositBuilding']);
 else
 	$deposit_building='';
 
@@ -93,13 +78,11 @@ $day_intake=$dayAndMonth[0];
 $month_intake=$dayAndMonth[1];
 $year_intake=$dayAndMonth[2];
 
+$date=htmlspecialchars($_POST['depositDay']);
+$deposit_hour=htmlspecialchars($_POST['depositHour']);
 
-$date=htmlspecialchars($_POST['search-bikes-form-day-deposit']);
-$deposit_hour=htmlspecialchars($_POST['search-bikes-form-deposit-hour']);
-
-
-$maxBookingsPerYear=htmlspecialchars($_POST['search-bikes-form-maxBookingPerYear']);
-$maxBookingsPerMonth=htmlspecialchars($_POST['search-bikes-form-maxBookingPerMonth']);
+$maxBookingsPerYear=$user_data['MAX_BOOKINGS_YEAR'];
+$maxBookingsPerMonth=$user_data['MAX_BOOKINGS_MONTH'];
 
 
 $dayAndMonth=explode("-", $date);
@@ -127,6 +110,7 @@ $x = explode('h', $deposit_hour);
 $deposit_hour=$x[0];
 $deposit_minute=$x[1];
 
+
 $dateStart=new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $dateStart->setDate($year_intake, $month_intake, $day_intake);
 $dateStart->setTime($intake_hour, $intake_minute);
@@ -138,7 +122,6 @@ $dateStart2->setTime($intake_hour_2, $intake_minute_2);
 $dateEnd=new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
 $dateEnd->setDate($year_deposit, $month_deposit, $day_deposit);
 $dateEnd->setTime($deposit_hour, $deposit_minute);
-
 
 $dateStartString=$dateStart->format('Y-m-d H:i');
 $dateStart2String=$dateStart2->format('Y-m-d H:i');
@@ -203,12 +186,11 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
       errorMessage("ES0027");
     }
 
-
-    if ($dateStart < (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
+    if ($action != "replaceBooking" && $dateStart < (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
       errorMessage("ES0016");
     }
 
-    if ($dateEnd< (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
+    if ($action != "replaceBooking" && $dateEnd< (new DateTime('NOW', new DateTimeZone('Europe/Brussels')))){
       errorMessage("ES0017");
     }
 
@@ -219,23 +201,22 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
     include 'connexion.php';
 
-    if($user_data['LOCKING'] == "Y"){
+    if($user_data['LOCKING'] == "Y" && $action != 'replaceBooking'){
       $sql="select count(1) as SOMME from reservations where EMAIL='$email' and STAANN != 'D' and STATUS='Open' and ((DATE_START_2 <= '$dateStartString' and DATE_END_2 >= '$dateStartString') OR (DATE_START_2<='$dateEndString' AND DATE_END_2>='$dateEndString'))";
-    }
-
-    if ($conn->query($sql) === FALSE) {
-  		$response = array ('response'=>'error', 'message'=> $conn->error);
-  		echo json_encode($response);
-  		die;
-  	}
-    $result = mysqli_query($conn, $sql);
-    $resultat = mysqli_fetch_assoc($result);
-    if($resultat['SOMME']>0){
-      errorMessage("ES0062");
+      if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+      }
+      $result = mysqli_query($conn, $sql);
+      $resultat = mysqli_fetch_assoc($result);
+      if($resultat['SOMME']>0){
+        errorMessage("ES0062");
+      }
     }
 
     if($user_data['LOCKING']=="Y"){
-      if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
+      if($user_data['LOCKING']=="Y" && ($boxesNumber > 1 || $action == "replaceBooking")){
         $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS != 'Closed') group by ID";
       }else{
         $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS ='Open' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
@@ -302,10 +283,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                   }
                   $result5 = mysqli_query($conn, $sql5);
                   $resultat5 = mysqli_fetch_assoc($result5);
-                  $response['bike'][$length]['bikeID'] = $bikeID;
-                  $response['bike'][$length]['frameNumber'] = $resultat5['FRAME_NUMBER'];
-                  $response['bike'][$length]['type']= $resultat5['TYPE'];
-                  $response['bike'][$length]['size']= $resultat5['SIZE'];
+                  $response['bike'][$length-1]['bikeID'] = $bikeID;
+                  $response['bike'][$length-1]['frameNumber'] = $resultat5['FRAME_NUMBER'];
+                  $response['bike'][$length-1]['type']= $resultat5['TYPE'];
+                  $response['bike'][$length-1]['size']= $resultat5['SIZE'];
                   $type=$resultat5['TYPE'];
                   $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
 
@@ -319,10 +300,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                   $result6 = mysqli_query($conn, $sql6);
                   if($result6->num_rows == 1){
                       $resultat6 = mysqli_fetch_assoc($result6);
-                      $response['bike'][$length]['img']=$resultat6['ID'];
-                      $response['bike'][$length]['brand'] = $resultat6['BRAND'];
-                      $response['bike'][$length]['model'] = $resultat6['MODEL'];
-                      $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
+                      $response['bike'][$length-1]['img']=$resultat6['ID'];
+                      $response['bike'][$length-1]['brand'] = $resultat6['BRAND'];
+                      $response['bike'][$length-1]['model'] = $resultat6['MODEL'];
+                      $response['bike'][$length-1]['frameType'] = $resultat6['FRAME_TYPE'];
                   }else{
                       $length--;
                   }
@@ -358,12 +339,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                       }
                       $result5 = mysqli_query($conn, $sql5);
                       $resultat5 = mysqli_fetch_assoc($result5);
-                      $response['bike'][$length]['bikeID'] = $bikeID;
-                      $response['bike'][$length]['frameNumber'] = $resultat5['FRAME_NUMBER'];
-                      $response['bike'][$length]['type']= $resultat5['TYPE'];
-                      $response['bike'][$length]['size']= $resultat5['SIZE'];
+                      $response['bike'][$length-1]['bikeID'] = $bikeID;
+                      $response['bike'][$length-1]['frameNumber'] = $resultat5['FRAME_NUMBER'];
+                      $response['bike'][$length-1]['type']= $resultat5['TYPE'];
+                      $response['bike'][$length-1]['size']= $resultat5['SIZE'];
                       $type=$resultat5['TYPE'];
-                      $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
+                      $response['bike'][$length-1]['typeDescription']= $resultat5['MODEL'];
 
                       include 'connexion.php';
                       $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
@@ -376,10 +357,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                       if($result6->num_rows == 1){
                           $resultat6 = mysqli_fetch_assoc($result6);
                           $file=__DIR__.'/images_bikes/'.$resultat6['ID'].'jpg';
-                          $response['bike'][$length]['img']=$resultat6['ID'];
-                          $response['bike'][$length]['brand'] = $resultat6['BRAND'];
-                          $response['bike'][$length]['model'] = $resultat6['MODEL'];
-                          $response['bike'][$length]['frameType'] = $resultat6['FRAME_TYPE'];
+                          $response['bike'][$length-1]['img']=$resultat6['ID'];
+                          $response['bike'][$length-1]['brand'] = $resultat6['BRAND'];
+                          $response['bike'][$length-1]['model'] = $resultat6['MODEL'];
+                          $response['bike'][$length-1]['frameType'] = $resultat6['FRAME_TYPE'];
                       }else{
                           $length--;
                       }

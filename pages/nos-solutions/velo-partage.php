@@ -90,10 +90,10 @@
 							<div class="carousel" data-lightbox-type="gallery">
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/bzen_amsterdam_f_mini.jpg" alt="BZEN Amsterdam">
+										<img src="images_bikes/24_mini.jpg" alt="BZEN Amsterdam">
 										<div class="image-box-content">
 											<p>
-												<a href="offre.php?brand=bzen&model=amsterdam&frameType=f"><i class="fa fa-eye"></i></a>
+												<a href="offre.php?ID=24"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
@@ -105,10 +105,10 @@
 
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_f_mini.jpg" alt="CONWAY Cairon">
+										<img src="images_bikes/63_mini.jpg" alt="CONWAY Cairon">
 										<div class="image-box-content">
 											<p>
-												<a href="offre.php?brand=conway&model=cairon t 200 se 500&frameType=f"><i class="fa fa-eye"></i></a>
+												<a href="offre.php?ID=63"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
@@ -119,10 +119,10 @@
 
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/ahooga_modular-bike-low-step_f_mini.jpg" alt="AHOOGA Modular">
+										<img src="images_bikes/134_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
-												<a href="offre.php?brand=ahooga&model=modular bike hybrid&frameType=h"><i class="fa fa-eye"></i></a>
+												<a href="offre.php?ID=134"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>
@@ -133,10 +133,10 @@
 
 								<div class="portfolio-item">
 									<div class="portfolio-image effect social-links">
-										<img src="images_bikes/conway_cairon-t-200-se-500_m_mini.jpg" alt="AHOOGA Modular">
+										<img src="images_bikes/65_mini.jpg" alt="AHOOGA Modular">
 										<div class="image-box-content">
 											<p>
-												<a href="offre.php?brand=conway&model=cairon%20t%20200%20se%20500&frameType=m"><i class="fa fa-eye"></i></a>
+												<a href="offre.php?ID=65"><i class="fa fa-eye"></i></a>
 											</p>
 										</div>
 									</div>

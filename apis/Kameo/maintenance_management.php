@@ -28,6 +28,7 @@ if (isset($_GET['action'])) {
             INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
             INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
             WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
+            GROUP BY entretiens.ID, entretiens.DATE, entretiens.STATUS
             ORDER BY entretiens.DATE;";
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -37,7 +38,6 @@ if (isset($_GET['action'])) {
     $result = mysqli_query($conn, $sql);
 
     $response['maintenance'] = $result->fetch_all(MYSQLI_ASSOC);
-    $response['sql'] = $sql;
 
     //count des entretiens auto planifiés ET confirmés de moins de 2 mois
     $sql_auto_plan="SELECT COUNT(ID) FROM entretiens

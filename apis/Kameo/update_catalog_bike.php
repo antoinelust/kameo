@@ -43,7 +43,7 @@ if($action=="update"){
     $conn->close();
     if(isset($_FILES['file'])){
 
-        $extensions = array('.jpg');
+        $extensions = array('.jpg', '.JPG');
         $extension = strrchr($_FILES['file']['name'], '.');
         if(!in_array($extension, $extensions))
         {

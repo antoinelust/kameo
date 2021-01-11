@@ -305,36 +305,51 @@ function br2nl( $input ) {
 }
 
 
-function getCondition(){
-  $token = getBearerToken();
-  require $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-  $sql = "SELECT aa.CONDITION_REFERENCE from specific_conditions aa, customer_referential bb WHERE aa.EMAIL=bb.EMAIL and TOKEN='$token' AND aa.STAANN != 'D'";
-  if ($conn->query($sql) === FALSE) {
-      $response = array ('response'=>'error', 'message'=> $conn->error);
-      echo json_encode($response);
-      die;
-  }
-  $result = mysqli_query($conn, $sql);
-  $length = $result->num_rows;
-  if($length>0){
-    $resultat=mysqli_fetch_assoc($result);
-    $ID=$resultat['CONDITION_REFERENCE'];
-    $stmt = $conn->prepare("SELECT * from conditions WHERE ID=?");
-    if ($stmt)
-    {
-      $stmt->bind_param("i", $ID);
-      $stmt->execute();
-      $response['response']="success";
-      $response['conditions']=$stmt->get_result()->fetch_assoc();
-      $stmt->close();
-      return $response;
-    } else
-          error_message('500', 'Error occured while changing data');
+function getCondition($company=NULL){
+  if($company==NULL){
+    $token = getBearerToken();
+    require $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+    $sql = "SELECT aa.CONDITION_REFERENCE from specific_conditions aa, customer_referential bb WHERE aa.EMAIL=bb.EMAIL and TOKEN='$token' AND aa.STAANN != 'D'";
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
+    $result = mysqli_query($conn, $sql);
+    $length = $result->num_rows;
+    if($length>0){
+      $resultat=mysqli_fetch_assoc($result);
+      $ID=$resultat['CONDITION_REFERENCE'];
+      $stmt = $conn->prepare("SELECT * from conditions WHERE ID=?");
+      if ($stmt)
+      {
+        $stmt->bind_param("i", $ID);
+        $stmt->execute();
+        $response['response']="success";
+        $response['conditions']=$stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $response;
+      } else
+            error_message('500', 'Error occured while changing data');
+    }else{
+      $stmt = $conn->prepare("SELECT * from conditions WHERE NAME='generic' AND COMPANY = (SELECT COMPANY FROM customer_referential WHERE TOKEN=?)");
+      if ($stmt)
+      {
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $response['response']="success";
+        $response['conditions']=$stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $response;
+      } else
+            error_message('500', 'Error occured while changing data');
+    }
   }else{
-    $stmt = $conn->prepare("SELECT * from conditions WHERE NAME='generic' AND COMPANY = (SELECT COMPANY FROM customer_referential WHERE TOKEN=?)");
+    require $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
+    $stmt = $conn->prepare("SELECT * from conditions WHERE COMPANY=? AND NAME='generic'");
     if ($stmt)
     {
-      $stmt->bind_param("s", $token);
+      $stmt->bind_param("i", $company);
       $stmt->execute();
       $response['response']="success";
       $response['conditions']=$stmt->get_result()->fetch_assoc();
@@ -342,6 +357,7 @@ function getCondition(){
       return $response;
     } else
           error_message('500', 'Error occured while changing data');
+
   }
 }
 

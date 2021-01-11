@@ -30,7 +30,7 @@ include 'include/head.php';
           <div class="col-md-6">
             <div class="form-group">
               <label class="valeur" for="phone"><?= L::location_allin_pricehtva; ?></label>
-              <input type="number" class="form-control required" name="prix" value="2000" id="prix" aria-required="true" onChange="updatePrices(this)">
+              <input type="number" class="form-control required" name="prix" value="2000" min='500' id="prix" aria-required="true" onChange="updatePrices(this)">
             </div>
           </div>
         </div>
@@ -141,6 +141,14 @@ include 'include/head.php';
           updatePrices(document.getElementById('prix'));
 
           function updatePrices(ele) {
+            if(ele.value < 500){
+              $.notify({
+              message: "Montant minimum : 500 €"
+              }, {
+              type: 'danger'
+              });
+              return;
+            }
             var price = (ele.value);
 
             $.ajax({

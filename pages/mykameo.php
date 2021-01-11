@@ -71,7 +71,6 @@ function get_class_consts($class_name)
 
 echo '<script type="text/javascript">
 var traduction = '.json_encode(get_class_consts("L")).';
-console.log(traduction);
 </script>';
 
 

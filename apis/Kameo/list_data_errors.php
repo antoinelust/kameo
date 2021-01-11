@@ -25,21 +25,19 @@ switch($_SERVER["REQUEST_METHOD"])
 			$stmt->execute();
 			$result = $stmt->get_result();
 			if($result->num_rows > 0){
-				echo "ERROR - Commandes cloturees non liees à un velo personnel";
-				die;
+				error_message('400', 'ERROR - Commandes cloturees non liees a un velo personnel');
 			}
 			$stmt = $conn->prepare("SELECT CODE, BUILDING_START, VALID, COUNT(*) AS cnt
 				FROM locking_code WHERE VALID='Y'
 				GROUP BY CODE, BUILDING_START, VALID
 				HAVING cnt > 1");
 				$stmt->execute();
-				$result = $stmt->get_result();
-				if($result->num_rows > 0){
-					echo "ERROR - Plusieurs memes codes valides en meme temps";
-					die;
-				}
-				echo "DATA OK";
+			$result = $stmt->get_result();
+			if($result->num_rows > 0){
+				error_message('400', "ERROR - Plusieurs memes codes valides en meme temps");
 				die;
+			}
+			die;
 		}else
 			error_message('405');
 		break;

@@ -36,7 +36,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-12">
-            <h4 class="text-green">Informations sur la réservation</h4>
+            <h4 class="text-green"><?= L::generic_informationBooking; ?></h4>
             <form
               id="widget_updateDepositHour_notification"
               action="apis/Kameo/bookings/bookings.php"
@@ -54,7 +54,7 @@
                 />
               </div>
               <div class="col-md-2" align="center">
-                <label for="condition">Vélo</label>
+                <label for="condition"><?= L::generic_bike; ?></label>
                 <input
                   type="text"
                   name="model"
@@ -64,7 +64,7 @@
               </div>
 
               <div class="col-md-4" align="center">
-                <label for="condition">Début de réservation</label>
+                <label for="condition"><?=L::generic_start_date; ?></label>
                 <input
                   type="datetime-local"
                   name="start"
@@ -73,7 +73,7 @@
                 />
               </div>
               <div class="col-md-4" align="center">
-                <label for="condition">Fin de réservation</label>
+                <label for="condition"><?=L::generic_end_date; ?></label>
                 <input
                   type="datetime-local"
                   name="end"
@@ -85,10 +85,10 @@
             <div class="separator"></div>
             <div class="row">
               <h4 class="text-green">
-                Quand rendez-vous le vélo ?
+                <?= L::notifications_lateBookingNewEndDate1; ?>
               </h4>
               <div class="col-md-4">
-                <label for="condition">Nouvelle Fin de réservation</label>
+                <label for="condition"><?= L::notifications_lateBookingNewEndDate2; ?></label>
                 <input
                   name="newEndDate"
                   type="datetime-local"
@@ -96,17 +96,17 @@
                 />
               </div>
               <div class="col-md-12">
-                <label for="condition">Envie de communiquer la raison du retard ou prévenir le prochain utilisateur ?</label>
-                <textarea type="text" name="messageForNextBooking" rows="5" class="form-control" placeholder="Votre message"></textarea>
+                <label for="condition"><?= L::notifications_lateBookingReason; ?></label>
+                <textarea type="text" name="messageForNextBooking" rows="5" class="form-control" placeholder="<?= L::generic_yourMessage; ?>"></textarea>
               </div>
               <div class="separator nextBooking"></div>
               <div class="col-sm-12 nextBooking">
-                <span class="label label-danger">Attention ! </span>
+                <span class="label label-danger"><?= L::generic_attention; ?> </span>
                 <span class="text-red">
-                  &nbsp;&nbsp;&nbsp;Une prochaine réservation est programmée sur ce vélo le
+                  &nbsp;&nbsp;&nbsp;<?= L::notifications_lateBookingNextBooking; ?>
                   <strong name="nextBookingDate">
                   </strong>. <br>
-                  Il est important de remettre les clés avant cette heure là !
+                  <?= L::notifications_lateBookingKeyDropping; ?>
                   <br><br>
                 </span>
               </div>
@@ -116,7 +116,7 @@
               class="button small green button-3d rounded icon-left"
               type="submit"
             >
-            <i class="fa fa-paper-plane"></i>Envoyer
+            <i class="fa fa-paper-plane"></i><?= L::generic_send; ?>
             </button>
             </form>
             </div>
@@ -124,7 +124,7 @@
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">
-          Fermer
+          <?= L::generic_close; ?>
         </button>
       </div>
     </div>
@@ -133,6 +133,38 @@
 
 
 <script type="text/javascript">
+
+jQuery("#widget_updateDepositHour_notification").validate({
+  submitHandler: function (form) {
+    jQuery(form).ajaxSubmit({
+      success: function (response) {
+        if (response.response == "success") {
+          $.notify(
+            {
+              message: traduction.lateBookingSuccessMessage,
+            },
+            {
+              type: "success",
+            }
+          );
+          document.getElementById("widget_updateDepositHour_notification").reset();
+          $("#lateBookingNotification").modal("toggle");
+          load_notifications();
+        } else {
+          $.notify(
+            {
+              message: response.message,
+            },
+            {
+              type: "danger",
+            }
+          );
+        }
+      },
+    });
+  },
+});
+
 
 var today = new Date();
 var dd = today.getDate();
@@ -158,3 +190,202 @@ todayWithHours =today+'T'+hh+':'+mm+':00';
 $("#widget_updateDepositHour_notification input[name=newEndDate]").attr("min",todayWithHours);
 
 </script>
+
+
+
+<div
+  class="modal fade"
+  id="newBookingLateBooking"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <button
+            type="button"
+            class="close col-sm-1"
+            data-dismiss="modal"
+            aria-hidden="true">
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12" id='widget_newBooking_lateBooking'>
+            <h4 class="text-green"><?= L::generic_informationBooking; ?></h4>
+            <div class="row">
+              <div class="col-md-2" align="center">
+                <label for="ID">ID&nbsp;&nbsp;</label
+                ><input
+                  type="number"
+                  name="ID"
+                  class="form-control required"
+                  readonly
+                />
+              </div>
+              <div class="col-md-2" align="center">
+                <label for="condition"><?= L::generic_bike; ?></label>
+                <input
+                  type="text"
+                  name="model"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+
+              <div class="col-md-4" align="center">
+                <label for="condition"><?= L::generic_start_date; ?></label>
+                <input
+                  type="datetime-local"
+                  name="start"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+              <div class="col-md-4" align="center">
+                <label for="condition"><?= L::generic_end_date; ?></label>
+                <input
+                  type="datetime-local"
+                  name="end"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <h4 class="text-green">
+                <?= L::notifications_lateBookingKeepBikeTitle; ?>
+              </h4>
+              <p><?= L::notifications_lateBookingKeepBikeText; ?></p>
+              <a class="button small green button-3d rounded icon-left" href="#" data-dismiss="modal"><?= L::notifications_lateBookingKeepBikeButton; ?></a>
+              <input name="action" value="replaceBooking" type="text" class="form-control required hidden" />
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <h4 class="text-green">
+                <?= L::notifications_lateBookingOtherBike; ?>
+              </h4>
+              <div id="replaceBooking">
+              </div>
+              <input name="action" value="replaceBooking" type="text" class="form-control required hidden" />
+            </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          <?= L::generic_close; ?>
+        </button>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="newBookingLateBookingNewHour"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <button
+            type="button"
+            class="close col-sm-1"
+            data-dismiss="modal"
+            aria-hidden="true">
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12" id='widget_newBooking_lateBooking_new_hour'>
+            <h4 class="text-green"><?= L::generic_informationBooking; ?></h4>
+            <div class="row">
+              <div class="col-md-2" align="center">
+                <label for="ID">ID&nbsp;&nbsp;</label
+                ><input
+                  type="number"
+                  name="ID"
+                  class="form-control required"
+                  readonly
+                />
+              </div>
+              <div class="col-md-2" align="center">
+                <label for="condition"><?= L::generic_bike; ?></label>
+                <input
+                  type="text"
+                  name="model"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+
+              <div class="col-md-4" align="center">
+                <label for="condition"><?= L::generic_start_date; ?></label>
+                <input
+                  type="datetime-local"
+                  name="start"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+              <div class="col-md-4" align="center">
+                <label for="condition"><?= L::generic_end_date; ?></label>
+                <input
+                  type="datetime-local"
+                  name="end"
+                  class="form-control required"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <h4 class="text-green">
+                <?= L::notifications_lateBookingKeepBikeTitle; ?>
+              </h4>
+              <p><?= L::notifications_lateBookingKeepBikeTextNewHour; ?> <span name="newStartDate"></span>
+              </p>
+              <a class="button small green button-3d rounded icon-left keepBookingNewHourButton" href="#" data-dismiss="modal"><?= L::notifications_lateBookingKeepBikeButton; ?></a>
+              <input name="action" value="replaceBookingNewHour" type="text" class="form-control required hidden" />
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <h4 class="text-green">
+                <?= L::notifications_lateBookingOtherBike; ?>
+              </h4>
+              <div id="replaceBookingNewHour">
+              </div>
+              <input name="action" value="replaceBooking" type="text" class="form-control required hidden" />
+              <input
+              type="datetime-local"
+              name="newStartDate"
+              class="form-control hidden"
+              readonly />
+            </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          <?= L::generic_close; ?>
+        </button>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>

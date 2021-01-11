@@ -491,7 +491,7 @@
     }</style></head>
         <body>
             <!--*|IF:MC_PREVIEW_TEXT|*-->
-            <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Your bike booking has been cancelled</span><!--<![endif]-->
+            <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Previous user won't bring the key on time...</span><!--<![endif]-->
             <!--*|END:IF|*-->
             <center>
                 <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\">
@@ -595,18 +595,12 @@
                             <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
                                 <div style=\"text-align: justify;\"><br>
-                                  <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">";
-                                  if($warnNextBooking){
-                                    $body=$body."Votre réservation $nextBookingID commence bientôt mais l'utilisateur précédent n'a toujours pas rendu la clé. Il vient de nous indiquer que celle-ci devrait être rendu pour $newDateEnd.<br><br>";
-                                    if($messageForNextBooking != NULL){
-                                      $body=$body."Message de l'utilisateur précédent lié au retard de la réservation précédente :  ".$messageForNextBooking."<br><br>";
-                                    }
-                                  }else{
-                                    $body=$body."La réservation $nextBookingID commence dans plus de 24h et l'utilisateur précédent n'a toujours pas rendu la clé. Il vient de nous indiquer que celle-ci devrait être rendue pour $newDateEnd.<br><br>";
-                                    if($messageForNextBooking != NULL){
-                                      $body=$body."<br>Message de l'utilisateur précédent lié au retard de la réservation précédente :  ".$messageForNextBooking."<br><br>
-                                      Nous n'avons pas envoyé ce message à l'utilisateur suivant car la réservation est dans plus de 24h.<br>";
-                                    }
+                                  <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
+                                  Votre réservation $nextBookingID commence bientôt et l'utilisateur nous a indiqué qu'il rendra malheureusement la clé après le début de votre réservation.
+                                  En effet, celle-ci sera déposée pour le ".$newEndDateString.".<br>
+                                  Nous vous invitons donc à modifier votre réservation pour choisir un vélo différent.<br><br>";
+                                  if($messageForNextBooking != NULL){
+                                    $body=$body."Message de l'utilisateur précédent lié au retard de la réservation précédente : <br> <em>".$messageForNextBooking."</em><br><br>";
                                   }
                                   $body=$body."</span>
                                   <br>

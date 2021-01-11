@@ -214,7 +214,7 @@ if($company=='KAMEO'){
 
     if($type=="bikesAdmin"){
         include 'connexion.php';
-        $sql = "select 1 from customer_bikes where STAANN != 'D' AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE = 'test' OR CONTRACT_TYPE='leasing' OR CONTRACT_TYPE='renting')";
+        $sql = "select 1 from customer_bikes where STAANN != 'D' AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='leasing' OR CONTRACT_TYPE='renting' OR CONTRACT_TYPE='order')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -224,8 +224,19 @@ if($company=='KAMEO'){
         $result = mysqli_query($conn, $sql);
         $length=$result->num_rows;
 
-        $response['bikeNumber']=$length;
         $response['response']="success";
+        $response['bikeNumber']=$length;
+
+        $sql = "SELECT COUNT(1) as SOMME FROM customer_bikes WHERE CONTRACT_TYPE='order' AND STAANN != 'D' AND (ESTIMATED_DELIVERY_DATE < CURRENT_DATE OR ESTIMATED_DELIVERY_DATE is NULL OR ESTIMATED_DELIVERY_DATE = '0000-00-00')";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
+        $response['bikeOrdersLate']=intval($resultat['SOMME']);
 
         $conn->close();
         echo json_encode($response);

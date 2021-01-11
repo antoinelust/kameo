@@ -19,6 +19,28 @@ function get_date_string(date = Date.now()){
   return dateNowString;
 }
 
+function get_date_string_european(date = Date.now()){
+  var dateNow=new Date(date);
+  var year=dateNow.getFullYear();
+  var month=("0" + (dateNow.getMonth()+1)).slice(-2)
+  var day=("0" + dateNow.getDate()).slice(-2)
+  var dateNowString=day+"/"+month+"/"+year;
+  return dateNowString;
+}
+
+function get_date_string_european_with_hours(date = Date.now()){
+  var dateNow=new Date(date);
+  var year=dateNow.getFullYear();
+  var month=("0" + (dateNow.getMonth()+1)).slice(-2)
+  var day=("0" + dateNow.getDate()).slice(-2)
+  var hours = ("0" + (dateNow.getHours())).slice(-2)
+  var minutes = ("0" + (dateNow.getMinutes())).slice(-2)
+  var dateNowString=day+"/"+month+"/"+year+" "+hours+":"+minutes;
+  return dateNowString;
+}
+
+
+
 // generic comparison function
 cmp = function(x, y){
     return x > y ? 1 : x < y ? -1 : 0;

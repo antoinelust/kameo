@@ -170,7 +170,7 @@
                   <i class="fa fa-bicycle"></i>
                 </a>
               </div>
-              <div class="counter bold" id="counterBikeAdmin" style="color:#3cb395"></div>
+              <div class="counter bold" id="counterBikeAdmin"></div>
               <p>Gérer les vélos</p>
             </div>
           </div>

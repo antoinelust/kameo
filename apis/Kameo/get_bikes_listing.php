@@ -101,6 +101,7 @@ while ($row = mysqli_fetch_array($result)) {
     $response['bike'][$i]['insurance'] = $row['INSURANCE'];
     $response['bike'][$i]['bikePrice'] = $row['BIKE_PRICE'];
     $response['bike'][$i]['GPS_ID'] = $row['GPS_ID'];
+    $response['bike'][$i]['estimatedDeliveryDate'] = $row['ESTIMATED_DELIVERY_DATE'];
     $response['bike'][$i]['deliveryDate'] = $row['DELIVERY_DATE'];
     $response['bike'][$i]['bikeBuyingDate'] = $row['BIKE_BUYING_DATE'];
     $response['bike'][$i]['orderNumber'] = $row['ORDER_NUMBER'];

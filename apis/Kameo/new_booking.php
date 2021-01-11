@@ -15,11 +15,25 @@ if(!get_user_permissions("search", $token)){
   error_message('403');
 }
 
-$user = htmlspecialchars($_POST['widget-new-booking-mail-customer']);
+$resultat = execSQL("SELECT EMAIL FROM customer_referential WHERE TOKEN='$token'", array(), false);
+$user = $resultat[0]['EMAIL'];
 $bikeID=htmlspecialchars($_POST['bikeID']);
 $buildingStart=htmlspecialchars($_POST['widget-new-booking-building-start']);
 $buildingEnd=htmlspecialchars($_POST['widget-new-booking-building-end']);
-$lockingcode=htmlspecialchars($_POST['widget-new-booking-locking-code']);
+
+if(isset($_POST['action'])){
+  if(isset($_POST['oldBookingID'])){
+    $oldBookingID=$_POST['oldBookingID'];
+    $resultat = execSQL("SELECT CODE FROM locking_code WHERE ID_reservation='$oldBookingID'", array(), false);
+    $lockingcode = $resultat[0]['CODE'];
+    execSQL("UPDATE locking_code SET VALID='N', STAANN = 'D', HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='replaceBooking.php' WHERE ID_reservation='$oldBookingID'", array(), true);
+    execSQL("UPDATE reservations SET STAANN = 'D', HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='replaceBooking.php' WHERE ID='$oldBookingID'", array(), true);
+  }else{
+    errorMessage("ES0012");
+  }
+}else{
+  $lockingcode=addslashes($_POST['widget-new-booking-locking-code']);
+}
 
 $temp=new DateTime($_POST['widget-new-booking-date-start'], new DateTimeZone('Europe/Brussels'));
 $dateStart=$temp->format('U');
@@ -74,23 +88,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
     $dateFinReservation = date("Y-m-d H:i:s", $dateEnd);
     $feedbackText = '';
 
-    $sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateFinReservation','$feedbackText', 'N', 'feedback',$ownerID,$insertedID)";
+    $sql= "INSERT INTO notifications (USR_MAJ, HEU_MAJ, DATE, TEXT , `READ`, TYPE, USER_ID, TYPE_ITEM) VALUES ('$user', CURRENT_TIMESTAMP, '$dateFinReservation','', 'N', 'feedback',$ownerID,$insertedID)";
         if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;
     }
-    $notifID = $conn->insert_id;
-    $feedbackText = 'Votre réservation n°'.$insertedID.' est terminée<br/><a data-toggle="modal" href="#" onclick=initiatizeFeedback('.$insertedID.','.$notifID.') class="text-green">Cliquez ici</a> pour donner votre feedback';
-    $sql= "UPDATE notifications SET TEXT = '$feedbackText' WHERE ID = $notifID";
-        if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-
-
-
     $sql="INSERT INTO feedbacks (HEU_MAJ, USR_MAJ, BIKE_ID, ID_RESERVATION, NOTE, COMMENT, ENTRETIEN, STATUS) VALUES (CURRENT_TIMESTAMP, '$user', '$bikeID', '$insertedID', NULL, NULL, NULL, 'SENT')";
 
 
@@ -100,8 +103,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
         die;
     }
     $conn->close();
-
-
+    include 'connexion.php';
 
     if($lockingcode!=""){
         include 'connexion.php';
@@ -118,9 +120,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
         $result = mysqli_query($conn, $sql);
         $resultat = mysqli_fetch_assoc($result);
         $ID = $resultat['ID'];
-
-        include 'connexion.php';
-
         $sql= "select * from building_access where BUILDING_REFERENCE = '$buildingStart'";
 
 

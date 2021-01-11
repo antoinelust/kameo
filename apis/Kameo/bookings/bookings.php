@@ -28,6 +28,11 @@ switch($_SERVER["REQUEST_METHOD"])
 				require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/bookings/update_end_booking.php';
 			}else
 				error_message('403');
+		}else if($action === "keepBookingNewHour"){
+			if(get_user_permissions("search", $token)){
+				require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/bookings/update_start_date_booking.php';
+			}else
+				error_message('403');
 		}else
 			error_message('405');
 	break;

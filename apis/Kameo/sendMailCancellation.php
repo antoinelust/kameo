@@ -15,10 +15,10 @@ $email=$resultat['EMAIL'];
 $company=$resultat['COMPANY'];
 
 $customName = $row['MODEL'];
-$temp=new DateTime($row['DATE_START_2'], new DateTimeZone('Europe/Brussels'));
-$dateStart=$temp->format('d/m/Y');
-$temp=new DateTime($row['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
-$dateEnd=$temp->format('d/m/Y');
+$temp=new DateTime($resultat['DATE_START_2'], new DateTimeZone('Europe/Brussels'));
+$dateStart=$temp->format('d/m/Y H:i');
+$temp=new DateTime($resultat['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
+$dateEnd=$temp->format('d/m/Y H:i');
 
 require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
