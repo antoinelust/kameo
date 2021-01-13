@@ -73,9 +73,9 @@ function get_orders_fleet_listing() {
 	            }
 
 							if(response.order[i].type=="leasing"){
-								var price= Math.round(response.order[i].price*100)/100 + "€/mois";
+								var price= Math.round(response.order[i].price*100)/100 + "€/"+traduction.generic_mois;
 							}else if(response.order[i].type=="annualLeasing"){
-								var price= Math.round(response.order[i].price*100)/100 + "€/an";
+								var price= Math.round(response.order[i].price*100)/100 + "€/"/traduction.generic_year;
 							}else{
 								var price= Math.round(response.order[i].price*100)/100 + "€";
 							}
@@ -86,7 +86,7 @@ function get_orders_fleet_listing() {
 							newSpan.setAttribute("class", "etape fait");
 							var newDivDesc = document.createElement("div");
 							newDivDesc.setAttribute("class", "desc");
-							var newContent = document.createTextNode('Nouvelle commande');
+							var newContent = document.createTextNode(traduction.status_new_command);
 							newDivDesc.appendChild(newContent);
 							newSpan.appendChild(newDivDesc);
 							newDiv.appendChild(newSpan);
@@ -111,7 +111,7 @@ function get_orders_fleet_listing() {
 							}
 							var newDivDesc = document.createElement("div");
 							newDivDesc.setAttribute("class", "desc");
-							var newContent = document.createTextNode('Commande confirmée');
+							var newContent = document.createTextNode(traduction.status_confirmed_command);
 							newDivDesc.appendChild(newContent);
 							newSpan.appendChild(newDivDesc);
 							newDiv.appendChild(newSpan);
@@ -125,7 +125,7 @@ function get_orders_fleet_listing() {
 							newSpan.setAttribute("class", "etape");
 							var newDivDesc = document.createElement("div");
 							newDivDesc.setAttribute("class", "desc");
-							var newContent = document.createTextNode('En attente de livraison');
+							var newContent = document.createTextNode(traduction.status_waiting_delivery);
 							newDivDesc.appendChild(newContent);
 							newSpan.appendChild(newDivDesc);
 							newDiv.appendChild(newSpan);
@@ -169,21 +169,12 @@ function get_orders_fleet_listing() {
 									var column=document.createElement("td");
 									column.setAttribute("class", "text-green");
 									column.setAttribute("onclick", "validate_command('"+response.order[i].ID+"')");
-									var newContent = document.createTextNode('Confirmer');
+									var newContent = document.createTextNode(traduction.generic_confirm);
 									column.appendChild(newContent);
 							}else{
 								var column=document.createElement("td");
 							}
 							ligne.appendChild(column);
-/*
-	            if(response.order[i].status=="new"){
-	                temp=temp.concat("<td><a class=\"text-green\" onclick=\"validate_command('"+response.order[i].ID+"')\">Confirmer</a></td>")
-	            }else{
-	                temp=temp.concat("<td></td>")
-	            }
-	            temp=temp.concat("</tr>");
-							dest=dest.concat(temp);
-*/
 							document.getElementById('ordersFleetListingSpan').append(ligne);
 
 						}
@@ -191,30 +182,7 @@ function get_orders_fleet_listing() {
             i++;
 
           }
-          //var temp="</tobdy></table>";
-          //dest=dest.concat(temp);
-          //document.getElementById('ordersFleetListingSpan').innerHTML = dest;
-
           displayLanguage();
-/*
-            $('#ordersFleetListingTable thead tr').clone(true).appendTo('#test thead');
-
-            $('#ordersFleetListingTable thead tr:eq(1) th').each(function(i){
-                var title=$(this).text();
-                $(this).html('<input type="text" placeholder="Search" />');
-
-                $('input', this).on('keyup change', function(){
-                    if (table.column(i).search() !== this.value){
-                        table
-                            .column(i)
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            });
-
-            var table=$('#ordersFleetListingTable').DataTable({
-            });*/
 
         $('.updateCommand').click(function(){
           construct_form_for_command_validation(this.name);
@@ -304,9 +272,9 @@ function retrieve_command_fleet(ID){
           $('#widget-orderFleet-form input[name=retailPrice]').val((Math.round(response.order.priceHTVA*1.21*100)/100)+" €");
 					$('#widget-orderFleet-form select[name=type]').val(response.order.type);
 					if(response.order.type=="leasing"){
-						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/mois");
+						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/"+traduction.generic_mois);
 					}else	if(response.order.type=="annualLeasing"){
-						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/an");
+						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €/"+traduction.generic_year);
 					}else{
 						$('#widget-orderFleet-form input[name=price]').val(response.order.price+" €");
 					}

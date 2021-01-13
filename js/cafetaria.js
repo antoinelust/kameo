@@ -78,9 +78,9 @@ function load_cafetaria(){
 
                 if(response.tvaIncluded == "Y"){
                   var priceWithLabel = Math.round(price*1.21*100)/100;
-                  priceWithLabel = priceWithLabel + "€/mois TVAC";
+                  priceWithLabel = priceWithLabel + "€/"+traduction.generic_moisTVAC;
                 }else{
-                  var priceWithLabel = price + "€/mois HTVA"
+                  var priceWithLabel = price + "€/"+traduction.generic_mois;
                 }
 
                 prices = prices + "Leasing men. : "+priceWithLabel+"<br>";
@@ -92,9 +92,9 @@ function load_cafetaria(){
                   var price = (response.bike[i].leasingPrice)*12;
                   if(response.tvaIncluded == "Y"){
                     var priceWithLabel = Math.round(price*1.21*100)/100;
-                    priceWithLabel = priceWithLabel + "€/an TVAC";
+                    priceWithLabel = priceWithLabel + "€/"+traduction.generic_yearTVAC;
                   }else{
-                    var priceWithLabel = price + "€/an HTVA"
+                    var priceWithLabel = price + "€/"+traduction.generic_year;
                   }
                   prices = prices + "Leasing an. : "+priceWithLabel+"<br>";
                   dataprop += "data-annualleasing="+price+" ";
@@ -106,9 +106,9 @@ function load_cafetaria(){
 
                 if(response.tvaIncluded == "Y"){
                   var priceWithLabel = Math.round(price*1.21*100)/100;
-                  priceWithLabel = priceWithLabel + "€ TVAC";
+                  priceWithLabel = priceWithLabel + "€ " + traduction.genericTVAC;
                 }else{
-                  var priceWithLabel = price + "€ HTVA"
+                  var priceWithLabel = price + "€"
                 }
 
                 prices = prices + "Achat : "+priceWithLabel+"<br>";
@@ -135,15 +135,15 @@ function load_cafetaria(){
 									<br>"+prices;
 
                     if(stock==="stock"){
-                        temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">De stock</strong>";
+                        temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">"+traduction.mk_ordertab_underStock+"</strong>";
                     }else{
-                        temp=temp+"<br><strong class=\"text-green center text-center text-small\">Précommander</strong>";
+                        temp=temp+"<br><strong class=\"text-green center text-center text-small\">"+traduction.mk_ordertab_preOrder+"</strong>";
                     }
 
                     temp=temp+"\
                     <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-amount=\""+price+"\" data-type=\""+response.cafeteriaType+"\" data-toggle=\"modal\"\
                     href=\"#\" name=\""+response.bike[i].ID+"\" "+dataprop+">\
-										<span>Commander</span>\
+										<span>"+traduction.tabs_order_title+"</span>\
 									</a>\
 									</p>\
 								</div>\
@@ -370,7 +370,7 @@ function get_message_history(){
 							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'})),
 							$('<div/>',{ "class": "received_msg" }).append([
 								$('<div/>',{ "class": "received_withd_msg" }).append([
-									$( '<p/>' ).text('Des questions sur un ou plusieurs de nos vélos ? Je suis à votre disposition pour vous aiguiller.'),
+									$( '<p/>' ).text(traduction.mk_ordertab_question),
 									$('<span/>').addClass('time_date').html('Info Kameo Bikes')
 								])
 							])
@@ -383,7 +383,7 @@ function get_message_history(){
 							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'})),
 							$('<div/>',{ "class": "received_msg" }).append([
 								$('<div/>',{ "class": "received_withd_msg" }).append([
-									$( '<p/>' ).text('Nous vous remercions pour votre message. Notre expert vous répondra aussi rapidement que possible.'),
+									$( '<p/>' ).text(traduction.mk_ordertab_answer),
 									$('<span/>').addClass('time_date').html('Info Kameo Bikes')
 								])
 							])

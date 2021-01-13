@@ -444,10 +444,10 @@ function getHistoricBookings() {
         var dest2 = "";
         if (response.booking.codePresence == false) {
           var tempFutureBookings =
-            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th></tr></thead><tbody>';
+            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th></th></tr></thead><tbody>';
         } else {
           var tempFutureBookings =
-            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th><?= L::mk_reservations_code; ?></th></tr></thead><tbody>';
+            '<table class="table table-condensed hidden-xs" id="futureBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th><?= L::mk_reservations_code; ?></th><th></th></tr></thead><tbody>';
         }
         dest = dest.concat(tempFutureBookings);
         var length =
@@ -472,6 +472,11 @@ function getHistoricBookings() {
           var model = response.booking[i].model;
           var booking_id = response.booking[i].bookingID;
           var annulation = response.booking[i].annulation;
+          if(typeof response.booking[i].nextBookingDate != 'undefined'){
+            var nextBookingDate = new Date(response.booking[i].nextBookingDate);
+          }else{
+            var nextBookingDate = false;
+          }
 
           if (response.booking.codePresence == false) {
             var tempFutureBookingsTable =
@@ -534,20 +539,20 @@ function getHistoricBookings() {
               model +
               "</td><td>" +
               code +
-              '</td><td><a class="button small green rounded effect" onclick="showBooking(' +
+              '</td><td style="text-align: center;"><a class="button small green rounded effect" onclick="showBooking(' +
               booking_id +
-              ')"><span>+</span></a></td>';
+              ')"><span>'+traduction.generic_moreInfo+'</span></a>';
           }
           if (annulation) {
             var tempAnnulation =
-              '<td><a class="button small red rounded effect" onclick="cancelBooking(' +
+              '<a class="button small red rounded effect" onclick="cancelBooking(' +
               booking_id +
-              ')"><i class="fa fa-times"></i><span>annuler</span></a></td></td></tr>';
-            tempFutureBookingsTable = tempFutureBookingsTable.concat(tempAnnulation);
-          } else {
-            var tempAnnulation = "</td></tr>";
+              ')"><i class="fa fa-times"></i><span>annuler</span></a>';
             tempFutureBookingsTable = tempFutureBookingsTable.concat(tempAnnulation);
           }
+          tempFutureBookingsTable=tempFutureBookingsTable.concat("&nbsp;<a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+
+          tempFutureBookingsTable = tempFutureBookingsTable.concat("</td></tr>");
           dest = dest.concat(tempFutureBookingsTable);
 
           var temp="<p class='text-dark'><strong>ID :</strong> "+
@@ -574,8 +579,10 @@ function getHistoricBookings() {
           if (annulation) {
             temp=temp.concat("&nbsp;<a class=\"button small red rounded effect\" onclick=\"cancelBooking(' "+booking_id +"')\"><i class=\"fa fa-times\"></i><span>annuler</span></a>");
           }
-          dest2=dest2.concat(temp);
 
+          temp=temp.concat("&nbsp;<a class=\"button small green rounded effect updateEndBookingDate\" data-date='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-nextBooking='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>Prolonger</span></a>");
+
+          dest2=dest2.concat(temp);
 
           i++;
         }
@@ -588,16 +595,37 @@ function getHistoricBookings() {
 
         displayLanguage();
 
-        var classname = document.getElementsByClassName("showBooking");
-        for (var j = 0; j < classname.length; j++) {
-          classname[j].addEventListener(
-            "click",
-            function () {
-              showBooking(this.name);
-            },
-            false
-          );
-        }
+        $(".updateEndBookingDate").click(function(){
+
+          if($(this).data("nextbooking") == false){
+            var nextBookingDate=false;
+          }else{
+            var nextBookingDate = new Date($(this).data("nextbooking"));
+          }
+          if( !nextBookingDate || (nextBookingDate && nextBookingDate > new Date())){
+            $('#widget_updateDepositHour_booking input[name=ID]').val($(this).data("id"));
+            $('#widget_updateDepositHour_booking input[name=model]').val($(this).data("model"));
+            $('#widget_updateDepositHour_booking input[name=start]').val($(this).data("start").replace(" ", "T"));
+            $('#widget_updateDepositHour_booking input[name=end]').val($(this).data("end").replace(" ", "T"));
+            if(nextBookingDate){
+              $('#widget_updateDepositHour_booking .nextBooking').removeClass("hidden");
+              $('#widget_updateDepositHour_booking strong[name=nextBookingDate]').html(get_date_string_european_with_hours(nextBookingDate));
+            }else{
+              $('#widget_updateDepositHour_booking .nextBooking').addClass("hidden");
+              $('#widget_updateDepositHour_booking strong[name=nextBookingDate]').html("");
+            }
+            $("#updateDepositHour").modal("toggle");
+          }else{
+            $.notify(
+              {
+                message: traduction.error_giveBackKeys,
+              },
+              {
+                type: "danger",
+              }
+            )
+          }
+        })
       } else {
         console.log(response.message);
       }

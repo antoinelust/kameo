@@ -92,8 +92,8 @@ if(isset($_POST['action'])){
         $mail->CharSet = 'UTF-8';
 
 
-        $mail->From = $email;
-        $mail->FromName = $firstName.' '.$name;
+        $mail->From = "info@kameobikes.com";
+        $mail->FromName = 'Info KAMEO Bikes';
         $mail->AddReplyTo($email, $name);
         $subject="Nouvelle commande de vélo de la part de ".$firstName.' '.$name;
         $mail->Subject = $subject;

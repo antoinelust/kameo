@@ -35,7 +35,6 @@ function get_orders_listing() {
           var temp="<table id=\"ordersListingTable\" data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Test ?</th><th>Date Livraison</th><th>Montant</th></tr></thead><tbody>";
           dest=dest.concat(temp);
           var i=0;
-
           while (i < response.ordersNumber){
             if(response.order[i].testBoolean){
                 if(response.order[i].testStatus=="done"){
@@ -174,8 +173,7 @@ function list_bikes(){
 
 function retrieve_command(ID){
   $('.accessoriesNumber').html('');
-  $('.otherCostsAccesoiresTable tbody').html('');
-  $('.otherCostsAccesoiresTable thead').html('');
+  document.getElementById("ExistingAccessory").innerHTML="";
   list_bikes();
   $.ajax({
     url: 'apis/Kameo/companies/companies.php',
@@ -242,24 +240,23 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
           $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg?date="+Date.now());
 
-          if(response.order.estimatedDeliveryDate != null){
-              $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
-          }
+          $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
 
           //Afficher les accessoires
-          var dest ="";
-
+          var dest =
+            '<thead><tr><th scope="col">#</th><th scope="col">Categorie</th><th scope="col">Accessoire</th><th scope="col">Type</th><th scope="col">Prix d\'Achat</th><th scope="col">Prix vente HTVA<th></th></tr></thead>';
           if (response.accessoryNumber > 0) {
             var i = 0;
-            var temp =
-              '<table class="table"><tbody><thead><tr><th scope="col"><span class="fr-inline">Catégorie</span></th><th scope="col"><span class="fr-inline">Accessoire</span></th><th scope="col"><span class="fr-inline">Prix d\'Achat</span></th><th scope="col"><span class="fr-inline">Prix vente HTVA</span></th><th></th></tr></thead>';
-            dest = dest.concat(temp);
             while (i < response.accessoryNumber) {
               var temp =
-                '<tr><td scope="row" name="categoryAcc" id="categoryAcc">' +
+                '<tr><td>' +
+                '<label>Accessoire n°'+(i+1)+"</label>"+
+                '</td><td scope="row" name="categoryAcc" id="categoryAcc">' +
                 response.order[i].aCategory +
                 '</td><td name="accessoryAcc" id="accessoryAcc">' +
                 response.order[i].typeAccessory +
+                "</td><td>" +
+                response.order[i].type +
                 "</td><td>" +
                 response.order[i].aBuyingPrice +
                 "</td><td>" +
@@ -270,10 +267,9 @@ function retrieve_command(ID){
               dest = dest.concat(temp);
               i++;
             }
-            dest = dest.concat("</tbody></table>");
+            dest = dest.concat("</tbody>");
           }
           document.getElementById("ExistingAccessory").innerHTML = dest;
-
 
           $(".deleteAccessory").click(function () {
             $.ajax({
@@ -352,14 +348,14 @@ get_all_accessories().done(function(response){
     });
 
     //ajout d'une ligne au tableau des accessoires
-    $('#orderManager').find('.otherCostsAccesoiresTable tbody')
+    $('#orderManager').find('#ExistingAccessory tbody')
     .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesOrderNumber)+` accessoriesRow form-group">
-    <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td>
+    <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td><td class="aType"></td>
     <td class="aBuyingPrice"></td><td class="aPriceHTVA"></td>
     </tr>`);
-    //label selon la langue
+
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aLabel')
-    .append('<label class="fr">Accessoire '+ accessoriesOrderNumber +'</label>');
+    .append('<label>Accessoire '+ accessoriesOrderNumber +'</label>');
 
     //select catégorie
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aCategory')
@@ -372,6 +368,7 @@ get_all_accessories().done(function(response){
     accessoriesOrderNumber+
     '"class="selectAccessory form-control required"></select>');
 
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aType').append('<select name="type[]" class="form-control required"><option value="achat">Achat</option><option value="leasing">Leasing</option></select>');
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aBuyingPrice').append('<input name="buyingPriceAcc[]" class="buyingPriceInput form-control required">');
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aPriceHTVA').append('<input name="sellingPriceAcc[]" class="sellingPriceInput form-control required">');
 

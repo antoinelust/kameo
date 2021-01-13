@@ -30,8 +30,8 @@ function get_users_listing(){
                  title: "Statut",
                  data: "staann",
                  fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                   if (sData !== null) $(nTd).html("Actif");
-                   else $(nTd).html("Inactif");
+                   if (sData !== null) $(nTd).html(traduction.generic_active);
+                   else $(nTd).html(traduction.generic_deleted);
                  },
                },
                {
@@ -70,7 +70,7 @@ function get_users_listing(){
           document.getElementById('widget-updateUser-form-phone').value = response.user.phone;
           var dest="";
           if(response.user.staann=='D'){
-            document.getElementById('widget-updateUser-form-status').value = "Inactif";
+            document.getElementById('widget-updateUser-form-status').value = traduction.generic_deleted;
             $('#widget-updateUser-form-firstname').prop('readonly', true);
             $('#widget-updateUser-form-name').prop('readonly', true);
             $("#widget-updateUser-form input[name=fleetManager]").prop( "readonly", true );
@@ -88,9 +88,9 @@ function get_users_listing(){
               $("#widget-updateUser-form input[name=fleetManager]").prop( "checked", false );
             }
 
-            document.getElementById('widget-updateUser-form-status').value = "Actif";
+            document.getElementById('widget-updateUser-form-status').value = traduction.generic_active;
             var i=0;
-            var dest="<h4>Accès aux bâtiments</h4>";
+            var dest="<h4>"+traduction.generic_accessToBuildings+"</h4>";
             while(i<response.buildingNumber){
               if(response.building[i].access==true){
                 temp="<input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\"> "+response.building[i].descriptionFR+"<br>";
@@ -106,7 +106,7 @@ function get_users_listing(){
             document.getElementById('buildingUpdateUser').innerHTML = dest;
 
             var i=0;
-            var dest="<h4>Accès aux vélos</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" /><strong>Tout sélectionner / déselectionner</strong><br>";
+            var dest="<h4>"+traduction.generic_accessToBikes+"</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" /><strong>"+traduction.generic_selectAll+"</strong><br>";
             while(i<response.bikeNumber){
               if(response.bike[i].access==true){
                 temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
@@ -118,8 +118,8 @@ function get_users_listing(){
               i++;
             }
             document.getElementById('bikeUpdateUser').innerHTML = dest;
-            var dest="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteUser\" onclick=\"initializeDeleteUser('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Supprimer</span><span class=\"en-inline\">Delete</span></a>";
-            document.getElementById('updateUserSendButton').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Envoyer</button><button  class=\"en button small green button-3d rounded icon-left\" type=\"submit\" ><i class=\"fa fa-paper-plane\"></i>Send</button><button  class=\"nl button small green button-3d rounded icon-left\" type=\"submit\" ><i class=\"fa fa-paper-plane\"></i>Verzenden</button>";
+            var dest="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteUser\" onclick=\"initializeDeleteUser('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\">"+traduction.generic_delete+"</a>";
+            document.getElementById('updateUserSendButton').innerHTML="<button class=\"button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>"+traduction.generic_send+"</button>";
             document.getElementById('deleteUserButton').innerHTML=dest;
 
             document.getElementById('select-all-update').onclick = function() {
@@ -178,7 +178,7 @@ function get_users_listing(){
   }
   //FleetManager: Nombre d'utilisateurs | Displays the msg to confim user creation
   function confirm_add_user(){
-    document.getElementById('confirmAddUser').innerHTML="<p><strong>Attention</strong>, la création d'un compte entraînera l'envoi d'un mail vers la personne en question.<br>Veuillez confirmer que les informations mentionées précédemment sont correctes.</p><button class=\"fr button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Confirmer</button>";
+    document.getElementById('confirmAddUser').innerHTML=traduction.generic_confirmSentenceforAddUser;
   }
 
   //FleetManager: Nombre d'utilisateurs | List the building, bikes and display the create button
@@ -225,9 +225,7 @@ function get_users_listing(){
                 $('#widget-addUser-form input[name=company]').val("");
                 document.getElementById('confirmAddUser').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" onclick=\"confirm_add_user()\">\
                 <i class=\"fa fa-paper-plane\">\
-                </i>\
-                Confirmer\
-                </button>";
+                </i>"+traduction.generic_confirm+"</button>";
 
 
                 document.getElementById('select-all').onclick = function() {

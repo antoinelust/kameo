@@ -31,12 +31,16 @@ if($company=='Actiris'){
   $mail->IsHTML(true);                                    // Set email format to HTML
   $mail->CharSet = 'UTF-8';
 
+  echo "environnement : ".constant('ENVIRONMENT')."\n";
+
   if(constant('ENVIRONMENT') == "production"){
     $mail->AddAddress($email);
     $mail->addBcc("antoine@kameobikes.com");
   }else if(constant('ENVIRONMENT') == "test"){
     $mail->AddAddress("antoine@kameobikes.com");
   }
+
+  echo "company : ".$company."\n";
 
   if($company=='Actiris'){
     $mail->From = "bookabike@actiris.be";
@@ -49,6 +53,8 @@ if($company=='Actiris'){
   $subject = "Your booking number ".$reservationID." is over but key is not returned";
   $mail->Subject = $subject;
 
+  echo "sujet : ".$subject."\n";
+
   if( $company == 'Actiris'){
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_lateBooking_actiris.php';
   }else{
@@ -56,8 +62,11 @@ if($company=='Actiris'){
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_lateBooking.php';
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mail_footer.php';
   }
-
   $mail->Body = $body;
+
+  echo "body : ".$body."\n";
+  error_log(date("Y-m-d H:i:s")." - BODY : ".$body."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/sendMailLateBooking.log');
+
   if(constant('ENVIRONMENT')=='production' || constant('ENVIRONMENT') == "test"){
     if(!$mail->Send()) {
        $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);

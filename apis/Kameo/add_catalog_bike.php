@@ -91,9 +91,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode($response);
             die;
       }
-      $conn->close();
 
-      $ID=$conn->insert_id
+      $ID=$conn->insert_id;
       //upload of Bike picture
 
       $dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';

@@ -62,64 +62,30 @@ if(isset($_POST['action'])){
 
         successMessage("SM0003");
     }else if($action=='update'){
-        if($deliveryAddress!=NULL){
-            $deliveryAddress="'".$deliveryAddress."'";
-        }else{
-            $deliveryAddress='NULL';
-        }
-
         include 'connexion.php';
-        $sql= "UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='$email', STATUS='$status', PORTFOLIO_ID='$portfolioID', SIZE='$size', DELIVERY_ADDRESS=$deliveryAddress, LEASING_PRICE='$price', TYPE='$type' WHERE ID='$ID'";
+        $stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, EMAIL=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, TEST_STATUS=? WHERE ID=?");
+        if ($stmt)
+        {
+          $stmt->bind_param("sssissdssssi", $email, $mail, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress, $testStatus, $ID);
+          $stmt->execute();
+          $response['response']="success";
+          $stmt->close();
+        } else
+          error_message('500', 'Error occured while changing data');
 
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $conn->close();
-
-        if($deliveryDate != NULL){
-            include 'connexion.php';
-            $sql= "UPDATE client_orders  SET ESTIMATED_DELIVERY_DATE='$deliveryDate' WHERE ID='$ID'";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $conn->close();
-        }
+            //  error_message('500', 'Error occured while changing data');
 
         if($testBoolean=="Y"){
             include 'connexion.php';
-
-            if($testDate!=NULL){
-                $testDate="'".$testDate."'";
-            }else{
-                $testDate='NULL';
-            }
-            if($testAddress!=NULL){
-                $testAddress="'".$testAddress."'";
-            }else{
-                $testAddress='NULL';
-            }
-            if($testResult!=NULL){
-                $testResult="'".$testResult."'";
-            }else{
-                $testResult='NULL';
-            }
-            if($deliveryAddress!=NULL){
-                $deliveryAddress="'".$deliveryAddress."'";
-            }else{
-                $deliveryAddress='NULL';
-            }
-
-            $sql= "UPDATE client_orders  SET TEST_BOOLEAN='Y', TEST_DATE=$testDate, TEST_ADDRESS=$testAddress, TEST_RESULT=$testResult WHERE ID='$ID'";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $conn->close();
+            $stmt = $conn->prepare("UPDATE client_orders  SET TEST_BOOLEAN='Y', TEST_DATE=?, TEST_ADDRESS=?, TEST_RESULT=? WHERE ID=?");
+            if ($stmt)
+            {
+              $stmt->bind_param("sssi", $testDate, $testAddress, $testResult, $ID);
+              $stmt->execute();
+              $response['response']="success";
+              $stmt->close();
+            } else
+                  error_message('500', 'Error occured while changing data');
         }
 
         if(isset($_POST['accessoryCategory']) && isset($_POST['accessoryAccessory']))
@@ -219,7 +185,7 @@ if(isset($_POST['action'])){
             $company=$resultat['COMPANY'];
 
             if($company=="KAMEO"){
-                $sql= "SELECT *  FROM client_orders ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
+                $sql= "SELECT aa.*, bb.ID as companyID, bb.COMPANY_NAME as companyName FROM client_orders aa, companies bb WHERE aa.COMPANY=bb.ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
             }else{
                 $sql="SELECT co.* FROM client_orders co, customer_referential cr WHERE cr.COMPANY='$company' AND cr.EMAIL=co.EMAIL ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
             }
@@ -243,11 +209,14 @@ if(isset($_POST['action'])){
                 $response['order'][$i]['size']=$row['SIZE'];
                 $response['order'][$i]['status']=$row['STATUS'];
                 $response['order'][$i]['estimatedDeliveryDate']=$row['ESTIMATED_DELIVERY_DATE'];
+                $response['order'][$i]['deliveryAddress']=$row['DELIVERY_ADDRESS'];
                 $response['order'][$i]['testStatus']=$row['TEST_STATUS'];
                 $response['order'][$i]['testDate']=$row['TEST_DATE'];
                 $response['order'][$i]['testBoolean']=$row['TEST_BOOLEAN'];
                 $response['order'][$i]['price']=$row['LEASING_PRICE'];
                 $response['order'][$i]['type']=$row['TYPE'];
+                $response['order'][$i]['companyID']=$row['companyID'];
+                $response['order'][$i]['companyName']=$row['companyName'];
 
 
                 $portfolioID=$row['PORTFOLIO_ID'];
@@ -263,17 +232,6 @@ if(isset($_POST['action'])){
                 $response['order'][$i]['brand']=$resultat['BRAND'];
                 $response['order'][$i]['model']=$resultat['MODEL'];
                 $priceHTVA=$resultat['PRICE_HTVA'];
-                $companyID=$row['COMPANY'];
-                $sql="select COMPANY_NAME FROM companies WHERE ID='$companyID'";
-                if ($conn->query($sql) === FALSE) {
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }
-                $result = mysqli_query($conn, $sql);
-                $resultat=mysqli_fetch_assoc($result);
-                $response['order'][$i]['companyID']=$companyID;
-                $response['order'][$i]['companyName']=$resultat['COMPANY_NAME'];
 
                 $emailUser=$row['EMAIL'];
                 if($emailUser != ""){
@@ -317,6 +275,8 @@ if(isset($_POST['action'])){
         $response['order']['email']=$email;
         $response['order']['size']=$resultat['SIZE'];
         $response['order']['status']=$resultat['STATUS'];
+        $response['order']['estimatedDeliveryDate']=$resultat['ESTIMATED_DELIVERY_DATE'];
+        $response['order']['deliveryAddress']=$resultat['DELIVERY_ADDRESS'];
         $response['order']['testBoolean']=$resultat['TEST_BOOLEAN'];
         $response['order']['testDate']=$resultat['TEST_DATE'];
         $response['order']['testAddress']=$resultat['TEST_ADDRESS'];
@@ -374,12 +334,13 @@ if(isset($_POST['action'])){
         $i=0;
 
         while($resultat = mysqli_fetch_array($result)){
-            $response['order'][$i]['typeAccessory']=$resultat['MODEL'];
-            $response['order'][$i]['aCategory']=$resultat['CATEGORY'];
-            $response['order'][$i]['aBuyingPrice']=$resultat['BUYING_PRICE'];
-            $response['order'][$i]['aPriceHTVA']=$resultat['PRICE_HTVA'];
-            $response['order'][$i]['accessoryID']=$resultat['orderID'];
-            $i++;
+          $response['order'][$i]['typeAccessory']=$resultat['MODEL'];
+          $response['order'][$i]['type']=$resultat['TYPE'];
+          $response['order'][$i]['aCategory']=$resultat['CATEGORY'];
+          $response['order'][$i]['aBuyingPrice']=$resultat['BUYING_PRICE'];
+          $response['order'][$i]['aPriceHTVA']=$resultat['PRICE_HTVA'];
+          $response['order'][$i]['accessoryID']=$resultat['orderID'];
+          $i++;
         }
         $response['accessoryNumber']=$i;
         $result = mysqli_query($conn, $sql);

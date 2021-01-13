@@ -30,7 +30,7 @@
                          { title: "Funct. ID", data: "model" },
 												 {
                            className: "hidden-xs",
-													 title: "Début contrat",
+													 title: traduction.bike_description_contract_start,
                            data: "contractStart",
                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                              if (sData !== null) $(nTd).html(sData);
@@ -39,7 +39,7 @@
                          },
 												 {
                            className: "hidden-xs",
-													 title: "Fin contrat",
+													 title: traduction.bike_description_contract_end,
                            data: "contractEnd",
                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                              if (sData !== null) $(nTd).html(sData);
@@ -48,15 +48,15 @@
                          },
 												 {
                            className: "hidden-xs",
-													 title: "Montant location",
+													 title: traduction.leasingType_amountLeasing,
                            data: "leasingPrice",
                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                             if (sData !== null) $(nTd).html(sData + "€/mois");
+                             if (sData !== null) $(nTd).html(sData + "€/"+traduction.generic_mois);
                              else $(nTd).html("0 €/mois");
                            },
                          },
 												 {
-                           title: "Statut",
+                           title: traduction.generic_status,
                            data: "status",
                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                              if (sData == null || sData == "KO") $(nTd).html("<i class=\"fa fa-close\" style=\"color:red\" aria-hidden=\"true\"></i>");
@@ -66,7 +66,7 @@
                          {
                            data: "id",
                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                             $(nTd).html("<ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+sData+"\" data-toggle=\"modal\" href=\"#\">Mettre à jour</a></ins>");
+                             $(nTd).html("<ins><a class=\"text-green updateBikeStatus\" data-target=\"#updateBikeStatus\" name=\""+sData+"\" data-toggle=\"modal\" href=\"#\">"+traduction.generic_update+"</a></ins>");
                              },
                           }
                        ],
@@ -94,14 +94,14 @@
 			                     data : data.action,
 			                     columns: [
 													 {
-															title: "Date",
+															title: traduction.generic_date,
 															data: "date",
 															fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 																$(nTd).html(sData.substring(0, 10));
 															},
 														},
 														{
-															 title: "Description",
+															 title: traduction.generic_description,
 		                           data: "title",
 		                           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 																 if (sData == 'maintenance') $(nTd).html("Entretien fait");

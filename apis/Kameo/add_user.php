@@ -61,8 +61,7 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
   	$company = $resultat['COMPANY'];
   }
 
-  include 'get_company_conditions.php';
-  $conditions=get_company_conditions(NULL, NULL, $company);
+  $conditions=getCondition($company);
 
   if($generatePassword){
       $password_unencrypted=uniqid();
@@ -98,10 +97,10 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
   $accessRights='';
 
 
-  if($conditions['companyConditions']['cafeteria']=='Y'){
+  if($conditions['conditions']['CAFETARIA']=='Y'){
       $accessRights=$accessRights.',order';
   }
-  if($conditions['companyConditions']['booking']=='Y'){
+  if($conditions['conditions']['BOOKING']=='Y'){
       $accessRights=$accessRights.',search';
   }
   if($fleetManager=='Y'){
@@ -175,8 +174,6 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
     $mail->IsHTML(true);
     $mail->CharSet = 'UTF-8';
 
-
-
     $mail->AddAddress($email);
 
     if($company=='Actiris'){
@@ -211,8 +208,9 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
             die;
         }
     }
-    successMessage("SM0008");
-    }
+  }
+  successMessage("SM0008");
+
 
 }else{
   error_message('403');

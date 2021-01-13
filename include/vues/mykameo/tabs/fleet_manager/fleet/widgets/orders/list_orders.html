@@ -4,17 +4,17 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-			<h4 class="text-green">Gérer les commandes</h4>
+			<h4 class="text-green"><?= L::widgetTitle_ordersManager; ?></h4>
 			<div data-example-id="contextual-table" class="bs-example">
 				<table id="ordersFleetListingTable" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class="table table-condensed">
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th><span class="fr-inline">Utilisateur</span><span class="en-inline">User</span><span class="nl-inline">User</span></th>
-							<th><span class="fr-inline">Vélo</span><span class="en-inline">Bike</span><span class="nl-inline">Bike</span></th>
-							<th><span class="fr-inline">Taille</span><span class="en-inline">Size</span><span class="nl-inline">Size</span></th>
-							<th>Montant</th>
-							<th><span class="fr-inline">Status</span><span class="en-inline">Status</span><span class="nl-inline">Status</span></th>
+							<th><?= L::generic_user; ?></th>
+							<th><?= L::generic_bike; ?></th>
+							<th><?= L::generic_size; ?></th>
+							<th><?= L::generic_amount; ?></th>
+							<th><?= L::generic_status; ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -47,62 +47,45 @@
 					<div class="col-sm-12">
 						<form id="widget-orderFleet-form" action="apis/Kameo/orders_management.php" role="form" method="post">
                           <fieldset disabled>
-							<h4 class="fr text-green">Gestion de la commande client</h4>
-							<h4 class="nl text-green">Management of client order</h4>
-							<h4 class="en text-green">Management of client order</h4>
+							<h4 class="text-green"><?= L::orders_title; ?></h4>
 							<div class="form-group col-sm-12">
-								<h4 class="fr text-green">Informations techniques</h4>
-								<h4 class="nl text-green">Technical information</h4>
-								<h4 class="en text-green">Technical information</h4>
+								<h4 class="text-green"><?= L::generic_technicalInformation; ?></h4>
 								<div class="row">
 									<div class="col-sm-4">
-										<label for="ID">ID commande</label>
+										<label for="ID">ID</label>
 										<input type="text" name="ID" class="form-control required" readonly>
 									</div>
 									<div class="col-sm-6">
-										<label for="status"  class="fr">Statut</label>
-										<label for="status"  class="en">Status</label>
-										<label for="status"  class="nl">Status</label>
+										<h4 class="text-green"><?= L::generic_status; ?></h4>
 										<select name="status" class="form-control">
-											<option value="new">Nouvelle demande</option>
-											<option value="ongoing">En cours</option>
-											<option value="confirmed">Confirmée</option>
-											<option value="refused">Refusée</option>
+											<option value="new"><?= L::status_new_command; ?></option>
+											<option value="confirmed"><?= L::status_confirmed_command; ?></option>
+											<option value="refused"><?= L::status_waiting_delivery; ?></option>
 										</select>
 									</div>
 								</div>
 							</div>
 							<div class="form-group col-sm-12">
-								<h4 class="fr text-green">Caractéristiques du vélo</h4>
-								<h4 class="nl text-green">Bike characteristics</h4>
-								<h4 class="en text-green">Bike characteristics</h4>
+								<h4 class="text-green"><?= L::generic_bikeCharacteristics; ?></h4>
 								<div class="row">
 									<div class="col-sm-4">
-										<label for="brand"  class="fr">Marque</label>
-										<label for="brand"  class="en">Brand</label>
-										<label for="brand"  class="nl">Brand</label>
+										<label for="brand"><?= L::generic_brand; ?></label>
 										<input type="text" name="brand" class="form-control required" disabled>
 									</div>
 									<div class="col-sm-4">
-										<label for="model"  class="fr">Modèle</label>
-										<label for="model"  class="en">Model</label>
-										<label for="model"  class="nl">Model</label>
+										<label for="model"><?= L::generic_model; ?></label>
 										<input type="text" name="model" class="form-control required" disabled>
 									</div>
 									<div class="col-sm-4">
-										<label for="frameType"  class="fr">Type de cadre</label>
-										<label for="frameType"  class="en">Frame Type</label>
-										<label for="frameType"  class="nl">Frame Type</label>
+										<label for="frameType"><?= L::generic_frameType; ?></label>
 										<select name="frameType" class="form-control" disabled>
-											<option value="H">Homme</option>
-											<option value="M">Mixte</option>
-											<option value="F">Femme</option>
+											<option value="H"><?= L::generic_man; ?></option>
+											<option value="M"><?= L::generic_mixt; ?></option>
+											<option value="F"><?= L::generic_woman; ?></option>
 										</select>
 									</div>
 									<div class="col-sm-4">
-										<label for="size"  class="fr">Taille</label>
-										<label for="size"  class="en">Size</label>
-										<label for="size"  class="nl">Size</label>
+										<label for="size"><?= L::generic_size; ?></label>
 										<select name="size" class="form-control">
 											<option value="XS">XS</option>
 											<option value="S">S</option>
@@ -115,79 +98,65 @@
 								</div>
 							</div>
 							<div class="form-group col-sm-12">
-								<h4 class="text-green">Informations sur l'employé</h4>
+								<h4 class="text-green"><?= L::generic_userInformation; ?></h4>
 								<div class="col-sm-4">
-									<label for="firstname" class="fr">Prénom</label>
-									<label for="firstname" class="en">Firstname</label>
-									<label for="firstname" class="nl">Voornaam</label>
+									<label for="firstname"><?= L::sidebar_first_name; ?></label>
 									<input type="text" name="firstName" class="form-control required">
 								</div>
 								<div class="col-sm-4">
-									<label for="name" class="fr">Nom</label>
-									<label for="name" class="en">Name</label>
-									<label for="name" class="nl">Achternaam</label>
+									<label for="name"><?= L::sidebar_last_name; ?></label>
 									<input type="text" name="name" class="form-control required">
 								</div>
 								<div class="col-sm-4">
-									<label for="mail" class="fr">E-mail</label>
-									<label for="mail" class="en">E-mail</label>
-									<label for="mail" class="nl">E-mail</label>
+									<label for="mail">E-mail</label>
 									<input type="text" name="mail" class="form-control mail required">
 								</div>
 								<div class="col-sm-4">
-									<label for="phone" class="fr">Numéro de téléphone</label>
-									<label for="phone" class="en">Phone number</label>
-									<label for="phone" class="nl">Phone number</label>
+									<label for="phone"><?= L::sidebar_phone; ?></label>
 									<input type="text" name="phone" class="form-control phone">
 								</div>
 							</div>
 							<div class="form-group col-sm-12">
-	                <h4 class="text-green">Montant de facturation</h4>
+								<h4 class="text-green"><?= L::generic_billing; ?></h4>
 	                <div class="col-sm-4">
-	                    <label for="brand">Valeur marchande (TVAC)</label>
+	                    <label for="retailPrice"><?= L::generic_retailPriceTVAC; ?></label>
 	                    <input type="text" name="retailPrice" class="form-control required" disabled>
 	                </div>
 									<div class="col-sm-4">
-                    <label for="type">Type</label>
+                    <label for="type"><?= L::leasingType_title; ?></label>
 										<select name="type" class="form-control required">
-											<option value="leasing">Leasing mensuel</option>
-											<option value="annualLeasing">Leasing annuel</option>
-											<option value="achat">Achat</option>
+											<option value="leasing"><?= L::leasingType_monthlyLeasing; ?></option>
+											<option value="annualLeasing"><?= L::leasingType_annualLeasing; ?></option>
+											<option value="achat"><?= L::leasingType_buying; ?></option>
 										</select>
 	                </div>
 									<div class="col-sm-4">
-                    <label for="model"  class="fr">Montant leasing</label>
+                    <label for="model"><?= L::leasingType_amountLeasing; ?></label>
                     <input type="text" name="price" class="form-control required" disabled>
 	                </div>
 	            </div>
 	            </fieldset>
 
 	            <div class="col-sm-12">
-	                <a class="button small red-dark button-3d rounded icon-right\" ID="initializeRefuseCommandButton"><span>Refuser</span></a>
-	                <button  class="button small green button-3d rounded icon-left" ID="confirmCommandButton" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
+	                <a class="button small red-dark button-3d rounded icon-right\" ID="initializeRefuseCommandButton"><span><?= L::generic_refuse; ?></span></a>
+	                <button  class="button small green button-3d rounded icon-left" ID="confirmCommandButton" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?></button>
 	            </div>
 
 	            <input type="text" name="action" class="hidden" value="confirmCommand">
 
 						</form>
 						<form id="widget-refuseCommand-form" class="hidden" action="apis/Kameo/orders_management.php" role="form" method="post">
-                <h4 class="text-green">Raison du refus</h4>
+                <h4 class="text-green"><?= L::leasingType_refusalReason; ?></h4>
                 <textarea type="text" name="reasonOfRefusal" rows="5" class="form-control required" placeholder="Votre message"></textarea>
                 <input type="text" name="action" class="hidden" value="refuse">
                 <input type="text" name="ID" ID="ID" class="hidden" value="refuse">
-                <button  class="button small green button-3d rounded icon-left" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i>Valider</button>
+                <button  class="button small green button-3d rounded icon-left" name="validationComand" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?></button>
             </form>
 
 					</div>
 				</div>
 				<div class="fr" class="modal-footer">
-					<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-				</div>
-				<div class="en" class="modal-footer">
-					<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-				</div>
-				<div class="nl" class="modal-footer">
-					<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+					<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 				</div>
 			</div>
 		</div>

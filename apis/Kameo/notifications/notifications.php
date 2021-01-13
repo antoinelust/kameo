@@ -31,10 +31,10 @@ switch($_SERVER["REQUEST_METHOD"])
 					else
 						$result = $conn->query("SELECT * FROM notifications WHERE USER_ID = '".$id."' AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY `notifications`.`READ` ASC, `notifications`.`READ` DESC");
 					$response=array();
+					$response['notifications']=array();
 					if ($result && $result->num_rows>0) {
 						$notifications = $result->fetch_all(MYSQLI_ASSOC);
 						$response['response']="success";
-						$response['notifications']=array();
 						foreach($notifications as $index=>$notification){
 							$notificationTemp=array();
 							$notificationTemp['TYPE']=$notification['TYPE'];
@@ -52,7 +52,7 @@ switch($_SERVER["REQUEST_METHOD"])
 								$bikeID=$informations[0]['BIKE_ID'];
 								$dateEnd=$informations[0]['DATE_END_2'];
 
-								$nextBooking = execSQL("SELECT aa.DATE_START_2 from reservations aa WHERE aa.BIKE_ID='$bikeID' AND  aa.DATE_START_2>'$dateEnd'", array(), false);
+								$nextBooking = execSQL("SELECT aa.DATE_START_2 from reservations aa WHERE aa.BIKE_ID='$bikeID' AND  aa.DATE_START_2>'$dateEnd' AND STAANN != 'D'", array(), false);
 								if($nextBooking != NULL){
 									$notificationTemp['nextBookingStart']=$nextBooking[0]['DATE_START_2'];
 								}

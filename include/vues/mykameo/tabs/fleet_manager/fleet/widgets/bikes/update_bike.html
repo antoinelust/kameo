@@ -8,88 +8,66 @@
 				<div class="row">
 					<form id="widget-updateBikeStatus-form" action="apis/Kameo/update_bike_status.php" role="form" method="post">
 						<div class="col-sm-12">
-							<h4 class="text-green">Caractéristiques du vélo</h4>
+							<h4 class="text-green"><?= L::generic_bikeCharacteristics; ?></h4>
 							<div class="col-sm-4">
-								<label for="bikeID" class="fr-inline">Référence du vélo :</label>
-								<label for="bikeID" class="en-inline">Bike Reference :</label>
-								<label for="bikeID" class="nl-inline">Bike Reference :</label>
+								<label for="bikeID"><?= L::bike_description_nameForUser; ?></label>
 								<input type="text" name="bikeID" readonly class="form-control" />
 							</div>
 							<div class="col-sm-12"></div>
 							<div class="col-sm-4">
-								<label for="bikeModel" class="fr">Modèle :</label>
-								<label for="bikeModel" class="en">Model:</label>
-								<label for="bikeModel" class="nl">Model:</label>
+								<label for="bikeModel"><?= L::generic_model; ?></label>
 								<input type="text" name="bikeModel" class="form-control" />
 							</div>
 							<div class="col-sm-4">
-								<label for="bikeNumber" class="fr">Numéro d'identification :</label>
-								<label for="bikeNumber" class="en">Identification number :</label>
-								<label for="bikeNumber" class="nl">Identification number :</label>
+								<label for="bikeNumber">Tech. ID.</label>
 								<input type="text" disabled name="bikeNumber" class="form-control">
 							</div>
 							<div class="col-sm-4">
-								<label for="frameReference" class="fr">Référence du cadre :</label>
-								<label for="frameReference" class="en">Frame reference :</label>
-								<label for="frameReference" class="nl">Frame reference :</label>
+								<label for="frameReference"><?= L::generic_frameReference; ?></label>
 								<input type="text" disabled name="frameReference" class="form-control">
 							</div>
 							<div class="col-sm-4">
-								<label for="type" class="fr">Type :</label>
-								<label for="type" class="en">Type :</label>
-								<label for="type" class="nl">Type :</label>
+								<label for="frameReference"><?= L::accessories_type; ?></label>
 								<select title="Bike Type" class="selectType" id="bikeType" name="bikeType">
-									<option value="partage">Partage</option>
-									<option value="personnel">Personnel</option>
+									<option value="partage"><?= L::bike_description_sharedBike; ?></option>
+									<option value="personnel"><?= L::bike_description_personnalBike; ?></option>
 								</select>
 							</div>
 							<div class="col-sm-4" id="user_name">
-								<label for="name" class="fr">Nom :</label>
-								<label for="name" class="en">Name :</label>
-								<label for="name" class="nl">Name :</label>
+								<label for="selectName"><?= L::sidebar_last_name; ?></label>
 								<select title="User Name" class="selectName" id="userName" name="name">
 								</select>
 							</div>
 							<div class="col-sm-4" id="user_email">
-								<label for="email" class="fr">Email :</label>
-								<label for="email" class="en">E-mail :</label>
-								<label for="email" class="nl">E-mail :</label>
+								<label for="email">Email :</label>
 								<input type="text" readonly name="email" class="form-control">
 							</div>
 							<div class="separator"></div>
-							<h4 class="text-green">Informations relatives au contrat</h4>
+							<h4 class="text-green"><?= L::generic_billing; ?></h4>
 							<div class="col-sm-4">
-								<label for="contractType" class="fr">Type de contrat :</label>
-								<label for="contractType" class="en">Contract type :</label>
-								<label for="contractType" class="nl">Contract type :</label>
+								<label for="contractType"><?= L::leasingType_title; ?></label>
 								<input type="text" disabled name="contractType" class="form-control">
 							</div>
 							<div class="col-sm-4">
-								<label for="startDateContract" class="fr">Date de début :</label>
-								<label for="startDateContract" class="en">Start date :</label>
-								<label for="startDateContract" class="nl">Start date :</label>
+								<label for="startDateContract"><?= L::bike_description_contract_start; ?></label>
 								<input type="date" disabled name="startDateContract" class="form-control">
 							</div>
 							<div class="col-sm-4">
-								<label for="endDateContract" class="fr">Date de fin :</label>
-								<label for="endDateContract" class="en">End date :</label>
-								<label for="endDateContract" class="nl">End date :</label>
+								<label for="endDateContract"><?= L::bike_description_contract_end; ?></label>
 								<input type="date" disabled name="endDateContract" class="form-control">
 							</div>
 							<div class="separator"></div>
-							<h4 class="text-green">Informations relatives au vélo</h4>
+							<h4 class="text-green"><?= L::generic_bikeCharacteristics; ?></h4>
 							<div class="col-md-12">
 								<img src="" class="bikeImage" alt="image" />
 							</div>
 							<div class="col-sm-12">
 								<div class="col-sm-4">
-									<h4><span class="fr" >Status :</span></h4>
-									<h4><span class="en" >Status:</span></h4>
-									<h4><span class="nl" >Status :</span></h4>
+									<label for="bikeStatus"><?= L::generic_status; ?></label>
 									<select title="Bike Status" class="selectpicker" id="bikeStatus" name="bikeStatus">
-										<option value="OK">En état d'utilisation</option>
-										<option value="KO">Cassé</option>
-										<option value="test">Vélo de test</option>
+										<option value="OK"><?= L::status_OK; ?></option>
+										<option value="KO"><?= L::status_KO; ?></option>
+										<option value="test"><?= L::status_test; ?></option>
 									</select>
 								</div>
 							</div>
@@ -98,27 +76,19 @@
 								<div class="col-md-6">
 									<input type="text" class="hidden" name="bikeID"/>
 									<input type="text" class="hidden" name="user" value="<?php echo $user_data['EMAIL']; ?>"/>
-									<h4><span class="fr" >Accès aux bâtiments :</span></h4>
+									<h4 class="text-green"><?= L::generic_accessToBuildings; ?></h4>
 									<div id="bikeBuildingAccess"></div>
 								</div>
 							</div>
 						</div>
 						<div class="col-sm-12">
-							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Envoyer</button>
-							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Send</button>
-							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Verzenden</button>
+							<button  class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
 						</div>
 					</form>
 				</div>
 			</div>
 			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
 	</div>

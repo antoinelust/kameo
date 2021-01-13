@@ -46,7 +46,7 @@
                     </a>
                   </div>
                   <div class="counter bold" id="counterOrdersFleet" style="color:#3cb395"></div>
-                  <p>Gérer les commandes</p>
+                  <p>'.L::widgetTitle_ordersManager.'</p>
                 </div>
               </div>
               <div class="seperator seperator-small visible-xs"><br/><br/></div>';
@@ -63,7 +63,7 @@
 	                </a>
 	              </div>
 	              <div class="counter bold" id="counterBoxesFleet" style="color:#3cb395"></div>
-	              <p>Gérer les Bornes</p>
+	              <p>'.L::widgetTitle_boxesManager.'</p>
 	            </div>
 	          </div>';
 						}
@@ -104,7 +104,7 @@
                 </a>
               </div>
                   <div class="counter bold" id="counterConditions" style="color:#3cb395"></div>
-              <p>Modifier les réglages</p>
+              <p>'.L::widgetTitle_settingsManager.'</p>
             </div>
           </div>
         </div>

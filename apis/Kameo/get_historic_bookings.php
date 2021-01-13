@@ -135,14 +135,12 @@ if($user != NULL)
   $length = $result->num_rows;
 
 	$response['future_bookings']=$length;
-    $response['booking']['codePresence']=false;
-    while($row = mysqli_fetch_array($result))
-    {
-        $buildingStart=$row['BUILDING_START'];
-        $buildingEnd=$row['BUILDING_END'];
-        $bikeID=$row['BIKE_ID'];
-
-
+  $response['booking']['codePresence']=false;
+  while($row = mysqli_fetch_array($result))
+  {
+    $buildingStart=$row['BUILDING_START'];
+    $buildingEnd=$row['BUILDING_END'];
+    $bikeID=$row['BIKE_ID'];
 		$response['booking'][$i]['bikeID']=$bikeID;
 		$response['booking'][$i]['frameNumber']=$row['FRAME_NUMBER'];;
 		$response['booking'][$i]['model']=$row['MODEL'];;
@@ -182,6 +180,7 @@ if($user != NULL)
     $response['booking'][$i]['building_end_fr']=$resultat2['BUILDING_FR'];
     $response['booking'][$i]['building_end_en']=$resultat2['BUILDING_EN'];
     $response['booking'][$i]['building_end_nl']=$resultat2['BUILDING_NL'];
+    $dateStart=$row['DATE_START_2'];
     $dateEnd=$row['DATE_END_2'];
 
     if($locking=='Y'){
@@ -219,9 +218,19 @@ if($user != NULL)
           $response['booking']['codePresence']=true;
           $response['booking'][$i]['codeValue']=$resultat4['CODE'];
       }
+      $sql3="select * from reservations where BIKE_ID='$bikeID' and DATE_START_2>'$dateStart' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
+      if ($conn->query($sql3) === FALSE) {
+          $response = array ('response'=>'error', 'message'=> $conn->error);
+          echo json_encode($response);
+          die;
+      }
+      $result3 = mysqli_query($conn, $sql3);
+      $resultat3 = mysqli_fetch_assoc($result3);
+      $length3 = $result3->num_rows;
+      if ($length3 != 0){
+        $response['booking'][$i]['nextBookingDate']=$resultat3['DATE_START_2'];
+      }
     }else{
-
-
       $sql3="select * from reservations where BIKE_ID='$bikeID' and DATE_START_2>'$dateEnd' and STAANN!='D' ORDER BY DATE_START_2 LIMIT 1";
       if ($conn->query($sql3) === FALSE) {
           $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -237,6 +246,7 @@ if($user != NULL)
           $resultat3 = mysqli_fetch_assoc($result3);
           $buildingStartNext=$resultat3['BUILDING_START'];
           $buildingEndNext=$resultat3['BUILDING_END'];
+          $response['booking'][$i]['nextBookingDate']=$resultat3['DATE_START_2'];
           if ($buildingStartNext==$buildingStart && $buildingEndNext==$buildingEnd){
               $response['booking'][$i]['annulation']=true;
           } else{

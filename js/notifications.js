@@ -115,7 +115,7 @@ function load_notifications(){
           }else if(notification.TYPE=="lateBookingNextUser"){
             notification.TEXT=traduction.notifications_lateBookingNextUser_1+notification.TYPE_ITEM+traduction.notifications_lateBookingNextUser_2+"<a data-toggle='modal' data-target='#newBookingLateBooking' href='#' data-ID='"+notification.TYPE_ITEM+"' data-start='"+notification.start+"' data-end='"+notification.end+"' data-bike='"+notification.model+"' data-bikeID = '"+notification.bikeID+"' data-notificationid = '"+notification.notificationID+"' class='lateBookingNewBooking text-green'> "+traduction.notifications_lateBookingNextUser_3+"</a>"+traduction.notifications_lateBookingNextUser_4;
           }else if(notification.TYPE=="lateBookingNextUserNewHour"){
-            notification.TEXT=traduction.notifications_lateBookingNextUser_1+notification.TYPE_ITEM+traduction.notifications_lateBookingNextUser_2+"<a data-toggle='modal' data-target='#newBookingLateBookingNewHour' href='#' data-ID='"+notification.TYPE_ITEM+"' data-start='"+notification.start+"' data-end='"+notification.end+"' data-newEnd='"+notification.endPreviousBooking+"' data-bike='"+notification.model+"' data-bikeID = '"+notification.bikeID+"' data-notificationid = '"+notification.notificationID+"' class='lateBookingNewBookingnewHour text-green'> "+traduction.notifications_lateBookingNextUser_3+"</a>"+traduction.notifications_lateBookingNextUser_4;
+            notification.TEXT=traduction.notifications_lateBookingNewHourNextUser_1+notification.TYPE_ITEM+traduction.notifications_lateBookingNewHourNextUser_2+"<a data-toggle='modal' data-target='#newBookingLateBookingNewHour' href='#' data-ID='"+notification.TYPE_ITEM+"' data-start='"+notification.start+"' data-end='"+notification.end+"' data-newEnd='"+notification.endPreviousBooking+"' data-bike='"+notification.model+"' data-bikeID = '"+notification.bikeID+"' data-notificationid = '"+notification.notificationID+"' class='lateBookingNewBookingnewHour text-green'> "+traduction.notifications_lateBookingNewHourNextUser_3+"</a>"+traduction.notifications_lateBookingNewHourNextUser_4;
           }
           read = "";
           borderBottom = "";
@@ -258,7 +258,7 @@ function load_notifications(){
                       $('#newBookingLateBooking').modal('toggle');
                       $('#replaceBooking').html("");
                       $.notify({
-                      message: "Réservation modifiée."
+                      message: response.message
                       }, {
                       type: 'success'
                       });
@@ -361,7 +361,7 @@ function load_notifications(){
                       $('#newBookingLateBookingNewHour').modal('toggle');
                       $('#replaceBookingNewHour').html("");
                       $.notify({
-                      message: "Réservation modifiée."
+                      message: response.message
                       }, {
                       type: 'success'
                       });
@@ -386,7 +386,7 @@ function load_notifications(){
                       $('#newBookingLateBookingNewHour').modal('toggle');
                       $('#replaceBookingNewHour').html("");
                       $.notify({
-                        message: response.response
+                        message: response.message
                         }, {
                         type: 'success'
                         });
