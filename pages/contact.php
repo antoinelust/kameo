@@ -249,7 +249,8 @@
 							<div class="image-box-description text-center">
 								<h4><?=L::contact_team_you;?></h4>
 								<hr class="line">
-								<div><?=L::contact_join_team;?></div>
+								<div><?=L::contact_join_team;?>
+								<p class="text-green">Nous sommes à la recherche d'un mécanicien vélo<br><a class="button small green rounded" href="https://www.kameobikes.com/docs/Offre_Mecanicien_Liege.pdf" target="_blank"><span>voir l'offre</span></a></p></div>
 							</div>
 					</div>
 					<div class="col-md-3 hidden-sm"></div>
