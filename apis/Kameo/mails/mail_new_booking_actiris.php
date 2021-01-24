@@ -595,8 +595,8 @@
                             <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
                                 <div style=\"text-align: justify;\"><br>
-    <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Date de début - Begindatum : <strong>$dateStart_3String</strong><br>
-    - Date de fin - Einddatum : <strong>$dateEnd_3String</strong><br>
+    <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Date de début - Begindatum : <strong>$dateStart_2String</strong><br>
+    - Date de fin - Einddatum : <strong>$dateEnd_2String</strong><br>
     - Identification du vélo - Fietsidentificatie : <strong>$customName</strong> </span><br>
     <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">- Code d'accès - Toegangscode : <strong>$lockingcode</strong> </span></span><br>
     <br>

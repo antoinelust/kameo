@@ -1,7 +1,7 @@
 <?php
 global $conn;
 $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
-$newEndDate=isset($_POST['newEndDate']) ? $_POST['newEndDate'] : NULL;
+$newEndDate=isset($_POST['newEndDate']) ? $_POST['newEndDate']." ".$_POST['newEndHour'] : NULL;
 $messageForNextBooking=isset($_POST['messageForNextBooking']) ? nl2br($_POST['messageForNextBooking']) : NULL;
 
 if($ID==NULL){
@@ -31,8 +31,8 @@ if($ID==NULL){
 			$mail->CharSet = 'UTF-8';
 
 			if(constant('ENVIRONMENT') == "production"){
-			  //$mail->AddAddress($nextBookingEMAIL);
-				$mail->AddAddress("antoine@kameobikes.com");
+			  $mail->AddAddress($nextBookingEMAIL);
+				$mail->AddCC("bookabike@actiris.be");
 			  $mail->addBcc("antoine@kameobikes.com");
 			}else if(constant('ENVIRONMENT') == "test"){
 			  $mail->AddAddress("antoine@kameobikes.com");

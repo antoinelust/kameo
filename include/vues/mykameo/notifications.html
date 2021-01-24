@@ -47,7 +47,7 @@
               <div class="col-md-2" align="center">
                 <label for="ID">ID&nbsp;&nbsp;</label
                 ><input
-                  type="number"
+                  type="text"
                   name="ID"
                   class="form-control required"
                   readonly
@@ -66,7 +66,7 @@
               <div class="col-md-4" align="center">
                 <label for="condition"><?=L::generic_start_date; ?></label>
                 <input
-                  type="datetime-local"
+                  type="text"
                   name="start"
                   class="form-control required"
                   disabled
@@ -75,11 +75,12 @@
               <div class="col-md-4" align="center">
                 <label for="condition"><?=L::generic_end_date; ?></label>
                 <input
-                  type="datetime-local"
+                  type="text"
                   name="end"
                   class="form-control required"
                   disabled
                 />
+
               </div>
             </div>
             <div class="separator"></div>
@@ -87,13 +88,23 @@
               <h4 class="text-green">
                 <?= L::notifications_lateBookingNewEndDate1; ?>
               </h4>
-              <div class="col-md-4">
-                <label for="condition"><?= L::notifications_lateBookingNewEndDate2; ?></label>
-                <input
-                  name="newEndDate"
-                  type="datetime-local"
-                  class="form-control required"
-                />
+              <div class="col-md-12">
+                <div class="col-md-4">
+                  <label for="condition"><?= L::notifications_lateBookingNewEndDate2; ?></label>
+                  <input
+                    name="newEndDate"
+                    type="date"
+                    class="form-control required"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="condition"><?= L::notifications_lateBookingNewEndDate3; ?></label>
+                  <input
+                    name="newEndHour"
+                    type="time"
+                    class="form-control required"
+                  />
+                </div>
               </div>
               <div class="col-md-12">
                 <label for="condition"><?= L::notifications_lateBookingReason; ?></label>
@@ -141,7 +152,7 @@ jQuery("#widget_updateDepositHour_notification").validate({
         if (response.response == "success") {
           $.notify(
             {
-              message: traduction.lateBookingSuccessMessage,
+              message: response.message,
             },
             {
               type: "success",
@@ -165,29 +176,6 @@ jQuery("#widget_updateDepositHour_notification").validate({
   },
 });
 
-
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
-var yyyy = today.getFullYear();
-var hh = today.getHours();
-var minutes = today.getMinutes();
-if(dd<10){
-    dd='0'+dd
-}
-if(mm<10){
-    mm='0'+mm
-}
-if(hh<10){
-  hh='0'+hh;
-}
-if(minutes<10){
-  minutes='0'+minutes;
-}
-
-today = yyyy+'-'+mm+'-'+dd;
-todayWithHours =today+'T'+hh+':'+mm+':00';
-$("#widget_updateDepositHour_notification input[name=newEndDate]").attr("min",todayWithHours);
 
 </script>
 
@@ -288,7 +276,6 @@ $("#widget_updateDepositHour_notification input[name=newEndDate]").attr("min",to
  </div>
 </div>
 
-
 <div
   class="modal fade"
   id="newBookingLateBookingNewHour"
@@ -338,7 +325,7 @@ $("#widget_updateDepositHour_notification input[name=newEndDate]").attr("min",to
               <div class="col-md-4" align="center">
                 <label for="condition"><?= L::generic_start_date; ?></label>
                 <input
-                  type="datetime-local"
+                  type="text"
                   name="start"
                   class="form-control required"
                   disabled
@@ -347,12 +334,14 @@ $("#widget_updateDepositHour_notification input[name=newEndDate]").attr("min",to
               <div class="col-md-4" align="center">
                 <label for="condition"><?= L::generic_end_date; ?></label>
                 <input
-                  type="datetime-local"
+                  type="text"
                   name="end"
                   class="form-control required"
                   disabled
                 />
               </div>
+              <input type="text" name="buildingStart" class="hidden" />
+              <input type="text" name="buildingEnd" class="hidden" />
             </div>
             <div class="separator"></div>
             <div class="row">
@@ -372,11 +361,6 @@ $("#widget_updateDepositHour_notification input[name=newEndDate]").attr("min",to
               <div id="replaceBookingNewHour">
               </div>
               <input name="action" value="replaceBooking" type="text" class="form-control required hidden" />
-              <input
-              type="datetime-local"
-              name="newStartDate"
-              class="form-control hidden"
-              readonly />
             </div>
           </div>
         </div>

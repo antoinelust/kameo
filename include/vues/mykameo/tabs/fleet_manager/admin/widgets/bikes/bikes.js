@@ -744,18 +744,10 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                             "paging": false
                         }
                         );
-
-
-
                     }
                 }
             })
-
-
-
         })
-
-
     })
 }
 
@@ -901,7 +893,6 @@ function construct_form_for_bike_access_updateAdmin(bikeID, company){
                             }
                         }
                         document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
-
                         displayLanguage();
 
 
@@ -1488,9 +1479,9 @@ function list_bikes_admin() {
             brandAndModel +
             "</td><td "+style+" >" +
             response.bike[i].contractType +
-            "</td><td "+style+" >" +
+            "</td><td "+style+" data-sort='"+(new Date(response.bike[i].contractStart)).getTime()+"'>" +
             start +
-            "</td><td "+style+" >" +
+            "</td><td "+style+" data-sort='"+(new Date(response.bike[i].contractEnd)).getTime()+"'>" +
             end +
             "</td><td>" +
             leasingPrice +

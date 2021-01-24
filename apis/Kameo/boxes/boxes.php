@@ -102,6 +102,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				$response['automatic_billing']=$resultat['AUTOMATIC_BILLING'];
 				$response['amount']=$resultat['AMOUNT'];
 				$response['billing_group']=$resultat['BILLING_GROUP'];
+				$response['doorPosition']=$resultat['DOOR'];
 
 				$sql="SELECT bb.ID as id, bb.MODEL as model, cc.PLACE_IN_BUILDING  as place
 				FROM boxes aa INNER JOIN customer_bikes bb ON aa.COMPANY=bb.COMPANY

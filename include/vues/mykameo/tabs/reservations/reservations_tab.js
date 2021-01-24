@@ -545,12 +545,12 @@ function getHistoricBookings() {
           }
           if (annulation) {
             var tempAnnulation =
-              '<a class="button small red rounded effect" onclick="cancelBooking(' +
+              '<br/><a class="button small red rounded effect" onclick="cancelBooking(' +
               booking_id +
-              ')"><i class="fa fa-times"></i><span>annuler</span></a>';
+              ')"><i class="fa fa-times"></i><span>'+traduction.generic_cancel+'</span></a>';
             tempFutureBookingsTable = tempFutureBookingsTable.concat(tempAnnulation);
           }
-          tempFutureBookingsTable=tempFutureBookingsTable.concat("&nbsp;<a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+          tempFutureBookingsTable=tempFutureBookingsTable.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
 
           tempFutureBookingsTable = tempFutureBookingsTable.concat("</td></tr>");
           dest = dest.concat(tempFutureBookingsTable);
@@ -577,10 +577,9 @@ function getHistoricBookings() {
           }
           temp=temp.concat("<a class='button small green rounded effect' onclick=\"showBooking('"+booking_id +"')\"><span>+</span></a>");
           if (annulation) {
-            temp=temp.concat("&nbsp;<a class=\"button small red rounded effect\" onclick=\"cancelBooking(' "+booking_id +"')\"><i class=\"fa fa-times\"></i><span>annuler</span></a>");
+            temp=temp.concat("<br/><a class=\"button small red rounded effect\" onclick=\"cancelBooking(' "+booking_id +"')\"><i class=\"fa fa-times\"></i><span>"+traduction.generic_cancel+"</span></a>");
           }
-
-          temp=temp.concat("&nbsp;<a class=\"button small green rounded effect updateEndBookingDate\" data-date='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-nextBooking='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>Prolonger</span></a>");
+          temp=temp.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
 
           dest2=dest2.concat(temp);
 
@@ -605,8 +604,16 @@ function getHistoricBookings() {
           if( !nextBookingDate || (nextBookingDate && nextBookingDate > new Date())){
             $('#widget_updateDepositHour_booking input[name=ID]').val($(this).data("id"));
             $('#widget_updateDepositHour_booking input[name=model]').val($(this).data("model"));
-            $('#widget_updateDepositHour_booking input[name=start]').val($(this).data("start").replace(" ", "T"));
-            $('#widget_updateDepositHour_booking input[name=end]').val($(this).data("end").replace(" ", "T"));
+            $('#widget_updateDepositHour_booking input[name=start]').val($(this).data("start"));
+            $('#widget_updateDepositHour_booking input[name=end]').val($(this).data("end"));
+
+            var end = $(this).data("end").split(' ');
+            $('#widget_updateDepositHour_booking input[name=newEndDate').val(end[0]);
+            $('#widget_updateDepositHour_booking input[name=newEndHour').val(end[1]);
+            $('#widget_updateDepositHour_booking input[name=newEndDate').prop("min",end[0]);
+
+
+
             if(nextBookingDate){
               $('#widget_updateDepositHour_booking .nextBooking').removeClass("hidden");
               $('#widget_updateDepositHour_booking strong[name=nextBookingDate]').html(get_date_string_european_with_hours(nextBookingDate));

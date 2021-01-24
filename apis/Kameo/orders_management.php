@@ -27,7 +27,7 @@ if(isset($_POST['action'])){
     $size=isset($_POST['size']) ? $_POST['size'] : NULL;
     $testBoolean=isset($_POST['testBoolean']) ? "Y" : "N";
     $testDate=isset($_POST['testDate']) ? ($_POST['testDate'] == "" ? NULL : $_POST['testDate']) : NULL;
-    $testStatus=isset($_POST['testStatus']) ? $_POST['testStatus'] : NULL;
+    $testStatus=isset($_POST['testStatus']) ? $_POST['testStatus'] : "not started";
     $testAddress=isset($_POST['testAddress']) ? addslashes($_POST['testAddress']) : NULL;
     $testResult=isset($_POST['testResult']) ? addslashes($_POST['testResult']) : NULL;
     $deliveryDate=isset($_POST['deliveryDate']) ? ($_POST['deliveryDate'] == "" ? NULL : $_POST['deliveryDate']) : NULL;
@@ -39,9 +39,9 @@ if(isset($_POST['action'])){
     $accessoriesNumber=isset($_POST['accessoriesNumber']) ? $_POST['accessoriesNumber'] : NULL;
     $categoryAccessory=isset($_POST['accessoryCategory']) ? $_POST['accessoryCategory'] : NULL;
     $typeAccessory=isset($_POST['accessoryAccessory']) ? $_POST['accessoryAccessory'] : NULL;
+    $financialTypeAccessory=isset($_POST['financialTypeAccessory']) ? $_POST['financialTypeAccessory'] : NULL;
     $buyingPrice=isset($_POST['buyingPriceAcc']) ? $_POST['buyingPriceAcc'] : NULL;
     $sellingPrice=isset($_POST['sellingPriceAcc']) ? $_POST['sellingPriceAcc'] : NULL;
-
     if($action=='add'){
         if(!get_user_permissions("admin", $token)){
           error_message('403');
@@ -67,7 +67,7 @@ if(isset($_POST['action'])){
         if ($stmt)
         {
           $stmt->bind_param("sssissdssssi", $email, $mail, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress, $testStatus, $ID);
-          $stmt->execute();
+          if(!$stmt->execute()){echo "there was an error....".$conn->error;}
           $response['response']="success";
           $stmt->close();
         } else
@@ -81,7 +81,7 @@ if(isset($_POST['action'])){
             if ($stmt)
             {
               $stmt->bind_param("sssi", $testDate, $testAddress, $testResult, $ID);
-              $stmt->execute();
+              if(!$stmt->execute()){echo "there was an error....".$conn->error;}
               $response['response']="success";
               $stmt->close();
             } else
@@ -96,17 +96,16 @@ if(isset($_POST['action'])){
             {
                 $category = $categoryAccessory;
                 $accessory = $typeAccessory[$index];
+                $financialT = $financialTypeAccessory[$index];
                 $buyingP = $buyingPrice[$index];
                 $sellingP = $sellingPrice[$index];
-                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, ORDER_ID) VALUES ('$accessory', '$category', '$buyingP', '$sellingP', '//', '$ID')";
-
+                $sql2 = "INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, TYPE, ORDER_ID) VALUES ('$accessory', '$category', '$buyingP', '$sellingP', '//', '$financialT', '$ID')";
                 if ($conn->query($sql2) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
                     die;
                 }
             }
-
             $conn->close();
         }
         successMessage("SM0003");
@@ -171,8 +170,7 @@ if(isset($_POST['action'])){
     $action=isset($_GET['action']) ? $_GET['action'] : NULL;
 
     if($action=='list'){
-		if(get_user_permissions(["admin", "fleetManager"], $token)){
-
+		    if(get_user_permissions(["admin", "fleetManager"], $token)){
             include 'connexion.php';
             $sql="SELECT * FROM customer_referential WHERE TOKEN='$token'";
             if ($conn->query($sql) === FALSE) {
@@ -187,7 +185,7 @@ if(isset($_POST['action'])){
             if($company=="KAMEO"){
                 $sql= "SELECT aa.*, bb.ID as companyID, bb.COMPANY_NAME as companyName FROM client_orders aa, companies bb WHERE aa.COMPANY=bb.ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
             }else{
-                $sql="SELECT co.* FROM client_orders co, customer_referential cr WHERE cr.COMPANY='$company' AND cr.EMAIL=co.EMAIL ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
+                $sql="SELECT co.*, companies.ID as companyID, companies.COMPANY_NAME as companyName FROM client_orders co, companies WHERE co.COMPANY=companies.ID AND companies.INTERNAL_REFERENCE='$company' ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
             }
 
             if ($conn->query($sql) === FALSE) {
@@ -306,7 +304,6 @@ if(isset($_POST['action'])){
         $response['order']['frameType']=$resultat['FRAME_TYPE'];
         $priceHTVA=$resultat['PRICE_HTVA'];
 
-
         $sql= "SELECT * FROM customer_referential WHERE EMAIL='$email'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -320,31 +317,15 @@ if(isset($_POST['action'])){
         $response['order']['firstname']=$resultat['PRENOM'];
         $response['order']['phone']=$resultat['PHONE'];
         $response['order']['priceHTVA']=$priceHTVA;
-
-
-        $sql= "SELECT *, order_accessories.ID as orderID FROM order_accessories INNER JOIN accessories_categories ON order_accessories.CATEGORY = accessories_categories.ID INNER JOIN accessories_catalog ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID WHERE order_accessories.ORDER_ID='$ID' AND accessories_catalog.ID=order_accessories.BRAND";
-
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
+        $resultat=execSQL("SELECT order_accessories.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, MODEL, order_accessories.TYPE, order_accessories.ID as orderID FROM order_accessories INNER JOIN accessories_categories ON order_accessories.CATEGORY = accessories_categories.ID INNER JOIN accessories_catalog ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID WHERE order_accessories.ORDER_ID=? AND accessories_catalog.ID=order_accessories.BRAND", array('i', $ID), false);
+        $response['accessoryNumber'] = 0;
+        $response['order']['accessories']=$resultat;
+        if($resultat){
+          $response['accessoryNumber']=count($resultat);
+        }else{
+          $response['accessoryNumber'] = 0;
         }
         $result = mysqli_query($conn, $sql);
-
-        $i=0;
-
-        while($resultat = mysqli_fetch_array($result)){
-          $response['order'][$i]['typeAccessory']=$resultat['MODEL'];
-          $response['order'][$i]['type']=$resultat['TYPE'];
-          $response['order'][$i]['aCategory']=$resultat['CATEGORY'];
-          $response['order'][$i]['aBuyingPrice']=$resultat['BUYING_PRICE'];
-          $response['order'][$i]['aPriceHTVA']=$resultat['PRICE_HTVA'];
-          $response['order'][$i]['accessoryID']=$resultat['orderID'];
-          $i++;
-        }
-        $response['accessoryNumber']=$i;
-        $result = mysqli_query($conn, $sql);
-
         echo json_encode($response);
         die;
     }

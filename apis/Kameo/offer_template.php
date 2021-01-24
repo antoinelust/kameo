@@ -30,6 +30,7 @@
   $dateStart = isset($_POST["dateStart"]) ? $_POST["dateStart"] : NULL;
   $dateEnd = isset($_POST["dateEnd"]) ? $_POST["dateEnd"] : NULL;
   $totalPerMonth = 0;
+  $globalDDiscount = isset($_POST["globalDiscount"]) ? $_POST["globalDiscount"] : NULL;
 
 
   $delais = explode("\n",$delais);
@@ -157,8 +158,9 @@
 
     for ($i=0; $i < $bikesNumber ; $i++) {
         $bikeFinalLocationPrice = $bikeFinalPrice[$i];
+        $bikeId=$bikesId[$i];
         include 'connexion.php';
-        $sql = "INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES ('$email', '$offerID', 'bike', '$boxId', '$bikeFinalLocationPrice', 0, '')";
+        $sql = "INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES ('$email', '$offerID', 'bike', '$bikeId', '$bikeFinalLocationPrice', 0, '')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

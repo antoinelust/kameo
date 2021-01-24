@@ -8,7 +8,11 @@ $rfid=isset($_GET['UID']) ? htmlspecialchars($_GET['UID']) : NULL;
 
 error_log("--------------------------------------------------------------------------------------- \n", 3, "logs/logs_boxes.log");
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - building :".$_GET['building']."\n", 3, "logs/logs_boxes.log");
-error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - frame_number :".$_GET['frame_number']."\n", 3, "logs/logs_boxes.log");
+
+if(isset($_GET['frame_number'])){
+  error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - frame_number :".$_GET['frame_number']."\n", 3, "logs/logs_boxes.log");
+}
+
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - emplacement :".$_GET['emplacement']."\n", 3, "logs/logs_boxes.log");
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - RFID :".$rfid."\n", 3, "logs/logs_boxes.log");
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - code :".$_GET['code']."\n", 3, "logs/logs_boxes.log");
@@ -19,7 +23,6 @@ if( ($code==NULL && $rfid == NULL) || $emplacement == NULL || $building == NULL)
 
 
 if($code==NULL){
-
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
     $sql="SELECT * from customer_referential WHERE RFID = '$rfid'";
     if ($conn->query($sql) === FALSE) {
@@ -65,9 +68,6 @@ if($code==NULL){
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $reservationID=$resultat['ID_reservation'];
-
-
-
 }
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';

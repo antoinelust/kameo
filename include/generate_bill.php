@@ -226,19 +226,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     }
                     $result = mysqli_query($conn, $sql);
                     $resultat = mysqli_fetch_assoc($result);
-                    $catalogID=$resultat['TYPE'];
                     $contractStart=$dateStart;
                     $contractEnd=$dateEnd;
-
-                    $sql2="SELECT * from bike_catalog where ID='$catalogID'";
-                    if ($conn->query($sql2) === FALSE) {
-                        echo $conn->error;
-                        die;
-                    }
-                    $result2 = mysqli_query($conn, $sql2);
-                    $resultat2 = mysqli_fetch_assoc($result2);
-
-                    $img=strtolower(str_replace(" ", "-", $resultat2['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat2['MODEL']))."_".strtolower($resultat2['FRAME_TYPE']);
+                    $img=$resultat['TYPE'];
 
                     error_log(date("Y-m-d H:i:s")." - img :".$img."\n", 3, "generate_bill.log");
 
@@ -288,16 +278,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     }
                     $result2 = mysqli_query($conn, $sql2);
                     $resultat2 = mysqli_fetch_assoc($result2);
-                    $catalogID=$resultat2['TYPE'];
-
-                    $sql3="SELECT * from bike_catalog where ID='$catalogID'";
-                    if ($conn->query($sql3) === FALSE) {
-                        echo $conn->error;
-                        die;
-                    }
-                    $result3 = mysqli_query($conn, $sql3);
-                    $resultat3 = mysqli_fetch_assoc($result3);
-                    $img=strtolower(str_replace(" ", "-", $resultat3['BRAND']))."_".strtolower(str_replace(" ", "-", $resultat3['MODEL']))."_".strtolower($resultat3['FRAME_TYPE']);
+                    $img=$resultat2['TYPE'];
                     $comment='Vente au '.$dateStart->format('d-m-Y');
 
                     $test2.='<tr>

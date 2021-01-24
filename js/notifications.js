@@ -115,7 +115,7 @@ function load_notifications(){
           }else if(notification.TYPE=="lateBookingNextUser"){
             notification.TEXT=traduction.notifications_lateBookingNextUser_1+notification.TYPE_ITEM+traduction.notifications_lateBookingNextUser_2+"<a data-toggle='modal' data-target='#newBookingLateBooking' href='#' data-ID='"+notification.TYPE_ITEM+"' data-start='"+notification.start+"' data-end='"+notification.end+"' data-bike='"+notification.model+"' data-bikeID = '"+notification.bikeID+"' data-notificationid = '"+notification.notificationID+"' class='lateBookingNewBooking text-green'> "+traduction.notifications_lateBookingNextUser_3+"</a>"+traduction.notifications_lateBookingNextUser_4;
           }else if(notification.TYPE=="lateBookingNextUserNewHour"){
-            notification.TEXT=traduction.notifications_lateBookingNewHourNextUser_1+notification.TYPE_ITEM+traduction.notifications_lateBookingNewHourNextUser_2+"<a data-toggle='modal' data-target='#newBookingLateBookingNewHour' href='#' data-ID='"+notification.TYPE_ITEM+"' data-start='"+notification.start+"' data-end='"+notification.end+"' data-newEnd='"+notification.endPreviousBooking+"' data-bike='"+notification.model+"' data-bikeID = '"+notification.bikeID+"' data-notificationid = '"+notification.notificationID+"' class='lateBookingNewBookingnewHour text-green'> "+traduction.notifications_lateBookingNewHourNextUser_3+"</a>"+traduction.notifications_lateBookingNewHourNextUser_4;
+            notification.TEXT=traduction.notifications_lateBookingNewHourNextUser_1+notification.TYPE_ITEM+traduction.notifications_lateBookingNewHourNextUser_2+"<a data-toggle='modal' data-target='#newBookingLateBookingNewHour' href='#' data-ID='"+notification.TYPE_ITEM+"' data-start='"+notification.start+"' data-end='"+notification.end+"' data-newEnd='"+notification.endPreviousBooking+"' data-buildingstart='"+notification.buildingStart+"' data-buildingend='"+notification.buildingEnd+"' data-bike='"+notification.model+"' data-bikeID = '"+notification.bikeID+"' data-notificationid = '"+notification.notificationID+"' class='lateBookingNewBookingnewHour text-green'> "+traduction.notifications_lateBookingNewHourNextUser_3+"</a>"+traduction.notifications_lateBookingNewHourNextUser_4;
           }
           read = "";
           borderBottom = "";
@@ -167,9 +167,13 @@ function load_notifications(){
         $('.lateBookingNotification').click(function(){
           $('#widget_updateDepositHour_notification input[name=ID]').val($(this).data("id"));
           $('#widget_updateDepositHour_notification input[name=model]').val($(this).data("bike"));
-          $('#widget_updateDepositHour_notification input[name=start]').val($(this).data("start").replace(' ', 'T'));
-          $('#widget_updateDepositHour_notification input[name=end]').val($(this).data("end").replace(' ', 'T'));
-          $('#widget_updateDepositHour_notification input[name=newEndDate]').val($(this).data("end").replace(' ', 'T'));
+          $('#widget_updateDepositHour_notification input[name=start]').val($(this).data("start"));
+          $('#widget_updateDepositHour_notification input[name=end]').val($(this).data("end"));
+          var end=$(this).data("end").split(" ");
+          $('#widget_updateDepositHour_notification input[name=newEndDate]').val(end[0]);
+          $('#widget_updateDepositHour_notification input[name=newEndDate]').attr("min", end[0]);
+          $('#widget_updateDepositHour_notification input[name=newEndHour]').val(end[1]);
+
           if($(this).data("next-booking") == null){
             $('#widget_updateDepositHour_notification .nextBooking').addClass("hidden");
           }else{
@@ -284,8 +288,10 @@ function load_notifications(){
           var currentStartDate=new Date($(this).data("start"));
           $('#newBookingLateBookingNewHour input[name=ID]').val($(this).data("id"));
           $('#newBookingLateBookingNewHour input[name=model]').val($(this).data("bike"));
-          $('#newBookingLateBookingNewHour input[name=start]').val($(this).data("start").replace(' ', 'T'));
-          $('#newBookingLateBookingNewHour input[name=end]').val($(this).data("end").replace(' ', 'T'));
+          $('#newBookingLateBookingNewHour input[name=start]').val($(this).data("start"));
+          $('#newBookingLateBookingNewHour input[name=end]').val($(this).data("end"));
+          $('#newBookingLateBookingNewHour input[name=buildingStart]').val($(this).data("buildingstart"));
+          $('#newBookingLateBookingNewHour input[name=buildingEnd]').val($(this).data("buildingend"));
           $('#newBookingLateBookingNewHour input[name=newStartDate]').val($(this).data("newend").replace(' ', 'T'));
           $('#newBookingLateBookingNewHour span[name=newStartDate]').html(get_date_string_european_with_hours(newStartDate));
 
@@ -333,7 +339,7 @@ function load_notifications(){
                 div_img.appendChild(img);
                 newDiv.appendChild(div_img);
                 var p=document.createElement("p");
-                p.innerHTML = traduction.generic_brand + " : "+bikeInformation.brand+"<br>"+ traduction.generic_model + " : "+bikeInformation.model+"<br> " + traduction.generic_size + " : "+bikeInformation.size;
+                p.innerHTML = traduction.generic_brand + " : "+bikeInformation.brand+"<br>"+ traduction.generic_model + " : "+bikeInformation.typeDescription+"<br> " + traduction.generic_size + " : "+bikeInformation.size;
                 newDiv.appendChild(p);
                 var button=document.createElement("button");
                 button.className = "btn btn-small replaceBookingNewHourButton";
@@ -350,8 +356,8 @@ function load_notifications(){
                 data.push({ name: "bikeID", value: this.name});
                 data.push({ name: "widget-new-booking-date-start", value: $('#widget_newBooking_lateBooking_new_hour input[name=start]').val()});
                 data.push({ name: "widget-new-booking-date-end", value: $('#widget_newBooking_lateBooking_new_hour input[name=end]').val()});
-                data.push({ name: "widget-new-booking-building-start", value: "ActirisSaintJosse"});
-                data.push({ name: "widget-new-booking-building-end", value: "ActirisSaintJosse"});
+                data.push({ name: "widget-new-booking-building-start", value: $('#widget_newBooking_lateBooking_new_hour input[name=buildingStart]').val()});
+                data.push({ name: "widget-new-booking-building-end", value: $('#widget_newBooking_lateBooking_new_hour input[name=buildingEnd]').val()});
                 $.ajax({
                   type: "POST",
                   url: "apis/Kameo/new_booking.php",

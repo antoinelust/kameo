@@ -499,15 +499,12 @@ if ($token == NULL) { //Not connected
     //PORTFOLIO BIKES
     /** @TODO: Add a delete confirmation widget **/
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
-  }
-  if (get_user_permissions("admin", $token)) {
-
     //PORTFOLIO ACCESSORIES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolioAccessories/main.php';
-  }
-  if (get_user_permissions("admin", $token)) {
-    //MANAGE BIKES
+    //STOCK BIKES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
+    //STOCK ACCESSORIES
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/main.php';
     //CHATS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/chats/main.php';
     //FEEDBACKS

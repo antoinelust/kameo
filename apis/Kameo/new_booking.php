@@ -5,9 +5,10 @@ header('Content-type: application/json');
 
 session_start();
 
-include 'globalfunctions.php';
-
+require_once 'globalfunctions.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 require_once __DIR__ .'/authentication.php';
+
 $token = getBearerToken();
 log_inputs($token);
 
@@ -170,6 +171,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 			$model=$resultat['MODEL'];
 			$company=$resultat['COMPANY'];
 
+
+
 			if($company=='Actiris'){
 		    $mail->From = "bookabike@actiris.be";
 		    $mail->FromName = "Book a Bike - Actiris";
@@ -177,7 +180,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 		    $mail->From = "info@kameobikes.com";
 		    $mail->FromName = "Info Kameo Bikes";
 		  }
-      $mail->AddAddress($user);
+
+      if(constant('ENVIRONMENT') == "production"){
+        $mail->AddAddress($user);
+      }else if(constant('ENVIRONMENT') == "test"){
+        $mail->AddAddress("antoine@kameobikes.com");
+      }
+
 			$mail->IsHTML(true);
 			$mail->CharSet = 'UTF-8';
 
@@ -196,12 +205,13 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 
       error_log(date("Y-m-d H:i:s")." - BODY  - ".$mail->Body."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/daily_logs.log');
 
-
-			if(!$mail->Send()) {
-				 $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
-					echo json_encode($response);
-					die;
-			}
+      if(constant('ENVIRONMENT') == "production" || constant('ENVIRONMENT') == "test"){
+  			if(!$mail->Send()) {
+  				 $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
+  					echo json_encode($response);
+  					die;
+  			}
+      }
 		}
     successMessage("SM0006");
 }else{

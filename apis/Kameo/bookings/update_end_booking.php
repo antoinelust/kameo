@@ -2,7 +2,7 @@
 
 global $conn;
 $ID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
-$newEndDate=isset($_POST['newEndDate']) ? $_POST['newEndDate'] : NULL;
+$newEndDate=isset($_POST['newEndDate']) ? $_POST['newEndDate']." ".$_POST['newEndHour'] : NULL;
 
 if($ID==NULL){
 	errorMessage("ES0012");
@@ -11,7 +11,6 @@ if($ID==NULL){
 	$bikeID = $booking[0]['BIKE_ID'];
 	$dateEnd = $booking[0]['DATE_END_2'];
 	$company = $booking[0]['COMPANY'];
-	$newEndDateString=str_replace("T", " ", $newEndDate);
 	$nextBooking = execSQL("SELECT aa.ID, aa.DATE_START_2, aa.EMAIL, bb.ID as customerID from reservations aa, customer_referential bb WHERE aa.EMAIL=bb.EMAIL AND aa.BIKE_ID=? AND aa.DATE_START_2 > ? AND aa.DATE_START_2 < ? AND aa.STAANN != 'D' ORDER BY aa.DATE_START_2", array('sss', $bikeID, $dateEnd, $newEndDate), false);
 
 	if($nextBooking != null){

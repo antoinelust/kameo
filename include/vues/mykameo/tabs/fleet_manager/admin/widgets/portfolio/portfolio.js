@@ -79,14 +79,12 @@ function initializeUpdatePortfolioBike(ID) {
       if(response.sizes != null){
         var sizes = response.sizes.split(",");
         const selectValues = [1, 2];
-        const select = document.getElementById('sizes');
+        const select = document.getElementById('updateBikeSizes');
 
         /* Iterate options of select element */
-        for (const option of document.querySelectorAll('#sizes option')){
-
+        for (const option of document.querySelectorAll('#updateBikeSizes option')){
           /* Parse value to integer */
           const value = option.value;
-
           /* If option value contained in values, set selected attribute */
           if (sizes.indexOf(value) !== -1) {
             option.setAttribute('selected', 'selected');

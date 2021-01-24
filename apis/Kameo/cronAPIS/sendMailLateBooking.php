@@ -12,7 +12,7 @@ if($company=='Actiris'){
   $temp=new DateTime($informations[0]['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
   $dateEndString=$temp->format('d/m/Y H:i');
 
-  $bikeID=$informations[0]['bikeID'];
+  $bikeID=$informations[0]['BIKE_ID'];
   $dateStart=$informations[0]['DATE_START_2'];
 
   $nextBooking = execSQL("select * from reservations WHERE BIKE_ID='$bikeID' AND DATE_START_2 > '$dateStart' AND STAANN != 'D'", array(), false);
@@ -34,7 +34,9 @@ if($company=='Actiris'){
   echo "environnement : ".constant('ENVIRONMENT')."\n";
 
   if(constant('ENVIRONMENT') == "production"){
-    $mail->AddAddress($email);
+    //$mail->AddAddress($email);
+    $mail->AddAddress("antoine@kameobikes.com");
+    $mail->AddCC("bookabike@actiris.be");
     $mail->addBcc("antoine@kameobikes.com");
   }else if(constant('ENVIRONMENT') == "test"){
     $mail->AddAddress("antoine@kameobikes.com");

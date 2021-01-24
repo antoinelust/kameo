@@ -68,7 +68,7 @@
               <div class="col-md-2" align="center">
                 <label for="ID">ID&nbsp;&nbsp;</label
                 ><input
-                  type="number"
+                  type="text"
                   name="ID"
                   class="form-control required"
                   readonly
@@ -87,16 +87,16 @@
               <div class="col-md-4" align="center">
                 <label for="condition"><?=L::generic_start_date; ?></label>
                 <input
-                  type="datetime-local"
+                  type="text"
                   name="start"
                   class="form-control required"
-                  disabled
+                  readonly
                 />
               </div>
               <div class="col-md-4" align="center">
                 <label for="condition"><?=L::generic_end_date; ?></label>
                 <input
-                  type="datetime-local"
+                  type="text"
                   name="end"
                   class="form-control required"
                   disabled
@@ -108,13 +108,23 @@
               <h4 class="text-green">
                 <?= L::notifications_lateBookingNewEndDate1; ?>
               </h4>
-              <div class="col-md-4">
-                <label for="condition"><?= L::notifications_lateBookingNewEndDate2; ?></label>
-                <input
-                  name="newEndDate"
-                  type="datetime-local"
-                  class="form-control required"
-                />
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="newEndDate"><?= L::notifications_lateBookingNewEndDate2; ?></label>
+                  <input
+                    name="newEndDate"
+                    type="date"
+                    class="form-control required"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="newEndHour"><?= L::notifications_lateBookingNewEndDate3; ?></label>
+                  <input
+                    name="newEndHour"
+                    type="time"
+                    class="form-control required"
+                  />
+                </div>
               </div>
               <div class="separator nextBooking"></div>
               <div class="col-sm-12 nextBooking">

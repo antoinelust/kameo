@@ -347,43 +347,40 @@ h2{
     <?php  } ?>
   </div>
 </page>
-<page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
 
-    <h1>1. Location tout inclus</h1>
-    <p>
-      La location est un contrat comprenant à la fois la mise à disposition d’un produit et des services liés à ce
-      produit. Pendant toute la durée de la période de location, le produit appartient à KAMEO Bikes. A l’échéance
-      de la période de location, une possibilité d'achat du vélo peut être réçue par <?php echo $company['COMPANY_NAME']; ?> de la part de Kameo Bikes afin d’acquérir définitivement le
-      produit. Les services peuvent toujours être contractés en supplément.
-    </p>
-    <p>Dans le cadre de cette offre, la location englobe les éléments suivants :</p>
-    <div class="list">
-      <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
-      <div class="listItem">• PRODUIT</div>
-      <div class="subList">
-        <div class="subListItem">
-          • <?php echo $nbVelos . ' '. $txtVelo; ?>
+<?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
+  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+
+      <h1>1. Location tout inclus</h1>
+      <p>
+        La location est un contrat comprenant à la fois la mise à disposition d’un produit et des services liés à ce
+        produit. Pendant toute la durée de la période de location, le produit appartient à KAMEO Bikes. A l’échéance
+        de la période de location, une possibilité d'achat du vélo peut être réçue par <?php echo $company['COMPANY_NAME']; ?> de la part de Kameo Bikes afin d’acquérir définitivement le
+        produit. Les services peuvent toujours être contractés en supplément.
+      </p>
+      <p>Dans le cadre de cette offre, la location englobe les éléments suivants :</p>
+      <div class="list">
+        <div class="listItem">• PRODUIT</div>
+        <div class="subList">
+          <div class="subListItem">
+            • <?php echo $nbVelos . ' '. $txtVelo; ?>
+          </div>
+        </div>
+        <?php if($assurance == true ||  $numberMaintenance >= 0){ ?>
+        <div class="listItem">• SERVICES</div>
+        <div class="subList">
+          <?php if($assurance == true){echo '<div class="subListItem">• Assurance</div>';} ?>
+          <?php if($numberMaintenance >= 0){echo '<div class="subListItem">• Maintenance</div>';} ?>
+        </div>
+      <?php } ?>
+        <div class="listItem">• POSSIBILITE D ACHAT</div>
+        <div class="subList">
+          <div class="subListItem">• A calculer selon la durée de location</div>
         </div>
       </div>
-      <?php } ?>
-      <?php if($assurance == true ||  $numberMaintenance >= 0){ ?>
-      <div class="listItem">• SERVICES</div>
-      <div class="subList">
-        <?php if($assurance == true){echo '<div class="subListItem">• Assurance</div>';} ?>
-        <?php if($numberMaintenance >= 0){echo '<div class="subListItem">• Maintenance</div>';} ?>
-      </div>
-    <?php } ?>
-      <?php if ($buyOrLeasing == "leasing" || $buyOrLeasing == "both") { ?>
-      <div class="listItem">• POSSIBILITE D ACHAT</div>
-      <div class="subList">
-        <div class="subListItem">• A calculer selon la durée de location</div>
-      </div>
-      <?php } ?>
-    </div>
-    <img src="<?php echo __DIR__ ; ?>/img/leasing_schema.png" alt="" style="width:600px; height: auto;" />
-
-
-</page>
+      <img src="<?php echo __DIR__ ; ?>/img/leasing_schema.png" alt="" style="width:600px; height: auto;" />
+  </page>
+<?php } ?>
 
 <?php
 //vélos
@@ -705,7 +702,18 @@ if ($assurance == true) { ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php foreach ($bikes as $bike) {
-                echo "<div style='margin-left:3mm;'>{$bike['PRICE_HTVA']} € HTVA  <span class='green bold'> x{$bike['count']}</span></div><br/>";
+
+                $priceTVAC = round($bike['PRICE_HTVA'] * 1.21);
+
+                if($globalDDiscount != '0'){
+                  $newPrice=round($bike['PRICE_HTVA']*(100 - $globalDDiscount)/100);
+                  $newPriceTVAC = round($newPrice * 1.21);
+                  echo "<del><div style='margin-left:3mm;'>{$bike['PRICE_HTVA']} € HTVA ({$priceTVAC} € TVAC) <span class='green bold'> x{$bike['count']}</span></div></del><br/>";
+                  echo "<div style='margin-left:3mm; color : red'> - ".$globalDDiscount." %</div><br/>";
+                  echo "<div style='margin-left:3mm;'>{$newPrice} € HTVA ({$newPriceTVAC} € TVAC) <span class='green bold'> x{$bike['count']}</span></div><br/>";
+                }else{
+                  echo "<div style='margin-left:3mm;'>{$bike['PRICE_HTVA']} € HTVA ({$priceTVAC} € TVAC) <span class='green bold'> x{$bike['count']}</span></div><br/>";
+                }
               } ?>
             </td>
           </tr>
@@ -806,93 +814,103 @@ if ($assurance == true) { ?>
     <div class="light">KAMEO Bikes offre une garantie conforme à celle de la marque. Soit 2 ans sur le cadre et les composants.</div>
     <h2>Facturation</h2>
     <div class="light">
-      La facturation s’effectuera de façon mensuelle chaque 1er du mois pour les locations et lors de la livraison pour les achats.<br/>
-      Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SRL.
+      <?php if($buyOrLeasing =="buy"){?>
+        La facturation s’effectuera lors de la livraison.<br/>
+        Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SRL.
+      <?php }else if($buyOrLeasing =="both"){ ?>
+        La facturation s’effectuera de façon mensuelle chaque 1er du mois pour les locations et lors de la livraison pour les achats.<br/>
+        Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SRL.
+      <?php }else{ ?>
+        La facturation s’effectuera de façon mensuelle, au jour de début de mise à disposition du vélo.<br/>
+        Cette offre est sujette aux conditions générales de vente et de location de KAMEO Bikes SRL.
+      <?php }?>
     </div>
     <h2>Conditions de paiement</h2>
     <div class="light">30 jours à partir de la date de la facture. Prélèvement automatique par domiciliation.</div>
   </page>
-  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
-    <h2>Rupture du contrat</h2>
-    <div class="light">
-      En cas de rupture unilatérale du contrat de location de la part du client, les indemnités suivantes seront dues :<br/>
-      <table class="maxWidth tableBorder tableMargins">
-        <thead>
-          <tr>
-            <th style="width:50%;" class="bold">DURÉE ÉCOULÉE DE LOCATION</th>
-            <th style="width:50%;" class="bold">Indemnité de rupture</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if($leasingDuration==36)
-          {?>
+  <?php if($buyOrLeasing != "buy"){?>
+    <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
+      <h2>Rupture du contrat</h2>
+      <div class="light">
+        En cas de rupture unilatérale du contrat de location de la part du client, les indemnités suivantes seront dues :<br/>
+        <table class="maxWidth tableBorder tableMargins">
+          <thead>
+            <tr>
+              <th style="width:50%;" class="bold">DURÉE ÉCOULÉE DE LOCATION</th>
+              <th style="width:50%;" class="bold">Indemnité de rupture</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if($leasingDuration==36)
+            {?>
+            <tr>
+              <td style="width:50%;" class="light">1-12 mois</td>
+              <td style="width:50%;" class="light">12 mois</td>
+            </tr>
+            <tr>
+              <td style="width:50%;" class="light">12-24 mois</td>
+              <td style="width:50%;" class="light">6 mois</td>
+            </tr>
+            <tr>
+              <td style="width:50%;" class="light">24-36 mois</td>
+              <td style="width:50%;" class="light">3 mois</td>
+            </tr>
+            <tr>
+              <td style="width:50%;" class="bold">A l’échéance </td>
+              <td style="width:50%;" class="bold">Possibilité d’achat</td>
+            </tr>
+            <tr>
+              <td style="width:50%;" class="light">36 mois</td>
+              <td style="width:50%;" class="light">16% de la valeur marchande neuve du vélo au moment du début du contrat de location</td>
+            </tr>
+          <?php }else if($leasingDuration==24){?>
+            <tr>
+              <td style="width:50%;" class="light">1-12 mois</td>
+              <td style="width:50%;" class="light">9 mois</td>
+            </tr>
+            <tr>
+              <td style="width:50%;" class="light">12-24 mois</td>
+              <td style="width:50%;" class="light">4 mois</td>
+            </tr>
+            <tr>
+              <td style="width:50%;" class="bold">A l’échéance </td>
+              <td style="width:50%;" class="bold">Possibilité d’achat</td>
+            </tr>
+            <tr>
+              <td style="width:50%;" class="light">24 mois</td>
+              <td style="width:50%;" class="light">16% de la valeur marchande neuve du vélo au moment du début du contrat de location</td>
+            </tr>
+          <?php }else if($leasingDuration==12){?>
           <tr>
             <td style="width:50%;" class="light">1-12 mois</td>
-            <td style="width:50%;" class="light">12 mois</td>
-          </tr>
-          <tr>
-            <td style="width:50%;" class="light">12-24 mois</td>
             <td style="width:50%;" class="light">6 mois</td>
           </tr>
           <tr>
-            <td style="width:50%;" class="light">24-36 mois</td>
-            <td style="width:50%;" class="light">3 mois</td>
-          </tr>
-          <tr>
             <td style="width:50%;" class="bold">A l’échéance </td>
             <td style="width:50%;" class="bold">Possibilité d’achat</td>
           </tr>
           <tr>
-            <td style="width:50%;" class="light">36 mois</td>
-            <td style="width:50%;" class="light">16% de la valeur marchande neuve du vélo au moment du début du contrat de location</td>
+            <td style="width:50%;" class="light">12 mois</td>
+            <td style="width:50%;" class="light">Dans le contrat d'un contrat de location court, il n'y a pas de possibilité de rachat</td>
           </tr>
-        <?php }else if($leasingDuration==24){?>
-          <tr>
-            <td style="width:50%;" class="light">1-12 mois</td>
-            <td style="width:50%;" class="light">9 mois</td>
-          </tr>
-          <tr>
-            <td style="width:50%;" class="light">12-24 mois</td>
-            <td style="width:50%;" class="light">4 mois</td>
-          </tr>
-          <tr>
-            <td style="width:50%;" class="bold">A l’échéance </td>
-            <td style="width:50%;" class="bold">Possibilité d’achat</td>
-          </tr>
-          <tr>
-            <td style="width:50%;" class="light">24 mois</td>
-            <td style="width:50%;" class="light">16% de la valeur marchande neuve du vélo au moment du début du contrat de location</td>
-          </tr>
-        <?php }else if($leasingDuration==12){?>
-        <tr>
-          <td style="width:50%;" class="light">1-12 mois</td>
-          <td style="width:50%;" class="light">6 mois</td>
-        </tr>
-        <tr>
-          <td style="width:50%;" class="bold">A l’échéance </td>
-          <td style="width:50%;" class="bold">Possibilité d’achat</td>
-        </tr>
-        <tr>
-          <td style="width:50%;" class="light">12 mois</td>
-          <td style="width:50%;" class="light">Dans le contrat d'un contrat de location court, il n'y a pas de possibilité de rachat</td>
-        </tr>
-      <?php } ?>
-        </tbody>
-      </table>
-    </div>
-    <h2>Rachat du vélo en cours de contrat</h2>
-    <div class="light">
-      Dans le cas où la société cliente et/ou l’employé, souhaite(nt) arrêter le contrat mais devenir propriétaire du vélo, cela est possible après 12 mois de contrat.
-      Le montant dû est égal à la somme de :
-      <ul>
-        <li> 60% de la valeur restante du contrat</li>
-        <li> La valeur résiduelle du vélo</li>
-      </ul>
-      <strong>Ce montant n’est pas cumulable avec l’indemnité de rupture décrite en début de page, une procédure ou l'autre s'applique, jamais les deux. Après
-      le paiement de la valeur de rachat, le vélo n'est plus la propriété de la KAMEO.</strong>
+        <?php } ?>
+          </tbody>
+        </table>
+      </div>
+      <h2>Rachat du vélo en cours de contrat</h2>
+      <div class="light">
+        Dans le cas où la société cliente et/ou l’employé, souhaite(nt) arrêter le contrat mais devenir propriétaire du vélo, cela est possible après 12 mois de contrat.
+        Le montant dû est égal à la somme de :
+        <ul>
+          <li> 60% de la valeur restante du contrat</li>
+          <li> La valeur résiduelle du vélo</li>
+        </ul>
+        <strong>Ce montant n’est pas cumulable avec l’indemnité de rupture décrite en début de page, une procédure ou l'autre s'applique, jamais les deux. Après
+        le paiement de la valeur de rachat, le vélo n'est plus la propriété de la KAMEO.</strong>
 
-    </div>
-  </page>
+      </div>
+    </page>
+  <?php } ?>
   <page backcolor="#2fa37c" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
     <page_footer>
       <div style="text-align:center" class="white">

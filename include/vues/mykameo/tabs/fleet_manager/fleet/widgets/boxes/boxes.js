@@ -34,83 +34,10 @@ function list_boxes(){
         var dest = "";
         if (response.boxesNumber > 0) {
           var temp =
-            '<table id="boxesListingTable" class="table"><thead><tr><th>ID</th><th scope="col"><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Reference</span><span class="nl-inline">Reference</span></th><th scope="col"><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th scope="col"><span class="fr-inline">Montant leasing</span><span class="en-inline">Leasing Price</span><span class="nl-inline">Leasing Price</span></th><th>Début de contrat</th><th>Fin de contrat</th></tr></thead><tbody>';
+            '<table id="boxesListingTable" class="table"><thead><tr><th>ID</th><th scope="col">'+traduction.generic_company+'</th><th scope="col">'+traduction.generic_reference+'</th><th scope="col">'+traduction.generic_reference+'</th><th scope="col">'+traduction.leasingType_amountLeasing+'</th><th>'+traduction.bike_description_contract_start+'</th></tr></thead><tbody>';
           dest = dest.concat(temp);
 
           while (i < response.boxesNumber) {
-            if (response.box[i].amount == null) {
-              amount = "0 €/mois";
-            } else {
-              amount = response.box[i].amount + " €/mois";
-            }
-
-            if (
-              response.box[i].start != null &&
-              response.box[i].company != "KAMEO" &&
-              response.box[i].company != "KAMEO VELOS TEST"
-            ) {
-              start =
-                '<span class="text-green">' +
-                response.box[i].start.shortDate() +
-                "</span>";
-            } else if (
-              response.box[i].start == null &&
-              response.box[i].company != "KAMEO" &&
-              response.box[i].company != "KAMEO VELOS TEST"
-            ) {
-              start = '<span class="text-red">N/A</span>';
-            } else if (
-              response.box[i].start == null &&
-              (response.box[i].company == "KAMEO" ||
-                response.box[i].company == "KAMEO VELOS TEST")
-            ) {
-              start = '<span class="text-green">N/A</span>';
-            } else if (
-              response.box[i].start != null &&
-              (response.box[i].company == "KAMEO" ||
-                response.box[i].company == "KAMEO VELOS TEST")
-            ) {
-              start =
-                '<span class="text-red">' +
-                response.box[i].start.shortDate() +
-                "</span>";
-            } else {
-              start = '<span class="text-red">ERROR</span>';
-            }
-
-            if (
-              response.box[i].end &&
-              response.box[i].company != "KAMEO" &&
-              response.box[i].company != "KAMEO VELOS TEST"
-            ) {
-              end =
-                '<span class="text-green">' +
-                response.box[i].end.shortDate() +
-                "</span>";
-            } else if (
-              response.box[i].end == null &&
-              response.box[i].company != "KAMEO" &&
-              response.box[i].company != "KAMEO VELOS TEST"
-            ) {
-              end = '<span class="text-red">N/A</span>';
-            } else if (
-              response.box[i].end == null &&
-              (response.box[i].company == "KAMEO" ||
-                response.box[i].company == "KAMEO VELOS TEST")
-            ) {
-              end = '<span class="text-green">N/A</span>';
-            } else if (
-              response.box[i].end != null &&
-              (response.box[i].company == "KAMEO" ||
-                response.box[i].company == "KAMEO VELOS TEST")
-            ) {
-              end =
-                '<span class="text-red">' +
-                response.box[i].end.shortDate() +
-                "</span>";
-            } else {
-              end = '<span class="text-red">ERROR</span>';
-            }
 
             temp =
               '<tr><td><a href="#" class="text-green retrieveBox" data-target="#boxManagement" name="' +
@@ -124,12 +51,10 @@ function list_boxes(){
               "</td><td>" +
               response.box[i].model +
               "</td><td>" +
-              amount +
+              response.box[i].amount + " €/" +traduction.generic_mois+
               "</td><td>" +
-              start +
-              "</td><td>" +
-              end +
-              '</td></tr>';
+              response.box[i].start.shortDate() +
+              "</td></tr>";
             dest = dest.concat(temp);
             i++;
           }
@@ -155,14 +80,14 @@ function list_boxes(){
 
 
 function retrieve_box(id) {
-  $("#widget-boxManagement-form-title").text("Informations de la borne");
-  $("#widget-boxManagement-form-send").addClass("hidden");
-  $("#widget-boxManagement-form input").attr("readonly", true);
-  $("#widget-boxManagement-form textarea").attr("readonly", true);
-  $("#widget-boxManagement-form select").attr("readonly", true);
-  $("#widget-boxManagement-form div[name=key]").remove();
-  $("#widget-boxManagement-form div[name=bike]").remove();
-  $("#widget-boxManagement-form div[name=severalBoxes]").html("");
+  $("#boxManagement-title").text("Informations de la borne");
+  $("#boxManagement-send").addClass("hidden");
+  $("#boxManagement input").attr("readonly", true);
+  $("#boxManagement textarea").attr("readonly", true);
+  $("#boxManagement select").attr("readonly", true);
+  $("#boxManagement div[name=key]").remove();
+  $("#boxManagement div[name=bike]").remove();
+  $("#boxManagement div[name=severalBoxes]").html("");
 
   $.ajax({
     url: "apis/Kameo/boxes/boxes.php",
@@ -173,29 +98,31 @@ function retrieve_box(id) {
         console.log(response.message);
       }
       if (response.response == "success") {
-        $("#widget-boxManagement-form input[name=reference]").val(
+        $("#boxManagement input[name=reference]").val(
           response.reference
         );
-        $("#widget-boxManagement-form select[name=boxModel]").val(
+        $("#boxManagement select[name=boxModel]").val(
           response.model
         );
-        $("#widget-boxManagement-form select[name=company]").val(
-          response.company
-        );
-        $("#widget-boxManagement-form input[name=amount]").val(response.amount);
+        $("#boxManagement input[name=amount]").val(response.amount);
         if (response.start) {
-          $("#widget-boxManagement-form input[name=contractStart]").val(
+          $("#boxManagement input[name=contractStart]").val(
             response.start.substr(0, 10)
           );
         } else {
-          $("#widget-boxManagement-form input[name=contractStart]").val("");
+          $("#boxManagement input[name=contractStart]").val("");
         }
         if (response.end) {
-          $("#widget-boxManagement-form input[name=contractEnd]").val(
+          $("#boxManagement input[name=contractEnd]").val(
             response.end.substr(0, 10)
           );
         } else {
-          $("#widget-boxManagement-form input[name=contractEnd]").val("");
+          $("#boxManagement input[name=contractEnd]").val("");
+        }
+        if(response.doorPosition=="Open"){
+          $("#boxManagement span[name=doorPosition]").html(traduction.generic_open);
+        }else if(response.doorPosition=="Closed"){
+          $("#boxManagement span[name=doorPosition]").html(traduction.generic_closed);
         }
 
         // Placement des clés
@@ -284,7 +211,7 @@ function retrieve_box(id) {
             new_paragraph2.setAttribute('style', 'font-size:'+size+';');
             new_paragraph2.style.textAlign = "center";
             new_paragraph2.style.fontWeight = "700";
-            new_paragraph2.appendChild(document.createTextNode('LIBRE'));
+            new_paragraph2.appendChild(document.createTextNode(traduction.box_free));
             new_paragraph.appendChild(new_paragraph2);
 
             new_div.appendChild(new_paragraph);
@@ -292,7 +219,7 @@ function retrieve_box(id) {
           }
 
           if(row == (range-1) || i == (box_keys -1)){
-            $("#widget-boxManagement-form div[name=keys]").append(new_row);
+            $("#boxManagement div[name=keys]").append(new_row);
           }
 
 
@@ -301,17 +228,24 @@ function retrieve_box(id) {
 
           // Vélos en déplacement
           if(response.keys_out){
+            var dateNow = new Date();
             response.keys_out.forEach(key => {
-              $("#widget-boxManagement-form div[name=in]").before('<div class="col-md-4" name="bike">\
-              <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
-              <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>Début : ' + key.dateStart + '<br>Fin : ' + key.dateEnd + '</center></p></div>');
+              var dateEnd = new Date(key.dateEnd);
+              if(dateEnd<dateNow){
+                var classSpan="text-red";
+              }else{
+                var classSpan="";
+              }
+              $("#boxManagement div[name=in]").before('<div class="col-md-4" name="bike">\
+              <center><img draggable="false" src="images_bikes/'+key.img+'_mini.jpg" style="height:136px;"></center>\
+              <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>'+traduction.generic_start_date+' : ' + key.dateStart.shortDateHours() + '<br><span class="'+classSpan+'">'+traduction.generic_end_date+' : '+ key.dateEnd.shortDateHours() + '</span></center></p></div>');
             });
 
           if(response.keys_other_box){
             $('.severalBoxes').removeClass("hidden");
-            $("#widget-boxManagement-form div[name=severalBoxes]").removeClass("hidden");
+            $("#boxManagement div[name=severalBoxes]").removeClass("hidden");
             response.keys_other_box.forEach(key => {
-              $("#widget-boxManagement-form div[name=severalBoxes]").append('<div class="col-md-4">\
+              $("#boxManagement div[name=severalBoxes]").append('<div class="col-md-4">\
               <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
               <p><center><B>'+ key.model + '</B><br>Bâtiment : ' + key.building + '</center></p></div>');
             });

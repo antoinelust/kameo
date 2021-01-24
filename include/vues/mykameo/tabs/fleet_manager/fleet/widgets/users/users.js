@@ -36,13 +36,12 @@ function get_users_listing(){
                },
                {
                  data: "email",
-                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol){
                    $(nTd).html("<a href='#' data-target='#updateUserInformation' onclick=\"update_user_information('" +
                      sData +
                      "')\" class='text-green' data-toggle='modal'> Mettre à jour </a>");
                    },
                 }
-
               ],
               order: [
                [0, "asc"]

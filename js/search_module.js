@@ -322,62 +322,62 @@ function update_deposit_hour_form(){
                 type: 'post',
                 data: { "email": email},
                 success: function(response) {
-                    if(response.response=="success"){
-                        if(response.buildingNumber=="1"){
-                            var dest="";
-                            var building_fr=response.building[1].fr;
-                            var building_en=response.building[1].en;
-                            var building_nl=response.building[1].nl;
+                  if(response.response=="success"){
+                    if(response.buildingNumber=="1"){
+                        var dest="";
+                        var building_fr=response.building[1].fr;
+                        var building_en=response.building[1].en;
+                        var building_nl=response.building[1].nl;
 
-                            var tempBuilding="<select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select>";
-                            dest=tempBuilding;
-                        } else{
-                            var dest="";
-                            var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";
-                            dest = dest.concat(tempBuilding);
-                            while (i < response.buildingNumber){
-                                i++;
-                                var building_code=response.building[i].building_code;
-                                var building_fr=response.building[i].fr;
-                                var building_en=response.building[i].en;
-                                var building_nl=response.building[i].nl;
+                        var tempBuilding="<select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control hidden\"><option value=\""+response.building[1].building_code+"\" class=\"fr\" selected=\"selected\">"+building_fr+"</option><option value=\""+response.building[1].building_code+"\" class=\"nl\" selected=\"selected\">"+building_nl+"</option><option value=\""+response.building[1].building_code+"\" class=\"en\" selected=\"selected\">"+building_en+"</option></select>";
+                        dest=tempBuilding;
+                    } else{
+                        var dest="";
+                        var tempBuilding="<label for=\"search-bikes-form-intake-building\" class=\" fr\">Où voulez-vous prendre le vélo?</label><label for=\"search-bikes-form-intake-building\" class=\"en\">Where is your departure ?</label><label for=\"search-bikes-form-intake-building\" class=\"nl\">Where is your departure ?</label><select id=\"search-bikes-form-intake-building\" name=\"search-bikes-form-intake-building\" class=\"form-control\">";
+                        dest = dest.concat(tempBuilding);
+                        while (i < response.buildingNumber){
+                            i++;
+                            var building_code=response.building[i].building_code;
+                            var building_fr=response.building[i].fr;
+                            var building_en=response.building[i].en;
+                            var building_nl=response.building[i].nl;
 
-                                var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
-                                dest = dest.concat(tempBuilding);
-                            }
-                            var tempBuilding="</select>";
-                            dest = dest.concat(tempBuilding);
-                            document.getElementById('start_building_form').innerHTML=dest;
-
-                            var j=0;
-                            var dest="";
-                            var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";
-                            dest = dest.concat(tempBuilding);
-
-                            while (j < response.buildingNumber){
-                                j++;
-                                var building_code=response.building[j].building_code;
-                                var building_fr=response.building[j].fr;
-                                var building_en=response.building[j].en;
-                                var building_nl=response.building[j].nl;
-
-                                var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
-                                dest = dest.concat(tempBuilding);
-                                var tempBuilding="</select>";
-
-                            }
+                            var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
                             dest = dest.concat(tempBuilding);
                         }
-                        document.getElementById('deposit_building_form').innerHTML=dest;
-                        document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
-                        document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
-                        $('#search-bikes-form-email').val(email);
-                        displayLanguage();
+                        var tempBuilding="</select>";
+                        dest = dest.concat(tempBuilding);
+                        document.getElementById('start_building_form').innerHTML=dest;
 
-                    }else{
-                        console.log(response.message);
+                        var j=0;
+                        var dest="";
+                        var tempBuilding="<label for=\"search-bikes-form-deposit-building\" class=\"fr\">Où voulez-vous rendre le vélo?</label><label for=\"search-bikes-form-deposit-building\" class=\"en\">Where is your arrival ?</label><label for=\"search-bikes-form-deposit-building\" class=\"nl\">Where is your arrival ?</label><select id=\"search-bikes-form-deposit-building\" name=\"search-bikes-form-deposit-building\" class=\"form-control\">";
+                        dest = dest.concat(tempBuilding);
+
+                        while (j < response.buildingNumber){
+                            j++;
+                            var building_code=response.building[j].building_code;
+                            var building_fr=response.building[j].fr;
+                            var building_en=response.building[j].en;
+                            var building_nl=response.building[j].nl;
+
+                            var tempBuilding="<option value=\""+building_code+"\" class=\"fr\">"+building_fr+"</option><option value=\""+building_code+"\" class=\"en\">"+building_en+"</option><option value=\""+building_code+"\" class=\"nl\">"+building_nl+"</option>";
+                            dest = dest.concat(tempBuilding);
+                            var tempBuilding="</select>";
+
+                        }
+                        dest = dest.concat(tempBuilding);
                     }
+                    document.getElementById('deposit_building_form').innerHTML=dest;
+                    document.getElementById('search-bikes-form-maxBookingPerYear').value=maxBookingsPerYear;
+                    document.getElementById('search-bikes-form-maxBookingPerMonth').value=maxBookingsPerMonth;
+                    $('#search-bikes-form-email').val(email);
+                    displayLanguage();
+
+                }else{
+                    console.log(response.message);
                 }
+              }
             });
 
 

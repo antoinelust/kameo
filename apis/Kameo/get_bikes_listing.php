@@ -38,7 +38,7 @@ if ($admin != "Y") {
     }
 
 
-    $sql = "SELECT * FROM customer_bikes aa where aa.COMPANY='$company' AND aa.STAANN != 'D'";
+    $sql = "SELECT * FROM customer_bikes aa where aa.COMPANY='$company' AND aa.STAANN != 'D' ORDER BY MODEL";
     if ($conn->query($sql) === FALSE) {
         $response = array('response' => 'error', 'message' => $conn->error);
         echo json_encode($response);

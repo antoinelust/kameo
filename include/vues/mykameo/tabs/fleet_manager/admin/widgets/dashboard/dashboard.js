@@ -245,6 +245,7 @@ function list_errors() {
             (response.company.img.number + response.company.action.number) +
             ")"
         );
+        $(".updateBikeAdmin").off();
         $(".updateBikeAdmin").click(function () {
           construct_form_for_bike_status_updateAdmin(this.name);
           $("#widget-bikeManagement-form input").attr("readonly", false);
@@ -280,7 +281,7 @@ function list_errors() {
             "</span>";
           $("#errorCounter").css("color", "#d80000");
         }
-        displayLanguage();
+        $(".updateBikeAdmin").off();
         $(".updateBikeAdmin").click(function () {
           construct_form_for_bike_status_updateAdmin(this.name);
           $("#widget-bikeManagement-form input").attr("readonly", false);

@@ -1,0 +1,4 @@
+AuthName "Member Only"
+AuthType Basic
+AuthUserFile /homez.71/kameobiknq/www/.htpasswd
+require valid-user

@@ -67,11 +67,13 @@ switch($_SERVER["REQUEST_METHOD"])
 								array_push($response['notifications'], $notificationTemp);
 							}else if($notification['TYPE']=='lateBookingNextUserNewHour'){
 								$reservationID=$notification['TYPE_ITEM'];
-								$informations = execSQL("SELECT aa.DATE_START_2, aa.BIKE_ID, aa.DATE_END_2, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.ID='$reservationID' AND  aa.BIKE_ID=bb.ID", array(), false);
+								$informations = execSQL("SELECT aa.DATE_START_2, aa.BIKE_ID, aa.DATE_END_2, bb.MODEL, aa.BUILDING_START, aa.BUILDING_END from reservations aa, customer_bikes bb WHERE aa.ID='$reservationID' AND  aa.BIKE_ID=bb.ID", array(), false);
 								$notificationTemp['start']=$informations[0]['DATE_START_2'];
 								$notificationTemp['end']=$informations[0]['DATE_END_2'];
 								$notificationTemp['model']=$informations[0]['MODEL'];
 								$notificationTemp['bikeID']=$informations[0]['BIKE_ID'];
+								$notificationTemp['buildingStart']=$informations[0]['BUILDING_START'];
+								$notificationTemp['buildingEnd']=$informations[0]['BUILDING_END'];
 								$dateStartBooking = $informations[0]['DATE_START_2'];
 								$informationsPreviousBooking = execSQL("SELECT aa.DATE_END_2 from reservations aa, reservations bb WHERE aa.BIKE_ID = bb.BIKE_ID AND bb.ID='$reservationID' AND  aa.DATE_START_2 < bb.DATE_START_2 AND aa.STAANN != 'D' ORDER BY aa.DATE_START_2 DESC LIMIT 1", array(), false);
 								$notificationTemp['endPreviousBooking']=$informationsPreviousBooking[0]['DATE_END_2'];

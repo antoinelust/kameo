@@ -1875,11 +1875,11 @@ function add_building(company) {
         while (i < response.usersNumber) {
           temp =
             '<input type="checkbox" name="userAccess[]" checked value="' +
-            response.user[i].email +
+            response.users[i].email +
             '">' +
-            response.user[i].firstName +
+            response.users[i].firstName +
             " - " +
-            response.user[i].name +
+            response.users[i].name +
             "<br>";
           dest = dest.concat(temp);
           i++;

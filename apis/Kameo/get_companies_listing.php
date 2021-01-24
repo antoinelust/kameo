@@ -15,8 +15,6 @@ if($action=="graphic"){
     $numberOfDays=isset($_GET['numberOfDays']) ? $_GET['numberOfDays'] : NULL;
     $dateStartInput=isset($_GET['dateStart']) ? $_GET['dateStart'] : NULL;
     $dateEndInput=isset($_GET['dateEnd']) ? $_GET['dateEnd'] : NULL;
-
-
     $intervalStop="P".$numberOfDays."D";
 
     $date_start = new DateTime($dateStartInput);

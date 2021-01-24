@@ -167,7 +167,7 @@
                   i++;
                 }
                 document.getElementById('bikeCreateUserAdmin').innerHTML = dest;
-                $('#widget-addUserAdmin-form input[name=company]').val("");
+                $('#widget-addUserAdmin-form input[name=company]').val(company);
                 document.getElementById('confirmAddUserAdmin').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" onclick=\"confirm_add_userAdmin()\">\
                 <i class=\"fa fa-paper-plane\">\
                 </i>\

@@ -1,0 +1,173 @@
+<div
+  class="modal fade"
+  id="stockAccessoriesListing"
+  tabindex="9"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <h4 class="text-green">Stock d'accessoires</h4>
+      <div data-example-id="contextual-table" class="bs-example">
+        <a class="button small green button-3d rounded icon-right addStockAccessoryButton" data-target="#manageStockAccessory" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::accessories_add_accessory; ?></a>
+        <table id="stockAccessoriesList" class="table" style='width: 100%;'></table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          <?= L::generic_close; ?>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="manageStockAccessory" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="z-index: 2000; display: none; overflow-y: auto !important;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="text-green"><?= L::accessories_add_accessory; ?></h4>
+            <form id="widget-manageStockAccessory-form" action="apis/Kameo/accessories/accessories.php" role="form" method="post">
+							<div class="form-group col-sm-12">
+                <div class="space"></div>
+                <h4 class="text-green">Sélection de l'accessoire</h4>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="category"><?= L::generic_category; ?></label>
+                    <select name="category" class="form-control required"></select>
+                  </div>
+  								<div class="col-md-4">
+  									<label for="model"><?= L::generic_brand; ?></label>
+  									<select name="model" class="form-control required"></select>
+  								</div>
+                </div>
+                <div class="space"></div>
+                <h4 class="text-green">Informations sur le client</h4>
+                <div class="row">
+  								<div class="col-md-4">
+  									<label for="company"><?= L::generic_company; ?></label>
+                    <select name="company" class="form-control required"></select>
+  								</div>
+                  <div class="col-md-4">
+                    <label for="user"><?= L::generic_user; ?></label>
+                    <select name="user" class="form-control">
+                    </select>
+                  </div>
+                </div>
+                <div class="space"></div>
+                <h4 class="text-green">Informations sur le contrat</h4>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="contractType"><?= L::leasingType_title; ?></label>
+                    <select name="contractType" class="form-control required">
+                      <option value="leasing">Leasing</option>
+                      <option value="achat">Achat</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="contractStart"><?= L::bike_description_contract_start; ?></label>
+                    <input type="date" name="contractStart" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="contractEnd"><?= L::bike_description_contract_end; ?></label>
+                    <input type="date" name="contractEnd" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="leasingAmount">Montant leasing</label>
+                    <div class="input-group">
+                    <span class="input-group-addon">€/mois</span>
+                      <input
+                        name="leasingAmount"
+                        type="number"
+                        step="0.01"
+                        class="form-control"
+                      />
+                    </div>
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="sellingDate">Date de vente</label>
+                    <input type="date" name="sellingDate" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="sellingAmount">Montant vente</label>
+                    <div class="input-group">
+                    <span class="input-group-addon">€</span>
+                      <input
+                        name="sellingAmount"
+                        type="number"
+                        step="0.01"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+
+                </div>
+							</div>
+              <div class="col-sm-12">
+                <button
+                  class="button small green button-3d rounded icon-left"
+                  type="submit"
+                >
+                  <i class="fa fa-paper-plane"></i><?= L::generic_send; ?>
+                </button>
+              </div>
+              <input type="text" name="action" value='addStockAccessory' class="hidden">
+              <input type="number" name="ID" class="hidden">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery("#widget-manageStockAccessory-form").validate({
+	 submitHandler: function(form) {
+		jQuery(form).ajaxSubmit({
+		 success: function(response) {
+			if (response.response == 'success') {
+			 $.notify({
+				message: response.message
+			 }, {
+				type: 'success'
+			 });
+			 list_stock_accessories();
+			 $('#manageStockAccessory').modal('toggle');
+			 document.getElementById('widget-manageStockAccessory-form').reset();
+			} else {
+			 $.notify({
+				message: response.message
+			 }, {
+				type: 'danger'
+			 });
+			}
+		 }
+		});
+	 }
+	});
+</script>

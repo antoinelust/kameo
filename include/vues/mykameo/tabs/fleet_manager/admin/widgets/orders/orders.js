@@ -32,7 +32,7 @@ function get_orders_listing() {
         }
         if(response.response == 'success'){
           var dest="";
-          var temp="<table id=\"ordersListingTable\" data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Test ?</th><th>Date Livraison</th><th>Montant</th></tr></thead><tbody>";
+          var temp="<table id=\"ordersListingTable\" data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th>Société</th><th>Utilisateur</th><th>Vélo</th><th>Taille</th><th>Status</th><th>Test ?</th><th>Date Livraison</th><th>Montant</th></tr></thead><tbody>";
           dest=dest.concat(temp);
           var i=0;
           while (i < response.ordersNumber){
@@ -244,31 +244,25 @@ function retrieve_command(ID){
 
           //Afficher les accessoires
           var dest =
-            '<thead><tr><th scope="col">#</th><th scope="col">Categorie</th><th scope="col">Accessoire</th><th scope="col">Type</th><th scope="col">Prix d\'Achat</th><th scope="col">Prix vente HTVA<th></th></tr></thead>';
-          if (response.accessoryNumber > 0) {
-            var i = 0;
-            while (i < response.accessoryNumber) {
-              var temp =
-                '<tr><td>' +
-                '<label>Accessoire n°'+(i+1)+"</label>"+
-                '</td><td scope="row" name="categoryAcc" id="categoryAcc">' +
-                response.order[i].aCategory +
-                '</td><td name="accessoryAcc" id="accessoryAcc">' +
-                response.order[i].typeAccessory +
-                "</td><td>" +
-                response.order[i].type +
-                "</td><td>" +
-                response.order[i].aBuyingPrice +
-                "</td><td>" +
-                response.order[i].aPriceHTVA +
-                "</td><td>" +
-                '<a href="#" class="deleteAccessory" style="color:red" name="'+response.order[i].accessoryID+'">Delete</a>' +
-                "</td></tr>";
-              dest = dest.concat(temp);
-              i++;
+            '<thead><tr><th>Categorie</th><th>Accessoire</th><th>Type</th><th>Prix d\'Achat</th><th>Prix vente HTVA</th></tr></thead><tbody>';
+            if(response.order.accessories){
+              response.order.accessories.forEach(function (accessory, i) {
+                var temp =
+                  '<tr><td scope="row" name="categoryAcc" id="categoryAcc">' +
+                  accessory.CATEGORY +
+                  '</td><td name="accessoryAcc" id="accessoryAcc">' +
+                  accessory.MODEL +
+                  "</td><td>" +
+                  accessory.TYPE +
+                  "</td><td>" +
+                  accessory.BUYING_PRICE +
+                  "</td><td>" +
+                  accessory.PRICE_HTVA +
+                  "</td></tr>";
+                dest = dest.concat(temp);
+              })
             }
-            dest = dest.concat("</tbody>");
-          }
+          dest = dest.concat("</tbody>");
           document.getElementById("ExistingAccessory").innerHTML = dest;
 
           $(".deleteAccessory").click(function () {
@@ -350,12 +344,9 @@ get_all_accessories().done(function(response){
     //ajout d'une ligne au tableau des accessoires
     $('#orderManager').find('#ExistingAccessory tbody')
     .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesOrderNumber)+` accessoriesRow form-group">
-    <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td><td class="aType"></td>
+    <td class="aCategory"></td><td class="aAccessory"></td><td class="aType"></td>
     <td class="aBuyingPrice"></td><td class="aPriceHTVA"></td>
     </tr>`);
-
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aLabel')
-    .append('<label>Accessoire '+ accessoriesOrderNumber +'</label>');
 
     //select catégorie
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aCategory')
@@ -367,11 +358,9 @@ get_all_accessories().done(function(response){
     .append('<select name="accessoryAccessory[]" id="selectAccessory'+
     accessoriesOrderNumber+
     '"class="selectAccessory form-control required"></select>');
-
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aType').append('<select name="type[]" class="form-control required"><option value="achat">Achat</option><option value="leasing">Leasing</option></select>');
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aBuyingPrice').append('<input name="buyingPriceAcc[]" class="buyingPriceInput form-control required">');
-    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aPriceHTVA').append('<input name="sellingPriceAcc[]" class="sellingPriceInput form-control required">');
-
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aType').append('<select name="financialTypeAccessory[]" class="selectType form-control required"><option value="achat">Achat</option><option value="leasing">Leasing</option></select>');
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aBuyingPrice').append('<div class="input-group"><span class="input-group-addon">€</span><input type="number" min="0" name="buyingPriceAcc[]" class="buyingPriceInput form-control required"></div>');
+    $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aPriceHTVA').append('<div class="input-group"><span class="input-group-addon">€</span><input type="number" min="0" name="sellingPriceAcc[]" class="sellingPriceInput form-control required"></div>');
     checkMinus('.orderAccessories','.accessoriesNumber');
 
     //on change de la catégorie
@@ -399,11 +388,33 @@ get_all_accessories().done(function(response){
 
       var buyingPrice = accessoriesOrder[accessoryId].buyingPrice;
       var priceHTVA = accessoriesOrder[accessoryId].priceHTVA ;
+      $(that).parents('tr').find('.aBuyingPrice input').val(buyingPrice);
+
+      if($(that).parents('tr').find('.aType select').val()=="leasing"){
+        $(that).parents('tr').find('.aPriceHTVA input').val(priceHTVA/36);
+      }else{
+        $(that).parents('tr').find('.aPriceHTVA input').val(priceHTVA);
+      }
 
       //affichage des champs buying price et selling price
-      $(that).parents('tr').find('.aBuyingPrice input').val(buyingPrice);
-      $(that).parents('tr').find('.aPriceHTVA input').val(priceHTVA);
 
+    });
+
+    $('.selectType').off();
+    $('.selectType').on("change",function(){
+      var type =$(this).val();
+      var accessoryId = $(this).parents('tr').find('.aAccessory select').val();
+      accessoryId = getIndex(accessoriesOrder, accessoryId);
+      var buyingPrice = accessoriesOrder[accessoryId].buyingPrice;
+      var priceHTVA = accessoriesOrder[accessoryId].priceHTVA ;
+
+      if(type=='leasing'){
+        $(this).parents('tr').find('.aPriceHTVA .input-group-addon').html("€/mois");
+        $(this).parents('tr').find('.aPriceHTVA input').val(priceHTVA/36);
+      }else{
+        $(this).parents('tr').find('.aPriceHTVA .input-group-addon').html("€");
+        $(this).parents('tr').find('.aPriceHTVA input').val(priceHTVA);
+      }
     });
   });
 });

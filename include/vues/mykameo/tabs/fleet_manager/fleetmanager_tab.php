@@ -127,7 +127,7 @@
                 </a>
               </div>
               <div class="counter bold" id="counterClients" style="color:#3cb395"></div>
-              <p>Gérer les clients</p>
+              <p>Clients et prospects</p>
             </div>
           </div>
           <div class="col-md-4 " id="orderManagement">
@@ -138,9 +138,20 @@
                 </a>
               </div>
               <div class="counter bold" id="counterOrdersAdmin" style="color:#3cb395"></div>
-              <p>Gérer les commandes</p>
+              <p>Commandes</p>
             </div>
           </div>
+					<div class="col-md-4 " id="chatsManagement">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#chatsListing" href="#" class="chatsManagerClick">
+									<i class="fa fa-comment"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterChat" style="color:#3cb395"></div>
+							<p>Chat</p>
+						</div>
+					</div>
           <div class="col-md-4 " id="portfolioManagement">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
@@ -152,6 +163,28 @@
               <p>Catalogue vélos</p>
             </div>
           </div>
+					<div class="col-md-4 " id="bikesManagement">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#BikesListingAdmin" href="#" class="bikeManagerClick">
+									<i class="fa fa-bicycle"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterBikeAdmin"></div>
+							<p>Stock vélo</p>
+						</div>
+					</div>
+					<div class="col-md-4 " id="maintenanceManagement">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick">
+									<i class="fa fa-wrench"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
+							<p>Vue sur les entretiens</p>
+						</div>
+					</div>
           <div class="col-md-4 " id="portfolioAccessoriesManagement">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
@@ -163,28 +196,18 @@
               <p>Catalogue accessoires</p>
             </div>
           </div>
-          <div class="col-md-4 " id="bikesManagement">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#BikesListingAdmin" href="#" class="bikeManagerClick">
-                  <i class="fa fa-bicycle"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="counterBikeAdmin"></div>
-              <p>Gérer les vélos</p>
-            </div>
-          </div>
-          <div class="col-md-4 " id="chatsManagement">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#chatsListing" href="#" class="chatsManagerClick">
-                  <i class="fa fa-comment"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="counterChat" style="color:#3cb395"></div>
-              <p>Chat</p>
-            </div>
-          </div>
+					<div class="col-md-4 " id="stockAccessories">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#stockAccessoriesListing" href="#" class="stockAccessoriesClick">
+									<i class="fa fa-briefcase"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterStockAccessoriesCounter"></div>
+							<p>Stock accessoires</p>
+						</div>
+					</div>
+					<div class="row"></div>
           <div class="col-md-4 " id="boxesManagement">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
@@ -196,6 +219,7 @@
               <p>Gérer les Bornes</p>
             </div>
           </div>
+					<div class="row"></div>
           <div class="col-md-4 " id="tasksManagement">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
@@ -233,17 +257,6 @@
 						</div>
 						<div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
 						<p>Vue sur les feedbacks</p>
-					</div>
-				</div>
-				<div class="col-md-4 " id="maintenanceManagement">
-					<div class="icon-box medium fancy">
-						<div class="icon bold" data-animation="pulse infinite">
-							<a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick">
-								<i class="fa fa-wrench"></i>
-							</a>
-						</div>
-						<div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
-						<p>Vue sur les entretiens</p>
 					</div>
 				</div>';
 			}if(get_user_permissions("dashboard", $token)){

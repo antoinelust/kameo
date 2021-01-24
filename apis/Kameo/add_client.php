@@ -16,8 +16,9 @@ global $password_unencrypted;
 //variable indiquant a add_company_contact.php qu'il s'agit d'un ajout de contact
 //au moment de l'ajout d'un client (fonctionnement différent)
 $addClient = true;
-
 $internalReference=$_POST['internalReference'];
+
+
 $description=$_POST['description'];
 $VAT=$_POST['VAT'];
 $street=addslashes($_POST['street']);

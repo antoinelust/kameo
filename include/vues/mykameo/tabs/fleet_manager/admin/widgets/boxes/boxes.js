@@ -17,8 +17,32 @@ $(".fleetmanager").click(function () {
       }
     },
   });
-  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() { list_boxes_admin()}, false);
+
+  var logBoxes;
+
+  document.getElementsByClassName('boxManagerClick')[0].addEventListener('click', function() {
+    list_boxes_admin();
+    getLogsBoxes();
+    logBoxes = setInterval(function(){ getLogsBoxes() }, 3000);
+    var objDiv = document.getElementById("logsBoxes");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }, false);
+
+  $("#boxesListingAdmin").on("hidden.bs.modal", function () {
+    clearInterval(logBoxes);
+  });
+
 });
+
+function getLogsBoxes () {
+  var url = "apis/Kameo/lock/logs/logs_boxes.log";
+  var xmlhttp = new XMLHttpRequest;
+  xmlhttp.open ("GET", url, false);    // synchron
+  xmlhttp.send (null);
+  var data = xmlhttp.response+"<br><br>";
+  document.getElementById("logsBoxes").innerHTML=data.replace(/(\r\n|\n|\r)/g,"<br />");
+}
+
 
 function list_boxes_admin(company) {
   $.ajax({

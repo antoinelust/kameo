@@ -74,9 +74,9 @@ else
 	$deposit_building='';
 
 $dayAndMonth=explode("-", $date);
-$day_intake=$dayAndMonth[0];
-$month_intake=$dayAndMonth[1];
-$year_intake=$dayAndMonth[2];
+$day_intake=intval($dayAndMonth[0]);
+$month_intake=intval($dayAndMonth[1]);
+$year_intake=intval($dayAndMonth[2]);
 
 $date=htmlspecialchars($_POST['depositDay']);
 $deposit_hour=htmlspecialchars($_POST['depositHour']);
@@ -86,16 +86,16 @@ $maxBookingsPerMonth=$user_data['MAX_BOOKINGS_MONTH'];
 
 
 $dayAndMonth=explode("-", $date);
-$day_deposit=$dayAndMonth[0];
-$month_deposit=$dayAndMonth[1];
-$year_deposit=$dayAndMonth[2];
+$day_deposit=intval($dayAndMonth[0]);
+$month_deposit=intval($dayAndMonth[1]);
+$year_deposit=intval($dayAndMonth[2]);
 
 
 
 $x = explode('h', $intake_hour);
 
-$intake_hour=$x[0];
-$intake_minute=$x[1];
+$intake_hour=intval($x[0]);
+$intake_minute=intval($x[1]);
 
 
 if($intake_minute=='0'){
@@ -107,8 +107,8 @@ if($intake_minute=='0'){
 }
 
 $x = explode('h', $deposit_hour);
-$deposit_hour=$x[0];
-$deposit_minute=$x[1];
+$deposit_hour=intval($x[0]);
+$deposit_minute=intval($x[1]);
 
 
 $dateStart=new DateTime('NOW', new DateTimeZone('Europe/Brussels'));
@@ -171,8 +171,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
 
 
-    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building'";
-
+    $sql= "select * from bike_building_access aa, customer_bikes bb, customer_referential cc where cc.EMAIL='$email' and bb.STATUS!='KO' and cc.COMPANY=bb.COMPANY and bb.ID=aa.BIKE_ID and aa.BUILDING_CODE='$deposit_building' and not exists (SELECT 1 from reservations WHERE reservations.STAANN !='D' AND reservations.BIKE_ID=bb.ID AND reservations.STATUS='Open')";
 
     if ($conn->query($sql) === FALSE) {
   		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -219,7 +218,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
       if($user_data['LOCKING']=="Y" && ($boxesNumber > 1 || $action == "replaceBooking")){
         $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS != 'Closed') group by ID";
       }else{
-        $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS ='Open' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
+        $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS ='Open' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) and not exists (SELECT 1 from reservations dd WHERE dd.STAANN !='D' AND dd.BIKE_ID=cc.ID AND dd.STATUS='Open' AND dd.EMAIL='$email') group by ID";
       }
     }else{
       $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
@@ -237,9 +236,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     if($length == 0){
         errorMessage("ES0015");
     }
-
-
-
 
     $bike=array();
 

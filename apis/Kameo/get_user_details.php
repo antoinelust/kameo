@@ -122,7 +122,7 @@ if($email != NULL)
 
 
     include 'connexion.php';
-    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and aa.BIKE_ID=bb.ID and aa.STAANN='D' and aa.TYPE='partage'";
+    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and aa.BIKE_ID=bb.ID and (aa.STAANN='D' OR aa.STAANN is null) and aa.TYPE='partage'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -139,12 +139,12 @@ if($email != NULL)
 
 
     include 'connexion.php';
-    $sql="SELECT aa.ID, FRAME_NUMBER, MODEL FROM customer_bikes aa WHERE COMPANY = '$company' AND not exists (select 1 from customer_bike_access bb where bb.BIKE_ID=aa.ID and (bb.TYPE='partage' OR bb.TYPE='personnel'))";
+    $sql="SELECT aa.ID, FRAME_NUMBER, MODEL FROM customer_bikes aa WHERE COMPANY = '$company' AND not exists (select 1 from customer_bike_access bb where bb.BIKE_ID=aa.ID and bb.EMAIL='$email' and (bb.TYPE='partage' OR bb.TYPE='personnel'))";
     if ($conn->query($sql) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
+  		$response = array ('response'=>'error', 'message'=> $conn->error);
+  		echo json_encode($response);
+  		die;
+	  }
     $result = mysqli_query($conn, $sql);
     $response['bikeNumber'] = $result->num_rows + $length;
     while($row = mysqli_fetch_array($result)){

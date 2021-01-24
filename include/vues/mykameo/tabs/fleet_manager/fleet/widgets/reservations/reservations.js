@@ -84,6 +84,9 @@ function get_reservations_listing(bike, date_start, date_end){
 
                 while (i < response.bookingNumber){
 
+                  var end = new Date(response.booking[i].dateEnd);
+                  var dateNow = new Date();
+
                   if(response.booking[i].status=="Closed"){
                     var status="Clôturée";
                   }else if(response.booking[i].status=="Ongoing"){
@@ -91,7 +94,11 @@ function get_reservations_listing(bike, date_start, date_end){
                   }else if(response.booking[i].status=="bikeNotTaken"){
                     var status="Vélo non pris";
                   }else if(response.booking[i].status=="bikeTaken"){
-                    var status="En cours";
+                    if(end < dateNow){
+                      var status="<span class='text-red'>Remise de clé en retard</span>";
+                    }else{
+                      var status="En cours";
+                    }
                   }else if(response.booking[i].status=="NotStarted"){
                     var status="Res. Future";
                   }else{
