@@ -15,8 +15,8 @@ if($connected){
 
     $type=isset($_GET['type']) ? $_GET['type'] : false;
     $revenuEmployee=isset($_GET['revenu']) ? $_GET['revenu'] : false;
-    $domicile=isset($_GET['domicile']) ? $_GET['domicile'] : NULL;
-    $travail=isset($_GET['travail']) ? $_GET['travail'] : NULL;
+    $domicile=isset($_GET['domicile']) ? addslashes($_GET['domicile']) : NULL;
+    $travail=isset($_GET['travail']) ? addslashes($_GET['travail']) : NULL;
     $prime=isset($_GET['prime']) ? $_GET['prime'] : NULL;
     $transport=isset($_GET['transport']) ? $_GET['transport'] : NULL;
     $transportationEssence=isset($_GET['transportationEssence']) ? $_GET['transportationEssence'] : NULL;
@@ -24,17 +24,18 @@ if($connected){
     $leasingAmount=isset($_GET['leasingAmount']) ? $_GET['leasingAmount'] : NULL;
     $frequenceBikePerWeek=isset($_GET['frequence']) ? $_GET['frequence'] : NULL;
 
-
     if($bike=="selection"){
         errorMessage("ES0057");
     }
 
     $domicile = str_replace(', ', ',', $domicile);
     $domicile= str_replace(str_split(' \,'),"+",$domicile);
+    $travail = str_replace('\'', '', $travail);
+
 
     $travail = str_replace(', ', ',', $travail);
     $travail= str_replace(str_split(' \,'),"+",$travail);
-
+    $travail = str_replace('\'', '', $travail);
 
     $url="https://maps.googleapis.com/maps/api/geocode/json?address=".$domicile."&key=AIzaSyADDgTKivQUzNh2Aatlvdv1W9H1_n7GZro";
 

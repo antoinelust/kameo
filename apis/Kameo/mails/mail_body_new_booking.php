@@ -74,13 +74,13 @@
 
                                 <h3>Nouvelle réservation de vélo !&nbsp;</h3>
                                 <ul>
-                                  <li>Date de début: $dateStart_3String </li>
-                                  <li>Date de fin: $dateEnd_3String </li>
+                                  <li>Date de début: $dateStart_2String </li>
+                                  <li>Date de fin: $dateEnd_2String </li>
                                   <li>Vélo : $customName</li>";
-                          if($lockingcode){
-                            $body=$body."<li> Code de réservation : $lockingcode </li>";
-                          }
-                          $body=$body."</ul>
+                                  if($lockingcode){
+                                    $body=$body."<li> Code de réservation : $lockingcode </li>";
+                                  }
+                                  $body=$body."</ul>
                                   Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo.php\">MyKameo</a> pour plus d'informations.</p>
                             </td>
                         </tr>

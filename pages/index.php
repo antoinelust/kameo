@@ -29,7 +29,7 @@ include 'include/head.php';
 
 		<!-- MISSION & VISSION -->
 		<section class="box-fancy section-fullwidth text-light no-padding">
-			<div class="row" style="display: flex;">
+			<div class="row" class="d-flex">
 				<div class="col-md-6 text-center" style="background-color: #3cb395;">
 					<h2><?= L::employer_title; ?></h2>
 					<span><?= L::employer_description; ?></span>
@@ -188,10 +188,10 @@ include 'include/head.php';
 									<div class="row">
 										<div class="form-group col-sm-12">
 											<label for="subject"><?= L::password_new; ?></label>
-											<input type="password" name="widget-lostPassword-form-new-password" class="form-control required" autocomplete="new-password">
+											<input type="password" name="widget-lostPassword-form-new-password" class="form-control required" autocomplete="off">
 										</div>
 									</div>
-									<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash" value="<?php echo $_GET['hash']; ?>"/>';
+									<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash" autocomplete="off" value="<?php echo $_GET['hash']; ?>"/>';
 									<button class="button effect fill" type="submit"><i class="fa fa-paper-plane"></i><?= L::password_send; ?></button>
 								</form>
 								<script type="text/javascript">

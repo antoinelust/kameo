@@ -27,7 +27,7 @@ $('body').on('click', '.markAsRead',function(){
     url: 'apis/Kameo/set_notification_read.php',
     method: 'post',
     data: {
-      'ID' : $(this).parents('.notificationItem').find('.notificationId').val()
+      'ID' : $(this).data("id")
     },
     success: function(response){
       if(response.response == 'success'){
@@ -122,7 +122,7 @@ function load_notifications(){
           markAsRead = "";
           if(notification.READ == 'N'){
             read = "notRead";
-            markAsRead = '<span class="markAsRead text-green pointerClick" style="text-decoration:underline;">' + traduction.notif_mark_as_read + '</span>';
+            markAsRead = '<span class="markAsRead text-green pointerClick" style="text-decoration:underline;" data-ID="'+notification.notificationID+'">' + traduction.notif_mark_as_read + '</span>';
             countNew++;
           }
           if (count != size) {

@@ -8,7 +8,6 @@ jQuery("#widget-updateBikeStatus-form").validate({
 					}, {
 						type: 'success'
 					});
-					get_bikes_listing();
 					$('#updateBikeStatus').modal('toggle');
 				} else {
 					$.notify({
@@ -67,7 +66,7 @@ function construct_form_for_bike_status_update(bikeID){
                     }).trigger("change");
 
                     document.getElementsByClassName("bikeImage")[1].src="images_bikes/"+response.img+"_mini.jpg";
-                    
+
                     $("#bikeStatus").val(response.status);
                     i=0;
                     var dest="";

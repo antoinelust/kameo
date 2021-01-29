@@ -249,10 +249,6 @@ function load_picture(id){
             if (response.response == "success") {
 
                 var price=(response.bike[0].priceHTVA);
-                var brand=response.bike[0].brand;
-                var model=response.bike[0].model;
-                var frameType=response.bike[0].frameType;
-
                 $.ajax({
                     url: 'apis/Kameo/get_prices.php',
                     method: 'post',
@@ -263,7 +259,7 @@ function load_picture(id){
                             $('#bike_price').html("<span class=\"text-green\">Prix à l'achat (TVAC): </span>"+Math.round(price*1.21)+" €");
                             //$('#bike_leasing_price').html("<span class=\"text-green\">Prix en location tout inclus (TVAC): </span>"+Math.round(response.HTVALeasingPrice)+" €/mois");
                             $('#cash4bike-form input[name=leasingAmount]').val(response.HTVALeasingPrice);
-                            document.getElementById("bike_picture").src="images_bikes/"+(brand+"_"+model+"_"+frameType).toLowerCase().replace(/ /g,'-')+"_mini.jpg";
+                            document.getElementById("bike_picture").src="images_bikes/"+id+"_mini.jpg";
                         }
                         else{
                             console.log(response);

@@ -12,7 +12,7 @@ $simulation = isset($_GET["simulation"]) ? addslashes($_GET["simulation"]) : NUL
 $forced = isset($_GET["forced"]) ? addslashes($_GET["forced"]) : NULL;
 $company = isset($_GET["company"]) ? addslashes($_GET["company"]) : NULL;
 $dateStart = isset($_GET["dateStart"]) ? addslashes($_GET["dateStart"]) : NULL;
-$dateEnd = isset($_GET["dateStart"]) ? addslashes($_GET["dateEnd"]) : NULL;
+$dateEnd = isset($_GET["dateEnd"]) ? addslashes($_GET["dateEnd"]) : NULL;
 
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
 
@@ -27,11 +27,11 @@ function requireToVar($file){
 
 
 include 'apis/Kameo/connexion.php';
-$sql= "SELECT * FROM ((select COMPANY, BILLING_GROUP from customer_bikes WHERE AUTOMATIC_BILLING='Y' and CONTRACT_TYPE='leasing') UNION (SELECT COMPANY, BILLING_GROUP FROM boxes WHERE AUTOMATIC_BILLING='Y')) as T1";
+$sql= "SELECT * FROM ((SELECT COMPANY, customer_bikes.BILLING_GROUP FROM customer_bikes WHERE CONTRACT_TYPE='leasing' AND STAANN != 'D') UNION (SELECT COMPANY, boxes.BILLING_GROUP FROM boxes WHERE boxes.STAANN!='D') UNION (SELECT INTERNAL_REFERENCE, accessories_stock.BILLING_GROUP from accessories_stock, companies WHERE accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.STAANN != 'D' and companies.ID=accessories_stock.COMPANY_ID)) T WHERE COMPANY != 'KAMEO'";
 
 
 if(isset($company)){
-    $sql=$sql." WHERE COMPANY='$company'";
+    $sql=$sql." AND COMPANY='$company'";
 }
 
 error_log("SQL1:".$sql."\n", 3, "generate_invoices.log");
@@ -48,12 +48,19 @@ $i=0;
 
 while($row = mysqli_fetch_array($result))
 {
+
     $internalReference=$row['COMPANY'];
+
+    error_log("--------------------\n", 3, "generate_invoices.log");
+    error_log("Company :".$internalReference."\n", 3, "generate_invoices.log");
     $currentDate=date('Y-m-d');
     $billingGroup=$row['BILLING_GROUP'];
-    $sql_dateStart="SELECT * from ((select min(SUBSTR(CONTRACT_START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$currentDate' and (aa.CONTRACT_END>'$currentDate' or aa.CONTRACT_END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup') UNION (select min(START ) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$currentDate' and (aa.END>'$currentDate' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.AUTOMATIC_BILLING='Y' and aa.BILLING_GROUP='$billingGroup')) AS T1 WHERE start is NOT NULL";
-    error_log("SQL2 :".$sql_dateStart."\n", 3, "generate_invoices.log");
-
+    if($dateStart==NULL){
+      $dateStart = new DateTime("now");
+      $dateStart = $dateStart->format('Y-m-d');
+    }
+    $sql_dateStart="SELECT * from ((select min(SUBSTR(CONTRACT_START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from customer_bikes aa where aa.CONTRACT_START<='$dateStart' and (aa.CONTRACT_END>'$dateStart' or aa.CONTRACT_END is NULL) and aa.COMPANY='AFELIO' and aa.BILLING_GROUP='1') UNION (select min(SUBSTR(START, 9, 2)) as 'start', COMPANY, BILLING_GROUP from boxes aa where aa.START<='$dateStart' and (aa.END>'$dateStart' or aa.END is NULL) and aa.COMPANY='$internalReference' and aa.BILLING_GROUP='$billingGroup') UNION (SELECT min(SUBSTR(accessories_stock.CONTRACT_START, 9, 2)), companies.INTERNAL_REFERENCE as '$internalReference', accessories_stock.BILLING_GROUP FROM accessories_stock, companies WHERE companies.ID=accessories_stock.COMPANY_ID AND accessories_stock.CONTRACT_TYPE='leasing' AND accessories_stock.CONTRACT_START<'$dateStart' AND accessories_stock.CONTRACT_END>'$dateStart' AND accessories_stock.STAANN != 'D' AND companies.INTERNAL_REFERENCE='$internalReference')) AS T1 WHERE start is NOT NULL";
+    //error_log("SQL2 :".$sql_dateStart."\n", 3, "generate_invoices.log");
 
     if ($conn->query($sql_dateStart) === FALSE) {
         echo $conn->error;
@@ -70,8 +77,15 @@ while($row = mysqli_fetch_array($result))
         {
             $firstDay=$resultat_dateStart['start'];
             $today=substr($currentDate, 8 ,2);
-            if($today==$firstDay || $firstDay==substr($dateStart, 10, 2) || $forced)
+            error_log("Today :".$today."\n", 3, "generate_invoices.log");
+            error_log("First Day :".$firstDay."\n", 3, "generate_invoices.log");
+            error_log("Date Start :".substr($dateStart, 8, 2)."\n", 3, "generate_invoices.log");
+
+
+            if($today==$firstDay || $firstDay==substr($dateStart, 8, 2) || $forced)
             {
+                error_log("Generation d'offre \n", 3, "generate_invoices.log");
+
 
                 $sql_companyDetails="select COMPANY_NAME from companies where INTERNAL_REFERENCE='$internalReference' and BILLING_GROUP='$billingGroup'";
                 error_log("SQL3 :".$sql_companyDetails."\n", 3, "generate_invoices.log");
@@ -176,6 +190,9 @@ while($row = mysqli_fetch_array($result))
                 if ((file_exists($file))){
                     unlink($file);
                 }
+
+            }else{
+              error_log("PASSED \n", 3, "generate_invoices.log");
 
             }
         }

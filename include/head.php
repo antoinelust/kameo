@@ -3,10 +3,15 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/lang_management.php';
 //require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
-header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-analytics.com ajax.googleapis.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://connect.facebook.net;");
+header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-analytics.com ajax.googleapis.com https://www.google-analytics.com https://snap.licdn.com https://static.mobilemonkey.com https://webchat.mobilemonkey.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://connect.facebook.net;");
 ?>
 
 <head>
+	<script async="async" src="https://static.mobilemonkey.com/js/123406464990910.js"></script>
+	<script>
+	window.mmDataLayer = window.mmDataLayer || [];
+	function mmData(o) { mmDataLayer.push(o); }
+	</script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta charset="UTF-8">
@@ -78,40 +83,5 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 	<script src="/js/cookie_consent.js"></script>
 	<!-- Modernizr WebP -->
 	<script src="/js/modernizr-custom.js"></script>
-
-<!-- Facebook Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '377435739982423');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=377435739982423&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Facebook Pixel Code -->
-
-<!-- Insight Tag LINKEDIN -->
-<script type="text/javascript">
-_linkedin_partner_id = "2642674";
-window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-window._linkedin_data_partner_ids.push(_linkedin_partner_id);
-</script><script type="text/javascript">
-(function(){var s = document.getElementsByTagName("script")[0];
-var b = document.createElement("script");
-b.type = "text/javascript";b.async = true;
-b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
-s.parentNode.insertBefore(b, s);})();
-</script>
-<noscript>
-<img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=2642674&fmt=gif" />
-</noscript>
-<!-- End Insight Tag LINKEDIN -->
 
 </head>

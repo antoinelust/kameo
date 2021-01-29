@@ -42,7 +42,7 @@ $reservationID=$resultat['RESERVATION_ID'];
 error_log(date("Y-m-d H:i:s")." - lock_update_remise_cle.php - reservations :".$reservationID."\n", 3, "logs/logs_boxes.log");
 
 
-$sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='mykameo', STATUS='Closed' WHERE ID='$reservationID'";
+$sql="UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, DATE_END_2=CURRENT_TIMESTAMP, USR_MAJ='mykameo', STATUS='Closed' WHERE ID='$reservationID'";
 if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);

@@ -37,6 +37,15 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('400', "ERROR - Plusieurs memes codes valides en meme temps");
 				die;
 			}
+
+			$stmt = $conn->prepare("SELECT * FROM reservations aa WHERE aa.STATUS='Open' AND aa.STAANN != 'D' AND EXISTS (SELECT 1 FROM reservations bb WHERE bb.DATE_START_2 < aa.DATE_END_2 and aa.DATE_START_2 <bb.DATE_START_2 AND bb.STATUS='Open' and bb.STAANN != 'D' and bb.BIKE_ID=aa.BIKE_ID)");
+			$stmt->execute();
+			$result = $stmt->get_result();
+			if($result->num_rows > 0){
+				error_message('400', 'ERROR - Une réservation se finit après le début d une autre');
+				die;
+			}
+
 			die;
 		}else
 			error_message('405');

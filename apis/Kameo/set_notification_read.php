@@ -9,7 +9,7 @@ $id = isset($_POST['ID']) ? $_POST['ID'] : NULL;
 $response = array();
 if ($id != NULL) {
   include 'connexion.php';
-  $sql="UPDATE notifications SET `READ` = 'Y' WHERE ID = $id;";
+  $sql="UPDATE notifications SET HEU_MAJ=CURRENT_TIMESTAMP, `READ` = 'Y' WHERE ID = $id;";
   if ($conn->query($sql) === FALSE) {
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);

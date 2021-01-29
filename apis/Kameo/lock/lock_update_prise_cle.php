@@ -45,17 +45,14 @@ if($code==NULL){
 
 
     $sql="SELECT * from reservations WHERE EMAIL = '$email' AND DATE_START_2 < '$dateStartBookingString' AND DATE_END_2 > CURRENT_TIMESTAMP() AND STATUS='Open' AND STAANN != 'D'";
-
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
         die;
     }
-
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $reservationID=$resultat['ID'];
-
 }else{
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
     $sql="SELECT ID_reservation from locking_code WHERE BUILDING_START = '$building' AND CODE = '$code' AND VALID='Y'";
@@ -68,6 +65,13 @@ if($code==NULL){
     $result = mysqli_query($conn, $sql);
     $resultat = mysqli_fetch_assoc($result);
     $reservationID=$resultat['ID_reservation'];
+    $sql="UPDATE reservations SET HEU_MAJ = CURRENT_TIMESTAMP, DATE_START_2 = CURRENT_TIMESTAMP WHERE ID ='$reservationID'";
+    
+    if ($conn->query($sql) === FALSE) {
+        $response = array ('response'=>'error', 'message'=> $conn->error);
+        echo json_encode($response);
+        die;
+    }
 }
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';

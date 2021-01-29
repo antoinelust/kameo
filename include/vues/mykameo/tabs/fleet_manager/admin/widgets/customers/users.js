@@ -1,5 +1,5 @@
   //FleetManager: Nombre d'utilisateurs | Display user details when "Mettre à jour" button is pressed
-  function update_user_information(email){
+  function update_user_information_admin(email){
     $.ajax({
       url: 'apis/Kameo/get_user_details.php',
       type: 'post',
