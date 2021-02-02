@@ -1062,7 +1062,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
         if (response.userNumber > 0) {
           var i = 0;
           var temp =
-            '<table class="table"><tbody><thead><tr><th scope="col"><span class="fr-inline">Nom</span><span class="en-inline">Name</span><span class="nl-inline">Name</span></th><th scope="col"><span class="fr-inline">Prénom</span><span class="en-inline">First Name</span><span class="nl-inline">First Name</span></th><th scope="col"><span class="fr-inline">E-mail</span><span class="en-inline">E-Mail</span><span class="nl-inline">E-Mail</span></th></tr></thead>';
+            '<table class="table"><tbody><thead><tr><th scope="col"><span class="fr-inline">Nom</span><span class="en-inline">Name</span><span class="nl-inline">Name</span></th><th scope="col"><span class="fr-inline">Prénom</span><span class="en-inline">First Name</span><span class="nl-inline">First Name</span></th><th scope="col"><span class="fr-inline">E-mail</span><span class="en-inline">E-Mail</span><span class="nl-inline">E-Mail</span></th><th>Téléphone</th></tr></thead>';
           dest = dest.concat(temp);
           while (i < response.userNumber) {
             var temp =
@@ -1072,6 +1072,8 @@ function get_company_details(ID, email, getCompanyContacts = false) {
               response.user[i].firstName +
               "</td><td>" +
               response.user[i].email +
+              "</td><td>" +
+              response.user[i].phone +
               "</td></tr>";
             dest = dest.concat(temp);
             i++;

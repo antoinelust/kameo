@@ -50,8 +50,8 @@ foreach ((array) $lateBookings as $lateBooking) {
 
     		if(constant('ENVIRONMENT') == "production"){
     			if($warnNextBooking){
-    			  //$mail->AddAddress($nextBookingEMAIL);
-    				$mail->AddAddress("antoine@kameobikes.com");
+    			  $mail->AddAddress($nextBookingEMAIL);
+    				//$mail->AddAddress("antoine@kameobikes.com");
     			  $mail->addBcc("antoine@kameobikes.com");
     			}
     		}else if(constant('ENVIRONMENT') == "test"){

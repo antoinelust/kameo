@@ -34,8 +34,7 @@ if($company=='Actiris'){
   echo "environnement : ".constant('ENVIRONMENT')."\n";
 
   if(constant('ENVIRONMENT') == "production"){
-    //$mail->AddAddress($email);
-    $mail->AddAddress("antoine@kameobikes.com");
+    $mail->AddAddress($email);
     $mail->AddCC("bookabike@actiris.be");
     $mail->addBcc("antoine@kameobikes.com");
   }else if(constant('ENVIRONMENT') == "test"){

@@ -7,11 +7,17 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 ?>
 
 <head>
-	<script async="async" src="https://static.mobilemonkey.com/js/123406464990910.js"></script>
-	<script>
-	window.mmDataLayer = window.mmDataLayer || [];
-	function mmData(o) { mmDataLayer.push(o); }
-	</script>
+	<?php
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/environment.php';
+	$page =$_SERVER['REQUEST_URI'];
+	if(constant('ENVIRONMENT')=='production' && $page != '/mykameo'){
+		echo '<script async="async" src="https://static.mobilemonkey.com/js/123406464990910.js"></script>
+		<script>
+		window.mmDataLayer = window.mmDataLayer || [];
+		function mmData(o) { mmDataLayer.push(o); }
+		</script>';
+	}
+	?>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta charset="UTF-8">
