@@ -9,8 +9,8 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-an
 <head>
 	<?php
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/environment.php';
-	$page =$_SERVER['REQUEST_URI'];
-	if(constant('ENVIRONMENT')=='production' && $page != '/mykameo'){
+	$page = $_SERVER['REQUEST_URI'];
+	if(constant('ENVIRONMENT')=='production' && $page != '/mykameo' && $page != '/mykameo.php'){
 		echo '<script async="async" src="https://static.mobilemonkey.com/js/123406464990910.js"></script>
 		<script>
 		window.mmDataLayer = window.mmDataLayer || [];

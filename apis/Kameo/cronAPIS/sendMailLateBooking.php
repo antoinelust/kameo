@@ -4,9 +4,10 @@ if($company=='Actiris'){
   require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
   include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
   $reservationID=$lateBooking['reservationID'];
-  $informations = execSQL("SELECT aa.EMAIL, aa.BIKE_ID, bb.COMPANY, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL from reservations aa, customer_referential bb, customer_bikes cc WHERE aa.ID='$reservationID' AND aa.EMAIL=bb.EMAIL AND aa.BIKE_ID=cc.ID", array(), false);
+  $informations = execSQL("SELECT aa.EMAIL, aa.EXTENSIONS, aa.BIKE_ID, bb.COMPANY, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL from reservations aa, customer_referential bb, customer_bikes cc WHERE aa.ID='$reservationID' AND aa.EMAIL=bb.EMAIL AND aa.BIKE_ID=cc.ID", array(), false);
   $email=$informations[0]['EMAIL'];
   $customName=$informations[0]['MODEL'];
+  $extension = $informations[0]['EXTENSIONS'];
   $temp=new DateTime($informations[0]['DATE_START_2'], new DateTimeZone('Europe/Brussels'));
   $dateStartString=$temp->format('d/m/Y H:i');
   $temp=new DateTime($informations[0]['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
@@ -35,7 +36,10 @@ if($company=='Actiris'){
 
   if(constant('ENVIRONMENT') == "production"){
     $mail->AddAddress($email);
-    $mail->AddCC("bookabike@actiris.be");
+
+    if($extension=='1'){
+      $mail->AddCC("bookabike@actiris.be");
+    }
     $mail->addBcc("antoine@kameobikes.com");
   }else if(constant('ENVIRONMENT') == "test"){
     $mail->AddAddress("antoine@kameobikes.com");

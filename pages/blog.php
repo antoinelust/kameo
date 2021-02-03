@@ -22,8 +22,31 @@
 				        <!-- Blog post-->
 				        <div class="post-content post-3-columns">
 
-				            <!-- Post Amélioration d'infrastuctures cyclables-->
-				            <div class="post-item">
+									<!-- Post pénurie vélo-->
+
+										<div class="post-item">
+				                <div class="post-image">
+				                    <a href="blog_Choisir-son-velo-electrique.html">
+				                        <img alt="" src="images/blog/ChoixVelo_Cover.jpg">
+				                    </a>
+				                </div>
+				                <div class="post-content-details">
+				                    <div class="post-title">
+				                        <h3><a href="blog_penurie_velo">Pénurie de vélos en 2021</a></h3>
+				                    </div>
+				                    <div class="post-description">
+				                        <p>On vous éclaire sur la situation en 2021 !</p>
+
+				                        <div class="post-info">
+				                            <a class="read-more" href="blog_penurie_velo">Lire plus <i class="fa fa-long-arrow-right"></i></a>
+				                        </div>
+				                    </div>
+				                </div>
+				            </div>
+
+										<!-- Post Amélioration d'infrastuctures cyclables-->
+
+										<div class="post-item">
 				                <div class="post-image">
 				                    <a href="blog_Choisir-son-velo-electrique.html">
 				                        <img alt="" src="images/blog/ChoixVelo_Cover.jpg">

@@ -81,14 +81,15 @@
 	$router->map('GET','/blog[ext]', 'pages/blog.php');
 	$router->map('GET','/blog_Infrastructures-cyclables-a-Liege-et-a-Bruxelles-pendant-le-deconfinement-et-apres[ext]', 'pages/blog_Infrastructures-cyclables-a-Liege-et-a-Bruxelles-pendant-le-deconfinement-et-apres.php');
 	$router->map('GET','/blog_Choisir-son-velo-electrique[ext]', 'pages/blog_Choisir-son-velo-electrique.php');
+	$router->map('GET','/blog_penurie_velo[ext]', 'pages/blog_penurie_velo.php');
 
 	/** 403 **/
 	$router->map('GET','/403[ext]', 'pages/403.php');
 
 	/** NAVIGATEUR **/
 	$router->map('GET','/navigateur[ext]', 'pages/navigateur.php');
-	
+
 	/** SECUREX **/
 	$router->map('GET','/login_securex[ext]', 'pages/login_securex.php');
-	
+
 ?>

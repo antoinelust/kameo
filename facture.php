@@ -349,9 +349,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $emailBikeUser = NULL;
                   }
 
-
-
-
                   $difference=$dateStartTemp->diff($contractStart);
 
                   $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
@@ -369,7 +366,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $test2=$test2.'<tr>
                         <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
                         <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo personnel de : '.$firstNameBikeUser.' '.$nameBikeUser.'</td>
-                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['LEASING_PRICE'],2).' € / mois HTVA</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey"></td>
                     </tr>';
 
                   }else{
@@ -377,7 +374,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <tr>
                         <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
                         <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo partagé</td>
-                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['LEASING_PRICE'],2).' € / mois HTVA</td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey"></td>
                     </tr>';
 
                   }
@@ -396,14 +393,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   </tr>
                   <tr>
                       <td></td>
-                      <td><img class="img-responsive" src="'.$fichier.'" alt=""></td>
-                      ';
+                      <td><img class="img-responsive" src="'.$fichier.'" alt="">';
+
                   if(($row2['CONTRACT_END'])){
-                      $test2=$test2.'<td>Période '.($monthDifference).'/'.$numberOfMonthContract.'</td>';
-                  }else{
-                      $test2=$test2."<td>Location</td>";
-                  }
-                  $test2=$test2."</tr>";
+                        $test2=$test2.'<br>Période '.($monthDifference).'/'.$numberOfMonthContract;
+                    }else{
+                        $test2=$test2."<br>Location";
+                    }
+
+                  $test2=$test2."</td><td>".round($row2['LEASING_PRICE'],2)." € / mois HTVA</td></tr>";
                   $test2=$test2.'<tr>';
 
                   if($j>0){

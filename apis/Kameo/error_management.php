@@ -80,7 +80,16 @@ if(get_user_permissions("admin", $token)){
                   }
               }
 
-
+              $sql="SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE, customer_bikes.ESTIMATED_DELIVERY_DATE FROM `client_orders`, customer_bike_access, customer_bikes WHERE client_orders.EMAIL=customer_bike_access.EMAIL AND customer_bike_access.BIKE_ID=customer_bikes.ID AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 14 DAY))";
+              if ($conn->query($sql) === FALSE){
+                  $response = array ('response'=>'error', 'message'=> $conn->error);
+                  echo json_encode($response);
+                  die;
+              }
+              $result = mysqli_query($conn, $sql);
+              while($row = mysqli_fetch_array($result)){
+                $response['bike']['order'] = $result->fetch_all(MYSQLI_ASSOC);
+              }
 
               include 'connexion.php';
               $sql="SELECT * FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'";

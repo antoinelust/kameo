@@ -1429,12 +1429,17 @@ function list_bikes_admin() {
                 response.bike[i].deliveryDate.shortDate() +
                 "</td>";
             }else if (response.bike[i].contractType=="order"){
-              console.log(response.bike[i].estimatedDeliveryDate);
-              console.log(new Date(response.bike[i].estimatedDeliveryDate));
-              var deliveryDate =
-                '<td data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
-                response.bike[i].estimatedDeliveryDate.shortDate() +
-                "</td>";
+              if((new Date(response.bike[i].estimatedDeliveryDate)) < new Date()){
+                var deliveryDate =
+                  '<td class="text-red" data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
+                  response.bike[i].estimatedDeliveryDate.shortDate() +
+                  "</td>";
+              }else{
+                var deliveryDate =
+                  '<td data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
+                  response.bike[i].estimatedDeliveryDate.shortDate() +
+                  "</td>";
+              }
             }else{
               var deliveryDate = '<td>N/A</td>';
             }

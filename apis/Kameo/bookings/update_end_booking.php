@@ -13,23 +13,25 @@ if($ID==NULL){
 	$company = $booking[0]['COMPANY'];
 	$email = $booking[0]['EMAIL'];
 	$customName = $booking[0]['MODEL'];
+	$dateEnd = new DateTime($booking[0]['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
+	$newEndDate = new DateTime($_POST['newEndDate']." ".$_POST['newEndHour'], new DateTimeZone('Europe/Brussels'));
+	$dateEndString = $dateEnd->format("Y-m-d H:i");
+	$newEndDateString = $newEndDate->format("d/m/Y - H:i");
+	$limitDate = $dateEnd->add(new DateInterval('P1M'));
+
+	if($limitDate < $newEndDate){
+		errorMessage("ES0068");
+	}
+
 
 	if($booking[0]['EXTENSIONS'] == '0'){
-		execSQL("UPDATE reservations SET INITIAL_END_DATE=? WHERE ID=?", array('si', $dateEnd, $ID), true);
+		execSQL("UPDATE reservations SET INITIAL_END_DATE=? WHERE ID=?", array('si', $dateEndString, $ID), true);
 	}else{
 		errorMessage("ES0067");
 	}
-	execSQL("UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, DATE_END_2=?, EXTENSIONS=EXTENSIONS+1 WHERE ID=?", array('ssi', $token, $newEndDate, $ID), true);
-
+	execSQL("UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, DATE_END_2=?, EXTENSIONS=EXTENSIONS+1 WHERE ID=?", array('ssi', $token, $newEndDate->format('Y-m-d H:i'), $ID), true);
 	require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php';
 	$mail = new PHPMailer();
-
-	$dateEnd = new DateTime($booking[0]['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
-	$newEndDate = new DateTime($_POST['newEndDate']." ".$_POST['newEndHour'], new DateTimeZone('Europe/Brussels'));
-	$dateEndString = $dateEnd->format("d/m/Y - H:i");
-	$newEndDateString = $newEndDate->format("d/m/Y - H:i");
-
-
 	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 
 	if(constant('ENVIRONMENT')!="local"){
