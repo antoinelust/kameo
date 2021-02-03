@@ -1420,21 +1420,23 @@ function list_bikes_admin() {
 
 
           if (((response.bike[i].contractType=="leasing" || response.bike[i].contractType=="location") && response.bike[i].deliveryDate == null) || (response.bike[i].contractType=="order" && (response.bike[i].estimatedDeliveryDate == "0000-00-00" || response.bike[i].estimatedDeliveryDate == null))) {
-            var deliveryDate = '<span class="text-red">N/A</span>';
+            var deliveryDate = '<td class="text-red">N/A</td>';
           } else {
             if(response.bike[i].contractType=="leasing" || response.bike[i].contractType=="location")
             {
               var deliveryDate =
-                '<span>' +
+                '<td data-sort="'+(new Date(response.bike[i].deliveryDate)).getTime()+'">' +
                 response.bike[i].deliveryDate.shortDate() +
-                "</span>";
+                "</td>";
             }else if (response.bike[i].contractType=="order"){
+              console.log(response.bike[i].estimatedDeliveryDate);
+              console.log(new Date(response.bike[i].estimatedDeliveryDate));
               var deliveryDate =
-                '<span>' +
+                '<td data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
                 response.bike[i].estimatedDeliveryDate.shortDate() +
-                "</span>";
+                "</td>";
             }else{
-              var deliveryDate = '<span>N/A</span>';
+              var deliveryDate = '<td>N/A</td>';
             }
           }
 
@@ -1499,9 +1501,9 @@ function list_bikes_admin() {
             rentability +
             "<td>" +
             bikeBuyingDate +
-            "</td><td "+style+" >" +
+            "</td>" +
             deliveryDate +
-            "</td><td>" +
+            "<td>" +
             response.bike[i].orderNumber +
             "</td><td>" +
             response.bike[i].size +
