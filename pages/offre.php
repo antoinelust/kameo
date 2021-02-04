@@ -229,6 +229,7 @@ $resultat = mysqli_fetch_assoc($result);
                                 <input type="text" class="hidden" id="widget-offer-antispam" name="widget-offer-antispam" value="" />
                                 <button class="button green button-3d rounded effect" type="submit" id="form-submit"><?= L::offre_askoffer_btn; ?></button>
                             </form>
+                          
                             <script type="text/javascript">
                                 jQuery("#widget-offer").validate({
                                     submitHandler: function(form) {

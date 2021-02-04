@@ -22,6 +22,7 @@ $(".fleetmanager").click(function () {
 
 
 function list_maintenances() {
+
   var dateStart = $(".form_date_start_maintenance").data("datetimepicker").getDate();
   var dateEnd = $(".form_date_end_maintenance").data("datetimepicker").getDate();
   var dateStartString =
@@ -60,13 +61,17 @@ function list_maintenances() {
                             <th>Date</th>
                             <th>Status</th>
                             <th>Adresse</th>
+                            <th>N° Téléphone</th>
                             <th></th>
                           </tr>
                         </thead>
                       <tbody>`;
             for (var i = 0; i < response.maintenance.length; i++) {
+
+
               var date = new Date(response.maintenance[i].date).toLocaleDateString();
               var status = '';
+              var phone='';
 
               if (response.maintenance[i].status == 'AUTOMATICALY_PLANNED' || response.maintenance[i].status == 'MANUALLY_PLANNED') {
                 status = '<span class="text-red">'+response.maintenance[i].status+'</span>';
@@ -77,6 +82,14 @@ function list_maintenances() {
               }else{
                 status = response.maintenance[i].status;
               }
+             
+              if (response.maintenance[i].phone == null || response.maintenance[i].phone == '') {
+                   phone = "N/A";
+              } else {
+                phone = response.maintenance[i].phone;
+               
+              }
+
               dest2 += `
                 <tr>
                 <td><a  data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+
@@ -87,6 +100,7 @@ function list_maintenances() {
                 <td>`+date+`</td>
                 <td>`+status+`</td>
                 <td>`+response.maintenance[i].street+ ', ' + response.maintenance[i].zip_code + ' ' + response.maintenance[i].town +`</td>
+                <td>`+phone+`</td>
                 <td><a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+`" data-toggle="modal">Modifier</a></td>
                 </tr>
               `;

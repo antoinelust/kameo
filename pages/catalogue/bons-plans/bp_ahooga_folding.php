@@ -67,7 +67,65 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="text-green">Ce vélo vous intéresse?</h4>
-						<p>Envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat AH-165 mixte&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
+						<form id="widget-offerBonsPlan" action="apis/Kameo/offer_bonsplan_form.php" role="form" method="post">
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="name"><?= L::offre_nom; ?></label>
+                                        <input type="text" aria-required="true" name="name" class="form-control required name">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="firstName"><?= L::offre_prenom; ?></label>
+                                        <input type="text" aria-required="true" name="firstName" class="form-control required name">
+
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="email"><?= L::offre_mail; ?></label>
+                                        <input type="email" aria-required="true" name="email" class="form-control required email">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="phone"><?= L::offre_phone; ?></label>
+                                        <input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
+                                    </div>
+                                     <div class="form-group col-sm-6">
+                                        <input type="text" class="hidden" id="offer" name="offer" value="Ahooga Folding" />
+                                    </div>
+                                </div>
+                                <button class="button green button-3d rounded effect" type="submit" id="form-submit"><?= L::offre_askoffer_btn; ?></button>
+                            </form>
+                             <script type="text/javascript">
+                                jQuery("#widget-offerBonsPlan").validate({
+                                    submitHandler: function(form) {
+                                        jQuery(form).ajaxSubmit({
+                                            success: function(text) {
+                                                if (text.response == 'success') {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'success'
+                                                    });
+                                                    $(form)[0].reset();
+
+                                                    gtag('event', 'send', {
+                                                        'event_category': 'mail',
+                                                        'event_label': 'offre.php',
+                                                        'config': 'UA-108429655-1'
+                                                    });
+
+                                                } else {
+                                                    $.notify({
+                                                        message: text.message
+                                                    }, {
+                                                        type: 'danger'
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            </script>
+                            <br/>
+						<p>Si vous avez besoin de plus d'information envoyez nous un mail à l'adresse suivante <a href="mailto:info@kameobikes.com?subject=Achat CW-370f2 femme&body=Merci de renseigner vos coordonnées: Nom, Prénom, mail, téléphone. Nous vous contacterons dès que possible.">info@kameobikes.com</a> en nous communiquant vos coordonnées complètes.</p>
 						<p><strong class="text-green">Ou</strong> téléphonez au (+32) 498 72 75 48</p>
 					</div>
 				</div>
