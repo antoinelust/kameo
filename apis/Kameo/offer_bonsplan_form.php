@@ -11,7 +11,7 @@ include 'globalfunctions.php';
 require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 
-log_input();
+log_inputs();
 
 $name = isset($_POST["name"]) ? addslashes($_POST["name"]) : "N/A";
 $firstName = isset($_POST["firstName"]) ? addslashes($_POST["firstName"]) : "N/A";
@@ -38,7 +38,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->CharSet = 'UTF-8';
 
         $mail->AddAddress('younes.chillah@kameobikes.com', 'Younes Chillah');
-        
+
 
         $mail->From = $email;
         $mail->FromName = $firstName.' '.$name;
