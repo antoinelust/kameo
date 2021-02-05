@@ -83,9 +83,15 @@ function construct_form_for_billing_status_update(ID){
 				$.notify({ message: "No file available for that bill" }, { type: 'danger' });
 			  });
 			}
-			var dest='<table class=\"table table-condensed\"><thead><tr><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
+			var dest='<table class=\"table table-condensed\"><thead><tr><th>Objet</th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
 			for(var i = 0; i<response.billDetailsNumber; i++){
-			  dest=dest.concat("<tr><th>"+response.bill.billDetails[i].bikeID + " - " + response.bill.billDetails[i].frameNumber+"</th><th>"+response.bill.billDetails[i].amountHTVA+"</th><th>"+response.bill.billDetails[i].comments+"</th></tr>");
+        if(response.bill.billDetails[i].itemType == "bike"){
+          dest=dest.concat("<tr><td><ul><li>Type : Vélo </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Identification : " + response.bill.billDetails[i].frameNumber+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" €</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
+        }else if(response.bill.billDetails[i].itemType == "accessory"){
+          dest=dest.concat("<tr><td><ul><li>Type : Accessoire </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Modèle : " + response.bill.billDetails[i].model+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" €</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
+        }else if(response.bill.billDetails[i].itemType == "box"){
+          dest=dest.concat("<tr><td><ul><li>Type : Borne </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Identification : " + response.bill.billDetails[i].model+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" €</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
+        }
 			}
 			document.getElementById('billingDetails').innerHTML=dest.concat("</tbody><table>");
 			displayLanguage();
