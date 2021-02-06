@@ -39,7 +39,7 @@ if($email != NULL || $company != NULL || $token != NULL){
     $company = $resultat['COMPANY'];
   }
 
-  $sql = "SELECT NOM AS name, PRENOM AS firstName, EMAIL AS email, STAANN AS staann FROM customer_referential WHERE COMPANY = '$company'";
+  $sql = "SELECT NOM AS name, PRENOM AS firstName, PHONE as phone, EMAIL AS email, STAANN AS staann FROM customer_referential WHERE COMPANY = '$company'";
   if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);

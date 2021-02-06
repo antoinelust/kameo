@@ -511,6 +511,7 @@ if(isset($_POST['action'])){
 
 
 
+
             if( $type_bike == 'partage'){
                 foreach($_POST['userAccess'] as $valueInArray){
                     include 'connexion.php';

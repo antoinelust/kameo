@@ -82,13 +82,9 @@ function list_maintenances() {
               }else{
                 status = response.maintenance[i].status;
               }
-             
-              if (response.maintenance[i].phone == null || response.maintenance[i].phone == '') {
-                   phone = "N/A";
-              } else {
-                phone = response.maintenance[i].phone;
-               
-              }
+                // trouver un moyen de faire la requete pour aller chercher le numero tel avc l'email
+                phone = response.maintenance[i].phone  ;
+
 
               dest2 += `
                 <tr>
