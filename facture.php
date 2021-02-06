@@ -383,7 +383,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <tr>
                         <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
                         <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo partagé</td>
-                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey"></td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$totalTemp.' €</td>
                     </tr>';
 
                   }
@@ -410,16 +410,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                       <td></td>
                       <td><img class="img-responsive" src="'.$fichier.'" alt="">';
                   $test2=$test2."</td><td style='color: grey'>".round($row2['LEASING_PRICE'],2)." € / mois HTVA</td></tr>";
-                  $test2=$test2.'<tr>';
 
                   if($j>0){
                     foreach($accessoryBike[$i] as &$accessory){
-                        $test2=$test2.'<td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' €/mois</td>';
+                        $test2=$test2.'<tr><td style="width: 20; text-align: left; border-top: solid 1px grey;"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' €/mois</td></tr>';
                     }
                   }
-
-                  $test2=$test2."</tr>";
-
                   $i+=1;
                   $total+=$row2['LEASING_PRICE'];
                 }

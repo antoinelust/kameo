@@ -187,7 +187,7 @@ if(get_user_permissions("admin", $token)){
                       $dateTempString2=$dateTemp->format('Y-m-d');
 
                       include 'connexion.php';
-                      $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID' and DATE_START = '$dateTempString2'";
+                      $sql="SELECT * FROM factures_details WHERE ITEM_TYPE='bike' AND ITEM_ID='$bikeID' and DATE_START = '$dateTempString2'";
 
                       $response['bike']['log'][$j]['bikeID']=$bikeID;
                       $response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
@@ -248,7 +248,7 @@ if(get_user_permissions("admin", $token)){
                   $bikeNumber=$row['FRAME_NUMBER'];
                   $dateTempString=$row['CONTRACT_START'];
 
-                  $sql="SELECT * FROM factures_details WHERE BIKE_ID='$bikeID'";
+                  $sql="SELECT * FROM factures_details WHERE ITEM_TYPE='bike' AND ITEM_ID='$bikeID'";
 
                   $response['bike']['log'][$j]['bikeID']=$bikeID;
                   $response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
