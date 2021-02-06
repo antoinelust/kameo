@@ -137,7 +137,7 @@ while ($row = mysqli_fetch_array($result)) {
 
     if ($row['BIKE_PRICE']) {
         include 'connexion.php';
-        $sql3 = "select SUM(AMOUNT_HTVA) AS 'SOMME' from factures_details WHERE BIKE_ID='$idBike'";
+        $sql3 = "select SUM(AMOUNT_HTVA) AS 'SOMME' from factures_details WHERE ITEM_ID='$idBike' AND ITEM_TYPE='bike'";
         if ($conn->query($sql3) === FALSE) {
             $response = array('response' => 'error', 'message' => $conn->error);
             echo json_encode($response);

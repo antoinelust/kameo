@@ -312,7 +312,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   $bikeID=$row2['ID'];
                   $commentBilling=$row2['COMMENT_BILLING'];
 
-                  $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
+                  $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'bike', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                   if ($conn->query($sql) === FALSE) {
                       echo $conn->error;
                   }
@@ -324,22 +324,31 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   }
                   $result5 = mysqli_query($conn, $sql5);
                   $j=0;
+                  $totalTemp=$row2['LEASING_PRICE'];
                   if($result5->num_rows>0){
                       $resultat5 = mysqli_fetch_assoc($result5);
                       $nameBikeUser=$resultat5['NOM'];
                       $firstNameBikeUser=$resultat5['PRENOM'];
                       $emailBikeUser=$resultat5['EMAIL'];
-                      $sqlAccessories="SELECT accessories_catalog.MODEL, accessories_categories.CATEGORY, CONTRACT_AMOUNT FROM accessories_stock, accessories_catalog, accessories_categories WHERE accessories_categories.ID= accessories_catalog.ACCESSORIES_CATEGORIES AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_stock.USER_EMAIL='$emailBikeUser' and accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.CONTRACT_START<='$temp3' AND accessories_stock.CONTRACT_END>='$temp3'";
+                      $sqlAccessories="SELECT accessories_stock.ID as accessoryID, accessories_catalog.MODEL, accessories_categories.CATEGORY, CONTRACT_AMOUNT FROM accessories_stock, accessories_catalog, accessories_categories WHERE accessories_categories.ID= accessories_catalog.ACCESSORIES_CATEGORIES AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_stock.USER_EMAIL='$emailBikeUser' and accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.CONTRACT_START<='$temp3' AND accessories_stock.CONTRACT_END>='$temp3'";
                       if ($conn->query($sqlAccessories) === FALSE) {
                           echo $conn->error;
                           die;
                       }
                       $resultAccessories = mysqli_query($conn, $sqlAccessories);
                       while($rowAccessories = mysqli_fetch_array($resultAccessories)){
+                        $accessoryID = $rowAccessories['accessoryID'];
+                        $amount = $rowAccessories["CONTRACT_AMOUNT"];
+                        $amountTVAC = round($amount*1.21);
+                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'accessory', '$accessoryID', '$comment', '$temp3', '$temp4', '$amount', '$amountTVAC')";
+                        if ($conn->query($sql) === FALSE){
+                            echo $conn->error;
+                        }
                         $accessoryBike[$i][$j]['CATEGORY']=$rowAccessories["CATEGORY"];
                         $accessoryBike[$i][$j]['MODEL']=$rowAccessories["MODEL"];
-                        $accessoryBike[$i][$j]['CONTRACT_AMOUNT']=$rowAccessories["CONTRACT_AMOUNT"];
+                        $accessoryBike[$i][$j]['CONTRACT_AMOUNT']= $amount;
                         $total+=$rowAccessories['CONTRACT_AMOUNT'];
+                        $totalTemp+=$rowAccessories['CONTRACT_AMOUNT'];
                         $j++;
                       }
 
@@ -366,7 +375,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $test2=$test2.'<tr>
                         <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
                         <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo personnel de : '.$firstNameBikeUser.' '.$nameBikeUser.'</td>
-                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey"></td>
+                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$totalTemp.' €</td>
                     </tr>';
 
                   }else{
@@ -384,6 +393,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                       <td></td>
                       <td style="color: grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'<br> Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
 
+                  if(($row2['CONTRACT_END'])){
+                    $test2=$test2.'<br>Période '.($monthDifference).'/'.$numberOfMonthContract;
+                  }else{
+                    $test2=$test2."<br>Location";
+                  }
+
                   if($commentBilling != NULL && $commentBilling != ''){
                     $test2.='<br/>'.$commentBilling;
                   }
@@ -394,19 +409,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   <tr>
                       <td></td>
                       <td><img class="img-responsive" src="'.$fichier.'" alt="">';
-
-                  if(($row2['CONTRACT_END'])){
-                        $test2=$test2.'<br>Période '.($monthDifference).'/'.$numberOfMonthContract;
-                    }else{
-                        $test2=$test2."<br>Location";
-                    }
-
-                  $test2=$test2."</td><td>".round($row2['LEASING_PRICE'],2)." € / mois HTVA</td></tr>";
+                  $test2=$test2."</td><td style='color: grey'>".round($row2['LEASING_PRICE'],2)." € / mois HTVA</td></tr>";
                   $test2=$test2.'<tr>';
 
                   if($j>0){
                     foreach($accessoryBike[$i] as &$accessory){
-                        $test2=$test2.'<td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$accessory['CONTRACT_AMOUNT'].' €/mois</td>';
+                        $test2=$test2.'<td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' €/mois</td>';
                     }
                   }
 
@@ -462,7 +470,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $leasingPrice=$row2['AMOUNT'];
                 $leasingPriceTVAC=1.21*$row2['AMOUNT'];
                 $boxID=$row2['ID'];
-                $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$boxID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
+                $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'box', '$boxID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                 if ($conn->query($sql) === FALSE) {
                     echo $conn->error;
                 }

@@ -16,7 +16,7 @@ $response=array();
 if($ID != NULL)
 {
 
-	
+
     include 'connexion.php';
 	$sql="SELECT *  FROM factures WHERE ID = '$ID'";
     if ($conn->query($sql) === FALSE) {
@@ -24,8 +24,8 @@ if($ID != NULL)
 		echo json_encode($response);
 		die;
 	}
-	
-    $result = mysqli_query($conn, $sql);        
+
+    $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
 
 
@@ -35,7 +35,7 @@ if($ID != NULL)
     $response['bill']['beneficiaryCompany']=$row['BENEFICIARY_COMPANY'];
     $response['bill']['communication']=$row['COMMUNICATION_STRUCTUREE'];
     $response['bill']['ID']=$row['ID'];
-    $response['bill']['date']=$row['DATE'];            
+    $response['bill']['date']=$row['DATE'];
     $response['bill']['amountHTVA']=$row['AMOUNT_HTVA'];
     $response['bill']['amountTVAC']=$row['AMOUNT_TVAINC'];
     $response['bill']['sent']=$row['FACTURE_SENT'];
@@ -44,34 +44,44 @@ if($ID != NULL)
     $response['bill']['paidDate']=$row['FACTURE_PAID_DATE'];
     $response['bill']['paidLimitDate']=$row['FACTURE_LIMIT_PAID_DATE'];
     $response['bill']['type']=$row['TYPE'];
-    $response['bill']['communicationSentAccounting']=$row['FACTURE_SENT_ACCOUNTING'];    
+    $response['bill']['communicationSentAccounting']=$row['FACTURE_SENT_ACCOUNTING'];
     $response['bill']['file']=$row['FILE_NAME'];
-    
+
     include 'connexion.php';
-	$sql="SELECT aa.*, bb.FRAME_NUMBER  FROM factures_details aa, customer_bikes bb WHERE FACTURE_ID = '$ID' and aa.BIKE_ID=bb.ID";
+		$sql="SELECT *  FROM factures_details aa WHERE FACTURE_ID = '$ID'";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
 		die;
 	}
-	
-    $result = mysqli_query($conn, $sql);  
-    $length = $result->num_rows;
-    
+
+  $result = mysqli_query($conn, $sql);
+  $length = $result->num_rows;
+
 	$response['billDetailsNumber']=$length;
-    
-    $i=0;
-    while($row = mysqli_fetch_array($result)){
-        $response['bill']['billDetails'][$i]['bikeID']=$row['BIKE_ID'];
-        $response['bill']['billDetails'][$i]['frameNumber']=$row['FRAME_NUMBER'];
-        $response['bill']['billDetails'][$i]['comments']=$row['COMMENTS'];
-        $response['bill']['billDetails'][$i]['amountHTVA']=$row['AMOUNT_HTVA'];
-        $response['bill']['billDetails'][$i]['amountTVAC']=$row['AMOUNT_TVAC'];
-        $i++;
-    }
-    
+
+  $i=0;
+  while($row = mysqli_fetch_array($result)){
+		$response['bill']['billDetails'][$i]['itemID']=$row['ITEM_ID'];
+		if($row['ITEM_TYPE'] == 'bike'){
+			$bikeInformation = execSQL("SELECT * FROM customer_bikes WHERE ID = ?", array('i', $row['ITEM_ID']), false);
+			$response['bill']['billDetails'][$i]['frameNumber']=$bikeInformation[0]['FRAME_NUMBER'];
+		}else if($row['ITEM_TYPE'] == 'box'){
+			$boxInformation = execSQL("SELECT MODEL FROM boxes WHERE ID = ?", array('i', $row['ITEM_ID']), false);
+			$response['bill']['billDetails'][$i]['model']=$boxInformation[0]['MODEL'];
+		}else if($row['ITEM_TYPE'] == 'accessory'){
+			$accessoryInformation = execSQL("SELECT accessories_catalog.MODEL FROM accessories_stock, accessories_catalog WHERE accessories_stock.ID = ? AND accessories_stock.CATALOG_ID=accessories_catalog.ID", array('i', $row['ITEM_ID']), false);
+			$response['bill']['billDetails'][$i]['model']=$accessoryInformation[0]['MODEL'];
+		}
+		$response['bill']['billDetails'][$i]['itemType']=$row['ITEM_TYPE'];
+    $response['bill']['billDetails'][$i]['comments']=$row['COMMENTS'];
+    $response['bill']['billDetails'][$i]['amountHTVA']=$row['AMOUNT_HTVA'];
+    $response['bill']['billDetails'][$i]['amountTVAC']=$row['AMOUNT_TVAC'];
+    $i++;
+  }
+
 	echo json_encode($response);
-    die;
+  die;
 
 }
 else
