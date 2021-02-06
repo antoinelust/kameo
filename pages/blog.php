@@ -43,13 +43,14 @@ include 'include/head.php';
 											<details open>
 												<?php
 											}
+										}
 											else 
 											{
 												?>	
 												<details>
 													<?php
 												}
-											}
+											
 											?>
 											<summary>Lire La suite <i class="fa fa-long-arrow-right"></i></summary>
 											<h1 class="fr text-green col-md-10 center text-center">Comment choisir son nouveau vélo électrique?<br>par KAMEO Bikes</h1>
@@ -249,13 +250,14 @@ include 'include/head.php';
 											<details open>
 												<?php
 											}
+										}
 											else 
 											{
 												?>	
 												<details>
 													<?php
 												}
-											}
+											
 											?>
 												<summary>Lire La suite <i class="fa fa-long-arrow-right"></i></summary>
 												<h1 class="fr text-green col-md-10 center text-center">Infrastructures cyclables à Liège et à Bruxelles : pendant le déconfinement et après ?</h1>
