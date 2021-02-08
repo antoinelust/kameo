@@ -65,7 +65,7 @@ if($company=='Actiris'){
   }else{
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
     include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_lateBooking.php';
-    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mail_footer.php';
+    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
   }
   $mail->Body = $body;
 

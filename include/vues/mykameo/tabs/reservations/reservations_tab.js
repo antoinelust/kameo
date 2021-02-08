@@ -446,6 +446,150 @@ function getHistoricBookings() {
           });
         }
 
+        //Ongoing bookings
+
+        var dest = "";
+        var dest2 = "";
+        if (response.booking.codePresence == false) {
+          var tempOngoingBookings =
+            '<table class="table table-condensed hidden-xs" id="ongoingBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th></th></tr></thead><tbody>';
+        } else {
+          var tempOngoingBookings =
+            '<table class="table table-condensed hidden-xs" id="ongoingBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><thead><tr><th><?= L::mk_reservations_id; ?></th><th><span><?= L::mk_reservations_start; ?></span></th><th><span><?= L::mk_reservations_stop; ?></span></th><th><span><?= L::mk_reservations_bike; ?></span></th><th><?= L::mk_reservations_code; ?></th><th></th></tr></thead><tbody>';
+        }
+        dest = dest.concat(tempOngoingBookings);
+        var length =
+          parseInt(response.ongoing_bookings) +
+          parseInt(response.previous_bookings);
+
+          if(response.ongoing_bookings == 0){
+            $("#ongoingBookingsSmartphone").addClass("hidden");
+          }else{
+            $("#ongoingBookingsSmartphone").removeClass("hidden");
+          }
+
+
+        while (i < length) {
+          var building_start_fr = response.booking[i].building_start_fr;
+          var building_start_en = response.booking[i].building_start_en;
+          var building_start_nl = response.booking[i].building_start_nl;
+          var building_end_fr = response.booking[i].building_end_fr;
+          var building_end_en = response.booking[i].building_end_en;
+          var building_end_nl = response.booking[i].building_end_nl;
+          var frame_number = response.booking[i].frameNumber;
+          var model = response.booking[i].model;
+          var booking_id = response.booking[i].bookingID;
+          var annulation = response.booking[i].annulation;
+          if(typeof response.booking[i].nextBookingDate != 'undefined'){
+            var nextBookingDate = new Date(response.booking[i].nextBookingDate);
+          }else{
+            var nextBookingDate = false;
+          }
+
+          if (response.booking.codePresence == false) {
+            var tempOngoingBookings =
+              '<tr><td><a href="#" name="' +
+              response.booking[i].bookingID +
+              '" class="showBooking">' +
+              response.booking[i].bookingID +
+              "</a></td><td>" +
+              response.booking[i].start.shortDate() +
+              " - " +
+              "<span class=\"fr-inline\">"+building_start_fr+"</span>\
+              <span class=\"en-inline\">"+building_start_en+"</span>\
+              <span class=\"nl-inline\">"+building_start_nl+"</span>" +
+              " <span><?= L::mk_reservations_at; ?></span> " +
+              response.booking[i].start.shortHours() +
+              "</td><td>" +
+              response.booking[i].end.shortDate() +
+              " - " +
+              building_end_fr +
+              " <span><?= L::mk_reservations_at; ?></span> " +
+              response.booking[i].end.shortHours() +
+              "</td><td>" +
+              model +
+              '</td><td><a class="button small green rounded effect" onclick="showBooking(' +
+              booking_id +
+              ')"><span>+</span></a>';
+          } else {
+            code = response.booking[i].codeValue;
+            if (code.length == 3) {
+              code = "0" + code;
+            } else if (code.length == 2) {
+              code = "00" + code;
+            } else if (code.length == 1) {
+              code = "000" + length;
+            }
+
+            var tempOngoingBookings =
+              '<tr><td><a href="#" name="' +
+              response.booking[i].bookingID +
+              '" class="showBooking">' +
+              response.booking[i].bookingID +
+              "</a></td><td>" +
+              response.booking[i].start.shortDate() +
+              " - " +
+              "<span class=\"fr-inline\">"+building_start_fr+"</span>\
+              <span class=\"en-inline\">"+building_start_en+"</span>\
+              <span class=\"nl-inline\">"+building_start_nl+"</span>" +
+              " <span><?= L::mk_reservations_at; ?></span> " +
+              response.booking[i].start.shortHours() +
+              "</td><td>" +
+              response.booking[i].end.shortDate() +
+              " - " +
+              "<span class=\"fr\">"+building_end_fr+"</span>\
+              <span class=\"en-inline\">"+building_end_en+"</span>\
+              <span class=\"nl-inline\">"+building_end_nl+"</span>" +
+              " <span><?= L::mk_reservations_at; ?></span> " +
+              " <span><?= L::mk_reservations_at; ?></span> " +
+              response.booking[i].end.shortHours() +
+              "</td><td>" +
+              model +
+              "</td><td>" +
+              code +
+              '</td><td style="text-align: center;"><a class="button small green rounded effect" onclick="showBooking(' +
+              booking_id +
+              ')"><span>'+traduction.generic_moreInfo+'</span></a>';
+          }
+          tempOngoingBookings=tempOngoingBookings.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+
+          tempOngoingBookings = tempOngoingBookings.concat("</td></tr>");
+          dest = dest.concat(tempOngoingBookings);
+
+          var temp="<p class='text-dark'><strong>ID :</strong> "+
+          response.booking[i].bookingID
+          +"<br><strong>Départ : </strong>"+
+          response.booking[i].start.shortDate()
+          +"<span><?= L::mk_reservations_at; ?></span> " +
+          response.booking[i].start.shortHours()
+          +" "+
+          building_start_fr
+          +"<br><strong>Arrivée : </strong>"+
+          response.booking[i].end.shortDate()
+          +"<span><?= L::mk_reservations_at; ?></span> " +
+          response.booking[i].end.shortHours()
+          +" "+
+          building_end_fr
+          +"<br><strong>Vélo :</strong> "+
+          model;
+
+          if(response.booking.codePresence){
+            temp=temp.concat("<br><strong>Code : </strong>"+code+"</p>");
+          }
+          temp=temp.concat("<a class='button small green rounded effect' onclick=\"showBooking('"+booking_id +"')\"><span>+</span></a>");
+          temp=temp.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+
+          dest2=dest2.concat(temp);
+
+          i++;
+        }
+        var tempOngoingBookings = "</tbody></table>";
+        dest = dest.concat(tempOngoingBookings);
+
+        //affichage du résultat de la recherche
+        document.getElementById("ongoingBookings").innerHTML = dest;
+        document.getElementById("ongoingBookingsSmartphone").innerHTML = dest2;
+
         //Booking futurs
 
         var dest = "";
@@ -460,6 +604,7 @@ function getHistoricBookings() {
         dest = dest.concat(tempFutureBookings);
         var length =
           parseInt(response.future_bookings) +
+          parseInt(response.ongoing_bookings) +
           parseInt(response.previous_bookings);
 
           if(response.future_bookings == 0){
@@ -510,7 +655,7 @@ function getHistoricBookings() {
               model +
               '</td><td><a class="button small green rounded effect" onclick="showBooking(' +
               booking_id +
-              ')"><span>+</span></a></td>';
+              ')"><span>+</span></a>';
           } else {
             code = response.booking[i].codeValue;
             if (code.length == 3) {
@@ -600,7 +745,12 @@ function getHistoricBookings() {
         document.getElementById("futureBookings").innerHTML = dest;
         document.getElementById("futureBookingsSmartphone").innerHTML = dest2;
 
-        displayLanguage();
+        //displayLanguage();
+
+        $(".showBooking").click(function(){
+          showBooking(this.name);
+        });
+
 
         $(".updateEndBookingDate").click(function(){
 
