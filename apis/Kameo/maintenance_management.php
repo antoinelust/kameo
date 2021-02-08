@@ -29,7 +29,7 @@ if (isset($_GET['action'])) {
     INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
     INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
     INNER JOIN customer_bike_access ON customer_bike_access.BIKE_ID = customer_bikes.ID
-    
+    WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
     GROUP BY entretiens.ID, entretiens.DATE, entretiens.STATUS
     ORDER BY entretiens.DATE;";
 
@@ -55,9 +55,7 @@ if (isset($_GET['action'])) {
       $response['maintenance'][$i]['model']=$row['model'];
       $response['maintenance'][$i]['frame_reference']=$row['frame_reference'];
       $response['maintenance'][$i]['bike_id']=$row['bike_id'];
-      $response['maintenance'][$i]['street']=$row['street'];
-      $response['maintenance'][$i]['zip_code']=$row['zip_code'];
-      $response['maintenance'][$i]['town']=$row['town'];
+     
       $response['maintenance'][$i]['type']=$row['type'];
       $response['maintenance'][$i]['email']=$row['email'];
 
@@ -66,13 +64,16 @@ if (isset($_GET['action'])) {
       if($row['type']!='partage'){
 
         $email = $row['email'];
-        $sqlPhone = "SELECT PHONE
+        $sqlPhone = "SELECT PHONE ,ADRESS ,CITY ,POSTAL_CODE
         FROM customer_referential WHERE EMAIL = '$email';";
 
         $resultPhone = mysqli_query($conn, $sqlPhone);
 
-       $rowPhone = $resultPhone->fetch_assoc();
+          $rowPhone = $resultPhone->fetch_assoc();
           $row['phone']= $rowPhone['PHONE'];
+          $row['street']=$rowPhone['ADRESS'];
+          $row['zip_code']=$rowPhone['POSTAL_CODE'];
+          $row['town']=$rowPhone['CITY'];
         
       }
 
@@ -83,6 +84,19 @@ if (isset($_GET['action'])) {
       else{
        $response['maintenance'][$i]['phone']=$row['phone'];
      }
+
+     if($row['street']==null || $row['street']=='' || $row['street']==' ' || $row['street']=='/')
+      {
+      $response['maintenance'][$i]['street']='N/A';
+      $response['maintenance'][$i]['zip_code']='';
+      $response['maintenance'][$i]['town']='';
+      }
+      else{
+      $response['maintenance'][$i]['street']=$row['street'];
+      $response['maintenance'][$i]['zip_code']=$row['zip_code'];
+      $response['maintenance'][$i]['town']=$row['town'];
+     }
+      
 
      $i++;
    }

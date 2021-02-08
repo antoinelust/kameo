@@ -60,6 +60,7 @@ function list_maintenances() {
                             <th>Société</th>
                             <th>Date</th>
                             <th>Status</th>
+                            <th>Type</th>
                             <th>Adresse</th>
                             <th>N° Téléphone</th>
                             <th></th>
@@ -82,7 +83,6 @@ function list_maintenances() {
               }else{
                 status = response.maintenance[i].status;
               }
-                // trouver un moyen de faire la requete pour aller chercher le numero tel avc l'email
                 phone = response.maintenance[i].phone  ;
 
 
@@ -95,6 +95,7 @@ function list_maintenances() {
                 <td>`+response.maintenance[i].company+`</td>
                 <td>`+date+`</td>
                 <td>`+status+`</td>
+                <td>`+response.maintenance[i].type+`</td>
                 <td>`+response.maintenance[i].street+ ', ' + response.maintenance[i].zip_code + ' ' + response.maintenance[i].town +`</td>
                 <td>`+phone+`</td>
                 <td><a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+`" data-toggle="modal">Modifier</a></td>
