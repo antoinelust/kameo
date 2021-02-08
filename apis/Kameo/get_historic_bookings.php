@@ -149,6 +149,7 @@ if($user != NULL)
 		$response['booking'][$i]['time']="past";
 		$response['booking'][$i]['time']="future";
     $response['booking'][$i]['bookingID']=$row['ID'];
+    $response['booking'][$i]['extension']=$row['EXTENSIONS'];
     $ID=$row['ID'];
 
 
@@ -292,6 +293,7 @@ if($user != NULL)
 		$response['booking'][$i]['time']="past";
 		$response['booking'][$i]['time']="future";
     $response['booking'][$i]['bookingID']=$row['ID'];
+    $response['booking'][$i]['extension']=$row['EXTENSIONS'];
     $ID=$row['ID'];
 
 

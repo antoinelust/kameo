@@ -20,18 +20,29 @@ if (isset($_GET['action'])) {
     $date_end = new DateTime($_GET['dateEnd']);
     $date_end_string=$date_end->format('Y-m-d');
 
-    //récupération des entretiens de moins de 2 mois
-    $sql = "SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
-    COMMENT AS comment,FRAME_NUMBER AS frame_number, COMPANY AS company, MODEL AS model,
-    FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id,CONTACT_PHONE AS phone, STREET AS street, ZIP_CODE AS zip_code,
-    TOWN AS town, customer_bike_access.TYPE AS type, customer_bike_access.EMAIL AS email
-    FROM entretiens
-    INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
-    INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
-    INNER JOIN customer_bike_access ON customer_bike_access.BIKE_ID = customer_bikes.ID
-    WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
-    GROUP BY entretiens.ID, entretiens.DATE, entretiens.STATUS
-    ORDER BY entretiens.DATE;";
+
+        $sql = "SELECT * FROM
+                  (SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
+                          COMMENT AS comment,FRAME_NUMBER AS frame_number, COMPANY AS company, MODEL AS model,
+                          FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id,CONTACT_PHONE AS phone, STREET AS street, ZIP_CODE AS zip_code,
+                          TOWN AS town, customer_bike_access.TYPE AS type, customer_bike_access.EMAIL AS email
+                          FROM entretiens
+                          INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+                          INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
+                          INNER JOIN customer_bike_access ON customer_bike_access.BIKE_ID = customer_bikes.ID
+                          WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
+                      UNION
+                      SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
+                          COMMENT AS comment,FRAME_NUMBER AS frame_number, COMPANY AS company, MODEL AS model,
+                          FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id,CONTACT_PHONE AS phone, STREET AS street, ZIP_CODE AS zip_code,
+                          TOWN AS town, 'partage' AS type, '' as email
+                          FROM entretiens
+                          INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+                          INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
+                          WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string' AND NOT EXISTS (SELECT 1 FROM customer_bike_access WHERE customer_bike_access.BIKE_ID = 		customer_bikes.ID)
+                  ) as tt
+                  GROUP BY id
+                  ORDER BY date";
 
     if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -55,10 +66,8 @@ if (isset($_GET['action'])) {
       $response['maintenance'][$i]['model']=$row['model'];
       $response['maintenance'][$i]['frame_reference']=$row['frame_reference'];
       $response['maintenance'][$i]['bike_id']=$row['bike_id'];
-     
       $response['maintenance'][$i]['type']=$row['type'];
       $response['maintenance'][$i]['email']=$row['email'];
-
 
 
       if($row['type']!='partage'){
@@ -66,15 +75,12 @@ if (isset($_GET['action'])) {
         $email = $row['email'];
         $sqlPhone = "SELECT PHONE ,ADRESS ,CITY ,POSTAL_CODE
         FROM customer_referential WHERE EMAIL = '$email';";
-
         $resultPhone = mysqli_query($conn, $sqlPhone);
-
-          $rowPhone = $resultPhone->fetch_assoc();
-          $row['phone']= $rowPhone['PHONE'];
-          $row['street']=$rowPhone['ADRESS'];
-          $row['zip_code']=$rowPhone['POSTAL_CODE'];
-          $row['town']=$rowPhone['CITY'];
-        
+        $rowPhone = $resultPhone->fetch_assoc();
+        $row['phone']= $rowPhone['PHONE'];
+        $row['street']=$rowPhone['ADRESS'];
+        $row['zip_code']=$rowPhone['POSTAL_CODE'];
+        $row['town']=$rowPhone['CITY'];
       }
 
       if($row['phone']==null || $row['phone']=='' || $row['phone']==' ' || $row['phone']=='/')
@@ -96,16 +102,13 @@ if (isset($_GET['action'])) {
       $response['maintenance'][$i]['zip_code']=$row['zip_code'];
       $response['maintenance'][$i]['town']=$row['town'];
      }
-      
+
 
      $i++;
    }
 
 
 //////////////Code test Pour ajouter le numero de telephone
-
-
-
 
 
 
