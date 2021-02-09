@@ -14,6 +14,44 @@ $( ".fleetmanager" ).click(function() {
     })
 })
 
+function get_users_listing(){
+  $.ajax({
+     url: "apis/Kameo/get_users_listing",
+     success : function(data) {
+      $('#usersList').dataTable( {
+        destroy: true,
+        sAjaxDataProp: "",
+        data : data.users,
+        columns: [
+         { title: traduction.sidebar_last_name, data: "name" },
+         { title: traduction.sidebar_first_name, data: "firstName" },
+         { className: "hidden-xs", title: "E-Mail", data: "email" },
+         {
+           title: traduction.generic_status,
+           data: "staann",
+           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+             if (sData !== null) $(nTd).html("Actif");
+             else $(nTd).html("Inactif");
+           },
+         },
+         {
+           data: "email",
+           fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+             $(nTd).html("<a href='#' data-target='#updateUserInformation' onclick=\"update_user_information('" +
+               sData +
+               "')\" class='text-green' data-toggle='modal'>"+traduction.generic_update+" </a>");
+             },
+          }
+
+        ],
+        order: [
+         [0, "asc"]
+        ]
+      });
+   }
+  });
+}
+
   //FleetManager: Nombre d'utilisateurs | Display user details when "Mettre à jour" button is pressed
   function update_user_information(email){
     $.ajax({
@@ -144,61 +182,69 @@ $( ".fleetmanager" ).click(function() {
 
   //FleetManager: Nombre d'utilisateurs | List the building, bikes and display the create button
   function create_user(){
-    var email= "<?php echo $user_data['EMAIL']; ?>";
-    $.ajax({
-      url: 'apis/Kameo/get_building_listing.php',
-      type: 'post',
-      data: { "email": email},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          var i=0;
-          var dest="";
-          while (i < response.buildingNumber){
-            temp="<input type=\"checkbox\" name=\"buildingAccess[]\" checked value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"<br>";
-            dest=dest.concat(temp);
-            i++;
+    document.getElementById('confirmAddUser').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" onclick=\"confirm_add_user()\">\
+    <i class=\"fa fa-paper-plane\">\
+    </i>"+traduction.generic_confirm+"</button>";
 
+    if(user_data.BOOKING == "Y"){
+      $('#widget-addUser-form .accessToBikes').removeClass("hidden");
+      $('#widget-addUser-form .accessToBuildings').removeClass("hidden");
+
+      $.ajax({
+        url: 'apis/Kameo/get_building_listing.php',
+        type: 'post',
+        data: { "email": user_data.EMAIL},
+        success: function(response){
+          if(response.response == 'error') {
+            console.log(response.message);
           }
-          document.getElementById('buildingCreateUser').innerHTML = dest;
-
-          $.ajax({
-            url: 'apis/Kameo/get_bikes_listing.php',
-            type: 'post',
-            data: { "email": email},
-            success: function(response){
-              if(response.response == 'error') {
-                console.log(response.message);
-              }
-              if(response.response == 'success'){
-                var i=0;
-                var dest="";
-                while (i < response.bikeNumber){
-                  if(response.bike[i].biketype == 'partage'){
-                    temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
-                    dest=dest.concat(temp);
-                  }
-                  i++;
-                }
-                document.getElementById('bikeCreateUser').innerHTML = dest;
-                $('#widget-addUser-form input[name=company]').val("");
-                document.getElementById('confirmAddUser').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" onclick=\"confirm_add_user()\">\
-                <i class=\"fa fa-paper-plane\">\
-                </i>"+traduction.generic_confirm+"</button>";
-
-
-                document.getElementById('select-all').onclick = function() {
-                  var checkboxes = document.getElementsByName('bikeAccess[]');
-                  for (var checkbox of checkboxes) {
-                    checkbox.checked = this.checked;
-                  }
-                }
-              }
+          if(response.response == 'success'){
+            var i=0;
+            var dest="";
+            while (i < response.buildingNumber){
+              temp="<input type=\"checkbox\" name=\"buildingAccess[]\" checked value=\""+response.building[i].code+"\"> "+response.building[i].descriptionFR+"<br>";
+              dest=dest.concat(temp);
+              i++;
             }
-          });
+            document.getElementById('buildingCreateUser').innerHTML = dest;
+
+            $.ajax({
+              url: 'apis/Kameo/get_bikes_listing.php',
+              type: 'post',
+              data: { "email": user_data.EMAIL},
+              success: function(response){
+                if(response.response == 'error') {
+                  console.log(response.message);
+                }
+                if(response.response == 'success'){
+                  var i=0;
+                  var dest="";
+                  while (i < response.bikeNumber){
+                    if(response.bike[i].biketype == 'partage'){
+                      temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\"> "+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
+                      dest=dest.concat(temp);
+                    }
+                    i++;
+                  }
+                  document.getElementById('bikeCreateUser').innerHTML = dest;
+                  $('#widget-addUser-form input[name=company]').val("");
+
+                  document.getElementById('select-all').onclick = function() {
+                    var checkboxes = document.getElementsByName('bikeAccess[]');
+                    for (var checkbox of checkboxes) {
+                      checkbox.checked = this.checked;
+                    }
+                  }
+                }
+              }
+            });
+          }
         }
-      }
-    });
+      });
+    }else{
+      $('#widget-addUser-form .accessToBikes').addClass("hidden");
+      $('#widget-addUser-form .accessToBuildings').addClass("hidden");
+      document.getElementById('buildingCreateUser').innerHTML = "";
+      document.getElementById('bikeCreateUser').innerHTML = "";
+    }
   }
