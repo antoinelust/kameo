@@ -176,8 +176,6 @@ try{
 
             ORDER BY stockTotal DESC";
 
-            //$sql="SELECT ID as ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+?)+(3*84+4*100)*(1+?))/?)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority FROM bike_catalog WHERE STAANN != 'D' ORDER BY STOCK DESC, BRAND, MODEL";
-
             $stmt = $conn->prepare($sql);
             if($stmt){
                 //$stmt->bind_param('ddiddi', $marginBike, $marginOther, $leasingDuration, $marginBike, $marginOther, $leasingDuration);

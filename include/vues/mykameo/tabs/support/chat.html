@@ -1,0 +1,23 @@
+<div class="tab-pane" id="chat">
+  <div class="mesgs col-sm-12">
+    <div class="row"></div>
+    <strong style="font-size: 20px; display: inline; color: #3cb39"></strong><h4 style='display:inline' class="text-green"><?=L::order_get_advice;?></h4>
+    <ul>
+      <li><?=L::order_more_questions_email;?> <a href="mailto:julien@kameobikes.com" target="_blank"> : julien@kameobikes.com</a></li>
+      <li><?=L::order_more_questions_number;?> : <a href="tel:+32498727546">+32 498 72 75 46</a></li>
+    </ul>
+    <div class="separator" style='margin: 10px'></div>
+    <strong style="font-size: 20px; display: inline; color: #3cb39"></strong><h4 style='display:inline' class="text-green">...ou discutez via le site avec notre expert</h4>
+    <div class="space"></div>
+    <strong style="font-size: 20px; display: inline; color: white">&#9314;</strong><h4 class="text-light" style='display: inline'> <?=L::order_choose_your_bike;?></h4>
+	  <div class="msg_history">
+		  <span id="divChatCommand"></span>
+	  </div>
+	  <div class="type_msg">
+  		<div class="input_msg_write">
+  		  <input type="text" class="write_msg" placeholder="<?= L::generic_typeAMessage; ?>">
+  		  <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+  		</div>
+	  </div>
+	</div>
+</div>

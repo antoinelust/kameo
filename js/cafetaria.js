@@ -4,23 +4,6 @@ window.addEventListener("DOMContentLoaded", function(event) {
         get_command_user(email);
     });
 
-    $("#orderBike .mesgs .msg_send_btn").click(function() {
-        var message=$("#orderBike .input_msg_write .write_msg").val();
-        if(message != ""){
-            write_message(message, email, email, "order");
-            $("#orderBike .input_msg_write .write_msg").val("");
-        }
-    });
-    $("#orderBike .input_msg_write .write_msg").keypress(function(event){
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
-            var message=$("#orderBike .input_msg_write .write_msg").val();
-            if(message != ""){
-                write_message(message, email, email, "order");
-                $("#orderBike .input_msg_write .write_msg").val("");
-            }
-        }
-    });
 });
 
 function load_cafetaria(){
@@ -118,7 +101,7 @@ function load_cafetaria(){
 
 
 							var temp="\
-							<div class=\"grid-item\">\
+              <div class=\"col-md-4 grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') +  "\" \">\
 								<div class=\"portfolio-image effect social-links\">\
 									<img src=\"images_bikes/"+response.bike[i].ID+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
 									<div class=\"image-box-content\">\
@@ -134,16 +117,16 @@ function load_cafetaria(){
 									<br>"+response.bike[i].utilisation+"\
 									<br>"+prices;
 
-                    if(stock==="stock"){
-                        temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">"+traduction.mk_ordertab_underStock+"</strong>";
-                    }else{
-                        temp=temp+"<br><strong class=\"text-green center text-center text-small\">"+traduction.mk_ordertab_preOrder+"</strong>";
-                    }
+                  if(stock==="stock"){
+                      temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">"+traduction.mk_ordertab_underStock+"</strong>";
+                  }else{
+                      temp=temp+"<br><strong class=\"text-green center text-center text-small\">"+traduction.mk_ordertab_preOrder+" <sup><i class='fa fa-question-circle' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='KAMEO Bikes ne possède pas ce modèle de stock.<br />Nous devons donc le commander et ne pouvons déterminer la date de livraison automatiquement'></i></sup></strong>";
+                  }
 
-                    temp=temp+"\
-                    <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-amount=\""+price+"\" data-type=\""+response.cafeteriaType+"\" data-toggle=\"modal\"\
-                    href=\"#\" name=\""+response.bike[i].ID+"\" "+dataprop+">\
-										<span>"+traduction.tabs_order_title+"</span>\
+                  temp=temp+"\
+                  <br><a class=\"button small green button-3d rounded icon-left orderBikeClick\" data-target=\"#command\" data-amount=\""+price+"\" data-type=\""+response.cafeteriaType+"\" data-toggle=\"modal\"\
+                  href=\"#\" name=\""+response.bike[i].ID+"\" "+dataprop+">\
+									<span>"+traduction.tabs_order_title+"</span>\
 									</a>\
 									</p>\
 								</div>\
@@ -152,9 +135,32 @@ function load_cafetaria(){
               var $item=$(temp);
 
 						  // add width and height class
-						  $item.addClass( 'grid-item--width3').addClass('grid-item--height4').addClass("plan");
 						  $grid.isotope( 'insert', $item );
 					}
+          $('.loaderOrderPortfolio').addClass("hidden");
+
+          $(function () {
+            $('[data-toggle="tooltip"]').tooltip({html: true})
+          })
+          var filters = {};
+
+          $('.portfolio').on('change', function(event) {
+              var $cible = $(event.currentTarget);
+              var filterGroup = $cible.attr('data-filter-group');
+              filters[filterGroup] = $(this).children("option:selected").attr('data-filter');
+              var filterValue = concatValues(filters);
+              $grid.isotope({
+                  filter: filterValue
+              });
+          });
+
+          function concatValues(obj) {
+              var value = '';
+              for (var prop in obj) {
+                  value += obj[prop];
+              }
+              return value;
+          }
 
 					//Fix Isotope not displayed after insert/append bug
 					setTimeout(function(){
@@ -315,103 +321,4 @@ function get_command_user(email){
 
     }
   });
-    get_message_history();
-}
-
-
-function get_message_history(){
-    $.ajax({
-        url: 'api/chats',
-        type: 'get',
-        data: { "action": "retrieveMessages", "type": "order"},
-        success: function(response){
-            var dest="";
-			$('#divChatCommand').empty();
-			for (var i = 0; i<response.messagesNumber; i++){
-			var kameoBikesRegex = new RegExp(/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")(@kameobikes.com){1}$/i);
-                var isKameoBikes = kameoBikesRegex.test(response.messages[i].emailUser);
-
-				if(isKameoBikes){
-                    var name_worker= response.messages[i].emailUser.split("@");
-                    name_worker = name_worker[0].toLocaleLowerCase();
-                    if(name_worker.includes(".")){
-                        name_worker = name_worker.replace(".", "_");
-                    }
-                    response.messages[i].img = "/images/" + name_worker +".jpg";
-
-					$('#divChatCommand').append([
-						$('<div/>',{ "class": "chat_message_container" }).append([
-							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:response.messages[i].img, style:"border-radius: 50%"})),
-							$('<div/>',{ "class": "received_msg" }).append([
-								$('<div/>',{ "class": "received_withd_msg" }).append([
-									$( '<p/>' ).text(response.messages[i].message),
-									$('<span/>').addClass('time_date').html(response.messages[i].firstName+" "+response.messages[i].name+" | "+response.messages[i].messageHour+" | "+response.messages[i].messageDate)
-								])
-							])
-						])
-					]);
-				}else{
-					$('#divChatCommand').append([
-						$('<div/>',{ "class": "chat_message_container" }).append([
-							$('<div/>',{ "class": "outgoing_msg" }).append([
-								$('<div/>',{ "class": "sent_msg" }).append([
-									$( '<p/>' ).text(response.messages[i].message),
-									$('<span/>').addClass('time_date').html(response.messages[i].firstName+" "+response.messages[i].name+" | "+response.messages[i].messageHour+" AM | "+response.messages[i].messageDate)
-								])
-							]),
-							$('<div/>',{ "class": "sent_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'}))
-						])
-					]);
-				}
-			}
-			if(response.messagesNumber==0){
-				$('#divChatCommand').append([
-						$('<div/>',{ "class": "chat_message_container" }).append([
-							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'})),
-							$('<div/>',{ "class": "received_msg" }).append([
-								$('<div/>',{ "class": "received_withd_msg" }).append([
-									$( '<p/>' ).text(traduction.mk_ordertab_question),
-									$('<span/>').addClass('time_date').html('Info Kameo Bikes')
-								])
-							])
-						])
-					]);
-			}
-			if(isKameoBikes == false){
-				$('#divChatCommand').append([
-						$('<div/>',{ "class": "chat_message_container" }).append([
-							$('<div/>',{ "class": "incoming_msg_img" }).prepend($('<img>',{src:'https://ptetutorials.com/images/user-profile.png'})),
-							$('<div/>',{ "class": "received_msg" }).append([
-								$('<div/>',{ "class": "received_withd_msg" }).append([
-									$( '<p/>' ).text(traduction.mk_ordertab_answer),
-									$('<span/>').addClass('time_date').html('Info Kameo Bikes')
-								])
-							])
-						])
-					]);
-			}
-			$('.msg_history').scrollTop($('.msg_history').prop("scrollHeight"));
-			$('#writeAdminMsg').val('');
-        }
-    })
-}
-
-function write_message(message, email, emailBeneficiary, type){
-    if(message != ""){
-        $.ajax({
-        url: 'api/chats',
-        type: 'post',
-        data: { "action": "sendMessage", "message": message, "type": type},
-        success: function(response){
-          if (response.response == 'error') {
-            console.log(response.message);
-          } else{
-              if(email==emailBeneficiary){
-                  get_message_history();
-              }
-          }
-
-        }
-      })
-    }
 }
