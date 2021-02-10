@@ -28,13 +28,8 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
   $send_mail=isset($_POST['sendMail']) ? "Y" : "N";
 
   if(!isset($_POST['firstName']) || !isset($_POST['name']) || !isset($_POST['mail']) || ((!isset($_POST['requestor'])) && !isset($_POST['company']))){
-
       errorMessage("ES0012");
   }
-
-
-
-
 
   $email=$_POST['mail'];
   $name=$_POST['name'];

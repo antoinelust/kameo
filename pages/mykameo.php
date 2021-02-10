@@ -107,20 +107,20 @@ if ($token == NULL) { //Not connected
     <script type="text/javascript">
 
       window.addEventListener("DOMContentLoaded", (event) => {';
-  if (get_user_permissions("search", $token)) {
-    echo '$("#reserver").addClass("active"); ';
-  } else if (get_user_permissions("order", $token)) {
+  if($user_data["personnalBike"]=="TRUE"){
+    echo '$("#personnalBike").addClass("active"); ';
+    echo '$("#personnalBikeID").addClass("active"); ';
+  }else if (get_user_permissions("order", $token)) {
     echo '$("#orderBike").addClass("active"); ';
     echo '$("#orderBikeID").addClass("active"); ';
     echo 'get_command_user(email);';
+  }else if (get_user_permissions("search", $token)) {
+    echo '$("#reserver").addClass("active"); ';
   } else if (get_user_permissions(["fleetManager", "admin"], $token)) {
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
     echo '$( ".fleetmanager" ).trigger( "click" );';
     echo 'displayLanguage();';
-  } else if ($user_data["personnalBike"]=="TRUE"){
-    echo '$("#personnalBike").addClass("active"); ';
-    echo '$("#personnalBikeID").addClass("active"); ';
   }
 
   echo 'initializeFields();';
@@ -165,11 +165,16 @@ if ($token == NULL) { //Not connected
                   <div id="tabs-05c" class="tabs color tabs radius">
                     <ul id="mainTab" class="tabs-navigation">
                       <?php
-                      if (get_user_permissions("order", $token)) {
-                        if($user_data['CAFETARIA']=='Y'){
-                          echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>' . L::tabs_order_title . '</a></li>';
+                      if($user_data['personnalBike']=="TRUE"){
+                        echo '<li id="personnalBikeID"><a href="#personnalBike" class="personnalBike"><i class="fa fa-user"></i>' . L::tabs_personnal_title . '</a> </li>';
+                      }else{
+                        if (get_user_permissions("order", $token)) {
+                          if($user_data['CAFETARIA']=='Y'){
+                            echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>' . L::tabs_order_title . '</a></li>';
+                          }
                         }
                       }
+
                       if (get_user_permissions("search", $token)) {
                         echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>' . L::tabs_book_title . '</a> </li>
                             <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>' . L::tabs_reservations_title . '</a> </li>';
@@ -178,26 +183,31 @@ if ($token == NULL) { //Not connected
 
                         echo '<li id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>' . L::tabs_fleet_title . '</a> </li>';
                       }
-                      if($user_data['personnalBike']=="TRUE"){
-                        echo '<li id="personnalBikeID"><a href="#personnalBike" class="personnalBike"><i class="fa fa-user"></i>' . L::tabs_personnal_title . '</a> </li>';
+                      if (get_user_permissions("chat", $token)) {
+                        echo '<li><a href="#chat" class="chat"><i class="fa fa-user"></i>'.L::chat_tab_title.'</a> </li>';
                       }
                       ?>
                     </ul>
                     <div class="tabs-content">
                       <?php
-                      if (get_user_permissions("order", $token)) {
-                        include 'include/vues/mykameo/tabs/order/order_tab.html';  //TAB 1 @TODO: REFACTOR
+                      if($user_data['personnalBike']=="TRUE"){
+                        include 'include/vues/mykameo/tabs/personnal_bike/main.php';  //TAB 1 @TODO: REFACTOR
+                      }else{
+                        if (get_user_permissions("order", $token)) {
+                          include 'include/vues/mykameo/tabs/order/order_tab.html';  //TAB 1 @TODO: REFACTOR
+                        }
                       }
+
                       /** @TODO: REPARE THE FACT THAT THE BOOK TAB SCRIPT DISPLAYS THE CONTACT ASSISTANCE BUTTON BECAUSE IT'S NOT USED WHEN PERSONNAL BIKE ONLY **/
                       if (get_user_permissions("search", $token)) {
                         include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
                         include 'include/vues/mykameo/tabs/reservations/main.php';  //TAB 3 @TODO: REFACTOR
                       }
-                      if($user_data['personnalBike']=="TRUE"){
-                        include 'include/vues/mykameo/tabs/personnal_bike/main.php';  //TAB 4 @TODO: REFACTOR
-                      }
                       if(get_user_permissions(["fleetManager", "admin"] , $token)){
                         include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
+                      }
+                      if(get_user_permissions("chat" , $token)){
+                        include 'include/vues/mykameo/tabs/support/main.php';  //TAB 4 @TODO: REFACTOR
                       }
                       ?>
 

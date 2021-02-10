@@ -42,11 +42,6 @@
 	margin: 0 3px;
 }
 
-#gridForCatalog {
-  height: 550px;
-  overflow-y: scroll;
-}
-
 .container {
   max-width: 1170px;
   margin: auto;
@@ -67,11 +62,9 @@ img {
     width: 200px;
 }
 
+
 .grid-item--height3 {
     height: 300px;
-}
-.grid-item--height3 {
-    height: 400px;
 }
 
 .inbox_people {

@@ -81,9 +81,9 @@ $body = $body."
                     </td>
                     <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                      <h3>Uw box is niet goed gesloten</h3>
+                      <h3>Uw bolder werd niet correct gesloten</h3>
 
-                      <p>U ontvangt deze e-mail omdat we hebben vastgesteld dat de deur naar uw box nog langer dan 2 minuten open staat<br>
+                      <p>U ontvangt deze e-mail omdat we hebben vastgesteld dat de deur van uw terminal nog steeds geopend is, sinds meer dan 2 minuten.<br>
                       <br>
                       <strong>ID van box : </strong> ". $openDoor['ID']." <br>
                       <strong>Open sinds : </strong> ".$openDoor['OPEN_UPDATE_TIME']."</p>

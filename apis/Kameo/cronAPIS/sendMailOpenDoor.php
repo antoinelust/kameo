@@ -28,6 +28,7 @@ foreach ((array) $openDoors as $openDoor){
   if(constant('ENVIRONMENT') == "production"){
     if($openDoor['COMPANY']=="Actiris"){
       $mail->AddAddress("bookabike@actiris.be");
+      $mail->addBcc("antoine@kameobikes.com");
     }else{
       $mail->AddAddress("antoine@kameobikes.com");
     }

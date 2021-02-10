@@ -325,7 +325,6 @@ function getCondition($company=NULL){
       {
         $stmt->bind_param("i", $ID);
         $stmt->execute();
-        $response['response']="success";
         $response['conditions']=$stmt->get_result()->fetch_assoc();
         $stmt->close();
         return $response;
@@ -337,7 +336,6 @@ function getCondition($company=NULL){
       {
         $stmt->bind_param("s", $token);
         $stmt->execute();
-        $response['response']="success";
         $response['conditions']=$stmt->get_result()->fetch_assoc();
         $stmt->close();
         return $response;
@@ -349,9 +347,8 @@ function getCondition($company=NULL){
     $stmt = $conn->prepare("SELECT * from conditions WHERE COMPANY=? AND NAME='generic'");
     if ($stmt)
     {
-      $stmt->bind_param("i", $company);
+      $stmt->bind_param("s", $company);
       $stmt->execute();
-      $response['response']="success";
       $response['conditions']=$stmt->get_result()->fetch_assoc();
       $stmt->close();
       return $response;

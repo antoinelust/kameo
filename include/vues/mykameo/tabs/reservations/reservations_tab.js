@@ -551,7 +551,9 @@ function getHistoricBookings() {
               booking_id +
               ')"><span>'+traduction.generic_moreInfo+'</span></a>';
           }
-          tempOngoingBookings=tempOngoingBookings.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+          if(response.booking[i].extension == '0'){
+            tempOngoingBookings=tempOngoingBookings.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+          }
 
           tempOngoingBookings = tempOngoingBookings.concat("</td></tr>");
           dest = dest.concat(tempOngoingBookings);
@@ -573,11 +575,13 @@ function getHistoricBookings() {
           +"<br><strong>Vélo :</strong> "+
           model;
 
-          if(response.booking.codePresence){
+          if(response.booking[i].codePresence){
             temp=temp.concat("<br><strong>Code : </strong>"+code+"</p>");
           }
           temp=temp.concat("<a class='button small green rounded effect' onclick=\"showBooking('"+booking_id +"')\"><span>+</span></a>");
-          temp=temp.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+          if(response.booking[i].extension == '0'){
+            temp=temp.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+          }
 
           dest2=dest2.concat(temp);
 
@@ -703,7 +707,10 @@ function getHistoricBookings() {
               ')"><i class="fa fa-times"></i><span>'+traduction.generic_cancel+'</span></a>';
             tempFutureBookingsTable = tempFutureBookingsTable.concat(tempAnnulation);
           }
-          tempFutureBookingsTable=tempFutureBookingsTable.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+
+          if(response.booking[i].extension == '0'){
+            tempFutureBookingsTable=tempFutureBookingsTable.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+          }
 
           tempFutureBookingsTable = tempFutureBookingsTable.concat("</td></tr>");
           dest = dest.concat(tempFutureBookingsTable);
@@ -732,7 +739,10 @@ function getHistoricBookings() {
           if (annulation) {
             temp=temp.concat("<br/><a class=\"button small red rounded effect\" onclick=\"cancelBooking(' "+booking_id +"')\"><i class=\"fa fa-times\"></i><span>"+traduction.generic_cancel+"</span></a>");
           }
-          temp=temp.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+
+          if(response.booking[i].extension == '0'){
+            temp=temp.concat("<br/><a class=\"button small green rounded effect updateEndBookingDate\" data-nextBooking='"+nextBookingDate+"' data-ID='"+response.booking[i].bookingID+"' data-start='"+response.booking[i].start+"' data-end='"+response.booking[i].end+"' data-model='"+response.booking[i].model+"'><span>"+traduction.generic_extend+"</span></a>");
+          }
 
           dest2=dest2.concat(temp);
 

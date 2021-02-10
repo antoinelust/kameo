@@ -1201,6 +1201,7 @@ body.device-xs hr.space-xxlg{height:80px;}
 .space{width:100%;display:block;clear:both;height:20px;position:relative;}
 .seperator,
 .separator{color:#ccc;width:100%;margin:30px auto;overflow:hidden;text-align:center;line-height:1.2em;}
+.separator-green{color:#ccc;width:100%;margin:30px auto;overflow:hidden;text-align:center;line-height:1.2em;}
 .seperator-simple{margin:10px auto;}
 .seperator::before,
 .seperator::after,

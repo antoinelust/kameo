@@ -1,6 +1,7 @@
 <div class="tab-pane" id="orderBike"> <!-- TAB1: COMMANDER UN VELO -->
   <div class="bikeOrdered hidden">
-		<h4 class="text-green"><?=L::mk_ordertab_yo_bike_title;?></h4>
+    <h4 class="text-green"> <?=L::mk_ordertab_yo_bike_title;?></h4>
+
 		<div class="col-sm-12">
 			<div class="col-sm-6">
 				<ul>
@@ -39,35 +40,80 @@
 		</div>
 	</div>
 	<div id="gridForCatalog" class="gridForCatalog" data-example-id="contextual-table" class="bs-example">
-    <h4 class="text-green"><?=L::order_useful_links;?></h4>
-	<p> <?=L::order_link_bike_choice_description;?> <a href="blog_Choisir-son-velo-electrique.html" target="_blank"> <?=L::order_link_bike_choice_link_description;?> </a></p>
+    <strong style="font-size: 20px; display: inline; color: #3cb395">&#9312;</strong><h4  style='display:inline' class="text-green"> <?=L::order_useful_links;?></h4>
+    <div class="row"></div>
 
-	<div class="separator"></div>
-	<h4 class="text-green"><?=L::order_more_questions;?></h4>
-	<ul>
-		<li><p><?=L::order_more_questions_email;?> <a href="mailto:julien@kameobikes.com" target="_blank"> : julien@kameobikes.com</a></p></li>
-		<li><p><?=L::order_more_questions_number;?> : +32 498 72 75 46</p></li>
-	</ul>
+	  <?=L::order_link_bike_choice_description;?> <a href="blog_Choisir-son-velo-electrique.html" target="_blank"> <?=L::order_link_bike_choice_link_description;?></a>
+    <div class="separator" style='margin: 10px'></div>
+    <strong style="font-size: 20px; display: inline; color: #3cb395">&#9313;</strong><h4 style='display:inline' class="text-green"> <?=L::order_get_advice;?></h4>
+    <ul>
+    	<li><?=L::order_more_questions_email;?> <a href="mailto:julien@kameobikes.com" target="_blank"> : julien@kameobikes.com</a></li>
+    	<li><?=L::order_more_questions_number;?> : <a href="tel:+32498727546">+32 498 72 75 46</a></li>
+    </ul>
+    <div class="separator" style='margin: 10px'></div>
+    <div class="col-md-12 searchCol background-green">
+        <div class="row">
+          <strong style="font-size: 20px; display: inline; color: white">&#9314;</strong><h4 class="text-light" style='display: inline'> <?=L::order_choose_your_bike;?></h4>
+        </div>
+        <div class="row" id="achat_sidebar">
+          <div class="form-group col-md-3">
+              <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
+              <select  class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
+                  <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
+                  <option data-filter=".ahooga"><?= L::achat_brand_option2; ?></option>
+                  <option data-filter=".benno"><?= L::achat_brand_option3; ?></option>
+                  <option data-filter=".bzen"><?= L::achat_brand_option4; ?></option>
+                  <option data-filter=".conway"><?= L::achat_brand_option5; ?></option>
+                  <option data-filter=".douze"><?= L::achat_brand_option6; ?></option>
+                  <option data-filter=".hnf"><?= L::achat_brand_option7; ?></option>
+                  <option data-filter=".kayza"><?= L::achat_brand_option8; ?></option>
+                  <option data-filter=".moustache">Moustache</option>
+                  <option data-filter=".victoria"><?= L::achat_brand_option10; ?></option>
+              </select>
+          </div>
 
-	<div class="separator"></div>
+          <div class="form-group col-md-3">
+              <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
+              <select  class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
+                  <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
+                  <option data-filter=".villeetchemin"><?= L::achat_use_option2; ?></option>
+                  <option data-filter=".ville"><?= L::achat_use_option3; ?></option>
+                  <option data-filter=".toutchemin"><?= L::achat_use_option4; ?></option>
+                  <option data-filter=".pliant"><?= L::achat_use_option5; ?></option>
+                  <option data-filter=".speedpedelec"><?= L::achat_use_option6; ?></option>
+                  <option data-filter=".gravel"><?= L::achat_use_option7; ?></option>
+                  <option data-filter=".vtt"><?= L::achat_use_option8; ?></option>
+                  <option data-filter=".cargo"><?= L::achat_use_option9; ?></option>
+                  <option data-filter=".enfant"><?= L::achat_use_option10; ?></option>
+              </select>
+          </div>
 
-    <h4 class="text-green"><?=L::order_choose_your_bike;?></h4>
-		<div class="grid">
-		</div>
-	</div>
+          <div class="form-group col-md-3">
+              <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
+              <select  class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
+                  <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
+                  <option data-filter=".m"><?= L::achat_cadre_option2; ?></option>
+                  <option data-filter=".f"><?= L::achat_cadre_option3; ?></option>
+                  <option data-filter=".h"><?= L::achat_cadre_option4; ?></option>
+                  <option data-filter=".unisex"><?= L::achat_cadre_option5; ?></option>
+              </select>
+          </div>
 
-	<div class="separator gridForCatalog"></div>
-
-	<div class="mesgs col-sm-12">
-	  <h4 class="text-green"><?= L::mk_ordertab_question; ?></h4>
-	  <div class="msg_history">
-		  <span id="divChatCommand"></span>
-	  </div>
-	  <div class="type_msg">
-		<div class="input_msg_write">
-		  <input type="text" class="write_msg" placeholder="<?= L::generic_typeAMessage; ?>">
-		  <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-		</div>
-	  </div>
-	</div>
+          <div class="form-group col-md-3">
+              <label for="widget-contact-form-electrique">Electrique ?</label>
+              <select  class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
+                  <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
+                  <option data-filter=".y"><?= L::achat_assist_option2; ?></option>
+                  <option data-filter=".n"><?= L::achat_assist_option3; ?></option>
+              </select>
+          </div>
+        </div>
+    </div>
+    <div class="separator"></div>
+    <div class="text-center loaderOrderPortfolio">
+      <img src='images/loading2.gif'>
+    </div>
+  	<div class="grid align-self-stretch">
+  	</div>
+  </div>
 </div>
