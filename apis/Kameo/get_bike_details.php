@@ -188,13 +188,6 @@ if($id != NULL)
     WHERE aa.COMPANY='$company'
     AND NOT EXISTS (select 1 from customer_bike_access bb
     WHERE aa.EMAIL=bb.EMAIL and bb.BIKE_ID='$id' and bb.STAANN!='D') ORDER BY NOM";
-
-    if($company){
-        $sql=$sql." AND COMPANY='$company'";
-    }
-
-
-
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
