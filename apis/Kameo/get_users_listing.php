@@ -7,7 +7,7 @@ session_start();
 include 'globalfunctions.php';
 
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
-$company=isset($_POST['company']) ? $_POST['company'] : NULL;
+$company=isset($_POST['company']) ? $_POST['company'] : isset($_GET['company']) ? $_GET['company'] : NULL;
 $response=array();
 
 require_once 'authentication.php';
@@ -28,7 +28,7 @@ if($email != NULL || $company != NULL || $token != NULL){
     }else{
       errorMessage("ES0038");
     }
-    
+
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -46,11 +46,6 @@ if($email != NULL || $company != NULL || $token != NULL){
       die;
   }
   $result = mysqli_query($conn, $sql);
-
-  if($result->num_rows=='0'){
-      errorMessage("ES0039");
-  }
-
   $response['users'] = $result->fetch_all(MYSQLI_ASSOC);
   $response['usersNumber']=$result->num_rows;
   $response['response']="success";

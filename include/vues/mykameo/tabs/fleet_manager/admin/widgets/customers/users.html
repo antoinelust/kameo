@@ -12,29 +12,21 @@
 							<div class="form-group col-sm-12">
                 <div class="row">
   								<div class="col-md-4">
-  									<label for="firstname" class="fr">Prénom</label>
-  									<label for="firstname" class="en">Firstname</label>
-  									<label for="firstname" class="nl">Voornaam</label>
+  									<label for="firstname"><?= L::sidebar_first_name; ?></label>
   									<input type="text" name="firstName" class="form-control required">
   								</div>
   								<div class="col-md-4">
-  									<label for="name" class="fr">Nom</label>
-  									<label for="name" class="en">Name</label>
-  									<label for="name" class="nl">Achternaam</label>
+  									<label for="name"><?= L::sidebar_last_name; ?></label>
   									<input type="text" name="name" class="form-control required">
   								</div>
   								<div class="col-md-4">
-  									<label for="mail" class="fr">E-mail</label>
-  									<label for="mail" class="en">E-mail</label>
-  									<label for="mail" class="nl">E-mail</label>
+  									<label for="mail" class="fr"><?= L::login_email; ?></label>
   									<input type="text" name="mail" class="form-control mail required">
   								</div>
                 </div>
                 <div class="row">
   								<div class="col-md-4">
-  									<label for="phone" class="fr">Numéro de téléphone</label>
-  									<label for="phone" class="en">Phone number</label>
-  									<label for="phone" class="nl">Phone number</label>
+  									<label for="phone"><?= L::sidebar_phone; ?></label>
   									<input type="text" name="phone" class="form-control phone required">
   								</div>
   								<div class="col-md-4">
@@ -42,10 +34,8 @@
   									<input type="checkbox" name="generatePassword" class="form-control" checked>
   								</div>
   								<div class="col-md-4">
-  									<label for="password" class="fr hidden">Password</label>
-  									<label for="password" class="en hidden">Password</label>
-  									<label for="password" class="nl hidden">Password</label>
-  									<input type="password" name="password" id="manual_password" class="form-control required hidden" autocomplete="off">
+  									<label for="password" class="hidden"><?= L::sidebar_password; ?></label>
+  									<input type="password" name="password" class="form-control required hidden" autocomplete="off">
   								</div>
                 </div>
                 <div class="row">
@@ -56,31 +46,25 @@
                 </div>
                 <div class="row">
   								<div class="col-md-4">
-  									<label for="sendMail" class="text-center">Envoyer un mail à l'utilisateur</label>
-  									<input type="checkbox" name="sendMail" class="form-control" checked>
+  									<label for="sendMail" class="text-center"><?= L::generic_sendEmail; ?></label>
+										<input type="checkbox" name="sendMail" class="form-control" checked>
   								</div>
                 </div>
 								<input type="text" name="requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
 								<input type="text" name="company" class="form-control hidden">
 							</div>
-							<h4>Accès aux bâtiments</h4>
+							<h4><?= L::generic_accessToBuildings; ?></h4>
 							<div class="form-group col-sm-12" id="buildingCreateUserAdmin"></div>
-							<h4>Accès aux vélos</h4>
-								<div class="col-sm-12"><input type="checkbox" id="select-allAdmin" name="select_all" value="1" /> <strong>Tout sélectionner / déselectionner</strong></div>
-								<div class="form-group col-sm-12" id="bikeCreateUserAdmin"></div>
-								<div id="confirmAddUserAdmin"></div>
+							<h4><?= L::generic_accessToBikes; ?></h4>
+							<div class="col-sm-12"><input type="checkbox" id="select-allAdmin" name="select_all" value="1" /> <strong><?= L::generic_selectAll; ?></strong></div>
+							<div class="form-group col-sm-12" id="bikeCreateUserAdmin"></div>
+							<button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
 						</form>
 					</div>
 				</div>
 			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
 	</div>
@@ -101,16 +85,6 @@
 		$('#widget-addUserAdmin-form input[name=password]').removeClass("hidden");
 	 }
 	});
-	jQuery("#widget-addUserAdmin-form").submit(function() {
-	  document.getElementById('manual_password').value = /*nacl.util.encodeBase64(
-		  nacl.hash(
-			  nacl.util.decodeUTF8(*/
-				document.getElementById('manual_password').value
-			  /*)
-		  )
-	  )*/;
-	  return true;
-	});
 	jQuery("#widget-addUserAdmin-form").validate({
 	 submitHandler: function(form) {
 		jQuery(form).ajaxSubmit({
@@ -124,7 +98,6 @@
 			 get_users_listing();
 			 $('#addUserAdmin').modal('toggle');
 			 document.getElementById('widget-addUserAdmin-form').reset();
-
 			} else {
 			 $.notify({
 				message: response.message

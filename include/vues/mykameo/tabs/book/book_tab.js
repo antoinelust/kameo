@@ -177,7 +177,6 @@ jQuery("#search-bikes-form").validate({
                 })
                 }else{
                     $("body").removeClass("loading");
-                    console.log(response);
                 }
               });
 
@@ -265,7 +264,6 @@ jQuery("#search-bikes-form").validate({
                 })
                 }else{
                     $("body").removeClass("loading");
-                    console.log(response);
                 }
             });
             })

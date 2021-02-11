@@ -18,9 +18,9 @@ $result = mysqli_query($conn, $sql);
 $dossier = '../../images_bikes/atraiter/';
 $dossier2= '../../images_bikes/';
 while($row = mysqli_fetch_array($result)){
-  echo "moustache"." - ".$row['MODEL']." - ".$row['FRAME_TYPE']."\n";
-  $fichier =  $dossier.strtolower(str_replace(" ", "-", $row["BRAND"]))."_".strtolower(str_replace(".", "_", str_replace(" ", "_", $row["MODEL"])))."_".strtolower($row["FRAME_TYPE"]).".jpg";
-  $fichier_mini =  $dossier.strtolower(str_replace(" ", "-", $row["BRAND"]))."_".strtolower(str_replace(".", "_", str_replace(" ", "_", $row["MODEL"])))."_".strtolower($row["FRAME_TYPE"])."_mini.jpg";
+  echo $row['BRAND']." - ".$row['MODEL']." - ".$row['FRAME_TYPE']."\n";
+  $fichier =  $dossier.strtolower(str_replace(" ", "_", $row["BRAND"]))."_".strtolower(str_replace(array('', '.'), "_", $row["MODEL"]))."_".strtolower($row["FRAME_TYPE"]).".JPG";
+  $fichier_mini =  $dossier.strtolower(str_replace(" ", "_", $row["BRAND"]))."_".strtolower(str_replace(array('', '.'), "_", $row["MODEL"]))."_".strtolower($row["FRAME_TYPE"])."_mini.JPG";
   if (file_exists($fichier)) {
     rename($fichier, $dossier2.$row["ID"].'.jpg');
     echo "fichier principal trouvé !\n";
@@ -39,13 +39,27 @@ while($row = mysqli_fetch_array($result)){
 
 
 echo "----------------------- \n\n";
+echo "----------------------- \n\n";
+echo "----------------------- \n\n";
 
 $result = mysqli_query($conn, $sql);
 
 while($row = mysqli_fetch_array($result)){
-  $fichier =  $dossier.strtolower(str_replace(" ", "-", $row["BRAND"]))."_".strtolower(str_replace(".", "_", str_replace(" ", "_", $row["MODEL"])))."_".strtolower($row["FRAME_TYPE"]).".jpg";
-  echo $row['MODEL']." ".$row['MODEL']." ".$ROW['FRAME_TYPE']." - ".$fichier."\n";
+  echo $row['BRAND']." - ".$row['MODEL']." - ".$row['FRAME_TYPE']."\n";
+  $fichier =  $dossier2.$row['ID'].".jpg";
+  $fichier_mini =  $dossier2.$row['ID']."_mini.jpg";
+  if (!file_exists($fichier)){
+    echo "fichier manquant ! : ".$row['BRAND']." ".$row['MODEL']." ".$ROW['FRAME_TYPE']." - ".$fichier."\n";
+  }else{
+    echo "fichier présent !\n";
+  }
+  if (!file_exists($fichier_mini)){
+    echo "fichier mini manquant ! : ".$row['BRAND']." ".$row['MODEL']." ".$ROW['FRAME_TYPE']." - ".$fichier_mini."\n";
+  }else{
+    echo "fichier mini présent !\n";
+  }
 }
+
 
 
 

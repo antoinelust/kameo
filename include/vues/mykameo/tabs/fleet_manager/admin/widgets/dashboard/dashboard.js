@@ -245,15 +245,6 @@ function list_errors() {
             (response.company.img.number + response.company.action.number) +
             ")"
         );
-        $(".updateBikeAdmin").off();
-        $(".updateBikeAdmin").click(function () {
-          construct_form_for_bike_status_updateAdmin(this.name);
-          $("#widget-bikeManagement-form input").attr("readonly", false);
-          $("#widget-bikeManagement-form select").attr("readonly", false);
-          $(".bikeManagementTitle").html("Modifier un vélo");
-          $(".bikeManagementSend").removeClass("hidden");
-          $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Modifier');
-        });
         if (
           response.bike.selling.number +
             response.bike.bill.number +

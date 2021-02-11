@@ -1,4 +1,4 @@
-<div class="modal fade" id="updateUserInformation" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+<div class="modal fade" id="updateUserAdmin" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important; z-index: 2000">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -8,64 +8,50 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Mise à jour des informations</h4>
-						<form id="widget-updateUser-form" action="apis/Kameo/update_user_information.php" role="form" method="post">
+						<form id="widget-updateUserAdmin-form" action="apis/Kameo/update_user_information.php" role="form" method="post">
 							<div class="form-group col-sm-12">
 								<div class="col-sm-6">
-									<label for="widget-updateUser-form-firstname"  class="fr">Prénom</label>
-									<label for="widget-updateUser-form-firstname"  class="en">Firstname</label>
-									<label for="widget-updateUser-form-firstname"  class="nl">Voornaam</label>
-									<input type="text" id="widget-updateUser-form-firstname" name="widget-updateUser-form-firstname" class="form-control required">
+									<label for="widget-updateUser-form-firstname"><?= L::sidebar_first_name; ?></label>
+									<input type="text" name="widget-updateUser-form-firstname" class="form-control required">
 								</div>
 								<div class="col-sm-6">
-									<label for="widget-updateUser-form-name"  class="fr">Nom</label>
-									<label for="widget-updateUser-form-name"  class="en">Name</label>
-									<label for="widget-updateUser-form-name"  class="nl">Achternaam</label>
-									<input type="text" id="widget-updateUser-form-name" name="widget-updateUser-form-name" class="form-control required">
+									<label for="widget-updateUser-form-name"><?= L::sidebar_last_name; ?></label>
+									<input type="text" name="widget-updateUser-form-name" class="form-control required">
 								</div>
 								<div class="col-sm-6">
-									<label for="widget-updateUser-form-mail"  class="fr">E-mail</label>
-									<label for="widget-updateUser-form-mail"  class="en">E-mail</label>
-									<label for="widget-updateUser-form-mail"  class="nl">E-mail</label>
-									<input type="text" id="widget-updateUser-form-mail" name="widget-updateUser-form-mail" readonly="readonly" class="form-control">
-									<input type="text" id="widget-updateUser-form-requestor" name="widget-updateUser-form-requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
+									<label for="widget-updateUser-form-mail"><?= L::login_email; ?></label>
+									<input type="text" name="widget-updateUser-form-mail" class="form-control">
+									<input type="text" name="widget-updateUser-form-requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
 								</div>
 								<div class="col-sm-6">
-									<label for="widget-updateUser-form-status"  class="fr">Status</label>
-									<input type="text" id="widget-updateUser-form-status" name="widget-updateUser-form-status" readonly="readonly" class="form-control">
+									<label for="widget-updateUser-form-status"><?= L::generic_status; ?></label>
+									<input type="text" name="status" disabled class="form-control">
 								</div>
 								<div class="col-sm-6">
-									<label for="widget-updateUser-form-phone"  class="fr">Numéro de téléphone</label>
-									<label for="widget-updateUser-form-phone"  class="en">Phone number</label>
-									<label for="widget-updateUser-form-phone"  class="nl">Phone number</label>
-									<input type="text" id="widget-updateUser-form-phone" name="widget-updateUser-form-phone" readonly="readonly" class="form-control">
+									<label for="widget-updateUser-form-phone"><?= L::sidebar_phone; ?></label>
+									<input type="text" name="widget-updateUser-form-phone" class="form-control">
 								</div>
 								<div class="col-md-6">
 									<label for="fleetManager">Fleet manager</label>
 									<input type="checkbox" name="fleetManager" class="form-control">
 								</div>
 							</div>
-							<div class="form-group col-sm-12" id="buildingUpdateUser"></div>
-							<div class="form-group col-sm-12" id="bikeUpdateUser"></div>
-							<div id="updateUserSendButton"></div>
+							<span class="form-group col-sm-12" name="buildingUpdateUserAdmin"></span>
+							<span class="form-group col-sm-12" name="bikeUpdateUserAdmin"></span>
+							<button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
 						</form>
-						<div id="deleteUserButton"></div>
+						<button class="button small red button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Désactiver</button>
 					</div>
 				</div>
 			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
-	jQuery("#widget-updateUser-form").validate({
+	jQuery("#widget-updateUserAdmin-form").validate({
 	  submitHandler: function(form) {
 		jQuery(form).ajaxSubmit({
 		  success: function(response) {

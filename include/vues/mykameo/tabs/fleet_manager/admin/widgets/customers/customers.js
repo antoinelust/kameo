@@ -336,18 +336,10 @@ function get_company_listing(type) {
         dest = dest.concat(temp);
         document.getElementById("companyListingSpan").innerHTML = dest;
 
-        var classname = document.getElementsByClassName(
-          "internalReferenceCompany"
-        );
-        for (var i = 0; i < classname.length; i++) {
-          classname[i].addEventListener(
-            "click",
-            function () {
-              get_company_details(this.name, email, true);
-            },
-            false
-          );
-        }
+        $(".internalReferenceCompany").click(function(){
+          get_company_details(this.name, email, true);
+        });
+
         var classname = document.getElementsByClassName("updateCompany");
         for (var i = 0; i < classname.length; i++) {
           classname[i].addEventListener(
@@ -396,7 +388,6 @@ function get_company_listing(type) {
 
 function get_company_details(ID, email, getCompanyContacts = false) {
   var internalReference;
-
   $.ajax({
     url: "apis/Kameo/companies/companies.php",
     type: "get",
@@ -422,9 +413,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
           response.companyZIPCode;
         document.getElementById("companyTown").value = response.companyTown;
         document.getElementById("companyVAT").value = response.companyVAT;
-        document.getElementById(
-          "widget_companyDetails_internalReference"
-        ).value = response.internalReference;
+        document.getElementById("widget_companyDetails_internalReference").value = response.internalReference;
         internalReference = response.internalReference;
         $("#widget-companyDetails-form select[name=type]").val(response.type);
         $("#widget-companyDetails-form input[name=email_billing]").val(
@@ -705,7 +694,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
           $(".bikeManagementSend").removeClass("hidden");
         });
 
-        //Ajouter un bâtiment
+        //Buildings management
         var dest =
           '<a class="button small green button-3d rounded icon-right" data-target="#addBuilding" data-toggle="modal" onclick="add_building(\'' +
           response.internalReference +
@@ -733,7 +722,11 @@ function get_company_details(ID, email, getCompanyContacts = false) {
 
         document.getElementById("companyBuildings").innerHTML = dest;
 
-        //Ajouter une offre
+
+        update_company_users_list_admin(internalReference);
+
+
+        //Offer Management
 
         var dest =
           '<a class="button small green button-3d rounded icon-right offerManagement addOffer" name="' +
@@ -890,7 +883,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
         document.getElementById("companyContracts").innerHTML = dest;
 
         var dest =
-          '<table class="table table-condensed"><thead><tr><th>Type</th><th>ID</th><th><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th><span class="fr-inline">Date d\'initiation</span><span class="en-inline">Generation Date</span><span class="nl-inline">Generation Date</span></th><th><span class="fr-inline">Montant (HTVA)</span><span class="en-inline">Amount (VAT ex.)</span><span class="nl-inline">Amount (VAT ex.)</span></th><th><span class="fr-inline">Communication</span><span class="en-inline">Communication</span><span class="nl-inline">Communication</span></th><th><span class="fr-inline">Envoi ?</span><span class="en-inline">Sent</span><span class="nl-inline">Sent</span></th><th><span class="fr-inline">Payée ?</span><span class="en-inline">Paid ?</span><span class="nl-inline">Paid ?</span></th><th><span class="fr-inline">Limite de paiement</span><span class="en-inline">Limit payment date</span><span class="nl-inline">Limit payment date</span></th><th>Comptable ?</th><th></th></tr></thead><tbody>';
+          '<table class="table table-condensed"><thead><tr><th>Type</th><th>ID</th><th><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th><span class="fr-inline">Date d\'initiation</span><span class="en-inline">Generation Date</span><span class="nl-inline">Generation Date</span></th><th><span class="fr-inline">Montant (HTVA)</span><span class="en-inline">Amount (VAT ex.)</span><span class="nl-inline">Amount (VAT ex.)</span></th><th><span class="fr-inline">Communication</span><span class="en-inline">Communication</span><span class="nl-inline">Communication</span></th><th><span class="fr-inline">Envoi ?</span><span class="en-inline">Sent</span><span class="nl-inline">Sent</span></th><th><span class="fr-inline">Payée ?</span><span class="en-inline">Paid ?</span><span class="nl-inline">Paid ?</span></th><th><span class="fr-inline">Limite de paiement</span><span class="en-inline">Limit payment date</span><span class="nl-inline">Limit payment date</span></th><th>Comptable ?</th></tr></thead><tbody>';
 
         var i = 0;
         while (i < response.billNumber) {
@@ -1019,13 +1012,6 @@ function get_company_details(ID, email, getCompanyContacts = false) {
             var temp = '<td class="text-red">KO</td>';
           }
           dest = dest.concat(temp);
-
-          temp =
-            '<td><ins><a class="text-green updateBillingStatus" data-target="#updateBillingStatus" name="' +
-            response.bill[i].ID +
-            '" data-toggle="modal" href="#">Update</a></ins></td>';
-          dest = dest.concat(temp);
-
           dest = dest.concat("</tr>");
           i++;
         }
@@ -1055,113 +1041,10 @@ function get_company_details(ID, email, getCompanyContacts = false) {
           $(".offerManagementSendButton").removeClass("hidden");
           $(".offerManagementSendButton").text("Ajouter");
         });
-
-        //Ajouter un utilisateur
-        var dest =
-          '<a class="button small green button-3d rounded icon-right addUserAdmin" data-target="#addUserAdmin" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::generic_addUser; ?></a>';
-        if (response.userNumber > 0) {
-          var i = 0;
-          var temp =
-            '<table class="table"><tbody><thead><tr><th scope="col"><span class="fr-inline">Nom</span><span class="en-inline">Name</span><span class="nl-inline">Name</span></th><th scope="col"><span class="fr-inline">Prénom</span><span class="en-inline">First Name</span><span class="nl-inline">First Name</span></th><th scope="col"><span class="fr-inline">E-mail</span><span class="en-inline">E-Mail</span><span class="nl-inline">E-Mail</span></th><th>Téléphone</th></tr></thead>';
-          dest = dest.concat(temp);
-          while (i < response.userNumber) {
-            var temp =
-              '<tr><td scope="row">' +
-              response.user[i].name +
-              "</td><td>" +
-              response.user[i].firstName +
-              "</td><td>" +
-              response.user[i].email +
-              "</td><td>" +
-              response.user[i].phone +
-              "</td></tr>";
-            dest = dest.concat(temp);
-            i++;
-          }
-          dest = dest.concat("</tbody></table>");
-        }
-        document.getElementById("companyUsers").innerHTML = dest;
-
-        $('.addUserAdmin').click(function() {
-          create_userAdmin();
-        });
-
-
-        $(".addUser").click(function () {
-          $("#widget-addUser-form input[name=company]").val(
-            response.internalReference
-          );
-
-          var company = response.internalReference;
-
-          $.ajax({
-            url: "apis/Kameo/get_building_listing.php",
-            type: "post",
-            data: { company: response.internalReference },
-            success: function (response) {
-              if (response.response == "error") {
-                console.log(response.message);
-              }
-              if (response.response == "success") {
-                var i = 0;
-                var dest = "";
-                while (i < response.buildingNumber) {
-                  temp =
-                    '<input type="checkbox" name="buildingAccess[]" checked value="' +
-                    response.building[i].code +
-                    '">' +
-                    response.building[i].descriptionFR +
-                    "<br>";
-                  dest = dest.concat(temp);
-                  i++;
-                }
-                document.getElementById("buildingCreateUser").innerHTML = dest;
-
-                $.ajax({
-                  url: "apis/Kameo/get_bikes_listing.php",
-                  type: "post",
-                  data: { company: company, admin: "N" },
-                  success: function (response) {
-                    if (response.response == "error") {
-                      console.log(response.message);
-                    }
-                    if (response.response == "success") {
-                      var i = 0;
-                      var dest = "";
-                      while (i < response.bikeNumber) {
-                        temp =
-                          '<input type="checkbox" name="bikeAccess[]" checked value="' +
-                          response.bike[i].id +
-                          '">' +
-                          response.bike[i].frameNumber +
-                          " " +
-                          response.bike[i].model +
-                          "<br>";
-                        dest = dest.concat(temp);
-                        i++;
-                      }
-                      document.getElementById(
-                        "bikeCreateUser"
-                      ).innerHTML = dest;
-                      document.getElementById("confirmAddUser").innerHTML =
-                        '<button class="fr button small green button-3d rounded icon-left" onclick="confirm_add_user()">\
-                      <i class="fa fa-paper-plane">\
-                      </i>\
-                      Confirmer\
-                      </button>';
-                    }
-                  },
-                });
-              }
-            },
-          });
-        });
-
         displayLanguage();
       }
     },
     error: function (response) {
-      console.log(response);
     },
   }).done(function () {
     $.ajax({
@@ -1251,6 +1134,87 @@ function get_company_details(ID, email, getCompanyContacts = false) {
   });
 }
 
+function update_company_users_list_admin(company){
+  $.ajax({
+    url: "apis/Kameo/get_users_listing.php",
+    type: "get",
+    data: { company: company },
+    success: function (response) {
+      if (response.response == "error") {
+        console.log(response.message);
+      } else {
+        //users management
+        var dest =
+          '<a class="button small green button-3d rounded icon-right addUserAdmin" data-target="#addUserAdmin" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::generic_addUser; ?></a>';
+        if (response.usersNumber > 0) {
+          var i = 0;
+          var temp =
+            '<table class="table"><tbody><thead><tr><th scope="col">'+traduction.sidebar_last_name+'</th><th scope="col">'+traduction.sidebar_first_name+'</th><th scope="col">'+traduction.login_email+'</th><th>'+traduction.sidebar_phone+'</th><th></th><th></th></tr></thead>';
+          dest = dest.concat(temp);
+          while (i < response.usersNumber) {
+            var temp =
+              '<tr><td scope="row">' +
+              response.users[i].name +
+              "</td><td>" +
+              response.users[i].firstName +
+              "</td><td>" +
+              response.users[i].email +
+              "</td><td>" +
+              response.users[i].phone +
+              "</td><td><a href='#' data-target='#updateUserAdmin' data-toggle='modal' data-email='"+response.users[i].email+"' class='text-green updateUserAdmin'>Update</a></td><td><a href='#' class='text-red deleteUserAdmin' data-email='"+response.users[i].email+"' data-company='"+company+"'>Delete</a></td></tr>";
+            dest = dest.concat(temp);
+            i++;
+          }
+          dest = dest.concat("</tbody></table>");
+        }else{
+          document.getElementById("companyUsers").innerHTML = "";
+        }
+        document.getElementById("companyUsers").innerHTML = dest;
+      }
+      $('.addUserAdmin').off();
+      $('.addUserAdmin').click(function() {
+        create_userAdmin();
+      });
+
+
+      $('.updateUserAdmin').off();
+      $('.updateUserAdmin').click(function(){
+        var email = $(this).data("email");
+        update_user_information_admin(email);
+      });
+
+
+      $('.deleteUserAdmin').off();
+      $('.deleteUserAdmin').click(function(){
+        var email = $(this).data("email");
+        var company = $(this).data("company");
+        $.ajax({
+          url: "apis/Kameo/users/users.php",
+          type: "post",
+          data: { email: email, action : 'deleteUserAdmin' },
+          success: function (response) {
+            if (response.response == "error") {
+              $.notify({
+    						message: response.message
+    					}, {
+    						type: 'danger'
+    					});
+            }
+            if (response.response == "success") {
+              $.notify({
+                message: response.message
+              }, {
+                type: 'success'
+              });
+              update_company_users_list_admin(company);
+            }
+          },
+        });
+      });
+    }
+  });
+}
+
 //Suppression d'une offre Pdf
 $("body").on("click", ".deletePdfOffer", function (e) {
   //empèche le comportement normal du lien
@@ -1336,19 +1300,6 @@ function list_contracts_offers(company) {
         dest = dest.concat(temp);
 
         document.getElementById("contractsListingSpan").innerHTML = dest;
-
-        var classname = document.getElementsByClassName(
-          "internalReferenceCompany"
-        );
-        for (var i = 0; i < classname.length; i++) {
-          classname[i].addEventListener(
-            "click",
-            function () {
-              get_company_details(this.name, email, true);
-            },
-            false
-          );
-        }
 
         var i = 0;
         var dest = "";
@@ -1571,7 +1522,6 @@ function retrieve_offer(ID, action) {
         $("#thickBoxProductLists").empty();
         var i = 0;
         if (response.itemsNumber > 0) {
-          console.log(response);
           while (i < response.itemsNumber) {
             if (response.item[i].type == "box") {
               $("#offerManagementDetails").append(

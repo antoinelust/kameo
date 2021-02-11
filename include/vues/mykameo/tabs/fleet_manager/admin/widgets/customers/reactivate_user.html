@@ -1,4 +1,4 @@
-<div class="modal fade" id="reactivateUser" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="reactivateUserAdmin" tabindex="1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -8,43 +8,29 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr">Réactiver un utilisateur</h4>
-						<form id="widget-reactivateUser-form" action="apis/Kameo/reactivate-user.php" role="form" method="post">
+						<form id="widget-reactivateUserAdmin-form" action="apis/Kameo/reactivate-user.php" role="form" method="post">
 							<div class="form-group col-sm-12">
-								<label for="widget-reactivateUser-form-firstname"  class="fr">Prénom</label>
-								<label for="widget-reactivateUser-form-firstname"  class="en">Firstname</label>
-								<label for="widget-reactivateUser-form-firstname"  class="nl">Voornaam</label>
-								<input type="text" id="widget-reactivateUser-form-firstname" readonly="readonly" name="widget-reactivateUser-form-firstname" class="form-control required">
-								<label for="widget-reactivateUser-form-name"  class="fr">Nom</label>
-								<label for="widget-reactivateUser-form-name"  class="en">Name</label>
-								<label for="widget-reactivateUser-form-name"  class="nl">Achternaam</label>
-								<input type="text" id="widget-reactivateUser-form-name" readonly="readonly" name="widget-reactivateUser-form-name" class="form-control required">
-								<label for="widget-reactivateUser-form-mail"  class="fr">E-mail</label>
-								<label for="widget-reactivateUser-form-mail"  class="en">E-mail</label>
-								<label for="widget-reactivateUser-form-mail"  class="nl">E-mail</label>
-								<input type="text" id="widget-reactivateUser-form-mail" readonly="readonly" name="widget-reactivateUser-form-mail" class="form-control">
-								<input type="text" id="widget-reactivateUser-form-requestor" name="widget-reactivateUser-form-requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
+								<label for="widget-reactivateUser-form-firstname"><?= L::sidebar_first_name; ?></label>
+								<input type="text" readonly="readonly" name="widget-reactivateUser-form-firstname" class="form-control required">
+								<label for="widget-reactivateUser-form-name"><?= L::sidebar_last_name; ?></label>
+								<input type="text" readonly="readonly" name="widget-reactivateUser-form-name" class="form-control required">
+								<label for="widget-reactivateUser-form-mail" ><?= L::login_email; ?></label>
+								<input type="text" readonly="readonly" name="widget-reactivateUser-form-mail" class="form-control">
+								<input type="text" name="widget-reactivateUser-form-requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
 							</div>
-							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i>Confirmer</button>
-							<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Confirm</button>
-							<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-paper-plane"></i>Confirm</button>
+							<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?></button>
 						</form>
 					</div>
 				</div>
 			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
-	jQuery("#widget-reactivateUser-form").validate({
+	jQuery("#widget-reactivateUserAdmin-form").validate({
 	  submitHandler: function(form) {
 
 		jQuery(form).ajaxSubmit({

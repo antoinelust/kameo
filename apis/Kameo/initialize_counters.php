@@ -56,7 +56,7 @@ if($type=="bikes"){
     // number of bikes for the client, to be done for all companies with fleet manager access
 
     include 'connexion.php';
-    $sql="SELECT 1 FROM customer_bikes where COMPANY='$company' AND STAANN != 'D'";
+    $sql="SELECT 1 FROM customer_bikes where COMPANY='$company' AND STAANN != 'D' AND CONTRACT_TYPE NOT IN ('order', 'stock', 'waiting_delivery')";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);

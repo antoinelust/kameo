@@ -9,71 +9,55 @@
           console.log(response.message);
         }
         if(response.response == 'success'){
-          document.getElementById('widget-updateUserAdmin-form-firstname').value = response.user.firstName;
-          document.getElementById('widget-updateUserAdmin-form-name').value = response.user.name;
-          document.getElementById('widget-updateUserAdmin-form-mail').value = response.user.email;
-          document.getElementById('widget-updateUserAdmin-form-phone').value = response.user.phone;
-          var dest="";
-          if(response.user.staann=='D'){
-            document.getElementById('widget-updateUserAdmin-form-status').value = "Inactif";
-            $('#widget-updateUserAdmin-form-firstname').prop('readonly', true);
-            $('#widget-updateUserAdmin-form-name').prop('readonly', true);
-            $("#widget-updateUserAdmin-form input[name=fleetManager]").prop( "readonly", true );
-            document.getElementById('buildingUpdateUser').innerHTML = "";
-            document.getElementById('bikeUpdateUser').innerHTML = "";
-            var dest="<a class=\"button small green button-3d rounded icon-right\" data-target=\"#reactivateUser\" onclick=\"initializeReactivateUser('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\"><span class=\"fr-inline\">Ré-activer</span><span class=\"en-inline\">Re-activate</span></a>";
-            document.getElementById('updateUserSendButton').innerHTML="";
-            document.getElementById('deleteUserButton').innerHTML=dest;
+          $('#widget-updateUserAdmin-form input[name=widget-updateUser-form-firstname]').val(response.user.firstName);
+          $('#widget-updateUserAdmin-form input[name=widget-updateUser-form-name]').val(response.user.name);
+          $('#widget-updateUserAdmin-form input[name=widget-updateUser-form-mail]').val(response.user.email);
+          $('#widget-updateUserAdmin-form input[name=widget-updateUser-form-phone]').val(response.user.phone);
+          if(response.user.administrator=="Y"){
+            $("#widget-updateUserAdmin-form input[name=fleetManager]").prop( "checked", true );
           }else{
-            $('#widget-updateUserAdmin-form-firstname').prop('readonly', false);
-            $('#widget-updateUserAdmin-form-name').prop('readonly', false);
-            if(response.user.administrator=="Y"){
-              $("#widget-updateUserAdmin-form input[name=fleetManager]").prop( "checked", true );
-            }else{
-              $("#widget-updateUserAdmin-form input[name=fleetManager]").prop( "checked", false );
-            }
-
-            document.getElementById('widget-updateUserAdmin-form-status').value = "Actif";
-            var i=0;
-            var dest="<h4>Accès aux bâtiments</h4>";
-            while(i<response.buildingNumber){
-              if(response.building[i].access==true){
-                temp="<input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\"> "+response.building[i].descriptionFR+"<br>";
-
-              }
-              else if(response.building[i].access==false){
-                temp="<input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\"> "+response.building[i].descriptionFR+"<br>";
-
-              }
-              dest=dest.concat(temp);
-              i++;
-            }
-            document.getElementById('buildingUpdateUser').innerHTML = dest;
-
-            var i=0;
-            var dest="<h4>Accès aux vélos</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" /><br>";
-            while(i<response.bikeNumber){
-              if(response.bike[i].access==true){
-                temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
-              }
-              else if(response.bike[i].access==false){
-                temp="<input type=\"checkbox\" name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
-              }
-              dest=dest.concat(temp);
-              i++;
-            }
-            document.getElementById('bikeUpdateUserAdmin').innerHTML = dest;
-            var dest="<a class=\"button small red-dark button-3d rounded icon-right\" data-target=\"#deleteUser\" onclick=\"initializeDeleteUserAdmin('"+response.user.email+"')\" data-toggle=\"modal\" href=\"#\"><span>Supprimer</span></a>";
-            document.getElementById('updateUserSendButtonAdmin').innerHTML="<button class=\"button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Envoyer</button>";
-            document.getElementById('deleteUserButtonAdmin').innerHTML=dest;
-
-            document.getElementById('select-all-updateAdmin').onclick = function() {
-              var checkboxes = document.getElementsByName('bikeAccess[]');
-              for (var checkbox of checkboxes) {
-                checkbox.checked = this.checked;
-              }
-            }
+            $("#widget-updateUserAdmin-form input[name=fleetManager]").prop( "checked", false );
           }
+          if(response.user.staann != 'D'){
+            $("#widget-updateUserAdmin-form input[name=status]").val("Actif");
+          }else{
+            $("#widget-updateUserAdmin-form input[name=status]").val("Inactif");
+          }
+          var i=0;
+          var dest="<h4 class='text-green'>"+traduction.generic_accessToBuildings+"</h4>";
+          while(i<response.buildingNumber){
+            if(response.building[i].access==true){
+              temp="<input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\"> "+response.building[i].descriptionFR+"<br>";
+
+            }
+            else if(response.building[i].access==false){
+              temp="<input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\"> "+response.building[i].descriptionFR+"<br>";
+
+            }
+            dest=dest.concat(temp);
+            i++;
+          }
+          $("#widget-updateUserAdmin-form span[name=buildingUpdateUserAdmin]").html(dest);
+          var i=0;
+          var dest="<h4>Accès aux vélos</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" />"+traduction.generic_selectAll+"<br>";
+          while(i<response.bikeNumber){
+            if(response.bike[i].access==true){
+              temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
+            }
+            else if(response.bike[i].access==false){
+              temp="<input type=\"checkbox\" name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
+            }
+            dest=dest.concat(temp);
+            i++;
+          }
+          $("#widget-updateUserAdmin-form span[name=bikeUpdateUserAdmin]").html(dest);
+          $("#widget-updateUserAdmin-form span[name=updateUserSendButtonAdmin]").html("<button class=\"button small green button-3d rounded icon-left\" type=\"submit\"><i class=\"fa fa-paper-plane\"></i>Envoyer</button>");
+          $('widget-updateUserAdmin-form input[select-all-updateAdmin]').click(function(){
+            var checkboxes = document.getElementsByName('bikeAccess[]');
+            for (var checkbox of checkboxes) {
+              checkbox.checked = this.checked;
+            }
+          });
         }
       }
     });
@@ -168,6 +152,7 @@
                 }
                 document.getElementById('bikeCreateUserAdmin').innerHTML = dest;
                 $('#widget-addUserAdmin-form input[name=company]').val(company);
+                console.log(company);
                 document.getElementById('confirmAddUserAdmin').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" onclick=\"confirm_add_userAdmin()\">\
                 <i class=\"fa fa-paper-plane\">\
                 </i>\

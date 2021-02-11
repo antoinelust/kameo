@@ -24,7 +24,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			}else{
 				error_message('403');
 			}
-        }else if($action === 'list'){
+    }else if($action === 'list'){
 			if(get_user_permissions("admin", $token)){
 				include 'list_companies.php';
 			}else{

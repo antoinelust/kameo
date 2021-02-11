@@ -828,7 +828,6 @@ function update_users_list(company, userEMAIL = null, userPHONE = null){
         console.log(response.message);
       }
       if(response.response == 'success'){
-        console.log(response);
         $('#widget-bikeManagement-form select[name=clientReference]')
         .find('option')
         .remove()
@@ -861,8 +860,6 @@ function update_users_list(company, userEMAIL = null, userPHONE = null){
 
         $("#widget-bikeManagement-form select[name=name]").off();
         $("#widget-bikeManagement-form select[name=name]").change(function(){
-         console.log(response);
-         console.log($(this).children("option:selected").val());
          if(response.users[$(this).children("option:selected").val()].phone=='' ||response.users[$(this).children("option:selected").val()].phone=='/' || response.users[$(this).children("option:selected").val()].phone==null ){
            var user_phone = 'N/A';
          }else{
@@ -1601,6 +1598,7 @@ document.getElementById("bikeDetailsAdmin").innerHTML = dest;
 
 displayLanguage();
 
+$(".updateBikeAdmin").off();
 $(".updateBikeAdmin").click(function () {
   construct_form_for_bike_status_updateAdmin(this.name);
   $("#widget-bikeManagement-form input").attr("readonly", false);

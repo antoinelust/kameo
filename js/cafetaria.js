@@ -113,7 +113,8 @@ function load_cafetaria(){
 								</div>\
 								<div class=\"portfolio-description\">\
 									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
-									<p>"+response.bike[i].model+" "+frameType+"\
+									<p>"+response.bike[i].model+"\
+                  <br>"+frameType+"\
 									<br>"+response.bike[i].utilisation+"\
 									<br>"+prices;
 

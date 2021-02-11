@@ -12,9 +12,6 @@ require_once __DIR__ .'/authentication.php';
 require_once __DIR__ .'/connexion.php';
 
 $token = getBearerToken();
-
-log_inputs($token);
-
 switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
