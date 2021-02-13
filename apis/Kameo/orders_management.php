@@ -18,6 +18,7 @@ log_inputs($token);
 if(isset($_POST['action'])){
 
 	$action=isset($_POST['action']) ? $_POST['action'] : NULL;
+	$idBike=isset($_POST['assignBike']) ? $_POST['assignBike'] : NULL;
 	$email=isset($_POST['email']) ? $_POST['email'] : NULL;
 	$company=isset($_POST['company']) ? $_POST['company'] : NULL;
 	$mail=isset($_POST['mail']) ? $_POST['mail'] : NULL;
@@ -62,6 +63,7 @@ if(isset($_POST['action'])){
 
 		successMessage("SM0003");
 	}else if($action=='update'){
+
 		include 'connexion.php';
 		$stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, EMAIL=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, TEST_STATUS=? WHERE ID=?");
 		if ($stmt)
@@ -70,10 +72,20 @@ if(isset($_POST['action'])){
 			if(!$stmt->execute()){echo "there was an error....".$conn->error;}
 			$response['response']="success";
 			$stmt->close();
-		} else
-		error_message('500', 'Error occured while changing data');
+		} else{
+			error_message('500', 'Error occured while changing data');
+		}
+///Code test assignation velo 
+		include 'connexion.php';
+		
+		$stmt = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$email',HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='pending_delivery' WHERE ID='$idBike'");
+		$stmt->execute();
 
-            //  error_message('500', 'Error occured while changing data');
+		$sqlTest = "INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL , BIKE_ID,TYPE)
+		VALUES (CURRENT_TIMESTAMP, '$email', '$mail', '$idBike' ,'personnel')";
+		mysqli_query($conn, $sqlTest);
+
+////
 
 		if($testBoolean=="Y"){
 			include 'connexion.php';
@@ -103,6 +115,7 @@ if(isset($_POST['action'])){
 				if ($conn->query($sql2) === FALSE) {
 					$response = array ('response'=>'error', 'message'=> $conn->error);
 					echo json_encode($response);
+
 					die;
 				}
 			}
@@ -215,26 +228,7 @@ if(isset($_POST['action'])){
 				$response['order'][$i]['type']=$row['TYPE'];
 				$response['order'][$i]['companyID']=$row['companyID'];
 				$response['order'][$i]['companyName']=$row['companyName'];
-
-//voir email a recupere sur quelle tab le customer_bike_access ou customer referential
-				//$response['order'][$i]['contract'] = 'pending_delivery';
-
-//Mettre la ligne noir rouge ou vert
-				/*if($row['STATUS']=='confirmed'){
-					$sqlStatus = "SELECT BIKE_ID
-					FROM customer_bike_access WHERE EMAIL = '$emailCustomer'";
-					$resultStatus = mysqli_query($conn, $sqlStatus);
-					$rowStatus = $resultStatus->fetch_assoc();
-					$tempBikeID = $rowStatus['BIKE_ID'];
-
-					if($tempBikeID!=null){
-						$sqlContrat = "SELECT CONTRACT_TYPE
-						FROM customer_bikes WHERE ID = '$tempBikeID'";
-						$resultContrat = mysqli_query($conn, $sqlContrat);
-						$rowContrat = $resultContrat->fetch_assoc();
-						$response['order'][$i]['contract'] = $rowContrat['CONTRACT_TYPE'];	
-					}
-				}*/
+				
 
 
 				$portfolioID=$row['PORTFOLIO_ID'];
@@ -266,6 +260,22 @@ if(isset($_POST['action'])){
 				}else{
 					$response['order'][$i]['user']="N/A";
 				}
+
+				if($row['STATUS']=='confirmed'){
+					$sqlStatus = "SELECT BIKE_ID
+					FROM customer_bike_access WHERE EMAIL = '$emailUser'";
+					$resultStatus = mysqli_query($conn, $sqlStatus);
+					$rowStatus = $resultStatus->fetch_assoc();
+					$tempBikeID = $rowStatus['BIKE_ID'];
+
+					if($tempBikeID!=null){
+						$sqlContrat = "SELECT CONTRACT_TYPE
+						FROM customer_bikes WHERE ID = '$tempBikeID'";
+						$resultContrat = mysqli_query($conn, $sqlContrat);
+						$rowContrat = $resultContrat->fetch_assoc();
+						$response['order'][$i]['contract'] = $rowContrat['CONTRACT_TYPE'];	
+					}
+				}
 				$i++;
 			}
 		}
@@ -274,6 +284,7 @@ if(isset($_POST['action'])){
 		die;
 
 	}else if($action=='retrieve'){
+		
 		$ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		include 'connexion.php';
@@ -308,6 +319,8 @@ if(isset($_POST['action'])){
 		$email=$resultat['EMAIL'];
 
 		$portfolioID=$resultat['PORTFOLIO_ID'];
+
+		
 
 		include 'connexion.php';
 		$sql= "SELECT * FROM bike_catalog WHERE ID='$portfolioID'";

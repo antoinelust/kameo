@@ -17,7 +17,50 @@ $( ".fleetmanager" ).click(function() {
 
 $('.ordersManagerClick').click(function(){get_orders_listing()});
 
+function get_bike_listing() {
+ $.ajax({
+  url: 'apis/Kameo/load_portfolio.php',
+  type: 'get',
+  data: {"action": "retrieve", "ID": $('#widget-order-form select[name=portfolioID]').val(), "IDOrder": $('#widget-order-form input[name=ID]').val(),"SIZE": $('#widget-order-form select[name=size]').val()},
+  success: function(response){
+    if(response.response == 'error') {
+      console.log(response.message);
+    }
+    if(response.response == 'success'){
+      $('#widget-order-form input[name=brand]').val(response.brand);
+      $('#widget-order-form input[name=model]').val(response.model);
+      $('#widget-order-form select[name=frameType]').val(response.frameType);
+      $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
+      $("#widget-order-form select[name=assignBike]").find("option").remove().end();
 
+      if(response.contract=='vide'){
+       
+       if(response.numberType==0){
+         $('#widget-order-form label[name=phraseNonAssignation]').text('Aucun vélo disponible pour cette commande');
+         $('#widget-order-form div[name=commandeVeloDiv]').show();
+         $('#widget-order-form div[name=assignBikeDiv]').hide();
+       }
+       else{
+         
+         $('#widget-order-form div[name=commandeVeloDiv]').hide();
+         $('#widget-order-form div[name=assignBikeDiv]').show();
+       }
+       var i =0;
+       while(i<response.numberType){
+        $('#widget-order-form select[name=assignBike]').append('<option value='+response.bike[i].id+'>'+response.bike[i].type+'</option>');
+        i++;
+      }
+    }
+    else{
+     
+     $('#widget-order-form label[name=phraseNonAssignation]').text('Vélo déja assigné pour cette commande');
+     $('#widget-order-form div[name=commandeVeloDiv]').show();
+     $('#widget-order-form div[name=assignBikeDiv]').hide();
+   }
+ }
+}
+});
+}
 
 
 function get_orders_listing() {
@@ -64,64 +107,73 @@ function get_orders_listing() {
           }else{
             var price = response.order[i].price + " €";
           }
+          if(response.order[i].status=='confirmed'){
 
-          if(response.order[i].contract=='pending_delivery'){
-            temp="<tr style =\"color:#3CB195;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+           if(response.order[i].contract=='pending_delivery'){
+            temp="<tr style =\"color:#3CB195;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
+          }
+          else if(response.order[i].contract==null){
+            temp="<tr style =\"color:red;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
           }
           else if(response.order[i].contract=='order'){
-            temp="<tr style =\"color:red;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
           }
           else {
-            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+            temp="<tr style =\"color:blue;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
           }
-
-          dest=dest.concat(temp);
-          i++;
-
         }
-        var temp="</tobdy></table>";
+        else{
+          temp="<tr ><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
+          //si closed et pas mail mettre en bleu sinon noir   
+        }
+
         dest=dest.concat(temp);
-        document.getElementById('ordersListingSpan').innerHTML = dest;
-
-        displayLanguage();
-
-        $('#ordersListingTable thead tr').clone(true).appendTo('#test thead');
-
-        $('#ordersListingTable thead tr:eq(1) th').each(function(i){
-          var title=$(this).text();
-          $(this).html('<input type="text" placeholder="Search" />');
-
-          $('input', this).on('keyup change', function(){
-            if (table.column(i).search() !== this.value){
-              table
-              .column(i)
-              .search(this.value)
-              .draw();
-            }
-          });
-        });
-
-        var table=$('#ordersListingTable').DataTable({
-          "aaSorting": []
-        });
-
-        var classname = document.getElementsByClassName(
-          "internalReferenceCompany"
-          );
-        for (var i = 0; i < classname.length; i++) {
-          classname[i].addEventListener(
-            "click",
-            function () {
-              get_company_details(this.name, email, true);
-            },
-            false
-            );
-        }
-
+        i++;
 
       }
+      var temp="</tobdy></table>";
+      dest=dest.concat(temp);
+      document.getElementById('ordersListingSpan').innerHTML = dest;
+
+      displayLanguage();
+
+      $('#ordersListingTable thead tr').clone(true).appendTo('#test thead');
+
+      $('#ordersListingTable thead tr:eq(1) th').each(function(i){
+        var title=$(this).text();
+        $(this).html('<input type="text" placeholder="Search" />');
+
+        $('input', this).on('keyup change', function(){
+          if (table.column(i).search() !== this.value){
+            table
+            .column(i)
+            .search(this.value)
+            .draw();
+          }
+        });
+      });
+
+      var table=$('#ordersListingTable').DataTable({
+        "aaSorting": []
+      });
+
+      var classname = document.getElementsByClassName(
+        "internalReferenceCompany"
+        );
+      for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener(
+          "click",
+          function () {
+            get_company_details(this.name, email, true);
+          },
+          false
+          );
+      }
+
+
     }
-  })
+  }
+})
 
 }
 
@@ -212,6 +264,7 @@ function retrieve_command(ID){
           $('#widget-order-form select[name=type]').val(response.order.type);
           $('#widget-order-form input[name=price]').val(response.order.price);
           $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID).attr('disabled', false);
+          get_bike_listing();
           $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);
           $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);
           $('#widget-order-form select[name=frameType]').val(response.order.frameType).attr('disabled', false);
@@ -222,6 +275,7 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
           $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
           $('#widget-order-form textarea[name=comment]').val(response.order.comment);
+          $('#widget-order-form select[name=assignBike]').val(response.order.stockVelo).attr('disabled', false); 
 
           if(response.order.testBoolean=="Y"){
             $('#widget-order-form input[name=testBoolean]').prop('checked', true);
@@ -457,24 +511,11 @@ get_all_accessories().done(function(response){
   });
 
   $('body').on('change', '#widget-order-form select[name=portfolioID]',function(){
-    $.ajax({
-      url: 'apis/Kameo/load_portfolio.php',
-      type: 'get',
-      data: {"action": "retrieve", "ID": $('#widget-order-form select[name=portfolioID]').val()},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          $('#widget-order-form input[name=brand]').val(response.brand);
-          $('#widget-order-form input[name=model]').val(response.model);
-          $('#widget-order-form select[name=frameType]').val(response.frameType);
-          $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
-        }
-      }
-    });
-
-  });
+   get_bike_listing();
+ });
+  $('body').on('change', '#widget-order-form select[name=size]',function(){
+   get_bike_listing();
+ });
 
   $('body').on('change', '#widget-order-form select[name=company]',function(){
     $.ajax({

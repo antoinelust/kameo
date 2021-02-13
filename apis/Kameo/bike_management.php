@@ -257,6 +257,9 @@ if(isset($_POST['action'])){
         if($contractType=="stock" && $company != 'KAMEO'){
             errorMessage("ES0060");
         }
+         if($contractType=="pending_delivery" && $company == 'KAMEO'){
+            errorMessage("ES0068");
+        }
 
 
         if(isset($_POST['billing'])){
