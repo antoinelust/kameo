@@ -33,7 +33,7 @@ function get_bike_listing() {
       $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
       $("#widget-order-form select[name=assignBike]").find("option").remove().end();
 
-      if(response.contract=='vide'){
+      if(response.contract==null){
        
        if(response.numberType==0){
          $('#widget-order-form label[name=phraseNonAssignation]').text('Aucun vélo disponible pour cette commande');
@@ -227,6 +227,7 @@ function list_bikes(){
           $('#widget-order-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+'>'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
           i++;
         }
+       // $('#widget-order-form div[name=assignationBikeHide]').hide();
       }
     }
   });

@@ -265,10 +265,7 @@ try{
         $rowContrat = $resultContrat->fetch_assoc();
         $response['contract'] = $rowContrat['CONTRACT_TYPE'];  
       }
-      else {
-         $response['contract'] = 'vide'; 
-      }
-//
+     
       echo json_encode($response);
     }
   }
