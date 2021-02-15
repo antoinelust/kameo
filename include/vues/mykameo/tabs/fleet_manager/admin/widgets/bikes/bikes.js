@@ -211,41 +211,8 @@ function add_bike(ID){
 
             $("#widget-bikeManagement-form div[id=user_name]").show();
             $("#widget-bikeManagement-form div[id=utilisateur_bike]").show();
-            for (var i = 0; i < response.userNumber; i++){
-              $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + i +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
-              $("#widget-bikeManagement-form input[name=email]").val(response.user[i].email);
-
-              if(response.user[i].phone=='' ||response.user[i].phone=='/'|| response.user[i].phone==null ){
-                response.user[i].phone='N/A';
-              }
-              $('#widget-bikeManagement-form input [name=phone]').val(response.user[i].phone);
-              $("#widget-bikeManagement-form select[name=clientReference]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
-            }
-            if($("#widget-bikeManagement-form select[name=name]").has('option').length > 0){
-
-              if(response.user[0].phone=='' ||response.user[i].phone=='/'|| response.user[0].phone==null ){
-                response.user[0].phone='N/A';
-              }
-              $("#widget-bikeManagement-form input[name=email]").val(response.user[0].email);
-              $("#widget-bikeManagement-form div[id=user_email]").show();
-              $("#widget-bikeManagement-form input[name = phone]").val(response.user[0].phone);
-              $("#widget-bikeManagement-form div[id=user_phone]").show();
-            }else{
-              $("#widget-bikeManagement-form div[id=user_email]").hide();
-              $("#widget-bikeManagement-form div[id=user_phone]").hide();
-            }
-
-            $("#widget-bikeManagement-form select[name=name]").change(function(){
-              if(response.users[$(this).children("option:selected").val()].phone=='' || response.users[$(this).children("option:selected").val()].phone==null ){
-                var user_phone = 'N/A';
-              }else {
-                var user_phone = response.users[$(this).children("option:selected").val()].phone;
-                var user_email = response.users[$(this).children("option:selected").val()].email;
-                $('#widget-bikeManagement-form input[name=email]').val(user_email);
-                $('#widget-bikeManagement-form input[name=phone]').val(user_phone);
-              }
-            })
           }
+          update_users_list(company);
         }).trigger("change");
       }
     }
@@ -482,8 +449,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
         }
       }
     }
-
-
   }).done(function(){
     document.getElementById('bikeBuildingAccessAdmin').innerHTML = "";
     document.getElementById('bikeUserAccessAdmin').innerHTML = "";
@@ -500,8 +465,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('.bikeManagementPicture').removeClass('hidden');
           id=response.id;
           company=response.company;
-
-
           $('#widget-bikeManagement-form input[name=bikeID]').val(bikeID);
           $('#widget-bikeManagement-form input[name=frameNumber]').val(response.frameNumber);
           $('#widget-deleteBike-form input[name=bikeID]').val(bikeID);
@@ -522,12 +485,12 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
 
           $("#widget-bikeManagement-form select[name=bikeType]").change(function() {
 
-            if ($(this).val() == "partage") {
+            if ($(this).val() == "partage"){
               $("#widget-bikeManagement-form div[id=user_name]").hide();
               $("#widget-bikeManagement-form div[id=user_email]").hide();
               $("#widget-bikeManagement-form div[id=user_phone]").hide();
               $("#widget-bikeManagement-form div[id=utilisateur_bike]").hide();
-            } else {
+            }else{
               $('#widget-bikeManagement-form input[name=email]').val("");
               $('#widget-bikeManagement-form input[name=phone]').val("test2");
               $("#widget-bikeManagement-form select[name=name]").find("option")
@@ -536,7 +499,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
 
               $("#widget-bikeManagement-form div[id=user_name]").show();
               $("#widget-bikeManagement-form div[id=utilisateur_bike]").show();
-
               for (var i = 0; i < response.userNumber; i++){
                 $("#widget-bikeManagement-form select[name=name]").append('<option value= "' + i +  '">' + response.user[i].name + ' ' +response.user[i].firstName + "<br>");
                 if(response.user[i].phone=='' ||response.user[i].phone=='/'|| response.user[i].phone==null ){
@@ -544,7 +506,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
                 }
               }
               if($("#widget-bikeManagement-form select[name=name]").has('option').length > 0){
-
                 if(response.user[0].phone=='' ||response.user[0].phone=='/'|| response.user[0].phone==null ){
                   response.user[0].phone='N/A';
                 }
@@ -793,7 +754,6 @@ function update_offer_list(company){
       if (response.response == "error"){
         console.log(response.message);
       }else{
-        console.log(company);
         $('#widget-bikeManagement-form select[name=offerReference]')
         .find('option')
         .remove()
@@ -824,6 +784,7 @@ function update_users_list(company, userEMAIL = null, userPHONE = null){
     type: 'post',
     data: { "company": company},
     success: function(response){
+      console.log(response);
       if(response.response == 'error') {
         console.log(response.message);
       }
@@ -839,9 +800,14 @@ function update_users_list(company, userEMAIL = null, userPHONE = null){
         .end()
         ;
         var i=0;
+        var toSelect = null;
+        console.log(userEMAIL);
         while (i < response.usersNumber){
           $('#widget-bikeManagement-form select[name=clientReference]').append("<option value="+response.users[i].email+">"+response.users[i].firstName+" - "+response.users[i].name+"<br>");
           $('#widget-bikeManagement-form select[name=name]').append("<option value="+i+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
+          if(response.users[i].email == userEMAIL){
+            var toSelect = i;
+          }
           i++;
         }
         if(response.usersNumber == 0){
@@ -850,13 +816,13 @@ function update_users_list(company, userEMAIL = null, userPHONE = null){
           $('.clientReference').fadeIn();
         }
 
-        if(userEMAIL != null){
-          $('#widget-bikeManagement-form select[name=clientReference]').val(userEMAIL);
-          $('#widget-bikeManagement-form select[name=name]').val(userEMAIL);
+        if(toSelect != null){
+          $('#widget-bikeManagement-form select[name=name]').val(toSelect);
         }else{
-          $('#widget-bikeManagement-form select[name=clientReference]').val("");
           $('#widget-bikeManagement-form select[name=name]').val("");
         }
+
+
 
         $("#widget-bikeManagement-form select[name=name]").off();
         $("#widget-bikeManagement-form select[name=name]").change(function(){
@@ -865,9 +831,8 @@ function update_users_list(company, userEMAIL = null, userPHONE = null){
          }else{
           var user_phone = response.users[$(this).children("option:selected").val()].phone;
         }
+
         var user_email = response.users[$(this).children("option:selected").val()].email;
-        console.log(user_phone);
-        console.log(user_email);
         $('#widget-bikeManagement-form input[name=email]').val(user_email);
         $('#widget-bikeManagement-form input[name = phone]').val(user_phone);
       })
@@ -982,7 +947,6 @@ function construct_form_for_bike_access_updateAdmin(bikeID, company){
         }
       }
     });
-
 
     $.ajax({
       url: 'apis/Kameo/get_users_listing.php',

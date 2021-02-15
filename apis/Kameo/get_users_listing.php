@@ -7,13 +7,12 @@ session_start();
 include 'globalfunctions.php';
 
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
-$company=isset($_POST['company']) ? $_POST['company'] : isset($_GET['company']) ? $_GET['company'] : NULL;
+$company=isset($_POST['company']) ? $_POST['company'] : (isset($_GET['company']) ? $_GET['company'] : NULL);
 $response=array();
 
 require_once 'authentication.php';
 $token = getBearerToken();
 log_inputs($token);
-
 
 
 if($email != NULL || $company != NULL || $token != NULL){

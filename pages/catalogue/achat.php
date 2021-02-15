@@ -22,15 +22,6 @@ include 'include/head.php';
                 font-family: sans-serif;
             }
 
-            /* ---- grid ---- */
-
-            .grid-item--width3 {
-                width: 270px;
-            }
-
-            .grid-item--height3 {
-                height: 340px;
-            }
         </style>
 
         <!-- CONTENT -->
@@ -264,7 +255,6 @@ include 'include/head.php';
 
         <script type="text/javascript">
             var bikes;
-
             function loadPortfolio(revenuEmployee = null, type = null, homeAddress = null, workAddress = null, prime = null, transport = null, transportationEssence = null, frequenceBikePerWeek = null) {
                 $('.grid').html("");
                 var $grid = $('.grid').isotope({});
@@ -325,7 +315,7 @@ include 'include/head.php';
                                     }
 
                                     var temp = "\
-                                    <div class=\"grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
+                                    <div style='display: block' class=\"col-md-2 grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
                                         <div class=\"portfolio-image effect social-links\">\
                                             <img src=\"images_bikes/" + response.bike[i].ID + "_mini.jpg\" alt=\"image_" + response.bike[i].brand.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].model.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].frameType.toLowerCase() + "\" class=\"lazy\">\
                                             <div class=\"image-box-content\">\
@@ -374,8 +364,6 @@ include 'include/head.php';
                                       <br><b>Leasing : " + response.bike[i].leasingPrice + " €/mois</b></p></div></div>");
                                     }
                                     var $item = $(temp);
-                                    // add width and height class
-                                    $item.addClass('grid-item--width3').addClass('grid-item--height3');
                                     $grid.append($item)
                                         // add and lay out newly appended elements
                                         .isotope('appended', $item);
@@ -391,6 +379,8 @@ include 'include/head.php';
                               });
                               $('.ac-content').css("display","none");
                             }
+
+
 
 
                             $(function () {
@@ -416,14 +406,13 @@ include 'include/head.php';
                                 }
                                 return value;
                             }
-
-                            $('.grid').isotope("layout");
                         }
 
                     }
                 });
             }
             loadPortfolio();
+            $(window).load(function(){$('.grid').isotope()})
 
 
             jQuery("#cash4bike-form").validate({

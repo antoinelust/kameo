@@ -46,6 +46,9 @@ if($ID==NULL){
 
 		if(constant('ENVIRONMENT') == "production"){
 			$mail->AddAddress($email);
+			if($email=="julien@actiris.be"){
+				$mail->AddAddress("antoine@kameobikes.com");
+			}
 			$mail->AddCC("bookabike@actiris.be");
 			$mail->AddBCC("antoine@kameobikes.com");
 		}else if(constant('ENVIRONMENT') == "test"){

@@ -11,7 +11,7 @@
                 <div class="icon-box medium fancy">
                   <div class="icon bold" data-animation="pulse infinite">
                     <a data-toggle="modal" data-target="#BikesListing" class="clientBikesManagerClick" href="#" >
-                      <i class="fa fa-bicycle"></i>
+                      <i style="opacity:0.15" class="fa fa-bicycle"></i>
                     </a>
                   </div>
                   <div class="counter bold" id="counterBike" style="color:#3cb395"></div>
@@ -26,7 +26,7 @@
                 <div class="icon-box medium fancy">
                   <div class="icon bold" data-animation="pulse infinite">
                     <a data-toggle="modal" data-target="#usersListing" class="usersManagerClick" href="#" >
-                      <i class="fa fa-users"></i>
+                      <i style="opacity:0.15" class="fa fa-users"></i>
                     </a>
                   </div>
                   <div class="counter bold" id="counterUsers" style="color:#3cb395"></div>
@@ -42,7 +42,7 @@
                 <div class="icon-box medium fancy">
                   <div class="icon bold" data-animation="pulse infinite">
                     <a data-toggle="modal" data-target="#ordersListingFleet" class="commandFleetManagerClick" href="#" >
-                      <i class="fa fa-users"></i>
+                      <i style="opacity:0.15" class="fa fa-users"></i>
                     </a>
                   </div>
                   <div class="counter bold" id="counterOrdersFleet" style="color:#3cb395"></div>
@@ -59,7 +59,7 @@
 	            <div class="icon-box medium fancy">
 	              <div class="icon bold" data-animation="pulse infinite">
 	                <a data-toggle="modal" data-target="#boxesListing" href="#" class="boxViewClick">
-	                  <i class="fa fa-cube"></i>
+	                  <i style="opacity:0.15" class="fa fa-cube"></i>
 	                </a>
 	              </div>
 	              <div class="counter bold" id="counterBoxesFleet" style="color:#3cb395"></div>
@@ -75,7 +75,7 @@
                 <div class="icon-box medium fancy">
                   <div class="icon bold" data-animation="pulse infinite">
                     <a data-toggle="modal" data-target="#ReservationsListing" href="#">
-                      <i class="fa fa-calendar-plus-o reservationlisting"></i>
+                      <i style="opacity:0.15" class="fa fa-calendar-plus-o reservationlisting"></i>
                     </a>
                   </div>
                   <div class="counter bold" id="counterBookings" style="color:#3cb395"></div>
@@ -100,7 +100,7 @@
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#conditionListing" id="settings" href="#" >
-                  <i class="fa fa-cog"></i>
+                  <i style="opacity:0.15" class="fa fa-cog"></i>
                 </a>
               </div>
                   <div class="counter bold" id="counterConditions" style="color:#3cb395"></div>
@@ -119,88 +119,88 @@
         echo '<h4 class="administrationKameo">Administration Kameo</h4>
         <br/><br/>
         <div class="row">
-          <div class="col-md-4 " id="clientManagement">
+          <div class="col-md-4 " id="clientManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#companyListing" href="#" class="clientManagerClick" >
-                  <i class="fa fa-users"></i>
+                  <i style="opacity:0.15" class="fa fa-users"></i>
                 </a>
               </div>
               <div class="counter bold" id="counterClients" style="color:#3cb395"></div>
               <p>Clients et prospects</p>
             </div>
           </div>
-          <div class="col-md-4 " id="orderManagement">
+          <div class="col-md-4 " id="orderManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#ordersListing" href="#" class="ordersManagerClick" >
-                  <i class="fa fa-users"></i>
+                  <i style="opacity:0.15" class="fa fa-users"></i>
                 </a>
               </div>
               <div class="counter bold" id="counterOrdersAdmin" style="color:#3cb395"></div>
               <p>Commandes</p>
             </div>
           </div>
-					<div class="col-md-4 " id="chatsManagement">
+					<div class="col-md-4 " id="chatsManagement" style="height:164px">
 						<div class="icon-box medium fancy">
 							<div class="icon bold" data-animation="pulse infinite">
 								<a data-toggle="modal" data-target="#chatsListing" href="#" class="chatsManagerClick">
-									<i class="fa fa-comment"></i>
+									<i style="opacity:0.15" class="fa fa-comment"></i>
 								</a>
 							</div>
 							<div class="counter bold" id="counterChat" style="color:#3cb395"></div>
 							<p>Chat</p>
 						</div>
 					</div>
-          <div class="col-md-4 " id="portfolioManagement">
+          <div class="col-md-4 " id="portfolioManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#portfolioManager" href="#" class="portfolioManagerClick">
-                  <i class="fa fa-book"></i>
+                  <i style="opacity:0.15" class="fa fa-book"></i>
                 </a>
               </div>
               <div class="counter bold" id="counterBikePortfolio" style="color:#3cb395"></div>
               <p>Catalogue vélos</p>
             </div>
           </div>
-					<div class="col-md-4 " id="bikesManagement">
+					<div class="col-md-4 " id="bikesManagement" style="height:164px">
 						<div class="icon-box medium fancy">
 							<div class="icon bold" data-animation="pulse infinite">
 								<a data-toggle="modal" data-target="#BikesListingAdmin" href="#" class="bikeManagerClick">
-									<i class="fa fa-bicycle"></i>
+									<i style="opacity:0.15" class="fa fa-bicycle"></i>
 								</a>
 							</div>
 							<div class="counter bold" id="counterBikeAdmin"></div>
 							<p>Stock vélo</p>
 						</div>
 					</div>
-					<div class="col-md-4 " id="maintenanceManagement">
+					<div class="col-md-4 " id="maintenanceManagement" style="height:164px">
 						<div class="icon-box medium fancy">
 							<div class="icon bold" data-animation="pulse infinite">
 								<a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick">
-									<i class="fa fa-wrench"></i>
+									<i style="opacity:0.15" class="fa fa-wrench"></i>
 								</a>
 							</div>
 							<div class="counter bold" id="counterMaintenance" style="color:#3cb395"></div>
 							<p>Vue sur les entretiens</p>
 						</div>
 					</div>
-          <div class="col-md-4 " id="portfolioAccessoriesManagement">
+          <div class="col-md-4 " id="portfolioAccessoriesManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#portfolioAccessoriesManager" href="#" class="portfolioAccessoriesManagerClick">
-                  <i class="fa fa-book"></i>
+                  <i style="opacity:0.15" class="fa fa-book"></i>
                 </a>
               </div>
               <div class="counter bold" id="counterAccessoriesPortfolio" style="color:#3cb395"></div>
               <p>Catalogue accessoires</p>
             </div>
           </div>
-					<div class="col-md-4 " id="stockAccessories">
+					<div class="col-md-4 " id="stockAccessories" style="height:164px">
 						<div class="icon-box medium fancy">
 							<div class="icon bold" data-animation="pulse infinite">
 								<a data-toggle="modal" data-target="#stockAccessoriesListing" href="#" class="stockAccessoriesClick">
-									<i class="fa fa-briefcase"></i>
+									<i style="opacity:0.15" class="fa fa-briefcase"></i>
 								</a>
 							</div>
 							<div class="counter bold" id="counterStockAccessoriesCounter"></div>
@@ -208,11 +208,11 @@
 						</div>
 					</div>
 					<div class="row"></div>
-          <div class="col-md-4 " id="boxesManagement">
+          <div class="col-md-4 " id="boxesManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#boxesListingAdmin" href="#" class="boxManagerClick">
-                  <i class="fa fa-cube"></i>
+                  <i style="opacity:0.15" class="fa fa-cube"></i>
                 </a>
               </div>
               <div class="counter bold" id="counterBoxes" style="color:#3cb395"></div>
@@ -220,11 +220,11 @@
             </div>
           </div>
 					<div class="row"></div>
-          <div class="col-md-4 " id="tasksManagement">
+          <div class="col-md-4 " id="tasksManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#tasksListing" href="#" class="tasksManagerClick">
-                  <i class="fa fa-tasks"></i>
+                  <i style="opacity:0.15" class="fa fa-tasks"></i>
                 </a>
               </div>
               <div class="counter bold" id="counterTasks" style="color:#3cb395"></div>
@@ -234,11 +234,11 @@
 				}
 				if(get_user_permissions("cashflow", $token)){
 
-          echo '<div class="col-md-4 " id="cashFlowManagement">
+          echo '<div class="col-md-4 " id="cashFlowManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#cashListing" href="#" id="offerManagerClick">
-                  <i class="fa fa-money"></i>
+                  <i style="opacity:0.15" class="fa fa-money"></i>
                 </a>
               </div>
               <div class="counter bold" id="cashFlowSpan" style="color:#3cb395"></div>
@@ -248,11 +248,11 @@
 				}
 				if(get_user_permissions("admin", $token)){
 
-				echo '<div class="col-md-4 " id="feedbacksManagement">
+				echo '<div class="col-md-4 " id="feedbacksManagement" style="height:164px">
 					<div class="icon-box medium fancy">
 						<div class="icon bold" data-animation="pulse infinite">
 							<a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagerClick">
-								<i class="fa fa-comments"></i>
+								<i style="opacity:0.15" class="fa fa-comments"></i>
 							</a>
 						</div>
 						<div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
@@ -261,11 +261,11 @@
 				</div>';
 			}if(get_user_permissions("dashboard", $token)){
 
-				echo '<div class="col-md-4 " id="dashBoardManagement">
+				echo '<div class="col-md-4 " id="dashBoardManagement" style="height:164px">
 					<div class="icon-box medium fancy">
 						<div class="icon bold" data-animation="pulse infinite">
 							<a data-toggle="modal" class="dashboardManagementClick" data-target="#dashboard" href="#" >
-								<i class="fa fa-dashboard"></i>
+								<i style="opacity:0.15" class="fa fa-dashboard"></i>
 							</a>
 						</div>
 						<div class="counter bold" id="errorCounter" style="color:#3cb395"></div>
@@ -281,11 +281,11 @@
     if(get_user_permissions("bills", $token)){
         echo '<h4 class="billsTitle ">Factures</h4><br><br>
         <div class="row">
-          <div class="col-md-4 " id="billsManagement">
+          <div class="col-md-4" style="height:164px" id="billsManagement">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#billingListing" href="#" class="billsManagerClick">
-                  <i class="fa fa-folder-open-o"></i>
+                  <i style="opacity:0.15" class="fa fa-folder-open-o"></i>
                 </a>
               </div>
               <div class="counter bold" id=\'counterBills\' style="color:#3cb395"></div>

@@ -29,6 +29,8 @@ if(isset($_POST['action'])){
     $lockingcode = $resultat[0]['CODE'];
     execSQL("UPDATE locking_code SET VALID='N', STAANN = 'D', HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='replaceBooking.php' WHERE ID_reservation='$oldBookingID'", array(), true);
     execSQL("UPDATE reservations SET STAANN = 'D', HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='replaceBooking.php' WHERE ID='$oldBookingID'", array(), true);
+    execSQL("UPDATE notifications SET STAAN = 'D', HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ='replaceBooking.php' WHERE TYPE_ITEM=? AND TYPE='feedback'", array('i', $oldBookingID), true);
+    execSQL("DELETE FROM feedbacks WHERE ID_RESERVATION=?", array('i', $oldBookingID), true);
   }else{
     errorMessage("ES0012");
   }
@@ -183,6 +185,9 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 
       if(constant('ENVIRONMENT') == "production"){
         $mail->AddAddress($user);
+        if($user=="julien@actiris.be"){
+          $mail->AddAddress("antoine@kameobikes.com");
+        }
       }else if(constant('ENVIRONMENT') == "test"){
         $mail->AddAddress("antoine@kameobikes.com");
       }

@@ -116,7 +116,7 @@ if ($token == NULL) { //Not connected
     echo 'get_command_user(email);';
   }else if (get_user_permissions("search", $token)) {
     echo '$("#reserver").addClass("active"); ';
-  } else if (get_user_permissions(["fleetManager", "admin"], $token)) {
+  } else if (get_user_permissions(["bills", "fleetManager", "admin"], $token)) {
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
     echo '$( ".fleetmanager" ).trigger( "click" );';
@@ -179,7 +179,7 @@ if ($token == NULL) { //Not connected
                         echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>' . L::tabs_book_title . '</a> </li>
                             <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>' . L::tabs_reservations_title . '</a> </li>';
                       }
-                      if (get_user_permissions(["fleetManager", "admin"], $token)) {
+                      if (get_user_permissions(["bills", "fleetManager", "admin"], $token)) {
 
                         echo '<li id="fleetmanagerID"><a href="#fleetmanager" class="fleetmanager"><i class="fa fa-user"></i>' . L::tabs_fleet_title . '</a> </li>';
                       }
@@ -203,7 +203,7 @@ if ($token == NULL) { //Not connected
                         include 'include/vues/mykameo/tabs/book/main.php'; //TAB 2 @TODO: REFACTOR
                         include 'include/vues/mykameo/tabs/reservations/main.php';  //TAB 3 @TODO: REFACTOR
                       }
-                      if(get_user_permissions(["fleetManager", "admin"] , $token)){
+                      if(get_user_permissions(["bills", "fleetManager", "admin"] , $token)){
                         include 'include/vues/mykameo/tabs/fleet_manager/main.php';  //TAB 4 @TODO: REFACTOR
                       }
                       if(get_user_permissions("chat" , $token)){

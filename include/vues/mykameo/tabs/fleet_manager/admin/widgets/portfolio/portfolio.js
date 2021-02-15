@@ -35,7 +35,9 @@ function listPortfolioBikes() {
           '<table class="table table-condensed" id="portfolioBikeListing"><h4 class="fr-inline text-green">Vélos du catalogue:</h4><h4 class="en-inline text-green">Portfolio bikes:</h4><h4 class="nl-inline text-green">Portfolio bikes:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addPortfolioBike" data-toggle="modal" onclick="initializeCreatePortfolioBike()" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class="fr-inline">Marque</span><span class="en-inline">Brand</span><span class="nl-inline">Brand</span></th><th><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th><span class="fr-inline">Utilisation</span><span class="en-inline">Use</span><span class="nl-inline">Use</span></th><th><span class="fr-inline">Electrique ?</span><span class="en-inline">Electric</span><span class="nl-inline">Electric</span></th><th><span class="fr-inline">Cadre</span><span class="en-inline">Frame</span><span class="nl-inline">Frame</span></th><th><span class="fr-inline">Prix</span><span class="en-inline">Price</span><span class="nl-inline">Price</span></th><th>Afficher</th><th>Saison</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>Uni</th><th>Total</th><th></th></tr></thead><tbody>';
         for (i = 0; i < response.bikeNumber; i++) {
           dest = dest.concat(
-            "<tr><td>" +
+            "<tr><td class='tooltipPortfolioBikes' rel='tooltip' data-toggle='tooltip' data-trigger='hover' data-placement='bottom' data-html='true' data-title=\"<div style='position:relative;overflow:auto'>"+
+            "<img src='images_bikes/"+response.bike[i].ID+"_mini.jpg' /></div>"+
+            "\"></i></sup>" +
               response.bike[i].ID +
               "</td><td>" +
               response.bike[i].brand +
@@ -65,6 +67,12 @@ function listPortfolioBikes() {
         $("#portfolioBikeListing").DataTable({
           paging: false,
         });
+        $(function () {
+          $('.tooltipPortfolioBikes').tooltip({
+            container: "body",
+          })
+        })
+
       }
     },
   });

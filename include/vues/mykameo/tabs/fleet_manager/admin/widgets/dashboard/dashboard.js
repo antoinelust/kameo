@@ -166,7 +166,7 @@ function list_errors() {
         $("#dashboardBodyBikes").html(dest);
         var i = 0;
         var dest =
-          '<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th>ID</th><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Bike Number</span><span class="nl-inline">Bike Number</span></th><th>Description</th></thead><tbody>';
+          '<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">ID</th><th scope="col"></th><th scope="col">Description</th></thead><tbody>';
         while (i < response.bike.bill.number) {
           var bill = response.bike.bill[i];
           if (bill.bikeNumber == null) {

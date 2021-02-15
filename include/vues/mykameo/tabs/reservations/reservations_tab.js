@@ -340,7 +340,7 @@ function getHistoricBookings() {
         var dest = "";
 
         var tempHistoricBookings =
-          '<table class="table table-condensed" id="previousBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><h4><?= L::mk_reservations_past; ?></h4>';
+          '<table class="table table-condensed" id="previousBookingsTable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'5\'><h4 class="text-green"><?= L::mk_reservations_past; ?></h4>';
         dest = dest.concat(tempHistoricBookings);
 
         var tempHistoricBookings =
@@ -775,7 +775,13 @@ function getHistoricBookings() {
             $('#widget_updateDepositHour_booking input[name=start]').val($(this).data("start"));
             $('#widget_updateDepositHour_booking input[name=end]').val($(this).data("end"));
 
-            var end = $(this).data("end").split(' ');
+            if((new Date($(this).data("end"))) < (new Date())) {
+              var dateEndBooking = new Date();
+            }else{
+              var dateEndBooking = new Date($(this).data("end"));
+            }
+
+            var end = get_date_string_european_with_hours2(dateEndBooking).split(' ');
             $('#widget_updateDepositHour_booking input[name=newEndDate').val(end[0]);
             $('#widget_updateDepositHour_booking input[name=newEndHour').val(end[1]);
             $('#widget_updateDepositHour_booking input[name=newEndDate').prop("min",end[0]);

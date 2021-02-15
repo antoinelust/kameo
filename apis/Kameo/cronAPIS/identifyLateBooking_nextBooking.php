@@ -11,12 +11,13 @@ foreach ((array) $lateBookings as $lateBooking) {
     $bikeID = $lateBooking['BIKE_ID'];
     $dateEnd = $lateBooking['DATE_END_2'];
 
-    $nextBooking = execSQL("SELECT aa.ID, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL, aa.EMAIL, bb.ID as customerID, bb.COMPANY from reservations aa, customer_referential bb, customer_bikes cc WHERE aa.BIKE_ID=cc.ID AND aa.EMAIL = bb.EMAIL AND BIKE_ID=? AND DATE_START_2 > ? AND NOT EXISTS (select 1 from notifications WHERE notifications.TYPE='lateBookingNextUser' AND (notifications.STAAN <> 'D' OR notifications.STAAN IS NULL) AND notifications.TYPE_ITEM = aa.ID AND notifications.USER_ID=(SELECT ID from customer_referential WHERE EMAIL = aa.EMAIL))", array('ss', $bikeID, $dateEnd), false);
+    $nextBooking = execSQL("SELECT aa.ID, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL, aa.EMAIL, bb.ID as customerID, bb.COMPANY from reservations aa, customer_referential bb, customer_bikes cc WHERE (aa.STAANN <> 'D' OR aa.STAANN is NULL) AND aa.BIKE_ID=cc.ID AND aa.EMAIL = bb.EMAIL AND BIKE_ID=? AND DATE_START_2 > ? AND NOT EXISTS (select 1 from notifications WHERE notifications.TYPE='lateBookingNextUser' AND (notifications.STAAN <> 'D' OR notifications.STAAN IS NULL) AND notifications.TYPE_ITEM = aa.ID AND notifications.USER_ID=(SELECT ID from customer_referential WHERE EMAIL = aa.EMAIL))", array('ss', $bikeID, $dateEnd), false);
     if($nextBooking != null){
       echo 'ID : '.$nextBooking[0]['ID']."\n";
       $nextBookingStart = $nextBooking[0]['DATE_START_2'];
       $nextBookingEnd = $nextBooking[0]['DATE_END_2'];
       $nextBookingID = $nextBooking[0]['ID'];
+      echo "Next Booking ID : ".$nextBookingID;
       $customName =  $nextBooking[0]['MODEL'];
       $nextBookingEMAIL = $nextBooking[0]['EMAIL'];
       $company = $nextBooking[0]['COMPANY'];
@@ -40,6 +41,12 @@ foreach ((array) $lateBookings as $lateBooking) {
   		}else{
   			$warnNextBooking = false;
   		}
+
+      echo 'Number of Minutes 1 : '.$numberOfMinutes1;
+      echo 'Number of Minutes 2 : '.$numberOfMinutes2;
+      echo 'Now : '.$now->format('d/m/Y H:i');
+      echo 'NextbookingDate : '.$nextBookingDate->format('d/m/Y H:i');
+      echo "Warn next booking ? ".$warnNextBooking;
 
       if($warnNextBooking){
         execSQL("INSERT INTO `notifications` ( `HEU_MAJ`, `USR_MAJ`, `DATE`, `TEXT`, `READ`, `TYPE`, `USER_ID`, `TYPE_ITEM`, `STAAN`) VALUES (CURRENT_TIMESTAMP, 'identifyLateBooking.php', CURRENT_TIMESTAMP, '', 'N', 'lateBookingNextUser', ?, ?, NULL)", array('ii', $nextBooking[0]['customerID'], $nextBookingID), true);

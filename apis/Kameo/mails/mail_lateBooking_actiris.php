@@ -15,7 +15,7 @@
             <meta charset=\"UTF-8\">
             <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
             <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-            <title>*|MC:SUBJECT|*</title>
+            <title>Your booking number is over but you didn't gave back the keys</title>
 
         <style type=\"text/css\">
         p{
@@ -491,7 +491,7 @@
     }</style></head>
         <body>
             <!--*|IF:MC_PREVIEW_TEXT|*-->
-            <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Your bike booking has been cancelled</span><!--<![endif]-->
+            <!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">Your booking number is over but you didn't gave back the keys</span><!--<![endif]-->
             <!--*|END:IF|*-->
             <center>
                 <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\">
@@ -608,12 +608,29 @@
                                     $body=$body."Attention ! Une autre réservation commence à la date suivante :  ".$nextBookingStartString.". Il est important que vous rendiez le vélo à temps pour la prochaine réservation !<br>
                                     Kijk uit! Een andere reservering begint op de volgende datum: ".$nextBookingStartString.". Het is belangrijk dat u de fiets op tijd terugbrengt voor de volgende reservering!<br><br>";
                                   }
+                                  if($extension=='0'){
+                                    $body=$body."
+                                    <strong style='color: #25539D'>Saviez-vous que vous pouvez prolonger votre réservation ? (une seule prolongation possible)</strong>
+                                    <ul>
+                                      <li>Soit via l'onget 'Mes réservations' de l'interface <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a>, en cliquant sur le bouton 'prolonger' à côté de votre réservation</li>
+                                      <li>Soit en cliquant sur la notification qui est apparue dans votre interface <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a></li>
+                                    </ul><br>
+                                    <strong style='color: #25539D'>Wist u dat u uw reservering kunt verlengen? (slechts één verlenging mogelijk)</strong>
+                                    <ul>
+                                      <li>Ofwel via het tabblad 'Mijn boekingen' van de <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> interface, door te klikken op de knop 'verlengen' naast uw boeking</li>
+                                      <li>Ofwel door op de melding te klikken die verschijnt in uw <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> interface</li>
+                                    </ul><br>";
+                                  }else{
+                                    $body=$body."
+                                    <p style='border: 1px solid red; padding: 15px'>
+                                    <strong style='color:red'>Attention !</strong> Vous avez déjà effectué une prolongation de réservation, cette option n'est plus disponible. Veuillez rendre le vélo aussi vite que possible.
+                                    </p>
+                                    <p style='border: 1px solid red; padding: 15px'>
+                                    <strong style='color:red'>Let op !</strong> U heeft al een reserveringsverlenging gemaakt, deze optie is niet meer beschikbaar. Breng de fiets zo snel mogelijk terug.
+                                    </p>";
 
-                                  $body=$body."<span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
-                                    Merci de nous indiquer aussi vite que possible l'heure à laquelle vous pouvez rendre votre vélo via l'application <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a><br>
-                                    Laat ons zo snel mogelijk weten om hoe laat u uw fiets kunt inleveren via de <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> applicatie.<br><br><br>
-                                  </span>
-                                </div>
+                                  }
+                                $body=$body."</div>
                             </td>
                         </tr>
                     </tbody></table>

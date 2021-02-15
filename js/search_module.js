@@ -96,9 +96,7 @@ function update_intake_hour_form(){
 
             var m = (((minutes + 7.5)/15 | 0) * 15) % 60;
             var h = ((((minutes/105) + .5) | 0) + hours) % 24;
-
             var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
-
         }
         else{
             var m = 0;
@@ -236,7 +234,7 @@ function update_deposit_hour_form(){
             bookingLength=parseInt(bookingLength);
             while(i<=daysToDisplay){
                 var afterHour=false;
-                if(tempDate.getHours()>=hourEndDepositBooking){
+                if(tempDate.getHours()>=hourEndIntakeBooking){
                     tempDate.setHours(hourStartIntakeBooking);
                     tempDate.setMinutes(0);
                     tempDate.setDate(tempDate.getDate()+1);
@@ -268,6 +266,9 @@ function update_deposit_hour_form(){
 
             var m = (((minutes + 15)/15 | 0) * 15) % 60;
             var h = ((((minutes/105) + .5) | 0) + hours) % 24;
+            if(m==0){
+              h+=1;
+            }
             var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
 
 

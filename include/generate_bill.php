@@ -261,7 +261,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                     $test2=$test2."<td>Location </td></tr>";
                     if(!$simulation || $simulation == 'N'){
-                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID', '$comment', '$contractStartString2', '$contractEndString2', '$price', '$priceTVAC')";
+                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'bike', '$ID', '$comment', '$contractStartString2', '$contractEndString2', '$price', '$priceTVAC')";
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
                             echo json_encode($response);
@@ -302,7 +302,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                     if(!$simulation || $simulation == 'N'){
                         include 'connexion.php';
-                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, BIKE_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', '$ID', '$comment', '$contractStartString', '$contractStartString', '$price', '$priceTVAC')";
+                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'bike', '$ID', '$comment', '$contractStartString', '$contractStartString', '$price', '$priceTVAC')";
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
                             echo json_encode($response);

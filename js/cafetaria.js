@@ -114,14 +114,16 @@ function load_cafetaria(){
 								<div class=\"portfolio-description\">\
 									<a href=\"offre.php?brand="+response.bike[i].brand.toLowerCase()+"&model="+response.bike[i].model.toLowerCase()+"&frameType="+response.bike[i].frameType.toLowerCase()+"\"><h4 class=\"title\">"+response.bike[i].brand+"</h4></a>\
 									<p>"+response.bike[i].model+"\
-                  <br>"+frameType+"\
-									<br>"+response.bike[i].utilisation+"\
+                  <br>"+traduction.generic_frame+" : "+traduction["generic_"+frameType]+"\
+									<br>"+traduction["generic_"+response.bike[i].utilisation.replace(/ /g, '_')]+"\
 									<br>"+prices;
 
                   if(stock==="stock"){
-                      temp=temp+"<br><strong class=\"background-green text-dark center text-center text-small\">"+traduction.mk_ordertab_underStock+"</strong>";
+                      temp=temp+"<strong style='font-size: 1em' class=\"background-green text-dark center text-center\">"+traduction.mk_ordertab_underStock+"</strong>";
                   }else{
-                      temp=temp+"<br><strong class=\"text-green center text-center text-small\">"+traduction.mk_ordertab_preOrder+" <sup><i class='fa fa-question-circle' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='KAMEO Bikes ne possède pas ce modèle de stock.<br />Nous devons donc le commander et ne pouvons déterminer la date de livraison automatiquement'></i></sup></strong>";
+                      temp=temp+"<strong style='font-size= 1em' class=\"text-green center text-center\">"+traduction.mk_ordertab_preOrder+" <sup><i class='fa fa-question-circle' rel='tooltip' data-toggle='tooltip' data-trigger='hover' data-placement='bottom' data-html='true' data-title=\"<div style='position:relative;overflow:auto'>"+
+                      "<div style='line-height:20px; float:left;border-radius: 3px;text-align:left'>"+traduction.order_not_in_stock+"</div></div>"+
+                      "\"></i></sup></strong>";
                   }
 
                   temp=temp+"\
@@ -141,7 +143,9 @@ function load_cafetaria(){
           $('.loaderOrderPortfolio').addClass("hidden");
 
           $(function () {
-            $('[data-toggle="tooltip"]').tooltip({html: true})
+            $('[data-toggle="tooltip"]').tooltip({
+              container: "body",
+            })
           })
           var filters = {};
 

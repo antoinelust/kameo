@@ -43,21 +43,17 @@ if(isset($_POST['action'])){
 	$financialTypeAccessory=isset($_POST['financialTypeAccessory']) ? $_POST['financialTypeAccessory'] : NULL;
 	$buyingPrice=isset($_POST['buyingPriceAcc']) ? $_POST['buyingPriceAcc'] : NULL;
 	$sellingPrice=isset($_POST['sellingPriceAcc']) ? $_POST['sellingPriceAcc'] : NULL;
-	
+
 	if($action=='add'){
 		if(!get_user_permissions("admin", $token)){
 			error_message('403');
 		}
 		include 'connexion.php';
 		$stmt = $conn->prepare("INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE, COMPANY) VALUES(CURRENT_TIMESTAMP, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		
-		echo json_encode("INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE, COMPANY) VALUES(CURRENT_TIMESTAMP, '$email', '$mail','$portfolioID', '$size', '$status', '$testBoolean', '$testDate', '$testAddress',' $testStatus', '$testResult', '$deliveryDate', '$deliveryAddress', '$price', '$type', '$company')");
-		die;
-
 		if ($stmt)
 		{
-			$stmt->bind_param("ssisssssssssdsi", $email, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $company );
-			$stmt->execute();
+			$stmt->bind_param("ssisssssssssdsi", $token, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $company );
+			if(!$stmt->execute()){echo json_encode("there was an error....".$conn->error); die;}
 			$response['response']="success";
 			$stmt->close();
 			successMessage("SM0003");
@@ -65,7 +61,7 @@ if(isset($_POST['action'])){
 		error_message('500', 'Error occured while changing data');
 		$conn->close();
 
-		
+
 	}
 	else if($action=='update'){
 
@@ -80,13 +76,13 @@ if(isset($_POST['action'])){
 		} else{
 			error_message('500', 'Error occured while changing data');
 		}
-		
+
 //////////////////////////////////////////////Code test assignation velo
-		
-		if ($idBike!=null){ 
-			
+
+		if ($idBike!=null){
+
 			include 'connexion.php';
-			
+
 			$stmt = $conn->prepare("UPDATE customer_bikes SET HEU_MAJ=CURRENT_TIMESTAMP,USR_MAJ='$email',CONTRACT_TYPE='pending_delivery' WHERE ID='$idBike'");
 			$stmt->execute();
 
@@ -239,7 +235,7 @@ if(isset($_POST['action'])){
 				$response['order'][$i]['type']=$row['TYPE'];
 				$response['order'][$i]['companyID']=$row['companyID'];
 				$response['order'][$i]['companyName']=$row['companyName'];
-				
+
 
 
 				$portfolioID=$row['PORTFOLIO_ID'];
@@ -284,7 +280,7 @@ if(isset($_POST['action'])){
 						FROM customer_bikes WHERE ID = '$tempBikeID'";
 						$resultContrat = mysqli_query($conn, $sqlContrat);
 						$rowContrat = $resultContrat->fetch_assoc();
-						$response['order'][$i]['contract'] = $rowContrat['CONTRACT_TYPE'];	
+						$response['order'][$i]['contract'] = $rowContrat['CONTRACT_TYPE'];
 					}
 				}
 				$i++;
@@ -295,7 +291,7 @@ if(isset($_POST['action'])){
 		die;
 
 	}else if($action=='retrieve'){
-		
+
 		$ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		include 'connexion.php';
@@ -330,7 +326,7 @@ if(isset($_POST['action'])){
 
 		$portfolioID=$resultat['PORTFOLIO_ID'];
 
-		
+
 
 		include 'connexion.php';
 		$sql= "SELECT * FROM bike_catalog WHERE ID='$portfolioID'";

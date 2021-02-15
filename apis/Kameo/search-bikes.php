@@ -200,19 +200,20 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
       $result = mysqli_query($conn, $sql);
       $resultat = mysqli_fetch_assoc($result);
       if($resultat['SOMME']>0){
-        errorMessage("ES0062");
+        //errorMessage("ES0062");
       }
     }
 
     if($user_data['LOCKING']=="Y"){
       if($user_data['LOCKING']=="Y" && ($boxesNumber > 1 || $action == "replaceBooking")){
-        $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS != 'Closed') group by ID";
+        $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS = 'Open') group by cc.ID";
       }else{
         $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS ='Open' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) and not exists (SELECT 1 from reservations dd WHERE dd.STAANN !='D' AND dd.BIKE_ID=cc.ID AND dd.STATUS='Open' AND dd.EMAIL='$email') group by ID";
       }
     }else{
       $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
     }
+    error_log(date("Y-m-d H:i:s")." -SQL : - ".$sql."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
 
    	if ($conn->query($sql) === FALSE) {
   		$response = array ('response'=>'error', 'message'=> $conn->error);
@@ -250,6 +251,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
               echo json_encode($response);
               die;
           }
+          error_log(date("Y-m-d H:i:s")." -SQL2 : - ".$sql2."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
 
           $result2 = mysqli_query($conn, $sql2);
           $resultat2 = mysqli_fetch_assoc($result2);
@@ -258,6 +260,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
 
               if($user_data['LOCKING']=="Y" && $boxesNumber > 1){
                 $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
+                error_log(date("Y-m-d H:i:s")." -SQL4 : - ".$sql4."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
+
 
                 if ($conn->query($sql4) === FALSE) {
                     $response = array ('response'=>'error7', 'message'=> $conn->error);
@@ -276,6 +280,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                         echo json_encode($response);
                         die;
                     }
+                    error_log(date("Y-m-d H:i:s")." -SQL5 : - ".$sql5."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
+
                     $result5 = mysqli_query($conn, $sql5);
                     $resultat5 = mysqli_fetch_assoc($result5);
                     $response['bike'][$length-1]['bikeID'] = $bikeID;
@@ -292,6 +298,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                         echo json_encode($response);
                         die;
                     }
+                    error_log(date("Y-m-d H:i:s")." -SQL6 : - ".$sql6."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
+
                     $result6 = mysqli_query($conn, $sql6);
                     if($result6->num_rows == 1){
                         $resultat6 = mysqli_fetch_assoc($result6);
@@ -312,6 +320,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                 }
                 $result3 = mysqli_query($conn, $sql3);
                 $resultat3 = mysqli_fetch_assoc($result3);
+                error_log(date("Y-m-d H:i:s")." -SQL3 : - ".$sql3."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
+
 
                 if($resultat3['BUILDING_START'] == $deposit_building or $resultat3['BUILDING_START'] == NULL){
                     $sql4="SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' and BUILDING_CODE='$deposit_building' and STAANN!='D'";
@@ -320,6 +330,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                         echo json_encode($response);
                         die;
                     }
+                    error_log(date("Y-m-d H:i:s")." -SQL4 : - ".$sql4."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
+
                     $result4 = mysqli_query($conn, $sql4);
                     $access = $result4->num_rows;
 
@@ -332,6 +344,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                             echo json_encode($response);
                             die;
                         }
+                        error_log(date("Y-m-d H:i:s")." -SQL5 : - ".$sql5."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
+
                         $result5 = mysqli_query($conn, $sql5);
                         $resultat5 = mysqli_fetch_assoc($result5);
                         $response['bike'][$length-1]['bikeID'] = $bikeID;
@@ -348,6 +362,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                             echo json_encode($response);
                             die;
                         }
+                        error_log(date("Y-m-d H:i:s")." -SQL6 : - ".$sql6."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
+
                         $result6 = mysqli_query($conn, $sql6);
                         if($result6->num_rows == 1){
                             $resultat6 = mysqli_fetch_assoc($result6);

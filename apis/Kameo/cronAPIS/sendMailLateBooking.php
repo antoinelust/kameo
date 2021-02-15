@@ -36,9 +36,11 @@ if($company=='Actiris'){
 
   if(constant('ENVIRONMENT') == "production"){
     $mail->AddAddress($email);
-
+    if($email=='julien@actiris.be'){
+      $mail->AddAddress("antoine@kameobikes.com");
+    }
     if($extension=='1'){
-      $mail->AddCC("bookabike@actiris.be");
+      //$mail->AddCC("bookabike@actiris.be");
     }
     $mail->addBcc("antoine@kameobikes.com");
   }else if(constant('ENVIRONMENT') == "test"){

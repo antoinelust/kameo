@@ -72,7 +72,7 @@ $body = $body."
                   <tbody><tr>
                     <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                      <h3>Votre borne n'a pas été correctement fermé</h3>
+                      <h3>Votre borne n'a pas été correctement fermée</h3>
 
                       <p>Vous recevez cet email car nous avons détecté que la porte de votre borne est toujours ouverte, depuis plus de 2 minutes<br/>
                       <br>

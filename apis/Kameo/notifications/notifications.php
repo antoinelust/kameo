@@ -27,9 +27,9 @@ switch($_SERVER["REQUEST_METHOD"])
 					$id = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['ID'];
 					$stmt->close();
 					if(get_user_permissions("chatsManager", $token))
-						$result = $conn->query("SELECT * FROM notifications WHERE (USER_ID = '".$id."' OR USER_ID = 0) AND `READ` = 'N' AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY `notifications`.`READ` ASC, `notifications`.`READ` DESC");
+						$result = $conn->query("SELECT * FROM notifications WHERE (USER_ID = '".$id."' OR USER_ID = 0) AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY `notifications`.`READ` ASC, HEU_MAJ DESC");
 					else
-						$result = $conn->query("SELECT * FROM notifications WHERE USER_ID = '".$id."' AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY `notifications`.`READ` ASC, `notifications`.`READ` DESC");
+						$result = $conn->query("SELECT * FROM notifications WHERE USER_ID = '".$id."' AND (STAAN <> 'D' OR STAAN IS NULL) ORDER BY `notifications`.`READ` ASC, HEU_MAJ DESC");
 					$response=array();
 					$response['notifications']=array();
 					if ($result && $result->num_rows>0) {
@@ -41,7 +41,6 @@ switch($_SERVER["REQUEST_METHOD"])
 							$notificationTemp['TYPE_ITEM']=$notification['TYPE_ITEM'];
 							$notificationTemp['READ']=$notification['READ'];
 							$notificationTemp['notificationID']=$notification['ID'];
-
 							if($notification['TYPE']=='lateBooking'){
 								$reservationID=$notification['TYPE_ITEM'];
 								$informations = execSQL("SELECT aa.DATE_START_2, aa.BIKE_ID, aa.DATE_END_2, bb.MODEL from reservations aa, customer_bikes bb WHERE aa.ID='$reservationID' AND  aa.BIKE_ID=bb.ID", array(), false);
