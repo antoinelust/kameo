@@ -3,7 +3,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
-$openDoors = execSQL("SELECT boxes.ID, boxes.OPEN_UPDATE_TIME, boxes.COMPANY, boxes.BUILDING FROM `boxes` WHERE COMPANY='Actiris' AND DOOR='Open' AND boxes.OPEN_UPDATE_TIME < (NOW() + INTERVAL 2 MINUTE)
+$openDoors = execSQL("SELECT boxes.ID, boxes.OPEN_UPDATE_TIME, boxes.COMPANY, boxes.BUILDING FROM `boxes` WHERE COMPANY='Actiris' AND DOOR='Open' AND boxes.OPEN_UPDATE_TIME < (NOW() - INTERVAL 2 MINUTE)
 AND NOT EXISTS (SELECT 1 FROM notifications WHERE notifications.TYPE_ITEM=boxes.ID AND notifications.TYPE='openDoor' AND notifications.DATE=boxes.OPEN_UPDATE_TIME)", array(), false);
 foreach ((array) $openDoors as $openDoor){
   echo "----------------------------------"."\n";

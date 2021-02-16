@@ -1,5 +1,6 @@
 <?php
 
+echo 'Company : '.$company."\n";
 if($company=='Actiris'){
   require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
   include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
@@ -16,23 +17,25 @@ if($company=='Actiris'){
   $bikeID=$informations[0]['BIKE_ID'];
   $dateStart=$informations[0]['DATE_START_2'];
 
+  echo "date start : ".$dateStart."\n";
+
+
   $nextBooking = execSQL("select * from reservations WHERE BIKE_ID='$bikeID' AND DATE_START_2 > '$dateStart' AND STAANN != 'D'", array(), false);
   if($nextBooking != NULL){
     $nextBookingStart=new DateTime($nextBooking[0]['DATE_START_2'], new DateTimeZone('Europe/Brussels'));
     $nextBookingStartString=$nextBookingStart->format('d/m/Y h:i');
-    echo $bikeID;
-    die;
     $now=new DateTime("now", new DateTimeZone('Europe/Brussels'));
     $interval = $now->diff($nextBookingStart);
     $intervalHours = $interval->format('%h');
   }
+
+  echo "environnement : ".constant('ENVIRONMENT')."\n";
 
   require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
   $mail = new PHPMailer();
   $mail->IsHTML(true);                                    // Set email format to HTML
   $mail->CharSet = 'UTF-8';
 
-  echo "environnement : ".constant('ENVIRONMENT')."\n";
 
   if(constant('ENVIRONMENT') == "production"){
     $mail->AddAddress($email);
@@ -40,14 +43,12 @@ if($company=='Actiris'){
       $mail->AddAddress("antoine@kameobikes.com");
     }
     if($extension=='1'){
-      //$mail->AddCC("bookabike@actiris.be");
+      $mail->AddCC("bookabike@actiris.be");
     }
     $mail->addBcc("antoine@kameobikes.com");
   }else if(constant('ENVIRONMENT') == "test"){
     $mail->AddAddress("antoine@kameobikes.com");
   }
-
-  echo "company : ".$company."\n";
 
   if($company=='Actiris'){
     $mail->From = "bookabike@actiris.be";

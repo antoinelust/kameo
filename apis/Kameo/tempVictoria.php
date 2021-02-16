@@ -19,8 +19,8 @@ $dossier = '../../images_bikes/atraiter/';
 $dossier2= '../../images_bikes/';
 while($row = mysqli_fetch_array($result)){
   echo $row['BRAND']." - ".$row['MODEL']." - ".$row['FRAME_TYPE']."\n";
-  $fichier =  $dossier.strtolower(str_replace(" ", "_", $row["BRAND"]))."_".strtolower(str_replace(array('', '.'), "_", $row["MODEL"]))."_".strtolower($row["FRAME_TYPE"]).".JPG";
-  $fichier_mini =  $dossier.strtolower(str_replace(" ", "_", $row["BRAND"]))."_".strtolower(str_replace(array('', '.'), "_", $row["MODEL"]))."_".strtolower($row["FRAME_TYPE"])."_mini.JPG";
+  $fichier =  $dossier.strtolower(str_replace(" ", "_", $row["BRAND"]))."_".strtolower(str_replace(array(' ', '.'), "_", $row["MODEL"]))."_".strtolower($row["FRAME_TYPE"]).".jpg";
+  $fichier_mini =  $dossier.strtolower(str_replace(" ", "_", $row["BRAND"]))."_".strtolower(str_replace(array(' ', '.'), "_", $row["MODEL"]))."_".strtolower($row["FRAME_TYPE"])."_mini.jpg";
   if (file_exists($fichier)) {
     rename($fichier, $dossier2.$row["ID"].'.jpg');
     echo "fichier principal trouvé !\n";

@@ -6,8 +6,6 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 $lateBookings = execSQL("SELECT aa.ID as reservationID, aa.BIKE_ID, aa.DATE_END_2, bb.ID as customerID, bb.COMPANY FROM reservations aa, customer_referential bb WHERE aa.STATUS='Open' AND (aa.STAANN <> 'D' OR aa.STAANN is NULL) AND aa.DATE_END_2 < CURRENT_TIMESTAMP AND aa.EMAIL=bb.EMAIL", array(), false);
 foreach ((array) $lateBookings as $lateBooking) {
   if($lateBooking['COMPANY']=="Actiris"){
-
-
     $bikeID = $lateBooking['BIKE_ID'];
     $dateEnd = $lateBooking['DATE_END_2'];
 
@@ -17,7 +15,7 @@ foreach ((array) $lateBookings as $lateBooking) {
       $nextBookingStart = $nextBooking[0]['DATE_START_2'];
       $nextBookingEnd = $nextBooking[0]['DATE_END_2'];
       $nextBookingID = $nextBooking[0]['ID'];
-      echo "Next Booking ID : ".$nextBookingID;
+      echo "Next Booking ID : ".$nextBookingID."\n";
       $customName =  $nextBooking[0]['MODEL'];
       $nextBookingEMAIL = $nextBooking[0]['EMAIL'];
       $company = $nextBooking[0]['COMPANY'];
@@ -36,17 +34,21 @@ foreach ((array) $lateBookings as $lateBooking) {
 
       if($now > $nextBookingDate){
         $warnNextBooking = false;
+        echo "Do not warn next user \n";
       }else if(($numberOfMinutes2 > ($numberOfMinutes1-30 ) && $numberOfMinutes1 < 120) || ($numberOfMinutes2 > ($numberOfMinutes1-5 ) && $numberOfMinutes1 < 15) ){
   			$warnNextBooking = true;
+        echo "Mail sent to next user \n";
   		}else{
+        echo "Do not warn next user \n";
   			$warnNextBooking = false;
   		}
 
-      echo 'Number of Minutes 1 : '.$numberOfMinutes1;
-      echo 'Number of Minutes 2 : '.$numberOfMinutes2;
-      echo 'Now : '.$now->format('d/m/Y H:i');
-      echo 'NextbookingDate : '.$nextBookingDate->format('d/m/Y H:i');
-      echo "Warn next booking ? ".$warnNextBooking;
+      echo 'Number of Minutes 1 : '.$numberOfMinutes1."\n";
+      echo 'Number of Minutes 2 : '.$numberOfMinutes2."\n";
+      echo 'Now : '.$now->format('d/m/Y H:i')."\n";
+      echo 'NextbookingDate : '.$nextBookingDate->format('d/m/Y H:i')."\n";
+      echo "Warn next booking ? ".$warnNextBooking."\n";
+      echo "--------------------- \n";
 
       if($warnNextBooking){
         execSQL("INSERT INTO `notifications` ( `HEU_MAJ`, `USR_MAJ`, `DATE`, `TEXT`, `READ`, `TYPE`, `USER_ID`, `TYPE_ITEM`, `STAAN`) VALUES (CURRENT_TIMESTAMP, 'identifyLateBooking.php', CURRENT_TIMESTAMP, '', 'N', 'lateBookingNextUser', ?, ?, NULL)", array('ii', $nextBooking[0]['customerID'], $nextBookingID), true);

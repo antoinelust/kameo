@@ -602,7 +602,16 @@
                                   if($messageForNextBooking != NULL){
                                     $body=$body."Message de l'utilisateur précédent lié au retard de la réservation précédente : <br> <em>".$messageForNextBooking."</em><br><br>";
                                   }
+                                  $body=$body."</span>";
+
+                                  $body=$body."<span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
+                                  Uw  $nextBookingID reservering gaat binnenkort beginnen en de gebruiker heeft ons laten weten dat hij/ze de sleutel helaas na het begin van uw reservering zullen teruggeven. Inderdaad, het wordt ingediend voor ".$newEndDateString.".<br>
+                                  Wij nodigen u daarom uit om uw reservering te wijzigen om een andere fiets te kiezen.<br><br>";
+                                  if($messageForNextBooking != NULL){
+                                    $body=$body."Bericht van de vorige gebruiker met betrekking tot de vertraging van de vorige reservering : <br> <em>".$messageForNextBooking."</em><br><br>";
+                                  }
                                   $body=$body."</span>
+
                                   <br>
                                   <br>
                                 </div>

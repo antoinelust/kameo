@@ -13,11 +13,11 @@ foreach ((array) $lateBookings as $lateBooking) {
   echo "Minutes : ".$minutes."\n";
   echo "ID réservation : ".$lateBooking['reservationID']."\n";
   echo "Fin de réservation : ".$lateBooking['DATE_END_2']."\n";
-  echo "Extension : ".$lateBooking['EXTENSIONS'];
+  echo "Extension : ".$lateBooking['EXTENSIONS']."\n";
   $company = $lateBooking['COMPANY'];
 
   $time = new DateTime('now', new DateTimeZone('Europe/Brussels'));
-  $time->add(new DateInterval('PT' . $minutes . 'M'));
+  $time->sub(new DateInterval('PT' . $minutes . 'M'));
   if($reservationEnd < $time){
     echo "MAIL - Génération du mail car l'heure actuelle est supérieure de ".$minutes." minutes à l'heure de fin de la réservation \n";
     execSQL("INSERT INTO `notifications` ( `HEU_MAJ`, `USR_MAJ`, `DATE`, `TEXT`, `READ`, `TYPE`, `USER_ID`, `TYPE_ITEM`, `STAAN`) VALUES (CURRENT_TIMESTAMP, 'identifyLateBooking.php', CURRENT_TIMESTAMP, ?, 'N', 'lateBooking', ?, ?, NULL)", array('sii', $lateBooking['EXTENSIONS'], $lateBooking['customerID'], $lateBooking['reservationID']), true);

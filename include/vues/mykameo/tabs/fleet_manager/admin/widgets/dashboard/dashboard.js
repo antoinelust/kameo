@@ -84,7 +84,7 @@ function list_errors() {
     method: "get",
     data: {
       action: "list",
-      item: "bikes",
+      item: "bikesAndBoxes",
     },
     success: function (response) {
       if (response.response == "error") {
@@ -165,8 +165,7 @@ function list_errors() {
         dest = dest.concat("</tbody></table>");
         $("#dashboardBodyBikes").html(dest);
         var i = 0;
-        var dest =
-          '<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">ID</th><th scope="col"></th><th scope="col">Description</th></thead><tbody>';
+        var dest = '<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">ID</th><th scope="col">'+traduction.generic_ref+'</th><th scope="col">Description</th></thead><tbody>';
         while (i < response.bike.bill.number) {
           var bill = response.bike.bill[i];
           if (bill.bikeNumber == null) {
@@ -188,6 +187,21 @@ function list_errors() {
           dest = dest.concat(temp);
           i++;
         }
+
+        response.box.bill.forEach(function(bill){
+          var temp =
+            '<tr><td scope="row">' +
+            (i + 1) +
+            '</td><td> Borne de chez ' +
+            bill.company + ' - ID :' +
+            bill.boxID +
+            "</td><td>" +
+            bill.description +
+            "</td><td></tr>";
+          //onclick=\"set_required_image('false')\"
+          dest = dest.concat(temp);
+          i++;
+        })
         dest = dest.concat("</tbody></table>");
         $("#dashboardBodyBills").html(dest);
         var i = 0;
