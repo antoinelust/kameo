@@ -168,12 +168,12 @@ try{
 
       include 'connexion.php';
 
-      $sql="(select aa.ID, BRAND as brand, aa.MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, count(case when bb.SIZE = 'XS' then 1 end) as stockXS, count(case when bb.SIZE = 'S' then 1 end) as stockS, count(case when bb.SIZE = 'M' then 1 end) as stockM, count(case when bb.SIZE = 'L' then 1 end) as stockL, count(case when bb.SIZE = 'XL' then 1 end) as stockXL, count(case when bb.SIZE = 'Uni' then 1 end) as stockUni, COUNT(1) as stockTotal
+      $sql="(select aa.ID, BRAND as brand, aa.MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, count(case when bb.SIZE = 'XS' then 1 end) as stockXS, count(case when bb.SIZE = 'S' then 1 end) as stockS, count(case when bb.SIZE = 'M' then 1 end) as stockM, count(case when bb.SIZE = 'L' then 1 end) as stockL, count(case when bb.SIZE = 'XL' then 1 end) as stockXL, count(case when bb.SIZE = 'Uni' then 1 end) as stockUni, COUNT(1) as stockTotal, SIZES as sizes
       from bike_catalog aa, customer_bikes bb WHERE aa.ID=bb.TYPE and aa.STAANN != 'D' and bb.COMPANY='KAMEO' GROUP BY TYPE)
 
       UNION ALL
 
-      (select ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, '0' as stockXS, '0' as stockS, '0' as stockM, '0' as stockL, '0' as stockXL , '0' as stockUni, 0 as stockTotal
+      (select ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, LINK as url, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, '0' as stockXS, '0' as stockS, '0' as stockM, '0' as stockL, '0' as stockXL , '0' as stockUni, 0 as stockTotal, SIZES as sizes
       from bike_catalog where STAANN != 'D' AND not EXISTS (SELECT 1 from customer_bikes where COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE))
 
       ORDER BY stockTotal DESC";
@@ -247,7 +247,7 @@ try{
       $response['img']=$response['ID'];
 
 ///Code test non assignation contart pas undefined
-      include 'connexion.php'; 
+      include 'connexion.php';
       $sqlStatusGet = "SELECT * FROM client_orders WHERE ID = '$IDOrder';";
       $resultStatusGet = mysqli_query($conn, $sqlStatusGet);
       $resultat = mysqli_fetch_assoc($resultStatusGet);
@@ -263,9 +263,9 @@ try{
         FROM customer_bikes WHERE ID = '$tempBikeID'";
         $resultContrat = mysqli_query($conn, $sqlContrat);
         $rowContrat = $resultContrat->fetch_assoc();
-        $response['contract'] = $rowContrat['CONTRACT_TYPE'];  
+        $response['contract'] = $rowContrat['CONTRACT_TYPE'];
       }
-     
+
       echo json_encode($response);
     }
   }

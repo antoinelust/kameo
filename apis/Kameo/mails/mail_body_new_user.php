@@ -70,26 +70,22 @@ $body = $body."
                 <![endif]-->
                 <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:100%; min-width:100%;\" width=\"100%\" class=\"mcnTextContentContainer\">
                   <tbody><tr>
-                    <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
 
-                      <h3>Félicitations!&nbsp;</h3>
+                    <h3>Félicitations!&nbsp;</h3>
 
-                      <p>Vous recevez cet email car vous venez d'être ajouté aux utilisateurs des vélos KAMEO.<br>
-                      Vous pouvez dès à présent vous connecter à votre espace en ligne <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.<br>
-                      <br>
-                      <strong>Votre identifiant:</strong> $email <br>
-                      <strong>Votre mot de passe:</strong> $password_unencrypted</p>
-                    </td>
-                    <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">
+                    <p>Vous recevez cet email car vous venez d'être ajouté aux utilisateurs des vélos KAMEO.<br>
+                    Vous pouvez dès à présent vous connecter à votre espace en ligne <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.<br>
+                    <br>
+                    <strong>Votre identifiant:</strong> $email <br>
+                    <strong>Votre mot de passe:</strong> $password_unencrypted</p>
 
-                      <h3>Gefeliciteerd!!&nbsp;</h3>
+                    <h3>Gefeliciteerd!!&nbsp;</h3>
 
-                      <p>U ontvangt deze e-mail omdat u vanaf nu toegang hebt aan de KAMEO-fietsen.<br>
-                      U kunt zich aanmelden op uw account <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.<br>
-                      <br>
-                      <strong>Gebruikersnaam:</strong> $email <br>
-                      <strong>Wachtwoord:</strong> $password_unencrypted</p>
-                    </td>
+                    <p>U ontvangt deze e-mail omdat u vanaf nu toegang hebt aan de KAMEO-fietsen.<br>
+                    U kunt zich aanmelden op uw account <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.<br>
+                    <br>
+                    <strong>Gebruikersnaam:</strong> $email <br>
+                    <strong>Wachtwoord:</strong> $password_unencrypted</p>
                   </tr>
                 </tbody></table>
                 <!--[if mso]>

@@ -52,11 +52,14 @@ while($row = mysqli_fetch_array($result)){
     echo "fichier manquant ! : ".$row['BRAND']." ".$row['MODEL']." ".$ROW['FRAME_TYPE']." - ".$fichier."\n";
   }else{
     echo "fichier présent !\n";
+    echo "taille de l'image : ".(getimagesize($fichier)[0]/getimagesize($fichier)[1])."\n";
   }
   if (!file_exists($fichier_mini)){
     echo "fichier mini manquant ! : ".$row['BRAND']." ".$row['MODEL']." ".$ROW['FRAME_TYPE']." - ".$fichier_mini."\n";
   }else{
     echo "fichier mini présent !\n";
+    echo "taille de l'image : ".(getimagesize($fichier_mini)[0]/getimagesize($fichier_mini)[1])."\n";
+
   }
 }
 
