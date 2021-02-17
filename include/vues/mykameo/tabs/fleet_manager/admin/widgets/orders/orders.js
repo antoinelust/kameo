@@ -33,15 +33,15 @@ function get_bike_listing() {
       $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
       $("#widget-order-form select[name=assignBike]").find("option").remove().end();
 
-   
       if(response.contract==null){
+       
        if(response.numberType==0){
-         $('#widget-order-form label[name=phraseNonAssignation]').text('Aucun vélo en stock disponible pour cette commande');
+         $('#widget-order-form label[name=phraseNonAssignation]').text('Aucun vélo disponible pour cette commande');
          $('#widget-order-form div[name=commandeVeloDiv]').show();
          $('#widget-order-form div[name=assignBikeDiv]').hide();
        }
        else{
-
+         
          $('#widget-order-form div[name=commandeVeloDiv]').hide();
          $('#widget-order-form div[name=assignBikeDiv]').show();
        }
@@ -51,10 +51,10 @@ function get_bike_listing() {
         i++;
       }
     }
-    else {
+    else{
+     
      $('#widget-order-form label[name=phraseNonAssignation]').text('Vélo déja assigné pour cette commande');
      $('#widget-order-form div[name=commandeVeloDiv]').show();
-     $('#widget-order-form button[name=commanderVelo]').hide();
      $('#widget-order-form div[name=assignBikeDiv]').hide();
    }
  }
@@ -124,7 +124,7 @@ function get_orders_listing() {
         }
         else{
           temp="<tr ><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
-
+          //si closed et pas mail mettre en bleu sinon noir   
         }
 
         dest=dest.concat(temp);
@@ -190,13 +190,6 @@ $('body').on('click', '.updateCommand',function(){
   $("#widget-order-form input[name=action]").val("update");
 });
 
-$('body').on('click', '.testAssignation',function(){
-   console.log("ok");
-   $(".bikeManagementTitle").html("Test Assignation");
-   $("#widget-bikeManagement-form input[name=color]").val('etst');
-});
-
-
 $('body').on('click', '.addOrder',function(){
   $('#widget-order-form')[0].reset();
   $("#widget-order-form select[name=name]").find("option")
@@ -235,9 +228,9 @@ function list_bikes(){
           i++;
         }
        // $('#widget-order-form div[name=assignationBikeHide]').hide();
-     }
-   }
- });
+      }
+    }
+  });
 }
 
 function retrieve_command(ID){

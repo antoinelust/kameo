@@ -273,18 +273,19 @@ if(isset($_POST['action'])){
 				}
 
 				if($row['STATUS']=='confirmed'){
-					$sqlStatus = "SELECT BIKE_ID
-					FROM customer_bike_access WHERE EMAIL = '$emailUser'";
-					$resultStatus = mysqli_query($conn, $sqlStatus);
-					$rowStatus = $resultStatus->fetch_assoc();
-					$tempBikeID = $rowStatus['BIKE_ID'];
-
-					if($tempBikeID!=null){
-						$sqlContrat = "SELECT CONTRACT_TYPE
-						FROM customer_bikes WHERE ID = '$tempBikeID'";
-						$resultContrat = mysqli_query($conn, $sqlContrat);
-						$rowContrat = $resultContrat->fetch_assoc();
-						$response['order'][$i]['contract'] = $rowContrat['CONTRACT_TYPE'];
+					if($emailUser != ''){
+						$sqlStatus = "SELECT BIKE_ID
+						FROM customer_bike_access WHERE EMAIL = '$emailUser'";
+						$resultStatus = mysqli_query($conn, $sqlStatus);
+						$rowStatus = $resultStatus->fetch_assoc();
+						$tempBikeID = $rowStatus['BIKE_ID'];
+						if($tempBikeID!=null){
+							$sqlContrat = "SELECT CONTRACT_TYPE
+							FROM customer_bikes WHERE ID = '$tempBikeID'";
+							$resultContrat = mysqli_query($conn, $sqlContrat);
+							$rowContrat = $resultContrat->fetch_assoc();
+							$response['order'][$i]['contract'] = $rowContrat['CONTRACT_TYPE'];
+						}
 					}
 				}
 				$i++;

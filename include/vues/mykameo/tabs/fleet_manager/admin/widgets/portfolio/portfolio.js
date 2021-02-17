@@ -18,11 +18,10 @@ $(".fleetmanager").click(function () {
     },
   });
   document.getElementsByClassName('portfolioManagerClick')[0].addEventListener('click', function() { listPortfolioBikes()}, false);
-
 });
 
 //FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it
-function listPortfolioBikes() {
+function listPortfolioBikes(){
   $.ajax({
     url: "apis/Kameo/load_portfolio.php",
     type: "get",
@@ -34,6 +33,13 @@ function listPortfolioBikes() {
         var dest =
           '<table class="table table-condensed" id="portfolioBikeListing"><h4 class="fr-inline text-green">Vélos du catalogue:</h4><h4 class="en-inline text-green">Portfolio bikes:</h4><h4 class="nl-inline text-green">Portfolio bikes:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addPortfolioBike" data-toggle="modal" onclick="initializeCreatePortfolioBike()" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class="fr-inline">Marque</span><span class="en-inline">Brand</span><span class="nl-inline">Brand</span></th><th><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th><span class="fr-inline">Utilisation</span><span class="en-inline">Use</span><span class="nl-inline">Use</span></th><th><span class="fr-inline">Electrique ?</span><span class="en-inline">Electric</span><span class="nl-inline">Electric</span></th><th><span class="fr-inline">Cadre</span><span class="en-inline">Frame</span><span class="nl-inline">Frame</span></th><th><span class="fr-inline">Prix</span><span class="en-inline">Price</span><span class="nl-inline">Price</span></th><th>Afficher</th><th>Saison</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>Uni</th><th>Total</th><th></th></tr></thead><tbody>';
         for (i = 0; i < response.bikeNumber; i++) {
+
+          if(response.bike[i].ID=='63'){
+            console.log(response.bike[i]);
+          }
+
+          var sizes= response.bike[i].sizes==null ? [""] : response.bike[i].sizes.split(",");
+
           dest = dest.concat(
             "<tr><td class='tooltipPortfolioBikes' rel='tooltip' data-toggle='tooltip' data-trigger='hover' data-placement='bottom' data-html='true' data-title=\"<div style='position:relative;overflow:auto'>"+
             "<img src='images_bikes/"+response.bike[i].ID+"_mini.jpg' /></div>"+
@@ -55,7 +61,19 @@ function listPortfolioBikes() {
               response.bike[i].display +
               "</td><td>" +
               response.bike[i].season +
-              "</td><td>"+response.bike[i].stockXS+"</td><td>"+response.bike[i].stockS+"</td><td>"+response.bike[i].stockM+"</td><td>"+response.bike[i].stockL+"</td><td>"+response.bike[i].stockXL+"</td><td>"+response.bike[i].stockUni+"</td><td>"+response.bike[i].stockTotal+"</td><td><a href='#' class='text-green updatePortfolioClick' onclick='initializeUpdatePortfolioBike(\"" +
+              "</td><td>"+
+              (sizes.includes("XS") ? response.bike[i].stockXS : (response.bike[i].stockXS>0 ? ("<span class='text-red'>"+response.bike[i].stockXS+"</span>") : ""))+
+              "</td><td>"+
+              (sizes.includes("S") ? response.bike[i].stockS : (response.bike[i].stockS>0 ? ("<span class='text-red'>"+response.bike[i].stockS+"</span>") : ""))+
+              "</td><td>"+
+              (sizes.includes("M") ? response.bike[i].stockM : (response.bike[i].stockM>0 ? ("<span class='text-red'>"+response.bike[i].stockM+"</span>") : ""))+
+              "</td><td>"+
+              (sizes.includes("L") ? response.bike[i].stockL : (response.bike[i].stockL>0 ? ("<span class='text-red'>"+response.bike[i].stockL+"</span>") : ""))+
+              "</td><td>"+
+              (sizes.includes("XL") ? response.bike[i].stockXL : (response.bike[i].stockXL>0 ? ("<span class='text-red'>"+response.bike[i].stockXL+"</span>") : ""))+
+              "</td><td>"+
+              (sizes.includes("unique") ? response.bike[i].stockUni : (response.bike[i].stockUni>0 ? ("<span class='text-red'>"+response.bike[i].stockUni+"</span>") : ""))+
+              "</td><td>"+response.bike[i].stockTotal+"</td><td><a href='#' class='text-green updatePortfolioClick' onclick='initializeUpdatePortfolioBike(\"" +
               response.bike[i].ID +
               "\")' data-target='#updatePortfolioBike' data-toggle='modal'>Mettre à jour </a></td></tr>"
           );
