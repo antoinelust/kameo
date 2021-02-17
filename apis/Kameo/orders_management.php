@@ -62,6 +62,10 @@ if(isset($_POST['action'])){
 		$conn->close();
 
 
+			
+	
+
+
 	}
 	else if($action=='update'){
 

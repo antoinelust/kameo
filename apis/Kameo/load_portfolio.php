@@ -164,6 +164,9 @@ try{
         }
         $response['realImpactCalculated']="Y";
       }
+      else {
+        $response['test'] = 'vide';
+      }
 
 
       include 'connexion.php';
@@ -265,7 +268,6 @@ try{
         $rowContrat = $resultContrat->fetch_assoc();
         $response['contract'] = $rowContrat['CONTRACT_TYPE'];  
       }
-     
       echo json_encode($response);
     }
   }

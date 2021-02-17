@@ -43,8 +43,6 @@ if($id == null){
 
 if($id != NULL)
 {
-
-
     $sql="SELECT * FROM customer_bikes  WHERE ID = '$id'";
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
