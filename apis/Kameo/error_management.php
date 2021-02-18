@@ -22,8 +22,6 @@ $token = getBearerToken();
           if($item=="bikesAndBoxes"){
 
             $response=array();
-            $response['company']['img']['number']=0;
-
             include 'connexion.php';
             $sql="SELECT * FROM company_actions aa WHERE not exists (select 1 from companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE)";
 
@@ -36,30 +34,25 @@ $token = getBearerToken();
             $conn->close();
 
             $i=0;
-
+            $response['company']=array();
             while($row = mysqli_fetch_array($result)){
                 $response['company']['action'][$i]['id']=$row['ID'];
                 $response['company']['action'][$i]['description']="Pas de société définie pour l'action suivante.<br/><strong>Titre : </strong>".$row['TITLE']."<br /> Actuellement identifié sur la société : <strong>".$row['COMPANY']."</strong>";
                 $i++;
             }
-
-            $response['company']['action']['number']=$i;
-
             include 'connexion.php';
             $sql="SELECT ID as bikeID, FRAME_NUMBER as frameNumber from customer_bikes WHERE CONTRACT_TYPE='selling' AND CONTRACT_START is NULL";
             $result = $conn->query($sql);
 
+            $response['bike']['selling']=array();
             if ($result && $result = $conn->query($sql)){
               $response['bike']['selling'] = $result->fetch_all(MYSQLI_ASSOC);
-              $response['bike']['selling']['number'] = $result->num_rows;
             }else{
-                if ($conn->query($sql) === FALSE){
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }else{
-                    $response['bike']['selling']['number'] = 0;
-                }
+              if ($conn->query($sql) === FALSE){
+                  $response = array ('response'=>'error', 'message'=> $conn->error);
+                  echo json_encode($response);
+                  die;
+              }
             }
 
             include 'connexion.php';
@@ -68,15 +61,12 @@ $token = getBearerToken();
 
             if ($result && $result = $conn->query($sql)){
               $response['bike']['sellingCompany'] = $result->fetch_all(MYSQLI_ASSOC);
-              $response['bike']['sellingCompany']['number'] = $result->num_rows;
             }else{
-                if ($conn->query($sql) === FALSE){
-                    $response = array ('response'=>'error', 'message'=> $conn->error);
-                    echo json_encode($response);
-                    die;
-                }else{
-                    $response['bike']['sellingCompany']['number'] = 0;
-                }
+              if ($conn->query($sql) === FALSE){
+                  $response = array ('response'=>'error', 'message'=> $conn->error);
+                  echo json_encode($response);
+                  die;
+              }
             }
 
             $sql="SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE, customer_bikes.ESTIMATED_DELIVERY_DATE FROM `client_orders`, customer_bike_access, customer_bikes WHERE client_orders.EMAIL=customer_bike_access.EMAIL AND customer_bike_access.BIKE_ID=customer_bikes.ID AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 14 DAY))";
@@ -107,9 +97,6 @@ $token = getBearerToken();
                 $response['bike']['stock'][$i]['frameNumber']=$row['FRAME_NUMBER'];
                 $i++;
             }
-
-            $response['bike']['stock']['number']=$i;
-
             include 'connexion.php';
             $sql="SELECT * FROM customer_bikes aa WHERE COMPANY != 'KAMEO' AND CONTRACT_START is NOT NULL and STAANN != 'D' and (CONTRACT_TYPE = 'leasing' OR CONTRACT_TYPE = 'renting') and BILLING_TYPE != 'paid'";
             if ($conn->query($sql) === FALSE) {
@@ -130,7 +117,6 @@ $token = getBearerToken();
                 $bikeNumber=$row['FRAME_NUMBER'];
                 $contractStart=new DateTime($row['CONTRACT_START']);
                 $dateTemp=$contractStart;
-
                 if($row['CONTRACT_TYPE']=='leasing'){
                     if($row['CONTRACT_END'] != NULL){
                         $contractEnd=new DateTime($row['CONTRACT_END']);
@@ -142,8 +128,6 @@ $token = getBearerToken();
                         $contractEnd=new DateTime('now');
                     }
                 }else if($row['CONTRACT_TYPE']=='renting'){
-
-
                     if($row['CONTRACT_END'] != NULL){
                         $contractEnd=new DateTime($row['CONTRACT_END']);
                         $now=new DateTime('now');
@@ -268,8 +252,6 @@ $token = getBearerToken();
                     $i++;
                 }
             }
-
-            $response['bike']['bill']['number']=$i;
             $conn->close();
 
             include 'connexion.php';
@@ -344,7 +326,6 @@ $token = getBearerToken();
                     $dateTemp->setDate($year, $month, $dayTemp);
                 }
             }
-            $response['bike']['bill']['number']=$i;
             $response['response']="success";
             echo json_encode($response);
             die;

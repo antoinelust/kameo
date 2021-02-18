@@ -37,7 +37,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->IsHTML(true);                                    // Set email format to HTML
         $mail->CharSet = 'UTF-8';
 
-        $mail->AddAddress('younes.chillah@kameobikes.com', 'Younes Chillah');
+				$mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
+				$mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
 
 
         $mail->From = $email;

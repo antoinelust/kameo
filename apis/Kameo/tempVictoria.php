@@ -8,7 +8,7 @@ include 'globalfunctions.php';
 
 include 'connexion.php';
 
-$sql="SELECT * from bike_catalog WHERE SEASON='2020-2021' AND BRAND='Victoria'";
+$sql="SELECT * from bike_catalog WHERE SEASON='2019-2020' AND BRAND='Victoria'";
 if ($conn->query($sql) === FALSE){
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);
@@ -63,20 +63,4 @@ while($row = mysqli_fetch_array($result)){
   }
 }
 
-
-
-
-
-
-/*
-
-$extensions = array('.jpg');
-$dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';
-$fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
- if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
- {
-    $upload=true;
-    $path= $dossier . $fichier;
- }
-*/
 ?>

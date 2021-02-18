@@ -203,7 +203,7 @@ function list_stock_accessories(){
        "action": "listStock",
      },
      success : function(data) {
-       $('#stockAccessoriesList').dataTable( {
+       var table = $('#stockAccessoriesList').dataTable( {
        destroy: true,
        responsive: true,
        bInfo : false,
@@ -267,6 +267,22 @@ function list_stock_accessories(){
          [0, "desc"]
        ]
       });
+
+      $("#stockAccessoriesList thead tr").clone(true).appendTo("#stockAccessoriesList thead");
+
+      $("#stockAccessoriesList thead tr:eq(1) th").each(function (i) {
+        var title = $(this).text();
+        $(this).html('<input style="width: 100%" type="text" />');
+
+        $("input", this).on("keyup change", function () {
+          if (table.column(i).search() !== this.value) {
+            table.column(i).search(this.value).draw();
+          }
+        });
+      });
+
+
+
       $('.updateStockAccessorylink').off();
       $('.updateStockAccessorylink').click(function(){
         get_stock_accessory($(this).data("id"));
@@ -286,7 +302,6 @@ function get_stock_accessory(ID){
      },
      success : function(data) {
        if(data.response="success"){
-         console.log(data);
          $("#widget-manageStockAccessory-form").trigger("reset");
          $("#widget-manageStockAccessory-form input[name=action]").val("updateStockAccessory");
          $("#widget-manageStockAccessory-form input[name=ID]").val(data.ID);

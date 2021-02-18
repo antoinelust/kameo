@@ -52,28 +52,14 @@ while($row = mysqli_fetch_array($result)){
     echo "fichier manquant ! : ".$row['BRAND']." ".$row['MODEL']." ".$ROW['FRAME_TYPE']." - ".$fichier."\n";
   }else{
     echo "fichier présent !\n";
+    echo "taille de l'image : ".(getimagesize($fichier)[0]/getimagesize($fichier)[1])."\n";
   }
   if (!file_exists($fichier_mini)){
     echo "fichier mini manquant ! : ".$row['BRAND']." ".$row['MODEL']." ".$ROW['FRAME_TYPE']." - ".$fichier_mini."\n";
   }else{
     echo "fichier mini présent !\n";
+    echo "taille de l'image : ".(getimagesize($fichier_mini)[0]/getimagesize($fichier_mini)[1])."\n";
   }
 }
 
-
-
-
-
-
-/*
-
-$extensions = array('.jpg');
-$dossier =  $_SERVER['DOCUMENT_ROOT'].'/images_bikes/';
-$fichier = strtolower(str_replace(" ", "-", $brand))."_".strtolower(str_replace(" ", "-", $model))."_".strtolower($frameType).$extension;
- if(move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
- {
-    $upload=true;
-    $path= $dossier . $fichier;
- }
-*/
 ?>
