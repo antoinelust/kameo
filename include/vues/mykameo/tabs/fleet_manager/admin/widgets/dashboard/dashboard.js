@@ -184,7 +184,7 @@ function list_errors() {
             i++;
           })
         }
-        if(typeof response.bike.bill != 'undefined'){
+        if(typeof response.box.bill != 'undefined'){
           response.box.bill.forEach(function(bill){
             var temp =
               '<tr><td scope="row">' +

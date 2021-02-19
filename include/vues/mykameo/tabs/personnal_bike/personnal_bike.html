@@ -1,18 +1,4 @@
 <div class="tab-pane" id="personnalBike">
-  <!-- TAB2: RÉSERVER UN VELO -->
-  <?php
-  /** @TODO: REPLACE BY API CALL **/
-  $sql = "select aa.EMAIL, aa.FRAME_NUMBER, aa.NOM, aa.PRENOM, aa.PHONE, aa.ADRESS, aa.POSTAL_CODE, aa.CITY, aa.WORK_ADRESS, aa.WORK_POSTAL_CODE, aa.WORK_CITY, bb.CONTRACT_START, bb.CONTRACT_END, dd.BRAND, dd.MODEL, dd.FRAME_TYPE
-  from customer_referential aa, customer_bikes bb, customer_bike_access cc, bike_catalog dd
-  where aa.EMAIL='" . $user_data['EMAIL'] . "' and aa.EMAIL=cc.EMAIL and cc.BIKE_ID=bb.ID and bb.TYPE=dd.ID and cc.TYPE='personnel'";
-  if ($conn->query($sql) === FALSE)
-    die;
-  $row = mysqli_fetch_assoc(mysqli_query($conn, $sql));
-  $contractNumber = 'KAMEO BIKES'; //@TODO: Remove var
-  $contractStart = $row['CONTRACT_START'];
-  $contractEnd = $row['CONTRACT_END'];
-  ?>
-  <?php /**   TRAVEL INFORMATIONS @TODO: NEED REFACTORISATION TO REMOVE BAD DEFINED RESPONSIVITY AND LOAD DATA DYNAMICALLY **/ ?>
 
   <img class="img-responsive img-rounded center" id='personnalBikeImg' alt="Image of Bike">
   <br />
@@ -37,11 +23,16 @@
     </table>
     <a data-target="#calculRachatVeloPersonalTab" class='calculRachatVeloPersonalTabLink text-green' data-toggle="modal" href="#"><?= L::rachatBike_url; ?></a><br><br>
   </div>
-  <hr>
+  <div class="separator"></div>
 
-  <h4 class="text-green"> Actions prises sur le vélo</h4>
+  <h4 class="text-green"><?= L::personnalTab_actionsTaken; ?></h4>
   <table class="table table-striped" id="personnalBikeActionTable" style="width:100%" >
   </table>
+
+  <div class="separator"></div>
+  <h4 class="text-green"><?= L::documentation_actiris_link_title; ?></h4>
+  <div class="col-md-12" id='documentationPersonnalBike'>
+  </div>
 
 </div>
 
@@ -62,7 +53,27 @@
           $('.calculRachatVeloPersonalTabLink').attr("catalogprice", response.catalogPrice);
           $('.calculRachatVeloPersonalTabLink').attr("catalogprice", response.catalogPrice);
           $('#personnalBikeImg').attr('src', "images_bikes/"+response.img+".jpg");
-
+          if(response.brand=="Kayza"){
+            $('#documentationPersonnalBike').append("<a href='docs/modeemploi/KAYZA_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+          }else if(response.brand=="Bzen"){
+            $('#documentationPersonnalBike').append("<a href='docs/modeemploi/BZEN_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+          }else if(response.brand=="Conway"){
+            $('#documentationPersonnalBike').append("<a href='docs/modeemploi/CONWAY_EBIKE.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+          }else if(response.brand=="Douze"){
+            $('#documentationPersonnalBike').append("<a href='docs/modeemploi/DOUZE_G4.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+          }else if(response.brand=="Moustache Bikes"){
+            $('#documentationPersonnalBike').append("<a href='docs/modeemploi/MOUSTACHE_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+          }else if(response.brand=="HNF Nicolai"){
+            $('#documentationPersonnalBike').append("<a href='docs/modeemploi/HNF_XD2.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+          }else if(response.brand=="Victoria"){
+            $('#documentationPersonnalBike').append("<a href='docs/modeemploi/VICTORIA_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+          }else if(response.brand=="Ahooga"){
+            if(response.modelCatalog=="Folding Bike" || response.modelCatalog=="Folding Bike Power"){
+              $('#documentationPersonnalBike').append("<a href='docs/modeemploi/AHOOGA_FOLDING.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+            }else{
+              $('#documentationPersonnalBike').append("<a href='docs/modeemploi/AHOOGA_MODULAR.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
+            }
+          }
         }
       }
     });

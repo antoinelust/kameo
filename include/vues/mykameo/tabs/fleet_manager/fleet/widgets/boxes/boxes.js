@@ -88,6 +88,7 @@ function retrieve_box(id) {
   $("#boxManagement div[name=key]").remove();
   $("#boxManagement div[name=bike]").remove();
   $("#boxManagement div[name=severalBoxes]").html("");
+  $("#boxManagement div[name=keys]").html("");
 
   $.ajax({
     url: "apis/Kameo/boxes/boxes.php",
@@ -155,10 +156,7 @@ function retrieve_box(id) {
             var new_div=document.createElement('div');
             new_div.className = classe;
             new_div.style.textAlign = "center";
-            new_div.setAttribute('name', 'key');
             new_div.setAttribute('style', 'height: 161px;');
-            new_div.setAttribute('draggable', 'true');
-            new_div.setAttribute('ondragstart', 'drag(event)');
             new_div.setAttribute('id', response.keys_in[place].id + '_' + id);
 
             var new_paragraph=document.createElement('p');
@@ -169,7 +167,6 @@ function retrieve_box(id) {
 
 
             var image = document.createElement("img");
-            image.setAttribute('draggable', 'false');
             image.src = 'images/key_in.png';
 
             new_paragraph.appendChild(image);
@@ -226,32 +223,32 @@ function retrieve_box(id) {
           row++;
         }
 
-          // Vélos en déplacement
-          if(response.keys_out){
-            var dateNow = new Date();
-            response.keys_out.forEach(key => {
-              var dateEnd = new Date(key.dateEnd);
-              if(dateEnd<dateNow){
-                var classSpan="text-red";
-              }else{
-                var classSpan="";
-              }
-              $("#boxManagement div[name=in]").before('<div class="col-md-4" name="bike">\
-              <center><img draggable="false" src="images_bikes/'+key.img+'_mini.jpg" style="height:136px;"></center>\
-              <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>'+traduction.generic_start_date+' : ' + key.dateStart.shortDateHours() + '<br><span class="'+classSpan+'">'+traduction.generic_end_date+' : '+ key.dateEnd.shortDateHours() + '</span></center></p></div>');
-            });
+        // Vélos en déplacement
+        if(response.keys_out){
+          var dateNow = new Date();
+          response.keys_out.forEach(key => {
+            var dateEnd = new Date(key.dateEnd);
+            if(dateEnd<dateNow){
+              var classSpan="text-red";
+            }else{
+              var classSpan="";
+            }
+            $("#boxManagement div[name=in]").before('<div class="col-md-4" name="bike">\
+            <center><img draggable="false" src="images_bikes/'+key.img+'_mini.jpg" style="height:136px;"></center>\
+            <p><center><B>'+ key.model + '</B><br>E-mail : ' + key.email + '<br>'+traduction.generic_start_date+' : ' + key.dateStart.shortDateHours() + '<br><span class="'+classSpan+'">'+traduction.generic_end_date+' : '+ key.dateEnd.shortDateHours() + '</span></center></p></div>');
+          });
+        }
 
-          if(response.keys_other_box){
-            $('.severalBoxes').removeClass("hidden");
-            $("#boxManagement div[name=severalBoxes]").removeClass("hidden");
-            response.keys_other_box.forEach(key => {
-              $("#boxManagement div[name=severalBoxes]").append('<div class="col-md-4">\
-              <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
-              <p><center><B>'+ key.model + '</B><br>Bâtiment : ' + key.building + '</center></p></div>');
-            });
-          }else{
-            $('.severalBoxes').addClass("hidden");
-          }
+        if(response.keys_other_box){
+          $('.severalBoxes').removeClass("hidden");
+          $("#boxManagement div[name=severalBoxes]").removeClass("hidden");
+          response.keys_other_box.forEach(key => {
+            $("#boxManagement div[name=severalBoxes]").append('<div class="col-md-4">\
+            <img draggable="false" src="images_bikes/'+key.img+'_mini.jpg">\
+            <p><center><B>'+ key.model + '</B><br>Bâtiment : ' + key.building + '</center></p></div>');
+          });
+        }else{
+          $('.severalBoxes').addClass("hidden");
         }
       }
     },

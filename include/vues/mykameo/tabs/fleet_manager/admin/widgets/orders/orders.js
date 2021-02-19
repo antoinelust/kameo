@@ -13,7 +13,7 @@ $( ".fleetmanager" ).click(function() {
     }
   })
 })
-var price;
+
 
 $('.ordersManagerClick').click(function(){get_orders_listing()});
 
@@ -33,18 +33,15 @@ function get_bike_listing() {
       $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
       $("#widget-order-form select[name=assignBike]").find("option").remove().end();
 
-      price = response.portfolioPrice;
-
       if(response.contract==null){
 
        if(response.numberType==0){
          $('#widget-order-form label[name=phraseNonAssignation]').text('Aucun vélo disponible pour cette commande');
          $('#widget-order-form div[name=commandeVeloDiv]').show();
-         $('#widget-order-form div[name=assignVeloDiv]').show();
          $('#widget-order-form div[name=assignBikeDiv]').hide();
        }
        else{
-         $('#widget-order-form div[name=assignVeloDiv]').hide();
+
          $('#widget-order-form div[name=commandeVeloDiv]').hide();
          $('#widget-order-form div[name=assignBikeDiv]').show();
        }
@@ -57,7 +54,6 @@ function get_bike_listing() {
     else{
 
      $('#widget-order-form label[name=phraseNonAssignation]').text('Vélo déja assigné pour cette commande');
-     $('#widget-order-form div[name=assignVeloDiv]').hide();
      $('#widget-order-form div[name=commandeVeloDiv]').show();
      $('#widget-order-form div[name=assignBikeDiv]').hide();
    }
@@ -78,7 +74,7 @@ function get_orders_listing() {
         console.log(response.message);
       }
       if(response.response == 'success'){
-        var dest="<ul><li style =\"color:red;\">En Rouge les commandes qui doivent encore être assigné à un vélo</li> <li style =\"color:#3CB195;\" >En Vert les commandes dont les vélos sont en attente de livraison </li> <li>En Noir les commandes où on ne doit rien faire</li></ul>";
+        var dest="";
         var temp="<table id=\"ordersListingTable\" data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th>Société</th><th>Utilisateur</th><th>Vélo</th><th>Taille</th><th>Status</th><th>Test ?</th><th>Date Livraison</th><th>Montant</th></tr></thead><tbody>";
         dest=dest.concat(temp);
         var i=0;
@@ -114,20 +110,21 @@ function get_orders_listing() {
           if(response.order[i].status=='confirmed'){
 
            if(response.order[i].contract=='pending_delivery'){
-            temp="<tr style =\"color:#3CB195;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
+            temp="<tr style =\"color:#3CB195;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
           else if(response.order[i].contract==null){
-            temp="<tr style =\"color:red;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
+            temp="<tr style =\"color:red;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
           else if(response.order[i].contract=='order'){
-            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
+            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
           else {
-            temp="<tr style =\"color:blue;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
+            temp="<tr style =\"color:blue;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
         }
         else{
-          temp="<tr ><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+response.order[i].contract+"</td></tr>";
+          temp="<tr ><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+          //si closed et pas mail mettre en bleu sinon noir
         }
 
         dest=dest.concat(temp);
@@ -193,36 +190,6 @@ $('body').on('click', '.updateCommand',function(){
   $("#widget-order-form input[name=action]").val("update");
 });
 
-$('body').on('click', '.testAssignation',function(){
-  $("#widget-bikeManagement-form div[name=pictureDisabled]").hide();
-  $("#widget-bikeManagement-form select[name=portfolioID]").append('<option id= "' +  $('#widget-order-form select[name=portfolioID]').val() +'" value="'+$('#widget-order-form select[name=portfolioID]').val()+ '">' + $('#widget-order-form select[name=portfolioID]').val() ).attr('disabled', false);;
-  $("#widget-bikeManagement-form input[name=size]").val($('#widget-order-form select[name=size]').val());
-  $("#widget-bikeManagement-form select[name=company]").append('<option id= "' +  $('#widget-order-form select[name=company]').val() +'" value="'+ $('#widget-order-form select[name=company]').val()+ '">' +  $('#widget-order-form select[name=company]').val() ).attr('disabled', false);;
-  $("#widget-bikeManagement-form input[name=model]").val( $('#widget-order-form input[name=model]').val());
-  $('#widget-bikeManagement-form select[name=contractType').append("<option value=\"order\">Commande</option>");
-  $("#widget-bikeManagement-form select[name=bikeType]").find("option").remove().end();
-  $("#widget-bikeManagement-form select[name=name]").append('<option id= "' +  $('#widget-order-form select[name=name]').val() +'" value="'+$('#widget-order-form select[name=name]').val()+ '">' + $('#widget-order-form select[name=name]').val() ).attr('disabled', false);;
-  $("#widget-bikeManagement-form select[name=bikeType]").append('<option id= "' +  $('#widget-order-form select[name=type]').val() +'" value="'+$('#widget-order-form select[name=type]').val()+ '">' + $('#widget-order-form select[name=type]').val() ).attr('disabled', false);;
-  $("#widget-bikeManagement-form input[name=email]").val(  $('#widget-order-form input[name=mail]').val());
-  $("#widget-bikeManagement-form input[name=phone]").val(  $('#widget-order-form input[name=phone]').val());
-  $("#widget-bikeManagement-form input[name=action]").val('add');
-  $("#widget-bikeManagement-form input[name=price]").val(price);
-
-  let today = new Date().toISOString().substr(0, 10);
-document.querySelector("#today").value = today;
-  
-
-  $('.contractInfos').fadeOut("slow");
-  $('.billingInfos').fadeOut("slow");
-  $('.buyingInfos').fadeIn("slow");
-  $('.orderInfos').fadeIn("slow");
-
-
-
-  $(".bikeManagementSend").removeClass("hidden");
-  $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Commander');
-});
-
 $('body').on('click', '.addOrder',function(){
   $('#widget-order-form')[0].reset();
   $("#widget-order-form select[name=name]").find("option")
@@ -261,9 +228,9 @@ function list_bikes(){
           i++;
         }
        // $('#widget-order-form div[name=assignationBikeHide]').hide();
-     }
-   }
- });
+      }
+    }
+  });
 }
 
 function retrieve_command(ID){
@@ -309,7 +276,7 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
           $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
           $('#widget-order-form textarea[name=comment]').val(response.order.comment);
-          $('#widget-order-form select[name=assignBike]').val(response.order.stockVelo).attr('disabled', false); 
+          $('#widget-order-form select[name=assignBike]').val(response.order.stockVelo).attr('disabled', false);
 
           if(response.order.testBoolean=="Y"){
             $('#widget-order-form input[name=testBoolean]').prop('checked', true);

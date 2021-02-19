@@ -7,6 +7,8 @@ header_remove("Set-Cookie");
 header_remove("X-Powered-By");
 header_remove("Content-Security-Policy");
 
+include_once 'globalfunctions.php';
+
 $marginBike=0.7;
 $marginOther=0.3;
 $leasingDuration=36;
@@ -50,6 +52,8 @@ function get_prices($retailPrice, $company = NULL){
 
     $response['response']="success";
     $response['retailPrice']=$retailPrice;
+    $response['company']=$company;
+    $response['discount']=$discount;
     $response['leasingPrice']=round($leasingPrice);
 
     $response['HTVARetailPrice']=round($retailPrice);
@@ -65,12 +69,17 @@ function get_prices($retailPrice, $company = NULL){
 
 
 
-if(isset($_POST["retailPrice"])){
-    $retailPrice = $_POST["retailPrice"];
-    $company = isset($_POST['company']) ? addslashes($_POST['company']) : NULL;
-    $response=get_prices($_POST["retailPrice"], $company);
-    echo json_encode($response);
-    die;
+if(isset($_POST["retailPrice"]) || isset($_GET['retailPrice'])){
+  $retailPrice = isset($_POST["retailPrice"]) ? $_POST["retailPrice"] : (isset($_GET['retailPrice']) ? $_GET['retailPrice'] : NULL);
+  $company = isset($_POST["company"]) ? $_POST["company"] : (isset($_GET['company']) ? $_GET['company'] : NULL);
+  $companyID = isset($_POST["companyID"]) ? $_POST["companyID"] : (isset($_GET['companyID']) ? $_GET['companyID'] : NULL);
+  if($company == NULL && $companyID != NULL){
+    $information = execSQL('SELECT * FROM companies WHERE ID=?', array('i', $companyID), false);
+    $company=$information[0]['INTERNAL_REFERENCE'];
+  }
+  $response=get_prices($retailPrice, $company);
+  echo json_encode($response);
+  die;
 }
 
 
