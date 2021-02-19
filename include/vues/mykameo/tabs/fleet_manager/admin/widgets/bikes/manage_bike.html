@@ -35,7 +35,7 @@
                   <div class="col-sm-4">
                     <label for="bikeID">ID</label>
                     <input
-                      type="text"
+                      type="hidden"
                       name="bikeID"
                       class="form-control required"
                       readonly
@@ -140,7 +140,7 @@
                   </div>
                 </div>
 
-                <div class="col-sm-12">
+                <div class="col-sm-12" name="pictureDisabled">
                   <div class="col-sm-4 bikeManagementPicture">
                     <label for="picture">Image du vélo</label>
                     <img id="bikeManagementPicture" alt="image" width="200" />
@@ -229,6 +229,7 @@
                       type="date"
                       name="orderingDate"
                       class="form-control"
+                      id="today"
                     />
                   </div>
                   <div class="col-sm-4 estimatedDeliveryDate">

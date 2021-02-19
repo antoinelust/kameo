@@ -34,10 +34,6 @@ function listPortfolioBikes(){
           '<table class="table table-condensed" id="portfolioBikeListing"><h4 class="fr-inline text-green">Vélos du catalogue:</h4><h4 class="en-inline text-green">Portfolio bikes:</h4><h4 class="nl-inline text-green">Portfolio bikes:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addPortfolioBike" data-toggle="modal" onclick="initializeCreatePortfolioBike()" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a><thead><tr><th>ID</th><th><span class="fr-inline">Marque</span><span class="en-inline">Brand</span><span class="nl-inline">Brand</span></th><th><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th><span class="fr-inline">Utilisation</span><span class="en-inline">Use</span><span class="nl-inline">Use</span></th><th><span class="fr-inline">Electrique ?</span><span class="en-inline">Electric</span><span class="nl-inline">Electric</span></th><th><span class="fr-inline">Cadre</span><span class="en-inline">Frame</span><span class="nl-inline">Frame</span></th><th><span class="fr-inline">Prix</span><span class="en-inline">Price</span><span class="nl-inline">Price</span></th><th>Afficher</th><th>Saison</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>Uni</th><th>Total</th><th></th></tr></thead><tbody>';
         for (i = 0; i < response.bikeNumber; i++) {
 
-          if(response.bike[i].ID=='63'){
-            console.log(response.bike[i]);
-          }
-
           var sizes= response.bike[i].sizes==null ? [""] : response.bike[i].sizes.split(",");
 
           dest = dest.concat(
@@ -82,8 +78,28 @@ function listPortfolioBikes(){
           "portfolioBikesListing"
         ).innerHTML = dest.concat("</tbody></table>");
         displayLanguage();
-        $("#portfolioBikeListing").DataTable({
+
+        $("#portfolioBikeListing thead tr").clone(true).appendTo("#portfolioBikeListing thead");
+
+        $("#portfolioBikeListing thead tr:eq(1) th").each(function (i) {
+          var title = $(this).text();
+          $(this).html('<input style="width: 100%" type="text" />');
+
+          $("input", this).on("keyup change", function () {
+            if (table.column(i).search() !== this.value) {
+              table.column(i).search(this.value).draw();
+            }
+          });
+        });
+
+
+
+        var table = $("#portfolioBikeListing").DataTable({
+          orderCellsTop: true,
+          fixedHeader: true,
+          scrollX: false,
           paging: false,
+          search: false
         });
         $(function () {
           $('.tooltipPortfolioBikes').tooltip({

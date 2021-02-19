@@ -265,10 +265,7 @@ function update_deposit_hour_form(){
             var minutes=currentDate.getMinutes();
 
             var m = (((minutes + 15)/15 | 0) * 15) % 60;
-            var h = ((((minutes/105) + .5) | 0) + hours) % 24;
-            if(m==0){
-              h+=1;
-            }
+            var h = minutes > 45 ? (hours === 23 ? 0 : ++hours) : hours;
             var dateTemp = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), h, m);
 
 

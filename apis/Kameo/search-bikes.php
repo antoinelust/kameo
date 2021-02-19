@@ -236,7 +236,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     {
         $bikeID=$row['ID'];
 
-        $sqlKeyNotReturned = "SELECT * FROM locking_bikes WHERE BIKE_ID='$bikeID' AND PLACE_IN_BUILDING='-1'";
+        $sqlKeyNotReturned = "SELECT * FROM locking_bikes WHERE BIKE_ID='$bikeID' AND PLACE_IN_BUILDING='-1' AND BUILDING='$intake_building'";
+        error_log(date("Y-m-d H:i:s")." - sqlKeyNotReturned : - ".$sqlKeyNotReturned."\n", 3, $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/logs/search_bikes.log');
         if ($conn->query($sqlKeyNotReturned) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -289,7 +290,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                     $response['bike'][$length-1]['type']= $resultat5['TYPE'];
                     $response['bike'][$length-1]['size']= $resultat5['SIZE'];
                     $type=$resultat5['TYPE'];
-                    $response['bike'][$length]['typeDescription']= $resultat5['MODEL'];
+                    $response['bike'][$length-1]['typeDescription']= $resultat5['MODEL'];
 
                     include 'connexion.php';
                     $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
