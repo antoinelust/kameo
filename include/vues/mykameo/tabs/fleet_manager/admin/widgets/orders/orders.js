@@ -31,6 +31,7 @@ function get_bike_listing() {
       $('#widget-order-form input[name=model]').val(response.model);
       $('#widget-order-form select[name=frameType]').val(response.frameType);
       $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
+      $('#widget-order-form .commandBike').removeClass("hidden");
       $("#widget-order-form select[name=assignBike]").find("option").remove().end();
 
       if(response.contract==null){
@@ -178,6 +179,9 @@ function get_orders_listing() {
 }
 
 $('body').on('click', '.updateCommand',function(){
+
+  $('#widget-order-form select[name=company], #widget-order-form select[name=type], #widget-order-form select[name=portfolioID]').off();
+
   $("#widget-order-form select[name=name]").find("option")
   .remove()
   .end();
@@ -192,6 +196,7 @@ $('body').on('click', '.updateCommand',function(){
 
 $('body').on('click', '.addOrder',function(){
   $('#widget-order-form')[0].reset();
+  $("#widget-order-form select[name=company]").val("");
   $("#widget-order-form select[name=name]").find("option")
   .remove()
   .end();
@@ -201,6 +206,7 @@ $('body').on('click', '.addOrder',function(){
   $("#widget-order-form select[name=name]").show();
   $(".orderManagementTitle").html("Ajouter une commande");
   $("#widget-order-form input[name=action]").val("add");
+  $("#widget-order-form img").addClass("hidden");
 });
 
 function list_bikes(){
@@ -220,14 +226,13 @@ function list_bikes(){
                   [cmp(b.brand, a.brand), cmp(b.model, a.model)]
                   );
               });
-
         $('#widget-order-form select[name=portfolioID]').empty();
         var i=0;
         while(i<response.bikeNumber){
-          $('#widget-order-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+'>'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
+          $('#widget-order-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+' data-retailPrice="'+portfolioSorted[i].price+'">'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
           i++;
         }
-       // $('#widget-order-form div[name=assignationBikeHide]').hide();
+        $("#widget-order-form select[name=portfolioID]").val("");
       }
     }
   });
@@ -511,8 +516,46 @@ get_all_accessories().done(function(response){
     }
   });
 
+
+  $('#widget-order-form select[name=company], #widget-order-form select[name=type], #widget-order-form select[name=portfolioID]').off();
+
   $('body').on('change', '#widget-order-form select[name=portfolioID]',function(){
    get_bike_listing();
+  });
+
+   $('#widget-order-form select[name=portfolioID], #widget-order-form select[name=company], #widget-order-form select[name=type]').change(function(){
+     if($('#widget-order-form select[name=portfolioID]').val()==null){
+       console.log("choisissez un vélo ! ")
+     }else if($('#widget-order-form select[name=company]').val()==null){
+       console.log("remplissez la société ! ")
+     }else{
+       $.ajax({
+         url: '/apis/Kameo/get_prices.php',
+         type: 'get',
+         data: {"retailPrice": $('#widget-order-form select[name=portfolioID]').find(':selected').data('retailprice'), "companyID" : $('#widget-order-form select[name=company]').val()},
+         success: function(response){
+           if(response.response == 'error') {
+             console.log(response.message);
+           }
+           if(response.response == 'success'){
+             if(response.company='City Dev'){
+               price = Math.round(response.leasingPrice + (response.HTVARetailPrice - 2000)/(4312-2000)*(142-135));
+             }else{
+               price = response.leasingPrice;
+             }
+             if($('#widget-order-form select[name=type]').val()=="leasing"){
+               $('#widget-order-form input[name=price]').val(price);
+             }else if($('#widget-order-form select[name=type]').val()=="annualLeasing"){
+               $('#widget-order-form input[name=price]').val(price*12);
+             }else if($('#widget-order-form select[name=type]').val()=="achat"){
+               $('#widget-order-form input[name=price]').val(response.HTVARetailPrice);
+             }else{
+               console.log($('#widget-order-form select[name=type]').val());
+             }
+           }
+         }
+       });
+     }
  });
   $('body').on('change', '#widget-order-form select[name=size]',function(){
    get_bike_listing();

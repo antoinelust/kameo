@@ -267,6 +267,8 @@ $token = getBearerToken();
             $i=0;
             $j=0;
 
+            $response['box']=array();
+            $response['box']['bill']=array();
             while($row = mysqli_fetch_array($result)){
                 $boxID=$row['ID'];
                 $company=$row['COMPANY'];
