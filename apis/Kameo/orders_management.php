@@ -62,7 +62,7 @@ if(isset($_POST['action'])){
 		$conn->close();
 	}
 
-	
+
 	else if($action=='update'){
 
 		include 'connexion.php';
@@ -264,6 +264,7 @@ if(isset($_POST['action'])){
 					$result = mysqli_query($conn, $sql);
 					$resultat=mysqli_fetch_assoc($result);
 					$response['order'][$i]['user']=$resultat['PRENOM']." ".$resultat['NOM'];
+					$response['order'][$i]['email']=$emailUser;
 				}else{
 					$response['order'][$i]['user']="N/A";
 				}

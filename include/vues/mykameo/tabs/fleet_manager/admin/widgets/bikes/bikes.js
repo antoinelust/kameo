@@ -259,44 +259,39 @@ function add_bike(ID){
   $('#widget-bikeManagement-form input[name=action]').val("add");
   $('#widget-bikeManagement-form select[name=contractType]').val("");
   $('#widget-bikeManagement-form select[name=billingType]').val("monthly");
-  $('#widget-bikeManagement-form select[name=portfolioID]')
-  .find('option')
-  .remove()
-  .end()
-  ;
+  if($("#widget-bikeManagement-form select[name=portfolioID] option").length==0){
+    $.ajax({
+      url: 'apis/Kameo/load_portfolio.php',
+      type: 'get',
+      data: {"action": "list"},
+      success: function(response){
+        if (response.response == 'error') {
+          console.log(response.message);
+        } else{
+          var i=0;
+            //sort name ascending then id descending
+            const portfolioSorted=response.bike.sort(function(a, b){
+                //note the minus before -cmp, for descending order
+                return cmp(
+                  [cmp(a.brand, b.brand), cmp(a.model, b.model)],
+                  [cmp(b.brand, a.brand), cmp(b.model, a.model)]
+                  );
+              });
 
-  $.ajax({
-    url: 'apis/Kameo/load_portfolio.php',
-    type: 'get',
-    data: {"action": "list"},
-    success: function(response){
-      if (response.response == 'error') {
-        console.log(response.message);
-      } else{
-        var i=0;
-          //sort name ascending then id descending
-          const portfolioSorted=response.bike.sort(function(a, b){
-              //note the minus before -cmp, for descending order
-              return cmp(
-                [cmp(a.brand, b.brand), cmp(a.model, b.model)],
-                [cmp(b.brand, a.brand), cmp(b.model, a.model)]
-                );
-            });
+            while(i<response.bikeNumber){
+              $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+portfolioSorted[i].ID+">"+portfolioSorted[i].brand+" - "+portfolioSorted[i].model+" - "+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
+              i++;
+            }
+            $('#widget-bikeManagement-form select[name=portfolioID]').val("");
 
-          while(i<response.bikeNumber){
-            $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+portfolioSorted[i].ID+">"+portfolioSorted[i].brand+" - "+portfolioSorted[i].model+" - "+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
-            i++;
           }
-          $('#widget-bikeManagement-form select[name=portfolioID]').val("");
-
         }
-      }
-    });
+      });
+    }
 
 
 
   $('#widget-bikeManagement-form select[name=portfolioID]').change(function(){
-    console.log("okok");
     $.ajax({
       url: 'apis/Kameo/load_portfolio.php',
       type: 'get',

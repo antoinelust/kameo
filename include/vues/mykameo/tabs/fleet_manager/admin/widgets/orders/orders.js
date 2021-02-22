@@ -71,6 +71,40 @@ function get_bike_listing() {
 
 
 function get_orders_listing() {
+
+
+
+  if($("#widget-bikeManagement-form select[name=portfolioID] option").length==0){
+    $.ajax({
+      url: 'apis/Kameo/load_portfolio.php',
+      type: 'get',
+      data: {"action": "list"},
+      success: function(response){
+        if (response.response == 'error') {
+          console.log(response.message);
+        } else{
+          var i=0;
+          //sort name ascending then id descending
+          const portfolioSorted=response.bike.sort(function(a, b){
+              //note the minus before -cmp, for descending order
+              return cmp(
+                [cmp(a.brand, b.brand), cmp(a.model, b.model)],
+                [cmp(b.brand, a.brand), cmp(b.model, a.model)]
+                );
+            });
+
+          while(i<response.bikeNumber){
+            $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+portfolioSorted[i].ID+">"+portfolioSorted[i].brand+" - "+portfolioSorted[i].model+" - "+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
+            i++;
+          }
+        }
+      }
+    });
+  }
+
+
+
+
   var email= "<?php echo $user_data['EMAIL']; ?>";
   $.ajax({
     url: 'apis/Kameo/orders_management.php',
@@ -117,16 +151,16 @@ function get_orders_listing() {
           if(response.order[i].status=='confirmed'){
 
            if(response.order[i].contract=='pending_delivery'){
-            temp="<tr style =\"color:#3CB195;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+            temp="<tr style =\"color:#3CB195;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-email=\""+response.order[i].email+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
           else if(response.order[i].contract==null){
-            temp="<tr style =\"color:red;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+            temp="<tr style =\"color:red;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-email=\""+response.order[i].email+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
           else if(response.order[i].contract=='order'){
-            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+            temp="<tr><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-email=\""+response.order[i].email+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
           else {
-            temp="<tr style =\"color:blue;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
+            temp="<tr style =\"color:blue;\"><td><a href=\"#\" class=\"updateCommand\" data-target=\"#orderManager\" data-toggle=\"modal\" name=\""+response.order[i].ID+"\" data-email=\""+response.order[i].email+"\" data-company=\""+response.order[i].companyID+"\">"+response.order[i].ID+"</td><td><a href=\"#\" class=\"internalReferenceCompany\" data-target=\"#companyDetails\" data-toggle=\"modal\" name=\""+response.order[i].companyID+"\">"+response.order[i].companyName+"</a></td><td>"+response.order[i].user+"</td><td>"+response.order[i].brand+" - "+response.order[i].model+"</td><td>"+response.order[i].size+"</td><td>"+response.order[i].status+"</td><td>"+test+"</td><td>"+estimatedDeliveryDate+"</td><td>"+price+"</td></tr>";
           }
         }
         else{
@@ -189,97 +223,52 @@ $('body').on('click', '.updateCommand',function(){
   .remove()
   .end();
   $("#widget-order-form select[name=company]").val($(this).data('company'));
-  retrieve_command(this.name);
+  retrieve_command(this.name, $(this).data('email'));
   $("#widget-order-form div[name=ID]").show();
   $("#widget-order-form select[name=name]").show();
-  $("#widget-order-form input[name=name]").hide();
   $(".orderManagementTitle").html("Gestion de la commande client");
   $("#widget-order-form input[name=action]").val("update");
 });
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-$('#widget-bikeManagement-form select[name=company]').change(function(){
-  console.log('entrer');
-});
 
 $('body').on('click', '.testAssignation',function(){
 
-//list_bikeIdToAssign();
-
-console.log($("#widget-order-form select[name=portfolioID]").val());
-console.log($("#widget-order-form select[name=company]").val());
- $('.contractInfos').fadeOut("slow");
- $('.billingInfos').fadeOut("slow");
- $('.buyingInfos').fadeIn("slow");
- $('.orderInfos').fadeIn("slow");
- $('.billingPriceDiv').fadeOut("slow");
- $('.billingGroupDiv').fadeOut("slow");
- $('.billingDiv').fadeOut("slow");
-
- let today = new Date().toISOString().substr(0, 10);
-
-//$('#orderManager').modal('hide');
- $("#widget-bikeManagement-form input[name=orderingDate]").val(today);
- $("#widget-bikeManagement-form input[name=action]").val("add");
- $("#widget-bikeManagement-form input[name=bikeID]").val($("#widget-order-form input[name=ID]").val());
- 
- 
- $("#widget-bikeManagement-form input[name=size]").val($("#widget-order-form select[name=size]").val());
- $("#widget-bikeManagement-form input[name=model]").val($("#widget-order-form input[name=model]").val());
- $("#widget-bikeManagement-form input[name=email]").val($("#widget-order-form input[name=mail]").val());
- $("#widget-bikeManagement-form input[name=phone]").val($("#widget-order-form input[name=phone]").val());
- $("#widget-bikeManagement-form input[name=price]").val(price);
-$('#widget-bikeManagement-form select[name=contractType').append("<option value=\"order\">Commande</option>");
-
-
-$("#widget-bikeManagement-form select[name=portfolioID]").val($("#widget-order-form select[name=portfolioID]").val()); 
- $("#widget-bikeManagement-form select[name=company]").val($("#widget-order-form select[name=company]").val());
- $("#widget-bikeManagement-form select[name=bikeType]").val("personnel");
- $("#widget-bikeManagement-form select[name=name]").val($("#widget-order-form select[name=name]").val());
-
-  
-});
-
-function list_bikeIdToAssign(){
   $.ajax({
-    url: 'apis/Kameo/load_portfolio.php',
+    url: 'apis/Kameo/companies/companies.php',
     type: 'get',
-    data: {"action": "list"},
+    data: {"action": "retrieve", "ID": $("#widget-order-form select[name=company]").val()},
     success: function(response){
       if(response.response == 'error') {
         console.log(response.message);
       }
       if(response.response == 'success'){
-        const portfolioSorted=response.bike.sort(function(a, b){
-                //note the minus before -cmp, for descending order
-                return cmp(
-                  [cmp(a.brand, b.brand), cmp(a.model, b.model)],
-                  [cmp(b.brand, a.brand), cmp(b.model, a.model)]
-                  );
-              });
+        $('#widget-bikeManagement-form select[name=company]').val(response.internalReference);
+        update_users_list(response.internalReference, $('#widget-order-form input[name=mail]').val());
+      }
+    }
+  });
+  $('.contractInfos').fadeOut("slow");
+  $('.billingInfos').fadeOut("slow");
+  $('.buyingInfos').fadeIn("slow");
+  $('.orderInfos').fadeIn("slow");
+  $('.billingPriceDiv').fadeOut("slow");
+  $('.billingGroupDiv').fadeOut("slow");
+  $('.billingDiv').fadeOut("slow");
 
-        $('#widget-bikeManagement-form select[name=portfolioID]').empty();
-        var i=0;
-        while(i<response.bikeNumber){
-          $('#widget-bikeManagement-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+'>'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue:'+portfolioSorted[i].ID+'</option>');
-          i++;
-        }
-       // $('#widget-order-form div[name=assignationBikeHide]').hide();
-     }
-   }
- });
-}
+  let today = new Date().toISOString().substr(0, 10);
 
-
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
+  $("#widget-bikeManagement-form input[name=orderingDate]").val(today);
+  $("#widget-bikeManagement-form input[name=action]").val("add");
+  $("#bikeManagementPicture").attr("src","images_bikes/"+$("#widget-order-form select[name=portfolioID]").val()+".jpg");
+  $("#widget-bikeManagement-form input[name=size]").val($("#widget-order-form select[name=size]").val());
+  $("#widget-bikeManagement-form input[name=model]").val($("#widget-order-form input[name=model]").val());
+  $("#widget-bikeManagement-form input[name=price]").val(price);
+  $('#widget-bikeManagement-form select[name=contractType').append("<option value=\"order\">Commande</option>");
+  $("#widget-bikeManagement-form select[name=portfolioID]").val($("#widget-order-form select[name=portfolioID]").val());
+  $("#widget-bikeManagement-form select[name=company]").val($("#widget-order-form select[name=company]").val());
+});
 
 
 
@@ -290,7 +279,6 @@ $('body').on('click', '.addOrder',function(){
   .end();
   list_bikes();
   $("#widget-order-form div[name=ID]").hide();
-  $("#widget-order-form input[name=name]").hide();
   $("#widget-order-form select[name=name]").show();
   $(".orderManagementTitle").html("Ajouter une commande");
   $("#widget-order-form input[name=action]").val("add");
@@ -327,22 +315,68 @@ function list_bikes(){
  });
 }
 
-function retrieve_command(ID){
+function retrieve_command(ID, email = NULL){
   $('.accessoriesNumber').html('');
   document.getElementById("ExistingAccessory").innerHTML="";
   list_bikes();
   $.ajax({
-    url: 'apis/Kameo/companies/companies.php',
-    type: 'get',
-    data: {"action":"retrieve", "ID": $('#widget-order-form select[name=company]').val()},
+    url: 'apis/Kameo/get_users_listing.php',
+    type: 'post',
+    data: { "companyID": $('#widget-order-form select[name=company]').val()},
     success: function(response){
       if(response.response == 'error') {
         console.log(response.message);
       }
       if(response.response == 'success'){
-        for (var i = 0; i < response.userNumber; i++){
-          $("#widget-order-form select[name=name]").append('<option id= "' + response.user[i].email +  '_' + response.user[i].firstName + '_' + response.user[i].phone +'" value="'+response.user[i].name+ '">' + response.user[i].name + "<br>");
+        $('#widget-order-form select[name=name]')
+        .find('option')
+        .remove()
+        .end()
+        ;
+
+        var i=0;
+        var toSelect = null;
+        while (i < response.usersNumber){
+          $('#widget-order-form select[name=name]').append("<option value="+i+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
+          if(response.users[i].email == email){
+            var toSelect = i;
+          }
+          i++;
         }
+        if(response.usersNumber == 0){
+          $('.clientReference').fadeOut();
+        }else{
+          $('.clientReference').fadeIn();
+        }
+        if(toSelect != null){
+          $('#widget-order-form select[name=name]').val(toSelect);
+          var user_email = response.users[toSelect].email;
+          if(response.users[toSelect].phone=='' ||response.users[toSelect].phone=='/' || response.users[toSelect].phone==null ){
+            var user_phone = 'N/A';
+          }else{
+            var user_phone = response.users[toSelect].phone;
+          }
+          $('#widget-order-form input[name = mail]').val(user_email);
+          $('#widget-order-form input[name = phone]').val(user_phone);
+
+        }else{
+          $('#widget-order-form select[name=name]').val("");
+          $('#widget-order-form input[name = mail]').val("");
+          $('#widget-order-form input[name = phone]').val("");
+
+        }
+
+        $("#widget-order-form select[name=name]").off();
+        $("#widget-order-form select[name=name]").change(function(){
+          if(response.users[$(this).children("option:selected").val()].phone=='' ||response.users[$(this).children("option:selected").val()].phone=='/' || response.users[$(this).children("option:selected").val()].phone==null ){
+            var user_phone = 'N/A';
+          }else{
+            var user_phone = response.users[$(this).children("option:selected").val()].phone;
+          }
+          var user_email = response.users[$(this).children("option:selected").val()].email;
+          $('#widget-order-form input[name = mail]').val(user_email);
+          $('#widget-order-form input[name = phone]').val(user_phone);
+        })
       }
     }
   }).done(function(response){
@@ -365,8 +399,6 @@ function retrieve_command(ID){
           $('#widget-order-form select[name=frameType]').val(response.order.frameType).attr('disabled', false);
           $('#widget-order-form select[name=size]').val(response.order.size).attr('disabled', false);
           $('#widget-order-form select[name=status]').val(response.order.status).attr('disabled', false);
-          $('#widget-order-form select[name=name]').val(response.order.name).attr('disabled', false);
-          $('#widget-order-form input[name=firstName]').val(response.order.firstname).attr('disabled', false);
           $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
           $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
           $('#widget-order-form textarea[name=comment]').val(response.order.comment);
@@ -623,7 +655,6 @@ get_all_accessories().done(function(response){
         }
         if(response.response == 'success'){
           $('#widget-order-form input[name=mail]').val("");
-          $('#widget-order-form input[name=firstName]').val("");
           $("#widget-order-form select[name=name]").find("option")
           .remove()
           .end();
@@ -631,22 +662,10 @@ get_all_accessories().done(function(response){
           for (var i = 0; i < response.userNumber; i++){
             $("#widget-order-form select[name=name]").append('<option id= "' + response.user[i].email +  '_' + response.user[i].firstName + '_' + response.user[i].phone +'" value="'+response.user[i].name+ '">' + response.user[i].name + "<br>");
           }
-
           if($("#widget-order-form select[name=name]").has('option').length > 0){
             $("#widget-order-form input[name=mail]").val(response.user[0].email);
-            $("#widget-order-form input[name=firstName]").val(response.user[0].firstName);
           }
         }
       }
     });
-  });
-
-  $('body').on('change', '#widget-order-form select[name=name]',function(){
-    var value = $(this).children("option:selected").attr('id').split("_");
-    var user_mail = value[0];
-    var user_fn = value[1];
-    var user_phone = value[2];
-    $('#widget-order-form input[name=mail]').val(user_mail);
-    $('#widget-order-form input[name=firstName]').val(user_fn);
-    $('#widget-order-form input[name=phone]').val(user_phone);
   });

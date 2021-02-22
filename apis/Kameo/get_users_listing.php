@@ -8,6 +8,7 @@ include 'globalfunctions.php';
 
 $email=isset($_POST['email']) ? $_POST['email'] : NULL;
 $company=isset($_POST['company']) ? $_POST['company'] : (isset($_GET['company']) ? $_GET['company'] : NULL);
+$companyID=isset($_POST['companyID']) ? $_POST['companyID'] : (isset($_GET['companyID']) ? $_GET['companyID'] : NULL);
 $response=array();
 
 require_once 'authentication.php';
@@ -15,11 +16,11 @@ $token = getBearerToken();
 log_inputs($token);
 
 
-if($email != NULL || $company != NULL || $token != NULL){
+if($email != NULL || $company != NULL || $token != NULL || $company != NULL){
 
   include 'connexion.php';
 
-  if($company == NULL){
+  if($company == NULL && $companyID == NULL){
     if($token != NULL){
       $sql = "SELECT COMPANY from customer_referential WHERE TOKEN = '$token'";
     }else if ($email != NULL){
@@ -38,7 +39,12 @@ if($email != NULL || $company != NULL || $token != NULL){
     $company = $resultat['COMPANY'];
   }
 
-  $sql = "SELECT NOM AS name, PRENOM AS firstName, PHONE as phone, EMAIL AS email, STAANN AS staann FROM customer_referential WHERE COMPANY = '$company'";
+  if($company){
+    $sql = "SELECT NOM AS name, PRENOM AS firstName, PHONE as phone, EMAIL AS email, STAANN AS staann FROM customer_referential WHERE COMPANY = '$company'";
+  }else{
+    $sql = "SELECT NOM AS name, PRENOM AS firstName, PHONE as phone, EMAIL AS email, customer_referential.STAANN AS staann FROM customer_referential, companies WHERE companies.ID='$companyID' and companies.INTERNAL_REFERENCE=customer_referential.COMPANY";
+  }
+
   if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
       echo json_encode($response);
