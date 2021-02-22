@@ -206,7 +206,7 @@ $('#widget-bikeManagement-form select[name=company]').change(function(){
 $('body').on('click', '.testAssignation',function(){
 
 //list_bikeIdToAssign();
-console.log('entret chien');
+
 console.log($("#widget-order-form select[name=portfolioID]").val());
 console.log($("#widget-order-form select[name=company]").val());
  $('.contractInfos').fadeOut("slow");
