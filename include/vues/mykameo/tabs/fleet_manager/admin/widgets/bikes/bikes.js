@@ -24,7 +24,7 @@ $(".fleetmanager").click(function () {
   });
 
 
-  $(".bikeManagerClick").click(function() {
+  $(".bikeManagerClick").click(function(){
     list_bikes_admin();
   });
 
@@ -296,6 +296,7 @@ function add_bike(ID){
 
 
   $('#widget-bikeManagement-form select[name=portfolioID]').change(function(){
+    console.log("okok");
     $.ajax({
       url: 'apis/Kameo/load_portfolio.php',
       type: 'get',

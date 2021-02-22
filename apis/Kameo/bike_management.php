@@ -33,6 +33,8 @@ if(isset($_POST['action'])){
 
     if($action=='add'){
         $model=$_POST['model'];
+        $idOrder = $_POST['bikeID'];
+        $mailOrder = $_POST['email'];
         $frameNumber=$_POST['frameNumber'];
         $size=$_POST['size'];
         $color=isset($_POST['color']) ? $_POST['color'] : NULL;
@@ -179,15 +181,16 @@ if(isset($_POST['action'])){
                 echo json_encode($response);
                 die;
             }
-            ///////////////////////////////////////
-          /*  $stmt = $conn->prepare("UPDATE customer_bikes SET  HEU_MAJ=CURRENT_TIMESTAMP,USR_MAJ='$email',CONTRACT_TYPE='order' WHERE ID='$idBike'");
-            $stmt->execute();
 
-            $sqlTest = "INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL , BIKE_ID,TYPE)
-            VALUES (CURRENT_TIMESTAMP, '$email', '$mail', '$idBike' ,'personnel')";
-            mysqli_query($conn, $sqlTest);*/
 
-            /////////////////////////////////////////////
+            $bikeID = $conn->insert_id;
+
+            if($idOrder!= null){
+                $sqlTest = "INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL , BIKE_ID,TYPE)
+                VALUES (CURRENT_TIMESTAMP, '$user', '$mailOrder', '$bikeID' ,'personnel')";
+                mysqli_query($conn, $sqlTest);
+            }
+
 
             $bikeID = $conn->insert_id;
             $conn->close();

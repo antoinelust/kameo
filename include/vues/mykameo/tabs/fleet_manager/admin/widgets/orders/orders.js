@@ -17,6 +17,8 @@ $( ".fleetmanager" ).click(function() {
 
 $('.ordersManagerClick').click(function(){get_orders_listing()});
 
+var price;
+
 function get_bike_listing() {
  $.ajax({
   url: 'apis/Kameo/load_portfolio.php',
@@ -27,6 +29,8 @@ function get_bike_listing() {
       console.log(response.message);
     }
     if(response.response == 'success'){
+
+      price = response.portfolioPrice;
       $('#widget-order-form input[name=brand]').val(response.brand);
       $('#widget-order-form input[name=model]').val(response.model);
       $('#widget-order-form select[name=frameType]').val(response.frameType);
@@ -37,6 +41,7 @@ function get_bike_listing() {
 
        if(response.numberType==0){
          $('#widget-order-form label[name=phraseNonAssignation]').text('Aucun vélo disponible pour cette commande');
+          $('#widget-order-form div[name=assignBikeDiv]').show();
          $('#widget-order-form div[name=commandeVeloDiv]').show();
          $('#widget-order-form div[name=assignBikeDiv]').hide();
        }
@@ -54,6 +59,7 @@ function get_bike_listing() {
     else{
 
      $('#widget-order-form label[name=phraseNonAssignation]').text('Vélo déja assigné pour cette commande');
+      $('#widget-order-form div[name=assignBikeDiv]').hide();
      $('#widget-order-form div[name=commandeVeloDiv]').show();
      $('#widget-order-form div[name=assignBikeDiv]').hide();
    }
@@ -61,6 +67,7 @@ function get_bike_listing() {
 }
 });
 }
+
 
 
 function get_orders_listing() {
@@ -190,6 +197,92 @@ $('body').on('click', '.updateCommand',function(){
   $("#widget-order-form input[name=action]").val("update");
 });
 
+
+///////////////////////////////////////////////////////////////////////////////////
+$('#widget-bikeManagement-form select[name=company]').change(function(){
+  console.log('entrer');
+});
+
+$('body').on('click', '.testAssignation',function(){
+
+//list_bikeIdToAssign();
+console.log('entret chien');
+console.log($("#widget-order-form select[name=portfolioID]").val());
+console.log($("#widget-order-form select[name=company]").val());
+ $('.contractInfos').fadeOut("slow");
+ $('.billingInfos').fadeOut("slow");
+ $('.buyingInfos').fadeIn("slow");
+ $('.orderInfos').fadeIn("slow");
+ $('.billingPriceDiv').fadeOut("slow");
+ $('.billingGroupDiv').fadeOut("slow");
+ $('.billingDiv').fadeOut("slow");
+
+ let today = new Date().toISOString().substr(0, 10);
+
+//$('#orderManager').modal('hide');
+ $("#widget-bikeManagement-form input[name=orderingDate]").val(today);
+ $("#widget-bikeManagement-form input[name=action]").val("add");
+ $("#widget-bikeManagement-form input[name=bikeID]").val($("#widget-order-form input[name=ID]").val());
+ 
+ 
+ $("#widget-bikeManagement-form input[name=size]").val($("#widget-order-form select[name=size]").val());
+ $("#widget-bikeManagement-form input[name=model]").val($("#widget-order-form input[name=model]").val());
+ $("#widget-bikeManagement-form input[name=email]").val($("#widget-order-form input[name=mail]").val());
+ $("#widget-bikeManagement-form input[name=phone]").val($("#widget-order-form input[name=phone]").val());
+ $("#widget-bikeManagement-form input[name=price]").val(price);
+$('#widget-bikeManagement-form select[name=contractType').append("<option value=\"order\">Commande</option>");
+
+
+$("#widget-bikeManagement-form select[name=portfolioID]").val($("#widget-order-form select[name=portfolioID]").val()); 
+ $("#widget-bikeManagement-form select[name=company]").val($("#widget-order-form select[name=company]").val());
+ $("#widget-bikeManagement-form select[name=bikeType]").val("personnel");
+ $("#widget-bikeManagement-form select[name=name]").val($("#widget-order-form select[name=name]").val());
+
+  
+});
+
+function list_bikeIdToAssign(){
+  $.ajax({
+    url: 'apis/Kameo/load_portfolio.php',
+    type: 'get',
+    data: {"action": "list"},
+    success: function(response){
+      if(response.response == 'error') {
+        console.log(response.message);
+      }
+      if(response.response == 'success'){
+        const portfolioSorted=response.bike.sort(function(a, b){
+                //note the minus before -cmp, for descending order
+                return cmp(
+                  [cmp(a.brand, b.brand), cmp(a.model, b.model)],
+                  [cmp(b.brand, a.brand), cmp(b.model, a.model)]
+                  );
+              });
+
+        $('#widget-bikeManagement-form select[name=portfolioID]').empty();
+        var i=0;
+        while(i<response.bikeNumber){
+          $('#widget-bikeManagement-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+'>'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue:'+portfolioSorted[i].ID+'</option>');
+          i++;
+        }
+       // $('#widget-order-form div[name=assignationBikeHide]').hide();
+     }
+   }
+ });
+}
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 $('body').on('click', '.addOrder',function(){
   $('#widget-order-form')[0].reset();
   $("#widget-order-form select[name=name]").find("option")
@@ -224,13 +317,14 @@ function list_bikes(){
         $('#widget-order-form select[name=portfolioID]').empty();
         var i=0;
         while(i<response.bikeNumber){
+
           $('#widget-order-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+'>'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
           i++;
         }
        // $('#widget-order-form div[name=assignationBikeHide]').hide();
-      }
-    }
-  });
+     }
+   }
+ });
 }
 
 function retrieve_command(ID){

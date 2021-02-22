@@ -366,7 +366,7 @@
               <div class="col-sm-12">
                 <button
                   class="button small green button-3d rounded icon-left bikeManagementSend"
-                  type="submit"
+                  type="submit" name="testFermer"
                 >
                   <i class="fa fa-plus"></i>Ajouter
                 </button>
@@ -493,7 +493,7 @@
     </div>
   </div>
 </div>
-<script src="js/add_bike_sell.js"></script>
+<script defer src="js/add_bike_sell.js"></script>
 <script type="text/javascript">
   jQuery("#widget-bikeManagement-form").validate({
     submitHandler: function (form) {
@@ -514,6 +514,10 @@
             );
             document.getElementById("widget-bikeManagement-form").reset();
             $("#bikeManagement").modal("toggle");
+            if($("#widget-bikeManagement-form input[name=action]").val()=='add' && $("#widget-companyDetails-form input[name=bikeID]").val()>=0){
+               $("#orderManager").modal("toggle");
+            }
+           
             list_bikes_admin();
           } else {
             $.notify(

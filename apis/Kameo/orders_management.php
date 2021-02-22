@@ -60,13 +60,9 @@ if(isset($_POST['action'])){
 		} else
 		error_message('500', 'Error occured while changing data');
 		$conn->close();
-
-
-			
-	
-
-
 	}
+
+	
 	else if($action=='update'){
 
 		include 'connexion.php';
