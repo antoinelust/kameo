@@ -37,6 +37,11 @@ $(".fleetmanager").click(function () {
       $('.billingPriceDiv').fadeIn("slow");
       $('.billingGroupDiv').fadeIn("slow");
       $('.billingDiv').fadeIn("slow");
+      if($('#widget-bikeManagement-form select[name=billingType]').val()=="annual"){
+        $('#widget-bikeManagement-form .billingPriceDiv .input-group-addon').html('€/an');
+      }else{
+        $('#widget-bikeManagement-form .billingPriceDiv .input-group-addon').html('€/mois');
+      }
     }
   });
 
@@ -481,11 +486,15 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('#widget-bikeManagement-form input[name=price]').val(response.bikePrice);
           $('#widget-bikeManagement-form input[name=buyingDate]').val(response.buyingDate);
           $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);
+          if(response.billingType=="monthly"){
+            $('#widget-bikeManagement-form .billingPriceDiv .input-group-addon').html('€/mois');
+          }else if(response.billingType=="annual"){
+            $('#widget-bikeManagement-form .billingPriceDiv .input-group-addon').html('€/an');
+          }
           $('#widget-bikeManagement-form select[name=contractType]').val(response.contractType);
           $('#widget-bikeManagement-form input[name=bikeSoldPrice]').val(response.soldPrice);
           $('#widget-bikeManagement-form input[name=orderNumber]').val(response.orderNumber);
           $("#widget-bikeManagement-form select[name=bikeType]").val(response.biketype);
-
           $("#widget-bikeManagement-form select[name=bikeType]").off();
           $("#widget-bikeManagement-form select[name=bikeType]").change(function() {
 
@@ -1383,11 +1392,18 @@ function list_bikes_admin() {
     response.bike[i].leasingPrice != 0 &&
     (response.bike[i].contractType == "renting" ||
       response.bike[i].contractType == "leasing")
-    ) {
-    var leasingPrice =
-    '<span class="text-green">' +
-    response.bike[i].leasingPrice +
-    " €/mois</span>";
+    ){
+      if(response.bike[i].billingType=='annual'){
+        var leasingPrice =
+        '<span class="text-green">' +
+        response.bike[i].leasingPrice +
+        " €/an</span>";
+      }else if(response.bike[i].billingType=='monthly'){
+        var leasingPrice =
+        '<span class="text-green">' +
+        response.bike[i].leasingPrice +
+        " €/mois</span>";
+      }
   } else if (
     response.bike[i].leasingPrice != null &&
     response.bike[i].leasingPrice != 0 &&

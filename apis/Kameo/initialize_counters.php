@@ -346,7 +346,7 @@ if($company=='KAMEO'){
     if($type=="cashFlow"){
 
         include 'connexion.php';
-        $sql="SELECT SUM(LEASING_PRICE) as 'SOMME' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";
+        $sql="SELECT SUM(CASE WHEN BILLING_TYPE = 'annual'  THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'SOMME' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

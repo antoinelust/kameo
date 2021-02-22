@@ -208,7 +208,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
       if($user_data['LOCKING']=="Y" && ($boxesNumber > 1 || $action == "replaceBooking")){
         $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS = 'Open') group by cc.ID";
       }else{
-        $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS ='Open' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) and not exists (SELECT 1 from reservations dd WHERE dd.STAANN !='D' AND dd.BIKE_ID=cc.ID AND dd.STATUS='Open' AND dd.EMAIL='$email') group by ID";
+        $sql= "select cc.ID, cc.FRAME_NUMBER, cc.DISPLAY_GROUP from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND bb.STATUS ='Open' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) and not exists (SELECT 1 from reservations dd WHERE dd.STAANN !='D' AND dd.BIKE_ID=cc.ID AND dd.STATUS='Open' AND dd.EMAIL='$email') group by cc.ID ORDER BY cc.DISPLAY_GROUP, cc.FRAME_NUMBER";
       }
     }else{
       $sql= "select cc.ID from reservations aa, customer_bikes cc where aa.BIKE_ID=cc.ID and cc.STATUS!='KO' and aa.STAANN!='D' and cc.ID in (select BIKE_ID from customer_bike_access aa where EMAIL='$email' and STAANN != 'D') and not exists (select 1 from reservations bb where aa.BIKE_ID=bb.BIKE_ID and bb.STAANN!='D' AND ((bb.DATE_START_2>='$dateStart2String' and bb.DATE_START_2<='$dateEndString') OR (bb.DATE_START_2<='$dateStart2String' and bb.DATE_END_2>'$dateStart2String'))) group by ID";
@@ -289,6 +289,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                     $response['bike'][$length-1]['frameNumber'] = $resultat5['FRAME_NUMBER'];
                     $response['bike'][$length-1]['type']= $resultat5['TYPE'];
                     $response['bike'][$length-1]['size']= $resultat5['SIZE'];
+                    $response['bike'][$length-1]['displayGroup']= $resultat5['DISPLAY_GROUP'];
+
                     $type=$resultat5['TYPE'];
                     $response['bike'][$length-1]['typeDescription']= $resultat5['MODEL'];
 
@@ -355,6 +357,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                         $response['bike'][$length-1]['size']= $resultat5['SIZE'];
                         $type=$resultat5['TYPE'];
                         $response['bike'][$length-1]['typeDescription']= $resultat5['MODEL'];
+                        $response['bike'][$length-1]['displayGroup']= $resultat5['DISPLAY_GROUP'];
+
 
                         include 'connexion.php';
                         $sql6="SELECT * FROM bike_catalog WHERE ID='$type'";
@@ -373,6 +377,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
                             $response['bike'][$length-1]['brand'] = $resultat6['BRAND'];
                             $response['bike'][$length-1]['model'] = $resultat6['MODEL'];
                             $response['bike'][$length-1]['frameType'] = $resultat6['FRAME_TYPE'];
+
                         }else{
                             $length--;
                         }

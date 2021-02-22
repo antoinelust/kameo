@@ -231,6 +231,14 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $total=0;
 
             while($row2 = mysqli_fetch_array($result2)){
+
+              if($row2['BILLING_TYPE']=='monthly'){
+                $units = '€/mois';
+              }else{
+                $units = '€/an';
+              }
+
+
                 $catalogID=$row2['TYPE'];
 
                 error_log(date("Y-m-d H:i:s")." - FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");
@@ -263,40 +271,36 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 error_log(" DateEnd : ".$dateEndObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
 
 
-                if($dateStartTemp >= $dateStartObject && ($dateStartTemp <= $dateEndObject || $dateStartTemp == $dateEndObject)){
+                if($dateStartTemp >= $dateStartObject && $dateStartTemp <= $dateEndObject){
 
-                  if($dateStartTemp->format('m')==12){
-                      $monthAfter2=1;
-                      $yearAfter2=(($dateStartTemp->format('Y'))+1);
-                  }else{
-                      $monthAfter2=(($dateStartTemp->format('m'))+1);
-                      $yearAfter2=$dateStartTemp->format('Y');
+                  if($row2['BILLING_TYPE'] == "monthly"){
+                    if($dateStartTemp->format('m')==12){
+                        $monthAfter2=1;
+                        $yearAfter2=(($dateStartTemp->format('Y'))+1);
+                    }else{
+                        $monthAfter2=(($dateStartTemp->format('m'))+1);
+                        $yearAfter2=$dateStartTemp->format('Y');
+                    }
+                    $dayAfter2=$contractStart->format('d');
+
+
+                    $lastDayMonth= last_day_month( $monthAfter2 );
+                    if($lastDayMonth < $dayAfter2){
+                        $dayAfter2=$lastDayMonth;
+                    }
+                    if(strlen($monthAfter2)==1){
+                        $monthAfter2='0'.$monthAfter2;
+                    }
+                    if(strlen($dayAfter2)==1){
+                        $dayAfter2='0'.$dayAfter2;
+                    }
+                    $dateAfter2=new DateTime();
+                    $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
+                  }else if($row2['BILLING_TYPE']=="annual"){
+                    $dateAfter2=new DateTime($dateStartTemp->format("Y-m-d"));
+                    $dateAfter2->add(new DateInterval('P1Y'));
                   }
-                  $dayAfter2=$contractStart->format('d');
-                  error_log(date("Y-m-d H:i:s")." - dayAfter2 :".$dayAfter2."\n", 3, "generate_invoices.log");
-
-
-                  $lastDayMonth= last_day_month( $monthAfter2 );
-                  if($lastDayMonth < $dayAfter2){
-                      $dayAfter2=$lastDayMonth;
-                  }
-                  error_log(date("Y-m-d H:i:s")." - dayAfter3 :".$dayAfter2."\n", 3, "generate_invoices.log");
-
-
-
-                  if(strlen($monthAfter2)==1){
-                      $monthAfter2='0'.$monthAfter2;
-                  }
-                  if(strlen($dayAfter2)==1){
-                      $dayAfter2='0'.$dayAfter2;
-                  }
-                  error_log(date("Y-m-d H:i:s")." - dayAfter4 :".$dayAfter2."\n", 3, "generate_invoices.log");
-
-
-
-                  $dateAfter2=new DateTime();
-                  $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
-                  error_log(date("Y-m-d H:i:s")." - dayAfter5 :".$dayAfter2."\n", 3, "generate_invoices.log");
+                  error_log(date("Y-m-d H:i:s")." - dateAfter :".$dateAfter2->format('d/m/Y')."\n", 3, "generate_invoices.log");
 
 
                   $temp2=$dateAfter2->format('d-m-Y');
@@ -337,6 +341,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                       }
                       $resultAccessories = mysqli_query($conn, $sqlAccessories);
                       while($rowAccessories = mysqli_fetch_array($resultAccessories)){
+                        if($rowAccessories['BILLING_TYPE']=='monthly'){
+                          $units = '€/mois';
+                        }else{
+                          $units = '€/an';
+                        }
+
                         $accessoryID = $rowAccessories['accessoryID'];
                         $amount = $rowAccessories["CONTRACT_AMOUNT"];
                         $amountTVAC = round($amount*1.21);
@@ -361,12 +371,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   $difference=$dateStartTemp->diff($contractStart);
 
                   $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
+                  $yearDifference=(($difference->format('%y'))+1);
 
                   if($row2['CONTRACT_END']){
                       $contractEnd= new DateTime();
                       $contractEnd->setDate(substr($row2['CONTRACT_END'], 0, 4), substr($row2['CONTRACT_END'],5,2), substr($row2['CONTRACT_END'], 8,2));
                       $numberOfMonthContract=$contractEnd->diff($contractStart);
                       $numberOfMonthContract=(($numberOfMonthContract->format('%y'))*12+$numberOfMonthContract->format('%m'));
+                      $numberOfYearContract=$contractEnd->diff($contractStart);
+                      $numberOfYearContract=(($numberOfYearContract->format('%y')));
                   }
 
 
@@ -394,7 +407,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                       <td style="color: grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'<br> Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
 
                   if(($row2['CONTRACT_END'])){
-                    $test2=$test2.'<br>Période '.($monthDifference).'/'.$numberOfMonthContract;
+                    if($row2['BILLING_TYPE']=='annual'){
+                      $test2=$test2.'<br>Période '.($yearDifference).'/'.($numberOfYearContract);
+                    }else{
+                      $test2=$test2.'<br>Période '.($monthDifference).'/'.$numberOfMonthContract;
+                    }
                   }else{
                     $test2=$test2."<br>Location";
                   }
@@ -409,11 +426,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   <tr>
                       <td></td>
                       <td><img class="img-responsive" src="'.$fichier.'" alt="">';
-                  $test2=$test2."</td><td style='color: grey'>".round($row2['LEASING_PRICE'],2)." € / mois HTVA</td></tr>";
+                  $test2=$test2."</td><td style='color: grey'>".round($row2['LEASING_PRICE'],2)." ".$units." HTVA</td></tr>";
 
                   if($j>0){
                     foreach($accessoryBike[$i] as &$accessory){
-                        $test2=$test2.'<tr><td style="width: 20; text-align: left; border-top: solid 1px grey;"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' €/mois</td></tr>';
+                        $test2=$test2.'<tr><td style="width: 20; text-align: left; border-top: solid 1px grey;"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' '.$units.'</td></tr>';
                     }
                   }
                   $i+=1;
@@ -430,6 +447,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $length = $result2->num_rows;
 
             while($row2 = mysqli_fetch_array($result2)){
+
+                if($row2['BILLING_TYPE']=='monthly'){
+                  $units = '€/mois';
+                }else{
+                  $units = '€/an';
+                }
+
+                error_log(date("Y-m-d H:i:s")." - Units :".$units."\n", 3, "generate_invoices.log");
+
 
                 $contractStart= new DateTime();
                 $contractStart->setDate(substr($row2['START'], 0, 4), substr($row2['START'],5,2), substr($row2['START'], 8,2));
@@ -461,7 +487,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $contractEnd->setDate(substr($row2['END'], 0, 4), substr($row2['END'],5,2), substr($row2['END'], 8,2));
                 }
 
-
                 $comment='Période du '.$temp1.' au '.$temp2;
                 $leasingPrice=$row2['AMOUNT'];
                 $leasingPriceTVAC=1.21*$row2['AMOUNT'];
@@ -475,6 +500,10 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                 $difference=$dateStartTemp->diff($contractStart);
 
+                if($row2['CONTRACT_TYPE']=='annual'){
+                  $difference=$difference/12;
+                }
+
                 $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
 
                 if($row2['END']){
@@ -484,7 +513,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $test2.='<tr>
                     <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
                     <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$row2['MODEL'].' - REFERENCE: '.$row2['REFERENCE'].'</td>
-                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['AMOUNT'],2).' € / mois HTVA</td>
+                    <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($row2['AMOUNT'],2).' '.$units.' HTVA</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -495,7 +524,11 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <td></td>
                     <td><img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$row2['MODEL'].'_mini.png" alt=""></td>';
                 if($row2['END']){
+                  if($row2['BILLING_TYPE']=="annual"){
+                    $test2=$test2.'<td>Période '.($monthDifference/12).'/'.($lengthLeasing/12).'</td></tr>';
+                  }else{
                     $test2=$test2.'<td>Période '.($monthDifference).'/'.($lengthLeasing).'</td></tr>';
+                  }
                 }else{
                     $test2=$test2.'<td>Location</td></tr>';
                 }
@@ -519,15 +552,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
                <td style="background-color: white" witdth="100"></td>
-               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' €/mois<br>+TVA: '.round($tva,2).' €/mois </p></td>
+               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' '.$units.'<br>+TVA: '.round($tva,2).' '.$units.' </p></td>
             </tr>
             <tr>
-                <td height="35">'.round($total,2).' €/mois</td>
+                <td height="35">'.round($total,2).' '.$units.'</td>
                 <td>21%</td>
-                <td>'.round($tva,2).' €/mois</td>
-                <td>'.round($totalTVAIncluded,2).' €/mois</td>
+                <td>'.round($tva,2).' '.$units.'</td>
+                <td>'.round($totalTVAIncluded,2).' '.$units.'</td>
                 <td style="background-color: white" width="100"></td>
-                <td style="background-color: white"> Total TVAC : <strong>'.round($totalTVAIncluded,2).' €/mois</strong></td>
+                <td style="background-color: white"> Total TVAC : <strong>'.round($totalTVAIncluded,2).' '.$units.'</strong></td>
             </tr>
         </tbody>
     </table>
@@ -577,7 +610,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 echo $test1.$test2.$test3;
 
 
-error_log(date("Y-m-d H:i:s")." - <Result :".$test1.$test2.$test3."\n", 3, "generate_invoices.log");
+//error_log(date("Y-m-d H:i:s")." - <Result :".$test1.$test2.$test3."\n", 3, "generate_invoices.log");
 
 
 
