@@ -155,9 +155,6 @@ include 'include/head.php';
 
 						<h3 class="fr text-green text-center">Finalement et avant tout, pensez à tester votre vélo avant de l’acheter c’est l’étape la plus importante qui vous fera savoir s’il vous est adapté.</h3>
 
-						<p class="text-justify text-dark">Le dérailleur, les freins, les suspensions sont les autres composants d’un vélo électrique. Il est difficile sans connaissances techniques ou une maîtrise du marché de différencier un bon composant d’un autre. Demandez conseil à des professionnels, cependant évitez les marques no-name et fiez-vous aux leaders de chaque catégorie comme SRAM, Shimano pour les dérailleurs qui vous proposeront des modèles robustes.</p>
-
-
 
 		      </div>
 

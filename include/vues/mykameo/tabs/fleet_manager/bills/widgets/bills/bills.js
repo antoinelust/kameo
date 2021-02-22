@@ -467,7 +467,7 @@ function create_bill(){
         var day=("0" + dateInOneMonth.getDate()).slice(-2)
         var dateInOneMonthString=year+"-"+month+"-"+day;
 
-        $('#widget-addBill-form input[name=widget-addBill-form-date]').val(get_string());
+        $('#widget-addBill-form input[name=widget-addBill-form-date]').val(get_date_string());
         $('#widget-addBill-form input[name=widget-addBill-form-datelimite]').val(dateInOneMonthString);
 
         }

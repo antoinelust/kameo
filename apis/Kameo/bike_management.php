@@ -51,6 +51,7 @@ if(isset($_POST['action'])){
         $orderNumber=isset($_POST['orderNumber']) ? $_POST['orderNumber'] : NULL;
         $offerReference=isset($_POST['offerReference']) ? $_POST['offerReference'] : NULL;
         $clientReference=isset($_POST['clientReference']) ? $_POST['clientReference'] : NULL;
+        $estimatedDeliveryDate=isset($_POST['estimatedDeliveryDate']) ? $_POST['estimatedDeliveryDate'] : NULL;
 
         $contractType=isset($_POST['contractType']) ? $_POST['contractType'] : NULL;
 
@@ -175,7 +176,7 @@ if(isset($_POST['action'])){
             }
 
             include 'connexion.php';
-            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, COLOR, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, LOCKER_REFERENCE, GPS_ID, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE, DELIVERY_DATE, ORDER_NUMBER, OFFER_ID, EMAIL) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', $color, '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', $lockerReference, $gpsID, '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice', '$deliveryDate', '$orderNumber', $offerReference, $clientReference)";
+            $sql= "INSERT INTO  customer_bikes (USR_MAJ, HEU_MAJ, FRAME_NUMBER, TYPE, SIZE, COLOR, CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, COMPANY, MODEL, FRAME_REFERENCE, LOCKER_REFERENCE, GPS_ID, AUTOMATIC_BILLING, BILLING_TYPE, LEASING_PRICE, STATUS, INSURANCE, BILLING_GROUP, BIKE_PRICE, BIKE_BUYING_DATE, STAANN, SOLD_PRICE, ESTIMATED_DELIVERY_DATE, DELIVERY_DATE, ORDER_NUMBER, OFFER_ID, EMAIL) VALUES ('$user', CURRENT_TIMESTAMP, '$frameNumber', '$portfolioID', '$size', $color, '$contractType', $contractStart, $contractEnd, '$company', '$model', '$frameReference', $lockerReference, $gpsID, '$automaticBilling', '$billingType', $billingPrice, 'OK', '$insurance', '$billingGroup', '$buyingPrice', '$buyingDate', '','$sellPrice', '$estimatedDeliveryDate', '$deliveryDate', '$orderNumber', $offerReference, $clientReference)";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
