@@ -305,7 +305,7 @@ function get_command_user(email){
                       $('#orderBike .nl .deliveryDate').html("To be confirmed");
                       $('#orderBike .en .deliveryDate').html("To be confirmed");
                   }else{
-                      $('#orderBike .deliveryDate').html(response[i].deliveryDate);
+                      $('#orderBike .deliveryDate').html(response[i].deliveryDate.shortDate());
                   }
                   if(response[i].deliveryAddress=="" || response[i].deliveryAddress == null){
                       $('#orderBike .fr .deliveryPlace').html("A confirmer");

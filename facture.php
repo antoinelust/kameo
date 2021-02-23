@@ -238,204 +238,200 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $units = '€/an';
               }
 
+              error_log(date("Y-m-d H:i:s")." - BILLING_TYPE :".$row2['BILLING_TYPE']."\n", 3, "generate_invoices.log");
+              error_log(date("Y-m-d H:i:s")." - UNITS :".$units."\n", 3, "generate_invoices.log");
 
-                $catalogID=$row2['TYPE'];
 
-                error_log(date("Y-m-d H:i:s")." - FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");
-                $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
-                error_log(date("Y-m-d H:i:s")." - SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");
+              $catalogID=$row2['TYPE'];
 
+              error_log(date("Y-m-d H:i:s")." - FRAME NUMBER :".$row2['FRAME_NUMBER']."\n", 3, "generate_invoices.log");
+              $sql="SELECT * FROM bike_catalog WHERE ID ='$catalogID'";
+              error_log(date("Y-m-d H:i:s")." - SQL CATALOG :".$sql."\n", 3, "generate_invoices.log");
+
+              if ($conn->query($sql) === FALSE) {
+                  echo $conn->error;
+                  die;
+              }
+              $result4 = mysqli_query($conn, $sql);
+              $resultat4 = mysqli_fetch_assoc($result4);
+              $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".$catalogID."_mini.jpg";
+
+              $contractStart= new DateTime();
+              $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));
+
+
+
+              $dateStartTemp = new DateTime();
+              $dateStartTemp->setDate($currentDateObject->format("Y"), $currentDateObject->format("m"), $contractStart->format("d"));
+
+              $temp1=$dateStartTemp->format('d-m-Y');
+
+              if($dateStartTemp <= $dateEndObject){
+                error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y")."\n", 3, "generate_invoices.log");
+              }
+              error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
+              error_log(" Date Start : ".$dateStartObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
+              error_log(" DateEnd : ".$dateEndObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
+
+
+              if($dateStartTemp >= $dateStartObject && $dateStartTemp <= $dateEndObject){
+
+                if($row2['BILLING_TYPE'] == "monthly"){
+                  if($dateStartTemp->format('m')==12){
+                      $monthAfter2=1;
+                      $yearAfter2=(($dateStartTemp->format('Y'))+1);
+                  }else{
+                      $monthAfter2=(($dateStartTemp->format('m'))+1);
+                      $yearAfter2=$dateStartTemp->format('Y');
+                  }
+                  $dayAfter2=$contractStart->format('d');
+
+
+                  $lastDayMonth= last_day_month( $monthAfter2 );
+                  if($lastDayMonth < $dayAfter2){
+                      $dayAfter2=$lastDayMonth;
+                  }
+                  if(strlen($monthAfter2)==1){
+                      $monthAfter2='0'.$monthAfter2;
+                  }
+                  if(strlen($dayAfter2)==1){
+                      $dayAfter2='0'.$dayAfter2;
+                  }
+                  $dateAfter2=new DateTime();
+                  $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
+                }else if($row2['BILLING_TYPE']=="annual"){
+                  $dateAfter2=new DateTime($dateStartTemp->format("Y-m-d"));
+                  $dateAfter2->add(new DateInterval('P1Y'));
+                }
+                error_log(date("Y-m-d H:i:s")." - dateAfter :".$dateAfter2->format('d/m/Y')."\n", 3, "generate_invoices.log");
+
+
+                $temp2=$dateAfter2->format('d-m-Y');
+                $temp3=$dateStartTemp->format('Y-m-d');
+                $temp4=$dateAfter2->format('Y-m-d');
+
+
+
+                $comment='Période du '.$temp1.' au '.$temp2;
+                $leasingPrice=$row2['LEASING_PRICE'];
+                $leasingPriceTVAC=1.21*$row2['LEASING_PRICE'];
+                $frameNumber=$row2['FRAME_NUMBER'];
+                $bikeID=$row2['ID'];
+                $commentBilling=$row2['COMMENT_BILLING'];
+
+                $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'bike', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
                 if ($conn->query($sql) === FALSE) {
+                    echo $conn->error;
+                }
+
+                $sql5="SELECT bb.NOM, bb.PRENOM, bb.EMAIL FROM customer_bike_access aa, customer_referential bb WHERE aa.BIKE_ID='$bikeID' and aa.TYPE='personnel' and aa.EMAIL=bb.EMAIL";
+                if ($conn->query($sql5) === FALSE) {
                     echo $conn->error;
                     die;
                 }
-                $result4 = mysqli_query($conn, $sql);
-                $resultat4 = mysqli_fetch_assoc($result4);
-                $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".$catalogID."_mini.jpg";
-
-                $contractStart= new DateTime();
-                $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));
-
-
-
-                $dateStartTemp = new DateTime();
-                $dateStartTemp->setDate($currentDateObject->format("Y"), $currentDateObject->format("m"), $contractStart->format("d"));
-
-                $temp1=$dateStartTemp->format('d-m-Y');
-
-                if($dateStartTemp <= $dateEndObject){
-                  error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y")."\n", 3, "generate_invoices.log");
-                }
-                error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
-                error_log(" Date Start : ".$dateStartObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
-                error_log(" DateEnd : ".$dateEndObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
-
-
-                if($dateStartTemp >= $dateStartObject && $dateStartTemp <= $dateEndObject){
-
-                  if($row2['BILLING_TYPE'] == "monthly"){
-                    if($dateStartTemp->format('m')==12){
-                        $monthAfter2=1;
-                        $yearAfter2=(($dateStartTemp->format('Y'))+1);
-                    }else{
-                        $monthAfter2=(($dateStartTemp->format('m'))+1);
-                        $yearAfter2=$dateStartTemp->format('Y');
+                $result5 = mysqli_query($conn, $sql5);
+                $j=0;
+                $totalTemp=$row2['LEASING_PRICE'];
+                if($result5->num_rows>0){
+                    $resultat5 = mysqli_fetch_assoc($result5);
+                    $nameBikeUser=$resultat5['NOM'];
+                    $firstNameBikeUser=$resultat5['PRENOM'];
+                    $emailBikeUser=$resultat5['EMAIL'];
+                    $sqlAccessories="SELECT accessories_stock.ID as accessoryID, accessories_catalog.MODEL, accessories_categories.CATEGORY, CONTRACT_AMOUNT FROM accessories_stock, accessories_catalog, accessories_categories WHERE accessories_categories.ID= accessories_catalog.ACCESSORIES_CATEGORIES AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_stock.USER_EMAIL='$emailBikeUser' and accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.CONTRACT_START<='$temp3' AND accessories_stock.CONTRACT_END>='$temp3'";
+                    if ($conn->query($sqlAccessories) === FALSE) {
+                        echo $conn->error;
+                        die;
                     }
-                    $dayAfter2=$contractStart->format('d');
+                    error_log(date("Y-m-d H:i:s")." - SQL accessories :".$sqlAccessories."\n", 3, "generate_invoices.log");
 
-
-                    $lastDayMonth= last_day_month( $monthAfter2 );
-                    if($lastDayMonth < $dayAfter2){
-                        $dayAfter2=$lastDayMonth;
-                    }
-                    if(strlen($monthAfter2)==1){
-                        $monthAfter2='0'.$monthAfter2;
-                    }
-                    if(strlen($dayAfter2)==1){
-                        $dayAfter2='0'.$dayAfter2;
-                    }
-                    $dateAfter2=new DateTime();
-                    $dateAfter2->setDate($yearAfter2, $monthAfter2, $dayAfter2);
-                  }else if($row2['BILLING_TYPE']=="annual"){
-                    $dateAfter2=new DateTime($dateStartTemp->format("Y-m-d"));
-                    $dateAfter2->add(new DateInterval('P1Y'));
-                  }
-                  error_log(date("Y-m-d H:i:s")." - dateAfter :".$dateAfter2->format('d/m/Y')."\n", 3, "generate_invoices.log");
-
-
-                  $temp2=$dateAfter2->format('d-m-Y');
-                  $temp3=$dateStartTemp->format('Y-m-d');
-                  $temp4=$dateAfter2->format('Y-m-d');
-
-
-
-                  $comment='Période du '.$temp1.' au '.$temp2;
-                  $leasingPrice=$row2['LEASING_PRICE'];
-                  $leasingPriceTVAC=1.21*$row2['LEASING_PRICE'];
-                  $frameNumber=$row2['FRAME_NUMBER'];
-                  $bikeID=$row2['ID'];
-                  $commentBilling=$row2['COMMENT_BILLING'];
-
-                  $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'bike', '$bikeID', '$comment', '$temp3', '$temp4', '$leasingPrice', '$leasingPriceTVAC')";
-                  if ($conn->query($sql) === FALSE) {
-                      echo $conn->error;
-                  }
-
-                  $sql5="SELECT bb.NOM, bb.PRENOM, bb.EMAIL FROM customer_bike_access aa, customer_referential bb WHERE aa.BIKE_ID='$bikeID' and aa.TYPE='personnel' and aa.EMAIL=bb.EMAIL";
-                  if ($conn->query($sql5) === FALSE) {
-                      echo $conn->error;
-                      die;
-                  }
-                  $result5 = mysqli_query($conn, $sql5);
-                  $j=0;
-                  $totalTemp=$row2['LEASING_PRICE'];
-                  if($result5->num_rows>0){
-                      $resultat5 = mysqli_fetch_assoc($result5);
-                      $nameBikeUser=$resultat5['NOM'];
-                      $firstNameBikeUser=$resultat5['PRENOM'];
-                      $emailBikeUser=$resultat5['EMAIL'];
-                      $sqlAccessories="SELECT accessories_stock.ID as accessoryID, accessories_catalog.MODEL, accessories_categories.CATEGORY, CONTRACT_AMOUNT FROM accessories_stock, accessories_catalog, accessories_categories WHERE accessories_categories.ID= accessories_catalog.ACCESSORIES_CATEGORIES AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_stock.USER_EMAIL='$emailBikeUser' and accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.CONTRACT_START<='$temp3' AND accessories_stock.CONTRACT_END>='$temp3'";
-                      if ($conn->query($sqlAccessories) === FALSE) {
+                    $resultAccessories = mysqli_query($conn, $sqlAccessories);
+                    while($rowAccessories = mysqli_fetch_array($resultAccessories)){
+                      $accessoryID = $rowAccessories['accessoryID'];
+                      $amount = $rowAccessories["CONTRACT_AMOUNT"];
+                      $amountTVAC = round($amount*1.21);
+                      $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'accessory', '$accessoryID', '$comment', '$temp3', '$temp4', '$amount', '$amountTVAC')";
+                      if ($conn->query($sql) === FALSE){
                           echo $conn->error;
-                          die;
                       }
-                      $resultAccessories = mysqli_query($conn, $sqlAccessories);
-                      while($rowAccessories = mysqli_fetch_array($resultAccessories)){
-                        if($rowAccessories['BILLING_TYPE']=='monthly'){
-                          $units = '€/mois';
-                        }else{
-                          $units = '€/an';
-                        }
-
-                        $accessoryID = $rowAccessories['accessoryID'];
-                        $amount = $rowAccessories["CONTRACT_AMOUNT"];
-                        $amountTVAC = round($amount*1.21);
-                        $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'accessory', '$accessoryID', '$comment', '$temp3', '$temp4', '$amount', '$amountTVAC')";
-                        if ($conn->query($sql) === FALSE){
-                            echo $conn->error;
-                        }
-                        $accessoryBike[$i][$j]['CATEGORY']=$rowAccessories["CATEGORY"];
-                        $accessoryBike[$i][$j]['MODEL']=$rowAccessories["MODEL"];
-                        $accessoryBike[$i][$j]['CONTRACT_AMOUNT']= $amount;
-                        $total+=$rowAccessories['CONTRACT_AMOUNT'];
-                        $totalTemp+=$rowAccessories['CONTRACT_AMOUNT'];
-                        $j++;
-                      }
-
-                  }else{
-                    $nameBikeUser = NULL;
-                    $firstNameBikeUser = NULL;
-                    $emailBikeUser = NULL;
-                  }
-
-                  $difference=$dateStartTemp->diff($contractStart);
-
-                  $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
-                  $yearDifference=(($difference->format('%y'))+1);
-
-                  if($row2['CONTRACT_END']){
-                      $contractEnd= new DateTime();
-                      $contractEnd->setDate(substr($row2['CONTRACT_END'], 0, 4), substr($row2['CONTRACT_END'],5,2), substr($row2['CONTRACT_END'], 8,2));
-                      $numberOfMonthContract=$contractEnd->diff($contractStart);
-                      $numberOfMonthContract=(($numberOfMonthContract->format('%y'))*12+$numberOfMonthContract->format('%m'));
-                      $numberOfYearContract=$contractEnd->diff($contractStart);
-                      $numberOfYearContract=(($numberOfYearContract->format('%y')));
-                  }
-
-
-
-                  if($nameBikeUser != NULL){
-                    $test2=$test2.'<tr>
-                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
-                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo personnel de : '.$firstNameBikeUser.' '.$nameBikeUser.'</td>
-                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$totalTemp.' €</td>
-                    </tr>';
-
-                  }else{
-                    $test2.='
-                    <tr>
-                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
-                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo partagé</td>
-                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$totalTemp.' €</td>
-                    </tr>';
-
-                  }
-
-
-                  $test2.='<tr>
-                      <td></td>
-                      <td style="color: grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'<br> Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
-
-                  if(($row2['CONTRACT_END'])){
-                    if($row2['BILLING_TYPE']=='annual'){
-                      $test2=$test2.'<br>Période '.($yearDifference).'/'.($numberOfYearContract);
-                    }else{
-                      $test2=$test2.'<br>Période '.($monthDifference).'/'.$numberOfMonthContract;
+                      $accessoryBike[$i][$j]['CATEGORY']=$rowAccessories["CATEGORY"];
+                      $accessoryBike[$i][$j]['MODEL']=$rowAccessories["MODEL"];
+                      $accessoryBike[$i][$j]['CONTRACT_AMOUNT']= $amount;
+                      $total+=$rowAccessories['CONTRACT_AMOUNT'];
+                      $totalTemp+=$rowAccessories['CONTRACT_AMOUNT'];
+                      $j++;
                     }
-                  }else{
-                    $test2=$test2."<br>Location";
-                  }
 
-                  if($commentBilling != NULL && $commentBilling != ''){
-                    $test2.='<br/>'.$commentBilling;
-                  }
-
-                  $test2.='</td>
-                  <td></td>
-                  </tr>
-                  <tr>
-                      <td></td>
-                      <td><img class="img-responsive" src="'.$fichier.'" alt="">';
-                  $test2=$test2."</td><td style='color: grey'>".round($row2['LEASING_PRICE'],2)." ".$units." HTVA</td></tr>";
-
-                  if($j>0){
-                    foreach($accessoryBike[$i] as &$accessory){
-                        $test2=$test2.'<tr><td style="width: 20; text-align: left; border-top: solid 1px grey;"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' '.$units.'</td></tr>';
-                    }
-                  }
-                  $i+=1;
-                  $total+=$row2['LEASING_PRICE'];
+                }else{
+                  $nameBikeUser = NULL;
+                  $firstNameBikeUser = NULL;
+                  $emailBikeUser = NULL;
                 }
+
+                $difference=$dateStartTemp->diff($contractStart);
+
+                $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
+                $yearDifference=(($difference->format('%y'))+1);
+
+                if($row2['CONTRACT_END']){
+                    $contractEnd= new DateTime();
+                    $contractEnd->setDate(substr($row2['CONTRACT_END'], 0, 4), substr($row2['CONTRACT_END'],5,2), substr($row2['CONTRACT_END'], 8,2));
+                    $numberOfMonthContract=$contractEnd->diff($contractStart);
+                    $numberOfMonthContract=(($numberOfMonthContract->format('%y'))*12+$numberOfMonthContract->format('%m'));
+                    $numberOfYearContract=$contractEnd->diff($contractStart);
+                    $numberOfYearContract=(($numberOfYearContract->format('%y')));
+                }
+                if($nameBikeUser != NULL){
+                  $test2=$test2.'<tr>
+                      <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
+                      <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo personnel de : '.$firstNameBikeUser.' '.$nameBikeUser.'</td>
+                      <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$totalTemp.' €</td>
+                  </tr>';
+
+                }else{
+                  $test2.='
+                  <tr>
+                      <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
+                      <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo partagé</td>
+                      <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$totalTemp.' €</td>
+                  </tr>';
+
+                }
+
+
+                $test2.='<tr>
+                    <td></td>
+                    <td style="color: grey">'.$row2['MODEL'].' - CADRE: '.$row2['FRAME_REFERENCE'].'<br> Période du '.$dateStartTemp->format('d-m-Y').' au '.$dateAfter2->format('d-m-Y').'<br>';
+
+                if(($row2['CONTRACT_END'])){
+                  if($row2['BILLING_TYPE']=='annual'){
+                    $test2=$test2.'<br>Période '.($yearDifference).'/'.($numberOfYearContract);
+                  }else{
+                    $test2=$test2.'<br>Période '.($monthDifference).'/'.$numberOfMonthContract;
+                  }
+                }else{
+                  $test2=$test2."<br>Location";
+                }
+
+                if($commentBilling != NULL && $commentBilling != ''){
+                  $test2.='<br/>'.$commentBilling;
+                }
+
+                $test2.='</td>
+                <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img class="img-responsive" src="'.$fichier.'" alt="">';
+                $test2=$test2."</td><td style='color: grey'>".round($row2['LEASING_PRICE'],2)." ".$units." HTVA</td></tr>";
+
+                if($j>0){
+                  foreach($accessoryBike[$i] as &$accessory){
+                      $test2=$test2.'<tr><td style="width: 20; text-align: left; border-top: solid 1px grey;"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' '.$units.'</td></tr>';
+                  }
+                }
+                $i+=1;
+                $total+=$row2['LEASING_PRICE'];
+              }
             }
 
             $sql2="select * from boxes where COMPANY='$company' and START<='$dateEnd' and (END>='$dateEnd' or END is NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN != 'D'";
