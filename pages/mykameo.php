@@ -99,7 +99,6 @@ if ($token == NULL) { //Not connected
   <script type="text/javascript" src="js/global_functions.js"></script>
   <script type="text/javascript" src="js/addons/datatables/datatables.min.js"></script>
   <script type="text/javascript" src="js/load_client_conditions.js"></script>
-  <script type="text/javascript" src="js/search_module.js"></script>
   <script type="text/javascript" src="js/notifications.js"></script>
   <script type="text/javascript" src="js/addresses.js"></script>
   <script type="text/javascript" src="js/weather.js"></script>

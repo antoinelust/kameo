@@ -24,8 +24,6 @@ function requireToVar($file){
 }
 
 
-
-
 include 'apis/Kameo/connexion.php';
 $sql= "SELECT * FROM ((SELECT COMPANY, customer_bikes.BILLING_GROUP FROM customer_bikes WHERE CONTRACT_TYPE='leasing' AND STAANN != 'D') UNION (SELECT COMPANY, boxes.BILLING_GROUP FROM boxes WHERE boxes.STAANN!='D') UNION (SELECT INTERNAL_REFERENCE, accessories_stock.BILLING_GROUP from accessories_stock, companies WHERE accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.STAANN != 'D' and companies.ID=accessories_stock.COMPANY_ID)) T WHERE COMPANY != 'KAMEO'";
 

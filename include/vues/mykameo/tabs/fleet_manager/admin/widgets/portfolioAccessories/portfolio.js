@@ -107,7 +107,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
           $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
             "hidden"
           );
-            
+
           $("#widget-addCatalogAccessory-form input[name=action]").val(
             "update"
           );
@@ -150,23 +150,27 @@ $(".portfolioAccessoriesManagerClick").click(function () {
                 if (response.response == "error") {
                   console.log(response.message);
                 } else {
-                  response.categories.forEach((accessory) =>
+                  const categoriesSorted=response.categories.sort(function(a, b){
+                    //note the minus before -cmp, for descending order
+                    return cmp(
+                      [cmp(a.CATEGORY, b.CATEGORY), cmp(a.ID, b.ID)],
+                      [cmp(b.CATEGORY, a.CATEGORY), cmp(b.ID, a.ID)]
+                      );
+                  });
+
+                  categoriesSorted.forEach((accessory) =>
                     $("#widget-addCatalogAccessory-form [name=category]").append(
                       new Option(accessory.CATEGORY, accessory.ID)
                     )
                   );
+
                   $("#widget-addCatalogAccessory-form [name=category]").val("");
                 }
               },
             });
           }
-
           $("#widget-addCatalogAccessory-form [name=category]").val("");
           $("#widget-addCatalogAccessory-form [name=provider]").val("");
-
-
-
-
         });
 
         $("#porfolioAccessoriesListing").DataTable({
@@ -188,8 +192,16 @@ function getPortfolioDetails(ID) {
       success: function (response) {
         if (response.response == "error") {
           console.log(response.message);
-        } else {
-          response.categories.forEach((accessory) =>
+        } else{
+          const categoriesSorted=response.categories.sort(function(a, b){
+            //note the minus before -cmp, for descending order
+            return cmp(
+              [cmp(a.CATEGORY, b.CATEGORY), cmp(a.ID, b.ID)],
+              [cmp(b.CATEGORY, a.CATEGORY), cmp(b.ID, a.ID)]
+              );
+          });
+
+          categoriesSorted.forEach((accessory) =>
             $("#widget-addCatalogAccessory-form [name=category]").append(
               new Option(accessory.CATEGORY, accessory.ID)
             )

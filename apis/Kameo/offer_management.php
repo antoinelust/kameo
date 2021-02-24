@@ -303,9 +303,8 @@ if(isset($_POST['action']))
             }
             else if($company){
 
-
                 include 'connexion.php';
-                $sql="SELECT bb.ID, aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END, SUM(aa.LEASING_PRICE) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes aa, companies bb WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' and aa.COMPANY!='KAMEO VELOS TEST' and aa.SOLD_PRICE = '0' and aa.COMPANY=bb.INTERNAL_REFERENCE and aa.BILLING_GROUP=bb.BILLING_GROUP";
+                $sql="SELECT bb.ID, aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END, ROUND(SUM(CASE WHEN BILLING_TYPE = 'annual' THEN LEASING_PRICE/12 ELSE LEASING_PRICE END)) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes aa, companies bb WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' AND aa.CONTRACT_TYPE IN ('leasing', 'location') and aa.COMPANY=bb.INTERNAL_REFERENCE and aa.BILLING_GROUP=bb.BILLING_GROUP";
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
