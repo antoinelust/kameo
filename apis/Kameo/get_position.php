@@ -133,8 +133,7 @@ $payload = array(
                 $content = curl_exec($ch);
                 curl_close($ch);
                 $json_a = json_decode($content, true);
-                $length=sizeof($json_a);
-                $response['id']=$json_a[$length-1]['id'];
+                $response['id']=$json_a['id'];
                 $response['bikeNumber']=$resultat['FRAME_NUMBER'];
                 $update= new DateTime($json_a[0]['deviceTime']);
                 $response['timestamp']= $update->format('Y-m-d H:m:s');
@@ -142,15 +141,12 @@ $payload = array(
                 $response['batteryLevel']= $json_a[$length-1]['attributes']['batteryLevel'];
                 $response['url']='https://traccar.powunity.com/api/positions?'.$param;
 
-                $response['latitude']= $json_a[$length-1]['latitude'];
-                $response['longitude']= $json_a[$length-1]['longitude'];
-
+                $response['latitude']= $json_a['latitude'];
+                $response['longitude']= $json_a['longitude'];
 
                 http_response_code(200);
                 echo json_encode($response);
                 die;
-
-
 
             }else if(strlen ($GPS_ID)==16){
 
@@ -167,14 +163,22 @@ $payload = array(
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 3);
                 curl_setopt($ch, CURLOPT_HTTPHEADER , array("X-Api-Key: R2JPahhqb32cPbJE92xuKRjwyLbycn"));
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
                 $content = curl_exec($ch);
+                if(curl_exec($ch) === false)
+                {
+                    echo json_encode(array("response" => "error", "message" => curl_error($ch)));
+                    die;
+                }
+
                 curl_close($ch);
                 $json_a = json_decode($content, true);
 
                 if(!isset($json_a[$length-1]['attributes']['batteryLevel'])){
                     $batteryLevel=0;
                 }else{
-                    $batteryLevel= $json_a[$length-1]['attributes']['batteryLevel']*20;
+                    $batteryLevel= $json_a[0]['attributes']['batteryLevel']*20;
                 }
 
                 $response['id']=$GPS_ID;

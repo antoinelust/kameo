@@ -3,7 +3,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/lang_management.php';
 //require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/activitylog.php';
-header("Content-Security-Policy: script-src 'self' 'unsafe-inline' www.google-analytics.com ajax.googleapis.com https://www.google-analytics.com https://snap.licdn.com https://static.mobilemonkey.com https://webchat.mobilemonkey.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://connect.facebook.net;");
+header("Content-Security-Policy: script-src 'self' 'unsafe-inline' https://unpkg.com www.google-analytics.com ajax.googleapis.com https://www.google-analytics.com https://snap.licdn.com https://static.mobilemonkey.com https://webchat.mobilemonkey.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://connect.facebook.net;");
 ?>
 
 <head>

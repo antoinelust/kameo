@@ -28,6 +28,7 @@ $(".fleetmanager").click(function () {
     list_bikes_admin();
   });
 
+
   $('#widget-bikeManagement-form select[name=billingType]').change(function(){
     if($('#widget-bikeManagement-form select[name=billingType]').val()=="paid"){
       $('.billingPriceDiv').fadeOut("slow");
@@ -65,50 +66,6 @@ $(".fleetmanager").click(function () {
   });
 });
 
-$( document ).ready(function() {
-  $("#bikePositionAdmin").on('shown', function(){
-    $.ajax({
-      url: "apis/Kameo/get_position.php",
-      type: "get",
-      data: { bikeId: this.name },
-      xhrFields: {
-        withCredentials: true,
-      },
-      headers: {
-        Authorization: "Basic " + btoa("antoine@kameobikes.com:test"),
-      },
-
-      success: function (response) {
-        if (response.response == "error") {
-          console.log(response.message);
-        } else {
-          $("#demoMapAdmin").html("");
-          //var lon = response.longitude;
-          //var lat = response.latitude;
-          var lon = "5";
-          var lat = "50";
-          var zoom = 15;
-          var position = new OpenLayers.LonLat(lat, lon);
-          var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
-          var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-          var position = new OpenLayers.LonLat(lon, lat).transform(
-            fromProjection,
-            toProjection
-            );
-
-          map = new OpenLayers.Map("demoMapAdmin");
-          var mapnik = new OpenLayers.Layer.OSM();
-          map.addLayer(mapnik);
-          var markers = new OpenLayers.Layer.Markers("Markers");
-          map.addLayer(markers);
-          markers.addMarker(new OpenLayers.Marker(position));
-
-          map.setCenter(position, zoom);
-        }
-      },
-    });
-  });
-});
 
 
 function updateDisplayBikeManagement(type){
@@ -1153,6 +1110,7 @@ function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleConten
 
 
 function list_bikes_admin() {
+  var bikeMap;
   $.ajax({
     url: "apis/Kameo/get_bikes_listing.php",
     type: "post",
@@ -1434,232 +1392,285 @@ function list_bikes_admin() {
     response.bike[i].company == "KAMEO")
     ) {
    error = true;
-}
-
-if (response.bike[i].rentability != "N/A") {
-  var rentability =
-  '<td data-sort="' +
-  response.bike[i].rentability +
-  '">' +
-  response.bike[i].rentability +
-  " %</td>";
-} else {
-  var rentability =
-  '<td data-sort="0">' + response.bike[i].rentability + "</td>";
-}
-
-if (response.bike[i].GPS_ID != null) {
-  var GPS = '<a data-target="#bikePositionAdmin" name="' +
-  response.bike[i].id +
-  '" data-toggle="modal" class="clickBikePosition" href="#"><i class="fa fa-map-pin" aria-hidden="true"></i> </a>';
-}else{
-  var GPS = "";
-}
-
-if (response.bike[i].bikeBuyingDate == null) {
-  var bikeBuyingDate = '<span class="text-red">N/A</span>';
-} else {
-  var bikeBuyingDate =
-  '<span class="">' +
-  response.bike[i].bikeBuyingDate.shortDate() +
-  "</span>";
-}
-
-
-
-if (((response.bike[i].contractType=="leasing" || response.bike[i].contractType=="location") && response.bike[i].deliveryDate == null) || (response.bike[i].contractType=="order" && (response.bike[i].estimatedDeliveryDate == "0000-00-00" || response.bike[i].estimatedDeliveryDate == null))) {
-  var deliveryDate = '<td class="text-red">N/A</td>';
-} else {
-  if(response.bike[i].contractType=="leasing" || response.bike[i].contractType=="location")
-  {
-    var deliveryDate =
-    '<td data-sort="'+(new Date(response.bike[i].deliveryDate)).getTime()+'">' +
-    response.bike[i].deliveryDate.shortDate() +
-    "</td>";
-  }else if (response.bike[i].contractType=="order"){
-    if((new Date(response.bike[i].estimatedDeliveryDate)) < new Date()){
-      var deliveryDate =
-      '<td class="text-red" data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
-      response.bike[i].estimatedDeliveryDate.shortDate() +
-      "</td>";
-    }else{
-      var deliveryDate =
-      '<td data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
-      response.bike[i].estimatedDeliveryDate.shortDate() +
-      "</td>";
-    }
-  }else{
-    var deliveryDate = '<td>N/A</td>';
   }
-}
 
-if (response.bike[i].color == "" || response.bike[i].color == null) {
-  var color = "N/A";
-} else {
-  var color = response.bike[i].color;
-}
-if(response.bike[i].contractType == "order"){
-  if(response.bike[i].estimatedDeliveryDate != null){
-    var dateOrder = new Date(response.bike[i].estimatedDeliveryDate);
-    if(dateOrder < now){
+  if (response.bike[i].rentability != "N/A") {
+    var rentability =
+    '<td data-sort="' +
+    response.bike[i].rentability +
+    '">' +
+    response.bike[i].rentability +
+    " %</td>";
+  } else {
+    var rentability =
+    '<td data-sort="0">' + response.bike[i].rentability + "</td>";
+  }
+
+  if (response.bike[i].GPS_ID != null && response.bike[i].GPS_ID != '/' && response.bike[i].GPS_ID != '-') {
+    var GPS = '<a data-target="#bikePositionAdmin" name="' +
+    response.bike[i].id +
+    '" data-toggle="modal" class="getBikePosition" href="#"><i class="fa fa-map-pin" aria-hidden="true"></i> </a>';
+  }else{
+    var GPS = "";
+  }
+
+  if (response.bike[i].bikeBuyingDate == null) {
+    var bikeBuyingDate = '<span class="text-red">N/A</span>';
+  } else {
+    var bikeBuyingDate =
+    '<span class="">' +
+    response.bike[i].bikeBuyingDate.shortDate() +
+    "</span>";
+  }
+
+
+
+  if (((response.bike[i].contractType=="leasing" || response.bike[i].contractType=="location") && response.bike[i].deliveryDate == null) || (response.bike[i].contractType=="order" && (response.bike[i].estimatedDeliveryDate == "0000-00-00" || response.bike[i].estimatedDeliveryDate == null))) {
+    var deliveryDate = '<td class="text-red">N/A</td>';
+  } else {
+    if(response.bike[i].contractType=="leasing" || response.bike[i].contractType=="location")
+    {
+      var deliveryDate =
+      '<td data-sort="'+(new Date(response.bike[i].deliveryDate)).getTime()+'">' +
+      response.bike[i].deliveryDate.shortDate() +
+      "</td>";
+    }else if (response.bike[i].contractType=="order"){
+      if((new Date(response.bike[i].estimatedDeliveryDate)) < new Date()){
+        var deliveryDate =
+        '<td class="text-red" data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
+        response.bike[i].estimatedDeliveryDate.shortDate() +
+        "</td>";
+      }else{
+        var deliveryDate =
+        '<td data-sort="'+(new Date(response.bike[i].estimatedDeliveryDate)).getTime()+'">' +
+        response.bike[i].estimatedDeliveryDate.shortDate() +
+        "</td>";
+      }
+    }else{
+      var deliveryDate = '<td>N/A</td>';
+    }
+  }
+
+  if (response.bike[i].color == "" || response.bike[i].color == null) {
+    var color = "N/A";
+  } else {
+    var color = response.bike[i].color;
+  }
+  if(response.bike[i].contractType == "order"){
+    if(response.bike[i].estimatedDeliveryDate != null){
+      var dateOrder = new Date(response.bike[i].estimatedDeliveryDate);
+      if(dateOrder < now){
+        error=true;
+      }
+    }else{
       error=true;
     }
-  }else{
-    error=true;
   }
-}
-if(response.bike[i].contractType == "order" && (response.bike[i].estimatedDeliveryDate == null || response.bike[i].estimatedDeliveryDate == "0000-00-00")){
-  error = true;
-}
+  if(response.bike[i].contractType == "order" && (response.bike[i].estimatedDeliveryDate == null || response.bike[i].estimatedDeliveryDate == "0000-00-00")){
+    error = true;
+  }
 
-var style = "";
-if(error){
-  var style = " class='text-red' "
-}else{
-  var style = " class='text-green' "
-}
+  var style = "";
+  if(error){
+    var style = " class='text-red' "
+  }else{
+    var style = " class='text-green' "
+  }
 
-temp =
-'<tr><td>'+
-GPS+
-'<a  data-target="#bikeManagement" name="' +
-response.bike[i].id +
-'" data-toggle="modal" class="updateBikeAdmin" href="#">' +
-response.bike[i].id +
-"</a></td><td>" +
-response.bike[i].company +
-"</td><td>" +
-response.bike[i].frameNumber +
-"</td><td>" +
-brandAndModel +
-"</td><td "+style+" >" +
-response.bike[i].contractType +
-"</td><td "+style+" data-sort='"+(new Date(response.bike[i].contractStart)).getTime()+"'>" +
-start +
-"</td><td "+style+" data-sort='"+(new Date(response.bike[i].contractEnd)).getTime()+"'>" +
-end +
-"</td><td>" +
-leasingPrice +
-"</td><td>" +
-automatic_billing +
-"</td><td>" +
-status +
-"</td><td>" +
-insurance +
-'</td><td data-sort="' +
-new Date(response.bike[i].HEU_MAJ).getTime() +
-'">' +
-response.bike[i].HEU_MAJ.shortDate() +
-"</td>" +
-rentability +
-"<td>" +
-bikeBuyingDate +
-"</td>" +
-deliveryDate +
-"<td>" +
-response.bike[i].orderNumber +
-"</td><td>" +
-response.bike[i].size +
-"</td><td>" +
-color +
-"</td></tr>";
-dest = dest.concat(temp);
-i++;
-}
-var temp = "</tbody></table>";
-dest = dest.concat(temp);
-document.getElementById("bikeDetailsAdmin").innerHTML = dest;
+  temp =
+  '<tr><td>'+
+  GPS+
+  '<a  data-target="#bikeManagement" name="' +
+  response.bike[i].id +
+  '" data-toggle="modal" class="updateBikeAdmin" href="#">' +
+  response.bike[i].id +
+  "</a></td><td>" +
+  response.bike[i].company +
+  "</td><td>" +
+  response.bike[i].frameNumber +
+  "</td><td>" +
+  brandAndModel +
+  "</td><td "+style+" >" +
+  response.bike[i].contractType +
+  "</td><td "+style+" data-sort='"+(new Date(response.bike[i].contractStart)).getTime()+"'>" +
+  start +
+  "</td><td "+style+" data-sort='"+(new Date(response.bike[i].contractEnd)).getTime()+"'>" +
+  end +
+  "</td><td>" +
+  leasingPrice +
+  "</td><td>" +
+  automatic_billing +
+  "</td><td>" +
+  status +
+  "</td><td>" +
+  insurance +
+  '</td><td data-sort="' +
+  new Date(response.bike[i].HEU_MAJ).getTime() +
+  '">' +
+  response.bike[i].HEU_MAJ.shortDate() +
+  "</td>" +
+  rentability +
+  "<td>" +
+  bikeBuyingDate +
+  "</td>" +
+  deliveryDate +
+  "<td>" +
+  response.bike[i].orderNumber +
+  "</td><td>" +
+  response.bike[i].size +
+  "</td><td>" +
+  color +
+  "</td></tr>";
+  dest = dest.concat(temp);
+  i++;
+  }
+  var temp = "</tbody></table>";
+  dest = dest.concat(temp);
+  document.getElementById("bikeDetailsAdmin").innerHTML = dest;
 
-displayLanguage();
-
-$(".updateBikeAdmin").off();
-$(".updateBikeAdmin").click(function () {
-  construct_form_for_bike_status_updateAdmin(this.name);
-  $("#widget-bikeManagement-form input").attr("readonly", false);
-  $("#widget-bikeManagement-form select").attr("readonly", false);
-  $(".bikeManagementTitle").html("Modifier un vélo");
-  $(".bikeManagementSend").removeClass("hidden");
-  $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Modifier');
-});
-
-$(".retrieveBikeAdmin").click(function () {
-  construct_form_for_bike_status_updateAdmin(this.name);
-  $("#widget-bikeManagement-form input").attr("readonly", true);
-  $("#widget-bikeManagement-form select").attr("readonly", true);
-  $(".bikeManagementTitle").html("Consulter un vélo");
-  $(".bikeManagementSend").addClass("hidden");
-});
-
-$(".addBikeAdmin").click(function () {
-  add_bike();
-  $("#widget-bikeManagement-form input").attr("readonly", false);
-  $("#widget-bikeManagement-form select").attr("readonly", false);
-  $(".bikeManagementTitle").html("Ajouter un vélo");
-  $(".bikeManagementSend").removeClass("hidden");
-  $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
-});
+  $('.getBikePosition').click(function(){
+    bikeMap=this.name;
+  })
 
 
-table = $("#bookingAdminTable").DataTable({
-  paging: true,
-  searching: true,
-  scrollX: true,
-  lengthMenu: [
-  [10, 25, 50, -1],
-  [10, 25, 50, "Tous"],
-  ],
-  columns: [
-  { width: "50px" },
-  { width: "50px" },
-  { width: "100px" },
-  { width: "180px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  { width: "100px" },
-  ],
-  columnDefs: [
-  {
-    targets: [13],
-    visible: false,
-    searchable: false,
+  $("#bikePositionAdmin").off();
+  $("#bikePositionAdmin").on('shown.bs.modal', function(){
+    $.ajax({
+      url: "apis/Kameo/get_position.php",
+      type: "get",
+      data: { bikeId: bikeMap },
+      xhrFields: {
+        withCredentials: true,
+      },
+      headers: {
+        Authorization: "Basic " + btoa("antoine@kameobikes.com:test"),
+      },
+
+      success: function (response) {
+        if (response.response == "error") {
+          console.log(response.message);
+        } else {
+          $("#demoMapAdmin").html("");
+          var lon = response.longitude;
+          var lat = response.latitude;
+          var zoom = 15;
+          var position = new OpenLayers.LonLat(lat, lon);
+          var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+          var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+          var position = new OpenLayers.LonLat(lon, lat).transform(
+            fromProjection,
+            toProjection
+            );
+
+          map = new OpenLayers.Map("demoMapAdmin");
+          var mapnik = new OpenLayers.Layer.OSM();
+          map.addLayer(mapnik);
+          var markers = new OpenLayers.Layer.Markers("Markers");
+          map.addLayer(markers);
+          markers.addMarker(new OpenLayers.Marker(position));
+
+          map.setCenter(position, zoom);
+
+          $('.informationGPS').html('<ul><li>Latitute : '+lat+'</li><li>Longitute : '+lon+'</li><li>Dernière position : '+get_date_string_european_with_hours(new Date(response.timestamp))+'</li><li>Niveau batterie : '+response.batteryLevel+' %</li></ul>');
+          //$('.informationGPS').html($('.informationGPS').html()+'<img src="images_bikes/'+bikeMap+'.jpg" >');
+        }
+      },
+    });
+  });
+
+
+
+
+  displayLanguage();
+
+  $(".updateBikeAdmin").off();
+  $(".updateBikeAdmin").click(function () {
+    construct_form_for_bike_status_updateAdmin(this.name);
+    $("#widget-bikeManagement-form input").attr("readonly", false);
+    $("#widget-bikeManagement-form select").attr("readonly", false);
+    $(".bikeManagementTitle").html("Modifier un vélo");
+    $(".bikeManagementSend").removeClass("hidden");
+    $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Modifier');
+  });
+
+  $(".retrieveBikeAdmin").click(function () {
+    construct_form_for_bike_status_updateAdmin(this.name);
+    $("#widget-bikeManagement-form input").attr("readonly", true);
+    $("#widget-bikeManagement-form select").attr("readonly", true);
+    $(".bikeManagementTitle").html("Consulter un vélo");
+    $(".bikeManagementSend").addClass("hidden");
+  });
+
+  $(".addBikeAdmin").click(function () {
+    add_bike();
+    $("#widget-bikeManagement-form input").attr("readonly", false);
+    $("#widget-bikeManagement-form select").attr("readonly", false);
+    $(".bikeManagementTitle").html("Ajouter un vélo");
+    $(".bikeManagementSend").removeClass("hidden");
+    $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
+  });
+
+
+  table = $("#bookingAdminTable").DataTable({
+    paging: true,
+    searching: true,
+    scrollX: true,
+    lengthMenu: [
+    [10, 25, 50, -1],
+    [10, 25, 50, "Tous"],
+    ],
+    columns: [
+    { width: "50px" },
+    { width: "50px" },
+    { width: "100px" },
+    { width: "180px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    { width: "100px" },
+    ],
+    columnDefs: [
+    {
+      targets: [13],
+      visible: false,
+      searchable: false,
+    },
+    {
+      targets: [14],
+      visible: false,
+      searchable: false,
+    },
+    {
+      targets: [15],
+      visible: false,
+    },
+    {
+      targets: [16],
+      visible: false,
+    },
+    {
+      targets: [17],
+      visible: false,
+    },
+    ],
+  });
+
+  table
+  .column(4)
+  .search("test|stock|renting|leasing", true, false)
+  .draw();
+  }
+  $("#load").addClass('hidden');
   },
-  {
-    targets: [14],
-    visible: false,
-    searchable: false,
-  },
-  {
-    targets: [15],
-    visible: false,
-  },
-  {
-    targets: [16],
-    visible: false,
-  },
-  {
-    targets: [17],
-    visible: false,
-  },
-  ],
-});
-
-table
-.column(4)
-.search("test|stock|renting|leasing", true, false)
-.draw();
-}
-$("#load").addClass('hidden');
-},
-});
+  });
 }
