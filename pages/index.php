@@ -6,6 +6,10 @@ header_remove("X-Powered-By");
 include 'include/head.php';
 ?>
 
+<!-- <head>
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com">
+</head> -->
+
 <body class="wide">
 <?
 	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';

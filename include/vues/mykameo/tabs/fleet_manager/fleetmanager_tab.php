@@ -295,5 +295,22 @@
 				</div>';
     }
 
+    //changer tt ici en dessous et creer modal dans fleet pour interface de stock
+    if(get_user_permissions("stock", $token)){
+        echo '<h4 class="StockTitle ">Stock</h4><br><br>
+        <div class="row">
+          <div class="col-md-4" style="height:164px" id="stockManagement">
+            <div class="icon-box medium fancy">
+              <div class="icon bold" data-animation="pulse infinite">
+                <a data-toggle="modal" data-target="#scanBarcodeModal" href="#" class="stockManagerClick">
+                  <i style="opacity:0.15" class="fa fa-barcode"></i>  
+                </a>
+              </div>
+              <p>Scanner Stock</p>
+            </div>
+          </div>
+        </div>';
+    }
+
     ?>
 	</div>
