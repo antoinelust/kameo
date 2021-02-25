@@ -12,6 +12,7 @@ include 'include/head.php';
         <?php include 'include/tb_popup.php'; ?>
         <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@13.0.1/dist/lazyload.min.js"></script>
         <script src="js/language.js"></script>
+        <script src="js/global_functions.js"></script>
 
         <style>
             * {
@@ -314,6 +315,10 @@ include 'include/head.php';
                                         var price = "5000";
                                     }
 
+                                    if(response.bike[i].estimatedDeliveryDate != null){
+                                      var estimatedDeliveryDate = new Date(response.bike[i].estimatedDeliveryDate);
+                                      estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + 7);
+                                    }
                                     var temp = "\
                                     <div style='display: block' class=\"col-md-2 grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
                                         <div class=\"portfolio-image effect social-links\">\
@@ -328,7 +333,9 @@ include 'include/head.php';
                                         <div class=\"portfolio-description\">\
                                           <a href=\"offre.php?ID="+response.bike[i].ID+"\"><h4 class=\"title\">" + response.bike[i].brand + "</h4></a>\
                                           <p>" + (response.bike[i].model + " " + frameType).substr(0, 25) + "\
-                                          <br>" + response.bike[i].utilisation;
+                                          <br>" + response.bike[i].utilisation +"<br>";
+                                          var stock = (response.bike[i].stockTotal > 0) ? "<span class='background-green text-light'>De stock</span>" : ((response.bike[i].estimatedDeliveryDate != null) ? "<span class='background-green'>Prochainement</span><sup><i class='fa fa-question-circle' rel='tooltip' data-toggle='tooltip' data-trigger='hover' data-placement='bottom' data-html='true' data-title=\"<div style='position:relative;overflow:auto'><div style='line-height:20px; float:left;border-radius: 3px;text-align:left'>Prochaine arrivée prévue le "+get_date_string_european(estimatedDeliveryDate)+"</div></div\"></i></sup></strong>" : "<span class='background-orange'>Pas en stock</span>");
+                                          temp=temp.concat(stock);
                                     if (typeof response.bike[i].impactOnNetSalary !== 'undefined' && typeof response.bike[i].impactOnGrossSalary != 'undefined') {
                                       var textExplanation="Montant du leasing : "+response.bike[i].leasingPrice+" €/mois<br/>Impact salaire brut : "+Math.round(response.bike[i].impactOnGrossSalary*10)/10+" €/mois<br/>\
                                       <b>Impact salaire net : "+Math.round(response.bike[i].impactOnNetSalary*10)/10+" €/mois</b>";
@@ -382,9 +389,29 @@ include 'include/head.php';
 
 
 
+                            var $elems = $('.grid-item img');
+                            var elemsCount = $elems.length;
+                            var loadedCount = 0;
+                            $elems.on('load', function () {
+                              // increase the loaded count
+                              loadedCount++;
+                              // if loaded count flag is equal to elements count
+                              if (loadedCount == elemsCount) {
+                                setTimeout(function(){
+                                  $('.grid').isotope();
+                                }, 500);
+                                window.scrollTo(0, 0);
+                                $('[data-toggle="tooltip"]').tooltip({
+                                  container: "body",
+                                })
+                              }
+                            });
+
+
 
                             $(function () {
-                              $('[data-toggle="popover"]').popover()
+                              $('[data-toggle="popover"]').popover();
+                              // get all images and iframes
                             })
 
                             var filters = {};
@@ -412,9 +439,6 @@ include 'include/head.php';
                 });
             }
             loadPortfolio();
-            $(window).load(function(){$('.grid').isotope()})
-
-
             jQuery("#cash4bike-form").validate({
               submitHandler: function(form) {
                 loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]:checked').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]:checked').val(), $('#cash4bike-form select[name=frequence]').val());
