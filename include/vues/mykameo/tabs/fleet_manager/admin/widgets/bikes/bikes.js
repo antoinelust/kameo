@@ -1571,8 +1571,9 @@ function list_bikes_admin() {
 
           map.setCenter(position, zoom);
 
-          $('.informationGPS').html('<ul><li>Latitute : '+lat+'</li><li>Longitute : '+lon+'</li><li>Dernière position : '+get_date_string_european_with_hours(new Date(response.timestamp))+'</li><li>Niveau batterie : '+response.batteryLevel+' %</li></ul>');
-          //$('.informationGPS').html($('.informationGPS').html()+'<img src="images_bikes/'+bikeMap+'.jpg" >');
+          $('#bikePositionAdmin span[name=bikeInformation]').html('<p><i class="fa fa-bicycle" aria-hidden="true"></i> Identification du vélo : '+response.frameNumber+'<br><i class="fa fa-building" aria-hidden="true"></i> Société : '+response.company+'<br></p>');
+          $('#bikePositionAdmin span[name=informationGPS]').html('<p><i class="fa fa-location-arrow" aria-hidden="true"></i> Coordonnées GPS : ('+lat+', '+lon+')<br><i class="fa fa-calendar" aria-hidden="true"></i> Dernière position : '+get_date_string_european_with_hours(new Date(response.timestamp))+'<br><i class="fa fa-battery-full" aria-hidden="true"></i> Niveau batterie : '+response.batteryLevel+' %<br></p>');
+          $('#bikePositionAdmin span[name=informationGPS]').html($('#bikePositionAdmin span[name=informationGPS]').html()+'<img src="images_bikes/'+response.catalogID+'_mini.jpg" >');
         }
       },
     });

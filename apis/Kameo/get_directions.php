@@ -14,7 +14,6 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 if($connected && constant('ENVIRONMENT')!="local"){
     require_once $_SERVER['DOCUMENT_ROOT'].'/include/api_keys.php';
     $response=array();
-
     $address_start=isset($_POST['address_start']) ? $_POST['address_start'] : NULL;
     $address_end=isset($_POST['address_end']) ? $_POST['address_end'] : NULL;
     $timestamp=isset($_POST['timestamp']) ? $_POST['timestamp'] : "now";

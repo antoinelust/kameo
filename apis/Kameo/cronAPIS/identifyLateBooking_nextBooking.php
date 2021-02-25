@@ -8,8 +8,13 @@ foreach ((array) $lateBookings as $lateBooking) {
   if($lateBooking['COMPANY']=="Actiris"){
     $bikeID = $lateBooking['BIKE_ID'];
     $dateEnd = $lateBooking['DATE_END_2'];
+    echo 'Bike ID : '.$bikeID."\n";
+    echo 'date end : '.$dateEnd."\n";
 
     $nextBooking = execSQL("SELECT aa.ID, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL, aa.EMAIL, bb.ID as customerID, bb.COMPANY from reservations aa, customer_referential bb, customer_bikes cc WHERE (aa.STAANN <> 'D' OR aa.STAANN is NULL) AND aa.BIKE_ID=cc.ID AND aa.EMAIL = bb.EMAIL AND BIKE_ID=? AND DATE_START_2 > ? AND NOT EXISTS (select 1 from notifications WHERE notifications.TYPE='lateBookingNextUser' AND (notifications.STAAN <> 'D' OR notifications.STAAN IS NULL) AND notifications.TYPE_ITEM = aa.ID AND notifications.USER_ID=(SELECT ID from customer_referential WHERE EMAIL = aa.EMAIL))", array('ss', $bikeID, $dateEnd), false);
+
+    echo 'SQL next booking : "SELECT aa.ID, aa.DATE_START_2, aa.DATE_END_2, cc.MODEL, aa.EMAIL, bb.ID as customerID, bb.COMPANY from reservations aa, customer_referential bb, customer_bikes cc WHERE (aa.STAANN <> \'D\' OR aa.STAANN is NULL) AND aa.BIKE_ID=cc.ID AND aa.EMAIL = bb.EMAIL AND BIKE_ID=\''.$bikeID.'\' AND DATE_START_2 > \''.$dateEnd.'\' AND NOT EXISTS (select 1 from notifications WHERE notifications.TYPE=\'lateBookingNextUser\' AND (notifications.STAAN <> \'D\' OR notifications.STAAN IS NULL) AND notifications.TYPE_ITEM = aa.ID AND notifications.USER_ID=(SELECT ID from customer_referential WHERE EMAIL = aa.EMAIL))"';
+
     if($nextBooking != null){
       echo 'ID : '.$nextBooking[0]['ID']."\n";
       $nextBookingStart = $nextBooking[0]['DATE_START_2'];

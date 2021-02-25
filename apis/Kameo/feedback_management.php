@@ -175,24 +175,16 @@ if(isset($_GET['action'])){
         $user = isset($_POST["user"]) ? $_POST["user"] : NULL;
         $bike = isset($_POST["bike"]) ? $_POST["bike"] : NULL;
         include 'connexion.php';
-        $sql="select * from feedbacks aa WHERE aa.ID_RESERVATION='$ID'";
+        $feedback=execSQL("select * from feedbacks aa WHERE aa.ID_RESERVATION=?", array("i", $ID), false);
+        $ID_feedback=$feedback[0]['ID'];
 
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $resultat = mysqli_fetch_assoc($result);
-        $length = $result->num_rows;
-        $ID_feedback=$resultat['ID'];
-        if($commentUpdate!=NULL){
-            $commentUpdate="'".addslashes($comment)."'";
+        if($comment!=NULL){
+            $comment="'".addslashes($comment)."'";
         }else{
-            $commentUpdate='NULL';
+            $comment='NULL';
         }
 
-        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, BIKE_ID='$ID', ID_RESERVATION='$ID', NOTE='$note', COMMENT=$commentUpdate, ENTRETIEN='$entretien', STATUS='DONE' WHERE ID='$ID_feedback'";
+        $sql="UPDATE feedbacks SET USR_MAJ='$user', HEU_MAJ=CURRENT_TIMESTAMP, ID_RESERVATION='$ID', NOTE='$note', COMMENT=$comment, ENTRETIEN='$entretien', STATUS='DONE' WHERE ID='$ID_feedback'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
