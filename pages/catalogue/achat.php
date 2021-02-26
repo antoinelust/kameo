@@ -28,206 +28,211 @@ include 'include/head.php';
         <!-- CONTENT -->
         <section>
             <div class="container-fullwidth">
-                <div class="row">
                     <div class="col-md-12 searchCol background-green" style ="margin-top : -40px">
-                        <div class="row">
-                            <div class="col-md-12" id="achat_sidebar">
-                                <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
+                      <div class="container" id="achat_sidebar">
+                        <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
+                          <div class="form-group col-md-2">
+                              <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
+                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
+                                  <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
+                                  <option data-filter=".ahooga"><?= L::achat_brand_option2; ?></option>
+                                  <option data-filter=".benno"><?= L::achat_brand_option3; ?></option>
+                                  <option data-filter=".bzen"><?= L::achat_brand_option4; ?></option>
+                                  <option data-filter=".conway"><?= L::achat_brand_option5; ?></option>
+                                  <option data-filter=".douze"><?= L::achat_brand_option6; ?></option>
+                                  <option data-filter=".hnf"><?= L::achat_brand_option7; ?></option>
+                                  <option data-filter=".kayza"><?= L::achat_brand_option8; ?></option>
+                                  <option data-filter=".moustache">Moustache</option>
+                                  <option data-filter=".victoria"><?= L::achat_brand_option10; ?></option>
+                              </select>
+                          </div>
 
-                                <div class="form-group col-md-2">
-                                    <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
-                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
-                                        <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
-                                        <option data-filter=".ahooga"><?= L::achat_brand_option2; ?></option>
-                                        <option data-filter=".benno"><?= L::achat_brand_option3; ?></option>
-                                        <option data-filter=".bzen"><?= L::achat_brand_option4; ?></option>
-                                        <option data-filter=".conway"><?= L::achat_brand_option5; ?></option>
-                                        <option data-filter=".douze"><?= L::achat_brand_option6; ?></option>
-                                        <option data-filter=".hnf"><?= L::achat_brand_option7; ?></option>
-                                        <option data-filter=".kayza"><?= L::achat_brand_option8; ?></option>
-                                        <option data-filter=".moustache">Moustache</option>
-                                        <option data-filter=".victoria"><?= L::achat_brand_option10; ?></option>
-                                    </select>
-                                </div>
+                          <div class="form-group col-md-2">
+                              <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
+                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
+                                  <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
+                                  <option data-filter=".villeetchemin"><?= L::achat_use_option2; ?></option>
+                                  <option data-filter=".ville"><?= L::achat_use_option3; ?></option>
+                                  <option data-filter=".toutchemin"><?= L::achat_use_option4; ?></option>
+                                  <option data-filter=".pliant"><?= L::achat_use_option5; ?></option>
+                                  <option data-filter=".speedpedelec"><?= L::achat_use_option6; ?></option>
+                                  <option data-filter=".gravel"><?= L::achat_use_option7; ?></option>
+                                  <option data-filter=".vtt"><?= L::achat_use_option8; ?></option>
+                                  <option data-filter=".cargo"><?= L::achat_use_option9; ?></option>
+                                  <option data-filter=".enfant"><?= L::achat_use_option10; ?></option>
+                              </select>
+                          </div>
 
-                                <div class="form-group col-md-2">
-                                    <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
-                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
-                                        <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
-                                        <option data-filter=".villeetchemin"><?= L::achat_use_option2; ?></option>
-                                        <option data-filter=".ville"><?= L::achat_use_option3; ?></option>
-                                        <option data-filter=".toutchemin"><?= L::achat_use_option4; ?></option>
-                                        <option data-filter=".pliant"><?= L::achat_use_option5; ?></option>
-                                        <option data-filter=".speedpedelec"><?= L::achat_use_option6; ?></option>
-                                        <option data-filter=".gravel"><?= L::achat_use_option7; ?></option>
-                                        <option data-filter=".vtt"><?= L::achat_use_option8; ?></option>
-                                        <option data-filter=".cargo"><?= L::achat_use_option9; ?></option>
-                                        <option data-filter=".enfant"><?= L::achat_use_option10; ?></option>
-                                    </select>
-                                </div>
+                          <div class="form-group col-md-2">
+                              <label for="size">Taille</label>
+                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })"  name="size">
+                                <option data-filter="" value="*">Toutes</option>
+                                <option data-filter="" value="XS">XS</option>
+                                <option data-filter="" value="S">S</option>
+                                <option data-filter="" value="M">M</option>
+                                <option data-filter="" value="L">L</option>
+                                <option data-filter="" value="XL">XL</option>
+                                <option data-filter="" value="UNI">Unique</option>
+                              </select>
+                          </div>
 
-                                <div class="form-group col-md-3">
-                                    <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
-                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
-                                        <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
-                                        <option data-filter=".m"><?= L::achat_cadre_option2; ?></option>
-                                        <option data-filter=".f"><?= L::achat_cadre_option3; ?></option>
-                                        <option data-filter=".h"><?= L::achat_cadre_option4; ?></option>
-                                        <option data-filter=".unisex"><?= L::achat_cadre_option5; ?></option>
-                                    </select>
-                                </div>
 
-                                <div class="form-group col-md-3">
-                                    <label for="widget-contact-form-electrique"><?= L::achat_searchbar_assist; ?></label>
-                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
-                                        <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
-                                        <option data-filter=".y"><?= L::achat_assist_option2; ?></option>
-                                        <option data-filter=".n"><?= L::achat_assist_option3; ?></option>
-                                    </select>
-                                </div>
+                          <div class="form-group col-md-2">
+                              <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
+                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
+                                  <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
+                                  <option data-filter=".m"><?= L::achat_cadre_option2; ?></option>
+                                  <option data-filter=".f"><?= L::achat_cadre_option3; ?></option>
+                                  <option data-filter=".h"><?= L::achat_cadre_option4; ?></option>
+                                  <option data-filter=".unisex"><?= L::achat_cadre_option5; ?></option>
+                              </select>
+                          </div>
 
-                                <div class="form-group col-md-2">
-                                    <label for="widget-contact-form-prix"><?= L::achat_searchbar_buyprice; ?></label>
-                                    <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
-                                        <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
-                                        <option data-filter=".2000"><?= L::achat_buyprice_option2; ?></option>
-                                        <option data-filter=".between-2000-3000"><?= L::achat_buyprice_option3; ?></option>
-                                        <option data-filter=".between-3000-4000"><?= L::achat_buyprice_option4; ?></option>
-                                        <option data-filter=".between-4000-5000"><?= L::achat_buyprice_option5; ?></option>
-                                        <option data-filter=".5000"><?= L::achat_buyprice_option6; ?></option>
-                                    </select>
-                                </div>
-                            <div class="col-md-2">
-                                <a class="button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; text-align: center;" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
-                            </div>
+                          <div class="form-group col-md-2">
+                              <label for="widget-contact-form-electrique"><?= L::generic_electric; ?></label>
+                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
+                                  <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
+                                  <option data-filter=".y"><?= L::achat_assist_option2; ?></option>
+                                  <option data-filter=".n"><?= L::achat_assist_option3; ?></option>
+                              </select>
+                          </div>
 
-                            </div>
+                          <div class="form-group col-md-2">
+                              <label for="widget-contact-form-prix"><?= L::generic_price." (".L::generic_VATExc.")"; ?></label>
+                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
+                                  <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
+                                  <option data-filter=".2000"><?= L::achat_buyprice_option2; ?></option>
+                                  <option data-filter=".between-2000-3000"><?= L::achat_buyprice_option3; ?></option>
+                                  <option data-filter=".between-3000-4000"><?= L::achat_buyprice_option4; ?></option>
+                                  <option data-filter=".between-4000-5000"><?= L::achat_buyprice_option5; ?></option>
+                                  <option data-filter=".5000"><?= L::achat_buyprice_option6; ?></option>
+                              </select>
+                          </div>
+                          <div class="col-md-2">
+                              <a class="button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; text-align: center;" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
+                          </div>
                         </div>
                     </div>
-					<div class="space"></div>
+          					<div class="space"></div>
                     <div class="col-md-12 catalog">
-						<div style="background-color: #D3EFDD">
-							<h3 class="text-dark text-center">Afin de calculer au mieux le coût réel de votre vélo, merci de renseigner les champs ci-dessous avec vos informations.</h3>
-              <a data-target="#informationsCalcul" data-toggle="modal" href="#" class="text-green"><ins><i class="fas fa-plus"></i> En savoir plus</ins></a>
+          						<div style="background-color: #D3EFDD">
+          							<h3 class="text-dark text-center">Afin de calculer au mieux le coût réel de votre vélo, merci de renseigner les champs ci-dessous avec vos informations.</h3>
+                        <a data-target="#informationsCalcul" data-toggle="modal" href="#" class="text-green"><ins><i class="fas fa-plus"></i> En savoir plus</ins></a>
 
-							<div class="accordion color">
-								<div class="ac-item" style= "background-color: #D3EFDD">
-									<h1 class="ac-title">Calcul de coût réel</h1>
-									<div class="ac-content">
+          							<div class="accordion color">
+          								<div class="ac-item" style= "background-color: #D3EFDD">
+          									<h1 class="ac-title">Calcul de coût réel</h1>
+          									<div class="ac-content">
 
-										<form id="cash4bike-form" action="apis/Kameo/load_portfolio" role="form" method="get">
-										<div class="row">
-											<div class="col-md-12" style= "background-color: #D3EFDD">
-												<small class="text-dark">*Les informations seront utilisées à des fins commerciales uniquement par KAMEO Bikes et non communiquées à des tiers.</small>
-												<h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
-
-
-												<div class="form-group col-md-12 ">
-													<div class="employe">
-														<label><input type="radio" name="type" value="employe" checked><?=L::cash4bike_personalinfo_employee;?></label>
-													</div>
-													<div class="ouvrier">
-														<label><input type="radio" name="type" value="ouvrier"><?=L::cash4bike_personalinfo_ouvrier;?></label>
-													</div>
-												</div>
-
-												<div class="col-md-12">
-													<div class="form-group col-md-6">
-														<div class="form-group">
-															<label class="revenu" for="phone"><?=L::cash4bike_personalinfo_brutsalary;?></label>
-															<div class="input-group">
-																<span class="input-group-addon"><?=L::cash4bike_personalinfo_permonth;?></span>
-																<input type="number" class="form-control required" min='0' placeholder="0" name="revenu" id="revenu" aria-required="true">
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div id="inputHomeAddress" class="form-group has-error has-feedback">
-													  <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
-													  <input type="text" name="domicile" class="form-control required" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
-													  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span>
-													  <span id="inputSuccess1Status" class="sr-only">(success)</span>
-													</div>
-													<div id="inputWorkAddress" class="form-group has-error has-feedback">
-													  <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
-													  <input type="text" name="travail" class="form-control required" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
-													  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span>
-													  <span id="inputSuccess2Status" class="sr-only">(success)</span>
-													</div>
-												</div>
-												<div class="space"></div>
-											</div>
-											<div class="col-md-12" style= "background-color: #D3EFDD">
-											<div class="space"></div>
-												<h4 class="text-green"><?=L::cash4bike_transport_title;?></h4>
-												<div class="form-group col-md-12">
-													<div class="col-md-6">
-														<label for="transport"><?=L::cash4bike_transport_choice;?></label>
-														<select class="form-control" name="transport">
-															<option value="personnalCar" selected><?=L::cash4bike_tc_personalcar;?></option>
-															<option value="companyCar"><?=L::cash4bike_tc_workcar;?></option>
-															<option value="covoiturage"><?=L::cash4bike_tc_covoiturage;?></option>
-															<option value="public transport"><?=L::cash4bike_tc_commun;?></option>
-															<option value="personalBike"><?=L::cash4bike_tc_personalbike;?></option>
-															<option value="walk"><?=L::cash4bike_tc_walk;?></option>
-														</select>
-													</div>
-													<div class="form-group col-sm-6 essence">
-														<div class="essence">
-															<label><input type="radio" name="transportationEssence" value="essence" checked><?=L::cash4bike_essence;?></label>
-														</div>
-														<div class="diesel">
-															<label><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
-														</div>
-													</div>
-
-												</div>
-												<div class="form-group col-md-12">
+          										<form id="cash4bike-form" action="apis/Kameo/load_portfolio" role="form" method="get">
+          										<div class="row">
+          											<div class="col-md-12" style= "background-color: #D3EFDD">
+          												<small class="text-dark">*Les informations seront utilisées à des fins commerciales uniquement par KAMEO Bikes et non communiquées à des tiers.</small>
+          												<h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
 
 
+          												<div class="form-group col-md-12 ">
+          													<div class="employe">
+          														<label><input type="radio" name="type" value="employe" checked><?=L::cash4bike_personalinfo_employee;?></label>
+          													</div>
+          													<div class="ouvrier">
+          														<label><input type="radio" name="type" value="ouvrier"><?=L::cash4bike_personalinfo_ouvrier;?></label>
+          													</div>
+          												</div>
 
-													<div class="col-md-12">
-														<div class="employeurremunere">
-															<label><input type="radio" name="prime" value="1" checked><?=L::cash4bike_bike_kmpayback;?></label>
-														</div>
-														<div class="employeurneremunerepas">
-															<label><input type="radio" name="prime" value="0"><?=L::cash4bike_bike_kmnopayback;?></label>
-														</div>
-													</div>
-												</div>
+          												<div class="col-md-12">
+          													<div class="form-group col-md-6">
+          														<div class="form-group">
+          															<label class="revenu" for="phone"><?=L::cash4bike_personalinfo_brutsalary;?></label>
+          															<div class="input-group">
+          																<span class="input-group-addon"><?=L::cash4bike_personalinfo_permonth;?></span>
+          																<input type="number" class="form-control required" min='0' placeholder="0" name="revenu" id="revenu" aria-required="true">
+          															</div>
+          														</div>
+          													</div>
+          												</div>
+          												<div class="col-md-12">
+          													<div id="inputHomeAddress" class="form-group has-error has-feedback">
+          													  <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
+          													  <input type="text" name="domicile" class="form-control required" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
+          													  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span>
+          													  <span id="inputSuccess1Status" class="sr-only">(success)</span>
+          													</div>
+          													<div id="inputWorkAddress" class="form-group has-error has-feedback">
+          													  <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
+          													  <input type="text" name="travail" class="form-control required" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
+          													  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span>
+          													  <span id="inputSuccess2Status" class="sr-only">(success)</span>
+          													</div>
+          												</div>
+          												<div class="space"></div>
+          											</div>
+          											<div class="col-md-12" style= "background-color: #D3EFDD">
+          											<div class="space"></div>
+          												<h4 class="text-green"><?=L::cash4bike_transport_title;?></h4>
+          												<div class="form-group col-md-12">
+          													<div class="col-md-6">
+          														<label for="transport"><?=L::cash4bike_transport_choice;?></label>
+          														<select class="form-control" name="transport">
+          															<option value="personnalCar" selected><?=L::cash4bike_tc_personalcar;?></option>
+          															<option value="companyCar"><?=L::cash4bike_tc_workcar;?></option>
+          															<option value="covoiturage"><?=L::cash4bike_tc_covoiturage;?></option>
+          															<option value="public transport"><?=L::cash4bike_tc_commun;?></option>
+          															<option value="personalBike"><?=L::cash4bike_tc_personalbike;?></option>
+          															<option value="walk"><?=L::cash4bike_tc_walk;?></option>
+          														</select>
+          													</div>
+          													<div class="form-group col-sm-6 essence">
+          														<div class="essence">
+          															<label><input type="radio" name="transportationEssence" value="essence" checked><?=L::cash4bike_essence;?></label>
+          														</div>
+          														<div class="diesel">
+          															<label><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
+          														</div>
+          													</div>
 
-												<div class="form-group col-md-12">
-													<div class="col-md-6">
-														<label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
-														<select class="form-control" name="frequence">
-															<option value="1"><?=L::cash4bike_tf_once;?></option>
-															<option value="2"><?=L::cash4bike_tf_twice;?></option>
-															<option value="3"><?=L::cash4bike_tf_three;?></option>
-															<option value="4" selected><?=L::cash4bike_tf_four;?></option>
-															<option value="5"><?=L::cash4bike_tf_five;?></option>
-														</select>
-													</div>
-												</div>
-											</div>
-
-											<div class="form-group col-md-2 center" >
-												<button class="button green button-3d effect fill-vertical" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
-											</div>
-										</div>
-										</form>
-
-									</div>
-								</div>
-							</div>
-						</div>
+          												</div>
+          												<div class="form-group col-md-12">
 
 
-                        <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
-                        <div class="grid"></div>
 
+          													<div class="col-md-12">
+          														<div class="employeurremunere">
+          															<label><input type="radio" name="prime" value="1" checked><?=L::cash4bike_bike_kmpayback;?></label>
+          														</div>
+          														<div class="employeurneremunerepas">
+          															<label><input type="radio" name="prime" value="0"><?=L::cash4bike_bike_kmnopayback;?></label>
+          														</div>
+          													</div>
+          												</div>
+
+          												<div class="form-group col-md-12">
+          													<div class="col-md-6">
+          														<label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
+          														<select class="form-control" name="frequence">
+          															<option value="1"><?=L::cash4bike_tf_once;?></option>
+          															<option value="2"><?=L::cash4bike_tf_twice;?></option>
+          															<option value="3"><?=L::cash4bike_tf_three;?></option>
+          															<option value="4" selected><?=L::cash4bike_tf_four;?></option>
+          															<option value="5"><?=L::cash4bike_tf_five;?></option>
+          														</select>
+          													</div>
+          												</div>
+          											</div>
+
+          											<div class="form-group col-md-2 center" >
+          												<button class="button green button-3d effect fill-vertical" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
+          											</div>
+          										</div>
+          										</form>
+
+          									</div>
+          								</div>
+          							</div>
+          						</div>
+                      <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
+                      <div class="grid"></div>
                         <!-- END: Portfolio Items -->
-
                     </div>
                 </div>
 
@@ -256,7 +261,7 @@ include 'include/head.php';
 
         <script type="text/javascript">
             var bikes;
-            function loadPortfolio(revenuEmployee = null, type = null, homeAddress = null, workAddress = null, prime = null, transport = null, transportationEssence = null, frequenceBikePerWeek = null) {
+            function loadPortfolio(revenuEmployee = null, type = null, homeAddress = null, workAddress = null, prime = null, transport = null, transportationEssence = null, frequenceBikePerWeek = null, size = '*') {
                 $('.grid').html("");
                 var $grid = $('.grid').isotope({});
                 $grid.isotope('destroy');
@@ -273,7 +278,8 @@ include 'include/head.php';
                         "type" : type,
                         "prime" : prime,
                         "transport" : transport,
-                        "transportationEssence" : transportationEssence
+                        "transportationEssence" : transportationEssence,
+                        "size" : size
                     },
                     success: function(response) {
                         if (response.response == 'error') {
@@ -426,6 +432,7 @@ include 'include/head.php';
                                 });
                             });
 
+
                             function concatValues(obj) {
                                 var value = '';
                                 for (var prop in obj) {
@@ -441,7 +448,7 @@ include 'include/head.php';
             loadPortfolio();
             jQuery("#cash4bike-form").validate({
               submitHandler: function(form) {
-                loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]:checked').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]:checked').val(), $('#cash4bike-form select[name=frequence]').val());
+                loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]:checked').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]:checked').val(), $('#cash4bike-form select[name=frequence]').val(), $('#cash4bike-form select[name=size]').val());
               }
             });
 
@@ -460,6 +467,12 @@ include 'include/head.php';
               $("#widget-bike-electric").val("*");
               $("#widget-contact-form-prix").val("*");
             });
+
+            $('#achat_sidebar select[name=size]').off();
+            $('#achat_sidebar select[name=size]').change(function(){
+              loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]:checked').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]:checked').val(), $('#cash4bike-form select[name=frequence]').val(), $('#achat_sidebar select[name=size]').val());
+            })
+
         </script>
         <?php include 'include/footer.php'; ?>
     </div>
