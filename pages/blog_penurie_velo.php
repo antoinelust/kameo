@@ -87,68 +87,94 @@ include 'include/head.php';
 
 						</p>
 						<div class="separator"></div>
+						<form id="widget-contact-form" action="apis/Kameo/contact_form.php" role="form" method="post">
+								<div class="col-sm-10 center">
+										<div class="form-group col-sm-6">
+												<label for="name"><?=L::contact_name;?></label>
+												<input type="text" aria-required="true" name="name" class="form-control required name">
+										</div>
+										 <div class="form-group col-sm-6">
+												<label for="firstName"><?=L::contact_firstname;?></label>
+												<input type="text" aria-required="true" name="firstName" class="form-control required name">
 
-												<form id="widget-contact-form" action="apis/Kameo/contact_form.php" role="form" method="post">
-														<div class="col-sm-10 center">
-																<div class="form-group col-sm-6">
-																		<label for="name"><?=L::contact_name;?></label>
-																		<input type="text" aria-required="true" name="name" class="form-control required name">
-																</div>
-																 <div class="form-group col-sm-6">
-																		<label for="firstName"><?=L::contact_firstname;?></label>
-																		<input type="text" aria-required="true" name="firstName" class="form-control required name">
+										</div>
+										<div class="form-group col-sm-6">
+												<label for="email"><?=L::contact_mail;?></label>
+												<input type="email" aria-required="true" name="email" class="form-control required email">
+										</div>
+										<div class="form-group col-sm-6">
+												<label for="phone"><?=L::contact_phone;?></label>
+												<input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
+										</div>
+										<div class="form-group col-sm-6">
+												<label for="entreprise">Entreprise</label>
+												<input type="text" aria-required="true" name="entreprise" class="form-control required">
+										</div>
+										<div class="form-group col-sm-6">
+												<label for="companySize">Taille de votre entreprise</label>
+												<select aria-required="true" name="companySize" class="form-control required">
+													<option value='1-20'>1-20 employés</option>
+													<option value='20-50'>20-50 employés</option>
+													<option value='50-200'>50-200 employés</option>
+													<option value='200-500'>200-500</option>
+													<option value='500+'>+500 employés</option>
+												</select>
+										</div>
+										<div class="form-group">
+												<label for="message">Expliquez votre démarche</label>
+												<textarea type="text" name="message" rows="5" class="form-control required" placeholder="Voulez-vous implémenter un plan cafétéria ? Des vélos partagés ?"></textarea>
+										</div>
+										<div class="text-center">
+											<div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
+										</center>
+										<input type="text" class="hidden" name="subject" value="Demande de contact pour pénurie vélo">
+										<div class="col-sm-12 text-center">
+											<button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp<?=L::contact_send_btn;?></button>
+										</div>
+								</div>
+						</form>
+						<script type="text/javascript">
+								jQuery("#widget-contact-form").validate({
+										submitHandler: function(form) {
+												jQuery(form).ajaxSubmit({
+														success: function(response) {
+																if (response.response == 'success') {
+																		$.notify({
+																				message: response.message
+																		}, {
+																				type: 'success'
+																		});
+																		$(form)[0].reset();
 
-																</div>
-																<div class="form-group col-sm-6">
-																		<label for="email"><?=L::contact_mail;?></label>
-																		<input type="email" aria-required="true" name="email" class="form-control required email">
-																</div>
-																<div class="form-group col-sm-6">
-																		<label for="phone"><?=L::contact_phone;?></label>
-																		<input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
-																</div>
-																<div class="form-group col-sm-6">
-																		<label for="company">Entreprise</label>
-																		<input type="text" aria-required="true" name="company" class="form-control required">
-																</div>
-																<div class="form-group col-sm-6">
-																		<label for="companySize">Taille de votre entreprise</label>
-																		<select aria-required="true" name="companySize" class="form-control required">
-																			<option value='1-20'>1-20 employés</option>
-																			<option value='20-50'>20-50 employés</option>
-																			<option value='50-200'>50-200 employés</option>
-																			<option value='200-500'>200-500</option>
-																			<option value='500+'>+500 employés</option>
-																		</select>
-																</div>
-																<div class="form-group">
-																		<label for="message">Expliquez votre démarche</label>
-																		<textarea type="text" name="message" rows="5" class="form-control required" placeholder="Voulez-vous implémenter un plan cafétéria ? Des vélos partagés ?"></textarea>
-																</div>
+																		gtag('event', 'send', {
+																			'event_category': 'mail',
+																			'event_label': 'Mail B2B pénurie vélo'
+																		});
+																} else {
+																		$.notify({
+																				message: response.message
+																		}, {
+																				type: 'danger'
+																		});
+																}
+														}
+												});
+										}
+								});
 
-																<div class="col-sm-12 text-center">
-																	<button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp<?=L::contact_send_btn;?></button>
-																</div>
-														</div>
-												</form>
-		      					</div>
-						</div>
-                <div class="space"></div>
-                <div class="col-md-12">
-
-
+						</script>
+					</div>
+				</div>
+        <div class="space"></div>
+        <div class="col-md-12">
 					<h3 class="fr text-green text-center">Pour toutes questions supplémentaires n’hésitez pas à nous contacter. <br>Bon ride et à bientôt sur les routes !</h3>
-
-
-		<a class="read-more" href="blog.php"><i class="fa fa-long-arrow-left"></i> Retour aux articles</a>
-
-
-                    </div></div>
-        </div>
-
-		<?php include 'include/footer.php'; ?>
+						<a class="read-more" href="blog.php"><i class="fa fa-long-arrow-left"></i> Retour aux articles</a>
+				</div>
+			</div>
+    </div>
 	</div>
-
+</div>
+<?php include 'include/footer.php'; ?>
 	<!-- END: WRAPPER -->
 
 
