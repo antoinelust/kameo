@@ -381,11 +381,7 @@ function getHistoricBookings() {
 
         while (i < response.previous_bookings) {
           var building_start_fr = response.booking[i].building_start_fr;
-          var building_start_en = response.booking[i].building_start_en;
-          var building_start_nl = response.booking[i].building_start_nl;
           var building_end_fr = response.booking[i].building_end_fr;
-          var building_end_en = response.booking[i].building_end_en;
-          var building_end_nl = response.booking[i].building_end_nl;
           var frame_number = response.booking[i].frameNumber;
           var model = response.booking[i].model;
           var bikeID = response.booking[i].bikeID;
@@ -400,9 +396,7 @@ function getHistoricBookings() {
             '">' +
             response.booking[i].start.shortDate() +
             " - " +
-            "<span class=\"fr-inline\">"+building_start_fr+"</span>\
-            <span class=\"en-inline\">"+building_start_en+"</span>\
-            <span class=\"nl-inline\">"+building_start_nl+"</span>" +
+            "<span>"+building_start_fr+"</span>"+
             " <span><?= L::mk_reservations_at; ?></span> " +
             response.booking[i].start.shortHours() +
             '</td><td data-sort="' +
@@ -410,9 +404,7 @@ function getHistoricBookings() {
             '">' +
             response.booking[i].end.shortDate() +
             " - " +
-            "<span class=\"fr-inline\">"+building_end_fr+"</span>\
-            <span class=\"en-inline\">"+building_end_en+"</span>\
-            <span class=\"nl-inline\">"+building_end_nl+"</span>" +
+            "<span>"+building_end_fr+"</span>"+
             " <span><?= L::mk_reservations_at; ?></span> " +
             response.booking[i].end.shortHours() +
             "</td><td>" +

@@ -48,9 +48,9 @@ include 'include/head.php';
 			<!-- REDIRECTION TB-VELO-ELECTRIQUE -->
 			<div class="jumbotron jumbotron-center jumbotron-redirection-tb">
 				<div class="tb-content">
-					<h3>JE SUIS UN PARTICULIER</h3>
-					<h4>Vous cherchez un vélo pour votre compte personnel ?</h4>
-					<a class="button black button-3d effect icon-left" href="https://www.tb-velo-electrique.be/"><span><i class="fa fa-bicycle"></i>KAMEO Bikes pour particuliers</span></a>
+					<h3><?= L::KAMEOB2C_title; ?></h3>
+					<h4><?= L::KAMEOB2C_text; ?></h4>
+					<a class="button black button-3d effect icon-left" href="https://www.tb-velo-electrique.be/"><span><i class="fa fa-bicycle"></i><?= L::KAMEOB2C_link; ?></span></a>
 				</div>
 				<img src="images/TB_Velo_Electrique_Icone.svg" alt="bandeau tb-velo-electrique.be">
 			</div>

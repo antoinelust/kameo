@@ -73,7 +73,7 @@ include 'include/head.php';
 						<h3 class="text-green">La réaction de l'équipe </h3>
 						<h1><small class="text-dark">Nous avons pensé à vous !</small></h1>
 						<p class="text-justify text-dark">L'équipe s'est démenée pour vous trouver les derniers vélos encore disponibles pour 2021.<br>
-							<strong style="color: red">Une flotte d'une centaine de vélos électriques va arriver dans nos ateliers d'ici juin 2021 mais risque de partir très rapidement !</strong>
+							<strong style="color: red">Une flotte importante de vélos arrivera tout au long de l'année mais sera rapidement réservée. <br>Profitez-en et réservez dès maintenant des vélos pour votre entreprise !</strong><br>
 						</p>
 							<div class="text-center">
 								<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" fill="red" class="bi bi-arrow-down" viewBox="0 0 16 16">
@@ -82,10 +82,8 @@ include 'include/head.php';
 							<div>
 						</p>
 						<div class="jumbotron jumbotron-center jumbotron-fullwidth text-light" style="background: url('images/fond_degrade3.jpg');" data-stellar-background-ratio="0.3">
-						<h3 class="text-green">Réservez le votre ! </h3>
-						<p class="text-justify text-dark">Réservez sans trop tarder le vélo de votre choix. Ainsi vous aurez la certitude de faire partie des rares personnes à posséder un nouveau vélo en 2021.
-
-							Pour se faire, un formulaire vous permettra de personnaliser votre demande, et ainsi à notre équipe de mettre votre vélo de côté, pour vous, dès son arrivée.
+						<h3 class="text-green">Réservez des vélos pour votre entreprise ! </h3>
+						<p class="text-center text-dark">Vous désirez implémenter une solution de mobilité plus complète pour vos employés ?<br>Contactez-nous dès maintenant pour réserver un nombre suffisant de vélos pour votre entreprise !
 
 						</p>
 						<div class="separator"></div>
@@ -110,26 +108,24 @@ include 'include/head.php';
 																		<input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
 																</div>
 																<div class="form-group col-sm-6">
-																		<label for="humanSize">Votre taille (en cm)</label>
-																		<div class="input-group">
-																		 <span class="input-group-addon">cm</span>
-																		 <input value='180' type="number" min='130' max='220' aria-required="true" name="humanSize" class="form-control required"/>
-																	 </div>
+																		<label for="company">Entreprise</label>
+																		<input type="text" aria-required="true" name="company" class="form-control required">
 																</div>
 																<div class="form-group col-sm-6">
-																	<label for="utilisation"> Type de vélo recherché : </label>
-								                  <select class="form-control required" name="utilisation" value=''>
-								                    <option value="Tout chemin">Tout chemin</option>
-								                    <option value="Ville et chemin">Ville et chemin</option>
-								                    <option value="Pliant">Pliant</option>
-								                    <option value="Ville">Ville</option>
-								                    <option value="Route">Route</option>
-								                    <option value="Cargo">Cargo</option>
-								                    <option value="Gravel">Gravel</option>
-								                    <option value="VTT">VTT</option>
-								                    <option value="Speedpedelec">Speedpedelec</option>
-								                  </select>
+																		<label for="companySize">Taille de votre entreprise</label>
+																		<select aria-required="true" name="companySize" class="form-control required">
+																			<option value='1-20'>1-20 employés</option>
+																			<option value='20-50'>20-50 employés</option>
+																			<option value='50-200'>50-200 employés</option>
+																			<option value='200-500'>200-500</option>
+																			<option value='500+'>+500 employés</option>
+																		</select>
 																</div>
+																<div class="form-group">
+																		<label for="message">Expliquez votre démarche</label>
+																		<textarea type="text" name="message" rows="5" class="form-control required" placeholder="Voulez-vous implémenter un plan cafétéria ? Des vélos partagés ?"></textarea>
+																</div>
+
 																<div class="col-sm-12 text-center">
 																	<button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp<?=L::contact_send_btn;?></button>
 																</div>
