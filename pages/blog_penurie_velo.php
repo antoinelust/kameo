@@ -140,7 +140,7 @@ include 'include/head.php';
 														success: function(response) {
 																if (response.response == 'success') {
 																		$.notify({
-																				message: response.message
+																				message: "Nous avons bien reçu votre mail et nous vous recontacterons aussi rapidement que possible"
 																		}, {
 																				type: 'success'
 																		});
