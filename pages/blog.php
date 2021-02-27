@@ -27,7 +27,7 @@
 										<div class="post-item">
 				                <div class="post-image">
 				                    <a href="blog_Choisir-son-velo-electrique.html">
-				                        <img alt="" src="images/blog/ChoixVelo_Cover.jpg">
+				                        <img alt="" src="images/blog/assemblage_velo_Cover.jpg">
 				                    </a>
 				                </div>
 				                <div class="post-content-details">
