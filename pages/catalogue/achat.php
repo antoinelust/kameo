@@ -72,7 +72,7 @@ include 'include/head.php';
                                 <option data-filter="" value="M">M</option>
                                 <option data-filter="" value="L">L</option>
                                 <option data-filter="" value="XL">XL</option>
-                                <option data-filter="" value="UNI">Unique</option>
+                                <option data-filter="" value="unique">Unique</option>
                               </select>
                           </div>
 

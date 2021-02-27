@@ -106,6 +106,8 @@ if($id != NULL)
     $response['motor']=$resultat['MOTOR'];
     $response['battery']=$resultat['BATTERY'];
     $response['transmission']=$resultat['TRANSMISSION'];
+    $response['possibleSizes']=$resultat['SIZES'];
+
 
     $response['status']=$row['STATUS'];
     include 'connexion.php';
