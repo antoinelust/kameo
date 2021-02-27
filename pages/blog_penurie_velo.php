@@ -128,7 +128,7 @@ include 'include/head.php';
 											<div class="g-recaptcha" data-sitekey="6LfqMFgUAAAAADlCo3L6lqhdnmmkNvoS-kx00BMi"></div>
 										</center>
 										<input type="text" class="hidden" name="subject" value="Demande de contact pour pénurie vélo">
-										<div class="col-sm-12 text-center">
+										<div class="col-sm-3 text-center">
 											<button class="button green button-3d effect fill-vertical" type="submit" id="form-submit"><i class="fa fa-paper-plane"></i>&nbsp<?=L::contact_send_btn;?></button>
 										</div>
 								</div>
