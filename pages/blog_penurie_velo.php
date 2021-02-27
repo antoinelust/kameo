@@ -29,10 +29,10 @@ include 'include/head.php';
 							Vous avez sûrement lu ou entendu que l'achat d'un vélo neuf en 2021 sera compliqué. Nous vous expliquons dans cet article pourquoi une telle pénurie est inévitable et comment s'assurer d'avoir un vélo cette année.<br><br>
 							A titre d'illustration, voici quelques articles que nous avons recensé, annonçant les difficultés d'approvisionnement:<br>
 							<ul>
-								<li>Vojomag - <a class="text-green" href="https://www.vojomag.com/delais-hausses-de-prix-les-effets-du-covid-19-sur-le-marche/">Délais, hausses de prix : les effets du Covid-19 sur le marché</a></li>
-								<li>RTBF - <a class="text-green" href="https://www.rtbf.be/info/regions/detail_si-vous-comptiez-commander-un-velo-neuf-pour-l-ete-vous-ne-pourrez-pas-l-enfourcher-avant-fin-fevrier-2022?id=10704897" target="_blank">Si vous comptiez commander un vélo neuf pour l'été, vous risquez de ne pouvoir l'enfourcher avant fin février 2022</a></li>
-								<li>L'avenir - <a class="text-green" href="https://www.lavenir.net/cnt/dmf20210108_01543650/video-explosion-et-penurie-de-velos">Explosion et pénurie de vélos</a></li>
-								<li>Matele - <a class="text-green" href="https://www.matele.be/le-marche-du-velo-face-a-une-penurie-mondiale">Le marché du vélo face à une pénurie mondiale</a></li>
+								<li>Vojomag - <a class="text-green" target=_blank" href="https://www.vojomag.com/delais-hausses-de-prix-les-effets-du-covid-19-sur-le-marche/">Délais, hausses de prix : les effets du Covid-19 sur le marché</a></li>
+								<li>RTBF - <a class="text-green" target=_blank" href="https://www.rtbf.be/info/regions/detail_si-vous-comptiez-commander-un-velo-neuf-pour-l-ete-vous-ne-pourrez-pas-l-enfourcher-avant-fin-fevrier-2022?id=10704897" target="_blank">Si vous comptiez commander un vélo neuf pour l'été, vous risquez de ne pouvoir l'enfourcher avant fin février 2022</a></li>
+								<li>L'avenir - <a class="text-green" target=_blank" href="https://www.lavenir.net/cnt/dmf20210108_01543650/video-explosion-et-penurie-de-velos">Explosion et pénurie de vélos</a></li>
+								<li>Matele - <a class="text-green" target=_blank" href="https://www.matele.be/le-marche-du-velo-face-a-une-penurie-mondiale">Le marché du vélo face à une pénurie mondiale</a></li>
 							</ul>
 						</div>
 						<div class="separator"></div>
@@ -71,8 +71,10 @@ include 'include/head.php';
 
 
 						<h3 class="text-green">La réaction de l'équipe </h3>
-						<p class="text-justify text-dark"><strong>Nous avons pensé à vous !</strong><br> L'équipe s'est démenée pour vous trouver les derniers vélos encore disponibles pour 2021.<br>
-							<strong style="color: red">Une flotte d'une centaine de vélos électriques va arriver dans nos ateliers d'ici juin 2021 mais risque de partir très rapidement !</strong><br>
+						<h1><small class="text-dark">Nous avons pensé à vous !</small></h1>
+						<p class="text-justify text-dark">L'équipe s'est démenée pour vous trouver les derniers vélos encore disponibles pour 2021.<br>
+							<strong style="color: red">Une flotte d'une centaine de vélos électriques va arriver dans nos ateliers d'ici juin 2021 mais risque de partir très rapidement !</strong>
+						</p>
 							<div class="text-center">
 								<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" fill="red" class="bi bi-arrow-down" viewBox="0 0 16 16">
 								  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
@@ -89,7 +91,7 @@ include 'include/head.php';
 						<div class="separator"></div>
 
 												<form id="widget-contact-form" action="apis/Kameo/contact_form.php" role="form" method="post">
-														<div class="col-sm-6 center">
+														<div class="col-sm-10 center">
 																<div class="form-group col-sm-6">
 																		<label for="name"><?=L::contact_name;?></label>
 																		<input type="text" aria-required="true" name="name" class="form-control required name">
@@ -108,7 +110,7 @@ include 'include/head.php';
 																		<input type="phone" aria-required="true" name="phone" class="form-control required phone" placeholder="+32">
 																</div>
 																<div class="form-group col-sm-6">
-																		<label for="humanSize">Votre taille</label>
+																		<label for="humanSize">Votre taille (en cm)</label>
 																		<div class="input-group">
 																		 <span class="input-group-addon">cm</span>
 																		 <input value='180' type="number" min='130' max='220' aria-required="true" name="humanSize" class="form-control required"/>
