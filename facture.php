@@ -199,6 +199,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 $monthAfter=(($currentDateObject->format('m'))+1);
                 $yearAfter=$currentDateObject->format('Y');
             }
+
             $dayAfter=$currentDateObject->format('d');
 
             $lastDayMonth= last_day_month( $monthAfter );
@@ -256,19 +257,28 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
               $resultat4 = mysqli_fetch_assoc($result4);
               $fichier = $_SERVER['DOCUMENT_ROOT']."/images_bikes/".$catalogID."_mini.jpg";
 
-              $contractStart= new DateTime();
-              $contractStart->setDate(substr($row2['CONTRACT_START'], 0, 4), substr($row2['CONTRACT_START'],5,2), substr($row2['CONTRACT_START'], 8,2));
+
+              $contractStart= new DateTime($row2['CONTRACT_START']);
+              error_log(" contractStart : ".$contractStart->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
+
+              $lastDayMonth= last_day_month( $currentDateObject->format("m") );
+              if($lastDayMonth < $contractStart->format('d')){
+                  $tempDay=$lastDayMonth;
+              }else{
+                $tempDay = substr($row2['CONTRACT_START'], 8,2);
+              }
 
 
 
               $dateStartTemp = new DateTime();
-              $dateStartTemp->setDate($currentDateObject->format("Y"), $currentDateObject->format("m"), $contractStart->format("d"));
+              $dateStartTemp->setDate($currentDateObject->format("Y"), $currentDateObject->format("m"), $tempDay);
 
               $temp1=$dateStartTemp->format('d-m-Y');
 
               if($dateStartTemp <= $dateEndObject){
                 error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y")."\n", 3, "generate_invoices.log");
               }
+
               error_log(" Temp1 : ".$dateStartTemp->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
               error_log(" Date Start : ".$dateStartObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
               error_log(" DateEnd : ".$dateEndObject->format("d-m-Y H:m:i")."\n", 3, "generate_invoices.log");
@@ -384,7 +394,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   $test2=$test2.'<tr>
                       <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$i.'</td>
                       <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">Vélo personnel de : '.$firstNameBikeUser.' '.$nameBikeUser.'</td>
-                      <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$totalTemp.' €</td>
+                      <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.round($totalTemp, 2).' €</td>
                   </tr>';
 
                 }else{

@@ -75,7 +75,7 @@ $body = $body."
                     <h3>Congratulations!&nbsp;</h3>
 
                     <p>You receive this mail because you just have been added to MyKameo users.<br>
-                    You can connect now to the <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a> plateform.</p>
+                    You can connect now to the <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a> plateform.</p>
                     <ul>
                       <li><strong>Login:</strong> $email </li>
                       <li><strong>Password:</strong> $password_unencrypted</li>
@@ -84,7 +84,7 @@ $body = $body."
                     <h3>Félicitations!&nbsp;</h3>
 
                     <p>Vous recevez cet email car vous venez d'être ajouté aux utilisateurs des vélos KAMEO.<br>
-                    Vous pouvez dès à présent vous connecter à votre espace en ligne <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.</p>
+                    Vous pouvez dès à présent vous connecter à votre espace en ligne <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a>.</p>
                     <br>
                     <ul>
                       <li><strong>Votre identifiant:</strong> $email </li>
@@ -93,7 +93,7 @@ $body = $body."
                     <hr>
                     <h3>Gefeliciteerd!!&nbsp;</h3>
                     <p>U ontvangt deze e-mail omdat u vanaf nu toegang hebt aan de KAMEO-fietsen.<br>
-                    U kunt zich aanmelden op uw account <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.</p>
+                    U kunt zich aanmelden op uw account <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a>.</p>
                     <ul>
                       <li><strong>Gebruikersnaam:</strong> $email </li>
                       <li><strong>Wachtwoord:</strong> $password_unencrypted</li>

@@ -41,7 +41,7 @@ $token = getBearerToken();
                 $i++;
             }
             include 'connexion.php';
-            $sql="SELECT ID as bikeID, FRAME_NUMBER as frameNumber from customer_bikes WHERE CONTRACT_TYPE='selling' AND CONTRACT_START is NULL";
+            $sql="SELECT ID as bikeID, FRAME_NUMBER as frameNumber from customer_bikes WHERE CONTRACT_TYPE='selling' AND SELLING_DATE is NULL";
             $result = $conn->query($sql);
 
             $response['bike']['selling']=array();
