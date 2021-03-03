@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+
+	<div class="modal fade" id="scanBarcodeModal" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+
+				<h1 class="title">Scan barcode from Video Camera</h1>
+				
+				<div>
+					<button  onclick="changeDisplay('scan')" class="button small green button-3d rounded icon-left" id="decodeBt">Scanner nouveau produit</button>
+
+					<button  onclick="changeDisplay('add')" class="button small green button-3d rounded icon-left" id="addBt">Ajouter au stock</button>
+
+					<button  onclick="changeDisplay('remove')" class="button small green button-3d rounded icon-left" id="removeBt">Enlever du stock</button>
+
+					<button  onclick="changeDisplay('bills')" class="button small green button-3d rounded icon-left" id="billsBt">Facture entretien</button>
+				</div>
+
+
+
+
+				<!-- ////////////////Affichage du scan produit -->
+				<div name="displayScan">
+					<button  class="button small green button-3d rounded icon-left" id="startButton">Start</button>
+					<div style="display:block ">
+						<video id="video" width="40%" height="30%" style="border: 1px solid gray"></video>
+					</div>
+					<form  name = "widget-stockScan-form" id="widget-stockScan-form" role="form" method="get" action="apis/Kameo/scannerForm.php">
+
+						<div id="sourceSelectPanel" style="display:none">
+							<label for="sourceSelect">Changer de caméra :</label>
+							<select id="sourceSelect" style="max-width:400px">
+							</select>
+						</div>
+						<div >
+							<input hidden name="result" id="result">
+							<input hidden name="action">
+						</div>
+						<div class="col-sm-12">
+							<div class="col-sm-4" name="typeDiv" style="display:block ">
+								<label>Type : </label>
+								<select name="type" class="form-control">
+									<option disabled selected value>Choisissez le type</option>
+									<option value="bike">Vélo</option>
+									<option value="accessoiry">Accessoire</option>
+									
+								</select>
+							</div>
+							<div class="col-sm-4" name="brandDiv" style="display:block ">
+								<label>Marque : </label>
+								<select name="brand" class="form-control">
+									<option disabled selected value>Choisissez la marque</option>
+								</select>
+							</div>
+							<div class="col-sm-4" name="modelDiv" style="display:block ">
+								<label>Model: </label>
+								<select name="model" class="form-control">
+									
+								</select>
+							</div>
+							<div class="col-sm-4" name="sizeDiv" style="display:block">
+								<label>Taille : </label>
+								<select name="size" class="form-control">
+									<option disabled selected value>Choisissez la taille</option>
+									<option value="XS">XS</option>
+									<option value="S">S</option>
+									<option value="M">M</option>
+									<option value="L">L</option>
+									<option value="XL">XL</option>
+									<option value="Uni">Unique</option>
+									<option value="enfant">Enfant</option>
+								</select>
+							</div>
+							<div class="col-sm-4" name="colorDiv" style="display:block ">
+								<label>Couleur: </label>
+								<select name="color" class="form-control">
+									<option disabled selected value>Choisissez la couleur</option>
+									<option value="blue">Bleu</option>
+									<option value="red">Rouge</option>
+									<option value="yellow">Jaune</option>
+									<option value="green">Vert</option>
+									<option value="grey">Gris</option>
+									<option value="black">Noir</option>
+									<option value="white">Blanc</option>
+									<option value="orange">Orange</option>
+								</select>
+							</div>
+						</div>
+						<button
+						class="button small green button-3d rounded icon-left"
+						type="submit"
+						name="sendValue"
+						>
+						<i class="fa fa-paper-plane"></i>Envoyer
+					</button>
+				</form>
+
+			</div>
+			<!-- //////////////// Fin Affichage du scan produit -->
+
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+  jQuery("#widget-stockScan-form").validate({
+    submitHandler: function (form) {
+      jQuery(form).ajaxSubmit({
+        success: function (response) {
+          if (response.response == "success") {
+            $.notify(
+            {
+              message: response.message,
+            },
+            {
+              type: "success",
+            }
+            );
+            initializeModal();
+            document.getElementById("widget-stockScan-form").reset();
+          } else {
+            $.notify(
+            {
+              message: response.message,
+            },
+            {
+              type: "danger",
+            }
+            );
+          }
+        },
+      });
+    },
+  });
+</script>

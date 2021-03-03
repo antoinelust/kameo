@@ -547,7 +547,7 @@ if ($token == NULL) { //Not connected
   /////////Ajout de stock
    if (get_user_permissions("stock", $token)) {
     //Stock
-    include 'include/vues/mykameo/tabs/fleet_manager/stock/widgets/scanPage.html';
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/main.php';
   }
   /////////////
 }
