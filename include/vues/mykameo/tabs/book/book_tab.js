@@ -240,16 +240,15 @@ function constructSearchForm(daysToDisplay, bookingLength, administrator, assist
         while(i<=daysToDisplay){
             var afterHour=false;
             if(tempDate.getHours()>=hourEndIntakeBooking){
-                tempDate.setHours(hourStartIntakeBooking);
-                tempDate.setMinutes(0);
-                tempDate.setDate(tempDate.getDate()+1);
-                afterHour=true;
+              tempDate.setHours(hourStartIntakeBooking);
+              tempDate.setMinutes(0);
+              tempDate.setDate(tempDate.getDate()+1);
+              afterHour=true;
             }
             var dayTrad = daysTrad[tempDate.getDay()];
-            if((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake))){
-                var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control\">"+dayTrad+" "+tempDate.getDate()+" "+monthTrad[tempDate.getMonth()]+"</option>";
-
-                dest = dest.concat(bookingDay);
+            if( !afterHour && ((tempDate.getDay()=="1" && parseInt(mondayIntake)) || (tempDate.getDay()=="2" && parseInt(tuesdayIntake)) || (tempDate.getDay()=="3" && parseInt(wednesdayIntake)) || (tempDate.getDay()=="4" && parseInt(thursdayIntake)) || (tempDate.getDay()=="5" && parseInt(fridayIntake)) || (tempDate.getDay()=="6" && parseInt(saturdayIntake)) || (tempDate.getDay()=="0" && parseInt(sundayIntake)))){
+              var bookingDay="<option value=\""+tempDate.getDate()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getFullYear()+"\" class=\"form-control\">"+dayTrad+" "+tempDate.getDate()+" "+monthTrad[tempDate.getMonth()]+"</option>";
+              dest = dest.concat(bookingDay);
             }
 
             i++;
@@ -294,6 +293,7 @@ function constructSearchForm(daysToDisplay, bookingLength, administrator, assist
             dateTemp.setMinutes(0);
             dateTemp.setDate(dateTemp.getDate()+1);
         }
+
 
         while(dateTemp.getHours()<hourEndIntakeBooking){
             if(dateTemp.getMinutes()=="0"){

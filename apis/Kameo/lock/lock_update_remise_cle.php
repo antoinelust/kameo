@@ -1,4 +1,5 @@
 <?php
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
 $building=isset($_GET['building']) ? htmlspecialchars($_GET['building']) : NULL;
 $frame_number=isset($_GET['frame_number']) ? htmlspecialchars($_GET['frame_number']) : NULL;
@@ -13,6 +14,12 @@ error_log(date("Y-m-d H:i:s")." - lock_update_remise_cle.php - INPUT emplacement
 if($building == NULL || $frame_number == NULL || $emplacement == NULL){
     echo "-1";
     die;
+}
+
+$reservationID=isset($_GET['reservationID']) ? $_GET['reservationID'] : NULL;
+
+if($reservationID){
+  error_log(date("Y-m-d H:i:s")." - lock_update_remise_cle.php - reservationID :".$reservationID."\n", 3, "logs/logs_boxes.log");
 }
 
 
@@ -85,4 +92,6 @@ if ($conn->query($sql) === FALSE) {
     die;
 }
 $conn->close();
+execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'update_remise_cle', $reservationID, $building, "OK"), true);
+
 ?>

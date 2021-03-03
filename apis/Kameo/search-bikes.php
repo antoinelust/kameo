@@ -123,7 +123,6 @@ $dateEndString=$dateEnd->format('Y-m-d H:i');
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStart != NULL && $deposit_building != NULL && $dateEnd != NULL ) {
 
-
     include 'connexion.php';
     $date1stJanuary=date('Y-01-01');
     $sql="select * from reservations where DATE_START_2>'$date1stJanuary' and EMAIL='$email' and STAANN != 'D'";
@@ -200,7 +199,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
       $result = mysqli_query($conn, $sql);
       $resultat = mysqli_fetch_assoc($result);
       if($resultat['SOMME']>0){
-        errorMessage("ES0062");
+        //errorMessage("ES0062");
       }
     }
 

@@ -24,7 +24,6 @@ $token = getBearerToken();
             $response=array();
             include 'connexion.php';
             $sql="SELECT * FROM company_actions aa WHERE not exists (select 1 from companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE)";
-
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -69,7 +68,7 @@ $token = getBearerToken();
               }
             }
 
-            $sql="SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE, customer_bikes.ESTIMATED_DELIVERY_DATE FROM `client_orders`, customer_bike_access, customer_bikes WHERE client_orders.EMAIL=customer_bike_access.EMAIL AND customer_bike_access.BIKE_ID=customer_bikes.ID AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 14 DAY))";
+            $sql="SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE as 'clientDeliveryDate', customer_bikes.ESTIMATED_DELIVERY_DATE as 'supplierDeliveryDate' FROM `client_orders`, customer_bike_access, customer_bikes WHERE client_orders.EMAIL=customer_bike_access.EMAIL AND client_orders.STATUS='confirmed' AND customer_bike_access.BIKE_ID=customer_bikes.ID AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 20 DAY))";
             if ($conn->query($sql) === FALSE){
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);

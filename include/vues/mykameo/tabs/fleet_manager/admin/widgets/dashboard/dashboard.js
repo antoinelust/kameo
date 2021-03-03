@@ -96,7 +96,6 @@ function list_errors() {
 
 
         response.bike.selling.forEach(function(bike){
-          var bike = response.bike.selling[j];
           if (bike.frameNumber == null) {
             var bikeDescription = "N/A - " + bike.bikeID;
           } else {
@@ -115,6 +114,23 @@ function list_errors() {
           dest = dest.concat(temp);
           i++;
           j++;
+        })
+
+        response.bike.order.forEach(function(bike){
+          var temp =
+            '<tr><td scope="row">' +
+            (i + 1) +
+            '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
+            bike.bikeID +
+            '" data-toggle="modal" href="#">' +
+            bike.bikeID +
+            "</a></td><td>Le vélo est censer arriver chez nous le " +
+            bike.supplierDeliveryDate +
+            " et est mentionné en livraison chez le client le "+
+            bike.clientDeliveryDate +
+            "</td><td></tr>";
+            i++;
+            dest = dest.concat(temp);
         })
 
         if(typeof response.bike.sellingCompany != 'undefined'){
@@ -248,11 +264,12 @@ function list_errors() {
         $(".dashboardBikes").html(
           "Vélos (" +
             (response.bike.selling.length +
-              response.bike.sellingCompany.length) +
+              response.bike.sellingCompany.length +
+              response.bike.order.length) +
             ")"
         );
         $(".dashboardBills").html(
-          "Factures (" + ( ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+parseInt(response.box.bill.length)) + ")"
+          "Factures (" + (((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+parseInt(response.box.bill.length)) + ")"
         );
         $(".dashboardCompanies").html(
           "Sociétés (" +
@@ -264,6 +281,8 @@ function list_errors() {
           parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
           parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
           parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
+          parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
+          ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
           parseInt((typeof response.company.img != 'undefined') ? response.company.img.length : 0) +
           parseInt((typeof response.company.action != 'undefined') ? response.company.action.length : 0)
            ==
@@ -278,14 +297,16 @@ function list_errors() {
               (parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
               parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
               parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
-              parseInt((typeof response.bike.bill != 'undefined') ? response.bike.bill.length : 0) +
+              parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
+              ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
               parseInt((typeof response.company.img != 'undefined') ? response.company.img.length : 0) +
               parseInt((typeof response.company.action != 'undefined') ? response.company.action.length : 0)) +
             '" data-from="0" data-seperator="true">' +
               (parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
               parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
               parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
-              parseInt((typeof response.bike.bill != 'undefined') ? response.bike.bill.length : 0) +
+              parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
+              ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
               parseInt((typeof response.company.img != 'undefined') ? response.company.img.length : 0) +
               parseInt((typeof response.company.action != 'undefined') ? response.company.action.length : 0)) +
             "</span>";
