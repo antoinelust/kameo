@@ -75,9 +75,7 @@ $token = getBearerToken();
                 die;
             }
             $result = mysqli_query($conn, $sql);
-            while($row = mysqli_fetch_array($result)){
-              $response['bike']['order'] = $result->fetch_all(MYSQLI_ASSOC);
-            }
+            $response['bike']['order'] = $result->fetch_all(MYSQLI_ASSOC);
 
             include 'connexion.php';
             $sql="SELECT * FROM customer_bikes WHERE CONTRACT_TYPE='stock' AND COMPANY != 'KAMEO'";
