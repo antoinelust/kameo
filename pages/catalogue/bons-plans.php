@@ -29,7 +29,8 @@
                         <!-- SHOP PRODUCTS -->
 								<div class="shop">
 									<div class="row">
-
+										
+										<!--
 										<div class="col-md-4">
 											<div class="product">
 												<div class="product-image">
@@ -60,6 +61,8 @@
 										</div>
 
 										<div class="separator visible-xs"></div>
+										
+										-->
 
 										<!--
 										<div class="col-md-4">
