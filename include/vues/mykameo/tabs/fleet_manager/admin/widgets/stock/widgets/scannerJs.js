@@ -39,7 +39,7 @@ $('#widget-stockScan-form select[name=type]').change(function(){
 		getDataBike()
 	}
 	else{
-		//$('#widget-stockScan-form input[name=action]').val('addAccessory')
+		$('#widget-stockScan-form input[name=action]').val('addAccessory')
 	}
 
 })
@@ -182,10 +182,11 @@ window.addEventListener('load', function () {
 		}
 
 		document.getElementById('startButton').addEventListener('click', () => {
-			document.getElementById('result').value = '00120286o634Q'
-			checkPresent()
+
+
 			codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
 				document.getElementById('result').value = result.text
+				checkPresent()
 			}).catch((err) => {
 				console.error(err)
 			})
