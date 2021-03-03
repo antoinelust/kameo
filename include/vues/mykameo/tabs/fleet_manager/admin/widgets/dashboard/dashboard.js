@@ -252,7 +252,7 @@ function list_errors() {
             ")"
         );
         $(".dashboardBills").html(
-          "Factures (" + (parseInt(response.bike.bill.length)+parseInt(response.box.bill.length)) + ")"
+          "Factures (" + ( ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+parseInt(response.box.bill.length)) + ")"
         );
         $(".dashboardCompanies").html(
           "Sociétés (" +

@@ -142,8 +142,9 @@ function get_maintenance(ID){
         var date = new Date(response.maintenance.dateMaintenance).toLocaleDateString();
         date = date.split("/");
         $('#widget-maintenanceManagement-form input[name=ID]').val(response.maintenance.id);
+        $('#widget-maintenanceManagement-form .maintenanceManagementDeleteButton').attr('name', response.maintenance.id);
         $('#widget-maintenanceManagement-form select[name=velo]').val(response.maintenance.bike_id);
-        $('#widget-maintenanceManagement-form select[name=company]').val(response.maintenance.company);
+        $('#widget-maintenanceManagement-form select[name=company]').val(response.maintenance.COMPANY_ID);
         $('#widget-maintenanceManagement-form input[name=model]').val(response.maintenance.model);
         $('#widget-maintenanceManagement-form input[name=address]').val(response.maintenance.street+ ', ' + response.maintenance.zip_code + ' ' + response.maintenance.town);
         $('#widget-maintenanceManagement-form select[name=status]').val(response.maintenance.status);
@@ -193,6 +194,39 @@ function get_maintenance(ID){
     }
   });
 }
+
+$('.maintenanceManagementDeleteButton').off();
+$('.maintenanceManagementDeleteButton').click(function(){
+  $.ajax({
+  url:'apis/Kameo/maintenance_management.php',
+  data:{'action' : 'deleteEntretien', 'id' : this.name},
+  method:'POST',
+  success:function(response){
+    if(response.response == "success"){
+      $.notify(
+        {
+          message: response.message,
+        },
+        {
+          type: "success",
+        }
+      );
+      list_maintenances();
+      $("#maintenanceManagementItem").modal("toggle");
+      document
+        .getElementById("widget-maintenanceManagement-form")
+        .reset();
+    }else{
+      $.notify({
+        message: response.message,
+      }, {
+        type: "danger",
+      });
+    }
+  }
+  });
+})
+
 
 $('body').on('click', '.editMaintenance',function(){
   get_maintenance(this.name);

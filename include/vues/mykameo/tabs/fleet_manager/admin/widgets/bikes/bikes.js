@@ -267,6 +267,14 @@ function add_bike(ID){
           $('#bikeManagementPicture').attr('src', "images_bikes/"+response.img+"_mini.jpg?date="+Date.now());
           $('.bikeManagementPicture').removeClass('hidden');
 
+          $('#widget-bikeManagement-form select[name=size]')
+          .find('option')
+          .remove()
+          .end()
+          ;
+          var sizes = response.sizes.split(',');
+          sizes.forEach(size => $('#widget-bikeManagement-form select[name=size]').append('<option value="'+size+'">'+size+'</option>'));
+          $('#widget-bikeManagement-form select[name=size]').val("");
         }
       }
     })
@@ -435,7 +443,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('#widget-deleteBike-form input[name=bikeID]').val(bikeID);
           $('#widget-bikeManagement-form input[name=frameNumberOriginel]').val(response.frameNumber);
           $('#widget-bikeManagement-form input[name=model]').val(response.model);
-          $('#widget-bikeManagement-form input[name=size]').val(response.size);
           $('#widget-bikeManagement-form input[name=color]').val(response.color);
           $('#widget-bikeManagement-form input[name=frameReference]').val(response.frameReference);
           $('#widget-bikeManagement-form input[name=lockerReference]').val(response.lockerReference);
@@ -452,6 +459,41 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('#widget-bikeManagement-form input[name=bikeSoldPrice]').val(response.soldPrice);
           $('#widget-bikeManagement-form input[name=orderNumber]').val(response.orderNumber);
           $("#widget-bikeManagement-form select[name=bikeType]").val(response.biketype);
+
+          $('#widget-bikeManagement-form select[name=size]')
+          .find('option')
+          .remove()
+          .end()
+          ;
+          if(response.possibleSizes != '' && response.possibleSizes != null){
+            var sizes = response.possibleSizes.split(',');
+            sizes.forEach(size => $('#widget-bikeManagement-form select[name=size]').append('<option value="'+size+'">'+size+'</option>'));
+            if(sizes.includes(response.size)){
+              $('#widget-bikeManagement-form select[name=size]').val(response.size);
+            }else{
+              $.notify(
+                {
+                  message: "Incompatibilité entre la taille du vélo et les tailles possible du modèle en catalogue. Taille du vélo : "+response.size,
+                },
+                {
+                  type: "danger",
+                }
+              );
+              $('#widget-bikeManagement-form select[name=size]').val("");
+            }
+          }else{
+            $.notify(
+              {
+                message: "Ce vélo n'a aucune taille possible configurée dans le catalogue, veuillez commencer par les définir",
+              },
+              {
+                type: "danger",
+              }
+            );
+          }
+
+
+
           $("#widget-bikeManagement-form select[name=bikeType]").off();
           $("#widget-bikeManagement-form select[name=bikeType]").change(function() {
 
@@ -1571,8 +1613,9 @@ function list_bikes_admin() {
 
           map.setCenter(position, zoom);
 
-          $('.informationGPS').html('<ul><li>Latitute : '+lat+'</li><li>Longitute : '+lon+'</li><li>Dernière position : '+get_date_string_european_with_hours(new Date(response.timestamp))+'</li><li>Niveau batterie : '+response.batteryLevel+' %</li></ul>');
-          //$('.informationGPS').html($('.informationGPS').html()+'<img src="images_bikes/'+bikeMap+'.jpg" >');
+          $('#bikePositionAdmin span[name=bikeInformation]').html('<p><i class="fa fa-bicycle" aria-hidden="true"></i> Identification du vélo : '+response.frameNumber+'<br><i class="fa fa-building" aria-hidden="true"></i> Société : '+response.company+'<br></p>');
+          $('#bikePositionAdmin span[name=informationGPS]').html('<p><i class="fa fa-location-arrow" aria-hidden="true"></i> Coordonnées GPS : ('+lat+', '+lon+')<br><i class="fa fa-calendar" aria-hidden="true"></i> Dernière position : '+get_date_string_european_with_hours(new Date(response.timestamp))+'<br><i class="fa fa-battery-full" aria-hidden="true"></i> Niveau batterie : '+response.batteryLevel+' %<br></p>');
+          $('#bikePositionAdmin span[name=informationGPS]').html($('#bikePositionAdmin span[name=informationGPS]').html()+'<img src="images_bikes/'+response.catalogID+'_mini.jpg" >');
         }
       },
     });

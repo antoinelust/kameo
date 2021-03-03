@@ -22,79 +22,39 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-12">
-            <h4 class="text-green maintenanceManagementTitle">
-              Éditer un entretien
-            </h4>
-
-            <form
-              id="widget-maintenanceManagement-form"
-              action="apis/Kameo/edit_maintenance.php"
-              role="form"
-              method="post"
-            >
+            <h4 class="text-green maintenanceManagementTitle"> Éditer un entretien </h4>
+            <form id="widget-maintenanceManagement-form" action="apis/Kameo/edit_maintenance.php" role="form" method="post" >
               <div class="form-group col-sm-12">
                 <div class="col-md-12">
                   <div class="col-md-4" name="id">
                     <label for="ID">ID</label>
-                    <input
-                      type="int"
-                      title="ID"
-                      class="form-control required"
-                      name="ID"
-                      readonly="readonly"
-                    />
+                    <input type="int" title="ID" class="form-control required" name="ID" readonly="readonly" />
                   </div>
                   <div class="col-md-4">
                     <label for="utilisateur">Société</label>
-                    <select
-                      title="company"
-                      class="form-control required form_company"
-                      name="company"
-                    ></select>
+                    <select title="company" class="form-control required form_company" name="company" ></select>
                   </div>
                   <div class="col-md-4">
                     <label for="utilisateur">Vélo</label>
-                    <select
-                      title="velo"
-                      class="form-control required form_velo"
-                      name="velo"
-                    ></select>
+                    <select title="velo" class="form-control required form_velo" name="velo" ></select>
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="col-md-4">
                     <label for="model">Model</label>
-                    <input
-                      type="int"
-                      title="model"
-                      class="form-control required"
-                      name="model"
-                      readonly="readonly"
-                    />
+                    <input type="int" title="model" class="form-control required" name="model" readonly="readonly" />
                   </div>
                   <div class="col-md-4">
                     <label for="address">Addresse</label>
-                    <input
-                      type="text"
-                      title="address"
-                      class="form-control required"
-                      name="address"
-                      readonly="readonly"
-                    />
+                    <input type="text" title="address" class="form-control required" name="address" readonly="readonly" />
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="col-md-4">
                     <label for="utilisateur">Status</label>
-                    <select
-                      title="status"
-                      class="form-control required"
-                      name="status"
-                    >
+                    <select title="status" class="form-control required" name="status" >
                       <option value="CONFIRMED">CONFIRMED</option>
-                      <option value="AUTOMATICALY_PLANNED">
-                        AUTOMATICALY_PLANNED
-                      </option>
+                      <option value="AUTOMATICALY_PLANNED">AUTOMATICALY_PLANNED</option>
                       <option value="MANUALLY_PLANNED">MANUALLY_PLANNED</option>
                       <option value="DONE">DONE</option>
                       <option value="CANCELLED">CANCELLED</option>
@@ -102,24 +62,14 @@
                   </div>
                   <div class="col-md-4">
                     <label for="dateMaintenance">Date d'entretien</label>
-                    <input
-                      type="date"
-                      title="dateMaintenance"
-                      name="dateMaintenance"
-                      class="form-control"
-                    />
+                    <input type="date" title="dateMaintenance" name="dateMaintenance" class="form-control" />
                   </div>
                 </div>
                 <div class="col-md-12">
                   <label for="comment">Commentaire</label>
-                  <textarea
-                    class="form-control"
-                    rows="5"
-                    name="comment"
-                  ></textarea>
+                  <textarea class="form-control" rows="5" name="comment" ></textarea>
                 </div>
                 <div class="col-md-12" name="images">
-
                 </div>
                 <div class="col-md-12">
                   <div name = "file" class="col-sm-6">
@@ -129,24 +79,14 @@
                   </div>
                 </div>
               </div>
-              <input
-                type="text"
-                name="action"
-                class="form-control hidden"
-                value="edit"
-              />
-              <input
-                type="text"
-                name="user"
-                class="form-control hidden"
-                value="<?php echo $user_data['EMAIL']; ?>"
-              />
+              <input type="text" name="action" class="form-control hidden" value="edit" />
+              <input type="text" name="user" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>"/>
               <div class="col-sm-12">
-                <button
-                  class="button small green button-3d rounded icon-left maintenanceManagementSendButton"
-                  type="submit"
-                >
-                  <i class="fa fa-paper-plane"></i>Valider
+                <button class="button small green button-3d rounded icon-left maintenanceManagementSendButton" type="submit">
+                  <i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?>
+                </button>
+                <button class="button small red button-3d rounded icon-left maintenanceManagementDeleteButton" type="button">
+                  <i class="fa fa-paper-plane"></i><?= L::generic_delete; ?>
                 </button>
               </div>
             </form>
@@ -189,7 +129,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">
-          Fermer
+          <?= L::generic_close; ?>
         </button>
       </div>
     </div>

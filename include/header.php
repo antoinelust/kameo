@@ -95,11 +95,11 @@
 						<form id="user_management" class="form-transparent-grey" action="/apis/Kameo/access_management.php" role="form" method="post">
 							<div class="form-group">
 								<label class="sr-only"><?=L::header_mail;?></label>
-								<input type="email" name="userID" class="form-control" id="userID" placeholder="Adresse mail" autocomplete="username">
+								<input type="email" name="userID" class="form-control" id="userID" placeholder="<?= L::header_mail; ?>" autocomplete="username">
 							</div>
 							<div class="form-group m-b-5">
 								<label class="sr-only"><?=L::header_password;?></label>
-								<input type="password" name="password" id="user_password" class="form-control" placeholder="Mot de passe" autocomplete="current-password">
+								<input type="password" name="password" id="user_password" class="form-control" placeholder="<?= L::header_password; ?>" autocomplete="current-password">
 							</div>
 							<div class="form-group form-inline text-left ">
 								<a data-target="#lostPassword" data-toggle="modal" data-dismiss="modal" href="#" class="right"><small><?=L::header_forgottenpass;?></small></a>

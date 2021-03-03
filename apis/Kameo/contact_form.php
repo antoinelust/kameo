@@ -16,11 +16,11 @@ $name = $_POST["name"];
 $firstName = $_POST["firstName"];
 $email = $_POST["email"];
 $phone =  $_POST["phone"];
-$type = $_POST["type"];
+$type = isset($_POST["type"]) ? $_POST["type"] : "N/A";
 $entreprise = isset($_POST["entreprise"]) ? $_POST["entreprise"] : "N/A";
+$companySize = isset($_POST["companySize"]) ? $_POST["companySize"] : NULL;
 $subject = isset($_POST["subject"]) ? $_POST["subject"] : "N/A";
 $message = nl2br($_POST["message"]);
-$antispam = $_POST['antispam'];
 $captcha = strlen($_POST['g-recaptcha-response']);
 
 
@@ -33,7 +33,7 @@ if($captcha == 0){
     errorMessage("ES0020");
 }
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '') {
+if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
  if($email != '') {
 
@@ -43,10 +43,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
 
 
     if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
-        $mail->AddAddress('thibaut@kameobikes.com', 'Thibaut Mativa');
-        $mail->AddAddress('julien@kameobikes.com', 'Julien Jamar');
-        $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
-        $mail->AddAddress('pierre-yves@kameobikes.com', 'Pierre-Yves Adant');
+        $mail->AddCC('julien@kameobikes.com', 'Julien Jamar');
+        $mail->AddCC('antoine@kameobikes.com', 'Antoine Lust');
         $mail->AddAddress('info@kameobikes.com', 'Information Kameo Bikes');
     }else{
         $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
@@ -619,8 +617,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($antispam) && $antispam == '')
     <br>
     <strong>$firstName $name ($phone):</strong><br>
     Type: $type<br>
-    Nom d'entreprise : $entreprise<br>
-    Message : $message<br></p>
+    Nom d'entreprise : $entreprise<br>";
+
+		if($companySize){
+			$body.="Taille de l'entreprise : ".$companySize."<br>";
+		}
+    $body.="Message : $message<br></p>
 
                             </td>
                         </tr>

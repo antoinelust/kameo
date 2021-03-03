@@ -605,7 +605,7 @@ $body="<!doctype html>
                             <div style=\"text-align: justify;\"><br>
                               <span style=\"font-size:18px\"><span style=\"font-family:arial,helvetica neue,helvetica,sans-serif\">
                                 Vous recevez cet email car vous venez d'être ajouté aux utilisateurs des vélos KAMEO.
-                                Vous pouvez dès à présent vous connecter à votre espace en ligne <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.
+                                Vous pouvez dès à présent vous connecter à votre espace en ligne <a href=\"https://www.kameobikes.com/mykameo\" target=\"_blank\"><span style=\"color:#25539D\">MyKameo</span></a>.
                                 <br><br>
                                 U ontvangt deze e-mail omdat u vanaf nu toegang hebt aan de KAMEO-fietsen.
                                 U kunt zich aanmelden op uw account <a href=\"www.kameobikes.com/mykameo.php\">MyKAMEO</a>.

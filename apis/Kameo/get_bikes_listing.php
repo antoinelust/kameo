@@ -39,6 +39,7 @@ if ($admin != "Y") {
 
 
     $sql = "SELECT * FROM customer_bikes aa where aa.COMPANY='$company' AND aa.CONTRACT_TYPE NOT IN ('order', 'stock', 'waiting_delivery') AND aa.STAANN != 'D' ORDER BY MODEL";
+    $response['sql'] = $sql;
     if ($conn->query($sql) === FALSE) {
         $response = array('response' => 'error', 'message' => $conn->error);
         echo json_encode($response);

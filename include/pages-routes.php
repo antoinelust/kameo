@@ -92,4 +92,7 @@
 	/** SECUREX **/
 	$router->map('GET','/login_securex[ext]', 'pages/login_securex.php');
 
+	/** MyBorne **/
+	$router->map('GET','/myBorne[ext]', 'pages/myBorne.php');
+
 ?>

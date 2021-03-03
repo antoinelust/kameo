@@ -22,7 +22,6 @@ if($action=="update"){
     $buyPrice = $_POST["buyPrice"];
     $price = $_POST["price"];
     $stock = $_POST["stock"];
-    $link=isset($_POST['$link']) ? $_POST['$link'] : NULL;
     $display=isset($_POST['display']) ? "Y" : "N";
     $motor = $_POST["motor"];
     $battery = $_POST["battery"];
@@ -147,16 +146,9 @@ if($action=="update"){
           }
           $sizes=substr($sizes, 0, -1);
         }
-        $stmt = $conn->prepare("update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, BRAND=?, MODEL=?, FRAME_TYPE=?, UTILISATION=?,  ELECTRIC=?, BUYING_PRICE=?, PRICE_HTVA=?, STOCK=?, DISPLAY=?, LINK=?, MOTOR=?, BATTERY=?, TRANSMISSION=?, SEASON=?, PRIORITY=?, SIZES=? WHERE ID=?");
-        if ($stmt)
-        {
-            $stmt->bind_param("ssssssddissssssisi", $user, $brand, $model, $frameType, $utilisation, $electric, $buyPrice, $price, $stock, $display, $link, $motor, $battery, $transmission, $season, $priority, $sizes, $ID);
-            $stmt->execute();
-            $stmt->close();
-        }else{
-            error_message('500', 'Unable to update catalog bike');
-        }
 
+
+        $information=execSQL("update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, BRAND=?, MODEL=?, FRAME_TYPE=?, UTILISATION=?,  ELECTRIC=?, BUYING_PRICE=?, PRICE_HTVA=?, STOCK=?, DISPLAY=?, MOTOR=?, BATTERY=?, TRANSMISSION=?, SEASON=?, PRIORITY=?, SIZES=? WHERE ID=?", array("ssssssddisssssisi", $user, $brand, $model, $frameType, $utilisation, $electric, $buyPrice, $price, $stock, $display, $motor, $battery, $transmission, $season, $priority, $sizes, $ID), true);
         successMessage("SM0003");
 
     } else {

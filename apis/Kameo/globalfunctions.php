@@ -376,7 +376,10 @@ function execSQL($sql, $params, $close){
     call_user_func_array(array($stmt, 'bind_param'), refValues($params));
   }
 
-  $stmt->execute();
+  if(!$stmt->execute()){
+    echo json_encode($stmt->error);
+    die;
+  }
 
   if($close){
      $result = $conn->affected_rows;

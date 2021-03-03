@@ -104,7 +104,7 @@ if($email != NULL)
     // Partie pour les vélos
 
     include 'connexion.php';
-    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and bb.ID=aa.BIKE_ID and aa.STAANN!='D' and aa.TYPE='partage'";
+    $sql="SELECT bb.ID, bb.FRAME_NUMBER, bb.MODEL FROM customer_bike_access aa, customer_bikes bb WHERE aa.EMAIL='$email' and bb.ID=aa.BIKE_ID and aa.STAANN!='D' and aa.TYPE='partage' ORDER BY bb.ID";
     if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);

@@ -20,7 +20,6 @@ $electric = $_POST["electric"];
 $buyingPrice = $_POST["buyPrice"];
 $price = $_POST["price"];
 $stock = $_POST["stock"];
-$link = $_POST["link"];
 $display=isset($_POST['display']) ? "Y" : "N";
 $motor = $_POST["motor"];
 $battery = $_POST["battery"];
@@ -84,7 +83,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
         $sizes=substr($sizes, 0, -1);
       }
 
-      $sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, LINK, STAANN, MOTOR, BATTERY, TRANSMISSION, SIZES, SEASON, PRIORITY) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '$link', '', '$motor', '$battery', '$transmission', '$sizes', '$season', '$priority')";
+      $sql = "INSERT INTO bike_catalog (USR_MAJ, BRAND, MODEL, FRAME_TYPE, UTILISATION,  ELECTRIC, BUYING_PRICE, PRICE_HTVA, STOCK, DISPLAY, STAANN, MOTOR, BATTERY, TRANSMISSION, SIZES, SEASON, PRIORITY) VALUES ('$user', '$brand', '$model', '$frameType', '$utilisation', '$electric', '$buyingPrice', '$price', '$stock', '$display', '', '$motor', '$battery', '$transmission', '$sizes', '$season', '$priority')";
 
       if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);

@@ -21,7 +21,6 @@ $("#chat .input_msg_write .write_msg").keypress(function(event){
 });
 
 function get_message_history(){
-  console.log("test");
   $.ajax({
       url: 'api/chats',
       type: 'get',

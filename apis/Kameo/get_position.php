@@ -101,6 +101,11 @@ $payload = array(
             $response['GPS_ID']=$GPS_ID;
             $response['brand']=$resultat['BRAND'];
             $response['model']=$resultat['MODEL'];
+            $response['catalogID']=$resultat['TYPE'];
+            $response['frameNumber']=$resultat['FRAME_NUMBER'];
+            $response['company']=$resultat['COMPANY'];
+
+
 
             if($GPS_ID == ''){
                 // set response code
