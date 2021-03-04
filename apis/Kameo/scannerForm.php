@@ -27,10 +27,10 @@ $size=isset($_GET['size']) ? addslashes($_GET['size']) : NULL;
 $color=isset($_GET['color']) ? addslashes($_GET['color']) : NULL;
 
 
-	// Verifie si le code barre est présent dans la table
+////// Verifie si le code barre est présent dans la table
 
 if($action == 'check'){
-	$sql="SELECT ARTICLE_ID FROM article_referential WHERE BARCODE='$barcode'";
+	$sql="SELECT ARTICLE_ID FROM article_referantial WHERE BARCODE='$barcode'";
 	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -47,6 +47,56 @@ if($action == 'check'){
 		$response['response']='present';
 	}
 	echo json_encode($response);
+}
+////// Recupere les données lié au code barre 
+else if ($action == 'getDataFromBarcode'){
+
+	$sql="SELECT * FROM article_referantial WHERE BARCODE='$barcode'";
+	if ($conn->query($sql) === FALSE) {
+		$response = array ('response'=>'error', 'message'=> $conn->error);
+		echo json_encode($response);
+		die;
+	}
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_assoc($result);
+	$response['response']='success';
+	$response['type']=$row['TYPE'];
+	$tempId = $row['ID_CATALOGUE'];
+
+	if($row['TYPE']=='BIKE'){
+		$response['color']=$row['COLOR'];
+		$response['size']=$row['SIZE'];
+		$sqlBike="SELECT * FROM bike_catalog WHERE ID='$tempId'";
+		$resultBike = mysqli_query($conn, $sqlBike);
+		$rowBike = mysqli_fetch_assoc($resultBike);
+
+		$response['model']=$rowBike['MODEL'];
+		$response['brand']=$rowBike['BRAND'];
+		$response['frame_type']=$rowBike['FRAME_TYPE'];
+
+	}
+	else if($row['TYPE']=='ACCESSORY'){
+		$sqlAccessory="SELECT * FROM accessories_catalog WHERE ID='$tempId'";
+		$resultAccessory= mysqli_query($conn, $sqlAccessory);
+		$rowAccessory = mysqli_fetch_assoc($resultAccessory);
+		
+		$response['model']=$rowAccessory['MODEL'];
+		$response['brand']=$rowAccessory['BRAND'];
+		$response['idCategory'] = $rowAccessory['ACCESSORIES_CATEGORIES'];
+
+
+		$tempIdCategory= $rowAccessory['ACCESSORIES_CATEGORIES'];
+
+		$sqlCategory="SELECT * FROM accessories_categories WHERE ID='$tempIdCategory'";
+		$resultCategory= mysqli_query($conn, $sqlCategory);
+		$rowCategory = mysqli_fetch_assoc($resultCategory);
+		$response['category'] = $rowCategory['CATEGORY'];
+
+	}
+
+	echo json_encode($response);
+
+
 }
 // Recupere toutes les marques de vélo
 
@@ -137,7 +187,7 @@ else if($action == 'loadModelBrandCategory'){
 	// ajout du code barre du velo 
 else if($action == 'addBike'){
 	include 'connexion.php';
-	$sqlTest = "INSERT INTO article_referential(TYPE, BARCODE, SIZE, COLOR, ID_CATALOGUE)
+	$sqlTest = "INSERT INTO article_referantial(TYPE, BARCODE, SIZE, COLOR, ID_CATALOGUE)
 	VALUES ('bike', '$result', '$size', '$color', '$id')";
 	//mysqli_query($conn, $sqlTest);
 
@@ -155,7 +205,7 @@ else if($action == 'addBike'){
 
 else if($action == 'addAccessory'){
 	include 'connexion.php';
-	$sqlTest = "INSERT INTO article_referential(TYPE, BARCODE, SIZE, COLOR, ID_CATALOGUE)
+	$sqlTest = "INSERT INTO article_referantial(TYPE, BARCODE, SIZE, COLOR, ID_CATALOGUE)
 	VALUES ('accessory', '$result', NULL , NULL, '$idAccessory')";
 
 	if ($conn->query($sqlTest) === FALSE) {

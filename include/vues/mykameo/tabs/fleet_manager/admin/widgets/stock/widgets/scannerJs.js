@@ -4,10 +4,9 @@
 $('.stockManagerClick').click(function(){initializeModal()});
 
 function initializeModal(){
-
-	console.log('tet')
 	var roleButton = 'scan';
-	document.getElementById('result').value = 'test';
+	document.getElementById('resultName').innerHTML = 'Etat du scan : Lancez le scan de code barre en appuyant sur start';
+	$('#widget-stockScan-form input[name=result]').hide();
 	$('#widget-stockScan-form div[name=typeDiv]').hide();
 	$('#widget-stockScan-form div[name=brandDiv]').hide();
 	$('#widget-stockScan-form div[name=modelDiv]').hide();
@@ -16,9 +15,14 @@ function initializeModal(){
 	$('#widget-stockScan-form button[name=sendValue]').hide();
 	$('#widget-stockScan-form div[name=categoryAccessoryDiv]').hide();
 	$('#widget-stockScan-form div[name=modelBrandAccessoryDiv]').hide();
+
+	$('#widget-stockScan-form div[name=displayResultDiv]').hide();
+
 }
 
 function resultChanged(){
+
+	$('#widget-stockScan-form div[name=displayResultDiv]').hide();
 	$('#widget-stockScan-form div[name=typeDiv]').hide();
 	$('#widget-stockScan-form div[name=brandDiv]').hide();
 	$('#widget-stockScan-form div[name=modelDiv]').hide();
@@ -83,7 +87,7 @@ $('#widget-stockScan-form select[name=size]').change(function(){
 	$('#widget-stockScan-form button[name=sendValue]').hide();
 })
 
-$('#widget-stockScan-form select[name=color]').change(function(){
+$('#widget-stockScan-form input[name=color]').change(function(){
 	$('#widget-stockScan-form button[name=sendValue]').show();
 })
 ///////////////////////////////////////////////////
@@ -142,7 +146,6 @@ function getModelFromBrand(){
 				console.log('test');
 			}
 			if(response.response == 'success'){
-				console.log('testOk')
 				var i =0;
 				$('#widget-stockScan-form select[name=model]').find('option').remove().end();
 				while(i<response.numberModel){
@@ -227,30 +230,85 @@ function checkPresent(){
 			}
 			if(response.response == 'present') {
 				$.notify(
-				{
-					message: 'Code barre déja présent dans la BDD',
-				},
-				{
-					type: "info",
-				}
-				);
+						{
+							message:'Article déja repertorié sur la BDD',
+						},
+						{
+							type: "info",
+						}
+						);
+				displayDataBarcode()
 			}
+		}
+	});
+}
+//////////////////////////////////////////////////////////////////////////
+
+///////////////Recupere les données lié au code barre déja repertorié
+
+function displayDataBarcode(){
+	$.ajax({
+		url: 'apis/Kameo/scannerForm.php',
+		type: 'get',
+		data: {"action": "getDataFromBarcode","barcode" : $('#widget-stockScan-form input[name=result]').val()},
+		success: function(response){
+			if(response.response == 'error') {
+				console.log('error')
+			}
+			if(response.response == 'success') {
+				$('#widget-stockScan-form div[name=typeDiv]').hide();
+				$('#widget-stockScan-form div[name=displayResultDiv]').show();
+
+				$('#widget-stockScan-form div[name=typeResultDiv]').show();
+				$('#widget-stockScan-form input[name=typeResult]').val(response.type);
+
+				if(response.type=='BIKE'){
+
+					$('#widget-stockScan-form div[name=brandResultDiv]').show();
+					$('#widget-stockScan-form input[name=brandResult]').val(response.brand);
+
+					$('#widget-stockScan-form div[name=modelResultDiv]').show();
+					$('#widget-stockScan-form input[name=modelResult]').val(response.model);
+
+					$('#widget-stockScan-form div[name=sizeResultDiv]').show();
+					$('#widget-stockScan-form input[name=sizeResult]').val(response.size);
+
+					$('#widget-stockScan-form div[name=colorResultDiv]').show();
+					$('#widget-stockScan-form input[name=colorResult]').val(response.color);
+
+					$('#widget-stockScan-form div[name=categoryResultDiv]').hide();
+					
+				}
+				else{
+					$('#widget-stockScan-form div[name=brandResultDiv]').show();
+					$('#widget-stockScan-form input[name=brandResult]').val(response.brand);
+
+					$('#widget-stockScan-form div[name=modelResultDiv]').show();
+					$('#widget-stockScan-form input[name=modelResult]').val(response.model);
+
+					$('#widget-stockScan-form div[name=categoryResultDiv]').show();
+					$('#widget-stockScan-form input[name=categoryResult]').val(response.category);
+
+					$('#widget-stockScan-form div[name=sizeResultDiv]').hide();
+					$('#widget-stockScan-form div[name=colorResultDiv]').hide();
+				}
+			}	
 		}
 	});
 }
 /////////////////////////////////////////////////
 
-
-
+///////////////Fonctionnalité activant le début du scan de code barre
 
 window.addEventListener('load', function () {
 	let selectedDeviceId;
 	const codeReader = new ZXing.BrowserBarcodeReader()
 
-	console.log('ZXing code reader initialized')
+	
 	codeReader.getVideoInputDevices()
 	.then((videoInputDevices) =>{
 		const sourceSelect = document.getElementById('sourceSelect');
+
 		selectedDeviceId = videoInputDevices[0].deviceId;
 		if (videoInputDevices.length > 1) {
 			videoInputDevices.forEach((element) => {
@@ -269,12 +327,10 @@ window.addEventListener('load', function () {
 		}
 
 		document.getElementById('startButton').addEventListener('click', () => {
-			codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
-				document.getElementById('result').value = result.text
-				checkPresent()
-			}).catch((err) => {
-				console.error(err)
-			})
+			decodeContiniously(codeReader, selectedDeviceId);
+		})
+		document.getElementById('stopButton').addEventListener('click', () => {
+			codeReader.reset()
 		})
 		
 	})
@@ -282,6 +338,25 @@ window.addEventListener('load', function () {
 		console.error(err);
 	})
 })
+
+function decodeContiniously(codeReader, selectedDeviceId){
+	document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
+	$('#widget-stockScan-form input[name=result]').hide();
+
+	codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
+		if (result) {
+			document.getElementById('resultName').innerHTML = 'Etat du scan :Code Barre Trouvé';
+			$('#widget-stockScan-form input[name=result]').show();
+			document.getElementById('result').value = result.text
+			checkPresent()
+
+		}if (err) {
+			if (err instanceof ZXing.FormatException) {
+				console.log('A code was found, but it was in a invalid format.')
+			}
+		}
+	})
+}
 
 
 /////////////////////////Responsable du changement de fonctionnalité lié au scan 

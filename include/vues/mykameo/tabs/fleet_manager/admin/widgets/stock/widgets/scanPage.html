@@ -29,8 +29,10 @@
 				<!-- ////////////////Affichage du scan produit -->
 				<div name="displayScan">
 					<button  class="button small green button-3d rounded icon-left" id="startButton">Start</button>
+					<button  class="button small green button-3d rounded icon-left" id="stopButton">Stop</button>
+					
 					<div style="display:block ">
-						<video id="video" width="40%" height="30%" style="border: 1px solid gray"></video>
+						<video id="video" width="70%" height="20%" style="border: 1px solid gray"></video>
 					</div>
 					<form  name = "widget-stockScan-form" id="widget-stockScan-form" role="form" method="get" action="apis/Kameo/scannerForm.php">
 
@@ -40,7 +42,8 @@
 							</select>
 						</div>
 						<div >
-							<input hidden name="result" id="result">
+							<label id="resultName" for="result">Etat du scan :</label>
+							<input readonly="readonly" name="result" id="result">
 							<input hidden name="action">
 						</div>
 						<div class="col-sm-12">
@@ -89,19 +92,40 @@
 							</div>
 							<div class="col-sm-4" name="colorDiv" style="display:block ">
 								<label>Couleur: </label>
-								<select name="color" class="form-control">
-									<option disabled selected value>Choisissez la couleur</option>
-									<option value="blue">Bleu</option>
-									<option value="red">Rouge</option>
-									<option value="yellow">Jaune</option>
-									<option value="green">Vert</option>
-									<option value="grey">Gris</option>
-									<option value="black">Noir</option>
-									<option value="white">Blanc</option>
-									<option value="orange">Orange</option>
-								</select>
+								<input name="color" class="form-control">
 							</div>
+							
 						</div>
+						<div class="col-sm-12" name="displayResultDiv" style="display:block " >
+
+							<div class="col-sm-4" name="typeResultDiv" style="display:block ">
+								<label>Type: </label>
+								<input readonly="readonly" name="typeResult" class="form-control">
+							</div>
+							<div class="col-sm-4" name="brandResultDiv" style="display:block ">
+								<label>Marque: </label>
+								<input readonly="readonly" name="brandResult" class="form-control">
+							</div>
+							<div class="col-sm-4" name="modelResultDiv" style="display:block ">
+								<label>Modèle: </label>
+								<input readonly="readonly" name="modelResult" class="form-control">
+							</div>
+							<div class="col-sm-4" name="sizeResultDiv" style="display:block ">
+								<label>Taille: </label>
+								<input readonly="readonly" name="sizeResult" class="form-control">
+							</div>
+							<div class="col-sm-4" name="colorResultDiv" style="display:block ">
+								<label>Couleur: </label>
+								<input readonly="readonly" name="colorResult" class="form-control">
+							</div>
+							<div class="col-sm-4" name="categoryResultDiv" style="display:block ">
+								<label>Categorie : </label>
+								<input readonly="readonly" name="categoryResult" class="form-control">
+							</div>
+
+						</div>
+						<br/>
+
 						<button
 						class="button small green button-3d rounded icon-left"
 						type="submit"
@@ -110,7 +134,6 @@
 						<i class="fa fa-paper-plane"></i>Envoyer
 					</button>
 				</form>
-
 			</div>
 			<!-- //////////////// Fin Affichage du scan produit -->
 
@@ -124,33 +147,33 @@
 </body>
 </html>
 <script type="text/javascript">
-  jQuery("#widget-stockScan-form").validate({
-    submitHandler: function (form) {
-      jQuery(form).ajaxSubmit({
-        success: function (response) {
-          if (response.response == "success") {
-            $.notify(
-            {
-              message: response.message,
-            },
-            {
-              type: "success",
-            }
-            );
-            initializeModal();
-            document.getElementById("widget-stockScan-form").reset();
-          } else {
-            $.notify(
-            {
-              message: response.message,
-            },
-            {
-              type: "danger",
-            }
-            );
-          }
-        },
-      });
-    },
-  });
+	jQuery("#widget-stockScan-form").validate({
+		submitHandler: function (form) {
+			jQuery(form).ajaxSubmit({
+				success: function (response) {
+					if (response.response == "success") {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "success",
+						}
+						);
+						initializeModal();
+						document.getElementById("widget-stockScan-form").reset();
+					} else {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "danger",
+						}
+						);
+					}
+				},
+			});
+		},
+	});
 </script>
