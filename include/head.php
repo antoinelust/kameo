@@ -71,7 +71,7 @@ header("Content-Security-Policy: script-src 'self' 'unsafe-inline' https://unpkg
 
 
 	if(constant('ENVIRONMENT')=="production"){
-		include $_SERVER['DOCUMENT_ROOT'].'/include/googleAnalytics.php';
+		//include $_SERVER['DOCUMENT_ROOT'].'/include/googleAnalytics.php';
 		include $_SERVER['DOCUMENT_ROOT'].'/include/googleTagManager.php';
 	}
 	?>

@@ -191,7 +191,6 @@ function fillReservationDetails(element) {
           "reservationStartDate"
         )[0].innerHTML = response.reservation.start.shortDateHours();
 
-        console.log(response.reservation.initialEndDate);
         if(response.reservation.initialEndDate == null){
           document.getElementsByClassName(
             "reservationEndDate"
@@ -217,7 +216,48 @@ function fillReservationDetails(element) {
           reservationID +
           '\')" data-toggle="modal" href="#"><span><?= L::mk_reservations_delete; ?></span></a>';
 
-        displayLanguage();
+          if(response.reservationsLogs != null){
+
+            var dest="<tr><th>Date</th><th>Action</th><th>Réponse serveur</th></tr>";
+            var action = "";
+            var output = "";
+            response.reservationsLogs.forEach((reservationLog) => {
+              console.log(reservationLog.ACTION);
+              if(reservationLog.ACTION == "verifier_code"){
+                action = "Vérification du code";
+                if(reservationLog.OUTCOME.substring(0, 2) == "-4"){
+                  output = "Code hors délai"
+                }else if(reservationLog.OUTCOME.substring(0, 2) == "-1"){
+                  output = "Code bon mais le vélo était déjà considéré comme sorti";
+                }else{
+                  output = "Code bon";
+                }
+              }else if(reservationLog.ACTION == "open_door"){
+                action = "Ouverture de porte";
+                output = "Ouverture OK";
+              }else if(reservationLog.ACTION == "close_door"){
+                action ="Fermeture de porte";
+                output = "Fermeture OK";
+              }else if(reservationLog.ACTION == "prise_cle"){
+                action = "Prise de la clé";
+                output = "Prise de clé OK";
+              }else if(reservationLog.ACTION == "verifier_rfid"){
+                action = "Vérification du badge RFID";
+                if(reservationLog.OUTCOME.substring(0, 2) == "-1"){
+                  output = "Vérification OK";
+                }else{
+                  output = "Le vélo n'était pas considéré comme en dehors de la borne - KO";
+                }
+              }else if(reservationLog.ACTION == "update_remise_cle"){
+                action = "Remise de la clé";
+                output = "Remise de clé OK";
+              }
+              dest = dest.concat("<tr><td>"+reservationLog.TIMESTAMP+"</td><td>"+action+"</td><td>"+output+"</td></tr>");
+            })
+          }else{
+            dest = "";
+          }
+          $('#detailsReservationsLogs').html(dest);
       }
     },
   });

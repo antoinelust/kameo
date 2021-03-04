@@ -100,7 +100,6 @@ if($id != NULL)
     $resultat = mysqli_fetch_assoc($result);
 
     $response['img']=$resultat['ID'];
-
     $response['brand']=$resultat['BRAND'];
     $response['modelCatalog']=$resultat['MODEL'];
     $response['catalogPrice']=$resultat['PRICE_HTVA'];

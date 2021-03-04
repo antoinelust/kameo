@@ -58,7 +58,7 @@ if($brand != '' && $model != '' && $description != '' && $category != '' && $buy
 
 
 if(isset($_FILES['file'])){
-  $extensions = array('.jpg');
+  $extensions = array('.jpg', '.JPG');
   $extension = strrchr($_FILES['file']['name'], '.');
   if(!in_array($extension, $extensions))
   {
@@ -79,7 +79,7 @@ if(isset($_FILES['file'])){
 
     $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
 
-    $fichier = $ID.$extension;
+    $fichier = $ID.'.jpg';
 
     if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier .$fichier))
     {
@@ -88,14 +88,14 @@ if(isset($_FILES['file'])){
     successMessage("SM0028");
   }
   if($action=="update"){
-    if (file_exists($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.$extension)) {
-        unlink($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.$extension) or die("Couldn't delete file");
+    if (file_exists($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.'.jpg')) {
+        unlink($_SERVER['DOCUMENT_ROOT'].'/images_accessories/'.$ID.'.jpg') or die("Couldn't delete file");
     }
 
     //upload of Bike picture
 
     $dossier = $_SERVER['DOCUMENT_ROOT'].'/images_accessories/';
-    $fichier = $ID.$extension;
+    $fichier = $ID.'.jpg';
     if(!move_uploaded_file($_FILES['file']['tmp_name'], $dossier . $fichier))
     {
       errorMessage("ES0024");

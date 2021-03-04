@@ -1,5 +1,8 @@
 <?php
 
+include '../globalfunctions.php';
+
+
 $building=isset($_GET['building']) ? htmlspecialchars($_GET['building']) : NULL;
 $code=isset($_GET['code']) ? htmlspecialchars($_GET['code']) : NULL;
 $emplacement=isset($_GET['emplacement']) ? htmlspecialchars($_GET['emplacement']) : NULL;
@@ -12,6 +15,14 @@ error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - building :".$_GET[
 if(isset($_GET['frame_number'])){
   error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - frame_number :".$_GET['frame_number']."\n", 3, "logs/logs_boxes.log");
 }
+
+$reservationID=isset($_GET['reservationID']) ? $_GET['reservationID'] : NULL;
+
+if($reservationID){
+  error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - reservationID :".$reservationID."\n", 3, "logs/logs_boxes.log");
+}
+
+
 
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - emplacement :".$_GET['emplacement']."\n", 3, "logs/logs_boxes.log");
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - RFID :".$rfid."\n", 3, "logs/logs_boxes.log");
@@ -66,7 +77,7 @@ if($code==NULL){
     $resultat = mysqli_fetch_assoc($result);
     $reservationID=$resultat['ID_reservation'];
     $sql="UPDATE reservations SET HEU_MAJ = CURRENT_TIMESTAMP, DATE_START_2 = CURRENT_TIMESTAMP WHERE ID ='$reservationID'";
-    
+
     if ($conn->query($sql) === FALSE) {
         $response = array ('response'=>'error', 'message'=> $conn->error);
         echo json_encode($response);
@@ -100,13 +111,16 @@ $conn->close();
 
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 $sql="UPDATE locking_code SET HEU_MAJ=CURRENT_TIMESTAMP(), VALID='N' WHERE ID_reservation='$reservationID'";
-if ($conn->query($sql) === FALSE) {
+if ($conn->query($sql) === FALSE){
     $response = array ('response'=>'error', 'message'=> $conn->error);
     echo json_encode($response);
     die;
 }
 $result = mysqli_query($conn, $sql);
 $conn->close();
+
+execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'prise_cle', $reservationID, $_GET['building'], 'OK'), true);
+
 
 echo "1";
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - SUCCESS \n", 3, "logs/logs_boxes.log");

@@ -32,6 +32,8 @@ if($bookingID != NULL)
   $response['reservationStartBuilding']=$row['building_start_fr'];
   $response['reservationEndBuilding']=$row['building_end_fr'];
   $response['reservationEmail']=$row['EMAIL'];
+  $response['reservationsLogs']=execSQL("SELECT * FROM reservations_details WHERE RESERVATION_ID=?", array('i', $bookingID), false);
+
   echo json_encode($response);
   die;
 

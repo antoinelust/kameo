@@ -56,7 +56,7 @@
           <strong style="font-size: 20px; display: inline; color: white">&#9314;</strong><h4 class="text-light" style='display: inline'> <?=L::order_choose_your_bike;?></h4>
         </div>
         <div class="row" id="achat_sidebar">
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-2">
               <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
               <select  class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
                   <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
@@ -99,7 +99,7 @@
               </select>
           </div>
 
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-2">
               <label for="widget-contact-form-electrique"><?= L::generic_electric; ?> ?</label>
               <select  class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
                   <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
@@ -107,6 +107,21 @@
                   <option data-filter=".n"><?= L::achat_assist_option3; ?></option>
               </select>
           </div>
+
+          <div class="form-group col-md-2">
+              <label for="size"><?= L::generic_size; ?></label>
+              <select  name="size">
+                <option data-filter="" value="*"><?= L::generic_all_feminin; ?></option>
+                <option data-filter="" value="XS">XS</option>
+                <option data-filter="" value="S">S</option>
+                <option data-filter="" value="M">M</option>
+                <option data-filter="" value="L">L</option>
+                <option data-filter="" value="XL">XL</option>
+                <option data-filter="" value="unique">Unique</option>
+              </select>
+          </div>
+
+
         </div>
     </div>
     <div class="separator"></div>

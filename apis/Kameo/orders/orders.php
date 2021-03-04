@@ -53,28 +53,18 @@ switch($_SERVER["REQUEST_METHOD"])
 				$stmt->execute();
 				$company_reference = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['COMPANY'];
 				$stmt->close();
-				$stmt = $conn->prepare("SELECT co.INTERNAL_REFERENCE as company, bc.ID, bc.BRAND as brand, bc.MODEL as model, bc.FRAME_TYPE as frameType, bc.UTILISATION as utilisation, bc.ELECTRIC as electric,bc.PRICE_HTVA as price, STOCK as stock FROM bike_catalog bc, companies_orderable co WHERE STAANN != 'D' AND bc.DISPLAY='Y' AND bc.ID = co.BIKE_ID AND co.INTERNAL_REFERENCE = ? ORDER BY STOCK DESC, BRAND, MODEL");
+				$stmt = $conn->prepare("SELECT BIKE_ID from companies_orderable WHERE INTERNAL_REFERENCE = ? ORDER BY BIKE_ID");
 				$stmt->bind_param("s", $company_reference);
 				$stmt->execute();
 				$orderable = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 				$response = array();
 				$response['response'] = "success";
+				$response['company'] = $company_reference;
 
 				$response['bike'] = $orderable;
 
-				$i=0;
-				require_once $_SERVER['DOCUMENT_ROOT']."/apis/Kameo/get_prices.php";
-				foreach ($orderable as $bike){
-					$getPrice=get_prices($bike['price'], $company_reference);
-					$response['bike'][$i]['leasingPrice']=$getPrice['leasingPrice'];
-					$i++;
-				}
-
-
 
 				$stmt->close();
-				$response['bikeNumber'] = count($orderable);
-
 				$stmt = $conn->prepare("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPES, TVA_INCLUDED from conditions WHERE COMPANY=? AND NAME='generic'");
 				$stmt->bind_param("s", $company_reference);
 				$stmt->execute();
