@@ -415,7 +415,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
       if (response.response == 'error') {
         console.log(response.message);
       } else{
-        console.log(reponse);
         var i=0;
         while(i<response.bikeNumber){
           $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+response.bike[i].ID+">"+response.bike[i].brand+" - "+response.bike[i].model+" - "+response.bike[i].frameType+"<br>");

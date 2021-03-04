@@ -199,7 +199,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
       $result = mysqli_query($conn, $sql);
       $resultat = mysqli_fetch_assoc($result);
       if($resultat['SOMME']>0){
-        //errorMessage("ES0062");
+        errorMessage("ES0062");
       }
     }
 
