@@ -36,8 +36,8 @@ include 'include/head.php';
 				
 				<div id="tabs-05c" class="tabs color">
 					<ul class="tabs-navigation">
-						<li class="active"><a href="#gestion"><i class="fa fa-home"></i>Gestion et optimisation de flotte</a> </li>
-						<li><a href="#velos"><i class="fa fa-home"></i>Vélos partagés</a> </li>
+						<li class="active"><a href="#gestion"><i class="fa fa-cogs"></i>Gestion et optimisation de flotte</a> </li>
+						<li><a href="#velos"><i class="fa fa-bicycle"></i>Vélos partagés</a> </li>
 					</ul>
 					<div class="tabs-content">
 						<div class="tab-pane active" id="gestion">
@@ -66,8 +66,46 @@ include 'include/head.php';
 						</ul><br>
 						
 						<h3 class="text-green">Fonctionnalités pour l'utilisateur du véhicule</h3>
-						<p class="text-dark">Le but premier de cette borne est de nouveau de faciliter la gestion et l’utilisation de la flotte. Pour les chauffeurs rien de plus simple. Ils recevront un code tous les matins. Ce code va les assigner à un véhicule et leur permettra de débloquer la clef du véhicule. Une fois leur tournée finie, ils rentrent la clef dans le boitier.<br>
-							Pour les chauffeurs il sera également possible de leur offrir la possibilité de choisir le véhicule de leur préférence. Le programme My Borne, pourra ainsi mettre à disposition de chaque travailleur, un véhicule qui se rapproche le plus de celui de leur préférence.</p>
+						<p class="text-dark">Le but premier de cette borne est de nouveau de faciliter la gestion et l’utilisation de la flotte. Pour les chauffeurs rien de plus simple. Ils recevront un code tous les matins. Ce code va les assigner à un véhicule et leur permettra de débloquer la clef du véhicule. Une fois leur tournée finie, ils rentrent la clef dans le boitier.</p>
+						<div class="col-md-12">
+							<h4 class="text-green">Prendre la clé d'un véhicule</h4>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_mykameo.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Connectez-vous sur MyKameo pour voir le code qui vous a été attribué</p>
+							</div>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_bornefermee.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Entrer le code reçu pour déverrouiller la borne</p>
+							</div>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_borneouvertefull.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Prenez la clef du véhicule sous le led illuminé</p>
+							</div>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_camion.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Vous pouvez partir en tournée</p>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<h4 class="text-green">Rendre la clé d'un véhicule</h4>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_camion.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Retour au dépôt</p>
+							</div>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_bornefermeebadge.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Ouvrez la borne en scannant le badge de votre clef</p>
+							</div>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_borneouverteremise.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Remettez la clef du véhicule sous le led illuminé</p>
+							</div>
+							<div class="col-md-3">
+								<img src="images/Icones_Borne_chack.png" class="img-responsive img-thumbnail" alt="">
+								<p class="text-dark text-center">Le tour est joué</p>
+							</div>
+						</div>
+						<p class="text-dark">Pour les chauffeurs il sera également possible de leur offrir la possibilité de choisir le véhicule de leur préférence. Le programme My Borne, pourra ainsi mettre à disposition de chaque travailleur, un véhicule qui se rapproche le plus de celui de leur préférence.</p>
 						<p class="text-dark"><strong>Vous l’aurez compris, MyBorne est un outil de travail complet. Ce système simple, connecté et intelligent vous assure une sécurité sans faille et une excellente gestion de votre flotte</strong></p>
 						</div>
 						
@@ -96,6 +134,46 @@ include 'include/head.php';
 							<p class="text-dark">Lorsqu’un utilisateur veut réserver un vélo, il se connecte à la plateforme MyKameo. Ensuite il choisit le créneau horaire où il désire réserver un vélo. Une liste des vélos disponibles apparaitra et il pourra sélectionner le vélo de son choix. Si aucun vélo n’apparaît c’est qu’aucun vélo n’est disponible pour ce créneau horaire.<br>
 								Une fois la réservation terminée, l’utilisateur reçoit un code qui lui permet de d’obtenir la clef du vélo. Il récupère la clef dans la borne, et peut utiliser le vélo. <br>
 								A son retour, il doit ranger le vélo à sa place, scanner la borne avec la clef pour l’ouvrir, ranger la clef à l’endroit imparti, refermer la borne et le tour est joué. </p>
+							
+							<div class="col-md-12">
+								<h4 class="text-green">Prendre la clé d'un vélo</h4>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_mykameo.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Connectez-vous sur MyKameo pour voir le code qui vous a été attribué</p>
+								</div>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_bornefermee.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Entrer le code reçu pour déverrouiller la borne</p>
+								</div>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_borneouvertefull.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Prenez la clef du vélo sous le led illuminé</p>
+								</div>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_velo.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Déverrouillez le cadenas du vélo à l’aide de la clef reçue</p>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<h4 class="text-green">Rendre la clé d'un vélo</h4>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_velo.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Verrouillez votre vélo à l’aide de votre clef</p>
+								</div>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_bornefermeebadge.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Ouvrez la borne en scannant le badge de votre clef</p>
+								</div>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_borneouverteremise.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Remettez la clef du véhicule sous le led illuminé</p>
+								</div>
+								<div class="col-md-3">
+									<img src="images/Icones_Borne_chack.png" class="img-responsive img-thumbnail" alt="">
+									<p class="text-dark text-center">Le tour est joué</p>
+								</div>
+							</div>
+							
 							<p class="text-dark"><strong>Vous l’aurez compris, MyBorne est un outil de travail complet. Ce système simple, connecté et intelligent vous assure une sécurité sans faille et une excellente gestion de votre flotte</strong></p>
 						</div>
 					</div>
