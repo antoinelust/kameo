@@ -2,10 +2,19 @@
 
 
 $('.stockManagerClick').click(function(){initializeModal()});
+var roleButton='';
+var typeToBind ='';
 
 function initializeModal(){
-	var roleButton = 'scan';
+	$('#bindArticleTooOrder').hide();
+
+	roleButton = 'scan';
+	document.getElementById('displayScan').style.display='block'
+	document.getElementById('displayAdd').style.display='none'
+	document.getElementById('resultDisplay').value = '';
+	document.getElementById('scanTitle').innerHTML = 'Scannez Votre Produit pour ajouter la référence';
 	document.getElementById('resultName').innerHTML = 'Etat du scan : Lancez le scan de code barre en appuyant sur start';
+	
 	$('#widget-stockScan-form input[name=result]').hide();
 	$('#widget-stockScan-form div[name=typeDiv]').hide();
 	$('#widget-stockScan-form div[name=brandDiv]').hide();
@@ -108,6 +117,38 @@ $('#widget-stockScan-form select[name=accessory]').change(function(){
 
 /////////////////////////////////////////////////////
 
+$('#listOrder').change(function(){
+	$('#bindArticleTooOrder').show();
+})
+
+////////////////////////Liaison de l'article au code barre scannez pour l'ajoit de stock
+
+function bindArticle(){
+	document.getElementById('listOrderDiv').style.display='none';
+	$('#bindArticleTooOrder').hide();
+	document.getElementById('resultDisplay').value='';
+	
+	$.ajax({
+		url: 'apis/Kameo/scannerForm.php',
+		type: 'get',
+		data: {"action": "changeContractType", "id": $('#listOrder').val() , "typeArticle" : typeToBind},
+		success: function(response){
+			if(response.response == 'error') {
+				console.log('test');
+			}
+			if(response.response == 'success'){
+				$.notify(
+				{
+					message:'Cette commandea bien été mis à jour',
+				},
+				{
+					type: "success",
+				}
+				);
+			}
+		}
+	});
+}
 
 
 
@@ -217,40 +258,141 @@ function getModelAndBrandAccessory(){
 
 ////////////////////Verifie si le code barre est déja repertorié 
 function checkPresent(){
+	document.getElementById('listOrderDiv').style.display='none'
+	$('#bindArticleTooOrder').hide();
+
 	$.ajax({
 		url: 'apis/Kameo/scannerForm.php',
 		type: 'get',
-		data: {"action": "check","barcode" : $('#widget-stockScan-form input[name=result]').val()},
+		data: {"action": "check","barcode" :document.getElementById('resultDisplay').value},
 		success: function(response){
 			if(response.response == 'error') {
 				console.log('error')
 			}
 			if(response.response == 'success') {
-				resultChanged()
+				if(roleButton=='scan'){
+					resultChanged()
+				}
+				else if(roleButton=='add'){
+					$.notify(
+					{
+						message:'Référence Inconnu, veuillez d\'abord l\'ajouter. Dirigez vous vers l\'onglet \"Scanner nouveau produit\" ',
+					},
+					{
+						type: "warning",
+					}
+					);
+				}
 			}
 			if(response.response == 'present') {
-				$.notify(
-						{
-							message:'Article déja repertorié sur la BDD',
-						},
-						{
-							type: "info",
-						}
-						);
-				displayDataBarcode()
+				if(roleButton=='scan'){
+					$.notify(
+					{
+						message:'Article déja repertorié sur la BDD',
+					},
+					{
+						type: "info",
+					}
+					);
+					displayDataBarcode()
+				}
+				else if(roleButton=='add'){
+					displaySelectToAddStock(response.type)
+				}
 			}
 		}
 	});
 }
 //////////////////////////////////////////////////////////////////////////
 
+///////////////Récupere les vélos de contract type 'order'
+function displaySelectToAddStock(type){
+	if(type=='BIKE'){
+		typeToBind = 'BIKE';
+		$.ajax({
+			url: 'apis/Kameo/scannerForm.php',
+			type: 'get',
+			data: {"action": "loadBikeOrder","barcode" :document.getElementById('resultDisplay').value,"id":$('#listOrder').val()},
+			success: function(response){
+				if(response.response == 'error') {
+					console.log('error');
+				}
+				if(response.response == 'success'){
+					
+
+					if(response.numberBikeOrder>0){
+						document.getElementById('listOrderDiv').style.display='block'
+						var i =0;
+						$('#listOrder').find('option').remove().end();
+						while(i<response.numberBikeOrder){
+							if(i==0){
+								$('#listOrder').append('<option disabled selected value>Choisissez la vélo lié à cette commande </option>');
+							}
+							$('#listOrder').append('<option value="'+response.bike[i].bike+'">'+response.bike[i].bike+'-'+response.brand +'-'+response.model+'-'+response.frame_type +':'+response.bike[i].estimate_date+'</option>');
+							i++;
+						}
+					}
+					else {
+						$.notify(
+						{
+							message:'Aucune commande de ce type n\'a été effectuée',
+						},
+						{
+							type: "danger",
+						}
+						);
+					}
+				}
+			}
+		});
+	}
+	else if (type='ACCESSORY'){
+		typeToBind = 'ACCESSORY';
+		$.ajax({
+			url: 'apis/Kameo/scannerForm.php',
+			type: 'get',
+			data: {"action": "loadAccessoryOrder","barcode" :document.getElementById('resultDisplay').value,"id":$('#listOrder').val()},
+			success: function(response){
+				if(response.response == 'error') {
+					console.log('error');
+				}
+				if(response.response == 'success'){
+
+					if(response.numberAccessoryOrder>0){
+						document.getElementById('listOrderDiv').style.display='block'
+						var i =0;
+						$('#listOrder').find('option').remove().end();
+						while(i<response.numberAccessoryOrder){
+							if(i==0){
+								$('#listOrder').append('<option disabled selected value>Choisissez l\accesoire lié à cette commande </option>');
+							}
+							$('#listOrder').append('<option value="'+response.bike[i].accessory+'">'+response.bike[i].accessory+'-'+response.brand +'-'+response.model+':'+response.category+'</option>');
+							i++;
+						}
+					}
+					else {
+						$.notify(
+						{
+							message:'Aucune commande de ce type n\'a été effectuée',
+						},
+						{
+							type: "danger",
+						}
+						);
+					}
+				}
+			}
+		});
+	}
+
+}
 ///////////////Recupere les données lié au code barre déja repertorié
 
 function displayDataBarcode(){
 	$.ajax({
 		url: 'apis/Kameo/scannerForm.php',
 		type: 'get',
-		data: {"action": "getDataFromBarcode","barcode" : $('#widget-stockScan-form input[name=result]').val()},
+		data: {"action": "getDataFromBarcode","barcode" : document.getElementById('resultDisplay').value},
 		success: function(response){
 			if(response.response == 'error') {
 				console.log('error')
@@ -320,6 +462,12 @@ window.addEventListener('load', function () {
 
 			sourceSelect.onchange = () => {
 				selectedDeviceId = sourceSelect.value;
+				document.getElementById('resultName').innerHTML = 'Etat du scan : Changement de camera en cours';
+				codeReader.reset();
+				decodeContiniously(codeReader, selectedDeviceId);
+				document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
+
+			
 			}
 
 			const sourceSelectPanel = document.getElementById('sourceSelectPanel')
@@ -331,6 +479,8 @@ window.addEventListener('load', function () {
 		})
 		document.getElementById('stopButton').addEventListener('click', () => {
 			codeReader.reset()
+			document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
+
 		})
 		
 	})
@@ -341,14 +491,15 @@ window.addEventListener('load', function () {
 
 function decodeContiniously(codeReader, selectedDeviceId){
 	document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
-	$('#widget-stockScan-form input[name=result]').hide();
+
 
 	codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
 		if (result) {
 			document.getElementById('resultName').innerHTML = 'Etat du scan :Code Barre Trouvé';
-			$('#widget-stockScan-form input[name=result]').show();
-			document.getElementById('result').value = result.text
+			document.getElementById('resultDisplay').value = result.text
+			$('#widget-stockScan-form input[name=result]').val(result.text);
 			checkPresent()
+			document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
 
 		}if (err) {
 			if (err instanceof ZXing.FormatException) {
@@ -357,8 +508,6 @@ function decodeContiniously(codeReader, selectedDeviceId){
 		}
 	})
 }
-
-
 /////////////////////////Responsable du changement de fonctionnalité lié au scan 
 
 function changeDisplay(type)
@@ -367,10 +516,22 @@ function changeDisplay(type)
 	roleButton = type;
 
 	if(type == 'scan'){
-
+		$('#bindArticleTooOrder').hide();
+		document.getElementById('displayScan').style.display='block'
+		document.getElementById('displayAdd').style.display='none'
+		document.getElementById('resultDisplay').value = '';
+		document.getElementById('scanTitle').innerHTML = 'Scannez Votre Produit pour ajouter la référence';
+		initializeModal();
 	}
 	else if(type == 'add'){
-		
+		$('#bindArticleTooOrder').hide();
+		$('#listOrder').find('option').remove().end();
+		document.getElementById('listOrderDiv').style.display='none'
+		document.getElementById('displayAdd').style.display='block'
+		document.getElementById('displayScan').style.display='none'
+		document.getElementById('scanTitle').innerHTML = 'Scannez Votre Produit pour l\'ajouter au stock';
+		document.getElementById('resultDisplay').value = '';
+
 	}
 	else if(type == 'remove'){
 		

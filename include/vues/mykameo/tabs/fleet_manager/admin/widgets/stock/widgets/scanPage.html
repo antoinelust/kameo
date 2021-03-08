@@ -11,7 +11,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				</div>
 
-				<h1 class="title">Scan barcode from Video Camera</h1>
+				<h4 class="text-green" id="scanTitle">Scannez Votre Produit pour ajouter la référence</h4>
 				
 				<div>
 					<button  onclick="changeDisplay('scan')" class="button small green button-3d rounded icon-left" id="decodeBt">Scanner nouveau produit</button>
@@ -23,122 +23,144 @@
 					<button  onclick="changeDisplay('bills')" class="button small green button-3d rounded icon-left" id="billsBt">Facture entretien</button>
 				</div>
 
+				<button  class="button small green button-3d rounded icon-left" id="startButton">Start</button>
+				<button  class="button small green button-3d rounded icon-left" id="stopButton">Stop</button>
 
-
+				<div style="display:block ">
+					<video id="video" width="70%" height="20%" style="border: 1px solid gray"></video>
+				</div>
+				<div class="col-sm-12" name="typeDiv" style="display:block;">			
+					<label id="resultName" for="resultDisplay">Etat du scan :</label>
+					<div class="col-sm-4">
+						<label for="resultDisplay">Code-Barre : </label>
+						<input class="form-control" readonly="readonly" name="resultDisplay" id="resultDisplay">
+					</div>
+				</div>
 
 				<!-- ////////////////Affichage du scan produit -->
-				<div name="displayScan">
-					<button  class="button small green button-3d rounded icon-left" id="startButton">Start</button>
-					<button  class="button small green button-3d rounded icon-left" id="stopButton">Stop</button>
-					
-					<div style="display:block ">
-						<video id="video" width="70%" height="20%" style="border: 1px solid gray"></video>
-					</div>
-					<form  name = "widget-stockScan-form" id="widget-stockScan-form" role="form" method="get" action="apis/Kameo/scannerForm.php">
+				<div id="displayScan" style="display:block ">
+					<div class="col-sm-12">
+						<form  name = "widget-stockScan-form" id="widget-stockScan-form" role="form" method="get" action="apis/Kameo/scannerForm.php">
 
-						<div id="sourceSelectPanel" style="display:none">
-							<label for="sourceSelect">Changer de caméra :</label>
-							<select id="sourceSelect" style="max-width:400px">
-							</select>
-						</div>
-						<div >
-							<label id="resultName" for="result">Etat du scan :</label>
-							<input readonly="readonly" name="result" id="result">
-							<input hidden name="action">
-						</div>
-						<div class="col-sm-12">
-							<div class="col-sm-4" name="typeDiv" style="display:block ">
-								<label>Type : </label>
-								<select name="type" class="form-control">
-									<option disabled selected value>Choisissez le type</option>
-									<option value="bike">Vélo</option>
-									<option value="accessory">Accessoire</option>
-									
+							<div id="sourceSelectPanel" style="display:none">
+								<label for="sourceSelect">Changer de caméra :</label>
+								<select id="sourceSelect" style="max-width:400px">
 								</select>
 							</div>
-							<div class="col-sm-4" name="brandDiv" style="display:block ">
-								<label>Marque : </label>
-								<select name="brand" class="form-control">
-									<option disabled selected value>Choisissez la marque</option>
-								</select>
+							<div>
+								<input readonly="readonly" name="result" id="result">
+								<input hidden name="action">
 							</div>
-							<div class="col-sm-4" name="modelDiv" style="display:block ">
-								<label>Model: </label>
-								<select name="model" class="form-control">
-								</select>
-							</div>
-							<div class="col-sm-4" name="categoryAccessoryDiv" style="display:block ">
-								<label>Catégorie : </label>
-								<select name="category" class="form-control">
-								</select>
-							</div>
-							<div class="col-sm-4" name="modelBrandAccessoryDiv" style="display:block ">
-								<label>Marque- Modèle : </label>
-								<select name="accessory" class="form-control">
-								</select>
-							</div>
-							<div class="col-sm-4" name="sizeDiv" style="display:block">
-								<label>Taille : </label>
-								<select name="size" class="form-control">
-									<option disabled selected value>Choisissez la taille</option>
-									<option value="XS">XS</option>
-									<option value="S">S</option>
-									<option value="M">M</option>
-									<option value="L">L</option>
-									<option value="XL">XL</option>
-									<option value="Uni">Unique</option>
-									<option value="enfant">Enfant</option>
-								</select>
-							</div>
-							<div class="col-sm-4" name="colorDiv" style="display:block ">
-								<label>Couleur: </label>
-								<input name="color" class="form-control">
-							</div>
-							
-						</div>
-						<div class="col-sm-12" name="displayResultDiv" style="display:block " >
+							<div class="col-sm-12">
+								<div class="col-sm-4" name="typeDiv" style="display:block ">
+									<label>Type : </label>
+									<select name="type" class="form-control">
+										<option disabled selected value>Choisissez le type</option>
+										<option value="bike">Vélo</option>
+										<option value="accessory">Accessoire</option>
 
-							<div class="col-sm-4" name="typeResultDiv" style="display:block ">
-								<label>Type: </label>
-								<input readonly="readonly" name="typeResult" class="form-control">
-							</div>
-							<div class="col-sm-4" name="brandResultDiv" style="display:block ">
-								<label>Marque: </label>
-								<input readonly="readonly" name="brandResult" class="form-control">
-							</div>
-							<div class="col-sm-4" name="modelResultDiv" style="display:block ">
-								<label>Modèle: </label>
-								<input readonly="readonly" name="modelResult" class="form-control">
-							</div>
-							<div class="col-sm-4" name="sizeResultDiv" style="display:block ">
-								<label>Taille: </label>
-								<input readonly="readonly" name="sizeResult" class="form-control">
-							</div>
-							<div class="col-sm-4" name="colorResultDiv" style="display:block ">
-								<label>Couleur: </label>
-								<input readonly="readonly" name="colorResult" class="form-control">
-							</div>
-							<div class="col-sm-4" name="categoryResultDiv" style="display:block ">
-								<label>Categorie : </label>
-								<input readonly="readonly" name="categoryResult" class="form-control">
-							</div>
+									</select>
+								</div>
+								<div class="col-sm-4" name="brandDiv" style="display:block ">
+									<label>Marque : </label>
+									<select name="brand" class="form-control">
+										<option disabled selected value>Choisissez la marque</option>
+									</select>
+								</div>
+								<div class="col-sm-4" name="modelDiv" style="display:block ">
+									<label>Model: </label>
+									<select name="model" class="form-control">
+									</select>
+								</div>
+								<div class="col-sm-4" name="categoryAccessoryDiv" style="display:block ">
+									<label>Catégorie : </label>
+									<select name="category" class="form-control">
+									</select>
+								</div>
+								<div class="col-sm-4" name="modelBrandAccessoryDiv" style="display:block ">
+									<label>Marque- Modèle : </label>
+									<select name="accessory" class="form-control">
+									</select>
+								</div>
+								<div class="col-sm-4" name="sizeDiv" style="display:block">
+									<label>Taille : </label>
+									<select name="size" class="form-control">
+										<option disabled selected value>Choisissez la taille</option>
+										<option value="XS">XS</option>
+										<option value="S">S</option>
+										<option value="M">M</option>
+										<option value="L">L</option>
+										<option value="XL">XL</option>
+										<option value="Uni">Unique</option>
+										<option value="ENF">Enfant</option>
+									</select>
+								</div>
+								<div class="col-sm-4" name="colorDiv" style="display:block ">
+									<label>Couleur: </label>
+									<input name="color" class="form-control">
+								</div>
 
-						</div>
-						<br/>
+							</div>
+							<div class="col-sm-12" name="displayResultDiv" style="display:block " >
 
-						<button
-						class="button small green button-3d rounded icon-left"
-						type="submit"
-						name="sendValue"
-						>
-						<i class="fa fa-paper-plane"></i>Envoyer
-					</button>
-				</form>
+								<div class="col-sm-4" name="typeResultDiv" style="display:block ">
+									<label>Type: </label>
+									<input readonly="readonly" name="typeResult" class="form-control">
+								</div>
+								<div class="col-sm-4" name="brandResultDiv" style="display:block ">
+									<label>Marque: </label>
+									<input readonly="readonly" name="brandResult" class="form-control">
+								</div>
+								<div class="col-sm-4" name="modelResultDiv" style="display:block ">
+									<label>Modèle: </label>
+									<input readonly="readonly" name="modelResult" class="form-control">
+								</div>
+								<div class="col-sm-4" name="sizeResultDiv" style="display:block ">
+									<label>Taille: </label>
+									<input readonly="readonly" name="sizeResult" class="form-control">
+								</div>
+								<div class="col-sm-4" name="colorResultDiv" style="display:block ">
+									<label>Couleur: </label>
+									<input readonly="readonly" name="colorResult" class="form-control">
+								</div>
+								<div class="col-sm-4" name="categoryResultDiv" style="display:block ">
+									<label>Categorie : </label>
+									<input readonly="readonly" name="categoryResult" class="form-control">
+								</div>
+
+							</div>
+							<br/>
+
+							<button
+							class="button small green button-3d rounded icon-left"
+							type="submit"
+							name="sendValue"
+							>
+							<i class="fa fa-paper-plane"></i>Envoyer
+						</button>
+					</form>
+				</div>
 			</div>
 			<!-- //////////////// Fin Affichage du scan produit -->
 
-			<div class="modal-footer">
+			<div  id = "displayAdd" style="display:block ">
+				<div class="col-sm-12">
+					<div class="col-sm-4" id="listOrderDiv" style="display:none ">
+						<div id="displayListe" style="display:block">
+							<label id="listOrderLabel" for="listOrder">Liste des Article en commande lié  :</label>
+							<select name= "listOrder" id="listOrder" style="max-width:400px">
+							</select>
+						</div>
 
+					</div>
+				</div>
+				<div class="col-sm-12" id ="bindArticleTooOrder" name ="bindArticleTooOrder">
+					<button onclick="bindArticle()" type="button" class="button small green button-3d rounded icon-left">Lier</button>
+				</div>
+			</div>
+			
+
+			<div class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
