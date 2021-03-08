@@ -82,7 +82,8 @@ function load_cafetaria(size='*'){
                             var prices="";
                             var dataprop="";
                             if(responseOrderable.cafeteriaTypes.includes("leasing")){
-                              var price = response.bike[i].leasingPrice;
+                              var price = Math.round(response.bike[i].leasingPrice*(100-responseOrderable.discount)/100);
+
                               if(responseOrderable.company == "City Dev"){
                                   price = Math.round(price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
                               }
