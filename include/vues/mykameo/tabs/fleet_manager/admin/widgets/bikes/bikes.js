@@ -448,7 +448,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('#widget-bikeManagement-form input[name=lockerReference]').val(response.lockerReference);
           $('#widget-bikeManagement-form input[name=gpsID]').val(response.gpsID);
           $('#widget-bikeManagement-form input[name=price]').val(response.bikePrice);
-          $('#widget-bikeManagement-form input[name=buyingDate]').val(response.buyingDate);
+          $('#widget-bikeManagement-form input[name=buyingDate]').val(response.bikeBuyingDate);
           $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);
           if(response.billingType=="monthly"){
             $('#widget-bikeManagement-form .billingPriceDiv .input-group-addon').html('€/mois');
@@ -675,7 +675,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
             dest=dest.concat("</tbody></table>");
             $('#action_bike_log').html(dest);
             $(".widget-deleteBike-form[name='bikeID']").val(bikeID);
-            displayLanguage();
+            //displayLanguage();
 
             document.getElementsByClassName("addActionBikeButton")[0].addEventListener('click', function(){
               $("label[for='widget-addActionBike-form-date']").removeClass("hidden");
@@ -982,7 +982,7 @@ function construct_form_for_bike_access_updateAdmin(bikeID, company){
         }
       }
     });
-    displayLanguage();
+    //displayLanguage();
   }
 
 }
@@ -1624,7 +1624,7 @@ function list_bikes_admin() {
 
 
 
-  displayLanguage();
+  //displayLanguage();
 
   $(".updateBikeAdmin").off();
   $(".updateBikeAdmin").click(function () {

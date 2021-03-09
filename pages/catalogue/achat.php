@@ -33,7 +33,7 @@ include 'include/head.php';
                         <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
                           <div class="form-group col-md-2">
                               <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
-                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
+                              <select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
                                   <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
                                   <option data-filter=".ahooga"><?= L::achat_brand_option2; ?></option>
                                   <option data-filter=".benno"><?= L::achat_brand_option3; ?></option>
@@ -49,7 +49,7 @@ include 'include/head.php';
 
                           <div class="form-group col-md-2">
                               <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
-                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
+                              <select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
                                   <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
                                   <option data-filter=".villeetchemin"><?= L::achat_use_option2; ?></option>
                                   <option data-filter=".ville"><?= L::achat_use_option3; ?></option>
@@ -65,7 +65,7 @@ include 'include/head.php';
 
                           <div class="form-group col-md-2">
                               <label for="size">Taille</label>
-                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })"  name="size">
+                              <select  name="size">
                                 <option data-filter="" value="*">Toutes</option>
                                 <option data-filter="" value="XS">XS</option>
                                 <option data-filter="" value="S">S</option>
@@ -79,7 +79,7 @@ include 'include/head.php';
 
                           <div class="form-group col-md-2">
                               <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
-                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
+                              <select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
                                   <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
                                   <option data-filter=".m"><?= L::achat_cadre_option2; ?></option>
                                   <option data-filter=".f"><?= L::achat_cadre_option3; ?></option>
@@ -90,7 +90,7 @@ include 'include/head.php';
 
                           <div class="form-group col-md-2">
                               <label for="widget-contact-form-electrique"><?= L::generic_electric; ?></label>
-                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
+                              <select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
                                   <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
                                   <option data-filter=".y"><?= L::achat_assist_option2; ?></option>
                                   <option data-filter=".n"><?= L::achat_assist_option3; ?></option>
@@ -99,7 +99,7 @@ include 'include/head.php';
 
                           <div class="form-group col-md-2">
                               <label for="widget-contact-form-prix"><?= L::generic_price." (".L::generic_VATExc.")"; ?></label>
-                              <select onchange="window.scrollTo({ top: 100, behavior: 'smooth' })" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
+                              <select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
                                   <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
                                   <option data-filter=".2000"><?= L::achat_buyprice_option2; ?></option>
                                   <option data-filter=".between-2000-3000"><?= L::achat_buyprice_option3; ?></option>
@@ -480,7 +480,6 @@ include 'include/head.php';
                                 setTimeout(function(){
                                   $('.grid').isotope();
                                 }, 500);
-                                window.scrollTo(0, 0);
                                 $('[data-toggle="tooltip"]').tooltip({
                                   container: "body",
                                 })
@@ -496,24 +495,30 @@ include 'include/head.php';
 
                             var filters = {};
 
-                            $('.portfolio').on('change', function(event) {
-                                var $cible = $(event.currentTarget);
+
+                            var filterValue = "";
+                            $('.portfolio').each(function(element){
+                              var $cible = $(element.currentTarget);
+                              var filterGroup = $cible.attr('data-filter-group');
+                              filters[filterGroup] = $(this).children("option:selected").attr('data-filter');
+                              filterValue += filters[filterGroup];
+                              $grid.isotope({
+                                  filter: filterValue
+                              });
+                            })
+
+                            $('.portfolio').on('change', function() {
+                              var filterValue = "";
+                              $('.portfolio').each(function(element){
+                                var $cible = $(element.currentTarget);
                                 var filterGroup = $cible.attr('data-filter-group');
                                 filters[filterGroup] = $(this).children("option:selected").attr('data-filter');
-                                var filterValue = concatValues(filters);
+                                filterValue += filters[filterGroup];
                                 $grid.isotope({
                                     filter: filterValue
                                 });
+                              });
                             });
-
-
-                            function concatValues(obj) {
-                                var value = '';
-                                for (var prop in obj) {
-                                    value += obj[prop];
-                                }
-                                return value;
-                            }
                         }
 
                     }

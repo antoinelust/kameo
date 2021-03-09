@@ -29,7 +29,6 @@ function load_cafetaria(size='*'){
             responseOrderable.bike.forEach( function(bike){
               bikes.push(bike.BIKE_ID);
             });
-            console.log(responseOrderable);
 
               $.ajax({
                   url: 'apis/Kameo/load_portfolio.php',
@@ -39,7 +38,6 @@ function load_cafetaria(size='*'){
                       "size" : size
                   },
                   success: function(response){
-                    console.log(response);
                     if(responseOrderable.response == 'error'){
                       console.log(response.message);
                     }
@@ -82,49 +80,56 @@ function load_cafetaria(size='*'){
                             var prices="";
                             var dataprop="";
                             if(responseOrderable.cafeteriaTypes.includes("leasing")){
-                              var price = Math.round(response.bike[i].leasingPrice*(100-responseOrderable.discount)/100);
+                              var price = (response.bike[i].leasingPrice*(100-responseOrderable.discount)/100);
+                              if(responseOrderable.remainingPriceIncludedInLeasing == "Y"){
+                                price = price + (0.16*response.bike[i].price/36);
+                              }
 
                               if(responseOrderable.company == "City Dev"){
-                                  price = Math.round(price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
+                                  price = (price + (response.bike[i].price - 2000)/(4312-2000)*(142-135));
                               }
 
                               if(responseOrderable.tvaIncluded == "Y"){
-                                var priceWithLabel = Math.round(price*1.21*100)/100;
-                                priceWithLabel = priceWithLabel + "€/"+traduction.generic_moisTVAC;
+                                price = (price*1.21*100)/100;
+                                priceWithLabel = Math.round(price) + "€/"+traduction.generic_moisTVAC;
                               }else{
-                                var priceWithLabel = price + "€/"+traduction.generic_mois;
+                                var priceWithLabel = Math.round(price) + "€/"+traduction.generic_mois;
                               }
 
                               prices = prices + "Leasing men. : "+priceWithLabel+"<br>";
                               dataprop += "data-leasing="+price+" ";
+                              dataprop += 'data-TVA='+responseOrderable.tvaIncluded+' ';
                             }
 
                             if(responseOrderable.cafeteriaTypes.includes("annualleasing")){
                                 var price = (response.bike[i].leasingPrice)*12;
+                                if(responseOrderable.remainingPriceIncludedInLeasing == "Y"){
+                                  price = price + (0.16*response.bike[i].price/3);
+                                }
                                 if(responseOrderable.tvaIncluded == "Y"){
-                                  var priceWithLabel = Math.round(price*1.21*100)/100;
-                                  priceWithLabel = priceWithLabel + "€/"+traduction.generic_yearTVAC;
+                                  price = price*1.21;
+                                  var priceWithLabel = Math.round(price) + "€/"+traduction.generic_yearTVAC;
                                 }else{
-                                  var priceWithLabel = price + "€/"+traduction.generic_year;
+                                  var priceWithLabel = Math.round(price) + "€/"+traduction.generic_year;
                                 }
                                 prices = prices + "Leasing an. : "+priceWithLabel+"<br>";
                                 dataprop += "data-annualleasing="+price+" ";
+                                dataprop += 'data-TVA='+responseOrderable.tvaIncluded+' ';
 
                             }
 
                             if(responseOrderable.cafeteriaTypes.includes("achat")){
                               var price = response.bike[i].price;
-
                               if(responseOrderable.tvaIncluded == "Y"){
-                                var priceWithLabel = Math.round(price*1.21*100)/100;
-                                priceWithLabel = priceWithLabel + "€ " + traduction.genericTVAC;
+                                price = price*1.21;
+                                priceWithLabel = Math.round(price) + "€ " + traduction.generic_VATInc;
                               }else{
-                                var priceWithLabel = price + "€"
+                                var priceWithLabel = Math.round(price) + "€"
                               }
 
                               prices = prices + "Achat : "+priceWithLabel+"<br>";
                               dataprop += "data-achat="+price+" ";
-
+                              dataprop += 'data-TVA='+responseOrderable.tvaIncluded+' ';
                             }
                             if(response.bike[i].estimatedDeliveryDate != null){
                               var estimatedDeliveryDate = new Date(response.bike[i].estimatedDeliveryDate);
@@ -198,7 +203,7 @@ function load_cafetaria(size='*'){
               					setTimeout(function(){
               						$grid.isotope( 'reloadItems' ).isotope();
               						$( ".orderBikeClick" ).click(function() {
-              							fillCommandDetails(this.name, $(this).data('amount'), $(this).data('type'), $(this).data('leasing'), $(this).data('annualleasing'), $(this).data('achat'));
+              							fillCommandDetails(this.name, $(this).data('amount'), $(this).data('type'), Math.round($(this).data('leasing')*100)/100, Math.round($(this).data('annualleasing')*100)/100, Math.round($(this).data('achat')*100)/100, $(this).data('tva'));
               						});
               						$( "img.portfolio-img" ).load(function(){
               							$('.grid').isotope();
@@ -215,7 +220,7 @@ function load_cafetaria(size='*'){
 }
 
 
-function fillCommandDetails(ID, price, type, leasing, annualleasing, achat){
+function fillCommandDetails(ID, price, type, leasing, annualleasing, achat, tva){
     $('#widget-command-form select[name=leasing_type]')
         .find('option')
         .remove()
@@ -223,25 +228,31 @@ function fillCommandDetails(ID, price, type, leasing, annualleasing, achat){
     ;
 
     var count=0;
+    if(tva == 'Y'){
+      $('#widget-command-form label[for=order_amount]').html(traduction.mk_order_amounttvac);
+    }else{
+      $('#widget-command-form label[for=order_amount]').html(traduction.mk_order_amounthtva);
+    }
+
     if(leasing){
       $('#widget-command-form select[name=leasing_type]')
-        .append('<option value="leasing">Leasing</option>');
-      $('.order_amount_order').html("€/mois");
+        .append('<option value="leasing">'+traduction.leasingType_monthlyLeasing+'</option>');
+      $('.order_amount_order').html("€/"+traduction.generic_mois);
       $('#widget-command-form input[name=order_amount]').val(leasing);
       count++;
     }
     if(annualleasing){
       $('#widget-command-form select[name=leasing_type]')
-        .append('<option value="annualleasing">annualLeasing</option>');
+        .append('<option value="annualleasing">'+traduction.leasingType_annualLeasing+'</option>');
       $('#widget-command-form input[name=order_amount]').val(annualleasing);
-      $('.order_amount_order').html("€/mois");
+      $('.order_amount_order').html("€/"+traduction.generic_year);
       count++;
     }
     if(achat){
       $('#widget-command-form select[name=leasing_type]')
-        .append('<option value="achat">Achat</option>');
+        .append('<option value="achat">'+traduction.leasingType_buying+'</option>');
       $('#widget-command-form input[name=order_amount]').val(achat);
-      $('.order_amount_order').html("€/mois");
+      $('.order_amount_order').html("€");
       count++;
     }
     if(count>1){
@@ -253,10 +264,10 @@ function fillCommandDetails(ID, price, type, leasing, annualleasing, achat){
 
     $('#widget-command-form select[name=leasing_type]').change(function(){
       if($('#widget-command-form select[name=leasing_type]').val()=="leasing"){
-        $('.order_amount_order').html("€/mois");
+        $('.order_amount_order').html("€/"+traduction.generic_mois);
         $('#widget-command-form input[name=order_amount]').val(leasing);
       }else if($('#widget-command-form select[name=leasing_type]').val()=="annualleasing"){
-        $('.order_amount_order').html("€/mois");
+        $('.order_amount_order').html("€/"+traduction.generic_year);
         $('#widget-command-form input[name=order_amount]').val(annualleasing);
       }else if($('#widget-command-form select[name=leasing_type]').val()=="achat"){
         $('.order_amount_order').html("€");
