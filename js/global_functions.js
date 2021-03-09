@@ -205,8 +205,6 @@ function initializeFields() {
   });
 }
 
-initializeFields();
-
 function list_kameobikes_member() {
   $('#widget-addActionCompany-form select[name=owner]')
     .find('option')
@@ -226,4 +224,3 @@ function list_kameobikes_member() {
     }
   });
 }
-list_kameobikes_member();

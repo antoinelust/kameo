@@ -115,11 +115,15 @@
 		</div>
 
 		<?php
+		if(get_user_permissions(['bikesStock', "admin"], $token)){
+			echo '<h4 class="administrationKameo">Administration Kameo</h4>
+			<br/><br/>
+			<div class="row">';
+		}
+
+
     if(get_user_permissions("admin", $token)){
-        echo '<h4 class="administrationKameo">Administration Kameo</h4>
-        <br/><br/>
-        <div class="row">
-          <div class="col-md-4 " id="clientManagement" style="height:164px">
+          echo '<div class="col-md-4 " id="clientManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#companyListing" href="#" class="clientManagerClick" >
@@ -162,8 +166,10 @@
               <div class="counter bold" id="counterBikePortfolio" style="color:#3cb395"></div>
               <p>Catalogue vélos</p>
             </div>
-          </div>
-					<div class="col-md-4 " id="bikesManagement" style="height:164px">
+          </div>';
+				}
+				if(get_user_permissions(['bikesStock', "admin"], $token)){
+					echo '<div class="col-md-4 " id="bikesManagement" style="height:164px">
 						<div class="icon-box medium fancy">
 							<div class="icon bold" data-animation="pulse infinite">
 								<a data-toggle="modal" data-target="#BikesListingAdmin" href="#" class="bikeManagerClick">
@@ -173,8 +179,10 @@
 							<div class="counter bold" id="counterBikeAdmin"></div>
 							<p>Stock vélo</p>
 						</div>
-					</div>
-					<div class="col-md-4 " id="maintenanceManagement" style="height:164px">
+					</div>';
+				}
+				if(get_user_permissions("admin", $token)){
+					echo '<div class="col-md-4 " id="maintenanceManagement" style="height:164px">
 						<div class="icon-box medium fancy">
 							<div class="icon bold" data-animation="pulse infinite">
 								<a data-toggle="modal" data-target="#maintenanceListing" href="#" class="maintenanceManagementClick">
@@ -274,7 +282,7 @@
 				</div>';
     }
 
-		if(get_user_permissions("admin", $token)){
+		if(get_user_permissions(["bikesStock", "admin"], $token)){
 			echo '</div>';
 		}
 
@@ -303,7 +311,7 @@
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#scanBarcodeModal" href="#" class="stockManagerClick">
-                  <i style="opacity:0.15" class="fa fa-barcode"></i>  
+                  <i style="opacity:0.15" class="fa fa-barcode"></i>
                 </a>
               </div>
               <p>Scanner Stock</p>

@@ -32,15 +32,16 @@
 			          <h5><?=L::avantages_entreprise_title;?></h5>
 			          <p><?=L::avantages_entreprise_subtitle;?></p>
 			          <br>
-			          <br>
 			        </div>
 			      </div>
 			      <div class="col-md-6">
 			        <div class="icon-box box-type effect medium center color">
 			          <div class="icon"> <a href="#"><i class="fa fa-money"></i></a> </div>
 			          <h5><?=L::avantages_incitants_title;?></h5>
-			          <p><?=L::avantages_incitants_sub1;?><br>
-                          <?=L::avantages_incitants_sub2;?></p>
+			          <p>
+									<?=L::avantages_incitants_sub1;?><br>
+									<?=L::avantages_incitants_sub2;?>
+								</p>
 			          <br>
 			        </div>
 			      </div>
@@ -159,8 +160,6 @@
 
 	<!-- Language management -->
 	<script type="text/javascript" src="js/language.js"></script>
-
-
 
 </body>
 

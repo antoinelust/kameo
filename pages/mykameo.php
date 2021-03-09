@@ -62,17 +62,6 @@ echo '<script type="text/javascript" src="js/language2.js">
 //require_once $_SERVER['DOCUMENT_ROOT'] . '/apis/Kameo/notifications/notifications_lang.php';
 
 
-function get_class_consts($class_name)
-{
-    $c = new ReflectionClass($class_name);
-    return ($c->getConstants());
-}
-
-
-echo '<script type="text/javascript">
-var traduction = '.json_encode(get_class_consts("L")).';
-</script>';
-
 
 
 if ($token == NULL) { //Not connected
@@ -115,7 +104,7 @@ if ($token == NULL) { //Not connected
     echo 'get_command_user(email);';
   }else if (get_user_permissions("search", $token)) {
     echo '$("#reserver").addClass("active"); ';
-  } else if (get_user_permissions(["bills", "fleetManager", "admin"], $token)) {
+  } else if (get_user_permissions(["bikesStock", "bills", "fleetManager", "admin"], $token)) {
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
     echo '$( ".fleetmanager" ).trigger( "click" );';
@@ -510,8 +499,12 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
     //PORTFOLIO ACCESSORIES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolioAccessories/main.php';
+  }
+  if (get_user_permissions(["admin", "bikesStock"], $token)) {
     //STOCK BIKES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/bikes/main.php';
+  }
+  if (get_user_permissions("admin", $token)) {
     //STOCK ACCESSORIES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/main.php';
     //CHATS

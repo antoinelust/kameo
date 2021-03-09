@@ -47,7 +47,7 @@ include 'include/head.php';
                   <ul style="display: block;">
                     <li><i class="fa fa-globe"></i><?= L::location_allin_sell_list1; ?></li>
                     <li><i class="fa fa-thumbs-up"></i><?= L::location_allin_sell_list2; ?></li>
-                    <li><i class="fa fa-cogs"></i><?= L::location_allin_sell_list3; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Cette formule ne prévoit pas d'entretien inclus dans le prix initial. Il est néanmoins possible d'en demander un via la plateforme MyKameo. Une facture séparée sera alors envoyée."></i></li>
+                    <li><i class="fa fa-cogs"></i><?= L::location_allin_sell_list3; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="<?= L::location_allin_sell_list3tooltip; ?>"></i></li>
                     <li><i class="fa fa-lock"></i><?= L::location_allin_sell_list4; ?></li>
                     <li><i class="fa fa-user"></i><?= L::location_allin_sell_list5; ?></li>
                     <br>
@@ -65,12 +65,12 @@ include 'include/head.php';
                 </div>
                 <div class="plan-list">
                   <ul style="display: block;">
-                    <li><i class="fa fa-globe"></i><?= L::location_allin_lease_list1; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Le nombre de kilomètres est cumulable. Sur une location de 36 mois, il suffit de ne pas dépasser 36 * 500 = 18.000 kms au total."></i></li>
+                    <li><i class="fa fa-globe"></i><?= L::location_allin_lease_list1; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="<?= L::location_allin_lease_list1tooltip; ?>"></i></li>
                     <li><i class="fa fa-thumbs-up"></i><?= L::location_allin_lease_list2; ?></li>
                     <li><i class="fa fa-lock"></i><?= L::location_allin_lease_list3; ?></li>
-                    <li><i class="fa fa-cogs"></i><?= L::location_allin_lease_list4; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="2 entretiens la première année puis un entretien par an. La planification exacte des entretiens se fait via la plateforme mykameo."></i></li>
+                    <li><i class="fa fa-cogs"></i><?= L::location_allin_lease_list4; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="<?= L::location_allin_lease_list4tooltip; ?>"></i></li>
                     <li><i class="fa fa-user"></i><?= L::location_allin_lease_list5; ?></li>
-                    <li><i class="fa fa-money"></i><?= L::location_allin_lease_list6; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="A la fin de la location, le vélo peut être racheté à hauteur de 15% du prix d'achat du vélo."></i></li>
+                    <li><i class="fa fa-money"></i><?= L::location_allin_lease_list6; ?><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="<?= L::location_allin_lease_list6tooltip; ?>"></i></li>
                     <br>
                     <a class="button small green button-3d rounded effect icon-left" data-target="#avantageLeasingPrice" data-toggle="modal" href="#"><span><i class="fa fa-eye"></i><?= L::location_allin_btn_lease; ?></span></a>
                   </ul>

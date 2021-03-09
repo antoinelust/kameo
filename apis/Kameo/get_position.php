@@ -115,39 +115,42 @@ $payload = array(
                 echo json_encode(array("message" => "GPS not defined for this bike."));
                 die;
             }else if(strlen ($GPS_ID)==5){
-                /*$data['deviceId']=$GPS_ID;
-                $data['from']='1963-11-22T18%3A30%3A00Z';
-                $data['to']='2020-05-25T18%3A30%3A00Z';
-                $callBack=CallAPI('POST', 'traccar.powunity.com/api/reports/summary', $data, 'antoine.lust@kameobikes.com', 'atoinelust');
-                echo $callBack;*/
-
                 $now=new DateTime('now');
 
                 $MonthBefore=new DateTime('now');
                 $interval = new DateInterval('P7D');
                 $MonthBefore->sub($interval);
 
-                $param='deviceId='.$GPS_ID.'&from='.$MonthBefore->format('Y-m-d').'T'.$MonthBefore->format('H:m:s').'Z&to='.$now->format('Y-m-d').'T'.$now->format('H:m:s')."Z";
 
-                $ch = curl_init();
-                //curl_setopt($ch, CURLOPT_URL, 'https://traccar.powunity.com/api/reports/route?'.$param);
-                curl_setopt($ch, CURLOPT_URL, 'https://traccar.powunity.com/api/positions?'.$param);
-                curl_setopt($ch, CURLOPT_USERPWD, 'antoine.lust@kameobikes.com' . ":" . 'antoinelust');
+                $headers = array(
+                    'Content-type: application/json',
+                    'Accept: application/json'
+                );
+                $ch = curl_init('https://traccar.powunity.com/api/positions');
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_USERPWD, "antoine.lust@kameobikes.com" . ":" . "antoinelust");
+                curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+                //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+
+
                 $content = curl_exec($ch);
                 curl_close($ch);
                 $json_a = json_decode($content, true);
-                $response['id']=$json_a['id'];
-                $response['bikeNumber']=$resultat['FRAME_NUMBER'];
-                $update= new DateTime($json_a[0]['deviceTime']);
-                $response['timestamp']= $update->format('Y-m-d H:m:s');
 
-                $response['batteryLevel']= $json_a[$length-1]['attributes']['batteryLevel'];
-                $response['url']='https://traccar.powunity.com/api/positions?'.$param;
-
-                $response['latitude']= $json_a['latitude'];
-                $response['longitude']= $json_a['longitude'];
+                foreach ($json_a as $bike){
+                  if($bike['deviceId'] == $GPS_ID){
+                    $response['id']=$bike['deviceId'];
+                    $response['bikeNumber']=$resultat['FRAME_NUMBER'];
+                    $response['batteryLevel']=$bike['attributes']['batteryLevel'];
+                    $update= new DateTime($bike['deviceTime']);
+                    $response['timestamp']= $update->format('Y-m-d H:m:s');
+                    $response['latitude']= $bike['latitude'];
+                    $response['longitude']= $bike['longitude'];
+                    $response['url']='https://traccar.powunity.com/api/positions';
+                  }
+                }
 
                 http_response_code(200);
                 echo json_encode($response);
@@ -168,7 +171,7 @@ $payload = array(
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 3);
                 curl_setopt($ch, CURLOPT_HTTPHEADER , array("X-Api-Key: R2JPahhqb32cPbJE92xuKRjwyLbycn"));
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 $content = curl_exec($ch);
                 if(curl_exec($ch) === false)

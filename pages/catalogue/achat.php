@@ -116,18 +116,18 @@ include 'include/head.php';
           					<div class="space"></div>
                     <div class="col-md-12 catalog">
           						<div style="background-color: #D3EFDD">
-          							<h3 class="text-dark text-center">Afin de calculer au mieux le coût réel de votre vélo, merci de renseigner les champs ci-dessous avec vos informations.</h3>
-                        <a data-target="#informationsCalcul" data-toggle="modal" href="#" class="text-green"><ins><i class="fas fa-plus"></i> En savoir plus</ins></a>
+          							<h3 class="text-dark text-center"><?= L::achat_cash4bike; ?></h3>
+                        <a data-target="#informationsCalcul" data-toggle="modal" href="#" class="text-green"><ins><i class="fas fa-plus"></i><?= L::achat_know_more; ?></ins></a>
 
           							<div class="accordion color">
           								<div class="ac-item" style= "background-color: #D3EFDD">
-          									<h1 class="ac-title">Calcul de coût réel</h1>
+          									<h1 class="ac-title"><?= L::achat_real_price; ?></h1>
           									<div class="ac-content">
 
           										<form id="cash4bike-form" action="apis/Kameo/load_portfolio" role="form" method="get">
           										<div class="row">
           											<div class="col-md-12" style= "background-color: #D3EFDD">
-          												<small class="text-dark">*Les informations seront utilisées à des fins commerciales uniquement par KAMEO Bikes et non communiquées à des tiers.</small>
+          												<small class="text-dark">*<?= L::achat_use_of_data; ?>.</small>
           												<h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
 
 
@@ -154,13 +154,13 @@ include 'include/head.php';
           												<div class="col-md-12">
           													<div id="inputHomeAddress" class="form-group has-error has-feedback">
           													  <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
-          													  <input type="text" name="domicile" class="form-control required" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
+          													  <input type="text" name="domicile" id='inputHomeAddressInput' class="form-control required" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
           													  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span>
           													  <span id="inputSuccess1Status" class="sr-only">(success)</span>
           													</div>
           													<div id="inputWorkAddress" class="form-group has-error has-feedback">
           													  <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
-          													  <input type="text" name="travail" class="form-control required" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
+          													  <input type="text" name="travail" id='inputWorkAddressInput' class="form-control required" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
           													  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span>
           													  <span id="inputSuccess2Status" class="sr-only">(success)</span>
           													</div>
@@ -173,7 +173,7 @@ include 'include/head.php';
           												<div class="form-group col-md-12">
           													<div class="col-md-6">
           														<label for="transport"><?=L::cash4bike_transport_choice;?></label>
-          														<select class="form-control" name="transport">
+          														<select class="form-control" name="transport" id='transportSelect'>
           															<option value="personnalCar" selected><?=L::cash4bike_tc_personalcar;?></option>
           															<option value="companyCar"><?=L::cash4bike_tc_workcar;?></option>
           															<option value="covoiturage"><?=L::cash4bike_tc_covoiturage;?></option>
@@ -182,15 +182,10 @@ include 'include/head.php';
           															<option value="walk"><?=L::cash4bike_tc_walk;?></option>
           														</select>
           													</div>
-          													<div class="form-group col-sm-6 essence">
-          														<div class="essence">
-          															<label><input type="radio" name="transportationEssence" value="essence" checked><?=L::cash4bike_essence;?></label>
-          														</div>
-          														<div class="diesel">
-          															<label><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
-          														</div>
+          													<div class="form-group col-md-6 essence">
+                                      <label for='essence'><input type="radio" name="transportationEssence" value="essence" checked><?=L::cash4bike_essence;?></label>
+                                      <label for='diesel'><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
           													</div>
-
           												</div>
           												<div class="form-group col-md-12">
 
@@ -220,8 +215,8 @@ include 'include/head.php';
           												</div>
           											</div>
 
-          											<div class="form-group col-md-2 center" >
-          												<button class="button green button-3d effect fill-vertical" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
+          											<div class="form-group col-md-12 text-center">
+          												<button class="button green button-3d effect" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
           											</div>
           										</div>
           										</form>
@@ -260,6 +255,86 @@ include 'include/head.php';
         </div>
 
         <script type="text/javascript">
+
+
+        $('#inputHomeAddressInput').change(function(){
+          $('#inputHomeAddress').removeClass('has-error');
+          $('#inputHomeAddress').removeClass('has-success');
+          $('#inputHomeAddress').addClass('has-warning');
+          $('#inputHomeAddress2').removeClass('fa-check');
+          $('#inputHomeAddress2').addClass('fa-info-circle');
+          $('#inputHomeAddress2').removeClass('fa-close');
+
+          var address=$('#inputHomeAddressInput').val();
+          $.ajax({
+            url: 'apis/Kameo/validate_address.php',
+            method: 'get',
+            data: {'address': address},
+            success: function(response){
+              if (response.response == "success") {
+                  $('#inputHomeAddress').removeClass('has-error');
+                  $('#inputHomeAddress').addClass('has-success');
+                  $('#inputHomeAddress').removeClass('has-warning');
+                  $('#inputHomeAddress2').addClass('fa-check');
+                  $('#inputHomeAddress2').removeClass('fa-info-circle');
+                  $('#inputHomeAddress2').removeClass('fa-close');
+              }
+              else{
+                  $('#inputHomeAddress').addClass('has-error');
+                  $('#inputHomeAddress').removeClass('has-success');
+                  $('#inputHomeAddress').removeClass('has-warning');
+                  $('#inputHomeAddress2').removeClass('fa-check');
+                  $('#inputHomeAddress2').removeClass('fa-info-circle');
+                  $('#inputHomeAddress2').addClass('fa-close');
+              }
+            }
+          });
+        });
+        $('#inputWorkAddressInput').change(function(){
+            $('#inputWorkAddress').removeClass('has-error');
+            $('#inputWorkAddress').removeClass('has-success');
+            $('#inputWorkAddress').addClass('has-warning');
+            $('#inputWorkAddress2').removeClass('fa-check');
+            $('#inputWorkAddress2').addClass('fa-info-circle');
+            $('#inputWorkAddress2').removeClass('fa-close');
+
+
+            var address=$('#inputWorkAddressInput').val();
+            $.ajax({
+                url: 'apis/Kameo/validate_address.php',
+                method: 'get',
+                data: {'address': address},
+                success: function(response){
+                  if (response.response == "success") {
+                      $('#inputWorkAddress').removeClass('has-error');
+                      $('#inputWorkAddress').addClass('has-success');
+                      $('#inputWorkAddress').removeClass('has-warning');
+                      $('#inputWorkAddress2').addClass('fa-check');
+                      $('#inputWorkAddress2').removeClass('fa-info-circle');
+                      $('#inputWorkAddress2').removeClass('fa-close');
+                  }
+                  else{
+                      $('#inputWorkAddress').addClass('has-error');
+                      $('#inputWorkAddress').removeClass('has-success');
+                      $('#inputWorkAddress').removeClass('has-warning');
+                      $('#inputWorkAddress2').removeClass('fa-check');
+                      $('#inputWorkAddress2').removeClass('fa-info-circle');
+                      $('#inputWorkAddress2').addClass('fa-close');
+                  }
+                }
+            });
+        });
+
+        $('#cash4bike-form select[name=transport]').off();
+        $('#transportSelect').change(function(){
+          if($(this).val()=="personnalCar" || $(this).val() == "companyCar"){
+            $('.essence').fadeIn("slow");
+          }else{
+            $('.essence').fadeOut("slow");
+          }
+        });
+
+
             var bikes;
             function loadPortfolio(revenuEmployee = null, type = null, homeAddress = null, workAddress = null, prime = null, transport = null, transportationEssence = null, frequenceBikePerWeek = null, size = '*') {
                 $('.grid').html("");
@@ -303,8 +378,6 @@ include 'include/head.php';
                                         var frameType = "Mixte";
                                     } else if (response.bike[i].frameType.toLowerCase() == "f") {
                                         var frameType = "Femme";
-                                    } else if (response.bike[i].frameType.toLowerCase() == "Unisex") {
-                                        var frameType = "Unisex";
                                     } else {
                                       var frameType = "undefined";
                                     }
@@ -338,9 +411,10 @@ include 'include/head.php';
                                         </div>\
                                         <div class=\"portfolio-description\">\
                                           <a href=\"offre.php?ID="+response.bike[i].ID+"\"><h4 class=\"title\">" + response.bike[i].brand + "</h4></a>\
-                                          <p>" + (response.bike[i].model + " " + frameType).substr(0, 25) + "\
-                                          <br>" + response.bike[i].utilisation +"<br>";
-                                          var stock = (response.bike[i].stockTotal > 0) ? "<span class='text-green'><strong>De stock</strong></span>" : ((response.bike[i].estimatedDeliveryDate != null) ? "<span class='text-orange'><strong>Prochainement</strong></span><sup><i class='fa fa-question-circle' rel='tooltip' data-toggle='tooltip' data-trigger='hover' data-placement='bottom' data-html='true' data-title=\"<div style='position:relative;overflow:auto'><div style='line-height:20px; float:left;border-radius: 3px;text-align:left'>Prochaine arrivée prévue le "+get_date_string_european(estimatedDeliveryDate)+"</div></div\"></i></sup></strong>" : "<span class='text-red'><strong>Pas en stock</strong></span>");
+                                          <p>"+response.bike[i].model+"\
+                                          <br>"+traduction.generic_frame+" : "+traduction["generic_"+frameType]+"\
+                        									<br>"+traduction["generic_"+response.bike[i].utilisation.replace(/ /g, '_')]+"<br>";
+                                          var stock = (response.bike[i].stockTotal > 0) ? "<span class='text-green'><strong>"+traduction.stock_de_stock+"</strong></span>" : ((response.bike[i].estimatedDeliveryDate != null) ? "<span class='text-orange'><strong>"+traduction.stock_available_soon+"</strong></span><sup><i class='fa fa-question-circle' rel='tooltip' data-toggle='tooltip' data-trigger='hover' data-placement='bottom' data-html='true' data-title=\"<div style='position:relative;overflow:auto'><div style='line-height:20px; float:left;border-radius: 3px;text-align:left'>"+traduction.stock_available_soon_text+get_date_string_european(estimatedDeliveryDate)+"</div></div\"></i></sup></strong>" : "<span class='text-red'><strong>"+traduction.stock_not_in_stock+"</strong></span><sup><i class='fa fa-question-circle' rel='tooltip' data-toggle='tooltip' data-trigger='hover' data-placement='bottom' data-html='true' data-title=\"<div style='position:relative;overflow:auto'><div style='line-height:20px; float:left;border-radius: 3px;text-align:left'>"+traduction.stock_not_in_stock_text+"</div> \"> </i></sup>");
                                           temp=temp.concat(stock);
                                     if (typeof response.bike[i].impactOnNetSalary !== 'undefined' && typeof response.bike[i].impactOnGrossSalary != 'undefined') {
                                       var textExplanation="Montant du leasing : "+response.bike[i].leasingPrice+" €/mois<br/>Impact salaire brut : "+Math.round(response.bike[i].impactOnGrossSalary*10)/10+" €/mois<br/>\
@@ -362,19 +436,19 @@ include 'include/head.php';
                                       }
 
                                       if(response.bike[i].realImpact > 0){
-                                        temp=temp.concat("<br><b>Achat : " + Math.round(response.bike[i].price) + "  €</b>\
+                                        temp=temp.concat("<br><b>"+traduction.achat_achat+": " + Math.round(response.bike[i].price) + "  €</b>\
                                         <br>Coût brut : " + response.bike[i].leasingPrice + " €/mois<br>\
                                         <b class=\"text-red\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">\
-                                        Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                        Cout réel : "+ Math.round(response.bike[i].realImpact)+" €/"+traduction.generic_mois+"  <i class='fa fa-question-circle'></i></b></p></div></div>");
                                       }else{
-                                        temp=temp.concat("<br><b>Achat : " + Math.round(response.bike[i].price) + "  €</b>\
+                                        temp=temp.concat("<br><b>"+traduction.achat_achat+": "+ Math.round(response.bike[i].price) + "  €</b>\
                                         <br>Coût brut : " + response.bike[i].leasingPrice + " €/mois<br>\
                                         <b class=\"text-green\" data-toggle=\"popover\" data-html=\"true\" data-trigger=\"hover\" data-container=\"body\"  data-placement=\"top\" title=\"Détail calcul\" data-content=\""+textExplanation+"\">\
-                                        Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/mois  <i class='fa fa-question-circle'></i></b></p></div></div>");
+                                        Gain réel : "+ Math.abs(Math.round(response.bike[i].realImpact))+" €/"+traduction.generic_mois+"  <i class='fa fa-question-circle'></i></b></p></div></div>");
                                       }
                                     }else{
-                                      temp=temp.concat("<br>Achat : " + Math.round(response.bike[i].price) + "  €\
-                                      <br><b>Leasing : " + response.bike[i].leasingPrice + " €/mois</b></p></div></div>");
+                                      temp=temp.concat("<br>"+traduction.achat_achat+": " + Math.round(response.bike[i].price) + "  €\
+                                      <br><b>Leasing : " + response.bike[i].leasingPrice + " €/"+traduction.generic_mois+"</b></p></div></div>");
                                     }
                                     var $item = $(temp);
                                     $grid.append($item)
@@ -473,6 +547,8 @@ include 'include/head.php';
               loadPortfolio($('#cash4bike-form input[name=revenu]').val(), $('#cash4bike-form input[name=type]').val(), $('#cash4bike-form input[name=domicile]').val(), $('#cash4bike-form input[name=travail]').val(), $('#cash4bike-form input[name=prime]:checked').val(), $('#cash4bike-form select[name=transport]').val(), $('#cash4bike-form input[name=transportationEssence]:checked').val(), $('#cash4bike-form select[name=frequence]').val(), $('#achat_sidebar select[name=size]').val());
             })
 
+
+
         </script>
         <?php include 'include/footer.php'; ?>
     </div>
@@ -528,93 +604,12 @@ include 'include/head.php';
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">
-          Fermer
+          <?= L::generic_close; ?>
         </button>
       </div>
     </div>
   </div>
 </div>
 
-
-<script type="text/javascript">
-
-  $('#cash4bike-form input[name=domicile]').change(function(){
-      $('#inputHomeAddress').removeClass('has-error');
-      $('#inputHomeAddress').removeClass('has-success');
-      $('#inputHomeAddress').addClass('has-warning');
-      $('#inputHomeAddress2').removeClass('fa-check');
-      $('#inputHomeAddress2').addClass('fa-info-circle');
-      $('#inputHomeAddress2').removeClass('fa-close');
-
-      var address=$('#cash4bike-form input[name=domicile]').val();
-      $.ajax({
-          url: 'apis/Kameo/validate_address.php',
-          method: 'get',
-          data: {'address': address},
-          success: function(response){
-              if (response.response == "success") {
-                  $('#inputHomeAddress').removeClass('has-error');
-                  $('#inputHomeAddress').addClass('has-success');
-                  $('#inputHomeAddress').removeClass('has-warning');
-                  $('#inputHomeAddress2').addClass('fa-check');
-                  $('#inputHomeAddress2').removeClass('fa-info-circle');
-                  $('#inputHomeAddress2').removeClass('fa-close');
-
-              }
-              else{
-                  $('#inputHomeAddress').addClass('has-error');
-                  $('#inputHomeAddress').removeClass('has-success');
-                  $('#inputHomeAddress').removeClass('has-warning');
-                  $('#inputHomeAddress2').removeClass('fa-check');
-                  $('#inputHomeAddress2').removeClass('fa-info-circle');
-                  $('#inputHomeAddress2').addClass('fa-close');
-
-              }
-          }
-      });
-  });
-  $('#cash4bike-form input[name=travail]').change(function(){
-      $('#inputWorkAddress').removeClass('has-error');
-      $('#inputWorkAddress').removeClass('has-success');
-      $('#inputWorkAddress').addClass('has-warning');
-      $('#inputWorkAddress2').removeClass('fa-check');
-      $('#inputWorkAddress2').addClass('fa-info-circle');
-      $('#inputWorkAddress2').removeClass('fa-close');
-
-
-      var address=$('#cash4bike-form input[name=travail]').val();
-      $.ajax({
-          url: 'apis/Kameo/validate_address.php',
-          method: 'get',
-          data: {'address': address},
-          success: function(response){
-              if (response.response == "success") {
-
-                  $('#inputWorkAddress').removeClass('has-error');
-                  $('#inputWorkAddress').addClass('has-success');
-                  $('#inputWorkAddress').removeClass('has-warning');
-                  $('#inputWorkAddress2').addClass('fa-check');
-                  $('#inputWorkAddress2').removeClass('fa-info-circle');
-                  $('#inputWorkAddress2').removeClass('fa-close');
-
-              }
-              else{
-
-                  $('#inputWorkAddress').addClass('has-error');
-                  $('#inputWorkAddress').removeClass('has-success');
-                  $('#inputWorkAddress').removeClass('has-warning');
-                  $('#inputWorkAddress2').removeClass('fa-check');
-                  $('#inputWorkAddress2').removeClass('fa-info-circle');
-                  $('#inputWorkAddress2').addClass('fa-close');
-
-
-              }
-          }
-      });
-  });
-
-
-
-</script>
 
 </html>
