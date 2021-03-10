@@ -15,7 +15,7 @@ $bookingID=$_POST['bookingID'];
 
 if($bookingID != NULL)
 {
-    
+
   include 'connexion.php';
   $sql= "update reservations set STAANN='D' where ID='$bookingID'";
   if ($conn->query($sql) === FALSE) {
@@ -25,26 +25,15 @@ if($bookingID != NULL)
     die;
   }
 
-  /*  //désactivation de la notification de réservation
-
+  //désactivation de la notification de feedback
   include 'connexion.php';
-  $sql= "update notifications set STAAN='D' where TYPE = 'reservation' AND TYPE_ITEM='$bookingID'";
+  $sql= "update notifications set STAAN='D' where TYPE = 'feedback' AND TYPE_ITEM='$bookingID'";
   if ($conn->query($sql) === FALSE) {
 
-  $response = array ('response'=>'error', 'message'=> $conn->error);
-  echo json_encode($response);
-  die;
-}*/
-
-    //désactivation de la notification de feedback
-    include 'connexion.php';
-    $sql= "update notifications set STAAN='D' where TYPE = 'feedback' AND TYPE_ITEM='$bookingID'";
-    if ($conn->query($sql) === FALSE) {
-
-      $response = array ('response'=>'error', 'message'=> $conn->error);
-      echo json_encode($response);
-      die;
-    }
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+  }
 
 
 
@@ -56,7 +45,7 @@ if($bookingID != NULL)
     echo json_encode($response);
     die;
   }
-    
+
   $sql= "update feedbacks set STATUS='CANCELLED' where ID_reservation='$bookingID'";
 
   if ($conn->query($sql) === FALSE) {
@@ -66,8 +55,9 @@ if($bookingID != NULL)
     die;
   }
   $conn->close();
-    
-    
+
+  execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'cancel', $bookingID, ' ', ' '), true);
+
   successMessage("SM0007");
 }
 else

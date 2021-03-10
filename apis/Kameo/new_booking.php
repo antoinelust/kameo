@@ -84,6 +84,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 		$insertedID = $conn->insert_id;
     $conn->close();
 
+
+    execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'new_booking', $insertedID, $buildingStart, $dateStart_2String.'/'.$dateEnd_2String.'/'.$buildingStart.'/'.$buildingEnd), true);
+
+
     // ====Ajout de la notification de feedback
     include 'connexion.php';
     $ownerID = $conn->query("SELECT ID FROM customer_referential WHERE EMAIL = '$user'");
@@ -150,6 +154,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
             echo json_encode($response);
             die;
         }
+
     }
 		require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php';
 		$mail = new PHPMailer();

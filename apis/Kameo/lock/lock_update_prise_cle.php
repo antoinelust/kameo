@@ -121,7 +121,6 @@ $conn->close();
 
 execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'prise_cle', $reservationID, $_GET['building'], 'OK'), true);
 
-
 echo "1";
 error_log(date("Y-m-d H:i:s")." - lock_update_prise_cle.php - SUCCESS \n", 3, "logs/logs_boxes.log");
 
