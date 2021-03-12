@@ -267,10 +267,6 @@ if($billType=='manual'){
 }else{
 }
 
-echo json_encode($billType);
-die;
-
-
 $conn->close();
 $response['sql']=$sql;
 successMessage("SM0012");

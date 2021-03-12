@@ -227,6 +227,10 @@ include 'include/head.php';
           						</div>
                       <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
                       <div class="grid"></div>
+                      <div class="no_results col-md-12 text-center" style='display: none'>
+                        <img src='<?= L::achat_img_no_results; ?>' width="80%" type="image/svg+xml" />
+                      </div>
+
                         <!-- END: Portfolio Items -->
                     </div>
                 </div>
@@ -507,6 +511,7 @@ include 'include/head.php';
                               });
                             })
 
+                            $('.portfolio').off();
                             $('.portfolio').on('change', function() {
                               var filterValue = "";
                               $('.portfolio').each(function(element){
@@ -518,6 +523,11 @@ include 'include/head.php';
                                     filter: filterValue
                                 });
                               });
+                              if ( !$grid.data('isotope').filteredItems.length ) {
+                                $('.no_results').fadeIn('slow');
+                              } else {
+                                $('.no_results').fadeOut('fast');
+                              }
                             });
                         }
 
