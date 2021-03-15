@@ -81,7 +81,7 @@ function get_users_listing(){
           }else{
             $('#widget-updateUser-form-firstname').prop('readonly', false);
             $('#widget-updateUser-form-name').prop('readonly', false);
-            if(response.user.administrator=="Y"){
+            if(response.user.fleetManager=="Y"){
               $("#widget-updateUser-form input[name=fleetManager]").prop( "checked", true );
             }else{
               $("#widget-updateUser-form input[name=fleetManager]").prop( "checked", false );

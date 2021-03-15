@@ -132,7 +132,7 @@ if($internalReference != NULL && $description){
     }
 
     if($type=="CLIENT" && $mailInitialisation != '' && $passwordTechnicalUser != ''){
-        $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, TOKEN, ACCESS_RIGHTS, STAANN) VALUES ('mykameo', UPPER('$nameInitialisation'), UPPER('$firstNameInitialisation'), '$nameInitialisation', '$firstNameInitialisation', '', '0', '', '', '', '0', '', '$internalReference', '$mailInitialisation', '$passwordTechnicalUser', 'N', '', '', '')";
+        $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, TOKEN, ACCESS_RIGHTS, STAANN) VALUES ('mykameo', UPPER('$nameInitialisation'), UPPER('$firstNameInitialisation'), '$nameInitialisation', '$firstNameInitialisation', '', '0', '', '', '', '0', '', '$internalReference', '$mailInitialisation', '$passwordTechnicalUser', '', '', '')";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);

@@ -77,8 +77,6 @@ if(isset($_POST['action'])){
 			error_message('500', 'Error occured while changing data');
 		}
 
-//////////////////////////////////////////////Code test assignation velo
-
 		if ($idBike!=null){
 
 			include 'connexion.php';
@@ -358,8 +356,13 @@ if(isset($_POST['action'])){
 		$response['order']['firstname']=$resultat['PRENOM'];
 		$response['order']['phone']=$resultat['PHONE'];
 		$response['order']['priceHTVA']=$priceHTVA;
-		$resultat=execSQL("SELECT order_accessories.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, MODEL, order_accessories.TYPE, order_accessories.ID as orderID FROM order_accessories INNER JOIN accessories_categories ON order_accessories.CATEGORY = accessories_categories.ID INNER JOIN accessories_catalog ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID WHERE order_accessories.ORDER_ID=? AND accessories_catalog.ID=order_accessories.BRAND", array('i', $ID), false);
-		$response['accessoryNumber'] = 0;
+		$resultat=execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ID as orderID
+												FROM order_accessories, accessories_categories, accessories_catalog
+												WHERE order_accessories.ORDER_ID=?
+												AND order_accessories.BRAND=accessories_catalog.ID
+												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES",
+							array('i', $ID), false);
+
 		$response['order']['accessories']=$resultat;
 		if($resultat){
 			$response['accessoryNumber']=count($resultat);

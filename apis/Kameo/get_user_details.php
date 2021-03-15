@@ -35,10 +35,10 @@ if($email != NULL)
     $response['user']['email']=$resultat['EMAIL'];
     $response['user']['phone']=$resultat['PHONE'];
     $response['user']['staann']=$resultat['STAANN'];
-    if($resultat['ADMINISTRATOR']==''){
-        $response['user']['administrator']='N';
+    if(strpos($resultat['ACCESS_RIGHTS'],'fleetManager') !== false){
+        $response['user']['fleetManager']='Y';
     }else{
-        $response['user']['administrator']=$resultat['ADMINISTRATOR'];
+        $response['user']['fleetManager']='N';
     }
 
     $company=$resultat['COMPANY'];

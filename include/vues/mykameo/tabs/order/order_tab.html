@@ -28,7 +28,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="seperator"></div>
+    <div class="seperator"></div>
 		<h4 class="text-green"><?=L::mk_ordertab_yo_ship_title;?></h4>
 		<div class="col-sm-12">
 			<div class="col-sm-6">
@@ -37,6 +37,13 @@
 					<li><strong><?=L::mk_ordertab_yo_ship_place;?></strong> <span class="deliveryPlace"></span></li>
 				</ul>
 			</div>
+		</div>
+    <div class="seperator"></div>
+		<h4 class="text-green"><?= L::mk_order_ordered_accessories; ?></h4>
+		<div class="col-sm-12">
+      <div id="accessoriesOrdered">
+        <p id="accessoriesOrderedEmpty"><?= L::mk_order_accessory_ordered_empty; ?></p>
+      </div>
 		</div>
 	</div>
 	<div id="gridForCatalog" class="gridForCatalog" data-example-id="contextual-table" class="bs-example">
@@ -130,5 +137,10 @@
     </div>
   	<div class="grid align-self-stretch">
   	</div>
+    <div class="no_results col-md-12 text-center" style='display: none'>
+      <img src='<?= L::achat_img_no_results; ?>' width="80%" type="image/svg+xml" />
+    </div>
+
+
   </div>
 </div>

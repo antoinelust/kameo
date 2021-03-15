@@ -29,7 +29,6 @@ if($email != NULL)
     $conn->close();
 
     $company=$resultat['COMPANY'];
-    $response['clientConditions']['administrator']=$resultat['ADMINISTRATOR'];
 
     include 'connexion.php';
 	$sql="select * from specific_conditions where COMPANY = '$company' AND EMAIL='$email' AND STAANN != 'D'";

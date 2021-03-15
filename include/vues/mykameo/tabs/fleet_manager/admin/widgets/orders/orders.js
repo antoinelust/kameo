@@ -315,7 +315,7 @@ function list_bikes(){
  });
 }
 
-function retrieve_command(ID, email = NULL){
+function retrieve_command(ID, email = null){
   $('.accessoriesNumber').html('');
   document.getElementById("ExistingAccessory").innerHTML="";
   list_bikes();
@@ -437,6 +437,13 @@ function retrieve_command(ID, email = NULL){
           '<thead><tr><th>Categorie</th><th>Accessoire</th><th>Type</th><th>Prix d\'Achat</th><th>Prix vente HTVA</th></tr></thead><tbody>';
           if(response.order.accessories){
             response.order.accessories.forEach(function (accessory, i) {
+              if(accessory.TYPE=="achat"){
+                var currency = "€";
+              }else if(accessory.TYPE='leasing'){
+                var currency = "€/mois";
+              }else if(accessory.TYPE='annualleasing'){
+                var currency = "€/an";
+              }
               var temp =
               '<tr><td scope="row" name="categoryAcc" id="categoryAcc">' +
               accessory.CATEGORY +
@@ -446,8 +453,8 @@ function retrieve_command(ID, email = NULL){
               accessory.TYPE +
               "</td><td>" +
               accessory.BUYING_PRICE +
-              "</td><td>" +
-              accessory.PRICE_HTVA +
+              " €</td><td>" +
+              accessory.PRICE_HTVA + " "+currency
               "</td></tr>";
               dest = dest.concat(temp);
             })

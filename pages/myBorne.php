@@ -41,15 +41,17 @@ include 'include/head.php';
 					</ul>
 					<div class="tabs-content">
 						<div class="tab-pane active" id="gestion">
-						<h2 class="text-green">Gestion et optimisation de flotte</h2>								
+						<h2 class="text-green">Gestion et optimisation de flotte</h2>
 						<h3 class="text-green">Comment ça marche ?</h3>
 						<p class="text-dark">Vous avez une borne physique qui contient toutes les clefs de vos véhicules. Cette borne est reliée à un serveur qui permet, à distance, d’assigner quelle clef sera pour quel employé. Cet assignement de véhicules aux employés sera fait via un algorithme en fonction de différents facteurs : </p>
 						<ul class="text-dark">
 							<li><strong>L’état du véhicule </strong> : Si un de vos véhicule n’est plus en état pour rouler (trop vieux, accident, panne…), le fleet manager pourra simplement le mentionner dans le programme MyBorne et le véhicule en question sera automatiquement mis de côté par le programme et donc sa clef ne sera plus assignée à un chauffeur</li>
 							<li><strong>La consommation du véhicule</strong> : : En fonction des données de consommation que le programme enregistrera à la fin de chaque tournée. Il sera possible d’évaluer la consommation des véhicules et donc d’assigner les véhicules de sorte à minimiser la consommation totale de votre flotte. Concrètement, les véhicules qui consomment le moins pourront être automatiquement assignés pour les tournées les plus longues</li>
-							<li><strong>Le statut du véhicule</strong> :
-							<li><strong>le véhicule est en leasing</strong> : Si l’ensemble de votre flotte est en leasing, vous avez très certainement des contraintes kilométriques à ne pas dépasser. Avec MyBorne le programme assignera les véhicules de telle sorte que le nombre de kilomètres de ces derniers n’excèdent pas leurs plafonds ou du moins que s’ils doivent excéder ce plafond, les coûts soient minimisés. La borne vous permettra donc d’optimiser au mieux votre flotte et de minimiser vos surcoûts</li>
-							<li><strong>Le véhicule n’est pas en leasing</strong> : Si votre flotte est composée de véhicules qui ne sont pas en leasing, MyBorne s’occupera d’optimiser l’assignement des véhicules pour que le nombre de kilomètre de chaque véhicule évolue à la même fréquence</li>
+							<li><strong>Le statut du véhicule</strong> :</li>
+							<ul>
+								<li><strong>le véhicule est en leasing</strong> : Si l’ensemble de votre flotte est en leasing, vous avez très certainement des contraintes kilométriques à ne pas dépasser. Avec MyBorne le programme assignera les véhicules de telle sorte que le nombre de kilomètres de ces derniers n’excèdent pas leurs plafonds ou du moins que s’ils doivent excéder ce plafond, les coûts soient minimisés. La borne vous permettra donc d’optimiser au mieux votre flotte et de minimiser vos surcoûts</li>
+								<li><strong>Le véhicule n’est pas en leasing</strong> : Si votre flotte est composée de véhicules qui ne sont pas en leasing, MyBorne s’occupera d’optimiser l’assignement des véhicules pour que le nombre de kilomètre de chaque véhicule évolue à la même fréquence</li>
+							</ul>
 						</ul>
 						<p class="text-green">Au-delà d’une simple boite à clefs, MyBorne est votre nouveau compagnon de gestion de flotte qui vous permettra d’optimiser l’utilisation de vos véhicules et les coûts qui en découlent</p>
 
@@ -102,7 +104,7 @@ include 'include/head.php';
 								<p class="text-dark text-center">Le tour est joué</p>
 							</div>
 						</div>
-						<p class="text-dark">Pour les chauffeurs il sera également possible de leur offrir la possibilité de choisir le véhicule de leur préférence. Le programme My Borne, pourra ainsi mettre à disposition de chaque travailleur, un véhicule qui se rapproche le plus de celui de leur préférence.</p>
+						<p class="text-dark">Pour les chauffeurs il sera également possible de choisir le véhicule de leur préférence. Le programme My Borne, pourra ainsi mettre à disposition de chaque travailleur, un véhicule qui se rapproche le plus de celui de leur préférence.</p>
 						<p class="text-dark"><strong>Vous l’aurez compris, MyBorne est un outil de travail complet. Ce système simple, connecté et intelligent vous assure une sécurité sans faille et une excellente gestion de votre flotte</strong></p>
 						</div>
 
@@ -128,7 +130,7 @@ include 'include/head.php';
 
 							<h3 class="text-green">Fonctionnalités pour l'utilisateur du vélo</h3>
 							<p class="text-dark">L’utilisateur, lui, aura accès aussi à la plateforme MyKameo sur laquelle il pourra réserver son vélo en fonction des disponibilités et des critères imposés par le fleet manager. Il aura également un aperçu de son historique des réservations.</p>
-							<p class="text-dark">Lorsqu’un utilisateur veut réserver un vélo, il se connecte à la plateforme MyKameo. Ensuite il choisit le créneau horaire où il désire réserver un vélo. Une liste des vélos disponibles apparaitra et il pourra sélectionner le vélo de son choix. Si aucun vélo n’apparaît c’est qu’aucun vélo n’est disponible pour ce créneau horaire.<br>
+							<p class="text-dark">Lorsqu’un utilisateur veut réserver un vélo, il se connecte à la plateforme MyKameo. Ensuite il choisit le créneau horaire où il désire réserver un vélo. Une liste des vélos disponibles apparaitra et il pourra sélectionner le vélo de son choix.<br>
 								Une fois la réservation terminée, l’utilisateur reçoit un code qui lui permet de d’obtenir la clef du vélo. Il récupère la clef dans la borne, et peut utiliser le vélo. <br>
 								A son retour, il doit ranger le vélo à sa place, scanner la borne avec la clef pour l’ouvrir, ranger la clef à l’endroit imparti, refermer la borne et le tour est joué. </p>
 

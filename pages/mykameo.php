@@ -275,6 +275,8 @@ if ($token == NULL) { //Not connected
               echo '<a href="docs/'.L::sidebar_bike_policy_link_actiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
             }elseif($contactDetails['contact']['company'] == "AZZANA"){
               echo '<a href="docs/'.L::sidebar_bike_policy_link_azzana.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
+            }elseif($contactDetails['contact']['company'] == "Methanex Corporation"){
+              echo '<a href="docs/'.L::sidebar_bike_policy_link_methanex.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
             }else{
               echo '<a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
             }
@@ -282,7 +284,9 @@ if ($token == NULL) { //Not connected
             if ($contactDetails['contact']['company'] == "Actiris"){
               echo '<a href="docs/'.L::sidebar_manualActiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
             }else{
-              echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
+              if($contactDetails['contact']['company'] != "Methanex Corporation"){
+                echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
+              }
             }
             ?>
             <a class="button small green button-3d rounded icon-left" data-target="#tellus" data-toggle="modal" href="#" onclick="initializeTellUs()">
