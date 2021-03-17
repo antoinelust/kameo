@@ -95,13 +95,9 @@ if(isset($_POST['action']))
 
 
     if($action=="retrieve"){
-
-
         if($graphics){
 
             $response['response']="success";
-
-
             include "connexion.php";
             $sql="select MAX(CONTRACT_END) as 'CONTRACT_END' from customer_bikes WHERE AUTOMATIC_BILLING='Y'";
             if ($conn->query($sql) === FALSE) {
@@ -128,7 +124,7 @@ if(isset($_POST['action']))
                 $date_start_string=$date_start->format('Y-m-d');
 
                 include 'connexion.php';
-                $sql="SELECT SUM(LEASING_PRICE) AS 'PRICE' FROM customer_bikes WHERE CONTRACT_START <= '$date_start_string' AND CONTRACT_END >= '$date_start_string' AND STAANN != 'D'";
+                $sql="SELECT SUM(CASE WHEN BILLING_TYPE = 'annual' THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'PRICE' FROM customer_bikes aa WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' AND aa.CONTRACT_TYPE IN ('leasing', 'location') AND CONTRACT_START <= '$date_start_string' AND CONTRACT_END >= '$date_start_string'";
                 if ($conn->query($sql) === FALSE) {
                     $response = array ('response'=>'error', 'message'=> $conn->error);
                     echo json_encode($response);
@@ -376,7 +372,8 @@ if(isset($_POST['action']))
 
 
                 include 'connexion.php';
-                $sql="SELECT SUM(LEASING_PRICE) as 'PRICE' from customer_bikes WHERE CONTRACT_START < CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";
+                $sql="SELECT SUM(CASE WHEN BILLING_TYPE = 'annual' THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'PRICE' FROM customer_bikes aa WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' AND aa.CONTRACT_TYPE IN ('leasing', 'location') AND CONTRACT_START <= CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";
+
                 if($company!="*"){
                     $sql=$sql." AND COMPANY='$company'";
                 }
