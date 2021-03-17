@@ -36,7 +36,7 @@ if ($is_null)
 	$reponse = $bdd->query('SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = \''.$_GET['code'].'\' AND VALID = \'Y\';');
 	if($reponse->fetch())
 	{
-		echo "-4";	// Hors delai
+		echo "-4/9999";	// Hors delai
 		$reponse2 = $bdd->query('SELECT ID_reservation FROM locking_code WHERE BUILDING_START LIKE \''.$_GET['building'].'\' AND CODE = \''.$_GET['code'].'\' AND VALID = \'Y\';');
 		$resultat = $reponse2->fetch();
 		execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'verifier_code', $_GET['building'], $resultat['ID_reservation'], '-4'), true);
