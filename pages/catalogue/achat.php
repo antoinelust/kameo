@@ -28,10 +28,10 @@ include 'include/head.php';
         <!-- CONTENT -->
         <section>
             <div class="container-fullwidth">
-                    <div class="col-md-12 searchCol background-green" style ="margin-top : -40px">
+                    <div class="col-md-3 background-green" id="search-sidebar">
                       <div class="container" id="achat_sidebar">
                         <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
-                          <div class="form-group col-md-2">
+                          <div class="form-group col-md-12">
                               <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
                               <select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
                                   <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
@@ -47,7 +47,7 @@ include 'include/head.php';
                               </select>
                           </div>
 
-                          <div class="form-group col-md-2">
+                          <div class="form-group col-md-12">
                               <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
                               <select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
                                   <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
@@ -63,7 +63,7 @@ include 'include/head.php';
                               </select>
                           </div>
 
-                          <div class="form-group col-md-2">
+                          <div class="form-group col-md-12">
                               <label for="size">Taille</label>
                               <select  name="size">
                                 <option data-filter="" value="*">Toutes</option>
@@ -77,7 +77,7 @@ include 'include/head.php';
                           </div>
 
 
-                          <div class="form-group col-md-2">
+                          <div class="form-group col-md-12">
                               <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
                               <select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
                                   <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
@@ -88,7 +88,7 @@ include 'include/head.php';
                               </select>
                           </div>
 
-                          <div class="form-group col-md-2">
+                          <div class="form-group col-md-12">
                               <label for="widget-contact-form-electrique"><?= L::generic_electric; ?></label>
                               <select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
                                   <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
@@ -97,7 +97,7 @@ include 'include/head.php';
                               </select>
                           </div>
 
-                          <div class="form-group col-md-2">
+                          <div class="form-group col-md-12">
                               <label for="widget-contact-form-prix"><?= L::generic_price." (".L::generic_VATExc.")"; ?></label>
                               <select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
                                   <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
@@ -108,14 +108,15 @@ include 'include/head.php';
                                   <option data-filter=".5000"><?= L::achat_buyprice_option6; ?></option>
                               </select>
                           </div>
-                          <div class="col-md-2">
+                          <div class="col-md-12">
                               <a class="button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; text-align: center;" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
                           </div>
                         </div>
                     </div>
-          					<div class="space"></div>
-                    <div class="col-md-12 catalog">
-          						<div style="background-color: #D3EFDD">
+					
+                    <div class="col-md-9 catalog">
+						<!-- 
+          				<div style="background-color: #D3EFDD">
           							<h3 class="text-dark text-center"><?= L::achat_cash4bike; ?></h3>
                         <a data-target="#informationsCalcul" data-toggle="modal" href="#" class="text-green"><ins><i class="fas fa-plus"></i><?= L::achat_know_more; ?></ins></a>
 
@@ -225,6 +226,7 @@ include 'include/head.php';
           								</div>
           							</div>
           						</div>
+								-->
                       <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
                       <div class="grid"></div>
                       <div class="no_results col-md-12 text-center" style='display: none'>
@@ -403,7 +405,7 @@ include 'include/head.php';
                                       estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + 7);
                                     }
                                     var temp = "\
-                                    <div style='display: block' class=\"col-md-2 grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
+                                    <div style='display: block' class=\"col-md-3 grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
                                         <div class=\"portfolio-image effect social-links\">\
                                             <img src=\"images_bikes/" + response.bike[i].ID + "_mini.jpg\" alt=\"image_" + response.bike[i].brand.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].model.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].frameType.toLowerCase() + "\" class=\"lazy\">\
                                             <div class=\"image-box-content\">\
