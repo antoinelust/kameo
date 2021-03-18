@@ -28,237 +28,85 @@ include 'include/head.php';
         <!-- CONTENT -->
         <section>
             <div class="container-fullwidth">
-                    <div class="col-md-3 background-green" id="search-sidebar">
-                      <div class="container" id="achat_sidebar">
-                        <h1 class="text-light"><?= L::achat_searchbar_title; ?></h1>
-                          <div class="form-group col-md-12">
-                              <label for="widget-contact-form-marque"><?= L::achat_searchbar_brand; ?></label>
-                              <select class="portfolio" data-filter-group="brand" name="widget-contact-form-marque" id="widget-bike-brand">
-                                  <option data-filter="" value="*"><?= L::achat_brand_option1; ?></option>
-                                  <option data-filter=".ahooga"><?= L::achat_brand_option2; ?></option>
-                                  <option data-filter=".benno"><?= L::achat_brand_option3; ?></option>
-                                  <option data-filter=".bzen"><?= L::achat_brand_option4; ?></option>
-                                  <option data-filter=".conway"><?= L::achat_brand_option5; ?></option>
-                                  <option data-filter=".douze"><?= L::achat_brand_option6; ?></option>
-                                  <option data-filter=".hnf"><?= L::achat_brand_option7; ?></option>
-                                  <option data-filter=".kayza"><?= L::achat_brand_option8; ?></option>
-                                  <option data-filter=".moustache">Moustache</option>
-                                  <option data-filter=".victoria"><?= L::achat_brand_option10; ?></option>
-                              </select>
-                          </div>
+				<h1 class="text-green text-center">Choisissez un type d'utilisation</h1>
 
-                          <div class="form-group col-md-12">
-                              <label for="widget-contact-form-utilisation"><?= L::achat_searchbar_use; ?></label>
-                              <select class="portfolio" data-filter-group="utilisation" name="widget-contact-form-utilisation" id="widget-bike-utilisation">
-                                  <option data-filter="" value="*"><?= L::achat_use_option1; ?></option>
-                                  <option data-filter=".villeetchemin"><?= L::achat_use_option2; ?></option>
-                                  <option data-filter=".ville"><?= L::achat_use_option3; ?></option>
-                                  <option data-filter=".toutchemin"><?= L::achat_use_option4; ?></option>
-                                  <option data-filter=".pliant"><?= L::achat_use_option5; ?></option>
-                                  <option data-filter=".speedpedelec"><?= L::achat_use_option6; ?></option>
-                                  <option data-filter=".gravel"><?= L::achat_use_option7; ?></option>
-                                  <option data-filter=".vtt"><?= L::achat_use_option8; ?></option>
-                                  <option data-filter=".cargo"><?= L::achat_use_option9; ?></option>
-                                  <option data-filter=".enfant"><?= L::achat_use_option10; ?></option>
-                              </select>
-                          </div>
+				<div class="col-md-10 center">
 
-                          <div class="form-group col-md-12">
-                              <label for="size">Taille</label>
-                              <select  name="size">
-                                <option data-filter="" value="*">Toutes</option>
-                                <option data-filter="" value="XS">XS</option>
-                                <option data-filter="" value="S">S</option>
-                                <option data-filter="" value="M">M</option>
-                                <option data-filter="" value="L">L</option>
-                                <option data-filter="" value="XL">XL</option>
-                                <option data-filter="" value="unique">Unique</option>
-                              </select>
-                          </div>
+					<a href="catalogue.php?category=Ville et Chemin">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_villeetchemin.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Ville et Chemin</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
+					<a href="catalogue.php?category=Tout chemin">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_toutchemin.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Tout chemin</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
-                          <div class="form-group col-md-12">
-                              <label for="widget-contact-form-cadre"><?= L::achat_searchbar_cadre; ?></label>
-                              <select class="portfolio" data-filter-group="cadre" name="widget-contact-form-cadre" id="widget-bike-frame-type">
-                                  <option data-filter="" value="*"><?= L::achat_cadre_option1; ?></option>
-                                  <option data-filter=".m"><?= L::achat_cadre_option2; ?></option>
-                                  <option data-filter=".f"><?= L::achat_cadre_option3; ?></option>
-                                  <option data-filter=".h"><?= L::achat_cadre_option4; ?></option>
-                                  <option data-filter=".unisex"><?= L::achat_cadre_option5; ?></option>
-                              </select>
-                          </div>
+					<a href="catalogue.php?category=VTT">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_vtt.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">VTT</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
-                          <div class="form-group col-md-12">
-                              <label for="widget-contact-form-electrique"><?= L::generic_electric; ?></label>
-                              <select class="portfolio" data-filter-group="electrique" name="widget-contact-form-electrique" id="widget-bike-electric">
-                                  <option data-filter="" value="*"><?= L::achat_assist_option1; ?></option>
-                                  <option data-filter=".y"><?= L::achat_assist_option2; ?></option>
-                                  <option data-filter=".n"><?= L::achat_assist_option3; ?></option>
-                              </select>
-                          </div>
+					<a href="catalogue.php?category=Ville">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_ville.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Ville</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
-                          <div class="form-group col-md-12">
-                              <label for="widget-contact-form-prix"><?= L::generic_price." (".L::generic_VATExc.")"; ?></label>
-                              <select class="portfolio" data-filter-group="prix" name="widget-contact-form-prix" id="widget-bike-price">
-                                  <option data-filter="" value="*" selected><?= L::achat_buyprice_option1; ?></option>
-                                  <option data-filter=".2000"><?= L::achat_buyprice_option2; ?></option>
-                                  <option data-filter=".between-2000-3000"><?= L::achat_buyprice_option3; ?></option>
-                                  <option data-filter=".between-3000-4000"><?= L::achat_buyprice_option4; ?></option>
-                                  <option data-filter=".between-4000-5000"><?= L::achat_buyprice_option5; ?></option>
-                                  <option data-filter=".5000"><?= L::achat_buyprice_option6; ?></option>
-                              </select>
-                          </div>
-                          <div class="col-md-12">
-                              <a class="button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; text-align: center;" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
-                          </div>
-                        </div>
-                    </div>
-					
-                    <div class="col-md-9 catalog">
-						<!-- 
-          				<div style="background-color: #D3EFDD">
-          							<h3 class="text-dark text-center"><?= L::achat_cash4bike; ?></h3>
-                        <a data-target="#informationsCalcul" data-toggle="modal" href="#" class="text-green"><ins><i class="fas fa-plus"></i><?= L::achat_know_more; ?></ins></a>
+					<a href="catalogue.php?category=Speedpedelec">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_speedpedelec.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Speedpedelec</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
-          							<div class="accordion color">
-          								<div class="ac-item" style= "background-color: #D3EFDD">
-          									<h1 class="ac-title"><?= L::achat_real_price; ?></h1>
-          									<div class="ac-content">
+					<a href="catalogue.php?category=Cargo">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_cargo.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Cargo et Famille</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
-          										<form id="cash4bike-form" action="apis/Kameo/load_portfolio" role="form" method="get">
-          										<div class="row">
-          											<div class="col-md-12" style= "background-color: #D3EFDD">
-          												<small class="text-dark">*<?= L::achat_use_of_data; ?>.</small>
-          												<h4 class="text-green"><?=L::cash4bike_personalinfo_title;?></h4>
+					<a href="catalogue.php?category=Pliant">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_pliant.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Pliants</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
+					<a href="catalogue.php?category=Gravel">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_gravel.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Gravel</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
-          												<div class="form-group col-md-12 ">
-          													<div class="employe">
-          														<label><input type="radio" name="type" value="employe" checked><?=L::cash4bike_personalinfo_employee;?></label>
-          													</div>
-          													<div class="ouvrier">
-          														<label><input type="radio" name="type" value="ouvrier"><?=L::cash4bike_personalinfo_ouvrier;?></label>
-          													</div>
-          												</div>
+					<a href="catalogue.php?category=Enfant">
+						<div class="container col-md-4" style="position : relative ; text-aligne : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_enfants.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Enfants</h3></div>
+						</div>
+					</a>
 
-          												<div class="col-md-12">
-          													<div class="form-group col-md-6">
-          														<div class="form-group">
-          															<label class="revenu" for="phone"><?=L::cash4bike_personalinfo_brutsalary;?></label>
-          															<div class="input-group">
-          																<span class="input-group-addon"><?=L::cash4bike_personalinfo_permonth;?></span>
-          																<input type="number" class="form-control required" min='0' placeholder="0" name="revenu" id="revenu" aria-required="true">
-          															</div>
-          														</div>
-          													</div>
-          												</div>
-          												<div class="col-md-12">
-          													<div id="inputHomeAddress" class="form-group has-error has-feedback">
-          													  <label class="control-label" for="domicile"><?=L::cash4bike_personalinfo_address;?></label>
-          													  <input type="text" name="domicile" id='inputHomeAddressInput' class="form-control required" aria-describedby="inputSuccess1Status" placeholder="Rue, numéro, code postal, commune">
-          													  <span id="inputHomeAddress2" class="fa fa-close form-control-feedback" aria-hidden="true"></span>
-          													  <span id="inputSuccess1Status" class="sr-only">(success)</span>
-          													</div>
-          													<div id="inputWorkAddress" class="form-group has-error has-feedback">
-          													  <label class="control-label" for="inputSuccess2"><?=L::cash4bike_personalinfo_workaddress;?></label>
-          													  <input type="text" name="travail" id='inputWorkAddressInput' class="form-control required" aria-describedby="inputSuccess2Status" placeholder="Rue, numéro, code postal, commune">
-          													  <span id='inputWorkAddress2' class="fa fa-close form-control-feedback" aria-hidden="true"></span>
-          													  <span id="inputSuccess2Status" class="sr-only">(success)</span>
-          													</div>
-          												</div>
-          												<div class="space"></div>
-          											</div>
-          											<div class="col-md-12" style= "background-color: #D3EFDD">
-          											<div class="space"></div>
-          												<h4 class="text-green"><?=L::cash4bike_transport_title;?></h4>
-          												<div class="form-group col-md-12">
-          													<div class="col-md-6">
-          														<label for="transport"><?=L::cash4bike_transport_choice;?></label>
-          														<select class="form-control" name="transport" id='transportSelect'>
-          															<option value="personnalCar" selected><?=L::cash4bike_tc_personalcar;?></option>
-          															<option value="companyCar"><?=L::cash4bike_tc_workcar;?></option>
-          															<option value="covoiturage"><?=L::cash4bike_tc_covoiturage;?></option>
-          															<option value="public transport"><?=L::cash4bike_tc_commun;?></option>
-          															<option value="personalBike"><?=L::cash4bike_tc_personalbike;?></option>
-          															<option value="walk"><?=L::cash4bike_tc_walk;?></option>
-          														</select>
-          													</div>
-          													<div class="form-group col-md-6 essence">
-                                      <label for='essence'><input type="radio" name="transportationEssence" value="essence" checked><?=L::cash4bike_essence;?></label>
-                                      <label for='diesel'><input type="radio" name="transportationEssence" value="diesel"><?=L::cash4bike_diesel;?></label>
-          													</div>
-          												</div>
-          												<div class="form-group col-md-12">
+				</div>
 
-
-
-          													<div class="col-md-12">
-          														<div class="employeurremunere">
-          															<label><input type="radio" name="prime" value="1" checked><?=L::cash4bike_bike_kmpayback;?></label>
-          														</div>
-          														<div class="employeurneremunerepas">
-          															<label><input type="radio" name="prime" value="0"><?=L::cash4bike_bike_kmnopayback;?></label>
-          														</div>
-          													</div>
-          												</div>
-
-          												<div class="form-group col-md-12">
-          													<div class="col-md-6">
-          														<label for="frequence"><?=L::cash4bike_transport_frequence;?></label>
-          														<select class="form-control" name="frequence">
-          															<option value="1"><?=L::cash4bike_tf_once;?></option>
-          															<option value="2"><?=L::cash4bike_tf_twice;?></option>
-          															<option value="3"><?=L::cash4bike_tf_three;?></option>
-          															<option value="4" selected><?=L::cash4bike_tf_four;?></option>
-          															<option value="5"><?=L::cash4bike_tf_five;?></option>
-          														</select>
-          													</div>
-          												</div>
-          											</div>
-
-          											<div class="form-group col-md-12 text-center">
-          												<button class="button green button-3d effect" type="submit"><i class="fa fa-calculator"></i>&nbsp;<?=L::cash4bike_calculate_btn;?></button>
-          											</div>
-          										</div>
-          										</form>
-
-          									</div>
-          								</div>
-          							</div>
-          						</div>
-								-->
-                      <h1 class="text-green"><?= L::achat_bikes_title; ?></h1>
-                      <div class="grid"></div>
-                      <div class="no_results col-md-12 text-center" style='display: none'>
-                        <img src='<?= L::achat_img_no_results; ?>' width="80%" type="image/svg+xml" />
-                      </div>
-
-                        <!-- END: Portfolio Items -->
-                    </div>
-                </div>
-
-                <button onclick="topFunction()" id="btn_goto_top_catalog" title="Go to top"><i class="fas fa-arrow-circle-up"></i></button>
             </div>
         </section>
-        <!-- END: CONTENT -->
-        <div class="modal fade" id="bikePicture" tabindex="-1" role="modal" aria-labelledby="modal-label-3" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                        <h4 id="bikePicturetitle" class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row mb20">
-                            <img id="bikePictureImage" class="img-responsive img-rounded" alt="" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-b" type="button"><?= L::achat_modal_close; ?></button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <script type="text/javascript">
 
@@ -405,7 +253,7 @@ include 'include/head.php';
                                       estimatedDeliveryDate.setDate(estimatedDeliveryDate.getDate() + 7);
                                     }
                                     var temp = "\
-                                    <div style='display: block' class=\"col-md-3 grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
+                                    <div style='display: block' class=\"col-md-2 grid-item " + response.bike[i].brand.toLowerCase() + " " + response.bike[i].frameType.toLowerCase() + " " + response.bike[i].utilisation.toLowerCase().replace(/ /g, '') + " " + response.bike[i].electric.toLowerCase().replace(/ /g, '') + " " + price + "\" \">\
                                         <div class=\"portfolio-image effect social-links\">\
                                             <img src=\"images_bikes/" + response.bike[i].ID + "_mini.jpg\" alt=\"image_" + response.bike[i].brand.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].model.toLowerCase().replace(/ /g, '-') + "_" + response.bike[i].frameType.toLowerCase() + "\" class=\"lazy\">\
                                             <div class=\"image-box-content\">\
@@ -582,51 +430,6 @@ include 'include/head.php';
 </body>
 
 
-<div
-  class="modal fade"
-  id="informationsCalcul"
-  tabindex="-1"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="z-index: 1500; display: none; overflow-y: auto !important"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-hidden="true"
-        >
-          ×
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="companyIdHidden" name="companyId" value="" />
-        <div class="row">
-          <div class="col-sm-12">
-            <h4 class="text-green">Informations calcul de coût réel</h4>
-            <p><strong>Le module de calcul de coût réel n'est valable que dans le cadre d'un vélo acquis via le salaire brut de l'employé ou de l'ouvrier.</strong><br/>
-            Dans un premier temps, nous identifions l'impact sur votre salaire net d'une diminution de votre salaire brut à hauteur du montant du leasing.<br/>
-            Ensuite, nous calculons la distance entre votre domicile et votre travail, permettant de calculer le montant des primes kilométriques versées chaque mois (24 cents / km).<br/>
-            Enfin, si vous utilisez votre voiture personnelle, nous calculons le montant économisé via l'utilisation du carburant (essence).</p>
-            <p>L'acquisition d'un vélo comme moyen de déplacement entre votre domicile et votre travail est très avantageux d'un point de vue fiscal en Belgique, étant déductible à 100%.</p>
-
-			<iframe id="ytplayer" type="text/html" width="720" height="405" src="https://www.youtube.com/embed/e6_4e5RlSGo?controls=0&color=white" frameborder="0" allowfullscreen>
-
-		  </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">
-          <?= L::generic_close; ?>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 </html>
