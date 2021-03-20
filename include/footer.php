@@ -14,7 +14,7 @@
 					</div>
 					<div class="col-md-6 text-center">
 						<a href="https://www.kameobikes.com/velo-personnel"><?= L::footer_personnalBike; ?></a><br>
-						<a href="https://www.kameobikes.com/achat"><?= L::footer_portfolio; ?></a><br>
+						<a href="https://www.kameobikes.com/catalogue_overview"><?= L::footer_portfolio; ?></a><br>
 						<a href="https://www.kameobikes.com/blog">Blog</a><br>
 						<a href="https://www.kameobikes.com/mykameo">MyKameo</a>
 					</div>

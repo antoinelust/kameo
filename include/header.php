@@ -41,7 +41,7 @@
 				<a href="#"><?=L::header_catalogue;?> <i class="fa fa-angle-down"></i> </a>
 				<ul class="dropdown-menu">
 				  <li>
-					<a href="/achat"><?=L::header_ourBikes;?></a>
+					<a href="/catalogue_overview"><?=L::header_ourBikes;?></a>
 				  </li>
 				  <li>
 					<a href="/accessoires"><?=L::header_ourAccessories;?></a>
