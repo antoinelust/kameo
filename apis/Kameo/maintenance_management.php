@@ -185,6 +185,7 @@ if (isset($_GET['action'])) {
       $response['maintenance']['comment']=$resultat['COMMENT'];
       $response['maintenance']['frame_number']=$resultat['FRAME_NUMBER'];
       $response['maintenance']['company']=$resultat['COMPANY'];
+      $response['maintenance']['COMPANY_ID']=$resultat['COMPANY_ID'];
       $response['maintenance']['model']=$resultat['MODEL'];
       $response['maintenance']['street']=$resultat['STREET'];
       $response['maintenance']['type']=$resultat['TYPE_V'];

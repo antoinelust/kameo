@@ -271,7 +271,7 @@ if(isset($_POST['action'])){
             errorMessage("ES0060");
         }
         if($contractType=="pending_delivery" && $company == 'KAMEO'){
-            errorMessage("ES0068");
+            errorMessage("ES0069");
         }
 
 

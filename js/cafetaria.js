@@ -133,8 +133,7 @@ function load_cafetaria(size='*'){
             									<img src=\"images_bikes/"+response.bike[i].ID+"_mini.jpg\" alt=\"image_"+response.bike[i].brand.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].model.toLowerCase().replace(/ /g, '-')+"_"+response.bike[i].frameType.toLowerCase()+"\" class=\"portfolio-img\">\
             									<div class=\"image-box-content\">\
             										<p>\
-            											<a data-target=\"#bikePicture\" data-toggle=\"modal\" href=\"#\" onclick=\"updateBikePicture('"+response.bike[i].brand+"', '"+response.bike[i].model+"', '"+response.bike[i].frameType+"')\"></a>\
-            											<a data-target=\"#command\" class=\"orderBikeClick\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\"><i class=\"fa fa-link\"></i></a>\
+            											<a data-target=\"#command\" class=\"orderBikeClick\" data-toggle=\"modal\" href=\"#\" name=\""+response.bike[i].ID+"\" "+dataprop+"><i class=\"fa fa-link\"></i></a>\
             										</p>\
             									</div>\
             								</div>\
@@ -285,6 +284,7 @@ function load_cafetaria_accessories(){
                       var $grid = $('.gridForAccessories').isotope({});
                       categories=[];
                       var category='';
+                      var accessoryNumber = 0;
                       response.accessories.forEach( function(accessory){
                         if(accessoriesMandatory.includes(accessory.catalogID)){
                           $('#accessoriesBasket').append('<div class="col-md-4 accessoryCard d-flex" style="margin-bottom : 10px"><div class="card" style="border: 1px solid black; padding : 18px"><div class="card-body text-center">\
@@ -298,7 +298,8 @@ function load_cafetaria_accessories(){
                             </div></div></div>');
                           $('#widget-command-form #accessoriesBasketEmpy').html("");
                         }
-                        if(accessory.DISPLAY == "Y"){
+                        if(accessory.DISPLAY == "Y" && (allAllowed || accessoriesAvailable.includes(accessory.ID))){
+                          accessoryNumber ++;
                           if(category != accessory.CATEGORY){
                             categories.push([accessory.CATEGORY, traduction["accessoryCategories_"+accessory.CATEGORY]]);
                             category=accessory.CATEGORY;
@@ -386,6 +387,16 @@ function load_cafetaria_accessories(){
                       categories.forEach( function(accessory){
                         $("#widget-command-form select[name=accessoriesCategories]").append(new Option(accessory[1], accessory[0]));
                       });
+
+                      if(accessoryNumber == 0){
+                        $('.accessoriesCatalogOrder').addClass("hidden");
+                      }
+
+                      if(accessoryNumber == 0 && accessoriesMandatory.length == 0){
+                        $('.accessoriesBasket').addClass("hidden");
+                        $('.accessoriesBasket').addClass("hidden");
+                        $('#accessoriesBasketEmpy').addClass("hidden");
+                      }
 
                       setTimeout(function(){
                         $grid.isotope( 'reloadItems' ).isotope();

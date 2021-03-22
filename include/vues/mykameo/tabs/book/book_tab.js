@@ -748,23 +748,13 @@ jQuery("#search-bikes-form").validate({
           .done(function(response){
             if(response.clientConditions.locking=="Y")
             {
-            var i;
-            var temp="";
-            for(i=0; i<4; i++){
-              var number=Math.floor(Math.random() * 10).toString();
-              while(document.getElementById('search-bikes-form-intake-building').options[document.getElementById('search-bikes-form-intake-building').selectedIndex].value == "infrabelnamur" && number == "3"){
-                number=Math.floor(Math.random() * 10).toString();
-              }
-              temp=temp.concat(number);
-            }
-            document.getElementById('lockingCodeDiv').style.display="block";
-            document.getElementById('lockingCode').innerHTML=temp;
-            document.getElementById('widget-new-booking-locking-code').value = temp;
-
-
+              var i;
+              document.getElementById('lockingCodeDiv').style.display="block";
+              document.getElementById('lockingCode').innerHTML = ('0000' + text.code).slice(-4);
+              document.getElementById('widget-new-booking-locking-code').value = text.code;
             }else{
-            document.getElementById('lockingCodeDiv').style.display="none";
-            document.getElementById('widget-new-booking-locking-code').value = "";
+              document.getElementById('lockingCodeDiv').style.display="none";
+              document.getElementById('widget-new-booking-locking-code').value = "";
             }
           });
 

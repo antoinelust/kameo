@@ -50,8 +50,7 @@ function list_maintenances() {
         } else {
           if(typeof(response.maintenance) != 'undefined' && response.maintenance.length > 0){
             var dest2 = `
-                      <table class="table table-condensed">
-                        <tbody></tbody>
+                      <table class="table table-condensed" id="listingMaintenances" style='width: 100%'>
                         <thead>
                           <tr>
                             <th>ID</th>
@@ -70,7 +69,6 @@ function list_maintenances() {
             for (var i = 0; i < response.maintenance.length; i++) {
 
 
-              var date = new Date(response.maintenance[i].date).toLocaleDateString();
               var status = '';
               var phone='';
 
@@ -90,10 +88,10 @@ function list_maintenances() {
                 <tr>
                 <td><a  data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+
                 '" data-toggle="modal" class="showMaintenance" href="#">'+response.maintenance[i].id+`</a></td>
-                <td>`+response.maintenance[i].bike_id+`</td>
+                <td>`+response.maintenance[i].frame_number+`</td>
                 <td>`+response.maintenance[i].model+`</td>
                 <td>`+response.maintenance[i].company+`</td>
-                <td>`+date+`</td>
+                <td data-sort="`+(new Date(response.maintenance[i].date).getTime())+`">`+(new Date(response.maintenance[i].date).toLocaleDateString())+`</td>
                 <td>`+status+`</td>
                 <td>`+response.maintenance[i].type+`</td>
                 <td>`+response.maintenance[i].street+ ', ' + response.maintenance[i].zip_code + ' ' + response.maintenance[i].town +`</td>
@@ -104,11 +102,15 @@ function list_maintenances() {
             }
             dest2 += '</tbody></table>'
             $('#maintenanceListingSpan').html(dest2);
-
             var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
             dest += response.maintenancesNumberGlobal + '/</span><span style="color: rgb(216, 0, 0); margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
             dest += response.maintenancesNumberAuto + '</span>';
             $('#counterMaintenance').html(dest);
+            var table = $("#listingMaintenances").DataTable({
+              paging: false,
+              scrollX: false,
+              "order": [[ 4, "asc" ]]
+            });
           }
           else{
             var dest2 = '<div>Pas d\'entretiens.</div>';
@@ -134,6 +136,7 @@ function get_maintenance(ID){
       if (response.response == "error") {
         console.log(response.message);
       } else{
+        console.log(response);
         $('#widget-maintenanceManagement-form select[name=velo]').append('<option value="'+response.maintenance.bike_id+'">'+response.maintenance.bike_id + " - " + response.maintenance.model+'</option>');
         $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", true);
         $("#widget-maintenanceManagement-form div[name=image]").remove();
@@ -144,7 +147,7 @@ function get_maintenance(ID){
         $('#widget-maintenanceManagement-form input[name=ID]').val(response.maintenance.id);
         $('#widget-maintenanceManagement-form .maintenanceManagementDeleteButton').attr('name', response.maintenance.id);
         $('#widget-maintenanceManagement-form select[name=velo]').val(response.maintenance.bike_id);
-        $('#widget-maintenanceManagement-form select[name=company]').val(response.maintenance.COMPANY_ID);
+        $('#widget-maintenanceManagement-form select[name=company]').val(response.maintenance.company);
         $('#widget-maintenanceManagement-form input[name=model]').val(response.maintenance.model);
         $('#widget-maintenanceManagement-form input[name=address]').val(response.maintenance.street+ ', ' + response.maintenance.zip_code + ' ' + response.maintenance.town);
         $('#widget-maintenanceManagement-form select[name=status]').val(response.maintenance.status);
