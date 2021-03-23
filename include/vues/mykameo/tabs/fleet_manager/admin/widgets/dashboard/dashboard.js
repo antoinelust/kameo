@@ -113,8 +113,24 @@ function list_errors() {
             " a été vendu mais la date de vente n'est pas mentionnée</td><td></tr>"; //onclick=\"set_required_image('false')\"
           dest = dest.concat(temp);
           i++;
-          j++;
         })
+        if(response.contract.length > 0){
+          response.contract.forEach(function(contract){
+            var temp =
+              '<tr><td scope="row">' +
+              (i + 1) +
+              '</td><td><a class="updateBikeAdmin" data-target="#bikeManagement" name="' +
+              contract.bikeID +
+              '" data-toggle="modal" href="#">' +
+              contract.frameNumber +
+              "</a></td><td>Le vélo " +
+              contract.frameNumber +
+              " est en leasing sur une durée de "+contract.contractDuration+" mois. Les durées acceptées sont 24, 36 ou 48 mois. (valeur actuelles de contract : "+contract.contractStart+" au "+contract.contractEnd+")</td><td></tr>";
+            dest = dest.concat(temp);
+            i++;
+          })
+        }
+
 
         response.bike.order.forEach(function(bike){
           var temp =
@@ -280,6 +296,7 @@ function list_errors() {
         if (
           parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
           parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
+          parseInt(response.contract.length) +
           parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
           parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
           ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
@@ -296,6 +313,7 @@ function list_errors() {
             '<span data-speed="1" data-refresh-interval="4" data-to="' +
               (parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
               parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
+              parseInt(response.contract.length) +
               parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
               parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
               ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
@@ -304,6 +322,7 @@ function list_errors() {
             '" data-from="0" data-seperator="true">' +
               (parseInt((typeof response.bike.selling != 'undefined') ? response.bike.selling.length : 0) +
               parseInt((typeof response.bike.sellingCompany != 'undefined') ? response.bike.sellingCompany.length : 0) +
+              parseInt(response.contract.length) +
               parseInt((typeof response.box.bill != 'undefined') ? response.box.bill.length : 0) +
               parseInt((typeof response.bike.order != 'undefined') ? response.bike.order.length : 0) +
               ((typeof response.bike.bill != 'undefined') ? parseInt(response.bike.bill.length) : 0)+
