@@ -28,78 +28,111 @@ include 'include/head.php';
         <!-- CONTENT -->
         <section>
             <div class="container-fullwidth">
-				<h1 class="text-green text-center">Choisissez un type d'utilisation</h1>
+				<h1 class="text-green text-center">Choisissez un type d'accessoire</h1>
 
 				<div class="col-md-10 center">
 
-					<a href="catalogue.php?category=Ville et Chemin">
+					<a href="catalogue.php?category=Cadenas">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_villeetchemin.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Ville et Chemin</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_cadenas.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Cadenas</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=Tout chemin">
+					<a href="catalogue.php?category=Casques">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_toutchemin.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Tout chemin</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_casques.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Casques</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=VTT">
+					<a href="catalogue.php?category=Textiles">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_vtt.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">VTT</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_textiles.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Textiles</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=Ville">
+					<a href="catalogue.php?category=Bagagerie">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_ville.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Ville</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_bagagerie.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Bagagerie</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=Speedpedelec">
+					<a href="catalogue.php?category=Eclairage">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_speedpedelec.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Speedpedelec</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_eclairage.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Eclairage</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=Cargo">
+					<a href="catalogue.php?category=Siegesenfants">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_cargo.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Cargo et Famille</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_siegesenfants.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Sièges enfants</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=Pliant">
+					<a href="catalogue.php?category=Remorques">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_pliant.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Pliants</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_remorquesvelo.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Remorques</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=Gravel">
+					<a href="catalogue.php?category=Bidons">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_gravel.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Gravel</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_portesbidons.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Bidons / Portes bidons</h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
 
-					<a href="catalogue.php?category=Enfant">
+					<a href="catalogue.php?category=Gardesboues">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
-							<img src="images/Cover_Catalogue/Cover_Catalogue_enfants.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Enfants</h3></div>
+							<img src="images/Cover_Catalogue/Cover_Catalogue_gardesboue.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Gardes boues</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
+					
+					<a href="catalogue.php?category=Outils">
+						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_outils.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Outils</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
+					
+					<a href="catalogue.php?category=GPS">
+						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_gps.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">GPS / Trackers</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
+					
+					<a href="catalogue.php?category=Pompes">
+						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_pompes.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Pompes</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
+					
+					<a href="catalogue.php?category=Produitsentretien">
+						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_produitsentretien.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Produits d'entretien</h3></div>
+							<div class="space"></div>
 						</div>
 					</a>
 
