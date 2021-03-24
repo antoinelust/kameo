@@ -155,10 +155,10 @@
                   name="remark"
                 ></textarea>
 
-                <div class="separator"></div>
-                <h4 class="text-green"><?= L::mk_order_current_accessories_basket; ?></h4>
-                <div id="accessoriesBasket">
-                  <p id="accessoriesBasketEmpy"><?= L::mk_order_accessory_basket_empty; ?></p>
+                <div class="separator accessoriesBasket"></div>
+                <h4 class="text-green accessoriesBasket"><?= L::mk_order_current_accessories_basket; ?></h4>
+                <p id="accessoriesBasketEmpy"><?= L::mk_order_accessory_basket_empty; ?></p>
+                <div id="accessoriesBasket" class='accessoriesBasket'>
                 </div>
                 <input
                   type="text"
@@ -175,17 +175,17 @@
               </div>
               <div class="separator"></div>
               <div class="text-center"><button id="send" class="button small red button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i><?=L::mk_order_orderbtn;?></button></div>
-              <div class="separator"></div>
-              <h4 class="text-green"><?= L::mk_order_catalog_accessory; ?></h4>
-              <div class="col-md-4">
+              <div class="separator accessoriesCatalogOrder"></div>
+              <h4 class="text-green accessoriesCatalogOrder"><?= L::mk_order_catalog_accessory; ?></h4>
+              <div class="col-md-4 accessoriesCatalogOrder">
                 <label for="accessoriesCategories"><?= L::mk_order_accessory_type; ?></label>
                 <select name="accessoriesCategories"></select>
               </div>
-              <div class="space"></div>
-              <div class="text-center loaderOrderPortfolioAccessories">
+              <div class="space accessoriesCatalogOrder"></div>
+              <div class="text-center loaderOrderPortfolioAccessories accessoriesCatalogOrder">
                 <img src='images/loading2.gif'>
               </div>
-              <div class="gridForAccessories align-self-stretch"></div>
+              <div class="gridForAccessories align-self-stretch accessoriesCatalogOrder"></div>
             </form>
           </div>
         </div>
@@ -351,7 +351,6 @@
         $(this).closest('.accessoryCard').remove();
         if($('#widget-command-form .accessoryCard').length==0){
           $('#widget-command-form #accessoriesBasketEmpy').html(traduction.mk_order_accessory_basket_empty);
-          console.log(traduction.mk_order_accessory_basket_empty);
         }else{
           $('#widget-command-form #accessoriesBasketEmpy').html("");
         }

@@ -59,17 +59,19 @@ if($user_data['LOCKING'] == 'Y'){
   $boxesNumber = 0;
 }
 
-$resultat = execSQL("SELECT EMAIL FROM customer_referential WHERE TOKEN='$token'", array(), false);
+$resultat = execSQL("SELECT EMAIL, COMPANY FROM customer_referential WHERE TOKEN='$token'", array(), false);
 $email = $resultat[0]['EMAIL'];
+$company = $resultat[0]['COMPANY'];
+
 $date=htmlspecialchars($_POST['intakeDay']);
 $intake_hour=htmlspecialchars($_POST['intakeHour']);
 
 if (isset($_POST['intakeBuilding']))
-	$intake_building=htmlspecialchars($_POST['intakeBuilding']);
+	$intake_building=addslashes($_POST['intakeBuilding']);
 else
 	$intake_building='';
 if (isset($_POST['depositBuilding']))
-	$deposit_building=htmlspecialchars($_POST['depositBuilding']);
+	$deposit_building=addslashes($_POST['depositBuilding']);
 else
 	$deposit_building='';
 
@@ -393,6 +395,43 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $intake_building != NULL & $dateStar
     {
         errorMessage("ES0015");
     }
+
+    if($company=='Infrabel' || $company=='Actiris'){
+      $code=execSQL("SELECT CODE, count(1) as SOMME FROM locking_code, reservations WHERE reservations.ID=locking_code.ID_reservation AND EMAIL=? ORDER BY DATE_BEGIN DESC LIMIT 1", array('s', $email), false)[0];
+      if($code['CODE'] != '' && $code['SOMME'] > 0){
+        $code=$code['CODE'];
+        $sql="SELECT COUNT(1) as SOMME FROM locking_code WHERE CODE='$code' AND VALID='Y' AND BUILDING_START='$intake_building'";
+        if ($conn->query($sql) === FALSE) {
+            $response = array ('response'=>'error', 'message'=> $conn->error);
+            echo json_encode($response);
+            die;
+        }
+        $result = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result);
+        if($resultat['SOMME']>0){
+            $duplicate=true;
+        }else{
+            $duplicate=false;
+        }
+      }else{
+        $duplicate=true;
+      }
+    }else{
+      $duplicate=true;
+    }
+
+    while($duplicate){
+        $code = random_int(0,9999);
+        $resultat=execSQL("SELECT COUNT(1) as SOMME FROM locking_code WHERE CODE=? AND BUILDING_START=?", array('is', $code, $intake_building), false)[0];
+        if($resultat['SOMME']>0){
+            $duplicate=true;
+        }else{
+            $duplicate=false;
+        }
+    }
+
+    $response['code']=$code;
+
 
 
     if ($_SESSION['langue']=='fr')
