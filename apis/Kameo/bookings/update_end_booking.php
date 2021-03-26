@@ -52,7 +52,6 @@ if($ID==NULL){
 			if($email=="julien@actiris.be"){
 				$mail->AddAddress("antoine@kameobikes.com");
 			}
-			$mail->AddCC("bookabike@actiris.be");
 			$mail->AddBCC("antoine@kameobikes.com");
 		}else if(constant('ENVIRONMENT') == "test"){
 			$mail->AddAddress("antoine@kameobikes.com");

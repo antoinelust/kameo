@@ -19,7 +19,7 @@ try{
     $IDOrder=isset($_GET['IDOrder']) ? $_GET['IDOrder'] : NULL;
     $category=isset($_GET['category']) ? addslashes($_GET['category']) : NULL;
 
-    if($action=="list"){
+    if($action=="list" || $action=="addBike"){
 
       $response=array();
       $marginBike=0.7;
@@ -202,9 +202,14 @@ try{
       UNION ALL
 
       (select ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, '0' as stockXS, '0' as stockS, '0' as stockM, '0' as stockL, '0' as stockXL , '0' as stockUni, 0 as stockTotal, NULL as estimatedDeliveryDate, SIZES as sizes
-      from bike_catalog where STAANN != 'D' ".$sizeInPortfolioQuery." AND not EXISTS (SELECT 1 from customer_bikes where customer_bikes.STAANN != 'D' AND COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE and customer_bikes.CONTRACT_TYPE='stock') AND NOT EXISTS (".$orderQuery.")
+      from bike_catalog where STAANN != 'D' ".$sizeInPortfolioQuery." AND not EXISTS (SELECT 1 from customer_bikes where customer_bikes.STAANN != 'D' AND COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE and customer_bikes.CONTRACT_TYPE='stock') AND NOT EXISTS (".$orderQuery.")";
 
-      ORDER BY stockTotal DESC, case when estimatedDeliveryDate is null then 1 else 0 end, estimatedDeliveryDate";
+      if($action == "list"){
+        $sql = $sql."ORDER BY stockTotal DESC, case when estimatedDeliveryDate is null then 1 else 0 end, estimatedDeliveryDate";
+      }else{
+        $sql = $sql."ORDER BY BRAND, MODEL";
+      }
+
 
 
       $stmt = $conn->prepare($sql);

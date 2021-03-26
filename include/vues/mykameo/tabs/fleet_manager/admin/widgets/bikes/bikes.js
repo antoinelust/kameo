@@ -66,7 +66,333 @@ $(".fleetmanager").click(function () {
   });
 });
 
+function getListOfBikesBill(factureID){
+  getLinkBikesBillsDetails(factureID).done(function(response){
+    $("#bikesNotLinkedSelection").html("");
+    $('#linkBikesToBillsManagement input[name=ID]').val(response.billingDetails.ID);
+    $('#linkBikesToBillsManagement input[name=supplier]').val(response.billingDetails.BENEFICIARY_COMPANY);
+    $('#linkBikesToBillsManagement input[name=date]').val(response.billingDetails.DATE.substring(0,10));
+    $('#linkBikesToBillsManagement input[name=communication]').val(response.billingDetails.COMMUNICATION_STRUCTUREE);
+    $("#linkBikesToBillsManagement .PDFFile").attr(
+      "data",
+      "factures/" + response.billingDetails.FILE_NAME
+    );
 
+
+    $('#linkBikesToBillsManagement select[name=bikesNotLinked]').find('option').remove().end();
+    var i=0;
+    $('#linkBikesToBillsManagement .bikeNumberTable tbody').html("");
+    if(response.catalogDetails != null){
+      response.catalogDetails.forEach(function(bike){
+        $('#linkBikesToBillsManagement .bikeNumberTable').append('<tr><td>'+(i+1)+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.catalogID+'</td><td>'+bike.SIZE+'</td><td>'+bike.BUYING_PRICE+'</td><td>'+bike.PRICE_HTVA+'</td><td>'+(bike.BIKE_ID == null ? '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>' : bike.BIKE_ID)+'</td></tr>');
+        i++;
+      });
+      $('#linkBikesToBillsManagement .bikesNumber').html(i);
+    }
+
+    if(response.notLinkedBikes != null){
+      response.notLinkedBikes.forEach(function(bike){
+        $('#linkBikesToBillsManagement select[name=bikesNotLinked]').append("<option value='"+bike.ID+"' data-catalogid='"+bike.CATALOG_ID+"'>"+bike.BRAND+" - "+bike.MODEL+" - "+bike.FRAME_TYPE+" - "+bike.SEASON+"</option>");
+        i++;
+      });
+      $('#linkBikesToBillsManagement select[name=bikesNotLinked]').val("");
+    }
+  })
+
+}
+
+
+
+function fill_link_bikes_to_bills(){
+  $("#linkBikesToBills").dataTable({
+    destroy: true,
+    ajax: {
+      url: "api/bikes",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "listBikeBills",
+      },
+    },
+    sAjaxDataProp: "",
+    columns: [
+      {
+        title: "",
+        data: "ID",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            "<a href='#' data-target='#linkBikesToBillsManagement' class='text-green' data-correspondent='"+sData+"' data-toggle='modal'>"+sData+"</a>"
+          );
+        },
+      },
+      {
+        title: "Date",
+        data: "DATE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null) ? 'N/A' : sData.shortDate()
+          );
+        },
+      },
+      { title: "Fournisseur", data: "BENEFICIARY_COMPANY" },
+      {
+        title: "Montant total facture",
+        data: "AMOUNT_HTVA",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            -sData+" €"
+          );
+        },
+      },
+      { title: "Nombre de vélos facture", data: "countBikesCatalog" },
+      {
+        title: "Montant des vélos facture",
+        data: "sumBikesCatalog",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null) ? "0 €" : Math.round(sData)+" €"
+          );
+        },
+      },
+      {
+        title: "Nombre vélos réel",
+        data: "countBikes",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == oData.countBikesCatalog) ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i> '+sData : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i> '+sData
+          );
+        },
+      },
+      {
+        title: "Montant des vélos réel",
+        data: "sumBikes",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null) ? "0 €" : Math.round(sData)+" €"
+          );
+        },
+      },
+      {
+        title: "",
+        data: "ID",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            "<a href='#' data-target='#linkBikesToBillsManagement' class='text-green' data-correspondent='"+sData+"' data-toggle='modal'>Update</a>"
+          );
+        },
+      },
+    ],
+    order: [
+      [0, "desc"]
+    ],
+    paging : false
+  });
+  $("#bikesNotLinkedTable").dataTable({
+    destroy: true,
+    ajax: {
+      url: "api/bikes",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "listOfBikesNotLinked",
+      },
+    },
+    sAjaxDataProp: "",
+    columns: [
+      { title: "ID", data: "ID" },
+      { title: "Frame number", data: "FRAME_NUMBER"},
+      { title: "Marque", data: "BRAND"},
+      { title: "Modèle", data: "MODEL"},
+      { title: "Société", data: "COMPANY" },
+      { title: "Type de contrat", data: "CONTRACT_TYPE"},
+      { title: "Début du contrat", data: "CONTRACT_START"},
+      { title: "Fin du contrat", data: "CONTRACT_END"}
+    ],
+    order: [
+      [0, "asc"]
+    ],
+    paging : false
+  });
+}
+
+$('#linkBikesToBillsManagement').on('hidden.bs.modal', function () {
+  $("#linkBikesToBills").dataTable().api().ajax.reload();
+  $("#bikesNotLinkedTable").dataTable().api().ajax.reload();
+})
+
+$('#linkBikesToBillsManagement').on('shown.bs.modal', function(event){
+  var factureID = $(event.relatedTarget).data("correspondent");
+  $('#linkBikesToBillsManagement tbody').html("");
+
+  $("#summaryBikesLinked").dataTable({
+    destroy: true,
+    ajax: {
+      url: "api/bikes",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "summaryBikesLinked",
+        factureID: factureID
+      }
+    },
+    sAjaxDataProp: "",
+    columns: [
+      { title: "ID", data: "ID" },
+      { title: "Société", data: "COMPANY" },
+      { title: "Taille", data: "SIZE" },
+      { title: "Type de contrat", data: "CONTRACT_TYPE" },
+      { title: "Début de contrat", data: "CONTRACT_START" },
+      { title: "Fin de contrat", data: "CONTRACT_END" },
+      {
+        title: "Date d'achat",
+        data: "BIKE_BUYING_DATE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null) ? 'N/A' : sData.shortDate()
+          );
+        },
+      },
+      {
+        title: "Prix d'achat facture",
+        data: "BUYING_PRICE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            sData+' €'
+          );
+        },
+      },
+      {
+        title: "Prix d'acchat ERP",
+        data: "BIKE_PRICE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            sData+' €'
+          );
+        },
+      },
+      {
+        title: "Date de livraison",
+        data: "DELIVERY_DATE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null) ? 'N/A' : sData.shortDate()
+          );
+        },
+      },
+    ],
+    order: [
+      [0, "asc"]
+    ],
+    paging : false,
+    searching : false
+  });
+
+
+
+  $("#widget-bikesNotLinked-form select[name=bikesNotLinked]").find("option")
+  .remove()
+  .end();
+  getListOfBikesBill(factureID);
+});
+
+$('#linkBikesToBillsManagement select[name=bikesNotLinked]').change(function(){
+  var catalogID=$(this).children("option:selected").data('catalogid');
+  $("#bikesNotLinkedSelection").dataTable({
+    destroy: true,
+    ajax: {
+      url: "api/bills",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "listBikesNotLinkedToBill",
+        catalogID: catalogID
+      }
+    },
+    sAjaxDataProp: "",
+    columns: [
+      { title: "ID", data: "ID" },
+      { title: "Identification", data: "MODEL" },
+      { title: "Société", data: "COMPANY" },
+      { title: "Taille", data: "SIZE" },
+      { title: "Type de contrat", data: "CONTRACT_TYPE" },
+      { title: "Début de contrat", data: "CONTRACT_START" },
+      { title: "Fin de contrat", data: "CONTRACT_END" },
+      {
+        title: "Date d'achat",
+        data: "BIKE_BUYING_DATE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null) ? 'N/A' : sData.shortDate()
+          );
+        },
+      },
+      {
+        title: "Date de livraison",
+        data: "DELIVERY_DATE",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null) ? 'N/A' : sData.shortDate()
+          );
+        },
+      },
+      {
+        title: "Numéro de commande",
+        data: "ORDER_NUMBER",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == null || sData=='') ? 'N/A' : sData.shortDate()
+          );
+        },
+      },
+      {
+        title: "",
+        data: "ID",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html("<a class='button small green button-3d rounded icon-right linkBikeToBill' data-correspondent='"+sData+"'>Assigner</a>");
+        },
+      }
+    ],
+    order: [
+      [0, "asc"]
+    ],
+    paging : false,
+    searching : false
+  });
+
+  $('#bikesNotLinkedSelection').on( 'draw.dt', function () {
+    $('#bikesNotLinkedSelection .linkBikeToBill').off();
+    $('#bikesNotLinkedSelection .linkBikeToBill').click(function(){
+      $.ajax({
+        url: 'api/bills.php',
+        type: 'post',
+        data: { "action": "linkBikeToBill", "ID": $('#linkBikesToBillsManagement select[name=bikesNotLinked]').val(), "bikeID" : $(this).data('correspondent')},
+        success: function(response){
+          $.notify(
+            {
+              message: response.message,
+            },
+            {
+              type: response.response,
+            }
+          );
+          getListOfBikesBill($('#linkBikesToBillsManagement input[name=ID]').val());
+          $("#bikesNotLinkedSelection").html("");
+        }
+      });
+    });
+  })
+});
+
+
+function getLinkBikesBillsDetails(id){
+  return $.ajax({
+    url: 'api/bills.php',
+    type: 'get',
+    data: { "billingID": id, "action" : "getLinkBikesBillsDetails"},
+    success: function(response){
+    }
+  });
+}
 
 function updateDisplayBikeManagement(type){
   if(type=="selling"){
@@ -173,7 +499,7 @@ function add_bike(ID){
             $("#widget-bikeManagement-form div[id=utilisateur_bike]").hide();
           } else {
             $('#widget-bikeManagement-form input[name=email]').val("");
-            $('#widget-bikeManagement-form input[name=phone]').val("test");
+            $('#widget-bikeManagement-form input[name=phone]').val("");
             $("#widget-bikeManagement-form select[name=name]").find("option")
             .remove()
             .end();
@@ -225,23 +551,15 @@ function add_bike(ID){
     $.ajax({
       url: 'apis/Kameo/load_portfolio.php',
       type: 'get',
-      data: {"action": "list"},
+      data: {"action": "addBike"},
       success: function(response){
         if (response.response == 'error') {
           console.log(response.message);
         } else{
           var i=0;
-            //sort name ascending then id descending
-            const portfolioSorted=response.bike.sort(function(a, b){
-                //note the minus before -cmp, for descending order
-                return cmp(
-                  [cmp(a.brand, b.brand), cmp(a.model, b.model)],
-                  [cmp(b.brand, a.brand), cmp(b.model, a.model)]
-                  );
-              });
 
             while(i<response.bikeNumber){
-              $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+portfolioSorted[i].ID+">"+portfolioSorted[i].brand+" - "+portfolioSorted[i].model+" - "+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
+              $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+response.bike[i].ID+">"+response.bike[i].brand+" - "+response.bike[i].model+" - "+response.bike[i].frameType+' - '+response.bike[i].season+' - ID catalogue :'+response.bike[i].ID+'</option>');
               i++;
             }
             $('#widget-bikeManagement-form select[name=portfolioID]').val("");
@@ -410,7 +728,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
   $.ajax({
     url: 'apis/Kameo/load_portfolio.php',
     type: 'get',
-    data: {"action": "list"},
+    data: {"action": "addBike"},
     success: function(response){
       if (response.response == 'error') {
         console.log(response.message);
@@ -998,7 +1316,7 @@ $('body').on('click','.showSoldBikes', function(){
 
   var buttonContent = "Afficher les autres vélos";
   var titleContent = "Vélos: Vendus";
-  var table = $('#bookingAdminTable').DataTable()
+  var table = $('#bikesListingTable').DataTable()
   .column(4)
   .search( "selling", true, false )
   .draw();
@@ -1027,7 +1345,7 @@ $('body').on('click','.showSoldBikes', function(){
 $('body').on('click','.showOrders', function(){
 
   var titleContent = "Vélos: Commandes";
-  var table = $('#bookingAdminTable').DataTable()
+  var table = $('#bikesListingTable').DataTable()
   .column(4)
   .search( "order", true, false )
   .draw();
@@ -1057,7 +1375,7 @@ $('body').on('click','.hideSoldBikes', function(){
   var buttonContent = "Afficher vélos vendus";
   var titleContent = "Vélos: Leasing et autres";
 
-  table=$('#bookingAdminTable').DataTable()
+  table=$('#bikesListingTable').DataTable()
   .column(4)
   .search( "test|renting|leasing", true, false )
   .draw();
@@ -1089,7 +1407,7 @@ $('body').on('click','.hideSoldBikes', function(){
 $('body').on('click','.showStockBikes', function(){
 
   var titleContent = "Vélos : Stock";
-  var table = $('#bookingAdminTable').DataTable()
+  var table = $('#bikesListingTable').DataTable()
   .column(4)
   .search( "stock", true, false )
   .draw();
@@ -1117,7 +1435,7 @@ $('body').on('click','.showStockBikes', function(){
 $('body').on('click','.showPendingDeliveryBike', function(){
 
   var titleContent = "Vélos : En attente livraison";
-  var table = $('#bookingAdminTable').DataTable()
+  var table = $('#bikesListingTable').DataTable()
   .column(4)
   .search( "pending_delivery", true, false )
   .draw();
@@ -1136,11 +1454,10 @@ $('body').on('click','.showPendingDeliveryBike', function(){
   table.column( 15 ).visible( false, true );
   table.column( 16 ).visible( true, true );
   table.column( 17 ).visible( true, true );
-    //$(table.column(5).header()).text('Date de commande');
-    //$(table.column(6).header()).text('Date d\'arrivée');
-    table.draw();
-    $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
-  });
+  table.draw();
+  $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
+});
+
 
 function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleContent){
   //modification du bouton
@@ -1151,7 +1468,7 @@ function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleConten
 
 
 
-function list_bikes_admin() {
+function list_bikes_admin(){
   var bikeMap;
   $.ajax({
     url: "apis/Kameo/get_bikes_listing.php",
@@ -1179,10 +1496,11 @@ function list_bikes_admin() {
         <span">Afficher les vélos en stock</span>
         </span>
         <span class="button small green button-3d rounded icon-right showPendingDeliveryBike">
-        <span">Afficher les vélos en attente de livraison</span>
+          <span">Afficher les vélos en attente de livraison</span>
         </span>
+        <span class="button small green button-3d rounded icon-right linkBikesToBills">Liason factures - vélos</span>
         <br/>
-        <table class="table table-condensed bikesListingTable" id=\"bookingAdminTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
+        <table class="table table-condensed" id=\"bikesListingTable\" data-order='[[ 0, \"desc\" ]]' data-page-length='25'>
         <thead>
         <tr>
         <th>
@@ -1566,9 +1884,117 @@ function list_bikes_admin() {
   dest = dest.concat(temp);
   i++;
   }
-  var temp = "</tbody></table>";
+  var temp = "</tbody></table><table id='linkBikesToBills' class='table' style='width: 100%''></table><div class='separator'></div><h4 class='text-green'>Vélos encore à lier</h4><table id='bikesNotLinkedTable' class='table' style='width: 100%''></table>";
   dest = dest.concat(temp);
   document.getElementById("bikeDetailsAdmin").innerHTML = dest;
+
+  $('.linkBikesToBills').off();
+  $('.linkBikesToBills').click(function(){
+    fill_link_bikes_to_bills();
+    $('#linkBikesToBills').removeClass("hidden");
+    $('#bikesListingTable_wrapper').addClass("hidden");
+  });
+
+
+
+  $('#linkBikesToBillsTable .glyphicon-plus').unbind();
+  $('#linkBikesToBillsTable .glyphicon-plus').click(function(){
+    bikesNumber = $("#widget-linkBikesToBills-form").find('.bikesNumber').html()*1+1;
+    $('#widget-linkBikesToBills-form').find('.bikesNumber').html(bikesNumber);
+
+    var hideBikepVenteHTVA;
+    var hideBikeLeasing ='';
+    var inRecapLeasingBike ='';
+    var inRecapVenteBike ='';
+
+    //creation du div contenant
+    $('#linkBikesToBillsTable').find('tbody')
+    .append(`<tr class="bikeNumber`+(bikesNumber)+` bikeRow form-group">
+    <td class="bLabel"></td>
+    <td class="brand"></td>
+    <td class="model"></td>
+    <td class="catalogID"></td>
+    <td class="size"></td>
+    <td class="priceCatalog"></td>
+    <td class="sellingPrice"></td>
+    <td class="bikeID"></td>
+    </tr>`);
+
+    //label selon la langue
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.bLabel')
+    .append('<label>'+ bikesNumber +'</label>');
+
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.brand')
+    .append("<select class='brand'>\
+      <option value='ahooga'>Ahooga</option>\
+      <option value'benno'>Benno</option>\
+      <option value'bzen'>BZEN</option>\
+      <option value'conway'>Conway</option>\
+      <option value'Douze Cycle'>Douze Cycle</option>\
+      <option value'hnf'>HNF Nicolai</option>\
+      <option value'kayza'>Kayza</option>\
+      <option value'Moustache Bikes'>Moustache Bikes</option>\
+      <option value'Orbea'>Orbea</option>\
+      <option value'other'>Other</option>\
+      <option value'victoria'>Victoria</option>\
+      </select>");
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.brand>select').val("");
+
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.model')
+    .append("<select class='pModel'></select>");
+
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.catalogID')
+    .append("<input type='number' name='catalogID[]' class='form-control required' readonly>");
+
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.size')
+    .append("<select class='size form-control required' name='size[]'>\
+      <option value='XS'>XS</option>\
+      <option value'S'>S</option>\
+      <option value'M'>M</option>\
+      <option value'L'>L</option>\
+      <option value'XL'>XL</option>\
+      <option value'unique'>Unique</option>\
+      </select>");
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.size>select').val("");
+
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.priceCatalog')
+    .append("<input type='number' name='buyingPrice[]' step='0.01' class='form-control required'>");
+
+    $('#linkBikesToBillsTable').find('.bikeNumber'+(bikesNumber)+'>.sellingPrice')
+    .append("<input type='number' step='0.01' class='form-control required' readonly>");
+
+    //gestion du select du velo
+    $('#linkBikesToBillsTable .brand select').off();
+    $('#linkBikesToBillsTable .brand select').on('change',function(){
+
+      var $modelSelect=$(this).closest('.bikeRow').find('.pModel');
+
+      $modelSelect.find("option")
+      .remove()
+      .end();
+      $.ajax({
+        url: "api/portfolioBikes",
+        type: "get",
+        data: { action: "listModelsFromBrand", brand:$(this).val()},
+        success: function (response){
+          response.forEach(model => $modelSelect.append('<option value="'+model.ID+'" data-buyingprice="'+model.BUYING_PRICE+'" data-sellingprice="'+model.PRICE_HTVA+'">'+model.MODEL+' - '+model.FRAME_TYPE+' -'+model.SEASON+'</option>'));
+          $modelSelect.val("");
+        }
+      });
+    });
+
+    $('#linkBikesToBillsTable .pModel').on('change',function(){
+      var catalogID = $(this).val();
+      var buyingPrice=$(this).children("option:selected").data("buyingprice");
+      var sellingPrice=$(this).children("option:selected").data("sellingprice");
+      $(this).closest('.bikeRow').find('.catalogID input').val(catalogID);
+      $(this).closest('.bikeRow').find('.priceCatalog input').val(buyingPrice);
+      $(this).closest('.bikeRow').find('.sellingPrice input').val(sellingPrice);
+    });
+    checkMinus('#widget-linkBikesToBills-form','.bikesNumber');
+  });
+
+
 
   $('.getBikePosition').click(function(){
     bikeMap=this.name;
@@ -1654,7 +2080,7 @@ function list_bikes_admin() {
   });
 
 
-  table = $("#bookingAdminTable").DataTable({
+  table = $("#bikesListingTable").DataTable({
     paging: true,
     searching: true,
     scrollX: true,
