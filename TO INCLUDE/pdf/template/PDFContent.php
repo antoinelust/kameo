@@ -320,20 +320,19 @@ h2{
         </div>
       </div>
     <?php } ?>
-    <?php if (count($accessories) > 0) { ?>
-      <div>
-        <?php
-        echo "<div class='listItem'>• Achat de " . count($accessories)  . " accessoire(s): </div>" ; ?>
-        <div class='subList'>
-          <?php
-          foreach ($accessories as $accessory) {
-            echo "<div class='subListItem'>• " . $accessory['NAME'] . "</div>";
-          }?>
-        </div>
-      </div>
-    <?php  } ?>
+    <?php if (isset($_POST['accessoriesAccessory'])) {
+      echo "<div>
+        <div class='listItem'>• Achat de " . count($_POST['accessoriesAccessory'])  . " accessoire(s): </div>
+        <div class='subList'>";
+          foreach ($_POST['accessoriesAccessory'] as $accessory) {
+            echo "<div class='subListItem'>• " . $accessory . "</div>";
+          }
+        echo "</div>
+      </div>";
+    }
 
-    <?php if (is_array($others) && count($others) > 0) { ?>
+
+    if (is_array($others) && count($others) > 0) { ?>
       <div>
         <?php
         echo "<div class='listItem'>• Autres : </div>" ; ?>
@@ -419,7 +418,6 @@ if (count($bikes) > 0) {
         </tbody>
       </table>
       <div><img src="<?php echo $bikeImg ?>" alt="velo.jpg" class="img-large" /></div>
-      <div><a href="<?php echo $bike['LINK'] ?>">Lien du vélo</a></div>
     </page>
   <?php }
 }
@@ -514,35 +512,43 @@ if($numberMaintenance > 0){ ?>
       Les éléments suivants ne sont pas couverts par l’entretien :
     </p>
     <div class="list">
-      <div class="subListItem">• Pièces de rechanges non comprises dans la liste précédente ;</div>
-      <div class="subListItem">• Réparation des dommages causés par une utilisation impropre, négligence, lors d’une compétition, collision, accidents ou les chutes, le vandalisme ou toute autre cause que l'usure normale ;</div>
-      <div class="subListItem">• Entretien et réparation de composants, de fonctions optionnelles et d'accessoires qui n'étaient pas fournis et montés à la livraison du vélo.</div>
+      <div class="listItem">• Pièces de rechanges non comprises dans la liste précédente ;</div>
+      <div class="listItem">• Réparation des dommages causés par une utilisation impropre, négligence, lors d’une compétition, collision, accidents ou les chutes, le vandalisme ou toute autre cause que l'usure normale ;</div>
+      <div class="listItem">• Entretien et réparation de composants, de fonctions optionnelles et d'accessoires qui n'étaient pas fournis et montés à la livraison du vélo.</div>
     </div>
-    <h3>Intervention sur demande</h3>
+    <h3>Réparation et intervention sur demande</h3>
     <p>
-      Un vélo ne fonctionne plus correctement ou une pièce est cassée ? Vous souhaitez réaliser un check complet
-      de la flotte avant une activité de la cellule environnement ?
+      Cette section reprend toutes les demandes en dehors des 4 entretiens prevus et en particulier : les crevaisons, la casse d’une chaine ou une erreur moteur.
     </p>
-    <p>
-      Pas de problème, nous pouvons planifier un entretien supplémentaire. La facturation de celui-ci dépend
-      alors de la nature de la demande.
-    </p>
-    <p class="bold">
-      SI LA DEMANDE RELÈVE D’UNE MALFAÇON DU VÉLO, KAMEO BIKES PREND À SA CHARGE
-      LE COÛT DE L’ENTRETIEN ET LES PIÈCES.
-    </p>
-    <p>Pour toute autre raison, KAMEO Bikes facturera l’intervention de la manière suivante :</p>
-    <div class="list">
-      <div class="listItem">• 75€ pour le déplacement et la première heure de travail</div>
-      <div class="listItem">
-        <div>• Main d’œuvre : (après les 60 min de base)</div>
-        <div class="subList" style="margin-top: 4mm;">
-          <div class="subListItem">o 50€/h pour le travail effectué par notre technicien de 8h à 18h du lundi au vendredi</div>
-          <div class="subListItem">o 85€/h en dehors de cette tranche horaire.</div>
-        </div>
+    <div class="list" style="margin-top: 5mm;">
+      <div class="listItem">Vous êtes face à un problème qui vous empêche de rouler avec votre vélo :</div>
+      <div class="subList" style="margin-top: 5mm;">
+        <div class="subListItem">o	Dès la constatation du problème, contactez le service de dépannage au 04 340 56 23 avec le numéro de contrat MA33000999</div>
+        <div class="subListItem">o	lDemandez que le vélo soit dépanné et remorqué jusque chez KAMEO Bikes. Vous avez aussi droit à être déposé où vous le souhaitez</div>
+        <div class="subListItem">o	KAMEO Bikes réceptionnera votre vélo, s’en occupera dans les plus bref délais et vous contactera pour vous le déposer</div>
       </div>
-      <div class="listItem">• Les pièces de rechange au prix du marché</div>
+      <div class="listItem">Vous êtes face à un mauvais fonctionnement mais vous pouvez sans rouler avec le vélo en ayant la certitude de ne pas le détériorer :</div>
+      <div class="subList" style="margin-top: 5mm;">
+        <div class="subListItem">o	Terminez votre trajet</div>
+        <div class="subListItem">o	Contactez KAMEO Bikes à l’adresse sav@kameobikes.com ou via la plateforme MyKAMEO pour une demande d’entretien</div>
+        <div class="subListItem">o	Vous serez alors recontacteé par un technicien</div>
+      </div>
     </div>
+    <p>Comment cette intervention vous sera facturée ? <br>
+      Si elle arrive dans un délais de 2 mois avant le prochain entretien prévu pour votre vélo, KAMEO Bikes effectuera en même temps que l’intervention de réparation l’entretien global de votre vélo.
+      Seules les pièces changées et non comprises dans les pièces de rechange vous seront facturées.<br>
+      Pour tout cas hors de cette situation KAMEO Bikes facturera les frais suivants :
+    </p>
+    <div class="list" style="margin-top: 5mm;">
+      <div class="listItem">Main d’œuvre :</div>
+      <div class="subList" style="margin-top: 5mm;">
+        <div class="subListItem">o	45€/h pour le travail effectué par notre technicien de 8h à 18h du lundi au vendredi</div>
+        <div class="subListItem">o	85€/h en dehors de cette tranche horaire</div>
+      </div>
+      <div class="listItem">Les pièces de rechange au prix du marché</div>
+      <div class="listItem">Livraison du vélo : 25 € </div>
+    </div>
+    <p>SI LA DEMANDE RELÈVE D’UNE MALFAÇON DU VÉLO, KAMEO BIKES PREND À SA CHARGE LE COÛT DE L’ENTRETIEN ET LES PIÈCES.</p>
   </page>
 <?php } ?>
 
@@ -570,11 +576,12 @@ if ($assurance == true) { ?>
     <div>
       <div class="bold">L’omnium P-Vélo a les caractéristiques suivantes :</div>
       <div class="list" style="margin-top: 5mm;">
-        <div class="subListItem">• En cas de perte totale ou vol complet, le vélo est remboursé TVAC la première année. A partir du 13eme mois, il y a une dégressivité mensuelle du remboursement du vélo de 1% par mois ;</div>
-        <div class="subListItem bold">• Franchise de 150€ ;</div>
+        <div class="subListItem">• « En cas de perte totale ou vol complet, une franchise de 150 € sera réclamée au client. Le client pourra ensuite reprendre, chez KAMEO, un nouveau vélo d’un prix catalogue équivalent au vélo volé. KAMEO s’efforcera de proposer un vélo équivalent dans la mesure des stock disponibles.</div>
         <div class="subListItem">• Aedes impose l’achat d’un cadenas d’une valeur d’achat de minimum 60€ pour tout qui souscrit une Omnium Vélo et qui souhaite être couvert contre le vol. </div>
         <div class="subListItem">• La couverture est valable en Belgique comme à l’étranger ;</div>
+        <div class="subListItem">• Il est nécessaire de restituer les deux clés du cadenas du vélo afin que l’assurance puisse être activée.</div>
         <div class="subListItem">• L’assurance comprend <span class="bold">2 dépannages</span> d’un même vélo dans la même année. S’il devait y en avoir plus, ceux-ci seront facturés suivant la police Aedes en annexe.</div>
+        <div class="subListItem">• Dans le cadre d'une assurance pour un speedpedelec, un RC est souscrite. Elle couvre les dommages matériels et corporels que vous causeriez aux tiers en cas d’accident si votre responsabilité est engagée.</div>
       </div>
     </div>
     <div>
@@ -597,8 +604,6 @@ if ($assurance == true) { ?>
       charge.
     </p>
     <div>Si vous avez des questions supplémentaires, n’hésitez pas à nous contacter !</div>
-  </page>
-  <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
     <h3>Procédure en cas de vol</h3>
     <p>
       <span class="bold">Les démarches suivantes sont obligatoires.</span> En cas de non-respect des délais ou de non-réalisation
@@ -622,15 +627,9 @@ if ($assurance == true) { ?>
 
 <?php
   //accessoires
-  if (count($accessories) > 0) { ?>
+  if (count($accessories)>0){ ?>
     <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
       <h1>2. Accessoires</h1>
-      <p>
-        Les vélos sont équipés mais les cyclistes doivent l’être également ! Il est important d’avoir un bon cadenas
-        pour sécuriser le vélo à un point fixe et une sacoche pour transporter ses affaires sans transpirer. La
-        sécurité des cyclistes est également à assurer via un casque répondant aux normes d’usage et
-        rétroéclairé. Une chasuble permet de garantir la visibilité vis-à-vis des autres usagers de la route !
-      </p>
       <table class="maxWidth tableBorder">
         <thead style="font-size: 18px;">
           <tr>
@@ -641,14 +640,14 @@ if ($assurance == true) { ?>
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($accessories as $accessory) { ?>
+          <?php foreach ($accessories as $key=>$accessory) {
+            echo '
             <tr>
-              <td style="width:33%;" class="center"><?php echo $accessory['NAME']; ?></td>
-              <!--<td style="width:25%;" class="center">A venir ...</td> -->
-              <td style="width:33%;" class="center"><?php echo $accessory['DESCRIPTION']; ?></td>
-              <td style="width:33%;" class="center"><?php echo $accessory['count']; ?></td>
-            </tr>
-          <?php } ?>
+              <td style="width:33%;" class="center">'.$accessory['BRAND'].' - '.$accessory['MODEL'].'</td>
+              <td style="width:33%;" class="center">'.$accessory['MODEL'].'</td>
+              <td style="width:33%;" class="center">1</td>
+            </tr>';
+          } ?>
         </tbody>
       </table>
     </page>
@@ -692,7 +691,7 @@ if ($assurance == true) { ?>
               } ?>
             </td>
           </tr>
-        <?php } if(($buyOrLeasing =="both" || $buyOrLeasing == "buy") && count($bikes) > 0) { ?>
+        <?php } if(($buyOrLeasing =="both") && count($bikes) > 0) { ?>
           <tr>
             <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Vélo: Achat</div> </td>
             <td style="width:33%;">
@@ -708,7 +707,7 @@ if ($assurance == true) { ?>
                 if($globalDDiscount != '0'){
                   $newPrice=round($bike['PRICE_HTVA']*(100 - $globalDDiscount)/100);
                   $newPriceTVAC = round($newPrice * 1.21);
-                  echo "<del><div style='margin-left:3mm;'>{$bike['PRICE_HTVA']} € HTVA ({$priceTVAC} € TVAC) <span class='green bold'> x{$bike['count']}</span></div></del><br/>";
+                  echo "<div style='margin-left:3mm;'>{$bike['PRICE_HTVA']} € HTVA ({$priceTVAC} € TVAC) <span class='green bold'> x{$bike['count']}</span></div></del><br/>";
                   echo "<div style='margin-left:3mm; color : red'> - ".$globalDDiscount." %</div><br/>";
                   echo "<div style='margin-left:3mm;'>{$newPrice} € HTVA ({$newPriceTVAC} € TVAC) <span class='green bold'> x{$bike['count']}</span></div><br/>";
                 }else{
@@ -719,6 +718,29 @@ if ($assurance == true) { ?>
           </tr>
         <?php } ?>
 
+        <?php if (count($accessories) > 0) { ?>
+          <tr>
+            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Accessoire: Acquisition sur <?php echo $leasingDuration ; ?> mois</div> </td>
+            <td style="width:33%;">
+              <?php foreach ($accessories as $accessory) {
+                echo "<div style='margin-left:3mm;'>{$accessory['MODEL']}  <span class='green bold'> x1</span></div><br/>";
+              } ?>
+            </td>
+            <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
+              <?php foreach ($accessories as $accessory) {
+                if($accessory['initialPrice'] != $accessory['finalPrice'] && $accessory['finance']=="achat"){
+                  echo "<div style='margin-left:3mm;'>Achat:<br/> <del>".round($accessory['initialPrice'], 2)." € HTVA</del><br/>".round($accessory['finalPrice'], 2)." € HTVA <span class='green bold'> x1</span></div><br/><br/>";
+                }else{
+                  if($accessory['finance']=="achat"){
+                    echo "<div style='margin-left:3mm;'><br/>". round($accessory['finalPrice'], 2)." € HTVA <span class='green bold'> x1</span></div><br/><br/>";
+                  }else{
+                    echo "<div style='margin-left:3mm;'><br/>".round($accessory['finalPrice'], 2)." €/mois HTVA <span class='green bold'> x1</span></div><br/><br/>";
+                  }
+                }
+              } ?>
+            </td>
+          </tr>
+        <?php } ?>
         <?php if (count($boxes) > 0) { ?>
           <tr>
             <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Boxes: Installation + Location <?php echo $leasingDuration ; ?> mois</div> </td>
@@ -740,22 +762,6 @@ if ($assurance == true) { ?>
                     echo  " Location:<br/> {$box['LOCATION_PRICE']} € HTVA/mois  <span class='green bold'> x{$box['count']}</span></div><br/>";
                 }
 
-              } ?>
-            </td>
-          </tr>
-        <?php } ?>
-
-        <?php if (count($accessories) > 0) { ?>
-          <tr>
-            <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Accessoires(achat) </div></td>
-            <td style="width:33%;">
-              <?php foreach ($accessories as $accessory) {
-                echo "<div style='margin-left:3mm;'>{$accessory['NAME']} <span class='green bold'> x{$box['count']}</span></div><br/>";
-              } ?>
-            </td>
-            <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
-              <?php foreach ($accessories as $accessory) {
-                echo "<div style='margin-left:3mm;'>Prix: {$accessory['BUYING_PRICE']} € HTVA <span class='green bold'> x{$box['count']}</span></div><br/>";
               } ?>
             </td>
           </tr>
@@ -785,7 +791,7 @@ if ($assurance == true) { ?>
 
   <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
     <?php $titleNumber = 2;
-    if (count($accessories) > 0) { $titleNumber = 3; } ?>
+    if (count($accessories)>0) { $titleNumber = 3; } ?>
     <h1><?php echo $titleNumber; ?>. Conditions de vente</h1>
     <h2>Prix</h2>
     <div class="light">Les prix sont entendus HTVA.</div>
@@ -899,14 +905,14 @@ if ($assurance == true) { ?>
       </div>
       <h2>Rachat du vélo en cours de contrat</h2>
       <div class="light">
-        Dans le cas où la société cliente et/ou l’employé, souhaite(nt) arrêter le contrat mais devenir propriétaire du vélo, cela est possible après 12 mois de contrat.
-        Le montant dû est égal à la somme de :
-        <ul>
-          <li> 60% de la valeur restante du contrat</li>
-          <li> La valeur résiduelle du vélo</li>
-        </ul>
-        <strong>Ce montant n’est pas cumulable avec l’indemnité de rupture décrite en début de page, une procédure ou l'autre s'applique, jamais les deux. Après
-        le paiement de la valeur de rachat, le vélo n'est plus la propriété de la KAMEO.</strong>
+        <p>Dans le cas où la société cliente et/ou l’employé, souhaite(nt) arrêter le contrat mais devenir propriétaire du vélo, cela est possible après 12 mois de contrat.
+        Le montant dû est égal à la somme de :</p>
+        <div class="list">
+          <div class="subListItem"> 60% de la valeur restante du contrat</div>
+          <div class="subListItem"> La valeur résiduelle du vélo</div>
+        </div>
+        <p><strong>Ce montant n’est pas cumulable avec l’indemnité de rupture décrite en début de page, une procédure ou l'autre s'applique, jamais les deux. Après
+        le paiement de la valeur de rachat, le vélo n'est plus la propriété de la KAMEO.</strong></p>
 
       </div>
     </page>

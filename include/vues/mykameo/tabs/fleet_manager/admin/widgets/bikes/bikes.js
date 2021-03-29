@@ -1570,17 +1570,19 @@ function list_bikes_admin(){
         '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>';
       }
 
-      if (
-        response.bike[i].contractStart == null &&
-        response.bike[i].company != "KAMEO" &&
-        response.bike[i].company != "KAMEO VELOS TEST"
-        ) {
-        start = '<span class="text-red">N/A</span>';
-    } else if (
-      response.bike[i].contractStart != null &&
-      response.bike[i].company != "KAMEO" &&
-      response.bike[i].company != "KAMEO VELOS TEST"
+    if (
+      response.bike[i].contractStart == null &&
+      response.bike[i].company != "KAMEO" && response.bike[i].contractType != 'selling'
       ) {
+      start = '<span class="text-red">N/A</span>';
+    } else if(response.bike[i].contractType == "selling"){
+      start =
+      '<span class="text-green">' +
+      response.bike[i].sellingDate.shortDate() +
+      "</span>";
+    }else if (
+      response.bike[i].contractStart != null &&
+      response.bike[i].company != "KAMEO") {
       start =
       '<span class="text-green">' +
       response.bike[i].contractStart.substr(8, 2) +
@@ -1591,14 +1593,12 @@ function list_bikes_admin(){
       "</span>";
     } else if (
       response.bike[i].contractStart == null &&
-      (response.bike[i].company == "KAMEO" ||
-        response.bike[i].company == "KAMEO VELOS TEST")
+      (response.bike[i].company == "KAMEO")
       ) {
       start = '<span class="text-green">N/A</span>';
     } else if (
       response.bike[i].contractStart != null &&
-      (response.bike[i].company == "KAMEO" ||
-        response.bike[i].company == "KAMEO VELOS TEST")
+      (response.bike[i].company == "KAMEO")
       ) {
       start =
       '<span class="text-red">' +
@@ -1608,16 +1608,7 @@ function list_bikes_admin(){
       "/" +
       response.bike[i].contractStart.substr(2, 2) +
       "</span>";
-    } else if (
-      response.bike[i].contractStart != null &&
-      response.bike[i].company != "KAMEO" &&
-      response.bike[i].contractType == "selling"
-      ) {
-      start =
-      '<span class="text-green">' +
-      response.bike[i].contractStart.shortDate() +
-      "</span>";
-    } else {
+    }else {
       start = '<span class="text-red">ERROR</span>';
     }
 

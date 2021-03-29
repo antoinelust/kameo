@@ -250,8 +250,7 @@
                 type: "success",
               }
             );
-            initializeFields();
-            get_company_listing("*");
+            $("#companyListingTable").dataTable().api().ajax.reload();
             document.getElementById("widget-addClient-form").reset();
             $("#addClient").modal("toggle");
           } else {
