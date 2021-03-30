@@ -240,11 +240,10 @@ try{
       $stmt->close();
       $conn->close();
       die;
-
     }
     if($action=="retrieve"){
       include 'connexion.php';
-      $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, SIZES as sizes FROM bike_catalog WHERE ID='$ID'";
+      $sql="SELECT ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyingPrice, PRICE_HTVA as portfolioPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, SIZES as sizes, MINIMAL_STOCK as minimalStock FROM bike_catalog WHERE ID='$ID'";
       $stmt = $conn->prepare($sql);
       if($stmt){
                 //$stmt->bind_param('ffi', $marginBike, $marginOther, $leasingDuration);

@@ -21,8 +21,6 @@ echo '<body class="wide">
 		include $_SERVER['DOCUMENT_ROOT'].'/include/header.php';
     require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
     ?>
-
-
     <!-- CONTENT -->
     <section class="content">
         <div class="container">

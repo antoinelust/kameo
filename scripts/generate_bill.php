@@ -5,6 +5,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
+
 $company=$_POST['company'];
 $dateStart=$_POST['dateStart'];
 $dateEnd=isset($_POST['dateEnd']) ? $_POST['dateEnd'] : NULL;
@@ -66,9 +67,7 @@ if($length=='0'){
         die;
     }
 }
-
 $resultat = mysqli_fetch_assoc($result);
-
 $companyName=$resultat['COMPANY_NAME'];
 $street=$resultat['STREET'];
 $zip=$resultat['ZIP_CODE'];
@@ -205,9 +204,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             $i=0;
             $total=0;
-
-
-
             while($i<$itemNumber){
                 $price=floatval($_POST['price'.$i]);
                 $TVA=($_POST['TVA'.$i]);

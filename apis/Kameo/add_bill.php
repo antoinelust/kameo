@@ -8,6 +8,8 @@ if(!isset($_SESSION))
     session_start();
 }
 
+
+
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
@@ -17,7 +19,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 $email=$_POST['widget-addBill-form-email'];
-$company=addslashes($_POST['widget-addBill-form-company']);
+$company=addslashes($_POST['company']);
 $beneficiaryCompany=addslashes($_POST['beneficiaryCompany']);
 $companyOther=$_POST['widget-addBill-form-companyOther'];
 $date=$_POST['widget-addBill-form-date'];
@@ -35,6 +37,17 @@ $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST[
 $billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
 $communication=addslashes($_POST['communication']);
 
+$scan=isset($_POST['scan']) ? addslashes($_POST['scan']) : NULL;
+
+$typeArticle = isset($_POST['typeArticle']) ? addslashes($_POST['typeArticle']) : NULL;
+$companyInternalReference = isset($_POST['companyInternalReference']) ? addslashes($_POST['companyInternalReference']) : NULL;
+$articlePrice= isset($_POST['articlePrice']) ? addslashes($_POST['articlePrice']) : NULL;
+$articleId= isset($_POST['articleId']) ? addslashes($_POST['articleId']) : NULL;
+
+$dateNow = isset($_POST['date']) ? addslashes($_POST['date']) : NULL;
+
+$bikeArrayId = isset($_POST['bikeArrayId']) ?$_POST['bikeArrayId'] :  NULL;
+$lengthArray= isset($_POST['articleNumbers']) ? addslashes($_POST['articleNumbers']) : NULL;
 
 
 if($amountHTVA<0 && $type != 'credit' && $company!="KAMEO"){
@@ -115,48 +128,81 @@ if($billType == "manual"){
 
         if(!in_array($extension, $extensions))
         {
-              errorMessage("ES0034");
-        }
+          errorMessage("ES0034");
+      }
 
 
-        $taille_maxi = 6291456;
-        $taille = filesize($_FILES['widget-addBill-form-file']['tmp_name']);
-        if($taille>$taille_maxi)
-        {
-              errorMessage("ES0023");
-        }
+      $taille_maxi = 6291456;
+      $taille = filesize($_FILES['widget-addBill-form-file']['tmp_name']);
+      if($taille>$taille_maxi)
+      {
+          errorMessage("ES0023");
+      }
 
-        $today = getdate();
-
-
-
-        $fichier = $fileName.".pdf";
-         if(!move_uploaded_file($_FILES['widget-addBill-form-file']['tmp_name'], $dossier . $fichier)){
-              errorMessage("ES0024");
-         }
+      $today = getdate();
 
 
-    }else{
-        errorMessage("ES0035");
-    }
-}else{
 
-    include 'connexion.php';
-    $sql="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $result3 = mysqli_query($conn, $sql);
-    $resultat = mysqli_fetch_assoc($result3);
-    $newID=$resultat['MAX_TOTAL'];
-    $newID=strval($newID+1);
-
-    $newIDOUT=$resultat['MAX_OUT'];
-    $newIDOUT=strval($newIDOUT+1);
+      $fichier = $fileName.".pdf";
+      if(!move_uploaded_file($_FILES['widget-addBill-form-file']['tmp_name'], $dossier . $fichier)){
+          errorMessage("ES0024");
+      }
 
 
+  }else{
+    errorMessage("ES0035");
+}
+}
+else{
+   include 'connexion.php';
+   $sql="select max(ID) as MAX_TOTAL, max(ID_OUT_BILL) as MAX_OUT from factures";
+   if ($conn->query($sql) === FALSE) { $response = array ('response'=>'error', 'message'=> $conn->error);
+   echo json_encode($response);}
+   $result3 = mysqli_query($conn, $sql);
+   $resultat = mysqli_fetch_assoc($result3);
+   $newID=$resultat['MAX_TOTAL'];
+   $newID=strval($newID+1);
+
+   $newIDOUT=$resultat['MAX_OUT'];
+   $newIDOUT=strval($newIDOUT+1);
+
+
+   if($scan=="test"){
+      $i=0;
+      if($typeArticle=='BIKE'){
+
+          $data['ID'.$i] = $articleId;
+          $data['price'.$i] = $articlePrice;
+          $data['type'.$i] = "bikeSell";
+          $data['TVA'.$i] = "21";
+          $i++;
+      }
+      else  if($typeArticle=='ACCESSORY'){
+       $data['ID'.$i] = $articleId;
+       $data['price'.$i] = $articlePrice;
+       $data['type'.$i] = "accessorySell";
+       $data['TVA'.$i] = "21";
+       $i++;
+   }
+
+   $data['itemNumber'] = $i;
+   $data['company'] = $company;
+   $data['dateStart'] = $dateNow;
+   $data['billingGroup'] = "1";
+  }else if($scan=="billsGeneral"){
+    $i=0;
+    while ($i<$lengthArray) {
+      $data['ID'.$i] = $bikeArrayId[$i][0];
+      $data['price'.$i] =$bikeArrayId[$i][1];
+      $data['type'.$i] =$bikeArrayId[$i][2];
+      $data['TVA'.$i] = "21";
+      $i++;
+  }
+  $data['itemNumber'] = $lengthArray;
+  $data['company'] = $company;
+  $data['dateStart'] = $dateNow;
+  $data['billingGroup'] = "1";
+  }else{
     $bikesNumber=isset($_POST['bikesNumber']) ? $_POST['bikesNumber'] : NULL;
     $accessoriesNumber=isset($_POST['accessoriesNumber']) ? $_POST['accessoriesNumber'] : NULL;
     $otherAccessoriesNumber=isset($_POST['otherAccessoriesNumber']) ? $_POST['otherAccessoriesNumber'] : NULL;
@@ -193,38 +239,36 @@ if($billType == "manual"){
         $data['type'.$i] = "maintenance";
         $data['TVA'.$i] = "6";
         $i++;
-      }
     }
-    $data['itemNumber'] = $i;
-    $data['company'] = $company;
-    $data['dateStart'] = $date;
-    $data['billingGroup'] = "1";
-
-
-    error_log("Final result2 :".constant('ENVIRONMENT')."\n", 3, "generate_bill.log");
-
-    if(constant('ENVIRONMENT')=="production"){
-        $test=CallAPI('POST', 'https://www.kameobikes.com/scripts/generate_bill.php', $data);
-    }else if(constant('ENVIRONMENT')=="test"){
-        $test=CallAPI('POST', 'https://www.kameobikes.com/test/scripts/generate_bill.php', $data);
-    }else{
-        $test=CallAPI('POST', 'http://kameobikes/scripts/generate_bill.php', $data);
-    }
-
-    try {
-        $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
-        $html2pdf->pdf->SetDisplayMode('fullpage');
-        $html2pdf->writeHTML($test);
-        $path=$_SERVER['DOCUMENT_ROOT'].'/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
-        $html2pdf->Output($path, 'F');
-    } catch (Html2PdfException $e) {
-        $html2pdf->clean();
-        $formatter = new ExceptionFormatter($e);
-        $response = array ('response'=>'error', 'message'=> $formatter->getHtmlMessage());
-        echo json_encode($response);
-        die;
-    }
-    $fichier = date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
+  }
+   $data['itemNumber'] = $i;
+   $data['company'] = $company;
+   $data['dateStart'] = $date;
+   $data['billingGroup'] = "1";
+  }
+  error_log("Final result2 :".constant('ENVIRONMENT')."\n", 3, "generate_bill.log");
+  if(constant('ENVIRONMENT')=="production"){
+    $test=CallAPI('POST', 'https://www.kameobikes.com/scripts/generate_bill.php', $data);
+  }else if(constant('ENVIRONMENT')=="test"){
+    $test=CallAPI('POST', 'https://www.kameobikes.com/test/scripts/generate_bill.php', $data);
+  }else{
+        //Modifier en fonction du virtual host 
+    $test=CallAPI('POST', 'http://kameo.local/scripts/generate_bill.php', $data);
+  }
+  try {
+    $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
+    $html2pdf->pdf->SetDisplayMode('fullpage');
+    $html2pdf->writeHTML($test);
+    $path=$_SERVER['DOCUMENT_ROOT'].'/factures/'.date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
+    $html2pdf->Output($path, 'F');
+  } catch (Html2PdfException $e) {
+    $html2pdf->clean();
+    $formatter = new ExceptionFormatter($e);
+    $response = array ('response'=>'error', 'message'=> $formatter->getHtmlMessage());
+    echo json_encode($response);
+    die;
+  }
+  $fichier = date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
 }
 
 
@@ -264,11 +308,10 @@ if($billType=='manual'){
         echo json_encode($response);
         die;
     }
-}else{
+}
+else{
 }
 
-echo json_encode($billType);
-die;
 
 
 $conn->close();

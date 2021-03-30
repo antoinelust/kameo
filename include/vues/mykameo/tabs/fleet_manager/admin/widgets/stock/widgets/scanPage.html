@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html>
-
 <body>
-
-
 	<div class="modal fade" id="scanBarcodeModal" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -20,6 +17,7 @@
 
 					<button  onclick="changeDisplay('remove')" class="button small green button-3d rounded icon-left" id="removeBt">Enlever du stock</button>
 
+					<button  onclick="changeDisplay('generateBill')" class="button small green button-3d rounded icon-left" id="billsGeneralBt">Facture Combiné</button>
 					<button  onclick="changeDisplay('bills')" class="button small green button-3d rounded icon-left" id="billsBt">Facture entretien</button>
 				</div>
 
@@ -29,11 +27,19 @@
 				<div style="display:block ">
 					<video id="video" width="70%" height="20%" style="border: 1px solid gray"></video>
 				</div>
+
 				<div class="col-sm-12" name="typeDiv" style="display:block;">			
 					<label id="resultName" for="resultDisplay">Etat du scan :</label>
 					<div class="col-sm-4">
 						<label for="resultDisplay">Code-Barre : </label>
 						<input class="form-control" readonly="readonly" name="resultDisplay" id="resultDisplay">
+					</div>
+					<div class="col-sm-4">
+						<div id="sourceSelectPanel" style="display:none">
+							<label for="sourceSelect">Changer de caméra :</label>
+							<select id="sourceSelect" style="max-width:400px">
+							</select>
+						</div>
 					</div>
 				</div>
 
@@ -41,12 +47,6 @@
 				<div id="displayScan" style="display:block ">
 					<div class="col-sm-12">
 						<form  name = "widget-stockScan-form" id="widget-stockScan-form" role="form" method="get" action="apis/Kameo/scannerForm.php">
-
-							<div id="sourceSelectPanel" style="display:none">
-								<label for="sourceSelect">Changer de caméra :</label>
-								<select id="sourceSelect" style="max-width:400px">
-								</select>
-							</div>
 							<div>
 								<input readonly="readonly" name="result" id="result">
 								<input hidden name="action">
@@ -158,13 +158,98 @@
 					<button onclick="bindArticle()" type="button" class="button small green button-3d rounded icon-left">Lier</button>
 				</div>
 			</div>
-			
 
-			<div class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+
+			<!-- //////////////// Fin Affichage d'ajout au stock -->
+			<div  id = "displayRemove" style="display:block ">
+				<form  name = "widget-stockScanRemove-form" id="widget-stockScanRemove-form" role="form" method="get" action="apis/Kameo/scannerForm.php">
+					<div>
+						<input readonly="readonly" name="result" id="result">
+						<input hidden name="action">
+						<input hidden name="typeArticle">
+						<input hidden id="testDateToday" name="testDateToday" type="date">
+						<input hidden id="testDateIn3years" name="testDateIn3years" type="date">
+						<input hidden name="companyInternalReference">
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4" name="listOrderTypeDiv" style="display:block ">
+							<label> Choisir l'article : </label>
+							<select name="listOrderType" class="form-control">
+							</select>
+						</div>
+						<div class="col-sm-4" name="typeOutputDiv" style="display:block ">
+							<label>Type : </label>
+							<select name="typeOutput" class="form-control">
+								<option disabled selected value="0">Choisissez le type de sortie</option>
+								<option value="selling">Vente</option>
+								<option value="leasing">Leasing</option>
+							</select>
+						</div>
+						<div class="col-sm-4" name="orderCompanyDiv" style="display:block ">
+							<label>Nom de la société : </label>
+							<select name="orderCompany" class="form-control">
+							</select>
+						</div>
+						<div class="col-sm-4" name="orderClientDiv" style="display:block ">
+							<label>Nom de l'employé : </label>
+							<select name="orderClient" class="form-control">
+							</select>
+						</div>
+
+					</div>
+					<div class="col-sm-12" name="displayPendingDiv" style="display:block " >
+						<div class="col-sm-4" name="typePendingArticleDiv" style="display:block ">
+							<label>Type d'article: </label>
+							<input readonly="readonly" name="typePendingArticle" class="form-control">
+						</div>
+						<div class="col-sm-4" name="companyPendingDiv" style="display:block ">
+							<label>Société : </label>
+							<input readonly="readonly" name="companyPending" class="form-control">
+						</div>
+						<div class="col-sm-4" name="clientPendingDiv" style="display:block ">
+							<label>Client : </label>
+							<input readonly="readonly" name="clientPending" class="form-control">
+						</div>
+					</div>
+					<br/>	
+					<button
+					class="button small green button-3d rounded icon-left"
+					type="submit"
+					name="sendValueToRemove">
+					<i name ="btsendFormName" class="fa fa-paper-plane"></i>Faire sortir</button>
+				</form>
+			</div>
+			<div id="displayGeneralBill" style="display:block ">
+				<form  name = "widget-generateBill-form" id="widget-generateBill-form" role="form" method="get" action="">
+					<div class="col-sm-12">
+						<div class="col-sm-4" name="companyBillsDiv" style="display:block ">
+							<label>Société : </label>
+							<select name="companyBills" id="companyBills" class="form-control">
+							</select>
+						</div>
+						<div class="col-sm-4" name="bikeBillsDiv">
+							<label>Article Disponibles : </label>
+							<select name="bikeBills" id="bikeBills" class="form-control">
+							</select>	
+						</div>
+						<label name="listArticleBills"></label>
+					</div>
+
+				</form>
+				<div class="col-sm-12" id="generateBillDiv"style="display:block ">
+					<button
+					onclick="generateBill()" class="button small green button-3d rounded icon-left" type="button">
+					<i name ="btsendFormName" class="fa fa-paper-plane"></i>Générer la Facture
+				</button>
 			</div>
 		</div>
+
+
+		<div class="modal-footer">
+			<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+		</div>
 	</div>
+</div>
 </div>
 </body>
 </html>
@@ -184,6 +269,41 @@
 						);
 						initializeModal();
 						document.getElementById("widget-stockScan-form").reset();
+					} else {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "danger",
+						}
+						);
+					}
+				},
+			});
+		},
+	});
+
+	jQuery("#widget-stockScanRemove-form").validate({
+		submitHandler: function (form) {
+			jQuery(form).ajaxSubmit({
+				success: function (response) {
+					if (response.response == "success") {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "success",
+						}
+						);
+						if(response.type=='leasing'){
+							hideAllFromRemove(); 
+							document.getElementById("widget-stockScanRemove-form").reset();
+						}
+						else if (response.type=='selling'){
+							create_Facture();
+						}
 					} else {
 						$.notify(
 						{

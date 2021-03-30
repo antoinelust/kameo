@@ -249,6 +249,7 @@ $('body').on('click', '.testAssignation',function(){
       }
     }
   });
+  
   $('.contractInfos').fadeOut("slow");
   $('.billingInfos').fadeOut("slow");
   $('.buyingInfos').fadeIn("slow");
@@ -258,6 +259,7 @@ $('body').on('click', '.testAssignation',function(){
   $('.billingDiv').fadeOut("slow");
 
   let today = new Date().toISOString().substr(0, 10);
+  
 
   $("#widget-bikeManagement-form input[name=orderingDate]").val(today);
   $("#widget-bikeManagement-form input[name=action]").val("add");

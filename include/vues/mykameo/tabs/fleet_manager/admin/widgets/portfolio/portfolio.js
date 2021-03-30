@@ -190,6 +190,7 @@ function initializeUpdatePortfolioBike(ID) {
         $("#widget-updateCatalog-form input[name=battery]").val(response.battery);
         $("#widget-updateCatalog-form input[name=transmission]").val(response.transmission);
         $("#widget-updateCatalog-form input[name=priority]").val(response.priority);
+        $("#widget-updateCatalog-form input[name=minimalStock]").val(response.minimalStock);
 
         document.getElementsByClassName("bikeCatalogImage")[0].src =
           "images_bikes/" +

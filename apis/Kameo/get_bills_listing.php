@@ -32,6 +32,7 @@ if($email != NULL)
     }
 
     $sql="select aa.ID as ID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting, bb.EMAIL_CONTACT_BILLING as emailContactBilling, bb.FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, bb.LASTNAME_CONTACT_BILLING as lastNameContactBilling from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
+    
     if($company!=='KAMEO'){
         $response['update']=false;
     	$sql=$sql." and aa.COMPANY = '$company'";

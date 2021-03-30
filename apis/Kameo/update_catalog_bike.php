@@ -28,6 +28,7 @@ if($action=="update"){
     $transmission = $_POST["transmission"];
     $season = $_POST["season"];
     $priority = $_POST["priority"];
+    $minimalStock = $_POST["minimalStock"];
     $sizes="";
 
     include 'connexion.php';
@@ -148,7 +149,7 @@ if($action=="update"){
         }
 
 
-        $information=execSQL("update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, BRAND=?, MODEL=?, FRAME_TYPE=?, UTILISATION=?,  ELECTRIC=?, BUYING_PRICE=?, PRICE_HTVA=?, STOCK=?, DISPLAY=?, MOTOR=?, BATTERY=?, TRANSMISSION=?, SEASON=?, PRIORITY=?, SIZES=? WHERE ID=?", array("ssssssddisssssisi", $user, $brand, $model, $frameType, $utilisation, $electric, $buyPrice, $price, $stock, $display, $motor, $battery, $transmission, $season, $priority, $sizes, $ID), true);
+        $information=execSQL("update bike_catalog set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, BRAND=?, MODEL=?, FRAME_TYPE=?, UTILISATION=?,  ELECTRIC=?, BUYING_PRICE=?, PRICE_HTVA=?, STOCK=?, DISPLAY=?, MOTOR=?, BATTERY=?, TRANSMISSION=?, SEASON=?, PRIORITY=?,MINIMAL_STOCK=?, SIZES=? WHERE ID=?", array("ssssssddisssssiisi", $user, $brand, $model, $frameType, $utilisation, $electric, $buyPrice, $price, $stock, $display, $motor, $battery, $transmission, $season, $priority,$minimalStock, $sizes, $ID), true);
         successMessage("SM0003");
 
     } else {

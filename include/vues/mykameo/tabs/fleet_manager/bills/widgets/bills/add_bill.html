@@ -1,4 +1,4 @@
-<div class="modal fade" id="addBill" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="addBill" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important; z-index: 10000;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -8,7 +8,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Ajouter une facture</h4>
-						<form id="widget-addBill-form" action="apis/Kameo/add_bill.php" role="form" method="post">
+						<form name="widget-addBill-form" id="widget-addBill-form" action="apis/Kameo/add_bill.php" role="form" method="post">
 							<div class="form-group col-md-12">
 								<h4 class="fr text-green">Informations générales</h4>
 								<div class="col-md-12">
@@ -30,7 +30,7 @@
 										<label for="widget-addBill-form-company"  class="fr">Originateur</label>
 										<label for="widget-addBill-form-company"  class="en">Originateur</label>
 										<label for="widget-addBill-form-company"  class="nl">Originateur</label>
-										<span class="widget-addBill-form-company" name="widget-addBill-form-company"></span>
+										<select class="widget-addBill-form-company2" name="company"></select>
 									</div>
 									<div class="col-md-4">
 										<label for="beneficiaryCompany"  class="fr">Beneficiaire</label>

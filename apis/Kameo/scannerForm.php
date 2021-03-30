@@ -7,11 +7,11 @@ header('Access-Control-Allow-Headers: application/json');
 header('Content-type: application/json');
 
 session_start();
-include 'globalfunctions.php';
 require_once 'authentication.php';
 
+
 $token = getBearerToken();
-log_inputs($token);
+
 
 $response=array();
 include 'connexion.php';
@@ -21,6 +21,8 @@ $barcode=isset($_GET['barcode']) ? addslashes($_GET['barcode']) : NULL;
 $idCategory= isset($_GET['idCategory']) ? addslashes($_GET['idCategory']) : NULL;
 $type =  isset($_GET['typeArticle']) ? addslashes($_GET['typeArticle']) : NULL;
 $id = isset($_GET['id']) ? addslashes($_GET['id']) : NULL;
+$typeContract = isset($_GET['typeContract']) ? addslashes($_GET['typeContract']) : NULL;
+$typeArticle = isset($_GET['typeArticle']) ? addslashes($_GET['typeArticle']) : NULL;
 
 $idAccessory=isset($_GET['accessory']) ? addslashes($_GET['accessory']) : NULL;
 $result = isset($_GET['result']) ? addslashes($_GET['result']) : NULL;
@@ -29,6 +31,14 @@ $idModel=isset($_GET['model']) ? addslashes($_GET['model']) : NULL;
 $size=isset($_GET['size']) ? addslashes($_GET['size']) : NULL;
 $color=isset($_GET['color']) ? addslashes($_GET['color']) : NULL;
 
+$bikeArrayId = isset($_GET['bikeArrayId']) ?$_GET['bikeArrayId'] :  NULL;
+$lengthArray= isset($_GET['articleNumbers']) ? addslashes($_GET['articleNumbers']) : NULL;
+$idBikes = isset($_GET['listOrderType']) ? addslashes($_GET['listOrderType']) : NULL;
+$dateNow = isset($_GET['testDateToday']) ? addslashes($_GET['testDateToday']) : NULL;
+$dateInThreeYears = isset($_GET['testDateIn3years']) ? addslashes($_GET['testDateIn3years']) : NULL;
+$companyId = isset($_GET['companyPending']) ? addslashes($_GET['companyPending']) : NULL;
+$clientEmail = isset($_GET['orderClient']) ? addslashes($_GET['orderClient']) : NULL;
+$companyInternalReference = isset($_GET['companyInternalReference']) ? addslashes($_GET['companyInternalReference']) : NULL;
 
 ////// Verifie si le code barre est présent dans la table
 
@@ -85,11 +95,17 @@ else if ($action == 'loadBikeOrder'){
 
 	$response['model']=$rowDetails['MODEL'];
 	$response['brand']=$rowDetails['BRAND'];
+	$response['type'] = $tempId;
 	$response['frame_type']=$rowDetails['FRAME_TYPE'];
 
+	if($typeContract=='stock'){
+		$sqlBike="SELECT * FROM customer_bikes WHERE TYPE='$tempId' AND (CONTRACT_TYPE='$typeContract' OR CONTRACT_TYPE='pending_delivery') AND COLOR='$color' AND SIZE='$size' ORDER BY ESTIMATED_DELIVERY_DATE ASC";
+	}
+	else {
+		$sqlBike="SELECT * FROM customer_bikes WHERE TYPE='$tempId' AND CONTRACT_TYPE='$typeContract' AND COLOR='$color' AND SIZE='$size' ORDER BY ESTIMATED_DELIVERY_DATE ASC";
+	}
 
-
-	$sqlBike="SELECT * FROM customer_bikes WHERE TYPE='$tempId' AND CONTRACT_TYPE='order' AND COLOR='$color' AND SIZE='$size' ORDER BY ESTIMATED_DELIVERY_DATE ASC";
+	
 	if ($conn->query($sqlBike) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -100,6 +116,8 @@ else if ($action == 'loadBikeOrder'){
 	$i=0;
 	while($rowBike = mysqli_fetch_array($resultBike)){
 		$response['bike'][$i]['bike']= $rowBike['ID'];
+		$response['bike'][$i]['contract']= $rowBike['CONTRACT_TYPE'];
+		$response['bike'][$i]['bikePrice']= $rowBike['BIKE_PRICE'];
 		
 		if($rowBike['ESTIMATED_DELIVERY_DATE']==null){
 			$response['bike'][$i]['estimate_date']='--/--/----';
@@ -139,8 +157,12 @@ else if ($action == 'loadAccessoryOrder'){
 	$response['idCategory']=$rowDetails['ACCESSORIES_CATEGORIES'];
 	$tempIdCategory = $rowDetails['ACCESSORIES_CATEGORIES'];
 
-
-	$sqlAccessory="SELECT * FROM accessories_stock WHERE CATALOG_ID='$tempId' AND CONTRACT_TYPE='order'";
+	if($typeContract=='stock'){
+		$sqlAccessory="SELECT * FROM accessories_stock WHERE CATALOG_ID='$tempId' AND (CONTRACT_TYPE='$typeContract' OR CONTRACT_TYPE='pending_delivery')";
+	}
+	else {
+		$sqlAccessory="SELECT * FROM accessories_stock WHERE CATALOG_ID='$tempId' AND CONTRACT_TYPE='$typeContract'";
+	}
 	if ($conn->query($sqlAccessory) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -151,6 +173,7 @@ else if ($action == 'loadAccessoryOrder'){
 	$i=0;
 	while($rowAccessory = mysqli_fetch_array($resultAccessory)){
 		$response['bike'][$i]['accessory']= $rowAccessory['ID'];
+		$response['bike'][$i]['contract']= $rowBike['CONTRACT_TYPE'];
 		$i++;
 	}
 	$response['numberAccessoryOrder'] = $i;
@@ -372,5 +395,160 @@ else if($action == 'addAccessory'){
 		die;
 	}
 	$response = array ('response'=>'success', 'message'=> 'Code barre repertorié');
+	echo json_encode($response);
+}
+
+
+/////Remplissage donné pour un vélo pending_delivery déja lié à un client
+
+else if ($action == 'getDataFromOrderPendingDelivery'){
+	include 'connexion.php';
+	
+	if($typeArticle=='BIKE'){
+		
+		$sql="SELECT * FROM customer_bike_access WHERE BIKE_ID='$id'";
+		$result= mysqli_query($conn, $sql);
+		$row = mysqli_fetch_assoc($result);
+		$tempEmail=$row['EMAIL'];
+
+
+		$sqlData="SELECT * FROM customer_referential WHERE EMAIL='$tempEmail'";
+		$resultData= mysqli_query($conn, $sqlData);
+		$rowData = mysqli_fetch_assoc($resultData);
+
+		$response['response']='success';
+		$response['name']=$rowData['NOM'];
+		$response['firstname']=$rowData['PRENOM'];
+		$tempcomp = $rowData['COMPANY'];
+
+		$sqlComp="SELECT * FROM companies WHERE INTERNAL_REFERENCE='$tempcomp'";
+		$resultComp= mysqli_query($conn, $sqlComp);
+		$rowComp = mysqli_fetch_assoc($resultComp);
+		$response['company']=$rowComp['COMPANY_NAME'];
+
+	}
+	else if($typeArticle=='ACCESSORY'){
+		// pas d'accessoire en pending delivery pour l'instant
+	}
+
+	echo json_encode($response);
+
+
+}
+else if ($action == 'listCompanies'){
+
+	$sql="SELECT * FROM companies";
+	$result= mysqli_query($conn, $sql);
+	$i=0;
+	$response['response']='success';
+	while($row = mysqli_fetch_array($result)){
+		$response['companies'][$i]['name']= $row['COMPANY_NAME'];
+		$response['companies'][$i]['id']= $row['ID'];
+		$response['companies'][$i]['internalRef']= $row['INTERNAL_REFERENCE'];
+
+		$i++;
+	}
+	$response['numberCompanies'] = $i;
+	echo json_encode($response);
+}
+// article en vente
+else if($action=='selling'){
+
+	if($typeArticle=='BIKE'){
+		$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='selling',SELLING_DATE='$dateNow', COMPANY = '$companyInternalReference', CONTRACT_START ='$dateNow' WHERE ID='$idBikes'");
+		$sql->execute();
+		
+		if($clientEmail!=NULL){
+			$sqlTest = "INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL , BIKE_ID,TYPE)
+			VALUES (CURRENT_TIMESTAMP, '$email', '$clientEmail', '$idBikes' ,'personnel')";
+			mysqli_query($conn, $sqlTest);
+		}
+	}
+	else if($typeArticle=='ACCESSORY'){
+		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='selling',COMPANY_ID = '$companyId', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
+		$sql->execute();		
+	}
+	$response['response']='success';
+	$response['message']='article modifié (vente) dans le BDD';
+	$response['type']='selling';
+	echo json_encode($response);
+}
+// livraison d'un vélo en attente de livraison
+else if($action=='leasingStockPending'){
+	if($typeArticle=='BIKE'){
+		$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='leasing', COMPANY = '$companyInternalReference', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
+		$sql->execute();
+		$response['response']='success';
+
+		if($clientEmail!=NULL){
+			$sqlTest = "INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL , BIKE_ID,TYPE)
+			VALUES (CURRENT_TIMESTAMP, '$email', '$clientEmail', '$idBikes' ,'personnel')";
+			mysqli_query($conn, $sqlTest);
+		}
+	}
+	else if($typeArticle=='ACCESSORY'){
+		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='leasing', COMPANY_ID = 'companyId', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
+		$sql->execute();
+		$response['response']='success';
+	}
+	$response['message']='article modifié (leasing) dans le BDD';
+	$response['type']='leasing';
+	echo json_encode($response);
+
+}
+else if($action=='getPrice'){
+	include 'connexion.php';
+
+	if($typeArticle=='BIKE'){
+
+		$sql="SELECT * FROM customer_bikes WHERE ID='$id'";
+		$result= mysqli_query($conn, $sql);
+		$row= mysqli_fetch_assoc($result);
+		$tempId = $row['TYPE'];
+		
+
+		$sqlBike="SELECT * FROM bike_catalog WHERE ID='$tempId'";
+		$resultBike= mysqli_query($conn, $sqlBike);
+		$rowBike= mysqli_fetch_assoc($resultBike);
+		$response['price']=$rowBike['PRICE_HTVA'];
+		$response['response']='success';
+		
+
+	}
+	else if($typeArticle=='ACCESSORY'){
+		
+		$sql="SELECT * FROM accessories_stock WHERE ID='$id'";
+		$result= mysqli_query($conn, $sql);
+		$row= mysqli_fetch_assoc($result);
+		$tempId = $row['CATALOG_ID'];
+		
+		$sqlAccessory="SELECT * FROM accessories_catalog WHERE ID='$tempId'";
+		$resultAccessory= mysqli_query($conn, $sqlAccessory);
+		$rowAccessory = mysqli_fetch_assoc($resultAccessory);
+		$response['price']=$rowAccessory['PRICE_HTVA'];
+		$response['response']='success';
+		
+
+	}
+	echo json_encode($response);
+}
+else if($action='changeMultipleArticles'){
+	// faire une boucle qui tourne jusque le tab length
+	// verifier le type et changer le stock date et contrat
+	// puis appeler add-bill et creer un nouveau if pour ajouter le tableau dans $data
+	$i=0;
+	while ($i<$lengthArray) {
+		$idArticle = $bikeArrayId[$i][0];
+		if($bikeArrayId[$i][3]=='BIKE'){
+			$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='selling',SELLING_DATE='$dateNow', COMPANY = '$companyInternalReference', CONTRACT_START ='$dateNow' WHERE ID='$idArticle'");
+			$sql->execute();
+		}
+		else{
+			$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='selling',COMPANY_ID = '$companyId', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idArticle'");
+			$sql->execute();		
+		}
+		$i++;
+	}
+	$response['response']='success';
 	echo json_encode($response);
 }
