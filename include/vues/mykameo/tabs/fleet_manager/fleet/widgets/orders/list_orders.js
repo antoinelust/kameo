@@ -32,8 +32,6 @@ function get_orders_fleet_listing() {
         }
         if(response.response == 'success'){
           var dest="";
-          //var temp="<table id=\"ordersFleetListingTable\" data-order='[[ 0, \"asc\" ]]' data-page-length='25' class=\"table table-condensed\"><thead><tr><th>ID</th><th><span class=\"fr-inline\">Utilisateur</span><span class=\"en-inline\">User</span><span class=\"nl-inline\">User</span></th><th><span class=\"fr-inline\">Vélo</span><span class=\"en-inline\">Bike</span><span class=\"nl-inline\">Bike</span></th><th><span class=\"fr-inline\">Taille</span><span class=\"en-inline\">Size</span><span class=\"nl-inline\">Size</span></th><th><span class=\"fr-inline\">Status</span><span class=\"en-inline\">Status</span><span class=\"nl-inline\">Status</span></th><th>Montant</th><th></th></tr></thead><tbody>";
-          //dest=dest.concat(temp);
           var i=0;
 
           while (i < response.ordersNumber){
@@ -282,6 +280,24 @@ function retrieve_command_fleet(ID){
           $('#widget-orderFleet-form input[name=firstName]').val(response.order.firstname);
           $('#widget-orderFleet-form input[name=mail]').val(response.order.email);
           $('#widget-orderFleet-form input[name=phone]').val(response.order.phone);
+
+					response.order.accessories.forEach(function(accessory){
+						if(accessory.TYPE=="achat"){
+							var currency = '€';
+						}else if(accessory.TYPE=="leasing"){
+							var currency = "€/"+traduction.generic_mois;
+						}else if(accessory.TYPE=="annualleasing"){
+							var currency = "€/"+traduction.generic_year;
+						}
+						$('#widget-orderFleet-form #accessoriesOrderedFleet').append('<div class="col-md-4 accessoryCard d-flex" style="margin-bottom : 10px"><div class="card" style="border: 1px solid black; padding : 18px"><div class="card-body text-center">\
+							<h5 class="card-title">'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</h5>\
+							<h6 class="card-subtitle mb-2 text-muted">'+accessory.BRAND+' - '+accessory.MODEL+'</h6>\
+							<img src="images_accessories/'+accessory.catalogID+'.jpg" style="height:100px; width:auto"/>\
+							<br><br><span>'+traduction.generic_amount+' : '+accessory.PRICE_HTVA+' '+currency+'</span><br>\
+							</div></div></div>');
+					})
+
+
 
 
           var element = document.getElementById("widget-refuseCommand-form");

@@ -10,7 +10,9 @@
 	$router->map('GET','/location-tout-inclus[ext]', 'pages/nos-solutions/location-tout-inclus.php');
 
 	/** CATALOGUE **/
-	$router->map('GET','/achat[ext]', 'pages/catalogue/achat.php');
+	$router->map('GET','/catalogue_overview[ext]', 'pages/catalogue/catalogue_overview.php');
+	$router->map('GET','/catalogue[ext]', 'pages/catalogue/catalogue.php');
+	$router->map('GET','/catalogue_accessoires_overview[ext]', 'pages/catalogue/catalogue_accessoires_overview.php');
 	$router->map('GET','/accessoires[ext]', 'pages/catalogue/accessoires.php');
 	$router->map('GET','/bons-plans[ext]', 'pages/catalogue/bons-plans.php');
 

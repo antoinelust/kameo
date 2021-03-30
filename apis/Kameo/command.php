@@ -16,7 +16,6 @@ if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
 
     if($action == "command"){
-
         $portfolioID=isset($_POST['ID']) ? $_POST['ID'] : NULL;
         $email=isset($_POST['email']) ? $_POST['email'] : NULL;
         $size=isset($_POST['size']) ? $_POST['size'] : NULL;
@@ -60,13 +59,24 @@ if(isset($_POST['action'])){
         $stmt = $conn->prepare("INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, COMPANY) VALUES(?, ?, ?, ?, ?, 'new', ?, ?, ?)") or die($mysqli->error);
 				$stmt->bind_param("ssissdss", $email, $email, $portfolioID, $size, $remark, $order_amount, $leasing_type, $companyID);
 				$stmt->execute();
+        $orderID = $stmt->insert_id;
         $stmt->close();
+
+
+        if(isset($_POST['accessory'])){
+          foreach ($_POST['accessory'] as $index => $accessory){
+            $accessoryID=$accessory;
+            $accessoryBillingType=$_POST['accessoryBillingType'][$index];
+            $accessoryAmount=$_POST['accessoryAmount'][$index];
+            execSQL("INSERT INTO order_accessories (BRAND, BUYING_PRICE, TYPE, PRICE_HTVA, CATEGORY, DESCRIPTION, ORDER_ID) VALUES (?, 0, ?, ?, 0, '//', ?)", array('isdi', $accessoryID, $accessoryBillingType, $accessoryAmount, $orderID), true);
+          }
+        }
 
         require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php');
         $mail = new PHPMailer();
 
         if(constant('ENVIRONMENT')=="production"){
-            $stmt = $conn->prepare("SELECT aa.* FROM customer_referential aa, customer_referential bb WHERE bb.EMAIL=? and aa.COMPANY=bb.COMPANY and aa.ADMINISTRATOR='Y' and aa.STAANN != 'D'");
+            $stmt = $conn->prepare("SELECT aa.EMAIL, aa.NOM, aa.PRENOM FROM customer_referential aa, customer_referential bb WHERE bb.EMAIL=? and aa.COMPANY=bb.COMPANY and aa.ACCESS_RIGHTS like '%fleetManager%' and aa.STAANN != 'D' GROUP BY aa.EMAIL, aa.NOM, aa.PRENOM");
             if (!$stmt->bind_param("s", $email)) {
                 $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
                 echo json_encode($response);
@@ -235,6 +245,14 @@ if(isset($_POST['action'])){
         $length = $result->num_rows;
 
         $response['commandNumber']=$length;
+
+        $response['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ID as orderID
+          												FROM order_accessories, accessories_categories, accessories_catalog, client_orders
+          												WHERE order_accessories.ORDER_ID=client_orders.ID
+          												AND order_accessories.BRAND=accessories_catalog.ID
+          												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES
+                                  AND client_orders.EMAIL=?",
+                                array('s',$email), false);
 
         $i=0;
 

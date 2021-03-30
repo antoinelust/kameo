@@ -190,7 +190,8 @@ include 'include/head.php';
 											<input type="password" name="widget-lostPassword-form-new-password" class="form-control required" autocomplete="off">
 										</div>
 									</div>
-									<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash" autocomplete="off" value="<?php echo $_GET['hash']; ?>"/>';
+									<?php $hash = isset($_GET['hash']) ? $_GET['hash'] : "";?>
+									<input type="text" class="hidden" id="widget-lostPassword-form-hash" name="widget-lostPassword-form-hash" autocomplete="off" value="<?php echo $hash; ?>"/>
 									<button class="button effect fill" type="submit"><i class="fa fa-paper-plane"></i><?= L::password_send; ?></button>
 								</form>
 								<script type="text/javascript">

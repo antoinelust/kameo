@@ -42,10 +42,25 @@
   //création des tableaux destinés a recevoir les id des différents item
   $bikesId = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
   $boxesId = $boxesNumber > 0 ? getIds('boxModel',$boxesNumber) : NULL;
-
-
-  $accessoriesId = $accessoriesNumber > 0 ? getIds('accessoryAccessory',$accessoriesNumber) : NULL;
   $others = $othersNumber > 0 ? getOthers($othersNumber) : array();
+
+
+  $accessories=array();
+  if(isset($_POST['accessoryAccessory'])){
+    foreach($_POST['accessoryAccessory'] as $key=>$accessory) {
+        $information=execSQL("SELECT * FROM accessories_catalog WHERE ID=?", array('i', $accessory), false)[0];
+        $accessories[$key]['ID']=$accessory;
+        $accessories[$key]['BRAND']=$information['BRAND'];
+        $accessories[$key]['MODEL']=$information['MODEL'];
+        $accessories[$key]['finance']=$_POST['accessoryFinance'][$key];
+        $accessories[$key]['finalPrice']=$_POST['accesoryFinalPrice'][$key];
+        if($_POST['accessoryFinance'][$key] == 'leasing'){
+          $accessories[$key]['initialPrice']=$information['PRICE_HTVA']*1.25/$leasingDuration;
+        }else{
+          $accessories[$key]['initialPrice']=$information['PRICE_HTVA']*1;
+        }
+    }
+  }
 
 
   include 'connexion.php';
@@ -64,12 +79,10 @@
 
   $bikes = array();
   $boxes = array();
-  $accessories = array();
   //recuperation des données nécéssaire en db
   $bikes = getItemsInDatabase($bikesId, 'bike_catalog');
   $boxes = getItemsInDatabase($boxesId, 'boxes_catalog');
 
-  $accessories = getItemsInDatabase($accessoriesId, 'accessories_catalog');
   $contact = getItemInDatabase($contact['id'], 'companies_contact');
 
 
@@ -92,7 +105,6 @@
   //transforme le tableau pour n avoir qu'une itération de chaque
   $bikes = distinct($bikes, $bikeFinalPrice);
   $boxes = distinct($boxes);
-  $accessories = distinct($accessories);
 
   $company = getCompany($companyId);
   include 'get_prices.php';
@@ -130,6 +142,7 @@
     include $_SERVER['DOCUMENT_ROOT'].'/TO INCLUDE/pdf/template/PDFContent.php';
     //fin de tampon
     $content = ob_get_clean();
+    error_log(date("Y-m-d H:i:s")." - Contenu :".$content."\n", 3, "offer-template.log");
     $html2pdf->writeHTML($content);
     //sort le fichier PDF sur le serveur
     $html2pdf->Output($_SERVER['DOCUMENT_ROOT'].'/offres/'.$pdfTitle.'.pdf', 'F');
@@ -167,6 +180,16 @@
             die;
         }
         $conn->close();
+    }
+
+    if(count($accessories) > 0){
+      foreach($accessories as $accessory) {
+        if($accessory['finance']=='achat'){
+          execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?)", array('sisiiis', $email, $offerID, 'accessory', $accessory['ID'], 0, $accessory['finalPrice'], ''), true);
+        }else{
+          execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?)", array('sisiiis', $email, $offerID, 'accessory', $accessory['ID'], $accessory['finalPrice'], 0, ''), true);
+        }
+      }
     }
 
 

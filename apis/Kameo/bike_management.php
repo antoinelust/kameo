@@ -271,7 +271,7 @@ if(isset($_POST['action'])){
             errorMessage("ES0060");
         }
         if($contractType=="pending_delivery" && $company == 'KAMEO'){
-            errorMessage("ES0068");
+            errorMessage("ES0069");
         }
 
 
@@ -361,7 +361,7 @@ if(isset($_POST['action'])){
             if($contractType=="order"){
                 $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', COLOR=$color,  CONTRACT_TYPE='$contractType', COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, GPS_ID=$gpsID, BIKE_BUYING_DATE='$orderingDate', ESTIMATED_DELIVERY_DATE=$estimatedDeliveryDate, DELIVERY_DATE=$deliveryDate, ORDER_NUMBER='$orderNumber', OFFER_ID=$offerReference, EMAIL=$clientReference where ID = '$bikeID'";
             }else{
-                $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', COLOR=$color, CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, GPS_ID=$gpsID, AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', SOLD_PRICE = $sellPrice, EMAIL=$clientReference where ID = '$bikeID'";
+                $sql="update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ='$user', MODEL='$model', TYPE='$portfolioID', SIZE='$size', COLOR=$color, CONTRACT_TYPE='$contractType', CONTRACT_START=$contractStart, CONTRACT_END=$contractEnd, COMPANY='$company', FRAME_REFERENCE='$frameReference', LOCKER_REFERENCE=$lockerReference, GPS_ID=$gpsID, BIKE_BUYING_DATE='$buyingDate', AUTOMATIC_BILLING='$automaticBilling', INSURANCE='$insurance', BILLING_TYPE='$billingType', LEASING_PRICE=$billingPrice, BILLING_GROUP='$billingGroup', BIKE_PRICE='$buyingPrice', SOLD_PRICE = $sellPrice, EMAIL=$clientReference where ID = '$bikeID'";
             }
 
             if ($conn->query($sql) === FALSE) {

@@ -28,7 +28,7 @@ $(".fleetmanager").click(function () {
 });
 
 $(".clientManagerClick").click(function (){
-  get_company_listing("*");
+  get_company_listing();
   generateCompaniesGraphic(
     $(".form_date_start_client").val(),
     $(".form_date_end_client").val()
@@ -52,7 +52,7 @@ function get_company_boxes(company) {
           '" data-target="#boxManagement" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter une borne</span></a>';
         if (response.boxesNumber > 0) {
           var temp =
-            '<table class="table"><tbody><thead><tr><th>ID</th><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Reference</span><span class="nl-inline">Reference</span></th><th scope="col"><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th scope="col"><span class="fr-inline">Facturation automatique</span><span class="en-inline">Automatic billing ?</span><span class="nl-inline">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope="col"><span class="fr-inline">Montant leasing</span><span class="en-inline">Leasing Price</span><span class="nl-inline">Leasing Price</span></th><th></th></tr></thead>';
+            '<table class="table"><tbody><thead><tr><th>ID</th><th scope="col">Référence</th><th scope="col">Modèle</th><th scope="col">Facturation automatique</th><th>Début</th><th>Fin</th><th scope="col">Montant leasing</th><th></th></tr></thead>';
           dest = dest.concat(temp);
           while (i < response.boxesNumber) {
             if (
@@ -241,152 +241,85 @@ function generateCompaniesGraphic(dateStart, dateEnd) {
     },
   });
 }
-function get_company_listing(type) {
-  var filter = $("#companyListingFilter").html();
 
-  $.ajax({
-    url: "apis/Kameo/companies/companies.php",
-    type: "get",
-    data: { action: "list", type: type, filter: filter },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        var dest = "";
-        var temp =
-          '<table id="test" data-order=\'[[ 0, "asc" ]]\' data-page-length=\'25\' class="table table-condensed"><h4 class="fr-inline text-green">Clients:</h4><h4 class="en-inline text-green">Clients:</h4><h4 class="nl-inline text-green">Clients:</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#addClient" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un client</span></a><br/><thead><tr><th><span class="fr-inline">Référence interne</span><span class="en-inline">Internal reference</span><span class="nl-inline">Internal reference</span></th><th><span class="fr-inline">Client</span><span class="en-inline">Client</span><span class="nl-inline">Client</span></th><th><span class="fr-inline"># vélos</span><span class="en-inline"># bikes</span><span class="nl-inline"># bikes</span></th><th>Audience</th><th>Rappeler ?</th><th>Mise à jour</th><th><span class="fr-inline">Accès vélos</span><span class="en-inline">Bike Access</span><span class="nl-inline">Bike Access</span></th><th><span class="fr-inline">Accès Bâtiments</span><span class="en-inline">Building Access</span><span class="nl-inline">Building Access</span></th><th>Type</th></tr></thead><tbody>';
-        dest = dest.concat(temp);
-        var i = 0;
-
-        while (i < response.companiesNumber) {
-          temp =
-            '<tr><td><a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
-            response.company[i].ID +
-            '">' +
-            response.company[i].internalReference +
-            "</a></td><td>" +
-            response.company[i].companyName +
-            "</td><td>" +
-            response.company[i].companyBikeNumber +
-            "</td>";
-          dest = dest.concat(temp);
-
-          var heuMaj = new Date(response.company[i].HEU_MAJ);
-          var now = new Date();
-
-          var difference = (
-            (now.getTime() - heuMaj.getTime()) /
-            86400000
-          ).toFixed(0);
-
-
-
-          dest = dest.concat("<td>" + response.company[i].audience + "</td>");
-
-          if (response.company[i].type == "PROSPECT" && difference >= 60) {
-            var rappeler = "Y";
-          } else {
-            var rappeler = "N";
-          }
-
-          var dest = dest.concat(
-            "<td>" +
-              rappeler +
-              '</td><td data-sort="' +
-              new Date(response.company[i].HEU_MAJ).getTime() +
-              '">' +
-              response.company[i].HEU_MAJ.shortDate() +
-              "</td>"
-          );
-
-          if (response.company[i].bikeAccessStatus == "OK") {
-            var temp =
-              '<td class="text-green">' +
-              response.company[i].bikeAccessStatus +
-              "</td>";
-          } else {
-            var temp =
-              '<td class="text-red">' +
-              response.company[i].bikeAccessStatus +
-              "</td>";
-          }
-          dest = dest.concat(temp);
-          if (response.company[i].customerBuildingAccess == "OK") {
-            var temp =
-              '<td class="text-green">' +
-              response.company[i].customerBuildingAccess +
-              "</td>";
-          } else {
-            var temp =
-              '<td class="text-red">' +
-              response.company[i].customerBuildingAccess +
-              "</td>";
-          }
-          dest = dest.concat(temp);
-
-          dest = dest.concat("<td>" + response.company[i].type + "</td>");
-
-
-          var temp = "</tr>";
-          dest = dest.concat(temp);
-          i++;
-        }
-        var temp = "</tobdy></table>";
-        dest = dest.concat(temp);
-        document.getElementById("companyListingSpan").innerHTML = dest;
-
-        $(".internalReferenceCompany").click(function(){
-          get_company_details(this.name, email, true);
-        });
-
-        var classname = document.getElementsByClassName("updateCompany");
-        for (var i = 0; i < classname.length; i++) {
-          classname[i].addEventListener(
-            "click",
-            function () {
-              construct_form_for_company_update(this.name);
-            },
-            false
-          );
-        }
-        displayLanguage();
-
-        $("#test thead tr").clone(true).appendTo("#test thead");
-
-        $("#test thead tr:eq(1) th").each(function (i) {
-          var title = $(this).text();
-          $(this).html('<input type="text" placeholder="Search" />');
-
-          $("input", this).on("keyup change", function () {
-            if (table.column(i).search() !== this.value) {
-              table.column(i).search(this.value).draw();
-            }
-          });
-        });
-
-        var table = $("#test").DataTable({
-          orderCellsTop: true,
-          fixedHeader: true,
-          scrollX: true,
-          columns: [
-            { width: "100px" },
-            { width: "100px" },
-            { width: "50px" },
-            { width: "50px" },
-            { width: "50px" },
-            { width: "50px" },
-            { width: "50px" },
-            { width: "50px" },
-            { width: "50px" },
-          ],
-        });
-      }
+function get_company_listing() {
+  $("#companyListingTable").dataTable({
+    destroy: true,
+    paging : false,
+    ajax: {
+      url: "api/companies",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "list",
+      },
     },
+    sAjaxDataProp: "company",
+    columns: [
+      {
+        title: "Référence",
+        data: "internalReference",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html('<a href="#" class="internalReferenceCompany text-green" data-target="#companyDetails" data-toggle="modal" name="'+oData.ID+'">'+sData+'</a>');
+        },
+      },
+      { title: "Nom de la société", data: "companyName"},
+      { title: "Type", data: "type"},
+      { title: "Nombre de vélos", data: "companyBikeNumber"},
+      { title: "Audience", data: "audience"},
+      {
+        title: "Recherche de vélos",
+        data: "BOOKING",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
+        },
+      },
+      {
+        title: "Plan cafétéria",
+        data: "CAFETARIA",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
+        },
+      },
+      {
+        title: "Accès aux vélos",
+        data: "bikeAccessStatus",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
+        },
+      },
+      {
+        title: "Accès aux bâtiments",
+        data: "customerBuildingAccess",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
+        },
+      },
+      { title: "Date mise à jour", data: "HEU_MAJ"}
+    ],
+    order: [
+      [0, "asc"]
+    ],
+  });
+  $('#companyDetails').on('shown.bs.modal', function(event){
+    get_company_details($(event.relatedTarget).attr('name'));
+  })
+
+  $("#companyListingTable thead tr").clone(true).appendTo("#test thead");
+
+  $("#companyListingTable thead tr:eq(1) th").each(function (i) {
+    var title = $(this).text();
+    $(this).html('<input type="text" placeholder="Search" />');
+
+    $("input", this).on("keyup change", function () {
+      if (table.column(i).search() !== this.value) {
+        table.column(i).search(this.value).draw();
+      }
+    })
   });
 }
 
-function get_company_details(ID, email, getCompanyContacts = false) {
+function get_company_details(ID, getCompanyContacts = false) {
   var internalReference;
   $.ajax({
     url: "apis/Kameo/companies/companies.php",
@@ -492,7 +425,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
           '"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a>';
         if (response.bikeNumber > 0) {
           var temp =
-            '<table id="bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Bike Number</span><span class="nl-inline">Bike Number</span></th><th scope="col"><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th scope="col"><span class="fr-inline">Facturation automatique</span><span class="en-inline">Automatic billing ?</span><span class="nl-inline">Automatic billing ?</span></th><th>Début</th><th>Fin</th><th scope="col"><span class="fr-inline">Montant location</span><span class="en-inline">Location Price</span><span class="nl-inline">Location Price</span></th><th scope="col">Accès aux bâtiments</th><th>Mise à jour</th><th></th></tr></thead><tbody>';
+            '<table id="bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">Référence</th><th scope="col">Modèle</th><th scope="col">Facturation automatique</th><th>Début</th><th>Fin</th><th scope="col">Montant location</th><th scope="col">Accès aux bâtiments</th><th>Mise à jour</th><th></th></tr></thead><tbody>';
           dest = dest.concat(temp);
           while (i < response.bikeNumber) {
             if (response.bike[i].contractType != "order") {
@@ -624,7 +557,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
         var dest = "";
         if (response.bikeNumber > 0) {
           var temp =
-            '<table id="ordered_bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Bike Number</span><span class="nl-inline">Bike Number</span></th><th scope="col"><span class="fr-inline">Modèle</span><span class="en-inline">Model</span><span class="nl-inline">Model</span></th><th>Date commande</th><th>Date livraison</th><th scope="col"><span class="fr-inline">Numéro commande fournisseur</span></th><th></th></tr></thead><tbody>';
+            '<table id="ordered_bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">Référence</th><th scope="col">Modèle</th><th>Date commande</th><th>Date livraison</th><th scope="col">Numéro commande fournisseur</th><th></th></tr></thead><tbody>';
           dest = dest.concat(temp);
           while (i < response.bikeNumber) {
             if (response.bike[i].contractType == "order") {
@@ -703,7 +636,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
         if (response.buildingNumber > 0) {
           var i = 0;
           var temp =
-            '<table class="table"><tbody><thead><tr><th scope="col"><span class="fr-inline">Référence</span><span class="en-inline">Reference</span><span class="nl-inline">Reference</span></th><th scope="col"><span class="fr-inline">Description</span><span class="en-inline">Description</span><span class="nl-inline">Description</span></th><th scope="col"><span class="fr-inline">Adresse</span><span class="en-inline">Address</span><span class="nl-inline">Address</span></th></tr></thead>';
+            '<table class="table"><tbody><thead><tr><th scope="col">Référence</th><th scope="col">Description</th><th scope="col">Adresse</th></tr></thead>';
           dest = dest.concat(temp);
           while (i < response.buildingNumber) {
             var temp =
@@ -731,15 +664,15 @@ function get_company_details(ID, email, getCompanyContacts = false) {
         var dest =
           '<a class="button small green button-3d rounded icon-right offerManagement addOffer" name="' +
           internalReference +
-          '" data-target="#offerManagement" data-toggle="modal" href="#"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter une offre</span></a>';
+          '" data-target="#offerManagement" data-toggle="modal" href="#"><i class="fa fa-plus"></i> Ajouter une offre</a>';
         dest +=
           '<a class="button small green button-3d rounded icon-right offerManagement getTemplate" name="' +
           internalReference +
-          '" href="#"><span class="fr-inline"><i class="fa fa-plus"></i>Nouveau Template Offre</span></a>';
+          '" href="#"><i class="fa fa-plus"></i>Nouveau Template Offre</a>';
         if (response.offerNumber + response.bikeContracts > 0) {
           var i = 0;
           var temp =
-            '<h5 class="text-green">Contrats</h5><table class="table"><tbody><thead><tr><th scope="col"><span class="fr-inline">ID</span><span class="en-inline">ID</span><span class="nl-inline">ID</span></th><th>PDF</th><th scope="col"><span class="fr-inline">Date</span><span class="en-inline">Date</span><span class="nl-inline">Date</span></th><th scope="col"><span class="fr-inline">Titre</span><span class="en-inline">Title</span><span class="nl-inline">Title</span></th><th scope="col"><span class="fr-inline">Chance</span><span class="en-inline">Chance</span><span class="nl-inline">Chance</span></th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>';
+            '<h5 class="text-green">Contrats</h5><table class="table"><tbody><thead><tr><th scope="col">ID</th><th scope="col">PDF</th><th scope="col">Date</th><th scope="col">Titre</th><th scope="col">Chance</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Statut</th><th></th></tr></thead>';
           dest = dest.concat(temp);
           while (i < response.bikeContracts) {
             if (response.offer[i].description) {
@@ -883,7 +816,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
         document.getElementById("companyContracts").innerHTML = dest;
 
         var dest =
-          '<table class="table table-condensed"><thead><tr><th>Type</th><th>ID</th><th><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th><span class="fr-inline">Date d\'initiation</span><span class="en-inline">Generation Date</span><span class="nl-inline">Generation Date</span></th><th><span class="fr-inline">Montant (HTVA)</span><span class="en-inline">Amount (VAT ex.)</span><span class="nl-inline">Amount (VAT ex.)</span></th><th><span class="fr-inline">Communication</span><span class="en-inline">Communication</span><span class="nl-inline">Communication</span></th><th><span class="fr-inline">Envoi ?</span><span class="en-inline">Sent</span><span class="nl-inline">Sent</span></th><th><span class="fr-inline">Payée ?</span><span class="en-inline">Paid ?</span><span class="nl-inline">Paid ?</span></th><th><span class="fr-inline">Limite de paiement</span><span class="en-inline">Limit payment date</span><span class="nl-inline">Limit payment date</span></th><th>Comptable ?</th></tr></thead><tbody>';
+          '<table class="table table-condensed"><thead><tr><th>Type</th><th>ID</th><th>Société</th><th>Date d\'initiation</th><th>Montant (HTVA)</th><th>Communication</th><th>Envoi ?</th><th>Payée ?</th><th>Limite de paiement</th><th>Comptable ?</th></tr></thead><tbody>';
 
         var i = 0;
         while (i < response.billNumber) {
@@ -1041,7 +974,6 @@ function get_company_details(ID, email, getCompanyContacts = false) {
           $(".offerManagementSendButton").removeClass("hidden");
           $(".offerManagementSendButton").text("Ajouter");
         });
-        displayLanguage();
       }
     },
     error: function (response) {
@@ -1050,7 +982,7 @@ function get_company_details(ID, email, getCompanyContacts = false) {
     $.ajax({
       url: "apis/Kameo/action_company.php",
       type: "get",
-      data: { company: internalReference, user: email },
+      data: { company: internalReference},
       success: function (response) {
         if (response.response == "error") {
           console.log(response.message);
@@ -1058,12 +990,12 @@ function get_company_details(ID, email, getCompanyContacts = false) {
           var dest =
             '<a href="#" data-target="#taskManagement" name="' +
             internalReference +
-            '" data-toggle="modal" class="button small green button-3d rounded icon-right addTask"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter une action</span></a>';
+            '" data-toggle="modal" class="button small green button-3d rounded icon-right addTask"><i class="fa fa-plus"></i> Ajouter une action</a>';
 
           if (response.actionNumber > 0) {
             var i = 0;
             var temp =
-              '<table class="table table-condensed"><tbody><thead><tr><th>ID</th><th><span class="fr-inline">Date</span><span class="en-inline">Date</span><span class="nl-inline">Date</span></th><th>Type</th><th><span class="fr-inline">Titre</span><span class="en-inline">Title</span><span class="nl-inline">Title</span></th><th><span class="fr-inline">Owner</span><span class="en-inline">Owner</span><span class="nl-inline">Owner</span></th><th><span class="fr-inline">Statut</span><span class="en-inline">Status</span><span class="nl-inline">Status</span></th><th></th></tr></thead> ';
+              '<table class="table table-condensed"><tbody><thead><tr><th>ID</th><th>Date</th><th>Type</th><th>Titre</th><th>Owner</th><th>Statut</th><th></th></tr></thead> ';
             dest = dest.concat(temp);
             while (i < response.actionNumber) {
               if (!response.action[i].date_reminder) {
@@ -1115,8 +1047,6 @@ function get_company_details(ID, email, getCompanyContacts = false) {
             $(".taskManagementSendButton").removeClass("hidden");
             $(".taskManagementSendButton").text("Ajouter");
           });
-
-          displayLanguage();
 
           var classname = document.getElementsByClassName("updateAction");
           for (var i = 0; i < classname.length; i++) {
@@ -1246,236 +1176,6 @@ $("body").on("click", ".deletePdfOffer", function (e) {
   }
 });
 
-function list_contracts_offers(company) {
-  $.ajax({
-    url: "apis/Kameo/offer_management.php",
-    type: "get",
-    data: { company: company, action: "retrieve" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        var i = 0;
-        var dest = "";
-        var temp =
-          '<table class="table table-condensed"><h4 class="fr-inline text-green">Contrats signés :</h4><br/><br/><div class="seperator seperator-small visible-xs"></div><thead><tr><th><span class="fr-inline">Société</span></th><th><span class="fr-inline">Description</span></th><th><span class="fr-inline">Montant</span></th><th><span class="fr-inline">Debut</span></th><th><span class="fr-inline">Fin</span></th></tr></thead>';
-        dest = dest.concat(temp);
-        while (i < response.contractsNumber) {
-          if (response.contract[i].start != null) {
-            var contract_start = response.contract[i].start.shortDate();
-          } else {
-            var contract_start = '<span class="text-red">N/A</span>';
-          }
-          if (response.contract[i].end != null) {
-            var contract_end = response.contract[i].end.shortDate();
-          } else {
-            var contract_end = '<span class="text-red">N/A</span>';
-          }
-
-          var temp =
-            '<tr><td><a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
-            response.contract[i].companyID +
-            '">' +
-            response.contract[i].company +
-            "</a></td><td>" +
-            response.contract[i].description +
-            "</td><td>" +
-            Math.round(response.contract[i].amount) +
-            " €/mois</td><td>" +
-            contract_start +
-            "</td><td>" +
-            contract_end +
-            "</td></tr>";
-          dest = dest.concat(temp);
-          i++;
-        }
-        var temp = "</tobdy></table>";
-        dest = dest.concat(temp);
-
-        var temp =
-          "<p>Valeur actuelle des contrat en cours : <strong>" +
-          Math.round(response.sumContractsCurrent) +
-          " €/mois</strong></p>";
-        dest = dest.concat(temp);
-
-        document.getElementById("contractsListingSpan").innerHTML = dest;
-
-        var i = 0;
-        var dest = "";
-        var temp =
-          '<h4 class="fr-inline text-green">Offres en cours :</h4><h4 class="en-inline text-green">Offers:</h4><h4 class="nl-inline text-green">Offers:</h4><br/><br/><div class="seperator seperator-small visible-xs"></div><table class="table table-condensed"><tbody><thead><tr><th>ID</th><th>PDF</th><th><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th>Type</th><th><span class="fr-inline">Titre</span><span class="en-inline">Title</span><span class="nl-inline">Title</span></th><th><span class="fr-inline">Montant</span><span class="en-inline">Amount</span><span class="nl-inline">Amount</span></th><th><span class="fr-inline">Debut</span><span class="en-inline">Start</span><span class="nl-inline">Start</span></th><th><span class="fr-inline">Fin</span><span class="en-inline">End</span><span class="nl-inline">End</span></th><th>Probabilité</th><th></th></tr></thead>';
-        dest = dest.concat(temp);
-        while (i < response.offersNumber) {
-          if (response.offer[i].start != null) {
-            var offer_start = response.offer[i].start.shortDate();
-          } else {
-            var offer_start = '<span class="text-red">N/A</span>';
-          }
-          if (response.offer[i].end != null) {
-            var offer_end = response.offer[i].end.shortDate();
-          } else {
-            var offer_end = '<span class="text-red">N/A</span>';
-          }
-
-          if (response.offer[i].type == "leasing") {
-            var amount = Math.round(response.offer[i].amount) + "€/mois";
-          } else {
-            var amount = Math.round(response.offer[i].amount) + "€";
-          }
-
-          if (response.offer[i].amount == 0) {
-            var amount = '<span class="text-red">' + amount + "</span>";
-          }
-
-          if (response.offer[i].type == "leasing") {
-            var type = "Leasing";
-          } else if (response.offer[i].type == "achat") {
-            var type = "Achat";
-          }
-
-          if (
-            response.offer[i].probability == 0 ||
-            response.offer[i].probability == 0
-          ) {
-            var probability =
-              '<span class="text-red">' +
-              response.offer[i].probability +
-              " %</span>";
-          } else {
-            var probability =
-              "<span>" + response.offer[i].probability + " %</span>";
-          }
-
-          if (response.offer[i].file != "" && response.offer[i].file != null) {
-            var offerLink = "offres/" + response.offer[i].file;
-
-            var temp =
-              '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
-              response.offer[i].id +
-              '">' +
-              response.offer[i].id +
-              "</a></td><td><a href=" +
-              offerLink +
-              ' target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td><td>' +
-              response.offer[i].company +
-              "</td><td>" +
-              type +
-              "</td><td>" +
-              response.offer[i].title +
-              "</td><td>" +
-              amount +
-              " </td><td>" +
-              offer_start +
-              "</td><td>" +
-              offer_end +
-              "</td><td>" +
-              probability +
-              '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
-              response.offer[i].id +
-              '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
-          } else {
-            var temp =
-              '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
-              response.offer[i].id +
-              '">' +
-              response.offer[i].id +
-              "</a></td><td></td><td>" +
-              response.offer[i].company +
-              "</td><td>" +
-              type +
-              "</td><td>" +
-              response.offer[i].title +
-              "</td><td>" +
-              amount +
-              " </td><td>" +
-              offer_start +
-              "</td><td>" +
-              offer_end +
-              "</td><td>" +
-              probability +
-              '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
-              response.offer[i].id +
-              '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
-          }
-
-          dest = dest.concat(temp);
-          i++;
-        }
-        var temp = "</tbody></table>";
-        dest = dest.concat(temp);
-        document.getElementById("cashListingSpan").innerHTML = dest;
-
-        var i = 0;
-        var dest = "";
-        var temp =
-          '<table class="table table-condensed"><h4 class="fr-inline text-green">Coûts :</h4><br/><br/><a class="button small green button-3d rounded icon-right" data-target="#costsManagement" data-toggle="modal" href="#" onclick=\"addCost()\"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un coût</span></a><div class="seperator seperator-small visible-xs"></div><tbody><thead><tr><th>ID</th><th><span class="fr-inline">Titre</span></th><th><span class="fr-inline">Montant</span></th><th><span class="fr-inline">Debut</span></th><th><span class="fr-inline">Fin</span></th><th>Type</th><th></th></tr></thead>';
-        dest = dest.concat(temp);
-        while (i < response.costsNumber) {
-          if (response.cost[i].start != null) {
-            var cost_start = response.cost[i].start.shortDate();
-          } else {
-            var cost_start = "N/A";
-          }
-          if (response.cost[i].end != null) {
-            var cost_end = response.cost[i].end.shortDate();
-          } else {
-            var cost_end = "N/A";
-          }
-
-          if (response.cost[i].type == "monthly" || response.cost[i].type == "loan") {
-            var amount = Math.round(response.cost[i].amount) + "€ /mois";
-          } else {
-            var amount = Math.round(response.cost[i].amount) + " €";
-          }
-
-          if (response.cost[i].type === "loan") {
-            var updateCostLoan = 'updateLoan(this.name)'
-            var retrieveCostLoan = 'retrieveLoan(this.name)'
-          } else {
-            var updateCostLoan = 'updateCost(this.name)'
-            var retrieveCostLoan = 'retrieveCost(this.name)'
-          }
-
-          var temp =
-            '<tr><td><a href="#" onclick=\"' + retrieveCostLoan + '\" data-target="#costsManagement" data-toggle="modal" name="' +
-            response.cost[i].id +
-            '">' +
-            response.cost[i].id +
-            "</a></td><td>" +
-            response.cost[i].title +
-            "</td><td>" +
-            amount +
-            " </td><td>" +
-            cost_start +
-            "</td><td>" +
-            cost_end +
-            '</td><td><ins><a class="text-green costsManagement" data-target="#costsManagement" name="' +
-            response.cost[i].id +
-            '" data-toggle="modal" href="#" onclick=\"' + updateCostLoan + '\">Mettre à jour</a></ins></td></tr>';
-          dest = dest.concat(temp);
-          i++;
-        }
-        var temp = "</tbody></table>";
-        dest = dest.concat(temp);
-        document.getElementById("costsListingSpan").innerHTML = dest;
-
-        $(".retrieveOffer").click(function () {
-          retrieve_offer(this.name, "retrieve");
-          $(".offerManagementTitle").text("Consulter une offre");
-          $(".offerManagementSendButton").addClass("hidden");
-        });
-        $(".updateOffer").click(function () {
-          retrieve_offer(this.name, "update");
-          $(".offerManagementTitle").text("Mettre à jour une offre");
-          $(".offerManagementSendButton").removeClass("hidden");
-          $(".offerManagementSendButton").text("Mettre à jour");
-        });
-        displayLanguage();
-      }
-    },
-  });
-}
 
 function retrieve_offer(ID, action) {
   $.ajax({

@@ -17,8 +17,9 @@ try{
     $ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
     $SIZE=isset($_GET['SIZE']) ? $_GET['SIZE'] : NULL;
     $IDOrder=isset($_GET['IDOrder']) ? $_GET['IDOrder'] : NULL;
+    $category=isset($_GET['category']) ? addslashes($_GET['category']) : NULL;
 
-    if($action=="list"){
+    if($action=="list" || $action=="addBike"){
 
       $response=array();
       $marginBike=0.7;
@@ -177,27 +178,39 @@ try{
         $stockQuery = "AND bb.SIZE = ?";
         $orderQuery = "SELECT 1 from customer_bikes where customer_bikes.STAANN != 'D' AND customer_bikes.SIZE=? AND COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE and customer_bikes.CONTRACT_TYPE='order')";
         $sizeInPortfolioQuery = "AND bike_catalog.SIZES & ?";
+        if($category){
+          $sizeInPortfolioQuery = $sizeInPortfolioQuery." AND UTILISATION='$category'";
+        }
       }else{
         $stockQuery = "";
         $orderQuery = "SELECT 1 from customer_bikes where customer_bikes.STAANN != 'D' AND COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE and customer_bikes.CONTRACT_TYPE='order')";
         $sizeInPortfolioQuery = "";
+        if($category){
+          $sizeInPortfolioQuery = $sizeInPortfolioQuery." AND UTILISATION='$category'";
+        }
       }
 
       $sql="(select bike_catalog.ID, BRAND as brand, bike_catalog.MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, count(case when bb.SIZE = 'XS' then 1 end) as stockXS, count(case when bb.SIZE = 'S' then 1 end) as stockS, count(case when bb.SIZE = 'M' then 1 end) as stockM, count(case when bb.SIZE = 'L' then 1 end) as stockL, count(case when bb.SIZE = 'XL' then 1 end) as stockXL, count(case when bb.SIZE = 'Uni' then 1 end) as stockUni, COUNT(1) as stockTotal, NULL as estimatedDeliveryDate, SIZES as sizes
-      from bike_catalog, customer_bikes bb WHERE bike_catalog.ID=bb.TYPE and bike_catalog.STAANN != 'D' and bb.COMPANY='KAMEO' and bb.CONTRACT_TYPE='stock' ".$stockQuery."  ".$sizeInPortfolioQuery."  GROUP BY TYPE)
+      from bike_catalog, customer_bikes bb WHERE bike_catalog.ID=bb.TYPE AND bb.STAANN!='D' AND bike_catalog.STAANN != 'D' and bb.COMPANY='KAMEO' and bb.CONTRACT_TYPE='stock' ".$stockQuery."  ".$sizeInPortfolioQuery."  GROUP BY TYPE)
 
       UNION ALL
 
 
-      (select bike_catalog.ID, BRAND as brand, bike_catalog.MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, '0' as stockXS, '0' as stockS, '0' as stockM, '0' as stockL, '0' as stockXL , '0' as stockUni, 0 as stockTotal, (SELECT min(customer_bikes.ESTIMATED_DELIVERY_DATE) FROM customer_bikes WHERE customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.CONTRACT_TYPE='order' and customer_bikes.STAANN != 'D') as estimatedDeliveryDate, SIZES as sizes
+      (select bike_catalog.ID, BRAND as brand, bike_catalog.MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, '0' as stockXS, '0' as stockS, '0' as stockM, '0' as stockL, '0' as stockXL , '0' as stockUni, 0 as stockTotal, (SELECT min(customer_bikes.ESTIMATED_DELIVERY_DATE) FROM customer_bikes WHERE customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.STAANN !='D' AND customer_bikes.CONTRACT_TYPE='order' and customer_bikes.STAANN != 'D') as estimatedDeliveryDate, SIZES as sizes
       from bike_catalog where bike_catalog.STAANN != 'D'  ".$sizeInPortfolioQuery."  AND not EXISTS (SELECT 1 from customer_bikes where customer_bikes.STAANN != 'D' AND COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE and customer_bikes.CONTRACT_TYPE='stock') AND EXISTS (".$orderQuery.")
 
       UNION ALL
 
       (select ID, BRAND as brand, MODEL as model, FRAME_TYPE as frameType, UTILISATION as utilisation, ELECTRIC as electric, STOCK as stock, DISPLAY as display, BUYING_PRICE as buyPrice, PRICE_HTVA as price, (round((PRICE_HTVA*(1-0.27)*(1+0.7)+(3*84+4*100)*(1+0.3))/36)) as leasingPrice, MOTOR as motor, BATTERY as battery, TRANSMISSION as transmission, SEASON as season, PRIORITY as priority, '0' as stockXS, '0' as stockS, '0' as stockM, '0' as stockL, '0' as stockXL , '0' as stockUni, 0 as stockTotal, NULL as estimatedDeliveryDate, SIZES as sizes
-      from bike_catalog where STAANN != 'D' ".$sizeInPortfolioQuery." AND not EXISTS (SELECT 1 from customer_bikes where customer_bikes.STAANN != 'D' AND COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE and customer_bikes.CONTRACT_TYPE='stock') AND NOT EXISTS (".$orderQuery.")
+      from bike_catalog where STAANN != 'D' ".$sizeInPortfolioQuery." AND not EXISTS (SELECT 1 from customer_bikes where customer_bikes.STAANN != 'D' AND COMPANY='KAMEO' AND bike_catalog.ID=customer_bikes.TYPE and customer_bikes.CONTRACT_TYPE='stock') AND NOT EXISTS (".$orderQuery.")";
 
-      ORDER BY stockTotal DESC, case when estimatedDeliveryDate is null then 1 else 0 end, estimatedDeliveryDate";
+      if($action == "list"){
+        $sql = $sql."ORDER BY stockTotal DESC, case when estimatedDeliveryDate is null then 1 else 0 end, estimatedDeliveryDate";
+      }else{
+        $sql = $sql."ORDER BY BRAND, MODEL";
+      }
+
+
 
       $stmt = $conn->prepare($sql);
       if($stmt){

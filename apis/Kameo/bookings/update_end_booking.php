@@ -7,16 +7,17 @@ $newEndDate=isset($_POST['newEndDate']) ? $_POST['newEndDate']." ".$_POST['newEn
 if($ID==NULL){
 	errorMessage("ES0012");
 }else{
-	$booking = execSQL("SELECT aa.BIKE_ID, aa.DATE_END_2, bb.COMPANY, aa.EMAIL, bb.MODEL, aa.EXTENSIONS from reservations aa, customer_bikes bb WHERE aa.ID=? AND aa.BIKE_ID=bb.ID", array('i', $ID), false);
+	$booking = execSQL("SELECT aa.BIKE_ID, aa.DATE_END_2, aa.BUILDING_START, bb.COMPANY, aa.EMAIL, bb.MODEL, aa.EXTENSIONS from reservations aa, customer_bikes bb WHERE aa.ID=? AND aa.BIKE_ID=bb.ID", array('i', $ID), false);
 	$bikeID = $booking[0]['BIKE_ID'];
 	$dateEnd = $booking[0]['DATE_END_2'];
 	$company = $booking[0]['COMPANY'];
 	$email = $booking[0]['EMAIL'];
 	$customName = $booking[0]['MODEL'];
+	$building = $booking[0]['BUILDING_START'];
 	$dateEnd = new DateTime($booking[0]['DATE_END_2'], new DateTimeZone('Europe/Brussels'));
 	$newEndDate = new DateTime($_POST['newEndDate']." ".$_POST['newEndHour'], new DateTimeZone('Europe/Brussels'));
 	$dateEndString = $dateEnd->format("Y-m-d H:i");
-	$newEndDateString = $newEndDate->format("d/m/Y - H:i");
+	$newEndDateString = $newEndDate->format("Y-m-d H:i");
 	$limitDate = $dateEnd->add(new DateInterval('P1M'));
 
 	if($limitDate < $newEndDate){
@@ -30,6 +31,8 @@ if($ID==NULL){
 		errorMessage("ES0067");
 	}
 	execSQL("UPDATE reservations SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, DATE_END_2=?, EXTENSIONS=EXTENSIONS+1 WHERE ID=?", array('ssi', $token, $newEndDate->format('Y-m-d H:i'), $ID), true);
+	execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'prolongation', $ID, $building, $dateEndString.'/'.$newEndDateString), true);
+
 	require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php';
 	$mail = new PHPMailer();
 	require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
@@ -49,7 +52,6 @@ if($ID==NULL){
 			if($email=="julien@actiris.be"){
 				$mail->AddAddress("antoine@kameobikes.com");
 			}
-			$mail->AddCC("bookabike@actiris.be");
 			$mail->AddBCC("antoine@kameobikes.com");
 		}else if(constant('ENVIRONMENT') == "test"){
 			$mail->AddAddress("antoine@kameobikes.com");

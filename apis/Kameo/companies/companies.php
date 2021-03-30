@@ -7,9 +7,9 @@ header_remove("Set-Cookie");
 header_remove("X-Powered-By");
 header_remove("Content-Security-Policy");
 
-require_once '../globalfunctions.php';
-require_once '../authentication.php';
-require_once '../connexion.php';
+require_once __DIR__ .'/../globalfunctions.php';
+require_once __DIR__ .'/../authentication.php';
+include __DIR__ .'/../connexion.php';
 
 $token = getBearerToken();
 

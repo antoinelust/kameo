@@ -100,8 +100,12 @@ if($action=="delete"){
             }
         }
 
+        if($amountHTVA<0){
+            $fichier=substr($date, 0, 10)."_".$beneficiary."_".$IDBilling.".pdf";
+        }else{
+            $fichier=substr($date, 0, 10)."_".$company."_".$IDBilling.".pdf";
+        }
 
-        $fichier=$currentFile;
         if(!move_uploaded_file($_FILES['widget-updateBillingStatus-form-file']['tmp_name'], $dossier.$fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
         {
             errorMessage("ES0024");

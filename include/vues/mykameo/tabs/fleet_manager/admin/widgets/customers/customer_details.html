@@ -399,6 +399,8 @@
             );
             $("#widget-companyDetails-form input").attr("readonly", true);
             $("#widget-companyDetails-form select").prop("disabled", true);
+            $("#companyListingTable").dataTable().api().ajax.reloa();
+
           } else {
             $.notify(
               {

@@ -51,7 +51,7 @@ if ($admin != "Y") {
         $sql = "SELECT * FROM customer_bikes WHERE COMPANY != 'KAMEO' AND ((CONTRACT_TYPE = 'leasing' AND LEASING_PRICE != '0') OR CONTRACT_TYPE = 'location' OR CONTRACT_TYPE = 'order') AND STAANN != 'D' AND NOT EXISTS (SELECT 1 FROM loan_belfius WHERE ID_BIKE=customer_bikes.ID)";
 
         if ($stockAndCommand) {
-            $sql = $sql . " AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";
+            $sql = $sql . " AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order' OR CONTRACT_TYPE='pending_delivery')";
         }
 
         if ($conn->query($sql) === FALSE) {
@@ -62,11 +62,9 @@ if ($admin != "Y") {
     }else{
         include 'connexion.php';
         $sql = "SELECT * FROM customer_bikes WHERE STAANN != 'D'";
-
         if ($stockAndCommand) {
             $sql = $sql . " AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";
         }
-
         if ($conn->query($sql) === FALSE) {
             $response = array('response' => 'error', 'message' => $conn->error);
             echo json_encode($response);
@@ -95,6 +93,7 @@ while ($row = mysqli_fetch_array($result)) {
     $response['bike'][$i]['billingType'] = $row['BILLING_TYPE'];
     $response['bike'][$i]['contractType'] = $row['CONTRACT_TYPE'];
     $response['bike'][$i]['contractStart'] = $row['CONTRACT_START'];
+    $response['bike'][$i]['sellingDate'] = $row['SELLING_DATE'];
     $response['bike'][$i]['leasingPrice'] = $row['LEASING_PRICE'];
     $response['bike'][$i]['soldPrice'] = $row['SOLD_PRICE'];
     $response['bike'][$i]['contractEnd'] = $row['CONTRACT_END'];

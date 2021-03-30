@@ -111,7 +111,7 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
   }
 
   include 'connexion.php';
-  $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, ADMINISTRATOR, STAANN, TOKEN, ACCESS_RIGHTS) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', $phone, '0', '', '', '', '0', '', '$company', '$email', '$pass', '$fleetManager', '', '$token', '$accessRights')";
+  $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, STAANN, TOKEN, ACCESS_RIGHTS) VALUES ('$requestor', UPPER('$name'), UPPER('$firstName'), '$name', '$firstName', $phone, '0', '', '', '', '0', '', '$company', '$email', '$pass', '', '$token', '$accessRights')";
 
   if ($conn->query($sql) === FALSE) {
       if($conn->errno=="1062"){
@@ -181,7 +181,11 @@ if(get_user_permissions(["fleetManager", "admin"], $token)){
     $mail->AddReplyTo("info@kameobikes.com");
     $mail->AddAddress($email);
 
-    $subject = "Accès MyKameo - Toegang tot MyKameo";
+    if($company == "Methanex Corporation"){
+      $subject = "Be-Flex - Bike Lease - MyKameo Access";
+    }else{
+      $subject = "Accès MyKameo - Toegang tot MyKameo";
+    }
     $mail->Subject = $subject;
 
     if($company=='Actiris'){

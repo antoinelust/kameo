@@ -204,26 +204,3 @@ function initializeFields() {
     },
   });
 }
-
-initializeFields();
-
-function list_kameobikes_member() {
-  $('#widget-addActionCompany-form select[name=owner]')
-    .find('option')
-    .remove()
-    .end();
-
-  $.ajax({
-    url: 'apis/Kameo/get_kameobikes_members.php',
-    type: 'get',
-    success: function(response) {
-      if (response.response == 'error')
-        console.log(response.message);
-      else if (response.response == 'success') {
-        for (var i = 0; i < response.membersNumber; i++)
-          $('#widget-addActionCompany-form select[name=owner]').append("<option value=" + response.member[i].email + ">" + response.member[i].firstName + " " + response.member[i].name + "<br>");
-      }
-    }
-  });
-}
-list_kameobikes_member();

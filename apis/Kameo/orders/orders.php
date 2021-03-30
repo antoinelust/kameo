@@ -78,6 +78,19 @@ switch($_SERVER["REQUEST_METHOD"])
 				log_output($response);
 			}else
 				error_message('403');
+		}else if($action === 'listOrderableAccessories'){
+			if(get_user_permissions("order", $token)){
+				$response['response']="success";
+				$response['accessories'] = execSQL("SELECT companies_orderable_accessories.* FROM companies_orderable_accessories, companies, customer_referential WHERE TOKEN=? AND customer_referential.COMPANY=companies.INTERNAL_REFERENCE AND companies.ID=companies_orderable_accessories.COMPANY_ID", array("s", $token), false);
+				$conditions = execSQL("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPES, TVA_INCLUDED from conditions, customer_referential WHERE conditions.COMPANY=customer_referential.COMPANY AND NAME='generic' and customer_referential.TOKEN=?", array('s', $token), false);
+				$response['discount']=$conditions[0]['DISCOUNT'];
+				$response['cafeteriaTypes']=explode(',', $conditions[0]['CAFETERIA_TYPES']);
+				$response['tvaIncluded']=$conditions[0]['TVA_INCLUDED'];
+				$response['remainingPriceIncludedInLeasing']=$conditions[0]['REMAINING_PRICE_INCLUDED_IN_LEASING'];
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
 		}else
 			error_message('405');
 		break;

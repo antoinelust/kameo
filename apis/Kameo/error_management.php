@@ -19,6 +19,8 @@ $token = getBearerToken();
       $item=isset($_GET['item']) ? $_GET['item'] : NULL;
 
       if($action=="list"){
+        $errorArrayLeasingDuration=array();
+        $errorIndex=0;
           if($item=="bikesAndBoxes"){
 
             $response=array();
@@ -68,7 +70,7 @@ $token = getBearerToken();
               }
             }
 
-            $sql="SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE as 'clientDeliveryDate', customer_bikes.ESTIMATED_DELIVERY_DATE as 'supplierDeliveryDate' FROM `client_orders`, customer_bike_access, customer_bikes WHERE client_orders.EMAIL=customer_bike_access.EMAIL AND client_orders.STATUS='confirmed' AND customer_bike_access.BIKE_ID=customer_bikes.ID AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 20 DAY))";
+            $sql="SELECT customer_bikes.ID as 'bikeID', client_orders.ESTIMATED_DELIVERY_DATE as 'clientDeliveryDate', customer_bikes.ESTIMATED_DELIVERY_DATE as 'supplierDeliveryDate' FROM `client_orders`, customer_bike_access, customer_bikes WHERE customer_bikes.CONTRACT_TYPE = 'order' AND client_orders.EMAIL=customer_bike_access.EMAIL AND client_orders.STATUS='confirmed' AND customer_bike_access.BIKE_ID=customer_bikes.ID AND (client_orders.ESTIMATED_DELIVERY_DATE < customer_bikes.ESTIMATED_DELIVERY_DATE OR client_orders.ESTIMATED_DELIVERY_DATE > DATE_ADD(customer_bikes.ESTIMATED_DELIVERY_DATE, INTERVAL 20 DAY))";
             if ($conn->query($sql) === FALSE){
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);
@@ -115,15 +117,33 @@ $token = getBearerToken();
                 $contractStart=new DateTime($row['CONTRACT_START']);
                 $dateTemp=$contractStart;
                 if($row['CONTRACT_TYPE']=='leasing'){
-                    if($row['CONTRACT_END'] != NULL){
-                        $contractEnd=new DateTime($row['CONTRACT_END']);
-                        $now=new DateTime('now');
-                        if($now<$contractEnd){
-                            $contractEnd=$now;
-                        }
-                    }else{
-                        $contractEnd=new DateTime('now');
-                    }
+                  if($row['CONTRACT_END'] != NULL){
+                      $contractEnd=new DateTime($row['CONTRACT_END']);
+                      $interval = $contractEnd->diff($contractStart);
+                      $ts1 = strtotime($row['CONTRACT_START']);
+                      $ts2 = strtotime($row['CONTRACT_END']);
+
+                      $year1 = date('Y', $ts1);
+                      $year2 = date('Y', $ts2);
+                      $month1 = date('m', $ts1);
+                      $month2 = date('m', $ts2);
+                      $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+
+                      if(!in_array($diff, array('24', '36', '48'))){
+                        $errorArrayLeasingDuration[$errorIndex]['bikeID']=$bikeID;
+                        $errorArrayLeasingDuration[$errorIndex]['frameNumber']=$row['FRAME_NUMBER'];
+                        $errorArrayLeasingDuration[$errorIndex]['contractStart']=$row['CONTRACT_START'];
+                        $errorArrayLeasingDuration[$errorIndex]['contractEnd']=$row['CONTRACT_END'];
+                        $errorArrayLeasingDuration[$errorIndex]['contractDuration']=$diff;
+                        $errorIndex++;
+                      }
+                      $now=new DateTime('now');
+                      if($now<$contractEnd){
+                          $contractEnd=$now;
+                      }
+                  }else{
+                      $contractEnd=new DateTime('now');
+                  }
                 }else if($row['CONTRACT_TYPE']=='renting'){
                     if($row['CONTRACT_END'] != NULL){
                         $contractEnd=new DateTime($row['CONTRACT_END']);
@@ -155,61 +175,56 @@ $token = getBearerToken();
                     $contractEnd=new DateTime($yearBefore.'-'.$monthBefore.'-'.$dayBefore);
                 }
 
+                $billingType=$row['BILLING_TYPE'];
+
                 $day=$contractStart->format('d');
                 $month=$contractStart->format('m');
                 $year=$contractStart->format('Y');
 
                 while($dateTemp<=$contractEnd){
+                  $dateTempString=$dateTemp->format('d-m-Y');
+                  $dateTempString2=$dateTemp->format('Y-m-d');
+
+                  include 'connexion.php';
+                  $sql="SELECT * FROM factures_details WHERE ITEM_TYPE='bike' AND ITEM_ID='$bikeID' and DATE_START = '$dateTempString2'";
+                  $j++;
 
 
+                  if ($conn->query($sql) === FALSE) {
+                      $response = array ('response'=>'error', 'message'=> $conn->error);
+                      echo json_encode($response);
+                      die;
+                  }
+                  $result2 = mysqli_query($conn, $sql);
+                  $length = $result2->num_rows;
+                  $conn->close();
 
-                    $dateTempString=$dateTemp->format('d-m-Y');
-                    $dateTempString2=$dateTemp->format('Y-m-d');
+                  if($length == 0){
+                      $response['bike']['bill'][$i]['bikeID']=$bikeID;
+                      //$response['bike']['bill'][$i]['sql']=$sql;
+                      $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
+                      $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo à la date du $dateTempString";
+                      $i++;
+                  }
 
-                    include 'connexion.php';
-                    $sql="SELECT * FROM factures_details WHERE ITEM_TYPE='bike' AND ITEM_ID='$bikeID' and DATE_START = '$dateTempString2'";
-
-                    //$response['bike']['log'][$j]['bikeID']=$bikeID;
-                    //$response['bike']['log'][$j]['bikeNumber']=$bikeNumber;
-                    //$response['bike']['log'][$j]['sql']=$sql;
-                    $j++;
-
-
-                    if ($conn->query($sql) === FALSE) {
-                        $response = array ('response'=>'error', 'message'=> $conn->error);
-                        echo json_encode($response);
-                        die;
-                    }
-                    $result2 = mysqli_query($conn, $sql);
-                    $length = $result2->num_rows;
-                    $conn->close();
-
-                    if($length == 0){
-                        $response['bike']['bill'][$i]['bikeID']=$bikeID;
-                        //$response['bike']['bill'][$i]['sql']=$sql;
-                        $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
-                        $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo à la date du $dateTempString";
-                        $i++;
-                    }
-
+                  if($billingType='annual'){
+                    $year++;
+                  }else{
                     if($month=='12'){
                         $month='01';
                         $year++;
                     }else{
                         $month++;
                     }
+                  }
 
-                    if($day>last_day_month($month)){
-                        $dayTemp=last_day_month($month);
-                    }else{
-                        $dayTemp=$day;
-                    }
-
-
-                    $dateTemp->setDate($year, $month, $dayTemp);
+                  if($day>last_day_month($month)){
+                      $dayTemp=last_day_month($month);
+                  }else{
+                      $dayTemp=$day;
+                  }
+                  $dateTemp->setDate($year, $month, $dayTemp);
                 }
-
-
             }
 
 
@@ -250,6 +265,8 @@ $token = getBearerToken();
                 }
             }
             $conn->close();
+
+            $response['contract']=$errorArrayLeasingDuration;
 
             include 'connexion.php';
             $sql="SELECT * FROM boxes aa WHERE COMPANY != 'KAMEO' AND START is NOT NULL and STAANN != 'D'";

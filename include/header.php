@@ -41,7 +41,7 @@
 				<a href="#"><?=L::header_catalogue;?> <i class="fa fa-angle-down"></i> </a>
 				<ul class="dropdown-menu">
 				  <li>
-					<a href="/achat"><?=L::header_ourBikes;?></a>
+					<a href="/catalogue_overview"><?=L::header_ourBikes;?></a>
 				  </li>
 				  <li>
 					<a href="/accessoires"><?=L::header_ourAccessories;?></a>
@@ -139,6 +139,8 @@
 		}
 	});
 </script>
+
+
 
 <div class="modal fade" id="lostPassword" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">

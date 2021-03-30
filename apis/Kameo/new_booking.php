@@ -75,7 +75,6 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
     $timestamp= time();
     $sql= "INSERT INTO reservations (USR_MAJ, STATUS, BIKE_ID, DATE_START, DATE_START_2, BUILDING_START, DATE_END, DATE_END_2, BUILDING_END, EMAIl, STAANN) VALUES ('new_booking', 'No box', '$bikeID', '$dateStart', '$dateStart_2String', '$buildingStart', '$dateEnd', '$dateEnd_2String', '$buildingEnd', '$user', '')";
 
-
    	if ($conn->query($sql) === FALSE) {
 		$response = array ('response'=>'error', 'message'=> $conn->error);
 		echo json_encode($response);
@@ -83,6 +82,10 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
 	}
 		$insertedID = $conn->insert_id;
     $conn->close();
+
+
+    execSQL("INSERT INTO reservations_details (ACTION, RESERVATION_ID, BUILDING, OUTCOME) VALUES (?, ?, ?, ?)", array('siss', 'new_booking', $insertedID, $buildingStart, $dateStart_2String.'/'.$dateEnd_2String.'/'.$buildingStart.'/'.$buildingEnd), true);
+
 
     // ====Ajout de la notification de feedback
     include 'connexion.php';
@@ -150,6 +153,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' && $bikeID != NULL & $buildingStart != 
             echo json_encode($response);
             die;
         }
+
     }
 		require_once $_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.php';
 		$mail = new PHPMailer();

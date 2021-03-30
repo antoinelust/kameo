@@ -252,7 +252,7 @@ else{
   }else if(constant('ENVIRONMENT')=="test"){
     $test=CallAPI('POST', 'https://www.kameobikes.com/test/scripts/generate_bill.php', $data);
   }else{
-        //Modifier en fonction du virtual host 
+        //Modifier en fonction du virtual host
     $test=CallAPI('POST', 'http://kameo.local/scripts/generate_bill.php', $data);
   }
   try {
@@ -312,6 +312,8 @@ if($billType=='manual'){
 else{
 }
 
+echo json_encode($billType);
+die;
 
 
 $conn->close();

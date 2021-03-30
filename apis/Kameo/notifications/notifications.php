@@ -19,7 +19,7 @@ switch($_SERVER["REQUEST_METHOD"])
 
 
 		if($action === 'retrieveNotifications'){
-			if(get_user_permissions(["search", "order","chatsManager","admin", 'fleetManager', 'personnalBike'], $token)){
+			if(get_user_permissions(["search", "order","chatsManager","admin", 'fleetManager', 'personnalBike', 'bikesStock'], $token)){
 				$stmt = $conn->prepare("SELECT ID FROM customer_referential WHERE TOKEN = ?");
 				$stmt->bind_param("s", $token);
 				if ($stmt->execute())

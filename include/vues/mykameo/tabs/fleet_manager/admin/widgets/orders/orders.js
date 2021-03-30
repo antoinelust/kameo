@@ -35,10 +35,8 @@ function get_bike_listing() {
       $('#widget-order-form input[name=model]').val(response.model);
       $('#widget-order-form select[name=frameType]').val(response.frameType);
       $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
-      $("#widget-order-form select[name=assignBike]").find("option").remove().end();
 
       if(response.contract==null){
-
        if(response.numberType==0){
          $('#widget-order-form label[name=phraseNonAssignation]').text('Aucun vélo disponible pour cette commande');
           $('#widget-order-form div[name=assignBikeDiv]').show();
@@ -46,18 +44,11 @@ function get_bike_listing() {
          $('#widget-order-form div[name=assignBikeDiv]').hide();
        }
        else{
-
          $('#widget-order-form div[name=commandeVeloDiv]').hide();
          $('#widget-order-form div[name=assignBikeDiv]').show();
        }
-       var i =0;
-       while(i<response.numberType){
-        $('#widget-order-form select[name=assignBike]').append('<option value='+response.bike[i].id+'>'+response.bike[i].type+'</option>');
-        i++;
-      }
-    }
+     }
     else{
-
      $('#widget-order-form label[name=phraseNonAssignation]').text('Vélo déja assigné pour cette commande');
       $('#widget-order-form div[name=assignBikeDiv]').hide();
      $('#widget-order-form div[name=commandeVeloDiv]').show();
@@ -71,40 +62,6 @@ function get_bike_listing() {
 
 
 function get_orders_listing() {
-
-
-
-  if($("#widget-bikeManagement-form select[name=portfolioID] option").length==0){
-    $.ajax({
-      url: 'apis/Kameo/load_portfolio.php',
-      type: 'get',
-      data: {"action": "list"},
-      success: function(response){
-        if (response.response == 'error') {
-          console.log(response.message);
-        } else{
-          var i=0;
-          //sort name ascending then id descending
-          const portfolioSorted=response.bike.sort(function(a, b){
-              //note the minus before -cmp, for descending order
-              return cmp(
-                [cmp(a.brand, b.brand), cmp(a.model, b.model)],
-                [cmp(b.brand, a.brand), cmp(b.model, a.model)]
-                );
-            });
-
-          while(i<response.bikeNumber){
-            $('#widget-bikeManagement-form select[name=portfolioID]').append("<option value="+portfolioSorted[i].ID+">"+portfolioSorted[i].brand+" - "+portfolioSorted[i].model+" - "+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
-            i++;
-          }
-        }
-      }
-    });
-  }
-
-
-
-
   var email= "<?php echo $user_data['EMAIL']; ?>";
   $.ajax({
     url: 'apis/Kameo/orders_management.php',
@@ -275,6 +232,7 @@ $('body').on('click', '.testAssignation',function(){
 
 
 $('body').on('click', '.addOrder',function(){
+  $('#widget-order-form div[name=assignationBikeHide]').addClass("hidden");
   $('#widget-order-form')[0].reset();
   $("#widget-order-form select[name=name]").find("option")
   .remove()
@@ -284,6 +242,56 @@ $('body').on('click', '.addOrder',function(){
   $("#widget-order-form select[name=name]").show();
   $(".orderManagementTitle").html("Ajouter une commande");
   $("#widget-order-form input[name=action]").val("add");
+  $('.accessoriesNumber').html('');
+  //document.getElementById("ExistingAccessory").innerHTML="";
+  list_bikes();
+  $("#widget-order-form select[name=company]").off();
+  $("#widget-order-form select[name=company]").change(function(){
+    $.ajax({
+      url: 'apis/Kameo/get_users_listing.php',
+      type: 'post',
+      data: { "companyID": $('#widget-order-form select[name=company]').val()},
+      success: function(response){
+        if(response.response == 'error') {
+          console.log(response.message);
+        }
+        if(response.response == 'success'){
+          $('#widget-order-form select[name=name]')
+          .find('option')
+          .remove()
+          .end()
+          ;
+
+          var i=0;
+          var toSelect = null;
+          while (i < response.usersNumber){
+            $('#widget-order-form select[name=name]').append("<option value="+i+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
+            i++;
+          }
+          if(response.usersNumber == 0){
+            $('.clientReference').fadeOut();
+          }else{
+            $('.clientReference').fadeIn();
+          }
+          $('#widget-order-form select[name=name]').val("");
+          $('#widget-order-form input[name = mail]').val("");
+          $('#widget-order-form input[name = phone]').val("");
+
+          $("#widget-order-form select[name=name]").off();
+          $("#widget-order-form select[name=name]").change(function(){
+            if(response.users[$(this).children("option:selected").val()].phone=='' ||response.users[$(this).children("option:selected").val()].phone=='/' || response.users[$(this).children("option:selected").val()].phone==null ){
+              var user_phone = 'N/A';
+            }else{
+              var user_phone = response.users[$(this).children("option:selected").val()].phone;
+            }
+            var user_email = response.users[$(this).children("option:selected").val()].email;
+            $('#widget-order-form input[name = mail]').val(user_email);
+            $('#widget-order-form input[name = phone]').val(user_phone);
+          })
+        }
+      }
+    });
+  });
 });
 
 function list_bikes(){
@@ -311,15 +319,14 @@ function list_bikes(){
           $('#widget-order-form select[name=portfolioID]').append('<option value='+portfolioSorted[i].ID+'>'+portfolioSorted[i].brand+' '+portfolioSorted[i].model+' - '+portfolioSorted[i].frameType+' - '+portfolioSorted[i].season+' - ID catalogue :'+portfolioSorted[i].ID+'</option>');
           i++;
         }
-       // $('#widget-order-form div[name=assignationBikeHide]').hide();
      }
    }
  });
 }
 
-function retrieve_command(ID, email = NULL){
+function retrieve_command(ID, email = null){
   $('.accessoriesNumber').html('');
-  document.getElementById("ExistingAccessory").innerHTML="";
+  $("#ExistingAccessory tbody").html("");
   list_bikes();
   $.ajax({
     url: 'apis/Kameo/get_users_listing.php',
@@ -404,7 +411,6 @@ function retrieve_command(ID, email = NULL){
           $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
           $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
           $('#widget-order-form textarea[name=comment]').val(response.order.comment);
-          $('#widget-order-form select[name=assignBike]').val(response.order.stockVelo).attr('disabled', false);
 
           if(response.order.testBoolean=="Y"){
             $('#widget-order-form input[name=testBoolean]').prop('checked', true);
@@ -434,11 +440,15 @@ function retrieve_command(ID, email = NULL){
 
           $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
 
-          //Afficher les accessoires
-          var dest =
-          '<thead><tr><th>Categorie</th><th>Accessoire</th><th>Type</th><th>Prix d\'Achat</th><th>Prix vente HTVA</th></tr></thead><tbody>';
           if(response.order.accessories){
             response.order.accessories.forEach(function (accessory, i) {
+              if(accessory.TYPE=="achat"){
+                var currency = "€";
+              }else if(accessory.TYPE='leasing'){
+                var currency = "€/mois";
+              }else if(accessory.TYPE='annualleasing'){
+                var currency = "€/an";
+              }
               var temp =
               '<tr><td scope="row" name="categoryAcc" id="categoryAcc">' +
               accessory.CATEGORY +
@@ -448,14 +458,12 @@ function retrieve_command(ID, email = NULL){
               accessory.TYPE +
               "</td><td>" +
               accessory.BUYING_PRICE +
-              "</td><td>" +
-              accessory.PRICE_HTVA +
+              " €</td><td>" +
+              accessory.PRICE_HTVA + " "+currency+
               "</td></tr>";
-              dest = dest.concat(temp);
+              $('#orderAccessories tbody').append(temp);
             })
           }
-          dest = dest.concat("</tbody>");
-          document.getElementById("ExistingAccessory").innerHTML = dest;
 
           $(".deleteAccessory").click(function () {
             $.ajax({
@@ -539,7 +547,6 @@ get_all_accessories().done(function(response){
       <td class="aCategory"></td><td class="aAccessory"></td><td class="aType"></td>
       <td class="aBuyingPrice"></td><td class="aPriceHTVA"></td>
       </tr>`);
-
     //select catégorie
     $('#orderManager').find('.otherCostsAccesoiresTable'+(accessoriesOrderNumber)+'>.aCategory')
     .append('<select name="accessoryCategory[]" id="selectCategory'+accessoriesOrderNumber+`" class="selectCategory form-control required">`+
@@ -611,63 +618,37 @@ get_all_accessories().done(function(response){
   });
 });
 
-  //retrait
-  $('.orderAccessories .glyphicon-minus')[0].addEventListener("click",function(){
-    accessoriesOrderNumber = $("#orderManager").find('.accessoriesNumber').html();
-    if(accessoriesOrderNumber > 0){
-      $('#orderManager').find('.accessoriesNumber').html(accessoriesOrderNumber*1 - 1);
-      $('#accessoriesNumber').val(accessoriesOrderNumber*1 - 1);
-      $('#orderManager').find('.otherCostsAccesoiresTable'+accessoriesOrderNumber).slideUp().remove();
-      accessoriesOrderNumber--;
-    }
-    checkMinus('.orderAccessories','.accessoriesNumber');
-  });
+//retrait
+$('.orderAccessories .glyphicon-minus')[0].addEventListener("click",function(){
+  accessoriesOrderNumber = $("#orderManager").find('.accessoriesNumber').html();
+  if(accessoriesOrderNumber > 0){
+    $('#orderManager').find('.accessoriesNumber').html(accessoriesOrderNumber*1 - 1);
+    $('#accessoriesNumber').val(accessoriesOrderNumber*1 - 1);
+    $('#orderManager').find('.otherCostsAccesoiresTable'+accessoriesOrderNumber).slideUp().remove();
+    accessoriesOrderNumber--;
+  }
+  checkMinus('.orderAccessories','.accessoriesNumber');
+});
 
 
 
-  $('body').on('change', '#widget-order-form input[name=testBoolean]',function(){
-    if($('#widget-order-form input[name=testBoolean]').is(':checked')){
-      $('#widget-order-form .testAddress').removeClass("hidden");
-      $('#widget-order-form .testDate').removeClass("hidden");
-      $('#widget-order-form .testStatus').removeClass("hidden");
-      $('#widget-order-form .testResult').removeClass("hidden");
-    }else{
-      $('#widget-order-form .testAddress').addClass("hidden");
-      $('#widget-order-form .testDate').addClass("hidden");
-      $('#widget-order-form .testStatus').addClass("hidden");
-      $('#widget-order-form .testResult').addClass("hidden");
-    }
-  });
+$('body').on('change', '#widget-order-form input[name=testBoolean]',function(){
+  if($('#widget-order-form input[name=testBoolean]').is(':checked')){
+    $('#widget-order-form .testAddress').removeClass("hidden");
+    $('#widget-order-form .testDate').removeClass("hidden");
+    $('#widget-order-form .testStatus').removeClass("hidden");
+    $('#widget-order-form .testResult').removeClass("hidden");
+  }else{
+    $('#widget-order-form .testAddress').addClass("hidden");
+    $('#widget-order-form .testDate').addClass("hidden");
+    $('#widget-order-form .testStatus').addClass("hidden");
+    $('#widget-order-form .testResult').addClass("hidden");
+  }
+});
 
-  $('body').on('change', '#widget-order-form select[name=portfolioID]',function(){
-   get_bike_listing();
+$('body').on('change', '#widget-order-form select[name=portfolioID]',function(){
+ get_bike_listing();
+});
+$('body').on('change', '#widget-order-form select[name=size]',function(){
+ get_bike_listing();
  });
-  $('body').on('change', '#widget-order-form select[name=size]',function(){
-   get_bike_listing();
- });
-
-  $('body').on('change', '#widget-order-form select[name=company]',function(){
-    $.ajax({
-      url: 'apis/Kameo/companies/companies.php',
-      type: 'get',
-      data: {"action":"retrieve", "ID": $('#widget-order-form select[name=company]').val()},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          $('#widget-order-form input[name=mail]').val("");
-          $("#widget-order-form select[name=name]").find("option")
-          .remove()
-          .end();
-
-          for (var i = 0; i < response.userNumber; i++){
-            $("#widget-order-form select[name=name]").append('<option id= "' + response.user[i].email +  '_' + response.user[i].firstName + '_' + response.user[i].phone +'" value="'+response.user[i].name+ '">' + response.user[i].name + "<br>");
-          }
-          if($("#widget-order-form select[name=name]").has('option').length > 0){
-            $("#widget-order-form input[name=mail]").val(response.user[0].email);
-          }
-        }
-      }
-    });
-  });

@@ -5,7 +5,7 @@
   role="modal"
   aria-labelledby="modal-label"
   aria-hidden="true"
-  style="display: none"
+  style="display: none; overflow-y: auto !important">
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -56,7 +56,7 @@
                     </select>
                   </div>
                   <div class="col-sm-4">
-                    <label for="order_amount"><?=L::mk_order_leasing_type;?></label>
+                    <label for="order_amount"></label>
                     <div class="input-group">
                       <span class="input-group-addon order_amount_order"></span>
                       <input type="number" step="0.01" name="order_amount" class="form-control required" readonly/>
@@ -135,6 +135,13 @@
                       <option value="N"><?=L::mk_order_elecno;?></option>
                     </select>
                   </div>
+                  <div class="col-sm-4">
+                    <label for="retailPriceTVAC"><?= L::mk_order_retail_price_TVAC; ?></label>
+                    <div class="input-group">
+                      <span class="input-group-addon">€</span>
+                      <input type="number" step="0.01" name="retailPriceTVAC" class="form-control required" disabled/>
+                    </div>
+                  </div>
                 </div>
                 <div class="separator"></div>
                 <h4 class="text-green"><?=L::mk_order_image;?></h4>
@@ -147,6 +154,12 @@
                   rows="5"
                   name="remark"
                 ></textarea>
+
+                <div class="separator accessoriesBasket"></div>
+                <h4 class="text-green accessoriesBasket"><?= L::mk_order_current_accessories_basket; ?></h4>
+                <p id="accessoriesBasketEmpy"><?= L::mk_order_accessory_basket_empty; ?></p>
+                <div id="accessoriesBasket" class='accessoriesBasket'>
+                </div>
                 <input
                   type="text"
                   name="email"
@@ -160,14 +173,19 @@
                   value="command"
                 />
               </div>
-              <button
-                id="send"
-                class="button small green button-3d rounded icon-left"
-                type="submit"
-              >
-                <i class="fa fa-plus"></i
-                ><?=L::mk_order_orderbtn;?>
-              </button>
+              <div class="separator"></div>
+              <div class="text-center"><button id="send" class="button small red button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i><?=L::mk_order_orderbtn;?></button></div>
+              <div class="separator accessoriesCatalogOrder"></div>
+              <h4 class="text-green accessoriesCatalogOrder"><?= L::mk_order_catalog_accessory; ?></h4>
+              <div class="col-md-4 accessoriesCatalogOrder">
+                <label for="accessoriesCategories"><?= L::mk_order_accessory_type; ?></label>
+                <select name="accessoriesCategories"></select>
+              </div>
+              <div class="space accessoriesCatalogOrder"></div>
+              <div class="text-center loaderOrderPortfolioAccessories accessoriesCatalogOrder">
+                <img src='images/loading2.gif'>
+              </div>
+              <div class="gridForAccessories align-self-stretch accessoriesCatalogOrder"></div>
             </form>
           </div>
         </div>
@@ -211,5 +229,132 @@
         },
       });
     },
+  });
+</script>
+
+
+<div
+  class="modal fade"
+  id="commandAccessory"
+  tabindex="-1"
+  role="modal"
+  aria-labelledby="modal-label"
+  aria-hidden="true"
+  style="display: none; overflow-y: auto !important">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <form
+              id="widget-commandAccessory-form"
+            >
+              <div class="form-group col-sm-12">
+                <h4 class="text-green"><?=L::mk_order_title_accessory;?></h4>
+                <div class="col-sm-12">
+                  <h4 class="text-green"><?=L::mk_order_subtitle_accessory;?></h4>
+                  <div class="col-sm-4 hidden">
+                    <label for="ID">ID :</label>
+                    <input
+                      type="text"
+                      readonly="readonly"
+                      class="form-control"
+                      name="ID"
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="category"><?=L::generic_category;?></label>
+                    <input
+                      type="text"
+                      class="form-control required"
+                      name="category"
+                      disabled
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="model"><?=L::mk_order_brand;?></label>
+                    <input
+                      type="text"
+                      class="form-control required"
+                      name="brand"
+                      disabled
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="model"><?=L::mk_order_model;?></label>
+                    <input
+                      type="text"
+                      class="form-control required"
+                      name="model"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div class='space'></div>
+                <div class="col-sm-12">
+                  <h4 class="text-green"><?=L::leasingType_title;?></h4>
+                  <span id="orderAccessoryBillingType"></span>
+                </div>
+                <div class="separator"></div>
+                <h4 class="text-green"><?=L::mk_order_image;?></h4>
+                <div class="col-sm-6 center">
+                  <img src="" class="commandAccessoryImage" alt="image" height="200px" width="auto" />
+                </div>
+              </div>
+              <button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i ><?=L::generic_add_to_basket;?></button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          <?=L::generic_close;?>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery("#widget-commandAccessory-form").validate({
+    submitHandler: function (form) {
+      if($("#widget-commandAccessory-form input[name=billingType]:checked").val()=="achat")
+        var amount = $("#widget-commandAccessory-form input[name=billingType]:checked").data("amount")+" €";
+      else if($("#widget-commandAccessory-form input[name=billingType]:checked").val()=="leasing")
+        var amount = $("#widget-commandAccessory-form input[name=billingType]:checked").data("amount")+" €/"+traduction.generic_mois;
+      else if($("#widget-commandAccessory-form input[name=billingType]:checked").val()=="annualleasing")
+        var amount = $("#widget-commandAccessory-form input[name=billingType]:checked").data("amount")+" €/"+traduction.generic_year;
+
+      $('#accessoriesBasket').append('<div class="col-md-4 accessoryCard d-flex" style="margin-bottom : 10px"><div class="card" style="border: 1px solid black; padding : 18px"><div class="card-body text-center">\
+        <h5 class="card-title">'+$('#widget-commandAccessory-form input[name=category]').val()+'</h5>\
+        <h6 class="card-subtitle mb-2 text-muted">'+$('#widget-commandAccessory-form input[name=brand]').val()+$('#widget-commandAccessory-form input[name=model]').val()+'</h6>\
+        <img src="images_accessories/'+$('#widget-commandAccessory-form input[name=ID]').val()+'.jpg" style="height:100px"/>\
+        <br><span>'+traduction.generic_amount+' : '+amount+'</span><br>\
+        <input type="text" class="hidden" name="accessory[]" value="'+$("#widget-commandAccessory-form input[name=ID]").val()+'">\
+        <input type="text" class="hidden" name="accessoryBillingType[]" value="'+$("#widget-commandAccessory-form input[name=billingType]:checked").val()+'">\
+        <input type="text" class="hidden" name="accessoryAmount[]" value="'+$("#widget-commandAccessory-form input[name=billingType]:checked").data("amount")+'">\
+        <a href="#" class="text-red deleteAccessoryBasket">'+traduction.generic_delete+'</a>\
+        </div></div></div>');
+      $('#widget-command-form #accessoriesBasketEmpy').html("");
+      $('#commandAccessory').modal("toggle");
+
+      $('.deleteAccessoryBasket').click(function(){
+        $(this).closest('.accessoryCard').remove();
+        if($('#widget-command-form .accessoryCard').length==0){
+          $('#widget-command-form #accessoriesBasketEmpy').html(traduction.mk_order_accessory_basket_empty);
+        }else{
+          $('#widget-command-form #accessoriesBasketEmpy').html("");
+        }
+      })
+    }
   });
 </script>

@@ -18,7 +18,6 @@ log_inputs($token);
 if(isset($_POST['action'])){
 
 	$action=isset($_POST['action']) ? $_POST['action'] : NULL;
-	$idBike=isset($_POST['assignBike']) ? $_POST['assignBike'] : NULL;
 	$email=isset($_POST['email']) ? $_POST['email'] : NULL;
 	$company=isset($_POST['company']) ? $_POST['company'] : NULL;
 	$mail=isset($_POST['mail']) ? $_POST['mail'] : NULL;
@@ -49,17 +48,30 @@ if(isset($_POST['action'])){
 			error_message('403');
 		}
 		include 'connexion.php';
+		$response['response']="success";
 		$stmt = $conn->prepare("INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE, COMPANY) VALUES(CURRENT_TIMESTAMP, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		if ($stmt)
 		{
 			$stmt->bind_param("ssisssssssssdsi", $token, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $company );
 			if(!$stmt->execute()){echo json_encode("there was an error....".$conn->error); die;}
-			$response['response']="success";
+			$orderID=$stmt->insert_id;
 			$stmt->close();
-			successMessage("SM0003");
 		} else
-		error_message('500', 'Error occured while changing data');
-		$conn->close();
+			error_message('500', 'Error occured while changing data');
+
+		if(isset($_POST['accessoryCategory']) && isset($_POST['accessoryAccessory'])){
+
+			foreach( $categoryAccessory as $index => $categoryAccessory)
+			{
+				$category = $categoryAccessory;
+				$accessory = $typeAccessory[$index];
+				$financialT = $financialTypeAccessory[$index];
+				$buyingP = $buyingPrice[$index];
+				$sellingP = $sellingPrice[$index];
+				execSQL("INSERT INTO order_accessories(BRAND, CATEGORY, BUYING_PRICE, PRICE_HTVA, DESCRIPTION, TYPE, ORDER_ID) VALUES ('$accessory', '$category', '$buyingP', '$sellingP', '//', '$financialT', '$orderID')", array(), true);
+			}
+		}
+		successMessage("SM0003");
 	}
 
 
@@ -75,21 +87,6 @@ if(isset($_POST['action'])){
 			$stmt->close();
 		} else{
 			error_message('500', 'Error occured while changing data');
-		}
-
-//////////////////////////////////////////////Code test assignation velo
-
-		if ($idBike!=null){
-
-			include 'connexion.php';
-
-			$stmt = $conn->prepare("UPDATE customer_bikes SET HEU_MAJ=CURRENT_TIMESTAMP,USR_MAJ='$email',CONTRACT_TYPE='pending_delivery' WHERE ID='$idBike'");
-			$stmt->execute();
-
-			$sqlTest = "INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL , BIKE_ID,TYPE)
-			VALUES (CURRENT_TIMESTAMP, '$email', '$mail', '$idBike' ,'personnel')";
-			mysqli_query($conn, $sqlTest);
-
 		}
 
 ////////////////////////////////////////////////
@@ -122,7 +119,6 @@ if(isset($_POST['action'])){
 				if ($conn->query($sql2) === FALSE) {
 					$response = array ('response'=>'error', 'message'=> $conn->error);
 					echo json_encode($response);
-
 					die;
 				}
 			}
@@ -358,8 +354,13 @@ if(isset($_POST['action'])){
 		$response['order']['firstname']=$resultat['PRENOM'];
 		$response['order']['phone']=$resultat['PHONE'];
 		$response['order']['priceHTVA']=$priceHTVA;
-		$resultat=execSQL("SELECT order_accessories.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, MODEL, order_accessories.TYPE, order_accessories.ID as orderID FROM order_accessories INNER JOIN accessories_categories ON order_accessories.CATEGORY = accessories_categories.ID INNER JOIN accessories_catalog ON accessories_catalog.ACCESSORIES_CATEGORIES = accessories_categories.ID WHERE order_accessories.ORDER_ID=? AND accessories_catalog.ID=order_accessories.BRAND", array('i', $ID), false);
-		$response['accessoryNumber'] = 0;
+		$resultat=execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ID as orderID
+												FROM order_accessories, accessories_categories, accessories_catalog
+												WHERE order_accessories.ORDER_ID=?
+												AND order_accessories.BRAND=accessories_catalog.ID
+												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES",
+							array('i', $ID), false);
+
 		$response['order']['accessories']=$resultat;
 		if($resultat){
 			$response['accessoryNumber']=count($resultat);

@@ -32,7 +32,6 @@ if($ID==NULL){
 
 			if(constant('ENVIRONMENT') == "production"){
 			  $mail->AddAddress($nextBookingEMAIL);
-				//$mail->AddCC("bookabike@actiris.be");
 			  $mail->addBcc("antoine@kameobikes.com");
 			}else if(constant('ENVIRONMENT') == "test"){
 			  $mail->AddAddress("antoine@kameobikes.com");

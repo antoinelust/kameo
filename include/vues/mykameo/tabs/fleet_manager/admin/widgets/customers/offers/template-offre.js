@@ -529,7 +529,18 @@ function update_elements_price(){
 
                 var marge = (installationPrice*1 - boxProdPrice*1 - maintenance + (contractLeasing*1)).toFixed(0) + '€ (' + ((installationPrice*1 - boxProdPrice*1 - maintenance + (contractLeasing*1))/(boxProdPrice*1 + maintenance*1)*100).toFixed(0) + '%)';
                 $(this).parents('.boxRow').find('.boxMarge').html(marge);
+            }else if(this.classList.contains("aPriceHTVA")){
+                var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+                var newPrice=this.innerHTML.split('€')[0];
+                $(this).parents('.accessoriesRow').find('.bikeFinalPrice').html("<input type=\"text\" name=\"accessoryFinalPrice[]\" value=\""+newPrice+"\"/>");
+                if(initialPrice==newPrice){
+                    $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
+                }else{
+                    var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+                    $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€/mois' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+                }
             }
+
 
         }
     }
@@ -578,61 +589,86 @@ get_all_accessories().done(function(response){
     //ajout d'une ligne au tableau des accessoires
     $('#template').find('.otherCostsAccesoiresTable tbody')
     .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
-    <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td>
-    <td class="aBuyingPrice"></td><td class="aPriceHTVA"></td>
+    <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td><td class="aFinance"></td>
+    <td class="aBuyingPrice"></td><td contenteditable="true" class="aPriceHTVA"></td><td class="accessoryFinalPrice hidden"></td>
     </tr>`);
     //label selon la langue
     $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
-    .append('<label class="fr">Accessoire '+ accessoriesNumber +'</label>');
+    .append('<label>Accessoire '+ accessoriesNumber +'</label>');
 
     //select catégorie
     $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
-    .append(`<select name="accessoryCategory`+accessoriesNumber+`" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
+    .append(`<select name="accessoryCategory[]" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
     categoriesOption+`
     </select>`);
     //select Accessoire
     $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
-    .append('<select name="accessoryAccessory'+accessoriesNumber+'" id="selectAccessory'+
+    .append('<select name="accessoryAccessory[]" id="selectAccessory'+
     accessoriesNumber+
     '"class="selectAccessory form-control required"></select>');
+
+    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aFinance')
+    .append('<select name="accessoryFinance[]" id="selectFinance'+
+    accessoriesNumber+
+    '"class="form-control required aFinance"><option value="achat">Achat</option><option value="leasing">Leasing</option></select>');
+    $('#selectFinance'+accessoriesNumber).val("");
+
+    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalPrice')
+    .append('<input type="text" name="accesoryFinalPrice[]" class="form-control required">');
+    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalprice').val("");
+
 
     checkMinus('.templateAccessories','.accessoriesNumber');
 
     //on change de la catégorie
+    $('.templateAccessories').find('.selectCategory').off();
     $('.templateAccessories').find('.selectCategory').on("change",function(){
-      var that = '#' + $(this).attr('id');
-      var categoryId =$(that).val();
-      var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
+      var categoryId =$(this).val();
 
+      $(this).closest('.accessoriesRow').find('.aAccessory select').val("");
+      $(this).closest('.accessoriesRow').find('.aFinance select').val("");
+
+      var accessoriesOption = "";
       //ne garde que les accessoires de cette catégorie
       accessories.forEach((accessory) => {
         if (categoryId == accessory.categoryId) {
-          accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+          accessoriesOption += '<option value="'+accessory.id+'" data-buyingprice="'+accessory.buyingPrice+'" data-sellingPrice="'+accessory.priceHTVA+'" data-leasingprice="'+accessory.leasingPrice+'">'+accessory.model+'</option>';
         }
       });
       //place les accessoires dans le select
-      $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
+      $(this).closest('.accessoriesRow').find('.aAccessory > select').html(accessoriesOption);
+      $(this).closest('.accessoriesRow').find('.aAccessory select').val("");
 
       //retire l'affichage d'éventuels prix
-      $(that).parents('.accessoriesRow').find('.aBuyingPrice').html('');
-      $(that).parents('.accessoriesRow').find('.aPriceHTVA').html('').removeClass('inRecapVenteAccessory');
+      $(this).closest('.accessoriesRow').find('.aBuyingPrice').html('');
+      $(this).closest('.accessoriesRow').find('.aPriceHTVA').html('');
+      $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val('');
     });
-
-    $('.templateAccessories').find('.selectAccessory').on("change",function(){
-      var that = '#' + $(this).attr('id');
-      var accessoryId =$(that).val();
-
+    $('.selectAccessory').off();
+    $('.selectAccessory').on("change",function(){
+      $(this).closest('.accessoriesRow').find('.aFinance select').val("");
+      $(this).closest('.accessoriesRow').find('.aBuyingPrice').html('');
+      $(this).closest('.accessoriesRow').find('.aPriceHTVA').html('');
+      $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val('');
+    });
+    $('.aFinance select').off();
+    $('.aFinance select').on("change",function(){
       //récupère le bon index même si le tableau est désordonné
-      accessoryId = getIndex(accessories, accessoryId);
+      $(this).closest('.accessoriesRow').find('.aBuyingPrice').html($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("buyingprice") + ' €');
+      if($(this).val()=='achat'){
+        $(this).closest('.accessoriesRow').find('.aPriceHTVA').html($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice") +' €');
+        $(this).closest('.accessoriesRow').find('.aPriceHTVA').attr('data-orig', $(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice") +' €');
+        $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice"));
 
-      var buyingPrice = accessories[accessoryId].buyingPrice + '€';
-      var priceHTVA = accessories[accessoryId].priceHTVA + '€';
+      }else{
+        $(this).closest('.accessoriesRow').find('.aPriceHTVA').html(Math.round(parseFloat($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice")*100))/100 + ' €/mois');
+        $(this).closest('.accessoriesRow').find('.aPriceHTVA').attr('data-orig', ($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice") + ' €/mois') + ' €/mois');
+        $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice"));
+      }
 
-      $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
-      $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA).addClass('inRecapVenteAccessory');
+      console.log($(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val());
     });
-
-
+    update_elements_price();
   });
 
   //retrait
@@ -659,22 +695,20 @@ $('body').on('click','.getTemplate', function(){
         type: 'danger'
       });
     }else{
-        var content = `
-          <select name="contactSelect" id="contactSelect" class="form-control required valid">
-        `;
-        for (var i = 0; i < response.length; i++) {
-            var selected ='';
-            if (i == 0) {
-              selected = 'selected';
+      var content = `
+        <select name="contactSelect" id="contactSelect" class="form-control required valid">
+      `;
+      for (var i = 0; i < response.length; i++) {
+        var selected ='';
+        if (i == 0) {
+          selected = 'selected';
         }
-            content += `<option `+selected+` value="`+response[i].contactId+`">` + response[i].firstNameContact + ` `+ response[i].lastNameContact + `</option>`;
-        }
-        content += "</select>";
-        $('.companyContactDiv').html(content);
-        $('#template').modal('toggle');
+        content += `<option `+selected+` value="`+response[i].contactId+`">` + response[i].firstNameContact + ` `+ response[i].lastNameContact + `</option>`;
+      }
+      content += "</select>";
+      $('.companyContactDiv').html(content);
+      $('#template').modal('toggle');
     }
-
-
   });
 })
 

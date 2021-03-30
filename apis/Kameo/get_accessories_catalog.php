@@ -14,6 +14,7 @@ $sql="SELECT accessories_catalog.id AS ACCESSORIES_ID,
              accessories_catalog.MODEL,
              accessories_catalog.BUYING_PRICE,
              accessories_catalog.PRICE_HTVA,
+             accessories_catalog.PRICE_HTVA*1.25/36 as leasingPrice,
              accessories_catalog.STOCK,
              accessories_catalog.DISPLAY,
              accessories_catalog.DESCRIPTION,
@@ -44,9 +45,10 @@ while($row = mysqli_fetch_array($result))
 {
     $response['accessories'][$i]['id']=$row['ACCESSORIES_ID'];
     $response['accessories'][$i]['brand']=$row['BRAND'];
-    $response['accessories'][$i]['model']=$row['MODEL'];    
+    $response['accessories'][$i]['model']=$row['MODEL'];
     $response['accessories'][$i]['buyingPrice']=$row['BUYING_PRICE'];
     $response['accessories'][$i]['priceHTVA']=$row['PRICE_HTVA'];
+    $response['accessories'][$i]['leasingPrice']=$row['leasingPrice'];
     $response['accessories'][$i]['stock']=$row['STOCK'];
     $response['accessories'][$i]['showAccessories']=$row['DISPLAY'];
     $response['accessories'][$i]['description']=$row['DESCRIPTION'];
