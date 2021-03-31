@@ -21,10 +21,6 @@ var arrayToBills=[];
 
 function initializeModal(){
 
-
-	
-
-
 	getDataForBills();
 
 	let today = new Date();

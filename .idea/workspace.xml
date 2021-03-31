@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Scan seeling Leasing (bills) + generate Order Email">
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/generate_order_minimalStock.php" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/generate_order_minimalStock.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/v3" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1o0l4a5FuirF0ytZnZrHGjGaAUS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="12.19.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="12.19.0" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="" />
+      <created>1612431199098</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612431199098</updated>
+      <workItem from="1612431200873" duration="7466000" />
+      <workItem from="1612441349351" duration="1022000" />
+      <workItem from="1612442379604" duration="22516000" />
+      <workItem from="1612626089729" duration="903000" />
+      <workItem from="1612780477968" duration="113000" />
+      <workItem from="1612780598986" duration="16000" />
+      <workItem from="1612780616555" duration="1199000" />
+      <workItem from="1612960687721" duration="1575000" />
+      <workItem from="1613118814312" duration="24000" />
+      <workItem from="1613129986240" duration="1289000" />
+      <workItem from="1613222941519" duration="669000" />
+      <workItem from="1613398271462" duration="5612000" />
+      <workItem from="1613721875824" duration="1428000" />
+      <workItem from="1613981522473" duration="190000" />
+      <workItem from="1613981725351" duration="1252000" />
+      <workItem from="1614158028718" duration="1964000" />
+      <workItem from="1614161987458" duration="4972000" />
+      <workItem from="1614334070335" duration="611000" />
+      <workItem from="1614764298015" duration="549000" />
+      <workItem from="1614765315954" duration="94000" />
+      <workItem from="1614771585217" duration="101000" />
+      <workItem from="1614851750836" duration="115000" />
+      <workItem from="1615190370109" duration="651000" />
+      <workItem from="1617087962911" duration="673000" />
+      <workItem from="1617088645127" duration="188000" />
+      <workItem from="1617088842353" duration="112000" />
+    </task>
+    <task id="LOCAL-00001" summary="Version Test Younes">
+      <created>1612442399254</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1612442399254</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Version Final Test Younes">
+      <created>1612626116502</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1612626116502</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Version Final Test Younes">
+      <created>1612626657897</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1612626657897</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Version Final Test Younes">
+      <created>1612780554401</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1612780554401</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Bug Bike Societe, mail,num">
+      <created>1612960731107</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1612960731107</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Assign Bike To Client Order">
+      <created>1613222996715</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1613222996715</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Bug AddOrder on the Order Widget">
+      <created>1613398396944</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1613398396944</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Assign Order">
+      <created>1613556564096</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1613556564096</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Commit to pull">
+      <created>1613733922364</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1613733922364</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Add Bike Bugs">
+      <created>1613981570724</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1613981570724</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Add Bike Bugs">
+      <created>1613981644926</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1613981644926</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Add Bike Bugs">
+      <created>1614161103288</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1614161103288</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Scan Bike Test">
+      <created>1614764658595</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1614764658595</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Scan Bike Test">
+      <created>1614765374710</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1614765374710</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Scan Bike and Accessory Test">
+      <created>1614771668959</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1614771668959</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Scan Bike and Accessory Improvements">
+      <created>1614851788486</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1614851788486</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Scan Bike and Accessory : add to stock">
+      <created>1615190425589</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1615190425589</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Scan seeling Leasing (bills) + generate Order Email">
+      <created>1617088033177</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1617088033177</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Scan seeling Leasing (bills) + generate Order Email">
+      <created>1617088685596</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1617088685596</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.php" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Version Test Younes" />
+    <MESSAGE value="Version Final Test Younes" />
+    <MESSAGE value="Bug Bike Societe, mail,num" />
+    <MESSAGE value="Assign Bike To Client Order" />
+    <MESSAGE value="Bug AddOrder on the Order Widget" />
+    <MESSAGE value="Assign Order" />
+    <MESSAGE value="Commit to pull" />
+    <MESSAGE value="Add Bike Bugs" />
+    <MESSAGE value="Scan Bike Test" />
+    <MESSAGE value="Scan Bike and Accessory Test" />
+    <MESSAGE value="Scan Bike and Accessory Improvements" />
+    <MESSAGE value="Scan Bike and Accessory : add to stock" />
+    <MESSAGE value="Scan seeling Leasing (bills) + generate Order Email" />
+    <option name="LAST_COMMIT_MESSAGE" value="Scan seeling Leasing (bills) + generate Order Email" />
+  </component>
+</project>
