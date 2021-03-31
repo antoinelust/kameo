@@ -83,6 +83,7 @@
 								<input type="text" name="ID" class="hidden">
 								<div class="separator"></div>
 								<button  class="button small green button-3d rounded icon-left offerManagementSendButton" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+								<a  class="button small red button-3d rounded icon-right hidden" id='offerManagementDelete'><i class="fa fa-plus"></i>Supprimer</a>
 							</div>
 						</form>
 					</div>
@@ -134,4 +135,33 @@
 			$("#widget-offerManagement-form input[name=end]").attr("readonly", false);
 		}
 	});
+
+
+	$("#offerManagementDelete").click(function(){
+	  $.ajax({
+	    url: "apis/Kameo/offer_management.php",
+	    method: "get",
+	    data: { action: "delete", offerID: this.name },
+	    success: function (response) {
+	      if (response.response == "error") {
+	        $.notify({
+	          message: response.message
+	        }, {
+	          type: 'danger'
+	        });
+	      }
+	      if (response.response == "success") {
+	        $.notify({
+	          message: response.message
+	        }, {
+	          type: 'success'
+	        });
+	        $('#offerManagement').modal("toggle");
+	        get_company_details($("#companyIdHidden").val());
+	      }
+	    }
+	  });
+	});
+
+
 </script>

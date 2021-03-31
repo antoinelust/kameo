@@ -40,13 +40,36 @@
 
   $others = array();
   //création des tableaux destinés a recevoir les id des différents item
-  $bikesId = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
+  //$bikesId = $bikesNumber > 0 ? getIds('bikeBrandModel',$bikesNumber) : NULL;
   $boxesId = $boxesNumber > 0 ? getIds('boxModel',$boxesNumber) : NULL;
   $others = $othersNumber > 0 ? getOthers($othersNumber) : array();
 
 
+  $bikes=array();
+  if(isset($_POST['bikeBrandModel'])){
+    $totalBikes=0;
+    foreach($_POST['bikeBrandModel'] as $key=>$bike){
+      $totalBikes += $_POST['bikeNumber'][$key];
+      $information=execSQL("SELECT * FROM bike_catalog WHERE ID=?", array('i', $bike), false)[0];
+      $bikes[$key]['ID']=$bike;
+      $bikes[$key]['BRAND']=$information['BRAND'];
+      $bikes[$key]['MODEL']=$information['MODEL'];
+      $bikes[$key]['bikeSize']=$_POST['bikeSize'][$key];
+      $bikes[$key]['finalPrice']=$_POST['bikeFinalPrice'][$key];
+      $bikes[$key]['initialPrice']=$_POST['bikeInitialPrice'][$key];
+      $bikes[$key]['UTILISATION']=$information['UTILISATION'];
+      $bikes[$key]['ELECTRIC']=$information['ELECTRIC'];
+      $bikes[$key]['bikeNumber']=$_POST['bikeNumber'][$key];
+    }
+  }
+
+
+
+
   $accessories=array();
   if(isset($_POST['accessoryAccessory'])){
+    $accessoriesTotalLeasing = 0;
+    $accessoriesTotalAchat = 0;
     foreach($_POST['accessoryAccessory'] as $key=>$accessory) {
         $information=execSQL("SELECT * FROM accessories_catalog WHERE ID=?", array('i', $accessory), false)[0];
         $accessories[$key]['ID']=$accessory;
@@ -54,9 +77,12 @@
         $accessories[$key]['MODEL']=$information['MODEL'];
         $accessories[$key]['finance']=$_POST['accessoryFinance'][$key];
         $accessories[$key]['finalPrice']=$_POST['accesoryFinalPrice'][$key];
+        $accessories[$key]['accessoryNumber']=$_POST['accessoryNumber'][$key];
         if($_POST['accessoryFinance'][$key] == 'leasing'){
+          $accessoriesTotalLeasing += $_POST['accessoryNumber'][$key];
           $accessories[$key]['initialPrice']=$information['PRICE_HTVA']*1.25/$leasingDuration;
         }else{
+          $accessoriesTotalAchat += $_POST['accessoryNumber'][$key];
           $accessories[$key]['initialPrice']=$information['PRICE_HTVA']*1;
         }
     }
@@ -77,10 +103,9 @@
   $phoneKameo=$resultat['PHONE'];
 
 
-  $bikes = array();
   $boxes = array();
   //recuperation des données nécéssaire en db
-  $bikes = getItemsInDatabase($bikesId, 'bike_catalog');
+  //$bikes = getItemsInDatabase($bikesId, 'bike_catalog');
   $boxes = getItemsInDatabase($boxesId, 'boxes_catalog');
 
   $contact = getItemInDatabase($contact['id'], 'companies_contact');
@@ -95,23 +120,24 @@
     }
 
 
+  $totalPerMonth=0;
 
-  for ($i=0; $i < $bikesNumber ; $i++) {
+  /*for ($i=0; $i < $bikesNumber ; $i++) {
       $bikes[$i]['FINAL_LEASING_PRICE'] = $bikeFinalPrice[$i];
       $totalPerMonth += intval($bikeFinalPrice[$i]);
 
-  }
+  }*/
 
   //transforme le tableau pour n avoir qu'une itération de chaque
-  $bikes = distinct($bikes, $bikeFinalPrice);
+  //$bikes = distinct($bikes, $bikeFinalPrice);
   $boxes = distinct($boxes);
 
   $company = getCompany($companyId);
   include 'get_prices.php';
-  for ($i=0; $i < count($bikes) ; $i++) {
+  /*for ($i=0; $i < count($bikes) ; $i++) {
     $response=get_prices($bikes[$i]['PRICE_HTVA']);
     $bikes[$i]['LEASING_PRICE'] = $response['leasingPrice'];
-  }
+  }*/
 
   $currentDate = getDate();
 
@@ -139,6 +165,8 @@
     $html2pdf->addFont('Akkurat-Light', '', $_SERVER['DOCUMENT_ROOT'].'/TO INCLUDE/pdf/template/fonts/akkurat-light.php');
     $html2pdf->addFont('Akkurat-Light', 'b', $_SERVER['DOCUMENT_ROOT'].'/TO INCLUDE/pdf/template/fonts/akkurat-light-b.php');
     //ajout du fichier contenant le HTML a convertir
+
+
     include $_SERVER['DOCUMENT_ROOT'].'/TO INCLUDE/pdf/template/PDFContent.php';
     //fin de tampon
     $content = ob_get_clean();
@@ -169,25 +197,25 @@
 
     }
 
-    for ($i=0; $i < $bikesNumber ; $i++) {
-        $bikeFinalLocationPrice = $bikeFinalPrice[$i];
-        $bikeId=$bikesId[$i];
-        include 'connexion.php';
-        $sql = "INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES ('$email', '$offerID', 'bike', '$bikeId', '$bikeFinalLocationPrice', 0, '')";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
+    if(count($bikes) > 0){
+      foreach($bikes as $bike) {
+        for($i=0; $i<$bike['bikeNumber']; $i++){
+          if($buyOrLeasing=='achat'){
+            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, SIZE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array('sisiiiss', $email, $offerID, 'accessory', $bike['ID'], 0, $bike['finalPrice'], $bike['bikeSize'], ''), true);
+          }else{
+            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, CONTRACT_DURATION, SIZE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", array('sisiiisds', $email, $offerID, 'accessory', $bike['ID'], $bike['finalPrice'], 0, $leasingDuration, $bike['bikeSize'], ''), true);
+          }
         }
-        $conn->close();
+      }
     }
-
     if(count($accessories) > 0){
       foreach($accessories as $accessory) {
-        if($accessory['finance']=='achat'){
-          execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?)", array('sisiiis', $email, $offerID, 'accessory', $accessory['ID'], 0, $accessory['finalPrice'], ''), true);
-        }else{
-          execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?)", array('sisiiis', $email, $offerID, 'accessory', $accessory['ID'], $accessory['finalPrice'], 0, ''), true);
+        for($i=0; $i<$accessory['accessoryNumber']; $i++){
+          if($accessory['finance']=='achat'){
+            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?)", array('sisiiis', $email, $offerID, 'accessory', $accessory['ID'], 0, $accessory['finalPrice'], ''), true);
+          }else{
+            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?)", array('sisiiis', $email, $offerID, 'accessory', $accessory['ID'], $accessory['finalPrice'], 0, ''), true);
+          }
         }
       }
     }

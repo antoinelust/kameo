@@ -1145,38 +1145,6 @@ function update_company_users_list_admin(company){
   });
 }
 
-//Suppression d'une offre Pdf
-$("body").on("click", ".deletePdfOffer", function (e) {
-  //empèche le comportement normal du lien
-  e.preventDefault();
-  id = $(this).parents("tr").find("td:first").html();
-  file = $(this).parents("tr").find("td a").attr("href");
-  that = $(this);
-  if (
-    confirm(
-      "Êtes-vous sur de vouloir supprimer ce PDF ? Cette action est irréversible."
-    )
-  ) {
-    $.ajax({
-      url: "apis/Kameo/delete_pdf_offer.php",
-      method: "post",
-      data: { id: id, file: file },
-      success: function (response) {
-        if (response.response == true) {
-          $(that)
-            .parents("tr")
-            .slideUp("", function () {
-              $(this).remove();
-            });
-        } else {
-          console.log(response);
-        }
-      },
-    });
-  }
-});
-
-
 function retrieve_offer(ID, action) {
   $.ajax({
     url: "apis/Kameo/offer_management.php",
@@ -1193,10 +1161,13 @@ function retrieve_offer(ID, action) {
           $("#widget-offerManagement-form input").attr("readonly", true);
           $("#widget-offerManagement-form textarea").attr("readonly", true);
           $("#widget-offerManagement-form select").attr("readonly", true);
+          $("#offerManagementDelete").addClass("hidden");
         } else {
           $("#widget-offerManagement-form input").attr("readonly", false);
           $("#widget-offerManagement-form textarea").attr("readonly", false);
           $("#widget-offerManagement-form select").attr("readonly", false);
+          $("#offerManagementDelete").removeClass("hidden");
+          $("#offerManagementDelete").attr("name", ID);
         }
 
         $("#widget-offerManagement-form input[name=title]").val(response.title);
@@ -1319,6 +1290,7 @@ function retrieve_offer(ID, action) {
     },
   });
 }
+
 //Module gérer les clients ==> id d'un client ==> ajouter une offre
 function add_offer(company) {
   $("#companyHiddenOffer").val(company);

@@ -196,99 +196,80 @@ $(".stockAccessoriesClick").click(function(){
 
 
 function list_stock_accessories(){
-  $.ajax({
-     url: "apis/Kameo/accessories/accessories.php",
-     type: "get",
-     data: {
-       "action": "listStock",
-     },
-     success : function(data) {
-       var table = $('#stockAccessoriesList').dataTable( {
-       destroy: true,
-       responsive: true,
-       bInfo : false,
-       paging: false,
-       searching: false,
-       data : data.accessories,
-       columns: [
-         {
-          title: "ID",
-          data: "ID",
-          fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-            $(nTd).html(
-              "<a href='#' data-target='#manageStockAccessory' data-toggle='modal' href=''#'' class='updateStockAccessorylink' data-ID='" +
-                sData +
-                "'> "+sData+"</a>"
-            );
-          },
-         },
-         {
-          title: "Company",
-          data: "COMPANY_NAME",
-         },
-         {
-          title: "User",
-          data: "USER_EMAIL",
-         },
-         {
-          title: "Brand",
-          data: "BRAND",
-         },
-         {
-          title: "Model",
-          data: "MODEL",
-         },
-         {
-          title: "Category",
-          data: "CATEGORY",
-         },
-         {
-          title: "Contract Type",
-          data: "CONTRACT_TYPE",
-         },
-         {
-          title: "Amount",
-          data: "CONTRACT_AMOUNT",
-          fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-            if (oData.CONTRACT_TYPE == 'leasing') $(nTd).html(sData + '€/mois');
-            else if (oData.CONTRACT_TYPE == 'achat') $(nTd).html(oData.SELLING_AMOUNT + ' €');
-          },
-         },
-         {
-          title: "Contract start",
-          data: "CONTRACT_START",
-         },
-         {
-           title: "Contract end",
-           data: "CONTRACT_END",
-         }
-       ],
-       order: [
-         [0, "desc"]
-       ]
-      });
+  $("#stockAccessoriesList").dataTable({
+    destroy: true,
+    ajax: {
+      url: "apis/Kameo/accessories/accessories.php",
+      contentType: "application/json",
+      type: "get",
+      data: {
+        action: "listStock",
+      },
+    },
+    sAjaxDataProp: "accessories",
+    columns: [
+      {
+      title: "ID",
+      data: "ID",
+      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+        $(nTd).html(
+          "<a href='#' data-target='#manageStockAccessory' data-toggle='modal' href=''#'' class='updateStockAccessorylink' data-ID='" +
+            sData +
+            "'> "+sData+"</a>"
+        );
+      },
+      },
+      {
+        title: "Company",
+        data: "COMPANY_NAME",
+      },
+      {
+        title: "User",
+        data: "USER_EMAIL",
+      },
+      {
+        title: "Brand",
+        data: "BRAND",
+      },
+      {
+        title: "Model",
+        data: "MODEL",
+      },
+      {
+        title: "Category",
+        data: "CATEGORY",
+      },
+      {
+        title: "Contract Type",
+        data: "CONTRACT_TYPE",
+      },
+      {
+      title: "Amount",
+        data: "CONTRACT_AMOUNT",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          if (oData.CONTRACT_TYPE == 'leasing') $(nTd).html(sData + '€/mois');
+          else if (oData.CONTRACT_TYPE == 'achat') $(nTd).html(oData.SELLING_AMOUNT + ' €');
+        },
+      },
+      {
+      title: "Contract start",
+      data: "CONTRACT_START",
+      },
+      {
+       title: "Contract end",
+       data: "CONTRACT_END",
+      }
+      ],
+      order: [
+        [0, "desc"]
+      ],
+      paging : false
+    });
 
-      $("#stockAccessoriesList thead tr").clone(true).appendTo("#stockAccessoriesList thead");
-
-      $("#stockAccessoriesList thead tr:eq(1) th").each(function (i) {
-        var title = $(this).text();
-        $(this).html('<input style="width: 100%" type="text" />');
-
-        $("input", this).on("keyup change", function () {
-          if (table.column(i).search() !== this.value) {
-            table.column(i).search(this.value).draw();
-          }
-        });
-      });
-
-
-
-      $('.updateStockAccessorylink').off();
-      $('.updateStockAccessorylink').click(function(){
-        get_stock_accessory($(this).data("id"));
-      })
-     }
-   });
+    $('.updateStockAccessorylink').off();
+    $('.updateStockAccessorylink').click(function(){
+    get_stock_accessory($(this).data("id"));
+    });
 }
 
 

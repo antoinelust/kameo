@@ -471,8 +471,6 @@ if(isset($_POST['action']))
                     $response['cost'][$i]['end']=$row['END'];
                     $i++;
                 }
-
-
                 echo json_encode($response);
                 die;
 
@@ -481,6 +479,12 @@ if(isset($_POST['action']))
             }
         }
 
+    }else if($action=="delete"){
+      $offerID=$_GET['offerID'];
+      execSQL("DELETE FROM offers_details WHERE OFFER_ID=?", array('i', $offerID), true);
+      execSQL("DELETE FROM offers WHERE ID=?", array('i', $offerID), true);
+      successMessage("SM0003");
+      die;
     }else{
         errorMessage("ES0012");
     }
