@@ -1466,8 +1466,6 @@ function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleConten
   $('#bikeDetailsAdmin').find('h4.fr-inline').html(titleContent);
 }
 
-
-
 function list_bikes_admin(){
   var bikeMap;
   $.ajax({
@@ -1543,32 +1541,31 @@ function list_bikes_admin(){
         </thead><tbody>`;
         dest = dest.concat(temp);
 
-        var now = new Date();
+    var now = new Date();
+    while (i < response.bike.length) {
+    var error = false;
+    if (
+      response.bike[i].automatic_billing == null ||
+      response.bike[i].automatic_billing == "N"
+      )
+    {
+      automatic_billing =
+      '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>';
+    } else {
+      automatic_billing =
+      '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>';
+    }
 
-        while (i < response.bikeNumber) {
-
-          var error = false;
-          if (
-            response.bike[i].automatic_billing == null ||
-            response.bike[i].automatic_billing == "N"
-            ) {
-            automatic_billing =
-          '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>';
-        } else {
-          automatic_billing =
-          '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>';
-        }
-
-        if (
-          response.bike[i].status == null ||
-          response.bike[i].status == "KO"
-          ) {
-          status =
-        '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>';
-      } else {
-        status =
-        '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>';
-      }
+    if (
+      response.bike[i].status == null ||
+      response.bike[i].status == "KO"
+      ) {
+      status =
+    '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>';
+    } else {
+      status =
+      '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>';
+    }
 
     if (
       response.bike[i].contractStart == null &&
@@ -1748,9 +1745,9 @@ function list_bikes_admin(){
   if (response.bike[i].rentability != "N/A") {
     var rentability =
     '<td data-sort="' +
-    response.bike[i].rentability +
+    Math.round(response.bike[i].rentability) +
     '">' +
-    response.bike[i].rentability +
+    Math.round(response.bike[i].rentability) +
     " %</td>";
   } else {
     var rentability =
@@ -1773,8 +1770,6 @@ function list_bikes_admin(){
     response.bike[i].bikeBuyingDate.shortDate() +
     "</span>";
   }
-
-
 
   if (((response.bike[i].contractType=="leasing" || response.bike[i].contractType=="location") && response.bike[i].deliveryDate == null) || (response.bike[i].contractType=="order" && (response.bike[i].estimatedDeliveryDate == "0000-00-00" || response.bike[i].estimatedDeliveryDate == null))) {
     var deliveryDate = '<td class="text-red">N/A</td>';

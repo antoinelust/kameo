@@ -46,8 +46,8 @@
 
 
   $bikes=array();
+  $totalBikes=0;
   if(isset($_POST['bikeBrandModel'])){
-    $totalBikes=0;
     foreach($_POST['bikeBrandModel'] as $key=>$bike){
       $totalBikes += $_POST['bikeNumber'][$key];
       $information=execSQL("SELECT * FROM bike_catalog WHERE ID=?", array('i', $bike), false)[0];
@@ -60,6 +60,7 @@
       $bikes[$key]['UTILISATION']=$information['UTILISATION'];
       $bikes[$key]['ELECTRIC']=$information['ELECTRIC'];
       $bikes[$key]['bikeNumber']=$_POST['bikeNumber'][$key];
+      $bikes[$key]['bikePriceAchat']=$_POST['bikeFinalPriceAchat'][$key];
     }
   }
 
@@ -67,9 +68,9 @@
 
 
   $accessories=array();
+  $accessoriesTotalLeasing = 0;
+  $accessoriesTotalAchat = 0;
   if(isset($_POST['accessoryAccessory'])){
-    $accessoriesTotalLeasing = 0;
-    $accessoriesTotalAchat = 0;
     foreach($_POST['accessoryAccessory'] as $key=>$accessory) {
         $information=execSQL("SELECT * FROM accessories_catalog WHERE ID=?", array('i', $accessory), false)[0];
         $accessories[$key]['ID']=$accessory;

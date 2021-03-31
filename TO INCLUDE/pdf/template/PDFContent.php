@@ -302,8 +302,8 @@ h2{
       echo "<div class='listItem'>• Location de " . $totalBikes . " " . $txtVelo ."</div>";
     } ?>
 
-    <?php if ($buyOrLeasing =="buy" && $totalbikes>0) {
-      echo "<div class='listItem'>• Achat de " . $totalBike . " " . $txtVelo."</div>";
+    <?php if ($buyOrLeasing =="buy" && $totalBikes>0) {
+      echo "<div class='listItem'>• Achat de " . $totalBikes . " " . $txtVelo."</div>";
     } ?>
 
     <?php if (count($boxes) > 0) { ?>
@@ -322,7 +322,7 @@ h2{
     }
 
     if($accessoriesTotalAchat>0){
-      echo "<div class='listItem'>• Achat de " . $accessoriesTotalLeasing  . " accessoire(s)</div>";
+      echo "<div class='listItem'>• Achat de " . $accessoriesTotalAchat  . " accessoire(s)</div>";
     }
 
 
@@ -673,7 +673,7 @@ if ($assurance == true) { ?>
         </tr>
       </thead>
       <tbody class="tbody-leftMargin">
-        <?php if (($buyOrLeasing =="leasing" || $buyOrLeasing == "both") && count($bikes) > 0) { ?>
+        <?php if (count($bikes) > 0) { ?>
           <tr>
             <td style="width:33%;"><div class="green bold" style="padding-top:3mm; padding-bottom:3mm; margin-left:3mm;">Vélos</div> </td>
             <td style="width:33%;">
@@ -685,13 +685,14 @@ if ($assurance == true) { ?>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php
               foreach ($bikes as $bike) {
-                if($bike['finalPrice'] < $bike['initialPrice']){
-                    echo "<div style='margin-left:3mm;'>".(($buyOrLeasing == "leasing") ? "Location" : "Achat")." :<br/><del>{$bike['initialPrice']} € HTVA/mois</del><br /> {$bike['finalPrice']} ".(($buyOrLeasing=="leasing") ? "€ HTVA/mois" : "€ HTVA")." <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
-                }else if($bike['finalPrice'] > $bike['initialPrice']){
-                    echo "<div style='margin-left:3mm;'>".(($buyOrLeasing == "leasing") ? "Location" : "Achat")." :<br/>{$bike['finalPrice']} ".(($buyOrLeasing=="leasing") ? "€ HTVA/mois" : "€ HTVA")."  <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
-                }
-                else{
-                    echo "<div style='margin-left:3mm;'>".(($buyOrLeasing == "leasing") ? "Location" : "Achat")." :<br/>{$bike['finalPrice']} ".(($buyOrLeasing=="leasing") ? "€ HTVA/mois" : "€ HTVA")."  <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
+                if($buyOrLeasing=="buy"){
+                  echo "<div style='margin-left:3mm;'>Achat :<br/>{$bike['finalPrice']} € HTVA  <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
+                }else{
+                  if($bike['finalPrice'] < $bike['initialPrice']){
+                      echo "<div style='margin-left:3mm;'>Location :<br/><del>{$bike['initialPrice']} €/mois (HTVA)</del><br /> {$bike['finalPrice']} €/mois (HTVA) <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
+                  }else{
+                      echo "<div style='margin-left:3mm;'>Location :<br/>{$bike['finalPrice']} €/mois (HTVA)  <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
+                  }
                 }
               } ?>
             </td>

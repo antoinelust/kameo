@@ -266,6 +266,7 @@ get_all_bikes().done(function(response){
     <td class="bikeMarge"></td>
     <td class="bikeInitialPrice hidden"></td>
     <td class="bikeFinalPrice hidden"></td>
+    <td class="bikeFinalPriceAchat hidden"></td>
     </tr>`);
 
     //label selon la langue
@@ -330,6 +331,7 @@ get_all_bikes().done(function(response){
         $(that).parents('.bikeRow').find('.bikepCosts').html(pCosts+"€" + " <span class=\"text-red\">(-)</span>");
         $(that).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
         $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
+        $(that).parents('.bikeRow').find('.bikeFinalPriceAchat').html("<input type=\"number\" name=\"bikeFinalPriceAchat[]\" value=\""+bikesTemp[id].priceHTVA+"\"/>");
         $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
         $(that).parents('.bikeRow').find('.bikeLeasing').html(leasingPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
         $(that).parents('.bikeRow').find('.bikeLeasing').attr('data-orig',leasingPrice);
