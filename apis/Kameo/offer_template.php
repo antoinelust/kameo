@@ -64,9 +64,6 @@
     }
   }
 
-
-
-
   $accessories=array();
   $accessoriesTotalLeasing = 0;
   $accessoriesTotalAchat = 0;
@@ -123,25 +120,12 @@
 
   $totalPerMonth=0;
 
-  /*for ($i=0; $i < $bikesNumber ; $i++) {
-      $bikes[$i]['FINAL_LEASING_PRICE'] = $bikeFinalPrice[$i];
-      $totalPerMonth += intval($bikeFinalPrice[$i]);
-
-  }*/
-
-  //transforme le tableau pour n avoir qu'une itération de chaque
-  //$bikes = distinct($bikes, $bikeFinalPrice);
   $boxes = distinct($boxes);
 
   $company = getCompany($companyId);
   include 'get_prices.php';
-  /*for ($i=0; $i < count($bikes) ; $i++) {
-    $response=get_prices($bikes[$i]['PRICE_HTVA']);
-    $bikes[$i]['LEASING_PRICE'] = $response['leasingPrice'];
-  }*/
 
   $currentDate = getDate();
-
   $pdfTitle = strtolower(str_replace(" ", "-", $company['INTERNAL_REFERENCE'])).'_'.$currentDate['year'].'_'.$currentDate['mon'].'_'.$currentDate['mday'].'_temp';
 
   require_once 	$_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
@@ -178,7 +162,33 @@
     //ajoute le PDF a la table
 
 
-    $offerID= add_PDF($companyId, $pdfTitle, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company['INTERNAL_REFERENCE'], $probability);
+
+    for ($i=0; $i < $boxesNumber ; $i++) {
+      $boxFinalLocationPrice = $boxFinalPrice[1][$i];
+      $totalPerMonth+=$boxFinalLocationPrice;
+    }
+
+    if(count($bikes) > 0){
+      foreach($bikes as $bike) {
+        for($i=0; $i<$bike['bikeNumber']; $i++){
+          if($buyOrLeasing=='buy'){
+            $totalPerMonth+=$bike['bikePriceAchat'];
+          }else{
+            $totalPerMonth+=$bike['finalPrice'];
+          }
+        }
+      }
+    }
+
+    if(count($accessories) > 0){
+      foreach($accessories as $accessory) {
+        for($i=0; $i<$accessory['accessoryNumber']; $i++){
+          $totalPerMonth+=$accessory['finalPrice'];
+        }
+      }
+    }
+
+    $offerID= add_PDF($companyId, $pdfTitle, $totalBikes, $boxesNumber, $buyOrLeasing, ($accessoriesTotalAchat+$accessoriesTotalLeasing), $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company['INTERNAL_REFERENCE'], $probability);
     $response['id'] = $offerID;
     $newPdfFile = str_replace('temp',$response['id'], $pdfTitle);
 
@@ -195,16 +205,19 @@
             die;
         }
         $conn->close();
+        $totalPerMonth+=$boxFinalLocationPrice;
 
     }
 
     if(count($bikes) > 0){
       foreach($bikes as $bike) {
         for($i=0; $i<$bike['bikeNumber']; $i++){
-          if($buyOrLeasing=='achat'){
-            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, SIZE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array('sisiiiss', $email, $offerID, 'accessory', $bike['ID'], 0, $bike['finalPrice'], $bike['bikeSize'], ''), true);
+          if($buyOrLeasing=='buy'){
+            $totalPerMonth+=$bike['bikePriceAchat'];
+            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, SIZE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array('sisiiiss', $email, $offerID, 'bike', $bike['ID'], 0, $bike['bikePriceAchat'], $bike['bikeSize'], ''), true);
           }else{
-            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, CONTRACT_DURATION, SIZE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", array('sisiiisds', $email, $offerID, 'accessory', $bike['ID'], $bike['finalPrice'], 0, $leasingDuration, $bike['bikeSize'], ''), true);
+            $totalPerMonth+=$bike['finalPrice'];
+            execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, CONTRACT_DURATION, SIZE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", array('sisiiisds', $email, $offerID, 'bike', $bike['ID'], $bike['finalPrice'], 0, $leasingDuration, $bike['bikeSize'], ''), true);
           }
         }
       }
@@ -212,6 +225,7 @@
     if(count($accessories) > 0){
       foreach($accessories as $accessory) {
         for($i=0; $i<$accessory['accessoryNumber']; $i++){
+          $totalPerMonth+=$accessory['finalPrice'];
           if($accessory['finance']=='achat'){
             execSQL("INSERT INTO offers_details (USR_MAJ, OFFER_ID, ITEM_TYPE, ITEM_ID, ITEM_LOCATION_PRICE, ITEM_INSTALLATION_PRICE, STAANN) VALUES (?, ?, ?, ?, ?, ?, ?)", array('sisiiis', $email, $offerID, 'accessory', $accessory['ID'], 0, $accessory['finalPrice'], ''), true);
           }else{

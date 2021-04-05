@@ -11,7 +11,7 @@ include_once 'globalfunctions.php';
 
 $marginBike=0.7;
 $marginOther=0.3;
-$leasingDuration=36;
+$leasingDuration=isset($_POST['leasingDuration']) ? intval($_POST['leasingDuration']) : 36;
 $otherCost=3*84+4*100;
 
 

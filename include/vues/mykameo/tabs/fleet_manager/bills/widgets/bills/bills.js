@@ -98,384 +98,363 @@ function construct_form_for_billing_status_update(ID){
 }
 
 function create_bill(){
-  //get_bills_listing('*', '*', '*', '*', email);
-  $.ajax({
-    url: 'apis/Kameo/get_companies_listing.php',
-    type: 'post',
-    data: {type: "*"},
-    success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
-      if(response.response == 'success'){
-        var i=0;
+  document.getElementsByClassName('widget-addBill-form-date')[0].value = "";
+  document.getElementsByClassName('widget-addBill-form-amountHTVA')[0].value = "";
+  document.getElementsByClassName('widget-addBill-form-amountTVAC')[0].value = "";
+  document.getElementsByClassName('widget-addBill-form-sendingDate')[0].value = "";
+  document.getElementsByClassName('widget-addBill-form-paymentDate')[0].value = "";
+  $('.widget-addBill-form-companyOther').addClass("hidden");
+  $('.IDAddBill').removeClass('hidden');
+  $('.IDAddBillOut').removeClass('hidden');
 
-        while (i < response.companiesNumber){
-          $('#widget-addBill-form select[name=company]').append('<option value="'+response.company[i].internalReference+'">'+response.company[i].companyName+'</option>');
-          i++;
+  //création des variables
+  var bikes = [];
+  get_all_bikes_stock_command().done(function(response){
+    bikes = response.bike;
+    if(bikes == undefined){
+      bikes =[];
+      console.log('bikes => table vide');
+    }
+    //tableau bikes avec tout les champs
+    var bikeModels = "<option hidden disabled selected value></option>";
+
+    //gestion du moins au lancement de la page
+    checkMinus('.generateBillBike','.bikesNumber');
+    checkMinus('.generateBillAccessories','.accessoriesNumber');
+    checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
+    checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+
+
+    //velo
+
+    for (var i = 0; i < bikes.length; i++) {
+      bikeModels += '<option value="' + bikes[i].id + '">' + bikes[i].id + ' - ' + bikes[i].brand + ' - ' + bikes[i].model + '</option>';
+    }
+
+    //a chaque modification du nombre de vélo
+    //ajout
+    $('.generateBillBike .glyphicon-plus').unbind();
+    $('.generateBillBike .glyphicon-plus').click(function(){
+      bikesNumber = $("#addBill").find('.bikesNumber').html()*1+1;
+      $('#addBill').find('.bikesNumber').html(bikesNumber);
+      $('#addBill').find('#bikesNumberBill').val(bikesNumber);
+
+
+      var hideBikepVenteHTVA;
+      var hideBikeLeasing ='';
+      var inRecapLeasingBike ='';
+      var inRecapVenteBike ='';
+
+      //creation du div contenant
+      $('#addBill').find('.generateBillBike tbody')
+      .append(`<tr class="bikesNumberTable`+(bikesNumber)+` bikeRow form-group">
+        <td class="bLabel"></td>
+        <td class="bikeID"></td>
+        <td class="billType"></td>
+        <td class="bikepAchat"></td>
+        <td class="bikepCatalog"></td>
+        <td contenteditable='true' class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
+        <td class="bikeMarge"></td>
+        <td><input type="number" name="bikeFinalPrice[]" class="bikeFinalPrice hidden"></td>
+        </tr>`);
+
+      //label selon la langue
+      $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bLabel')
+      .append('<label>Vélo '+ bikesNumber +'</label>');
+
+      $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bikeID')
+      .append(`<select name="bikeID[]" class="select`+bikesNumber+` bikeID form-control required">`+
+        bikeModels+`</select>`);
+
+
+        //type de facture
+        $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.billType')
+        .append("<select><option value='vente'>Vente</option><option value'location'>Location</option></select>");
+
+      //gestion du select du velo
+      $('.generateBillBike select').on('change',function(){
+        console.log('')
+
+        var that ='.'+ $(this).attr('class').split(" ")[0];
+        var id =$(that).val();
+
+        //récupère le bon index même si le tableau est désordonné
+        id = getIndex(bikes, id);
+          //gestion de prix null
+          if (bikes[id].buyingPrice == null) {
+            pAchat = 'non renseigné';
+            pVenteHTVA = 'non renseigné';
+            var marge = 'non calculable';
+          }else{
+            var pAchat = bikes[id].buyingPrice + '€ ';
+            var pVenteHTVA = bikes[id].priceHTVA + '€ ';
+            var marge = (bikes[id].priceHTVA - bikes[id].buyingPrice).toFixed(0) + '€ (' + ((bikes[id].priceHTVA - bikes[id].buyingPrice)/(bikes[id].buyingPrice)*100).toFixed(0) + '%)';
+          }
+
+          $(that).parents('.bikeRow').find('.bikepAchat').html(pAchat + " <span class=\"text-red\">(-)</span>");
+          $(that).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
+          $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
+          $(that).parents('.bikeRow').find('.bikepVenteHTVA').attr('data-orig',pVenteHTVA);
+          $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
+          $(that).parents('.bikeRow').find('.bikeFinalPrice').val(bikes[id].priceHTVA);
+        });
+      checkMinus('.generateBillBike','.bikesNumber');
+
+      $('#widget-addBill-form .bikeRow .bikepVenteHTVA').blur(function(){
+        var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+        var newPrice=this.innerHTML.split('€')[0];
+        if(initialPrice==newPrice){
+          $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
+        }else{
+          var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+          $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
         }
+        var buyingPrice=$(this).parents('.bikeRow').find('.bikepAchat').html().split('€')[0];
+        var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
+        $(this).parents('.bikeRow').find('.bikeMarge').html(marge);
+        $(this).parents('.bikeRow').find('.bikeFinalPrice').val(newPrice);
+      });
+    });
 
-        document.getElementsByClassName('widget-addBill-form-date')[0].value = "";
-        document.getElementsByClassName('widget-addBill-form-amountHTVA')[0].value = "";
-        document.getElementsByClassName('widget-addBill-form-amountTVAC')[0].value = "";
-        document.getElementsByClassName('widget-addBill-form-sendingDate')[0].value = "";
-        document.getElementsByClassName('widget-addBill-form-paymentDate')[0].value = "";
-        $('.widget-addBill-form-companyOther').addClass("hidden");
-        $('.IDAddBill').removeClass('hidden');
-        $('.IDAddBillOut').removeClass('hidden');
+    //retrait
+    $('.generateBillBike .glyphicon-minus').unbind();
 
-        //création des variables
-        var bikes = [];
-        get_all_bikes_stock_command().done(function(response){
-          bikes = response.bike;
-          if(bikes == undefined){
-            bikes =[];
-            console.log('bikes => table vide');
-          }
-          //tableau bikes avec tout les champs
-          var bikeModels = "<option hidden disabled selected value></option>";
-
-          //gestion du moins au lancement de la page
-          checkMinus('.generateBillBike','.bikesNumber');
-          checkMinus('.generateBillAccessories','.accessoriesNumber');
-          checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
-          checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
-
-
-          //velo
-
-          for (var i = 0; i < bikes.length; i++) {
-            bikeModels += '<option value="' + bikes[i].id + '">' + bikes[i].id + ' - ' + bikes[i].brand + ' - ' + bikes[i].model + '</option>';
-          }
-
-          //a chaque modification du nombre de vélo
-          //ajout
-          $('.generateBillBike .glyphicon-plus').unbind();
-          $('.generateBillBike .glyphicon-plus').click(function(){
-            bikesNumber = $("#addBill").find('.bikesNumber').html()*1+1;
-            $('#addBill').find('.bikesNumber').html(bikesNumber);
-            $('#addBill').find('#bikesNumberBill').val(bikesNumber);
-
-
-            var hideBikepVenteHTVA;
-            var hideBikeLeasing ='';
-            var inRecapLeasingBike ='';
-            var inRecapVenteBike ='';
-
-            //creation du div contenant
-            $('#addBill').find('.generateBillBike tbody')
-            .append(`<tr class="bikesNumberTable`+(bikesNumber)+` bikeRow form-group">
-              <td class="bLabel"></td>
-              <td class="bikeID"></td>
-              <td class="billType"></td>
-              <td class="bikepAchat"></td>
-              <td class="bikepCatalog"></td>
-              <td contenteditable='true' class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
-              <td class="bikeMarge"></td>
-              <td><input type="number" name="bikeFinalPrice[]" class="bikeFinalPrice hidden"></td>
-              </tr>`);
-
-            //label selon la langue
-            $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bLabel')
-            .append('<label>Vélo '+ bikesNumber +'</label>');
-
-            $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bikeID')
-            .append(`<select name="bikeID[]" class="select`+bikesNumber+` bikeID form-control required">`+
-              bikeModels+`</select>`);
-
-
-              //type de facture
-              $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.billType')
-              .append("<select><option value='vente'>Vente</option><option value'location'>Location</option></select>");
-
-            //gestion du select du velo
-            $('.generateBillBike select').on('change',function(){
-              console.log('')
-
-              var that ='.'+ $(this).attr('class').split(" ")[0];
-              var id =$(that).val();
-
-              //récupère le bon index même si le tableau est désordonné
-              id = getIndex(bikes, id);
-                //gestion de prix null
-                if (bikes[id].buyingPrice == null) {
-                  pAchat = 'non renseigné';
-                  pVenteHTVA = 'non renseigné';
-                  var marge = 'non calculable';
-                }else{
-                  var pAchat = bikes[id].buyingPrice + '€ ';
-                  var pVenteHTVA = bikes[id].priceHTVA + '€ ';
-                  var marge = (bikes[id].priceHTVA - bikes[id].buyingPrice).toFixed(0) + '€ (' + ((bikes[id].priceHTVA - bikes[id].buyingPrice)/(bikes[id].buyingPrice)*100).toFixed(0) + '%)';
-                }
-
-                $(that).parents('.bikeRow').find('.bikepAchat').html(pAchat + " <span class=\"text-red\">(-)</span>");
-                $(that).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
-                $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
-                $(that).parents('.bikeRow').find('.bikepVenteHTVA').attr('data-orig',pVenteHTVA);
-                $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
-                $(that).parents('.bikeRow').find('.bikeFinalPrice').val(bikes[id].priceHTVA);
-              });
-            checkMinus('.generateBillBike','.bikesNumber');
-
-            $('#widget-addBill-form .bikeRow .bikepVenteHTVA').blur(function(){
-              var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
-              var newPrice=this.innerHTML.split('€')[0];
-              if(initialPrice==newPrice){
-                $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
-              }else{
-                var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
-                $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
-              }
-              var buyingPrice=$(this).parents('.bikeRow').find('.bikepAchat').html().split('€')[0];
-              var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
-              $(this).parents('.bikeRow').find('.bikeMarge').html(marge);
-              $(this).parents('.bikeRow').find('.bikeFinalPrice').val(newPrice);
-            });
-          });
-
-          //retrait
-          $('.generateBillBike .glyphicon-minus').unbind();
-
-          $('.generateBillBike .glyphicon-minus').click(function(){
-            bikesNumber = $("#addBill").find('.bikesNumber').html();
-            if(bikesNumber > 0){
-              $('#addBill').find('.bikesNumber').html(bikesNumber*1 - 1);
-              $('#bikesNumberBill').val(bikesNumber*1 - 1);
-              $('#addBill').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
-              bikesNumber--;
-            }
-            checkMinus('.generateBillBike','.bikesNumber');
-          });
-        });
-
-        //Accessoires
-        get_all_accessories().done(function(response){
-          //variables
-          var accessories = response.accessories;
-          if(accessories == undefined){
-            accessories =[];
-            console.log('accessories => table vide');
-          }
-          var categories = [];
-
-          //generation du tableau de catégories
-          accessories.forEach((accessory) => {
-            var newCategory = true;
-            categories.forEach((category) => {
-              if (category.name === accessory.category) {
-                newCategory = false;
-              }
-            });
-            if (newCategory === true) {
-              categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
-            }
-          });
-
-          $('.generateBillAccessories .glyphicon-plus').unbind();
-          $('.generateBillAccessories .glyphicon-plus').click(function(){
-            //gestion accessoriesNumber
-            accessoriesNumber = $("#addBill").find('.accessoriesNumber').html()*1+1;
-            $('#addBill').find('.accessoriesNumber').html(accessoriesNumber);
-            $('#accessoriesNumber').val(accessoriesNumber);
-
-            //ajout des options du select pour les catégories
-            var categoriesOption = "<option hidden disabled selected value></option>";
-            categories.forEach((category) => {
-              categoriesOption += '<option value="'+category.id+'">'+category.name+'</option>';
-            });
-
-            //ajout d'une ligne au tableau des accessoires
-            $('#addBill').find('.otherCostsAccesoiresTable tbody')
-            .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
-              <td class="aLabel"></td>
-              <td class="aCategory"></td>
-              <td class="aAccessory"></td>
-              <td class="aBuyingPrice"></td>
-              <td contenteditable='true' class="aPriceHTVA"></td>
-              <td><input type="number" class="accessoryFinalPrice hidden" name="accessoryFinalPrice[]" /></td>
-              </tr>`);
-            //label selon la langue
-            $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
-            .append('<label class="fr">Accessoire '+ accessoriesNumber +'</label>');
-
-            //select catégorie
-            $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
-            .append(`<select name="accessoryCategory`+accessoriesNumber+`" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
-              categoriesOption+`
-              </select>`);
-            //select Accessoire
-            $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
-            .append('<select name="accessoryID[]" id="selectAccessory'+
-              accessoriesNumber+
-              '"class="selectAccessory form-control required"></select>');
-
-            checkMinus('.generateBillAccessories','.accessoriesNumber');
-
-            //on change de la catégorie
-            $('.generateBillAccessories').find('.selectCategory').on("change",function(){
-              var that = '#' + $(this).attr('id');
-              var categoryId =$(that).val();
-              var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
-
-              //ne garde que les accessoires de cette catégorie
-              accessories.forEach((accessory) => {
-                if (categoryId == accessory.categoryId) {
-                  accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
-                }
-              });
-              //place les accessoires dans le select
-              $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
-
-              //retire l'affichage d'éventuels prix
-              $(that).parents('.accessoriesRow').find('.aBuyingPrice').html('');
-              $(that).parents('.accessoriesRow').find('.aPriceHTVA').html('');
-            });
-
-            $('.generateBillAccessories').find('.selectAccessory').on("change",function(){
-              var that = '#' + $(this).attr('id');
-              var accessoryId =$(that).val();
-
-                //récupère le bon index même si le tableau est désordonné
-                accessoryId = getIndex(accessories, accessoryId);
-
-                var buyingPrice = accessories[accessoryId].buyingPrice + '€';
-                var priceHTVA = accessories[accessoryId].priceHTVA + '€';
-
-                $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
-                $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
-                $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
-                $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].priceHTVA);
-              });
-
-            $('#widget-addBill-form .accessoriesRow .aPriceHTVA ').blur(function(){
-              var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
-              var newPrice=this.innerHTML.split('€')[0];
-              if(initialPrice==newPrice){
-                $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
-              }else{
-                var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
-                $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
-              }
-              var buyingPrice=$(this).parents('.accessoriesRow').find('.aBuyingPrice').html().split('€')[0];
-              var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
-              $(this).parents('.accessoriesRow').find('.accessoryMarge').html(marge);
-              $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').val(newPrice);
-            });
-
-          });
-
-          //retrait
-          $('.generateBillAccessories .glyphicon-minus').unbind();
-          $('.generateBillAccessories .glyphicon-minus').click(function(){
-            accessoriesNumber = $("#addBill").find('.accessoriesNumber').html();
-            if(accessoriesNumber > 0){
-              $('#addBill').find('.accessoriesNumber').html(accessoriesNumber*1 - 1);
-              $('#accessoriesNumber').val(accessoriesNumber*1 - 1);
-              $('#addBill').find('.otherCostsAccesoiresTable'+accessoriesNumber).slideUp().remove();
-              accessoriesNumber--;
-            }
-            checkMinus('.generateBillAccessories','.accessoriesNumber');
-          });
-
-        });
-
-$('.generateBillOtherAccessories .glyphicon-plus').unbind();
-$('.generateBillOtherAccessories .glyphicon-plus').click(function(){
-          //gestion accessoriesNumber
-          otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html()*1+1;
-          $('#addBill').find('.otherAccessoriesNumber').html(otherAccessoriesNumber);
-          $('#otherAccessoriesNumber').val(otherAccessoriesNumber);
-
-          //ajout d'une ligne au tableau des accessoires
-          $('#addBill').find('.otherCostsOtherAccesoiresTable tbody')
-          .append(`<tr class="otherCostsOtherAccesoiresTable`+(otherAccessoriesNumber)+` otherAccessoriesRow form-group">
-            <td class="aLabel"></td>
-            <td class="aAccessory"><input type="text" class="otherAccessoryDescription form-control required" name="otherAccessoryDescription[]" /></td>
-            <td><input type="number" class="otherAccessoryFinalPrice form-control required" name="otherAccessoryFinalPrice[]" /></td>
-            </tr>`);
-          //label selon la langue
-          $('#addBill').find('.otherCostsOtherAccesoiresTable'+(otherAccessoriesNumber)+'>.aLabel')
-          .append('<label class="fr">Accessoire '+ otherAccessoriesNumber +'</label>');
-          checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
-        });
-
-          //retrait
-          $('.generateBillOtherAccessories .glyphicon-minus').unbind();
-          $('.generateBillOtherAccessories .glyphicon-minus').click(function(){
-            otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html();
-            if(otherAccessoriesNumber > 0){
-              $('#addBill').find('.otherAccessoriesNumber').html(otherAccessoriesNumber*1 - 1);
-              $('#otherAccessoriesNumber').val(otherAccessoriesNumber*1 - 1);
-              $('#addBill').find('.otherCostsOtherAccesoiresTable'+otherAccessoriesNumber).slideUp().remove();
-              otherAccessoriesNumber--;
-            }
-            checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
-          });
-
-
-          $('.generateBillManualWorkload .glyphicon-plus').unbind();
-          $('.generateBillManualWorkload .glyphicon-plus').click(function(){
-            //gestion travail manuel
-            manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html()*1+1;
-            $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber);
-            $('#manualWorkloadNumber').val(manualWorkloadNumber);
-
-            //ajout d'une ligne au tableau de la main d'oeuvre
-            $('#addBill').find('.otherCostsManualWorkloadTable tbody')
-            .append(`<tr class="otherCostsManualWorkloadTable`+(manualWorkloadNumber)+` manualWorkloadRow form-group">
-              <td class="aLabel"></td>
-              <td class="aDescription"><input type="text" class="manualWorkloadDescription form-control required" name="manualWorkladDescription[]" /></td>
-              <td><input type="number" class="manualWorkloadLength form-control required" name="manualWorkloadLength[]" value="0" /></td>
-              <td><input type="number" class="manualWorkloadRate form-control required" name="manualWorkloadRate[]" value="45" /></td>
-              <td><input type="number" class="manualWorkloadTotal form-control required" name="manualWorkloadTotal[]" value="0" readonly /></td>
-              </tr>`);
-            //label selon la langue
-            $('#addBill').find('.otherCostsManualWorkloadTable'+(manualWorkloadNumber)+'>.aLabel')
-            .append('<label class="fr">Main d\'oeuvre '+ manualWorkloadNumber +'</label>');
-            checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
-
-
-            $('#widget-addBill-form .manualWorkloadRow .manualWorkloadLength, #widget-addBill-form .manualWorkloadRow .manualWorkloadRate').change(function(){
-              $(this).parents('.manualWorkloadRow').find('.manualWorkloadTotal').val(($(this).parents('.manualWorkloadRow').find('.manualWorkloadLength').val()*$(this).parents('.manualWorkloadRow').find('.manualWorkloadRate').val()/60));
-            });
-
-
-
-          });
-
-          //retrait
-          $('.generateBillManualWorkload .glyphicon-minus').unbind();
-          $('.generateBillManualWorkload .glyphicon-minus').click(function(){
-            manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html();
-            if(manualWorkloadNumber > 0){
-              $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber*1 - 1);
-              $('#manualWorkloadNumber').val(manualWorkloadNumber*1 - 1);
-              $('#addBill').find('.otherCostsManualWorkloadTable'+manualWorkloadNumber).slideUp().remove();
-              otherAccessoriesNumber--;
-            }
-            checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
-          });
-
-
-          var dateInOneMonth=new Date();
-          dateInOneMonth.setMonth(dateInOneMonth.getMonth()+1);
-          var year=dateInOneMonth.getFullYear();
-          var month=("0" + (dateInOneMonth.getMonth()+1)).slice(-2)
-          var day=("0" + dateInOneMonth.getDate()).slice(-2)
-          var dateInOneMonthString=year+"-"+month+"-"+day;
-
-          $('#widget-addBill-form input[name=widget-addBill-form-date]').val(get_date_string());
-          $('#widget-addBill-form input[name=widget-addBill-form-datelimite]').val(dateInOneMonthString);
-
-        }
+    $('.generateBillBike .glyphicon-minus').click(function(){
+      bikesNumber = $("#addBill").find('.bikesNumber').html();
+      if(bikesNumber > 0){
+        $('#addBill').find('.bikesNumber').html(bikesNumber*1 - 1);
+        $('#bikesNumberBill').val(bikesNumber*1 - 1);
+        $('#addBill').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
+        bikesNumber--;
       }
-    })
-console.log('fini');
+      checkMinus('.generateBillBike','.bikesNumber');
+    });
+  });
+
+  //Accessoires
+  get_all_accessories().done(function(response){
+    //variables
+    var accessories = response.accessories;
+    if(accessories == undefined){
+      accessories =[];
+      console.log('accessories => table vide');
+    }
+    var categories = [];
+
+    //generation du tableau de catégories
+    accessories.forEach((accessory) => {
+      var newCategory = true;
+      categories.forEach((category) => {
+        if (category.name === accessory.category) {
+          newCategory = false;
+        }
+      });
+      if (newCategory === true) {
+        categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+      }
+    });
+
+    $('.generateBillAccessories .glyphicon-plus').unbind();
+    $('.generateBillAccessories .glyphicon-plus').click(function(){
+      //gestion accessoriesNumber
+      accessoriesNumber = $("#addBill").find('.accessoriesNumber').html()*1+1;
+      $('#addBill').find('.accessoriesNumber').html(accessoriesNumber);
+      $('#accessoriesNumber').val(accessoriesNumber);
+
+      //ajout des options du select pour les catégories
+      var categoriesOption = "<option hidden disabled selected value></option>";
+      categories.forEach((category) => {
+        categoriesOption += '<option value="'+category.id+'">'+category.name+'</option>';
+      });
+
+      //ajout d'une ligne au tableau des accessoires
+      $('#addBill').find('.otherCostsAccesoiresTable tbody')
+      .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
+        <td class="aLabel"></td>
+        <td class="aCategory"></td>
+        <td class="aAccessory"></td>
+        <td class="aBuyingPrice"></td>
+        <td contenteditable='true' class="aPriceHTVA"></td>
+        <td><input type="number" class="accessoryFinalPrice hidden" name="accessoryFinalPrice[]" /></td>
+        </tr>`);
+      //label selon la langue
+      $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
+      .append('<label class="fr">Accessoire '+ accessoriesNumber +'</label>');
+
+      //select catégorie
+      $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
+      .append(`<select name="accessoryCategory`+accessoriesNumber+`" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
+        categoriesOption+`
+        </select>`);
+      //select Accessoire
+      $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
+      .append('<select name="accessoryID[]" id="selectAccessory'+
+        accessoriesNumber+
+        '"class="selectAccessory form-control required"></select>');
+
+      checkMinus('.generateBillAccessories','.accessoriesNumber');
+
+      //on change de la catégorie
+      $('.generateBillAccessories').find('.selectCategory').on("change",function(){
+        var that = '#' + $(this).attr('id');
+        var categoryId =$(that).val();
+        var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
+
+        //ne garde que les accessoires de cette catégorie
+        accessories.forEach((accessory) => {
+          if (categoryId == accessory.categoryId) {
+            accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+          }
+        });
+        //place les accessoires dans le select
+        $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
+
+        //retire l'affichage d'éventuels prix
+        $(that).parents('.accessoriesRow').find('.aBuyingPrice').html('');
+        $(that).parents('.accessoriesRow').find('.aPriceHTVA').html('');
+      });
+
+      $('.generateBillAccessories').find('.selectAccessory').on("change",function(){
+        var that = '#' + $(this).attr('id');
+        var accessoryId =$(that).val();
+
+          //récupère le bon index même si le tableau est désordonné
+          accessoryId = getIndex(accessories, accessoryId);
+
+          var buyingPrice = accessories[accessoryId].buyingPrice + '€';
+          var priceHTVA = accessories[accessoryId].priceHTVA + '€';
+
+          $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
+          $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
+          $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
+          $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].priceHTVA);
+        });
+
+      $('#widget-addBill-form .accessoriesRow .aPriceHTVA ').blur(function(){
+        var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+        var newPrice=this.innerHTML.split('€')[0];
+        if(initialPrice==newPrice){
+          $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
+        }else{
+          var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+          $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+        }
+        var buyingPrice=$(this).parents('.accessoriesRow').find('.aBuyingPrice').html().split('€')[0];
+        var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
+        $(this).parents('.accessoriesRow').find('.accessoryMarge').html(marge);
+        $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').val(newPrice);
+      });
+
+    });
+
+    //retrait
+    $('.generateBillAccessories .glyphicon-minus').unbind();
+    $('.generateBillAccessories .glyphicon-minus').click(function(){
+      accessoriesNumber = $("#addBill").find('.accessoriesNumber').html();
+      if(accessoriesNumber > 0){
+        $('#addBill').find('.accessoriesNumber').html(accessoriesNumber*1 - 1);
+        $('#accessoriesNumber').val(accessoriesNumber*1 - 1);
+        $('#addBill').find('.otherCostsAccesoiresTable'+accessoriesNumber).slideUp().remove();
+        accessoriesNumber--;
+      }
+      checkMinus('.generateBillAccessories','.accessoriesNumber');
+    });
+
+  });
+
+  $('.generateBillOtherAccessories .glyphicon-plus').unbind();
+  $('.generateBillOtherAccessories .glyphicon-plus').click(function(){
+    //gestion accessoriesNumber
+    otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html()*1+1;
+    $('#addBill').find('.otherAccessoriesNumber').html(otherAccessoriesNumber);
+    $('#otherAccessoriesNumber').val(otherAccessoriesNumber);
+
+    //ajout d'une ligne au tableau des accessoires
+    $('#addBill').find('.otherCostsOtherAccesoiresTable tbody')
+    .append(`<tr class="otherCostsOtherAccesoiresTable`+(otherAccessoriesNumber)+` otherAccessoriesRow form-group">
+      <td class="aLabel"></td>
+      <td class="aAccessory"><input type="text" class="otherAccessoryDescription form-control required" name="otherAccessoryDescription[]" /></td>
+      <td><input type="number" class="otherAccessoryFinalPrice form-control required" name="otherAccessoryFinalPrice[]" /></td>
+      </tr>`);
+    //label selon la langue
+    $('#addBill').find('.otherCostsOtherAccesoiresTable'+(otherAccessoriesNumber)+'>.aLabel')
+    .append('<label class="fr">Accessoire '+ otherAccessoriesNumber +'</label>');
+    checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
+  });
+
+  //retrait
+  $('.generateBillOtherAccessories .glyphicon-minus').unbind();
+  $('.generateBillOtherAccessories .glyphicon-minus').click(function(){
+    otherAccessoriesNumber = $("#addBill").find('.otherAccessoriesNumber').html();
+    if(otherAccessoriesNumber > 0){
+      $('#addBill').find('.otherAccessoriesNumber').html(otherAccessoriesNumber*1 - 1);
+      $('#otherAccessoriesNumber').val(otherAccessoriesNumber*1 - 1);
+      $('#addBill').find('.otherCostsOtherAccesoiresTable'+otherAccessoriesNumber).slideUp().remove();
+      otherAccessoriesNumber--;
+    }
+    checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
+  });
+
+
+  $('.generateBillManualWorkload .glyphicon-plus').unbind();
+  $('.generateBillManualWorkload .glyphicon-plus').click(function(){
+    //gestion travail manuel
+    manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html()*1+1;
+    $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber);
+    $('#manualWorkloadNumber').val(manualWorkloadNumber);
+
+    //ajout d'une ligne au tableau de la main d'oeuvre
+    $('#addBill').find('.otherCostsManualWorkloadTable tbody')
+    .append(`<tr class="otherCostsManualWorkloadTable`+(manualWorkloadNumber)+` manualWorkloadRow form-group">
+      <td class="aLabel"></td>
+      <td class="aDescription"><input type="text" class="manualWorkloadDescription form-control required" name="manualWorkladDescription[]" /></td>
+      <td><input type="number" class="manualWorkloadLength form-control required" name="manualWorkloadLength[]" value="0" /></td>
+      <td><input type="number" class="manualWorkloadRate form-control required" name="manualWorkloadRate[]" value="45" /></td>
+      <td><input type="number" class="manualWorkloadTotal form-control required" name="manualWorkloadTotal[]" value="0" readonly /></td>
+      </tr>`);
+    //label selon la langue
+    $('#addBill').find('.otherCostsManualWorkloadTable'+(manualWorkloadNumber)+'>.aLabel')
+    .append('<label class="fr">Main d\'oeuvre '+ manualWorkloadNumber +'</label>');
+    checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+
+
+    $('#widget-addBill-form .manualWorkloadRow .manualWorkloadLength, #widget-addBill-form .manualWorkloadRow .manualWorkloadRate').change(function(){
+      $(this).parents('.manualWorkloadRow').find('.manualWorkloadTotal').val(($(this).parents('.manualWorkloadRow').find('.manualWorkloadLength').val()*$(this).parents('.manualWorkloadRow').find('.manualWorkloadRate').val()/60));
+    });
+
+
+
+  });
+
+  //retrait
+  $('.generateBillManualWorkload .glyphicon-minus').unbind();
+  $('.generateBillManualWorkload .glyphicon-minus').click(function(){
+    manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html();
+    if(manualWorkloadNumber > 0){
+      $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber*1 - 1);
+      $('#manualWorkloadNumber').val(manualWorkloadNumber*1 - 1);
+      $('#addBill').find('.otherCostsManualWorkloadTable'+manualWorkloadNumber).slideUp().remove();
+      otherAccessoriesNumber--;
+    }
+    checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+  });
+
+
+  var dateInOneMonth=new Date();
+  dateInOneMonth.setMonth(dateInOneMonth.getMonth()+1);
+  var year=dateInOneMonth.getFullYear();
+  var month=("0" + (dateInOneMonth.getMonth()+1)).slice(-2)
+  var day=("0" + dateInOneMonth.getDate()).slice(-2)
+  var dateInOneMonthString=year+"-"+month+"-"+day;
+
+  $('#widget-addBill-form input[name=widget-addBill-form-date]').val(get_date_string());
+  $('#widget-addBill-form input[name=widget-addBill-form-datelimite]').val(dateInOneMonthString);
 }
 
 
 
 function get_bills_listing(company, sent, paid, direction, email) {
+
   $.ajax({
     url: 'apis/Kameo/get_bills_listing.php',
     type: 'post',
@@ -490,7 +469,7 @@ function get_bills_listing(company, sent, paid, direction, email) {
         $('#widget-addBill-form input[name=ID]').val(parseInt(response.IDMaxBilling) +1);
         $('#widget-addBill-form input[name=communication]').val(response.communication);
         $('#widget-addBill-form input[name=communicationHidden]').val(response.communication);
-       
+
         var i=0;
         var dest="";
         var dest3="";

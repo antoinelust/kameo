@@ -85,13 +85,25 @@ function initializeFields() {
     .remove()
     .end();
 
+  $("#widget-addBill-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
+
+
+  $("#widget-manageStockAccessory-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
+
+
   $.ajax({
-    url: "apis/Kameo/get_companies_listing.php",
-    type: "post",
-    data: { type: "*" },
+    url: "api/companies",
+    type: "get",
+    data: { type: "*", action: 'listMinimal' },
     success: function (response) {
       if (response.response == "success") {
-        for (var i = 0; i < response.companiesNumber; i++) {
+        for (var i = 0; i < response.company.length; i++) {
           var selected = "";
           if (response.company[i].internalReference == "KAMEO") {
             selected = "selected";
@@ -144,7 +156,22 @@ function initializeFields() {
             response.company[i].ID +
             '">' +
             response.company[i].companyName +  "<br>"
-            );
+          );
+          $("#widget-addBill-form select[name=company]").append(
+            '<option value= "' +
+            response.company[i].ID +
+            '">' +
+            response.company[i].companyName +  "<br>"
+          );
+
+          $("#widget-manageStockAccessory-form select[name=company]").append(
+            '<option value= "' +
+            response.company[i].ID +
+            '">' +
+            response.company[i].companyName +  "<br>"
+          );
+          $("#widget-manageStockAccessory-form select[name=company]").val("");
+
         }
       } else {
         console.log(response.response + ": " + response.message);

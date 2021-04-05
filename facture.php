@@ -96,9 +96,10 @@ $email=$resultat['EMAIL_CONTACT'];
 $nom=$resultat['NOM_CONTACT'];
 $prenom=$resultat['PRENOM_CONTACT'];
 $reference=$newID;
-$base_modulo=date('d').date('m').$reference;
+$base_modulo=substr('00'.$reference, -6);
+$base_modulo=date('Y').$base_modulo;
 $modulo_check=($base_modulo % 97);
-$reference=substr('0000'.$base_modulo.$modulo_check, -12);
+$reference=substr($base_modulo.$modulo_check, -12);
 $reference=substr($reference, 0,3).'/'.substr($reference, 3,4).'/'.substr($reference, 7,5);
 
 $monthFR=array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
@@ -454,11 +455,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
             while($row2 = mysqli_fetch_array($result2)){
 
-                if($row2['BILLING_TYPE']=='monthly'){
-                  $units = '€/mois';
-                }else{
-                  $units = '€/an';
-                }
+                $units = '€/mois';
 
                 error_log(date("Y-m-d H:i:s")." - Units :".$units."\n", 3, "generate_invoices.log");
 
@@ -505,11 +502,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
                 $difference=$dateStartTemp->diff($contractStart);
-
-                if($row2['CONTRACT_TYPE']=='annual'){
-                  $difference=$difference/12;
-                }
-
                 $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);
 
                 if($row2['END']){
@@ -530,13 +522,9 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     <td></td>
                     <td><img class="img-responsive" src="'.$_SERVER['DOCUMENT_ROOT'].'/images_bikes/'.$row2['MODEL'].'_mini.png" alt=""></td>';
                 if($row2['END']){
-                  if($row2['BILLING_TYPE']=="annual"){
-                    $test2=$test2.'<td>Période '.($monthDifference/12).'/'.($lengthLeasing/12).'</td></tr>';
-                  }else{
-                    $test2=$test2.'<td>Période '.($monthDifference).'/'.($lengthLeasing).'</td></tr>';
-                  }
+                  $test2=$test2.'<td>Période '.($monthDifference).'/'.($lengthLeasing).'</td></tr>';
                 }else{
-                    $test2=$test2.'<td>Location</td></tr>';
+                  $test2=$test2.'<td>Location</td></tr>';
                 }
                 $i+=1;
                 $total+=$row2['AMOUNT'];

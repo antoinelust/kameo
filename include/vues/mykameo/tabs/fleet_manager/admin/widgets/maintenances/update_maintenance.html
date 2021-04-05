@@ -104,7 +104,7 @@
                             type: "success",
                           }
                         );
-                        list_maintenances();
+                        $("#maintenanceListingSpan").dataTable().api().ajax.reload();
                         $("#maintenanceManagementItem").modal("toggle");
                         document
                           .getElementById("widget-maintenanceManagement-form")

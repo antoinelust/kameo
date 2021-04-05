@@ -185,7 +185,6 @@ function get_users_listing(){
     document.getElementById('confirmAddUser').innerHTML="<button class=\"fr button small green button-3d rounded icon-left\" onclick=\"confirm_add_user()\">\
     <i class=\"fa fa-paper-plane\">\
     </i>"+traduction.generic_confirm+"</button>";
-
     if(user_data.BOOKING == "Y"){
       $('#widget-addUser-form .accessToBikes').removeClass("hidden");
       $('#widget-addUser-form .accessToBuildings').removeClass("hidden");
@@ -219,13 +218,15 @@ function get_users_listing(){
                 if(response.response == 'success'){
                   var i=0;
                   var dest="";
-                  while (i < response.bikeNumber){
+                  while (i < response.bike.length){
+                    console.log(response.bike[i]);
                     if(response.bike[i].biketype == 'partage'){
                       temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\"> "+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
                       dest=dest.concat(temp);
                     }
                     i++;
                   }
+                  console.log(dest);
                   document.getElementById('bikeCreateUser').innerHTML = dest;
                   $('#widget-addUser-form input[name=company]').val("");
 

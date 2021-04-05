@@ -34,24 +34,6 @@ $('.addStockAccessoryButton').click(function(){
   $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
 })
 
-$.ajax({
-   url: "apis/Kameo/companies/companies.php",
-   type: "get",
-   data: {
-     "action" : "list"
-   },
-   success : function(data){
-     $('#widget-manageStockAccessory-form select[name=company')
-      .find('option')
-      .remove()
-      .end();
-      data.company.forEach(function(company, index){
-        $("#widget-manageStockAccessory-form select[name=company]").append('<option value='+company['ID']+'>'+company['companyName']+'</option>');
-      });
-      $("#widget-manageStockAccessory-form select[name=company]").val("");
-   }
- });
-
  $('#widget-manageStockAccessory-form select[name=company]').change(function(){
    $.ajax({
      url: "apis/Kameo/companies/companies.php",
@@ -125,20 +107,7 @@ $('#widget-manageStockAccessory-form select[name=category]').change(function(){
         data.models.forEach(function(model, index){
           $("#widget-manageStockAccessory-form select[name=model]").append('<option value='+model['ID']+'>'+model['BRAND'] + " - " +model['MODEL']+'</option>');
         });
-
-        $.ajax({
-           url: "apis/Kameo/accessories/accessories.php",
-           type: "get",
-           data: {
-             "action": "retrieve",
-             "ID" : $('#widget-manageStockAccessory-form select[name=model]').val()
-           },
-           success : function(data) {
-             $('#widget-manageStockAccessory-form input[name=leasingAmount]').val(data.accessory.PRICE_HTVA/36);
-             $('#widget-manageStockAccessory-form input[name=sellingAmount]').val(data.PRICE_HTVA);
-           }
-         });
-
+        $("#widget-manageStockAccessory-form select[name=model]").val("");
       }
 
      }
@@ -155,7 +124,7 @@ $('#widget-manageStockAccessory-form select[name=category]').change(function(){
         "ID" : $(this).val()
       },
       success : function(data) {
-        $('#widget-manageStockAccessory-form input[name=leasingAmount]').val(data.accessory.PRICE_HTVA/36);
+        $('#widget-manageStockAccessory-form input[name=leasingAmount]').val(data.accessory.PRICE_HTVA*1.25/36);
         $('#widget-manageStockAccessory-form input[name=sellingAmount]').val(data.PRICE_HTVA);
       }
     });
