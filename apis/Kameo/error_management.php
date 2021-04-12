@@ -114,8 +114,8 @@ $token = getBearerToken();
 
                 $bikeID=$row['ID'];
                 $bikeNumber=$row['FRAME_NUMBER'];
-                $contractStart=new DateTime($row['CONTRACT_START']);
-                $dateTemp=$contractStart;
+                $contractStart=new DateTime($row['CONTRACT_START'], new DateTimeZone('Europe/Brussels'));
+
                 if($row['CONTRACT_TYPE']=='leasing'){
                   if($row['CONTRACT_END'] != NULL){
                       $contractEnd=new DateTime($row['CONTRACT_END']);
@@ -138,19 +138,13 @@ $token = getBearerToken();
                         $errorIndex++;
                       }
                       $now=new DateTime('now');
-                      if($now<$contractEnd){
-                          $contractEnd=$now;
-                      }
                   }else{
                       $contractEnd=new DateTime('now');
                   }
                 }else if($row['CONTRACT_TYPE']=='renting'){
                     if($row['CONTRACT_END'] != NULL){
-                        $contractEnd=new DateTime($row['CONTRACT_END']);
-                        $now=new DateTime('now');
-                        if($now<$contractEnd){
-                            $contractEnd=$now;
-                        }
+                        $contractEnd=new DateTime($row['CONTRACT_END'], new DateTimeZone('Europe/Brussels'));
+                        $now=new DateTime('now', new DateTimeZone('Europe/Brussels'));
                     }else{
                         $contractEnd=new DateTime('now');
                     }
@@ -171,8 +165,11 @@ $token = getBearerToken();
                     if(strlen($dayBefore)==1){
                         $dayBefore='0'.$dayBefore;
                     }
-
                     $contractEnd=new DateTime($yearBefore.'-'.$monthBefore.'-'.$dayBefore);
+                }
+
+                if($now<$contractEnd){
+                    $contractEnd=$now;
                 }
 
                 $billingType=$row['BILLING_TYPE'];
@@ -181,14 +178,21 @@ $token = getBearerToken();
                 $month=$contractStart->format('m');
                 $year=$contractStart->format('Y');
 
+                $dateTemp=new DateTime($row['CONTRACT_START']);
+
+
                 while($dateTemp<=$contractEnd){
+                  $day=$dateTemp->format('d');
+                  $month=$dateTemp->format('m');
+                  $year=$dateTemp->format('Y');
+
                   $dateTempString=$dateTemp->format('d-m-Y');
                   $dateTempString2=$dateTemp->format('Y-m-d');
 
                   include 'connexion.php';
                   $sql="SELECT * FROM factures_details WHERE ITEM_TYPE='bike' AND ITEM_ID='$bikeID' and DATE_START = '$dateTempString2'";
-                  $j++;
 
+                  $j++;
 
                   if ($conn->query($sql) === FALSE) {
                       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -207,7 +211,8 @@ $token = getBearerToken();
                       $i++;
                   }
 
-                  if($billingType='annual'){
+
+                  if($billingType=='annual'){
                     $year++;
                   }else{
                     if($month=='12'){
@@ -224,9 +229,9 @@ $token = getBearerToken();
                       $dayTemp=$day;
                   }
                   $dateTemp->setDate($year, $month, $dayTemp);
+
                 }
             }
-
 
             $j=0;
             include 'connexion.php';

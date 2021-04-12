@@ -32,6 +32,200 @@ function get_all_bikes() {
 }
 
 
+function retrieve_offer(ID, action) {
+  $.ajax({
+    url: "apis/Kameo/offer_management.php",
+    type: "get",
+    data: { ID: ID, action: "retrieve" },
+    success: function (response) {
+      $("#offerManagementPDF").attr("data", "");
+
+      if (response.response == "error") {
+        console.log(response.message);
+      }
+      if (response.response == "success") {
+        if (action == "retrieve") {
+          $("#widget-offerManagement-form input").attr("readonly", true);
+          $("#widget-offerManagement-form textarea").attr("readonly", true);
+          $("#widget-offerManagement-form select").attr("readonly", true);
+          $("#offerManagementDelete").addClass("hidden");
+        } else {
+          $("#widget-offerManagement-form input").attr("readonly", false);
+          $("#widget-offerManagement-form textarea").attr("readonly", false);
+          $("#widget-offerManagement-form select").attr("readonly", false);
+          $("#offerManagementDelete").removeClass("hidden");
+          $("#offerManagementDelete").attr("name", ID);
+        }
+
+        $("#widget-offerManagement-form input[name=title]").val(response.title);
+        $("#widget-offerManagement-form textarea[name=description]").val(
+          response.description
+        );
+        $("#widget-offerManagement-form select[name=type]").val(response.type);
+        $("#widget-offerManagement-form select[name=status]").val(
+          response.status
+        );
+        $("#widget-offerManagement-form input[name=margin]").val(
+          response.margin
+        );
+        $("#widget-offerManagement-form input[name=probability]").val(
+          response.probability
+        );
+        $("#widget-offerManagement-form input[name=company]").val(
+          response.company
+        );
+        $("#widget-offerManagement-form input[name=action]").val(action);
+        $("#widget-offerManagement-form input[name=ID]").val(ID);
+
+        $("#thickBoxProductLists").empty();
+        var i = 0;
+        $("#offerManagementDetails").html("");
+        if (response.itemsNumber > 0) {
+          while (i < response.itemsNumber) {
+            if (response.item[i].type == "box") {
+              $("#offerManagementDetails").append(
+                "<li>1 borne " +
+                  response.item[i].model +
+                  " au prix de " +
+                  response.item[i].locationPrice +
+                  " €/mois et un coût d'installation de " +
+                  response.item[i].installationPrice +
+                  " €</a></li>"
+              );
+            } else if (response.item[i].type=='bike') {
+              if(response.item[i].locationPrice == '0'){
+                $("#offerManagementDetails").append(
+                  "<li>Achat de vélo " +
+                    response.item[i].brand +
+                    " " +
+                    response.item[i].model +
+                    " au prix de " +
+                    response.item[i].installationPrice +
+                    " €</a></li>"
+                );
+              }else{
+                $("#offerManagementDetails").append(
+                  "<li>Location de vélo " +
+                    response.item[i].brand +
+                    " " +
+                    response.item[i].model +
+                    " au prix de " +
+                    response.item[i].locationPrice +
+                    " €/mois</a></li>"
+                );
+              }
+            } else if (response.item[i].type='accessory') {
+              if(response.item[i].locationPrice == '0'){
+                $("#offerManagementDetails").append(
+                  "<li>Achat d'accessoire " +
+                    response.item[i].brand +
+                    " " +
+                    response.item[i].model +
+                    " au prix de " +
+                    response.item[i].installationPrice +
+                    " €</a></li>"
+                );
+              }else{
+                $("#offerManagementDetails").append(
+                  "<li>Location d'accessoire   " +
+                    response.item[i].brand +
+                    " " +
+                    response.item[i].model +
+                    " au prix de " +
+                    response.item[i].locationPrice +
+                    " €/mois</a></li>"
+                );
+              }
+            }
+            i++;
+          }
+        } else {
+        }
+
+        if (
+          $("#widget-offerManagement-form select[name=type]").val() == "achat"
+        ) {
+          $("#widget-offerManagement-form input[name=start]").attr(
+            "readonly",
+            true
+          );
+          $("#widget-offerManagement-form input[name=end]").attr(
+            "readonly",
+            true
+          );
+          $("#widget-offerManagement-form input[name=start]").val("");
+          $("#widget-offerManagement-form input[name=end]").val("");
+        } else {
+          if (action != "retrieve") {
+            $("#widget-offerManagement-form input[name=start]").attr(
+              "readonly",
+              false
+            );
+            $("#widget-offerManagement-form input[name=end]").attr(
+              "readonly",
+              false
+            );
+          }
+
+          if (response.date) {
+            $("#widget-offerManagement-form input[name=date]").val(
+              response.date.substring(0, 10)
+            );
+          } else {
+            $("#widget-offerManagement-form input[name=date]").val("");
+          }
+          if (response.start) {
+            $("#widget-offerManagement-form input[name=start]").val(
+              response.start.substring(0, 10)
+            );
+          } else {
+            $("#widget-offerManagement-form input[name=start]").val("");
+          }
+          if (response.end) {
+            $("#widget-offerManagement-form input[name=end]").val(
+              response.end.substring(0, 10)
+            );
+          } else {
+            $("#widget-offerManagement-form input[name=end]").val("");
+          }
+        }
+
+        if (response.amount) {
+          $("#widget-offerManagement-form input[name=amount]").val(
+            response.amount
+          );
+        }
+
+        $("#offerManagement").on("shown.bs.modal", function () {
+          if (response.file != null && response.file != "") {
+            $(".offerManagementPDF").removeClass("hidden");
+            $("#offerManagementPDF").attr(
+              "data",
+              "offres/" + response.file + ".pdf"
+            );
+          } else {
+            $(".offerManagementPDF").addClass("hidden");
+            $("#offerManagementPDF").attr("data", "");
+          }
+        });
+      }
+    },
+  });
+}
+
+//Module gérer les clients ==> id d'un client ==> ajouter une offre
+function add_offer(company) {
+  $("#companyHiddenOffer").val(company);
+  $("#widget-offerManagement-form select[name=type]").val("leasing");
+  $("#widget-offerManagement-form input[name=action]").val("add");
+  $("#widget-offerManagement-form input").attr("readonly", false);
+  $("#widget-offerManagement-form textarea").attr("readonly", false);
+  $("#widget-offerManagement-form select").attr("readonly", false);
+  document.getElementById("widget-offerManagement-form").reset();
+}
+
+
+
 //récuperation du prix de leasing en fct du prix HTVA
 function get_leasing_price(retailPrice){
   return  $.ajax({
@@ -196,263 +390,7 @@ $('.buyOrLeasing .numberMaintenance').on('change',function(){
   }
 });
 
-//création des variables
-var bikes = [];
-get_all_bikes().done(function(response){
 
-  if(response.bike == undefined){
-    bikes =[];
-    console.log('bikes => table vide');
-  }else{
-    bikes = response.bike;
-  }
-
-  var bikesTemp=bikes;
-
-  //tableau bikes avec tout les champs
-  var bikeModels = "<option hidden disabled selected value></option>";
-
-  //tri du tableau par marques
-  bikes.sort(compare);
-
-  //gestion du moins au lancement de la page
-  checkMinus('.templateBike','.bikesNumber');
-
-  //generation des Options
-
-  //velo
-
-  for (var i = 0; i < bikes.length; i++){
-    var elec = "";
-    if(bikes[i].electric == 'Y'){
-      elec = ' - Elec';
-    }
-    bikeModels += '<option value="' + bikes[i].id + '">' + bikes[i].brand + ' - ' + bikes[i].model + ' - ' + bikes[i].frameType + elec + '</option>';
-  }
-
-  //a chaque modification du nombre de vélo
-  //ajout
-  $('.templateBike .glyphicon-plus')[0].addEventListener("click",function(){
-    bikesNumber = $("#template").find('.bikesNumber').html()*1+1;
-    $('#template').find('.bikesNumber').html(bikesNumber);
-    $('#bikesNumberTemplate').val(bikesNumber);
-
-    var hideBikepVenteHTVA;
-    var hideBikeLeasing ='';
-    var inRecapLeasingBike ='';
-    var inRecapVenteBike ='';
-
-    if ($("#templateForm").hasClass('isLeasing')) {
-      hideBikepVenteHTVA = 'style="display:none"';
-      inRecapLeasingBike ='inRecapLeasingBike';
-
-    }else{
-      hideBikeLeasing = 'style="display:none"';
-      inRecapVenteBike = 'inRecapVenteBike';
-    }
-    //creation du div contenant
-    $('#template').find('.templateBike tbody')
-    .append(`<tr class="bikesNumberTable`+(bikesNumber)+` bikeRow form-group">
-    <td class="bLabel"></td>
-    <td class="bikeBrandModel"></td>
-    <td class="bikepAchat"></td>
-    <td class="bikepCosts"></td>
-    <td class="bikepCatalog"></td>
-    <td class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
-    <td contenteditable='true' class="bikeLeasing TD_bikeLeasing `+inRecapLeasingBike+`"`+hideBikeLeasing+`></td>
-    <td class="contractLeasing"></td>
-    <td class="bikeMarge"></td>
-    <td class="bikeFinalPrice hidden"></td>
-    </tr>`);
-
-    //label selon la langue
-    $('#template').find('.bikesNumberTable'+(bikesNumber)+'>.bLabel')
-    .append('<label class="fr">Vélo '+ bikesNumber +'</label>');
-    /*$('#template').find('.bikesNumberTable'+bikesNumber+'>.bLabel').append('<span class="en">Bike '+ bikesNumber +'</span>');
-    $('#template').find('.bikesNumberTable'+bikesNumber+'>.bLabel').append('<span class="nl">Vélo '+ bikesNumber +'</span>');*/
-
-    $('#template').find('.bikesNumberTable'+(bikesNumber)+'>.bikeBrandModel')
-    .append(`<select name="bikeBrandModel`+bikesNumber+`" class="select`+bikesNumber+` form-control required">`+
-    bikeModels+
-    `</select>`);
-
-
-    //gestion du select du velo
-    $('.templateBike select').on('change',function(){
-
-      var that ='.'+ $(this).attr('class').split(" ")[0];
-      var id =$(that).val();
-
-      //récupère le bon index même si le tableau est désordonné
-      id = getIndex(bikesTemp, id);
-      var pAchat = bikesTemp[id].buyingPrice + '€ ';
-      var pVenteHTVA = bikesTemp[id].priceHTVA + '€ ';
-      var margeVente = (bikesTemp[id].priceHTVA - bikesTemp[id].buyingPrice).toFixed(0) + '€';
-      get_leasing_price(bikesTemp[id].priceHTVA).done(function(response){
-
-        var nbreEntretiens = $('.numberMaintenance').val();
-        var pCosts = nbreEntretiens*PRIX_ENTRETIEN;
-        var assurance = 0;
-        if ($('.assuranceCheck ').prop('checked')) {
-          assurance = PRIX_ASSURANCE*leasingDuration/12;
-        }
-        pCosts+=assurance;
-
-
-        //recuperation du prix leasing
-        var leasingPrice = response.leasingPrice;
-        var margeLeasing = (leasingDuration*leasingPrice*1 - bikesTemp[id].buyingPrice - pCosts).toFixed(0) + '€ (' + ((leasingDuration*leasingPrice*1 - bikesTemp[id].buyingPrice - pCosts)/(bikesTemp[id].buyingPrice*1 + parseInt(pCosts))*100).toFixed(0) + '%)';
-        var contractLeasing=leasingDuration*leasingPrice*1;
-
-        //gestion de prix null
-        if (bikesTemp[id].buyingPrice == null) {
-          pAchat = 'non renseigné';
-          pVenteHTVA = 'non renseigné';
-          margeVente = 'non calculable';
-          margeLeasing = 'non calculable';
-        }
-        //gestion de l'affichage de la bonne marge et du tableau recap
-        if($("#templateForm").hasClass('isLeasing')){
-          marge = '<span class="margeLeasing">'+margeLeasing+'<\/span><span class="margeVente" style="display:none">'+margeVente+'<\/span>';
-
-        } else {
-          marge = '<span class="margeLeasing" style="display:none">'+margeLeasing+'<\/span><span class="margeVente">'+margeVente+'<\/span>';
-        }
-
-
-        $(that).parents('.bikeRow').find('.bikepAchat').html(pAchat + " <span class=\"text-red\">(-)</span>");
-        $(that).parents('.bikeRow').find('.bikepCosts').html(pCosts+"€" + " <span class=\"text-red\">(-)</span>");
-        $(that).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
-        $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
-        $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
-        $(that).parents('.bikeRow').find('.bikeLeasing').html(leasingPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
-        $(that).parents('.bikeRow').find('.bikeLeasing').attr('data-orig',leasingPrice);
-        $(that).parents('.bikeRow').find('.bikeFinalPrice').html("<input type=\"text\" name=\"bikeFinalPrice[]\" value=\""+leasingPrice+"\"/>");
-
-
-        $(that).parents('.bikeRow').find('.contractLeasing').html(contractLeasing + '€');
-      });
-        update_elements_price();
-
-    });
-    checkMinus('.templateBike','.bikesNumber');
-
-
-  });
-
-  //retrait
-  $('.templateBike .glyphicon-minus')[0].addEventListener("click",function(){
-    bikesNumber = $("#template").find('.bikesNumber').html();
-    if(bikesNumber > 0){
-      $('#template').find('.bikesNumber').html(bikesNumber*1 - 1);
-      $('#bikesNumberTemplate').val(bikesNumber*1 - 1);
-      $('#template').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
-      bikesNumber--;
-    }
-    checkMinus('.templateBike','.bikesNumber');
-  });
-});
-
-
-//boxes
-var boxes = [];
-get_all_boxes().done(function(response){
-  //variables
-  boxes = response.boxes;
-  if(boxes == undefined){
-    boxes =[];
-    console.log('boxes => table vide');
-  }
-
-  //gestion bouton moins
-  checkMinus('.templateBoxes','.boxesNumber');
-
-  //ajout
-  $('.templateBoxes .glyphicon-plus')[0].addEventListener("click",function(){
-    //gestion boxNumber
-    boxesNumber = $("#template").find('.boxesNumber').html()*1+1;
-    $('#template').find('.boxesNumber').html(boxesNumber);
-    $('#boxesNumber').val(boxesNumber);
-
-    //boxModels
-    var boxesModels = "<option hidden disabled selected value></option>";
-    for (var i = 0; i < boxes.length; i++) {
-      boxesModels += '<option value="'+boxes[i].id+'">'+boxes[i].model+'</option>';
-    }
-
-
-
-
-    //creation du tr contenant
-    $('#template').find('.templateBoxes tbody')
-    .append(`<tr class="boxesNumberTable`+(boxesNumber)+` boxRow form-group">
-              <td class="boxLabel"></td><td class="boxModel"></td>
-              <td class="boxProdPrice"></td>
-              <td class="boxMaintenance"></td>
-              <td contenteditable='true'  class="boxInstallationPrice"></td>
-              <td class="boxFinalInstallationPrice hidden"></td>
-              <td contenteditable='true'  class="boxLocationPrice"></td>
-              <td class="boxFinalLocationPrice hidden"></td>
-              <td class="boxContractPrice"></td>
-              <td class="boxMarge"></td>
-              </tr>`);
-
-    //label selon la langue
-    $('#template').find('.boxesNumberTable'+(boxesNumber)+'>.boxLabel').append('<label class="fr">Box '+ boxesNumber +'</label>');
-
-    //select boxModel
-    $('#template').find('.boxesNumberTable'+(boxesNumber)+'>.boxModel')
-    .append(`<select name="boxModel`+boxesNumber+`" class="select`+boxesNumber+` form-control required">`+
-    boxesModels+`
-    </select>`);
-
-    //gestion du select de la box
-    $('.templateBoxes select').on('change',function(){
-
-      var that = '.' + $(this).attr('class').split(" ")[0];
-      var boxId =$('.templateBoxes ' + that).val();
-
-      //récupère le bon index même si le tableau est désordonné
-      boxId = getIndex(boxes, boxId);
-      var productionPrice = (boxes[boxId].productionPrice*1) + '€ ';
-      var installationPrice = boxes[boxId].installationPrice + '€';
-      var locationPrice = boxes[boxId].locationPrice + '€/mois';
-      var boxMaintenance = leasingDuration*box_maintenance_year/12;
-
-      var marge = (boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*leasingDuration)).toFixed(0) + '€ (' + ((boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*leasingDuration))/(boxes[boxId].productionPrice*1 + boxMaintenance)*100).toFixed(0) + '%)';
-
-
-        $(that).parents('.boxRow').find('.boxProdPrice').html(productionPrice + " <span class=\"text-red\">(-)</span>");
-        $(that).parents('.boxRow').find('.boxMaintenance').html(boxMaintenance+" €" + " <span class=\"text-red\">(-)</span>");
-        $(that).parents('.boxRow').find('.boxInstallationPrice').html(installationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapInstallBox');
-        $(that).parents('.boxRow').find('.boxInstallationPrice').attr('data-orig',boxes[boxId].installationPrice);
-        $(that).parents('.boxRow').find('.boxFinalInstallationPrice').html("<input type=\"text\" name=\"boxFinalInstallationPrice[]\" value=\""+boxes[boxId].installationPrice+"\"/>");
-        $(that).parents('.boxRow').find('.boxMarge').html(marge);
-        $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapLocationBox');
-        $(that).parents('.boxRow').find('.boxLocationPrice').attr('data-orig',boxes[boxId].locationPrice);
-        $(that).parents('.boxRow').find('.boxFinalLocationPrice').html("<input type=\"text\" name=\"boxFinalLocationPrice[]\" value=\""+boxes[boxId].locationPrice+"\"/>");
-
-      $(that).parents('.boxRow').find('.boxContractPrice').html((boxes[boxId].locationPrice*leasingDuration*1+boxes[boxId].installationPrice*1) + "€").addClass('inRecapLocationBox');
-
-    });
-    update_elements_price();
-
-    checkMinus('.templateBoxes','.boxesNumber');
-  });
-
-
-  //retrait
-  $('.templateBoxes .glyphicon-minus')[0].addEventListener("click",function(){
-    boxesNumber = $("#template").find('.boxesNumber').html();
-    if(boxesNumber > 0){
-      $('#template').find('.boxesNumber').html(boxesNumber*1 - 1);
-      $('#boxesNumber').val(boxesNumber*1 - 1);
-      $('#template').find('.boxesNumberTable'+boxesNumber).slideUp().remove();
-      boxesNumber--;
-    }
-    checkMinus('.templateBoxes','.boxesNumber');
-  });
-});
 
 
 function update_elements_price(){
@@ -475,9 +413,7 @@ function update_elements_price(){
                 var buyingPrice=$(this).parents('.bikeRow').find('.bikepAchat').html().split('€')[0];
                 var costs=$(this).parents('.bikeRow').find('.bikepCosts').html().split('€')[0];
                 var priceHTVA=$(this).parents('.bikeRow').find('.bikepCatalog').html().split('€')[0];
-                $(this).parents('.bikeRow').find('.bikeFinalPrice').html("<input type=\"text\" name=\"bikeFinalPrice[]\" value=\""+newPrice+"\"/>");
-
-
+                $(this).parents('.bikeRow').find('.bikeFinalPrice').html("<input type=\"int\" step='0.01' name=\"bikeFinalPrice[]\" value=\""+newPrice+"\"/>");
 
                 var margeVente = (priceHTVA*1 - buyingPrice*1).toFixed(0) + '€';
                 var margeLeasing = (leasingDuration*newPrice*1 - buyingPrice - costs).toFixed(0) + '€ (' + ((leasingDuration*newPrice*1 - buyingPrice - costs*1)/(buyingPrice*1 + costs*1)*100).toFixed(0) + '%)';
@@ -532,7 +468,7 @@ function update_elements_price(){
             }else if(this.classList.contains("aPriceHTVA")){
                 var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
                 var newPrice=this.innerHTML.split('€')[0];
-                $(this).parents('.accessoriesRow').find('.bikeFinalPrice').html("<input type=\"text\" name=\"accessoryFinalPrice[]\" value=\""+newPrice+"\"/>");
+                $(this).parents('.accessoriesRow').find('.accessoryFinalPrice').html("<input type=\"int\" step='0.01' name=\"accessoryFinalPrice[]\" value=\""+newPrice+"\"/>");
                 if(initialPrice==newPrice){
                     $(this).parents('.accessoriesRow').find('.aPriceHTVA').html(newPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
                 }else{
@@ -547,146 +483,420 @@ function update_elements_price(){
 }
 
 
-//Accessoires
-get_all_accessories().done(function(response){
-  //gestion du moins au lancement de la page
-  checkMinus('.templateAccessories','.accessoriesNumber');
-  //variables
-  var accessories = response.accessories;
-  if(accessories == undefined){
-    accessories =[];
-    console.log('accessories => table vide');
-  }
-  var categories = [];
 
 
-  //generation du tableau de catégories
-  accessories.forEach((accessory) => {
-    var newCategory = true;
-    categories.forEach((category) => {
-      if (category.name === accessory.category) {
-        newCategory = false;
-      }
-    });
-    if (newCategory === true) {
-      categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+$('body').on('click','.getTemplate', function(){
+
+  //création des variables
+  var bikes = [];
+  get_all_bikes().done(function(response){
+
+    if(response.bike == undefined){
+      bikes =[];
+      console.log('bikes => table vide');
+    }else{
+      bikes = response.bike;
     }
-  });
 
+    var bikesTemp=bikes;
 
-  $('.templateAccessories .glyphicon-plus')[0].addEventListener("click",function(){
-    //gestion accessoriesNumber
-    accessoriesNumber = $("#template").find('.accessoriesNumber').html()*1+1;
-    $('#template').find('.accessoriesNumber').html(accessoriesNumber);
-    $('#accessoriesNumber').val(accessoriesNumber);
+    //tableau bikes avec tout les champs
+    var bikeModels = "<option hidden disabled selected value></option>";
 
-    //ajout des options du select pour les catégories
-    var categoriesOption = "<option hidden disabled selected value></option>";
-    categories.forEach((category) => {
-      categoriesOption += '<option value="'+category.id+'">'+category.name+'</option>';
-    });
+    //tri du tableau par marques
+    bikes.sort(compare);
 
-    //ajout d'une ligne au tableau des accessoires
-    $('#template').find('.otherCostsAccesoiresTable tbody')
-    .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
-    <td class="aLabel"></td><td class="aCategory"></td><td class="aAccessory"></td><td class="aFinance"></td>
-    <td class="aBuyingPrice"></td><td contenteditable="true" class="aPriceHTVA"></td><td class="accessoryFinalPrice hidden"></td>
-    </tr>`);
-    //label selon la langue
-    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
-    .append('<label>Accessoire '+ accessoriesNumber +'</label>');
+    //gestion du moins au lancement de la page
+    checkMinus('.templateBike','.bikesNumber');
 
-    //select catégorie
-    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
-    .append(`<select name="accessoryCategory[]" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
-    categoriesOption+`
-    </select>`);
-    //select Accessoire
-    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aAccessory')
-    .append('<select name="accessoryAccessory[]" id="selectAccessory'+
-    accessoriesNumber+
-    '"class="selectAccessory form-control required"></select>');
+    //generation des Options
 
-    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aFinance')
-    .append('<select name="accessoryFinance[]" id="selectFinance'+
-    accessoriesNumber+
-    '"class="form-control required aFinance"><option value="achat">Achat</option><option value="leasing">Leasing</option></select>');
-    $('#selectFinance'+accessoriesNumber).val("");
+    //velo
 
-    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalPrice')
-    .append('<input type="text" name="accesoryFinalPrice[]" class="form-control required">');
-    $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalprice').val("");
+    for (var i = 0; i < bikes.length; i++){
+      var elec = "";
+      if(bikes[i].electric == 'Y'){
+        elec = ' - Elec';
+      }
+      bikeModels += '<option value="' + bikes[i].id + '">' + bikes[i].brand + ' - ' + bikes[i].model + ' - ' + bikes[i].frameType + elec + '</option>';
+    }
 
+    //a chaque modification du nombre de vélo
+    //ajout
+    $('.templateBike .glyphicon-plus')[0].addEventListener("click",function(){
+      bikesNumber = $("#template").find('.bikesNumber').html()*1+1;
+      $('#template').find('.bikesNumber').html(bikesNumber);
+      $('#bikesNumberTemplate').val(bikesNumber);
 
-    checkMinus('.templateAccessories','.accessoriesNumber');
+      var hideBikepVenteHTVA;
+      var hideBikeLeasing ='';
+      var inRecapLeasingBike ='';
+      var inRecapVenteBike ='';
 
-    //on change de la catégorie
-    $('.templateAccessories').find('.selectCategory').off();
-    $('.templateAccessories').find('.selectCategory').on("change",function(){
-      var categoryId =$(this).val();
-
-      $(this).closest('.accessoriesRow').find('.aAccessory select').val("");
-      $(this).closest('.accessoriesRow').find('.aFinance select').val("");
-
-      var accessoriesOption = "";
-      //ne garde que les accessoires de cette catégorie
-      accessories.forEach((accessory) => {
-        if (categoryId == accessory.categoryId) {
-          accessoriesOption += '<option value="'+accessory.id+'" data-buyingprice="'+accessory.buyingPrice+'" data-sellingPrice="'+accessory.priceHTVA+'" data-leasingprice="'+accessory.leasingPrice+'">'+accessory.model+'</option>';
-        }
-      });
-      //place les accessoires dans le select
-      $(this).closest('.accessoriesRow').find('.aAccessory > select').html(accessoriesOption);
-      $(this).closest('.accessoriesRow').find('.aAccessory select').val("");
-
-      //retire l'affichage d'éventuels prix
-      $(this).closest('.accessoriesRow').find('.aBuyingPrice').html('');
-      $(this).closest('.accessoriesRow').find('.aPriceHTVA').html('');
-      $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val('');
-    });
-    $('.selectAccessory').off();
-    $('.selectAccessory').on("change",function(){
-      $(this).closest('.accessoriesRow').find('.aFinance select').val("");
-      $(this).closest('.accessoriesRow').find('.aBuyingPrice').html('');
-      $(this).closest('.accessoriesRow').find('.aPriceHTVA').html('');
-      $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val('');
-    });
-    $('.aFinance select').off();
-    $('.aFinance select').on("change",function(){
-      //récupère le bon index même si le tableau est désordonné
-      $(this).closest('.accessoriesRow').find('.aBuyingPrice').html($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("buyingprice") + ' €');
-      if($(this).val()=='achat'){
-        $(this).closest('.accessoriesRow').find('.aPriceHTVA').html($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice") +' €');
-        $(this).closest('.accessoriesRow').find('.aPriceHTVA').attr('data-orig', $(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice") +' €');
-        $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice"));
+      if ($("#templateForm").hasClass('isLeasing')) {
+        hideBikepVenteHTVA = 'style="display:none"';
+        inRecapLeasingBike ='inRecapLeasingBike';
 
       }else{
-        $(this).closest('.accessoriesRow').find('.aPriceHTVA').html(Math.round(parseFloat($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice")*100))/100 + ' €/mois');
-        $(this).closest('.accessoriesRow').find('.aPriceHTVA').attr('data-orig', ($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice") + ' €/mois') + ' €/mois');
-        $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice"));
+        hideBikeLeasing = 'style="display:none"';
+        inRecapVenteBike = 'inRecapVenteBike';
+      }
+      //creation du div contenant
+      $('#template').find('.templateBike tbody')
+      .append(`<tr class="bikesNumberTable`+(bikesNumber)+` bikeRow form-group">
+      <td class="bLabel"></td>
+      <td class="bikeBrandModel"></td>
+      <td class="bikeSize"></td>
+      <td class="bikeNumber"></td>
+      <td class="bikepAchat"></td>
+      <td class="bikepCosts"></td>
+      <td class="bikepCatalog"></td>
+      <td class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
+      <td contenteditable='true' class="bikeLeasing TD_bikeLeasing `+inRecapLeasingBike+`"`+hideBikeLeasing+`></td>
+      <td class="contractLeasing"></td>
+      <td class="bikeMarge"></td>
+      <td class="bikeInitialPrice hidden"></td>
+      <td class="bikeFinalPrice hidden"></td>
+      <td class="bikeFinalPriceAchat hidden"></td>
+      </tr>`);
+
+      //label selon la langue
+      $('#template').find('.bikesNumberTable'+(bikesNumber)+'>.bLabel')
+      .append('<label>Vélo '+ bikesNumber +'</label>');
+      /*$('#template').find('.bikesNumberTable'+bikesNumber+'>.bLabel').append('<span class="en">Bike '+ bikesNumber +'</span>');
+      $('#template').find('.bikesNumberTable'+bikesNumber+'>.bLabel').append('<span class="nl">Vélo '+ bikesNumber +'</span>');*/
+
+      $('#template').find('.bikesNumberTable'+(bikesNumber)+'>.bikeBrandModel')
+      .append(`<select name="bikeBrandModel[]" class="select`+bikesNumber+` form-control required">`+
+      bikeModels+
+      `</select>`);
+
+      $('#template').find('.bikesNumberTable'+(bikesNumber)+'>.bikeSize').html("<select name='bikeSize[]'><option value='XS'>XS</option><option value='S'>S</option><option value='M'>M</option><option value='L'>L</option><option value'XL'>XL</option><option value='unique'>Unique</option></select>");
+      $('#template').find('.bikesNumberTable'+(bikesNumber)+'>.bikeSize select').val("");
+      $('#template').find('.bikesNumberTable'+(bikesNumber)+'>.bikeNumber').html("<input type='number' name='bikeNumber[]' value='1' class='form-control required'>");
+
+
+      //gestion du select du velo
+      $('.bikeBrandModel select').on('change',function(){
+
+        var that ='.'+ $(this).attr('class').split(" ")[0];
+        var id =$(that).val();
+
+        //récupère le bon index même si le tableau est désordonné
+        id = getIndex(bikesTemp, id);
+        var pAchat = bikesTemp[id].buyingPrice + '€ ';
+        var pVenteHTVA = bikesTemp[id].priceHTVA + '€ ';
+        var margeVente = (bikesTemp[id].priceHTVA - bikesTemp[id].buyingPrice).toFixed(2) + '€';
+        get_leasing_price(bikesTemp[id].priceHTVA).done(function(response){
+
+          var nbreEntretiens = $('.numberMaintenance').val();
+          var pCosts = nbreEntretiens*PRIX_ENTRETIEN;
+          var assurance = 0;
+          if ($('.assuranceCheck ').prop('checked')) {
+            assurance = PRIX_ASSURANCE*leasingDuration/12;
+          }
+          pCosts+=assurance;
+
+
+          //recuperation du prix leasing
+          var leasingPrice = response.leasingPrice;
+          var margeLeasing = (leasingDuration*leasingPrice*1 - bikesTemp[id].buyingPrice - pCosts).toFixed(2) + '€ (' + ((leasingDuration*leasingPrice*1 - bikesTemp[id].buyingPrice - pCosts)/(bikesTemp[id].buyingPrice*1 + parseInt(pCosts))*100).toFixed(2) + '%)';
+          var contractLeasing=leasingDuration*leasingPrice*1;
+
+          //gestion de prix null
+          if (bikesTemp[id].buyingPrice == null) {
+            pAchat = 'non renseigné';
+            pVenteHTVA = 'non renseigné';
+            margeVente = 'non calculable';
+            margeLeasing = 'non calculable';
+          }
+          //gestion de l'affichage de la bonne marge et du tableau recap
+          if($("#templateForm").hasClass('isLeasing')){
+            marge = '<span class="margeLeasing">'+margeLeasing+'<\/span><span class="margeVente" style="display:none">'+margeVente+'<\/span>';
+          } else {
+            marge = '<span class="margeLeasing" style="display:none">'+margeLeasing+'<\/span><span class="margeVente">'+margeVente+'<\/span>';
+          }
+
+
+          $(that).parents('.bikeRow').find('.bikepAchat').html(pAchat + " <span class=\"text-red\">(-)</span>");
+          $(that).parents('.bikeRow').find('.bikepCosts').html(pCosts+"€" + " <span class=\"text-red\">(-)</span>");
+          $(that).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
+          $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
+          $(that).parents('.bikeRow').find('.bikeFinalPriceAchat').html("<input type=\"number\" name=\"bikeFinalPriceAchat[]\" value=\""+bikesTemp[id].priceHTVA+"\"/>");
+          $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
+          $(that).parents('.bikeRow').find('.bikeLeasing').html(leasingPrice + '€/mois' + " <span class=\"text-green\">(+)</span>");
+          $(that).parents('.bikeRow').find('.bikeLeasing').attr('data-orig',leasingPrice);
+          $(that).parents('.bikeRow').find('.bikeInitialPrice').html("<input type=\"number\" step='0.01' name=\"bikeInitialPrice[]\" value=\""+leasingPrice+"\"/>");
+          $(that).parents('.bikeRow').find('.bikeFinalPrice').html("<input type=\"text\" name=\"bikeFinalPrice[]\" value=\""+leasingPrice+"\"/>");
+          $(that).parents('.bikeRow').find('.contractLeasing').html(contractLeasing + '€');
+        });
+          update_elements_price();
+
+      });
+      checkMinus('.templateBike','.bikesNumber');
+    });
+
+    //retrait
+    $('.templateBike .glyphicon-minus')[0].addEventListener("click",function(){
+      bikesNumber = $("#template").find('.bikesNumber').html();
+      if(bikesNumber > 0){
+        $('#template').find('.bikesNumber').html(bikesNumber*1 - 1);
+        $('#bikesNumberTemplate').val(bikesNumber*1 - 1);
+        $('#template').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
+        bikesNumber--;
+      }
+      checkMinus('.templateBike','.bikesNumber');
+    });
+  });
+
+
+  //boxes
+  var boxes = [];
+  get_all_boxes().done(function(response){
+    //variables
+    boxes = response.boxes;
+    if(boxes == undefined){
+      boxes =[];
+      console.log('boxes => table vide');
+    }
+
+    //gestion bouton moins
+    checkMinus('.templateBoxes','.boxesNumber');
+
+    //ajout
+    $('.templateBoxes .glyphicon-plus')[0].addEventListener("click",function(){
+      //gestion boxNumber
+      boxesNumber = $("#template").find('.boxesNumber').html()*1+1;
+      $('#template').find('.boxesNumber').html(boxesNumber);
+      $('#boxesNumber').val(boxesNumber);
+
+      //boxModels
+      var boxesModels = "<option hidden disabled selected value></option>";
+      for (var i = 0; i < boxes.length; i++) {
+        boxesModels += '<option value="'+boxes[i].id+'">'+boxes[i].model+'</option>';
       }
 
-      console.log($(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val());
+
+
+
+      //creation du tr contenant
+      $('#template').find('.templateBoxes tbody')
+      .append(`<tr class="boxesNumberTable`+(boxesNumber)+` boxRow form-group">
+                <td class="boxLabel"></td><td class="boxModel"></td>
+                <td class="boxProdPrice"></td>
+                <td class="boxMaintenance"></td>
+                <td contenteditable='true'  class="boxInstallationPrice"></td>
+                <td class="boxFinalInstallationPrice hidden"></td>
+                <td contenteditable='true'  class="boxLocationPrice"></td>
+                <td class="boxFinalLocationPrice hidden"></td>
+                <td class="boxContractPrice"></td>
+                <td class="boxMarge"></td>
+                </tr>`);
+
+      //label selon la langue
+      $('#template').find('.boxesNumberTable'+(boxesNumber)+'>.boxLabel').append('<label class="fr">Box '+ boxesNumber +'</label>');
+
+      //select boxModel
+      $('#template').find('.boxesNumberTable'+(boxesNumber)+'>.boxModel')
+      .append(`<select name="boxModel`+boxesNumber+`" class="select`+boxesNumber+` form-control required">`+
+      boxesModels+`
+      </select>`);
+
+      //gestion du select de la box
+      $('.templateBoxes select').on('change',function(){
+
+        var that = '.' + $(this).attr('class').split(" ")[0];
+        var boxId =$('.templateBoxes ' + that).val();
+
+        //récupère le bon index même si le tableau est désordonné
+        boxId = getIndex(boxes, boxId);
+        var productionPrice = (boxes[boxId].productionPrice*1) + '€ ';
+        var installationPrice = boxes[boxId].installationPrice + '€';
+        var locationPrice = boxes[boxId].locationPrice + '€/mois';
+        var boxMaintenance = leasingDuration*box_maintenance_year/12;
+
+        var marge = (boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*leasingDuration)).toFixed(0) + '€ (' + ((boxes[boxId].installationPrice - boxes[boxId].productionPrice*1 - boxMaintenance + (boxes[boxId].locationPrice*leasingDuration))/(boxes[boxId].productionPrice*1 + boxMaintenance)*100).toFixed(0) + '%)';
+
+
+          $(that).parents('.boxRow').find('.boxProdPrice').html(productionPrice + " <span class=\"text-red\">(-)</span>");
+          $(that).parents('.boxRow').find('.boxMaintenance').html(boxMaintenance+" €" + " <span class=\"text-red\">(-)</span>");
+          $(that).parents('.boxRow').find('.boxInstallationPrice').html(installationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapInstallBox');
+          $(that).parents('.boxRow').find('.boxInstallationPrice').attr('data-orig',boxes[boxId].installationPrice);
+          $(that).parents('.boxRow').find('.boxFinalInstallationPrice').html("<input type=\"text\" name=\"boxFinalInstallationPrice[]\" value=\""+boxes[boxId].installationPrice+"\"/>");
+          $(that).parents('.boxRow').find('.boxMarge').html(marge);
+          $(that).parents('.boxRow').find('.boxLocationPrice').html(locationPrice + " <span class=\"text-green\">(+)</span>").addClass('inRecapLocationBox');
+          $(that).parents('.boxRow').find('.boxLocationPrice').attr('data-orig',boxes[boxId].locationPrice);
+          $(that).parents('.boxRow').find('.boxFinalLocationPrice').html("<input type=\"text\" name=\"boxFinalLocationPrice[]\" value=\""+boxes[boxId].locationPrice+"\"/>");
+
+        $(that).parents('.boxRow').find('.boxContractPrice').html((boxes[boxId].locationPrice*leasingDuration*1+boxes[boxId].installationPrice*1) + "€").addClass('inRecapLocationBox');
+
+      });
+      update_elements_price();
+
+      checkMinus('.templateBoxes','.boxesNumber');
     });
-    update_elements_price();
+
+
+    //retrait
+    $('.templateBoxes .glyphicon-minus')[0].addEventListener("click",function(){
+      boxesNumber = $("#template").find('.boxesNumber').html();
+      if(boxesNumber > 0){
+        $('#template').find('.boxesNumber').html(boxesNumber*1 - 1);
+        $('#boxesNumber').val(boxesNumber*1 - 1);
+        $('#template').find('.boxesNumberTable'+boxesNumber).slideUp().remove();
+        boxesNumber--;
+      }
+      checkMinus('.templateBoxes','.boxesNumber');
+    });
   });
 
-  //retrait
-  $('.templateAccessories .glyphicon-minus')[0].addEventListener("click",function(){
-    accessoriesNumber = $("#template").find('.accessoriesNumber').html();
-    if(accessoriesNumber > 0){
-      $('#template').find('.accessoriesNumber').html(accessoriesNumber*1 - 1);
-      $('#accessoriesNumber').val(accessoriesNumber*1 - 1);
-      $('#template').find('.otherCostsAccesoiresTable'+accessoriesNumber).slideUp().remove();
-      accessoriesNumber--;
-    }
+
+
+  //Accessoires
+  get_all_accessories().done(function(response){
+    //gestion du moins au lancement de la page
     checkMinus('.templateAccessories','.accessoriesNumber');
+    //variables
+    var accessories = response.accessories;
+    if(accessories == undefined){
+      accessories =[];
+      console.log('accessories => table vide');
+    }
+    var categories = [];
+
+
+    //generation du tableau de catégories
+    accessories.forEach((accessory) => {
+      var newCategory = true;
+      categories.forEach((category) => {
+        if (category.name === accessory.category) {
+          newCategory = false;
+        }
+      });
+      if (newCategory === true) {
+        categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+      }
+    });
+
+
+    $('.templateAccessories .glyphicon-plus')[0].addEventListener("click",function(){
+      //gestion accessoriesNumber
+      accessoriesNumber = $("#template").find('.accessoriesNumber').html()*1+1;
+      $('#template').find('.accessoriesNumber').html(accessoriesNumber);
+      $('#accessoriesNumber').val(accessoriesNumber);
+
+      //ajout des options du select pour les catégories
+      var categoriesOption = "<option hidden disabled selected value></option>";
+      categories.forEach((category) => {
+        categoriesOption += '<option value="'+category.id+'">'+category.name+'</option>';
+      });
+
+      //ajout d'une ligne au tableau des accessoires
+      $('#template').find('.otherCostsAccesoiresTable tbody')
+      .append(`<tr class="otherCostsAccesoiresTable`+(accessoriesNumber)+` accessoriesRow form-group">
+      <td class="aLabel"></td>
+      <td class="aCategory"></td>
+      <td class="aAccessory">
+        <select name='accessoryAccessory[]' class='form-control required'></select>
+      </td>
+      <td class="accessoryNumber"></td>
+      <td class="aFinance"></td>
+      <td class="aBuyingPrice"></td>
+      <td contenteditable="true" class="aPriceHTVA"></td>
+      <td class="accessoryFinalPrice hidden"></td>
+      </tr>`);
+      //label selon la langue
+      $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
+      .append('<label>Accessoire '+ accessoriesNumber +'</label>');
+
+      //select catégorie
+      $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
+      .append(`<select name="accessoryCategory[]" id="selectCategory`+accessoriesNumber+`" class="selectCategory form-control required">`+
+      categoriesOption+`
+      </select>`);
+      //select Accessoire
+      $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryNumber')
+      .append('<input name="accessoryNumber[]" class="form-control required" type="number" min="0">');
+
+      $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aFinance')
+      .append('<select name="accessoryFinance[]" id="selectFinance'+
+      accessoriesNumber+
+      '"class="form-control required aFinance"><option value="achat">Achat</option><option value="leasing">Leasing</option></select>');
+      $('#selectFinance'+accessoriesNumber).val("");
+
+      $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalPrice')
+      .append('<input type="text" name="accesoryFinalPrice[]" class="form-control required">');
+      $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalprice').val("");
+
+
+      checkMinus('.templateAccessories','.accessoriesNumber');
+
+      //on change de la catégorie
+      $('.templateAccessories').find('.selectCategory').off();
+      $('.templateAccessories').find('.selectCategory').on("change",function(){
+        var categoryId =$(this).val();
+        $(this).closest('.accessoriesRow').find('.aFinance select').val("");
+
+        var accessoriesOption = "";
+        //ne garde que les accessoires de cette catégorie
+        accessories.forEach((accessory) => {
+          if (categoryId == accessory.categoryId) {
+            accessoriesOption += '<option value="'+accessory.id+'" data-buyingprice="'+accessory.buyingPrice+'" data-sellingPrice="'+accessory.priceHTVA+'" data-leasingprice="'+accessory.leasingPrice+'">'+accessory.model+'</option>';
+          }
+        });
+        //place les accessoires dans le select
+        $(this).closest('.accessoriesRow').find('.aAccessory select').html(accessoriesOption);
+        $(this).closest('.accessoriesRow').find('.aAccessory select').val("");
+
+        //retire l'affichage d'éventuels prix
+        $(this).closest('.accessoriesRow').find('.aBuyingPrice').html('');
+        $(this).closest('.accessoriesRow').find('.aPriceHTVA').html('');
+        $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val('');
+      });
+      $('.selectAccessory').off();
+      $('.selectAccessory').on("change",function(){
+        $(this).closest('.accessoriesRow').find('.aFinance select').val("");
+        $(this).closest('.accessoriesRow').find('.aBuyingPrice').html('');
+        $(this).closest('.accessoriesRow').find('.aPriceHTVA').html('');
+        $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val('');
+      });
+      $('.aFinance select').off();
+      $('.aFinance select').on("change",function(){
+        //récupère le bon index même si le tableau est désordonné
+        $(this).closest('.accessoriesRow').find('.aBuyingPrice').html($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("buyingprice") + ' €');
+        if($(this).val()=='achat'){
+          $(this).closest('.accessoriesRow').find('.aPriceHTVA').html($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice") +' €');
+          $(this).closest('.accessoriesRow').find('.aPriceHTVA').attr('data-orig', $(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice") +' €');
+          $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("sellingprice"));
+
+        }else{
+          $(this).closest('.accessoriesRow').find('.aPriceHTVA').html(Math.round(parseFloat($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice")*100))/100 + ' €/mois');
+          $(this).closest('.accessoriesRow').find('.aPriceHTVA').attr('data-orig', ($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice") + ' €/mois') + ' €/mois');
+          $(this).closest('.accessoriesRow').find('.accessoryFinalPrice input').val($(this).closest('.accessoriesRow').find('.aAccessory select').children("option:selected").data("leasingprice"));
+        }
+      });
+      update_elements_price();
+    });
+
+    //retrait
+    $('.templateAccessories .glyphicon-minus')[0].addEventListener("click",function(){
+      accessoriesNumber = $("#template").find('.accessoriesNumber').html();
+      if(accessoriesNumber > 0){
+        $('#template').find('.accessoriesNumber').html(accessoriesNumber*1 - 1);
+        $('#accessoriesNumber').val(accessoriesNumber*1 - 1);
+        $('#template').find('.otherCostsAccesoiresTable'+accessoriesNumber).slideUp().remove();
+        accessoriesNumber--;
+      }
+      checkMinus('.templateAccessories','.accessoriesNumber');
+    });
+
   });
 
-});
 
-//Contacts
-$('body').on('click','.getTemplate', function(){
+
+
+
+
   get_company_contacts_list($('#companyIdHidden').val()).done(function(response){
     if(response.length==0){
       $.notify({

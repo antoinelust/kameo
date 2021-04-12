@@ -273,9 +273,22 @@ if(isset($_POST['action']))
                         $resultat2=mysqli_fetch_assoc($result2);
                         $conn->close();
                         $response['item'][$i]['model']=$resultat2['MODEL'];
-                    }else{
+                    }else if($response['item'][$i]['type'] == 'bike'){
                         include 'connexion.php';
                         $sql2="SELECT * FROM bike_catalog WHERE ID='$itemID'";
+                        if ($conn->query($sql) === FALSE) {
+                            $response = array ('response'=>'error', 'message'=> $conn->error);
+                            echo json_encode($response);
+                            die;
+                        }
+                        $result2 = mysqli_query($conn, $sql2);
+                        $resultat2=mysqli_fetch_assoc($result2);
+                        $conn->close();
+                        $response['item'][$i]['brand']=$resultat2['BRAND'];
+                        $response['item'][$i]['model']=$resultat2['MODEL'];
+                    }else if($response['item'][$i]['type'] == 'accessory'){
+                        include 'connexion.php';
+                        $sql2="SELECT * FROM accessories_catalog WHERE ID='$itemID'";
                         if ($conn->query($sql) === FALSE) {
                             $response = array ('response'=>'error', 'message'=> $conn->error);
                             echo json_encode($response);
@@ -471,8 +484,6 @@ if(isset($_POST['action']))
                     $response['cost'][$i]['end']=$row['END'];
                     $i++;
                 }
-
-
                 echo json_encode($response);
                 die;
 
@@ -481,6 +492,12 @@ if(isset($_POST['action']))
             }
         }
 
+    }else if($action=="delete"){
+      $offerID=$_GET['offerID'];
+      execSQL("DELETE FROM offers_details WHERE OFFER_ID=?", array('i', $offerID), true);
+      execSQL("DELETE FROM offers WHERE ID=?", array('i', $offerID), true);
+      successMessage("SM0003");
+      die;
     }else{
         errorMessage("ES0012");
     }

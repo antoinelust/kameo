@@ -38,90 +38,72 @@ function list_maintenances() {
     "-" +
     ("0" + dateEnd.getDate()).slice(-2);
 
-  $.ajax({
-      url: 'apis/Kameo/maintenance_management.php',
-      method: 'get',
-      data: {'action' : 'list',
-      dateStart: dateStartString,
-      dateEnd: dateEndString,},
-      success: function(response){
-        if (response.response == "error") {
-          console.log(response.message);
-        } else {
-          if(typeof(response.maintenance) != 'undefined' && response.maintenance.length > 0){
-            var dest2 = `
-                      <table class="table table-condensed" id="listingMaintenances" style='width: 100%'>
-                        <thead>
-                          <tr>
-                            <th>ID</th>
-                            <th>Vélo</th>
-                            <th>Model</th>
-                            <th>Société</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Type</th>
-                            <th>Adresse</th>
-                            <th>N° Téléphone</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                      <tbody>`;
-            for (var i = 0; i < response.maintenance.length; i++) {
+  $("#maintenanceListingSpan").dataTable({
+    destroy: true,
+    ajax: {
+      url: "apis/Kameo/maintenance_management.php",
+      contentType: "application/json",
+      type: "get",
+      data: {
+        'action' : 'list',
+        dateStart: dateStartString,
+        dateEnd: dateEndString
+      },
+    },
+    sAjaxDataProp: "maintenance",
+    columns: [
+      {
+        title: "ID",
+        data: "id",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html('<a  data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal" class="showMaintenance" href="#">'+sData+'</a>');
+        },
+      },
+      { title: "Vélo", data: "frame_number" },
+      { title: "Modèle", data: "model" },
+      { title: "Client", data: "company" },
+      {
+        title: "Date",
+        data: "date",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(sData.shortDate());
+        },
+      },
 
-
-              var status = '';
-              var phone='';
-
-              if (response.maintenance[i].status == 'AUTOMATICALY_PLANNED' || response.maintenance[i].status == 'MANUALLY_PLANNED') {
-                status = '<span class="text-red">'+response.maintenance[i].status+'</span>';
-              }else if(response.maintenance[i].status == 'DONE'){
-                status = '<span class="text-green">'+response.maintenance[i].status+'</span>';
-              }else if(response.maintenance[i].status == 'CONFIRMED'){
-                status = '<span class="text-light" style="background: #3CB195;">'+response.maintenance[i].status+'</span>';
-              }else{
-                status = response.maintenance[i].status;
-              }
-                phone = response.maintenance[i].phone  ;
-
-
-              dest2 += `
-                <tr>
-                <td><a  data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+
-                '" data-toggle="modal" class="showMaintenance" href="#">'+response.maintenance[i].id+`</a></td>
-                <td>`+response.maintenance[i].frame_number+`</td>
-                <td>`+response.maintenance[i].model+`</td>
-                <td>`+response.maintenance[i].company+`</td>
-                <td data-sort="`+(new Date(response.maintenance[i].date).getTime())+`">`+(new Date(response.maintenance[i].date).toLocaleDateString())+`</td>
-                <td>`+status+`</td>
-                <td>`+response.maintenance[i].type+`</td>
-                <td>`+response.maintenance[i].street+ ', ' + response.maintenance[i].zip_code + ' ' + response.maintenance[i].town +`</td>
-                <td>`+phone+`</td>
-                <td><a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="`+response.maintenance[i].id+`" data-toggle="modal">Modifier</a></td>
-                </tr>
-              `;
-            }
-            dest2 += '</tbody></table>'
-            $('#maintenanceListingSpan').html(dest2);
-            var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
-            dest += response.maintenancesNumberGlobal + '/</span><span style="color: rgb(216, 0, 0); margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
-            dest += response.maintenancesNumberAuto + '</span>';
-            $('#counterMaintenance').html(dest);
-            var table = $("#listingMaintenances").DataTable({
-              paging: false,
-              scrollX: false,
-              "order": [[ 4, "asc" ]]
-            });
-          }
-          else{
-            var dest2 = '<div>Pas d\'entretiens.</div>';
-            $('#maintenanceListingSpan').html(dest2);
-            var dest = '<span data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberGlobal+'" data-from="0" data-seperator="true">';
-            dest += response.maintenancesNumberGlobal + '/</span><span style="color: rgb(216, 0, 0); margin:0;" data-speed="1" data-refresh-interval="4" data-to="'+response.maintenancesNumberAuto+'" data-from="0" data-seperator="false">';
-            dest += response.maintenancesNumberAuto + '</span>';
-            $('#counterMaintenance').html(dest);
-          }
-        }
+      {
+        title: "Statut",
+        data: "status",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            (sData == "AUTOMATICALY_PLANNED" || sData == "MANUALLY_PLANNED") ? "<span class='text-red'>"+sData+"<sData>" : sData
+          );
+        },
+      },
+      { title: "Type", data: "type" },
+      {
+        title: "Adresse",
+        data: "street",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            sData+" "+oData.zip_code+" "+oData.town
+          );
+          $(nTd).data('sort', new Date(sData).getTime());
+        },
+      },
+      { title: "N° téléphone", data: "phone" },
+      {
+        title: "",
+        data: "id",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html('<a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal">Modifier</a>');
+        },
       }
+
+    ],
+    order: [
+      [4, "asc"]
+    ],
+    paging : false
   });
 }
 
@@ -136,7 +118,6 @@ function get_maintenance(ID){
       if (response.response == "error") {
         console.log(response.message);
       } else{
-        console.log(response);
         $('#widget-maintenanceManagement-form select[name=velo]').append('<option value="'+response.maintenance.bike_id+'">'+response.maintenance.bike_id + " - " + response.maintenance.model+'</option>');
         $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", true);
         $("#widget-maintenanceManagement-form div[name=image]").remove();
@@ -302,7 +283,7 @@ function empty_form(){
   $('#widget-maintenanceManagement-form textarea[name=comment]').val("");
 }
 
-$('body').on('change', '.form_company',function(){
+$('#widget-maintenanceManagement-form select[name=company]').change(function(){
   $('#widget-maintenanceManagement-form input[name=model]').val("");
   $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", false);
 
@@ -332,14 +313,14 @@ $('body').on('change', '.form_company',function(){
       }
     },
   }).done(function(response){
-  $.ajax({
-    url: "apis/Kameo/get_companies_listing.php",
-    method: "get",
-    data: {action: "name", company: $('#widget-maintenanceManagement-form select[name=company]').val() },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }else{
+    $.ajax({
+      url: "api/companies",
+      method: "get",
+      data: {action: "name", company: $('#widget-maintenanceManagement-form select[name=company]').val() },
+      success: function (response) {
+        if (response.response == "error") {
+          console.log(response.message);
+        }else{
           $('#widget-maintenanceManagement-form input[name=address]').val(response.street + ", " + response.zip_code + " " + response.town);
         }
       }

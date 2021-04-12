@@ -295,7 +295,14 @@ function get_company_listing() {
           $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
         },
       },
-      { title: "Date mise à jour", data: "HEU_MAJ"}
+      {
+        title: "Date mise à jour",
+        data: "HEU_MAJ",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(sData.shortDate());
+          $(nTd).data('sort', new Date(sData).getTime());
+        },
+      }
     ],
     order: [
       [0, "asc"]
@@ -1145,190 +1152,6 @@ function update_company_users_list_admin(company){
   });
 }
 
-//Suppression d'une offre Pdf
-$("body").on("click", ".deletePdfOffer", function (e) {
-  //empèche le comportement normal du lien
-  e.preventDefault();
-  id = $(this).parents("tr").find("td:first").html();
-  file = $(this).parents("tr").find("td a").attr("href");
-  that = $(this);
-  if (
-    confirm(
-      "Êtes-vous sur de vouloir supprimer ce PDF ? Cette action est irréversible."
-    )
-  ) {
-    $.ajax({
-      url: "apis/Kameo/delete_pdf_offer.php",
-      method: "post",
-      data: { id: id, file: file },
-      success: function (response) {
-        if (response.response == true) {
-          $(that)
-            .parents("tr")
-            .slideUp("", function () {
-              $(this).remove();
-            });
-        } else {
-          console.log(response);
-        }
-      },
-    });
-  }
-});
-
-
-function retrieve_offer(ID, action) {
-  $.ajax({
-    url: "apis/Kameo/offer_management.php",
-    type: "get",
-    data: { ID: ID, action: "retrieve" },
-    success: function (response) {
-      $("#offerManagementPDF").attr("data", "");
-
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        if (action == "retrieve") {
-          $("#widget-offerManagement-form input").attr("readonly", true);
-          $("#widget-offerManagement-form textarea").attr("readonly", true);
-          $("#widget-offerManagement-form select").attr("readonly", true);
-        } else {
-          $("#widget-offerManagement-form input").attr("readonly", false);
-          $("#widget-offerManagement-form textarea").attr("readonly", false);
-          $("#widget-offerManagement-form select").attr("readonly", false);
-        }
-
-        $("#widget-offerManagement-form input[name=title]").val(response.title);
-        $("#widget-offerManagement-form textarea[name=description]").val(
-          response.description
-        );
-        $("#widget-offerManagement-form select[name=type]").val(response.type);
-        $("#widget-offerManagement-form select[name=status]").val(
-          response.status
-        );
-        $("#widget-offerManagement-form input[name=margin]").val(
-          response.margin
-        );
-        $("#widget-offerManagement-form input[name=probability]").val(
-          response.probability
-        );
-        $("#widget-offerManagement-form input[name=company]").val(
-          response.company
-        );
-        $("#widget-offerManagement-form input[name=action]").val(action);
-        $("#widget-offerManagement-form input[name=ID]").val(ID);
-
-        $("#thickBoxProductLists").empty();
-        var i = 0;
-        if (response.itemsNumber > 0) {
-          while (i < response.itemsNumber) {
-            if (response.item[i].type == "box") {
-              $("#offerManagementDetails").append(
-                "<li>1 borne " +
-                  response.item[i].model +
-                  " au prix de " +
-                  response.item[i].locationPrice +
-                  " €/mois et un coût d'installation de " +
-                  response.item[i].installationPrice +
-                  " €</a></li>"
-              );
-            } else {
-              $("#offerManagementDetails").append(
-                "<li>1 vélo " +
-                  response.item[i].brand +
-                  " " +
-                  response.item[i].model +
-                  " au prix de " +
-                  response.item[i].locationPrice +
-                  " €/mois</a></li>"
-              );
-            }
-            i++;
-          }
-        } else {
-        }
-
-        if (
-          $("#widget-offerManagement-form select[name=type]").val() == "achat"
-        ) {
-          $("#widget-offerManagement-form input[name=start]").attr(
-            "readonly",
-            true
-          );
-          $("#widget-offerManagement-form input[name=end]").attr(
-            "readonly",
-            true
-          );
-          $("#widget-offerManagement-form input[name=start]").val("");
-          $("#widget-offerManagement-form input[name=end]").val("");
-        } else {
-          if (action != "retrieve") {
-            $("#widget-offerManagement-form input[name=start]").attr(
-              "readonly",
-              false
-            );
-            $("#widget-offerManagement-form input[name=end]").attr(
-              "readonly",
-              false
-            );
-          }
-
-          if (response.date) {
-            $("#widget-offerManagement-form input[name=date]").val(
-              response.date.substring(0, 10)
-            );
-          } else {
-            $("#widget-offerManagement-form input[name=date]").val("");
-          }
-          if (response.start) {
-            $("#widget-offerManagement-form input[name=start]").val(
-              response.start.substring(0, 10)
-            );
-          } else {
-            $("#widget-offerManagement-form input[name=start]").val("");
-          }
-          if (response.end) {
-            $("#widget-offerManagement-form input[name=end]").val(
-              response.end.substring(0, 10)
-            );
-          } else {
-            $("#widget-offerManagement-form input[name=end]").val("");
-          }
-        }
-
-        if (response.amount) {
-          $("#widget-offerManagement-form input[name=amount]").val(
-            response.amount
-          );
-        }
-
-        $("#offerManagement").on("shown.bs.modal", function () {
-          if (response.file != null && response.file != "") {
-            $(".offerManagementPDF").removeClass("hidden");
-            $("#offerManagementPDF").attr(
-              "data",
-              "offres/" + response.file + ".pdf"
-            );
-          } else {
-            $(".offerManagementPDF").addClass("hidden");
-            $("#offerManagementPDF").attr("data", "");
-          }
-        });
-      }
-    },
-  });
-}
-//Module gérer les clients ==> id d'un client ==> ajouter une offre
-function add_offer(company) {
-  $("#companyHiddenOffer").val(company);
-  $("#widget-offerManagement-form select[name=type]").val("leasing");
-  $("#widget-offerManagement-form input[name=action]").val("add");
-  $("#widget-offerManagement-form input").attr("readonly", false);
-  $("#widget-offerManagement-form textarea").attr("readonly", false);
-  $("#widget-offerManagement-form select").attr("readonly", false);
-  document.getElementById("widget-offerManagement-form").reset();
-}
 
 //Module gérer les clients ==> un client ==> modifier un contact
 function edit_contact(contact) {

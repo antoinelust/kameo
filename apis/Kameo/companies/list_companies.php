@@ -25,19 +25,7 @@
 
   $sql=$sql." ORDER BY INTERNAL_REFERENCE";
 
-  //$response['sql']=$sql;
-  if ($conn->query($sql) === FALSE) {
-      $response = array ('response'=>'error', 'message'=> $conn->error);
-      echo json_encode($response);
-      die;
-  }
-	$result = $conn->query($sql);
-	if ($result && $result->num_rows>0)
-	{
-		  $response['company'] = $result->fetch_all(MYSQLI_ASSOC);
-      $response['companiesNumber'] = $result->num_rows;
-	}
-    $response['response']="success";
-
-    echo json_encode($response);
+  $response['company']=execSQL($sql, array(), false);
+  $response['response']="success";
+  echo json_encode($response);
 ?>

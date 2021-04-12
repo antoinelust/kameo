@@ -30,6 +30,15 @@ switch($_SERVER["REQUEST_METHOD"])
 			}else{
 				error_message('403');
 			}
+		}else if($action=="listMinimal"){
+			if(get_user_permissions("admin", $token)){
+				$response['company']=execSQL("SELECT c.ID, COMPANY_NAME AS companyName, INTERNAL_REFERENCE AS internalReference FROM companies c WHERE STAANN != 'D'", array(), false);
+				$response['response']="success";
+				echo json_encode($response);
+				die;
+			}else{
+				error_message('403');
+			}
 		}else if($action === 'listCafetariaCompanies'){
 			if(get_user_permissions("admin", $token)){
 				if ($result = $conn->query("SELECT c.COMPANY_NAME, (SELECT COUNT(*) FROM companies_orderable co WHERE co.INTERNAL_REFERENCE = c.INTERNAL_REFERENCE) AS NUM_OF_ORDERABLE, co.CAFETARIA, co.DISCOUNT, co.TVA_INCLUDED, co.CAFETERIA_TYPE, co.CAFETERIA_TYPES FROM companies c, conditions co WHERE c.INTERNAL_REFERENCE=co.COMPANY AND co.NAME = 'generic' AND c.STAANN != 'D'")) {

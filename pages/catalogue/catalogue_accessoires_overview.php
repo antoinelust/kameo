@@ -135,6 +135,14 @@ include 'include/head.php';
 							<div class="space"></div>
 						</div>
 					</a>
+					
+					<a href="catalogue.php?category=Selle">
+						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_selle.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Selle</h3></div>
+							<div class="space"></div>
+						</div>
+					</a>
 
 				</div>
 
