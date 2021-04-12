@@ -40,7 +40,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
         data: "ID",
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
           $(nTd).html(
-            '<a href="#" class="text-green getPortfolioDetails" data-target="#portfolioAccessoryManagement" name="' +
+            '<a href="#" class="text-green getPortfolioDetails" data-target="#portfolioAccessoryManagement" data-action="retrieve" name="' +
               sData +
               '" data-toggle="modal">' +
               sData +
@@ -61,7 +61,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
         data: "ID",
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
           $(nTd).html(
-            '<a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" name="' +
+            '<a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" data-action="update" name="' +
             sData +'" data-toggle="modal" href="#">Update</a>'
           );
         },
@@ -75,20 +75,7 @@ $(".portfolioAccessoriesManagerClick").click(function () {
   });
 });
 
-$(".addCatalogAccessory").click(function (){
-  $("#widget-addCatalogAccessory-form input").attr("readonly", false);
-  $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
-  $("#widget-addCatalogAccessory-form select").attr("disabled", false);
-  $(".accessoryManagementTitle").html("Ajouter un accessoire");
-  $(".accessoryManagementSend").removeClass("hidden");
-  $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
-  $('.accessoryCatalogImage').addClass('hidden');
-  document.getElementById('widget-addCatalogAccessory-form').reset();
-  $("#widget-addCatalogAccessory-form .ID").addClass("hidden");
-  $("#widget-addCatalogAccessory-form input[name=action]").val("add");
-  $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
-    "hidden"
-  );
+$('#portfolioAccessoryManagement').on('shown.bs.modal', function(event){
 
   if (
     !$("#widget-addCatalogAccessory-form [name=category]").find("option").length
@@ -122,38 +109,73 @@ $(".addCatalogAccessory").click(function (){
   }
   $("#widget-addCatalogAccessory-form [name=category]").val("");
   $("#widget-addCatalogAccessory-form [name=provider]").val("");
-})
 
-$('#portfolioAccessoryManagement').on('shown.bs.modal', function(event){
+
   var ID = $(event.relatedTarget).attr('name');
-  $("#widget-addCatalogAccessory-form input").attr("readonly", false);
-  $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
-  $("#widget-addCatalogAccessory-form input[name=ID]").attr("readonly", true);
-  $("#widget-addCatalogAccessory-form select").attr("disabled", false);
-  $(".accessoryManagementTitle").html("Modifier un accessoire");
-  $(".accessoryManagementSend").removeClass("hidden");
-  $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Modifier');
-  $("#widget-addCatalogAccessory-form .ID").removeClass("hidden");
-  $("#widget-addCatalogAccessory-form input[name=file]").removeClass(
-    "required"
-  );
-  $("#widget-addCatalogAccessory-form input[name=ID]").val(this.name);
-  $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
-    "hidden"
-  );
+  var action = $(event.relatedTarget).data('action');
 
-  $("#widget-addCatalogAccessory-form input[name=action]").val(
-    "update"
-  );
 
-  var d = new Date();
-  $("#widget-addCatalogAccessory-form .accessoryCatalogImage").attr(
-    "src",
-    "images_accessories/" + ID + ".jpg?" + d.getTime()
-  );
-  $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
+  if(action == "retrieve"){
+    $("#widget-addCatalogAccessory-form input").attr("readonly", true);
+    $("#widget-addCatalogAccessory-form textarea").attr("readonly", true);
+    $("#widget-addCatalogAccessory-form input[name=ID]").attr("readonly", true);
+    $("#widget-addCatalogAccessory-form select").attr("disabled", true);
+    $(".accessoryManagementTitle").html("Consulter un accessoire");
+    $(".accessoryManagementSend").addClass("hidden");
+    $("#widget-addCatalogAccessory-form .ID").addClass("hidden");
+    $("#widget-addCatalogAccessory-form input[name=ID]").val(this.name);
+    $("#widget-addCatalogAccessory-form button[type=submit]").addClass(
+      "hidden"
+    );
+    var d = new Date();
+    $("#widget-addCatalogAccessory-form .accessoryCatalogImage").attr(
+      "src",
+      "images_accessories/" + ID + ".jpg?" + d.getTime()
+    );
+    $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
+    getPortfolioDetails(ID);
+  }else if(action == "update"){
+    $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+    $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
+    $("#widget-addCatalogAccessory-form input[name=ID]").attr("readonly", true);
+    $("#widget-addCatalogAccessory-form select").attr("disabled", false);
+    $(".accessoryManagementTitle").html("Modifier un accessoire");
+    $(".accessoryManagementSend").removeClass("hidden");
+    $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Modifier');
+    $("#widget-addCatalogAccessory-form .ID").removeClass("hidden");
+    $("#widget-addCatalogAccessory-form input[name=file]").removeClass(
+      "required"
+    );
+    $("#widget-addCatalogAccessory-form input[name=ID]").val(this.name);
+    $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
+      "hidden"
+    );
 
-  getPortfolioDetails(ID);
+    $("#widget-addCatalogAccessory-form input[name=action]").val(
+      "update"
+    );
+    var d = new Date();
+    $("#widget-addCatalogAccessory-form .accessoryCatalogImage").attr(
+      "src",
+      "images_accessories/" + ID + ".jpg?" + d.getTime()
+    );
+    $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
+    getPortfolioDetails(ID);
+  }else if(action == "add"){
+    $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+    $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
+    $("#widget-addCatalogAccessory-form select").attr("disabled", false);
+    $(".accessoryManagementTitle").html("Ajouter un accessoire");
+    $(".accessoryManagementSend").removeClass("hidden");
+    $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
+    $('.accessoryCatalogImage').addClass('hidden');
+    document.getElementById('widget-addCatalogAccessory-form').reset();
+    $("#widget-addCatalogAccessory-form .ID").addClass("hidden");
+    $("#widget-addCatalogAccessory-form input[name=action]").val("add");
+    $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
+      "hidden"
+    );
+  }
 });
 
 
