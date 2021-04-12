@@ -23,170 +23,146 @@ $(".fleetmanager").click(function () {
 
 //FleetManager: Gérer le catalogue | Displays the portfolio <table> by calling load_portfolio.php and creating it
 $(".portfolioAccessoriesManagerClick").click(function () {
-  $.ajax({
-    url: "apis/Kameo/accessories/accessories.php",
-    type: "get",
-    data: { action: "listCatalog" },
-    success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      } else {
-        var dest =
-          '<table class="table table-condensed" id="porfolioAccessoriesListing"><h4 class="text-green"><?=L::accessories_title_listing;?></h4><br/><a class="button small green button-3d rounded icon-right addCatalogAccessory" data-target="#portfolioAccessoryManagement" data-toggle="modal" href="#"><span><i class="fa fa-plus"></i><?=L::accessories_add_accessory;?></span></a><thead><tr><th>ID</th><th>Marque</th><th>Modèle</th><th><?=L::accessories_buying_price;?></th><th><?=L::accessories_selling_price;?></th><th><?=L::accessories_stock;?></th><th><?=L::accessories_display;?></th><th><?=L::accessories_type;?></th><th>Fournisseur</th><th>Numéro d\'article</th><th></th></tr></thead><tbody>';
-
-        response.accessories.forEach(
-          (accessory) =>
-            (dest = dest.concat(
-              '<tr><td><a href="#" class="text-green getPortfolioDetails" data-target="#portfolioAccessoryManagement" name="' +
-                accessory.ID +
-                '" data-toggle="modal">' +
-                accessory.ID +
-                " </a></td><td>" +
-                accessory.BRAND +
-                "</td><td>" +
-                accessory.MODEL +
-                "</td><td>" +
-                accessory.BUYING_PRICE +
-                " €</td><td>" +
-                accessory.PRICE_HTVA +
-                " €</td><td>" +
-                accessory.STOCK +
-                "</td><td>" +
-                accessory.DISPLAY +
-                "</td><td>" +
-                accessory.CATEGORY +
-                "</td><td>" +
-                accessory.PROVIDER +
-                "</td><td>" +
-                accessory.REFERENCE +
-                '</td><td><a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" name="' +
-                accessory.ID +'" data-toggle="modal" href="#">Mettre à jour </a></td></tr>'
-            ))
-        );
-
-        document.getElementById(
-          "portfolioAccessoriesListing"
-        ).innerHTML = dest.concat("</tbody></table>");
-
-        var d = new Date();
-
-        $(".getPortfolioDetails").click(function () {
-          $("#widget-addCatalogAccessory-form input").attr("readonly", true);
-          $("#widget-addCatalogAccessory-form textarea").attr("readonly", true);
-          $("#widget-addCatalogAccessory-form select").attr("disabled", true);
-          $(".accessoryManagementTitle").html("Consulter un accessoire");
-          $(".accessoryManagementSend").addClass("hidden");
-          $("#widget-addCatalogAccessory-form .ID").removeClass("hidden");
-          $("#widget-addCatalogAccessory-form input[name=ID]").val(this.name);
-          $("#widget-addCatalogAccessory-form button[type=submit]").addClass(
-            "hidden"
-          );
-          $("#widget-addCatalogAccessory-form .accessoryCatalogImage").attr(
-            "src",
-            "images_accessories/" + this.name + ".jpg?" + d.getTime()
-          );
-          $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
-
-          getPortfolioDetails(this.name);
-        });
-
-
-        $(".updateAccessoryAdmin").click(function () {
-          $("#widget-addCatalogAccessory-form input").attr("readonly", false);
-          $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
-          $("#widget-addCatalogAccessory-form input[name=ID]").attr("readonly", true);
-          $("#widget-addCatalogAccessory-form select").attr("disabled", false);
-          $(".accessoryManagementTitle").html("Modifier un accessoire");
-          $(".accessoryManagementSend").removeClass("hidden");
-          $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Modifier');
-          $("#widget-addCatalogAccessory-form .ID").removeClass("hidden");
-          $("#widget-addCatalogAccessory-form input[name=file]").removeClass(
-            "required"
-          );
-          $("#widget-addCatalogAccessory-form input[name=ID]").val(this.name);
-          $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
-            "hidden"
-          );
-
-          $("#widget-addCatalogAccessory-form input[name=action]").val(
-            "update"
-          );
-
-          var d = new Date();
-          $("#widget-addCatalogAccessory-form .accessoryCatalogImage").attr(
-            "src",
-            "images_accessories/" + this.name + ".jpg?" + d.getTime()
-          );
-          $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
-
-          getPortfolioDetails(this.name);
-        });
-
-        $(".addCatalogAccessory").click(function () {
-          $("#widget-addCatalogAccessory-form input").attr("readonly", false);
-          $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
-          $("#widget-addCatalogAccessory-form select").attr("disabled", false);
-          $(".accessoryManagementTitle").html("Ajouter un accessoire");
-          $(".accessoryManagementSend").removeClass("hidden");
-          $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
-          $('.accessoryCatalogImage').addClass('hidden');
-          document.getElementById('widget-addCatalogAccessory-form').reset();
-          $("#widget-addCatalogAccessory-form .ID").addClass("hidden");
-          $("#widget-addCatalogAccessory-form input[name=action]").val("add");
-          $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
-            "hidden"
-          );
-
-
-
-          if (
-            !$("#widget-addCatalogAccessory-form [name=category]").find("option").length
-          ) {
-            $.ajax({
-              url: "apis/Kameo/accessories/accessories.php",
-              type: "get",
-              data: { action: "listCategories" },
-              success: function (response) {
-                if (response.response == "error") {
-                  console.log(response.message);
-                } else {
-                  const categoriesSorted=response.categories.sort(function(a, b){
-                    //note the minus before -cmp, for descending order
-                    return cmp(
-                      [cmp(a.CATEGORY, b.CATEGORY), cmp(a.ID, b.ID)],
-                      [cmp(b.CATEGORY, a.CATEGORY), cmp(b.ID, a.ID)]
-                      );
-                  });
-
-                  categoriesSorted.forEach((accessory) =>
-                    $("#widget-addCatalogAccessory-form [name=category]").append(
-                      new Option(accessory.CATEGORY, accessory.ID)
-                    )
-                  );
-
-                  $("#widget-addCatalogAccessory-form [name=category]").val("");
-                }
-              },
-            });
-          }
-          $("#widget-addCatalogAccessory-form [name=category]").val("");
-          $("#widget-addCatalogAccessory-form [name=provider]").val("");
-        });
-
-        $("#porfolioAccessoriesListing").DataTable({
-           "paging":   false
-        });
-      }
+  $("#porfolioAccessoriesListing").dataTable({
+    destroy: true,
+    ajax: {
+      url: "apis/Kameo/accessories/accessories.php",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "listCatalog",
+      },
     },
+    sAjaxDataProp: "accessories",
+    columns: [
+      {
+        title: "ID",
+        data: "ID",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            '<a href="#" class="text-green getPortfolioDetails" data-target="#portfolioAccessoryManagement" name="' +
+              sData +
+              '" data-toggle="modal">' +
+              sData +
+              ' </a>'
+          );
+        },
+      },
+      {title: "Marque", data: "BRAND"},
+      { title: "Modèle", data: "MODEL" },
+      { title: "Prix d'achat", data: "BUYING_PRICE"},
+      { title: "Prix de vente", data: "PRICE_HTVA" },
+      {title: "Stock",data: "STOCK"},
+      {title: "Afficher ?",data: "DISPLAY"},
+      {title: "Fournisseur", data: "PROVIDER"},
+      {title: "Référence",data: "REFERENCE"},
+      {
+        title: "",
+        data: "ID",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(
+            '<a href="#" class="text-green updateAccessoryAdmin" data-target="#portfolioAccessoryManagement" name="' +
+            sData +'" data-toggle="modal" href="#">Update</a>'
+          );
+        },
+      },
+
+    ],
+    order: [
+      [0, "asc"]
+    ],
+    paging : false
   });
 });
+
+$(".addCatalogAccessory").click(function (){
+  $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+  $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
+  $("#widget-addCatalogAccessory-form select").attr("disabled", false);
+  $(".accessoryManagementTitle").html("Ajouter un accessoire");
+  $(".accessoryManagementSend").removeClass("hidden");
+  $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Ajouter');
+  $('.accessoryCatalogImage').addClass('hidden');
+  document.getElementById('widget-addCatalogAccessory-form').reset();
+  $("#widget-addCatalogAccessory-form .ID").addClass("hidden");
+  $("#widget-addCatalogAccessory-form input[name=action]").val("add");
+  $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
+    "hidden"
+  );
+
+  if (
+    !$("#widget-addCatalogAccessory-form [name=category]").find("option").length
+  ) {
+    $.ajax({
+      url: "apis/Kameo/accessories/accessories.php",
+      type: "get",
+      data: { action: "listCategories" },
+      success: function (response) {
+        if (response.response == "error") {
+          console.log(response.message);
+        } else {
+          const categoriesSorted=response.categories.sort(function(a, b){
+            //note the minus before -cmp, for descending order
+            return cmp(
+              [cmp(a.CATEGORY, b.CATEGORY), cmp(a.ID, b.ID)],
+              [cmp(b.CATEGORY, a.CATEGORY), cmp(b.ID, a.ID)]
+              );
+          });
+
+          categoriesSorted.forEach((accessory) =>
+            $("#widget-addCatalogAccessory-form [name=category]").append(
+              new Option(accessory.CATEGORY, accessory.ID)
+            )
+          );
+
+          $("#widget-addCatalogAccessory-form [name=category]").val("");
+        }
+      },
+    });
+  }
+  $("#widget-addCatalogAccessory-form [name=category]").val("");
+  $("#widget-addCatalogAccessory-form [name=provider]").val("");
+})
+
+$('#portfolioAccessoryManagement').on('shown.bs.modal', function(event){
+  var ID = $(event.relatedTarget).attr('name');
+  $("#widget-addCatalogAccessory-form input").attr("readonly", false);
+  $("#widget-addCatalogAccessory-form textarea").attr("readonly", false);
+  $("#widget-addCatalogAccessory-form input[name=ID]").attr("readonly", true);
+  $("#widget-addCatalogAccessory-form select").attr("disabled", false);
+  $(".accessoryManagementTitle").html("Modifier un accessoire");
+  $(".accessoryManagementSend").removeClass("hidden");
+  $(".accessoryManagementSend").html('<i class="fa fa-plus"></i>Modifier');
+  $("#widget-addCatalogAccessory-form .ID").removeClass("hidden");
+  $("#widget-addCatalogAccessory-form input[name=file]").removeClass(
+    "required"
+  );
+  $("#widget-addCatalogAccessory-form input[name=ID]").val(this.name);
+  $("#widget-addCatalogAccessory-form button[type=submit]").removeClass(
+    "hidden"
+  );
+
+  $("#widget-addCatalogAccessory-form input[name=action]").val(
+    "update"
+  );
+
+  var d = new Date();
+  $("#widget-addCatalogAccessory-form .accessoryCatalogImage").attr(
+    "src",
+    "images_accessories/" + ID + ".jpg?" + d.getTime()
+  );
+  $("#widget-addCatalogAccessory-form .accessoryCatalogImage").removeClass('hidden');
+
+  getPortfolioDetails(ID);
+});
+
 
 function getPortfolioDetails(ID) {
   if (
     !$("#widget-addCatalogAccessory-form [name=category]").find("option").length
   ) {
     $.ajax({
-      url: "apis/Kameo/accessories/accessories.php",
+      url: "api/accessories",
       type: "get",
       data: { action: "listCategories" },
       success: function (response) {
@@ -213,13 +189,16 @@ function getPortfolioDetails(ID) {
   }
 
   $.ajax({
-  url: "apis/Kameo/accessories/accessories.php",
+  url: "api/accessories",
   type: "get",
-  data: { action: "retrieve", ID: ID },
+  data: { action: "retrieveCatalog", ID: ID },
   success: function (response) {
     if (response.response == "error") {
       console.log(response.message);
     } else {
+      $("#widget-addCatalogAccessory-form [name=ID]").val(
+        ID
+      );
       $("#widget-addCatalogAccessory-form [name=brand]").val(
         response.accessory.BRAND
       );

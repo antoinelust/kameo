@@ -51,7 +51,6 @@ if($brand != '' && $model != '' && $description != '' && $category != '' && $buy
             error_message('500', 'Unable to add an accessory');
     }
 } else {
-
     $response = array ('response'=>'error');
     echo json_encode($response);
     die;
@@ -101,7 +100,8 @@ if(isset($_FILES['file'])){
     {
       errorMessage("ES0024");
     }
-    successMessage("SM0029");
   }
 }
+successMessage("SM0003");
+
 ?>

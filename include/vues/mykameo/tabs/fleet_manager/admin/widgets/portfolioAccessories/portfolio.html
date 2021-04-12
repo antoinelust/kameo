@@ -19,9 +19,7 @@
           ×
         </button>
       </div>
-      <div data-example-id="contextual-table" class="bs-example">
-        <span id="portfolioAccessoriesListing"></span>
-      </div>
+      <table id='porfolioAccessoriesListing'></table>
       <div class="modal-footer">
         <button type="button" class="btn btn-b" data-dismiss="modal">
           <?=L::generic_close;?>
@@ -249,7 +247,7 @@
             listPortfolioBikes();
             document.getElementById("widget-addCatalogAccessory-form").reset();
             $("#portfolioAccessoryManagement").modal("toggle");
-            listPortfolioAccessories();
+            $("#porfolioAccessoriesListing").dataTable().api().ajax.reload();
           } else {
             $.notify(
               {
