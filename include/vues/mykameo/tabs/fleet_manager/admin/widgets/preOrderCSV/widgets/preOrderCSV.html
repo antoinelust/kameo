@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div class="modal fade" id="preOrderCSVModal" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+
+				<h4 class="text-green" id="scanTitle">Chargez les différents fichiers de commande des accessoire</h4>
+				<form  name = "widget-csvOrder-form" id="widget-csvOrder-form" role="form" method="post" action="apis/Kameo/csvOrder.php"  enctype="multipart/form-data">
+					
+					<article>
+						<div id="holder">
+						</div> 
+						<p id="upload" class="hidden"><label>Drag &amp; drop not supported, but you can still upload via this input field:<br><input type="file" accept="text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required></label></p>
+						<p id="filereader">File API &amp; FileReader API not supported</p>
+						<p id="formdata">XHR2's FormData is not supported</p>
+						<p id="progress">XHR2's upload progress isn't supported</p>
+						<p hidden>Upload progress: <progress id="uploadprogress" max="100" value="0">0</progress></p>
+						<p>Glissez le fichier dans la zone ci-dessous pour l'ajouter au site</p>
+					</article>
+					<style>
+						#holder { border: 10px dashed #ccc; width: 100%; min-height: 300px; margin: 20px auto;}
+						#holder.hover { border: 10px dashed #0c0; }
+						#holder img { display: block; margin: 10px auto; }
+						#holder p { margin: 10px; font-size: 14px; }
+						progress { width: 100%; }
+						progress:after { content: '%'; }
+						.fail { background: #c00; padding: 2px; color: #fff; }
+						.hidden { display: none !important;}
+					</style>
+					<input type="text" name="testAction" value="addFileCSVToLoad" hidden>
+					<input type="text" id="fileCSV" name="fileCSV" hidden>
+					
+				<button
+				class="button small green button-3d rounded icon-left"
+				type="submit"
+				>
+				<i class="fa fa-paper-plane"></i>Charger le fichier
+			</button>
+		</form>
+		<hr/>
+
+		<br>
+		<br>
+
+
+		<h4 class="text-green" id="scanTitle">Les fichiers de commande d'excel à traiter</h4>
+		<table id='displayCSVOrder' class='table' style='width: 100%'> 
+		</table>
+		<hr>
+		<h4 class="text-green" id="scanTitle">Les fichiers de commande d'excel cloturé</h4>
+		<table id='displayCSVOrderClosed' class='table' style='width: 100%'> 
+		</table>
+
+		<div class="modal-footer">
+			<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+	jQuery("#widget-csvOrder-form").validate({
+		submitHandler: function (form) {
+			jQuery(form).ajaxSubmit({
+				success: function (response) {
+					if (response.response == "success") {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "success",
+						}
+						);
+						reloadDatatable();
+						document.getElementById("widget-csvOrder-form").reset();
+					} else {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "danger",
+						}
+						);
+					}
+				},
+			});
+		},
+	});
+</script>

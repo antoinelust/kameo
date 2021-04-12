@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div class="modal fade" id="csvConfirmOrder" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+
+				<h4 class="text-green" id="scanTitle">Chargez les différents fichiers de commande des accessoire</h4>
+
+				<h4 class="text-green" id="scanTitle">Les fichiers de commande d'excel</h4>
+				<form name = "widget-csvDetailOrder-form" id="widget-csvDetailOrder-form" role="form" method="get" action="apis/Kameo/csvOrder.php">
+					
+					<input type="text" name="testCSVOrderDetail" hidden>
+					<input type="text" name="totalArticleNumber" hidden>
+					<input type="text" name="action" value="validFormToChangeOrder" hidden>
+					
+					<table id='displayDetailCSVOrder' class='table' style='width: 100%'> 
+					</table>
+					<button
+					class="button small green button-3d rounded icon-left"
+					type="submit"
+					name="confirmForm"
+					>
+					<i class="fa fa-paper-plane"></i>Validé la commande
+				</button>
+
+			</form>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	jQuery("#widget-csvDetailOrder-form").validate({
+		submitHandler: function (form) {
+			jQuery(form).ajaxSubmit({
+				success: function (response) {
+					if (response.response == "success") {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "success",
+						}
+						);
+						reloadDatatable();
+						 $('#csvConfirmOrder').modal('toggle');
+						document.getElementById("widget-csvDetailOrder-form").reset();
+					} else {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "danger",
+						}
+						);
+					}
+				},
+			});
+		},
+	});
+</script>
