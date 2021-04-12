@@ -44,7 +44,7 @@
 					<a href="/catalogue_overview"><?=L::header_ourBikes;?></a>
 				  </li>
 				  <li>
-					<a href="/accessoires"><?=L::header_ourAccessories;?></a>
+					<a href="/catalogue_accessoires_overview"><?=L::header_ourAccessories;?></a>
 				  </li>
 				  <li>
 					<a href="/bons-plans"><?=L::header_ourDeals;?></a>

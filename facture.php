@@ -99,6 +99,7 @@ $reference=$newID;
 $base_modulo=substr('00'.$reference, -6);
 $base_modulo=date('Y').$base_modulo;
 $modulo_check=($base_modulo % 97);
+$modulo_check=substr('0'+$modulo_check, -2);
 $reference=substr($base_modulo.$modulo_check, -12);
 $reference=substr($reference, 0,3).'/'.substr($reference, 3,4).'/'.substr($reference, 7,5);
 

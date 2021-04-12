@@ -74,7 +74,7 @@
         $accessories[$key]['BRAND']=$information['BRAND'];
         $accessories[$key]['MODEL']=$information['MODEL'];
         $accessories[$key]['finance']=$_POST['accessoryFinance'][$key];
-        $accessories[$key]['finalPrice']=$_POST['accesoryFinalPrice'][$key];
+        $accessories[$key]['finalPrice']=$_POST['accessoryFinalPrice'][$key];
         $accessories[$key]['accessoryNumber']=$_POST['accessoryNumber'][$key];
         if($_POST['accessoryFinance'][$key] == 'leasing'){
           $accessoriesTotalLeasing += $_POST['accessoryNumber'][$key];

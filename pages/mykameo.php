@@ -111,7 +111,10 @@ if ($token == NULL) { //Not connected
     echo 'displayLanguage();';
   }
 
-  echo 'initializeFields();';
+
+ if (get_user_permissions("admin", $token)) {
+   echo 'initializeFields();';
+ }
 
 
   echo '});

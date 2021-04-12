@@ -21,18 +21,18 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-sm-12">
+          <div class="col-md-12">
             <form
               id="widget-bikeManagement-form"
-              action="apis/Kameo/bike_management.php"
+              action="api/bikes"
               role="form"
               method="post"
             >
               <h4 class="text-green bikeManagementTitle">Ajouter un vélo</h4>
-              <div class="form-group col-sm-12">
+              <div class="form-group col-md-12">
                 <h4 class="text-green">Caractéristiques du vélo</h4>
-                <div class="col-sm-12">
-                  <div class="col-sm-4">
+                <div class="col-md-12">
+                  <div class="col-md-4">
                     <label for="bikeID">ID</label>
                     <input
                       type="hidden"
@@ -42,33 +42,33 @@
                     />
                   </div>
                 </div>
-                <div class="col-sm-12">
-                  <div class="col-sm-4">
+                <div class="col-md-12">
+                  <div class="col-md-4">
                     <label for="portfolioID">Marque - Modèle</label>
                     <select
                       name="portfolioID"
                       class="form-control required"
                     ></select>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="size">Taille</label>
                     <select name="size" class="form-control required">
                     </select>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="color">Couleur</label>
                     <input type="text" name="color" class="form-control" />
                   </div>
                 </div>
-                <div class="col-sm-12">
-                  <div class="col-sm-4">
+                <div class="col-md-12">
+                  <div class="col-md-4">
                     <label for="company">Société</label>
                     <select
                       name="company"
                       class="form-control required"
                     ></select>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="model">Nom pour client</label>
                     <input
                       type="text"
@@ -76,7 +76,7 @@
                       class="form-control required"
                     />
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="frameNumber">Numéro d'identification</label>
                     <input
                       type="text"
@@ -90,8 +90,8 @@
                     />
                   </div>
                 </div>
-                <div class="col-sm-12">
-                  <div class="col-sm-4">
+                <div class="col-md-12">
+                  <div class="col-md-4">
                     <label for="frameReference">Référence de cadre</label>
                     <input
                       type="text"
@@ -99,7 +99,7 @@
                       class="form-control required"
                     />
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="lockerReference">Clé du cadenas</label>
                     <input
                       type="text"
@@ -107,7 +107,7 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="gpsID">Identification GPS</label>
                     <input
                       type="text"
@@ -115,38 +115,46 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-12">
+                    <label for="address">Adresse pour entretien</label>
+                    <input
+                      type="text"
+                      name="address"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-md-4">
                     <label for="bikeType" class="">Type :</label>
                     <select title="Bike Type" class="selectType" id="bikeType" name="bikeType">
                       <option value="partage">Partage</option>
                       <option value="personnel">Personnel</option>
                     </select>
                   </div>
-                  <div class="col-sm-4" id="user_name">
+                  <div class="col-md-4" id="user_name">
                     <label for="name" class="">Nom :</label>
                     <select title="User Name" class="selectName" id="userName" name="name">
                     </select>
                   </div>
-                  <div class="col-sm-4" id="user_email">
+                  <div class="col-md-4" id="user_email">
                     <label for="email" class="">Email :</label>
                     <input type="text" readonly="readonly" name="email" class="form-control">
                   </div>
-                  <div class="col-sm-4" id="user_phone">
+                  <div class="col-md-4" id="user_phone">
                     <label for="phone" class="">N° Téléphone :</label>
                     <input type="text" readonly="readonly" name="phone" class="form-control">
                   </div>
                 </div>
 
-                <div class="col-sm-12" name="pictureDisabled">
-                  <div class="col-sm-4 bikeManagementPicture">
+                <div class="col-md-12" name="pictureDisabled">
+                  <div class="col-md-4 bikeManagementPicture">
                     <label for="picture">Image du vélo</label>
                     <img id="bikeManagementPicture" alt="image" width="200" />
                   </div>
                 </div>
                 <div class="separator"></div>
                 <h4 class="text-green">Type de contrat</h4>
-                <div class="col-sm-12">
-                  <div class="col-sm-4">
+                <div class="col-md-12">
+                  <div class="col-md-4">
                     <label for="contractType">Type de contrat</label>
                     <select
                       name="contractType"
@@ -155,9 +163,9 @@
                   </div>
                 </div>
                 <div class="separator buyingInfos" style="display: none"></div>
-                <div class="col-sm-12 buyingInfos" style="display: none">
+                <div class="col-md-12 buyingInfos" style="display: none">
                   <h4 class="text-green">Informations sur l'achat du vélo</h4>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="price">Prix d'achat</label>
                     <div class="input-group">
                       <span class="input-group-addon">€/</span>
@@ -168,7 +176,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="buyingDate">Date d'achat</label>
                     <input type="date" name="buyingDate" class="form-control required">
                   </div>
@@ -177,9 +185,9 @@
                   class="separator contractInfos"
                   style="display: none"
                 ></div>
-                <div class="col-sm-12 contractInfos" style="display: none">
+                <div class="col-md-12 contractInfos" style="display: none">
                   <h4 class="text-green">Informations relatives au contrat</h4>
-                  <div class="col-sm-4 contractStartBloc">
+                  <div class="col-md-4 contractStartBloc">
                     <label for="contractStart">Début de contrat</label>
                     <input
                       type="date"
@@ -187,7 +195,7 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-4 contractEndBloc">
+                  <div class="col-md-4 contractEndBloc">
                     <label for="contractEnd">Fin de contrat</label>
                     <input
                       type="date"
@@ -195,8 +203,8 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-12">
-                    <div class="col-sm-4 insurance">
+                  <div class="col-md-12">
+                    <div class="col-md-4 insurance">
                       <label for="insurance">Assurance ?</label>
                       <input
                         type="checkbox"
@@ -205,7 +213,7 @@
                         class="form-control"
                       />Oui
                     </div>
-                    <div class="col-sm-4 soldPrice" style="display: none">
+                    <div class="col-md-4 soldPrice" style="display: none">
                       <label for="insurance">Prix de vente du vélo</label>
                       <input
                         type="number"
@@ -220,11 +228,11 @@
                   </div>
                 </div>
                 <div class="separator orderInfos" style="display: none"></div>
-                <div class="col-sm-12 orderInfos" style="display: none">
+                <div class="col-md-12 orderInfos" style="display: none">
                   <h4 class="text-green">
                     Informations relatives à la commande
                   </h4>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="orderingDate">Date de la commande</label>
                     <input
                       type="date"
@@ -233,7 +241,7 @@
                       id="today"
                     />
                   </div>
-                  <div class="col-sm-4 estimatedDeliveryDate">
+                  <div class="col-md-4 estimatedDeliveryDate">
                     <label for="estimatedDeliveryDate"
                       >Date estimée d'arrivée</label
                     >
@@ -243,7 +251,7 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-4 deliveryDate">
+                  <div class="col-md-4 deliveryDate">
                     <label for="deliveryDate">Date d'arrivée</label>
                     <input
                       type="date"
@@ -251,7 +259,7 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="orderNumber">Numéro de commande</label>
                     <input
                       type="text"
@@ -259,7 +267,7 @@
                       class="form-control"
                     />
                   </div>
-                  <div class="col-sm-4 offer">
+                  <div class="col-md-4 offer">
                     <label for="offerReference" class="offerReference"
                       >Offre liée</label
                     >
@@ -268,7 +276,7 @@
                       class="form-control offerReference"
                     ></select>
                   </div>
-                  <div class="col-sm-4 clientReference" id="utilisateur_bike">
+                  <div class="col-md-4 clientReference" id="utilisateur_bike">
                     <label for="clientReference" class="clientReference"
                       >Utilisateur</label
                     >
@@ -279,11 +287,11 @@
                   </div>
                 </div>
                 <div class="separator billingInfos" style="display: none"></div>
-                <div class="col-sm-12 billingInfos" style="display: none">
+                <div class="col-md-12 billingInfos" style="display: none">
                   <h4 class="text-green">
                     Informations relatives à la facturation
                   </h4>
-                  <div class="col-sm-4">
+                  <div class="col-md-4">
                     <label for="billingType">Type de facturation</label>
                     <select name="billingType" class="form-control">
                       <option value="monthly">Mensuelle</option>
@@ -291,7 +299,7 @@
                       <option value="paid">Déjà payé</option>
                     </select>
                   </div>
-                  <div class="col-sm-4 billingPriceDiv">
+                  <div class="col-md-4 billingPriceDiv">
                     <label for="billingPrice">Montant de facturation</label>
                     <div class="input-group">
                       <span class="input-group-addon">€/mois</span>
@@ -302,7 +310,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-sm-4 billingGroupDiv">
+                  <div class="col-md-4 billingGroupDiv">
                     <label for="billingGroup">Groupe de facturation</label>
                     <input
                       type="text"
@@ -310,8 +318,8 @@
                       class="form-control required"
                     />
                   </div>
-                  <div class="col-sm-12 billingDiv">
-                    <div class="col-sm-4">
+                  <div class="col-md-12 billingDiv">
+                    <div class="col-md-4">
                       <label for="billing">Facturation automatique ?</label>
                       <label
                         ><input
@@ -324,12 +332,12 @@
                   </div>
                 </div>
                 <div
-                  class="form-group col-sm-4"
+                  class="form-group col-md-4"
                   style="display: none"
                   id="addBike_firstBuilding"
                 ></div>
                 <div
-                  class="form-group col-sm-12"
+                  class="form-group col-md-12"
                   style="display: none"
                   id="addBike_buildingListing"
                 ></div>
@@ -341,31 +349,31 @@
                 />
                 <input type="text" name="action" class="form-control hidden" />
                 <div
-                  class="col-sm-12"
+                  class="col-md-12"
                   id="bikeBuildingAccessAdminDiv"
                   style="display: none"
                 >
                   <h4>Accès aux bâtiments de ce vélo</h4>
                 </div>
                 <div
-                  class="form-group col-sm-12"
+                  class="form-group col-md-12"
                   id="bikeBuildingAccessAdmin"
                   style="display: none"
                 ></div>
                 <div
-                  class="col-sm-12"
+                  class="col-md-12"
                   id="bikeUserAccessAdminDiv"
                   style="display: none"
                 >
                   <h4>Accès des utilisateurs à ce vélo</h4>
                 </div>
                 <div
-                  class="form-group col-sm-12"
+                  class="form-group col-md-12"
                   id="bikeUserAccessAdmin"
                   style="display: none"
                 ></div>
               </div>
-              <div class="col-sm-12">
+              <div class="col-md-12">
                 <button
                   class="button small green button-3d rounded icon-left bikeManagementSend"
                   type="submit" name="testFermer"
@@ -376,7 +384,7 @@
             </form>
 
             <div class="separator bikeActions" class="hidden"></div>
-            <div class="col-sm-12 bikeActions" class="hidden">
+            <div class="col-md-12 bikeActions" class="hidden">
               <h4 class="text-green">Actions prises sur le vélo</h4>
               <form
                 id="widget-addActionBike-form"
@@ -401,8 +409,8 @@
                   class="form-control required hidden"
                   value="add"
                 />
-                <div class="col-sm-12">
-                  <div class="col-sm-3">
+                <div class="col-md-12">
+                  <div class="col-md-3">
                     <label for="widget-addActionBike-form-date" class="hidden"
                       >Date</label
                     >
@@ -412,7 +420,7 @@
                       class="form-control required hidden"
                     />
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-md-6">
                     <label
                       for="widget-addActionBike-form-description"
                       class="hidden"
@@ -424,7 +432,7 @@
                       class="form-control required hidden"
                     ></textarea>
                   </div>
-                  <div class="col-sm-2">
+                  <div class="col-md-2">
                     <label for="widget-addActionBike-form-public" class="hidden"
                       >Public ?</label
                     >
@@ -434,7 +442,7 @@
                       class="form-control hidden"
                     />
                   </div>
-                  <div class="col-sm-1">
+                  <div class="col-md-1">
                     <button
                       class="button small green button-3d rounded icon-left hidden addActionConfirmButton"
                       type="submit"
@@ -447,7 +455,7 @@
               <span id="action_bike_log"></span>
             </div>
             <div class="separator billsInfos" style="display: block"></div>
-            <div class="col-sm-12 billsInfos" style="display: block">
+            <div class="col-md-12 billsInfos" style="display: block">
               <h4 class="text-green">Factures du vélo</h4>
               <span id="bills_bike"></span>
             </div>

@@ -27,59 +27,6 @@
           style="width: 100%"
         ></table>
       </div>
-      <script>
-        $(".ordersManagerClick").click(function () {
-          $("#companiesOrderable").dataTable({
-            destroy: true,
-            ajax: {
-              url: "apis/Kameo/companies/companies.php",
-              contentType: "application/json",
-              type: "GET",
-              data: {
-                action: "listCafetariaCompanies",
-              },
-            },
-            sAjaxDataProp: "",
-            columnDefs: [{ width: "100%", targets: 0 }],
-            columns: [
-              {
-                title: "Name",
-                data: "COMPANY_NAME",
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                  var cafetaria = oData.CAFETARIA === "Y" ? true : false;
-                  var discount = oData.DISCOUNT;
-                  var tva = oData.TVA_INCLUDED === "Y" ? true : false;
-                  var type = oData.CAFETERIA_TYPE;
-                  var types = oData.CAFETERIA_TYPES;
-                  $(nTd).html(
-                    "<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='" +
-                      cafetaria +
-                      "'data-discount='" +
-                      discount +
-                      "'data-tva='" +
-                      tva +
-                      "'data-types='" +
-                      types +
-                      "'data-type='" +
-                      type +
-                      "' data-company='" +
-                      sData +
-                      "'>" +
-                      sData +
-                      "</a>"
-                  );
-                },
-              },
-              { title: "Bikes", data: "NUM_OF_ORDERABLE" },
-              { title: "Cafetaria", data: "CAFETARIA" },
-            ],
-            order: [
-              [2, "desc"],
-              [0, "asc"],
-            ],
-          });
-        });
-      </script>
       <div class="separator"></div>
       <h4 class="text-green">Gérer les commandes</h4>
       <a class="button small green button-3d rounded icon-right addOrder" data-target="#orderManager" data-toggle="modal" href="#">

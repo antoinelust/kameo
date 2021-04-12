@@ -28,14 +28,14 @@ include 'include/head.php';
         <!-- CONTENT -->
         <section>
             <div class="container-fullwidth">
-				<h1 class="text-green text-center">Choisissez un type d'utilisation</h1>
+				<h1 class="text-green text-center"><?=L::generic_usage; ?></h1>
 
 				<div class="col-md-10 center">
 
 					<a href="catalogue.php?category=Ville et Chemin">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_villeetchemin.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Ville et Chemin</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Ville_et_chemin; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
@@ -43,7 +43,7 @@ include 'include/head.php';
 					<a href="catalogue.php?category=Tout chemin">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_toutchemin.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Tout chemin</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Tout_chemin; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
@@ -51,7 +51,7 @@ include 'include/head.php';
 					<a href="catalogue.php?category=VTT">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_vtt.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">VTT</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_VTT; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
@@ -59,7 +59,7 @@ include 'include/head.php';
 					<a href="catalogue.php?category=Ville">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_ville.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Ville</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Ville; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
@@ -67,7 +67,7 @@ include 'include/head.php';
 					<a href="catalogue.php?category=Speedpedelec">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_speedpedelec.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Speedpedelec</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Speedpedelec; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
@@ -75,34 +75,30 @@ include 'include/head.php';
 					<a href="catalogue.php?category=Cargo">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_cargo.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Cargo et Famille</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Cargo; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
-
 					<a href="catalogue.php?category=Pliant">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_pliant.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Pliants</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Pliant; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
-
 					<a href="catalogue.php?category=Gravel">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_gravel.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Gravel</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Gravel; ?></h3></div>
 							<div class="space"></div>
 						</div>
 					</a>
-
 					<a href="catalogue.php?category=Enfant">
 						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
 							<img src="images/Cover_Catalogue/Cover_Catalogue_enfants.jpg" alt="Snow" style="width:100%;">
-							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light">Enfants</h3></div>
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Enfant; ?></h3></div>
 						</div>
 					</a>
-
 				</div>
 
             </div>

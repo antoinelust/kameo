@@ -24,8 +24,8 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 			}
     }else if($action === 'list'){
-			if(get_user_permissions("bills", $token)){
-				include 'get_list_of_companies_bills.php';
+			if(get_user_permissions(["admin", "bills"], $token)){
+				include 'get_bills_listing.php';
 			}else{
 				error_message('403');
 			}

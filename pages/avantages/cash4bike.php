@@ -192,16 +192,16 @@
                                     console.log(response);
 
                                     if(response.totalImpact>=0){
-                                        $('#impactOnNetSalary').html("Coût réel du vélo : "+response.totalImpact+" €/mois")
-                                        $('#impactOnNetSalaryText').html("En souscrivant à une location, cela vous coutera réellement "+response.totalImpact+"€ par mois. <br>Ce montant comprend votre vélo (référence/modèle), une assurance p-vélo et un entretien annuel.")
+                                        $('#impactOnNetSalary').html(traduction.cash4Bike_impactOnNetSalary+" "+response.totalImpact+" €/"+traduction.generic_mois)
+                                        $('#impactOnNetSalaryText').html(traduction.cash4Bike_impactOnNetSalaryText1+" "+response.totalImpact+traduction.cash4Bike_cash4Bike_impactOnNetSalaryText2)
                                     }else if(response.totalImpact<0){
-                                        $('#impactOnNetSalary').html("Gain réalisé grâce au vélo : "+Math.abs(response.totalImpact)+" €/mois")
-                                        $('#impactOnNetSalaryText').html("En souscrivant à une location, vous économiserez "+Math.abs(response.totalImpact)+"€ par mois. En d'autre termes, avoir un vélo en leasing vous fera gagner de l'argent !<br>Votre vélo, une assurance p-vélo et un entretien annuel sont inclus.")
+                                        $('#impactOnNetSalary').html(traduction.cash4Bike_gain+" : "+Math.abs(response.totalImpact)+" €/"+traduction.generic_mois)
+                                        $('#impactOnNetSalaryText').html(traduction.cash4Bike_impactOnNetSalaryText3+" "+Math.abs(response.totalImpact)+traduction.cash4Bike_impactOnNetSalaryText4)
 
                                     }
 
                                     if(response.impactCarSavingCO2>0){
-                                        $('#impactOnCO2').html("Gain de CO2 réalisé par mois : "+response.impactCarSavingCO2+" kg.CO2/mois")
+                                        $('#impactOnCO2').html(traduction.cash4Bike_impactOnCO2+" "+response.impactCarSavingCO2+" kg.CO2/"+traduction.generic_mois)
                                     }
                                 }
                             }
@@ -224,8 +224,7 @@
 		    <h3 class="text-light" id='impactOnNetSalary'></h3>
 		    <h3 class="text-light" id='impactOnCO2'></h3>
 		    <p class="text-light" id='impactOnNetSalaryText'></p>
-
-		    <a class="button black-light button-3d effect fill-vertical"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i>Demandez le détail de votre calcul</span></a>
+		    <a class="button black-light button-3d effect fill-vertical"  data-target="#detail" data-toggle="modal" href="#"><span><i class="fa fa-send"></i><?=L::cash4Bike_askDetails; ?></span></a>
 		</div>
 
 
@@ -314,9 +313,9 @@
 		<!--END: RESULTAT -->
 
 	</div>
-	
-	
-	
+
+
+
 
     <h3><?=L::cash4bike_rent_gain_title;?></h3>
     <p><?=L::cash4bike_rent_gain_subtitle;?><br>

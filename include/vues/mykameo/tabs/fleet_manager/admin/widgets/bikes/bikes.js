@@ -416,6 +416,8 @@ function updateDisplayBikeManagement(type){
     $('#bikeUserAccessAdminDiv').fadeOut("slow");
     $('#bikeBuildingAccessAdmin').fadeOut("slow");
     $('#bikeUserAccessAdmin').fadeOut("slow");
+    $('#widget-bikeManagement-form label[for=address]').removeClass("hidden");
+    $('#widget-bikeManagement-form input[name=address]').removeClass("hidden");
   }else if(type=="stock"){
     $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
     $('.contractInfos').fadeOut("slow");
@@ -433,6 +435,9 @@ function updateDisplayBikeManagement(type){
     $('#bikeUserAccessAdminDiv').fadeOut("slow");
     $('#bikeBuildingAccessAdmin').fadeOut("slow");
     $('#bikeUserAccessAdmin').fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=address]').val("");
+    $('#widget-bikeManagement-form label[for=address]').addClass("hidden");
+    $('#widget-bikeManagement-form input[name=address]').addClass("hidden");
   }else if(type=="order"){
     $('.contractInfos').fadeOut("slow");
     $('.billingInfos').fadeOut("slow");
@@ -449,6 +454,8 @@ function updateDisplayBikeManagement(type){
     $('#bikeUserAccessAdmin').fadeOut("slow");
     $('addBike_firstBuilding').fadeOut("slow");
     $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
+    $('#widget-bikeManagement-form label[for=address]').addClass("hidden");
+    $('#widget-bikeManagement-form input[name=address]').addClass("hidden");
   }else{
     $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
     $('.buyingInfos').fadeIn("slow");
@@ -467,6 +474,8 @@ function updateDisplayBikeManagement(type){
     $('#bikeBuildingAccessAdmin').removeClass("hidden");
     $('#bikeUserAccessAdmin').removeClass("hidden");
     $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', false);
+    $('#widget-bikeManagement-form label[for=address]').removeClass("hidden");
+    $('#widget-bikeManagement-form input[name=address]').removeClass("hidden");
   }
 }
 
@@ -1537,6 +1546,7 @@ function list_bikes_admin(){
         <th>Numéro commande fournisseur </th>
         <th>Taille </th>
         <th>Couleur </th>
+        <th>Assignation </th>
         </tr>
         </thead><tbody>`;
         dest = dest.concat(temp);
@@ -1823,6 +1833,12 @@ function list_bikes_admin(){
     var style = " class='text-green' "
   }
 
+  if(response.bike[i].type=='personnel'){
+    var assignation = response.bike[i].ownerFirstName + " " + response.bike[i].ownerName;
+  }else{
+    var assignation = "/";
+  }
+
   temp =
   '<tr><td>'+
   GPS+
@@ -1866,6 +1882,8 @@ function list_bikes_admin(){
   response.bike[i].size +
   "</td><td>" +
   color +
+  "</td><td>" +
+  assignation +
   "</td></tr>";
   dest = dest.concat(temp);
   i++;
@@ -2079,6 +2097,7 @@ function list_bikes_admin(){
     { width: "50px" },
     { width: "100px" },
     { width: "180px" },
+    { width: "100px" },
     { width: "100px" },
     { width: "100px" },
     { width: "100px" },

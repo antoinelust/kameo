@@ -15,7 +15,7 @@ var arrayToBills=[];
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////Action lié au scan de produit pour le referencement 
+/////////////////////////////////Action lié au scan de produit pour le referencement
 ////////////////////////////////////////////////////////////////
 
 
@@ -25,7 +25,7 @@ function initializeModal(){
 
 	let today = new Date();
 	let dateInThreeYears = new Date(today.getYear()+1903,today.getMonth(), today.getDay());
-	
+
 	document.getElementById('testDateToday').value = today.toISOString().substr(0, 10);
 	document.getElementById('testDateIn3years').value = dateInThreeYears.toISOString().substr(0, 10);
 
@@ -41,7 +41,7 @@ function initializeModal(){
 	document.getElementById('resultDisplay').value = '';
 	document.getElementById('scanTitle').innerHTML = 'Scannez Votre Produit pour ajouter la référence';
 	document.getElementById('resultName').innerHTML = 'Etat du scan : Lancez le scan de code barre en appuyant sur start';
-	
+
 	$('#widget-stockScan-form input[name=result]').hide();
 	$('#widget-stockScan-form div[name=typeDiv]').hide();
 	$('#widget-stockScan-form div[name=brandDiv]').hide();
@@ -76,7 +76,7 @@ $('#widget-stockScan-form select[name=type]').change(function(){
 	$('#widget-stockScan-form button[name=sendValue]').hide();
 	$('#widget-stockScan-form div[name=categoryAccessoryDiv]').hide();
 	$('#widget-stockScan-form div[name=modelBrandAccessoryDiv]').hide();
-	
+
 
 	if($('#widget-stockScan-form select[name=type]').val()=='bike'){
 		$('#widget-stockScan-form input[name=action]').val('addBike')
@@ -91,7 +91,7 @@ $('#widget-stockScan-form select[name=type]').change(function(){
 
 })
 
-//////////////Select correspondant au type velo 
+//////////////Select correspondant au type velo
 
 $('#widget-stockScan-form select[name=brand]').change(function(){
 
@@ -128,7 +128,7 @@ $('#widget-stockScan-form input[name=color]').change(function(){
 ///////////////////////////////////////////////////
 
 
-//////////////////Select correspondant au type accessoire 
+//////////////////Select correspondant au type accessoire
 
 $('#widget-stockScan-form select[name=category]').change(function(){
 
@@ -141,7 +141,7 @@ $('#widget-stockScan-form select[name=accessory]').change(function(){
 })
 
 
-////////////////////////////////Recuperation donnes pour les vélo 
+////////////////////////////////Recuperation donnes pour les vélo
 function getDataBike(){
 	$.ajax({
 		url: 'apis/Kameo/scannerForm.php',
@@ -191,7 +191,7 @@ function getModelFromBrand(){
 }
 ////////////////////////////////////////////////////////////////
 
-///////////////////////////Recuperation des données pour les  accessoires 
+///////////////////////////Recuperation des données pour les  accessoires
 
 function getDataAccessory(){
 	$.ajax({
@@ -273,7 +273,7 @@ function displayDataBarcode(){
 					$('#widget-stockScan-form input[name=colorResult]').val(response.color);
 
 					$('#widget-stockScan-form div[name=categoryResultDiv]').hide();
-					
+
 				}
 				else{
 					$('#widget-stockScan-form div[name=brandResultDiv]').show();
@@ -288,20 +288,20 @@ function displayDataBarcode(){
 					$('#widget-stockScan-form div[name=sizeResultDiv]').hide();
 					$('#widget-stockScan-form div[name=colorResultDiv]').hide();
 				}
-			}	
+			}
 		}
 	});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////Fin Action lié au scan de produit pour le referencement 
+/////////////////////////////////Fin Action lié au scan de produit pour le referencement
 ////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////Action lié au scan de produit pour l'ajout de stock 
+/////////////////////////////////Action lié au scan de produit pour l'ajout de stock
 ////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////
@@ -317,7 +317,7 @@ function bindArticle(){
 	document.getElementById('listOrderDiv').style.display='none';
 	$('#bindArticleTooOrder').hide();
 	document.getElementById('resultDisplay').value='';
-	
+
 	$.ajax({
 		url: 'apis/Kameo/scannerForm.php',
 		type: 'get',
@@ -401,7 +401,7 @@ function displaySelectToAddStock(type){
 						if(response.numberAccessoryOrder>0){
 
 							var i =0;
-							
+
 							document.getElementById('listOrderDiv').style.display='block'
 							$('#listOrder').find('option').remove().end();
 							while(i<response.numberAccessoryOrder){
@@ -490,7 +490,7 @@ function displaySelectToAddStock(type){
 						if(response.numberAccessoryOrder>0){
 
 							var i =0;
-							
+
 							$('#widget-stockScanRemove-form div[name=listOrderTypeDiv]').show();
 							$('#widget-stockScanRemove-form select[name=listOrderType]').find('option').remove().end();
 							while(i<response.numberAccessoryOrder){
@@ -526,19 +526,19 @@ function displaySelectToAddStock(type){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////Fin Action lié au scan de produit pour l'ajout de stock 
+/////////////////////////////////Fin Action lié au scan de produit pour l'ajout de stock
 ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////Action lié au scan de produit pour la sortie de stock 
+/////////////////////////////////Action lié au scan de produit pour la sortie de stock
 ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
 function hideAllFromRemove(){
 	let today = new Date();
 	let dateInThreeYears = new Date(today.getYear()+1903,today.getMonth(), today.getDay());
-	
+
 	document.getElementById('testDateToday').value = today.toISOString().substr(0, 10);
 	document.getElementById('testDateIn3years').value = dateInThreeYears.toISOString().substr(0, 10);
 
@@ -550,7 +550,7 @@ function hideAllFromRemove(){
 	$('#widget-stockScanRemove-form div[name=orderCompanyDiv]').hide();
 	$('#widget-stockScanRemove-form button[name=sendValueToRemove]').hide();
 	$('#widget-stockScanRemove-form select[name=typeOutput]').attr("disabled", false);
-	
+
 }
 
 
@@ -569,7 +569,7 @@ $('#widget-stockScanRemove-form select[name=listOrderType]').change(function(){
 	}
 	else {
 		$('#widget-stockScanRemove-form div[name=typeOutputDiv]').show();
-	}	
+	}
 })
 
 $('#widget-stockScanRemove-form select[name=typeOutput]').change(function(){
@@ -589,11 +589,20 @@ $('#widget-stockScanRemove-form select[name=typeOutput]').change(function(){
 
 $('#widget-stockScanRemove-form select[name=orderCompany]').change(function(){
 	tempCompany = $('#widget-stockScanRemove-form select[name=orderCompany]').find(':selected').data('inter');
-	
+
 	$('#widget-stockScanRemove-form input[name=companyInternalReference]').val(tempCompany);
 	changeCompanyAndClient()
 	$('#widget-stockScanRemove-form div[name=orderClientDiv]').show();
 	$('#widget-stockScanRemove-form button[name=sendValueToRemove]').show();
+
+
+	if($('#widget-stockScanRemove-form select[name=typeOutput]').val('selling')){
+		$('#widget-stockScanRemove-form input[name=action]').val('selling');
+	}
+	else{
+		$('#widget-stockScanRemove-form input[name=action]').val('leasingStockPending');
+	}
+
 	$('#widget-stockScanRemove-form input[name=typeArticle]').val(typeToBind);
 })
 
@@ -654,7 +663,7 @@ function displayResultPendingDelivery(){
 					$('#widget-stockScanRemove-form input[name=companyPending]').val(response.company);
 					$('#widget-stockScanRemove-form div[name=clientPendingDiv]').hide();
 				}
-			}	
+			}
 		}
 	});
 }
@@ -683,24 +692,24 @@ function getCompanies() {
 					$('#widget-generateBill-form select[name=companyBills]').append('<option value="'+response.companies[i].id+'" data-inter="'+response.companies[i].internalRef+'" data-name="'+response.companies[i].name+'">'+response.companies[i].name+'</option>');
 					i++;
 				}
-			}	
+			}
 		}
 	});
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////// Fin Action lié au scan de produit pour la sortie de stock 
+///////////////////////////////// Fin Action lié au scan de produit pour la sortie de stock
 ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////Action utilisé pour tous les type de scan 
+/////////////////////////////////Action utilisé pour tous les type de scan
 ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-////////////////////Verifie si le code barre est déja repertorié 
+////////////////////Verifie si le code barre est déja repertorié
 function checkPresent(){
 	document.getElementById('listOrderDiv').style.display='none'
 	$('#bindArticleTooOrder').hide();
@@ -744,11 +753,11 @@ function checkPresent(){
 					displaySelectToAddStock(response.type)
 				}
 				else if(roleButton=='remove'){
-					
+
 					displaySelectToAddStock(response.type)
 				}
 				else if(roleButton=='generateBill'){
-					
+
 					displayToAddBills(response.type,response.id)
 				}
 			}
@@ -764,7 +773,7 @@ window.addEventListener('load', function () {
 	let selectedDeviceId;
 	const codeReader = new ZXing.BrowserBarcodeReader()
 
-	
+
 	codeReader.getVideoInputDevices()
 	.then((videoInputDevices) =>{
 		const sourceSelect = document.getElementById('sourceSelect');
@@ -796,10 +805,10 @@ window.addEventListener('load', function () {
 		document.getElementById('stopButton').addEventListener('click', () => {
 			codeReader.reset()
 			document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
-			hideAllFromRemove(); 
+			hideAllFromRemove();
 
 		})
-		
+
 	})
 	.catch((err) => {
 		console.error(err);
@@ -825,7 +834,7 @@ function decodeContiniously(codeReader, selectedDeviceId){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////Fin Action utilisé pour tous les type de scan 
+/////////////////////////////////Fin Action utilisé pour tous les type de scan
 ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -847,14 +856,14 @@ function create_Facture(){
 				let dateToday = new Date().toISOString().substr(0, 10);
 				let today = new Date();
 				let datelimit = new Date(today.getYear()+1903,today.getMonth(), today.getDay()).toISOString().substr(0, 10);
-				
+
 				$.ajax({
 					url: 'apis/Kameo/add_bill.php',
 					type: 'post',
 					data: {"beneficiaryCompany":'KAMEO',
 					"widget-addBill-form-email":email,
 					"scan":'test',
-					"ID":ID, 
+					"ID":ID,
 					"type":'selling',
 					"ID_OUT": ID_OUT,
 					"widget-addBill-form-date":dateToday,
@@ -865,9 +874,9 @@ function create_Facture(){
 					"communication":communication,
 					"company":$('#widget-stockScanRemove-form select[name=orderCompany]').find(':selected').data('name'),
 					"billType":'automatic',
-					"date":dateToday , 
+					"date":dateToday ,
 					"companyInternalReference":tempCompany,
-					"typeArticle":typeToBind, 
+					"typeArticle":typeToBind,
 					"articleId":$('#widget-stockScanRemove-form select[name=listOrderType]').val(),
 					"articlePrice":price},
 					success: function(response){
@@ -875,20 +884,20 @@ function create_Facture(){
 							console.log('error')
 						}
 						if(response.response == 'success') {
-							hideAllFromRemove(); 
+							hideAllFromRemove();
 							document.getElementById("widget-stockScanRemove-form").reset();
-						}	
+						}
 					}
 				});
-			}	
+			}
 		}
-	});	
+	});
 }
 function getDataForBills(){
 	$.ajax({
-		url: 'apis/Kameo/get_bills_listing.php',
-		type: 'post',
-		data: { "email": email, "company": '*', "sent": '*', "paid": '*', "direction": '*'},
+		url: 'api/bills',
+		type: 'get',
+		data: { "email": email, "company": '*', "sent": '*', "paid": '*', "direction": '*', 'action': 'list'},
 		success: function(response){
 			if(response.response == 'error') {
 				console.log(response.message);
@@ -902,7 +911,7 @@ function getDataForBills(){
 		}
 	});
 }
-/////////////////////////Responsable du changement de fonctionnalité lié au scan 
+/////////////////////////Responsable du changement de fonctionnalité lié au scan
 
 function changeDisplay(type)
 {
@@ -956,7 +965,7 @@ function changeDisplay(type)
 
 	}
 	else if(type == 'bills'){
-		
+
 	}
 }
 
@@ -1015,7 +1024,7 @@ function displayToAddBills(type, id){
 
 						var i =0;
 
-						
+
 						$('#widget-generateBill-form select[name=bikeBills]').find('option').remove().end();
 						while(i<response.numberAccessoryOrder){
 							if(i==0){
@@ -1041,7 +1050,7 @@ function displayToAddBills(type, id){
 	}
 }
 $('#widget-generateBill-form select[name=bikeBills]').change(function(){
-	//add Text 
+	//add Text
 	var article='';
 	var temparr=[];
 	temparr[0]=$('#widget-generateBill-form select[name=bikeBills]').val();
@@ -1102,7 +1111,7 @@ function generateBill(){
 					data: {"beneficiaryCompany":'KAMEO',
 					"widget-addBill-form-email":email,
 					"scan":'billsGeneral',
-					"ID":ID, 
+					"ID":ID,
 					"type":'selling',
 					"ID_OUT": ID_OUT,
 					"widget-addBill-form-date":dateToday,
@@ -1113,7 +1122,7 @@ function generateBill(){
 					"communication":communication,
 					"company":$('#widget-generateBill-form select[name=companyBills]').find(':selected').data('name'),
 					"billType":'automatic',
-					"date":dateToday , 
+					"date":dateToday ,
 					"companyInternalReference":$('#widget-generateBill-form select[name=companyBills]').find(':selected').data('inter'),
 					"bikeArrayId":arrayToBills,
 					"articleNumbers":arrayToBills.length},
@@ -1128,7 +1137,7 @@ function generateBill(){
 							$('#widget-generateBill-form label[name=listArticleBills]').text('List des Articles :');
 							document.getElementById('resultDisplay').value = '';
 							document.getElementById("widget-generateBill-form").reset();
-						}	
+						}
 					}
 				});
 			}

@@ -6,9 +6,12 @@ const box_maintenance_year = 500;
 //liste des contacts
 function get_company_contacts_list(ID) {
   return  $.ajax({
-    url: 'apis/Kameo/get_company_contact.php',
-    type: 'post',
-    data: { 'ID' : ID },
+    url: 'api/companies',
+    type: 'get',
+    data: {
+      'action' : 'getCompanyContacts',
+      'ID' : ID
+     },
     success: function(response){
       if(response.response == 'error') {
         console.log(response.message);
@@ -825,7 +828,7 @@ $('body').on('click','.getTemplate', function(){
       $('#selectFinance'+accessoriesNumber).val("");
 
       $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalPrice')
-      .append('<input type="text" name="accesoryFinalPrice[]" class="form-control required">');
+      .append('<input type="text" name="accessoryFinalPrice[]" class="form-control required">');
       $('#template').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.accessoryFinalprice').val("");
 
 

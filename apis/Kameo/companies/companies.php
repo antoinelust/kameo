@@ -32,7 +32,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			}
 		}else if($action=="listMinimal"){
 			if(get_user_permissions("admin", $token)){
-				$response['company']=execSQL("SELECT c.ID, COMPANY_NAME AS companyName, INTERNAL_REFERENCE AS internalReference FROM companies c WHERE STAANN != 'D'", array(), false);
+				$response['company']=execSQL("SELECT c.ID, COMPANY_NAME AS companyName, INTERNAL_REFERENCE AS internalReference FROM companies c WHERE STAANN != 'D' ORDER BY COMPANY_NAME", array(), false);
 				$response['response']="success";
 				echo json_encode($response);
 				die;
@@ -45,6 +45,11 @@ switch($_SERVER["REQUEST_METHOD"])
 					echo json_encode(mysqli_fetch_all($result, MYSQLI_ASSOC));
 					$result->close();
 				}
+			}else
+				error_message('403');
+		}else if($action === 'getCompanyContacts'){
+			if(get_user_permissions("admin", $token)){
+				include 'get_company_contact.php';
 			}else
 				error_message('403');
 		}

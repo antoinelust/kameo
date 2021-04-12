@@ -96,7 +96,6 @@ function initializeFields() {
     .remove()
     .end();
 
-
   $.ajax({
     url: "api/companies",
     type: "get",
@@ -159,10 +158,11 @@ function initializeFields() {
           );
           $("#widget-addBill-form select[name=company]").append(
             '<option value= "' +
-            response.company[i].ID +
+            response.company[i].internalReference +
             '">' +
             response.company[i].companyName +  "<br>"
           );
+          $("#widget-addBill-form select[name=company]").val("");
 
           $("#widget-manageStockAccessory-form select[name=company]").append(
             '<option value= "' +

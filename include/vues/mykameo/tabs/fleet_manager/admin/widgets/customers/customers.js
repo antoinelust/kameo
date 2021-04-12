@@ -174,7 +174,7 @@ function get_company_boxes(company) {
 //FleetManager: Gérer les clients | Displays the companies graph by calling get_companies_listing.php and creating it
 function generateCompaniesGraphic(dateStart, dateEnd) {
   $.ajax({
-    url: "apis/Kameo/get_companies_listing.php",
+    url: "api/companies",
     type: "get",
     data: {
       action: "graphic",
@@ -308,6 +308,7 @@ function get_company_listing() {
       [0, "asc"]
     ],
   });
+  $('#companyDetails').off();
   $('#companyDetails').on('shown.bs.modal', function(event){
     get_company_details($(event.relatedTarget).attr('name'));
   })
@@ -326,7 +327,7 @@ function get_company_listing() {
   });
 }
 
-function get_company_details(ID, getCompanyContacts = false) {
+function get_company_details(ID) {
   var internalReference;
   $.ajax({
     url: "apis/Kameo/companies/companies.php",
@@ -340,9 +341,7 @@ function get_company_details(ID, getCompanyContacts = false) {
         $("#companyIdHidden").val(response.ID);
         $("#companyIdTemplate").val(response.ID);
         get_company_boxes(response.internalReference);
-        if (getCompanyContacts == true) {
-          get_company_contacts(response.ID);
-        }
+        get_company_contacts(response.ID);
 
         remove_contact_form(true);
         $("#widget-companyDetails-form input[name=ID]").val(response.ID);
@@ -1188,118 +1187,115 @@ function delete_contact(contact, id) {
 //Module gérer les clients ==> un client ==> list les contacts
 function get_company_contacts(ID) {
   $.ajax({
-    url: "apis/Kameo/get_company_contact.php",
-    method: "post",
-    data: { ID: ID },
+    url: "api/companies",
+    method: "get",
+    data: {
+      action : 'getCompanyContacts',
+      ID: ID
+    },
     success: function (response) {
       initialize_company_contacts();
       var contactContent = `
-	<table class="table contactsTable">
-	<thead>
-	<tr>
-	<th><label class="fr">Email: </label><label class="en">Email: </label><label class="nl">Email: </label></th>
-	<th><label class="fr">Nom: </label><label class="en">Lastname: </label><label class="nl">Lastname: </label></th>
-	<th><label class="fr">Prénom: </label><label class="en">Firstname: </label><label class="nl">Firstname: </label></th>
-	<th><label class="fr">Téléphone: </label><label class="en">Phone: </label><label class="nl">Phone: </label></th>
-	<th><label class="fr">Fonction: </label><label class="en">Function: </label><label class="nl">Function: </label></th>
-	<th><label class="fr">Statistiques vélos: </label><label class="en">Bikes stats: </label><label class="nl">Bikes stats: </label></th>
-	<th></th>
-	<th></th>
-	</tr>
-	</thead>
-	<tbody>`;
-      nbContacts = response.length;
-      for (var i = 0; i < response.length; i++) {
-        var contactId =
-          response[i].contactId != undefined ? response[i].contactId : "";
-        var email =
-          response[i].emailContact != undefined ? response[i].emailContact : "";
-        var lastName =
-          response[i].lastNameContact != undefined
-            ? response[i].lastNameContact
-            : "";
-        var firstName =
-          response[i].firstNameContact != undefined
-            ? response[i].firstNameContact
-            : "";
-        var phone = response[i].phone != undefined ? response[i].phone : "";
-        var fonction =
-          response[i].fonction != undefined ? response[i].fonction : "";
-        var bikesStatsChecked = "";
-        if (response[i].bikesStats == "Y") {
-          bikesStatsChecked = "checked";
+    	<table class="table contactsTable">
+    	<thead>
+    	<tr>
+    	 <th><label>Email: </label></th><th><label>Nom: </label></th><th><label>Prénom: </label></th><th><label>Téléphone: </label></th><th>Fonction: </label></th><th><label>Statistiques vélos: </label></th><th></th><th></th>
+    	</tr>
+    	</thead>
+    	<tbody>`;
+      if(response != null){
+        for (var i = 0; i < response.length; i++) {
+          var contactId =
+            response[i].contactId != undefined ? response[i].contactId : "";
+          var email =
+            response[i].emailContact != undefined ? response[i].emailContact : "";
+          var lastName =
+            response[i].lastNameContact != undefined
+              ? response[i].lastNameContact
+              : "";
+          var firstName =
+            response[i].firstNameContact != undefined
+              ? response[i].firstNameContact
+              : "";
+          var phone = response[i].phone != undefined ? response[i].phone : "";
+          var fonction =
+            response[i].fonction != undefined ? response[i].fonction : "";
+          var bikesStatsChecked = "";
+          if (response[i].bikesStats == "Y") {
+            bikesStatsChecked = "checked";
+          }
+          contactContent +=
+            `
+        	  <tr class="form-group">
+        	  <td>
+        	  <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail` +
+                  response[i].contactId +
+                  `" id="contactEmail` +
+                  response[i].contactId +
+                  `" value="` +
+                  email +
+                  `" required/>
+        	  </td>
+        	  <td>
+        	  <input type="text" class="form-control required lastName" readonly="true"  name="contactNom` +
+                  response[i].contactId +
+                  `" id="contactNom` +
+                  response[i].contactId +
+                  `" value="` +
+                  lastName +
+                  `" required/>
+        	  </td>
+        	  <td>
+        	  <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom` +
+                  response[i].contactId +
+                  `" id="contactPrenom` +
+                  response[i].contactId +
+                  `" value="` +
+                  firstName +
+                  `" required/>
+        	  </td>
+        	  <td>
+        	  <input type="tel" class="form-control phone" readonly="true"  name="contactPhone` +
+                  response[i].contactId +
+                  `" id="contactPhone` +
+                  response[i].contactId +
+                  `" value="` +
+                  phone +
+                  `"/>
+        	  </td>
+        	  <td>
+        	  <input type="text" class="form-control fonction" readonly="true"  name="contactFunction` +
+                  response[i].contactId +
+                  `" id="contactFunction` +
+                  response[i].contactId +
+                  `" value="` +
+                  fonction +
+                  `"/>
+        	  </td>
+        	  <td>
+        	  <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats` +
+                  response[i].contactId +
+                  `" id="contactBikesStats` +
+                  response[i].contactId +
+                  `" value="bikesStats" ` +
+                  bikesStatsChecked +
+                  `/>
+        	  </td>
+        	  <td>
+        	  <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil" type="button"></button>
+        	  </td>
+        	  <td>
+        	  <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove" type="button"></button>
+        	  </td>
+        	  <input type="hidden" class="contactIdHidden" name="contactId` +
+                  response[i].contactId +
+                  `" id="contactId` +
+                  response[i].contactId +
+                  `" value="` +
+                  contactId +
+                  `" />
+        	  </tr>`;
         }
-        contactContent +=
-          `
-	  <tr class="form-group">
-	  <td>
-	  <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail` +
-          response[i].contactId +
-          `" id="contactEmail` +
-          response[i].contactId +
-          `" value="` +
-          email +
-          `" required/>
-	  </td>
-	  <td>
-	  <input type="text" class="form-control required lastName" readonly="true"  name="contactNom` +
-          response[i].contactId +
-          `" id="contactNom` +
-          response[i].contactId +
-          `" value="` +
-          lastName +
-          `" required/>
-	  </td>
-	  <td>
-	  <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom` +
-          response[i].contactId +
-          `" id="contactPrenom` +
-          response[i].contactId +
-          `" value="` +
-          firstName +
-          `" required/>
-	  </td>
-	  <td>
-	  <input type="tel" class="form-control phone" readonly="true"  name="contactPhone` +
-          response[i].contactId +
-          `" id="contactPhone` +
-          response[i].contactId +
-          `" value="` +
-          phone +
-          `"/>
-	  </td>
-	  <td>
-	  <input type="text" class="form-control fonction" readonly="true"  name="contactFunction` +
-          response[i].contactId +
-          `" id="contactFunction` +
-          response[i].contactId +
-          `" value="` +
-          fonction +
-          `"/>
-	  </td>
-	  <td>
-	  <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats` +
-          response[i].contactId +
-          `" id="contactBikesStats` +
-          response[i].contactId +
-          `" value="bikesStats" ` +
-          bikesStatsChecked +
-          `/>
-	  </td>
-	  <td>
-	  <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil" type="button"></button>
-	  </td>
-	  <td>
-	  <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove" type="button"></button>
-	  </td>
-	  <input type="hidden" class="contactIdHidden" name="contactId` +
-          response[i].contactId +
-          `" id="contactId` +
-          response[i].contactId +
-          `" value="` +
-          contactId +
-          `" />
-	  </tr>`;
       }
       contactContent += "</tbody></table>";
       $(".clientContactZone").append(contactContent);
@@ -1308,7 +1304,7 @@ function get_company_contacts(ID) {
 }
 
 //Module gérer les clients ==> ajouter un batiment à un client
-function add_building(company) {
+function add_building(company){
   $.ajax({
     url: "apis/Kameo/get_bikes_listing.php",
     type: "post",

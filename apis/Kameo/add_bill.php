@@ -58,7 +58,6 @@ if($amountHTVA>0 && $type == 'credit' && $company!="KAMEO"){
   errorMessage("ES0064");
 }
 
-
 if($amountHTVA>0 && $type != "credit" && $company=="KAMEO"){
     errorMessage("ES0047");
 }
@@ -312,11 +311,6 @@ if($billType=='manual'){
 else{
 }
 
-echo json_encode($billType);
-die;
-
-
 $conn->close();
-$response['sql']=$sql;
 successMessage("SM0012");
 ?>

@@ -17,7 +17,10 @@ window.addEventListener("DOMContentLoaded", function(event) {
       $('#widget-addBill-form input[name=widget-addBill-form-file]').removeClass("required");
     }
   });
-  document.getElementsByClassName('billsManagerClick')[0].addEventListener('click', function() {get_bills_listing('*', '*', '*', '*', email)});
+  $('.billsManagerClick').off();
+  $('.billsManagerClick').click(function(){
+    get_bills_listing('*', '*', '*', '*', email);
+  });
 });
 
 $( ".fleetmanager" ).click(function() {
@@ -35,6 +38,70 @@ $( ".fleetmanager" ).click(function() {
     }
   })
 })
+
+
+$('#widget-addBill-form select[name=company]').off();
+
+$('.widget-addBill-form-company').change(function(){
+  var e = document.getElementsByClassName('widget-addBill-form-company')[0];
+  var valueSelect = e.options[e.selectedIndex].value;
+  $('#widget-addBill-form input[name=communication]').attr('readonly', true);
+  if(valueSelect=='other'){
+    $('.widget-addBill-form-companyOther').removeClass("hidden");
+    $('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());
+    $('input[name=beneficiaryCompany]').attr('readonly', true);
+    $('input[name=beneficiaryCompany]').val('KAMEO');
+  }else if(valueSelect=='KAMEO'){
+    $('input[name=beneficiaryCompany]').attr('readonly', false);
+    $('input[name=beneficiaryCompany]').val('');
+    $('#widget-addBill-form input[name=communication]').attr('readonly', false);
+    $('#widget-addBill-form input[name=communication]').val('');
+  }
+  else{
+    $('.widget-addBill-form-companyOther').addClass("hidden");
+    $('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());
+    $('input[name=beneficiaryCompany]').attr('readonly', true);
+    $('input[name=beneficiaryCompany]').val('KAMEO');
+    $('.IDAddBill').removeClass("hidden");
+    $('.IDAddBillOut').removeClass("hidden");
+  }
+});
+$('#widget-addBill-form input[name=beneficiaryCompany]').change(function(){
+  if($('#widget-addBill-form input[name=beneficiaryCompany]').val()=='KAMEO'){
+    $('.IDAddBill').removeClass("hidden");
+    $('.IDAddBillOut').removeClass("hidden");
+  }else{
+    $('.IDAddBill').addClass("hidden");
+    $('.IDAddBillOut').addClass("hidden");
+  }
+});
+$('#widget-addBill-form select[name=type]').change(function(){
+  if($('#widget-addBill-form select[name=type]').val()=="autre"){
+    $('#widget-addBill-form input[name=typeOther]').removeClass("hidden");
+    $('#widget-addBill-form input[name=typeOther]').addClass("required");
+    $('#widget-addBill-form label[for=typeOther]').removeClass("hidden");
+  }else{
+    $('#widget-addBill-form input[name=typeOther]').addClass("hidden");
+    $('#widget-addBill-form input[name=typeOther]').removeClass("required");
+    $('#widget-addBill-form label[for=typeOther]').addClass("hidden");
+  }
+});
+$('input[name=widget-addBill-form-amountHTVA]').change(function(){
+  if($('input[name=widget-addBill-form-VAT]').is(':checked')){
+    $('input[name=widget-addBill-form-amountTVAC]').val((1.21*$('input[name=widget-addBill-form-amountHTVA]').val()).toFixed(2));
+  }else{
+    $('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
+  }
+});
+$('.widget-addBill-form-VAT').change(function(){
+  if($('input[name=widget-addBill-form-VAT]').is(':checked')){
+    $('input[name=widget-addBill-form-amountTVAC]').val((1.21*$('input[name=widget-addBill-form-amountHTVA]').val()).toFixed(2));
+  }else{
+    $('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
+  }
+});
+
+
 
 function construct_form_for_billing_status_update(ID){
   $.ajax({
@@ -91,13 +158,13 @@ function construct_form_for_billing_status_update(ID){
         }
       }
       document.getElementById('billingDetails').innerHTML=dest.concat("</tbody><table>");
-      displayLanguage();
     }
   }
 });
 }
 
 function create_bill(){
+  $("#widget-addBill-form select[name=company]").val("");
   document.getElementsByClassName('widget-addBill-form-date')[0].value = "";
   document.getElementsByClassName('widget-addBill-form-amountHTVA')[0].value = "";
   document.getElementsByClassName('widget-addBill-form-amountTVAC')[0].value = "";
@@ -107,129 +174,6 @@ function create_bill(){
   $('.IDAddBill').removeClass('hidden');
   $('.IDAddBillOut').removeClass('hidden');
 
-  //création des variables
-  var bikes = [];
-  get_all_bikes_stock_command().done(function(response){
-    bikes = response.bike;
-    if(bikes == undefined){
-      bikes =[];
-      console.log('bikes => table vide');
-    }
-    //tableau bikes avec tout les champs
-    var bikeModels = "<option hidden disabled selected value></option>";
-
-    //gestion du moins au lancement de la page
-    checkMinus('.generateBillBike','.bikesNumber');
-    checkMinus('.generateBillAccessories','.accessoriesNumber');
-    checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
-    checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
-
-
-    //velo
-
-    for (var i = 0; i < bikes.length; i++) {
-      bikeModels += '<option value="' + bikes[i].id + '">' + bikes[i].id + ' - ' + bikes[i].brand + ' - ' + bikes[i].model + '</option>';
-    }
-
-    //a chaque modification du nombre de vélo
-    //ajout
-    $('.generateBillBike .glyphicon-plus').unbind();
-    $('.generateBillBike .glyphicon-plus').click(function(){
-      bikesNumber = $("#addBill").find('.bikesNumber').html()*1+1;
-      $('#addBill').find('.bikesNumber').html(bikesNumber);
-      $('#addBill').find('#bikesNumberBill').val(bikesNumber);
-
-
-      var hideBikepVenteHTVA;
-      var hideBikeLeasing ='';
-      var inRecapLeasingBike ='';
-      var inRecapVenteBike ='';
-
-      //creation du div contenant
-      $('#addBill').find('.generateBillBike tbody')
-      .append(`<tr class="bikesNumberTable`+(bikesNumber)+` bikeRow form-group">
-        <td class="bLabel"></td>
-        <td class="bikeID"></td>
-        <td class="billType"></td>
-        <td class="bikepAchat"></td>
-        <td class="bikepCatalog"></td>
-        <td contenteditable='true' class="bikepVenteHTVA TD_bikepVenteHTVA `+inRecapVenteBike+`"`+hideBikepVenteHTVA+`></td>
-        <td class="bikeMarge"></td>
-        <td><input type="number" name="bikeFinalPrice[]" class="bikeFinalPrice hidden"></td>
-        </tr>`);
-
-      //label selon la langue
-      $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bLabel')
-      .append('<label>Vélo '+ bikesNumber +'</label>');
-
-      $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bikeID')
-      .append(`<select name="bikeID[]" class="select`+bikesNumber+` bikeID form-control required">`+
-        bikeModels+`</select>`);
-
-
-        //type de facture
-        $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.billType')
-        .append("<select><option value='vente'>Vente</option><option value'location'>Location</option></select>");
-
-      //gestion du select du velo
-      $('.generateBillBike select').on('change',function(){
-        console.log('')
-
-        var that ='.'+ $(this).attr('class').split(" ")[0];
-        var id =$(that).val();
-
-        //récupère le bon index même si le tableau est désordonné
-        id = getIndex(bikes, id);
-          //gestion de prix null
-          if (bikes[id].buyingPrice == null) {
-            pAchat = 'non renseigné';
-            pVenteHTVA = 'non renseigné';
-            var marge = 'non calculable';
-          }else{
-            var pAchat = bikes[id].buyingPrice + '€ ';
-            var pVenteHTVA = bikes[id].priceHTVA + '€ ';
-            var marge = (bikes[id].priceHTVA - bikes[id].buyingPrice).toFixed(0) + '€ (' + ((bikes[id].priceHTVA - bikes[id].buyingPrice)/(bikes[id].buyingPrice)*100).toFixed(0) + '%)';
-          }
-
-          $(that).parents('.bikeRow').find('.bikepAchat').html(pAchat + " <span class=\"text-red\">(-)</span>");
-          $(that).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
-          $(that).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
-          $(that).parents('.bikeRow').find('.bikepVenteHTVA').attr('data-orig',pVenteHTVA);
-          $(that).parents('.bikeRow').find('.bikeMarge').html(marge);
-          $(that).parents('.bikeRow').find('.bikeFinalPrice').val(bikes[id].priceHTVA);
-        });
-      checkMinus('.generateBillBike','.bikesNumber');
-
-      $('#widget-addBill-form .bikeRow .bikepVenteHTVA').blur(function(){
-        var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
-        var newPrice=this.innerHTML.split('€')[0];
-        if(initialPrice==newPrice){
-          $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
-        }else{
-          var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
-          $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
-        }
-        var buyingPrice=$(this).parents('.bikeRow').find('.bikepAchat').html().split('€')[0];
-        var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
-        $(this).parents('.bikeRow').find('.bikeMarge').html(marge);
-        $(this).parents('.bikeRow').find('.bikeFinalPrice').val(newPrice);
-      });
-    });
-
-    //retrait
-    $('.generateBillBike .glyphicon-minus').unbind();
-
-    $('.generateBillBike .glyphicon-minus').click(function(){
-      bikesNumber = $("#addBill").find('.bikesNumber').html();
-      if(bikesNumber > 0){
-        $('#addBill').find('.bikesNumber').html(bikesNumber*1 - 1);
-        $('#bikesNumberBill').val(bikesNumber*1 - 1);
-        $('#addBill').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
-        bikesNumber--;
-      }
-      checkMinus('.generateBillBike','.bikesNumber');
-    });
-  });
 
   //Accessoires
   get_all_accessories().done(function(response){
@@ -359,7 +303,6 @@ function create_bill(){
       }
       checkMinus('.generateBillAccessories','.accessoriesNumber');
     });
-
   });
 
   $('.generateBillOtherAccessories .glyphicon-plus').unbind();
@@ -451,14 +394,154 @@ function create_bill(){
   $('#widget-addBill-form input[name=widget-addBill-form-datelimite]').val(dateInOneMonthString);
 }
 
+$('#widget-addBill-form select[name=company]').change(function(){
+  //création des variables
+
+  var bikesNumber=0;
+  $('#addBill').find('.bikesNumber').html(bikesNumber);
+  $('#addBill').find('#bikesNumberBill').val(bikesNumber);
+  $('#addBill').find('.generateBillBike tbody').html("");
+  var bikeModels = "<option hidden disabled selected value></option>";
+  var bikes = [];
+
+
+
+  $.ajax({
+    url: 'api/bikes',
+    type: 'get',
+    data: {
+      'action' : 'listPendingDeliveryBikes',
+      'company' : $(this).val()
+    },
+    success: function(response){
+        if(response == null){
+          $.notify({
+            message: "Pas de vélos en attente de livraison pour ce client"
+          }, {
+            type: 'warning'
+          });
+          $('.generateBillBike .glyphicon-plus').unbind();
+          $('.generateBillBike .glyphicon-plus').click(function(){
+            $.notify({
+              message: "Pas de vélos en attente de livraison pour ce client"
+            }, {
+              type: 'warning'
+            });
+          });
+          return false;
+        }
+        bikes = response;
+        //tableau bikes avec tout les champs
+
+        //gestion du moins au lancement de la page
+        checkMinus('.generateBillBike','.bikesNumber');
+        checkMinus('.generateBillAccessories','.accessoriesNumber');
+        checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
+        checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+
+        //velo
+
+        for (var i = 0; i < bikes.length; i++) {
+          bikeModels += '<option value="' + bikes[i].id + '">' + bikes[i].id + ' - ' + bikes[i].brand + ' - ' + bikes[i].model + '</option>';
+        }
+
+        //a chaque modification du nombre de vélo
+        //ajout
+        $('.generateBillBike .glyphicon-plus').unbind();
+        $('.generateBillBike .glyphicon-plus').click(function(){
+          bikesNumber = $("#addBill").find('.bikesNumber').html()*1+1;
+          $('#addBill').find('.bikesNumber').html(bikesNumber);
+          $('#addBill').find('#bikesNumberBill').val(bikesNumber);
+
+          //creation du div contenant
+          $('#addBill').find('.generateBillBike tbody')
+          .append(`<tr class="bikesNumberTable`+(bikesNumber)+` bikeRow form-group">
+            <td class="bLabel"></td>
+            <td class="bikeID"></td>
+            <td class="bikepAchat"></td>
+            <td class="bikepCatalog"></td>
+            <td contenteditable='true' class="bikepVenteHTVA TD_bikepVenteHTVA"></td>
+            <td class="bikeMarge"></td>
+            <td class="hidden"><input type="number" name="bikeFinalPrice[]" class="bikeFinalPrice"></td>
+            </tr>`);
+
+          //label selon la langue
+          $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bLabel')
+          .append('<label>Vélo '+ bikesNumber +'</label>');
+
+          $('#addBill').find('.bikesNumberTable'+(bikesNumber)+'>.bikeID')
+          .append(`<select name="bikeID[]" class="select`+bikesNumber+` bikeID form-control required">`+
+            bikeModels+`</select>`);
+
+
+          //gestion du select du velo
+          $('.generateBillBike .bikeID select').on('change',function(){
+
+            var id =$(this).val();
+
+
+            //récupère le bon index même si le tableau est désordonné
+            id = getIndex(bikes, id);
+              //gestion de prix null
+              if (bikes[id].buyingPrice == null) {
+                pAchat = 'non renseigné';
+                pVenteHTVA = 'non renseigné';
+                var marge = 'non calculable';
+              }else{
+                var pAchat = bikes[id].buyingPrice + '€ ';
+                var pVenteHTVA = bikes[id].priceHTVA + '€ ';
+                var marge = (bikes[id].priceHTVA - bikes[id].buyingPrice).toFixed(0) + '€ (' + ((bikes[id].priceHTVA - bikes[id].buyingPrice)/(bikes[id].buyingPrice)*100).toFixed(0) + '%)';
+              }
+
+              $(this).parents('.bikeRow').find('.bikepAchat').html(pAchat + " <span class=\"text-red\">(-)</span>");
+              $(this).parents('.bikeRow').find('.bikepCatalog').html(pVenteHTVA);
+              $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(pVenteHTVA);
+              $(this).parents('.bikeRow').find('.bikepVenteHTVA').attr('data-orig',pVenteHTVA);
+              $(this).parents('.bikeRow').find('.bikeMarge').html(marge);
+              $(this).parents('.bikeRow').find('.bikeFinalPrice').val(bikes[id].priceHTVA);
+            });
+          checkMinus('.generateBillBike','.bikesNumber');
+
+          $('#widget-addBill-form .bikeRow .bikepVenteHTVA').blur(function(){
+            var initialPrice=this.getAttribute('data-orig',this.innerHTML).split('€')[0];
+            var newPrice=this.innerHTML.split('€')[0];
+            if(initialPrice==newPrice){
+              $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span>");
+            }else{
+              var reduction=Math.round((newPrice*1-initialPrice*1)/(initialPrice*1)*100);
+              $(this).parents('.bikeRow').find('.bikepVenteHTVA').html(newPrice + '€ ' + " <span class=\"text-green\">(+)</span> <br/><span class=\"text-red\">("+reduction+"%)</span> ");
+            }
+            var buyingPrice=$(this).parents('.bikeRow').find('.bikepAchat').html().split('€')[0];
+            var marge = (newPrice*1 - buyingPrice).toFixed(0) + '€ (' + ((newPrice*1 - buyingPrice)/(buyingPrice*1)*100).toFixed(0) + '%)';
+            $(this).parents('.bikeRow').find('.bikeMarge').html(marge);
+            $(this).parents('.bikeRow').find('.bikeFinalPrice').val(newPrice);
+          });
+        });
+
+        //retrait
+        $('.generateBillBike .glyphicon-minus').unbind();
+
+        $('.generateBillBike .glyphicon-minus').click(function(){
+          bikesNumber = $("#addBill").find('.bikesNumber').html();
+          if(bikesNumber > 0){
+            $('#addBill').find('.bikesNumber').html(bikesNumber*1 - 1);
+            $('#bikesNumberBill').val(bikesNumber*1 - 1);
+            $('#addBill').find('.bikesNumberTable'+bikesNumber).slideUp().remove();
+            bikesNumber--;
+          }
+          checkMinus('.generateBillBike','.bikesNumber');
+        });
+    }
+  })
+});
 
 
 function get_bills_listing(company, sent, paid, direction, email) {
 
   $.ajax({
-    url: 'apis/Kameo/get_bills_listing.php',
-    type: 'post',
-    data: { "email": email, "company": company, "sent": sent, "paid": paid, "direction": direction},
+    url: 'api/bills',
+    type: 'get',
+    data: { "email": email, "company": company, "sent": sent, "paid": paid, "direction": direction, "action" : "list"},
     success: function(response){
       if(response.response == 'error') {
         console.log(response.message);
@@ -477,15 +560,15 @@ function get_bills_listing(company, sent, paid, direction, email) {
 
         if(response.update){
 
-          var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une facture</span></a><thead><tr><th>Type</th><th>ID</th><th style='width : 5%;'>Société</th><th style='width : 5%;'>Date d'initiation</th><th style='width : 5%;'>Montant (HTVA)</th><th style='width : 5%;'>Communication</th><th style='width : 5%;'>Envoi ?</th><th style='width : 5%;'>Payée ?</th><th style='width : 5%;'>Limite de paiement</th><th style='width : 5%;'>Comptable ?</th><th></th></tr></thead><tbody>";
-          var temp3="<table id=\"billsToSendListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><thead><tr><th>ID</th><th><span class=\"fr-inline\">Société</span><span class=\"en-inline\">Company</span><span class=\"nl-inline\">Company</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th>Email</th><th>Prénom</th><th>Nom</th><th></th></tr></thead><tbody>";
+          var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"text-green\">Vos Factures:</h4><br/><a class=\"button small green button-3d rounded icon-right\" data-target=\"#addBill\" data-toggle=\"modal\" onclick=\"create_bill()\" href=\"#\"><i class=\"fa fa-plus\"></i> Ajouter une facture</a><thead><tr><th>Type</th><th>ID</th><th style='width : 5%;'>Société</th><th style='width : 5%;'>Date d'initiation</th><th style='width : 5%;'>Montant (HTVA)</th><th style='width : 5%;'>Communication</th><th style='width : 5%;'>Envoi ?</th><th style='width : 5%;'>Payée ?</th><th style='width : 5%;'>Limite de paiement</th><th style='width : 5%;'>Comptable ?</th><th></th></tr></thead><tbody>";
+          var temp3="<table id=\"billsToSendListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><thead><tr><th>ID</th><th>Société</th><th>Montant</th><th>Date</th><th>Email</th><th>Prénom</th><th>Nom</th><th></th></tr></thead><tbody>";
         }else{
-          var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"fr-inline text-green\">Vos Factures:</h4><h4 class=\"en-inline text-green\">Your Bills:</h4><h4 class=\"nl-inline text-green\">Your Bills:</h4><br/><thead><tr><th>ID</th><th><span class=\"fr-inline\">Date d'initiation</span><span class=\"en-inline\">Generation Date</span><span class=\"nl-inline\">Generation Date</span></th><th><span class=\"fr-inline\">Montant (HTVA)</span><span class=\"en-inline\">Amount (VAT ex.)</span><span class=\"nl-inline\">Amount (VAT ex.)</span></th><th><span class=\"fr-inline\">Communication</span><span class=\"en-inline\">Communication</span><span class=\"nl-inline\">Communication</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th><th><span class=\"fr-inline\">Limite de paiement</span><span class=\"en-inline\">Limit payment date</span><span class=\"nl-inline\">Limit payment date</span></th></tr></thead><tbody>";
+          var temp="<table id=\"billsListingTable\" class=\"table table-condensed\" data-order='[[ 1, \"desc\" ]]' data-page-length='50'><h4 class=\"text-green\">Vos Factures:</h4><br/><thead><tr><th>ID</th><th>Date d'initiation</th><th>Montant (HTVA)</th><th>Communication</th><th>Envoyée ?</th><th>Payée ?</th><th>>Limite de paiement</th></tr></thead><tbody>";
         }
         dest=dest.concat(temp);
         dest3=dest3.concat(temp3);
 
-        while (i < response.billNumber){
+        while (i < response.bill.length){
 
           if(response.bill[i].sentDate==null){
             var sendDate="N/A";
@@ -672,7 +755,6 @@ function get_bills_listing(company, sent, paid, direction, email) {
         for (var i = 0; i < classname.length; i++) {
           classname[i].addEventListener('click', function() {construct_form_for_billing_status_update(this.name)}, false);
         }
-        displayLanguage();
 
         $("#billsListingTable thead tr").clone(true).appendTo("#billsListingTable thead");
 
@@ -698,19 +780,6 @@ function get_bills_listing(company, sent, paid, direction, email) {
       }
     }
   })
-}
-
-function get_all_bikes_stock_command() {
-  return  $.ajax({
-    url: 'apis/Kameo/get_bikes_listing.php',
-    type: 'post',
-    data: {"stockAndCommand": true,  admin: 'Y'},
-    success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
-    }
-  });
 }
 
 //liste des Accessoires

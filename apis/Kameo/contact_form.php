@@ -9,8 +9,6 @@ include 'globalfunctions.php';
 require_once('../../include/php-mailer/PHPMailerAutoload.php');
 $mail = new PHPMailer();
 
-
-
 // Form Fields
 $name = $_POST["name"];
 $firstName = $_POST["firstName"];
@@ -22,7 +20,6 @@ $companySize = isset($_POST["companySize"]) ? $_POST["companySize"] : NULL;
 $subject = isset($_POST["subject"]) ? $_POST["subject"] : "N/A";
 $message = nl2br($_POST["message"]);
 $captcha = strlen($_POST['g-recaptcha-response']);
-
 
 $length = strlen($phone);
 if ($length<8 or $length>12) {

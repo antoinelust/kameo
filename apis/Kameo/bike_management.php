@@ -14,18 +14,6 @@ $token = getBearerToken();
 
 log_inputs($token);
 
-function plan_maintenances($start, $end)
-{
-    $maintenances = array();
-    $date = date('Y-m-d', strtotime("+3 months", strtotime($start)));
-    while ($date <= $end) {
-        $maintenances[] = $date;
-        $date = date('Y-m-d', strtotime("+9 months", strtotime($date)));
-    }
-    return $maintenances;
-}
-
-
 if(isset($_POST['action'])){
     $action=isset($_POST['action']) ? $_POST['action'] : NULL;
 

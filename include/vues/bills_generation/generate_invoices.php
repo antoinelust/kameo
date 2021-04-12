@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
 <?php
-ob_start();
-if(!isset($_SESSION))
-	session_start();
 
-$token=isset($_SESSION['userID']) ? $_SESSION['userID'] : NULL; //@TODO: replaced by a token to check if connected
-
-include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';    
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
 $token = getBearerToken();
-    
+
 echo '<script type="text/javascript" src="../../js/language2.js">
   displayLanguage();
 </script>';
@@ -21,11 +14,11 @@ echo '<body class="wide">
 	<div class="wrapper">';
 include $_SERVER['DOCUMENT_ROOT'].'/include/topbar.php';
 include $_SERVER['DOCUMENT_ROOT'].'/include/header.php';
-    
+
 if($token==NULL){ //Not connected
   include 'include/vues/login_form/main.php'; //@TODO: REFACTOR
 }else{ //Connected
-  //@TODO: Replace email chech with authentication token    
+  //@TODO: Replace email chech with authentication token
   $sql = "SELECT NOM, PRENOM, PHONE, ADRESS, CITY, POSTAL_CODE, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, EMAIL from customer_referential WHERE TOKEN='$token' LIMIT 1";
   if ($conn->query($sql) === FALSE)
     die;
@@ -41,7 +34,7 @@ if($token==NULL){ //Not connected
               <div class="row" style="position: relative;">
                 <h2 class="col-sm-8">MY KAMEO</h2>
                   <div class="col-sm-12">
-                      <h4 class="text-green">Génération des factures de location Long-terme</h4>                                      
+                      <h4 class="text-green">Génération des factures de location Long-terme</h4>
                       <span class="leasingListing"></span>
                   </div>
               </div>

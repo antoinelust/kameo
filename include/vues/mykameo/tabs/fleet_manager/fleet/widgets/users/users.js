@@ -226,7 +226,6 @@ function get_users_listing(){
                     }
                     i++;
                   }
-                  console.log(dest);
                   document.getElementById('bikeCreateUser').innerHTML = dest;
                   $('#widget-addUser-form input[name=company]').val("");
 

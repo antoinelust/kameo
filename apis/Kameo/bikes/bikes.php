@@ -39,12 +39,36 @@ switch($_SERVER["REQUEST_METHOD"])
 					die;
 				}else
 					error_message('403');
+		}else if($action === 'getAddress'){
+				if(get_user_permissions("admin", $token)){
+					$response=execSQL("SELECT ADDRESS FROM customer_bikes WHERE ID = ?", array('i', $_GET['ID']), false)[0]['ADDRESS'];
+					if($response=="" || $response == null){
+						$response=execSQL("SELECT CONCAT(STREET, ', ', ZIP_CODE, ' ', TOWN) as ADDRESS FROM companies, customer_bikes WHERE customer_bikes.ID=? AND customer_bikes.COMPANY=companies.INTERNAL_REFERENCE", array('i', $_GET['ID']), false)[0]['ADDRESS'];
+					}
+					echo json_encode($response);
+					die;
+				}else
+					error_message('403');
+		}else if($action === 'listPendingDeliveryBikes'){
+				if(get_user_permissions("admin", $token)){
+					$response=execSQL("SELECT customer_bikes.ID as id, BRAND as brand, bike_catalog.MODEL as model, bike_catalog.BUYING_PRICE as buyingPrice, bike_catalog.PRICE_HTVA as priceHTVA FROM customer_bikes, bike_catalog WHERE customer_bikes.TYPE=bike_catalog.ID AND COMPANY=? AND customer_bikes.CONTRACT_TYPE='pending_delivery'", array('s', $_GET['company']), false);
+					echo json_encode($response);
+					die;
+				}else
+					error_message('403');
 		}else
 			error_message('405');
 		break;
 	case 'POST':
 		$action=isset($_POST['action']) ? $_POST['action'] : NULL;
-		error_message('405');
+		if($action === 'update'){
+			if(get_user_permissions("admin", $token)){
+				require_once 'updateBike.php';
+			}else
+				error_message('403');
+		}else{
+			error_message('405');
+		}
 	break;
 	default:
 		error_message('405');

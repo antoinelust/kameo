@@ -15,7 +15,6 @@ $( ".fleetmanager" ).click(function() {
 })
 
 
-$('.ordersManagerClick').click(function(){get_orders_listing()});
 
 var price;
 
@@ -180,7 +179,7 @@ $('body').on('click', '.updateCommand',function(){
   .remove()
   .end();
   $("#widget-order-form select[name=company]").val($(this).data('company'));
-  retrieve_command(this.name, $(this).data('email'));
+  retrieve_command(this.name);
   $("#widget-order-form div[name=ID]").show();
   $("#widget-order-form select[name=name]").show();
   $(".orderManagementTitle").html("Gestion de la commande client");
@@ -323,7 +322,7 @@ function list_bikes(){
  });
 }
 
-function retrieve_command(ID, email = null){
+function retrieve_command(ID){
   $('.accessoriesNumber').html('');
   $("#ExistingAccessory tbody").html("");
   list_bikes();
@@ -500,9 +499,63 @@ function retrieve_command(ID, email = null){
 })
 }
 
+$('.ordersManagerClick').off();
 
-$('.addStockAccessoryButton').off();
-$('.addStockAccessoryButton').click(function(){
+$(".ordersManagerClick").click(function () {
+  $("#companiesOrderable").dataTable({
+    destroy: true,
+    ajax: {
+      url: "apis/Kameo/companies/companies.php",
+      contentType: "application/json",
+      type: "GET",
+      data: {
+        action: "listCafetariaCompanies",
+      },
+    },
+    sAjaxDataProp: "",
+    columnDefs: [{ width: "100%", targets: 0 }],
+    columns: [
+      {
+        title: "Name",
+        data: "COMPANY_NAME",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          var cafetaria = oData.CAFETARIA === "Y" ? true : false;
+          var discount = oData.DISCOUNT;
+          var tva = oData.TVA_INCLUDED === "Y" ? true : false;
+          var type = oData.CAFETERIA_TYPE;
+          var types = oData.CAFETERIA_TYPES;
+          $(nTd).html(
+            "<a href='#' data-target='#manageOrderable' data-toggle='modal' data-cafetaria='" +
+              cafetaria +
+              "'data-discount='" +
+              discount +
+              "'data-tva='" +
+              tva +
+              "'data-types='" +
+              types +
+              "'data-type='" +
+              type +
+              "' data-company='" +
+              sData +
+              "'>" +
+              sData +
+              "</a>"
+          );
+        },
+      },
+      { title: "Bikes", data: "NUM_OF_ORDERABLE" },
+      { title: "Cafetaria", data: "CAFETARIA" },
+    ],
+    order: [
+      [2, "desc"],
+      [0, "asc"],
+    ],
+  });
+});
+
+
+$('.ordersManagerClick').click(function(){get_orders_listing()});
+$('.ordersManagerClick').click(function(){
 
   //Accessoires
   get_all_accessories().done(function(response){
@@ -529,8 +582,7 @@ $('.addStockAccessoryButton').click(function(){
       }
     });
 
-
-    $('.orderAccessories .glyphicon-plus')[0].addEventListener("click",function(){
+    $('.orderAccessories .glyphicon-plus').click(function(){
       //gestion accessoriesNumber
       accessoriesOrderNumber = $("#orderManager").find('.accessoriesNumber').html()*1+1;
       $('#orderManager').find('.accessoriesNumber').html(accessoriesOrderNumber);

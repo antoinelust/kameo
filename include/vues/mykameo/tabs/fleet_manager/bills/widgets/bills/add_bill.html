@@ -7,35 +7,27 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<h4 class="fr text-green">Ajouter une facture</h4>
+						<h4 class="text-green">Ajouter une facture</h4>
 						<form name="widget-addBill-form" id="widget-addBill-form" action="apis/Kameo/add_bill.php" role="form" method="post">
 							<div class="form-group col-md-12">
-								<h4 class="fr text-green">Informations générales</h4>
+								<h4 class="text-green">Informations générales</h4>
 								<div class="col-md-12">
 									<div class="col-md-4 IDAddBill hidden">
-										<label for="ID"  class="fr">ID</label>
-										<label for="ID"  class="en">ID</label>
-										<label for="ID"  class="nl">ID</label>
+										<label for="ID">ID</label>
 										<input type="number" name="ID" class="form-control" readonly='readonly'>
 									</div>
 									<div class="col-md-4 IDAddBillOut hidden">
-										<label for="ID_OUT"  class="fr">ID OUT</label>
-										<label for="ID_OUT"  class="en">ID OUT</label>
-										<label for="ID_OUT"  class="nl">ID OUT</label>
+										<label for="ID_OUT">ID OUT</label>
 										<input type="number" name="ID_OUT" class="form-control" readonly='readonly'>
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="col-md-4">
-										<label for="widget-addBill-form-company"  class="fr">Originateur</label>
-										<label for="widget-addBill-form-company"  class="en">Originateur</label>
-										<label for="widget-addBill-form-company"  class="nl">Originateur</label>
-										<select class="widget-addBill-form-company2" name="company"></select>
+										<label for="widget-addBill-form-company">Originateur</label>
+										<select class="widget-addBill-form-company" name="company"></select>
 									</div>
 									<div class="col-md-4">
-										<label for="beneficiaryCompany"  class="fr">Beneficiaire</label>
-										<label for="beneficiaryCompany"  class="en">Beneficiaire</label>
-										<label for="beneficiaryCompany"  class="nl">Beneficiaire</label>
+										<label for="beneficiaryCompany">Beneficiaire</label>
 										<input type="text" name="beneficiaryCompany" class="form-control required" readonly='readonly' value="KAMEO">
 									</div>
 									<div class="col-md-4">
@@ -62,53 +54,39 @@
 								</div>
 								<div class="col-md-12">
 									<div class="col-md-4">
-										<label for="communication"  class="fr">Communication</label>
-										<label for="communication"  class="en">Communication </label>
-										<label for="communication"  class="nl">Communication</label>
+										<label for="communication">Communication</label>
 										<input type="text" name="communication" class="form-control" readonly='readonly'>
 									</div>
 								</div>
 								<div class="separator"></div>
-								<h4 class="fr text-green">Informations sur les dates</h4>
+								<h4 class="text-green">Informations sur les dates</h4>
 								<div class="col-md-12">
 									<div class="col-md-6">
-										<label for="widget-addBill-form-date"  class="fr">Date</label>
-										<label for="widget-addBill-form-date"  class="en">Date</label>
-										<label for="widget-addBill-form-date"  class="nl">Date</label>
+										<label for="widget-addBill-form-date">Date</label>
 										<input type="date" class="widget-addBill-form-date form-control required" name="widget-addBill-form-date">
 									</div>
 									<div class="col-md-6">
-										<label for="widget-addBill-form-datelimite"  class="fr">Date limite de paiement</label>
-										<label for="widget-addBill-form-datelimite"  class="en">Date limite de paiement </label>
-										<label for="widget-addBill-form-datelimite"  class="nl">Date limite de paiement</label>
+										<label for="widget-addBill-form-datelimite">Date limite de paiement</label>
 										<input type="date" class="widget-addBill-form-datelimite form-control required" name="widget-addBill-form-datelimite">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="col-md-6">
-										<label for="widget-addBill-form-sent"  class="fr">Envoyée ?</label>
-										<label for="widget-addBill-form-sent"  class="en">Sent ?</label>
-										<label for="widget-addBill-form-sent"  class="nl">Sent ?</label>
+										<label for="widget-addBill-form-sent">Envoyée ?</label>
 										<input type="checkbox" name="widget-addBill-form-sent" >
 									</div>
 									<div class="col-md-6">
-										<label for="widget-addBill-form-sendingDate"  class="fr">Date d'envoi</label>
-										<label for="widget-addBill-form-sendingDate"  class="en">Sending date </label>
-										<label for="widget-addBill-form-sendingDate"  class="nl">Sending date</label>
+										<label for="widget-addBill-form-sendingDate">Date d'envoi</label>
 										<input type="date" class="widget-addBill-form-sendingDate form-control" name="widget-addBill-form-sendingDate">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="col-md-6">
-										<label for="widget-addBill-form-paid"  class="fr">Payée ?</label>
-										<label for="widget-addBill-form-paid"  class="en">Paid ?</label>
-										<label for="widget-addBill-form-paid"  class="nl">Paid ?</label>
+										<label for="widget-addBill-form-paid"">Payée ?</label>
 										<input type="checkbox" name="widget-addBill-form-paid" >
 									</div>
 									<div class="col-md-6">
-										<label for="widget-addBill-form-paymentDate"  class="fr">Date de paiement</label>
-										<label for="widget-addBill-form-paymentDate"  class="en">Payment date </label>
-										<label for="widget-addBill-form-paymentDate"  class="nl">Payment date</label>
+										<label for="widget-addBill-form-paymentDate">Date de paiement</label>
 										<input type="date" class="widget-addBill-form-paymentDate form-control " name="widget-addBill-form-paymentDate" >
 									</div>
 								</div>
@@ -126,9 +104,7 @@
 								<div class="col-md-12 generateBillDetails">
 									<div class="row generateBillBike">
 										<div class="col-sm-4">
-											<h4 class="fr text-green">Nombre de vélos: </h4>
-											<h4 class="en text-green">Bike number: </h4>
-											<h4 class="nl text-green">Nombre de vélos: </h4>
+											<h4 class="text-green">Nombre de vélos: </h4>
 										</div>
 										<div class="col-sm-12">
 											<i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span><input type="hidden" id="bikesNumberBill" name="bikesNumber" value="0" />
@@ -140,34 +116,19 @@
 												<tr>
 													<th class="bLabel"></th>
 													<th class="bikeBrandModel">
-														<label for="bikeID" class="fr">Vélo</label>
-														<label for="bikeID" class="en">Bike</label>
-														<label for="bikeID" class="nl">Bike</label>
-													</th>
-													<th class="billpType">
-														<label for="billType" class="fr">Type</label>
-														<label for="billType" class="en">Type</label>
-														<label for="billType" class="nl">Type</label>
+														<label for="bikeID">Vélo</label>
 													</th>
 													<th class="bikepAchat">
-														<label for="pAchat" class="fr">Prix d'achat</label>
-														<label for="pAchat" class="en">Buying price</label>
-														<label for="pAchat" class="nl">Buying price</label>
+														<label for="pAchat">Prix d'achat</label>
 													</th>
 													<th class="bikepCatalog">
-														<label for="pCatalog" class="fr">Prix catalogue</label>
-														<label for="pCatalog" class="en">Catalog price</label>
-														<label for="pCatalog" class="nl">Catalog price</label>
+														<label for="pCatalog">Prix catalogue</label>
 													</th>
 													<th class="bikepVenteHTVA">
-														<label for="pVenteHTVA" class="fr">Prix de vente</label>
-														<label for="pVenteHTVA" class="en">Selling price</label>
-														<label for="pVenteHTVA" class="nl">Selling price</label>
+														<label for="pVenteHTVA">Prix de vente</label>
 													</th>
 													<th class="bikeMarge">
-														<label for="marge" class="fr">Marge</label>
-														<label for="marge" class="en">Margin</label>
-														<label for="marge" class="nl">Margin</label>
+														<label for="marge">Marge</label>
 													</th>
 													<th class="hidden">
 													</th>
@@ -179,9 +140,7 @@
 									<div class="separator"></div>
 									<div class="row generateBillAccessories">
 										<div class="col-sm-4">
-											<h4 class="fr text-green">Accessoires catalogue: </h4>
-											<h4 class="en text-green">Catalog accessories: </h4>
-											<h4 class="nl text-green">Catalog accessoires: </h4>
+											<h4 class="text-green">Accessoires catalogue: </h4>
 										</div>
 										<div class="col-sm-12 accessoriesButtons">
 											<i class="fa fa-calculator"></i> <span class="accessoriesNumber">0</span><input type="hidden" id="accessoriesNumber" name="accessoriesNumber" value="0" />
@@ -192,16 +151,16 @@
 											<thead>
 												<th class="accessoriesLabel"></th>
 												<th class="accessoriesCategory">
-													<label for="aCategory" class="fr">Catégorie</label>
+													<label for="aCategory">Catégorie</label>
 												</th>
 												<th class="accessoriesAccessory">
-													<label for="aAccessory" class="fr">Accessoire</label>
+													<label for="aAccessory"">Accessoire</label>
 												</th>
 												<th class="accessoriesBuyingPrice">
-													<label for="aBuyingPrice" class="fr">Prix achat</label>
+													<label for="aBuyingPrice">Prix achat</label>
 												</th>
 												<th class="accessoriesPriceHTVA">
-													<label for="aPriceHTVA" class="fr">Prix Vente HTVA</label>
+													<label for="aPriceHTVA">Prix Vente HTVA</label>
 												</th>
 											</thead>
 											<tbody>
@@ -211,9 +170,7 @@
 									<div class="separator"></div>
 									<div class="row generateBillOtherAccessories">
 										<div class="col-sm-4">
-											<h4 class="fr text-green">Accessoires autre : </h4>
-											<h4 class="en text-green">Other accessories: </h4>
-											<h4 class="nl text-green">Other accessoires: </h4>
+											<h4 class="text-green">Accessoires autre : </h4>
 										</div>
 										<div class="col-sm-12 accessoriesButtons">
 											<i class="fa fa-calculator"></i>
@@ -226,10 +183,10 @@
 											<thead>
 												<th class="otherAccessoriesLabel"></th>
 												<th class="accessoriesAccessory">
-													<label for="aAccessory" class="fr">Accessoire</label>
+													<label for="aAccessory">Accessoire</label>
 												</th>
 												<th class="accessoriesPriceHTVA">
-													<label for="aPriceHTVA" class="fr">Prix Vente HTVA</label>
+													<label for="aPriceHTVA">Prix Vente HTVA</label>
 												</th>
 											</thead>
 											<tbody>
@@ -274,27 +231,19 @@
 								<h4 class="text-green manualBill" style="display: none;">Informations sur les montants</h4>
 								<div class="col-md-12 manualBill" style="display: none;">
 									<div class="col-md-4">
-										<label for="widget-addBill-form-amountHTVA"  class="fr">Montant (HTVA)</label>
-										<label for="widget-addBill-form-amountHTVA"  class="en">Amount (VAT ex.)</label>
-										<label for="widget-addBill-form-amountHTVA"  class="nl">Amount (VAT ex.)</label>
+										<label for="widget-addBill-form-amountHTVA">Montant (HTVA)</label>
 										<input type="text" class="widget-addBill-form-amountHTVA form-control required" name="widget-addBill-form-amountHTVA">
 									</div>
 									<div class="col-md-4">
-										<label for="widget-addBill-form-VAT" class="fr">TVA ? </label>
-										<label for="widget-addBill-form-VAT" class="nl">TVA ?</label>
-										<label for="widget-addBill-form-VAT" class="en">TVA ? </label>
+										<label for="widget-addBill-form-VAT">TVA ? </label>
 										<input type="checkbox" class="widget-addBill-form-VAT form-control" name="widget-addBill-form-VAT" />
 									</div>
 									<div class="col-md-4">
-										<label for="widget-addBill-form-amountTVAC"  class="fr">Montant (TVAC)</label>
-										<label for="widget-addBill-form-amountTVAC"  class="en">Amount (VAT inc.)</label>
-										<label for="widget-addBill-form-amountTVAC"  class="nl">Amount (VAT inc.)</label>
+										<label for="widget-addBill-form-amountTVAC">Montant (TVAC)</label>
 										<input type="text" class="widget-addBill-form-amountTVAC form-control required" name="widget-addBill-form-amountTVAC" readonly="readonly">
 									</div>
 									<div class="form-group col-md-6">
-										<label for="widget-addBill-form-file"  class="fr">Facture</label>
-										<label for="widget-addBill-form-file"  class="en">Bill</label>
-										<label for="widget-addBill-form-file"  class="nl">Bill</label>
+										<label for="widget-addBill-form-file">Facture</label>
 										<input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
 										<input type=file size=40 id="widget-addBill-form-file" class="form-control required" name="widget-addBill-form-file">
 									</div>
@@ -304,22 +253,14 @@
 							<input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user_data['EMAIL']; ?>" hidden>
 							<div class="separator"></div>
 							<div class="col-md-12">
-								<button  class="fr button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
-								<button  class="en button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
-								<button  class="nl button small green button-3d rounded icon-left" type="submit" ><i class="fa fa-plus"></i>Add</button>
+								<button  class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i><?= L::generic_confirm ?></button>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
-			<div class="fr" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Fermer</button>
-			</div>
-			<div class="en" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-			</div>
-			<div class="nl" class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal">Sluiten</button>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 			</div>
 		</div>
 	</div>
@@ -347,64 +288,6 @@
 					}
 				}
 			});
-		}
-	});
-	$('.widget-addBill-form-company').change(function(){
-		var e = document.getElementsByClassName('widget-addBill-form-company2')[0];
-		var valueSelect = e.options[e.selectedIndex].value;
-		$('#widget-addBill-form input[name=communication]').attr('readonly', true);
-		if(valueSelect=='other'){
-			$('.widget-addBill-form-companyOther').removeClass("hidden");
-			$('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());
-			$('input[name=beneficiaryCompany]').attr('readonly', true);
-			$('input[name=beneficiaryCompany]').val('KAMEO');
-		}else if(valueSelect=='KAMEO'){
-			$('input[name=beneficiaryCompany]').attr('readonly', false);
-			$('input[name=beneficiaryCompany]').val('');
-			$('#widget-addBill-form input[name=communication]').attr('readonly', false);
-			$('#widget-addBill-form input[name=communication]').val('');
-		}
-		else{
-			$('.widget-addBill-form-companyOther').addClass("hidden");
-			$('#widget-addBill-form input[name=communication]').val($('#widget-addBill-form input[name=communicationHidden]').val());
-			$('input[name=beneficiaryCompany]').attr('readonly', true);
-			$('input[name=beneficiaryCompany]').val('KAMEO');
-			$('.IDAddBill').removeClass("hidden");
-			$('.IDAddBillOut').removeClass("hidden");
-		}
-	});
-	$('#widget-addBill-form input[name=beneficiaryCompany]').change(function(){
-		if($('#widget-addBill-form input[name=beneficiaryCompany]').val()=='KAMEO'){
-			$('.IDAddBill').removeClass("hidden");
-			$('.IDAddBillOut').removeClass("hidden");
-		}else{
-			$('.IDAddBill').addClass("hidden");
-			$('.IDAddBillOut').addClass("hidden");
-		}
-	});
-	$('#widget-addBill-form select[name=type]').change(function(){
-		if($('#widget-addBill-form select[name=type]').val()=="autre"){
-			$('#widget-addBill-form input[name=typeOther]').removeClass("hidden");
-			$('#widget-addBill-form input[name=typeOther]').addClass("required");
-			$('#widget-addBill-form label[for=typeOther]').removeClass("hidden");
-		}else{
-			$('#widget-addBill-form input[name=typeOther]').addClass("hidden");
-			$('#widget-addBill-form input[name=typeOther]').removeClass("required");
-			$('#widget-addBill-form label[for=typeOther]').addClass("hidden");
-		}
-	});
-	$('input[name=widget-addBill-form-amountHTVA]').change(function(){
-		if($('input[name=widget-addBill-form-VAT]').is(':checked')){
-			$('input[name=widget-addBill-form-amountTVAC]').val((1.21*$('input[name=widget-addBill-form-amountHTVA]').val()).toFixed(2));
-		}else{
-			$('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
-		}
-	});
-	$('.widget-addBill-form-VAT').change(function(){
-		if($('input[name=widget-addBill-form-VAT]').is(':checked')){
-			$('input[name=widget-addBill-form-amountTVAC]').val((1.21*$('input[name=widget-addBill-form-amountHTVA]').val()).toFixed(2));
-		}else{
-			$('input[name=widget-addBill-form-amountTVAC]').val($('input[name=widget-addBill-form-amountHTVA]').val());
 		}
 	});
 </script>

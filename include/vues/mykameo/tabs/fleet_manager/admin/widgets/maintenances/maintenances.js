@@ -82,11 +82,13 @@ function list_maintenances() {
       { title: "Type", data: "type" },
       {
         title: "Adresse",
-        data: "street",
+        data: "bikeAddress",
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html(
-            sData+" "+oData.zip_code+" "+oData.town
-          );
+          if(sData != null){
+            $(nTd).html(sData);
+          }else{
+            $(nTd).html(oData.street+" "+oData.zip_code+" "+oData.town);
+          }
           $(nTd).data('sort', new Date(sData).getTime());
         },
       },
@@ -111,9 +113,9 @@ function get_maintenance(ID){
   document.getElementById('widget-maintenanceManagement-form').reset();
 
   $.ajax({
-    url: 'apis/Kameo/maintenance_management.php',
+    url: 'api/maintenances',
     method: 'get',
-    data: {'action' : 'getOne', 'ID' : ID},
+    data: {'action' : 'retrieve', 'ID' : ID},
     success: function(response){
       if (response.response == "error") {
         console.log(response.message);
@@ -130,24 +132,65 @@ function get_maintenance(ID){
         $('#widget-maintenanceManagement-form select[name=velo]').val(response.maintenance.bike_id);
         $('#widget-maintenanceManagement-form select[name=company]').val(response.maintenance.company);
         $('#widget-maintenanceManagement-form input[name=model]').val(response.maintenance.model);
-        $('#widget-maintenanceManagement-form input[name=address]').val(response.maintenance.street+ ', ' + response.maintenance.zip_code + ' ' + response.maintenance.town);
         $('#widget-maintenanceManagement-form select[name=status]').val(response.maintenance.status);
         $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val(date[2] + '-' + date[1] + '-' + date[0]);
         $('#widget-maintenanceManagement-form textarea[name=comment]').val(response.maintenance.comment);
+        $('#widget-maintenanceManagement-form textarea[name=internalComment]').val(response.maintenance.internalComment);
 
-        response.maintenance.images.forEach(function(image){
-          $("#widget-maintenanceManagement-form div[name=images]").append('<div class="col-md-4" name="image">\
-          <img src="images_entretiens/'+image+'">\
-          <a class="button small red button-3d rounded icon-left deleteImage" name="'+image+'"> \
-          <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
+        $.ajax({
+          url: "api/bikes",
+          method: "get",
+          data: {action: "getAddress", ID: response.maintenance.bike_id },
+          success: function (response){
+            if (response.response == "error") {
+              console.log(response.message);
+            }else{
+              $('#widget-maintenanceManagement-form input[name=address]').val(response);
+            }
+          }
+        });
+
+
+        response.maintenance.publicFiles.forEach(function(file){
+          var extension=/[^.]*$/.exec(file)[0];
+          if(extension=="pdf"){
+            $("#widget-maintenanceManagement-form div[name=images]").append('<div class="col-md-4" name="image">\
+            <embed src="images_entretiens/'+ID+'/publicFile/'+file+'" height="100%" />\
+            <a class="button small green button-3d rounded icon-left" href="images_entretiens/'+ID+'/publicFile/'+file+'" target="_blank"><i class="fa fa-paper-plane"></i>Ouvrir </a>\
+            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/publicFile/'+file+'"><i class="fa fa-paper-plane"></i>Supprimer le fichier </a></div>');
+
+          }else{
+            $("#widget-maintenanceManagement-form div[name=images]").append('<div class="col-md-4" name="image">\
+            <img src="images_entretiens/'+ID+'/publicFile/'+file+'">\
+            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/publicFile/'+file+'"> \
+            <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
+          }
         })
 
+
+        response.maintenance.internalFiles.forEach(function(file){
+          var extension=/[^.]*$/.exec(file)[0];
+          if(extension=="pdf"){
+            $("#widget-maintenanceManagement-form div[name=internalImages]").append('<div class="col-md-4" name="image">\
+            <embed src="images_entretiens/'+ID+'/internalFile/'+file+'" height="100%" />\
+            <a class="button small green button-3d rounded icon-left" href="images_entretiens/'+ID+'/internalFile/'+file+'" target="_blank"><i class="fa fa-paper-plane"></i>Ouvrir </a>\
+            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"><i class="fa fa-paper-plane"></i>Supprimer le fichier </a></div>');
+
+          }else{
+            $("#widget-maintenanceManagement-form div[name=internalImages]").append('<div class="col-md-4" name="image">\
+            <img src="images_entretiens/'+ID+'/internalFile/'+file+'">\
+            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"> \
+            <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
+          }
+        })
+
+
         $(function(){
-          $('a.deleteImage').click(function(){
+          $('a.deleteFile').click(function(){
             $.ajax({
-            url:'apis/Kameo/maintenance_management.php',
+            url:'api/maintenances',
             data:{'action' : 'deleteImage', 'url' : 'images_entretiens/'+this.name},
-            method:'GET',
+            method:'POST',
             success:function(response){
               if(response.response == "success"){
                 $.notify(
@@ -159,7 +202,6 @@ function get_maintenance(ID){
                   }
                 );
                 get_maintenance(response.id);
-                $("#maintenanceManagementItem").modal("toggle");
                 document
                   .getElementById("widget-maintenanceManagement-form")
                   .reset();
@@ -182,7 +224,7 @@ function get_maintenance(ID){
 $('.maintenanceManagementDeleteButton').off();
 $('.maintenanceManagementDeleteButton').click(function(){
   $.ajax({
-  url:'apis/Kameo/maintenance_management.php',
+  url:'api/maintenances',
   data:{'action' : 'deleteEntretien', 'id' : this.name},
   method:'POST',
   success:function(response){
@@ -222,6 +264,7 @@ $('body').on('click', '.editMaintenance',function(){
   $(".maintenanceManagementTitle").html("Éditer un entretien");
   $("#widget-maintenanceManagement-form button").show();
   $("#widget-maintenanceManagement-form div[name=file]").show();
+  $("#widget-maintenanceManagement-form div[name=internalFile]").show();
   $("#widget-maintenanceManagement-form button[name=delete]").show();
   $("#widget-maintenanceManagement-form div[name=status]").show();
   $("#widget-maintenanceManagement-form div[name=id]").show();
@@ -242,6 +285,7 @@ $('body').on('click', '.showMaintenance',function(){
 
 $('body').on('click', '.addMaintenance',function(){
   $("#widget-maintenanceManagement-form div[name=image]").remove();
+  $("#widget-maintenanceManagement-form div[name=internalImages]").remove();
   empty_form();
   $("#widget-maintenanceManagement-form input[name=action]").val("add");
   $("#widget-maintenanceManagement-form input").attr("readonly", false);
@@ -253,6 +297,7 @@ $('body').on('click', '.addMaintenance',function(){
   $("#widget-maintenanceManagement-form button").show();
   $("#widget-maintenanceManagement-form div[name=id]").hide();
   $("#widget-maintenanceManagement-form div[name=file]").hide();
+  $("#widget-maintenanceManagement-form div[name=internalFile]").hide();
   $("#widget-maintenanceManagement-form button[name=delete]").hide();
 });
 
@@ -281,6 +326,7 @@ function empty_form(){
   $('#widget-maintenanceManagement-form select[name=status]').val("MANUALLY_PLANNED");
   $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val("");
   $('#widget-maintenanceManagement-form textarea[name=comment]').val("");
+  $('#widget-maintenanceManagement-form textarea[name=internalComment]').val("");
 }
 
 $('#widget-maintenanceManagement-form select[name=company]').change(function(){
@@ -300,7 +346,7 @@ $('#widget-maintenanceManagement-form select[name=company]').change(function(){
           .remove()
           .end();
 
-        for (var i = 0; i < response.bikeNumber; i++) {
+        for (var i = 0; i < response.bike.length; i++) {
           $('#widget-maintenanceManagement-form select[name=velo]').append(
             '<option value="' +
               response.bike[i].id +
@@ -308,28 +354,49 @@ $('#widget-maintenanceManagement-form select[name=company]').change(function(){
               response.bike[i].id + ' - ' + response.bike[i].model + ' : ' + response.bike[i].size +
               "<br>"
           );
-          $('#widget-maintenanceManagement-form input[name=model]').val(response.bike[0].model);
         }
+        $('#widget-maintenanceManagement-form select[name=velo]').val("");
       }
     },
-  }).done(function(response){
-    $.ajax({
-      url: "api/companies",
-      method: "get",
-      data: {action: "name", company: $('#widget-maintenanceManagement-form select[name=company]').val() },
-      success: function (response) {
-        if (response.response == "error") {
-          console.log(response.message);
-        }else{
-          $('#widget-maintenanceManagement-form input[name=address]').val(response.street + ", " + response.zip_code + " " + response.town);
-        }
-      }
-    });
-  });
+  })
 });
 
 $('body').on('change', '.form_velo',function(){
   var res = $('#widget-maintenanceManagement-form select[name=velo] option:selected').text().split(" - ");
   var model = res[1].split(" : ")[0];
   $('#widget-maintenanceManagement-form input[name=model]').val(model);
+
+  $.ajax({
+    url: "api/bikes",
+    method: "get",
+    data: {action: "getAddress", ID: $('#widget-maintenanceManagement-form select[name=velo]').val() },
+    success: function (response){
+      if (response.response == "error") {
+        console.log(response.message);
+      }else{
+        $('#widget-maintenanceManagement-form input[name=address]').val(response);
+      }
+    }
+  });
+});
+
+$('#widget-maintenanceManagement-form input[name=publicFile], #widget-maintenanceManagement-form input[name=internalFile]').off();
+$('#widget-maintenanceManagement-form input[name=publicFile], #widget-maintenanceManagement-form input[name=internalFile]').change(function(){
+  var file = this.files[0];
+  var form = new FormData();
+  form.append('media', file);
+  form.append('action', 'addImage');
+  form.append('name', this.name);
+  form.append('ID', $('#widget-maintenanceManagement-form input[name=ID]').val());
+  $.ajax({
+      url : "api/maintenances",
+      type: "POST",
+      cache: false,
+      contentType: false,
+      processData: false,
+      data : form,
+      success: function(response){
+        get_maintenance($('#widget-maintenanceManagement-form input[name=ID]').val());
+      }
+  });
 });

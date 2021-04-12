@@ -259,9 +259,14 @@ h2{
     </p>
     <img src="<?php echo __DIR__ ; ?>/img/kameo_scheme.png" alt="kameo-scheme" style="margin-left:25mm; width:400px; height:auto;">
     <p>
-      Nous avons le plaisir de vous faire parvenir <span class="bold">notre offre</span> pour l’acquisition sous forme d'une location tout inclus d’un
-      vélo ainsi que les services associés. Ces solutions sont entièrement définies par le présent
-      document et nos conditions générales.
+      <? if($buyOrLeasing=='leasing'){
+        echo 'Nous avons le plaisir de vous faire parvenir <span class="bold">notre offre</span> pour l’acquisition sous forme d\'une location tout inclus d’un
+        vélo ainsi que les services associés. Ces solutions sont entièrement définies par le présent
+        document et nos conditions générales.';
+      }else{
+        echo 'Nous avons le plaisir de vous faire parvenir <span class="bold">notre offre</span> pour l’achat de vélos(s). Cet achat est entièrement défini par le présent
+        document et nos conditions générales.';
+      }?>
     </p>
     <p>
       Nous restons à votre disposition pour toute demande d’informations complémentaires.
@@ -684,7 +689,7 @@ if ($assurance == true) { ?>
             </td>
             <td style="width:33%; padding-top:3mm; padding-bottom:3mm;">
               <?php
-              foreach ($bikes as $bike) {
+              foreach ($bikes as $bike){
                 if($buyOrLeasing=="buy"){
                   echo "<div style='margin-left:3mm;'>Achat :<br/>{$bike['bikePriceAchat']} € HTVA  <span class='green bold'> x".$bike['bikeNumber']."</span></div><br/>";
                 }else{
