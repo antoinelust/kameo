@@ -150,7 +150,7 @@ $resultat = mysqli_fetch_assoc($result);
 
                             <!-- Pricing Table Colored -->
                             <div class="equal">
-                                    <div class="col-md-4 col-sm-12 col-xs-4 box_grey">
+                                    <div class="col-md-6 col-sm-12 col-xs-4 box_grey">
                                         <div class="plan">
                                             <div class="plan-header" style="cursor : default">
                                                 <h4><?= L::offre_buyprice_htva; ?></h4>
@@ -159,7 +159,7 @@ $resultat = mysqli_fetch_assoc($result);
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 col-sm-12 col-xs-4  box_grey">
+                                    <div class="col-md-6 col-sm-12 col-xs-4  box_grey">
                                         <div class="plan">
                                             <div class="plan-header" style="cursor : default">
                                                 <h4><?= L::offre_buyprice_tvac; ?></h4>
@@ -168,12 +168,20 @@ $resultat = mysqli_fetch_assoc($result);
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 col-sm-12 col-xs-4  box_grey">
+                                    <div class="col-md-6 col-sm-12 col-xs-4  box_grey">
                                         <div class="plan">
                                             <div class="plan-header" style="cursor : default">
                                                 <h4><?= L::offre_price_leasing_htva; ?></h4>
                                                 <h2 class="text-green"><sup>€</sup><?php echo $leasingPrice; ?><span><small><?= L::offre_permonth; ?></small></span></h2>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-xs-4  box_grey">
+                                        <div class="plan">
+                                            <div class="plan-header" style="cursor : default">
+                                                <h4><?= L::offre_price_leasing_tvac; ?></h4>
+                                                <h2 class="text-green"><sup>€</sup><?php echo round($leasingPrice*1.21); ?><span><small><?= L::offre_permonth; ?></small></span></h2>
                                             </div>
                                         </div>
                                     </div>
