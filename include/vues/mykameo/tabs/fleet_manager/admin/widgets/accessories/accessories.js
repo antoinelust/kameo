@@ -168,7 +168,7 @@ function list_stock_accessories(){
   $("#stockAccessoriesList").dataTable({
     destroy: true,
     ajax: {
-      url: "apis/Kameo/accessories/accessories.php",
+      url: "api/accessories",
       contentType: "application/json",
       type: "get",
       data: {
@@ -189,31 +189,31 @@ function list_stock_accessories(){
       },
       },
       {
-        title: "Company",
+        title: "Société",
         data: "COMPANY_NAME",
       },
       {
-        title: "User",
+        title: "Client",
         data: "USER_EMAIL",
       },
       {
-        title: "Brand",
+        title: "Marque",
         data: "BRAND",
       },
       {
-        title: "Model",
+        title: "Modèle",
         data: "MODEL",
       },
       {
-        title: "Category",
+        title: "Catégorie",
         data: "CATEGORY",
       },
       {
-        title: "Contract Type",
+        title: "Type de contrat",
         data: "CONTRACT_TYPE",
       },
       {
-      title: "Amount",
+      title: "Montant",
         data: "CONTRACT_AMOUNT",
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
           if (oData.CONTRACT_TYPE == 'leasing') $(nTd).html(sData + '€/mois');
@@ -221,12 +221,20 @@ function list_stock_accessories(){
         },
       },
       {
-      title: "Contract start",
-      data: "CONTRACT_START",
+        title: "Début contrat",
+        data: "CONTRACT_START",
+        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html(get_date_string_european(sData));
+          $(nTd).data('sort', new Date(sData).getTime());
+        },
       },
       {
-       title: "Contract end",
+       title: "Fin contrat",
        data: "CONTRACT_END",
+       fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+         $(nTd).html(get_date_string_european(sData));
+         $(nTd).data('sort', new Date(sData).getTime());
+       },
       }
       ],
       order: [
