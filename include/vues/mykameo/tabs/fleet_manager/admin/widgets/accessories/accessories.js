@@ -268,8 +268,8 @@ function list_stock_accessories(){
        ]
       });
 
-      $("#stockAccessoriesList thead tr").clone(true).appendTo("#stockAccessoriesList thead");
-
+     /* $("#stockAccessoriesList thead tr").clone(true).appendTo("#stockAccessoriesList thead");
+*/
       $("#stockAccessoriesList thead tr:eq(1) th").each(function (i) {
         var title = $(this).text();
         $(this).html('<input style="width: 100%" type="text" />');

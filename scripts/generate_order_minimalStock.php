@@ -10,110 +10,137 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/include/php-mailer/PHPMailerAutoload.ph
 $mail = new PHPMailer();
 $mailAcessory = new PHPMailer();
 
+$token = getBearerToken();
+
+log_inputs($token);
 
 $brandUtilisation=array();
 $brandUtilisation[0]['brand'] = 'Conway';
 $brandUtilisation[0]['utilisation'] = 'Ville et chemin';
 $brandUtilisation[0]['limite'] = 10;
+$brandUtilisation[0]['stockOpti'] = 15;
 
 $brandUtilisation[1]['brand'] = 'Conway';
 $brandUtilisation[1]['utilisation'] = 'Ville';
 $brandUtilisation[1]['limite'] = 10;
+$brandUtilisation[1]['stockOpti'] = 15;
 
 $brandUtilisation[2]['brand'] = 'Conway';
 $brandUtilisation[2]['utilisation'] = 'Tout chemin';
 $brandUtilisation[2]['limite'] = 10;
+$brandUtilisation[2]['stockOpti'] = 15;
 
 $brandUtilisation[3]['brand'] = 'Conway';
 $brandUtilisation[3]['utilisation'] = 'Gravel';
 $brandUtilisation[3]['limite'] = 10;
+$brandUtilisation[3]['stockOpti'] = 15;
 
 $brandUtilisation[4]['brand'] = 'Conway';
 $brandUtilisation[4]['utilisation'] = 'VTT';
 $brandUtilisation[4]['limite'] = 10;
+$brandUtilisation[4]['stockOpti'] = 15;
 
 $brandUtilisation[5]['brand'] = 'Ahooga';
 $brandUtilisation[5]['utilisation'] = 'Pliant';
 $brandUtilisation[5]['limite'] = 10;
+$brandUtilisation[5]['stockOpti'] = 15;
 
 $brandUtilisation[6]['brand'] = 'Ahooga';
 $brandUtilisation[6]['utilisation'] = 'Ville';
 $brandUtilisation[6]['limite'] = 10;
-
-
-$brandUtilisation[6]['brand'] = 'Benno';
-$brandUtilisation[6]['utilisation'] = 'Ville';
-$brandUtilisation[6]['limite'] = 10;
+$brandUtilisation[6]['stockOpti'] = 15;
 
 
 $brandUtilisation[7]['brand'] = 'Bzen';
 $brandUtilisation[7]['utilisation'] = 'Ville';
 $brandUtilisation[7]['limite'] = 10;
+$brandUtilisation[7]['stockOpti'] = 15;
 
 
 $brandUtilisation[8]['brand'] = 'Douze cycle';
 $brandUtilisation[8]['utilisation'] = 'Cargo';
 $brandUtilisation[8]['limite'] = 10;
+$brandUtilisation[8]['stockOpti'] = 15;
 
 
 $brandUtilisation[9]['brand'] = 'HNF Nicolai';
 $brandUtilisation[9]['utilisation'] = 'Ville';
 $brandUtilisation[9]['limite'] = 10;
+$brandUtilisation[9]['stockOpti'] = 15;
 
 $brandUtilisation[10]['brand'] = 'HNF Nicolai';
 $brandUtilisation[10]['utilisation'] = 'Ville et chemin';
 $brandUtilisation[10]['limite'] = 10;
+$brandUtilisation[10]['stockOpti'] = 15;
 
 $brandUtilisation[11]['brand'] = 'HNF Nicolai';
 $brandUtilisation[11]['utilisation'] = 'Speedpedelec';
 $brandUtilisation[11]['limite'] = 10;
+$brandUtilisation[11]['stockOpti'] = 15;
 
 
 $brandUtilisation[12]['brand'] = 'Kayza';
 $brandUtilisation[12]['utilisation'] = 'Ville et chemin';
 $brandUtilisation[12]['limite'] = 10;
+$brandUtilisation[12]['stockOpti'] = 15;
 
 $brandUtilisation[13]['brand'] = 'Kayza';
 $brandUtilisation[13]['utilisation'] = 'Tout chemin';
 $brandUtilisation[13]['limite'] = 10;
+$brandUtilisation[13]['stockOpti'] = 15;
 
 $brandUtilisation[14]['brand'] = 'Kayza';
 $brandUtilisation[14]['utilisation'] = 'VTT';
 $brandUtilisation[14]['limite'] = 10;
+$brandUtilisation[14]['stockOpti'] = 15;
 
 
 $brandUtilisation[15]['brand'] = 'Moustache Bikes';
 $brandUtilisation[15]['utilisation'] = 'Speedpedelec';
 $brandUtilisation[15]['limite'] = 10;
+$brandUtilisation[15]['stockOpti'] = 15;
 
 $brandUtilisation[16]['brand'] = 'Moustache Bikes';
 $brandUtilisation[16]['utilisation'] = 'Ville';
 $brandUtilisation[16]['limite'] = 10;
+$brandUtilisation[16]['stockOpti'] = 15;
 
 $brandUtilisation[17]['brand'] = 'Moustache Bikes';
 $brandUtilisation[17]['utilisation'] = 'Tout chemin';
 $brandUtilisation[17]['limite'] = 10;
+$brandUtilisation[17]['stockOpti'] = 15;
 
 $brandUtilisation[18]['brand'] = 'Moustache Bikes';
 $brandUtilisation[18]['utilisation'] = 'VTT';
 $brandUtilisation[18]['limite'] = 10;
+$brandUtilisation[18]['stockOpti'] = 15;
 
 
 $brandUtilisation[19]['brand'] = 'Victoria';
 $brandUtilisation[19]['utilisation'] = 'Ville et chemin';
 $brandUtilisation[19]['limite'] = 10;
+$brandUtilisation[19]['stockOpti'] = 15;
 
 $brandUtilisation[20]['brand'] = 'Victoria';
 $brandUtilisation[20]['utilisation'] = 'Ville';
 $brandUtilisation[20]['limite'] = 10;
+$brandUtilisation[20]['stockOpti'] = 15;
 
 $brandUtilisation[21]['brand'] = 'Victoria';
 $brandUtilisation[21]['utilisation'] = 'Tout chemin';
 $brandUtilisation[21]['limite'] = 10;
+$brandUtilisation[21]['stockOpti'] = 15;
 
 $brandUtilisation[22]['brand'] = 'Victoria';
 $brandUtilisation[22]['utilisation'] = 'Pliant';
 $brandUtilisation[22]['limite'] = 10;
+$brandUtilisation[22]['stockOpti'] = 15;
+
+
+$brandUtilisation[23]['brand'] = 'Benno';
+$brandUtilisation[23]['utilisation'] = 'Ville';
+$brandUtilisation[23]['limite'] = 10;
+$brandUtilisation[23]['stockOpti'] = 15;
 
 
 
@@ -133,6 +160,7 @@ while($cpt!=count($brandUtilisation)){
 	$brandArray = $brandUtilisation[$cpt]['brand'];
 	$utilisationArray = $brandUtilisation[$cpt]['utilisation'];
 	$limitArray = $brandUtilisation[$cpt]['limite'];
+	$optimumStcokArray = $brandUtilisation[$cpt]['stockOpti'];
 
 	
 	$sqlBike="SELECT * FROM bike_catalog where BRAND='$brandArray' AND UTILISATION='$utilisationArray'";
@@ -145,7 +173,6 @@ while($cpt!=count($brandUtilisation)){
 		$sql="SELECT * FROM customer_bikes WHERE TYPE='$tempId' AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";
 		$result = mysqli_query($conn, $sql);
 		$length = $result->num_rows;
-
 		$sum = $sum + $length;
 		$i++;
 	}
@@ -156,7 +183,7 @@ while($cpt!=count($brandUtilisation)){
 		$orderBike[$size]['utilisation'] = $utilisationArray;
 		$orderBike[$size]['limite'] = $limitArray;
 		$orderBike[$size]['numberOfArticle'] = $sum;
-		$orderBike[$size]['numberOfArticleToOrder'] = $limitArray-$sum;
+		$orderBike[$size]['numberOfArticleToOrder'] = $optimumStcokArray-$sum;
 		$size++;
 	}
 
@@ -171,6 +198,7 @@ $size = 0;
 while($rowAccessory = mysqli_fetch_array($resultAccessory)){
 	$tempId = $rowAccessory['ID'];
 	$stockMin = $rowAccessory['MINIMAL_STOCK'];
+	$stockOpti = $rowAccessory['STOCK_OPTIMUM'];
 	$idCategory = $rowAccessory['ACCESSORIES_CATEGORIES'];
 
 	$sql="SELECT * FROM accessories_stock WHERE CATALOG_ID='$tempId' AND (CONTRACT_TYPE='stock' OR CONTRACT_TYPE='order')";
@@ -188,28 +216,21 @@ while($rowAccessory = mysqli_fetch_array($resultAccessory)){
 		$orderArticle[$size]['brand'] = $rowAccessory['BRAND'];
 		$orderArticle[$size]['reference'] = $rowAccessory['REFERENCE'];
 		$orderArticle[$size]['category'] = $rowCategory['CATEGORY'];
-		$orderArticle[$size]['limite'] = $stockMin;
-		$orderArticle[$size]['price'] = $rowAccessory['BUYING_PRICE'];
-		$orderArticle[$size]['numberOfArticleToOrder'] = $stockMin-$length;
-		$size++;
-	}
+        $orderArticle[$size]['id'] = $rowAccessory['ID'];
+        $orderArticle[$size]['limite'] = $stockMin;
+        $orderArticle[$size]['stockOpti'] = $stockOpti;
+        $orderArticle[$size]['price'] = $rowAccessory['BUYING_PRICE'];
+        $orderArticle[$size]['numberOfArticleToOrder'] = $stockOpti-$length;
+        $size++;
+    }
 }
-
-if(constant('ENVIRONMENT') == 'production' || constant('ENVIRONMENT') == 'test'){
-	$mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-	$mailAcessory->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
-                                //$mail->AddAddress('julien.jamar@kameobikes.com', 'Julien Jamar');
-                                //$mail->AddAddress("thibaut.mativa@kameobikes.com");
-                                //$mail->AddAddress("pierre-yves.adant@kameobikes.com");
-}
-
 
         $mail->IsHTML(true);                                    // Set email format to HTML
         $mail->CharSet = 'UTF-8';
 
         $mail->From = "info@kameobikes.com";
         $mail->FromName = "Kameo Bikes";
-        $mail->AddAddress('younes.chillah@kameobikes.com', 'Younes Chillah');
+        $mail->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
         $mail->AddReplyTo("info@kameobikes.com");
         $mail->Subject = "Aperçu des vélos nécessitant une commande";
 
@@ -219,9 +240,9 @@ if(constant('ENVIRONMENT') == 'production' || constant('ENVIRONMENT') == 'test')
 
         $mailAcessory->From = "info@kameobikes.com";
         $mailAcessory->FromName = "Kameo Bikes";
-        $mailAcessory->AddAddress('younes.chillah@kameobikes.com', 'Younes Chillah');
+        $mailAcessory->AddAddress('antoine.lust@kameobikes.com', 'Antoine Lust');
         $mailAcessory->AddReplyTo("info@kameobikes.com");
-        $mailAcessory->Subject = "Aperçu des vélos nécessitant une commande";
+        $mailAcessory->Subject = "Aperçu des accessoires nécessitant une commande";
 
         include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
 
@@ -297,104 +318,126 @@ if(constant('ENVIRONMENT') == 'production' || constant('ENVIRONMENT') == 'test')
         <tbody><tr>
 
         <td valign=\"top\" class=\"mcnTextContent\" style=\"padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;\">";
+        if(count($orderBike)!=0){
+            $dest="<h3>Commande des différents vélo a effectué  : &nbsp;</h3><br>
+            <table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\"> Marque du vélo</span></th><th><span class=\"fr-inline\">Utilisation</span></th><th><span class=\"fr-inline\">Limite minimal de stock </span></th><th><span class=\"fr-inline\"> Nombre de vélo à commander</span></th></tr></thead>";
+            $i=0;
+            while($i<count($orderBike)){
+               $temp="<tr><td>".$orderBike[$i]['brand']."</td><td>".$orderBike[$i]['utilisation']."</td><td>".$orderBike[$i]['limite']."</td><td>".$orderBike[$i]['numberOfArticleToOrder']."</td></tr>";
+               $dest=$dest.''.$temp;
+               $i++;
+           }
+           $dest=$dest."</tbody></table>";
+       }
+       else {
+        $dest = 'Aucune commande ne doit être effectué pour le moment';
+    }  
+    if(count($orderArticle)!=0){
+       $destAcessory="<h3>Commande des différents accessoires a effectué  : &nbsp;</h3><br>
+       <table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\"> Marque de l'accessoire</span></th><th><span class=\"fr-inline\">Catgorie</span></th><th><span class=\"fr-inline\">Limite minimal de stock </span></th><th><span class=\"fr-inline\"> Nombre d'accessoire à commander</span></th></tr></thead>";
+       $i=0;
+       while($i<count($orderArticle)){
+           if($orderArticle[$i]['provider']!='Hartje'){
+              $temp="<tr><td>".$orderArticle[$i]['brand']."</td><td>".$orderArticle[$i]['category']."</td><td>".$orderArticle[$i]['limite']."</td><td>".$orderArticle[$i]['numberOfArticleToOrder']."</td></tr>";
+              $destAcessory=$destAcessory.''.$temp;
+          }
+          $i++;
+      }
+      $destAcessory=$destAcessory."</tbody></table>";   
+  }  
+  else {
+    $destAcessory = 'Aucune commande ne doit être effectué pour le moment';
+}       
 
-        $dest="<h3>Commande des différents vélo a effectué  : &nbsp;</h3><br>
-        <table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\"> Marque du vélo</span></th><th><span class=\"fr-inline\">Utilisation</span></th><th><span class=\"fr-inline\">Limite minimal de stock </span></th><th><span class=\"fr-inline\"> Nombre de vélo à commander</span></th></tr></thead>";
-        $i=0;
-        while($i<count($orderBike)){
-        	$temp="<tr><td>".$orderBike[$i]['brand']."</td><td>".$orderBike[$i]['utilisation']."</td><td>".$orderBike[$i]['limite']."</td><td>".$orderBike[$i]['numberOfArticleToOrder']."</td></tr>";
-        	$dest=$dest.''.$temp;
-        	$i++;
-        }
-        $dest=$dest."</tbody></table>";
+$body2 = "
+<br>
+<br>
+Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo.php\">MyKameo</a> pour plus d'informations.</p>
+</td>
+</tr>
+</tbody></table>
+<!--[if mso]>
+</td>
+<![endif]-->
 
-        $destAcessory="<h3>Commande des différents accessoires a effectué  : &nbsp;</h3><br>
-        <table class=\"table table-condensed\"><tbody><thead><tr><th><span class=\"fr-inline\"> Marque de l'accessoire</span></th><th><span class=\"fr-inline\">Catgorie</span></th><th><span class=\"fr-inline\">Limite minimal de stock </span></th><th><span class=\"fr-inline\"> Nombre d'accessoire à commander</span></th></tr></thead>";
-        $i=0;
-        while($i<count($orderArticle)){
-        	if($orderArticle[$i]['provider']!='Hartje'){
-        		$temp="<tr><td>".$orderArticle[$i]['brand']."</td><td>".$orderArticle[$i]['category']."</td><td>".$orderArticle[$i]['limite']."</td><td>".$orderArticle[$i]['numberOfArticleToOrder']."</td></tr>";
-        		$destAcessory=$destAcessory.''.$temp;
-        	}
-        	$i++;
-        }
-        $destAcessory=$destAcessory."</tbody></table>";            
-
-
-
-        $body2 = "
-        <br>
-        <br>
-        Rendez-vous sur votre interface <a href=\"https://www.kameobikes.com/mykameo.php\">MyKameo</a> pour plus d'informations.</p>
-        </td>
-        </tr>
-        </tbody></table>
-        <!--[if mso]>
-        </td>
-        <![endif]-->
-
-        <!--[if mso]>
-        </tr>
-        </table>
-        <![endif]-->
-        </td>
-        </tr>
-        </tbody>
-        </table>";
-
-        include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
-
-        $mail->Body = $body.''.$dest.''.$body2;
-        $mailAcessory->Body = $body.''.$destAcessory.''.$body2;
-
-        if(constant('ENVIRONMENT')=="test" || constant('ENVIRONMENT')=="production"){
-        	if(!$mail->Send()) {
-        		$response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
-
-        	}else {
-        		$response = array ('response'=>'success', 'message'=> "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible.");
-        	}
-
-        	if(!$mailAcessory->Send()) {
-        		$response = array ('response'=>'error', 'message'=> $mailAcessory->ErrorInfo);
-        	}else {
-        		$response = array ('response'=>'success', 'message'=> "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible.");
-        	}
-        }else{
-        	$response = array ('response'=>'success', 'message'=> "Environnement local, mail non envoyé");
-        }
-        echo json_encode($response);
+<!--[if mso]>
+</tr>
+</table>
+<![endif]-->
+</td>
+</tr>
+</tbody>
+</table>";
+$mail->Body = $body.''.$dest.''.$body2;
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
 
 
-        $i=0;
-        $size=0;
-        while($i<count($orderArticle)){
-        	if($orderArticle[$i]['provider']=='Hartje'){
-        		$arrayCSVTemp = array('358783',$orderArticle[$i]['reference'],$orderArticle[$i]['numberOfArticleToOrder']);
-        		array_push($arrayCSV,$arrayCSVTemp);
-        	}
-        	$i++;
-        }
+$mailAcessory->Body = $body.''.$destAcessory.''.$body2;
+include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_footer.php';
 
-        file_put_contents('AccessoryOrder'.date('Y').'.'.date('m').'.'.date('d').'.csv','');
 
-        $nameFile='AccessoryOrder'.date('Y').'.'.date('m').'.'.date('d').'.csv';
-        $monfichier = fopen(''.$nameFile, 'w+');
-        $header=null;
-        
-        foreach($arrayCSV as $t)
-        {
-        	if(!$header) {
-        		$arrayCSVTempLine=array('Numero de Client','Numero article','Nombre article');
-        		fputcsv($monfichier,$arrayCSVTempLine,";");
-        		$arrayCSVTempLine=array('');
-        		fputcsv($monfichier,$arrayCSVTempLine,";");
-        		
-        		$header = true;
-        	}
-        	fputcsv($monfichier,$t,";");
-        	
-        }
-        fclose ($monfichier);
-        ?>
+
+if(constant('ENVIRONMENT')=="test" || constant('ENVIRONMENT')=="production"){
+   if(!$mail->Send()) {
+      $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
+
+  }else {
+      $response = array ('response'=>'success', 'message'=> "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible.");
+  }
+
+  if(!$mailAcessory->Send()) {
+      $response = array ('response'=>'error', 'message'=> $mailAcessory->ErrorInfo);
+  }else {
+      $response = array ('response'=>'success', 'message'=> "Nous avons bien reçu votre message et nous reviendrons vers vous dès que possible.");
+  }
+}else{
+   $response = array ('response'=>'success', 'message'=> "Environnement local, mail non envoyé");
+}
+echo json_encode($response);
+
+$nameFile='AccessoryOrder'.date('Y').'.'.date('m').'.'.date('d').'.csv';
+$i=0;
+$size=0;
+while($i<count($orderArticle)){
+   if($orderArticle[$i]['provider']=='Hartje'){
+       include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/mails/mail_header.php';
+
+       $tempId = $orderArticle[$i]['id'];
+       $sqlTest = "INSERT INTO accessories_stock (HEU_MAJ, USR_MAJ, COMPANY_ID , USER_EMAIL,CATALOG_ID,CONTRACT_TYPE, CONTRACT_START, CONTRACT_END, CONTRACT_AMOUNT, SELLING_DATE, SELLING_AMOUNT,STAANN,INTERNAL_REFERENCE)
+       VALUES (CURRENT_TIMESTAMP, '$token', NULL, NULL,'$tempId','preorder',NULL,NULL,NULL,NULL,NULL,'','$nameFile')";
+       mysqli_query($conn, $sqlTest);
+       $arrayCSVTemp = array('358783',$orderArticle[$i]['reference'],$orderArticle[$i]['numberOfArticleToOrder']);
+       array_push($arrayCSV,$arrayCSVTemp);
+   }
+   $i++;
+}
+
+$sqlTest = "INSERT INTO order_file_csv (HEU_MAJ, USR_MAJ, CSV_NAME,PROVIDER,LOAD_STATUS)
+VALUES (CURRENT_TIMESTAMP, '$token','$nameFile','Hartje','NONE')";
+mysqli_query($conn, $sqlTest);
+
+$nameFile='AccessoryOrder'.date('Y').'.'.date('m').'.'.date('d').'.csv';
+$dossier = $_SERVER['DOCUMENT_ROOT'].'/orderCSV/';
+move_uploaded_file($nameFile, $dossier . $nameFile);
+
+
+$monfichier = fopen($dossier.''.$nameFile, 'w+');
+$header=null;
+
+
+
+foreach($arrayCSV as $t)
+{
+   if(!$header) {
+      $arrayCSVTempLine=array('Numero de Client','Numero article','Nombre article');
+      fputcsv($monfichier,$arrayCSVTempLine,";");
+
+
+      $header = true;
+  }
+  fputcsv($monfichier,$t,";");
+
+}
+fclose ($monfichier);
+?>
 

@@ -317,8 +317,17 @@
               <p>Scanner Stock</p>
             </div>
           </div>
+          <div class="col-md-4" style="height:164px" id="preOrderCSVManagement">
+            <div class="icon-box medium fancy">
+              <div class="icon bold" data-animation="pulse infinite">
+                <a data-toggle="modal" data-target="#preOrderCSVModal" href="#" class="preOrderCSVManagerClick">
+                  <i style="opacity:0.15" class="fa fa-file-excel-o"></i>
+                </a>
+              </div>
+              <p>Chargement des Accessoire sous CSV</p>
+            </div>
+          </div>
         </div>';
     }
-
     ?>
 	</div>

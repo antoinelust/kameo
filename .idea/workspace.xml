@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Scan seeling Leasing (bills) + generate Order Email">
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/generate_order_minimalStock.php" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/generate_order_minimalStock.php" afterDir="false" />
-    </list>
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Geberate File CSV to order HARTJE" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,6 +72,7 @@
       <workItem from="1617087962911" duration="673000" />
       <workItem from="1617088645127" duration="188000" />
       <workItem from="1617088842353" duration="112000" />
+      <workItem from="1617174977108" duration="51000" />
     </task>
     <task id="LOCAL-00001" summary="Version Test Younes">
       <created>1612442399254</created>
@@ -210,7 +207,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617088685596</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Geberate File CSV to order HARTJE">
+      <created>1617175015517</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1617175015517</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,6 +249,7 @@
     <MESSAGE value="Scan Bike and Accessory Improvements" />
     <MESSAGE value="Scan Bike and Accessory : add to stock" />
     <MESSAGE value="Scan seeling Leasing (bills) + generate Order Email" />
-    <option name="LAST_COMMIT_MESSAGE" value="Scan seeling Leasing (bills) + generate Order Email" />
+    <MESSAGE value="Geberate File CSV to order HARTJE" />
+    <option name="LAST_COMMIT_MESSAGE" value="Geberate File CSV to order HARTJE" />
   </component>
 </project>

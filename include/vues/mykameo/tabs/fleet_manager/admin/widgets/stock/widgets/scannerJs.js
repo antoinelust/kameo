@@ -329,7 +329,7 @@ function bindArticle(){
 			if(response.response == 'success'){
 				$.notify(
 				{
-					message:'Cette commandea bien été mis à jour',
+					message:'Cette commande a bien été mis à jour',
 				},
 				{
 					type: "success",
@@ -536,6 +536,12 @@ function displaySelectToAddStock(type){
 //////////////////////////////////////////////////////////////////////////////////
 
 function hideAllFromRemove(){
+	let today = new Date();
+	let dateInThreeYears = new Date(today.getYear()+1903,today.getMonth(), today.getDay());
+	
+	document.getElementById('testDateToday').value = today.toISOString().substr(0, 10);
+	document.getElementById('testDateIn3years').value = dateInThreeYears.toISOString().substr(0, 10);
+
 	$('#widget-stockScanRemove-form div[name=displayPendingDiv]').hide();
 	$('#widget-stockScanRemove-form input[name=result]').hide();
 	$('#widget-stockScanRemove-form div[name=typeOutputDiv]').hide();
@@ -572,6 +578,13 @@ $('#widget-stockScanRemove-form select[name=typeOutput]').change(function(){
 	$('#widget-stockScanRemove-form div[name=orderClientDiv]').hide();
 	$('#widget-stockScanRemove-form button[name=sendValueToRemove]').hide();
 	$('#widget-stockScanRemove-form div[name=orderCompanyDiv]').show();
+
+	if($('#widget-stockScanRemove-form select[name=typeOutput]').val()=='selling'){
+		$('#widget-stockScanRemove-form input[name=action]').val('selling');
+	}
+	else{
+		$('#widget-stockScanRemove-form input[name=action]').val('leasingStockPending');
+	}
 })
 
 $('#widget-stockScanRemove-form select[name=orderCompany]').change(function(){
@@ -581,15 +594,6 @@ $('#widget-stockScanRemove-form select[name=orderCompany]').change(function(){
 	changeCompanyAndClient()
 	$('#widget-stockScanRemove-form div[name=orderClientDiv]').show();
 	$('#widget-stockScanRemove-form button[name=sendValueToRemove]').show();
-	
-	
-	if($('#widget-stockScanRemove-form select[name=typeOutput]').val('selling')){
-		$('#widget-stockScanRemove-form input[name=action]').val('selling');
-	}
-	else{
-		$('#widget-stockScanRemove-form input[name=action]').val('leasingStockPending');
-	}
-
 	$('#widget-stockScanRemove-form input[name=typeArticle]').val(typeToBind);
 })
 
@@ -635,18 +639,20 @@ function displayResultPendingDelivery(){
 
 				$('#widget-stockScanRemove-form div[name=displayPendingDiv]').show();
 				$('#widget-stockScanRemove-form input[name=typePendingArticle]').val(typeToBind);
+				$('#widget-stockScanRemove-form input[name=typeArticle]').val(typeToBind);
 				$('#widget-stockScanRemove-form button[name=sendValueToRemove]').show();
 				$('#widget-stockScanRemove-form div[name=typeOutputDiv]').show();
 				$('#widget-stockScanRemove-form select[name=typeOutput]').val('leasing');
 				$('#widget-stockScanRemove-form select[name=typeOutput]').attr("disabled", true);
 
 				if(typeToBind=='BIKE'){
-
 					$('#widget-stockScanRemove-form input[name=companyPending]').val(response.company);
 					$('#widget-stockScanRemove-form input[name=clientPending]').val(response.name + ' - ' + response.firstname);
 				}
-				else{
-					// pas d'accessoire en pending delivery pour l'instant
+				if(typeToBind=='ACCESSORY'){
+					console.log("test");
+					$('#widget-stockScanRemove-form input[name=companyPending]').val(response.company);
+					$('#widget-stockScanRemove-form div[name=clientPendingDiv]').hide();
 				}
 			}	
 		}

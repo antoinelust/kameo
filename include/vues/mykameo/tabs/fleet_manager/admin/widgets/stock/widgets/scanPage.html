@@ -298,8 +298,9 @@
 						}
 						);
 						if(response.type=='leasing'){
-							hideAllFromRemove(); 
+							
 							document.getElementById("widget-stockScanRemove-form").reset();
+							hideAllFromRemove(); 
 						}
 						else if (response.type=='selling'){
 							create_Facture();

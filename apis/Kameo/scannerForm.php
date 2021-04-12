@@ -37,6 +37,7 @@ $idBikes = isset($_GET['listOrderType']) ? addslashes($_GET['listOrderType']) : 
 $dateNow = isset($_GET['testDateToday']) ? addslashes($_GET['testDateToday']) : NULL;
 $dateInThreeYears = isset($_GET['testDateIn3years']) ? addslashes($_GET['testDateIn3years']) : NULL;
 $companyId = isset($_GET['companyPending']) ? addslashes($_GET['companyPending']) : NULL;
+$companyIdSelling = isset($_GET['orderCompany']) ? addslashes($_GET['orderCompany']) : NULL;
 $clientEmail = isset($_GET['orderClient']) ? addslashes($_GET['orderClient']) : NULL;
 $companyInternalReference = isset($_GET['companyInternalReference']) ? addslashes($_GET['companyInternalReference']) : NULL;
 
@@ -173,7 +174,7 @@ else if ($action == 'loadAccessoryOrder'){
 	$i=0;
 	while($rowAccessory = mysqli_fetch_array($resultAccessory)){
 		$response['bike'][$i]['accessory']= $rowAccessory['ID'];
-		$response['bike'][$i]['contract']= $rowBike['CONTRACT_TYPE'];
+		$response['bike'][$i]['contract']= $rowAccessory['CONTRACT_TYPE'];
 		$i++;
 	}
 	$response['numberAccessoryOrder'] = $i;
@@ -186,7 +187,7 @@ else if ($action == 'loadAccessoryOrder'){
 }
 
 else if($action == 'changeContractType'){
-	
+
 	if($type='BIKE'){
 		include 'connexion.php';
 		$sql="SELECT * FROM customer_bike_access WHERE BIKE_ID='$id' AND TYPE='personnel'";
@@ -211,16 +212,29 @@ else if($action == 'changeContractType'){
 			$sql->execute();
 			$response['response']='success';
 		}
-		echo json_encode($response);
-
+		
 	}
-	else if($type='ACCESSORY'){
+	if($type='ACCESSORY'){
 		include 'connexion.php';
-		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token',HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='stock' WHERE ID='$id'");
+		$status='';
+		
+		$sqlCheck="SELECT * FROM accessories_stock WHERE ID='$id' ";
+		$resultCheck= mysqli_query($conn, $sqlCheck);
+		$rowCheck= mysqli_fetch_assoc($resultCheck);
+		$test = $rowCheck['COMPANY_ID'];
+
+		if($test==NULL){
+			$status = 'stock';
+		}
+		else {
+			$status='pending_delivery';
+		}
+		
+		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token',HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='$status' WHERE ID='$id'");
 		$sql->execute();
 		$response['response']='success';
-		echo json_encode($response);
 	}
+	echo json_encode($response);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -425,10 +439,22 @@ else if ($action == 'getDataFromOrderPendingDelivery'){
 		$resultComp= mysqli_query($conn, $sqlComp);
 		$rowComp = mysqli_fetch_assoc($resultComp);
 		$response['company']=$rowComp['COMPANY_NAME'];
+		$response['response']='success';
 
 	}
-	else if($typeArticle=='ACCESSORY'){
-		// pas d'accessoire en pending delivery pour l'instant
+	if($typeArticle=='ACCESSORY'){
+		
+		$sql="SELECT * FROM accessories_stock WHERE ID='$id'";
+		$result= mysqli_query($conn, $sql);
+		$row = mysqli_fetch_assoc($result);
+		$tempcomp=$row['COMPANY_ID'];
+
+
+		$sqlData="SELECT * FROM companies WHERE ID='$tempcomp'";
+		$resultData= mysqli_query($conn, $sqlData);
+		$rowData = mysqli_fetch_assoc($resultData);
+		$response['response']='success';
+		$response['company'] = $rowData['COMPANY_NAME'];
 	}
 
 	echo json_encode($response);
@@ -465,7 +491,7 @@ else if($action=='selling'){
 		}
 	}
 	else if($typeArticle=='ACCESSORY'){
-		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='selling',COMPANY_ID = '$companyId', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
+		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='selling',COMPANY_ID = '$companyIdSelling', SELLING_DATE='$dateNow',CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
 		$sql->execute();		
 	}
 	$response['response']='success';
@@ -475,6 +501,19 @@ else if($action=='selling'){
 }
 // livraison d'un vélo en attente de livraison
 else if($action=='leasingStockPending'){
+
+	if($companyId!=''){
+		
+			$sqlData="SELECT * FROM companies WHERE COMPANY_NAME='$companyId'";
+			$resultData= mysqli_query($conn, $sqlData);
+			$rowData = mysqli_fetch_assoc($resultData);
+			$companyInternalReference = $rowData['INTERNAL_REFERENCE'];
+			$companyId = $rowData['ID'];
+	}
+	else{
+		$companyId = $companyIdSelling;
+	}
+	
 	if($typeArticle=='BIKE'){
 		$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='leasing', COMPANY = '$companyInternalReference', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
 		$sql->execute();
@@ -486,11 +525,12 @@ else if($action=='leasingStockPending'){
 			mysqli_query($conn, $sqlTest);
 		}
 	}
-	else if($typeArticle=='ACCESSORY'){
-		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='leasing', COMPANY_ID = 'companyId', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
+	if($typeArticle=='ACCESSORY'){
+		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='leasing', COMPANY_ID = '$companyId', CONTRACT_START ='$dateNow', CONTRACT_END='$dateInThreeYears' WHERE ID='$idBikes'");
 		$sql->execute();
 		$response['response']='success';
 	}
+
 	$response['message']='article modifié (leasing) dans le BDD';
 	$response['type']='leasing';
 	echo json_encode($response);
