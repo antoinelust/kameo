@@ -256,7 +256,7 @@ $('.maintenanceManagementDeleteButton').click(function(){
 
 $('body').on('click', '.editMaintenance',function(){
   get_maintenance(this.name);
-  $("#widget-maintenanceManagement-form input[name=action]").val("edit");
+  $("#widget-maintenanceManagement-form input[name=action]").val("update");
   $("#widget-maintenanceManagement-form input").attr("readonly", true);
   $("#widget-maintenanceManagement-form input[name=dateMaintenance]").attr("readonly", false);
   $("#widget-maintenanceManagement-form select").attr("disabled", false);
@@ -334,9 +334,9 @@ $('#widget-maintenanceManagement-form select[name=company]').change(function(){
   $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", false);
 
   $.ajax({
-    url: "apis/Kameo/get_bikes_listing.php",
-    type: "post",
-    data: {company: $('#widget-maintenanceManagement-form select[name=company]').val() },
+    url: "api/bikes",
+    type: "get",
+    data: {company: $('#widget-maintenanceManagement-form select[name=company]').val(), action: 'list' },
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);

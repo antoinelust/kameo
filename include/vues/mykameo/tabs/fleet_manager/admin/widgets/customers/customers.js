@@ -1306,9 +1306,9 @@ function get_company_contacts(ID) {
 //Module gérer les clients ==> ajouter un batiment à un client
 function add_building(company){
   $.ajax({
-    url: "apis/Kameo/get_bikes_listing.php",
-    type: "post",
-    data: { company: company },
+    url: "api/bikes",
+    type: "get",
+    data: { company: company, action:'list'},
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);

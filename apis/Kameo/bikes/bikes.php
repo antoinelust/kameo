@@ -9,7 +9,6 @@ header_remove("Content-Security-Policy");
 
 require_once __DIR__ .'/../globalfunctions.php';
 require_once __DIR__ .'/../authentication.php';
-require_once __DIR__ .'/../connexion.php';
 
 $token = getBearerToken();
 
@@ -20,7 +19,20 @@ switch($_SERVER["REQUEST_METHOD"])
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 
-		if($action === 'listBikeBills'){
+		if($action=="list"){
+			$admin = isset($_GET['admin']) ? $_GET['admin'] : NULL;
+			if ($admin != "Y") {
+				if(get_user_permissions(["admin", "fleetManager"], $token)){
+					include "listBikesFleetManager.php";
+				}else
+					error_message('403');
+			}else{
+				if(get_user_permissions("admin", $token)){
+					include "listBikesAdmin.php";
+				}else
+					error_message('403');
+			}
+		}else if($action === 'listBikeBills'){
 			if(get_user_permissions(["admin", "bikesStock"], $token)){
 				require_once 'listBikeBills.php';
 			}else
@@ -74,6 +86,4 @@ switch($_SERVER["REQUEST_METHOD"])
 		error_message('405');
 	break;
 }
-
-$conn->close();
 ?>

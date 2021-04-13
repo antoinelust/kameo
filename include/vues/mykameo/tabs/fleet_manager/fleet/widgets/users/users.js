@@ -208,9 +208,9 @@ function get_users_listing(){
             document.getElementById('buildingCreateUser').innerHTML = dest;
 
             $.ajax({
-              url: 'apis/Kameo/get_bikes_listing.php',
-              type: 'post',
-              data: { "email": user_data.EMAIL},
+              url: 'api/bikes',
+              type: 'get',
+              data: { 'action': 'list'},
               success: function(response){
                 if(response.response == 'error') {
                   console.log(response.message);

@@ -133,9 +133,9 @@
           document.getElementById('buildingCreateUserAdmin').innerHTML = dest;
 
           $.ajax({
-            url: 'apis/Kameo/get_bikes_listing.php',
-            type: 'post',
-            data: { "company": company},
+            url: 'api/bikes',
+            type: 'get',
+            data: { "company": company, 'action': 'list'},
             success: function(response){
               if(response.response == 'error') {
                 console.log(response.message);
@@ -143,7 +143,7 @@
               if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                while (i < response.bikeNumber){
+                while (i < response.bike.length){
                   if(response.bike[i].biketype == 'partage'){
                     temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\">"+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
                     dest=dest.concat(temp);

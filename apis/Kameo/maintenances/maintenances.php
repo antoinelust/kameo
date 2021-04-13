@@ -44,7 +44,22 @@ switch($_SERVER["REQUEST_METHOD"])
 				die;
 			}else
 				error_message('403');
-		}if($action === 'addImage'){
+		}if($action === 'update'){
+			if(get_user_permissions("admin", $token)){
+				$id = isset($_POST["ID"]) ? $_POST["ID"] : NULL;
+				$user = isset($_POST["user"]) ? $_POST["user"] : NULL;
+				$date = isset($_POST["dateMaintenance"]) ? date('Y-m-d',strtotime($_POST["dateMaintenance"])): NULL;
+				$status = isset($_POST["status"]) ? $_POST["status"] : NULL;
+				$comment = isset($_POST["comment"]) ? $_POST["comment"] : NULL;
+				$internalComment = isset($_POST["internalComment"]) ? $_POST["internalComment"] : NULL;
+				$bike_id = isset($_POST["velo"]) ? $_POST["velo"] : NULL;
+				$sql =execSQL("UPDATE entretiens SET USR_MAJ = ?, HEU_MAJ = CURRENT_TIMESTAMP, DATE = ?, STATUS = ?, COMMENT = ?, INTERNAL_COMMENT=? WHERE ID = ?;", array('sssssi', $token, $date, $status, $comment, $internalComment, $id), true);
+				$response = array ('response'=>'success', 'message' => 'la modification a bien été effectuée');
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
+		}else if($action === 'addImage'){
 			if(get_user_permissions("admin", $token)){
 				$id = isset($_POST["ID"]) ? $_POST["ID"] : NULL;
 				$name = isset($_POST["name"]) ? $_POST["name"] : NULL;

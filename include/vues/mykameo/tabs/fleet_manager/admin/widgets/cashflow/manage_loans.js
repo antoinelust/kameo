@@ -1,9 +1,9 @@
 // get customers bikes
 function get_customers_bikes() {
   return $.ajax({
-    url: "apis/Kameo/get_bikes_listing.php",
-    type: "post",
-    data: { admin: "Y", customersCompaniesToIncludeInLoan: "Y"},
+    url: "api/bikes",
+    type: "get",
+    data: { admin: "Y", action:'list', customersCompaniesToIncludeInLoan: "Y"},
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);
