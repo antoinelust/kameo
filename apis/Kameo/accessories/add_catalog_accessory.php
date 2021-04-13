@@ -22,6 +22,7 @@ $display=isset($_POST['display']) ? "Y" : "N";
 $provider = isset($_POST["provider"]) ? addslashes($_POST["provider"]) : NULL;
 $articleNbr = isset($_POST["articleNbr"]) ? addslashes($_POST["articleNbr"]) : NULL;
 $minimalStockAccessory = isset($_POST["minimalStockAccessory"]) ? addslashes($_POST["minimalStockAccessory"]) : NULL;
+$optimumStockAccessory = isset($_POST["optimumStockAccessory"]) ? addslashes($_POST["optimumStockAccessory"]) : NULL;
 
 
 
@@ -42,10 +43,10 @@ if($brand != '' && $model != '' && $description != '' && $category != '' && $buy
             error_message('500', 'Unable to add an accessory');
     }else if($action=="update"){
 
-        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, MODEL=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=?, PROVIDER=?,REFERENCE=?, MINIMAL_STOCK=? WHERE ID=? ");
+        $stmt = $conn->prepare("UPDATE accessories_catalog set USR_MAJ=?, BRAND=?, MODEL=?, DESCRIPTION=?, ACCESSORIES_CATEGORIES=?, BUYING_PRICE=?,  PRICE_HTVA=?, STOCK=?, DISPLAY=?, PROVIDER=?,REFERENCE=?, MINIMAL_STOCK=?, STOCK_OPTIMUM=? WHERE ID=? ");
         if ($stmt)
         {
-            $stmt->bind_param("ssssiddisssii", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $minimalStockAccessory, $ID);
+            $stmt->bind_param("ssssiddisssiii", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $stock, $display, $provider, $articleNbr, $minimalStockAccessory, $optimumStockAccessory, $ID);
             $stmt->execute();
         }else
             error_message('500', 'Unable to add an accessory');

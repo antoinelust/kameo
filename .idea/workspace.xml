@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Order File and Scan">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.html" beforeDir="false" afterPath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.js" beforeDir="false" afterPath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.js" afterDir="false" />
-    </list>
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Accessory Test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,7 +76,7 @@
       <workItem from="1618212377555" duration="243000" />
       <workItem from="1618216144297" duration="145000" />
       <workItem from="1618216496445" duration="14000" />
-      <workItem from="1618220986736" duration="70000" />
+      <workItem from="1618220986736" duration="152000" />
     </task>
     <task id="LOCAL-00001" summary="Version Test Younes">
       <created>1612442399254</created>
@@ -236,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618216187696</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Accessory Test">
+      <created>1618226654658</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1618226654658</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,6 +277,7 @@
     <MESSAGE value="Geberate File CSV to order HARTJE" />
     <MESSAGE value="Order File and Scan" />
     <MESSAGE value="Oder CSV File" />
-    <option name="LAST_COMMIT_MESSAGE" value="Oder CSV File" />
+    <MESSAGE value="Accessory Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Accessory Test" />
   </component>
 </project>
