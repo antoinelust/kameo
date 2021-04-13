@@ -251,6 +251,12 @@ function getPortfolioDetails(ID) {
        $("#widget-addCatalogAccessory-form [name=minimalStockAccessory]").val(
         response.accessory.MINIMAL_STOCK
       );
+
+        $("#widget-addCatalogAccessory-form [name=optimumStockAccessory]").val(
+        response.accessory.STOCK_OPTIMUM
+      );
+
+
       if (response.accessory.DISPLAY == "Y") {
         $("#widget-addCatalogAccessory-form [name=display]").prop(
           "checked",

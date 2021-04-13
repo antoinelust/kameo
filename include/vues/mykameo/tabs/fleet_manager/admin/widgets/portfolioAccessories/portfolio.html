@@ -123,6 +123,7 @@
                     name="articleNbr"
                   />
                 </div>
+                <div class="col-sm-12">
                 <div class="col-sm-4">
                     <label for="minimalStockAccessory"> Stock Minimal : </label>
                     <input
@@ -133,6 +134,17 @@
                       name="minimalStockAccessory"
                     />
                   </div>
+                   <div class="col-sm-4">
+                    <label for="optimumStockAccessory"> Stock Optimum : </label>
+                    <input
+                      type="number"
+                      min='0'
+                      max='100'
+                      class="form-control required"
+                      name="optimumStockAccessory"
+                    />
+                  </div>
+                </div>
                 <div class="col-sm-12">
                   <label for="description">
                     <?=L::generic_description;?>

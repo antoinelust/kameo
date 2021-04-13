@@ -9,11 +9,11 @@ $(".fleetmanager").click(function () {
       }
       if (response.response == "success") {
         document.getElementById("counterStockAccessoriesCounter").innerHTML =
-          '<span style="color:#3cb395" data-speed="1" data-refresh-interval="4" data-to="' +
-          response.accessoriesNumber +
-          '" data-from="0" data-seperator="false">' +
-          response.accessoriesNumber +
-          "</span>";
+        '<span style="color:#3cb395" data-speed="1" data-refresh-interval="4" data-to="' +
+        response.accessoriesNumber +
+        '" data-from="0" data-seperator="false">' +
+        response.accessoriesNumber +
+        "</span>";
       }
     },
   });
@@ -34,36 +34,44 @@ $('.addStockAccessoryButton').click(function(){
   $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
 })
 
- $('#widget-manageStockAccessory-form select[name=company]').change(function(){
-   $.ajax({
-     url: "apis/Kameo/companies/companies.php",
-     type: "get",
-     data: {
-       "action" : "retrieve",
-       "ID" : $(this).val()
-     },
-     success : function(data) {
-       $('#widget-manageStockAccessory-form select[name=user')
-        .find('option')
-        .remove()
-        .end();
-        if(data.userNumber > 0 ){
-          $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
-          data.user.forEach(function(user, index){
-            $("#widget-manageStockAccessory-form select[name=user]").append('<option value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
-          });
-          $("#widget-manageStockAccessory-form select[name=user]").val("");
-        }else{
-          $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
-          $.notify({
-            message: "Pas d'utilisateurs définis pour cette société, il n'est possible d'attribuer l'accessoire qu'au niveau de la société"
-          }, {
-            type: 'info'
-          });
-        }
-     }
-   });
- });
+$('#widget-manageStockAccessory-form select[name=company]').change(function(){
+
+  if($('#widget-manageStockAccessory-form select[name=company]').val()=='KAMEO'){
+    $('#widget-manageStockAccessory-form select[name=contractType]').val('order');
+    $('#widget-manageStockAccessory-form select[name=contractType]').attr('disabled', true);
+  }
+  else{
+   $('#widget-manageStockAccessory-form select[name=contractType]').attr('disabled', false);
+ }
+ $.ajax({
+   url: "apis/Kameo/companies/companies.php",
+   type: "get",
+   data: {
+     "action" : "retrieve",
+     "ID" : $(this).val()
+   },
+   success : function(data) {
+     $('#widget-manageStockAccessory-form select[name=user')
+     .find('option')
+     .remove()
+     .end();
+     if(data.userNumber > 0 ){
+      $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
+      data.user.forEach(function(user, index){
+        $("#widget-manageStockAccessory-form select[name=user]").append('<option value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
+      });
+      $("#widget-manageStockAccessory-form select[name=user]").val("");
+    }else{
+      $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
+      $.notify({
+        message: "Pas d'utilisateurs définis pour cette société, il n'est possible d'attribuer l'accessoire qu'au niveau de la société"
+      }, {
+        type: 'info'
+      });
+    }
+  }
+});
+});
 
 
 $('#widget-manageStockAccessory-form select[name=contractType]').change(function(){
@@ -85,50 +93,50 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
 
 $('#widget-manageStockAccessory-form select[name=category]').change(function(){
   $.ajax({
-     url: "apis/Kameo/accessories/accessories.php",
-     type: "get",
-     data: {
-       "action": "getModelsCategory",
-       "category" : $(this).val()
-     },
-     success : function(data) {
-       $('#widget-manageStockAccessory-form select[name=model')
-        .find('option')
-        .remove()
-        .end();
+   url: "apis/Kameo/accessories/accessories.php",
+   type: "get",
+   data: {
+     "action": "getModelsCategory",
+     "category" : $(this).val()
+   },
+   success : function(data) {
+     $('#widget-manageStockAccessory-form select[name=model')
+     .find('option')
+     .remove()
+     .end();
 
-      if(data.models==null){
-        $.notify({
-          message: "Pas d'accessoires dans notre catalogue pour cette catégorie"
-        }, {
-          type: 'danger'
-        });
-      }else{
-        data.models.forEach(function(model, index){
-          $("#widget-manageStockAccessory-form select[name=model]").append('<option value='+model['ID']+'>'+model['BRAND'] + " - " +model['MODEL']+'</option>');
-        });
-        $("#widget-manageStockAccessory-form select[name=model]").val("");
-      }
+     if(data.models==null){
+      $.notify({
+        message: "Pas d'accessoires dans notre catalogue pour cette catégorie"
+      }, {
+        type: 'danger'
+      });
+    }else{
+      data.models.forEach(function(model, index){
+        $("#widget-manageStockAccessory-form select[name=model]").append('<option value='+model['ID']+'>'+model['BRAND'] + " - " +model['MODEL']+'</option>');
+      });
+      $("#widget-manageStockAccessory-form select[name=model]").val("");
+    }
 
-     }
-   });
- });
+  }
+});
+});
 
 
- $('#widget-manageStockAccessory-form select[name=model]').change(function(){
-   $.ajax({
-      url: "apis/Kameo/accessories/accessories.php",
-      type: "get",
-      data: {
-        "action": "retrieve",
-        "ID" : $(this).val()
-      },
-      success : function(data) {
-        $('#widget-manageStockAccessory-form input[name=leasingAmount]').val(data.accessory.PRICE_HTVA*1.25/36);
-        $('#widget-manageStockAccessory-form input[name=sellingAmount]').val(data.PRICE_HTVA);
-      }
-    });
-  });
+$('#widget-manageStockAccessory-form select[name=model]').change(function(){
+ $.ajax({
+  url: "apis/Kameo/accessories/accessories.php",
+  type: "get",
+  data: {
+    "action": "retrieve",
+    "ID" : $(this).val()
+  },
+  success : function(data) {
+    $('#widget-manageStockAccessory-form input[name=leasingAmount]').val(data.accessory.PRICE_HTVA*1.25/36);
+    $('#widget-manageStockAccessory-form input[name=sellingAmount]').val(data.PRICE_HTVA);
+  }
+});
+});
 
 
 
@@ -145,20 +153,20 @@ $(".stockAccessoriesClick").click(function(){
   list_stock_accessories();
   if ($('#widget-manageStockAccessory-form select[name=category] option').length == 0) {
     $.ajax({
-       url: "apis/Kameo/accessories/accessories.php",
-       type: "get",
-       data: {
-         "action": "getCategories",
-       },
-       success : function(data) {
-         data.categories.forEach(function(category, index){
-           $("#widget-manageStockAccessory-form select[name=category]").append('<option value='+category['ID']+'>'+category['CATEGORY']+'</option>');
-         });
-         $("#widget-manageStockAccessory-form select[name=category]").val("");
-       }
-     });
-   }
- });
+     url: "apis/Kameo/accessories/accessories.php",
+     type: "get",
+     data: {
+       "action": "getCategories",
+     },
+     success : function(data) {
+       data.categories.forEach(function(category, index){
+         $("#widget-manageStockAccessory-form select[name=category]").append('<option value='+category['ID']+'>'+category['CATEGORY']+'</option>');
+       });
+       $("#widget-manageStockAccessory-form select[name=category]").val("");
+     }
+   });
+  }
+});
 
 
 
@@ -177,163 +185,163 @@ function list_stock_accessories(){
     },
     sAjaxDataProp: "accessories",
     columns: [
-      {
+    {
       title: "ID",
       data: "ID",
       fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
         $(nTd).html(
           "<a href='#' data-target='#manageStockAccessory' data-toggle='modal' href=''#'' class='updateStockAccessorylink' data-ID='" +
-            sData +
-            "'> "+sData+"</a>"
-        );
+          sData +"'> "+sData+"</a>");
       },
-      },
-      {
-        title: "Société",
-        data: "COMPANY_NAME",
-      },
-      {
-        title: "Client",
-        data: "USER_EMAIL",
-      },
-      {
-        title: "Marque",
-        data: "BRAND",
-      },
-      {
-        title: "Modèle",
-        data: "MODEL",
-      },
-      {
-        title: "Catégorie",
-        data: "CATEGORY",
-      },
-      {
-        title: "Type de contrat",
-        data: "CONTRACT_TYPE",
-      },
-      {
+    },
+    {
+      title: "Société",
+      data: "COMPANY_NAME",
+    },
+    {
+      title: "Client",
+      data: "USER_EMAIL",
+    },
+    {
+      title: "Marque",
+      data: "BRAND",
+    },
+    {
+      title: "Modèle",
+      data: "MODEL",
+    },
+    {
+      title: "Catégorie",
+      data: "CATEGORY",
+    },
+    {
+      title: "Type de contrat",
+      data: "CONTRACT_TYPE",
+    },
+    {
       title: "Montant",
-        data: "CONTRACT_AMOUNT",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          if (oData.CONTRACT_TYPE == 'leasing') $(nTd).html(sData + '€/mois');
-          else if (oData.CONTRACT_TYPE == 'achat') $(nTd).html(oData.SELLING_AMOUNT + ' €');
-        },
+      data: "CONTRACT_AMOUNT",
+      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+        if (oData.CONTRACT_TYPE == 'leasing') $(nTd).html(sData + '€/mois');
+        else if (oData.CONTRACT_TYPE == 'selling') $(nTd).html(oData.SELLING_AMOUNT + ' €');
       },
-      {
-        title: "Début contrat",
-        data: "CONTRACT_START",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html(get_date_string_european(sData));
-          $(nTd).data('sort', new Date(sData).getTime());
-        },
+    },
+    {
+      title: "Début contrat",
+      data: "CONTRACT_START",
+      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+        $(nTd).html(get_date_string_european(sData));
+        $(nTd).data('sort', new Date(sData).getTime());
       },
-      {
-       title: "Fin contrat",
-       data: "CONTRACT_END",
-       fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-         $(nTd).html(get_date_string_european(sData));
-         $(nTd).data('sort', new Date(sData).getTime());
-       },
-      }
-      ],
-      order: [
-        [0, "desc"]
-      ],
-      paging : false
-    });
-
+    },
+    {
+     title: "Fin contrat",
+     data: "CONTRACT_END",
+     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+       $(nTd).html(get_date_string_european(sData));
+       $(nTd).data('sort', new Date(sData).getTime());
+     },
+   }
+   ],
+   order: [
+   [0, "desc"]
+   ],
+   paging : false
+ });
+  $('#stockAccessoriesList').on( 'draw.dt', function () {
     $('.updateStockAccessorylink').off();
     $('.updateStockAccessorylink').click(function(){
-    get_stock_accessory($(this).data("id"));
-    });
+      get_stock_accessory($(this).data("id"));
+    })
+  })
 }
 
 
 function get_stock_accessory(ID){
+  console.log('tes'+ID);
   $.ajax({
-     url: "apis/Kameo/accessories/accessories.php",
-     type: "get",
-     data: {
-       "action": "getAccessoryStock",
-       "ID" : ID
-     },
-     success : function(data) {
-       if(data.response="success"){
-         $("#widget-manageStockAccessory-form").trigger("reset");
-         $("#widget-manageStockAccessory-form input[name=action]").val("updateStockAccessory");
-         $("#widget-manageStockAccessory-form input[name=ID]").val(data.ID);
-         $("#widget-manageStockAccessory-form select[name=category]").val(data.ACCESSORIES_CATEGORIES);
-         $("#widget-manageStockAccessory-form select[name=company]").val(data.COMPANY_ID);
-         $("#widget-manageStockAccessory-form input[name=user]").val(data.USER_EMAIL);
-         $("#widget-manageStockAccessory-form select[name=contractType]").val(data.CONTRACT_TYPE);
-         if(data.CONTRACT_TYPE == "leasing"){
-           $("#widget-manageStockAccessory-form input[name=contractStart]").val(data.CONTRACT_START);
-           $("#widget-manageStockAccessory-form input[name=contractEnd]").val(data.CONTRACT_END);
-           $("#widget-manageStockAccessory-form input[name=leasingAmount]").val(data.CONTRACT_AMOUNT);
-           $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeIn();
-           $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeIn();
-           $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeIn();
-           $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
-           $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
-         }else if(data.CONTRACT_TYPE == 'achat'){
-           $("#widget-manageStockAccessory-form input[name=sellingDate]").val(data.SELLING_DATE);
-           $("#widget-manageStockAccessory-form input[name=sellingAmount]").val(data.SELLING_AMOUNT);
-           $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
-           $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
-           $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
-           $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
-           $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
-         }
-
-         var user= data.USER_EMAIL;
-         $.ajax({
-           url: "apis/Kameo/companies/companies.php",
-           type: "get",
-           data: {
-             "action" : "retrieve",
-             "ID" : data.COMPANY_ID
-           },
-           success : function(data) {
-             $('#widget-manageStockAccessory-form select[name=user')
-              .find('option')
-              .remove()
-              .end();
-              if(data.userNumber > 0 ){
-                $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
-                data.user.forEach(function(user, index){
-                  $("#widget-manageStockAccessory-form select[name=user]").append('<option value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
-                });
-                $("#widget-manageStockAccessory-form select[name=user]").val("");
-              }else{
-                $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
-              }
-              $("#widget-manageStockAccessory-form select[name=user]").val(user);
-
-           }
-         });
-         var catalogID = data.CATALOG_ID;
-
-         $.ajax({
-            url: "apis/Kameo/accessories/accessories.php",
-            type: "get",
-            data: {
-              "action": "getModelsCategory",
-              "category" : data.ACCESSORIES_CATEGORIES
-            },
-            success : function(data) {
-              $('#widget-manageStockAccessory-form select[name=model]')
-               .find('option')
-               .remove()
-               .end();
-
-               data.models.forEach(function(model, index){
-                 $("#widget-manageStockAccessory-form select[name=model]").append('<option value='+model['ID']+'>'+model['BRAND'] + " - " +model['MODEL']+'</option>');
-               });
-               $("#widget-manageStockAccessory-form select[name=model]").val(catalogID);
-             }
-           });
+   url: "apis/Kameo/accessories/accessories.php",
+   type: "get",
+   data: {
+     "action": "getAccessoryStock",
+     "ID" : ID
+   },
+   success : function(data) {
+     if(data.response="success"){
+       $("#widget-manageStockAccessory-form").trigger("reset");
+       $("#widget-manageStockAccessory-form input[name=action]").val("updateStockAccessory");
+       $("#widget-manageStockAccessory-form input[name=ID]").val(data.ID);
+       $("#widget-manageStockAccessory-form select[name=category]").val(data.ACCESSORIES_CATEGORIES);
+       $("#widget-manageStockAccessory-form select[name=company]").val(data.COMPANY_ID);
+       $("#widget-manageStockAccessory-form input[name=user]").val(data.USER_EMAIL);
+       $("#widget-manageStockAccessory-form select[name=contractType]").val(data.CONTRACT_TYPE);
+       if(data.CONTRACT_TYPE == "leasing"){
+         $("#widget-manageStockAccessory-form input[name=contractStart]").val(data.CONTRACT_START);
+         $("#widget-manageStockAccessory-form input[name=contractEnd]").val(data.CONTRACT_END);
+         $("#widget-manageStockAccessory-form input[name=leasingAmount]").val(data.CONTRACT_AMOUNT);
+         $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeIn();
+         $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeIn();
+         $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeIn();
+         $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+       }else if(data.CONTRACT_TYPE == 'selling'){
+         $("#widget-manageStockAccessory-form input[name=sellingDate]").val(data.SELLING_DATE);
+         $("#widget-manageStockAccessory-form input[name=sellingAmount]").val(data.SELLING_AMOUNT);
+         $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
+         $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
        }
+
+       var user= data.USER_EMAIL;
+       $.ajax({
+         url: "apis/Kameo/companies/companies.php",
+         type: "get",
+         data: {
+           "action" : "retrieve",
+           "ID" : data.COMPANY_ID
+         },
+         success : function(data) {
+           $('#widget-manageStockAccessory-form select[name=user')
+           .find('option')
+           .remove()
+           .end();
+           if(data.userNumber > 0 ){
+            $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
+            data.user.forEach(function(user, index){
+              $("#widget-manageStockAccessory-form select[name=user]").append('<option value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
+            });
+            $("#widget-manageStockAccessory-form select[name=user]").val("");
+          }else{
+            $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
+          }
+          $("#widget-manageStockAccessory-form select[name=user]").val(user);
+
+        }
+      });
+       var catalogID = data.CATALOG_ID;
+
+       $.ajax({
+        url: "apis/Kameo/accessories/accessories.php",
+        type: "get",
+        data: {
+          "action": "getModelsCategory",
+          "category" : data.ACCESSORIES_CATEGORIES
+        },
+        success : function(data) {
+          $('#widget-manageStockAccessory-form select[name=model]')
+          .find('option')
+          .remove()
+          .end();
+
+          data.models.forEach(function(model, index){
+           $("#widget-manageStockAccessory-form select[name=model]").append('<option value='+model['ID']+'>'+model['BRAND'] + " - " +model['MODEL']+'</option>');
+         });
+          $("#widget-manageStockAccessory-form select[name=model]").val(catalogID);
+        }
+      });
      }
-   });
+   }
+ });
 }

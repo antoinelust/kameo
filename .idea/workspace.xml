@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Geberate File CSV to order HARTJE" />
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Accessory Test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,6 +73,10 @@
       <workItem from="1617088645127" duration="188000" />
       <workItem from="1617088842353" duration="112000" />
       <workItem from="1617174977108" duration="51000" />
+      <workItem from="1618212377555" duration="243000" />
+      <workItem from="1618216144297" duration="145000" />
+      <workItem from="1618216496445" duration="14000" />
+      <workItem from="1618220986736" duration="152000" />
     </task>
     <task id="LOCAL-00001" summary="Version Test Younes">
       <created>1612442399254</created>
@@ -214,7 +218,28 @@
       <option name="project" value="LOCAL" />
       <updated>1617175015517</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Order File and Scan">
+      <created>1618212413494</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1618212413494</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Oder CSV File">
+      <created>1618216187696</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1618216187696</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Accessory Test">
+      <created>1618226654658</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1618226654658</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,6 +275,9 @@
     <MESSAGE value="Scan Bike and Accessory : add to stock" />
     <MESSAGE value="Scan seeling Leasing (bills) + generate Order Email" />
     <MESSAGE value="Geberate File CSV to order HARTJE" />
-    <option name="LAST_COMMIT_MESSAGE" value="Geberate File CSV to order HARTJE" />
+    <MESSAGE value="Order File and Scan" />
+    <MESSAGE value="Oder CSV File" />
+    <MESSAGE value="Accessory Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Accessory Test" />
   </component>
 </project>
