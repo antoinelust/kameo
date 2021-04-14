@@ -81,7 +81,7 @@ if(isset($_POST['action'])){
 		$stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, EMAIL=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, TEST_STATUS=? WHERE ID=?");
 		if ($stmt)
 		{
-			$stmt->bind_param("sssissdssssi", $email, $mail, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress, $testStatus, $ID);
+			$stmt->bind_param("sssissdssssi", $token, $mail, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress, $testStatus, $ID);
 			if(!$stmt->execute()){echo "there was an error....".$conn->error;}
 			$response['response']="success";
 			$stmt->close();
@@ -93,10 +93,10 @@ if(isset($_POST['action'])){
 
 		if($testBoolean=="Y"){
 			include 'connexion.php';
-			$stmt = $conn->prepare("UPDATE client_orders  SET TEST_BOOLEAN='Y', TEST_DATE=?, TEST_ADDRESS=?, TEST_RESULT=? WHERE ID=?");
+			$stmt = $conn->prepare("UPDATE client_orders SET TEST_BOOLEAN='Y', HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, TEST_DATE=?, TEST_ADDRESS=?, TEST_RESULT=? WHERE ID=?");
 			if ($stmt)
 			{
-				$stmt->bind_param("sssi", $testDate, $testAddress, $testResult, $ID);
+				$stmt->bind_param("ssssi", $token, $testDate, $testAddress, $testResult, $ID);
 				if(!$stmt->execute()){echo "there was an error....".$conn->error;}
 				$response['response']="success";
 				$stmt->close();

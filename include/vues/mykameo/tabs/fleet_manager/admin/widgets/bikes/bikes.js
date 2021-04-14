@@ -1478,9 +1478,9 @@ function switch_showed_bikes(buttonRemove, buttonAdd, buttonContent, titleConten
 function list_bikes_admin(){
   var bikeMap;
   $.ajax({
-    url: "apis/Kameo/get_bikes_listing.php",
-    type: "post",
-    data: { email: email, admin: "Y" },
+    url: "api/bikes",
+    type: "get",
+    data: { action: "list", admin: "Y" },
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);

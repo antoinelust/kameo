@@ -371,16 +371,14 @@ execSQL("INSERT INTO table(id, name) VALUES (?,?)", array('ss', $id, $name), tru
 
 function execSQL($sql, $params, $close){
   include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-  $stmt = $conn->prepare($sql) or die ("Failed to prepare the statement!");
+  $stmt = $conn->prepare($sql) or die ("Failed to prepare the statement : ".$conn->error);
   if($params){
     call_user_func_array(array($stmt, 'bind_param'), refValues($params));
   }
-
-  if(!$stmt->execute()){
+  if( !$stmt->execute() ){
     echo json_encode($stmt->error);
     die;
   }
-
   if($close){
      $result = $conn->affected_rows;
   } else {
