@@ -33,7 +33,6 @@ switch($_SERVER["REQUEST_METHOD"])
 			if(is_null($response['user'])){
 				$response['bike']=array();
 			}
-
 			echo json_encode($response);
 			die;
 		}else

@@ -322,8 +322,9 @@ function get_stock_accessory(ID){
        $("#widget-manageStockAccessory-form input[name=ID]").val(data.ID);
        $("#widget-manageStockAccessory-form select[name=category]").val(data.ACCESSORIES_CATEGORIES);
        $("#widget-manageStockAccessory-form select[name=company]").val(data.COMPANY_ID);
-       $("#widget-manageStockAccessory-form input[name=user]").val(data.USER_EMAIL);
        $("#widget-manageStockAccessory-form select[name=contractType]").val(data.CONTRACT_TYPE);
+       var email = data.USER_EMAIL;
+       var bikeID = data.BIKE_ID;
 
        $.ajax({
          url: "apis/Kameo/companies/companies.php",
@@ -340,10 +341,16 @@ function get_stock_accessory(ID){
            if(data.user.length > 0 ){
             $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
             data.user.forEach(function(user, index){
-             $("#widget-manageStockAccessory-form select[name=user]").append('<option data-bike="'+user['bikeId']+'"" value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
+             $("#widget-manageStockAccessory-form select[name=user]").append('<option data-bike="'+user['bikeId']+'" value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
            });
+           $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeOut();
+
+          if(email != 'null'){
+            $("#widget-manageStockAccessory-form select[name=user]").val(email);
+          }else{
             $("#widget-manageStockAccessory-form select[name=user]").val("");
-            $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeOut();
+          }
+
           }else{
             $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
             $.notify({
@@ -369,6 +376,11 @@ function get_stock_accessory(ID){
               while(i<data.bike.length){
                 $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+data.bike[i].id+'>'+data.bike[i].id+' :  '+data.bike[i].model+' - '+data.bike[i].contract+'</option>');
                 i++;
+              }
+              if(bikeID != 'null'){
+                $("#widget-manageStockAccessory-form select[name=bike]").val(bikeID);
+              }else{
+                $("#widget-manageStockAccessory-form select[name=bike]").val("");
               }
 
               if(data.bike.length==0){
@@ -433,14 +445,16 @@ function get_stock_accessory(ID){
         }
       });
      }
-     $("#widget-manageStockAccessory-form select[name=bike]").val(data.BIKE_ID);
    }
  });
-
 }
 
 $("#widget-manageStockAccessory-form select[name=user]").change(function(){
   $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeIn();
+  $('#widget-manageStockAccessory-form select[name=bike')
+  .find('option')
+  .remove()
+  .end();
   var idBike =  $("#widget-manageStockAccessory-form select[name=user]").find(':selected').data('bike');
   $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+idBike+'>'+idBike+'</option>');
 })
