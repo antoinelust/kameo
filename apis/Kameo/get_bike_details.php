@@ -52,7 +52,7 @@ if($id != NULL)
 
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    
+
 
     $response['response']="success";
     $response['id']=$row['ID'];

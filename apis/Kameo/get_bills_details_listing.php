@@ -13,7 +13,7 @@ if($bikeID != NULL)
 {
 
     include 'connexion.php';
-	$sql="select * from factures_details where ITEM_ID = '$bikeID' AND ITEM_TYPE='bike'";
+	$sql="select factures_details.* from factures_details, factures where ITEM_ID = '$bikeID' AND ITEM_TYPE='bike' and factures_details.FACTURE_ID=factures.ID";
 
 
     if ($conn->query($sql) === FALSE) {

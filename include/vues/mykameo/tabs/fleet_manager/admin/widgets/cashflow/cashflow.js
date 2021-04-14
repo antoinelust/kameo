@@ -237,205 +237,209 @@ function retrieve_cost(ID, action) {
 }
 function generateCashGraphic() {
   $.ajax({
-    url: "apis/Kameo/offer_management.php",
+    url: "api/cashFlow",
     type: "get",
-    data: { graphics: "Y", action: "retrieve" },
+    data: { action: "getGraphics" },
     success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        var threeYearsFromNow = new Date();
-        threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
-        var maxXAxis = threeYearsFromNow.toISOString().split("T")[0];
+      var threeYearsFromNow = new Date();
+      threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
+      var maxXAxis = threeYearsFromNow.toISOString().split("T")[0];
 
-        var ctx = document.getElementById("myChart").getContext("2d");
-        var myChart = new Chart(ctx, {
-          type: "line",
-          data: {
-            datasets: [
+      var ctx = document.getElementById("myChart").getContext("2d");
+      var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          datasets: [
+            {
+              label: "Contrats signés",
+              borderColor: "rgba(44, 132, 109, 0.5)",
+              backgroundColor: "rgba(44, 132, 109, 0)",
+              data: response.arrayContracts,
+            },
+            {
+              label: "Offres",
+              borderColor: "rgba(145, 145, 145, 0.5)",
+              backgroundColor: "rgba(145, 145, 145, 0)",
+              data: response.arrayOffers,
+            },
+            {
+              label: "Chiffre d'affaire",
+              borderColor: "rgba(60, 179, 149, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0)",
+              data: response.totalIN,
+            },
+            {
+              label: "Frais",
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(176, 0, 0, 0)",
+              data: response.arrayCosts,
+            },
+            {
+              label: "Cash flow",
+              borderColor: "rgba(60, 179, 149, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              data: response.arrayFreeCashFlow,
+            },
+          ],
+          labels: response.arrayDates,
+        },
+
+        options: {
+          scales: {
+            xAxes: [
               {
-                label: "Contrats signés",
-                borderColor: "rgba(44, 132, 109, 0.5)",
-                backgroundColor: "rgba(44, 132, 109, 0)",
-                data: response.arrayContracts,
-              },
-              {
-                label: "Offres",
-                borderColor: "rgba(145, 145, 145, 0.5)",
-                backgroundColor: "rgba(145, 145, 145, 0)",
-                data: response.arrayOffers,
-              },
-              {
-                label: "Chiffre d'affaire",
-                borderColor: "rgba(60, 179, 149, 0.5)",
-                backgroundColor: "rgba(60, 179, 149, 0)",
-                data: response.totalIN,
-              },
-              {
-                label: "Frais",
-                borderColor: "rgba(176, 0, 0, 0.5)",
-                backgroundColor: "rgba(176, 0, 0, 0)",
-                data: response.arrayCosts,
-              },
-              {
-                label: "Cash flow",
-                borderColor: "rgba(60, 179, 149, 0.5)",
-                backgroundColor: "rgba(60, 179, 149, 0.5)",
-                data: response.arrayFreeCashFlow,
+                ticks: {
+                  max: "2020-12-19",
+                },
               },
             ],
-            labels: response.arrayDates,
-          },
-
-          options: {
-            scales: {
-              xAxes: [
-                {
-                  ticks: {
-                    max: "2020-12-19",
-                  },
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
                 },
-              ],
-              yAxes: [
-                {
-                  ticks: {
-                    beginAtZero: true,
-                  },
-                },
-              ],
-            },
-            elements: {
-              line: {
-                tension: 0,
               },
+            ],
+          },
+          elements: {
+            line: {
+              tension: 0,
             },
           },
-        });
-        myChart.update();
-      }
-    },
+        },
+      });
+      myChart.update();
+    }
   });
 }
 
 
 function list_contracts_offers(company) {
   $.ajax({
-    url: "apis/Kameo/offer_management.php",
+    url: "api/cashFlow",
     type: "get",
-    data: { company: company, action: "retrieve" },
+    data: { action: "getContracts" },
     success: function (response) {
-      if (response.response == "error") {
-        console.log(response.message);
-      }
-      if (response.response == "success") {
-        var i = 0;
         var dest = "";
         var temp =
-          '<table class="table table-condensed"><h4 class="fr-inline text-green">Contrats signés :</h4><br/><br/><div class="seperator seperator-small visible-xs"></div><thead><tr><th><span class="fr-inline">Société</span></th><th><span class="fr-inline">Description</span></th><th><span class="fr-inline">Montant</span></th><th><span class="fr-inline">Debut</span></th><th><span class="fr-inline">Fin</span></th></tr></thead>';
+          '<table class="table table-condensed"><h4 class="text-green">Contrats signés (vélos) :</h4><br/><div class="seperator seperator-small visible-xs"></div><thead><tr><th><span>Société</span></th><th><span>Description</span></th><th><span>Montant</span></th></tr></thead>';
         dest = dest.concat(temp);
-        while (i < response.contractsNumber) {
-          if (response.contract[i].start != null) {
-            var contract_start = response.contract[i].start.shortDate();
-          } else {
-            var contract_start = '<span class="text-red">N/A</span>';
-          }
-          if (response.contract[i].end != null) {
-            var contract_end = response.contract[i].end.shortDate();
-          } else {
-            var contract_end = '<span class="text-red">N/A</span>';
-          }
-
+        var total=0;
+        response.contracts.bikes.forEach(function(contractBike){
           var temp =
             '<tr><td><a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
-            response.contract[i].companyID +
+            contractBike.companyID +
             '">' +
-            response.contract[i].company +
+            contractBike.company +
             "</a></td><td>" +
-            response.contract[i].description +
-            "</td><td>" +
-            Math.round(response.contract[i].amount) +
-            " €/mois</td><td>" +
-            contract_start +
-            "</td><td>" +
-            contract_end +
-            "</td></tr>";
+            contractBike.bikeNumber + " vélos</td><td>" +
+            Math.round(contractBike.leasingAmount) +
+            " €/mois</td></tr>";
           dest = dest.concat(temp);
-          i++;
-        }
+          total+=contractBike.leasingAmount;
+        })
         var temp = "</tobdy></table>";
         dest = dest.concat(temp);
 
         var temp =
           "<p>Valeur actuelle des contrat en cours : <strong>" +
-          Math.round(response.sumContractsCurrent) +
+          Math.round(total) +
           " €/mois</strong></p>";
         dest = dest.concat(temp);
 
-        document.getElementById("contractsListingSpan").innerHTML = dest;
+        document.getElementById("contractsBikesListingSpan").innerHTML = dest;
 
-        var i = 0;
+
         var dest = "";
         var temp =
-          '<h4 class="fr-inline text-green">Offres en cours :</h4><h4 class="en-inline text-green">Offers:</h4><h4 class="nl-inline text-green">Offers:</h4><br/><br/><div class="seperator seperator-small visible-xs"></div><table class="table table-condensed"><tbody><thead><tr><th>ID</th><th>PDF</th><th><span class="fr-inline">Société</span><span class="en-inline">Company</span><span class="nl-inline">Company</span></th><th>Type</th><th><span class="fr-inline">Titre</span><span class="en-inline">Title</span><span class="nl-inline">Title</span></th><th><span class="fr-inline">Montant</span><span class="en-inline">Amount</span><span class="nl-inline">Amount</span></th><th><span class="fr-inline">Debut</span><span class="en-inline">Start</span><span class="nl-inline">Start</span></th><th><span class="fr-inline">Fin</span><span class="en-inline">End</span><span class="nl-inline">End</span></th><th>Probabilité</th><th></th></tr></thead>';
+          '<table class="table table-condensed"><h4 class="text-green">Contrats signés (bornes):</h4><br/><div class="seperator seperator-small visible-xs"></div><thead><tr><th><span>Société</span></th><th><span>Description</span></th><th><span>Montant</span></th></tr></thead>';
         dest = dest.concat(temp);
-        while (i < response.offersNumber) {
-          if (response.offer[i].start != null) {
-            var offer_start = response.offer[i].start.shortDate();
+        var total=0;
+        response.contracts.boxes.forEach(function(contractBike){
+          var temp =
+            '<tr><td><a href="#" class="internalReferenceCompany" data-target="#companyDetails" data-toggle="modal" name="' +
+            contractBike.companyID +
+            '">' +
+            contractBike.company +
+            "</a></td><td>" +
+            contractBike.boxesNumber + " bornes</td><td>" +
+            Math.round(contractBike.amount) +
+            " €/mois</td></tr>";
+          dest = dest.concat(temp);
+          total+=contractBike.amount;
+        })
+        var temp = "</tobdy></table>";
+        dest = dest.concat(temp);
+
+        var temp =
+          "<p>Valeur actuelle des contrat en cours : <strong>" +
+          Math.round(total) +
+          " €/mois</strong></p>";
+        dest = dest.concat(temp);
+
+        document.getElementById("contractsBoxesListingSpan").innerHTML = dest;
+
+        var dest = "";
+        var temp =
+          '<h4 class="text-green">Offres en cours :</h4><br/><div class="seperator seperator-small visible-xs"></div><table class="table table-condensed"><tbody><thead><tr><th>ID</th><th>PDF</th><th>Société</th><th>Type</th><th>Titre</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Probabilité</th><th></th></tr></thead>';
+        dest = dest.concat(temp);
+        response.offers.forEach(function(offer){
+          if (offer.START != null) {
+            var offer_start = offer.START.shortDate();
           } else {
             var offer_start = '<span class="text-red">N/A</span>';
           }
-          if (response.offer[i].end != null) {
-            var offer_end = response.offer[i].end.shortDate();
+          if (offer.END != null) {
+            var offer_end = offer.END.shortDate();
           } else {
             var offer_end = '<span class="text-red">N/A</span>';
           }
 
-          if (response.offer[i].type == "leasing") {
-            var amount = Math.round(response.offer[i].amount) + "€/mois";
+          if (offer.TYPE == "leasing") {
+            var amount = Math.round(offer.AMOUNT) + "€/mois";
           } else {
-            var amount = Math.round(response.offer[i].amount) + "€";
+            var amount = Math.round(offer.AMOUNT) + "€";
           }
 
-          if (response.offer[i].amount == 0) {
+          if (offer.AMOUNT == 0) {
             var amount = '<span class="text-red">' + amount + "</span>";
           }
 
-          if (response.offer[i].type == "leasing") {
+          if (offer.TYPE == "leasing") {
             var type = "Leasing";
-          } else if (response.offer[i].type == "achat") {
+          } else if (offer.type == "achat") {
             var type = "Achat";
           }
 
           if (
-            response.offer[i].probability == 0 ||
-            response.offer[i].probability == 0
+            offer.PROBABILITY == 0 ||
+            offer.PROBABILITY == 0
           ) {
             var probability =
               '<span class="text-red">' +
-              response.offer[i].probability +
+              offer.PROBABILITY +
               " %</span>";
           } else {
             var probability =
-              "<span>" + response.offer[i].probability + " %</span>";
+              "<span>" + offer.PROBABILITY + " %</span>";
           }
 
-          if (response.offer[i].file != "" && response.offer[i].file != null) {
-            var offerLink = "offres/" + response.offer[i].file;
+          if (offer.FILE_NAME != "" && offer.FILE_NAME != null) {
+            var offerLink = "offres/" + offer.FILE_NAME;
 
             var temp =
               '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
-              response.offer[i].id +
+              offer.ID +
               '">' +
-              response.offer[i].id +
+              offer.ID +
               "</a></td><td><a href=" +
               offerLink +
               ' target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td><td>' +
-              response.offer[i].company +
+              offer.COMPANY +
               "</td><td>" +
               type +
               "</td><td>" +
-              response.offer[i].title +
+              offer.TITRE +
               "</td><td>" +
               amount +
               " </td><td>" +
@@ -445,20 +449,20 @@ function list_contracts_offers(company) {
               "</td><td>" +
               probability +
               '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
-              response.offer[i].id +
+              offer.ID +
               '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
           } else {
             var temp =
               '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
-              response.offer[i].id +
+              offer.ID +
               '">' +
-              response.offer[i].id +
+              offer.ID +
               "</a></td><td></td><td>" +
-              response.offer[i].company +
+              offer.COMPANY +
               "</td><td>" +
               type +
               "</td><td>" +
-              response.offer[i].title +
+              offer.TITRE +
               "</td><td>" +
               amount +
               " </td><td>" +
@@ -468,41 +472,45 @@ function list_contracts_offers(company) {
               "</td><td>" +
               probability +
               '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
-              response.offer[i].id +
+              offer.ID +
               '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
           }
 
           dest = dest.concat(temp);
-          i++;
-        }
+        });
         var temp = "</tbody></table>";
         dest = dest.concat(temp);
         document.getElementById("cashListingSpan").innerHTML = dest;
-
-        var i = 0;
+      }
+    });
+    $.ajax({
+      url: "api/cashFlow",
+      type: "get",
+      data: { action: "getCosts" },
+      success: function (response) {
         var dest = "";
         var temp =
-          '<table class="table table-condensed"><h4 class="fr-inline text-green">Coûts :</h4><br/><br/><a class="button small green button-3d rounded icon-right" data-target="#costsManagement" data-toggle="modal" href="#" onclick=\"addCost()\"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un coût</span></a><div class="seperator seperator-small visible-xs"></div><tbody><thead><tr><th>ID</th><th><span class="fr-inline">Titre</span></th><th><span class="fr-inline">Montant</span></th><th><span class="fr-inline">Debut</span></th><th><span class="fr-inline">Fin</span></th><th>Type</th><th></th></tr></thead>';
+          '<table class="table table-condensed"><h4 class="text-green">Coûts :</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#costsManagement" data-toggle="modal" href="#" onclick=\"addCost()\"><i class="fa fa-plus"></i> Ajouter un coût</a><div class="seperator seperator-small visible-xs"></div><tbody><thead><tr><th>ID</th><th>Titre</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Type</th><th></th></tr></thead>';
         dest = dest.concat(temp);
-        while (i < response.costsNumber) {
-          if (response.cost[i].start != null) {
-            var cost_start = response.cost[i].start.shortDate();
+        response.forEach(function(cost){
+          if (cost.START != null) {
+            var cost_start = cost.START.shortDate();
           } else {
             var cost_start = "N/A";
           }
-          if (response.cost[i].end != null) {
-            var cost_end = response.cost[i].end.shortDate();
+          if (cost.END != null) {
+            var cost_end = cost.END.shortDate();
           } else {
             var cost_end = "N/A";
           }
 
-          if (response.cost[i].type == "monthly" || response.cost[i].type == "loan") {
-            var amount = Math.round(response.cost[i].amount) + "€ /mois";
+          if (cost.TYPE == "monthly" || cost.TYPE == "loan") {
+            var amount = Math.round(cost.AMOUNT) + "€ /mois";
           } else {
-            var amount = Math.round(response.cost[i].amount) + " €";
+            var amount = Math.round(cost.AMOUNT) + " €";
           }
 
-          if (response.cost[i].type === "loan") {
+          if (cost.TYPE === "loan") {
             var updateCostLoan = 'updateLoan(this.name)'
             var retrieveCostLoan = 'retrieveLoan(this.name)'
           } else {
@@ -512,11 +520,11 @@ function list_contracts_offers(company) {
 
           var temp =
             '<tr><td><a href="#" onclick=\"' + retrieveCostLoan + '\" data-target="#costsManagement" data-toggle="modal" name="' +
-            response.cost[i].id +
+            cost.ID +
             '">' +
-            response.cost[i].id +
+            cost.ID +
             "</a></td><td>" +
-            response.cost[i].title +
+            cost.TITLE +
             "</td><td>" +
             amount +
             " </td><td>" +
@@ -524,11 +532,10 @@ function list_contracts_offers(company) {
             "</td><td>" +
             cost_end +
             '</td><td><ins><a class="text-green costsManagement" data-target="#costsManagement" name="' +
-            response.cost[i].id +
+            cost.ID +
             '" data-toggle="modal" href="#" onclick=\"' + updateCostLoan + '\">Mettre à jour</a></ins></td></tr>';
           dest = dest.concat(temp);
-          i++;
-        }
+        });
         var temp = "</tbody></table>";
         dest = dest.concat(temp);
         document.getElementById("costsListingSpan").innerHTML = dest;
@@ -544,8 +551,6 @@ function list_contracts_offers(company) {
           $(".offerManagementSendButton").removeClass("hidden");
           $(".offerManagementSendButton").text("Mettre à jour");
         });
-        displayLanguage();
-      }
-    },
+    }
   });
 }

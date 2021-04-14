@@ -62,7 +62,8 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
      .find('option')
      .remove()
      .end();
-     if(data.userNumber > 0 ){
+     console.log(data.user);
+     if(data.user.length > 0 ){
       $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
       data.user.forEach(function(user, index){
         $("#widget-manageStockAccessory-form select[name=user]").append('<option data-bike="'+user['bikeId']+'"" value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
@@ -108,7 +109,7 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
     }
   }
 });
- 
+
 });
 
 
@@ -292,7 +293,8 @@ function list_stock_accessories(){
    order: [
    [0, "desc"]
    ],
-   paging : false
+   paging : true,
+   "pageLength": 50
  });
   $('#stockAccessoriesList').on( 'draw.dt', function () {
     $('.updateStockAccessorylink').off();
@@ -335,7 +337,7 @@ function get_stock_accessory(ID){
            .find('option')
            .remove()
            .end();
-           if(data.userNumber > 0 ){
+           if(data.user.length > 0 ){
             $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
             data.user.forEach(function(user, index){
              $("#widget-manageStockAccessory-form select[name=user]").append('<option data-bike="'+user['bikeId']+'"" value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
@@ -364,12 +366,12 @@ function get_stock_accessory(ID){
               .remove()
               .end();
               var i =0;
-              while(i<data.bikeNumber){
+              while(i<data.bike.length){
                 $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+data.bike[i].id+'>'+data.bike[i].id+' :  '+data.bike[i].model+' - '+data.bike[i].contract+'</option>');
                 i++;
               }
-              
-              if(data.bikeNumber==0){
+
+              if(data.bike.length==0){
                 $.notify({
                   message: "Pas de vélo lié à cette société, il n'est possible d'attribuer l'accessoire qu'au niveau de la société"
                 }, {

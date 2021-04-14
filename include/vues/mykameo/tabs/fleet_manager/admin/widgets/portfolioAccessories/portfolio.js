@@ -245,10 +245,7 @@ function getPortfolioDetails(ID) {
       $("#widget-addCatalogAccessory-form [name=articleNbr]").val(
         response.accessory.REFERENCE
       );
-      $("#widget-addCatalogAccessory-form [name=stock]").val(
-        response.accessory.STOCK
-      );
-       $("#widget-addCatalogAccessory-form [name=minimalStockAccessory]").val(
+      $("#widget-addCatalogAccessory-form [name=minimalStockAccessory]").val(
         response.accessory.MINIMAL_STOCK
       );
 

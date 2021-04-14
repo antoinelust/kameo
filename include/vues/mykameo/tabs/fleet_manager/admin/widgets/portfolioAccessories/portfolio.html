@@ -183,13 +183,6 @@
                     name="sellingPrice"
                   />
                 </div>
-                <div class="col-sm-4">
-                  <label for="stock">
-                    <?=L::generic_in_stock;?>
-                    ?
-                  </label>
-                  <input type="text" class="form-control required" name="stock" />
-                </div>
               </div>
               <div class="col-sm-12">
                 <div class="col-sm-4">
@@ -257,7 +250,6 @@
                 type: "success",
               }
             );
-            listPortfolioBikes();
             document.getElementById("widget-addCatalogAccessory-form").reset();
             $("#portfolioAccessoryManagement").modal("toggle");
             $("#porfolioAccessoriesListing").dataTable().api().ajax.reload();

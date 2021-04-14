@@ -37,182 +37,173 @@ function get_all_bikes() {
 
 function retrieve_offer(ID, action) {
   $.ajax({
-    url: "apis/Kameo/offer_management.php",
+    url: "api/companies",
     type: "get",
-    data: { ID: ID, action: "retrieve" },
+    data: { action: "retrieveOffer", ID: ID},
     success: function (response) {
       $("#offerManagementPDF").attr("data", "");
-
-      if (response.response == "error") {
-        console.log(response.message);
+      if (action == "retrieve") {
+        $("#widget-offerManagement-form input").attr("readonly", true);
+        $("#widget-offerManagement-form textarea").attr("readonly", true);
+        $("#widget-offerManagement-form select").attr("readonly", true);
+        $("#offerManagementDelete").addClass("hidden");
+      } else {
+        $("#widget-offerManagement-form input").attr("readonly", false);
+        $("#widget-offerManagement-form textarea").attr("readonly", false);
+        $("#widget-offerManagement-form select").attr("readonly", false);
+        $("#offerManagementDelete").removeClass("hidden");
+        $("#offerManagementDelete").attr("name", ID);
       }
-      if (response.response == "success") {
-        if (action == "retrieve") {
-          $("#widget-offerManagement-form input").attr("readonly", true);
-          $("#widget-offerManagement-form textarea").attr("readonly", true);
-          $("#widget-offerManagement-form select").attr("readonly", true);
-          $("#offerManagementDelete").addClass("hidden");
-        } else {
-          $("#widget-offerManagement-form input").attr("readonly", false);
-          $("#widget-offerManagement-form textarea").attr("readonly", false);
-          $("#widget-offerManagement-form select").attr("readonly", false);
-          $("#offerManagementDelete").removeClass("hidden");
-          $("#offerManagementDelete").attr("name", ID);
-        }
 
-        $("#widget-offerManagement-form input[name=title]").val(response.title);
-        $("#widget-offerManagement-form textarea[name=description]").val(
-          response.description
-        );
-        $("#widget-offerManagement-form select[name=type]").val(response.type);
-        $("#widget-offerManagement-form select[name=status]").val(
-          response.status
-        );
-        $("#widget-offerManagement-form input[name=margin]").val(
-          response.margin
-        );
-        $("#widget-offerManagement-form input[name=probability]").val(
-          response.probability
-        );
-        $("#widget-offerManagement-form input[name=company]").val(
-          response.company
-        );
-        $("#widget-offerManagement-form input[name=action]").val(action);
-        $("#widget-offerManagement-form input[name=ID]").val(ID);
+      $("#widget-offerManagement-form input[name=title]").val(response.TITRE);
+      $("#widget-offerManagement-form textarea[name=description]").val(
+        response.DESCRIPTION
+      );
+      $("#widget-offerManagement-form select[name=type]").val(response.TYPE);
+      $("#widget-offerManagement-form select[name=status]").val(
+        response.STATUS
+      );
+      $("#widget-offerManagement-form input[name=margin]").val(
+        response.MARGIN
+      );
+      $("#widget-offerManagement-form input[name=probability]").val(
+        response.PROBABILITY
+      );
+      $("#widget-offerManagement-form input[name=company]").val(
+        response.COMPANY
+      );
+      $("#widget-offerManagement-form input[name=action]").val(action);
+      $("#widget-offerManagement-form input[name=ID]").val(ID);
 
-        $("#thickBoxProductLists").empty();
-        var i = 0;
-        $("#offerManagementDetails").html("");
-        if (response.itemsNumber > 0) {
-          while (i < response.itemsNumber) {
-            if (response.item[i].type == "box") {
+      $("#thickBoxProductLists").empty();
+      $("#offerManagementDetails").html("");
+      if (response.item.length > 0) {
+        response.item.forEach(function(item) {
+          if (item.ITEM_TYPE == "box") {
+            $("#offerManagementDetails").append(
+              "<li>1 borne " +
+                item.MODEL +
+                " au prix de " +
+                item.LOCATION_PRICE +
+                " €/mois et un coût d'installation de " +
+                item.INSTALLATION_PRICE +
+                " €</a></li>"
+            );
+          } else if (item.ITEM_TYPE=='bike') {
+            if(item.LOCATION_PRICE == '0'){
               $("#offerManagementDetails").append(
-                "<li>1 borne " +
-                  response.item[i].model +
+                "<li>Achat de vélo " +
+                  item.BRAND +
+                  " " +
+                  item.MODEL +
                   " au prix de " +
-                  response.item[i].locationPrice +
-                  " €/mois et un coût d'installation de " +
-                  response.item[i].installationPrice +
+                  item.INSTALLATION_PRICE +
                   " €</a></li>"
               );
-            } else if (response.item[i].type=='bike') {
-              if(response.item[i].locationPrice == '0'){
-                $("#offerManagementDetails").append(
-                  "<li>Achat de vélo " +
-                    response.item[i].brand +
-                    " " +
-                    response.item[i].model +
-                    " au prix de " +
-                    response.item[i].installationPrice +
-                    " €</a></li>"
-                );
-              }else{
-                $("#offerManagementDetails").append(
-                  "<li>Location de vélo " +
-                    response.item[i].brand +
-                    " " +
-                    response.item[i].model +
-                    " au prix de " +
-                    response.item[i].locationPrice +
-                    " €/mois</a></li>"
-                );
-              }
-            } else if (response.item[i].type='accessory') {
-              if(response.item[i].locationPrice == '0'){
-                $("#offerManagementDetails").append(
-                  "<li>Achat d'accessoire " +
-                    response.item[i].brand +
-                    " " +
-                    response.item[i].model +
-                    " au prix de " +
-                    response.item[i].installationPrice +
-                    " €</a></li>"
-                );
-              }else{
-                $("#offerManagementDetails").append(
-                  "<li>Location d'accessoire   " +
-                    response.item[i].brand +
-                    " " +
-                    response.item[i].model +
-                    " au prix de " +
-                    response.item[i].locationPrice +
-                    " €/mois</a></li>"
-                );
-              }
+            }else{
+              $("#offerManagementDetails").append(
+                "<li>Location de vélo " +
+                  item.BRAND +
+                  " " +
+                  item.MODEL +
+                  " au prix de " +
+                  item.LOCATION_PRICE +
+                  " €/mois</a></li>"
+              );
             }
-            i++;
+          } else if (item.ITEM_TYPE='accessory') {
+            if(item.LOCATION_PRICE == '0'){
+              $("#offerManagementDetails").append(
+                "<li>Achat d'accessoire " +
+                  item.BRAND +
+                  " " +
+                  item.MODEL +
+                  " au prix de " +
+                  item.INSTALLATION_PRICE +
+                  " €</a></li>"
+              );
+            }else{
+              $("#offerManagementDetails").append(
+                "<li>Location d'accessoire   " +
+                  item.BRAND +
+                  " " +
+                  item.MODEL +
+                  " au prix de " +
+                  item.LOCATION_PRICE +
+                  " €/mois</a></li>"
+              );
+            }
           }
-        } else {
-        }
+        })
+      }
 
-        if (
-          $("#widget-offerManagement-form select[name=type]").val() == "achat"
-        ) {
+      if (
+        $("#widget-offerManagement-form select[name=type]").val() == "achat"
+      ) {
+        $("#widget-offerManagement-form input[name=start]").attr(
+          "readonly",
+          true
+        );
+        $("#widget-offerManagement-form input[name=end]").attr(
+          "readonly",
+          true
+        );
+        $("#widget-offerManagement-form input[name=start]").val("");
+        $("#widget-offerManagement-form input[name=end]").val("");
+      } else {
+        if (action != "retrieve") {
           $("#widget-offerManagement-form input[name=start]").attr(
             "readonly",
-            true
+            false
           );
           $("#widget-offerManagement-form input[name=end]").attr(
             "readonly",
-            true
+            false
           );
-          $("#widget-offerManagement-form input[name=start]").val("");
-          $("#widget-offerManagement-form input[name=end]").val("");
+        }
+
+        if (response.DATE) {
+          $("#widget-offerManagement-form input[name=date]").val(
+            response.DATE.substring(0, 10)
+          );
         } else {
-          if (action != "retrieve") {
-            $("#widget-offerManagement-form input[name=start]").attr(
-              "readonly",
-              false
-            );
-            $("#widget-offerManagement-form input[name=end]").attr(
-              "readonly",
-              false
-            );
-          }
-
-          if (response.date) {
-            $("#widget-offerManagement-form input[name=date]").val(
-              response.date.substring(0, 10)
-            );
-          } else {
-            $("#widget-offerManagement-form input[name=date]").val("");
-          }
-          if (response.start) {
-            $("#widget-offerManagement-form input[name=start]").val(
-              response.start.substring(0, 10)
-            );
-          } else {
-            $("#widget-offerManagement-form input[name=start]").val("");
-          }
-          if (response.end) {
-            $("#widget-offerManagement-form input[name=end]").val(
-              response.end.substring(0, 10)
-            );
-          } else {
-            $("#widget-offerManagement-form input[name=end]").val("");
-          }
+          $("#widget-offerManagement-form input[name=date]").val("");
         }
-
-        if (response.amount) {
-          $("#widget-offerManagement-form input[name=amount]").val(
-            response.amount
+        if (response.START) {
+          $("#widget-offerManagement-form input[name=start]").val(
+            response.START.substring(0, 10)
           );
+        } else {
+          $("#widget-offerManagement-form input[name=start]").val("");
         }
-
-        $("#offerManagement").on("shown.bs.modal", function () {
-          if (response.file != null && response.file != "") {
-            $(".offerManagementPDF").removeClass("hidden");
-            $("#offerManagementPDF").attr(
-              "data",
-              "offres/" + response.file + ".pdf"
-            );
-          } else {
-            $(".offerManagementPDF").addClass("hidden");
-            $("#offerManagementPDF").attr("data", "");
-          }
-        });
+        if (response.END) {
+          $("#widget-offerManagement-form input[name=end]").val(
+            response.END.substring(0, 10)
+          );
+        } else {
+          $("#widget-offerManagement-form input[name=end]").val("");
+        }
       }
-    },
+
+      if (response.AMOUNT) {
+        $("#widget-offerManagement-form input[name=amount]").val(
+          response.AMOUNT
+        );
+      }
+
+      $("#offerManagement").on("shown.bs.modal", function () {
+        if (response.FILE_NAME != null && response.FILE_NAME != "") {
+          $(".offerManagementPDF").removeClass("hidden");
+          $("#offerManagementPDF").attr(
+            "data",
+            "offres/" + response.FILE_NAME + ".pdf"
+          );
+        } else {
+          $(".offerManagementPDF").addClass("hidden");
+          $("#offerManagementPDF").attr("data", "");
+        }
+      });
+    }
   });
 }
 
@@ -220,7 +211,7 @@ function retrieve_offer(ID, action) {
 function add_offer(company) {
   $("#companyHiddenOffer").val(company);
   $("#widget-offerManagement-form select[name=type]").val("leasing");
-  $("#widget-offerManagement-form input[name=action]").val("add");
+  $("#widget-offerManagement-form input[name=action]").val("addManualOffer");
   $("#widget-offerManagement-form input").attr("readonly", false);
   $("#widget-offerManagement-form textarea").attr("readonly", false);
   $("#widget-offerManagement-form select").attr("readonly", false);

@@ -1,0 +1,139 @@
+$sql="SELECT bb.ID, aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END, ROUND(SUM(CASE WHEN BILLING_TYPE = 'annual' THEN LEASING_PRICE/12 ELSE LEASING_PRICE END)) as 'PRICE', COUNT(1) AS 'BIKE_NUMBER' FROM customer_bikes aa, companies bb WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' AND aa.CONTRACT_TYPE IN ('leasing', 'location') and aa.COMPANY=bb.INTERNAL_REFERENCE and aa.BILLING_GROUP=bb.BILLING_GROUP";
+if($company!="*"){
+    $sql=$sql." AND COMPANY='$company'";
+}
+$sql=$sql." GROUP BY bb.ID, aa.COMPANY, aa.BILLING_GROUP, aa.CONTRACT_START, aa.CONTRACT_END";
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+
+
+$result = mysqli_query($conn, $sql);
+$conn->close();
+
+$response['contractsNumber'] = $result->num_rows;
+$i=0;
+while($row = mysqli_fetch_array($result))
+{
+
+    $response['response']="success";
+    $response['contract'][$i]['company']=$row['COMPANY'];
+    $response['contract'][$i]['companyID']=$row['ID'];
+    if($row['BIKE_NUMBER']>1){
+        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélos en location";
+    }else{
+        $response['contract'][$i]['description']=$row['BIKE_NUMBER']." vélo en location";
+    }
+    $response['contract'][$i]['amount']=$row['PRICE'];
+    $response['contract'][$i]['start']=$row['CONTRACT_START'];
+    $response['contract'][$i]['end']=$row['CONTRACT_END'];
+    $i++;
+}
+
+include 'connexion.php';
+$sql="SELECT COMPANY, START, END, SUM(AMOUNT) as 'PRICE', COUNT(1) AS 'BOXES_NUMBER' FROM boxes WHERE STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+if($company!="*"){
+    $sql=$sql." AND COMPANY='$company'";
+}
+$sql=$sql." GROUP BY COMPANY, START, END";
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+
+
+$result = mysqli_query($conn, $sql);
+$conn->close();
+
+$response['contractsNumber'] = $response['contractsNumber'] + $result->num_rows;
+
+while($row = mysqli_fetch_array($result))
+{
+
+    $response['response']="success";
+    $response['contract'][$i]['company']=$row['COMPANY'];
+    if($row['BOXES_NUMBER']>1){
+        $response['contract'][$i]['description']=$row['BOXES_NUMBER']." bornes en leasing";
+    }else{
+        $response['contract'][$i]['description']=$row['BOXES_NUMBER']." borne en leasing";
+    }
+    $response['contract'][$i]['amount']=$row['PRICE'];
+    $response['contract'][$i]['start']=$row['START'];
+    $response['contract'][$i]['end']=$row['END'];
+    $i++;
+}
+
+
+include 'connexion.php';
+$sql="SELECT SUM(CASE WHEN BILLING_TYPE = 'annual' THEN LEASING_PRICE/12 ELSE LEASING_PRICE END) as 'PRICE' FROM customer_bikes aa WHERE aa.STAANN != 'D' and aa.COMPANY != 'KAMEO' AND aa.CONTRACT_TYPE IN ('leasing', 'location') AND CONTRACT_START <= CURRENT_TIMESTAMP AND (CONTRACT_END > CURRENT_TIMESTAMP OR CONTRACT_END is NULL)";
+
+if($company!="*"){
+    $sql=$sql." AND COMPANY='$company'";
+}
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$result = mysqli_query($conn, $sql);
+$resultat = mysqli_fetch_assoc($result);
+$conn->close();
+
+$response['sumContractsCurrent']=$resultat['PRICE'];
+
+include 'connexion.php';
+$sql="SELECT SUM(AMOUNT) as 'PRICE' FROM boxes WHERE START<CURRENT_TIMESTAMP AND (END > CURRENT_TIMESTAMP OR END is NULL) AND STAANN != 'D' and COMPANY != 'KAMEO' and COMPANY!='KAMEO VELOS TEST'";
+if($company!="*"){
+    $sql=$sql." AND COMPANY='$company'";
+}
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$result = mysqli_query($conn, $sql);
+$resultat = mysqli_fetch_assoc($result);
+$conn->close();
+
+$response['sumContractsCurrent']+=$resultat['PRICE'];
+
+include 'connexion.php';
+$sql="SELECT * FROM offers WHERE STATUS='ongoing' AND STAANN != 'D'";
+if($company!="*"){
+    $sql=$sql." AND COMPANY='$company'";
+}
+
+if ($conn->query($sql) === FALSE) {
+    $response = array ('response'=>'error', 'message'=> $conn->error);
+    echo json_encode($response);
+    die;
+}
+$result = mysqli_query($conn, $sql);
+$conn->close();
+
+$response['offersNumber'] = $result->num_rows;
+$i=0;
+while($row = mysqli_fetch_array($result))
+{
+
+    $response['response']="success";
+    $response['offer'][$i]['id']=$row['ID'];
+    $response['offer'][$i]['company']=$row['COMPANY'];
+    $response['offer'][$i]['type']=$row['TYPE'];
+    $response['offer'][$i]['title']=$row['TITRE'];
+    $response['offer'][$i]['amount']=$row['AMOUNT'];
+    $response['offer'][$i]['probability']=$row['PROBABILITY'];
+    $response['offer'][$i]['start']=$row['START'];
+    $response['offer'][$i]['end']=$row['END'];
+    $response['offer'][$i]['margin']=$row['MARGIN'];
+    $response['offer'][$i]['status']=$row['STATUS'];
+    $response['offer'][$i]['file']=$row['FILE_NAME'];
+    $i++;
+}

@@ -449,9 +449,8 @@ function updateDisplayBikeManagement(type){
     $('#addBike_firstBuilding').fadeOut("slow");
     $('#addBike_buildingListing').fadeOut("slow");
     $('#bikeBuildingAccessAdminDiv').fadeOut("slow");
-    $('#bikeBuildingAccessAdminDiv').fadeOut("slow");
     $('#bikeBuildingAccessAdmin').fadeOut("slow");
-    $('#bikeUserAccessAdmin').fadeOut("slow");
+    $('#bikeUserAccessAdminDiv').fadeOut("slow");
     $('addBike_firstBuilding').fadeOut("slow");
     $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
     $('#widget-bikeManagement-form label[for=address]').addClass("hidden");
@@ -467,12 +466,13 @@ function updateDisplayBikeManagement(type){
       $('.billingGroupDiv').fadeIn("slow");
       $('.billingDiv').fadeIn("slow");
     }
-    $('#addBike_firstBuilding').removeClass("hidden");
-    $('#addBike_buildingListing').removeClass("hidden");
-    $('#bikeBuildingAccessAdminDiv').removeClass("hidden");
-    $('#bikeBuildingAccessAdminDiv').removeClass("hidden");
-    $('#bikeBuildingAccessAdmin').removeClass("hidden");
-    $('#bikeUserAccessAdmin').removeClass("hidden");
+    $('#addBike_firstBuilding').fadeIn("slow");
+    $('#addBike_buildingListing').fadeIn("slow");
+    $('#bikeBuildingAccessAdminDiv').fadeIn("slow");
+    $('#bikeBuildingAccessAdmin').fadeIn("slow");
+    $('#bikeUserAccessAdminDiv').fadeIn("slow");
+    $('#bikeUserAccessAdmin').fadeIn("slow");
+    $('addBike_firstBuilding').fadeIn("slow");
     $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', false);
     $('#widget-bikeManagement-form label[for=address]').removeClass("hidden");
     $('#widget-bikeManagement-form input[name=address]').removeClass("hidden");
@@ -754,9 +754,9 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
     document.getElementById('bikeUserAccessAdmin').innerHTML = "";
     var id;
     $.ajax({
-      url: 'apis/Kameo/get_bike_details.php',
-      type: 'post',
-      data: { "bikeID": bikeID},
+      url: 'api/bikes',
+      type: 'get',
+      data: { action: "retrieve", "bikeID": bikeID},
       success: function(response){
         if (response.response == 'error') {
           console.log(response.message);
@@ -871,7 +871,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           }else{
             $('#widget-bikeManagement-form input[name=orderingDate]').val(response.bikeBuyingDate.substr(0,10));
           }
-          update_offer_list(company);
           if(response.offerID != null){
             $('#widget-bikeManagement-form select[name=offerReference]').val(response.offerID);
           }else{
@@ -906,23 +905,22 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           }
           i=0;
           var dest="";
-          if(response.buildingNumber==0){
+          if(response.building.length==0){
             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
             dest=dest.concat(temp);
 
           }else{
-            while(i<response.buildingNumber){
-              if(response.building[i].access==true){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
+            response.building.forEach(function(building){
+              if(building.access=='true'){
+                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+building.buildingCode+"\">"+building.descriptionFR+"</div>";
               }
               else{
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
+                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+building.buildingCode+"\">"+building.descriptionFR+"</div>";
               }
               dest=dest.concat(temp);
-              i++;
-            }
+            })
           }
 
           document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
@@ -930,30 +928,28 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           i=0;
           var dest="";
 
-          if(response.userNumber==0){
+          if(response.user.length==0){
             temp="<div class=\"col-sm-12 fr\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
             temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
             temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
             dest=dest.concat(temp);
 
           }else{
-            while(i<response.userNumber){
-              if(response.user[i].access==true){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
+            response.user.forEach(function(user){
+              if(user.access=='true'){
+                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+user.email+"\">"+user.name+" "+user.firstName+"</div>";
               }
-              else if(response.user[i].access==false){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
+              else if(user.access=='false'){
+                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+user.email+"\">"+user.name+" "+user.firstName+"</div>";
               }
               dest=dest.concat(temp);
-              i++;
-            }
+            })
           }
           document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
           $('#widget-bikeManagement-form select[name=company]').val(company);
 
           $('#widget-bikeManagement-form select[name=company]').change(function(){
-            updateAccessAdmin($('#widget-bikeManagement-form input[name=frameNumber]').val(), $('#widget-bikeManagement-form select[name=company]').val());
-            update_offer_list($('#widget-bikeManagement-form select[name=company]').val());
+            updateAccessAdmin($(this).val());
             update_users_list($('#widget-bikeManagement-form select[name=company]').val());
           });
 
@@ -976,7 +972,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           });
           updateDisplayBikeManagement(response.contractType);
         }
-
       }
     }).done(function(response){
       $.ajax({
@@ -988,7 +983,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
             console.log(response.message);
           } else{
             var i=0;
-            var dest="<table class=\"table table-condensed\"><a class=\"button small green button-3d rounded icon-right addActionBikeButton\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Description</span><span class=\"en-inline\">Description</span><span class=\"nl-inline\">Description</span></th><th><span class=\"fr-inline\">Public ?</span><span class=\"en-inline\">Public ?</span><span class=\"nl-inline\">Public ?</span></th></tr></thead> ";
+            var dest="<table class=\"table table-condensed\"><a class=\"button small green button-3d rounded icon-right addActionBikeButton\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><tbody><thead><tr><th>Date</th><th>Description</th><th>Public ?</th></tr></thead> ";
             while(i<response.actionNumber){
               if(response.action[i].public=="1"){
                 var public="Yes";
@@ -1028,7 +1023,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
             console.log(response.message);
           } else{
             var i=0;
-            var dest="<table id=\"bills_details_listing\" class=\"table table-condensed\"  data-order='[[ 0, \"desc\" ]]'><thead><tr><th><span class=\"fr-inline\">ID</span></th><th><span class=\"fr-inline\">Date</span><span class=\"en-inline\">Date</span><span class=\"nl-inline\">Date</span></th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Envoyée ?</span><span class=\"en-inline\">Sent ?</span><span class=\"nl-inline\">Sent ?</span></th><th><span class=\"fr-inline\">Payée ?</span><span class=\"en-inline\">Paid ?</span><span class=\"nl-inline\">Paid ?</span></th></tr></thead><tbody>";
+            var dest="<table id=\"bills_details_listing\" class=\"table table-condensed\"  data-order='[[ 0, \"desc\" ]]'><thead><tr><th><span class=\"fr-inline\">ID</span></th><th>Date</th><th>Montant</th><th>Envoyée ?</th><th>Payée ?</th></tr></thead><tbody>";
             while(i<response.billNumber){
               if(response.bill[i].sent=="1"){
                 sent="<span class=\"text-green\">Y</span>"
@@ -1040,7 +1035,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
               }else{
                 paid="<span class=\"text-red\">N</span>"
               }
-
               var temp="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].FACTURE_ID+"</a></td><td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td><td>"+response.bill[i].amountHTVA+" €</td><td>"+sent+"</td><td>"+paid+"</td></tr>";
               dest=dest.concat(temp);
               i++;
@@ -1065,33 +1059,26 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
 
 function update_offer_list(company){
   $.ajax({
-    url: 'apis/Kameo/offer_management.php',
+    url: 'api/companies',
     method: 'get',
-    data: {'company' : company, 'action': 'retrieve'},
+    data: {'company' : company, 'action': 'retrieveOffers'},
     success: function(response){
-      if (response.response == "error"){
-        console.log(response.message);
-      }else{
-        $('#widget-bikeManagement-form select[name=offerReference]')
-        .find('option')
-        .remove()
-        .end()
-        ;
-        var i=0;
-        while (i < response.offersNumber){
-          $('#widget-bikeManagement-form select[name=offerReference]').append("<option value="+response.offer[i].id+">"+response.offer[i].title+"<br>");
-          i++;
-        }
-
-        if(response.offersNumber == 0){
-          $('.offerReference').fadeOut();
-        }else{
-          $('.offerReference').fadeIn();
-        }
-
-        $('#widget-bikeManagement-form select[name=offerReference').val("");
-
+      $('#widget-bikeManagement-form select[name=offerReference]')
+      .find('option')
+      .remove()
+      .end()
+      ;
+      var i=0;
+      while (i < response.length){
+        $('#widget-bikeManagement-form select[name=offerReference]').append("<option value="+response.ID+">"+response.title+"<br>");
+        i++;
       }
+      if(response.length == 0){
+        $('.offerReference').fadeOut();
+      }else{
+        $('.offerReference').fadeIn();
+      }
+      $('#widget-bikeManagement-form select[name=offerReference').val("");
     }
   });
 }
@@ -1171,12 +1158,11 @@ function update_users_list(company, userEMAIL = null, userPHONE = null){
 }
 
 
-function construct_form_for_bike_access_updateAdmin(bikeID, company){
-  if(bikeID){
+function construct_form_for_bike_access_updateAdmin(company){
     $.ajax({
-      url: 'apis/Kameo/get_bike_details.php',
-      type: 'post',
-      data: { "bikeID": bikeID, "company": company},
+      url: 'api/companies',
+      type: 'get',
+      data: { action: "retrieve", "company": company},
       success: function(response){
         if (response.response == 'error') {
           console.log(response.message);
@@ -1185,50 +1171,33 @@ function construct_form_for_bike_access_updateAdmin(bikeID, company){
           var dest="";
           var dest2="<label for=\"firstBuilding\">Bâtiment pour initialisation</label><select name=\"firstBuilding\">";
 
-          if(response.buildingNumber==0){
-            temp="<div class=\"col-sm-12 fr\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
-            temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
-            temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
+          if(response.building.length==0){
+            temp="<div class=\"col-sm-12\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
             dest=dest.concat(temp);
 
           }else{
-            while(i<response.buildingNumber){
-              temp2="<option value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"</option>";
-              dest2=dest2.concat(temp2);
-
-              if(response.building[i].access==true){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
-              }
-              else if(response.building[i].access==false){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"</div>";
-              }
+            response.building.forEach(function(building){
+              temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+building.buildingReference+"\">"+building.buildingFR+"</div>";
               dest=dest.concat(temp);
-              i++;
-            }
+            })
           }
           dest2=dest2.concat("</select>");
           document.getElementById('addBike_firstBuilding').innerHTML = dest2;
+          console.log(dest);
 
           document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
           i=0;
           var dest="";
-          if(response.userNumber==0){
-            temp="<div class=\"col-sm-12 fr\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
-            temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
-            temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
+          if(response.user.length==0){
+            temp="<div class=\"col-sm-12\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
             dest=dest.concat(temp);
           }else{
-            while(i<response.userNumber){
-              if(response.user[i].access==true){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-              }
-              else if(response.user[i].access==false){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-              }
+            response.user.forEach(function(user){
+              temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+user.email+"\">"+user.name+" "+user.firstName+"</div>";
               dest=dest.concat(temp);
-              i++;
-            }
+            })
           }
+          console.log(dest);
           document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
           displayLanguage();
 
@@ -1237,87 +1206,12 @@ function construct_form_for_bike_access_updateAdmin(bikeID, company){
 
       }
     })
-  }else{
-    $.ajax({
-      url: 'apis/Kameo/get_building_listing.php',
-      type: 'post',
-      data: { "company": company},
-      success: function(response){
-        if (response.response == 'error') {
-          console.log(response.message);
-        } else{
-          i=0;
-          var dest="";
-          var dest2="<label for=\"firstBuilding\">Bâtiment pour initialisation</label><select name=\"firstBuilding\">";
-
-          if(response.buildingNumber==0){
-            temp="<div class=\"col-sm-12 fr\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
-            temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
-            temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
-            dest=dest.concat(temp);
-
-          }else{
-            while(i<response.buildingNumber){
-              temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"</div>";
-              dest=dest.concat(temp);
-              temp2="<option value=\""+response.building[i].code+"\">"+response.building[i].descriptionFR+"</option>";
-              dest2=dest2.concat(temp2);
-
-
-              i++;
-            }
-          }
-          document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
-          dest2=dest2.concat("</select>");
-          document.getElementById('addBike_firstBuilding').innerHTML = dest2;
-
-
-
-        }
-      }
-    });
-
-    $.ajax({
-      url: 'apis/Kameo/get_users_listing.php',
-      type: 'post',
-      data: { "company": company},
-      success: function(response){
-        if (response.response == 'error') {
-          console.log(response.message);
-        } else{
-
-          i=0;
-          var dest="";
-          if(response.usersNumber==0){
-            temp="<div class=\"col-sm-12 fr\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
-            temp=temp.concat("<div class=\"col-sm-12 en\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
-            temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos user</strong> defined for that company, please first create one and then you will be able to link that user and the bike</p></div>");
-            dest=dest.concat(temp);
-
-          }else{
-
-            while(i<response.usersNumber){
-
-              temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+response.user[i].email+"\">"+response.user[i].name+" "+response.user[i].firstName+"</div>";
-              dest=dest.concat(temp);
-              i++;
-            }
-          }
-
-          document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
-
-        }
-      }
-    });
-    //displayLanguage();
-  }
-
 }
 
 
 
-function updateAccessAdmin(bikeID, company){
-  construct_form_for_bike_access_updateAdmin(bikeID, company);
+function updateAccessAdmin(company){
+  construct_form_for_bike_access_updateAdmin(company);
 }
 
 //Affichage des vélos vendus

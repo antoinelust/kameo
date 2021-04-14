@@ -106,7 +106,7 @@ function get_users_listing(){
 
             var i=0;
             var dest="<h4>"+traduction.generic_accessToBikes+"</h4><input type=\"checkbox\" id=\"select-all-update\" name=\"select_all\" value=\"1\" /><strong>"+traduction.generic_selectAll+"</strong><br>";
-            while(i<response.bikeNumber){
+            while(i<response.bike.length){
               if(response.bike[i].access==true){
                 temp="<input type=\"checkbox\" checked name=\"bikeAccess[]\" value=\""+response.bike[i].bikeID+"\"> "+response.bike[i].bikeID+" - "+response.bike[i].model+"<br>";
               }
@@ -219,7 +219,6 @@ function get_users_listing(){
                   var i=0;
                   var dest="";
                   while (i < response.bike.length){
-                    console.log(response.bike[i]);
                     if(response.bike[i].biketype == 'partage'){
                       temp="<input type=\"checkbox\" name=\"bikeAccess[]\" checked value=\""+response.bike[i].id+"\"> "+response.bike[i].frameNumber+" "+response.bike[i].model+"<br>";
                       dest=dest.concat(temp);

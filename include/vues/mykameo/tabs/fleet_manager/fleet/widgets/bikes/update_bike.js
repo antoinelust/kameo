@@ -9,6 +9,7 @@ jQuery("#widget-updateBikeStatus-form").validate({
 						type: 'success'
 					});
 					$('#updateBikeStatus').modal('toggle');
+					$('#bikeDetails').dataTable().api().ajax.reload();
 				} else {
 					$.notify({
 						message: response.message
@@ -22,9 +23,9 @@ jQuery("#widget-updateBikeStatus-form").validate({
 });
 function construct_form_for_bike_status_update(bikeID){
     $.ajax({
-            url: 'apis/Kameo/get_bike_details.php',
-            type: 'post',
-            data: { "bikeID": bikeID},
+            url: 'api/bikes',
+            type: 'get',
+            data: { action: 'retrieve', "bikeID": bikeID},
             success: function(response){
                 if (response.response == 'error') {
                     console.log(response.message);
@@ -38,31 +39,31 @@ function construct_form_for_bike_status_update(bikeID){
                     $('#widget-updateBikeStatus-form input[name=endDateContract]').val(response.contractEnd);
                     $("#widget-updateBikeStatus-form select[name=bikeType]").val(response.biketype);
                     $("#widget-updateBikeStatus-form select[name=bikeType]").change(function() {
-                        if ($(this).val() == "partage") {
-                          $("#widget-updateBikeStatus-form div[id=user_name]").hide();
-                          $("#widget-updateBikeStatus-form div[id=user_email]").hide();
-                        } else {
-                            $('#widget-updateBikeStatus-form input[name=email]').val("");
-                            $("#widget-updateBikeStatus-form select[name=name]").find("option")
-                              .remove()
-                              .end();
+	                    if ($(this).val() == "partage") {
+	                      $("#widget-updateBikeStatus-form div[id=user_name]").hide();
+	                      $("#widget-updateBikeStatus-form div[id=user_email]").hide();
+	                    } else {
+	                        $('#widget-updateBikeStatus-form input[name=email]').val("");
+	                        $("#widget-updateBikeStatus-form select[name=name]").find("option")
+	                          .remove()
+	                          .end();
 
-                            $("#widget-updateBikeStatus-form div[id=user_name]").show();
+	                        $("#widget-updateBikeStatus-form div[id=user_name]").show();
 
-                            for (var i = 0; i < response.userNumber; i++){
-                                $("#widget-updateBikeStatus-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
-                            }
-                            if($("#widget-updateBikeStatus-form select[name=name]").has('option').length > 0){
-                                $("#widget-updateBikeStatus-form input[name=email]").val(response.user[0].email);
-                                $("#widget-updateBikeStatus-form div[id=user_email]").show();
-                            }else{
-                                $("#widget-updateBikeStatus-form div[id=user_email]").hide();
-                            }
-                            $("#widget-updateBikeStatus-form select[name=name]").change(function(){
-                                var user_email = $(this).children("option:selected").val();
-                                $('#widget-updateBikeStatus-form input[name=email]').val(user_email);
-                            });
-                        }
+	                        for (var i = 0; i < response.userNumber; i++){
+	                            $("#widget-updateBikeStatus-form select[name=name]").append('<option value= "' + response.user[i].email +  '">' + response.user[i].name + ' ' + response.user[i].firstName + "<br>");
+	                        }
+	                        if($("#widget-updateBikeStatus-form select[name=name]").has('option').length > 0){
+	                            $("#widget-updateBikeStatus-form input[name=email]").val(response.user[0].email);
+	                            $("#widget-updateBikeStatus-form div[id=user_email]").show();
+	                        }else{
+	                            $("#widget-updateBikeStatus-form div[id=user_email]").hide();
+	                        }
+	                        $("#widget-updateBikeStatus-form select[name=name]").change(function(){
+	                            var user_email = $(this).children("option:selected").val();
+	                            $('#widget-updateBikeStatus-form input[name=email]').val(user_email);
+	                        });
+	                    }
                     }).trigger("change");
 
                     document.getElementsByClassName("bikeImage")[1].src="images_bikes/"+response.img+"_mini.jpg";
@@ -70,13 +71,15 @@ function construct_form_for_bike_status_update(bikeID){
                     $("#bikeStatus").val(response.status);
                     i=0;
                     var dest="";
-                    while(i<response.buildingNumber){
-                        if(response.building[i].access==true){
+                    while(i<response.building.length){
+                        if(response.building[i].access=='true'){
                             temp="<input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"<br>";
                         }
-                        else if(response.building[i].access==false){
+                        else if(response.building[i].access=='false'){
                             temp="<input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+response.building[i].buildingCode+"\">"+response.building[i].descriptionFR+"<br>";
-                        }
+                        }else{
+													console.log("error")
+												}
                         dest=dest.concat(temp);
                         i++;
                     }
