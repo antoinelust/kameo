@@ -91,12 +91,12 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
         .remove()
         .end();
         var i =0;
-        while(i<data.bikeNumber){
+        while(i<data.bike.length){
           $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+data.bike[i].id+'>'+data.bike[i].id+' :  '+data.bike[i].model+' - '+data.bike[i].contract+'</option>');
           i++;
         }
         $("#widget-manageStockAccessory-form select[name=bike]").val("");
-        if(data.bikeNumber==0){
+        if(data.bike.length==0){
           $.notify({
             message: "Pas de vélo lié à cette société, il n'est possible d'attribuer l'accessoire qu'au niveau de la société"
           }, {
