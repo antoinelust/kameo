@@ -21,33 +21,40 @@ $(".fleetmanager").click(function () {
 
 
 $('.addStockAccessoryButton').click(function(){
-  $("#widget-manageStockAccessory-form").trigger("reset");
-  $("#widget-manageStockAccessory-form select[name=category]").val("");
-  $("#widget-manageStockAccessory-form select[name=model]").val("");
-  $("#widget-manageStockAccessory-form select[name=company]").val("");
-  $("#widget-manageStockAccessory-form select[name=user]").val("");
-  $("#widget-manageStockAccessory-form input[name=action]").val("addStockAccessory");
-  $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeIn();
-  $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeIn();
-  $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeIn();
-  $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
-  $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+
+
+ $("#widget-manageStockAccessory-form").trigger("reset");
+ $("#widget-manageStockAccessory-form select[name=category]").val("");
+ $("#widget-manageStockAccessory-form select[name=model]").val("");
+ $("#widget-manageStockAccessory-form select[name=company]").val("");
+ $("#widget-manageStockAccessory-form select[name=user]").val("");
+ $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
+ $("#widget-manageStockAccessory-form select[name=bike]").val("");
+ $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
+ $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeOut();
+ $("#widget-manageStockAccessory-form input[name=action]").val("addStockAccessory");
+
+ $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+ $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+ $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+ $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
+ $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+
+
+ $('#widget-manageStockAccessory-form select[name=contractType]').val('order');
+ $('#widget-manageStockAccessory-form select[name=contractType]').attr('readonly', true);
 })
 
 $('#widget-manageStockAccessory-form select[name=company]').change(function(){
 
-  if($('#widget-manageStockAccessory-form select[name=company]').val()=='KAMEO'){
-    $('#widget-manageStockAccessory-form select[name=contractType]').val('order');
-    $('#widget-manageStockAccessory-form select[name=contractType]').attr('disabled', true);
-  }
-  else{
-   $('#widget-manageStockAccessory-form select[name=contractType]').attr('disabled', false);
- }
+ $('#widget-manageStockAccessory-form select[name=bike').find('option').remove().end();
+ $('#widget-manageStockAccessory-form select[name=bike]').attr('disabled', false);
+
  $.ajax({
    url: "apis/Kameo/companies/companies.php",
    type: "get",
    data: {
-     "action" : "retrieve",
+     "action" : "retrieveCustommerBike",
      "ID" : $(this).val()
    },
    success : function(data) {
@@ -58,9 +65,10 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
      if(data.userNumber > 0 ){
       $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
       data.user.forEach(function(user, index){
-        $("#widget-manageStockAccessory-form select[name=user]").append('<option value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
+        $("#widget-manageStockAccessory-form select[name=user]").append('<option data-bike="'+user['bikeId']+'"" value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
       });
       $("#widget-manageStockAccessory-form select[name=user]").val("");
+      $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeOut();
     }else{
       $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
       $.notify({
@@ -68,9 +76,39 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
       }, {
         type: 'info'
       });
+      $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeIn();
+      $.ajax({
+       url: "apis/Kameo/accessories/accessories.php",
+       type: "get",
+       data: {
+         "action" : "getBikeFromCompany",
+         "ID" : $('#widget-manageStockAccessory-form select[name=company]').val()
+       },
+       success : function(data) {
+        $('#widget-manageStockAccessory-form select[name=bike')
+        .find('option')
+        .remove()
+        .end();
+        var i =0;
+        while(i<data.bikeNumber){
+          $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+data.bike[i].id+'>'+data.bike[i].id+' :  '+data.bike[i].model+' - '+data.bike[i].contract+'</option>');
+          i++;
+        }
+        $("#widget-manageStockAccessory-form select[name=bike]").val("");
+        if(data.bikeNumber==0){
+          $.notify({
+            message: "Pas de vélo lié à cette société, il n'est possible d'attribuer l'accessoire qu'au niveau de la société"
+          }, {
+            type: 'info'
+          });
+        }
+
+      }
+    });
     }
   }
 });
+ 
 });
 
 
@@ -82,13 +120,21 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
   }
-  else{
+  else if($(this).val()=="selling"){
     $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
   }
+  else{
+    $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+  }
+
 });
 
 $('#widget-manageStockAccessory-form select[name=category]').change(function(){
@@ -128,7 +174,7 @@ $('#widget-manageStockAccessory-form select[name=model]').change(function(){
   url: "apis/Kameo/accessories/accessories.php",
   type: "get",
   data: {
-    "action": "retrieve",
+    "action": "retrieveCatalog",
     "ID" : $(this).val()
   },
   success : function(data) {
@@ -143,29 +189,29 @@ $('#widget-manageStockAccessory-form select[name=model]').change(function(){
 
 
 $(".stockAccessoriesClick").click(function(){
+ $("#widget-manageStockAccessory-form").trigger("reset");
+ $('#widget-manageStockAccessory-form select[name=bike').find('option').remove().end();
+ $("#widget-manageStockAccessory-form select[name=category]").val("");
+ $("#widget-manageStockAccessory-form select[name=model]").val("");
+ $("#widget-manageStockAccessory-form select[name=company]").val("");
+ $("#widget-manageStockAccessory-form select[name=user]").val("");
 
-  $("#widget-manageStockAccessory-form").trigger("reset");
-  $("#widget-manageStockAccessory-form select[name=category]").val("");
-  $("#widget-manageStockAccessory-form select[name=model]").val("");
-  $("#widget-manageStockAccessory-form select[name=company]").val("");
-  $("#widget-manageStockAccessory-form select[name=user]").val("");
-
-  list_stock_accessories();
-  if ($('#widget-manageStockAccessory-form select[name=category] option').length == 0) {
-    $.ajax({
-     url: "apis/Kameo/accessories/accessories.php",
-     type: "get",
-     data: {
-       "action": "getCategories",
-     },
-     success : function(data) {
-       data.categories.forEach(function(category, index){
-         $("#widget-manageStockAccessory-form select[name=category]").append('<option value='+category['ID']+'>'+category['CATEGORY']+'</option>');
-       });
-       $("#widget-manageStockAccessory-form select[name=category]").val("");
-     }
-   });
-  }
+ list_stock_accessories();
+ if ($('#widget-manageStockAccessory-form select[name=category] option').length == 0) {
+  $.ajax({
+   url: "apis/Kameo/accessories/accessories.php",
+   type: "get",
+   data: {
+     "action": "getCategories",
+   },
+   success : function(data) {
+     data.categories.forEach(function(category, index){
+       $("#widget-manageStockAccessory-form select[name=category]").append('<option value='+category['ID']+'>'+category['CATEGORY']+'</option>');
+     });
+     $("#widget-manageStockAccessory-form select[name=category]").val("");
+   }
+ });
+}
 });
 
 
@@ -196,7 +242,7 @@ function list_stock_accessories(){
     },
     {
       title: "Société",
-      data: "COMPANY_NAME",
+      data: "COMPANY_ID",
     },
     {
       title: "Client",
@@ -258,7 +304,8 @@ function list_stock_accessories(){
 
 
 function get_stock_accessory(ID){
-  console.log('tes'+ID);
+  $('#widget-manageStockAccessory-form select[name=contractType]').attr('readonly', false);
+
   $.ajax({
    url: "apis/Kameo/accessories/accessories.php",
    type: "get",
@@ -275,6 +322,68 @@ function get_stock_accessory(ID){
        $("#widget-manageStockAccessory-form select[name=company]").val(data.COMPANY_ID);
        $("#widget-manageStockAccessory-form input[name=user]").val(data.USER_EMAIL);
        $("#widget-manageStockAccessory-form select[name=contractType]").val(data.CONTRACT_TYPE);
+
+       $.ajax({
+         url: "apis/Kameo/companies/companies.php",
+         type: "get",
+         data: {
+           "action" : "retrieveCustommerBike",
+           "ID" : data.COMPANY_ID
+         },
+         success : function(data) {
+           $('#widget-manageStockAccessory-form select[name=user')
+           .find('option')
+           .remove()
+           .end();
+           if(data.userNumber > 0 ){
+            $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
+            data.user.forEach(function(user, index){
+             $("#widget-manageStockAccessory-form select[name=user]").append('<option data-bike="'+user['bikeId']+'"" value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
+           });
+            $("#widget-manageStockAccessory-form select[name=user]").val("");
+            $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeOut();
+          }else{
+            $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
+            $.notify({
+              message: "Pas d'utilisateurs définis pour cette société, il n'est possible d'attribuer l'accessoire qu'au niveau de la société"
+            }, {
+              type: 'info'
+            });
+
+            $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeIn();
+            $.ajax({
+             url: "apis/Kameo/accessories/accessories.php",
+             type: "get",
+             data: {
+               "action" : "getBikeFromCompany",
+               "ID" : $('#widget-manageStockAccessory-form select[name=company]').val()
+             },
+             success : function(data) {
+              $('#widget-manageStockAccessory-form select[name=bike')
+              .find('option')
+              .remove()
+              .end();
+              var i =0;
+              while(i<data.bikeNumber){
+                $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+data.bike[i].id+'>'+data.bike[i].id+' :  '+data.bike[i].model+' - '+data.bike[i].contract+'</option>');
+                i++;
+              }
+              
+              if(data.bikeNumber==0){
+                $.notify({
+                  message: "Pas de vélo lié à cette société, il n'est possible d'attribuer l'accessoire qu'au niveau de la société"
+                }, {
+                  type: 'info'
+                });
+              }
+
+            }
+          });
+          }
+        }
+      });
+
+
        if(data.CONTRACT_TYPE == "leasing"){
          $("#widget-manageStockAccessory-form input[name=contractStart]").val(data.CONTRACT_START);
          $("#widget-manageStockAccessory-form input[name=contractEnd]").val(data.CONTRACT_END);
@@ -293,33 +402,13 @@ function get_stock_accessory(ID){
          $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
          $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
        }
-
-       var user= data.USER_EMAIL;
-       $.ajax({
-         url: "apis/Kameo/companies/companies.php",
-         type: "get",
-         data: {
-           "action" : "retrieve",
-           "ID" : data.COMPANY_ID
-         },
-         success : function(data) {
-           $('#widget-manageStockAccessory-form select[name=user')
-           .find('option')
-           .remove()
-           .end();
-           if(data.userNumber > 0 ){
-            $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
-            data.user.forEach(function(user, index){
-              $("#widget-manageStockAccessory-form select[name=user]").append('<option value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
-            });
-            $("#widget-manageStockAccessory-form select[name=user]").val("");
-          }else{
-            $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
-          }
-          $("#widget-manageStockAccessory-form select[name=user]").val(user);
-
-        }
-      });
+       else {
+         $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
+         $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+       }
        var catalogID = data.CATALOG_ID;
 
        $.ajax({
@@ -342,6 +431,14 @@ function get_stock_accessory(ID){
         }
       });
      }
+     $("#widget-manageStockAccessory-form select[name=bike]").val(data.BIKE_ID);
    }
  });
+
 }
+
+$("#widget-manageStockAccessory-form select[name=user]").change(function(){
+  $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeIn();
+  var idBike =  $("#widget-manageStockAccessory-form select[name=user]").find(':selected').data('bike');
+  $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+idBike+'>'+idBike+'</option>');
+})

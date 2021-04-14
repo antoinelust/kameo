@@ -22,6 +22,8 @@
       <h4 class="text-green">Stock d'accessoires</h4>
       <div data-example-id="contextual-table" class="bs-example">
         <a class="button small green button-3d rounded icon-right addStockAccessoryButton" data-target="#manageStockAccessory" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::accessories_add_accessory; ?></a>
+
+         <a class="button small green button-3d rounded icon-right bindBillToAccessory" data-target="#manageBillAccessory" data-toggle="modal" href="#">Liaison Factures-Accessoires</a>
         <table id="stockAccessoriesList" class="table" style='width: 100%;'></table>
       </div>
       <div class="modal-footer">
@@ -63,11 +65,16 @@
                 <div class="row">
   								<div class="col-md-4">
   									<label for="company"><?= L::generic_company; ?></label>
-                    <select name="company" class="form-control required"></select>
+                    <select name="company" class="form-control"></select>
   								</div>
                   <div class="col-md-4">
                     <label for="user"><?= L::generic_user; ?></label>
                     <select name="user" class="form-control">
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="bike">Lié à un vélo</label>
+                    <select name="bike" class="form-control">
                     </select>
                   </div>
                 </div>
@@ -147,7 +154,9 @@
 	</div>
 </div>
 <script type="text/javascript">
+
 	jQuery("#widget-manageStockAccessory-form").validate({
+
 	 submitHandler: function(form) {
 		jQuery(form).ajaxSubmit({
 		 success: function(response) {

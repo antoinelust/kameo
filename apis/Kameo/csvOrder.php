@@ -121,13 +121,12 @@ else if ($action=='validFormToChangeOrder'){
 		$data[$i]['numberOfArticle'] =$numberToArticle;
 		$i++;
 	}
-
-	print_r($data);
     //////Remodifie le fichier
 	$nameFile=$csvName;
 	$dossier = $_SERVER['DOCUMENT_ROOT'].'/orderCSV/';
 	$monfichier = fopen($dossier.''.$nameFile, 'w+');
 	$header=null;
+	
 	foreach($data as $t)
 	{
 		if(!$header) {
@@ -189,5 +188,6 @@ else if ($action=='validFormToChangeOrder'){
 	$response['response']='success';
 	$response['message']='La commande a bien été traité';
 
+	echo json_encode($response);
 }
 ?>
