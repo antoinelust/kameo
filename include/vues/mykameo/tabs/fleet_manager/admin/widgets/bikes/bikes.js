@@ -695,8 +695,17 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('#widget-bikeManagement-form select[name=bikeType], #widget-bikeManagement-form select[name=company]').change(function(bikeType){
             if($('#widget-bikeManagement-form select[name=bikeType]').val()=='personnel' && $('#widget-bikeManagement-form select[name=company]').val() != null){
               $('#widget-bikeManagement-form select[name=name]').closest("div").fadeIn();
+              $('#bikeBuildingAccessAdminDiv').addClass("hidden");
+              $('#bikeBuildingAccessAdmin').addClass("hidden");
+              $('#bikeUserAccessAdminDiv').addClass("hidden");
+              $('#bikeUserAccessAdmin').addClass("hidden");
               update_users_list(company, response.bikeOwner);
             }else{
+              $('#bikeBuildingAccessAdminDiv').removeClass("hidden");
+              $('#bikeBuildingAccessAdmin').removeClass("hidden");
+              $('#bikeUserAccessAdminDiv').removeClass("hidden");
+              $('#bikeUserAccessAdmin').removeClass("hidden");
+
               $('#widget-bikeManagement-form select[name=name]').closest("div").fadeOut();
               $('#widget-bikeManagement-form select[name=name]').val("");
             }

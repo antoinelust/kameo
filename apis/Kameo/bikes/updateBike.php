@@ -25,7 +25,6 @@ $frameReference=$_POST['frameReference'];
 $lockerReference=$_POST['lockerReference'];
 $gpsID=$_POST['gpsID'];
 $type_bike = $_POST['bikeType'];
-
 $buyingPrice=isset($_POST['price']) ? $_POST['price'] : NULL;
 $buyingDate=isset($_POST['buyingDate']) ? $_POST['buyingDate'] : NULL;
 $contractType=isset($_POST['contractType']) ? $_POST['contractType'] : NULL;
@@ -48,6 +47,12 @@ if($contractType=="stock" && $company != 'KAMEO'){
 }
 if($contractType=="pending_delivery" && $company == 'KAMEO'){
     errorMessage("ES0069");
+}
+if($contractType=='stock' || $contractType=='test'){
+  $billingPrice=0;
+  $contractStart=NULL;
+  $contractEnd=NULL;
+  $automaticBilling="N";
 }
 
 
