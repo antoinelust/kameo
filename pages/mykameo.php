@@ -502,7 +502,6 @@ if ($token == NULL) { //Not connected
     //ORDERS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orderAccessories/main.php';
-    //PORTFOLIO BIKE
     //PORTFOLIO BIKES
     /** @TODO: Add a delete confirmation widget **/
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
@@ -555,6 +554,7 @@ if ($token == NULL) { //Not connected
   /////////////
 }
   ?>
+
 <div class="loader">
   <!-- Place at bottom of page -->
 </div>
