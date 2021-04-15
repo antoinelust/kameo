@@ -215,6 +215,17 @@
 							<p>Stock accessoires</p>
 						</div>
 					</div>
+            <div class="col-md-4 " id="orderAccessories" style="height:164px">
+            <div class="icon-box medium fancy">
+              <div class="icon bold" data-animation="pulse infinite">
+                <a data-toggle="modal" data-target="#orderAccessoriesListing" href="#" class="orderAccessoriesClick">
+                  <i style="opacity:0.15" class="fa fa-users"></i>
+                </a>
+              </div>
+              <div class="counter bold" id="counterOrderAccessoriesCounter"></div>
+              <p>Commande accessoires</p>
+            </div>
+          </div>
 					<div class="row"></div>
           <div class="col-md-4 " id="boxesManagement" style="height:164px">
             <div class="icon-box medium fancy">

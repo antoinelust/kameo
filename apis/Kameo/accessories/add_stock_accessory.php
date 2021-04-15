@@ -11,6 +11,7 @@ $sellingDate = isset($_POST["sellingDate"]) ? ($_POST["sellingDate"] != '' ? $_P
 $sellingAmount=isset($_POST["sellingAmount"]) ? ($_POST["sellingAmount"] != '' ? $_POST["sellingAmount"] : NULL) : NULL;
 $action=isset($_POST['action']) ? $_POST['action'] : NULL;
 $bikeID=isset($_POST['bike']) ? $_POST['bike'] : NULL;
+$numberToOrder = isset($_POST['numberArticle']) ? $_POST['numberArticle'] : NULL;
 
 
 if($modelID != '' && $contractType != '') {
@@ -27,48 +28,52 @@ if($modelID != '' && $contractType != '') {
   include '../connexion.php';
 /// voir coment ajouyter les id de velo ou bike 
   if($action=="addStockAccessory"){
-    $stmt = $conn->prepare("INSERT INTO accessories_stock (USR_MAJ, COMPANY_ID, USER_EMAIL, CATALOG_ID, CONTRACT_TYPE, CONTRACT_START,  CONTRACT_END, CONTRACT_AMOUNT, SELLING_DATE, SELLING_AMOUNT, STAANN, BIKE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '',?) ");
-    if ($stmt)
-    {
+    $i=0;
+    while($i<$numberToOrder){
+      $stmt = $conn->prepare("INSERT INTO accessories_stock (USR_MAJ, COMPANY_ID, USER_EMAIL, CATALOG_ID, CONTRACT_TYPE, CONTRACT_START,  CONTRACT_END, CONTRACT_AMOUNT, SELLING_DATE, SELLING_AMOUNT, STAANN, BIKE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '',?) ");
+      if ($stmt)
+      {
         $stmt->bind_param("sisisssdsdi", $token, $companyID, $userEMAIL, $modelID, $contractType, $contractStart, $contractEnd, $leasingAmount, $sellingDate, $sellingAmount, $bikeID);
         $stmt->execute();
-    }else
+      }else{
         error_message('500', $conn->error);
-
+      }
+      $i++;
+    }
     successMessage("SM0028");
   }else if($action=="updateStockAccessory"){
-      $ID = isset($_POST["ID"]) ? addslashes($_POST["ID"]) : NULL;
-      if($contractType=="achat"){
-        $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE='achat', SELLING_DATE=?, SELLING_AMOUNT=?,BIKE_ID=? WHERE ID=? ");
-        if ($stmt)
-        {
-          $stmt->bind_param("sisisdii", $token, $companyID, $userEMAIL, $modelID, $sellingDate, $sellingAmount,$bikeID, $ID);
-          $stmt->execute();
-        }else
-            error_message('500', $conn->error);
-      }else if($contractType=="leasing"){
-        $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, CONTRACT_AMOUNT=?, BIKE_ID=? WHERE ID=? ");
-        if ($stmt)
-        {
-          $stmt->bind_param("sisisssdii", $token, $companyID, $userEMAIL, $modelID, $contractType, $contractStart, $contractEnd, $leasingAmount,$bikeID, $ID);
-          $stmt->execute();
-        }else
-            error_message('500', $conn->error);
-      }
-      else {
-         $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=? WHERE ID=? ");
-        if ($stmt)
-        {
-          $stmt->bind_param("sisisii", $token, $companyID, $userEMAIL, $modelID, $contractType,$bikeID, $ID);
-          $stmt->execute();
-        }else
-            error_message('500', $conn->error);
-      }
-      successMessage("SM0028");
+    $ID = isset($_POST["ID"]) ? addslashes($_POST["ID"]) : NULL;
+    if($contractType=="achat"){
+      $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE='achat', SELLING_DATE=?, SELLING_AMOUNT=?,BIKE_ID=? WHERE ID=? ");
+      if ($stmt)
+      {
+        $stmt->bind_param("sisisdii", $token, $companyID, $userEMAIL, $modelID, $sellingDate, $sellingAmount,$bikeID, $ID);
+        $stmt->execute();
+      }else
+      error_message('500', $conn->error);
+    }else if($contractType=="leasing"){
+      $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, CONTRACT_AMOUNT=?, BIKE_ID=? WHERE ID=? ");
+      if ($stmt)
+      {
+        $stmt->bind_param("sisisssdii", $token, $companyID, $userEMAIL, $modelID, $contractType, $contractStart, $contractEnd, $leasingAmount,$bikeID, $ID);
+        $stmt->execute();
+      }else
+      error_message('500', $conn->error);
+    }
+    else {
+     $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=? WHERE ID=? ");
+     if ($stmt)
+     {
+      $stmt->bind_param("sisisii", $token, $companyID, $userEMAIL, $modelID, $contractType,$bikeID, $ID);
+      $stmt->execute();
+    }else
+    error_message('500', $conn->error);
   }
+  successMessage("SM0028");
+}
 }else{
-    $response = array ('response'=>'error');
-    echo json_encode($response);
-    die;
+  $response = array ('response'=>'error');
+  echo json_encode($response);
+  die;
 }
 ?>

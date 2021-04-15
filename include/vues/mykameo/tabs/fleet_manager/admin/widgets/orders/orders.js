@@ -502,6 +502,7 @@ function retrieve_command(ID){
 $('.ordersManagerClick').off();
 
 $(".ordersManagerClick").click(function () {
+
   $("#companiesOrderable").dataTable({
     destroy: true,
     ajax: {
@@ -554,7 +555,8 @@ $(".ordersManagerClick").click(function () {
 });
 
 
-$('.ordersManagerClick').click(function(){get_orders_listing()});
+$('.ordersManagerClick').click(function(){
+  get_orders_listing()});
 $('.ordersManagerClick').click(function(){
 
   //Accessoires

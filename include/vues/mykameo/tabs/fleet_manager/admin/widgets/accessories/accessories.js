@@ -22,11 +22,11 @@ $(".fleetmanager").click(function () {
 
 $('.addStockAccessoryButton').click(function(){
 
-
+ $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeIn();
  $("#widget-manageStockAccessory-form").trigger("reset");
  $("#widget-manageStockAccessory-form select[name=category]").val("");
  $("#widget-manageStockAccessory-form select[name=model]").val("");
- $("#widget-manageStockAccessory-form select[name=company]").val("");
+ $("#widget-manageStockAccessory-form select[name=company]").val(12);
  $("#widget-manageStockAccessory-form select[name=user]").val("");
  $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
  $("#widget-manageStockAccessory-form select[name=bike]").val("");
@@ -196,6 +196,8 @@ $(".stockAccessoriesClick").click(function(){
  $("#widget-manageStockAccessory-form select[name=model]").val("");
  $("#widget-manageStockAccessory-form select[name=company]").val("");
  $("#widget-manageStockAccessory-form select[name=user]").val("");
+
+  $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeOut();
 
  list_stock_accessories();
  if ($('#widget-manageStockAccessory-form select[name=category] option').length == 0) {
@@ -458,3 +460,5 @@ $("#widget-manageStockAccessory-form select[name=user]").change(function(){
   var idBike =  $("#widget-manageStockAccessory-form select[name=user]").find(':selected').data('bike');
   $("#widget-manageStockAccessory-form select[name=bike]").append('<option value='+idBike+'>'+idBike+'</option>');
 })
+
+
