@@ -40,34 +40,36 @@
 <script type="text/javascript">
   function load_personnal_bike(){
     $.ajax({
-      url: "apis/Kameo/get_bike_details.php",
+      url: "api/bikes",
       type: "get",
+      data: {
+        action: "getPersonnalBike"
+      },
       success: function (response) {
         if (response.response == "error") {
           console.log(response.message);
         } else {
-          $('.brandModelPersonnalBike').html(response.brand+" "+response.modelCatalog);
-          $('.contractStartPersonnalBike').html(response.contractStart);
-          $('.contractEndPersonnalbike').html(response.contractEnd);
-          $('.calculRachatVeloPersonalTabLink').attr("leasingPrice", response.leasingPrice);
-          $('.calculRachatVeloPersonalTabLink').attr("catalogprice", response.catalogPrice);
-          $('.calculRachatVeloPersonalTabLink').attr("catalogprice", response.catalogPrice);
-          $('#personnalBikeImg').attr('src', "images_bikes/"+response.img+".jpg");
-          if(response.brand=="Kayza"){
+          $('.brandModelPersonnalBike').html(response.BRAND+" "+response.modelCatalog);
+          $('.contractStartPersonnalBike').html(response.CONTRACT_START);
+          $('.contractEndPersonnalbike').html(response.CONTRACT_END);
+          $('.calculRachatVeloPersonalTabLink').attr("leasingPrice", response.LEASING_PRICE);
+          $('.calculRachatVeloPersonalTabLink').attr("catalogprice", response.PRICE_HTVA);
+          $('#personnalBikeImg').attr('src', "images_bikes/"+response.TYPE+".jpg");
+          if(response.BRAND=="Kayza"){
             $('#documentationPersonnalBike').append("<a href='docs/modeemploi/KAYZA_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
-          }else if(response.brand=="Bzen"){
+          }else if(response.BRAND=="Bzen"){
             $('#documentationPersonnalBike').append("<a href='docs/modeemploi/BZEN_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
-          }else if(response.brand=="Conway"){
+          }else if(response.BRAND=="Conway"){
             $('#documentationPersonnalBike').append("<a href='docs/modeemploi/CONWAY_EBIKE.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
-          }else if(response.brand=="Douze"){
+          }else if(response.BRAND=="Douze"){
             $('#documentationPersonnalBike').append("<a href='docs/modeemploi/DOUZE_G4.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
-          }else if(response.brand=="Moustache Bikes"){
+          }else if(response.BRAND=="Moustache Bikes"){
             $('#documentationPersonnalBike').append("<a href='docs/modeemploi/MOUSTACHE_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
-          }else if(response.brand=="HNF Nicolai"){
+          }else if(response.BRAND=="HNF Nicolai"){
             $('#documentationPersonnalBike').append("<a href='docs/modeemploi/HNF_XD2.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
-          }else if(response.brand=="Victoria"){
+          }else if(response.BRAND=="Victoria"){
             $('#documentationPersonnalBike').append("<a href='docs/modeemploi/VICTORIA_USER.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
-          }else if(response.brand=="Ahooga"){
+          }else if(response.BRAND=="Ahooga"){
             if(response.modelCatalog=="Folding Bike" || response.modelCatalog=="Folding Bike Power"){
               $('#documentationPersonnalBike').append("<a href='docs/modeemploi/AHOOGA_FOLDING.pdf' target='_blank'><i class='fa fa-file-pdf-o fa-3' aria-hidden='true'> "+traduction.documentation_actiris_link_title+" "+response.brand+"</i></a>");
             }else{
@@ -147,7 +149,7 @@
       parent.append(cell);
       var cell = document.createElement("td");
       if(i==12){
-        cell.innerHTML=Math.round(catalogPrice*1.21)+" €";
+        cell.innerHTML=Math.round((0.6*(36-12)*leasingprice*1.21 + 0.16*catalogPrice)*1.21)+" €";
       }else{
         cell.innerHTML=Math.round((0.6*(36-i)*leasingprice*1.21 + 0.16*catalogPrice)*1.21)+" €";
       }

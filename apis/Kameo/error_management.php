@@ -111,7 +111,6 @@ $token = getBearerToken();
 
             while($row = mysqli_fetch_array($result)){
 
-
                 $bikeID=$row['ID'];
                 $bikeNumber=$row['FRAME_NUMBER'];
                 $contractStart=new DateTime($row['CONTRACT_START'], new DateTimeZone('Europe/Brussels'));
@@ -180,12 +179,7 @@ $token = getBearerToken();
 
                 $dateTemp=new DateTime($row['CONTRACT_START']);
 
-
                 while($dateTemp<=$contractEnd){
-                  $day=$dateTemp->format('d');
-                  $month=$dateTemp->format('m');
-                  $year=$dateTemp->format('Y');
-
                   $dateTempString=$dateTemp->format('d-m-Y');
                   $dateTempString2=$dateTemp->format('Y-m-d');
 
@@ -205,7 +199,6 @@ $token = getBearerToken();
 
                   if($length == 0){
                       $response['bike']['bill'][$i]['bikeID']=$bikeID;
-                      //$response['bike']['bill'][$i]['sql']=$sql;
                       $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
                       $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo à la date du $dateTempString";
                       $i++;
@@ -223,13 +216,14 @@ $token = getBearerToken();
                     }
                   }
 
+                  $dateTemp=new DateTime($row['CONTRACT_START']);
+
                   if($day>last_day_month($month)){
                       $dayTemp=last_day_month($month);
                   }else{
                       $dayTemp=$day;
                   }
                   $dateTemp->setDate($year, $month, $dayTemp);
-
                 }
             }
 

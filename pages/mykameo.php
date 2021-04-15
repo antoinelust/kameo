@@ -555,7 +555,6 @@ if ($token == NULL) { //Not connected
   /////////////
 }
   ?>
-
 <div class="loader">
   <!-- Place at bottom of page -->
 </div>

@@ -13,6 +13,7 @@
 		$router->map('GET','/api/csvOrder', 'apis/Kameo/csvOrder.php');
 		$router->map('GET|POST','/api/chats[ext]', 'apis/Kameo/chats/chats.php');
 		$router->map('GET|POST','/api/bikes[ext]', 'apis/Kameo/bikes/bikes.php');
+		$router->map('GET|POST','/api/users[ext]', 'apis/Kameo/users/users.php');
 		$router->map('GET|POST','/api/maintenances', 'apis/Kameo/maintenances/maintenances.php');
 		$router->map('GET|POST','/api/cashFlow', 'apis/Kameo/cashFlow/cashFlow.php');
 		$router->map('GET|POST','/api/accessories', 'apis/Kameo/accessories/accessories.php');

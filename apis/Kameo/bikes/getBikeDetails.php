@@ -57,9 +57,7 @@ $response['status']=$row['STATUS'];
 
 $buildings=array();
 $buildings[]=execSQL("SELECT bb.BUILDING_REFERENCE as buildingCode, bb.BUILDING_FR as descriptionFR, 'true' as access FROM bike_building_access aa, building_access bb WHERE aa.BIKE_ID=? and BUILDING_REFERENCE=aa.BUILDING_CODE and aa.STAANN!='D' and COMPANY=?", array('is', $id, $company), false);
-$buildings[]=execSQL("SELECT BUILDING_REFERENCE as buildingCode, BUILDING_FR as descriptionFR, 'true' as access FROM building_access WHERE COMPANY = ? AND not exists (select 1 from bike_building_access bb where bb.BUILDING_CODE=BUILDING_REFERENCE and bb.BIKE_ID=? and bb.STAANN!='D')", array('si', $company, $id), false);
-
-
+$buildings[]=execSQL("SELECT BUILDING_REFERENCE as buildingCode, BUILDING_FR as descriptionFR, 'false' as access FROM building_access WHERE COMPANY = ? AND not exists (select 1 from bike_building_access bb where bb.BUILDING_CODE=BUILDING_REFERENCE and bb.BIKE_ID=? and bb.STAANN!='D')", array('si', $company, $id), false);
 $response['building'] = array();
 foreach($buildings as $arr) {
   if(is_array($arr)) {

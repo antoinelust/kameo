@@ -89,11 +89,10 @@ $("#bikeDetailsFull").on("show.bs.modal", function (event) {
  var bikeID = $(event.relatedTarget).attr("name");
  fillBikeDetails(bikeID);
  $.ajax({
-   url: "apis/Kameo/action_bike_management.php",
-   type: "post",
+   url: "api/bikes",
+   type: "get",
    data: {
-     "readActionBike-action": "read",
-     "readActionBike-bikeNumber": bikeID,
+     "action": "getPersonnalBikeActions",
    },
    success : function(data) {
      $('#action_bike_log_user').dataTable( {
@@ -102,7 +101,7 @@ $("#bikeDetailsFull").on("show.bs.modal", function (event) {
      paging: false,
      searching: false,
      sAjaxDataProp: "",
-     data : data.action,
+     data : data.actions,
      columns: [
      {
         title: traduction.generic_date,
@@ -115,8 +114,8 @@ $("#bikeDetailsFull").on("show.bs.modal", function (event) {
          title: traduction.generic_description,
          data: "title",
          fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-           if (sData == 'maintenance') $(nTd).html("Entretien fait");
-           else if(sData == 'maintenance')$(nTd).html(description);
+           if (sData == 'Maintenance') $(nTd).html("Entretien fait");
+           else $(nTd).html(oData.description);
          },
        }
      ],

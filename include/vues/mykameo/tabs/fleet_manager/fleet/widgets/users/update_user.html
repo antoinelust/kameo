@@ -8,30 +8,30 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<h4 class="fr text-green">Mise à jour des informations</h4>
-						<form id="widget-updateUser-form" action="apis/Kameo/update_user_information.php" role="form" method="post">
+						<form id="widget-updateUser-form" action="api/users" role="form" method="post">
 							<div class="form-group col-sm-12">
-								<div class="col-sm-6">
-									<label for="widget-updateUser-form-firstname"><?= L::sidebar_first_name; ?></label>
-									<input type="text" id="widget-updateUser-form-firstname" name="widget-updateUser-form-firstname" class="form-control required">
+								<div class="col-md-4">
+									<label for="firstname"><?= L::sidebar_first_name; ?></label>
+									<input type="text" name="firstname" class="form-control required">
 								</div>
-								<div class="col-sm-6">
-									<label for="widget-updateUser-form-name"><?= L::sidebar_last_name; ?></label>
-									<input type="text" id="widget-updateUser-form-name" name="widget-updateUser-form-name" class="form-control required">
+								<div class="col-md-4">
+									<label for="name"><?= L::sidebar_last_name; ?></label>
+									<input type="text" name="name" class="form-control required">
 								</div>
-								<div class="col-sm-6">
-									<label for="widget-updateUser-form-mail">E-mail</label>
-									<input type="text" id="widget-updateUser-form-mail" name="widget-updateUser-form-mail" readonly="readonly" class="form-control">
-									<input type="text" id="widget-updateUser-form-requestor" name="widget-updateUser-form-requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
+								<div class="col-md-4">
+									<label for="mail">E-mail</label>
+									<input type="text" name="mail" readonly="readonly" class="form-control">
+									<input type="text" name="requestor" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>">
 								</div>
-								<div class="col-sm-6">
-									<label for="widget-updateUser-form-status" ><?= L::generic_status; ?></label>
-									<input type="text" id="widget-updateUser-form-status" name="widget-updateUser-form-status" readonly="readonly" class="form-control">
+								<div class="col-md-4">
+									<label for="phone"><?= L::sidebar_phone; ?></label>
+									<input type="text" name="phone" class="form-control">
 								</div>
-								<div class="col-sm-6">
-									<label for="widget-updateUser-form-phone"><?= L::sidebar_phone; ?></label>
-									<input type="text" id="widget-updateUser-form-phone" name="widget-updateUser-form-phone" readonly="readonly" class="form-control">
+								<div class="col-md-4">
+									<label for="status" ><?= L::generic_status; ?></label>
+									<input type="text" name="status" readonly="readonly" class="form-control">
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-4 text-center">
 									<label for="fleetManager">Fleet manager</label>
 									<input type="checkbox" name="fleetManager" class="form-control">
 								</div>
@@ -39,6 +39,7 @@
 							<div class="form-group col-sm-12" id="buildingUpdateUser"></div>
 							<div class="form-group col-sm-12" id="bikeUpdateUser"></div>
 							<div id="updateUserSendButton"></div>
+							<input type="text" name="action" value="update" class="hidden">
 						</form>
 						<div id="deleteUserButton"></div>
 					</div>
@@ -46,6 +47,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -62,7 +64,6 @@
 			  });
 			  get_users_listing();
 			  $('#updateUserInformation').modal('toggle');
-			  $('#usersListing').modal('toggle');
 			} else {
 			  $.notify({
 				message: response.message

@@ -1,7 +1,8 @@
 <?php
 include 'bikes.html';
 include 'bike_localization.html';
-include 'manage_bike.html'?>
+include 'manage_bike.html'
+?>
 
 <script type="text/javascript">
     <?php
