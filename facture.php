@@ -553,15 +553,15 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVA</td>
                 <td width="100" style="border-bottom: solid 1px grey">Montant TVAC</td>
                <td style="background-color: white" witdth="100"></td>
-               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' '.$units.'<br>+TVA: '.round($tva,2).' '.$units.' </p></td>
+               <td style="background-color: white"><p> Total HTVA: '.round($total,2).' €<br>+TVA: '.round($tva,2).' €</p></td>
             </tr>
             <tr>
-                <td height="35">'.round($total,2).' '.$units.'</td>
+                <td height="35">'.round($total,2).' €</td>
                 <td>21%</td>
-                <td>'.round($tva,2).' '.$units.'</td>
-                <td>'.round($totalTVAIncluded,2).' '.$units.'</td>
+                <td>'.round($tva,2).' €</td>
+                <td>'.round($totalTVAIncluded,2).' €</td>
                 <td style="background-color: white" width="100"></td>
-                <td style="background-color: white"> Total TVAC : <strong>'.round($totalTVAIncluded,2).' '.$units.'</strong></td>
+                <td style="background-color: white"> Total TVAC : <strong>'.round($totalTVAIncluded,2).' €</strong></td>
             </tr>
         </tbody>
     </table>

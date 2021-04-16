@@ -26,7 +26,6 @@ $lockerReference=$_POST['lockerReference'];
 $gpsID=$_POST['gpsID'];
 $type_bike = $_POST['bikeType'];
 $buyingPrice=isset($_POST['price']) ? $_POST['price'] : NULL;
-$buyingDate=isset($_POST['buyingDate']) ? $_POST['buyingDate'] : NULL;
 $contractType=isset($_POST['contractType']) ? $_POST['contractType'] : NULL;
 $contractStart=isset($_POST['contractStart']) ? $_POST['contractStart'] : NULL;
 $contractEnd=isset($_POST['contractEnd']) ? $_POST['contractEnd'] : NULL;
@@ -48,13 +47,31 @@ if($contractType=="stock" && $company != 'KAMEO'){
 if($contractType=="pending_delivery" && $company == 'KAMEO'){
     errorMessage("ES0069");
 }
+
+if($contractStart=='')
+  $contractStart = NULL;
+
+if($contractEnd == '')
+  $contractEnd = NULL;
+
 if($contractType=='stock' || $contractType=='test'){
   $billingPrice=0;
   $contractStart=NULL;
   $contractEnd=NULL;
   $automaticBilling="N";
+  $sellingDate=NULL;
+  $sellingPrice=0;
 }
 
+if($contractType=='test'){
+  $deliverDate=NULL;
+  $estimatedDeliveryDate=NULL;
+}
+
+if($contractType=="leasing" || $contractType=="renting" || $contractType=="pending_delivery"){
+  $sellingDate=NULL;
+  $sellingPrice=0;
+}
 
 if(isset($_POST['billing'])){
     $automaticBilling="Y";
@@ -74,7 +91,7 @@ if($frameNumberOriginel != $frameNumber){
 if($contractType=="order"){
   execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE=?, COLOR=?, CONTRACT_TYPE=?, COMPANY=?, BIKE_BUYING_DATE=?, ESTIMATED_DELIVERY_DATE=?, ORDER_NUMBER=?, OFFER_ID=? where ID =?", array('ssissssssssi', $token, $model, $portfolioID, $size, $color, $contractType, $company, $orderingDate, $estimatedDeliveryDate, $orderNumber, $offerReference, $bikeID), true);
 }else{
-  execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE='$size', COLOR=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, COMPANY=?, FRAME_REFERENCE=?, LOCKER_REFERENCE=?, GPS_ID=?, BIKE_BUYING_DATE=?, AUTOMATIC_BILLING=?, INSURANCE=?, BILLING_TYPE=?, LEASING_PRICE=?, BILLING_GROUP=?, BIKE_PRICE=?, SOLD_PRICE = ?, EMAIL=?, ADDRESS=? where ID = ?", array('ssissssssssssssssddssi', $token, $model, $portfolioID, $color, $contractType, $contractStart, $contractEnd, $company, $frameReference, $lockerReference, $gpsID, $buyingDate, $automaticBilling, $insurance, $billingType, $billingPrice, $billingGroup, $buyingPrice, $sellPrice, $clientReference, $address, $bikeID), true);
+  execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE='$size', COLOR=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, COMPANY=?, FRAME_REFERENCE=?, LOCKER_REFERENCE=?, GPS_ID=?, BIKE_BUYING_DATE=?, AUTOMATIC_BILLING=?, INSURANCE=?, BILLING_TYPE=?, LEASING_PRICE=?, BILLING_GROUP=?, BIKE_PRICE=?, SOLD_PRICE = ?, EMAIL=?, ADDRESS=?, DELIVERY_DATE=? where ID = ?", array('ssissssssssssssssddsssi', $token, $model, $portfolioID, $color, $contractType, $contractStart, $contractEnd, $company, $frameReference, $lockerReference, $gpsID, $orderingDate, $automaticBilling, $insurance, $billingType, $billingPrice, $billingGroup, $buyingPrice, $sellPrice, $clientReference, $address, $deliveryDate, $bikeID), true);
 }
 
 $customerBikes=array();
@@ -85,87 +102,12 @@ if(count($customerBikes)==0){
 }
 
 
-if(isset($_POST['buildingAccess'])){
-  $buildings=array();
-  $buildings=execSQL("SELECT * FROM bike_building_access WHERE BIKE_ID='$bikeID' AND STAANN != 'D'", array(), false);
-
-  foreach((array) $buildings as $row){
-    $presence=false;
-    foreach($_POST['buildingAccess'] as $valueInArray){
-      if($row['BUILDING_CODE']==$valueInArray){
-          $presence=true;
-      }
-    }
-    $buildingCode=$row['BUILDING_CODE'];
-    if($presence==false){
-      execSQL("update bike_building_access set STAANN='D', USR_MAJ='$token', TIMESTAMP=CURRENT_TIMESTAMP where BUILDING_CODE = '$buildingCode' and BIKE_ID='$bikeID'", array(), true);
-    }
-  }
-
-  if( $type_bike == 'partage'){
-    foreach($_POST['buildingAccess'] as $valueInArray){
-      $bikeBuildingAccess=execSQL("select * FROM bike_building_access WHERE BUILDING_CODE='$valueInArray' and BIKE_ID='$bikeID'", array(), false);
-      if(!is_null($bikeBuildingAccess)){
-        execSQL("INSERT INTO  bike_building_access (USR_MAJ, TIMESTAMP, BUILDING_CODE, BIKE_ID, STAANN) VALUES ('$token', CURRENT_TIMESTAMP, '$valueInArray', '$bikeID', '')", array(), true);
-      }else{
-        $exsitingBikeBuildingAccess=execSQL("select * FROM bike_building_access WHERE BUILDING_CODE='$valueInArray' and BIKE_ID='$bikeID' and STAANN = 'D'", array(), false);
-        if(!is_null($exsitingBikeBuildingAccess)){
-          execSQL("update bike_building_access SET STAANN='' WHERE BUILDING_CODE='$valueInArray' and BIKE_ID='$bikeID'", array(), true);
-        }
-      }
-    }
-  }
-}else{
-    execSQL("update bike_building_access set STAANN='D', USR_MAJ='$token', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_ID='$bikeID' and STAANN != 'D'", array(), true);
-}
-
-if(isset($_POST['userAccess'])){
-
-    $informationCustomerBikeAccess=array();
-    $informationCustomerBikeAccess=execSQL("SELECT * FROM customer_bike_access WHERE ID='$bikeID' AND STAANN != 'D'", array(), false);
-    foreach((array) $informationCustomerBikeAccess as $row){
-        $presence=false;
-        foreach($_POST['userAccess'] as $valueInArray){
-            if($row['EMAIL']==$valueInArray){
-                $presence=true;
-            }
-        }
-        $emailUser=$row['EMAIL'];
-
-        if($presence==false){
-            execSQL("update customer_bike_access set STAANN='D', USR_MAJ='$token', TIMESTAMP=CURRENT_TIMESTAMP where EMAIL = '$emailUser' and BIKE_ID='$bikeID'", array(), true);
-        }
-    }
-
-
-
-
-    if( $type_bike == 'partage'){
-      foreach($_POST['userAccess'] as $valueInArray){
-        $informationCustomerBikeAccess=array();
-          $informationCustomerBikeAccess=execSQL("select * FROM customer_bike_access WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID'", array(), false);
-          if(!is_null($informationCustomerBikeAccess)){
-              execSQL("INSERT INTO  customer_bike_access (USR_MAJ, TIMESTAMP, EMAIL, BIKE_ID, TYPE, STAANN) VALUES ('$token', CURRENT_TIMESTAMP, '$valueInArray', '$bikeID', '$type_bike', '')", array(), true);
-          }else{
-            $existingCustomerBikeAccess=array();
-            $existingCustomerBikeAccess=execSQL("select * FROM customer_bike_access WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID' and STAANN = 'D'", array(), false);
-            if(!is_null($existingCustomerBikeAccess)){
-              execSQL("update customer_bike_access SET USR_MAJ='$token', TYPE='$type_bike', TIMESTAMP=CURRENT_TIMESTAMP, STAANN='' WHERE EMAIL='$valueInArray' and BIKE_ID='$bikeID'", array(), true);
-            }
-          }
-      }
-    }
-}else{
-    execSQL("update customer_bike_access set STAANN='D', USR_MAJ='$token', TIMESTAMP=CURRENT_TIMESTAMP where BIKE_ID='$bikeID' and STAANN != 'D'", array(), true);
-}
-
 if(isset($_POST['bikeType']) && $_POST['bikeType'] == "personnel"){
     execSQL("DELETE FROM customer_bike_access WHERE BIKE_ID = '$bikeID'", array(), true);
     execSQL("INSERT INTO customer_bike_access (TIMESTAMP, USR_MAJ, EMAIL, BIKE_ID, TYPE, STAANN) VALUES (CURRENT_TIMESTAMP, '$token', '$bikeOwner', '$bikeID', '$type_bike', '')", array(), true);
 }
 
 if(isset($_POST['contractStart']) && isset($_POST['contractEnd'])){
-
     if(isset($_POST['contractType'])){
         if ($_POST['contractType'] == 'leasing'){
             $dates = plan_maintenances($_POST['contractStart'], $_POST['contractEnd']);
@@ -175,7 +117,7 @@ if(isset($_POST['contractStart']) && isset($_POST['contractEnd'])){
                 $num_m = array_search($next_date, $dates) + 1;
 
                 execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, NR_ENTR)
-                SELECT CURRENT_TIMESTAMP, '$user', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '$num_m'
+                SELECT CURRENT_TIMESTAMP, '$token', '$bikeID', '$next_date', 'AUTOMATICALY_PLANNED', '$num_m'
                 FROM DUAL WHERE NOT EXISTS (SELECT * FROM entretiens WHERE BIKE_ID = '$bikeID' AND DATE(DATE + INTERVAL 3 MONTH) >= '$dates[$i]')", array(), true);
             }
         }
