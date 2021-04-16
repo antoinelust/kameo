@@ -354,17 +354,17 @@ if(isset($_POST['action'])){
 		$response['order']['firstname']=$resultat['PRENOM'];
 		$response['order']['phone']=$resultat['PHONE'];
 		$response['order']['priceHTVA']=$priceHTVA;
-		$resultat=execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ID as orderID
+		$response['order']['accessories']=execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.MODEL, accessories_catalog.BRAND, order_accessories.TYPE, order_accessories.ID as orderID
 												FROM order_accessories, accessories_categories, accessories_catalog
 												WHERE order_accessories.ORDER_ID=?
 												AND order_accessories.BRAND=accessories_catalog.ID
 												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES",
 							array('i', $ID), false);
 
-		$response['order']['accessories']=$resultat;
-		if($resultat){
-			$response['accessoryNumber']=count($resultat);
+		if($response['order']['accessories']!=null){
+			$response['accessoryNumber']=count($response['order']['accessories']);
 		}else{
+			$response['order']['accessories']=array();
 			$response['accessoryNumber'] = 0;
 		}
 		$result = mysqli_query($conn, $sql);
