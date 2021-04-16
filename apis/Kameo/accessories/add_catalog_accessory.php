@@ -34,7 +34,7 @@ if($brand != '' && $model != '' && $description != '' && $category != '' && $buy
         $stmt = $conn->prepare("INSERT INTO accessories_catalog (USR_MAJ, BRAND, MODEL, DESCRIPTION, ACCESSORIES_CATEGORIES, BUYING_PRICE,  PRICE_HTVA, DISPLAY, PROVIDER, REFERENCE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
         if ($stmt)
         {
-            $stmt->bind_param("ssssiddisss", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $display, $provider, $articleNbr);
+            $stmt->bind_param("ssssiddsss", $token, $brand, $model, $description, $category, $buyingPrice, $sellingPrice, $display, $provider, $articleNbr);
             $stmt->execute();
             $ID = $conn->insert_id;
         }else
