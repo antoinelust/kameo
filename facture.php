@@ -220,7 +220,14 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
             $dateAfter->setDate($yearAfter, $monthAfter, $dayAfter);
             $dateAfterString=$dateAfter->format('Y-m-d');
 
-            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$dateEnd' and (CONTRACT_END>='$dateEnd' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'";
+            if(isset($_GET['bikeID'])){
+              $sqlBike = " AND customer_bikes.ID='".$_GET['bikeID']."' ";
+            }else {
+              $sqlBike = "";
+            }
+
+
+            $sql2="select * from customer_bikes where COMPANY='$company' and CONTRACT_START<='$dateEnd' and (CONTRACT_END>='$dateEnd' or CONTRACT_END IS NULL) and BILLING_GROUP='$billingGroup' and AUTOMATIC_BILLING='Y' and STAANN !='D'".$sqlBike;
             error_log(date("Y-m-d H:i:s")."SQL6 :".$sql2."\n", 3, "generate_invoices.log");
             if ($conn->query($sql2) === FALSE){
                 echo $conn->error;
@@ -287,7 +294,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
 
               if($dateStartTemp >= $dateStartObject && $dateStartTemp <= $dateEndObject){
-
                 if($row2['BILLING_TYPE'] == "monthly"){
                   if($dateStartTemp->format('m')==12){
                       $monthAfter2=1;
