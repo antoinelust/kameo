@@ -395,101 +395,143 @@ function getLinkBikesBillsDetails(id){
 }
 
 function updateDisplayBikeManagement(type){
+
+
   $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
-  $('#widget-bikeManagement-form input[name=address]').closest("div").fadeIn();
-  $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn();
-  $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn();
-  $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn();
-  $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn();
-  $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn();
-  $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn();
-  $('.billsInfos').removeClass("hidden");
 
   if(type=="selling"){
-    $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
-    $('#widget-bikeManagement-form .contractEndBloc').fadeOut();
-    $('#widget-bikeManagement-form label[for=contractStart]').html("Date de vente");
-    $('#widget-bikeManagement-form .soldPrice').show();
-    $('#widget-bikeManagement-form .soldPrice input').removeAttr("disabled");
+
+
+    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut();
+    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn();
+    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn();
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn();
+    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn();
+    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn();
+    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn();
+
+    $('.buyingInfos').fadeIn("slow");
+
+    $('.orderInfos').fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=estimatedDeliveryDate]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
+
+
     $('.contractInfos').fadeIn("slow");
+    $('#widget-bikeManagement-form label[for=contractStart]').html("Date de vente");
+    $('#widget-bikeManagement-form .contractEndBloc').fadeOut();
+
     $('.billingInfos').fadeIn("slow");
-    $('.buyingInfos').fadeIn("slow");
-    $('.orderInfos').fadeOut("slow");
     $('.billingPriceDiv').fadeOut("slow");
-    $('.billingGroupDiv').fadeOut("slow");
-    $('.billingDiv').fadeOut("slow");
     $('#widget-bikeManagement-form select[name=billingType]').val("paid");
     $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', true);
-    $('#addBike_firstBuilding').fadeOut("slow");
-    $('#addBike_buildingListing').fadeOut("slow");
-    $('#bikeBuildingAccessAdminDiv').fadeOut("slow");
-    $('#bikeUserAccessAdminDiv').fadeOut("slow");
-    $('#bikeBuildingAccessAdmin').fadeOut("slow");
-    $('#bikeUserAccessAdmin').fadeOut("slow");
-    $('#widget-bikeManagement-form label[for=address]').removeClass("hidden");
-    $('#widget-bikeManagement-form input[name=address]').removeClass("hidden");
+    $('.billingGroupDiv').fadeOut("slow");
+    $('.billingDiv').fadeOut("slow");
+
+
+    $('#widget-bikeManagement-form .soldPrice').fadeIn();
+    $('#widget-bikeManagement-form .soldPrice input').removeAttr("disabled");
+
   }else if(type=="stock"){
-    $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
-    $('.contractInfos').fadeOut("slow");
-    $('.billingInfos').fadeOut("slow");
-    $('.buyingInfos').fadeIn("slow");
-    $('.orderInfos').fadeOut("slow");
-    $('.billingPriceDiv').fadeOut("slow");
-    $('.billingGroupDiv').fadeOut("slow");
-    $('.billingDiv').fadeOut("slow");
-    $('#widget-bikeManagement-form select[name=billingType]').val("paid");
-    $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', true);
-    $('#addBike_firstBuilding').fadeOut("slow");
-    $('#addBike_buildingListing').fadeOut("slow");
-    $('#bikeBuildingAccessAdminDiv').fadeOut("slow");
-    $('#bikeUserAccessAdminDiv').fadeOut("slow");
-    $('#bikeBuildingAccessAdmin').fadeOut("slow");
-    $('#bikeUserAccessAdmin').fadeOut("slow");
-    $('#widget-bikeManagement-form input[name=address]').val("");
-  }else if(type=="order"){
-    $('.contractInfos').fadeOut("slow");
-    $('.billingInfos').fadeOut("slow");
+
+    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn("slow");
+
+
     $('.buyingInfos').fadeIn("slow");
     $('.orderInfos').fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=estimatedDeliveryDate]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
+
+    $('.contractInfos').fadeOut("slow");
+
+    $('.billingInfos').fadeOut("slow");
+    $('#widget-bikeManagement-form select[name=billingType]').val("paid");
     $('.billingPriceDiv').fadeOut("slow");
     $('.billingGroupDiv').fadeOut("slow");
     $('.billingDiv').fadeOut("slow");
-    $('#addBike_firstBuilding').fadeOut("slow");
-    $('#addBike_buildingListing').fadeOut("slow");
-    $('#bikeBuildingAccessAdminDiv').fadeOut("slow");
-    $('#bikeBuildingAccessAdmin').fadeOut("slow");
-    $('#bikeUserAccessAdminDiv').fadeOut("slow");
-    $('addBike_firstBuilding').fadeOut("slow");
-    $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
-    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut();
-    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeOut();
-    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeOut();
-    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeOut();
-    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeOut();
-    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeOut();
-    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeOut();
-    $('.billsInfos').addClass("hidden");
-  }else{
-    $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
+
+    $('#widget-bikeManagement-form .soldPrice').fadeOut("slow")
+    $('#widget-bikeManagement-form .soldPrice input').attr("disabled");
+
+  }else if(type=="order"){
+    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeOut("slow");
+
+
     $('.buyingInfos').fadeIn("slow");
-    $('.contractInfos').fadeIn("slow");
-    $('.billingInfos').fadeIn("slow");
+    $('.orderInfos').fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=estimatedDeliveryDate]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeOut("slow");
+
+    $('.contractInfos').fadeOut("slow");
+
+    $('.billingInfos').fadeOut("slow");
+    $('#widget-bikeManagement-form select[name=billingType]').val("paid");
+    $('.billingPriceDiv').fadeOut("slow");
+    $('.billingGroupDiv').fadeOut("slow");
+    $('.billingDiv').fadeOut("slow");
+
+    $('#widget-bikeManagement-form .soldPrice').fadeOut("slow")
+    $('#widget-bikeManagement-form .soldPrice input').attr("disabled");
+  }else if(type=="test"){
+    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn("slow");
+
+
+    $('.buyingInfos').fadeOut("slow")
     $('.orderInfos').fadeOut("slow");
-    if($('#widget-bikeManagement-form select[name=billingType]').val()!="paid"){
-      $('.billingPriceDiv').fadeIn("slow");
-      $('.billingGroupDiv').fadeIn("slow");
-      $('.billingDiv').fadeIn("slow");
-    }
-    $('#addBike_firstBuilding').fadeIn("slow");
-    $('#addBike_buildingListing').fadeIn("slow");
-    $('#bikeBuildingAccessAdminDiv').fadeIn("slow");
-    $('#bikeBuildingAccessAdmin').fadeIn("slow");
-    $('#bikeUserAccessAdminDiv').fadeIn("slow");
-    $('#bikeUserAccessAdmin').fadeIn("slow");
-    $('addBike_firstBuilding').fadeIn("slow");
-    $('#widget-bikeManagement-form select[name=billingType]').attr('readonly', false);
-    $('#widget-bikeManagement-form label[for=address]').removeClass("hidden");
-    $('#widget-bikeManagement-form input[name=address]').removeClass("hidden");
+
+    $('.contractInfos').fadeOut("slow");
+
+    $('.billingInfos').fadeOut("slow");
+    $('#widget-bikeManagement-form select[name=billingType]').val("paid");
+    $('#widget-bikeManagement-form .soldPrice input').removeAttr("disabled");
+    $('.billingPriceDiv').fadeOut("slow");
+    $('.billingGroupDiv').fadeOut("slow");
+    $('.billingDiv').fadeOut("slow");
+
+    $('#widget-bikeManagement-form .soldPrice').fadeOut("slow")
+    $('#widget-bikeManagement-form .soldPrice input').attr("disabled");
+  }else{
+    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn("slow");
+
+    $('.buyingInfos').fadeIn("slow");
+    $('.orderInfos').fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=estimatedDeliveryDate]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
+
+    $('.contractInfos').fadeIn("slow");
+
+    $('.billingInfos').fadeIn("slow");
+    $('#widget-bikeManagement-form select[name=billingType]').val("monthly");
+    $('.billingPriceDiv').fadeIn("slow");
+    $('.billingGroupDiv').fadeIn("slow");
+    $('.billingDiv').fadeIn("slow");
+
+    $('#widget-bikeManagement-form .soldPrice').fadeOut("slow")
+    $('#widget-bikeManagement-form .soldPrice input').attr("disabled");
   }
 }
 
@@ -498,35 +540,20 @@ function add_bike(ID){
   $('#widget-bikeManagement-form select[name=name]').val("");
   $('#widget-bikeManagement-form input[name=email]').val("");
 
+  updateDisplayBikeManagement("order");
+
   $('#widget-bikeManagement-form select[name=contractType')
   .find('option')
   .remove()
   .end()
   ;
   $('#widget-bikeManagement-form select[name=contractType').append("<option value=\"order\">Commande</option>");
-
-
-  $('.contractInfos').fadeOut("slow");
-  $('.billingInfos').fadeOut("slow");
-  $('.buyingInfos').fadeOut("slow");
-  $('.orderInfos').fadeOut("slow");
-  $('.billingPriceDiv').fadeOut("slow");
-  $('.billingGroupDiv').fadeOut("slow");
-  $('.billingDiv').fadeOut("slow");
-  $('#addBike_firstBuilding').fadeOut("slow");
-  $('#addBike_buildingListing').fadeOut("slow");
-  $('#bikeBuildingAccessAdminDiv').fadeOut("slow");
-  $('#bikeBuildingAccessAdminDiv').fadeOut("slow");
-  $('#bikeBuildingAccessAdmin').fadeOut("slow");
-  $('#bikeUserAccessAdmin').fadeOut("slow");
-  $('addBike_firstBuilding').fadeOut("slow");
   $('.bikeManagementPicture').addClass('hidden');
   $('.bikeActions').addClass('hidden');
-  document.getElementById('addBike_firstBuilding').innerHTML = "";
   document.getElementById('widget-bikeManagement-form').reset();
 
   $('#widget-bikeManagement-form input[name=action]').val("add");
-  $('#widget-bikeManagement-form select[name=billingType]').val("monthly");
+  $('#widget-bikeManagement-form select[name=billingType]').val("paid");
   if($("#widget-bikeManagement-form select[name=portfolioID] option").length==0){
     $.ajax({
       url: 'apis/Kameo/load_portfolio.php',
@@ -545,14 +572,10 @@ function add_bike(ID){
         }
       }
     });
+  }else{
+    $('#widget-bikeManagement-form select[name=portfolioID]').val("");
   }
   $('#widget-bikeManagement-form select[name=company]').val("");
-  $('#widget-bikeManagement-form input[name=bikeID').val("");
-  $('#widget-bikeManagement-form input[name=bikeID').fadeOut();
-  $('#widget-bikeManagement-form label[for=bikeID').fadeOut();
-  updateDisplayBikeManagement("order");
-
-
 
   $('#widget-bikeManagement-form select[name=portfolioID]').off();
   $('#widget-bikeManagement-form select[name=portfolioID]').change(function(){
@@ -598,7 +621,6 @@ function add_bike(ID){
           .end()
           ;
           if(response == null){
-            $('.clientReference').fadeOut();
             $.notify(
               {
                 message: "Aucun utilisateur défini pour cette société, impossible de l'assigner à quelqu'un"
