@@ -41,7 +41,7 @@ if (isset($_GET['action'])) {
         UNION
         SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
            COMMENT AS comment, customer_bikes.FRAME_NUMBER AS frame_number, customer_bikes.COMPANY AS company, MODEL AS model, customer_bikes.ADDRESS as bikeAddress,
-           FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id,CONTACT_PHONE AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
+           FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id, '' AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
            companies.TOWN AS town, 'partage' AS type, 'N/A' AS email
            FROM entretiens
            INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
