@@ -25,7 +25,7 @@
             <h4 class="text-green">Ajouter un client</h4>
             <form
               id="widget-addClient-form"
-              action="apis/Kameo/add_client.php"
+              action="api/companies"
               role="form"
               method="post"
             >
@@ -72,138 +72,46 @@
                 <div class="col-sm-6">
                   <label for="picture">Logo de la société (.jpg)</label>
                   <input type="hidden" name="MAX_FILE_SIZE" value="6291456" />
-                  <input
-                    type="file"
-                    size="40"
-                    class="form-control"
-                    name="picture"
-                  />
+                  <input type="file" size="40" class="form-control" name="picture">
                 </div>
                 <div class="separator"></div>
                 <h4 class="text-green">Adresse</h4>
                 <div class="col-sm-4">
                   <label for="street">Rue :</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="street"
-                  />
+                  <input type="text" class="form-control" name="street">
                 </div>
                 <div class="col-sm-4">
                   <label for="zipCode">Code Postal</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="zipCode"
-                  />
+                  <input type="text" class="form-control" name="zipCode">
                 </div>
                 <div class="col-sm-4">
                   <label for="city">Ville</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="city"
-                  />
+                  <input type="text" class="form-control" name="city">
                 </div>
-                <div class="separator"></div>
-                <h4 class="text-green">Personne de Contact</h4>
-                <div class="col-md-3">
-                  <label for="contactEmail">E-Mail</label>
-                  <input
-                    type="text"
-                    name="contactEmail"
-                    class="form-control required"
-                  />
-                </div>
-                <div class="col-md-3">
-                  <label for="firstName">Prénom</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    class="form-control required"
-                  />
-                </div>
-                <div class="col-md-3">
-                  <label for="lastName">Nom de Famille</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    class="form-control required"
-                  />
-                </div>
-                <div class="col-md-3">
-                  <label for="phone">Téléphone</label>
-                  <input type="text" name="phone" class="form-control" />
-                </div>
+                <div class="separator addClientTechnicalUser hidden"></div>
                 <h4 class="text-green addClientTechnicalUser hidden">
                   Données techniques pour le premier utilisateur
                 </h4>
                 <div class="separator"></div>
                 <div class="col-md-3">
-                  <label
-                    for="$firstNameInitialisation"
-                    class="hidden addClientTechnicalUser"
-                    >Prénom</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control addClientTechnicalUser hidden"
-                    name="firstNameInitialisation"
-                  />
+                  <label for="$firstNameInitialisation" class="hidden addClientTechnicalUser">Prénom</label>
+                  <input type="text" class="form-control addClientTechnicalUser hidden" name="firstNameInitialisation"/>
                 </div>
                 <div class="col-md-3">
-                  <label
-                    for="nameInitialisation"
-                    class="addClientTechnicalUser hidden"
-                    >Nom</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control addClientTechnicalUser hidden"
-                    name="nameInitialisation"
-                  />
+                  <label for="nameInitialisation" class="addClientTechnicalUser hidden">Nom</label>
+                  <input type="text" class="form-control addClientTechnicalUser hidden" name="nameInitialisation"/>
                 </div>
                 <div class="col-md-3">
-                  <label
-                    for="mailInitialisation"
-                    class="addClientTechnicalUser hidden"
-                    >Mail</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control addClientTechnicalUser hidden"
-                    name="mailInitialisation"
-                  />
+                  <label for="mailInitialisation" class="addClientTechnicalUser hidden">Mail</label>
+                  <input type="text" class="form-control addClientTechnicalUser hidden" name="mailInitialisation">
                 </div>
                 <div class="col-md-3">
-                  <label
-                    for="passwordInitialisation"
-                    class="addClientTechnicalUser hidden"
-                    >Mot de passe</label
-                  >
-                  <input
-                    type="password"
-                    autocomplete="off"
-                    class="form-control addClientTechnicalUser hidden"
-                    id="customer_password"
-                    name="passwordInitialisation"
-                  />
-                </div>
-                <input
-                  type="text"
-                  class="form-control hidden"
-                  name="email"
-                  value="<?php echo $user_data['EMAIL']; ?>"
-                  hidden
-                />
+                  <label for="passwordInitialisation" class="addClientTechnicalUser hidden">Mot de passe</label>
+                  <input type="password" autocomplete="off" class="form-control addClientTechnicalUser hidden" id="customer_password" name="passwordInitialisation"></div>
+                <input type="text" class="form-control hidden" name="action" value="addClient">
               </div>
               <div class="separator"></div>
-              <button
-                class="button small green button-3d rounded icon-left"
-                type="submit"
-              >
-                <i class="fa fa-plus"></i>Ajouter
-              </button>
+              <button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
             </form>
           </div>
         </div>

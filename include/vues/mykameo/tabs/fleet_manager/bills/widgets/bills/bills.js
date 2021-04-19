@@ -147,7 +147,7 @@ function construct_form_for_billing_status_update(ID){
           $.notify({ message: "No file available for that bill" }, { type: 'danger' });
         });
        }
-       var dest='<table class=\"table table-condensed\"><thead><tr><th>Objet</th><th><span class=\"fr-inline\">Montant</span><span class=\"en-inline\">Amount</span><span class=\"nl-inline\">Amount</span></th><th><span class=\"fr-inline\">Comentaire</span><span class=\"en-inline\">Comment</span><span class=\"nl-inline\">Comment</span></th></tr></thead><tbody>';
+       var dest='<table class=\"table table-condensed\"><thead><tr><th>Objet</th><th>Montant</th><th>Comentaire</th></tr></thead><tbody>';
        for(var i = 0; i<response.billDetailsNumber; i++){
         if(response.bill.billDetails[i].itemType == "bike"){
           dest=dest.concat("<tr><td><ul><li>Type : Vélo </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Identification : " + response.bill.billDetails[i].frameNumber+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" €</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");

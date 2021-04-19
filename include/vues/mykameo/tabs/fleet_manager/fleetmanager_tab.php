@@ -3,7 +3,7 @@
         <?php
 
 				if(get_user_permissions("fleetManager", $token)){
-					echo '<h4 class="fr">Votre flotte</h4><br><br>';
+					echo '<h4>Votre flotte</h4><br><br>';
 				}
         if(get_user_permissions("fleetManager", $token)){
             echo '

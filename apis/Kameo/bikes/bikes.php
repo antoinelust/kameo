@@ -23,6 +23,10 @@ switch($_SERVER["REQUEST_METHOD"])
 				include "getBikeDetails.php";
 			}else
 				error_message('403');
+		}else if($action=="getPersonnalBike"){
+			include 'getPersonnalBike.php';
+		}else if($action=="getPersonnalBikeActions"){
+			include 'getPersonnalBikeActions.php';
 		}else if($action=="list"){
 			$admin = isset($_GET['admin']) ? $_GET['admin'] : NULL;
 			if ($admin != "Y") {
@@ -77,9 +81,19 @@ switch($_SERVER["REQUEST_METHOD"])
 		break;
 	case 'POST':
 		$action=isset($_POST['action']) ? $_POST['action'] : NULL;
-		if($action === 'update'){
+		if($action === 'add'){
+			if(get_user_permissions("admin", $token)){
+				require_once 'add_bike.php';
+			}else
+				error_message('403');
+		}else if($action === 'update'){
 			if(get_user_permissions("admin", $token)){
 				require_once 'updateBike.php';
+			}else
+				error_message('403');
+		}else if($action === 'updateBikeStatus'){
+			if(get_user_permissions("fleetManager", $token)){
+				require_once 'updateBikeStatus.php';
 			}else
 				error_message('403');
 		}else{

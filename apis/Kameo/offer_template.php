@@ -20,6 +20,7 @@
   $contact['id'] = isset($_POST["contactSelect"]) ? $_POST["contactSelect"] : NULL;
   $contactKameo = isset($_POST["offer_template_kameo_contact"]) ? $_POST["offer_template_kameo_contact"] : NULL;
   $delais = isset($_POST["delais"]) ? $_POST["delais"] : NULL;
+  $remarques = isset($_POST["remarques"]) ? nl2br($_POST["remarques"]) : NULL;
   $offerValidity = isset($_POST["offerValidity"]) ? $_POST["offerValidity"] : NULL;
   $bikeFinalPrice = isset($_POST["bikeFinalPrice"]) ? $_POST["bikeFinalPrice"] : NULL;
   $boxFinalInstallationlPrice = isset($_POST["boxFinalInstallationPrice"]) ? $_POST["boxFinalInstallationPrice"] : NULL;

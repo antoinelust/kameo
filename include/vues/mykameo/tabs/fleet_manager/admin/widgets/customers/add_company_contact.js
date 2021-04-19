@@ -33,7 +33,7 @@ $("body").on("click", ".addCompanyContact", function () {
     .find("input")
     .each(function () {
       //si un champ est invalide, on empèche la requete
-      if (!$(this).valid()) {
+      if (!$(this).valid()){
         sendData = false;
       }
     });
@@ -46,13 +46,23 @@ $("body").on("click", ".addCompanyContact", function () {
         bikesStatsChecked = "checked";
       }
       var id = response.id != undefined ? response.id : "";
-      var email =
-        response.emailContact != undefined ? response.emailContact : "";
+      var email = response.emailContact != undefined ? response.emailContact : "";
       var companyId = response.companyId != undefined ? response.companyId : "";
       var lastName = response.lastName != undefined ? response.lastName : "";
       var firstName = response.firstName != undefined ? response.firstName : "";
       var phone = response.phone != undefined ? response.phone : "";
+      var type = response.type;
       var fonction = response.fonction != undefined ? response.fonction : "";
+
+      if(type=='contact'){
+        var type="contact";
+      }else if(type=='billing'){
+        var type = 'Destinataire Facture';
+      }else if(type=="ccBilling"){
+        var type = 'En copie pour facture';
+      }else{
+        var type = 'Error';
+      }
       responseContent =
         `<tr class="form-group">
         <td>
@@ -100,14 +110,7 @@ $("body").on("click", ".addCompanyContact", function () {
         fonction +
         `"/>
         </td>
-        <td>
-        <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats` +
-        id +
-        `" id="contactBikesStats` +
-        id +
-        `" value="bikesStats" ` +
-        bikesStatsChecked +
-        `/>
+        <td>`+type+`
         </td>
         <td>
           <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil" type="button"></button>
@@ -127,7 +130,6 @@ $("body").on("click", ".addCompanyContact", function () {
         .find(".contactsTable")
         .find("tbody")
         .append(responseContent);
-      nbContacts++;
     });
 
     //retirer le visuel d'ajout
@@ -143,9 +145,10 @@ $("body").on("click", ".addCompanyContact", function () {
 
 function add_contact(that) {
   return $.ajax({
-    url: "apis/Kameo/add_company_contact.php",
+    url: "api/companies",
     method: "post",
     data: {
+      action: 'addCompanyContact',
       companyId: $("#companyIdHidden").val(),
       contactEmail: $(that).find(".emailContact").val(),
       firstName: $(that).find(".firstNameContact").val(),
@@ -153,7 +156,7 @@ function add_contact(that) {
       phone: $(that).find(".phoneContact").val(),
       function: $(that).find(".functionContact").val(),
       bikesStats: $(that).find(".bikeStatsContact").prop("checked"),
-      email: email,
+      type: $(that).find(".typeContact").val()
     },
     success: function (response) {},
   });

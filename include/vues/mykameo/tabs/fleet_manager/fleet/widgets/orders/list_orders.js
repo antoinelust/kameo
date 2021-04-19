@@ -281,6 +281,7 @@ function retrieve_command_fleet(ID){
           $('#widget-orderFleet-form input[name=mail]').val(response.order.email);
           $('#widget-orderFleet-form input[name=phone]').val(response.order.phone);
 
+					$('#widget-orderFleet-form #accessoriesOrderedFleet').html("");
 					response.order.accessories.forEach(function(accessory){
 						if(accessory.TYPE=="achat"){
 							var currency = '€';

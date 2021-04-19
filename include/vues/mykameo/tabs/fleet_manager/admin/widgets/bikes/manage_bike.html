@@ -5,7 +5,7 @@
   role="modal"
   aria-labelledby="modal-label"
   aria-hidden="true"
-  style="display: none; z-index: 2000;"
+  style="display: none; z-index: 2000"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -22,12 +22,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-12">
-            <form
-              id="widget-bikeManagement-form"
-              action="api/bikes"
-              role="form"
-              method="post"
-            >
+            <form id="widget-bikeManagement-form" action="api/bikes" role="form" method="post">
               <h4 class="text-green bikeManagementTitle">Ajouter un vélo</h4>
               <div class="form-group col-md-12">
                 <h4 class="text-green">Caractéristiques du vélo</h4>
@@ -135,14 +130,6 @@
                     <select title="User Name" class="selectName" id="userName" name="name">
                     </select>
                   </div>
-                  <div class="col-md-4" id="user_email">
-                    <label for="email" class="">Email :</label>
-                    <input type="text" readonly="readonly" name="email" class="form-control">
-                  </div>
-                  <div class="col-md-4" id="user_phone">
-                    <label for="phone" class="">N° Téléphone :</label>
-                    <input type="text" readonly="readonly" name="phone" class="form-control">
-                  </div>
                 </div>
 
                 <div class="col-md-12" name="pictureDisabled">
@@ -176,15 +163,8 @@
                       />
                     </div>
                   </div>
-                  <div class="col-md-4">
-                    <label for="buyingDate">Date d'achat</label>
-                    <input type="date" name="buyingDate" class="form-control required">
-                  </div>
                 </div>
-                <div
-                  class="separator contractInfos"
-                  style="display: none"
-                ></div>
+                <div class="separator contractInfos" style="display: none"></div>
                 <div class="col-md-12 contractInfos" style="display: none">
                   <h4 class="text-green">Informations relatives au contrat</h4>
                   <div class="col-md-4 contractStartBloc">
@@ -237,14 +217,12 @@
                     <input
                       type="date"
                       name="orderingDate"
-                      class="form-control"
+                      class="form-control required"
                       id="today"
                     />
                   </div>
                   <div class="col-md-4 estimatedDeliveryDate">
-                    <label for="estimatedDeliveryDate"
-                      >Date estimée d'arrivée</label
-                    >
+                    <label for="estimatedDeliveryDate">Date estimée d'arrivée</label>
                     <input
                       type="date"
                       name="estimatedDeliveryDate"
@@ -256,7 +234,7 @@
                     <input
                       type="date"
                       name="deliveryDate"
-                      class="form-control"
+                      class="form-control required"
                     />
                   </div>
                   <div class="col-md-4">
@@ -274,15 +252,6 @@
                     <select
                       name="offerReference"
                       class="form-control offerReference"
-                    ></select>
-                  </div>
-                  <div class="col-md-4 clientReference" id="utilisateur_bike">
-                    <label for="clientReference" class="clientReference"
-                      >Utilisateur</label
-                    >
-                    <select
-                      name="clientReference"
-                      class="form-control clientReference"
                     ></select>
                   </div>
                 </div>
@@ -494,7 +463,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-b" data-dismiss="modal">
-                Fermer
+                <?= L::generic_close; ?>
               </button>
             </div>
           </div>
@@ -518,15 +487,16 @@
                 type: "success",
               }
             );
-            get_company_details(
-              $("#widget-companyDetails-form input[name=ID]").val(),
-              email
-            );
-            document.getElementById("widget-bikeManagement-form").reset();
             $("#bikeManagement").modal("toggle");
             if($("#widget-bikeManagement-form input[name=action]").val()=='add' && $("#widget-companyDetails-form input[name=bikeID]").val()>=0){
                $("#orderManager").modal("toggle");
+            }else{
+              get_company_details(
+                $("#widget-companyDetails-form input[name=ID]").val(),
+                email
+              );
             }
+            document.getElementById("widget-bikeManagement-form").reset();
             list_bikes_admin();
           } else {
             $.notify(

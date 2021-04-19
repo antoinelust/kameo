@@ -4,7 +4,6 @@ if(!isset($_SESSION))
 {
     session_start();
 }
-include '../connexion.php';
 
 $id = isset($_POST["id"]) ? $conn->real_escape_string($_POST["id"]) : NULL;
 $companyId = isset($_POST["companyId"]) ? $conn->real_escape_string($_POST["companyId"]) : NULL;
@@ -14,10 +13,10 @@ $lastName = isset($_POST["lastName"]) ? $conn->real_escape_string($_POST["lastNa
 $phone = isset($_POST["phone"]) ? $conn->real_escape_string($_POST["phone"]) : NULL;
 $function = isset($_POST["function"]) ? $conn->real_escape_string($_POST["function"]) : NULL;
 $bikesStats = isset($_POST["bikesStats"]) ? (($_POST["bikesStats"] == 'true') ? 'Y' : 'N')  : 'N';
-$USRemail = isset($_POST["email"]) ? $conn->real_escape_string($_POST["email"]) : NULL;
+$type = isset($_POST["type"]) ? $conn->real_escape_string($_POST["type"]) : NULL;
 
 
-include 'connexion.php';
+include __DIR__ .'/../connexion.php';
 $stmt = $conn->prepare("UPDATE companies_contact
         SET EMAIL = ?,
             NOM = ?,
@@ -29,9 +28,8 @@ $stmt = $conn->prepare("UPDATE companies_contact
             HEU_MAJ = CURRENT_TIMESTAMP
         WHERE ID = ?");
 
-$stmt->bind_param("ssssssss", $email, $lastName, $firstName, $phone, $function, $bikesStats, $USRemail, $id);
+$stmt->bind_param("sssssssi", $email, $lastName, $firstName, $phone, $function, $bikesStats, $token, $id);
 $stmt->execute();
-$id = $conn->insert_id;
 $stmt->close();
 $conn->close();
 

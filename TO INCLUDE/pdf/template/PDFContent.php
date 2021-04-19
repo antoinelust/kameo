@@ -272,7 +272,6 @@ h2{
       Nous restons à votre disposition pour toute demande d’informations complémentaires.
     </p>
     <img src="<?php echo __DIR__ ; ?>/img/illu1.png" alt="kameo-scheme" style="margin-left:45mm;">
-
   </div>
 </page>
 <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
@@ -773,6 +772,12 @@ if ($assurance == true) { ?>
         <?php } ?>
       </tbody>
     </table>
+    <?php
+    if($remarques){
+      echo '<h2>Remarques : </h2>
+      <div class="light">'.$remarques.'</div>';
+    }
+    ?>
   </page>
 
   <page pageset="old" backtop="30mm" backleft="15mm" backright="10mm" backbottom="20mm">
@@ -785,12 +790,12 @@ if ($assurance == true) { ?>
     <table class="maxWidth">
       <tbody>
         <tr>
-          <td style="width:50%;" class="light">Livraison directement chez vous soit :</td>
+          <td style="width:50%;" class="light">Livraison directement sur le site de votre entreprise à l'adresse suivante :</td>
           <td style="width:50%;" class="light"><?php echo $company['STREET'] . '<br/><br/>' . $company['ZIP_CODE'] . ' '. $company['TOWN']?></td>
         </tr>
       </tbody>
     </table>
-    <h2>Délais</h2>
+    <h2>Délais : </h2>
     <div class="light">
       <?php
           foreach ($delais as $delai) {

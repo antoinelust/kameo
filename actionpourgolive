@@ -1,2 +1,1 @@
-INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'SM0028', 'Accessoire rajouté avec succès', 'Accessory added with success', 'Accessory added with success');
-ALTER TABLE `companies` ADD `AUDIENCE` VARCHAR(3) NOT NULL DEFAULT 'B2B' AFTER `STAANN`;
+INSERT INTO companies_contact (USR_MAJ, NOM, PRENOM, EMAIL, PHONE, ID_COMPANY, TYPE, BIKES_STATS) SELECT 'script', companies.LASTNAME_CONTACT_BILLING, companies.FIRSTNAME_CONTACT_BILLING, companies.EMAIL_CONTACT_BILLING, companies.PHONE_CONTACT_BILLING, companies.ID, 'billing', 'N' FROM companies WHERE companies.LASTNAME_CONTACT_BILLING IS NOT NULL

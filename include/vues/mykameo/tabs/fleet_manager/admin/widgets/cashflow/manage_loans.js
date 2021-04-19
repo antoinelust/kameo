@@ -15,9 +15,9 @@ function get_customers_bikes() {
 // get bike details
 function get_bike_details(bikeID) {
   return $.ajax({
-    url: "apis/Kameo/get_bike_details.php",
-    type: "post",
-    data: { bikeID: bikeID },
+    url: "api/bikes",
+    type: "get",
+    data: { action:"retrieve", bikeID: bikeID },
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);

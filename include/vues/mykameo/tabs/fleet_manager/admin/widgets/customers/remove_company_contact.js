@@ -113,34 +113,15 @@ $(".clientContactZone").on("click", ".validate", function () {
 });
 
 $(".clientContactZone").on("click", ".delete", function () {
-  if (
-    confirm(
-      "Êtes-vous sur de vouloir supprimer ce contact ? Cette action est irréversible."
-    )
-  ) {
-    that = $(this);
-    if (nbContacts > 1) {
-      delete_contact(
-        $(this).parents("tr"),
-        $(this).parents("tr").find(".contactIdHidden").val()
-      ).done(function (response) {
-        $(that)
-          .parents("tr")
-          .fadeOut(function () {
-            $(that).parents("tr").remove();
-            nbContacts--;
-          });
-      });
-    } else {
-      $.notify(
-        {
-          message:
-            "Impossible d'effectuer la suppression, il faut au minimum une personne de contact",
-        },
-        {
-          type: "danger",
-        }
-      );
-    }
+  if(confirm("Êtes-vous sur de vouloir supprimer ce contact ? Cette action est irréversible.")) {
+  that = $(this);
+  delete_contact(
+    $(this).parents("tr").find(".contactIdHidden").val()
+  );
+  $(this)
+    .parents("tr")
+    .fadeOut(function () {
+      $(this).closest("tr").remove();
+    });
   }
 });

@@ -346,27 +346,14 @@ function get_company_details(ID) {
         remove_contact_form(true);
         $("#widget-companyDetails-form input[name=ID]").val(response.ID);
         $("#widget-companyDetails-form select[name=audience]").val(response.audience);
-        document.getElementById("companyName").value = response.companyName;
-        document.getElementById("companyStreet").value = response.companyStreet;
-        document.getElementById("companyZIPCode").value =
-          response.companyZIPCode;
-        document.getElementById("companyTown").value = response.companyTown;
-        document.getElementById("companyVAT").value = response.companyVAT;
-        document.getElementById("widget_companyDetails_internalReference").value = response.internalReference;
+        $("#widget-companyDetails-form input[name=companyName]").val(response.companyName);
+        $("#widget-companyDetails-form input[name=companyStreet]").val(response.companyStreet);
+        $("#widget-companyDetails-form input[name=companyZIPCode]").val(response.companyZIPCode);
+        $("#widget-companyDetails-form input[name=companyTown]").val(response.companyTown);
+        $("#widget-companyDetails-form input[name=companyVAT]").val(response.companyVAT);
+        $("#widget-companyDetails-form input[name=internalReference]").val(response.internalReference);
         internalReference = response.internalReference;
         $("#widget-companyDetails-form select[name=type]").val(response.type);
-        $("#widget-companyDetails-form input[name=email_billing]").val(
-          response.emailContactBilling
-        );
-        $(
-          "#widget-companyDetails-form input[name=firstNameContactBilling]"
-        ).val(response.firstNameContactBilling);
-        $("#widget-companyDetails-form input[name=lastNameContactBilling]").val(
-          response.lastNameContactBilling
-        );
-        $("#widget-companyDetails-form input[name=phoneBilling]").val(
-          response.phoneContactBilling
-        );
 
         if (response.automaticBilling == "Y") {
           $("#widget-companyDetails-form input[name=billing]").prop(
@@ -431,96 +418,72 @@ function get_company_details(ID) {
           '"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a>';
         if (response.bikeNumber > 0) {
           var temp =
-            '<table id="bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">Référence</th><th scope="col">Modèle</th><th scope="col">Facturation automatique</th><th>Début</th><th>Fin</th><th scope="col">Montant location</th><th scope="col">Accès aux bâtiments</th><th>Mise à jour</th><th></th></tr></thead><tbody>';
+            '<table id="bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">Référence</th><th scope="col">Modèle</th><th scope="col">Facturation automatique</th><th>Début</th><th>Fin</th><th scope="col">Montant location</th><th scope="col">Accès aux bâtiments</th><th></th></tr></thead><tbody>';
           dest = dest.concat(temp);
           while (i < response.bikeNumber) {
-            if (response.bike[i].contractType != "order") {
+            if (response.bike[i].CONTRACT_TYPE != "order") {
               if (
-                response.bike[i].company != "KAMEO" &&
-                response.bike[i].company != "KAMEO VELOS TEST" &&
-                response.bike[i].contractStart != null
+                response.bike[i].COMPANY != "KAMEO" && response.bike[i].CONTRACT_START != null
               ) {
                 var contractStart =
                   "<span>" +
-                  response.bike[i].contractStart.shortDate() +
+                  response.bike[i].CONTRACT_START.shortDate() +
                   "</span>";
               } else if (
-                response.bike[i].company != "KAMEO" &&
-                response.bike[i].company != "KAMEO VELOS TEST" &&
-                response.bike[i].contractStart == null
+                response.bike[i].COMPANY != "KAMEO" && response.bike[i].CONTRACT_START == null
               ) {
                 var contractStart = '<span class="text-red">N/A</span>';
               } else if (
-                response.bike[i].company == "KAMEO" &&
-                response.bike[i].company == "KAMEO VELOS TEST" &&
-                response.bike[i].contractStart == null
+                response.bike[i].COMPANY == "KAMEO" && response.bike[i].CONTRACT_START == null
               ) {
                 var contractStart = "<span>N/A</span>";
               } else if (
-                response.bike[i].company == "KAMEO" &&
-                response.bike[i].company == "KAMEO VELOS TEST" &&
-                response.bike[i].contractStart != null
+                response.bike[i].COMPANY == "KAMEO" && response.bike[i].CONTRACT_START != null
               ) {
                 var contractStart =
-                  '<span class="text-red">' +
-                  response.bike[i].contractStart.shortDate() +
-                  "</span>";
+                  '<span class="text-red">' + response.bike[i].CONTRACT_START.shortDate() +"</span>";
               } else {
                 var contractStart = '<span class="text-red">ERROR</span>';
               }
               if (
-                response.bike[i].company != "KAMEO" &&
-                response.bike[i].company != "KAMEO VELOS TEST" &&
-                response.bike[i].contractEnd != null
+                response.bike[i].COMPANY != "KAMEO" && response.bike[i].CONTRACT_END != null
               ) {
-                var contractEnd =
-                  "<span>" +
-                  response.bike[i].contractEnd.shortDate() +
-                  "</span>";
+                var contractEnd = "<span>" + response.bike[i].CONTRACT_END.shortDate() + "</span>";
               } else if (
-                response.bike[i].company != "KAMEO" &&
-                response.bike[i].company != "KAMEO VELOS TEST" &&
-                response.bike[i].contractEnd == null
+                response.bike[i].COMPANY != "KAMEO" && response.bike[i].CONTRACT_END == null
               ) {
                 var contractEnd = '<span class="text-red">N/A</span>';
               } else if (
-                response.bike[i].company == "KAMEO" &&
-                response.bike[i].company == "KAMEO VELOS TEST" &&
-                response.bike[i].contractEnd == null
+                response.bike[i].COMPANY == "KAMEO" && response.bike[i].CONTRACT_END == null
               ) {
                 var contractEnd = "<span>N/A</span>";
               } else if (
-                response.bike[i].company == "KAMEO" &&
-                response.bike[i].company == "KAMEO VELOS TEST" &&
-                response.bike[i].contractEnd != null
+                response.bike[i].COMPANY == "KAMEO" && response.bike[i].CONTRACT_END != null
               ) {
-                var contractEnd =
-                  '<span class="text-red">' +
-                  response.bike[i].contractEnd.shortDate() +
-                  "</span>";
+                var contractEnd = '<span class="text-red">' + response.bike[i].CONTRACT_END.shortDate() + "</span>";
               } else {
                 var contractEnd = '<span class="text-red">ERROR</span>';
               }
 
-              if (response.bike[i].frameNumber == null) {
-                var frameNumber = "N/A " + response.bike[i].id;
+              if (response.bike[i].FRAME_NUMBER == null) {
+                var frameNumber = "N/A " + response.bike[i].ID;
               } else {
-                var frameNumber = response.bike[i].frameNumber;
+                var frameNumber = response.bike[i].FRAME_NUMBER;
               }
 
               var temp =
                 '<tr><td scope="row">' +
                 frameNumber +
                 "</td><td>" +
-                response.bike[i].model +
+                response.bike[i].MODEL +
                 "</td><td>" +
-                response.bike[i].facturation +
+                response.bike[i].AUTOMATIC_BILLING +
                 "</td><td>" +
                 contractStart +
                 "</td><td>" +
                 contractEnd +
                 "</td><td>" +
-                response.bike[i].leasingPrice +
+                response.bike[i].LEASING_PRICE +
                 "</td><td>";
               dest = dest.concat(temp);
 
@@ -534,18 +497,7 @@ function get_company_details(ID) {
                 var temp = '<span class="text-red">Non-défini</span>';
                 dest = dest.concat(temp);
               }
-              dest = dest.concat(
-                '<td data-sort="' +
-                  new Date(response.bike[i].heuMaj).getTime() +
-                  '">' +
-                  response.bike[i].heuMaj.shortDate() +
-                  "</td>"
-              );
-              dest = dest.concat(
-                '<td><ins><a class="text-green text-green updateBikeAdmin" data-target="#bikeManagement" name="' +
-                  response.bike[i].id +
-                  '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>'
-              );
+              dest = dest.concat('<td><ins><a class="text-green text-green updateBikeAdmin" data-target="#bikeManagement" name="' +response.bike[i].id +'" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>');
             }
             i++;
           }
@@ -566,42 +518,35 @@ function get_company_details(ID) {
             '<table id="ordered_bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">Référence</th><th scope="col">Modèle</th><th>Date commande</th><th>Date livraison</th><th scope="col">Numéro commande fournisseur</th><th></th></tr></thead><tbody>';
           dest = dest.concat(temp);
           while (i < response.bikeNumber) {
-            if (response.bike[i].contractType == "order") {
-              if (response.bike[i].frameNumber == null) {
-                var frameNumber = "N/A - " + response.bike[i].id;
-              } else {
-                var frameNumber = response.bike[i].frameNumber;
-              }
-              if (response.bike[i].deliveryDate == null) {
+            if (response.bike[i].CONTRACT_TYPE == "order") {
+              if (response.bike[i].DELIVERY_DATE == null) {
                 var deliveryDate = "N/A ";
               } else {
-                var deliveryDate = response.bike[i].deliveryDate.shortDate();
+                var deliveryDate = response.bike[i].DELIVERY_DATE.shortDate();
               }
-              if (response.bike[i].bikeBuyingDate == null) {
+              if (response.bike[i].BIKE_BUYING_DATE == null) {
                 var bikeBuyingDate = "N/A ";
               } else {
-                var bikeBuyingDate = response.bike[
-                  i
-                ].bikeBuyingDate.shortDate();
+                var bikeBuyingDate = response.bike[i].BIKE_BUYING_DATE.shortDate();
               }
 
               var temp =
                 '<tr><td scope="row">' +
-                frameNumber +
+                response.bike[i].ID +
                 "</td><td>" +
-                response.bike[i].model +
+                response.bike[i].MODEL +
                 "</td><td>" +
                 bikeBuyingDate +
                 "</td><td>" +
                 deliveryDate +
                 "</td><td>" +
-                response.bike[i].orderNumber +
+                response.bike[i].ORDER_NUMBER +
                 "</td>";
               dest = dest.concat(temp);
 
               dest = dest.concat(
                 '<td><ins><a class="text-green text-green updateBikeAdmin" data-target="#bikeManagement" name="' +
-                  response.bike[i].id +
+                  response.bike[i].ID +
                   '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>'
               );
             }
@@ -1155,9 +1100,10 @@ function update_company_users_list_admin(company){
 //Module gérer les clients ==> un client ==> modifier un contact
 function edit_contact(contact) {
   return $.ajax({
-    url: "apis/Kameo/edit_company_contact.php",
+    url: "api/companies",
     method: "post",
     data: {
+      action: "editCompanyContact",
       id: $(contact).find(".contactIdHidden").val(),
       contactEmail: $(contact).find(".emailContact").val(),
       firstName: $(contact).find(".firstName").val(),
@@ -1165,20 +1111,20 @@ function edit_contact(contact) {
       phone: $(contact).find(".phone").val(),
       function: $(contact).find(".fonction").val(),
       bikesStats: $(contact).find(".bikesStats").prop("checked"),
-      companyId: $("#companyIdHidden").val(),
-      email: email,
+      companyId: $("#companyIdHidden").val()
     },
     success: function (response) {},
   });
 }
 
 //Module gérer les clients ==> un client ==> supprimer un de la base de donnée, ne touche pas le front end contact
-function delete_contact(contact, id) {
+function delete_contact(id) {
   return $.ajax({
-    url: "apis/Kameo/delete_company_contact.php",
+    url: "api/companies",
     method: "post",
     data: {
       id: id,
+      action: 'deleteContact'
     },
     success: function (response) {},
   });
@@ -1199,87 +1145,91 @@ function get_company_contacts(ID) {
     	<table class="table contactsTable">
     	<thead>
     	<tr>
-    	 <th><label>Email: </label></th><th><label>Nom: </label></th><th><label>Prénom: </label></th><th><label>Téléphone: </label></th><th>Fonction: </label></th><th><label>Statistiques vélos: </label></th><th></th><th></th>
+    	<th><label>Email: </label></th><th><label>Nom: </label></th><th><label>Prénom: </label></th><th><label>Téléphone: </label></th><th>Fonction: </label></th><th>Type</th><th></th><th></th>
     	</tr>
     	</thead>
     	<tbody>`;
       if(response != null){
-        for (var i = 0; i < response.length; i++) {
+        response.forEach(function(contact){
           var contactId =
-            response[i].contactId != undefined ? response[i].contactId : "";
+            contact.contactId != undefined ? contact.contactId : "";
           var email =
-            response[i].emailContact != undefined ? response[i].emailContact : "";
+            contact.emailContact != undefined ? contact.emailContact : "";
           var lastName =
-            response[i].lastNameContact != undefined
-              ? response[i].lastNameContact
+            contact.lastNameContact != undefined
+              ? contact.lastNameContact
               : "";
           var firstName =
-            response[i].firstNameContact != undefined
-              ? response[i].firstNameContact
+            contact.firstNameContact != undefined
+              ? contact.firstNameContact
               : "";
-          var phone = response[i].phone != undefined ? response[i].phone : "";
+          var phone = contact.phone != undefined ? contact.phone : "";
           var fonction =
-            response[i].fonction != undefined ? response[i].fonction : "";
+            contact.fonction != undefined ? contact.fonction : "";
           var bikesStatsChecked = "";
-          if (response[i].bikesStats == "Y") {
+          if (contact.bikesStats == "Y") {
             bikesStatsChecked = "checked";
           }
+          if(contact.TYPE=='contact'){
+            var type="contact";
+          }else if(contact.TYPE=='billing'){
+            var type = 'Destinataire Facture';
+          }else if(contact.TYPE=="ccBilling"){
+            var type = 'En copie pour facture';
+          }else{
+            var type = 'Error';
+          }
+
+
           contactContent +=
             `
         	  <tr class="form-group">
         	  <td>
         	  <input type="text" class="form-control required emailContact" readonly="true"  name="contactEmail` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" id="contactEmail` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" value="` +
                   email +
                   `" required/>
         	  </td>
         	  <td>
         	  <input type="text" class="form-control required lastName" readonly="true"  name="contactNom` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" id="contactNom` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" value="` +
                   lastName +
                   `" required/>
         	  </td>
         	  <td>
         	  <input type="text" class="form-control required firstName" readonly="true" name="contactPrenom` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" id="contactPrenom` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" value="` +
                   firstName +
                   `" required/>
         	  </td>
         	  <td>
         	  <input type="tel" class="form-control phone" readonly="true"  name="contactPhone` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" id="contactPhone` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" value="` +
                   phone +
                   `"/>
         	  </td>
         	  <td>
         	  <input type="text" class="form-control fonction" readonly="true"  name="contactFunction` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" id="contactFunction` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" value="` +
                   fonction +
                   `"/>
         	  </td>
-        	  <td>
-        	  <input type="checkbox" class="form-control bikesStats" readonly="true"  name="contactBikesStats` +
-                  response[i].contactId +
-                  `" id="contactBikesStats` +
-                  response[i].contactId +
-                  `" value="bikesStats" ` +
-                  bikesStatsChecked +
-                  `/>
+        	  <td>`+type+`
         	  </td>
         	  <td>
         	  <button class="modify button small green button-3d rounded icon-right glyphicon glyphicon-pencil" type="button"></button>
@@ -1288,14 +1238,14 @@ function get_company_contacts(ID) {
         	  <button class="delete button small red button-3d rounded icon-right glyphicon glyphicon-remove" type="button"></button>
         	  </td>
         	  <input type="hidden" class="contactIdHidden" name="contactId` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" id="contactId` +
-                  response[i].contactId +
+                  contact.contactId +
                   `" value="` +
                   contactId +
                   `" />
         	  </tr>`;
-        }
+        })
       }
       contactContent += "</tbody></table>";
       $(".clientContactZone").append(contactContent);

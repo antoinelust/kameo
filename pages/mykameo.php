@@ -108,7 +108,10 @@ if ($token == NULL) { //Not connected
     echo '$("#fleetmanager").addClass("active"); ';
     echo '$("#fleetmanagerID").addClass("active"); ';
     echo '$( ".fleetmanager" ).trigger( "click" );';
-    echo 'displayLanguage();';
+  } else if (get_user_permissions("espaceCollaboratif", $token)) {
+    echo '$("#espaceCollaboratif").addClass("active"); ';
+    echo '$("#espaceCollaboratifID").addClass("active"); ';
+    echo '$( ".espaceCollaboratif" ).trigger( "click" );';
   }
 
 
@@ -156,6 +159,7 @@ if ($token == NULL) { //Not connected
                   <div id="tabs-05c" class="tabs color tabs radius">
                     <ul id="mainTab" class="tabs-navigation">
                       <?php
+
                       if($user_data['personnalBike']=="TRUE"){
                         echo '<li id="personnalBikeID"><a href="#personnalBike" class="personnalBike"><i class="fa fa-user"></i>' . L::tabs_personnal_title . '</a> </li>';
                       }else{
@@ -164,6 +168,11 @@ if ($token == NULL) { //Not connected
                             echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>' . L::tabs_order_title . '</a></li>';
                           }
                         }
+                      }
+
+                      if(get_user_permissions('espaceCollaboratif', $token)){
+                        include 'include/vues/mykameo/tabs/espaceCollaboratif/customers/main.php';  //TAB 4 @TODO: REFACTOR
+                        include 'include/vues/mykameo/tabs/espaceCollaboratif/bikes/main.php';  //TAB 4 @TODO: REFACTOR
                       }
 
                       if (get_user_permissions("search", $token)) {
@@ -176,6 +185,9 @@ if ($token == NULL) { //Not connected
                       }
                       if (get_user_permissions("chat", $token)) {
                         echo '<li><a href="#chat" class="chat"><i class="fa fa-user"></i>'.L::chat_tab_title.'</a> </li>';
+                      }
+                      if (get_user_permissions("espaceCollaboratif", $token)) {
+                        echo '<li><a href="#espaceCollaboratif" class="espaceCollaboratif"><i class="fa fa-user"></i>Espace collaboratif</a></li>';
                       }
                       ?>
                     </ul>
@@ -199,6 +211,9 @@ if ($token == NULL) { //Not connected
                       }
                       if(get_user_permissions("chat" , $token)){
                         include 'include/vues/mykameo/tabs/support/main.php';  //TAB 4 @TODO: REFACTOR
+                      }
+                      if(get_user_permissions("espaceCollaboratif", $token)){
+                        include 'include/vues/mykameo/tabs/espaceCollaboratif/main.php';  //TAB 4 @TODO: REFACTOR
                       }
                       ?>
 
@@ -267,29 +282,25 @@ if ($token == NULL) { //Not connected
             <?php endif; ?>
             <br>
             <?php
-            include_once 'apis/Kameo/companies/get_company_details.php';
-            $contactDetails = get_company();
-            if ($contactDetails['contact']['company'] != "Actiris"){
+            if ($user_data['COMPANY'] != "Actiris"){
               echo '<a href="docs/cgvfr.pdf" target="_blank" title="Pdf">' . L::sidebar_terms . '</a><br><br>';
               echo '<a href="docs/'.L::sidebar_insurance_link.'.pdf" target="_blank" title="Pdf">'.L::sidebar_insurance.'</a><br><br>';
             }
 
-            if ($contactDetails['contact']['company'] == "Actiris"){
+            if ($user_data['COMPANY'] == "Actiris"){
               echo '<a href="docs/'.L::sidebar_bike_policy_link_actiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
-            }elseif($contactDetails['contact']['company'] == "AZZANA"){
+            }elseif($user_data['COMPANY'] == "AZZANA"){
               echo '<a href="docs/'.L::sidebar_bike_policy_link_azzana.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
-            }elseif($contactDetails['contact']['company'] == "Methanex Corporation"){
+            }elseif($user_data['COMPANY'] == "Methanex Corporation"){
               echo '<a href="docs/'.L::sidebar_bike_policy_link_methanex.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
             }else{
               echo '<a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
             }
 
-            if ($contactDetails['contact']['company'] == "Actiris"){
+            if ($user_data['COMPANY'] == "Actiris"){
               echo '<a href="docs/'.L::sidebar_manualActiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
-            }else{
-              if($contactDetails['contact']['company'] != "Methanex Corporation"){
-                echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
-              }
+            }else if($user_data['COMPANY'] != "Methanex Corporation"){
+              echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
             }
             ?>
             <a class="button small green button-3d rounded icon-left" data-target="#tellus" data-toggle="modal" href="#" onclick="initializeTellUs()">
@@ -333,7 +344,6 @@ if ($token == NULL) { //Not connected
   <script type="text/javascript">
     window.addEventListener("DOMContentLoaded", function(event) {
       $(".fleetmanager").click(function() {
-
         hideResearch();
         var date = new Date();
         if ($(".form_date_end_client").length)
@@ -502,7 +512,6 @@ if ($token == NULL) { //Not connected
     //ORDERS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orderAccessories/main.php';
-    //PORTFOLIO BIKE
     //PORTFOLIO BIKES
     /** @TODO: Add a delete confirmation widget **/
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/portfolio/main.php';
