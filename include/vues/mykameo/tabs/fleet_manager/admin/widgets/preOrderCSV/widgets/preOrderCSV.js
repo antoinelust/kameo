@@ -221,7 +221,6 @@ function readfiles(files) {
   }
 
   if (tests.dnd) { 
-    console.log('ici1');
     holder.ondragover = function () { this.className = 'hover'; return false; };
     holder.ondragend = function () { this.className = ''; return false; };
     holder.ondrop = function (e) {
@@ -238,7 +237,6 @@ function readfiles(files) {
   }
 function reloadDatatable(){
   holder.innerHTML ='';
-  console.log('test');
   $("#displayCSVOrder").dataTable().api().ajax.reload();
   $("#displayCSVOrderClosed").dataTable().api().ajax.reload();
 }

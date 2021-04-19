@@ -324,7 +324,7 @@ function bindArticle(){
 		data: {"action": "changeContractType", "id": $('#listOrder').val() , "typeArticle" : typeToBind},
 		success: function(response){
 			if(response.response == 'error') {
-				console.log('test');
+				console.log('error');
 			}
 			if(response.response == 'success'){
 				$.notify(
@@ -659,7 +659,6 @@ function displayResultPendingDelivery(){
 					$('#widget-stockScanRemove-form input[name=clientPending]').val(response.name + ' - ' + response.firstname);
 				}
 				if(typeToBind=='ACCESSORY'){
-					console.log("test");
 					$('#widget-stockScanRemove-form input[name=companyPending]').val(response.company);
 					$('#widget-stockScanRemove-form div[name=clientPendingDiv]').hide();
 				}
@@ -1104,7 +1103,6 @@ function generateBill(){
 				console.log('error')
 			}
 			if(response.response == 'success') {
-				console.log('test');
 				$.ajax({
 					url: 'apis/Kameo/add_bill.php',
 					type: 'post',
