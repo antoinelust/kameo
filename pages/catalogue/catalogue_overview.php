@@ -98,6 +98,14 @@ include 'include/head.php';
 							<img src="images/Cover_Catalogue/Cover_Catalogue_enfants.jpg" alt="Snow" style="width:100%;">
 							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_Enfant; ?></h3></div>
 						</div>
+						<div class="space"></div>
+					</a>
+					
+					<a href="bons-plans.php">
+						<div class="container col-md-4" style="position : relative ; text-align : center ; color : white">
+							<img src="images/Cover_Catalogue/Cover_Catalogue_bonsplans.jpg" alt="Snow" style="width:100%;">
+							<div class="centered" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><h3 class="text-light"><?=L::generic_bonsplans; ?></h3></div>
+						</div>
 					</a>
 				</div>
 

@@ -102,9 +102,11 @@ var category ='".$category."';
                                   <option data-filter=".5000"><?= L::achat_buyprice_option6; ?></option>
                               </select>
                           </div>
+						  <!--
                           <div class="col-md-12">
                               <a class="button rounded black-light button-3d effect icon-left" style="background-color: #ffc300; text-align: center;" href="bons-plans.php"><span><i class="fas fa-percent"></i><?= L::achat_bonsplans_btn; ?></span></a>
                           </div>
+						  -->
                         </div>
                     </div>
 
