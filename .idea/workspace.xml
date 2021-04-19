@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Accessory Stock">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Accessory Stock" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,6 +79,7 @@
       <workItem from="1618220986736" duration="152000" />
       <workItem from="1618297376324" duration="102000" />
       <workItem from="1618384075196" duration="869000" />
+      <workItem from="1618471762868" duration="85000" />
     </task>
     <task id="LOCAL-00001" summary="Version Test Younes">
       <created>1612442399254</created>
@@ -257,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618384183221</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Orders Bug">
+      <created>1618471799554</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1618471799554</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +304,7 @@
     <MESSAGE value="Accessory Test" />
     <MESSAGE value="Accessory Stock Bug" />
     <MESSAGE value="Accessory Stock" />
-    <option name="LAST_COMMIT_MESSAGE" value="Accessory Stock" />
+    <MESSAGE value="Orders Bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Orders Bug" />
   </component>
 </project>

@@ -215,7 +215,7 @@
 							<p>Stock accessoires</p>
 						</div>
 					</div>
-            <div class="col-md-4 " id="orderAccessories" style="height:164px">
+          <div class="col-md-4 " id="orderAccessories" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#orderAccessoriesListing" href="#" class="orderAccessoriesClick">

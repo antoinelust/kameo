@@ -221,13 +221,15 @@ else if($action == 'changeContractType'){
 		$sqlCheck="SELECT * FROM accessories_stock WHERE ID='$id' ";
 		$resultCheck= mysqli_query($conn, $sqlCheck);
 		$rowCheck= mysqli_fetch_assoc($resultCheck);
-		$test = $rowCheck['COMPANY_ID'];
+		$company = $rowCheck['COMPANY_ID'];
+		$order = $rowCheck['ORDER_ID'];
 
-		if($test==NULL){
-			$status = 'stock';
-		}
-		else {
+		if(($company!=NULL || $company!=12)|| $order != null){
 			$status='pending_delivery';
+		}
+
+		if(($company==NULL || $company==12)|| $order == null){
+			$status = 'stock';
 		}
 		
 		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token',HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='$status' WHERE ID='$id'");
