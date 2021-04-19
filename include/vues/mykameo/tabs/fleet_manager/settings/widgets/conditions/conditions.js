@@ -39,12 +39,12 @@ $( "#settings" ).click(function() {
     var temp2="<input type=\"checkbox\" name=\"depositBookingMonday\" value=\"\">Lundi<br><input type=\"checkbox\" name=\"depositBookingTuesday\" value=\"\">Mardi<br><input type=\"checkbox\" name=\"depositBookingWednesday\" value=\"\">Mercredi<br><input type=\"checkbox\" name=\"depositBookingThursday\" value=\"\">Jeudi<br><input type=\"checkbox\" name=\"depositBookingFriday\" value=\"\">Vendredi<br><input type=\"checkbox\" name=\"depositBookingSaturday\" value=\"\">Samedi<br><input type=\"checkbox\" name=\"depositBookingSunday\" value=\"\">Dimanche<br>";
     document.getElementsByClassName('intakeBookingDays')[0].innerHTML = temp;
     document.getElementsByClassName('depositBookingDays')[0].innerHTML = temp2;
-    $('#widget-updateCompanyConditions-form input[name=action]').val("create");
+    $('#widget-updateCompanyConditions-form input[name=action]').val("addCondition");
 
     $.ajax({
-      url: 'apis/Kameo/get_company_details.php',
-      type: 'post',
-      data: { "email": email},
+      url: 'api/companies',
+      type: 'get',
+      data: { "action": "retrieve"},
       success: function(response){
         if(response.response == 'error') {
           console.log(response.message);
@@ -52,7 +52,7 @@ $( "#settings" ).click(function() {
         if(response.response == 'success'){
           var i=0;
           var dest="";
-          while (i < response.userNumber){
+          while (i < reponse.user.length){
             temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+response.user[i].email+"\"> "+response.user[i].firstName+" "+response.user[i].name+"</div>";
             dest=dest.concat(temp);
             i++;
@@ -70,7 +70,7 @@ $( "#settings" ).click(function() {
       data: { "email": email},
       success: function(response){
         if(response.response == 'success'){
-          var dest="<table class=\"table table-condensed\"><h4 class=\"fr-inline text-green\">Groupes de condition :</h4><h4 class=\"en-inline\">Condition groups:</h4><h4 class=\"nl-inline\">Condition groups:</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#companyConditions\" data-toggle=\"modal\" onclick=\"create_condition()\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter un groupe de conditions</span></a><tbody><thead><tr><th><span class=\"fr-inline\">Nom</span><span class=\"en-inline\">Name</span><span class=\"nl-inline\">Naam</span></th><th><span class=\"fr-inline\">Nombre d'utilisateurs</span><span class=\"en-inline\">Groupe size</span><span class=\"nl-inline\">Group size</span></th><th></th></tr></thead>";
+          var dest="<table class=\"table table-condensed\"><h4 class=\"text-green\">Groupes de condition :</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#companyConditions\" data-toggle=\"modal\" onclick=\"create_condition()\" href=\"#\"><i class=\"fa fa-plus\"></i> Ajouter un groupe de conditions</a><tbody><thead><tr><th>Nom</th><th>Nombre d'utilisateurs</th><th></th></tr></thead>";
 
           for (var i = 0; i < response.conditionNumber; i++){
             if(response.condition[i].name=="generic"){
@@ -84,7 +84,6 @@ $( "#settings" ).click(function() {
             dest=dest.concat(temp);
           }
           document.getElementById('spanConditionListing').innerHTML = dest;
-          displayLanguage();
         }
         else {
           console.log(response.response + ': ' + response.message);
@@ -104,7 +103,7 @@ $.ajax({
 	if(response.response == 'error') {
 	  console.log(response.message);
 	}else	if(response.response == 'success'){
-	  $('#widget-updateCompanyConditions-form input[name=action]').val("update");
+	  $('#widget-updateCompanyConditions-form input[name=action]').val("updateCompanyConditions");
 
 	  $('#widget-updateCompanyConditions-form input[name=id]').val(id);
 	  if(response.name=="generic"){
@@ -236,9 +235,9 @@ $.ajax({
       emailArray.push(value.EMAIL);
     });
 	  $.ajax({
-		url: 'apis/Kameo/get_company_details.php',
-		type: 'post',
-		data: { "email": email},
+		url: 'api/companies',
+		type: 'get',
+		data: { action : "retrieve"},
 		success: function(response){
 		  if(response.response == 'error') {
 			console.log(response.message);

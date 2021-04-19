@@ -1,67 +1,60 @@
 <?php
-$email=isset($_GET['email']) ? $_GET['email']: null;
 $sent=isset($_GET['sent']) ? $_GET['sent']: null;
 $paid=isset($_GET['paid']) ? $_GET['paid']: null;
 $direction=isset($_GET['direction']) ? $_GET['direction']: null;
 $company2=isset($_GET['company']) ? $_GET['company']: null;
 $response=array();
 
-if($email != NULL)
-{
-    $company=execSQL("select COMPANY from customer_referential WHERE EMAIL=?", array('s', $email), false)[0]['COMPANY'];
+$company=execSQL("select COMPANY from customer_referential WHERE TOKEN=?", array('s', $token), false)[0]['COMPANY'];
 
-    $sql="select aa.ID as ID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting, bb.EMAIL_CONTACT_BILLING as emailContactBilling, bb.FIRSTNAME_CONTACT_BILLING as firstNameContactBilling, bb.LASTNAME_CONTACT_BILLING as lastNameContactBilling from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
+$sql="select aa.ID as ID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
 
-    if($company!=='KAMEO'){
-        $response['update']=false;
-    	$sql=$sql." and aa.COMPANY = '$company'";
-    }else{
-        $response['update']=true;
-        if($company2!="*" && $company2 != NULL){
-    	   $sql=$sql." and aa.COMPANY = '$company2'";
-        }
-    }
-
-
-    if($paid!=='*' && $paid !== NULL){
-        $sql=$sql." AND FACTURE_PAID='$paid'";
-    }
-    if($sent!=='*' && $sent !== NULL){
-        $sql=$sql." AND FACTURE_SENT='$sent'";
-    }
-    if($direction!=='*' && $direction !== NULL){
-        if($direction=="IN"){
-            $sql=$sql." AND AMOUNT_HTVA>0";
-        }else if($direction=="OUT"){
-            $sql=$sql." AND AMOUNT_HTVA<0";
-        }
-    }
-
-    $sql=$sql." GROUP BY aa.ID";
-
-    $response['bill']=execSQL($sql, array(), false);
-    $response['response']="success";
-
-    $information=execSQL("select LPAD(MAX(ID_OUT_BILL)+1, 3, '0') as reference, MAX(ID_OUT_BILL) as MAX_OUT, MAX(ID) as MAX_TOTAL from factures", array(), false)[0];
-    $response['IDMaxBillingOut']=$information['MAX_OUT'];
-    $newID=$information['MAX_TOTAL'];
-    $newID=strval($newID+1);
-    $reference=$newID;
-    $base_modulo=substr('00'.$reference, -6);
-    $base_modulo=date('Y').$base_modulo;
-    $modulo_check=($base_modulo % 97);
-    $modulo_check=substr('0'+$modulo_check, -2);
-    $reference=substr($base_modulo.$modulo_check, -12);
-    $reference=substr($reference, 0,3).'/'.substr($reference, 3,4).'/'.substr($reference, 7,5);
-
-    $response['communication']=$reference;
-    $response['IDMaxBilling']=$information['MAX_TOTAL'];
-    echo json_encode($response);
-    die;
+if($company!=='KAMEO'){
+  $response['update']=false;
+	$sql=$sql." and aa.COMPANY = '$company'";
+}else{
+  $response['update']=true;
+  if($company2!="*" && $company2 != NULL){
+   $sql=$sql." and aa.COMPANY = '$company2'";
+  }
 }
-else
-{
-	errorMessage("ES0006");
+
+
+if($paid!=='*' && $paid !== NULL){
+    $sql=$sql." AND FACTURE_PAID='$paid'";
 }
+if($sent!=='*' && $sent !== NULL){
+    $sql=$sql." AND FACTURE_SENT='$sent'";
+}
+if($direction!=='*' && $direction !== NULL){
+    if($direction=="IN"){
+        $sql=$sql." AND AMOUNT_HTVA>0";
+    }else if($direction=="OUT"){
+        $sql=$sql." AND AMOUNT_HTVA<0";
+    }
+}
+
+$sql=$sql." GROUP BY aa.ID";
+
+$response['bill']=execSQL($sql, array(), false);
+$response['response']="success";
+
+$information=execSQL("select LPAD(MAX(ID_OUT_BILL)+1, 3, '0') as reference, MAX(ID_OUT_BILL) as MAX_OUT, MAX(ID) as MAX_TOTAL from factures", array(), false)[0];
+$response['IDMaxBillingOut']=$information['MAX_OUT'];
+$newID=$information['MAX_TOTAL'];
+$newID=strval($newID+1);
+$reference=$newID;
+$base_modulo=substr('00'.$reference, -6);
+$base_modulo=date('Y').$base_modulo;
+$modulo_check=($base_modulo % 97);
+$modulo_check=substr('0'+$modulo_check, -2);
+$reference=substr($base_modulo.$modulo_check, -12);
+$reference=substr($reference, 0,3).'/'.substr($reference, 3,4).'/'.substr($reference, 7,5);
+
+$response['communication']=$reference;
+$response['IDMaxBilling']=$information['MAX_TOTAL'];
+echo json_encode($response);
+die;
+
 
 ?>

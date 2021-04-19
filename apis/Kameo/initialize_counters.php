@@ -188,10 +188,27 @@ if($type=="bills"){
     $conn->close();
 }
 
+if($type=="customersCollab"){
+  if(get_user_permissions("espaceCollaboratif", $token)){
+    $somme=execSQL("SELECT COUNT(1) as SOMME FROM companies WHERE AQUISITION = (SELECT COMPANY FROM customer_referential WHERE TOKEN=?) AND STAANN != 'D'", array('s', $token), false)[0]['SOMME'];
+    $response['companiesNumber']=$somme;
+    $response['response']="success";
+    echo json_encode($response);
+    die;
+  }
+}
+if($type=="bikesCollab"){
+  if(get_user_permissions("espaceCollaboratif", $token)){
+    $somme=execSQL("SELECT COUNT(1) as SOMME FROM customer_bikes WHERE COMPANY = (SELECT INTERNAL_REFERENCE FROM companies WHERE INTERNAL_REFERENCE = (SELECT COMPANY FROM customer_referential WHERE TOKEN=?)) AND STAANN != 'D'", array('s', $token), false)[0]['SOMME'];
+    $response['bikesNumber']=$somme;
+    $response['response']="success";
+    echo json_encode($response);
+    die;
+  }
+}
+
 
 if($company=='KAMEO'){
-
-
     if($type=="ordersAdmin"){
         include 'connexion.php';
         $sql = "select 1 from client_orders WHERE STATUS='new'";

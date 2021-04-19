@@ -37,7 +37,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		}else
 			error_message('403');
 	}else if($action === 'retrieve'){
-		if(get_user_permissions("admin", $token)){
+		if(get_user_permissions(["fleetManager", "admin"], $token)){
 			include 'get_company_details.php';
 		}else{
 			error_message('403');
@@ -142,9 +142,33 @@ switch($_SERVER["REQUEST_METHOD"])
 		}else{
 			error_message('403');
 		}
+	}else if($action === 'addClient'){
+		if(get_user_permissions("admin", $token)){
+			include 'add_client.php';
+		}else{
+			error_message('403');
+		}
 	}else if($action === 'editCompanyContact'){
 		if(get_user_permissions("admin", $token)){
 			include 'edit_company_contact.php';
+		}else{
+			error_message('403');
+		}
+	}else if($action === 'deleteContact'){
+		if(get_user_permissions("admin", $token)){
+			execSQL('DELETE FROM companies_contact WHERE ID = ?', array('i', $_POST['id']), true);
+		}else{
+			error_message('403');
+		}
+	}else if($action === 'addCondition'){
+		if(get_user_permissions(["fleetManager", "admin"], $token)){
+			include 'addCompanyCondition.php';
+		}else{
+			error_message('403');
+		}
+	}else if($action === 'updateCompanyConditions'){
+		if(get_user_permissions(["fleetManager", "admin"], $token)){
+			include 'updateCompanyConditions.php';
 		}else{
 			error_message('403');
 		}
