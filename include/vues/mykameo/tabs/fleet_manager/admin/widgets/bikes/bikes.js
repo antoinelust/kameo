@@ -980,30 +980,37 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
       })
 
       $.ajax({
-        url: 'apis/Kameo/get_bills_details_listing.php',
-        type: 'post',
-        data: { "bikeID": id},
+        url: 'api/bikes',
+        type: 'get',
+        data: {
+          "bikeID": id,
+          "action" : "getListofBills"
+        },
         success: function(response){
           if (response.response == 'error') {
             console.log(response.message);
           } else{
             var i=0;
             var dest="<table id=\"bills_details_listing\" class=\"table table-condensed\"  data-order='[[ 0, \"desc\" ]]'><thead><tr><th><span class=\"fr-inline\">ID</span></th><th>Date</th><th>Montant</th><th>Envoyée ?</th><th>Payée ?</th></tr></thead><tbody>";
-            while(i<response.billNumber){
-              if(response.bill[i].sent=="1"){
+            response.bills.forEach(function(bill){
+              if(bill.FACTURE_SENT=="1"){
                 sent="<span class=\"text-green\">Y</span>"
               }else{
                 sent="<span class=\"text-red\">N</span>"
               }
-              if(response.bill[i].paid=="1"){
+              if(bill.FACTURE_PAID=="1"){
                 paid="<span class=\"text-green\">Y</span>"
               }else{
                 paid="<span class=\"text-red\">N</span>"
               }
-              var temp="<tr><td><a href=\"factures/"+response.bill[i].fileName+"\" target=\"_blank\">"+response.bill[i].FACTURE_ID+"</a></td><td data-sort=\""+(new Date(response.bill[i].date)).getTime()+"\">"+response.bill[i].date.shortDate()+"</td><td>"+response.bill[i].amountHTVA+" €</td><td>"+sent+"</td><td>"+paid+"</td></tr>";
+              if(bill.direction == 'OUT'){
+                var amount = bill.AMOUNT_HTVA + " €";
+              }else{
+                var amount = "<span class='text-red'>"+(-bill.AMOUNT_HTVA)+" €</span>";
+              }
+              var temp="<tr><td><a href=\"factures/"+bill.FILE_NAME+"\" target=\"_blank\">"+bill.FACTURE_ID+"</a></td><td data-sort=\""+(new Date(bill.DATE)).getTime()+"\">"+bill.DATE.shortDate()+"</td><td>"+amount+"</td><td>"+sent+"</td><td>"+paid+"</td></tr>";
               dest=dest.concat(temp);
-              i++;
-            }
+            })
             dest=dest.concat("</tbody></table>");
             $('#bills_bike').html(dest);
             displayLanguage();
@@ -1011,8 +1018,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
             $('#bills_details_listing').DataTable({
               "searching": false,
               "paging": false
-            }
-            );
+            });
           }
         }
       })

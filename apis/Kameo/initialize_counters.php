@@ -229,23 +229,10 @@ if($company=='KAMEO'){
         die;
     }
     if($type=="ordersAccessoryAdmin"){
-        include 'connexion.php';
-        $sql = "select 1 from order_accessories";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-
-        $result = mysqli_query($conn, $sql);
-        $length=$result->num_rows;
-
-        $response['ordersAccessoryNumber']=$length;
-        $response['response']="success";
-
-        $conn->close();
-        echo json_encode($response);
-        die;
+      $response['response']="success";
+      $response['ordersAccessoryNumber']=execSQL("select COUNT(1) as SOMME from order_accessories", array(), false)[0]['SOMME'];
+      echo json_encode($response);
+      die;
     }
 
     if($type=="bikesAdmin"){

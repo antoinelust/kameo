@@ -25,6 +25,11 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 		}else if($action=="getPersonnalBike"){
 			include 'getPersonnalBike.php';
+		}else if($action=="getListofBills"){
+			if(get_user_permissions(["admin", "bikesStock"], $token)){
+				include 'getListofBills.php';
+			}else
+				error_message('403');
 		}else if($action=="getPersonnalBikeActions"){
 			include 'getPersonnalBikeActions.php';
 		}else if($action=="list"){
