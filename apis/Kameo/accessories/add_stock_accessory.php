@@ -60,6 +60,15 @@ if($modelID != '' && $contractType != '') {
       }else
       error_message('500', $conn->error);
     }
+    else if($contractType=="stock"){
+      $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=12, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=? WHERE ID=? ");
+     if ($stmt)
+     {
+      $stmt->bind_param("ssisii", $token, $userEMAIL, $modelID, $contractType ,$bikeID, $ID);
+      $stmt->execute();
+      }else
+      error_message('500', $conn->error);
+    }
     else {
      $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=? WHERE ID=? ");
      if ($stmt)

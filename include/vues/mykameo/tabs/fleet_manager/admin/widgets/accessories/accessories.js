@@ -136,6 +136,10 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
   }
 
+  if($(this).val()=="stock"){
+    $('#widget-manageStockAccessory-form select[name=company]').val(12);
+  }
+
 });
 
 $('#widget-manageStockAccessory-form select[name=category]').change(function(){
@@ -197,7 +201,7 @@ $(".stockAccessoriesClick").click(function(){
  $("#widget-manageStockAccessory-form select[name=company]").val("");
  $("#widget-manageStockAccessory-form select[name=user]").val("");
 
-  $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeOut();
+ $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeOut();
 
  list_stock_accessories();
  if ($('#widget-manageStockAccessory-form select[name=category] option').length == 0) {
@@ -245,7 +249,7 @@ function list_stock_accessories(){
     },
     {
       title: "Société",
-      data: "COMPANY_ID",
+      data: "COMPANY_NAME",
     },
     {
       title: "Client",
@@ -345,13 +349,13 @@ function get_stock_accessory(ID){
             data.user.forEach(function(user, index){
              $("#widget-manageStockAccessory-form select[name=user]").append('<option data-bike="'+user['bikeId']+'" value='+user['email']+'>'+user['name']+' '+user['firstName']+'</option>');
            });
-           $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeOut();
+            $("#widget-manageStockAccessory-form select[name=bike]").parent().fadeOut();
 
-          if(email != 'null'){
-            $("#widget-manageStockAccessory-form select[name=user]").val(email);
-          }else{
-            $("#widget-manageStockAccessory-form select[name=user]").val("");
-          }
+            if(email != 'null'){
+              $("#widget-manageStockAccessory-form select[name=user]").val(email);
+            }else{
+              $("#widget-manageStockAccessory-form select[name=user]").val("");
+            }
 
           }else{
             $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();

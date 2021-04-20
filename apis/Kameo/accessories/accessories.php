@@ -39,7 +39,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	}
 	else if ($action === 'listOrderAcessories'){
 		if(get_user_permissions("admin", $token)){
-			$listOrderAcessories= execSQL("SELECT aa.*, bb.EMAIL, bb.PORTFOLIO_ID,bb.COMPANY, dd.COMPANY_NAME FROM order_accessories aa, client_orders bb, companies dd WHERE aa.ORDER_ID=bb.ID  AND bb.COMPANY=dd.ID", array(), false);
+			$listOrderAcessories= execSQL("SELECT aa.*,cc.CATEGORY,ee.BRAND,ee.MODEL,bb.EMAIL, bb.PORTFOLIO_ID,bb.COMPANY, dd.COMPANY_NAME FROM order_accessories aa, accessories_categories cc,client_orders bb, companies dd, bike_catalog ee WHERE ee.ID=bb.PORTFOLIO_ID AND aa.ORDER_ID=bb.ID  AND bb.COMPANY=dd.ID AND cc.ID=aa.CATEGORY", array(), false);
 			echo json_encode($listOrderAcessories);
 			die;
 		}

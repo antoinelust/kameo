@@ -32,7 +32,8 @@ $( ".orderAccessoriesClick" ).click(function() {
 		{ title: "ID",data: "ID",},
 		{ title: "Société", data: "COMPANY_NAME" },
 		{ title: "Type", data: "TYPE" },
-		{ title: "Vélo", data: "PORTFOLIO_ID" },
+		{ title: "Marque du vélo", data: "BRAND"},
+		{ title: "Model du vélo", data: "MODEL"},
 		{ title: "Categorie", data: "CATEGORY" },
 		{ title: "Etat de la commande", data: "ID" ,fnCreatedCell: 
 		function (nTd, sData, oData, iRow, iCol) {
