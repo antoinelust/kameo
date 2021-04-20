@@ -18,7 +18,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	case 'GET':
 	$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 	if($action === 'list'){
-		if(get_user_permissions("admin", $token)){
+		if(get_user_permissions("espaceCollaboratif", $token)){
 			$response=execSQL("SELECT aa.ID, bb.BRAND, bb.MODEL, aa.CONTRACT_START, aa.CONTRACT_END, aa.LEASING_PRICE, cc.COMPANY_NAME FROM customer_bikes aa, bike_catalog bb, companies cc WHERE aa.TYPE=bb.ID AND aa.COMPANY IN (SELECT INTERNAL_REFERENCE FROM companies WHERE AQUISITION = (SELECT COMPANY FROM customer_referential WHERE TOKEN=?)) AND aa.STAANN != 'D' AND aa.COMPANY=cc.INTERNAL_REFERENCE", array('s', $token), false);
 			if(is_null($response)){
 				$response=array();
