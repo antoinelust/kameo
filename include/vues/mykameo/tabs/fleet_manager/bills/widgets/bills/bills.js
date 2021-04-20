@@ -150,11 +150,13 @@ function construct_form_for_billing_status_update(ID){
        var dest='<table class=\"table table-condensed\"><thead><tr><th>Objet</th><th>Montant</th><th>Comentaire</th></tr></thead><tbody>';
        for(var i = 0; i<response.billDetailsNumber; i++){
         if(response.bill.billDetails[i].itemType == "bike"){
-          dest=dest.concat("<tr><td><ul><li>Type : Vélo </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Identification : " + response.bill.billDetails[i].frameNumber+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" €</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
+          dest=dest.concat("<tr><td><ul><li>Type : Vélo </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Identification : " + response.bill.billDetails[i].frameNumber+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" € HTVA</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
         }else if(response.bill.billDetails[i].itemType == "accessory"){
-          dest=dest.concat("<tr><td><ul><li>Type : Accessoire </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Modèle : " + response.bill.billDetails[i].model+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" €</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
+          dest=dest.concat("<tr><td><ul><li>Type : Accessoire </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Modèle : " + response.bill.billDetails[i].model+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" € HTVA</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
         }else if(response.bill.billDetails[i].itemType == "box"){
-          dest=dest.concat("<tr><td><ul><li>Type : Borne </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Identification : " + response.bill.billDetails[i].model+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" €</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
+          dest=dest.concat("<tr><td><ul><li>Type : Borne </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Identification : " + response.bill.billDetails[i].model+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" € HTVA</td><td>"+response.bill.billDetails[i].comments+"</td></tr>");
+        }else if(response.bill.billDetails[i].itemType == "maintenance"){
+          dest=dest.concat("<tr><td><ul><li>Type : Entretien </li><li>ID : "+response.bill.billDetails[i].itemID + " </li><li>Description : " + response.bill.billDetails[i].description+"</li></ul><td>"+response.bill.billDetails[i].amountHTVA+" € HTVA</td><td>"+response.bill.billDetails[i].amountTVAC+" € TVAC</td></tr>");
         }
       }
       document.getElementById('billingDetails').innerHTML=dest.concat("</tbody><table>");
@@ -305,6 +307,7 @@ function create_bill(){
     });
   });
 
+
   $('.generateBillOtherAccessories .glyphicon-plus').unbind();
   $('.generateBillOtherAccessories .glyphicon-plus').click(function(){
     //gestion accessoriesNumber
@@ -339,48 +342,110 @@ function create_bill(){
   });
 
 
-  $('.generateBillManualWorkload .glyphicon-plus').unbind();
-  $('.generateBillManualWorkload .glyphicon-plus').click(function(){
-    //gestion travail manuel
-    manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html()*1+1;
-    $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber);
-    $('#manualWorkloadNumber').val(manualWorkloadNumber);
+  $.ajax({
+    url: 'api/maintenances',
+    type: 'get',
+    data: {
+      action: 'listCategories'
+    },
+    success: function(response){
+      var categories = [];
+      response.forEach(function(service){
+        categories.push('<option value="'+service.CATEGORY+'">'+service.CATEGORY+'</option>');
+      });
+      $('.generateBillManualWorkload .glyphicon-plus').unbind();
+      $('.generateBillManualWorkload .glyphicon-plus').click(function(){
+        //gestion travail manuel
+        manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html()*1+1;
+        $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber);
+        $('#manualWorkloadNumber').val(manualWorkloadNumber);
 
-    //ajout d'une ligne au tableau de la main d'oeuvre
-    $('#addBill').find('.otherCostsManualWorkloadTable tbody')
-    .append(`<tr class="otherCostsManualWorkloadTable`+(manualWorkloadNumber)+` manualWorkloadRow form-group">
-      <td class="aLabel"></td>
-      <td class="aDescription"><input type="text" class="manualWorkloadDescription form-control required" name="manualWorkladDescription[]" /></td>
-      <td><input type="number" class="manualWorkloadLength form-control required" name="manualWorkloadLength[]" value="0" /></td>
-      <td><input type="number" class="manualWorkloadRate form-control required" name="manualWorkloadRate[]" value="45" /></td>
-      <td><input type="number" class="manualWorkloadTotal form-control required" name="manualWorkloadTotal[]" value="0" readonly /></td>
-      </tr>`);
-    //label selon la langue
-    $('#addBill').find('.otherCostsManualWorkloadTable'+(manualWorkloadNumber)+'>.aLabel')
-    .append('<label class="fr">Main d\'oeuvre '+ manualWorkloadNumber +'</label>');
-    checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+        //ajout d'une ligne au tableau de la main d'oeuvre
+        $('#addBill').find('.otherCostsManualWorkloadTable tbody')
+        .append(`<tr class="otherCostsManualWorkloadTable`+(manualWorkloadNumber)+` manualWorkloadRow form-group">
+          <td class="category"><select name="category[]" class="form-control required" value="">`+categories+`</select></td>
+          <td class="service"><select name="service[]" class="form-control required"></select></td>
+          <td class="bikeMaintenance"><select name="bikeMaintenance[]" class="form-control required" value=""></select></td>
+          <td class="manualWorkloadLength"><input type="number" step='5' class="form-control required" name="manualWorkloadLength[]" value="" /></td>
+          <td class="manualWorkloadTotal"><input type="number" step='0.01' class="form-control required" name="manualWorkloadTotal[]" value="" /></td>
+          <td class="manualWorkloadTotalTVAC"><input type="number" step='0.01' class="form-control required" name="manualWorkloadTotalTVAC[]" value="" /></td>
+          </tr>`);
+        $('.otherCostsManualWorkloadTable'+(manualWorkloadNumber)+' .category select').val('');
 
+        //label selon la langue
+        checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+        $('.category select').off();
+        $('.category select').change(function(){
+          var $select = $(this);
+          $select.closest('tr').find('.service select').find('option')
+          .remove();
+          $.ajax({
+            url: 'api/maintenances',
+            type: 'get',
+            data: {
+              action: 'listServices',
+              category: $(this).val()
+            },
+            success: function(response){
+              response.forEach(function(service){
+                $select.closest('tr').find('.service select').append('<option value="'+service.ID+'" data-minutes="'+service.MINUTES+'" data-htva="'+Math.round(service.PRICE_TVAC/1.06*100)/100+'" data-tvac="'+service.PRICE_TVAC+'">'+service.DESCRIPTION+'</option>');
+              });
+              $select.closest('tr').find('.service select').val("");
+            }
+          })
 
-    $('#widget-addBill-form .manualWorkloadRow .manualWorkloadLength, #widget-addBill-form .manualWorkloadRow .manualWorkloadRate').change(function(){
-      $(this).parents('.manualWorkloadRow').find('.manualWorkloadTotal').val(($(this).parents('.manualWorkloadRow').find('.manualWorkloadLength').val()*$(this).parents('.manualWorkloadRow').find('.manualWorkloadRate').val()/60));
-    });
+          $.ajax({
+            url: 'api/maintenances',
+            type: 'get',
+            data: {
+              action: 'list',
+              company : $('#widget-addBill-form select[name=company]').val()
+            },
+            success: function(response){
+              var maintenances = [];
+              console.log($select.val());
+              response.forEach(function(maintenance){
+                console.log(maintenance);
+                $select.closest('tr').find('.bikeMaintenance select').append('<option value="'+maintenance.ID+'">'+maintenance.ID+' - '+maintenance.DATE.shortDate()+' - '+maintenance.BRAND+' '+maintenance.MODEL+'</option>');
+              })
+              $select.closest('tr').find('.bikeMaintenance select').val("");
+            }
+          })
+        });
 
+        $('.service select').off()
+        $('.service select').change(function(){
+          $(this).closest('tr').find('.manualWorkloadLength input').val($(this).find(':selected').data('minutes'));
+          $(this).closest('tr').find('.manualWorkloadTotal input').val($(this).find(':selected').data('htva'));
+          $(this).closest('tr').find('.manualWorkloadTotalTVAC input').val($(this).find(':selected').data('tvac'));
+        });
 
+        $('.manualWorkloadTotal input').off()
+        $('.manualWorkloadTotal input').change(function(){
+          $(this).closest('tr').find('.manualWorkloadTotalTVAC input').val(Math.round($(this).val()*1.06*100)/100);
+        });
+        $('.manualWorkloadTotalTVAC input').off()
+        $('.manualWorkloadTotalTVAC input').change(function(){
+          $(this).closest('tr').find('.manualWorkloadTotal input').val(Math.round($(this).val()/1.06*100)/100);
+        });
 
-  });
+      });
 
-  //retrait
-  $('.generateBillManualWorkload .glyphicon-minus').unbind();
-  $('.generateBillManualWorkload .glyphicon-minus').click(function(){
-    manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html();
-    if(manualWorkloadNumber > 0){
-      $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber*1 - 1);
-      $('#manualWorkloadNumber').val(manualWorkloadNumber*1 - 1);
-      $('#addBill').find('.otherCostsManualWorkloadTable'+manualWorkloadNumber).slideUp().remove();
-      otherAccessoriesNumber--;
+      //retrait
+      $('.generateBillManualWorkload .glyphicon-minus').unbind();
+      $('.generateBillManualWorkload .glyphicon-minus').click(function(){
+        manualWorkloadNumber = $("#addBill").find('.manualWorkloadNumber').html();
+        if(manualWorkloadNumber > 0){
+          $('#addBill').find('.manualWorkloadNumber').html(manualWorkloadNumber*1 - 1);
+          $('#manualWorkloadNumber').val(manualWorkloadNumber*1 - 1);
+          $('#addBill').find('.otherCostsManualWorkloadTable'+manualWorkloadNumber).slideUp().remove();
+          otherAccessoriesNumber--;
+        }
+        checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
+      });
     }
-    checkMinus('.generateBillManualWorkload','.manualWorkloadNumber');
   });
+
 
 
   var dateInOneMonth=new Date();

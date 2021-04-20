@@ -59,7 +59,7 @@
                   <label for="type">Type</label>
                   <select
                     title="Type"
-                    class="form-control selectpicker"
+                    class="form-control required"
                     name="type"
                   >
                     <option value="CLIENT">Client</option>
@@ -67,6 +67,17 @@
                     <option value="ANCIEN PROSPECT">Ancien prospect</option>
                     <option value="ANCIEN CLIENT">Ancien client</option>
                     <option value="NOT INTERESTED">Pas intéressé</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="type">Audience</label>
+                  <select
+                    title="Audience"
+                    class="form-control required"
+                    name="audience"
+                  >
+                    <option value="B2B">Entreprise</option>
+                    <option value="B2C">Particulier</option>
                   </select>
                 </div>
                 <div class="col-sm-6">
@@ -88,29 +99,8 @@
                   <label for="city">Ville</label>
                   <input type="text" class="form-control" name="city">
                 </div>
-                <div class="separator addClientTechnicalUser hidden"></div>
-                <h4 class="text-green addClientTechnicalUser hidden">
-                  Données techniques pour le premier utilisateur
-                </h4>
-                <div class="separator"></div>
-                <div class="col-md-3">
-                  <label for="$firstNameInitialisation" class="hidden addClientTechnicalUser">Prénom</label>
-                  <input type="text" class="form-control addClientTechnicalUser hidden" name="firstNameInitialisation"/>
-                </div>
-                <div class="col-md-3">
-                  <label for="nameInitialisation" class="addClientTechnicalUser hidden">Nom</label>
-                  <input type="text" class="form-control addClientTechnicalUser hidden" name="nameInitialisation"/>
-                </div>
-                <div class="col-md-3">
-                  <label for="mailInitialisation" class="addClientTechnicalUser hidden">Mail</label>
-                  <input type="text" class="form-control addClientTechnicalUser hidden" name="mailInitialisation">
-                </div>
-                <div class="col-md-3">
-                  <label for="passwordInitialisation" class="addClientTechnicalUser hidden">Mot de passe</label>
-                  <input type="password" autocomplete="off" class="form-control addClientTechnicalUser hidden" id="customer_password" name="passwordInitialisation"></div>
-                <input type="text" class="form-control hidden" name="action" value="addClient">
               </div>
-              <div class="separator"></div>
+              <input type="text" class="hidden required" name='action' value="addClient">
               <button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
             </form>
           </div>
@@ -127,24 +117,6 @@
 <!--<script type="text/javascript" src="js/addons/tweetnacl/nacl-fast.min.js"></script>
 <script type="text/javascript" src="js/addons/tweetnacl-util/nacl-util.min.js"></script>-->
 <script type="text/javascript">
-  $("#widget-addClient-form select[name=type]").change(function () {
-    if ($("#widget-addClient-form select[name=type]").val() == "CLIENT") {
-      $(".addClientTechnicalUser").removeClass("hidden");
-    } else {
-      $(".addClientTechnicalUser").addClass("hidden");
-    }
-  });
-  jQuery("#widget-addClient-form").submit(function () {
-    document.getElementById("customer_password").value =
-      /*nacl.util.encodeBase64(
-		  nacl.hash(
-			  nacl.util.decodeUTF8(*/
-      document.getElementById("customer_password").value;
-    /*)
-		  )
-	  )*/
-    return true;
-  });
   jQuery("#widget-addClient-form").validate({
     submitHandler: function (form) {
       jQuery(form).ajaxSubmit({

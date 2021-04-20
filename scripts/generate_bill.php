@@ -3,8 +3,7 @@ require_once dirname(__FILE__).'/../vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
-include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
-
+include_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
 
 $company=$_POST['company'];
 $dateStart=$_POST['dateStart'];
@@ -199,19 +198,25 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 	          </tr>
 	        </thead>
 	        <tbody>';
+
             $test2='';
 
 
             $i=0;
             $total=0;
+
+            error_log("itemNumber :".$itemNumber."\n", 3, "generate_invoices.log");
+
+
             while($i<$itemNumber){
                 $price=floatval($_POST['price'.$i]);
                 $TVA=($_POST['TVA'.$i]);
-                $priceTVAC=(1+$TVA/100)*$price;
+                $priceTVAC=round((1+$TVA/100)*$price, 2);
                 $type=$_POST['type'.$i];
 
                 $ID=isset($_POST['ID'.$i]) ? $_POST['ID'.$i] : NULL;
                 $description=isset($_POST['description'.$i]) ? $_POST['description'.$i] : NULL;
+                error_log("type :".$type."\n", 3, "generate_invoices.log");
 
 
                 if($type=="bike"){
@@ -400,22 +405,29 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     $test2=$test2."<td>Vente<br><br></td></tr>";
                 }else if($type=="maintenance"){
 
-                    $test2.='<tr>
-                        <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
-                        <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$description.'</td>
-                        <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($price).' € HTVA</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td style="color: grey">T.V.A. 6%</td>
-                        <td></td>
-                    </tr>
 
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        ';
-                    $test2=$test2."<td>Main d'oeuvre<br><br></td></tr>";
+                  $comment=$_POST['description'.$i].'/'.($_POST['minutes'.$i]);
+                  $description=execSQL("SELECT DESCRIPTION FROM services_entretiens WHERE ID=?", array('i', $description), false)[0]['DESCRIPTION'];
+
+                  $test2.='<tr>
+                      <td style="width: 20; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($i+1).'</td>
+                      <td style="width: 430; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.$description.'</td>
+                      <td style="width: 150; text-align: left; border-top: solid 1px grey; border-bottom: solid 1px grey">'.($price).' € HTVA</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td style="color: grey">T.V.A. 6%</td>
+                      <td></td>
+                  </tr>
+
+                  <tr>
+                      <td></td>
+                      <td></td>
+                      ';
+                  $test2=$test2."<td>Main d'oeuvre<br><br></td></tr>";
+                  $contractStartString=$dateStart->format('Y-m-d');
+                  $usrMaj='script';
+                  execSQL("INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", array('sisisssdd', $usrMaj, $newID, $type, $ID, $comment, $contractStartString, $contractStartString, $price, $priceTVAC), true);
                 }
 
                 $i+=1;
@@ -427,12 +439,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                 }
             }
             $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
-
             $tva6=($totalTVA6*0.06);
             $tva21=($totalTVA21*0.21);
-
             $totalTVAIncluded6=$totalTVA6+$tva6;
             $totalTVAIncluded21=$totalTVA21+$tva21;
+
+            error_log("test2 :".$test2."\n", 3, "generate_invoices.log");
 
 	        $test3='</tbody>
 	      </table>
