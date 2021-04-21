@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/include/lang_management.php';
 
 require_once dirname(__FILE__).'/vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;

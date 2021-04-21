@@ -1,4 +1,5 @@
 <?php
+
 $company = file_get_contents(__DIR__.'/temp/company.txt');
 $billingGroup = file_get_contents(__DIR__.'/temp/billingGroup.txt');
 
@@ -92,9 +93,6 @@ $street=$resultat['STREET'];
 $zip=$resultat['ZIP_CODE'];
 $town=$resultat['TOWN'];
 $vat=$resultat['VAT_NUMBER'];
-$email=$resultat['EMAIL_CONTACT'];
-$nom=$resultat['NOM_CONTACT'];
-$prenom=$resultat['PRENOM_CONTACT'];
 $reference=$newID;
 $base_modulo=substr('00'.$reference, -6);
 $base_modulo=date('Y').$base_modulo;
@@ -444,7 +442,8 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 
                 if($j>0){
                   foreach($accessoryBike[$i] as &$accessory){
-                      $test2=$test2.'<tr><td style="width: 20; text-align: left; border-top: solid 1px grey;"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' '.$units.'</td></tr>';
+                    $traduction="accessoryCategories_".$accessory['CATEGORY'];
+                    $test2=$test2.'<tr><td style="width: 20; text-align: left; border-top: solid 1px grey;"></td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CATEGORY'].' - '.$accessory['MODEL'].'</td><td style="width: 20; text-align: left; border-top: solid 1px grey; color: grey">'.$accessory['CONTRACT_AMOUNT'].' '.$units.'</td></tr>';
                   }
                 }
                 $i+=1;
@@ -617,14 +616,6 @@ echo $test1.$test2.$test3;
 
 
 $fileName=date('Y').'.'.date('m').'.'.date('d').'_'.$company.'_'.$newID.'_facture_'.$newIDOUT.'.pdf';
-
-$sql3="select EMAIL_CONTACT, NOM_CONTACT, PRENOM_CONTACT, EMAIL_CONTACT_BILLING, FIRSTNAME_CONTACT_BILLING, LASTNAME_CONTACT_BILLING, PHONE_CONTACT_BILLING, BILLS_SENDING from companies where INTERNAL_REFERENCE='$company' and BILLING_GROUP='$billingGroup'";
-if ($conn->query($sql3) === FALSE) {
-    echo $conn->error;
-    die;
-}
-$result3 = mysqli_query($conn, $sql3);
-$resultat3 = mysqli_fetch_assoc($result3);
 
 $sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$todayString', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$inOneMonthString','leasing', '$todayString')";
 

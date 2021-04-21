@@ -13,6 +13,7 @@ $street=addslashes($_POST['street']);
 $zipCode=$_POST['zipCode'];
 $city=addslashes($_POST['city']);
 $type=$_POST['type'];
+$audience=$_POST['audience'];
 
 
 if(isset($_POST['passwordInitialisation'])){
@@ -65,24 +66,6 @@ if(isset($_FILES['picture']) && !empty($_FILES['picture'])){
 if($internalReference != NULL && $description){
   include __DIR__ .'/../connexion.php';
 
-  if($type=="CLIENT" && $mailInitialisation != '' && $passwordTechnicalUser != ''){
-      $sql= "SELECT * FROM customer_referential WHERE EMAIL='$mailInitialisation'";
-      if ($conn->query($sql) === FALSE) {
-          $response = array ('response'=>'error', 'message'=> $conn->error);
-          echo json_encode($response);
-          die;
-
-      }
-      $result = mysqli_query($conn, $sql);
-      $length=$result->num_rows;
-      if($length>0){
-          errorMessage("ES0049");
-      }
-  }
-
-
-
-
   $sql="select * from companies where INTERNAL_REFERENCE='$internalReference'";
   if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -95,7 +78,7 @@ if($internalReference != NULL && $description){
       errorMessage("ES0036");
   }
 
-  $sql= "INSERT INTO  companies (USR_MAJ, HEU_MAJ, COMPANY_NAME, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AUTOMATIC_STATISTICS, BILLING_GROUP, STAANN, BILLS_SENDING) VALUES ('$token', CURRENT_TIMESTAMP, '$description', '$street', '$zipCode', '$city', '$VAT', '$internalReference', '$type', '', '1', '', 'N')";
+  $sql= "INSERT INTO  companies (USR_MAJ, HEU_MAJ, COMPANY_NAME, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AUTOMATIC_STATISTICS, BILLING_GROUP, STAANN, BILLS_SENDING, AUDIENCE) VALUES ('$token', CURRENT_TIMESTAMP, '$description', '$street', '$zipCode', '$city', '$VAT', '$internalReference', '$type', '', '1', '', 'N', '$audience')";
 
   if ($conn->query($sql) === FALSE) {
       $response = array ('response'=>'error', 'message'=> $conn->error);
@@ -110,17 +93,6 @@ if($internalReference != NULL && $description){
       echo json_encode($response);
       die;
   }
-
-  if($type=="CLIENT" && $mailInitialisation != '' && $passwordTechnicalUser != ''){
-      $sql= "INSERT INTO  customer_referential (USR_MAJ, NOM_INDEX, PRENOM_INDEX, NOM, PRENOM, PHONE, POSTAL_CODE, CITY, ADRESS, WORK_ADRESS, WORK_POSTAL_CODE, WORK_CITY, COMPANY, EMAIL, PASSWORD, TOKEN, ACCESS_RIGHTS, STAANN) VALUES ('mykameo', UPPER('$nameInitialisation'), UPPER('$firstNameInitialisation'), '$nameInitialisation', '$firstNameInitialisation', '', '0', '', '', '', '0', '', '$internalReference', '$mailInitialisation', '$passwordTechnicalUser', '', '', '')";
-      if ($conn->query($sql) === FALSE) {
-          $response = array ('response'=>'error', 'message'=> $conn->error);
-          echo json_encode($response);
-          die;
-      }
-  $conn->close();
-  }
-
   successMessage("SM0008");
 
 }else{

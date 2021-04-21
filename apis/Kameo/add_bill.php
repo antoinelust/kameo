@@ -8,15 +8,13 @@ if(!isset($_SESSION))
     session_start();
 }
 
-
-
 include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
-
 require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/environment.php';
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
+
 
 $email=$_POST['widget-addBill-form-email'];
 $company=addslashes($_POST['company']);
@@ -26,8 +24,8 @@ $date=$_POST['widget-addBill-form-date'];
 $type=$_POST['type'];
 $billType=isset($_POST['billType']) ? $_POST['billType'] : NULL;
 $typeOther=isset($_POST['typeOther']) ? addslashes($_POST['typeOther']) : NULL;
-$amountHTVA=$_POST['widget-addBill-form-amountHTVA'];
-$amountTVAC=$_POST['widget-addBill-form-amountTVAC'];
+$amountHTVA=isset($_POST['widget-addBill-form-amountHTVA']) ? $_POST['widget-addBill-form-amountHTVA'] : NULL;
+$amountTVAC=isset($_POST['widget-addBill-form-amountTVAC']) ? $_POST['widget-addBill-form-amountTVAC'] : NULL;
 $billingSent=isset($_POST['widget-addBill-form-sent']) ? "1" : "0";
 $ID=isset($_POST['ID']) ?$_POST['ID'] :  NULL;
 $ID_OUT=isset($_POST['ID_OUT']) ?$_POST['ID_OUT'] :  NULL;
@@ -48,6 +46,7 @@ $dateNow = isset($_POST['date']) ? addslashes($_POST['date']) : NULL;
 
 $bikeArrayId = isset($_POST['bikeArrayId']) ?$_POST['bikeArrayId'] :  NULL;
 $lengthArray= isset($_POST['articleNumbers']) ? addslashes($_POST['articleNumbers']) : NULL;
+
 
 
 if($amountHTVA<0 && $type != 'credit' && $company!="KAMEO"){
@@ -150,7 +149,7 @@ if($billType == "manual"){
 
   }else{
     errorMessage("ES0035");
-}
+  }
 }
 else{
    include 'connexion.php';
@@ -231,29 +230,24 @@ else{
         $j++;
         $i++;
     }
-    if(isset($_POST['manualWorkladDescription'])){
-      foreach ($_POST['manualWorkladDescription'] as $key=>$value) {
+    if(isset($_POST['service'])){
+      foreach ($_POST['service'] as $key=>$value) {
+        $data['ID'.$i] = $_POST['bikeMaintenance'][$key];
         $data['price'.$i] = $_POST['manualWorkloadTotal'][$key];
-        $data['description'.$i] = $_POST['manualWorkladDescription'][$key];
+        $data['description'.$i] = $_POST['service'][$key];
+        $data['minutes'.$i] = $_POST['manualWorkloadLength'][$key];
         $data['type'.$i] = "maintenance";
         $data['TVA'.$i] = "6";
         $i++;
+      }
     }
+    $data['itemNumber'] = $i;
+    $data['company'] = $company;
+    $data['dateStart'] = $date;
+    $data['billingGroup'] = "1";
   }
-   $data['itemNumber'] = $i;
-   $data['company'] = $company;
-   $data['dateStart'] = $date;
-   $data['billingGroup'] = "1";
-  }
-  error_log("Final result2 :".constant('ENVIRONMENT')."\n", 3, "generate_bill.log");
-  if(constant('ENVIRONMENT')=="production"){
-    $test=CallAPI('POST', 'https://www.kameobikes.com/scripts/generate_bill.php', $data);
-  }else if(constant('ENVIRONMENT')=="test"){
-    $test=CallAPI('POST', 'https://www.kameobikes.com/test/scripts/generate_bill.php', $data);
-  }else{
-        //Modifier en fonction du virtual host
-    $test=CallAPI('POST', 'http://kameo.local/scripts/generate_bill.php', $data);
-  }
+  $url='http://'.$_SERVER['HTTP_HOST'].'/scripts/generate_bill.php';
+  $test=CallAPI('POST', $url, $data);
   try {
     $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', 3);
     $html2pdf->pdf->SetDisplayMode('fullpage');

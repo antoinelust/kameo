@@ -60,8 +60,8 @@
                   disabled
                   name="audience"
                 >
-                  <option value="B2B">B2B</option>
-                  <option value="B2C">B2C</option>
+                  <option value="B2B">Entreprise</option>
+                  <option value="B2C">Particulier</option>
                 </select>
               </div>
               <div class="separator"></div>
@@ -80,9 +80,9 @@
                   <input type="checkbox" name="locking" class="form-control" readonly="true">
                 </div>
               </div>
-              <input type="text" name="ID" class="form-control hidden" />
+              <input type="text" name="action" class="form-control hidden" value="editClient">
+              <input type="text" name="ID" class="form-control hidden">
               <input type="text" name="internalReference" class="form-control hidden">
-
               <div class="col-sm-12">
                 <button class="button small green button-3d rounded icon-left hidden" id="sendButtonClientDetails" type="submit" >
                   <i class="fa fa-paper-plane"></i><?= L::generic_send; ?>
@@ -223,7 +223,7 @@
             );
             $("#widget-companyDetails-form input").attr("readonly", true);
             $("#widget-companyDetails-form select").prop("disabled", true);
-            $("#companyListingTable").dataTable().api().ajax.reloa();
+            $("#companyListingTable").dataTable().api().ajax.reload();
 
           } else {
             $.notify(

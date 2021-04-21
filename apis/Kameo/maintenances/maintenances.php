@@ -24,6 +24,26 @@ switch($_SERVER["REQUEST_METHOD"])
 			if(get_user_permissions("admin", $token)){
 				include 'retrieveMaintenance.php';
 			}
+		}else if($action === 'list'){
+			if(get_user_permissions("admin", $token)){
+				if(isset($_GET['company'])){
+					echo json_encode(execSQL("SELECT entretiens.ID, entretiens.DATE, bike_catalog.BRAND, bike_catalog.MODEL FROM entretiens, customer_bikes, bike_catalog WHERE entretiens.STATUS='DONE' AND BIKE_ID=customer_bikes.ID  AND customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.COMPANY=? ORDER BY entretiens.ID DESC", array('s', $_GET['company']), false));
+					die;
+				}else{
+					echo json_encode(execSQL("SELECT * FROM entretiens WHERE BIKE_ID IN (SELECT ID FROM customer_bikes WHERE COMPANY = ?) ORDER BY ID DESC", array('s', $_GET['category']), false));
+					die;
+				}
+			}
+		}else if($action === 'listServices'){
+			if(get_user_permissions("admin", $token)){
+				echo json_encode(execSQL("SELECT * FROM services_entretiens WHERE CATEGORY = ?", array('s', $_GET['category']), false));
+				die;
+			}
+		}else if($action === 'listCategories'){
+			if(get_user_permissions("admin", $token)){
+				echo json_encode(execSQL("SELECT CATEGORY FROM services_entretiens GROUP BY CATEGORY ORDER BY CATEGORY", array(), false));
+				die;
+			}
 		}else
 			error_message('405');
 		break;

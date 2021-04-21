@@ -74,9 +74,16 @@ function list_maintenances() {
         title: "Statut",
         data: "status",
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html(
-            (sData == "AUTOMATICALY_PLANNED" || sData == "MANUALLY_PLANNED") ? "<span class='text-red'>"+sData+"<sData>" : sData
-          );
+          if(sData == "AUTOMATICALY_PLANNED"){
+            $(nTd).html("<span class='text-red'>Automatique<sData>");
+          }else if(sData == "MANUALLY_PLANNED"){
+            $(nTd).html("<span class='text-red'>Manuelle<sData>");
+          }else if(sData == "CONFIRMED"){
+            $(nTd).html("<span class='text-green'>Confirmé<sData>");
+          }
+          else{
+            $(nTd).html("<span class='text-green'>Fait<sData>");
+          }
         },
       },
       { title: "Type", data: "type" },
