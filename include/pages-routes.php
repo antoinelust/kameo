@@ -2,6 +2,7 @@
 
 	/** INDEX **/
 	$router->map('GET','@(/|index((\.).+)?)$', 'pages/index.php', 'index');
+	$router->map('GET','/index2[ext]', 'pages/index2.php');
 
 	/** NOS SOLUTIONS **/
 	$router->map('GET','/velo-partage[ext]', 'pages/nos-solutions/velo-partage.php');

@@ -1994,3 +1994,5 @@ body.device-xxs .box-fancy [class*="col-"]{padding:10% !important;}
 .inspiro-slider .owl-dots .owl-dot span{background-color:#fff;border-radius:inherit;height:4px;width:30px;opacity:.5;border:none !important;box-shadow:none !important;outline:none !important;}
 .inspiro-slider .owl-dots .owl-dot.active span{opacity:1;}
 .inspiro-slider .owl-dots .owl-dot span:after{background-color:#fff;}
+
+.newbox{padding:-80px 0;position:relative;z-index:auto;width:100%;overflow:hidden;}
