@@ -306,10 +306,6 @@ function displayDataBarcode(){
 
 /////////////////////////////////////////////////////
 
-$('#listOrder').change(function(){
-	$('#bindArticleTooOrder').show();
-})
-
 
 ////////////////////////Liaison de l'article au code barre scannez pour l'ajoit de stock
 
@@ -340,6 +336,10 @@ function bindArticle(){
 	});
 }
 
+$('#listOrder').change(function(){
+	$('#bindArticleTooOrder').show();
+})
+
 
 ///////////////Récupere les vélos de contract type 'order'
 function displaySelectToAddStock(type){
@@ -361,7 +361,10 @@ function displaySelectToAddStock(type){
 
 							var i =0;
 
-							document.getElementById('listOrderDiv').style.display='block'
+							document.getElementById('listOrderDiv').style.display='block';
+							document.getElementById('listOrderBikeDiv').style.display='block';
+							document.getElementById('listOrderAccessoryDiv').style.display='none';
+							
 							$('#listOrder').find('option').remove().end();
 							while(i<response.numberBikeOrder){
 								if(i==0){
@@ -388,43 +391,46 @@ function displaySelectToAddStock(type){
 		}
 		else if (type='ACCESSORY'){
 			typeToBind = 'ACCESSORY';
-			$.ajax({
-				url: 'apis/Kameo/scannerForm.php',
-				type: 'get',
-				data: {"action": "loadAccessoryOrder","barcode" :document.getElementById('resultDisplay').value,"typeContract":'order'},
-				success: function(response){
-					if(response.response == 'error') {
-						console.log('error');
-					}
-					if(response.response == 'success'){
-
-						if(response.numberAccessoryOrder>0){
-
-							var i =0;
-
-							document.getElementById('listOrderDiv').style.display='block'
-							$('#listOrder').find('option').remove().end();
-							while(i<response.numberAccessoryOrder){
-								if(i==0){
-									$('#listOrder').append('<option disabled selected value>Choisissez l\accesoire lié à cette commande </option>');
-								}
-								$('#listOrder').append('<option value="'+response.bike[i].accessory+'">'+response.bike[i].accessory+'-'+response.brand +'-'+response.model+':'+response.category+'</option>');
-								i++;
-							}
-						}
-						else {
-							$.notify(
-							{
-								message:'Aucune article de ce type n\'a été commandé ou en stock',
-							},
-							{
-								type: "danger",
-							}
-							);
-						}
-					}
-				}
-			});
+			document.getElementById('listOrderDiv').style.display='block';
+			document.getElementById('listOrderBikeDiv').style.display='none';
+			document.getElementById('listOrderAccessoryDiv').style.display='block';
+			
+			$("#accessoryOrderToAdd").dataTable({
+				destroy: true,
+				ajax: {
+					url: "apis/Kameo/scannerForm.php",
+					contentType: "application/json",
+					type: "get",
+					data: {
+						action: "loadAccessoryOrder",
+						barcode :document.getElementById('resultDisplay').value,
+						typeContract:"order",
+					},
+					dataSrc: ""
+				},
+				columns: [
+				{title: "ID", data: "accessory",
+			},
+			{title: "Type de contrat", data: "contract",
+		},
+		{title: "Marque", data: "brand",
+	},
+	{title: "Modèle", data: "model",
+},
+{title: "Categorie", data: "category",
+},
+{ title: "",data: "accessory",
+fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+	$(nTd).html(
+		"<input class='form-check-input' name='accessoryId[]' type='checkbox' value='"+sData+"' >");
+},
+},
+],
+order: [
+[0, "desc"]
+],
+paging : false,
+});
 		}
 	}
 	else if (roleButton=='remove'){
@@ -929,7 +935,7 @@ function changeDisplay(type)
 	}
 	else if(type == 'add'){
 		$('#bindArticleTooOrder').hide();
-		$('#listOrder').find('option').remove().end();
+
 		document.getElementById('listOrderDiv').style.display='none'
 		document.getElementById('displayAdd').style.display='block'
 		document.getElementById('displayScan').style.display='none'

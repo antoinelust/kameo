@@ -39,6 +39,8 @@ $('.addStockAccessoryButton').click(function(){
  $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
  $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
  $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+ $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeIn();
+ $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
 
 
  $('#widget-manageStockAccessory-form select[name=contractType]').val('order');
@@ -120,6 +122,10 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
     $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeIn();
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
+
+
   }
   else if($(this).val()=="selling"){
     $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
@@ -127,17 +133,28 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
     $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
+    $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
   }
-  else{
+  else if($(this).val()=="order"){
     $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeIn();
+    $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
   }
 
-  if($(this).val()=="stock"){
+  else {
+    $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
+    $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
     $('#widget-manageStockAccessory-form select[name=company]').val(12);
+    $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeIn();
+    $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
   }
 
 });
@@ -194,31 +211,32 @@ $('#widget-manageStockAccessory-form select[name=model]').change(function(){
 
 
 $(".stockAccessoriesClick").click(function(){
- $("#widget-manageStockAccessory-form").trigger("reset");
- $('#widget-manageStockAccessory-form select[name=bike').find('option').remove().end();
- $("#widget-manageStockAccessory-form select[name=category]").val("");
- $("#widget-manageStockAccessory-form select[name=model]").val("");
- $("#widget-manageStockAccessory-form select[name=company]").val("");
- $("#widget-manageStockAccessory-form select[name=user]").val("");
+  $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeOut();
+  $("#widget-manageStockAccessory-form").trigger("reset");
+  $('#widget-manageStockAccessory-form select[name=bike').find('option').remove().end();
+  $("#widget-manageStockAccessory-form select[name=category]").val("");
+  $("#widget-manageStockAccessory-form select[name=model]").val("");
+  $("#widget-manageStockAccessory-form select[name=company]").val("");
+  $("#widget-manageStockAccessory-form select[name=user]").val("");
 
- $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeOut();
+  $("#widget-manageStockAccessory-form input[name=numberArticle]").parent().fadeOut();
 
- list_stock_accessories();
- if ($('#widget-manageStockAccessory-form select[name=category] option').length == 0) {
-  $.ajax({
-   url: "apis/Kameo/accessories/accessories.php",
-   type: "get",
-   data: {
-     "action": "getCategories",
-   },
-   success : function(data) {
-     data.categories.forEach(function(category, index){
-       $("#widget-manageStockAccessory-form select[name=category]").append('<option value='+category['ID']+'>'+category['CATEGORY']+'</option>');
-     });
-     $("#widget-manageStockAccessory-form select[name=category]").val("");
-   }
- });
-}
+  list_stock_accessories();
+  if ($('#widget-manageStockAccessory-form select[name=category] option').length == 0) {
+    $.ajax({
+     url: "apis/Kameo/accessories/accessories.php",
+     type: "get",
+     data: {
+       "action": "getCategories",
+     },
+     success : function(data) {
+       data.categories.forEach(function(category, index){
+         $("#widget-manageStockAccessory-form select[name=category]").append('<option value='+category['ID']+'>'+category['CATEGORY']+'</option>');
+       });
+       $("#widget-manageStockAccessory-form select[name=category]").val("");
+     }
+   });
+  }
 });
 
 
@@ -422,16 +440,32 @@ function get_stock_accessory(ID){
          $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeIn();
          $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeIn();
        }
-       else {
-         $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
-         $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
-         $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
-         $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
-         $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
-       }
-       var catalogID = data.CATALOG_ID;
+       else if(data.CONTRACT_TYPE=="order"){
+        $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeIn();
+        $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").val(data.ESTIMATED_DELIVERY_DATE);
+        console.log(data.ESTIMATED_DELIVERY_DATE);
+      }
+      else {
+        $("#widget-manageStockAccessory-form input[name=contractStart]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=contractEnd]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
+        $('#widget-manageStockAccessory-form select[name=company]').val(12);
+        $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeIn();
+        $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
+        $("#widget-manageStockAccessory-form input[name=deliveryDate]").val(data.DELIVERY_DATE);
+        console.log(data.DELIVERY_DATE);
+      }
+      var catalogID = data.CATALOG_ID;
 
-       $.ajax({
+      $.ajax({
         url: "apis/Kameo/accessories/accessories.php",
         type: "get",
         data: {
@@ -450,9 +484,9 @@ function get_stock_accessory(ID){
           $("#widget-manageStockAccessory-form select[name=model]").val(catalogID);
         }
       });
-     }
-   }
- });
+    }
+  }
+});
 }
 
 $("#widget-manageStockAccessory-form select[name=user]").change(function(){

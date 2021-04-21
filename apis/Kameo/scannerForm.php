@@ -143,46 +143,77 @@ else if ($action == 'loadAccessoryOrder'){
 		die;
 	}
 	$result = mysqli_query($conn, $sql);
-	$length = $result->num_rows;
 	$row = mysqli_fetch_assoc($result);
 	$tempId = $row['ID_CATALOGUE'];
 
 
-
-	$sqlDetails="SELECT * FROM accessories_catalog WHERE ID='$tempId'";
-	$resultDetails = mysqli_query($conn, $sqlDetails);
-	$rowDetails= mysqli_fetch_assoc($resultDetails);
-
-	$response['model']=$rowDetails['MODEL'];
-	$response['brand']=$rowDetails['BRAND'];
-	$response['idCategory']=$rowDetails['ACCESSORIES_CATEGORIES'];
-	$tempIdCategory = $rowDetails['ACCESSORIES_CATEGORIES'];
-
 	if($typeContract=='stock'){
+
+		$sqlDetails="SELECT * FROM accessories_catalog WHERE ID='$tempId'";
+		$resultDetails = mysqli_query($conn, $sqlDetails);
+		$rowDetails= mysqli_fetch_assoc($resultDetails);
+
+		$response['model']=$rowDetails['MODEL'];
+		$response['brand']=$rowDetails['BRAND'];
+		$response['idCategory']=$rowDetails['ACCESSORIES_CATEGORIES'];
+		$tempIdCategory = $rowDetails['ACCESSORIES_CATEGORIES'];
+
 		$sqlAccessory="SELECT * FROM accessories_stock WHERE CATALOG_ID='$tempId' AND (CONTRACT_TYPE='$typeContract' OR CONTRACT_TYPE='pending_delivery')";
+		$response['response']='success';
+		$resultAccessory = mysqli_query($conn, $sqlAccessory);
+
+		if ($conn->query($sqlAccessory) === FALSE) {
+			$response = array ('response'=>'error', 'message'=> $conn->error);
+			echo json_encode($response);
+			die;
+		}
+
+		$i=0;
+		while($rowAccessory = mysqli_fetch_array($resultAccessory)){
+			$response['bike'][$i]['accessory']= $rowAccessory['ID'];
+			$response['bike'][$i]['contract']= $rowAccessory['CONTRACT_TYPE'];
+			$i++;
+		}
+		$response['numberAccessoryOrder'] = $i;
+
+		$sqlCategory="SELECT * FROM accessories_categories WHERE ID='$tempIdCategory'";
+		$resultCategory= mysqli_query($conn, $sqlCategory);
+		$rowCategory = mysqli_fetch_assoc($resultCategory);
+		$response['category'] = $rowCategory['CATEGORY'];
+
 	}
 	else {
 		$sqlAccessory="SELECT * FROM accessories_stock WHERE CATALOG_ID='$tempId' AND CONTRACT_TYPE='$typeContract'";
-	}
-	if ($conn->query($sqlAccessory) === FALSE) {
-		$response = array ('response'=>'error', 'message'=> $conn->error);
-		echo json_encode($response);
-		die;
-	}
-	$resultAccessory = mysqli_query($conn, $sqlAccessory);
-	$response['response']='success';
-	$i=0;
-	while($rowAccessory = mysqli_fetch_array($resultAccessory)){
-		$response['bike'][$i]['accessory']= $rowAccessory['ID'];
-		$response['bike'][$i]['contract']= $rowAccessory['CONTRACT_TYPE'];
-		$i++;
-	}
-	$response['numberAccessoryOrder'] = $i;
+		$resultAccessory = mysqli_query($conn, $sqlAccessory);
+		
+		if ($conn->query($sqlAccessory) === FALSE) {
+			$response = array ('response'=>'error', 'message'=> $conn->error);
+			echo json_encode($response);
+			die;
+		}
 
-	$sqlCategory="SELECT * FROM accessories_categories WHERE ID='$tempIdCategory'";
-	$resultCategory= mysqli_query($conn, $sqlCategory);
-	$rowCategory = mysqli_fetch_assoc($resultCategory);
-	$response['category'] = $rowCategory['CATEGORY'];
+		$i=0;
+		while($rowAccessory = mysqli_fetch_array($resultAccessory)){
+			
+			$response[$i]['accessory']= $rowAccessory['ID'];
+			$response[$i]['contract']= $rowAccessory['CONTRACT_TYPE'];
+
+			$sqlDetails="SELECT * FROM accessories_catalog WHERE ID='$tempId'";
+			$resultDetails = mysqli_query($conn, $sqlDetails);
+			$rowDetails= mysqli_fetch_assoc($resultDetails);
+
+			$response[$i]['model']=$rowDetails['MODEL'];
+			$response[$i]['brand']=$rowDetails['BRAND'];
+			$response[$i]['idCategory']=$rowDetails['ACCESSORIES_CATEGORIES'];
+			$tempIdCategory = $rowDetails['ACCESSORIES_CATEGORIES'];
+
+			$sqlCategory="SELECT * FROM accessories_categories WHERE ID='$tempIdCategory'";
+			$resultCategory= mysqli_query($conn, $sqlCategory);
+			$rowCategory = mysqli_fetch_assoc($resultCategory);
+			$response[$i]['category'] = $rowCategory['CATEGORY'];
+			$i++;
+		}
+	}
 	echo json_encode($response);
 }
 
@@ -460,6 +491,7 @@ else if ($action == 'getDataFromOrderPendingDelivery'){
 	}
 
 	echo json_encode($response);
+	die;
 
 
 }
@@ -478,6 +510,7 @@ else if ($action == 'listCompanies'){
 	}
 	$response['numberCompanies'] = $i;
 	echo json_encode($response);
+	die;
 }
 // article en vente
 else if($action=='selling'){
@@ -500,17 +533,18 @@ else if($action=='selling'){
 	$response['message']='article modifié (vente) dans le BDD';
 	$response['type']='selling';
 	echo json_encode($response);
+	die;
 }
 // livraison d'un vélo en attente de livraison
 else if($action=='leasingStockPending'){
 
 	if($companyId!=''){
 		
-			$sqlData="SELECT * FROM companies WHERE COMPANY_NAME='$companyId'";
-			$resultData= mysqli_query($conn, $sqlData);
-			$rowData = mysqli_fetch_assoc($resultData);
-			$companyInternalReference = $rowData['INTERNAL_REFERENCE'];
-			$companyId = $rowData['ID'];
+		$sqlData="SELECT * FROM companies WHERE COMPANY_NAME='$companyId'";
+		$resultData= mysqli_query($conn, $sqlData);
+		$rowData = mysqli_fetch_assoc($resultData);
+		$companyInternalReference = $rowData['INTERNAL_REFERENCE'];
+		$companyId = $rowData['ID'];
 	}
 	else{
 		$companyId = $companyIdSelling;
@@ -536,6 +570,7 @@ else if($action=='leasingStockPending'){
 	$response['message']='article modifié (leasing) dans le BDD';
 	$response['type']='leasing';
 	echo json_encode($response);
+	die;
 
 }
 else if($action=='getPrice'){
@@ -573,8 +608,9 @@ else if($action=='getPrice'){
 
 	}
 	echo json_encode($response);
+	die;
 }
-else if($action='changeMultipleArticles'){
+else if($action=='changeMultipleArticles'){
 	// faire une boucle qui tourne jusque le tab length
 	// verifier le type et changer le stock date et contrat
 	// puis appeler add-bill et creer un nouveau if pour ajouter le tableau dans $data
@@ -593,4 +629,34 @@ else if($action='changeMultipleArticles'){
 	}
 	$response['response']='success';
 	echo json_encode($response);
+	die;
 }
+else if($action=='bindAccessoriesMultiple'){
+	
+	foreach ($_GET['accessoryId'] as $row) {
+		$status='';
+		$id=$row;
+		
+		$sqlCheck="SELECT * FROM accessories_stock WHERE ID='$id' ";
+		$resultCheck= mysqli_query($conn, $sqlCheck);
+		$rowCheck= mysqli_fetch_assoc($resultCheck);
+		$company = $rowCheck['COMPANY_ID'];
+		$order = $rowCheck['ORDER_ID'];
+
+		if(($company!=NULL || $company!=12)|| $order != null){
+			$status='pending_delivery';
+		}
+
+		if(($company==NULL || $company==12)|| $order == null){
+			$status = 'stock';
+		}
+		
+		$sql = $conn->prepare("UPDATE accessories_stock SET USR_MAJ='$token',HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='$status' WHERE ID='$id'");
+		$sql->execute();
+		
+	}	
+	$response['response']='success';
+	echo json_encode($response);
+	die;
+}
+

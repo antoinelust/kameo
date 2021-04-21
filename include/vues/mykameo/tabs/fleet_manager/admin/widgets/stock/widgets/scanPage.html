@@ -145,14 +145,29 @@
 
 			<div  id = "displayAdd" style="display:block ">
 				<div class="col-sm-12">
-					<div class="col-sm-6" id="listOrderDiv" style="display:none ">
+					<div id="listOrderDiv" style="display:none ">
 						
+						
+						
+						<div class="col-sm-6" id="listOrderBikeDiv" style="display:none ">
 							<label id="listOrderLabel" for="listOrder">Liste des Article en commande lié  :</label>
 							<select name= "listOrder" id="listOrder" style="max-width:400px">
 							</select>
-
+						</div>
+						<div id="listOrderAccessoryDiv" style="display:none ">
+							<label id="listOrderLabel" >Liste des Article en commande lié  :</label>
+							<form  name = "widget-stockBindAccessoryMultiple-form" id="widget-stockBindAccessoryMultiple-form" role="form" method="get" action="apis/Kameo/scannerForm.php">
+								<table id="accessoryOrderToAdd" name="accessoryOrderToAdd" class="table" style='width: 100%;'></table>
+								<input hidden name="action" value="bindAccessoriesMultiple">
+								<button
+								class="button small green button-3d rounded icon-left"
+								type="submit"
+								name="btBindAccessories">
+								<i name ="btBindAccessoriesIm" class="fa fa-paper-plane"></i>Envoyer</button>
+							</form>
+						</div>
 					</div>
-				
+
 				</div>
 				<div class="col-sm-12" id ="bindArticleTooOrder" name ="bindArticleTooOrder">
 					<button onclick="bindArticle()" type="button" class="button small green button-3d rounded icon-left">Lier</button>
@@ -305,6 +320,36 @@
 						else if (response.type=='selling'){
 							create_Facture();
 						}
+					} else {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "danger",
+						}
+						);
+					}
+				},
+			});
+		},
+	});
+	jQuery("#widget-stockBindAccessoryMultiple-form").validate({
+		submitHandler: function (form) {
+			jQuery(form).ajaxSubmit({
+				success: function (response) {
+					if (response.response == "success") {
+						$.notify(
+						{
+							message: response.message,
+						},
+						{
+							type: "success",
+						}
+						);
+						document.getElementById("widget-stockBindAccessoryMultiple-form").reset();
+						document.getElementById('listOrderDiv').style.display='none';
+						document.getElementById('resultDisplay').value='';
 					} else {
 						$.notify(
 						{

@@ -39,8 +39,36 @@ switch($_SERVER["REQUEST_METHOD"])
 	}
 	else if ($action === 'listOrderAcessories'){
 		if(get_user_permissions("admin", $token)){
-			$listOrderAcessories= execSQL("SELECT aa.*,cc.CATEGORY,ee.BRAND,ee.MODEL,bb.EMAIL, bb.PORTFOLIO_ID,bb.COMPANY, dd.COMPANY_NAME FROM order_accessories aa, accessories_categories cc,client_orders bb, companies dd, bike_catalog ee WHERE ee.ID=bb.PORTFOLIO_ID AND aa.ORDER_ID=bb.ID  AND bb.COMPANY=dd.ID AND cc.ID=aa.CATEGORY", array(), false);
+			$listOrderAcessories= execSQL("SELECT aa.*,cc.CATEGORY,ee.BRAND,ee.MODEL,bb.EMAIL, bb.PORTFOLIO_ID,bb.COMPANY, dd.COMPANY_NAME, ff.CONTRACT_TYPE FROM order_accessories aa, accessories_categories cc,client_orders bb, companies dd, bike_catalog ee, accessories_stock ff WHERE ee.ID=bb.PORTFOLIO_ID AND aa.ORDER_ID=bb.ID  AND bb.COMPANY=dd.ID AND cc.ID=aa.CATEGORY AND ff.ORDER_ID=aa.ID 
+				UNION ALL 
+				(SELECT aa.*,cc.CATEGORY,ee.BRAND,ee.MODEL,bb.EMAIL, bb.PORTFOLIO_ID,bb.COMPANY, dd.COMPANY_NAME, ff.CONTRACT_TYPE FROM order_accessories aa, accessories_categories cc,client_orders bb, companies dd, bike_catalog ee, accessories_stock ff WHERE ee.ID=bb.PORTFOLIO_ID AND aa.ORDER_ID=bb.ID  AND bb.COMPANY=dd.ID AND cc.ID=aa.CATEGORY AND not EXISTS(SELECT 1 FROM accessories_stock WHERE ORDER_ID=aa.ID))", array(), false);
 			echo json_encode($listOrderAcessories);
+			die;
+		}
+		else{
+			error_message('403');
+		}
+	}
+	else if ($action === 'getStatOfAccessoryOrder'){
+		$id=isset($_GET['ID']) ? $_GET['ID'] : NULL;
+		if(get_user_permissions("admin", $token)){
+			$response['state']= execSQL("SELECT aa.*, bb.* FROM accessories_stock aa, accessories_catalog bb WHERE aa.ORDER_ID='$id' AND aa.CATALOG_ID=bb.ID", array(), false);
+			$response['response']="success";
+			
+			if($response['state']==null){
+				$status="En attente de traitement";
+			}
+			if($response['state'][0]['CONTRACT_TYPE']=='order'){
+				$status="En attente de livraison de nos fournisseurs";
+			}
+			if($response['state'][0]['CONTRACT_TYPE']=='pending_delivery'){
+				$status="En attente d'expedition chez le client";
+			}
+			if($response['state'][0]['CONTRACT_TYPE']=='leasing' || $response['state'][0]['CONTRACT_TYPE']=='selling'){
+				$status="Commande envoyé chez le client";
+			}
+			$response['status']=$status;
+			echo json_encode($response);
 			die;
 		}
 		else{

@@ -35,21 +35,20 @@ $( ".orderAccessoriesClick" ).click(function() {
 		{ title: "Marque du vélo", data: "BRAND"},
 		{ title: "Model du vélo", data: "MODEL"},
 		{ title: "Categorie", data: "CATEGORY" },
-		{ title: "Etat de la commande", data: "ID" ,fnCreatedCell: 
-		function (nTd, sData, oData, iRow, iCol) {
-			$.ajax({
-				url: 'apis/Kameo/accessories/accessories.php',
-				type: 'get',
-				data: {"action": "getStatOfAccessoryOrder", "ID":oData.ID},
-				success: function(response){
-					if(response.response == 'error') {
-						console.log('error');
-					}
-					if(response.response == 'success'){
-						$(nTd).html(response.status);
-					}
-				}
-			});
+		{ title: "Etat de la commande", data: "CONTRACT_TYPE" ,
+		fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+			if(sData==null){
+				$(nTd).html('<label>En attente de traitement</label>');
+			}
+			if(sData=='order'){
+				$(nTd).html('<label>En attente de livraison de nos fournisseurs</label>');
+			}
+			if(sData=='pending_delivery'){
+				$(nTd).html('<label>En attente d\'expedition chez le client</label>');	
+			}
+			if(sData=='leasing' || sData=='selling'){
+				$(nTd).html('<label>Commande envoyé chez le client</label>');
+			}
 		} 
 	},
 	{ title: "", data: "ID" ,fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
