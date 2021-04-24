@@ -1024,7 +1024,7 @@ a.read-more{text-transform:uppercase;font-weight:700;-webkit-transition:all 0.2s
 .owl-carousel:hover .owl-controls .owl-nav .owl-prev{left:0px;}
 .owl-carousel:hover .owl-controls .owl-nav .owl-next{right:0px;}
 .owl-carousel .owl-controls .owl-nav .owl-next,
-.owl-carousel .owl-controls .owl-nav .owl-prev{background:rgba(0, 0, 0, 0.4);color:#fff;font-size:18px;height:75px;position:absolute;text-align:center;-webkit-transition:all 0.3s ease-out 0s;transition:all 0.3s ease-out 0s;width:35px;cursor:pointer;cursor:hand;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.owl-carousel .owl-controls .owl-nav .owl-prev{background:rgba(60, 179, 149, 1);color:#fff;font-size:18px;height:75px;position:absolute;text-align:center;-webkit-transition:all 0.3s ease-out 0s;transition:all 0.3s ease-out 0s;width:35px;cursor:pointer;cursor:hand;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 .carousel-description-style .description{margin-bottom:30px;}
 .carousel-description-style .description h2{margin-top:0;padding-right:74px;}
 .carousel-description-style .image-box-description h4{margin-bottom:0;}

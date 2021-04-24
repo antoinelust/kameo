@@ -18,7 +18,63 @@ include 'include/head.php';
 		<?php include 'include/topbar.php'; ?>
 		<?php include 'include/header2.php'; ?>
 		
+		<!-- SLIDER -->
+		<section class="no-padding">
+
+			<div id="slider-carousel" class="boxed-slider">
+
+				<div style="background-image:url('images/slider_1_leasing.jpg');" class="owl-bg-img">
+
+					<div class="container-fullscreen">
+						<div class="text-middle">
+							<div class="container">
+								<div class="text-dark slider-content">
+									<h1 class="text-uppercase text-large"><strong class="text-green">Leasing</strong> <strong class="text-light">de vélos</strong></h1>
+									<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
+									<a class="button color full-rounded transparent"  style="margin-right: 2em;" href="#">Je suis un employeur</a>
+									<a class="button white full-rounded" style="background-color: white" href="#">Je suis un employé</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="background-image:url('images/slider_2_achat.jpg');" class="owl-bg-img">
+
+					<div class="container-fullscreen">
+						<div class="text-middle">
+							<div class="container">
+								<div class="text-dark slider-content">
+									<h1 class="text-uppercase text-large"><strong class="text-green">Achat</strong> <strong class="text-light">de vélos</strong></h1>
+									<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
+									<a class="button white full-rounded" style="margin-right: 2em; background-color: white" href="#">Je suis un particulier</a>
+									<a class="button color full-rounded transparent" style="margin-right: 2em;" href="#">Je suis un employeur</a>
+									<a class="button white full-rounded" style="background-color: white" href="#">Je suis un employé</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="background-image:url('images/slider_3_entretien.jpg');" class="owl-bg-img">
+
+					<div class="container-fullscreen">
+						<div class="text-middle">
+							<div class="container">
+								<div class="text-dark slider-content">
+									<h1 class="text-uppercase text-large"><strong class="text-green">Entretien</strong> <strong class="text-light">de vélos</strong></h1>
+									<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
+									<a class="button color full-rounded transparent"  style="margin-right: 2em;" href="#">Je suis un particulier</a>
+									<a class="button white full-rounded" style="background-color: white" href="#">Je suis une entreprise</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- END: SLIDER -->
+		
 		<!-- SECTION SLIDER OWL -->
+		<!--
 		<div id="slider">
 			<div id="slider-carousel">
 				<div style="background-image:url('images/slider_1_leasing.jpg');" class="owl-bg-img fullscreen">
@@ -66,17 +122,80 @@ include 'include/head.php';
 				</div>
 			</div>
 		</div>
+		-->
 		<!-- END: SECTION SLIDER OWL -->
 		
 		<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark">
 			<div class="container">
 				<h1 class="text-uppercase text-large"><strong class="text-green">Services</strong> <strong class="text-light">annexes</strong></h1>
 				<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
-				<a class="button green full-rounded text-light" style="margin-right: 2em;" href="#"><span>Gestion de flotte</span></a>
-				<a class="button white full-rounded" style="margin-right: 2em; background-color: white" "href="#"><span>Infrastructures</span></a>
-				<a class="button green full-rounded text-light" href="#"><span>Expertise / Conseil</span></a>
+				<a class="button color full-rounded transparent" style="margin-right: 2em;" href="#"><span>Gestion de flotte</span></a>
+				<a class="button white full-rounded" style="margin-right: 2em; background-color: white" href="#"><span>Infrastructures</span></a>
+				<a class="button color full-rounded transparent" href="#"><span>Expertise / Conseil</span></a>
 			</div>
 		</div>
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h1 class="text-green"><?= L::choose_kameo_title; ?></h1>
+					<br>
+					<p class="text-justify"><?= L::choose_kameo_subtitle; ?></p>
+					<p class="text-justify"><?= L::choose_kameo_text; ?></p>
+					<p class="text-justify"><?= L::choose_kameo_text2; ?></p>
+					<p><?= L::choose_kameo_text3; ?></p>
+				</div>
+				<div class="col-md-6">
+					<img src="images/Roue_Kameo_Montage_GIF.gif" class="img-responsive img-rounded center" alt="Roue des services KAMEO Bikes" style="width:75%">
+				</div>
+			</div>
+		</div>
+		
+		<section class="background-green">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<h2 class="text-light text-uppercase text-medium">Conway<br>
+						<strong class="text-dark">cairon t 270 2021</strong></h2>
+						<p class="text-light text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>
+						Sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+						<a class="button white full-rounded" style="margin-right: 2em; background-color: white" href="#">En savoir plus</a>
+					</div>
+					<div class="col-md-6">
+						<img src="images/t270.png" class="img-responsive img-rounded center" alt="Roue des services KAMEO Bikes">
+					</div>
+					<a class="button full-rounded text-light" style="margin-right: 2em; background-color: black" href="#">Voir tout le catalogue</a>
+				</div>
+			</div>
+		</section>
+		
+		<!-- SECTION CLIENTS -->
+		<section class="p-b-0">
+			<div class="container">
+				<h1 class="text-green"><?= L::societes_title; ?></h1>
+				<ul class="grid grid-4-columns">
+					<!-- <li style="cursor: default;"><img draggable="false" src="images/clients/bpost.png" alt="Nos clients - BPost"></li> -->
+					<li style="cursor: default;"><img draggable="false" src="images/clients/actiris.png" alt="Nos clients - Actiris"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/infrabel.png" alt="Nos clients - Infrabel"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/afelio.png" alt="Nos clients - Afelio"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/atradius.png" alt="Nos clients - Atradius"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/galler.png" alt="Nos clients - Galler Chocolatiers"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/siapartners.png" alt="Nos clients - SiaPartners"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/spi.png" alt="Nos clients - SPI"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/agc.png" alt="Nos clients - AGC"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/rayon9.png" alt="Nos clients - Rayon 9"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/chu.png" alt="Nos clients - CHU Liège"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/dedale.png" alt="Nos clients - Dedale Assurances"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/elegis.png" alt="Nos clients - Elegis"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/epsylon.png" alt="Nos clients - Epsylon"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/infine.png" alt="Nos clients - In Fine"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/idea.png" alt="Nos clients - IDEA"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/bxlville.png" alt="Nos clients - Ville de Bruxelles"></li>
+					<li style="cursor: default;"><img draggable="false" src="images/clients/prefer.png" alt="Nos clients - Prefer"></li>
+				</ul>
+			</div>
+		</section>
+		<!-- END: SECTION CLIENTS -->
 		
 		
 		<!--
