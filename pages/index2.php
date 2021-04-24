@@ -28,7 +28,7 @@ include 'include/head.php';
 					<div class="container-fullscreen">
 						<div class="text-middle">
 							<div class="container">
-								<div class="text-dark slider-content">
+								<div class="slider-content">
 									<h1 class="text-uppercase text-large"><strong class="text-green">Leasing</strong> <strong class="text-light">de vélos</strong></h1>
 									<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
 									<a class="button color full-rounded transparent"  style="margin-right: 2em;" href="#">Je suis un employeur</a>
@@ -43,7 +43,7 @@ include 'include/head.php';
 					<div class="container-fullscreen">
 						<div class="text-middle">
 							<div class="container">
-								<div class="text-dark slider-content">
+								<div class="slider-content">
 									<h1 class="text-uppercase text-large"><strong class="text-green">Achat</strong> <strong class="text-light">de vélos</strong></h1>
 									<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
 									<a class="button white full-rounded" style="margin-right: 2em; background-color: white" href="#">Je suis un particulier</a>
@@ -59,7 +59,7 @@ include 'include/head.php';
 					<div class="container-fullscreen">
 						<div class="text-middle">
 							<div class="container">
-								<div class="text-dark slider-content">
+								<div class="slider-content">
 									<h1 class="text-uppercase text-large"><strong class="text-green">Entretien</strong> <strong class="text-light">de vélos</strong></h1>
 									<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
 									<a class="button color full-rounded transparent"  style="margin-right: 2em;" href="#">Je suis un particulier</a>
