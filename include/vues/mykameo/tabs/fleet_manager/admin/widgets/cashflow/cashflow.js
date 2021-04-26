@@ -428,7 +428,7 @@ function list_contracts_offers(company) {
             var offerLink = "offres/" + offer.FILE_NAME;
 
             var temp =
-              '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
+              '<tr><td><a href="#" data-target="#offerManagement" data-action="retrieve" data-toggle="modal" data-id="' +
               offer.ID +
               '">' +
               offer.ID +
@@ -448,12 +448,12 @@ function list_contracts_offers(company) {
               offer_end +
               "</td><td>" +
               probability +
-              '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
+              '</td><td><ins><a class="text-green" data-target="#offerManagement" data-action="update" data-id="' +
               offer.ID +
               '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
           } else {
             var temp =
-              '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
+              '<tr><td><a href="#" data-target="#offerManagement" data-action="retrieve" data-toggle="modal" data-id="' +
               offer.ID +
               '">' +
               offer.ID +
@@ -471,7 +471,7 @@ function list_contracts_offers(company) {
               offer_end +
               "</td><td>" +
               probability +
-              '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
+              '</td><td><ins><a class="text-green" data-action="update" data-target="#offerManagement" data-id="' +
               offer.ID +
               '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
           }
@@ -539,18 +539,6 @@ function list_contracts_offers(company) {
         var temp = "</tbody></table>";
         dest = dest.concat(temp);
         document.getElementById("costsListingSpan").innerHTML = dest;
-
-        $(".retrieveOffer").click(function () {
-          retrieve_offer(this.name, "retrieve");
-          $(".offerManagementTitle").text("Consulter une offre");
-          $(".offerManagementSendButton").addClass("hidden");
-        });
-        $(".updateOffer").click(function () {
-          retrieve_offer(this.name, "update");
-          $(".offerManagementTitle").text("Mettre à jour une offre");
-          $(".offerManagementSendButton").removeClass("hidden");
-          $(".offerManagementSendButton").text("Mettre à jour");
-        });
     }
   });
 }

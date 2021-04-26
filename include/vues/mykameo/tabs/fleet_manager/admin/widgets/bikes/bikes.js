@@ -400,18 +400,15 @@ function updateDisplayBikeManagement(type){
   $('#widget-bikeManagement-form input[name=bikeID]').attr('readonly', true);
 
   if(type=="selling"){
-
-
-    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut();
-    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn();
-    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn();
-    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn();
-    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn();
-    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn();
-    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn();
-
+    $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form select[name=localisation]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=frameNumber]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form input[name=model]').closest("div").fadeIn("slow");
     $('.buyingInfos').fadeIn("slow");
-
     $('.orderInfos').fadeIn("slow");
     $('#widget-bikeManagement-form input[name=estimatedDeliveryDate]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
@@ -419,7 +416,7 @@ function updateDisplayBikeManagement(type){
 
     $('.contractInfos').fadeIn("slow");
     $('#widget-bikeManagement-form label[for=contractStart]').html("Date de vente");
-    $('#widget-bikeManagement-form .contractEndBloc').fadeOut();
+    $('#widget-bikeManagement-form .contractEndBloc').fadeOut("slow");
 
     $('.billingInfos').fadeIn("slow");
     $('.billingPriceDiv').fadeOut("slow");
@@ -436,6 +433,7 @@ function updateDisplayBikeManagement(type){
 
     $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form select[name=localisation]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn("slow");
@@ -462,6 +460,7 @@ function updateDisplayBikeManagement(type){
   }else if(type=="order"){
     $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form select[name=localisation]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeOut("slow");
@@ -486,6 +485,7 @@ function updateDisplayBikeManagement(type){
     $('#widget-bikeManagement-form .soldPrice input').attr("disabled");
   }else if(type=="test"){
     $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeOut("slow");
+    $('#widget-bikeManagement-form select[name=localisation]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=address]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeOut("slow");
@@ -511,6 +511,7 @@ function updateDisplayBikeManagement(type){
   }else{
     $('#widget-bikeManagement-form input[name=frameReference]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=gpsID]').closest("div").fadeIn("slow");
+    $('#widget-bikeManagement-form select[name=localisation]').closest("div").fadeOut("slow");
     $('#widget-bikeManagement-form input[name=address]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
     $('#widget-bikeManagement-form input[name=lockerReference]').closest("div").fadeIn("slow");
@@ -523,7 +524,6 @@ function updateDisplayBikeManagement(type){
     $('#widget-bikeManagement-form input[name=deliveryDate]').closest("div").fadeIn("slow");
 
     $('.contractInfos').fadeIn("slow");
-
     $('.billingInfos').fadeIn("slow");
     $('#widget-bikeManagement-form select[name=billingType]').val("monthly");
     $('.billingPriceDiv').fadeIn("slow");
@@ -746,6 +746,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('#widget-bikeManagement-form input[name=frameReference]').val(response.frameReference);
           $('#widget-bikeManagement-form input[name=lockerReference]').val(response.lockerReference);
           $('#widget-bikeManagement-form input[name=gpsID]').val(response.gpsID);
+          $('#widget-bikeManagement-form select[name=localisation]').val(response.localisation);
           $('#widget-bikeManagement-form input[name=price]').val(response.bikePrice);
           $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);
           if(response.billingType=="monthly"){
@@ -1305,7 +1306,7 @@ function list_bikes_admin(){
         var dest = "";
         var temp = `<h4 class="text-green">Vélos: Leasing et autres</h4>
         <a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#">
-        <span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span>
+        <i class="fa fa-plus"></i> Ajouter un vélo
         </a>
         <span class="button small green button-3d rounded icon-right showSoldBikes">
         <span>Afficher les vélos vendus</span>

@@ -33,165 +33,174 @@ function get_all_bikes() {
     }
   });
 }
+$( document ).ready(function() {
+  $("#offerManagement").on("show.bs.modal", function (event) {
+    var action = $(event.relatedTarget).data("action");
+    var ID = $(event.relatedTarget).data("id");
+    if(action == 'retrieve'){
+      $(".offerManagementTitle").text("Consulter une offre");
+      $(".offerManagementSendButton").aeddClass("hidden");
+    }else if(action == "update"){
+      $(".offerManagementTitle").text("Mettre à jour une offre");
+      $(".offerManagementSendButton").removeClass("hidden");
+      $(".offerManagementSendButton").text("Mettre à jour");
+    }
+    $.ajax({
+      url: "api/companies",
+      type: "get",
+      data: { action: "retrieveOffer", ID: ID},
+      success: function (response) {
+        $("#offerManagementPDF").attr("data", "");
+        console.log(action);
+        if (action == "retrieve") {
+          $("#widget-offerManagement-form input").attr("readonly", true);
+          $("#widget-offerManagement-form textarea").attr("readonly", true);
+          $("#widget-offerManagement-form select").attr("readonly", true);
+          $("#offerManagementDelete").addClass("hidden");
+        } else {
+          $("#widget-offerManagement-form input").attr("readonly", false);
+          $("#widget-offerManagement-form textarea").attr("readonly", false);
+          $("#widget-offerManagement-form select").attr("readonly", false);
+          $("#offerManagementDelete").removeClass("hidden");
+          $("#offerManagementDelete").attr("name", ID);
+        }
 
+        $("#widget-offerManagement-form input[name=title]").val(response.TITRE);
+        $("#widget-offerManagement-form textarea[name=description]").val(
+          response.DESCRIPTION
+        );
+        $("#widget-offerManagement-form select[name=type]").val(response.TYPE);
+        $("#widget-offerManagement-form select[name=status]").val(
+          response.STATUS
+        );
+        $("#widget-offerManagement-form input[name=margin]").val(
+          response.MARGIN
+        );
+        $("#widget-offerManagement-form input[name=probability]").val(
+          response.PROBABILITY
+        );
+        $("#widget-offerManagement-form input[name=company]").val(
+          response.COMPANY
+        );
+        $("#widget-offerManagement-form input[name=action]").val(action);
+        $("#widget-offerManagement-form input[name=ID]").val(ID);
 
-function retrieve_offer(ID, action) {
-  $.ajax({
-    url: "api/companies",
-    type: "get",
-    data: { action: "retrieveOffer", ID: ID},
-    success: function (response) {
-      $("#offerManagementPDF").attr("data", "");
-      if (action == "retrieve") {
-        $("#widget-offerManagement-form input").attr("readonly", true);
-        $("#widget-offerManagement-form textarea").attr("readonly", true);
-        $("#widget-offerManagement-form select").attr("readonly", true);
-        $("#offerManagementDelete").addClass("hidden");
-      } else {
-        $("#widget-offerManagement-form input").attr("readonly", false);
-        $("#widget-offerManagement-form textarea").attr("readonly", false);
-        $("#widget-offerManagement-form select").attr("readonly", false);
-        $("#offerManagementDelete").removeClass("hidden");
-        $("#offerManagementDelete").attr("name", ID);
-      }
-
-      $("#widget-offerManagement-form input[name=title]").val(response.TITRE);
-      $("#widget-offerManagement-form textarea[name=description]").val(
-        response.DESCRIPTION
-      );
-      $("#widget-offerManagement-form select[name=type]").val(response.TYPE);
-      $("#widget-offerManagement-form select[name=status]").val(
-        response.STATUS
-      );
-      $("#widget-offerManagement-form input[name=margin]").val(
-        response.MARGIN
-      );
-      $("#widget-offerManagement-form input[name=probability]").val(
-        response.PROBABILITY
-      );
-      $("#widget-offerManagement-form input[name=company]").val(
-        response.COMPANY
-      );
-      $("#widget-offerManagement-form input[name=action]").val(action);
-      $("#widget-offerManagement-form input[name=ID]").val(ID);
-
-      $("#thickBoxProductLists").empty();
-      $("#offerManagementDetails").html("");
-      if (response.item.length > 0) {
-        response.item.forEach(function(item) {
-          if (item.ITEM_TYPE == "box") {
-            $("#offerManagementDetails").append(
-              "<li>1 borne " +
-                item.MODEL +
-                " au prix de " +
-                item.LOCATION_PRICE +
-                " €/mois et un coût d'installation de " +
-                item.INSTALLATION_PRICE +
-                " €</a></li>"
-            );
-          } else if (item.ITEM_TYPE=='bike') {
-            if(item.LOCATION_PRICE == '0'){
+        $("#thickBoxProductLists").empty();
+        $("#offerManagementDetails").html("");
+        if (response.item.length > 0) {
+          response.item.forEach(function(item) {
+            console.log(item);
+            if (item.ITEM_TYPE == "box") {
               $("#offerManagementDetails").append(
-                "<li>Achat de vélo " +
-                  item.BRAND +
-                  " " +
-                  item.MODEL +
+                "<li>1 borne " +
+                  item.model +
                   " au prix de " +
-                  item.INSTALLATION_PRICE +
+                  item.ITEM_LOCATION_PRICE +
+                  " €/mois et un coût d'installation de " +
+                  item.ITEM_INSTALLATION_PRICE +
                   " €</a></li>"
               );
-            }else{
-              $("#offerManagementDetails").append(
-                "<li>Location de vélo " +
-                  item.BRAND +
-                  " " +
-                  item.MODEL +
-                  " au prix de " +
-                  item.LOCATION_PRICE +
-                  " €/mois</a></li>"
-              );
+            } else if (item.ITEM_TYPE=='bike') {
+              if(item.ITEM_LOCATION_PRICE == '0'){
+                $("#offerManagementDetails").append(
+                  "<li>Achat de vélo " +
+                    item.brand +
+                    " " +
+                    item.model +
+                    " au prix de " +
+                    item.ITEM_INSTALLATION_PRICE +
+                    " €</a></li>"
+                );
+              }else{
+                $("#offerManagementDetails").append(
+                  "<li>Location de vélo " +
+                    item.brand +
+                    " " +
+                    item.model +
+                    " au prix de " +
+                    item.ITEM_LOCATION_PRICE +
+                    " €/mois</a></li>"
+                );
+              }
+            } else if (item.ITEM_TYPE='accessory') {
+              if(item.ITEM_LOCATION_PRICE == '0'){
+                $("#offerManagementDetails").append(
+                  "<li>Achat d'accessoire " +
+                    item.brand +
+                    " " +
+                    item.model +
+                    " au prix de " +
+                    item.ITEM_INSTALLATION_PRICE +
+                    " €</a></li>"
+                );
+              }else{
+                $("#offerManagementDetails").append(
+                  "<li>Location d'accessoire   " +
+                    item.brand +
+                    " " +
+                    item.model +
+                    " au prix de " +
+                    item.ITEM_LOCATION_PRICE +
+                    " €/mois</a></li>"
+                );
+              }
             }
-          } else if (item.ITEM_TYPE='accessory') {
-            if(item.LOCATION_PRICE == '0'){
-              $("#offerManagementDetails").append(
-                "<li>Achat d'accessoire " +
-                  item.BRAND +
-                  " " +
-                  item.MODEL +
-                  " au prix de " +
-                  item.INSTALLATION_PRICE +
-                  " €</a></li>"
-              );
-            }else{
-              $("#offerManagementDetails").append(
-                "<li>Location d'accessoire   " +
-                  item.BRAND +
-                  " " +
-                  item.MODEL +
-                  " au prix de " +
-                  item.LOCATION_PRICE +
-                  " €/mois</a></li>"
-              );
-            }
-          }
-        })
-      }
+          })
+        }
 
-      if (
-        $("#widget-offerManagement-form select[name=type]").val() == "achat"
-      ) {
-        $("#widget-offerManagement-form input[name=start]").attr(
-          "readonly",
-          true
-        );
-        $("#widget-offerManagement-form input[name=end]").attr(
-          "readonly",
-          true
-        );
-        $("#widget-offerManagement-form input[name=start]").val("");
-        $("#widget-offerManagement-form input[name=end]").val("");
-      } else {
-        if (action != "retrieve") {
+        if (
+          $("#widget-offerManagement-form select[name=type]").val() == "achat"
+        ) {
           $("#widget-offerManagement-form input[name=start]").attr(
             "readonly",
-            false
+            true
           );
           $("#widget-offerManagement-form input[name=end]").attr(
             "readonly",
-            false
+            true
           );
-        }
-
-        if (response.DATE) {
-          $("#widget-offerManagement-form input[name=date]").val(
-            response.DATE.substring(0, 10)
-          );
-        } else {
-          $("#widget-offerManagement-form input[name=date]").val("");
-        }
-        if (response.START) {
-          $("#widget-offerManagement-form input[name=start]").val(
-            response.START.substring(0, 10)
-          );
-        } else {
           $("#widget-offerManagement-form input[name=start]").val("");
-        }
-        if (response.END) {
-          $("#widget-offerManagement-form input[name=end]").val(
-            response.END.substring(0, 10)
-          );
-        } else {
           $("#widget-offerManagement-form input[name=end]").val("");
+        } else {
+          if (action != "retrieve") {
+            $("#widget-offerManagement-form input[name=start]").attr(
+              "readonly",
+              false
+            );
+            $("#widget-offerManagement-form input[name=end]").attr(
+              "readonly",
+              false
+            );
+          }
+
+          if (response.DATE) {
+            $("#widget-offerManagement-form input[name=date]").val(
+              response.DATE.substring(0, 10)
+            );
+          } else {
+            $("#widget-offerManagement-form input[name=date]").val("");
+          }
+          if (response.START) {
+            $("#widget-offerManagement-form input[name=start]").val(
+              response.START.substring(0, 10)
+            );
+          } else {
+            $("#widget-offerManagement-form input[name=start]").val("");
+          }
+          if (response.END) {
+            $("#widget-offerManagement-form input[name=end]").val(
+              response.END.substring(0, 10)
+            );
+          } else {
+            $("#widget-offerManagement-form input[name=end]").val("");
+          }
         }
-      }
 
-      if (response.AMOUNT) {
-        $("#widget-offerManagement-form input[name=amount]").val(
-          response.AMOUNT
-        );
-      }
-
-      $("#offerManagement").on("shown.bs.modal", function () {
+        if (response.AMOUNT) {
+          $("#widget-offerManagement-form input[name=amount]").val(
+            response.AMOUNT
+          );
+        }
         if (response.FILE_NAME != null && response.FILE_NAME != "") {
           $(".offerManagementPDF").removeClass("hidden");
           $("#offerManagementPDF").attr(
@@ -202,10 +211,10 @@ function retrieve_offer(ID, action) {
           $(".offerManagementPDF").addClass("hidden");
           $("#offerManagementPDF").attr("data", "");
         }
-      });
-    }
-  });
-}
+      }
+    });
+  })
+})
 
 //Module gérer les clients ==> id d'un client ==> ajouter une offre
 function add_offer(company) {

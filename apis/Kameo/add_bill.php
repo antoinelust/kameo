@@ -34,6 +34,7 @@ $billingPaid=isset($_POST['widget-addBill-form-paid']) ? "1" : "0";
 $billingPaidDate=isset($_POST['widget-addBill-form-paymentDate']) ? date($_POST['widget-addBill-form-paymentDate']) : "0";
 $billingLimitPaidDate=isset($_POST['widget-addBill-form-datelimite']) ? date($_POST['widget-addBill-form-datelimite']) : "0";
 $communication=addslashes($_POST['communication']);
+$commentBilling=isset($_POST['comment']) ? nl2br($_POST['comment']) : NULL;
 
 $scan=isset($_POST['scan']) ? addslashes($_POST['scan']) : NULL;
 
@@ -244,6 +245,7 @@ else{
     $data['itemNumber'] = $i;
     $data['company'] = $company;
     $data['dateStart'] = $date;
+    $data['commentBilling']=$commentBilling;
     $data['billingGroup'] = "1";
   }
   $url='http://'.$_SERVER['HTTP_HOST'].'/scripts/generate_bill.php';

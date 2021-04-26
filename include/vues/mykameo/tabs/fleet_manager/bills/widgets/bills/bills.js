@@ -175,7 +175,7 @@ function create_bill(){
   $('.widget-addBill-form-companyOther').addClass("hidden");
   $('.IDAddBill').removeClass('hidden');
   $('.IDAddBillOut').removeClass('hidden');
-
+  $('#widget-addBill-form textarea').val('');
 
   //Accessoires
   get_all_accessories().done(function(response){
@@ -202,6 +202,7 @@ function create_bill(){
 
     $('.generateBillAccessories .glyphicon-plus').unbind();
     $('.generateBillAccessories .glyphicon-plus').click(function(){
+      console.log("test");
       //gestion accessoriesNumber
       accessoriesNumber = $("#addBill").find('.accessoriesNumber').html()*1+1;
       $('#addBill').find('.accessoriesNumber').html(accessoriesNumber);
@@ -225,7 +226,7 @@ function create_bill(){
         </tr>`);
       //label selon la langue
       $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aLabel')
-      .append('<label class="fr">Accessoire '+ accessoriesNumber +'</label>');
+      .append('<label>Accessoire '+ accessoriesNumber +'</label>');
 
       //select catégorie
       $('#addBill').find('.otherCostsAccesoiresTable'+(accessoriesNumber)+'>.aCategory')
@@ -324,7 +325,7 @@ function create_bill(){
       </tr>`);
     //label selon la langue
     $('#addBill').find('.otherCostsOtherAccesoiresTable'+(otherAccessoriesNumber)+'>.aLabel')
-    .append('<label class="fr">Accessoire '+ otherAccessoriesNumber +'</label>');
+    .append('<label>Accessoire '+ otherAccessoriesNumber +'</label>');
     checkMinus('.generateBillOtherAccessories','.otherAccessoriesNumber');
   });
 
@@ -403,9 +404,10 @@ function create_bill(){
             },
             success: function(response){
               var maintenances = [];
-              console.log($select.val());
-              response.forEach(function(maintenance){
-                console.log(maintenance);
+              response.internalMaintenances.forEach(function(maintenance){
+                $select.closest('tr').find('.bikeMaintenance select').append('<option value="'+maintenance.ID+'">'+maintenance.ID+' - '+maintenance.DATE.shortDate()+' - '+maintenance.BRAND+' '+maintenance.MODEL+'</option>');
+              })
+              response.externalMaintenances.forEach(function(maintenance){
                 $select.closest('tr').find('.bikeMaintenance select').append('<option value="'+maintenance.ID+'">'+maintenance.ID+' - '+maintenance.DATE.shortDate()+' - '+maintenance.BRAND+' '+maintenance.MODEL+'</option>');
               })
               $select.closest('tr').find('.bikeMaintenance select').val("");

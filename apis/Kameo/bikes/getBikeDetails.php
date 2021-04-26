@@ -40,6 +40,7 @@ $response['bikeBuyingDate']=$row['BIKE_BUYING_DATE'];
 $response['orderNumber']=$row['ORDER_NUMBER'];
 $response['offerID']=$row['OFFER_ID'];
 $response['gpsID']=$row['GPS_ID'];
+$response['localisation']=$row['LOCALISATION'];
 $catalogID=$row['TYPE'];
 
 $resultat=execSQL("SELECT * FROM bike_catalog WHERE ID=?", array('i', $catalogID), false)[0];

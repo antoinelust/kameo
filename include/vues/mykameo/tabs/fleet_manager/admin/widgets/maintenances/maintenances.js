@@ -353,16 +353,36 @@ $('#widget-maintenanceManagement-form select[name=company]').change(function(){
           .remove()
           .end();
 
-        for (var i = 0; i < response.bike.length; i++) {
+        response.bike.forEach(function(bike){
           $('#widget-maintenanceManagement-form select[name=velo]').append(
             '<option value="' +
-              response.bike[i].id +
+              bike.id +
               '">' +
-              response.bike[i].id + ' - ' + response.bike[i].model + ' : ' + response.bike[i].size +
-              "<br>"
+              bike.id + ' - ' + bike.model + ' : ' + bike.size +
+              "</option>"
           );
-        }
+        })
+        response.externalBike.forEach(function(bike){
+          $('#widget-maintenanceManagement-form select[name=velo]').append(
+            '<option data-external value="' +
+              bike.ID +
+              '"> EXTERNAL - ' +
+              bike.ID + ' - ' + bike.BRAND + ' ' + bike.MODEL +
+              "</option>"
+          );
+        })
         $('#widget-maintenanceManagement-form select[name=velo]').val("");
+
+
+        $('#widget-maintenanceManagement-form select[name=velo]').change(function(){
+          if($(this).children("option:selected").data("external") != undefined){
+            $('#widget-maintenanceManagement-form input[name=external]').val(1);
+          }else{
+            var external = false;
+            $('#widget-maintenanceManagement-form input[name=external]').val(0);
+          }
+        })
+
       }
     },
   })
@@ -386,6 +406,9 @@ $('body').on('change', '.form_velo',function(){
     }
   });
 });
+
+
+
 
 $('#widget-maintenanceManagement-form input[name=publicFile], #widget-maintenanceManagement-form input[name=internalFile]').off();
 $('#widget-maintenanceManagement-form input[name=publicFile], #widget-maintenanceManagement-form input[name=internalFile]').change(function(){

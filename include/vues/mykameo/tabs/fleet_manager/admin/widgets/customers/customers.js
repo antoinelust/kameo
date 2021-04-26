@@ -413,9 +413,11 @@ function get_company_details(ID) {
 
         var i = 0;
         var dest =
-          '<a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#" name="' +
-          response.ID +
-          '"><span class="fr-inline"><i class="fa fa-plus"></i> Ajouter un vélo</span></a>';
+        '<a class="button small green button-3d rounded icon-right addBikeAdmin" data-target="#bikeManagement" data-toggle="modal" href="#" name="' +
+        response.ID +
+        '"><i class="fa fa-plus"></i> Ajouter un vélo</a> <a class="button small green button-3d rounded icon-right" data-action="add" data-target="#externalBikeManagement" data-toggle="modal" href="#" name="' +
+        response.ID +
+        '"><i class="fa fa-plus"></i> Ajouter un vélo externe</a>';
         if (response.bikeNumber > 0) {
           var temp =
             '<table id="bike_company_listing" class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">Référence</th><th scope="col">Modèle</th><th scope="col">Facturation automatique</th><th>Début</th><th>Fin</th><th scope="col">Montant location</th><th scope="col">Accès aux bâtiments</th><th></th></tr></thead><tbody>';
@@ -711,7 +713,7 @@ function get_company_details(ID) {
             ) {
               var offerLink = "offres/" + response.offer[i].file;
               var temp =
-                '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
+                '<tr><td><a href="#" data-target="#offerManagement" data-action="retrieve" data-toggle="modal" data-id="' +
                 response.offer[i].id +
                 '">' +
                 response.offer[i].id +
@@ -731,12 +733,12 @@ function get_company_details(ID) {
                 end +
                 "</td><td>" +
                 status +
-                '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
+                '</td><td><ins><a class="text-green offerManagement" data-action="update" data-target="#offerManagement" data-id="' +
                 response.offer[i].id +
                 '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
             } else {
               var temp =
-                '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
+                '<tr><td><a href="#" data-target="#offerManagement" data-toggle="modal" name="' +
                 response.offer[i].id +
                 '">' +
                 response.offer[i].id +
@@ -765,6 +767,13 @@ function get_company_details(ID) {
           dest = dest.concat("</tbody></table>");
         }
         document.getElementById("companyContracts").innerHTML = dest;
+
+        $("body").on("click", ".addOffer", function () {
+          add_offer(this.name);
+          $(".offerManagementSendButton").removeClass("hidden");
+          $(".offerManagementSendButton").text("Ajouter");
+        });
+
 
         var dest =
           '<table class="table table-condensed"><thead><tr><th>Type</th><th>ID</th><th>Société</th><th>Date d\'initiation</th><th>Montant (HTVA)</th><th>Communication</th><th>Envoi ?</th><th>Payée ?</th><th>Limite de paiement</th><th>Comptable ?</th></tr></thead><tbody>';
@@ -912,19 +921,6 @@ function get_company_details(ID) {
             false
           );
         }
-
-        $(".retrieveOffer").click(function () {
-          retrieve_offer(this.name, "retrieve");
-        });
-
-        $(".updateOffer").click(function () {
-          retrieve_offer(this.name, "update");
-        });
-        $("body").on("click", ".addOffer", function () {
-          add_offer(this.name);
-          $(".offerManagementSendButton").removeClass("hidden");
-          $(".offerManagementSendButton").text("Ajouter");
-        });
       }
     },
     error: function (response) {
