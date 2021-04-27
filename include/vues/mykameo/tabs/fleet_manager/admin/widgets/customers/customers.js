@@ -499,7 +499,7 @@ function get_company_details(ID) {
                 var temp = '<span class="text-red">Non-défini</span>';
                 dest = dest.concat(temp);
               }
-              dest = dest.concat('<td><ins><a class="text-green text-green updateBikeAdmin" data-target="#bikeManagement" name="' +response.bike[i].id +'" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>');
+              dest = dest.concat('<td><ins><a class="text-green text-green updateBikeAdmin" data-target="#bikeManagement" name="' +response.bike[i].ID +'" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>');
             }
             i++;
           }

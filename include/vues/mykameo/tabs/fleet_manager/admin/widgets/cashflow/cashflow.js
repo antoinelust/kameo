@@ -242,26 +242,38 @@ function generateCashGraphic() {
     data: { action: "getGraphics" },
     success: function (response) {
       var ctx = document.getElementById("myChartCA").getContext("2d");
+      ctx.height = 500;
       var myChart = new Chart(ctx, {
         type: "line",
         data: {
           datasets: [
             {
               label: "Leasing vélos",
+              fill: true,
               borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(44, 132, 109, 0)",
+              backgroundColor: "rgba(60, 179, 149, 0.5)",
               data: response.bikeLeasing,
               tension: 0.4
             },
             {
               label: "Vente vélos",
+              fill: true,
               borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(145, 145, 145, 0)",
+              backgroundColor: "rgba(252, 39, 80, 0.2)",
               data: response.bikeSelling,
               tension: 0.4
             },
             {
+              label: "Leasing bornes",
+              fill: true,
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(176, 0, 0, 0)",
+              data: response.boxesLeasing,
+              tension: 0.4
+            },
+            {
               label: "Leasing accessoires",
+              fill: true,
               borderColor: "rgba(60, 179, 149, 0.5)",
               backgroundColor: "rgba(60, 179, 149, 0)",
               data: response.accessoryLeasing,
@@ -269,39 +281,43 @@ function generateCashGraphic() {
             },
             {
               label: "Ventes accessoires",
+              fill: true,
               borderColor: "rgba(176, 0, 0, 0.5)",
               backgroundColor: "rgba(176, 0, 0, 0)",
               data: response.accessorySelling,
               tension: 0.4
-            },
-            {
-              label: "Leasing bornes",
-              borderColor: "rgba(176, 0, 0, 0.5)",
-              backgroundColor: "rgba(176, 0, 0, 0)",
-              data: response.boxesLeasing,
-              tension: 0.4
             }
-
           ],
           labels: response.arrayDatesCA,
         },
-
         options: {
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true
-                },
-              },
-            ],
-          },
-          elements: {
-            line: {
-              tension: 0,
+            tooltips: {
+                mode: 'label',
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var corporation = data.datasets[tooltipItem.datasetIndex].label;
+                        var valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        var total = 0;
+                        for (var i = 0; i < data.datasets.length; i++)
+                            total += data.datasets[i].data[tooltipItem.index];
+                        if (tooltipItem.datasetIndex != data.datasets.length - 1) {
+                            return corporation + " : " + valor.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') +' €';
+                        } else {
+                            return [corporation + " : " + valor.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'), "Total : $" + total + ' €'];
+                        }
+                    }
+                }
             },
-          },
-        },
+            responsive: true,
+            scales: {
+              xAxes: [{
+                stacked: true,
+              }],
+              yAxes: [{
+                  stacked: true
+              }],
+            }
+        }
       });
       myChart.update();
 
@@ -311,6 +327,7 @@ function generateCashGraphic() {
       var maxXAxis = threeYearsFromNow.toISOString().split("T")[0];
 
       var ctx = document.getElementById("myChart").getContext("2d");
+      ctx.height = 500;
       var myChart = new Chart(ctx, {
         type: "line",
         data: {

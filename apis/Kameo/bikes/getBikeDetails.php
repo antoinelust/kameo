@@ -86,13 +86,13 @@ $emailOwner=execSQL("SELECT EMAIL FROM customer_bike_access WHERE TYPE='personne
 if(!is_null($emailOwner)){
   $response['biketype']='personnel';
   $response['bikeOwner']=$emailOwner;
-  $response['deliveryDate']=execSQL("SELECT ESTIMATED_DELIVERY_DATE FROM client_orders WHERE EMAIL=?", array('s', $emailOwner), false)[0]['ESTIMATED_DELIVERY_DATE'];
+  $response['deliveryDateOrder']=execSQL("SELECT ESTIMATED_DELIVERY_DATE FROM client_orders WHERE EMAIL=?", array('s', $emailOwner), false)[0]['ESTIMATED_DELIVERY_DATE'];
   if(is_null($response['deliveryDate'])){
-    $response['deliveryDate']='';
+    $response['deliveryDateOrder']='';
   }
 }else{
   $response['biketype']="partage";
-  $response['deliveryDate']='';
+  $response['deliveryDateOrder']='';
 }
 
 echo json_encode($response);

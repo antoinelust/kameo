@@ -34,6 +34,7 @@ $sellPrice = isset($_POST['bikeSoldPrice']) ? $_POST['bikeSoldPrice'] : 0;
 $orderingDate=isset($_POST['orderingDate']) ? $_POST['orderingDate'] : NULL;
 $estimatedDeliveryDate=isset($_POST['estimatedDeliveryDate']) ? $_POST['estimatedDeliveryDate'] : NULL;
 $deliveryDate=isset($_POST['deliveryDate']) ? $_POST['deliveryDate'] : NULL;
+
 $orderNumber=isset($_POST['orderNumber']) ? $_POST['orderNumber'] : NULL;
 $offerReference=isset($_POST['offerReference']) ? $_POST['offerReference'] : NULL;
 $clientReference=isset($_POST['clientReference']) ? $_POST['clientReference'] : NULL;
@@ -97,6 +98,7 @@ if($frameNumberOriginel != $frameNumber){
 if($contractType=="order"){
   execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE=?, COLOR=?, CONTRACT_TYPE=?, COMPANY=?, BIKE_BUYING_DATE=?, ESTIMATED_DELIVERY_DATE=?, ORDER_NUMBER=?, OFFER_ID=? where ID =?", array('ssissssssssi', $token, $model, $portfolioID, $size, $color, $contractType, $company, $orderingDate, $estimatedDeliveryDate, $orderNumber, $offerReference, $bikeID), true);
 }else{
+  
   execSQL("update customer_bikes set HEU_MAJ = CURRENT_TIMESTAMP, USR_MAJ=?, MODEL=?, TYPE=?, SIZE='$size', COLOR=?, CONTRACT_TYPE=?, CONTRACT_START=?, CONTRACT_END=?, COMPANY=?, FRAME_REFERENCE=?, LOCKER_REFERENCE=?, GPS_ID=?, BIKE_BUYING_DATE=?, AUTOMATIC_BILLING=?, INSURANCE=?, BILLING_TYPE=?, LEASING_PRICE=?, BILLING_GROUP=?, BIKE_PRICE=?, SOLD_PRICE = ?, EMAIL=?, ADDRESS=?, DELIVERY_DATE=?, LOCALISATION=? where ID = ?", array('ssissssssssssssssddssssi', $token, $model, $portfolioID, $color, $contractType, $contractStart, $contractEnd, $company, $frameReference, $lockerReference, $gpsID, $orderingDate, $automaticBilling, $insurance, $billingType, $billingPrice, $billingGroup, $buyingPrice, $sellPrice, $clientReference, $address, $deliveryDate, $localisation, $bikeID), true);
 }
 
