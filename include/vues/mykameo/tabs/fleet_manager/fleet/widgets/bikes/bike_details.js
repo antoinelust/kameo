@@ -20,6 +20,13 @@ function fillBikeDetails(element) {
         $('#bikeDetailsFull input[name=bikePrice]').val(Math.round(response.catalogPrice*1.21));
         $('#bikeDetailsFull select[name=bikeType]').val(response.biketype);
 
+        if(response.deliveryDate!=''){
+          $('#bikeDetailsFull input[name=deliveryDate]').val(response.deliveryDate);
+          $('#bikeDetailsFull input[name=deliveryDate]').closest('div').removeClass('hidden');
+        }else{
+          $('#bikeDetailsFull input[name=deliveryDate]').closest('div').addClass('hidden');
+        }
+
         if(response.contractType == "leasing"){
           $('#bikeDetailsFull .leasingAmount').removeClass("hidden");
           $('#bikeDetailsFull input[name=leasingAmount]').val(response.leasingPrice);

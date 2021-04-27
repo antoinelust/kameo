@@ -7,7 +7,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<form id="widget-offerManagement-form" action="api/companies" role="form" method="post">
+						<form id="widget-offerManagement-form" action="api/offers" role="form" method="post">
 							<div class="form-group col-sm-12">
 								<h4 class="text-green offerManagementTitle">Ajouter une offre</h4>
 								<div class="col-sm-12">
@@ -96,6 +96,7 @@
 	</div>
 </div>
 <script type="text/javascript">
+	jQuery("#widget-offerManagement-form").off();
 	jQuery("#widget-offerManagement-form").validate({
 		submitHandler: function(form) {
 			jQuery(form).ajaxSubmit({
@@ -123,6 +124,7 @@
 			});
 		}
 	});
+	$("#widget-offerManagement-form select[name=type]").off();
 	$("#widget-offerManagement-form select[name=type]").change(function() {
 		if ($("#widget-offerManagement-form select[name=type]").val() == "achat") {
 			$("#widget-offerManagement-form input[name=start]").val("");
@@ -136,7 +138,7 @@
 		}
 	});
 
-
+	$("#offerManagementDelete").off();
 	$("#offerManagementDelete").click(function(){
 	  $.ajax({
 	    url: "api/companies",
@@ -149,15 +151,18 @@
 	        }, {
 	          type: 'danger'
 	        });
-	      }
-	      if (response.response == "success") {
+	      }else{
 	        $.notify({
 	          message: response.message
 	        }, {
 	          type: 'success'
 	        });
-	        $('#offerManagement').modal("toggle");
-	        get_company_details($("#companyIdHidden").val());
+					list_contracts_offers('*');
+					document.getElementById('widget-offerManagement-form').reset();
+					if ($('#widget-companyDetails-form input[name=ID]').val() != '') {
+						get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);
+					}
+					$('#offerManagement').modal('toggle');
 	      }
 	    }
 	  });

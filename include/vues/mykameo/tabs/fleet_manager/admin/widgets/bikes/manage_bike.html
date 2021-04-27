@@ -616,7 +616,7 @@
                 <h4 class="text-green">Caractéristiques du vélo</h4>
                 <div class="col-md-4">
                   <label for="bikeID">ID</label>
-                  <input type="hidden" name="bikeID" class="form-control required" readonly>
+                  <input type="text" name="bikeID" class="form-control required" readonly>
                 </div>
                 <div class="col-md-4">
                   <label for="brand">Marque</label>
@@ -670,7 +670,8 @@
               }
             );
             $("#externalBikeManagement").modal("toggle");
-            document.getElementById("widget-externalBikeManagement-form").reset();
+            $('#widget-externalBikeManagement-form').trigger("reset");
+            get_company_details($("#widget-companyDetails-form input[name=ID]").val());
           } else {
             $.notify(
               {
@@ -687,14 +688,37 @@
   });
 
   $("#externalBikeManagement").on("show.bs.modal", function (event) {
+    $('#widget-externalBikeManagement-form').trigger("reset");
     var action = $(event.relatedTarget).data("action");
-    var bikeID = $(event.relatedTarget).data("ID");
+    var bikeID = $(event.relatedTarget).data("id");
     if(action == "add"){
+      $("#widget-externalBikeManagement-form input[name=action]").val('addExternalBike');
       $("#widget-externalBikeManagement-form input").attr("readonly", false);
       $("#widget-externalBikeManagement-form select").attr("readonly", false);
       $("#widget-externalBikeManagement-form .title").html("Ajouter un vélo externe");
       $("#widget-externalBikeManagement-form .title").removeClass("hidden");
       $("#widget-externalBikeManagement-form input[name=bikeID]").closest('div').addClass("hidden");
+    }else if(action=="update"){
+      $("#widget-externalBikeManagement-form input[name=action]").val('updateExternalBike');
+      $("#widget-externalBikeManagement-form input").attr("readonly", false);
+      $("#widget-externalBikeManagement-form select").attr("readonly", false);
+      $("#widget-externalBikeManagement-form .title").html("Modifier un vélo externe");
+      $("#widget-externalBikeManagement-form .title").removeClass("hidden");
+      $("#widget-externalBikeManagement-form input[name=bikeID]").closest('div').remove("hidden");
+      $.ajax({
+        url: 'api/bikes',
+        type: 'get',
+        data: { "action": "retrieveExternalBike", "ID": bikeID},
+        success: function(response){
+          $("#widget-externalBikeManagement-form input[name=bikeID]").attr('readonly', true);
+          $("#widget-externalBikeManagement-form input[name=bikeID]").val(response.ID);
+          $("#widget-externalBikeManagement-form input[name=brand]").val(response.BRAND);
+          $("#widget-externalBikeManagement-form input[name=model]").val(response.MODEL);
+          $("#widget-externalBikeManagement-form input[name=color]").val(response.COLOR);
+          $("#widget-externalBikeManagement-form select[name=company]").val(response.COMPANY_ID);
+          $("#widget-externalBikeManagement-form input[name=frameReference]").val(response.FRAME_REFERENCE);
+        }
+      });
     }
 
   });

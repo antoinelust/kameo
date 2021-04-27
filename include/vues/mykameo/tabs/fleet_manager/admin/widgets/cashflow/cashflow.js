@@ -241,6 +241,71 @@ function generateCashGraphic() {
     type: "get",
     data: { action: "getGraphics" },
     success: function (response) {
+      var ctx = document.getElementById("myChartCA").getContext("2d");
+      var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          datasets: [
+            {
+              label: "Leasing vélos",
+              borderColor: "rgba(44, 132, 109, 0.5)",
+              backgroundColor: "rgba(44, 132, 109, 0)",
+              data: response.bikeLeasing,
+              tension: 0.4
+            },
+            {
+              label: "Vente vélos",
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(145, 145, 145, 0)",
+              data: response.bikeSelling,
+              tension: 0.4
+            },
+            {
+              label: "Leasing accessoires",
+              borderColor: "rgba(60, 179, 149, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0)",
+              data: response.accessoryLeasing,
+              tension: 0.4
+            },
+            {
+              label: "Ventes accessoires",
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(176, 0, 0, 0)",
+              data: response.accessorySelling,
+              tension: 0.4
+            },
+            {
+              label: "Leasing bornes",
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(176, 0, 0, 0)",
+              data: response.boxesLeasing,
+              tension: 0.4
+            }
+
+          ],
+          labels: response.arrayDatesCA,
+        },
+
+        options: {
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true
+                },
+              },
+            ],
+          },
+          elements: {
+            line: {
+              tension: 0,
+            },
+          },
+        },
+      });
+      myChart.update();
+
+
       var threeYearsFromNow = new Date();
       threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
       var maxXAxis = threeYearsFromNow.toISOString().split("T")[0];
@@ -489,6 +554,7 @@ function list_contracts_offers(company) {
       data: { action: "getCosts" },
       success: function (response) {
         var dest = "";
+        var total=0;
         var temp =
           '<table class="table table-condensed"><h4 class="text-green">Coûts :</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#costsManagement" data-toggle="modal" href="#" onclick=\"addCost()\"><i class="fa fa-plus"></i> Ajouter un coût</a><div class="seperator seperator-small visible-xs"></div><tbody><thead><tr><th>ID</th><th>Titre</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Type</th><th></th></tr></thead>';
         dest = dest.concat(temp);
@@ -506,8 +572,10 @@ function list_contracts_offers(company) {
 
           if (cost.TYPE == "monthly" || cost.TYPE == "loan") {
             var amount = Math.round(cost.AMOUNT) + "€ /mois";
+            total+=cost.AMOUNT;
           } else {
             var amount = Math.round(cost.AMOUNT) + " €";
+            total+=cost.AMOUNT/12;
           }
 
           if (cost.TYPE === "loan") {
@@ -538,7 +606,9 @@ function list_contracts_offers(company) {
         });
         var temp = "</tbody></table>";
         dest = dest.concat(temp);
+        dest = dest.concat("<p>Valeur totale des coûts : <strong>"+Math.round(total)+" €/mois</strong></p>");
         document.getElementById("costsListingSpan").innerHTML = dest;
+
     }
   });
 }

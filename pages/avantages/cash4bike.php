@@ -193,7 +193,7 @@
 
                                     if(response.totalImpact>=0){
                                         $('#impactOnNetSalary').html(traduction.cash4Bike_impactOnNetSalary+" "+response.totalImpact+" €/"+traduction.generic_mois)
-                                        $('#impactOnNetSalaryText').html(traduction.cash4Bike_impactOnNetSalaryText1+" "+response.totalImpact+traduction.cash4Bike_cash4Bike_impactOnNetSalaryText2)
+                                        $('#impactOnNetSalaryText').html(traduction.cash4Bike_impactOnNetSalaryText1+" "+response.totalImpact+traduction.cash4Bike_impactOnNetSalaryText2)
                                     }else if(response.totalImpact<0){
                                         $('#impactOnNetSalary').html(traduction.cash4Bike_gain+" : "+Math.abs(response.totalImpact)+" €/"+traduction.generic_mois)
                                         $('#impactOnNetSalaryText').html(traduction.cash4Bike_impactOnNetSalaryText3+" "+Math.abs(response.totalImpact)+traduction.cash4Bike_impactOnNetSalaryText4)

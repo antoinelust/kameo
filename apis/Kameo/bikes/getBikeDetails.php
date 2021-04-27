@@ -56,6 +56,8 @@ $response['possibleSizes']=$resultat['SIZES'];
 $response['status']=$row['STATUS'];
 
 
+
+
 $buildings=array();
 $buildings[]=execSQL("SELECT bb.BUILDING_REFERENCE as buildingCode, bb.BUILDING_FR as descriptionFR, 'true' as access FROM bike_building_access aa, building_access bb WHERE aa.BIKE_ID=? and BUILDING_REFERENCE=aa.BUILDING_CODE and aa.STAANN!='D' and COMPANY=?", array('is', $id, $company), false);
 $buildings[]=execSQL("SELECT BUILDING_REFERENCE as buildingCode, BUILDING_FR as descriptionFR, 'false' as access FROM building_access WHERE COMPANY = ? AND not exists (select 1 from bike_building_access bb where bb.BUILDING_CODE=BUILDING_REFERENCE and bb.BIKE_ID=? and bb.STAANN!='D')", array('si', $company, $id), false);
@@ -84,8 +86,13 @@ $emailOwner=execSQL("SELECT EMAIL FROM customer_bike_access WHERE TYPE='personne
 if(!is_null($emailOwner)){
   $response['biketype']='personnel';
   $response['bikeOwner']=$emailOwner;
+  $response['deliveryDate']=execSQL("SELECT ESTIMATED_DELIVERY_DATE FROM client_orders WHERE EMAIL=?", array('s', $emailOwner), false)[0]['ESTIMATED_DELIVERY_DATE'];
+  if(is_null($response['deliveryDate'])){
+    $response['deliveryDate']='';
+  }
 }else{
   $response['biketype']="partage";
+  $response['deliveryDate']='';
 }
 
 echo json_encode($response);

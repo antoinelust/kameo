@@ -271,14 +271,14 @@ function get_company_listing() {
         title: "Recherche de vélos",
         data: "BOOKING",
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
+          $(nTd).html((sData == "Y") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
         },
       },
       {
         title: "Plan cafétéria",
         data: "CAFETARIA",
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
+          $(nTd).html((sData == "Y") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
         },
       },
       {
@@ -508,6 +508,22 @@ function get_company_details(ID) {
 
         document.getElementById("companyBikes").innerHTML = dest;
 
+        var dest="<thead><tr><th>ID</th><th>Marque</th><th>Modèle</th><th>Couleur</th><th></th></tr></thead>";
+        dest+='<tbody>';
+        response.externalBikes.forEach(function(bike){
+          dest+='<tr><td>'+bike.ID+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.COLOR+'</td><td><ins><a class="text-green text-green" data-target="#externalBikeManagement" data-action="update" data-id="' +bike.ID +'" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>'
+        })
+        dest+='</tbody>';
+
+        $("#externalBikes").html(dest);
+        $("#externalBikes").DataTable({
+          destroy: true,
+          searching: false,
+          paging: false
+        });
+
+
+
         $("#bike_company_listing").DataTable({
           searching: false,
           paging: false,
@@ -615,11 +631,11 @@ function get_company_details(ID) {
         //Offer Management
 
         var dest =
-          '<a class="button small green button-3d rounded icon-right offerManagement addOffer" name="' +
+          '<a class="button small green button-3d rounded icon-right addOffer" name="' +
           internalReference +
           '" data-target="#offerManagement" data-toggle="modal" href="#"><i class="fa fa-plus"></i> Ajouter une offre</a>';
         dest +=
-          '<a class="button small green button-3d rounded icon-right offerManagement getTemplate" name="' +
+          '<a class="button small green button-3d rounded icon-right getTemplate" name="' +
           internalReference +
           '" href="#"><i class="fa fa-plus"></i>Nouveau Template Offre</a>';
         if (response.offerNumber + response.bikeContracts > 0) {
@@ -756,7 +772,7 @@ function get_company_details(ID) {
                 end +
                 "</td><td>" +
                 status +
-                '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
+                '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" data-action="update" data-id="' +
                 response.offer[i].id +
                 '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
             }
@@ -1022,8 +1038,8 @@ function update_company_users_list_admin(company){
       } else {
         //users management
         var dest =
-          '<a class="button small green button-3d rounded icon-right addUserAdmin" data-target="#addUserAdmin" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::generic_addUser; ?></a>';
-        if (response.usersNumber > 0) {
+          '<a class="button small green button-3d rounded icon-right" data-company="'+company+'" data-target="#addUserAdmin" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::generic_addUser; ?></a>';
+        if (response.users.length > 0) {
           var i = 0;
           var temp =
             '<table class="table"><tbody><thead><tr><th scope="col">'+traduction.sidebar_last_name+'</th><th scope="col">'+traduction.sidebar_first_name+'</th><th scope="col">'+traduction.login_email+'</th><th>'+traduction.sidebar_phone+'</th><th></th><th></th></tr></thead>';
@@ -1048,11 +1064,6 @@ function update_company_users_list_admin(company){
         }
         document.getElementById("companyUsers").innerHTML = dest;
       }
-      $('.addUserAdmin').off();
-      $('.addUserAdmin').click(function() {
-        create_userAdmin();
-      });
-
 
       $('.updateUserAdmin').off();
       $('.updateUserAdmin').click(function(){

@@ -44,6 +44,10 @@ $( document ).ready(function() {
       $(".offerManagementTitle").text("Mettre à jour une offre");
       $(".offerManagementSendButton").removeClass("hidden");
       $(".offerManagementSendButton").text("Mettre à jour");
+    }else if(action == "add"){
+      
+      $(".offerManagementSendButton").removeClass("hidden");
+      $(".offerManagementSendButton").text("Ajouter");
     }
     $.ajax({
       url: "api/companies",
@@ -51,7 +55,6 @@ $( document ).ready(function() {
       data: { action: "retrieveOffer", ID: ID},
       success: function (response) {
         $("#offerManagementPDF").attr("data", "");
-        console.log(action);
         if (action == "retrieve") {
           $("#widget-offerManagement-form input").attr("readonly", true);
           $("#widget-offerManagement-form textarea").attr("readonly", true);
@@ -89,7 +92,6 @@ $( document ).ready(function() {
         $("#offerManagementDetails").html("");
         if (response.item.length > 0) {
           response.item.forEach(function(item) {
-            console.log(item);
             if (item.ITEM_TYPE == "box") {
               $("#offerManagementDetails").append(
                 "<li>1 borne " +

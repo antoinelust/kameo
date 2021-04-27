@@ -177,6 +177,12 @@ switch($_SERVER["REQUEST_METHOD"])
 		}else{
 			error_message('403');
 		}
+	}else if($action === 'add_user'){
+		if(get_user_permissions(["fleetManager", "admin"], $token)){
+			include 'add_user.php';
+		}else{
+			error_message('403');
+		}
 	}else if($action === 'addManualOffer'){
 		if(get_user_permissions("admin", $token)){
 			$id = isset($_POST["ID"]) ? $_POST["ID"] : NULL;
