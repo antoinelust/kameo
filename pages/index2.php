@@ -31,7 +31,7 @@ include 'include/head.php';
 								<div class="slider-content">
 									<h1 class="text-uppercase text-large"><strong class="text-green">Leasing</strong> <strong class="text-light">de vélos</strong></h1>
 									<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>
-									<a class="button color full-rounded transparent"  style="margin-right: 2em;" href="#">Je suis un employeur</a>
+									<a class="button color full-rounded transparent"  style="margin-right: 2em;" href="leasing-employeur">Je suis un employeur</a>
 									<a class="button white full-rounded" style="background-color: white" href="#">Je suis un employé</a>
 								</div>
 							</div>
@@ -125,7 +125,7 @@ include 'include/head.php';
 		-->
 		<!-- END: SECTION SLIDER OWL -->
 		
-		<div class="jumbotron jumbotron-center jumbotron-fullwidth background-dark">
+		<div class="jumbotron jumbotron-center jumbotron-fullwidth" style="background-color: #636363";>
 			<div class="container">
 				<h1 class="text-uppercase text-large"><strong class="text-green">Services</strong> <strong class="text-light">annexes</strong></h1>
 				<p class="text-light" style="font-size:24px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, sem quis lacinia faucibus, orci ipsum gravida tortor, vel interdum mi sapien ut justo.</p>

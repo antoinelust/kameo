@@ -9,6 +9,7 @@
 	$router->map('GET','/velo-personnel[ext]', 'pages/nos-solutions/velo-personnel.php');
 	$router->map('GET','/gestion-flotte[ext]', 'pages/nos-solutions/gestion-flotte.php');
 	$router->map('GET','/location-tout-inclus[ext]', 'pages/nos-solutions/location-tout-inclus.php');
+	$router->map('GET','/leasing-employeur[ext]', 'pages/nos-solutions/leasing-employeur.php');
 
 	/** CATALOGUE **/
 	$router->map('GET','/catalogue_overview[ext]', 'pages/catalogue/catalogue_overview.php');
