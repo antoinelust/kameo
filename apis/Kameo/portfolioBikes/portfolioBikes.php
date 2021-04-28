@@ -27,6 +27,19 @@ switch($_SERVER["REQUEST_METHOD"])
 				die;
 			}else
 				error_message('403');
+		}else if($action === 'listSizesFromModel'){
+			if(get_user_permissions("admin", $token)){
+				$response=execSQL("SELECT SIZES FROM bike_catalog WHERE ID=?", array('i', $_GET['ID']), false)[0]['SIZES'];
+				if(is_null($response)){
+					$response=array();
+				}else{
+					$response=explode(",", $response);
+					array_column($response, 'SIZES');
+				}
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
 		}else
 			error_message('405');
 		break;

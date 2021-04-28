@@ -201,7 +201,7 @@ if(isset($_POST['action'])){
 			if($company=="KAMEO"){
 				$sql= "SELECT aa.*, bb.ID as companyID, bb.COMPANY_NAME as companyName FROM client_orders aa, companies bb WHERE aa.COMPANY=bb.ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
 			}else{
-				$sql="SELECT co.*, companies.ID as companyID, companies.COMPANY_NAME as companyName FROM client_orders co, companies WHERE co.COMPANY=companies.ID AND companies.INTERNAL_REFERENCE='$company' ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
+				$sql="SELECT co.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL FROM client_orders co, companies, bike_catalog WHERE co.COMPANY=companies.ID AND companies.INTERNAL_REFERENCE='$company' AND bike_catalog.ID=co.PORTFOLIO_ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
 			}
 
 			if ($conn->query($sql) === FALSE) {
@@ -220,6 +220,7 @@ if(isset($_POST['action'])){
 			while($row = mysqli_fetch_array($result2)){
 				$emailCustomer=$row['EMAIL'];
 				$response['order'][$i]['ID']=$row['ID'];
+				$response['order'][$i]['groupID']=$row['GROUP_ID'];
 				$response['order'][$i]['size']=$row['SIZE'];
 				$response['order'][$i]['status']=$row['STATUS'];
 				$response['order'][$i]['estimatedDeliveryDate']=$row['ESTIMATED_DELIVERY_DATE'];
@@ -231,22 +232,15 @@ if(isset($_POST['action'])){
 				$response['order'][$i]['type']=$row['TYPE'];
 				$response['order'][$i]['companyID']=$row['companyID'];
 				$response['order'][$i]['companyName']=$row['companyName'];
+				$response['order'][$i]['brand']=$row['BRAND'];
+				$response['order'][$i]['model']=$row['MODEL'];
 
 
+				$response['order'][$i]['sumAccessories']=$row['sumAccessories'];
 
-				$portfolioID=$row['PORTFOLIO_ID'];
-				include 'connexion.php';
-				$sql= "SELECT * FROM bike_catalog WHERE ID='$portfolioID'";
-				if ($conn->query($sql) === FALSE) {
-					$response = array ('response'=>'error', 'message'=> $conn->error);
-					echo json_encode($response);
-					die;
-				}
-				$result = mysqli_query($conn, $sql);
-				$resultat=mysqli_fetch_assoc($result);
-				$response['order'][$i]['brand']=$resultat['BRAND'];
-				$response['order'][$i]['model']=$resultat['MODEL'];
-				$priceHTVA=$resultat['PRICE_HTVA'];
+				if(!is_null($row['sumAccessories'])){
+					$response['order'][$i]['price'] = $response['order'][$i]['price']+$row['sumAccessories'];
+				};
 
 				$emailUser=$row['EMAIL'];
 				if($emailUser != ""){
@@ -293,7 +287,7 @@ if(isset($_POST['action'])){
 		$ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		include 'connexion.php';
-		$sql= "SELECT * FROM client_orders WHERE ID='$ID'";
+		$sql= "SELECT * FROM client_orders WHERE GROUP_ID='$ID'";
 		if ($conn->query($sql) === FALSE) {
 			$response = array ('response'=>'error', 'message'=> $conn->error);
 			echo json_encode($response);
@@ -354,12 +348,11 @@ if(isset($_POST['action'])){
 		$response['order']['firstname']=$resultat['PRENOM'];
 		$response['order']['phone']=$resultat['PHONE'];
 		$response['order']['priceHTVA']=$priceHTVA;
-		$response['order']['accessories']=execSQL("SELECT accessories_catalog.ID as catalogID, accessories_catalog.BUYING_PRICE, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.MODEL, accessories_catalog.BRAND, order_accessories.TYPE, order_accessories.ID as orderID
-												FROM order_accessories, accessories_categories, accessories_catalog
-												WHERE order_accessories.ORDER_ID=?
-												AND order_accessories.BRAND=accessories_catalog.ID
-												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES",
-							array('i', $ID), false);
+		$response['order']['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ORDER_ID as orderID
+															FROM order_accessories, accessories_categories, accessories_catalog, client_orders
+															WHERE order_accessories.BRAND=accessories_catalog.ID
+															AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES
+															AND order_accessories.ORDER_ID=client_orders.GROUP_ID AND client_orders.GROUP_ID=?", array('i', $ID), false);
 
 		if($response['order']['accessories']!=null){
 			$response['accessoryNumber']=count($response['order']['accessories']);

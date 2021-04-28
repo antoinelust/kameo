@@ -23,28 +23,13 @@ if(isset($_POST['action'])){
         $order_amount = isset($_POST['order_amount']) ? $_POST['order_amount'] : NULL;
         $leasing_type = isset($_POST['leasing_type']) ? $_POST['leasing_type'] : "leasing";
 
-        include 'connexion.php';
-        $stmt = $conn->prepare("SELECT PRENOM, NOM, bb.ID FROM customer_referential aa, companies bb WHERE EMAIL=? and aa.COMPANY=bb.INTERNAL_REFERENCE");
-        if (!$stmt->bind_param("s", $email)) {
-            $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
-            echo json_encode($response);
-            die;
-        }
-
-        if (!$stmt->execute()) {
-            $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
-            echo json_encode($response);
-            die;
-        }
-
-        $resultat=$stmt->get_result()->fetch_assoc();
+        $resultat=execSQL("SELECT PRENOM, NOM, bb.ID FROM customer_referential aa, companies bb WHERE TOKEN=? and aa.COMPANY=bb.INTERNAL_REFERENCE", array('s', $token), false)[0];
         $firstName=$resultat['PRENOM'];
         $name=$resultat['NOM'];
         $companyID=$resultat['ID'];
-        $stmt->close();
 
 
-        $sql="SELECT * FROM client_orders where EMAIL='$email'";
+        /*$sql="SELECT * FROM client_orders where EMAIL='$email'";
         if ($conn->query($sql) === FALSE) {
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
@@ -54,21 +39,23 @@ if(isset($_POST['action'])){
         $length = $result->num_rows;
         if($length>0){
             errorMessage("ES0061");
-        }
+        }*/
 
-        $stmt = $conn->prepare("INSERT INTO client_orders (USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, COMPANY) VALUES(?, ?, ?, ?, ?, 'new', ?, ?, ?)") or die($mysqli->error);
-				$stmt->bind_param("ssissdss", $email, $email, $portfolioID, $size, $remark, $order_amount, $leasing_type, $companyID);
-				$stmt->execute();
-        $orderID = $stmt->insert_id;
-        $stmt->close();
 
+        $groupID=execSQL("SELECT MAX(MaxGroupID) as MaxGroupID FROM (SELECT MAX(GROUP_ID) as MaxGroupID FROM client_orders UNION SELECT MAX(ORDER_ID) as MaxGroupID FROM order_accessories) as tt", array(), false)[0]['MaxGroupID'];
+				$groupID=intval($groupID)+1;
+
+        execSQL("INSERT INTO client_orders (USR_MAJ, GROUP_ID, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, COMPANY) VALUES(?, ?, ?, ?, ?, ?, 'new', ?, ?, ?)", array("sisissdss", $token, $groupID, $email, $portfolioID, $size, $remark, $order_amount, $leasing_type, $companyID), true);
 
         if(isset($_POST['accessory'])){
           foreach ($_POST['accessory'] as $index => $accessory){
             $accessoryID=$accessory;
             $accessoryBillingType=$_POST['accessoryBillingType'][$index];
             $accessoryAmount=$_POST['accessoryAmount'][$index];
-            execSQL("INSERT INTO order_accessories (BRAND, BUYING_PRICE, TYPE, PRICE_HTVA, CATEGORY, DESCRIPTION, ORDER_ID) VALUES (?, 0, ?, ?, 0, '//', ?)", array('isdi', $accessoryID, $accessoryBillingType, $accessoryAmount, $orderID), true);
+            $remark='';
+            $status='new';
+            execSQL("INSERT INTO order_accessories (USR_MAJ, ORDER_ID, COMPANY, EMAIL, BRAND, PRICE_HTVA, TYPE, DESCRIPTION, STATUS) VALUES(?,?,?,?,?,?,?,?,?)",
+            array('siisidsss', $token, $groupID, $companyID, $email, $accessoryID, $accessoryAmount, $accessoryBillingType, $remark, $status), true);
           }
         }
 
@@ -76,24 +63,12 @@ if(isset($_POST['action'])){
         $mail = new PHPMailer();
 
         if(constant('ENVIRONMENT')=="production"){
-            $stmt = $conn->prepare("SELECT aa.EMAIL, aa.NOM, aa.PRENOM FROM customer_referential aa, customer_referential bb WHERE bb.EMAIL=? and aa.COMPANY=bb.COMPANY and aa.ACCESS_RIGHTS like '%fleetManager%' and aa.STAANN != 'D' GROUP BY aa.EMAIL, aa.NOM, aa.PRENOM");
-            if (!$stmt->bind_param("s", $email)) {
-                $response = array ('response'=>'error', 'message'=> "Echec lors du liage des paramètres : (" . $stmt->errno . ") " . $stmt->error);
-                echo json_encode($response);
-                die;
-            }
-            if (!$stmt->execute()) {
-                $response = array ('response'=>'error', 'message'=> "Echec lors de l'exécution : (" . $stmt->errno . ") " . $stmt->error);
-                echo json_encode($response);
-                die;
-            }
-            foreach($stmt->get_result()->fetch_all(MYSQLI_ASSOC) as $contact){
+            $resultat=execSQL("SELECT aa.EMAIL, aa.NOM, aa.PRENOM FROM customer_referential aa, customer_referential bb WHERE bb.TOKEN=? and aa.COMPANY=bb.COMPANY and aa.ACCESS_RIGHTS like '%fleetManager%' and aa.STAANN != 'D' GROUP BY aa.EMAIL, aa.NOM, aa.PRENOM", array('s', $token), false);
+            foreach($resultat as $contact){
               if($contact['COMPANY'] != 'KAMEO'){
                 $mail->AddAddress($contact['EMAIL'], $contact['PRENOM'].' '.$contact['NOM']);
               }
             }
-            $stmt->close();
-
             $mail->AddCC('julien@kameobikes.com', 'Julien Jamar');
         }else{
             $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
@@ -219,9 +194,6 @@ if(isset($_POST['action'])){
                 die;
             }
         }
-
-        $conn->close();
-        $response['sql']=$sql;
         successMessage("SM0027");
     }
 }else if(isset($_GET['action'])){
@@ -229,7 +201,6 @@ if(isset($_POST['action'])){
     $action=isset($_GET['action']) ? $_GET['action'] : NULL;
 
     if($action=="list"){
-
 
         $email=isset($_GET['email']) ? $_GET['email'] : NULL;
         $response=array();
@@ -246,13 +217,12 @@ if(isset($_POST['action'])){
 
         $response['commandNumber']=$length;
 
-        $response['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ID as orderID
-          												FROM order_accessories, accessories_categories, accessories_catalog, client_orders
-          												WHERE order_accessories.ORDER_ID=client_orders.ID
-          												AND order_accessories.BRAND=accessories_catalog.ID
+        $response['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ORDER_ID as orderID
+          												FROM order_accessories, accessories_categories, accessories_catalog, customer_referential
+          												WHERE order_accessories.BRAND=accessories_catalog.ID
           												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES
-                                  AND client_orders.EMAIL=?",
-                                array('s',$email), false);
+                                  AND order_accessories.EMAIL=customer_referential.EMAIL and customer_referential.TOKEN=?",
+                                array('s',$token), false);
 
         $i=0;
 

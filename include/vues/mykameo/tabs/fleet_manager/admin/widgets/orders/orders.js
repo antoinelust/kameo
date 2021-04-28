@@ -33,7 +33,6 @@ function get_bike_listing() {
       $('#widget-order-form input[name=brand]').val(response.brand);
       $('#widget-order-form input[name=model]').val(response.model);
       $('#widget-order-form select[name=frameType]').val(response.frameType);
-      $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.img+".jpg?date="+Date.now());
 
       if(response.contract==null){
        if(response.numberType==0){
@@ -263,27 +262,28 @@ $('body').on('click', '.addOrder',function(){
 
           var i=0;
           var toSelect = null;
-          while (i < response.usersNumber){
-            $('#widget-order-form select[name=name]').append("<option value="+i+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
-            i++;
-          }
-          if(response.usersNumber == 0){
+          if(response.users.length == 0){
             $('.clientReference').fadeOut();
           }else{
             $('.clientReference').fadeIn();
+            response.users.forEach(function(user){
+              $('#widget-order-form select[name=name]').append("<option value="+user.email+">"+user.name+" - "+user.firstName+"<br>");
+            })
           }
           $('#widget-order-form select[name=name]').val("");
           $('#widget-order-form input[name = mail]').val("");
           $('#widget-order-form input[name = phone]').val("");
 
+
+
           $("#widget-order-form select[name=name]").off();
           $("#widget-order-form select[name=name]").change(function(){
-            if(response.users[$(this).children("option:selected").val()].phone=='' ||response.users[$(this).children("option:selected").val()].phone=='/' || response.users[$(this).children("option:selected").val()].phone==null ){
+            if($(this).children("option:selected").data('phone')=='' ||$(this).children("option:selected").data('phone')=='/' || $(this).children("option:selected").data('phone')==null ){
               var user_phone = 'N/A';
             }else{
-              var user_phone = response.users[$(this).children("option:selected").val()].phone;
+              var user_phone = $(this).children("option:selected").data('phone');
             }
-            var user_email = response.users[$(this).children("option:selected").val()].email;
+            var user_email = $(this).children("option:selected").val();
             $('#widget-order-form input[name = mail]').val(user_email);
             $('#widget-order-form input[name = phone]').val(user_phone);
           })
@@ -343,44 +343,28 @@ function retrieve_command(ID){
 
         var i=0;
         var toSelect = null;
-        while (i < response.usersNumber){
-          $('#widget-order-form select[name=name]').append("<option value="+i+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
-          if(response.users[i].email == email){
-            var toSelect = i;
-          }
-          i++;
-        }
-        if(response.usersNumber == 0){
-          $('.clientReference').fadeOut();
-        }else{
-          $('.clientReference').fadeIn();
-        }
-        if(toSelect != null){
-          $('#widget-order-form select[name=name]').val(toSelect);
-          var user_email = response.users[toSelect].email;
-          if(response.users[toSelect].phone=='' ||response.users[toSelect].phone=='/' || response.users[toSelect].phone==null ){
-            var user_phone = 'N/A';
-          }else{
-            var user_phone = response.users[toSelect].phone;
-          }
-          $('#widget-order-form input[name = mail]').val(user_email);
-          $('#widget-order-form input[name = phone]').val(user_phone);
 
-        }else{
+        if(response.users.length == 0){
+          $('.clientReference').fadeOut();
           $('#widget-order-form select[name=name]').val("");
           $('#widget-order-form input[name = mail]').val("");
           $('#widget-order-form input[name = phone]').val("");
-
+        }else{
+          response.users.forEach(function(user){
+            $('#widget-order-form select[name=name]').append("<option value="+user.email+" data-name='"+user.name+" - "+user.firstName+"' data-phone='"+user.phone+"'>"+user.name+" - "+user.firstName+"<br>");
+          })
+          $('.clientReference').fadeIn();
         }
+
 
         $("#widget-order-form select[name=name]").off();
         $("#widget-order-form select[name=name]").change(function(){
-          if(response.users[$(this).children("option:selected").val()].phone=='' ||response.users[$(this).children("option:selected").val()].phone=='/' || response.users[$(this).children("option:selected").val()].phone==null ){
+          if($(this).children("option:selected").data('phone')=='' ||$(this).children("option:selected").data('phone')=='/' || $(this).children("option:selected").data('phone')==null ){
             var user_phone = 'N/A';
           }else{
-            var user_phone = response.users[$(this).children("option:selected").val()].phone;
+            var user_phone = $(this).children("option:selected").data('phone');
           }
-          var user_email = response.users[$(this).children("option:selected").val()].email;
+          var user_email = $(this).children("option:selected").val();
           $('#widget-order-form input[name = mail]').val(user_email);
           $('#widget-order-form input[name = phone]').val(user_phone);
         })
@@ -434,8 +418,6 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=testDate]').val(response.order.testDate);
           $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-          $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg?date="+Date.now());
-
           $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
 
           if(response.order.accessories){

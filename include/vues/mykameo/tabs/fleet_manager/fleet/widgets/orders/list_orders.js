@@ -21,7 +21,6 @@ $( ".fleetmanager" ).click(function() {
 
 function get_orders_fleet_listing() {
 		document.getElementById('ordersFleetListingSpan').innerHTML='';
-    var email= "<?php echo $user_data['EMAIL']; ?>";
     $.ajax({
       url: 'apis/Kameo/orders_management.php',
       type: 'get',
@@ -132,12 +131,12 @@ function get_orders_fleet_listing() {
 							var ligne=document.createElement("tr");
 							var column=document.createElement("td");
 							var link=document.createElement("a");
-							link.setAttribute("class", "updateCommand");
+							link.setAttribute("class", "updateCommand text-green");
 							link.setAttribute("data-target", "#orderManagerFleet");
 							link.setAttribute("data-toggle", "modal");
 							link.setAttribute("href", "#");
-							link.setAttribute("name", response.order[i].ID);
-							var newContent = document.createTextNode(response.order[i].ID);
+							link.setAttribute("name", response.order[i].groupID);
+							var newContent = document.createTextNode(response.order[i].groupID);
 							link.appendChild(newContent);
 							column.appendChild(link);
 							ligne.appendChild(column);

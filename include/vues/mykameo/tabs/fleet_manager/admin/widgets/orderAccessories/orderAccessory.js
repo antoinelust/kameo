@@ -16,7 +16,35 @@ $( ".fleetmanager" ).click(function() {
 
 
 $( ".orderAccessoriesClick" ).click(function() {
+
+	$("#widget-orderAcessory-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
+		$.ajax({
+	    url: "api/companies",
+	    type: "get",
+	    data: { type: "*", action: 'listMinimal' },
+	    success: function (response) {
+	      if (response.response == "success") {
+	        for (var i = 0; i < response.company.length; i++) {
+						$("#widget-orderAcessory-form select[name=company]").append(
+							'<option value="' +
+								response.company[i].ID +
+								'">' +
+								response.company[i].companyName +
+								"</option>"
+						);
+					}
+				}
+			}
+		})
+
+
+
 	$("#displayorderAcessory").dataTable({
+		paging : false,
+		searching : true,
 		destroy: true,
 		ajax: {
 			url: "apis/Kameo/accessories/accessories.php",
@@ -29,111 +57,74 @@ $( ".orderAccessoriesClick" ).click(function() {
 		sAjaxDataProp: "",
 		columnDefs: [{ width: "100%", targets: 0 }],
 		columns: [
-		{ title: "ID",data: "ID",},
-		{ title: "Société", data: "COMPANY_NAME" },
-		{ title: "Type", data: "TYPE" },
-		{ title: "Marque du vélo", data: "BRAND"},
-		{ title: "Model du vélo", data: "MODEL"},
-		{ title: "Categorie", data: "CATEGORY" },
-		{ title: "Etat de la commande", data: "CONTRACT_TYPE" ,
-		fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-			if(sData==null){
-				$(nTd).html('<label>En attente de traitement</label>');
+			{ title: "ID",
+				data: "ID",
+				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html('<a href="#" class="text-green" data-target="#accessoryOrderManagement" data-toggle="modal" data-action="retrieve" data-id="'+sData+'">'+sData+'</a>');
+				},
+			},
+			{ title: "Société", data: "COMPANY_NAME" },
+			{ title: "Type", data: "TYPE" },
+			{ title: "Montant", data: "PRICE_HTVA"},
+			{
+				title: "Categorie",
+				data: "CATEGORY",
+				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html(traduction["accessoryCategories_"+sData]);
+				},
+			},
+			{ title: "Marque", data: "BRAND"},
+			{ title: "Modèle", data: "MODEL"},
+			{
+				title: "Statut de la commande",
+				data: "STATUS",
 			}
-			if(sData=='order'){
-				$(nTd).html('<label>En attente de livraison de nos fournisseurs</label>');
-			}
-			if(sData=='pending_delivery'){
-				$(nTd).html('<label>En attente d\'expedition chez le client</label>');	
-			}
-			if(sData=='leasing' || sData=='selling'){
-				$(nTd).html('<label>Commande envoyé chez le client</label>');
-			}
-		} 
-	},
-	{ title: "", data: "ID" ,fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-		$(nTd).html('<a href="#" class="text-green confirmOrderAccessory" data-target="#confirmOrderAccessory" data-toggle="modal" name="linkConfirmOrderAccessory"  data-correspondent="'+oData.ID+'">Update</a>');
-	} 
-},
-],
-order: [
-[0, "asc"]
-],
-paging : false,
-searching : true
-});
+		],
+		order: [
+			[0, "asc"]
+		],
+	});
 });
 
-$('#displayorderAcessory').on( 'draw.dt', function () {
-	$('#displayorderAcessory .confirmOrderAccessory').off();
-	$('#displayorderAcessory .confirmOrderAccessory').click(function(){
-		getOrderDetailAcessory($(this).data('correspondent'));
-	})
+$("#accessoryOrderManagement").on("show.bs.modal", function (event) {
+	var action = $(event.relatedTarget).data("action");
+	var ID = $(event.relatedTarget).data("id");
+	if(action == 'retrieve'){
+		getOrderDetailAcessory(ID);
+		$('#accessoryOrderManagement .title').text("Consulter une commande");
+		$('#accessoryOrderManagement input').attr('disabled', true);
+		$('#accessoryOrderManagement select').attr('disabled', true);
+		$('#accessoryOrderManagement input[name=ID]').closest('div').removeClass("hidden");
+	}else{
+		$('#accessoryOrderManagement input').attr('disabled', false);
+		$('#accessoryOrderManagement select').attr('disabled', false);
+		if(action=="add"){
+			$('#accessoryOrderManagement input[name=action]').val("addOrder");
+			$('#accessoryOrderManagement .title').text("Ajouter une commande");
+			$('#accessoryOrderManagement input[name=ID]').closest('div').addClass("hidden");
+
+		}else{
+			getOrderDetailAcessory(ID);
+			$('#accessoryOrderManagement .title').text("Modifier une commande");
+			$('#accessoryOrderManagement input[name=ID]').closest('div').removeClass("hidden");
+
+		}
+	}
 })
+
 function getOrderDetailAcessory(ID){
 	$.ajax({
-		url: 'apis/Kameo/accessories/accessories.php',
+		url: 'api/accessories',
 		type: 'get',
 		data: {"action": "getOrderDetailAcessory", "ID":ID},
 		success: function(response){
-			if(response.response == 'error') {
-				console.log('error');
-			}
-			if(response.response == 'success'){
-				$("#widget-orderAcessory-form [name=company]").val(response[0].COMPANY_NAME);
-				$("#widget-orderAcessory-form [name=emailUser]").val(response[0].EMAIL);
-				$("#widget-orderAcessory-form [name=contractType]").val(response[0].TYPE);
-				$("#widget-orderAcessory-form [name=priceHTVA]").val(response[0].PRICE_HTVA);
-				$("#widget-orderAcessory-form [name=description]").val(response[0].DESCRIPTION);
-				$("#widget-orderAcessory-form [name=bike]").val(response[0].BRAND + ' - ' +response[0].MODEL);
-				$("#widget-orderAcessory-form [name=id]").val(ID);
-			}
+			$("#widget-orderAcessory-form select[name=company]").val(response.COMPANY);
+			$("#widget-orderAcessory-form [name=emailUser]").val(response.EMAIL);
+			$("#widget-orderAcessory-form [name=contractType]").val(response.TYPE);
+			$("#widget-orderAcessory-form [name=priceHTVA]").val(response.PRICE_HTVA);
+			$("#widget-orderAcessory-form [name=description]").val(response.DESCRIPTION);
+			$("#widget-orderAcessory-form [name=bike]").val(response.BRAND + ' - ' +response.MODEL);
+			$("#widget-orderAcessory-form [name=id]").val(ID);
 		}
 	});
-	$.ajax({
-		url: 'apis/Kameo/accessories/accessories.php',
-		type: 'get',
-		data: {"action": "getContractFromAccessory", "OrderId":ID},
-		success: function(response){
-			if(response.response == 'error') {
-				console.log('error');
-			}
-			if(response.response == 'success'){
-				if(response.orderAccessory!=null){
-					$("#widget-orderAcessory-form [name=accessory]").find('option')
-					.remove()
-					.end();
-					$("#widget-orderAcessory-form [name=accessory]").append('<option value="'+response.orderAccessory[0].ID+'">'+response.orderAccessory[0].ID+' : '+response.orderAccessory[0].BRAND +' - '+response.orderAccessory[0].MODEL+'</option>');
-					$("#widget-orderAcessory-form [name=accessory]").attr("readonly",true);
-					$("#widget-orderAcessory-form [name=submitBtn]").parent().fadeOut();
-				}
-				else{
-					$.ajax({
-						url: 'apis/Kameo/accessories/accessories.php',
-						type: 'get',
-						data: {"action": "getOrderAccessory", "ID":ID},
-						success: function(response){
-							$("#widget-orderAcessory-form [name=accessory]").find('option')
-							.remove()
-							.end();
-							if(response.response == 'error') {
-								console.log('error');
-							}
-							if(response.response == 'success'){
-								var i=0;
-
-								response.orderAccessory.forEach(function(bike, index){
-									$("#widget-orderAcessory-form [name=accessory]").append('<option value="'+bike['ID']+'">'+bike['ID']+' : '+bike['BRAND'] +' - '+bike['MODEL']+'</option>');
-								});
-
-								$("#widget-orderAcessory-form [name=accessory]").attr("readonly",false);
-								$("#widget-orderAcessory-form [name=submitBtn]").parent().fadeIn();
-							}
-						}
-					});
-				}
-			}
-		}
-	});
-
 }

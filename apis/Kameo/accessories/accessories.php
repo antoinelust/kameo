@@ -27,8 +27,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		$id=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		if(get_user_permissions("admin", $token)){
-			$retrieveOrderAcessories= execSQL("SELECT aa.PRICE_HTVA,aa.TYPE,aa.DESCRIPTION,bb.EMAIL, bb.PORTFOLIO_ID, bb.COMPANY,cc.BRAND,cc.MODEL,dd.COMPANY_NAME FROM order_accessories aa,client_orders bb, bike_catalog cc,companies dd WHERE bb.ID=aa.ORDER_ID AND cc.ID=bb.PORTFOLIO_ID AND dd.ID=bb.COMPANY AND  aa.ID='$id'", array(), false);
-			$retrieveOrderAcessories['response']="success";
+			$retrieveOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, order_accessories.DESCRIPTION, order_accessories.COMPANY, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL FROM order_accessories, accessories_catalog, accessories_categories, companies WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND order_accessories.ID=?", array('i', $id), false)[0];
 			echo json_encode($retrieveOrderAcessories);
 			die;
 		}
@@ -38,9 +37,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	}
 	else if ($action === 'listOrderAcessories'){
 		if(get_user_permissions("admin", $token)){
-			$listOrderAcessories= execSQL("SELECT aa.*,cc.CATEGORY,ee.BRAND,ee.MODEL,bb.EMAIL, bb.PORTFOLIO_ID,bb.COMPANY, dd.COMPANY_NAME, ff.CONTRACT_TYPE FROM order_accessories aa, accessories_categories cc,client_orders bb, companies dd, bike_catalog ee, accessories_stock ff WHERE ee.ID=bb.PORTFOLIO_ID AND aa.ORDER_ID=bb.ID  AND bb.COMPANY=dd.ID AND cc.ID=aa.CATEGORY AND ff.ORDER_ID=aa.ID
-				UNION ALL
-				(SELECT aa.*,cc.CATEGORY,ee.BRAND,ee.MODEL,bb.EMAIL, bb.PORTFOLIO_ID,bb.COMPANY, dd.COMPANY_NAME, 'NONE' as CONTRACT_TYPE FROM order_accessories aa, accessories_categories cc,client_orders bb, companies dd, bike_catalog ee WHERE ee.ID=bb.PORTFOLIO_ID AND aa.ORDER_ID=bb.ID  AND bb.COMPANY=dd.ID AND cc.ID=aa.CATEGORY AND not EXISTS(SELECT 1 FROM accessories_stock WHERE ORDER_ID=aa.ID))", array(), false);
+			$listOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, COMPANY_NAME, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL FROM order_accessories, accessories_catalog, accessories_categories, companies WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND companies.ID=order_accessories.COMPANY", array(), false);
 			echo json_encode($listOrderAcessories);
 			die;
 		}
@@ -261,7 +258,10 @@ switch($_SERVER["REQUEST_METHOD"])
 		error_message('403');
 	}else if($action === 'getModelsCategory'){
 		if(get_user_permissions("admin", $token)){
-			$models['models'] = execSQL("SELECT ID, BRAND, MODEL FROM accessories_catalog WHERE ACCESSORIES_CATEGORIES = ? ORDER BY  BRAND, MODEL", array("i", $_GET['category']), false);
+			$models['models'] = execSQL("SELECT ID, BRAND, MODEL, PRICE_HTVA FROM accessories_catalog WHERE ACCESSORIES_CATEGORIES = ? ORDER BY  BRAND, MODEL", array("i", $_GET['category']), false);
+			if(is_null($models['models'])){
+				$models['models']=array();
+			}
 			$models['response']="success";
 			echo json_encode($models);
 			die;

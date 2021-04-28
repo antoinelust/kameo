@@ -1,10 +1,3 @@
-window.addEventListener("DOMContentLoaded", function (event) {
-  document.getElementById("clientManagement").classList.remove("hidden");
-  document.getElementsByClassName('taskOwnerSelection')[0].addEventListener('change', function() { taskFilter()}, false);
-  document.getElementsByClassName('taskOwnerSelection2')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-  document.getElementsByClassName('numberOfDays')[0].addEventListener('change', function() { generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val())}, false);
-
-});
 
 $(".fleetmanager").click(function () {
   $.ajax({
