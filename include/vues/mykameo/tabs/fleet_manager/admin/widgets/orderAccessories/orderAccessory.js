@@ -86,6 +86,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 	});
 });
 
+$("#accessoryOrderManagement").off();
 $("#accessoryOrderManagement").on("show.bs.modal", function (event) {
 	var action = $(event.relatedTarget).data("action");
 	var ID = $(event.relatedTarget).data("id");
