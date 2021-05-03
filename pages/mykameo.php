@@ -536,7 +536,8 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
     //MAINTENANCE
     include 'include/vues/mykameo/widgets/support/contact_maintenance.html';
-
+    //Statistics
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/statistics/main.php';
   }
 
   if(get_user_permissions("cashflow", $token)){

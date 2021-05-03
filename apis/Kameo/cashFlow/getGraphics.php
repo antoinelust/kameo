@@ -50,6 +50,8 @@ $response['accessoryLeasing']=array_column($result, 'accessoryLeasing');
 $response['accessorySelling']=array_column($result, 'accessorySelling');
 $response['boxesLeasing']=array_column($result, 'boxesLeasing');
 
+$response['totalCA']=execSQL("SELECT SUM(AMOUNT_HTVA) as totalCA FROM factures WHERE  DATE >= MAKEDATE(year(now()),1) AND AMOUNT_HTVA>0", array(), false)[0]['totalCA'];
+
 echo json_encode($response);
 die;
 ?>

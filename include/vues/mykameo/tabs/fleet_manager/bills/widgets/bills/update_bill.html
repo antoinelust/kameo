@@ -179,7 +179,7 @@
                     type: 'success'
                   });
                   $('#updateBillingStatus').modal('toggle');
-                  get_bills_listing('*', '*', '*', '*',email);
+                  get_bills_listing();
                 } else {
                   $.notify({
                     message: response.message
@@ -204,7 +204,7 @@
                     type: 'success'
                   });
                   $('#updateBillingStatus').modal('toggle');
-                  get_bills_listing('*', '*', '*', '*',email);
+                  get_bills_listing();
                 } else {
                   $.notify({
                     message: response.message

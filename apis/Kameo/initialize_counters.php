@@ -9,7 +9,6 @@ require_once __DIR__ .'/authentication.php';
 $token = getBearerToken();
 
 
-$email=isset($_POST['email']) ? htmlspecialchars($_POST['email']) : NULL;
 $type=$_POST['type'];
 
 $response=array();
@@ -418,25 +417,10 @@ if($company=='KAMEO'){
 
     }
 
-    if($type=="tasks"){
-
-        include 'connexion.php';
-        $sql="SELECT 1 from company_actions WHERE OWNER = '$email' AND STATUS = 'TO DO'";
-        if ($conn->query($sql) === FALSE) {
-            $response = array ('response'=>'error', 'message'=> $conn->error);
-            echo json_encode($response);
-            die;
-        }
-        $result = mysqli_query($conn, $sql);
-        $length=$result->num_rows;
-        $response['actionNumberNotDone'] = $length;
-        $response['response']="success";
-        $conn->close();
-        echo json_encode($response);
-        die;
-
+    if($type=='statistics'){
+      echo json_encode(execSQL("SELECT (SUM(CASE WHEN year='thisYear' THEN CA ELSE 0 END)-SUM(CASE WHEN year='lastYear' THEN CA ELSE 0 END))/SUM(CASE WHEN year='lastYear' THEN CA ELSE 0 END) as progressCA FROM (SELECT SUM(aa.AMOUNT_HTVA) as CA, 'thisYear' as year FROM factures aa WHERE aa.DATE >= MAKEDATE(year(now()),1) AND aa.AMOUNT_HTVA>0 UNION ALL SELECT SUM(bb.AMOUNT_HTVA) as CA, 'lastYear' as year FROM factures bb WHERE bb.DATE >= MAKEDATE(year(now()-interval 1 year),1) AND bb.DATE <= MAKEDATE(year(now()-interval 1 year),DAYOFYEAR(CURDATE())) AND bb.AMOUNT_HTVA>0) as tt", array(), false)[0]);
+      die;
     }
-
 
     include 'connexion.php';
     $sql="SELECT COUNT(1) AS 'SOMME' FROM factures WHERE FACTURE_SENT='0'";

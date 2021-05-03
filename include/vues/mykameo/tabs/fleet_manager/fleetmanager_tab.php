@@ -254,7 +254,8 @@
 				}
 				if(get_user_permissions("cashflow", $token)){
 
-          echo '<div class="col-md-4 " id="cashFlowManagement" style="height:164px">
+          echo '
+					<div class="col-md-4 " id="cashFlowManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
                 <a data-toggle="modal" data-target="#cashListing" href="#" id="offerManagerClick">
@@ -267,6 +268,20 @@
           </div>';
 				}
 				if(get_user_permissions("admin", $token)){
+
+					echo '
+						<div class="col-md-4 " style="height:164px">
+							<div class="icon-box medium fancy">
+								<div class="icon bold" data-animation="pulse infinite">
+									<a data-toggle="modal" data-target="#statisticsListing" href="#">
+										<i style="opacity:0.15" class="fa fa-arrow-up"></i>
+									</a>
+								</div>
+								<div class="counter bold" id="statisticsCounter" style="color:#3cb395"></div>
+								<p>Statistiques</p>
+							</div>
+						</div>';
+
 
 				echo '<div class="col-md-4 " id="feedbacksManagement" style="height:164px">
 					<div class="icon-box medium fancy">
