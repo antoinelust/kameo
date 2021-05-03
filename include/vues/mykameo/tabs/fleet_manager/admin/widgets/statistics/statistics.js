@@ -7,7 +7,8 @@ $(".fleetmanager").click(function () {
       if (response.response == "error") {
         console.log(response.message);
       }
-      document.getElementById("statisticsCounter").innerHTML ='<span data-speed="1" data-refresh-interval="4" data-to="' + Math.round(response.progressCA*100) + '" data-from="0" data-seperator="true">' + Math.round(response.progressCA*100) + "</span>";
+      document.getElementById("statisticsCounter").innerHTML ='<span style="color:#3cb395" data-speed="1" data-refresh-interval="4" data-to="' + Math.round(response.progressCA*100) + '" data-from="0" data-seperator="false">' + Math.round(response.progressCA*100) + "%</span>";
+
       if (response.progressCA > 0) {
         $("#statisticsCounter").css("color", "#3cb395");
       }else {

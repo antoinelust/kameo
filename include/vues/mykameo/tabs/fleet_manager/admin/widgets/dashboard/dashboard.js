@@ -79,6 +79,8 @@ $(".dashboardCompanies").click(function () {
   $("#dashboardBodyCompanies").fadeIn();
 });
 function list_errors() {
+  $("#dashboardBodyBikes").html('');
+  $("#dashboardBodyBills").html('');
   $.ajax({
     url: "apis/Kameo/error_management.php",
     method: "get",
@@ -194,7 +196,7 @@ function list_errors() {
         dest = dest.concat("</tbody></table>");
         $("#dashboardBodyBikes").html(dest);
         var i = 0;
-        var dest = '<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">ID</th><th scope="col">'+traduction.generic_ref+'</th><th scope="col">Description</th></thead><tbody>';
+        var dest = '<table class="table table-condensed"  data-order=\'[[ 0, "asc" ]]\'><thead><tr><th scope="col">ID</th><th scope="col">'+traduction.generic_reference+'</th><th scope="col">Description</th><th></th></thead><tbody>';
         if(typeof response.bike.bill != 'undefined'){
           response.bike.bill.forEach(function(bill){
             if (bill.bikeNumber == null) {
@@ -211,7 +213,9 @@ function list_errors() {
               bikeDescription +
               "</a></td><td>" +
               bill.description +
-              "</td><td></tr>";
+              "</td><td>"+
+              '<a class="button small green button-3d rounded icon-left generateInvoice" data-company="'+bill.company+'" data-date="'+bill.date+'"><i class="fa fa-paper-plane"></i>Générer </a>'+
+              "</td></tr>";
             dest = dest.concat(temp);
             i++;
           })
@@ -226,7 +230,7 @@ function list_errors() {
               bill.boxID +
               "</td><td>" +
               bill.description +
-              "</td><td></tr>";
+              "</td><td></td></tr>";
             //onclick=\"set_required_image('false')\"
             dest = dest.concat(temp);
             i++;
@@ -340,6 +344,20 @@ function list_errors() {
           $(".bikeManagementSend").removeClass("hidden");
           $(".bikeManagementSend").html('<i class="fa fa-plus"></i>Modifier');
         });
+
+        $('.generateInvoice').off();
+        $('.generateInvoice').click(function(){
+          var DateParts = $(this).data('date').split("-");
+          var dateTemp = new Date(DateParts[2], DateParts[1] - 1, DateParts[0]);
+          var url = "generate_invoices.php?forced=Y&company="+$(this).data('company')+"&dateStart="+get_date_string(new Date(dateTemp.getFullYear(), dateTemp.getMonth(), 1))+"&dateEnd="+get_date_string(new Date(dateTemp.getFullYear(), dateTemp.getMonth()+1, 0));
+          $.ajax({
+            url: url,
+            method: "get",
+            success: function (response) {
+              list_errors();
+            }
+          });
+        })
       }
     },
   });
