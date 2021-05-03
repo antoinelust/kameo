@@ -1,38 +1,38 @@
 <div
-  class="modal fade"
-  id="stockAccessoriesListing"
-  tabindex="9"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="display: none; overflow-y: auto !important"
+class="modal fade"
+id="stockAccessoriesListing"
+tabindex="9"
+role="modal"
+aria-labelledby="modal-label"
+aria-hidden="true"
+style="display: none; overflow-y: auto !important"
 >
-  <div class="modal-dialog modal-lg" style="width: 1250px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-hidden="true"
-        >
-          ×
-        </button>
-      </div>
-      <h4 class="text-green">Stock d'accessoires</h4>
-      <div data-example-id="contextual-table" class="bs-example">
-        <a class="button small green button-3d rounded icon-right addStockAccessoryButton" data-target="#manageStockAccessory" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::accessories_add_accessory; ?></a>
-
-         <a class="button small green button-3d rounded icon-right bindBillToAccessory" data-target="#manageBillAccessory" data-toggle="modal" href="#">Liaison Factures-Accessoires</a>
-        <table id="stockAccessoriesList" class="table" style='width: 100%;'></table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">
-          <?= L::generic_close; ?>
-        </button>
-      </div>
-    </div>
+<div class="modal-dialog modal-lg" style="width: 1250px">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      >
+      ×
+    </button>
   </div>
+  <h4 class="text-green">Stock d'accessoires</h4>
+  <div data-example-id="contextual-table" class="bs-example">
+    <a class="button small green button-3d rounded icon-right addStockAccessoryButton" data-target="#manageStockAccessory" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::accessories_add_accessory; ?></a>
+
+    <a class="button small green button-3d rounded icon-right bindBillToAccessory" data-target="#accessoriesBills" onclick="rempDataTable()"data-toggle="modal" href="#">Liaison Factures-Accessoires</a>
+    <table id="stockAccessoriesList" class="table" style='width: 100%;'></table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-b" data-dismiss="modal">
+      <?= L::generic_close; ?>
+    </button>
+  </div>
+</div>
+</div>
 </div>
 
 
@@ -47,153 +47,324 @@
 					<div class="col-sm-12">
 						<h4 class="text-green"><?= L::accessories_add_accessory; ?></h4>
             <form id="widget-manageStockAccessory-form" action="apis/Kameo/accessories/accessories.php" role="form" method="post">
-							<div class="form-group col-sm-12">
-                <div class="space"></div>
-                <h4 class="text-green">Sélection de l'accessoire</h4>
-                <div class="row">
-                  <div class="col-md-4">
-                    <label for="category"><?= L::generic_category; ?></label>
-                    <select name="category" class="form-control required"></select>
-                  </div>
-  								<div class="col-md-4">
-  									<label for="model"><?= L::generic_brand; ?></label>
-  									<select name="model" class="form-control required"></select>
-  								</div>
-                   <div class="col-md-4">
-                    <label for="numberArticle">Nombre d'article a commander</label>
-                    <input type="number" name="numberArticle" class="form-control" min="0" max="100" required />
-                  </div>
+             <div class="form-group col-sm-12">
+              <div class="space"></div>
+              <h4 class="text-green">Sélection de l'accessoire</h4>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="category"><?= L::generic_category; ?></label>
+                  <select name="category" class="form-control required"></select>
                 </div>
-                <div class="space"></div>
-                <h4 class="text-green">Informations sur le client</h4>
-                <div class="row">
-  								<div class="col-md-4">
-  									<label for="company"><?= L::generic_company; ?></label>
-                    <select name="company" class="form-control"></select>
-  								</div>
-                  <div class="col-md-4">
-                    <label for="user"><?= L::generic_user; ?></label>
-                    <select name="user" class="form-control">
-                    </select>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="bike">Lié à un vélo</label>
-                    <select name="bike" class="form-control">
-                    </select>
-                  </div>
-                </div>
-                <div class="space"></div>
-                <h4 class="text-green">Informations sur le contrat</h4>
-                <div class="row">
-                  <div class="col-md-4">
-                    <label for="contractType"><?= L::leasingType_title; ?></label>
-                    <select name="contractType" class="form-control required">
-                      <option value="leasing">Leasing</option>
-                      <option value="selling">Achat</option>
-                      <option value="order">Commande</option>
-                      <option value="stock">Stock</option>
-                       <option value="pending_delivery">En attente de livraison client</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <label for="contractStart"><?= L::bike_description_contract_start; ?></label>
-                    <input type="date" name="contractStart" class="form-control">
-                  </div>
-                  <div class="col-md-4">
-                    <label for="contractEnd"><?= L::bike_description_contract_end; ?></label>
-                    <input type="date" name="contractEnd" class="form-control">
-                  </div>
-                  <div class="col-md-4">
-                    <label for="leasingAmount">Montant leasing</label>
-                    <div class="input-group">
-                    <span class="input-group-addon">€/mois</span>
-                      <input
-                        name="leasingAmount"
-                        type="number"
-                        step="0.01"
-                        class="form-control"
-                      />
-                    </div>
-
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <label for="sellingDate">Date de vente</label>
-                    <input type="date" name="sellingDate" class="form-control">
-                  </div>
-                  <div class="col-md-4">
-                    <label for="sellingAmount">Montant vente</label>
-                    <div class="input-group">
-                    <span class="input-group-addon">€</span>
-                      <input
-                        name="sellingAmount"
-                        type="number"
-                        step="0.01"
-                        class="form-control"
-                      />
-                    </div>
-                  </div>
-
-                </div>
-                 <div class="row">
-                  <div class="col-md-4">
-                    <label for="deliveryDate">Date de livraison</label>
-                    <input type="date" name="deliveryDate" class="form-control">
-                  </div>
-                  <div class="col-md-4">
-                    <label for="estimateDeliveryDate">Estimation de date de livraison</label>
-                    <input type="date" name="estimateDeliveryDate" class="form-control">
-                  </div>
-                </div>
-							</div>
-              <div class="col-sm-12">
-                <button
-                  class="button small green button-3d rounded icon-left"
-                  type="submit"
-                >
-                  <i class="fa fa-paper-plane"></i><?= L::generic_send; ?>
-                </button>
+                <div class="col-md-4">
+                 <label for="model"><?= L::generic_brand; ?></label>
+                 <select name="model" class="form-control required"></select>
+               </div>
+               <div class="col-md-4">
+                <label for="numberArticle">Nombre d'article a commander</label>
+                <input type="number" name="numberArticle" class="form-control" value="1" min="1" max="100"  />
               </div>
-              <input type="text" name="action" value='addStockAccessory' class="hidden">
-              <input type="number" name="ID" class="hidden">
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
-			</div>
-		</div>
-	</div>
+            </div>
+            <div class="space"></div>
+            <h4 class="text-green">Informations sur le client</h4>
+            <div class="row">
+              <div class="col-md-4">
+               <label for="company"><?= L::generic_company; ?></label>
+               <select name="company" class="form-control"></select>
+             </div>
+             <div class="col-md-4">
+              <label for="user"><?= L::generic_user; ?></label>
+              <select name="user" class="form-control">
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="bike">Lié à un vélo</label>
+              <select name="bike" class="form-control">
+              </select>
+            </div>
+          </div>
+          <div class="space"></div>
+          <h4 class="text-green">Informations sur le contrat</h4>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="contractType"><?= L::leasingType_title; ?></label>
+              <select name="contractType" class="form-control required">
+                <option value="leasing">Leasing</option>
+                <option value="selling">Achat</option>
+                <option value="order">Commande</option>
+                <option value="stock">Stock</option>
+                <option value="pending_delivery">En attente de livraison client</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="contractStart"><?= L::bike_description_contract_start; ?></label>
+              <input type="date" name="contractStart" class="form-control">
+            </div>
+            <div class="col-md-4">
+              <label for="contractEnd"><?= L::bike_description_contract_end; ?></label>
+              <input type="date" name="contractEnd" class="form-control">
+            </div>
+            <div class="col-md-4">
+              <label for="leasingAmount">Montant leasing</label>
+              <div class="input-group">
+                <span class="input-group-addon">€/mois</span>
+                <input
+                name="leasingAmount"
+                type="number"
+                step="0.01"
+                class="form-control"
+                />
+              </div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="sellingDate">Date de vente</label>
+              <input type="date" name="sellingDate" class="form-control">
+            </div>
+            <div class="col-md-4">
+              <label for="sellingAmount">Montant vente</label>
+              <div class="input-group">
+                <span class="input-group-addon">€</span>
+                <input
+                name="sellingAmount"
+                type="number"
+                step="0.01"
+                class="form-control"
+                />
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="deliveryDate">Date de livraison</label>
+              <input type="date" name="deliveryDate" class="form-control">
+            </div>
+            <div class="col-md-4">
+              <label for="estimateDeliveryDate">Estimation de date de livraison</label>
+              <input type="date" name="estimateDeliveryDate" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <button
+          class="button small green button-3d rounded icon-left"
+          type="submit"
+          >
+          <i class="fa fa-paper-plane"></i><?= L::generic_send; ?>
+        </button>
+      </div>
+      <input type="text" name="action" value='addStockAccessory' class="hidden">
+      <input type="number" name="ID" class="hidden">
+    </form>
+  </div>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+</div>
+</div>
+</div>
+</div>
+
+<div
+class="modal fade"
+id="accessoriesBills"
+tabindex="9"
+role="modal"
+aria-labelledby="modal-label"
+aria-hidden="true"
+style="display: none; overflow-y: auto !important"
+>
+<div class="modal-dialog modal-lg" style="width: 1250px">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      >
+      ×
+    </button>
+  </div>
+  <h4 class="text-green">Facture d'accessoire</h4>
+
+
+  <table id="accessoriesBillsTable" class="table" style='width: 100%;'></table>
+  <hr>
+  <br>
+  <h4 class="text-green">Accessoire non lié</h4>
+  <table id="accessoriesBillsTableNotBind" class="table" style='width: 100%;'></table>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-b" data-dismiss="modal">
+      <?= L::generic_close; ?>
+    </button>
+  </div>
+</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="linkAccessoriesToBillsManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h4 class="text-green">Gérer les accessoires de la facture</h4>
+            <form id="widget-linkAccessoriesToBills-form" action="apis/Kameo/accessories/accessories.php" role="form" method="post">
+              <div class="form-group col-md-12">
+                <h4 class="text-green">Informations générales</h4>
+                <div class="col-md-4">
+                  <label for="ID">ID</label>
+                  <input type="number" name="ID" class="form-control" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label for="supplier">Fournisseur</label>
+                  <input type="text" name="supplier" class="form-control required" disabled>
+                </div>
+                <div class="col-md-4">
+                  <label for="communication">Communication</label>
+                  <input type="text" name="communication" class="form-control" disabled>
+                </div>
+                <div class="col-md-4">
+                  <label for="date">Date</label>
+                  <input type="date" class="form-control required" name="date" disabled>
+                </div>
+                <div class="separator"></div>
+                <div class="form-group col-md-12">
+                  <h4 class="text-green">Résumé: </h4>
+                  <table id='summaryAccessoriesLinked' class='table' style='width: 100%'></table>
+                </div>
+                <div class="separator"></div>
+                <div class="col-sm-12">
+                  <h4 class="text-green">Facture (PDF)</h4>
+                  <object data="" class="PDFFile" type="application/pdf" width="100%" height="800px">
+                    <p>Apparemment vous n'avez pas un plug-in pour lire directement un fichier PDF.</p>
+                  </object>
+                </div>
+
+                <div class="separator"></div>
+                <div class="col-md-12" id='linkAcessoriesToBillsTable'>
+                  <div class="row">
+                    <h4 class="text-green">Liaison entre vélo et facture: </h4>
+                    <div class="col-sm-12">
+                      <i class="fa fa-bicycle"></i> <span class="accessoriesNumber">0</span><input type="hidden" name="accessoriesNumber" value="0" />
+                      <button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+                      <button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" style="display: none;" type="button"></button>
+                    </div>
+                    <table class="table table-condensed tableFixed accessoryNumberTable">
+                      <thead>
+                        <tr>
+                          <th class="bLabel">
+                            <label for="bLabel">N°</label>
+                          </th>
+                          <th class="brand">
+                            <label for="brand">Marque</label>
+                          </th>
+                          <th class="model">
+                            <label for="model">Modèle</label>
+                          </th>
+                          <th class="catalogID">
+                            <label for="catalogID">ID catalogue</label>
+                          </th>
+                          <th class="pCatalog">
+                            <label for="pCatalog">Prix d'achat</label>
+                          </th>
+                          <th class="pVenteHTVA">
+                            <label for="pVenteHTVA">Prix de vente catalogue</label>
+                          </th>
+                          <th class="pVenteHTVA">
+                            <label for="pVenteHTVA">Identification du vélo</label>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbodyAccessoriesTable"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+             <!--  <input type="text" class="widget-addBill-form-email" name="widget-addBill-form-email" value="<?php echo $user_data['EMAIL']; ?>" hidden> -->
+              <input type="text" name="action" value="valideFormTolinkAccessoriesToBills" hidden>
+              <div class="separator"></div>
+              <div class="col-md-12">
+                <button  class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i><?= L::generic_send; ?></button>
+              </div>
+            </form>
+            <div class="space"></div>
+            <div class="form-group col-md-12">
+              <h4 class="text-green">Vélos non liés: </h4>
+              <div class="col-md-12">
+                <select class='form-control' name='accessoriesNotLinked'></select>
+              </div>
+              <table id='AccessoriesNotLinkedSelection' class='table' style='width: 100%'></table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+      </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript">
 
 	jQuery("#widget-manageStockAccessory-form").validate({
 
-	 submitHandler: function(form) {
-		jQuery(form).ajaxSubmit({
-		 success: function(response) {
-			if (response.response == 'success') {
-			 $.notify({
-				message: response.message
-			 }, {
-				type: 'success'
-			 });
-			 list_stock_accessories();
-			 $('#manageStockAccessory').modal('toggle');
-			 document.getElementById('widget-manageStockAccessory-form').reset();
-			} else {
-			 $.notify({
-				message: response.message
-			 }, {
-				type: 'danger'
-			 });
-			}
-		 }
-		});
-	 }
-	});
+    submitHandler: function(form) {
+      jQuery(form).ajaxSubmit({
+       success: function(response) {
+         if (response.response == 'success') {
+          $.notify({
+            message: response.message
+          }, {
+            type: 'success'
+          });
+          list_stock_accessories();
+          $('#manageStockAccessory').modal('toggle');
+          document.getElementById('widget-manageStockAccessory-form').reset();
+        } else {
+          $.notify({
+            message: response.message
+          }, {
+            type: 'danger'
+          });
+        }
+      }
+    });
+    }
+  });
+  jQuery("#widget-linkAccessoriesToBills-form").validate({
+    submitHandler: function(form) {
+      jQuery(form).ajaxSubmit({
+        success: function(response) {
+          if (response.response == 'success') {
+            $.notify({
+              message: response.message
+            },{
+              type: 'success'
+            });
+            $("#summaryAccessoriesLinked").dataTable().api().ajax.reload();
+            getListAccessoriesBillsDetails($('#widget-linkAccessoriesToBills-form input[name=ID]').val());
+          } else {
+            $.notify({
+              message: response.message
+            }, {
+              type: 'danger'
+            });
+          }
+        }
+      });
+    }
+  });
 </script>
+

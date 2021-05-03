@@ -42,6 +42,7 @@ if(isset($_POST['action'])){
 	$financialTypeAccessory=isset($_POST['financialTypeAccessory']) ? $_POST['financialTypeAccessory'] : NULL;
 	$buyingPrice=isset($_POST['buyingPriceAcc']) ? $_POST['buyingPriceAcc'] : NULL;
 	$sellingPrice=isset($_POST['sellingPriceAcc']) ? $_POST['sellingPriceAcc'] : NULL;
+	$commentsAdmin=isset($_POST['commentsAdmin']) ? $_POST['commentsAdmin'] : NULL;
 
 	if($action=='add'){
 		if(!get_user_permissions("admin", $token)){
@@ -49,10 +50,10 @@ if(isset($_POST['action'])){
 		}
 		include 'connexion.php';
 		$response['response']="success";
-		$stmt = $conn->prepare("INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE, COMPANY) VALUES(CURRENT_TIMESTAMP, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		$stmt = $conn->prepare("INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE,COMMENTS_ADMIN, COMPANY) VALUES(CURRENT_TIMESTAMP, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)");
 		if ($stmt)
 		{
-			$stmt->bind_param("ssisssssssssdsi", $token, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $company );
+			$stmt->bind_param("ssisssssssssdsi", $token, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $commentsAdmin,$company );
 			if(!$stmt->execute()){echo json_encode("there was an error....".$conn->error); die;}
 			$orderID=$stmt->insert_id;
 			$stmt->close();
@@ -78,10 +79,10 @@ if(isset($_POST['action'])){
 	else if($action=='update'){
 
 		include 'connexion.php';
-		$stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, EMAIL=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, TEST_STATUS=? WHERE ID=?");
+		$stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, EMAIL=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, COMMENTS_ADMIN=?, TEST_STATUS=? WHERE ID=?");
 		if ($stmt)
 		{
-			$stmt->bind_param("sssissdssssi", $token, $mail, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress, $testStatus, $ID);
+			$stmt->bind_param("sssissdsssssi", $token, $mail, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress,$commentsAdmin, $testStatus, $ID);
 			if(!$stmt->execute()){echo "there was an error....".$conn->error;}
 			$response['response']="success";
 			$stmt->close();
@@ -320,6 +321,7 @@ if(isset($_POST['action'])){
 		$response['order']['type']=$resultat['TYPE'];
 		$response['order']['comment']=br2nl($resultat['REMARK']);
 		$response['order']['img']=br2nl($resultat['PORTFOLIO_ID']);
+		$response['order']['commentsAdmin']=br2nl($resultat['COMMENTS_ADMIN']);
 		$email=$resultat['EMAIL'];
 
 		$portfolioID=$resultat['PORTFOLIO_ID'];

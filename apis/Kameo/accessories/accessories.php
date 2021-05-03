@@ -272,8 +272,82 @@ switch($_SERVER["REQUEST_METHOD"])
 			die;
 		}else
 		error_message('403');
-	}else
-	error_message('405');
+	}
+	else if($action === 'getFacturesBillsAccessory'){
+		if(get_user_permissions("admin", $token)){
+			include 'accessoriesBills.php';
+			die;
+		}else
+		error_message('403');
+	}
+	else if($action === 'getFacturesBillsNotLinkedAccessory'){
+		if(get_user_permissions("admin", $token)){
+			$response=execSQL("SELECT aa.*, bb.BRAND, bb.MODEL, cc.COMPANY_NAME FROM accessories_stock aa, accessories_catalog bb, companies cc WHERE aa.CATALOG_ID=bb.ID AND cc.ID=aa.COMPANY_ID AND NOT EXISTS(SELECT 1 from bills_catalog_accessories_link where bills_catalog_accessories_link.ACCESSORY_ID=aa.ID)", array(), false);
+			if($response == null){
+				$response=array();
+			}
+			echo json_encode($response);
+			die;
+		}else
+		error_message('403');
+	}
+	else if($action === 'getLinkAccessoriesBillsDetails'){
+		if(get_user_permissions("admin", $token)){
+			$id=$_GET['billingID'];
+			$response['billingDetails']=execSQL("SELECT * from factures WHERE ID=?", array('i', $id), false)[0];
+			
+			$response['catalogDetails']=execSQL("SELECT BRAND, MODEL, accessories_catalog.ID as catalogID, bills_catalog_accessories_link.BUYING_PRICE, PRICE_HTVA, bills_catalog_accessories_link.ACCESSORY_ID from bills_catalog_accessories_link, accessories_catalog WHERE bills_catalog_accessories_link.CATALOG_ID=accessories_catalog.ID AND bills_catalog_accessories_link.FACTURE_ID=?", array('i', $id), false);
+			
+			$response['modelDetails']=execSQL("SELECT * from factures_details WHERE FACTURE_ID=?", array('i', $id), false);
+			
+			$response['notLinkedAccessories']=execSQL("SELECT bills_catalog_accessories_link.ID, bills_catalog_accessories_link.CATALOG_ID, BRAND, MODEL,accessories_categories.CATEGORY FROM bills_catalog_accessories_link, accessories_catalog,accessories_categories WHERE FACTURE_ID=? AND bills_catalog_accessories_link.CATALOG_ID=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND bills_catalog_accessories_link.ACCESSORY_ID is NULL ", array('i', $id), false);
+
+			echo json_encode($response);
+			die;
+		}else
+		error_message('403');
+	}
+	else if($action === 'summaryAccessoriesLinked'){
+		if(get_user_permissions("admin", $token)){
+			$response=execSQL("SELECT accessories_stock.*, bills_catalog_accessories_link.BUYING_PRICE, accessories_catalog.BRAND, accessories_catalog.MODEL, companies.COMPANY_NAME FROM accessories_stock, accessories_catalog, bills_catalog_accessories_link, companies WHERE accessories_catalog.ID=accessories_stock.CATALOG_ID AND companies.ID=accessories_stock.COMPANY_ID AND accessories_stock.ID=bills_catalog_accessories_link.ACCESSORY_ID AND bills_catalog_accessories_link.FACTURE_ID=? 
+				UNION ALL
+				(SELECT accessories_stock.*, bills_catalog_accessories_link.BUYING_PRICE, accessories_catalog.BRAND, accessories_catalog.MODEL,'NONE' FROM accessories_stock, accessories_catalog, bills_catalog_accessories_link WHERE accessories_catalog.ID=accessories_stock.CATALOG_ID AND accessories_stock.ID=bills_catalog_accessories_link.ACCESSORY_ID AND bills_catalog_accessories_link.FACTURE_ID=? AND not EXISTS(SELECT 1 FROM companies WHERE companies.ID=accessories_stock.COMPANY_ID))", array('ii', $_GET['factureID'],$_GET['factureID']), false);
+			echo json_encode($response);
+			die;
+		}else
+		error_message('403');
+	}
+	else if($action === 'listModelsFromBrandAccessories'){
+		if(get_user_permissions("admin", $token)){
+			$brand = $_GET['brand'];
+			$response=execSQL("SELECT accessories_categories.CATEGORY ,accessories_catalog.* FROM accessories_catalog, accessories_categories  WHERE accessories_catalog.BRAND='$brand' AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES ORDER BY MODEL", array(), false);
+			echo json_encode($response);
+			die;
+		}else
+		error_message('403');
+	}
+	else if($action === 'listAccessoriesNotLinkedToBill'){
+		if(get_user_permissions("admin", $token)){
+			$catalogID = $_GET['catalogID'];
+			$response=execSQL("SELECT  aa.*,bb.COMPANY_NAME,cc.CATEGORY,dd.BRAND,dd.MODEL FROM accessories_stock aa, companies bb,accessories_categories cc,accessories_catalog dd WHERE aa.CATALOG_ID='$catalogID' AND dd.ID=aa.CATALOG_ID AND dd.ACCESSORIES_CATEGORIES=cc.ID AND NOT EXISTS(SELECT 1 from bills_catalog_accessories_link where bills_catalog_accessories_link.ACCESSORY_ID=aa.ID) AND bb.ID =aa.COMPANY_ID 
+				UNION ALL
+				(SELECT  aa.*,'NONE',cc.CATEGORY,dd.BRAND,dd.MODEL FROM accessories_stock aa,accessories_categories cc,accessories_catalog dd WHERE aa.CATALOG_ID='$catalogID' AND dd.ID=aa.CATALOG_ID AND dd.ACCESSORIES_CATEGORIES=cc.ID AND NOT EXISTS(SELECT 1 from bills_catalog_accessories_link where bills_catalog_accessories_link.ACCESSORY_ID=aa.ID) AND NOT EXISTS(SELECT 1 from companies where companies.ID=aa.COMPANY_ID))", array(), false);
+			echo json_encode($response);
+			die;
+		}else
+		error_message('403');
+	}
+	else if($action === 'linkAccessoryToBill'){
+			if(get_user_permissions("admin", $token)){
+				execSQL("UPDATE bills_catalog_accessories_link SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, ACCESSORY_ID=? WHERE ID=?", array('sii', $token, $_GET['accessoryID'], $_GET['ID']), true);
+				successMessage("SM0003");
+			}else
+				error_message('403');
+		}
+	
+	
+	else
+		error_message('405');
 	break;
 	case 'POST':
 	$action=isset($_POST['action']) ? $_POST['action'] : NULL;
@@ -293,6 +367,21 @@ switch($_SERVER["REQUEST_METHOD"])
 			require 'add_stock_accessory.php';
 		else
 			error_message('403');
+	}
+	else if($action === 'valideFormTolinkAccessoriesToBills'){
+		if(get_user_permissions("admin", $token)){
+			if(isset($_POST['catalogID'])){
+				foreach ($_POST['catalogID'] as $key=>$value) {
+					$billingID=$_POST['ID'];
+					$catalogID=$value;
+					$buyingPrice=$_POST['buyingPrice'][$key];
+					execSQL("INSERT INTO bills_catalog_accessories_link (USR_MAJ, FACTURE_ID, CATALOG_ID, BUYING_PRICE) VALUES (?, ?, ?, ?)", array('siid', $token, $billingID, $catalogID, $buyingPrice), true);
+				}
+				successMessage("SM0003");
+			}
+			die;
+		}else
+		error_message('403');
 	}else
 	error_message('405');
 

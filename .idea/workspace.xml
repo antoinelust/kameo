@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Order Accessories Solve Bug">
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Scan Add Multiple accessories + bug in order accessories">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/Kameo/accessories/accessories.php" beforeDir="false" afterPath="$PROJECT_DIR$/apis/Kameo/accessories/accessories.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/Kameo/accessories/add_stock_accessory.php" beforeDir="false" afterPath="$PROJECT_DIR$/apis/Kameo/accessories/add_stock_accessory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apis/Kameo/scannerForm.php" beforeDir="false" afterPath="$PROJECT_DIR$/apis/Kameo/scannerForm.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.html" beforeDir="false" afterPath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.js" beforeDir="false" afterPath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/accessories/accessories.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/orderAccessories/orderAccessory.js" beforeDir="false" afterPath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/orderAccessories/orderAccessory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/scanPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/scanPage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/scannerJs.js" beforeDir="false" afterPath="$PROJECT_DIR$/include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/scannerJs.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +86,8 @@
       <workItem from="1618817064209" duration="20000" />
       <workItem from="1618914619597" duration="76000" />
       <workItem from="1619013127949" duration="46000" />
+      <workItem from="1619013183158" duration="418000" />
+      <workItem from="1619083084424" duration="843000" />
     </task>
     <task id="LOCAL-00001" summary="Version Test Younes">
       <created>1612442399254</created>
@@ -298,7 +292,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618914676979</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Scan Add Multiple accessories + bug in order accessories">
+      <created>1619013297045</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1619013297045</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,6 +343,7 @@
     <MESSAGE value="Orders Bug" />
     <MESSAGE value="Order Accessories" />
     <MESSAGE value="Order Accessories Solve Bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="Order Accessories Solve Bug" />
+    <MESSAGE value="Scan Add Multiple accessories + bug in order accessories" />
+    <option name="LAST_COMMIT_MESSAGE" value="Scan Add Multiple accessories + bug in order accessories" />
   </component>
 </project>

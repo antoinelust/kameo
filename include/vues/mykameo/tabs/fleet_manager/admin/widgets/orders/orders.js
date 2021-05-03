@@ -434,9 +434,9 @@ function retrieve_command(ID){
           $('#widget-order-form input[name=testDate]').val(response.order.testDate);
           $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
+           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
           $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg?date="+Date.now());
-
-          $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
+          $('#widget-order-form textarea[name=commentsAdmin]').val(response.order.commentsAdmin);
 
           if(response.order.accessories){
             response.order.accessories.forEach(function (accessory, i) {

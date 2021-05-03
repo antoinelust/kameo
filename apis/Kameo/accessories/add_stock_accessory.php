@@ -62,7 +62,7 @@ if($modelID != '' && $contractType != '') {
       }else
       error_message('500', $conn->error);
     }
-    else if($contractType=="stock" || $contractType='pending_delivery'){
+    else if($contractType=="stock" || $contractType=="pending_delivery"){
       $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=12, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=?, DELIVERY_DATE=? WHERE ID=? ");
      if ($stmt)
      {
@@ -71,11 +71,11 @@ if($modelID != '' && $contractType != '') {
       }else
       error_message('500', $conn->error);
     }
-    else {
+    else if($contractType=="order"){
      $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=?, ESTIMATED_DELIVERY_DATE=? WHERE ID=? ");
      if ($stmt)
      {
-      $stmt->bind_param("sisisii", $token, $companyID, $userEMAIL, $modelID, $contractType,$bikeID,$estimatedDeliveryDate, $ID);
+      $stmt->bind_param("sisisisi", $token, $companyID, $userEMAIL, $modelID, $contractType,$bikeID,$estimatedDeliveryDate, $ID);
       $stmt->execute();
     }else
     error_message('500', $conn->error);

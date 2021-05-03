@@ -15,7 +15,7 @@ $( ".fleetmanager" ).click(function() {
 })
 
 
-$( ".orderAccessoriesClick" ).click(function() {
+$(".orderAccessoriesClick" ).click(function() {
 	$("#displayorderAcessory").dataTable({
 		destroy: true,
 		ajax: {
@@ -37,6 +37,9 @@ $( ".orderAccessoriesClick" ).click(function() {
 		{ title: "Categorie", data: "CATEGORY" },
 		{ title: "Etat de la commande", data: "CONTRACT_TYPE" ,
 		fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+			if(sData=='NONE'){
+				$(nTd).html('<label>En attente de traitement</label>');
+			}
 			if(sData==null){
 				$(nTd).html('<label>En attente de traitement</label>');
 			}

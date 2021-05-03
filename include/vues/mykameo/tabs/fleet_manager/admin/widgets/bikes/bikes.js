@@ -187,6 +187,7 @@ function fill_link_bikes_to_bills(){
     ],
     paging : false
   });
+ 
   $("#bikesNotLinkedTable").dataTable({
     destroy: true,
     ajax: {
