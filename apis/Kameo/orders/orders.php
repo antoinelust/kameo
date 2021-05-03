@@ -7,9 +7,10 @@ header_remove("Set-Cookie");
 header_remove("X-Powered-By");
 header_remove("Content-Security-Policy");
 
-require_once '../globalfunctions.php';
-require_once '../authentication.php';
-require_once '../connexion.php';
+require_once __DIR__ .'/../globalfunctions.php';
+require_once __DIR__ .'/../authentication.php';
+
+$token = getBearerToken();
 
 $token = getBearerToken();
 
@@ -19,7 +20,6 @@ switch($_SERVER["REQUEST_METHOD"])
 {
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
-
 		if($action === 'listOrderable'){
 
 			if(get_user_permissions("admin", $token) && isset($_GET['company'])){
@@ -48,32 +48,19 @@ switch($_SERVER["REQUEST_METHOD"])
         $marginBike=0.7;
         $marginOther=0.3;
         $leasingDuration=36;
-				$stmt = $conn->prepare("SELECT COMPANY from customer_referential WHERE TOKEN=?");
-				$stmt->bind_param("s", $token);
-				$stmt->execute();
-				$company_reference = $stmt->get_result()->fetch_array(MYSQLI_ASSOC)['COMPANY'];
-				$stmt->close();
-				$stmt = $conn->prepare("SELECT BIKE_ID from companies_orderable WHERE INTERNAL_REFERENCE = ? ORDER BY BIKE_ID");
-				$stmt->bind_param("s", $company_reference);
-				$stmt->execute();
-				$orderable = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+				$company_reference=execSQL("SELECT COMPANY from customer_referential WHERE TOKEN=?", array('s', $token), false)[0]['COMPANY'];
 				$response = array();
+				$response['bike']=execSQL("SELECT BIKE_ID from companies_orderable WHERE INTERNAL_REFERENCE = ? ORDER BY BIKE_ID", array('s', $company_reference), false);
+				if(is_null($response['bike'])){
+					$response['bike']=array();
+				}
 				$response['response'] = "success";
 				$response['company'] = $company_reference;
-
-				$response['bike'] = $orderable;
-
-
-				$stmt->close();
-				$stmt = $conn->prepare("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPES, TVA_INCLUDED from conditions WHERE COMPANY=? AND NAME='generic'");
-				$stmt->bind_param("s", $company_reference);
-				$stmt->execute();
-				$reponse=$stmt->get_result()->fetch_array(MYSQLI_ASSOC);
+				$reponse=execSQL("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPES, TVA_INCLUDED from conditions WHERE COMPANY=? AND NAME='generic'", array('s', $company_reference), false)[0];
 				$response['discount']=$reponse['DISCOUNT'];
 				$response['cafeteriaTypes']=explode(',', $reponse['CAFETERIA_TYPES']);
 				$response['tvaIncluded']=$reponse['TVA_INCLUDED'];
 				$response['remainingPriceIncludedInLeasing']=$reponse['REMAINING_PRICE_INCLUDED_IN_LEASING'];
-				$stmt->close();
 				echo json_encode($response);
 				log_output($response);
 			}else
@@ -82,11 +69,35 @@ switch($_SERVER["REQUEST_METHOD"])
 			if(get_user_permissions("order", $token)){
 				$response['response']="success";
 				$response['accessories'] = execSQL("SELECT companies_orderable_accessories.* FROM companies_orderable_accessories, companies, customer_referential WHERE TOKEN=? AND customer_referential.COMPANY=companies.INTERNAL_REFERENCE AND companies.ID=companies_orderable_accessories.COMPANY_ID", array("s", $token), false);
-				$conditions = execSQL("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPES, TVA_INCLUDED from conditions, customer_referential WHERE conditions.COMPANY=customer_referential.COMPANY AND NAME='generic' and customer_referential.TOKEN=?", array('s', $token), false);
-				$response['discount']=$conditions[0]['DISCOUNT'];
-				$response['cafeteriaTypes']=explode(',', $conditions[0]['CAFETERIA_TYPES']);
-				$response['tvaIncluded']=$conditions[0]['TVA_INCLUDED'];
-				$response['remainingPriceIncludedInLeasing']=$conditions[0]['REMAINING_PRICE_INCLUDED_IN_LEASING'];
+				if(is_null($response['accessories'])){
+					$response['accessories']=array();
+				}
+				$conditions = execSQL("SELECT DISCOUNT, REMAINING_PRICE_INCLUDED_IN_LEASING, CAFETERIA_TYPES, TVA_INCLUDED from conditions, customer_referential WHERE conditions.COMPANY=customer_referential.COMPANY AND NAME='generic' and customer_referential.TOKEN=?", array('s', $token), false)[0];
+				$response['discount']=$conditions['DISCOUNT'];
+				$response['cafeteriaTypes']=explode(',', $conditions['CAFETERIA_TYPES']);
+				$response['tvaIncluded']=$conditions['TVA_INCLUDED'];
+				$response['remainingPriceIncludedInLeasing']=$conditions['REMAINING_PRICE_INCLUDED_IN_LEASING'];
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
+		}else if($action === 'listGroupedOrders'){
+			if(get_user_permissions("admin", $token)){
+				$response['orders'] = execSQL("SELECT GROUP_ID, companies.COMPANY_NAME, SUM(CASE WHEN tt.TYPE='bike' THEN 1 ELSE 0 END) as bikeNumber, SUM(CASE WHEN tt.TYPE='accessory' THEN 1 ELSE 0 END) as accessoryNumber, SUM(CASE WHEN tt.STATUS = 'closed' THEN 0 ELSE 1 END) as 'notDelivered' FROM (SELECT GROUP_ID, STATUS, 'bike' as TYPE, client_orders.COMPANY FROM client_orders UNION ALL SELECT ORDER_ID as GROUP_ID, STATUS, 'accessory' as TYPE, COMPANY FROM order_accessories) as tt, companies WHERE companies.ID=tt.COMPANY GROUP BY GROUP_ID", array(), false);
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
+		}else if($action === 'retrieveGroupedOrder'){
+			if(get_user_permissions("admin", $token)){
+				$response['bikes'] = execSQL("SELECT client_orders.ID, client_orders.STATUS, client_orders.SIZE, client_orders.TYPE, bike_catalog.BRAND, bike_catalog.MODEL, client_orders.LEASING_PRICE, client_orders.ESTIMATED_DELIVERY_DATE FROM client_orders, bike_catalog WHERE GROUP_ID=? AND client_orders.PORTFOLIO_ID=bike_catalog.ID", array('i', $_GET['ID']), false);
+				$response['accessories'] = execSQL("SELECT order_accessories.ID, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.ESTIMATED_DELIVERY_DATE, order_accessories.STATUS FROM order_accessories, accessories_categories, accessories_catalog WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND order_accessories.ORDER_ID=?", array('i', $_GET['ID']), false);
+				if(is_null($response['bikes'])){
+					$response['bikes']==array();
+				}
+				if(is_null($response['accessories'])){
+					$response['accessories']==array();
+				}
 				echo json_encode($response);
 				die;
 			}else
@@ -96,7 +107,6 @@ switch($_SERVER["REQUEST_METHOD"])
 		break;
 	case 'POST':
 		$action=isset($_POST['action']) ? $_POST['action'] : NULL;
-
 		if($action === 'updateOrderable')
 		{
 			if(get_user_permissions("admin", $token) && isset($_POST['company']) && isset($_POST['cafeteria'])){
@@ -149,11 +159,45 @@ switch($_SERVER["REQUEST_METHOD"])
 				}
 			}else
 				error_message('403');
-		}
+		}else if($action === "addGroupedOrder"){
+			if(get_user_permissions("admin", $token)){
+				$companyID=$_POST['company'];
+				$groupID=execSQL("SELECT MAX(MaxGroupID) as MaxGroupID FROM (SELECT MAX(GROUP_ID) as MaxGroupID FROM client_orders UNION SELECT MAX(ORDER_ID) as MaxGroupID FROM order_accessories) as tt", array(), false)[0]['MaxGroupID'];
+				$groupID=intval($groupID)+1;
+				$test='N';
+				$email='';
+				$remark='';
+				if(isset($_POST['catalogID'])){
+					foreach ($_POST['catalogID'] as $key => $catalogID) {
+						$size=$_POST['size'][$key];
+						$contractType=$_POST['contractType'][$key];
+						$amount=$_POST['bikeAmount'][$key];
+						$status=$_POST['status'][$key];
+						$estimatedDeliveryDate=$_POST['estimatedDeliveryDate'][$key];
+						execSQL("INSERT INTO client_orders (USR_MAJ, GROUP_ID, COMPANY, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, TEST_BOOLEAN, ESTIMATED_DELIVERY_DATE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+						array('siisisssdsss', $token, $groupID, $companyID, $email, $catalogID, $size, $remark, $status, $amount, $contractType, $test, $estimatedDeliveryDate), true);
+					}
+				}
+				if(isset($_POST['accessoryCatalogID'])){
+					foreach ($_POST['accessoryCatalogID'] as $key => $catalogID) {
+						$contractType=$_POST['accessoryContractType'][$key];
+						$amount=$_POST['accessoryAmount'][$key];
+						$status=$_POST['accessoryStatus'][$key];
+						$estimatedDeliveryDate=$_POST['accessoryEstimatedDeliveryDate'][$key];
+						execSQL("INSERT INTO order_accessories (USR_MAJ, ORDER_ID, COMPANY, EMAIL, BRAND, PRICE_HTVA, TYPE, DESCRIPTION, ESTIMATED_DELIVERY_DATE, STATUS) VALUES(?,?,?,?,?,?,?,?,?,?)",
+						array('siisidssss', $token, $groupID, $companyID, $email, $catalogID, $amount, $contractType, $remark, $estimatedDeliveryDate, $status), true);
+					}
+				}
+
+				successMessage("SM0032");
+			}else
+				error_message('403');
+		}else
+			error_message('405');
+
 	break;
 	default:
 			error_message('405');
 		break;
 }
-$conn->close();
 ?>

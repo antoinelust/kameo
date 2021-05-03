@@ -6,7 +6,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-sm-12">
+					<div class="col-md-12">
 						<h4 class="text-green">Ajouter une facture</h4>
 						<form name="widget-addBill-form" id="widget-addBill-form" action="apis/Kameo/add_bill.php" role="form" method="post">
 							<div class="form-group col-md-12">
@@ -103,10 +103,10 @@
 								<div class="separator"></div>
 								<div class="col-md-12 generateBillDetails">
 									<div class="row generateBillBike">
-										<div class="col-sm-4">
+										<div class="col-md-12">
 											<h4 class="text-green">Nombre de vélos: </h4>
 										</div>
-										<div class="col-sm-12">
+										<div class="col-md-12">
 											<i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span><input type="hidden" id="bikesNumberBill" name="bikesNumber" value="0" />
 											<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
 											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" style="display: none;" type="button"></button>
@@ -139,10 +139,10 @@
 									</div>
 									<div class="separator"></div>
 									<div class="row generateBillAccessories">
-										<div class="col-sm-4">
+										<div class="col-md-12">
 											<h4 class="text-green">Accessoires catalogue: </h4>
 										</div>
-										<div class="col-sm-12 accessoriesButtons">
+										<div class="col-md-12 accessoriesButtons">
 											<i class="fa fa-calculator"></i> <span class="accessoriesNumber">0</span><input type="hidden" id="accessoriesNumber" name="accessoriesNumber" value="0" />
 											<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
 											<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" style="display: none;" type="button"></button>
@@ -169,10 +169,10 @@
 									</div>
 									<div class="separator"></div>
 									<div class="row generateBillOtherAccessories">
-										<div class="col-sm-4">
+										<div class="col-md-12">
 											<h4 class="text-green">Accessoires autre : </h4>
 										</div>
-										<div class="col-sm-12 accessoriesButtons">
+										<div class="col-md-12 accessoriesButtons">
 											<i class="fa fa-calculator"></i>
 											<span class="otherAccessoriesNumber">0</span>
 											<input type="hidden" id="otherAccessoriesNumber" name="otherAccessoriesNumber" value="0" />
@@ -196,10 +196,10 @@
 									<div class="separator"></div>
 
 									<div class="row generateBillManualWorkload">
-										<div class="col-sm-4">
+										<div class="col-md-12">
 											<h4 class="text-green">Main d'oeuvre : </h4>
 										</div>
-										<div class="col-sm-12">
+										<div class="col-md-12">
 											<i class="fa fa-calculator"></i>
 											<span class="manualWorkloadNumber">0</span>
 											<input type="hidden" id="manualWorkloadNumber" name="manualWorkloadNumber" value="0" />
@@ -219,7 +219,13 @@
 											</tbody>
 										</table>
 									</div>
-
+								</div>
+								<div class="separator"></div>
+								<div class="col-md-12">
+									<h4 class="text-green">Commentaires à mentionner dans la facture : </h4>
+								</div>
+								<div class="col-md-12">
+									<textarea name="comment" rows="5" cols="33" class="form-control"></textarea>
 								</div>
 								<h4 class="text-green manualBill" style="display: none;">Informations sur les montants</h4>
 								<div class="col-md-12 manualBill" style="display: none;">

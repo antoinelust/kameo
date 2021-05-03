@@ -37,16 +37,25 @@ if (isset($_GET['action'])) {
          INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
          INNER JOIN customer_bike_access ON customer_bike_access.BIKE_ID = customer_bikes.ID AND customer_bike_access.TYPE='personnel'
          INNER JOIN customer_referential ON customer_referential.EMAIL=customer_bike_access.EMAIL
-         WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string'
+         WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string' AND entretiens.EXTERNAL_BIKE=0
+       UNION
+       SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
+          COMMENT AS comment, customer_bikes.FRAME_NUMBER AS frame_number, customer_bikes.COMPANY AS company, MODEL AS model, customer_bikes.ADDRESS as bikeAddress,
+          FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id, (SELECT PHONE from companies_contact WHERE ID_COMPANY=companies.ID LIMIT 1) AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
+          companies.TOWN AS town, 'partage' AS type, 'N/A' AS email
+          FROM entretiens
+          INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+          INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
+          WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string' AND NOT EXISTS (SELECT 1 from customer_bike_access WHERE customer_bike_access.BIKE_ID = customer_bikes.ID AND customer_bike_access.TYPE='personnel') and EXTERNAL_BIKE=0
         UNION
         SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
-           COMMENT AS comment, customer_bikes.FRAME_NUMBER AS frame_number, customer_bikes.COMPANY AS company, MODEL AS model, customer_bikes.ADDRESS as bikeAddress,
-           FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id, (SELECT PHONE from companies_contact WHERE ID_COMPANY=companies.ID LIMIT 1) AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
-           companies.TOWN AS town, 'partage' AS type, 'N/A' AS email
+           COMMENT AS comment, 'External Bike' AS frame_number, companies.INTERNAL_REFERENCE AS company, external_bikes.MODEL AS model, '' as bikeAddress,
+           external_bikes.FRAME_REFERENCE AS frame_reference, external_bikes.ID AS bike_id, (SELECT PHONE from companies_contact WHERE ID_COMPANY=companies.ID LIMIT 1) AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
+           companies.TOWN AS town, 'external' AS type, 'N/A' AS email
            FROM entretiens
-           INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
-           INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
-           WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string' AND NOT EXISTS (SELECT 1 from customer_bike_access WHERE customer_bike_access.BIKE_ID = customer_bikes.ID AND customer_bike_access.TYPE='personnel')
+           INNER JOIN external_bikes ON external_bikes.ID = entretiens.BIKE_ID
+           INNER JOIN companies ON companies.ID = external_bikes.COMPANY_ID
+           WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string' AND EXTERNAL_BIKE=1
       ) as tt
       GROUP BY id
       ORDER BY date", array(), false);

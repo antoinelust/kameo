@@ -36,6 +36,12 @@ if(is_null($response['bike'])){
 
 $response['bikeNumber']=count($response['bike']);
 
+$response['externalBikes']=execSQL("SELECT * FROM external_bikes where COMPANY_ID=?", array('i', $ID), false);
+if(is_null($response['externalBikes'])){
+  $response['externalBikes']=array();
+}
+
+
 
 ///////////////////
 

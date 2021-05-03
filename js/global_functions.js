@@ -90,8 +90,12 @@ function initializeFields() {
     .remove()
     .end();
 
-
   $("#widget-manageStockAccessory-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
+
+  $("#widget-externalBikeManagement-form select[name=company]")
     .find("option")
     .remove()
     .end();
@@ -171,6 +175,15 @@ function initializeFields() {
             response.company[i].companyName +  "<br>"
           );
           $("#widget-manageStockAccessory-form select[name=company]").val("");
+
+          $("#widget-externalBikeManagement-form select[name=company]").append(
+            '<option value= "' +
+            response.company[i].ID +
+            '">' +
+            response.company[i].companyName +  "<br>"
+          );
+          $("#widget-externalBikeManagement-form select[name=company]").val("");
+
 
         }
       } else {

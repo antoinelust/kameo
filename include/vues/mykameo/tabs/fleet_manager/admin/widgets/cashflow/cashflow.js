@@ -241,11 +241,93 @@ function generateCashGraphic() {
     type: "get",
     data: { action: "getGraphics" },
     success: function (response) {
+      var ctx = document.getElementById("myChartCA").getContext("2d");
+      ctx.height = 500;
+      var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          datasets: [
+            {
+              label: "Leasing vélos",
+              fill: true,
+              borderColor: "rgba(44, 132, 109, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              data: response.bikeLeasing,
+              tension: 0.4
+            },
+            {
+              label: "Vente vélos",
+              fill: true,
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(252, 39, 80, 0.2)",
+              data: response.bikeSelling,
+              tension: 0.4
+            },
+            {
+              label: "Leasing bornes",
+              fill: true,
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(176, 0, 0, 0)",
+              data: response.boxesLeasing,
+              tension: 0.4
+            },
+            {
+              label: "Leasing accessoires",
+              fill: true,
+              borderColor: "rgba(60, 179, 149, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0)",
+              data: response.accessoryLeasing,
+              tension: 0.4
+            },
+            {
+              label: "Ventes accessoires",
+              fill: true,
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(176, 0, 0, 0)",
+              data: response.accessorySelling,
+              tension: 0.4
+            }
+          ],
+          labels: response.arrayDatesCA,
+        },
+        options: {
+            tooltips: {
+                mode: 'label',
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var corporation = data.datasets[tooltipItem.datasetIndex].label;
+                        var valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        var total = 0;
+                        for (var i = 0; i < data.datasets.length; i++)
+                            total += data.datasets[i].data[tooltipItem.index];
+                        if (tooltipItem.datasetIndex != data.datasets.length - 1) {
+                            return corporation + " : " + valor.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') +' €';
+                        } else {
+                            return [corporation + " : " + valor.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'), "Total : $" + total + ' €'];
+                        }
+                    }
+                }
+            },
+            responsive: true,
+            scales: {
+              xAxes: [{
+                stacked: true,
+              }],
+              yAxes: [{
+                  stacked: true
+              }],
+            }
+        }
+      });
+      myChart.update();
+
+
       var threeYearsFromNow = new Date();
       threeYearsFromNow.setFullYear(threeYearsFromNow.getFullYear() + 1);
       var maxXAxis = threeYearsFromNow.toISOString().split("T")[0];
 
       var ctx = document.getElementById("myChart").getContext("2d");
+      ctx.height = 500;
       var myChart = new Chart(ctx, {
         type: "line",
         data: {
@@ -428,7 +510,7 @@ function list_contracts_offers(company) {
             var offerLink = "offres/" + offer.FILE_NAME;
 
             var temp =
-              '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
+              '<tr><td><a href="#" data-target="#offerManagement" data-action="retrieve" data-toggle="modal" data-id="' +
               offer.ID +
               '">' +
               offer.ID +
@@ -448,12 +530,12 @@ function list_contracts_offers(company) {
               offer_end +
               "</td><td>" +
               probability +
-              '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
+              '</td><td><ins><a class="text-green" data-target="#offerManagement" data-action="update" data-id="' +
               offer.ID +
               '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
           } else {
             var temp =
-              '<tr><td><a href="#" class="retrieveOffer" data-target="#offerManagement" data-toggle="modal" name="' +
+              '<tr><td><a href="#" data-target="#offerManagement" data-action="retrieve" data-toggle="modal" data-id="' +
               offer.ID +
               '">' +
               offer.ID +
@@ -471,7 +553,7 @@ function list_contracts_offers(company) {
               offer_end +
               "</td><td>" +
               probability +
-              '</td><td><ins><a class="text-green offerManagement updateOffer" data-target="#offerManagement" name="' +
+              '</td><td><ins><a class="text-green" data-action="update" data-target="#offerManagement" data-id="' +
               offer.ID +
               '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
           }
@@ -489,6 +571,7 @@ function list_contracts_offers(company) {
       data: { action: "getCosts" },
       success: function (response) {
         var dest = "";
+        var total=0;
         var temp =
           '<table class="table table-condensed"><h4 class="text-green">Coûts :</h4><br/><a class="button small green button-3d rounded icon-right" data-target="#costsManagement" data-toggle="modal" href="#" onclick=\"addCost()\"><i class="fa fa-plus"></i> Ajouter un coût</a><div class="seperator seperator-small visible-xs"></div><tbody><thead><tr><th>ID</th><th>Titre</th><th>Montant</th><th>Debut</th><th>Fin</th><th>Type</th><th></th></tr></thead>';
         dest = dest.concat(temp);
@@ -506,8 +589,10 @@ function list_contracts_offers(company) {
 
           if (cost.TYPE == "monthly" || cost.TYPE == "loan") {
             var amount = Math.round(cost.AMOUNT) + "€ /mois";
+            total+=cost.AMOUNT;
           } else {
             var amount = Math.round(cost.AMOUNT) + " €";
+            total+=cost.AMOUNT/12;
           }
 
           if (cost.TYPE === "loan") {
@@ -538,19 +623,9 @@ function list_contracts_offers(company) {
         });
         var temp = "</tbody></table>";
         dest = dest.concat(temp);
+        dest = dest.concat("<p>Valeur totale des coûts : <strong>"+Math.round(total)+" €/mois</strong></p>");
         document.getElementById("costsListingSpan").innerHTML = dest;
 
-        $(".retrieveOffer").click(function () {
-          retrieve_offer(this.name, "retrieve");
-          $(".offerManagementTitle").text("Consulter une offre");
-          $(".offerManagementSendButton").addClass("hidden");
-        });
-        $(".updateOffer").click(function () {
-          retrieve_offer(this.name, "update");
-          $(".offerManagementTitle").text("Mettre à jour une offre");
-          $(".offerManagementSendButton").removeClass("hidden");
-          $(".offerManagementSendButton").text("Mettre à jour");
-        });
     }
   });
 }

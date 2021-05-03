@@ -19,8 +19,15 @@ switch($_SERVER["REQUEST_METHOD"])
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 		if($action=="retrieve"){
-			if(get_user_permissions(["admin", "fleetManager"], $token)){
+			if(get_user_permissions(["fleetManager", "admin", "bikesStock"], $token)){
 				include "getBikeDetails.php";
+			}else
+				error_message('403');
+		}else if($action=="retrieveExternalBike"){
+			if(get_user_permissions("admin", $token)){
+				$response=execSQL("SELECT * FROM external_bikes WHERE ID=?", array('i', $_GET['ID']), false)[0];
+				echo json_encode($response);
+				die;
 			}else
 				error_message('403');
 		}else if($action=="getPersonnalBike"){
@@ -40,7 +47,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				}else
 					error_message('403');
 			}else{
-				if(get_user_permissions("admin", $token)){
+				if(get_user_permissions(["admin", "bikesStock"], $token)){
 					include "listBikesAdmin.php";
 				}else
 					error_message('403');
@@ -89,6 +96,24 @@ switch($_SERVER["REQUEST_METHOD"])
 		if($action === 'add'){
 			if(get_user_permissions("admin", $token)){
 				require_once 'add_bike.php';
+			}else
+				error_message('403');
+		}else if($action === 'addExternalBike'){
+			if(get_user_permissions("admin", $token)){
+				execSQL('INSERT INTO external_bikes (USR_MAJ, BRAND, MODEL, COLOR, COMPANY_ID, FRAME_REFERENCE, OWNER_ID) VALUES(?, ?, ?, ?, ?, ?, ?)', array('ssssisi', $token, $_POST['brand'], $_POST['model'], isset($_POST['color']) ? $_POST['color'] : NULL, $_POST['company'], isset($_POST['frameReference']) ? $_POST['frameReference'] : NULL, isset($_POST['ownerID']) ? $_POST['ownerID'] : NULL), true);
+				$response['response']="success";
+				$response['message']="Vélo ajouté";
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
+		}else if($action === 'updateExternalBike'){
+			if(get_user_permissions("admin", $token)){
+				execSQL('UPDATE external_bikes SET USR_MAJ=?, BRAND=?, MODEL=?, COLOR=?, COMPANY_ID=?, FRAME_REFERENCE=?, OWNER_ID=? WHERE ID=?', array('ssssisii', $token, $_POST['brand'], $_POST['model'], isset($_POST['color']) ? $_POST['color'] : NULL, $_POST['company'], isset($_POST['frameReference']) ? $_POST['frameReference'] : NULL, isset($_POST['ownerID']) ? $_POST['ownerID'] : NULL, $_POST['bikeID']), true);
+				$response['response']="success";
+				$response['message']="Vélo ajouté";
+				echo json_encode($response);
+				die;
 			}else
 				error_message('403');
 		}else if($action === 'update'){

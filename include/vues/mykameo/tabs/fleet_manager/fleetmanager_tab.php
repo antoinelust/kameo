@@ -123,17 +123,18 @@
 
 
     if(get_user_permissions("admin", $token)){
-          echo '<div class="col-md-4 " id="clientManagement" style="height:164px">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#companyListing" href="#" class="clientManagerClick" >
-                  <i style="opacity:0.15" class="fa fa-users"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="counterClients" style="color:#3cb395"></div>
-              <p>Clients et prospects</p>
-            </div>
-          </div>
+          echo '
+					<div class="col-md-4 " id="orderAccessories" style="height:164px">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#groupedOrdersListing" href="#">
+									<i style="opacity:0.15" class="fa fa-users"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterGroupedCommands"></div>
+							<p>Commandes groupées</p>
+						</div>
+					</div>
           <div class="col-md-4 " id="orderManagement" style="height:164px">
             <div class="icon-box medium fancy">
               <div class="icon bold" data-animation="pulse infinite">
@@ -142,9 +143,20 @@
                 </a>
               </div>
               <div class="counter bold" id="counterOrdersAdmin" style="color:#3cb395"></div>
-              <p>Commandes</p>
+              <p>Commandes Vélos</p>
             </div>
           </div>
+					<div class="col-md-4 " id="orderAccessories" style="height:164px">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#orderAccessoriesListing" href="#" class="orderAccessoriesClick">
+									<i style="opacity:0.15" class="fa fa-users"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterOrderAccessoriesCounter"></div>
+							<p>Commande accessoires</p>
+						</div>
+					</div>
 					<div class="col-md-4 " id="chatsManagement" style="height:164px">
 						<div class="icon-box medium fancy">
 							<div class="icon bold" data-animation="pulse infinite">
@@ -215,17 +227,6 @@
 							<p>Stock accessoires</p>
 						</div>
 					</div>
-          <div class="col-md-4 " id="orderAccessories" style="height:164px">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#orderAccessoriesListing" href="#" class="orderAccessoriesClick">
-                  <i style="opacity:0.15" class="fa fa-users"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="counterOrderAccessoriesCounter"></div>
-              <p>Commande accessoires</p>
-            </div>
-          </div>
 					<div class="row"></div>
           <div class="col-md-4 " id="boxesManagement" style="height:164px">
             <div class="icon-box medium fancy">
@@ -239,17 +240,17 @@
             </div>
           </div>
 					<div class="row"></div>
-          <div class="col-md-4 " id="tasksManagement" style="height:164px">
-            <div class="icon-box medium fancy">
-              <div class="icon bold" data-animation="pulse infinite">
-                <a data-toggle="modal" data-target="#tasksListing" href="#" class="tasksManagerClick">
-                  <i style="opacity:0.15" class="fa fa-tasks"></i>
-                </a>
-              </div>
-              <div class="counter bold" id="counterTasks" style="color:#3cb395"></div>
-              <p>Gérer les Actions</p>
-            </div>
-          </div>';
+					<div class="col-md-4 " id="clientManagement" style="height:164px">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#companyListing" href="#" class="clientManagerClick" >
+									<i style="opacity:0.15" class="fa fa-users"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterClients" style="color:#3cb395"></div>
+							<p>Clients et prospects</p>
+						</div>
+					</div>';
 				}
 				if(get_user_permissions("cashflow", $token)){
 

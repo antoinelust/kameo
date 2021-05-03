@@ -27,10 +27,18 @@ switch($_SERVER["REQUEST_METHOD"])
 		}else if($action === 'list'){
 			if(get_user_permissions("admin", $token)){
 				if(isset($_GET['company'])){
-					echo json_encode(execSQL("SELECT entretiens.ID, entretiens.DATE, bike_catalog.BRAND, bike_catalog.MODEL FROM entretiens, customer_bikes, bike_catalog WHERE entretiens.STATUS='DONE' AND BIKE_ID=customer_bikes.ID  AND customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.COMPANY=? ORDER BY entretiens.ID DESC", array('s', $_GET['company']), false));
+					$response['internalMaintenances']=execSQL("SELECT entretiens.ID, entretiens.DATE, bike_catalog.BRAND, bike_catalog.MODEL FROM entretiens, customer_bikes, bike_catalog WHERE entretiens.STATUS='DONE' AND BIKE_ID=customer_bikes.ID  AND customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.COMPANY=? ORDER BY entretiens.ID DESC", array('s', $_GET['company']), false);
+					$response['externalMaintenances']=execSQL("SELECT entretiens.ID, entretiens.DATE, external_bikes.BRAND, external_bikes.MODEL FROM entretiens, external_bikes WHERE entretiens.STATUS='DONE' AND BIKE_ID=external_bikes.ID  AND external_bikes.COMPANY_ID=(SELECT ID FROM companies WHERE INTERNAL_REFERENCE=?) ORDER BY entretiens.ID DESC", array('s', $_GET['company']), false);
+					if(is_null($response['internalMaintenances'])){
+						$response['internalMaintenances']=array();
+					}
+					if(is_null($response['externalMaintenances'])){
+						$response['externalMaintenances']=array();
+					}
+					echo json_encode($response);
 					die;
 				}else{
-					echo json_encode(execSQL("SELECT * FROM entretiens WHERE BIKE_ID IN (SELECT ID FROM customer_bikes WHERE COMPANY = ?) ORDER BY ID DESC", array('s', $_GET['category']), false));
+					echo json_encode(execSQL("SELECT * FROM entretiens WHERE BIKE_ID IN (SELECT ID FROM customer_bikes WHERE COMPANY = (SELECT COMPANY FROM customer_referential WHERE TOKEN = ?)) ORDER BY ID DESC", array('s', $token), false));
 					die;
 				}
 			}
@@ -58,7 +66,8 @@ switch($_SERVER["REQUEST_METHOD"])
 				$comment = isset($_POST["comment"]) ? addslashes($_POST["comment"]) : NULL;
 				$internalComment = isset($_POST["internalComment"]) ? addslashes($_POST["internalComment"]) : NULL;
 				$bike_id = isset($_POST["velo"]) ? $_POST["velo"] : NULL;
-				execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR ) VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, 1)", array('sissss', $user, $bike_id, $date, $status, $comment, $internalComment), true);
+				$external = isset($_POST["external"]) ? $_POST["external"] : NULL;
+				execSQL("INSERT INTO entretiens (HEU_MAJ, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR ) VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1)", array('siissss', $user, $bike_id, $external, $date, $status, $comment, $internalComment), true);
 				$response=array('response'=>"success", "message"=>"Entretien ajouté avec succès");
 				echo json_encode($response);
 				die;

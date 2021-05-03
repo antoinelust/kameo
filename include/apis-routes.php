@@ -11,11 +11,13 @@
 	{
 		$router->map('GET|POST','/api/companies', 'apis/Kameo/companies/companies.php');
 		$router->map('GET','/api/csvOrder', 'apis/Kameo/csvOrder.php');
+		$router->map('GET|POST','/api/orders[ext]', 'apis/Kameo/orders/orders.php');
 		$router->map('GET|POST','/api/chats[ext]', 'apis/Kameo/chats/chats.php');
 		$router->map('GET|POST','/api/bikes[ext]', 'apis/Kameo/bikes/bikes.php');
 		$router->map('GET|POST','/api/users[ext]', 'apis/Kameo/users/users.php');
 		$router->map('GET|POST','/api/maintenances', 'apis/Kameo/maintenances/maintenances.php');
 		$router->map('GET|POST','/api/cashFlow', 'apis/Kameo/cashFlow/cashFlow.php');
+		$router->map('GET|POST','/api/offers', 'apis/Kameo/offers/offers.php');
 		$router->map('GET|POST','/api/accessories', 'apis/Kameo/accessories/accessories.php');
 		$router->map('GET|POST','/api/bills[ext]', 'apis/Kameo/bills/bills.php');
 		$router->map('GET|POST','/api/portfolioBikes[ext]', 'apis/Kameo/portfolioBikes/portfolioBikes.php');

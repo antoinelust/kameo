@@ -1,0 +1,172 @@
+<div
+	class="modal fade"
+	id="groupedOrdersListing"
+	tabindex="9"
+	role="modal"
+	aria-labelledby="modal-label"
+	aria-hidden="true"
+	style="display: none; overflow-y: auto !important">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-hidden="true">
+					×
+				</button>
+			</div>
+			<h4 class="text-green">Liste des commandes</h4>
+			<a class="button small green button-3d rounded icon-right" data-target="#groupedOrderManagement" data-toggle="modal" href="#" data-action="add"><i class="fa fa-plus"></i> Ajouter une commande</a><br>
+			<table id='groupedOrdersListingTable' class='table' style='width: 100%'>
+			</table>
+			<hr>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="groupedOrderManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <h4 class="text-green title"></h4>
+          <form id="widget_groupedOrderManagement-form" action="api/orders" role="form" method="post">
+						<div class="col-md-4">
+							<label for='company'>ID</label>
+							<input name="ID" class="form-control required">
+						</div>
+						<div class="col-md-4">
+							<label for='company'>Société</label>
+							<select name="company" class="form-control required"></select>
+						</div>
+            <div class="col-md-12">
+              <h4 class="text-green">Informations sur les vélos</h4>
+              <div class="col-md-12 bikes">
+								<div class="col-md-12">
+									<i class="fa fa-bicycle"></i> <span class="bikesNumber">0</span>
+									<button
+										class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+									<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+								</div>
+								<table class="table table-condensed tableFixed bikeNumberTable hideAt0">
+									<thead>
+										<tr>
+											<th class="bLabel"></th>
+											<th class="bikeBrandModel">
+												<label for="brand">Marque</label>
+											</th>
+											<th class="bikeBrandModel">
+												<label for="model">Modèle</label>
+											</th>
+											<th >
+												<label for="size">Taille</label>
+											</th>
+											<th >
+												<label for="contractType">Type de contrat</label>
+											</th>
+											<th >
+												<label for="amount">Montant</label>
+											</th>
+											<th >
+												<label for="bikeEstimatedDeliveryDate">Date estimée de livraison</label>
+											</th>
+											<th>
+												<label for="status">Statut</label>
+											</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+              </div>
+              <div class="col-md-12">
+              </div>
+              <div class="col-md-12">
+              </div>
+              <div class="separator"></div>
+              <h4 class="text-green">Informations sur les accessoires</h4>
+              <div class="col-md-12 accessories">
+								<div class="col-md-12">
+									<i class="fa fa-bicycle"></i> <span class="accessoriesNumber">0</span>
+									<button class="button small green button-3d rounded icon-right glyphicon glyphicon-plus" type="button"></button>
+									<button class="button small red button-3d rounded icon-right glyphicon glyphicon-minus" type="button"></button>
+								</div>
+								<table class="table table-condensed tableFixed accessoriesTable">
+									<thead>
+										<tr>
+											<th class="bLabel"></th>
+											<th class="category">
+												<label for="category">Categorie</label>
+											</th>
+											<th class="model">
+												<label for="model">Modèle</label>
+											</th>
+											<th >
+												<label for="contractType">Type de contrat</label>
+											</th>
+											<th >
+												<label for="amount">Montant</label>
+											</th>
+											<th >
+												<label for="accessoryEstimatedDeliveryDate">Date estimée de livraison</label>
+											</th>
+											<th>
+												<label for="status">Statut</label>
+											</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+
+              </div>
+            </div>
+						<input type='text' class="hidden" name="action">
+            <div class="col-md-12"><button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-paper-plane"></i><?= L::generic_send; ?></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-b" data-dismiss="modal">
+          <?= L::generic_close; ?>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+	jQuery("#widget_groupedOrderManagement-form").validate({
+
+	 submitHandler: function(form) {
+		jQuery(form).ajaxSubmit({
+		 success: function(response) {
+			if (response.response == 'success') {
+			 $.notify({
+				message: response.message
+			 }, {
+				type: 'success'
+			 });
+			 $('#groupedOrderManagement').modal('toggle');
+			 document.getElementById('widget_groupedOrderManagement-form').reset();
+			 $("#groupedOrdersListingTable").dataTable().api().ajax.reload();
+			} else {
+			 $.notify({
+				message: response.message
+			 }, {
+				type: 'danger'
+			 });
+			}
+		 }
+		});
+	 }
+	});
+</script>

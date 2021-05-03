@@ -510,6 +510,7 @@ if ($token == NULL) { //Not connected
     //CUSTOMERS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
     //ORDERS
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/groupedOrders/main.php';
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orders/main.php';
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/orderAccessories/main.php';
     //PORTFOLIO BIKES
@@ -533,8 +534,6 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
     //BOXES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
-    //TASKS
-    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
     //MAINTENANCE
     include 'include/vues/mykameo/widgets/support/contact_maintenance.html';
 

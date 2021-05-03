@@ -11,6 +11,7 @@ $dateEnd=isset($_POST['dateEnd']) ? $_POST['dateEnd'] : NULL;
 
 $billingGroup=$_POST['billingGroup'];
 $itemNumber=$_POST['itemNumber'];
+$commentBilling=$_POST['commentBilling'];
 
 $totalTVA6=0;
 $totalTVA21=0;
@@ -449,8 +450,13 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
 	        $test3='</tbody>
 	      </table>
 
- 		<br><br>
-    <table style="border-collapse: collapse; background-color: #E4E4E4">
+ 		<br><br>';
+
+    if($commentBilling != NULL && $commentBilling != ''){
+      $test3.="<p><strong>Remarques :</strong><br><br>".$commentBilling.'</p><br>';
+    }
+
+    $test3.='<table style="border-collapse: collapse; background-color: #E4E4E4">
 	   <tbody>
            <tr>
                 <th width="100" height="35" style="border-bottom: solid 1px grey">Montant HTVA</th>

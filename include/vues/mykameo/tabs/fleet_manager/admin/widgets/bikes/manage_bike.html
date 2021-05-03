@@ -104,11 +104,14 @@
                   </div>
                   <div class="col-md-4">
                     <label for="gpsID">Identification GPS</label>
-                    <input
-                      type="text"
-                      name="gpsID"
-                      class="form-control"
-                    />
+                    <input type="text" name="gpsID" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="localisation">Entrepot</label>
+                    <select name="localisation" class="form-control required">
+                      <option value="KAMEO">8 Rue de la brasserie</option>
+                      <option value="Sauveniere">Boulevard de la sauveniere</option>
+                    </select>
                   </div>
                   <div class="col-md-12">
                     <label for="address">Adresse pour entretien</label>
@@ -586,5 +589,137 @@
         },
       });
     },
+  });
+</script>
+
+
+
+<div class="modal fade" id="externalBikeManagement" tabindex="-1" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; z-index: 2000">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <form id="widget-externalBikeManagement-form" action="api/bikes" role="form" method="post">
+              <h4 class="text-green title">Ajouter un vélo</h4>
+              <div class="form-group col-md-12">
+                <h4 class="text-green">Caractéristiques du vélo</h4>
+                <div class="col-md-4">
+                  <label for="bikeID">ID</label>
+                  <input type="text" name="bikeID" class="form-control required" readonly>
+                </div>
+                <div class="col-md-4">
+                  <label for="brand">Marque</label>
+                  <input type="text" name="brand" class="form-control required">
+                </div>
+                <div class="col-md-4">
+                  <label for="model">Modèle</label>
+                  <input type="text" name="model" class="form-control required">
+                </div>
+                <div class="col-md-4">
+                  <label for="color">Couleur</label>
+                  <input type="text" name="color" class="form-control" />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="col-md-4">
+                  <label for="company">Société</label>
+                  <select name="company" class="form-control required"></select>
+                </div>
+                <div class="col-md-4">
+                  <label for="frameReference">Référence de cadre</label>
+                  <input type="text" name="frameReference" class="form-control">
+                </div>
+              </div>
+              <input type="text" class="hidden required" name='action' value="addExternalBike">
+              <div class="col-md-12">
+                <button class="button small green button-3d rounded icon-left" type="submit"><i class="fa fa-plus"></i>Ajouter</button>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery("#widget-externalBikeManagement-form").validate({
+    submitHandler: function (form) {
+      jQuery(form).ajaxSubmit({
+        success: function (response) {
+          if (response.response == "success") {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "success",
+              }
+            );
+            $("#externalBikeManagement").modal("toggle");
+            $('#widget-externalBikeManagement-form').trigger("reset");
+            get_company_details($("#widget-companyDetails-form input[name=ID]").val());
+          } else {
+            $.notify(
+              {
+                message: response.message,
+              },
+              {
+                type: "danger",
+              }
+            );
+          }
+        },
+      });
+    },
+  });
+
+  $("#externalBikeManagement").on("show.bs.modal", function (event) {
+    $('#widget-externalBikeManagement-form').trigger("reset");
+    var action = $(event.relatedTarget).data("action");
+    var bikeID = $(event.relatedTarget).data("id");
+    if(action == "add"){
+      $("#widget-externalBikeManagement-form input[name=action]").val('addExternalBike');
+      $("#widget-externalBikeManagement-form input").attr("readonly", false);
+      $("#widget-externalBikeManagement-form select").attr("readonly", false);
+      $("#widget-externalBikeManagement-form .title").html("Ajouter un vélo externe");
+      $("#widget-externalBikeManagement-form .title").removeClass("hidden");
+      $("#widget-externalBikeManagement-form input[name=bikeID]").closest('div').addClass("hidden");
+    }else if(action=="update"){
+      $("#widget-externalBikeManagement-form input[name=action]").val('updateExternalBike');
+      $("#widget-externalBikeManagement-form input").attr("readonly", false);
+      $("#widget-externalBikeManagement-form select").attr("readonly", false);
+      $("#widget-externalBikeManagement-form .title").html("Modifier un vélo externe");
+      $("#widget-externalBikeManagement-form .title").removeClass("hidden");
+      $("#widget-externalBikeManagement-form input[name=bikeID]").closest('div').remove("hidden");
+      $.ajax({
+        url: 'api/bikes',
+        type: 'get',
+        data: { "action": "retrieveExternalBike", "ID": bikeID},
+        success: function(response){
+          $("#widget-externalBikeManagement-form input[name=bikeID]").attr('readonly', true);
+          $("#widget-externalBikeManagement-form input[name=bikeID]").val(response.ID);
+          $("#widget-externalBikeManagement-form input[name=brand]").val(response.BRAND);
+          $("#widget-externalBikeManagement-form input[name=model]").val(response.MODEL);
+          $("#widget-externalBikeManagement-form input[name=color]").val(response.COLOR);
+          $("#widget-externalBikeManagement-form select[name=company]").val(response.COMPANY_ID);
+          $("#widget-externalBikeManagement-form input[name=frameReference]").val(response.FRAME_REFERENCE);
+        }
+      });
+    }
+
   });
 </script>

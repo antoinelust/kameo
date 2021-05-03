@@ -8,3 +8,20 @@ ADD ESTIMATED_DELIVERY_DATE date;
 
 ALTER TABLE accessories_stock
 ADD DELIVERY_DATE date;
+
+
+INSERT INTO `success_messages` (`ID`, `MSGNUM`, `TEXT_FR`, `TEXT_NL`, `TEXT_EN`) VALUES (NULL, 'SM0032', 'Commande ajoutée', 'Command added', 'Command added');
+ALTER TABLE `client_orders`  ADD `GROUP_ID` INT NOT NULL  AFTER `ID`;
+UPDATE client_orders SET GROUP_ID=ID;
+ALTER TABLE `order_accessories` ADD `STATUS` VARCHAR(150) NOT NULL AFTER `ORDER_ID`;
+ALTER TABLE `order_accessories`  ADD `COMPANY` INT NOT NULL  AFTER `ID`;
+UPDATE order_accessories, client_orders SET order_accessories.COMPANY=client_orders.COMPANY WHERE order_accessories.ORDER_ID=client_orders.ID;
+ALTER TABLE `order_accessories`  ADD `EMAIL` VARCHAR(150) NOT NULL  AFTER `COMPANY`;
+UPDATE order_accessories, client_orders SET order_accessories.EMAIL=client_orders.EMAIL WHERE order_accessories.ORDER_ID=client_orders.ID;
+UPDATE order_accessories, client_orders SET order_accessories.STATUS=client_orders.STATUS WHERE client_orders.ID=order_accessories.ORDER_ID
+ALTER TABLE `order_accessories` DROP `BUYING_PRICE`;
+ALTER TABLE `order_accessories` DROP `CATEGORY`;
+ALTER TABLE `order_accessories`  ADD `ESTIMATED_DELIVERY_DATE` DATE NULL DEFAULT NULL  AFTER `ORDER_ID`;
+ALTER TABLE `order_accessories` CHANGE `ID` `ID` INT(11) NOT NULL AUTO_INCREMENT FIRST;
+ALTER TABLE `order_accessories`  ADD `USR_MAJ` TEXT NULL  AFTER `HEU_MAJ`;
+ALTER TABLE `order_accessories` CHANGE `ORDER_ID` `ORDER_ID` INT(11) NOT NULL AFTER `USR_MAJ`;

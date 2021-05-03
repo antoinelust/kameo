@@ -77,20 +77,20 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 		}else if($action === 'retrieveOffer'){
 			if(get_user_permissions("admin", $token)){
-				$response=execSQL("SELECT * FROM offers WHERE ID=?", array('s', $_GET['ID']),false)[0];
-				$response['item']=execSQL("SELECT * FROM offers_details WHERE OFFER_ID=?", array('s', $_GET['ID']),false);
+				$response=execSQL("SELECT * FROM offers WHERE ID=?", array('i', $_GET['ID']),false)[0];
+				$response['item']=execSQL("SELECT * FROM offers_details WHERE OFFER_ID=?", array('i', $_GET['ID']),false);
 				$i=0;
 				if(!is_null($response['item'])){
 					foreach($response['item'] as $item){
 						if($item['ITEM_TYPE'] == 'box'){
-								$resultat2=execSQL("SELECT * FROM boxes_catalog WHERE ID='?'", array('i', $_GET['ID']), false);
+								$resultat2=execSQL("SELECT * FROM boxes_catalog WHERE ID=?", array('i', $item['ITEM_ID']), false)[0];
 								$response['item'][$i]['model']=$resultat2['MODEL'];
 						}else if($item['ITEM_TYPE'] == 'bike'){
-								$resultat2=execSQL("SELECT * FROM bike_catalog WHERE ID=?", array('i', $_GET['ID']), false);
+								$resultat2=execSQL("SELECT * FROM bike_catalog WHERE ID=?", array('i', $item['ITEM_ID']), false)[0];
 								$response['item'][$i]['brand']=$resultat2['BRAND'];
 								$response['item'][$i]['model']=$resultat2['MODEL'];
 						}else if($item['ITEM_TYPE'] == 'accessory'){
-								$resultat2=execSQL("SELECT * FROM accessories_catalog WHERE ID=.", array('i', $_GET['ID']), false);
+								$resultat2=execSQL("SELECT * FROM accessories_catalog WHERE ID=?", array('i', $item['ITEM_ID']), false)[0];
 								$response['item'][$i]['brand']=$resultat2['BRAND'];
 								$response['item'][$i]['model']=$resultat2['MODEL'];
 						}
@@ -99,7 +99,6 @@ switch($_SERVER["REQUEST_METHOD"])
 				}else{
 					$response['item']=array();
 				}
-
 				echo json_encode($response);
 				die;
 			}else
@@ -175,6 +174,12 @@ switch($_SERVER["REQUEST_METHOD"])
 	}else if($action === 'updateCompanyConditions'){
 		if(get_user_permissions(["fleetManager", "admin"], $token)){
 			include 'updateCompanyConditions.php';
+		}else{
+			error_message('403');
+		}
+	}else if($action === 'add_user'){
+		if(get_user_permissions(["fleetManager", "admin"], $token)){
+			include 'add_user.php';
 		}else{
 			error_message('403');
 		}

@@ -15,8 +15,36 @@ $( ".fleetmanager" ).click(function() {
 })
 
 
-$(".orderAccessoriesClick" ).click(function() {
+$( ".orderAccessoriesClick" ).click(function() {
+
+	$("#widget-orderAcessory-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
+		$.ajax({
+	    url: "api/companies",
+	    type: "get",
+	    data: { type: "*", action: 'listMinimal' },
+	    success: function (response) {
+	      if (response.response == "success") {
+	        for (var i = 0; i < response.company.length; i++) {
+						$("#widget-orderAcessory-form select[name=company]").append(
+							'<option value="' +
+								response.company[i].ID +
+								'">' +
+								response.company[i].companyName +
+								"</option>"
+						);
+					}
+				}
+			}
+		})
+
+
+
 	$("#displayorderAcessory").dataTable({
+		paging : false,
+		searching : true,
 		destroy: true,
 		ajax: {
 			url: "apis/Kameo/accessories/accessories.php",
@@ -29,42 +57,33 @@ $(".orderAccessoriesClick" ).click(function() {
 		sAjaxDataProp: "",
 		columnDefs: [{ width: "100%", targets: 0 }],
 		columns: [
-		{ title: "ID",data: "ID",},
-		{ title: "Société", data: "COMPANY_NAME" },
-		{ title: "Type", data: "TYPE" },
-		{ title: "Marque du vélo", data: "BRAND"},
-		{ title: "Model du vélo", data: "MODEL"},
-		{ title: "Categorie", data: "CATEGORY" },
-		{ title: "Etat de la commande", data: "CONTRACT_TYPE" ,
-		fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-			if(sData=='NONE'){
-				$(nTd).html('<label>En attente de traitement</label>');
+			{ title: "ID",
+				data: "ID",
+				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html('<a href="#" class="text-green" data-target="#accessoryOrderManagement" data-toggle="modal" data-action="retrieve" data-id="'+sData+'">'+sData+'</a>');
+				},
+			},
+			{ title: "Société", data: "COMPANY_NAME" },
+			{ title: "Type", data: "TYPE" },
+			{ title: "Montant", data: "PRICE_HTVA"},
+			{
+				title: "Categorie",
+				data: "CATEGORY",
+				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html(traduction["accessoryCategories_"+sData]);
+				},
+			},
+			{ title: "Marque", data: "BRAND"},
+			{ title: "Modèle", data: "MODEL"},
+			{
+				title: "Statut de la commande",
+				data: "STATUS",
 			}
-			if(sData==null){
-				$(nTd).html('<label>En attente de traitement</label>');
-			}
-			if(sData=='order'){
-				$(nTd).html('<label>En attente de livraison de nos fournisseurs</label>');
-			}
-			if(sData=='pending_delivery'){
-				$(nTd).html('<label>En attente d\'expedition chez le client</label>');	
-			}
-			if(sData=='leasing' || sData=='selling'){
-				$(nTd).html('<label>Commande envoyé chez le client</label>');
-			}
-		} 
-	},
-	{ title: "", data: "ID" ,fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-		$(nTd).html('<a href="#" class="text-green confirmOrderAccessory" data-target="#confirmOrderAccessory" data-toggle="modal" name="linkConfirmOrderAccessory"  data-correspondent="'+oData.ID+'">Update</a>');
-	} 
-},
-],
-order: [
-[0, "asc"]
-],
-paging : false,
-searching : true
-});
+		],
+		order: [
+			[0, "asc"]
+		],
+	});
 });
 
 $('#displayorderAcessory').on( 'draw.dt', function () {

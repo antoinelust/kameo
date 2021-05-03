@@ -1,122 +1,70 @@
-<!DOCTYPE html>
-<html>
-<body>
-	<div
-	class="modal fade"
-	id="orderAccessoriesListing"
-	tabindex="9"
-	role="modal"
-	aria-labelledby="modal-label"
-	aria-hidden="true"
-	style="display: none; overflow-y: auto !important">
+<div class="modal fade" id="orderAccessoriesListing" tabindex="9" role="modal" aria-hidden="true" style="display: none; overflow-y: auto !important">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button
-				type="button"
-				class="close"
-				data-dismiss="modal"
-				aria-hidden="true">
-				×
-			</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<h4 class="text-green">Gérer les comandes d'accessoires</h4>
+			<table id='displayorderAcessory' class='table' style='width: 100%'>
+			</table>
+			<hr>
 		</div>
-		<h4 class="text-green">Gérer les comandes d'accessoires</h4>
-		<div>
-		<button class="button small green button-3d rounded icon-left" id="addOrderAccessories">Ajouter une commande</button>
-	</div>
-		<table id='displayorderAcessory' class='table' style='width: 100%'> 
-		</table>
-		<hr>
 	</div>
 </div>
-</div>
 
-<div
-class="modal fade"
-id="confirmOrderAccessory"
-tabindex="9"
-role="modal"
-aria-labelledby="modal-label"
-aria-hidden="true"
-style="display: none; overflow-y: auto !important">
-<div class="modal-dialog modal-lg">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button
-			type="button"
-			class="close"
-			data-dismiss="modal"
-			aria-hidden="true">
-			×
-		</button> 
-	</div>
-
-	<h4 class="text-green">Modifier les commandes accessoires</h4>
-	<hr>
-	<div class="table-responsive">
-		<form  name = "widget-orderAcessory-form" id="widget-orderAcessory-form" role="form" method="get" action="apis/Kameo/accessories/accessories.php">
-			<div class="col-sm-12">
-				<input class="form-control" type="hidden" name="action" value="updateOrderDetailAcessory" />
-				<input class="form-control" type="hidden" name="id" />
-				
-				<div class="col-sm-4">
-					<label for="company">Société :</label>
-					<input class="form-control" type="text" name="company" readonly/>
-				</div>
-				<div class="col-sm-4">
-					<label for="emailUser">Email :</label>
-					<input class="form-control" type="text" name="emailUser" readonly/>
-				</div>
-				<div class="col-sm-4">
-					<label for="contractType">Type de contrat :</label>
-					<input class="form-control" type="text" name="contractType" readonly/>
-				</div>
+<div class="modal fade" id="accessoryOrderManagement" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			</div>
-			<div class="col-sm-12">
-				<div class="col-sm-4">
-					<label for="priceHTVA">Prix  :</label>
-					<input class="form-control" type="text" name="priceHTVA" readonly/>
-				</div>
-				<div class="col-sm-5">
-					<label for="bike">Vélo :</label>
-					<input class="form-control" type="text" name="bike" readonly/>
-				</div>
-				<div class="col-sm-4">
-					<label for="accessory">Lié à un accessoire :</label>
-					<select class="form-control" type="text" name="accessory"></select> 
-				</div> 
+			<h4 class="text-green">Modifier les commandes accessoires</h4>
+			<hr>
+			<div class="table-responsive">
+				<form  name = "widget-orderAcessory-form" id="widget-orderAcessory-form" role="form" method="get" action="apis/Kameo/accessories/accessories.php">
+					<div class="col-sm-12">
+						<input class="form-control" type="hidden" name="action" value="updateOrderDetailAcessory" />
+						<input class="form-control" type="hidden" name="id" />
+						<div class="col-sm-4">
+							<label for="company">Société :</label>
+							<select class="form-control" name="company">
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<label for="emailUser">Email :</label>
+							<input class="form-control" type="text" name="emailUser" readonly/>
+						</div>
+						<div class="col-sm-4">
+							<label for="contractType">Type de contrat :</label>
+							<select class="form-control" name="contractType">
+								<option value='leasing'>Leasing</option>
+								<option value='achat'>Vente</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="priceHTVA">Prix  :</label>
+							<input class="form-control" type="text" name="priceHTVA" readonly/>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<label for="description">Description :</label>
+						<textarea class="form-control required" rows="5" name="description" readonly></textarea>
+					</div>
+					<div class="col-sm-12" >
+						<button class="button small green button-3d rounded icon-left" type="submit" name="submitBtn"><i class="fa fa-plus"></i>Modifier</button>
+					</div>
+				</form>
 			</div>
-			<div class="col-sm-12">
-				<label for="description">Description :</label>
-				<textarea
-				class="form-control required"
-				rows="5"
-				name="description"
-				readonly></textarea>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-b" data-dismiss="modal">
+					<?= L::generic_close; ?>
+				</button>
 			</div>
-			<div class="col-sm-12" >
-				<button
-				class="button small green button-3d rounded icon-left"
-				type="submit"
-				name="submitBtn"
-				>
-				<i class="fa fa-plus"></i>Modifier
-			</button>
 		</div>
-	</form>
+	</div>
 </div>
-
-<div class="modal-footer">
-	<button type="button" class="btn btn-b" data-dismiss="modal">
-		<?= L::generic_close; ?>
-	</button>
-</div>
-
-</div>
-</div>
-</div>
-</body>
-</html>
 
 <script type="text/javascript">
 	jQuery("#widget-orderAcessory-form").validate({
