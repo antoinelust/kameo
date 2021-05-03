@@ -50,6 +50,20 @@ switch($_SERVER["REQUEST_METHOD"])
 				die;
 			}else
 				error_message('403');
+		}else if($action === 'getContactsForBillingSending'){
+			if(get_user_permissions(["admin"], $token)){
+				$response['beneficiaries']=execSQL("SELECT * FROM companies_contact WHERE ID_COMPANY=? AND TYPE='billing'", array('i', $_GET['company']), false);
+				$response['cc']=execSQL("SELECT * FROM companies_contact WHERE ID_COMPANY=? AND TYPE='ccBilling'", array('i', $_GET['company']), false);
+				if($response['beneficiaries'] == null){
+					$response['beneficiaries']=array();
+				}
+				if($response['cc'] == null){
+					$response['cc']=array();
+				}
+				echo json_encode($response);
+				die;
+			}else
+				error_message('403');
 		}else if($action === 'graphic'){
 			if(get_user_permissions("bills", $token)){
 				include 'graphic_companies.php';
@@ -78,6 +92,11 @@ switch($_SERVER["REQUEST_METHOD"])
 			if(get_user_permissions(["admin", "bikesStock"], $token)){
 				execSQL("UPDATE bills_catalog_bikes_link SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, BIKE_ID=? WHERE ID=?", array('sii', $token, $_POST['bikeID'], $_POST['ID']), true);
 				successMessage("SM0003");
+			}else
+				error_message('403');
+		}else if($action === 'sendBill'){
+			if(get_user_permissions(["admin"], $token)){
+				include 'send_bill.php';
 			}else
 				error_message('403');
 		}else{

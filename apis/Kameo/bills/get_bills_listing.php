@@ -1,37 +1,15 @@
 <?php
-$sent=isset($_GET['sent']) ? $_GET['sent']: null;
-$paid=isset($_GET['paid']) ? $_GET['paid']: null;
-$direction=isset($_GET['direction']) ? $_GET['direction']: null;
-$company2=isset($_GET['company']) ? $_GET['company']: null;
 $response=array();
 
 $company=execSQL("select COMPANY from customer_referential WHERE TOKEN=?", array('s', $token), false)[0]['COMPANY'];
 
-$sql="select aa.ID as ID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
+$sql="select aa.ID as ID, bb.ID as companyID, COMPANY as company, BENEFICIARY_COMPANY as beneficiaryCompany, DATE as date, AMOUNT_HTVA as amountHTVA, AMOUNT_TVAINC as amountTVAC, FACTURE_SENT as sent, FACTURE_SENT_DATE as sentDate, FACTURE_PAID as paid, FACTURE_PAID_DATE as paidDate, FACTURE_LIMIT_PAID_DATE as limitPaidDate, FILE_NAME as fileName, COMMUNICATION_STRUCTUREE as communication, FACTURE_SENT_ACCOUNTING as communicationSentAccounting from factures aa, companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE";
 
 if($company!=='KAMEO'){
   $response['update']=false;
 	$sql=$sql." and aa.COMPANY = '$company'";
 }else{
   $response['update']=true;
-  if($company2!="*" && $company2 != NULL){
-   $sql=$sql." and aa.COMPANY = '$company2'";
-  }
-}
-
-
-if($paid!=='*' && $paid !== NULL){
-    $sql=$sql." AND FACTURE_PAID='$paid'";
-}
-if($sent!=='*' && $sent !== NULL){
-    $sql=$sql." AND FACTURE_SENT='$sent'";
-}
-if($direction!=='*' && $direction !== NULL){
-    if($direction=="IN"){
-        $sql=$sql." AND AMOUNT_HTVA>0";
-    }else if($direction=="OUT"){
-        $sql=$sql." AND AMOUNT_HTVA<0";
-    }
 }
 
 $sql=$sql." GROUP BY aa.ID";
