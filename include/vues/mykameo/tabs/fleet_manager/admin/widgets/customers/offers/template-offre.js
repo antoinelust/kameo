@@ -45,7 +45,7 @@ $( document ).ready(function() {
       $(".offerManagementSendButton").removeClass("hidden");
       $(".offerManagementSendButton").text("Mettre à jour");
     }else if(action == "add"){
-      
+
       $(".offerManagementSendButton").removeClass("hidden");
       $(".offerManagementSendButton").text("Ajouter");
     }
@@ -528,7 +528,8 @@ $('body').on('click','.getTemplate', function(){
 
     //a chaque modification du nombre de vélo
     //ajout
-    $('.templateBike .glyphicon-plus')[0].addEventListener("click",function(){
+    $('.templateBike .glyphicon-plus').off();
+    $('.templateBike .glyphicon-plus').click(function(){
       bikesNumber = $("#template").find('.bikesNumber').html()*1+1;
       $('#template').find('.bikesNumber').html(bikesNumber);
       $('#bikesNumberTemplate').val(bikesNumber);
@@ -669,7 +670,8 @@ $('body').on('click','.getTemplate', function(){
     checkMinus('.templateBoxes','.boxesNumber');
 
     //ajout
-    $('.templateBoxes .glyphicon-plus')[0].addEventListener("click",function(){
+    $('.templateBoxes .glyphicon-plus').off();
+    $('.templateBoxes .glyphicon-plus').click(function(){
       //gestion boxNumber
       boxesNumber = $("#template").find('.boxesNumber').html()*1+1;
       $('#template').find('.boxesNumber').html(boxesNumber);
@@ -783,8 +785,8 @@ $('body').on('click','.getTemplate', function(){
       }
     });
 
-
-    $('.templateAccessories .glyphicon-plus')[0].addEventListener("click",function(){
+    $('.templateAccessories .glyphicon-plus').off();
+    $('.templateAccessories .glyphicon-plus').click(function(){
       //gestion accessoriesNumber
       accessoriesNumber = $("#template").find('.accessoriesNumber').html()*1+1;
       $('#template').find('.accessoriesNumber').html(accessoriesNumber);
@@ -961,7 +963,8 @@ $(document).ready(function(){
 
   checkMinus('.templateOthers','.othersNumber');
   //ajout
-  $('.templateOthers .glyphicon-plus')[0].addEventListener("click",function(){
+  $('.templateOthers .glyphicon-plus').off();
+  $('.templateOthers .glyphicon-plus').click(function(){
     //gestion boxNumber
     othersNumber = $("#template").find('.othersNumber').html()*1+1;
     $('#template').find('.othersNumber').html(othersNumber);

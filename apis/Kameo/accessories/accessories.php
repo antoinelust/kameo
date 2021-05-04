@@ -191,29 +191,22 @@ switch($_SERVER["REQUEST_METHOD"])
 	}else if($action === 'getBikeFromCompany'){
 		if(get_user_permissions("admin", $token)){
 			$idComp=isset($_GET['ID']) ? $_GET['ID'] : NULL;
-
-			$sqlComp="SELECT * FROM companies where ID='$idComp'";
-			$resultComp = mysqli_query($conn, $sqlComp);
-			$rowComp = mysqli_fetch_assoc($resultComp);
-			$company = $rowComp['INTERNAL_REFERENCE'];
-
-			$sql="SELECT * FROM customer_bikes where COMPANY='$company'";
-
-			if ($conn->query($sql) === FALSE) {
-				$response = array ('response'=>'error', 'message'=> $conn->error);
-				echo json_encode($response);
-				die;
-			}
-			$result = mysqli_query($conn, $sql);
+			$result=execSQL("SELECT customer_bikes.* FROM customer_bikes, companies where companies.ID=? AND companies.INTERNAL_REFERENCE=customer_bikes.COMPANY", array('i', $idComp), false);
 			$i=0;
-			while($row = mysqli_fetch_array($result)){
-				$response['bike'][$i]['id']=$row['ID'];
-				$response['bike'][$i]['model']=$row['MODEL'];
-				$response['bike'][$i]['contract']=$row['CONTRACT_TYPE'];
-				$i++;
+			if(is_null($result)){
+				$response['bikeNumber']=0;
+				$response['bike']=array();
+			}else{
+				foreach($result as $row){
+					$response['bike'][$i]['id']=$row['ID'];
+					$response['bike'][$i]['model']=$row['MODEL'];
+					$response['bike'][$i]['contract']=$row['CONTRACT_TYPE'];
+					$i++;
+				}
 			}
 			$response['bikeNumber']=$i;
 			echo json_encode($response);
+			die;
 		}else
 		error_message('403');
 	}elseif($action === 'listStock'){
@@ -290,11 +283,11 @@ switch($_SERVER["REQUEST_METHOD"])
 		if(get_user_permissions("admin", $token)){
 			$id=$_GET['billingID'];
 			$response['billingDetails']=execSQL("SELECT * from factures WHERE ID=?", array('i', $id), false)[0];
-			
+
 			$response['catalogDetails']=execSQL("SELECT BRAND, MODEL, accessories_catalog.ID as catalogID, bills_catalog_accessories_link.BUYING_PRICE, PRICE_HTVA, bills_catalog_accessories_link.ACCESSORY_ID from bills_catalog_accessories_link, accessories_catalog WHERE bills_catalog_accessories_link.CATALOG_ID=accessories_catalog.ID AND bills_catalog_accessories_link.FACTURE_ID=?", array('i', $id), false);
-			
+
 			$response['modelDetails']=execSQL("SELECT * from factures_details WHERE FACTURE_ID=?", array('i', $id), false);
-			
+
 			$response['notLinkedAccessories']=execSQL("SELECT bills_catalog_accessories_link.ID, bills_catalog_accessories_link.CATALOG_ID, BRAND, MODEL,accessories_categories.CATEGORY FROM bills_catalog_accessories_link, accessories_catalog,accessories_categories WHERE FACTURE_ID=? AND bills_catalog_accessories_link.CATALOG_ID=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND bills_catalog_accessories_link.ACCESSORY_ID is NULL ", array('i', $id), false);
 
 			echo json_encode($response);
@@ -304,7 +297,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	}
 	else if($action === 'summaryAccessoriesLinked'){
 		if(get_user_permissions("admin", $token)){
-			$response=execSQL("SELECT accessories_stock.*, bills_catalog_accessories_link.BUYING_PRICE, accessories_catalog.BRAND, accessories_catalog.MODEL, companies.COMPANY_NAME FROM accessories_stock, accessories_catalog, bills_catalog_accessories_link, companies WHERE accessories_catalog.ID=accessories_stock.CATALOG_ID AND companies.ID=accessories_stock.COMPANY_ID AND accessories_stock.ID=bills_catalog_accessories_link.ACCESSORY_ID AND bills_catalog_accessories_link.FACTURE_ID=? 
+			$response=execSQL("SELECT accessories_stock.*, bills_catalog_accessories_link.BUYING_PRICE, accessories_catalog.BRAND, accessories_catalog.MODEL, companies.COMPANY_NAME FROM accessories_stock, accessories_catalog, bills_catalog_accessories_link, companies WHERE accessories_catalog.ID=accessories_stock.CATALOG_ID AND companies.ID=accessories_stock.COMPANY_ID AND accessories_stock.ID=bills_catalog_accessories_link.ACCESSORY_ID AND bills_catalog_accessories_link.FACTURE_ID=?
 				UNION ALL
 				(SELECT accessories_stock.*, bills_catalog_accessories_link.BUYING_PRICE, accessories_catalog.BRAND, accessories_catalog.MODEL,'NONE' FROM accessories_stock, accessories_catalog, bills_catalog_accessories_link WHERE accessories_catalog.ID=accessories_stock.CATALOG_ID AND accessories_stock.ID=bills_catalog_accessories_link.ACCESSORY_ID AND bills_catalog_accessories_link.FACTURE_ID=? AND not EXISTS(SELECT 1 FROM companies WHERE companies.ID=accessories_stock.COMPANY_ID))", array('ii', $_GET['factureID'],$_GET['factureID']), false);
 			echo json_encode($response);
@@ -324,7 +317,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	else if($action === 'listAccessoriesNotLinkedToBill'){
 		if(get_user_permissions("admin", $token)){
 			$catalogID = $_GET['catalogID'];
-			$response=execSQL("SELECT  aa.*,bb.COMPANY_NAME,cc.CATEGORY,dd.BRAND,dd.MODEL FROM accessories_stock aa, companies bb,accessories_categories cc,accessories_catalog dd WHERE aa.CATALOG_ID='$catalogID' AND dd.ID=aa.CATALOG_ID AND dd.ACCESSORIES_CATEGORIES=cc.ID AND NOT EXISTS(SELECT 1 from bills_catalog_accessories_link where bills_catalog_accessories_link.ACCESSORY_ID=aa.ID) AND bb.ID =aa.COMPANY_ID 
+			$response=execSQL("SELECT  aa.*,bb.COMPANY_NAME,cc.CATEGORY,dd.BRAND,dd.MODEL FROM accessories_stock aa, companies bb,accessories_categories cc,accessories_catalog dd WHERE aa.CATALOG_ID='$catalogID' AND dd.ID=aa.CATALOG_ID AND dd.ACCESSORIES_CATEGORIES=cc.ID AND NOT EXISTS(SELECT 1 from bills_catalog_accessories_link where bills_catalog_accessories_link.ACCESSORY_ID=aa.ID) AND bb.ID =aa.COMPANY_ID
 				UNION ALL
 				(SELECT  aa.*,'NONE',cc.CATEGORY,dd.BRAND,dd.MODEL FROM accessories_stock aa,accessories_categories cc,accessories_catalog dd WHERE aa.CATALOG_ID='$catalogID' AND dd.ID=aa.CATALOG_ID AND dd.ACCESSORIES_CATEGORIES=cc.ID AND NOT EXISTS(SELECT 1 from bills_catalog_accessories_link where bills_catalog_accessories_link.ACCESSORY_ID=aa.ID) AND NOT EXISTS(SELECT 1 from companies where companies.ID=aa.COMPANY_ID))", array(), false);
 			echo json_encode($response);
@@ -339,8 +332,8 @@ switch($_SERVER["REQUEST_METHOD"])
 			}else
 				error_message('403');
 		}
-	
-	
+
+
 	else
 		error_message('405');
 	break;

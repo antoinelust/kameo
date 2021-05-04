@@ -383,6 +383,25 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                   $emailBikeUser = NULL;
                 }
 
+                $resultAccessories=execSQL("SELECT accessories_stock.ID as accessoryID, accessories_catalog.MODEL, accessories_categories.CATEGORY, CONTRACT_AMOUNT FROM accessories_stock, accessories_catalog, accessories_categories WHERE accessories_stock.BIKE_ID=? AND accessories_stock.CONTRACT_TYPE='leasing' and accessories_stock.CONTRACT_START<='$temp3' AND accessories_stock.CONTRACT_END>='$temp3' AND accessories_stock.CATALOG_ID=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID", array('i', $bikeID), false);
+                if(!is_null($resultAccessories)){
+                  foreach($resultAccessories as $rowAccessories){
+                    $accessoryID = $rowAccessories['accessoryID'];
+                    $amount = $rowAccessories["CONTRACT_AMOUNT"];
+                    $amountTVAC = round($amount*1.21);
+                    $sql="INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES('script', '$newID', 'accessory', '$accessoryID', '$comment', '$temp3', '$temp4', '$amount', '$amountTVAC')";
+                    if ($conn->query($sql) === FALSE){
+                        echo $conn->error;
+                    }
+                    $accessoryBike[$i][$j]['CATEGORY']=$rowAccessories["CATEGORY"];
+                    $accessoryBike[$i][$j]['MODEL']=$rowAccessories["MODEL"];
+                    $accessoryBike[$i][$j]['CONTRACT_AMOUNT']= $amount;
+                    $total+=$rowAccessories['CONTRACT_AMOUNT'];
+                    $totalTemp+=$rowAccessories['CONTRACT_AMOUNT'];
+                    $j++;
+                  }
+                }
+
                 $difference=$dateStartTemp->diff($contractStart);
 
                 $monthDifference=(($difference->format('%y'))*12+$difference->format('%m')+1);

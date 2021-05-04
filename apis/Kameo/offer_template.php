@@ -3,7 +3,9 @@
     header('Expires: ' . gmdate('r', 0));
     header('Content-type: application/json');
 
-  include 'globalfunctions.php';
+  require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
+  require_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
+  $token = getBearerToken();
 
   ini_set('internal_encoding', 'utf-8');
   //récupération des données du $_POST (pré boucle)
@@ -27,12 +29,11 @@
   $boxFinalLocationPrice = isset($_POST["boxFinalLocationPrice"]) ? $_POST["boxFinalLocationPrice"] : NULL;
   $boxFinalPrice=[$boxFinalInstallationlPrice, $boxFinalLocationPrice];
   $probability = isset($_POST["probability"]) ? $_POST["probability"] : NULL;
-  $dateSignature = isset($_POST["dateSignature"]) ? $_POST["dateSignature"] : NULL;
-  $dateStart = isset($_POST["dateStart"]) ? $_POST["dateStart"] : NULL;
-  $dateEnd = isset($_POST["dateEnd"]) ? $_POST["dateEnd"] : NULL;
+  $dateSignature = ($_POST["dateSignature"] != '') ? $_POST["dateSignature"] : NULL;
+  $dateStart = ($_POST["dateStart"] != '') ? $_POST["dateStart"] : NULL;
+  $dateEnd = ($_POST["dateEnd"] != '') ? $_POST["dateEnd"] : NULL;
   $totalPerMonth = 0;
   $globalDDiscount = isset($_POST["globalDiscount"]) ? $_POST["globalDiscount"] : NULL;
-
 
   $delais = explode("\n",$delais);
   $offerValidity = date_create($offerValidity);
@@ -55,6 +56,7 @@
       $bikes[$key]['ID']=$bike;
       $bikes[$key]['BRAND']=$information['BRAND'];
       $bikes[$key]['MODEL']=$information['MODEL'];
+      $bikes[$key]['retailprice']=$information['PRICE_HTVA'];
       $bikes[$key]['bikeSize']=$_POST['bikeSize'][$key];
       $bikes[$key]['finalPrice']=$_POST['bikeFinalPrice'][$key];
       $bikes[$key]['initialPrice']=$_POST['bikeInitialPrice'][$key];
@@ -336,24 +338,12 @@
   }
 
   function add_PDF($id, $file, $bikesNumber, $boxesNumber, $buyOrLeasing, $accessoriesNumber, $email, $dateSignature, $dateStart, $dateEnd, $totalPerMonth, $company, $probability){
-    include 'connexion.php';
     $description="Facture générée depuis mykameo pour ".$bikesNumber." vélos, ".$boxesNumber." bornes et ".$accessoriesNumber." accessoires.";
-
-    $sql="INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, COMPANY_ID, FILE_NAME, STAANN) VALUES (CURRENT_TIMESTAMP, '$email', 'Facture générée via le template', '$description', 'ongoing', '$probability', '$buyOrLeasing', '$totalPerMonth', '40', '$dateSignature', '$dateStart', '$dateEnd', '$company', '$id', '$file',  '')";
-
-    if ($conn->query($sql) === FALSE) {
-        $response = array ('response'=>'error', 'message'=> $conn->error);
-        echo json_encode($response);
-        die;
-    }
-    $id = $conn->insert_id;
+    global $token;
+    $id=execSQL("INSERT INTO offers (HEU_MAJ, USR_MAJ, TITRE, DESCRIPTION, STATUS, PROBABILITY, TYPE, AMOUNT, MARGIN, DATE, START, END, COMPANY, COMPANY_ID, FILE_NAME, STAANN)
+    VALUES (CURRENT_TIMESTAMP, ?, 'Facture générée via le template', ?, 'ongoing', ?, ?, ?, '40', ?, ?, ?, ?, ?, ?, '')", array('ssisdssssis', $token, $description, $probability, $buyOrLeasing, $totalPerMonth, $dateSignature, $dateStart, $dateEnd, $company, $id, $file), true);
     $file = str_replace('temp', $id, $file);
-    $conn->close();
-
-    include 'connexion.php';
-    $sql = "UPDATE `offers` SET `FILE_NAME` = '$file' WHERE `offers`.`ID` = '$id'";
-    $res = $conn->query($sql);
-    $conn->close();
+    execSQL("UPDATE `offers` SET `FILE_NAME` = ? WHERE `offers`.`ID` = ?", array('si', $file, $id), true);
     return $id;
   }
 
