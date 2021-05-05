@@ -1,5 +1,5 @@
 $(".fleetmanager").click(function () {
-  document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances()}, false);
+  document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances(); getCompaniesInMaintenances();}, false);
 
   $.ajax({
     url: "apis/Kameo/initialize_counters.php",
@@ -17,8 +17,32 @@ $(".fleetmanager").click(function () {
       }
     },
   });
-
+  getCompaniesInMaintenances();
 });
+
+function getCompaniesInMaintenances(){
+ $.ajax({
+  url: "apis/Kameo/companies/companies.php",
+  type: "get",
+  data: { action:'listMinimal' },
+  success: function (response) {
+    if (response.response == "error") {
+      console.log(response.message);
+    }
+    if (response.response == "success") {
+      $("#widget-maintenanceManagement-form select[name=company]")
+      .find("option")
+      .remove()
+      .end();
+      response.company.forEach(function(company){
+       $("#widget-maintenanceManagement-form select[name=company]").append(
+        '<option id= "'+ company.ID + '" value= "' +company.internalReference +'">' +company.companyName +  "<br>"
+        );
+     })
+    }
+  },
+});
+}
 
 
 function list_maintenances() {
@@ -26,17 +50,17 @@ function list_maintenances() {
   var dateStart = $(".form_date_start_maintenance").data("datetimepicker").getDate();
   var dateEnd = $(".form_date_end_maintenance").data("datetimepicker").getDate();
   var dateStartString =
-    dateStart.getFullYear() +
-    "-" +
-    ("0" + (dateStart.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + dateStart.getDate()).slice(-2);
+  dateStart.getFullYear() +
+  "-" +
+  ("0" + (dateStart.getMonth() + 1)).slice(-2) +
+  "-" +
+  ("0" + dateStart.getDate()).slice(-2);
   var dateEndString =
-    dateEnd.getFullYear() +
-    "-" +
-    ("0" + (dateEnd.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + dateEnd.getDate()).slice(-2);
+  dateEnd.getFullYear() +
+  "-" +
+  ("0" + (dateEnd.getMonth() + 1)).slice(-2) +
+  "-" +
+  ("0" + dateEnd.getDate()).slice(-2);
 
   $("#maintenanceListingSpan").dataTable({
     destroy: true,
@@ -45,75 +69,82 @@ function list_maintenances() {
       contentType: "application/json",
       type: "get",
       data: {
-        'action' : 'list',
+        action : 'list',
         dateStart: dateStartString,
         dateEnd: dateEndString
       },
     },
     sAjaxDataProp: "maintenance",
     columns: [
-      {
-        title: "ID",
-        data: "id",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html('<a  data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal" class="showMaintenance" href="#">'+sData+'</a>');
-        },
+    {
+      title: "ID",
+      data: "id",
+      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+        $(nTd).html('<a  data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal" class="showMaintenance" href="#">'+sData+'</a>');
       },
-      { title: "Vélo", data: "frame_number" },
-      { title: "Modèle", data: "model" },
-      { title: "Client", data: "company" },
-      {
-        title: "Date",
-        data: "date",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html(sData.shortDate());
-        },
-      },
+    },
+    { title: "Vélo", data: "frame_number" },
+    { title: "Modèle", data: "model" },
+    { title: "Client", data: "company" },
+    { title: "Date de sortie planifié", data: "OUT_DATE_PLANNED",
+    fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+      $(nTd).html(sData.shortDate());
+    }
+  },
+  { title: "Date", data: "date",
+  fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+    $(nTd).html(sData.shortDate());
+  }
+},
+{title: "Statut", data: "status",
+fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+  if(sData == "AUTOMATICALY_PLANNED"){
+    $(nTd).html("<span class='text-red'>Automatique</span>");
 
-      {
-        title: "Statut",
-        data: "status",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          if(sData == "AUTOMATICALY_PLANNED"){
-            $(nTd).html("<span class='text-red'>Automatique<sData>");
-          }else if(sData == "MANUALLY_PLANNED"){
-            $(nTd).html("<span class='text-red'>Manuelle<sData>");
-          }else if(sData == "CONFIRMED"){
-            $(nTd).html("<span class='text-green'>Confirmé<sData>");
-          }
-          else{
-            $(nTd).html("<span class='text-green'>Fait<sData>");
-          }
-        },
-      },
-      { title: "Type", data: "type" },
-      {
-        title: "Adresse",
-        data: "bikeAddress",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          if(sData != null){
-            $(nTd).html(sData);
-          }else{
-            $(nTd).html(oData.street+" "+oData.zip_code+" "+oData.town);
-          }
-          $(nTd).data('sort', new Date(sData).getTime());
-        },
-      },
-      { title: "N° téléphone", data: "phone" },
-      {
-        title: "",
-        data: "id",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html('<a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal">Modifier</a>');
-        },
-      }
+  }else if(sData == "MANUALLY_PLANNED"){
+    $(nTd).html("<span class='text-red'>Manuelle</span>");
 
-    ],
-    order: [
-      [4, "asc"]
-    ],
-    paging : false
-  });
+  }else if(sData == "CONFIRMED"){
+    $(nTd).html("<span class='text-green'>Confirmé</span>");
+  }
+  else if(sData == "DONE"){
+    $(nTd).html("<span class='text-green'>Fait</span>");
+  }
+  else if(sData == "IN_SHOP"){  
+    $(nTd).html("<span  style =\"color:blue;\">En atelier</span>");
+  }
+  else if(sData == "TO_PLAN"){
+    $(nTd).html("<span  style =\"color:yellow;\">A planifier</span>");
+  }
+  else if(sData == "WAITING_PIECES"){
+    $(nTd).html("<span  style =\"color:blue;\">En attente de pièces</span>");
+  }
+  else{
+    $(nTd).html("<span  style =\"color:black;\">Récupéré par le client</span>");
+  }
+},
+},
+{ title: "Type", data: "type" },
+{ title: "Adresse", data: "bikeAddress",
+fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+  if(sData != null){
+    $(nTd).html(sData);
+  }else{
+    $(nTd).html(oData.street+" "+oData.zip_code+" "+oData.town);
+  }
+  $(nTd).data('sort', new Date(sData).getTime());
+},
+},
+{ title: "N° téléphone", data: "phone"},
+{ title: "", data: "id",
+fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+  $(nTd).html('<a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal">Modifier</a>');
+},
+}
+],
+order: [[0, "asc"]],
+paging : false
+});
 }
 
 function get_maintenance(ID){
@@ -134,6 +165,8 @@ function get_maintenance(ID){
 
         var date = new Date(response.maintenance.dateMaintenance).toLocaleDateString();
         date = date.split("/");
+        var dateOut = new Date(response.maintenance.dateOutPlanned).toLocaleDateString();
+        dateOut = dateOut.split("/");
         $('#widget-maintenanceManagement-form input[name=ID]').val(response.maintenance.id);
         $('#widget-maintenanceManagement-form .maintenanceManagementDeleteButton').attr('name', response.maintenance.id);
         $('#widget-maintenanceManagement-form select[name=velo]').val(response.maintenance.bike_id);
@@ -141,6 +174,7 @@ function get_maintenance(ID){
         $('#widget-maintenanceManagement-form input[name=model]').val(response.maintenance.model);
         $('#widget-maintenanceManagement-form select[name=status]').val(response.maintenance.status);
         $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val(date[2] + '-' + date[1] + '-' + date[0]);
+        $('#widget-maintenanceManagement-form input[name=dateOutPlanned]').val(dateOut[2] + '-' + dateOut[1] + '-' + dateOut[0]);
         $('#widget-maintenanceManagement-form textarea[name=comment]').val(response.maintenance.comment);
         $('#widget-maintenanceManagement-form textarea[name=internalComment]').val(response.maintenance.internalComment);
 
@@ -162,15 +196,15 @@ function get_maintenance(ID){
           var extension=/[^.]*$/.exec(file)[0];
           if(extension=="pdf"){
             $("#widget-maintenanceManagement-form div[name=images]").append('<div class="col-md-4" name="image">\
-            <embed src="images_entretiens/'+ID+'/publicFile/'+file+'" height="100%" />\
-            <a class="button small green button-3d rounded icon-left" href="images_entretiens/'+ID+'/publicFile/'+file+'" target="_blank"><i class="fa fa-paper-plane"></i>Ouvrir </a>\
-            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/publicFile/'+file+'"><i class="fa fa-paper-plane"></i>Supprimer le fichier </a></div>');
+              <embed src="images_entretiens/'+ID+'/publicFile/'+file+'" height="100%" />\
+              <a class="button small green button-3d rounded icon-left" href="images_entretiens/'+ID+'/publicFile/'+file+'" target="_blank"><i class="fa fa-paper-plane"></i>Ouvrir </a>\
+              <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/publicFile/'+file+'"><i class="fa fa-paper-plane"></i>Supprimer le fichier </a></div>');
 
           }else{
             $("#widget-maintenanceManagement-form div[name=images]").append('<div class="col-md-4" name="image">\
-            <img src="images_entretiens/'+ID+'/publicFile/'+file+'">\
-            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/publicFile/'+file+'"> \
-            <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
+              <img src="images_entretiens/'+ID+'/publicFile/'+file+'">\
+              <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/publicFile/'+file+'"> \
+              <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
           }
         })
 
@@ -179,15 +213,15 @@ function get_maintenance(ID){
           var extension=/[^.]*$/.exec(file)[0];
           if(extension=="pdf"){
             $("#widget-maintenanceManagement-form div[name=internalImages]").append('<div class="col-md-4" name="image">\
-            <embed src="images_entretiens/'+ID+'/internalFile/'+file+'" height="100%" />\
-            <a class="button small green button-3d rounded icon-left" href="images_entretiens/'+ID+'/internalFile/'+file+'" target="_blank"><i class="fa fa-paper-plane"></i>Ouvrir </a>\
-            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"><i class="fa fa-paper-plane"></i>Supprimer le fichier </a></div>');
+              <embed src="images_entretiens/'+ID+'/internalFile/'+file+'" height="100%" />\
+              <a class="button small green button-3d rounded icon-left" href="images_entretiens/'+ID+'/internalFile/'+file+'" target="_blank"><i class="fa fa-paper-plane"></i>Ouvrir </a>\
+              <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"><i class="fa fa-paper-plane"></i>Supprimer le fichier </a></div>');
 
           }else{
             $("#widget-maintenanceManagement-form div[name=internalImages]").append('<div class="col-md-4" name="image">\
-            <img src="images_entretiens/'+ID+'/internalFile/'+file+'">\
-            <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"> \
-            <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
+              <img src="images_entretiens/'+ID+'/internalFile/'+file+'">\
+              <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"> \
+              <i class="fa fa-paper-plane"></i>Supprimer l\'image </a></div>');
           }
         })
 
@@ -195,31 +229,31 @@ function get_maintenance(ID){
         $(function(){
           $('a.deleteFile').click(function(){
             $.ajax({
-            url:'api/maintenances',
-            data:{'action' : 'deleteImage', 'url' : 'images_entretiens/'+this.name},
-            method:'POST',
-            success:function(response){
-              if(response.response == "success"){
-                $.notify(
+              url:'api/maintenances',
+              data:{'action' : 'deleteImage', 'url' : 'images_entretiens/'+this.name},
+              method:'POST',
+              success:function(response){
+                if(response.response == "success"){
+                  $.notify(
                   {
                     message: response.message,
                   },
                   {
                     type: "success",
                   }
-                );
-                get_maintenance(response.id);
-                document
+                  );
+                  get_maintenance(response.id);
+                  document
                   .getElementById("widget-maintenanceManagement-form")
                   .reset();
-              }else{
-                $.notify({
-                  message: response.message,
-                }, {
-                  type: "danger",
-                });
+                }else{
+                  $.notify({
+                    message: response.message,
+                  }, {
+                    type: "danger",
+                  });
+                }
               }
-            }
             });
           });
         });
@@ -231,32 +265,32 @@ function get_maintenance(ID){
 $('.maintenanceManagementDeleteButton').off();
 $('.maintenanceManagementDeleteButton').click(function(){
   $.ajax({
-  url:'api/maintenances',
-  data:{'action' : 'deleteEntretien', 'id' : this.name},
-  method:'POST',
-  success:function(response){
-    if(response.response == "success"){
-      $.notify(
+    url:'api/maintenances',
+    data:{'action' : 'deleteEntretien', 'id' : this.name},
+    method:'POST',
+    success:function(response){
+      if(response.response == "success"){
+        $.notify(
         {
           message: response.message,
         },
         {
           type: "success",
         }
-      );
-      list_maintenances();
-      $("#maintenanceManagementItem").modal("toggle");
-      document
+        );
+        list_maintenances();
+        $("#maintenanceManagementItem").modal("toggle");
+        document
         .getElementById("widget-maintenanceManagement-form")
         .reset();
-    }else{
-      $.notify({
-        message: response.message,
-      }, {
-        type: "danger",
-      });
+      }else{
+        $.notify({
+          message: response.message,
+        }, {
+          type: "danger",
+        });
+      }
     }
-  }
   });
 })
 
@@ -266,6 +300,7 @@ $('body').on('click', '.editMaintenance',function(){
   $("#widget-maintenanceManagement-form input[name=action]").val("update");
   $("#widget-maintenanceManagement-form input").attr("readonly", true);
   $("#widget-maintenanceManagement-form input[name=dateMaintenance]").attr("readonly", false);
+  $("#widget-maintenanceManagement-form input[name=dateOutPlanned]").attr("readonly", false);
   $("#widget-maintenanceManagement-form select").attr("disabled", false);
   $("#widget-maintenanceManagement-form textarea").attr("readonly", false);
   $(".maintenanceManagementTitle").html("Éditer un entretien");
@@ -300,6 +335,7 @@ $('body').on('click', '.addMaintenance',function(){
   $("#widget-maintenanceManagement-form textarea").attr("readonly", false);
   $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", false);
   $("#widget-maintenanceManagement-form input[name=dateMaintenance]").attr("readonly", false);
+  $("#widget-maintenanceManagement-form input[name=dateOutPlanned]").attr("readonly", false);
   $(".maintenanceManagementTitle").html("Ajouter un entretien");
   $("#widget-maintenanceManagement-form button").show();
   $("#widget-maintenanceManagement-form div[name=id]").hide();
@@ -332,6 +368,7 @@ function empty_form(){
   $('#widget-maintenanceManagement-form input[name=address]').val("");
   $('#widget-maintenanceManagement-form select[name=status]').val("MANUALLY_PLANNED");
   $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val("");
+  $('#widget-maintenanceManagement-form input[name=dateOutPlanned]').val("");
   $('#widget-maintenanceManagement-form textarea[name=comment]').val("");
   $('#widget-maintenanceManagement-form textarea[name=internalComment]').val("");
 }
@@ -349,27 +386,27 @@ $('#widget-maintenanceManagement-form select[name=company]').change(function(){
         console.log(response.message);
       }else{
         $("#widget-maintenanceManagement-form select[name=velo]")
-          .find("option")
-          .remove()
-          .end();
+        .find("option")
+        .remove()
+        .end();
 
         response.bike.forEach(function(bike){
           $('#widget-maintenanceManagement-form select[name=velo]').append(
             '<option value="' +
-              bike.id +
-              '">' +
-              bike.id + ' - ' + bike.model + ' : ' + bike.size +
-              "</option>"
-          );
+            bike.id +
+            '">' +
+            bike.id + ' - ' + bike.model + ' : ' + bike.size +
+            "</option>"
+            );
         })
         response.externalBike.forEach(function(bike){
           $('#widget-maintenanceManagement-form select[name=velo]').append(
             '<option data-external value="' +
-              bike.ID +
-              '"> EXTERNAL - ' +
-              bike.ID + ' - ' + bike.BRAND + ' ' + bike.MODEL +
-              "</option>"
-          );
+            bike.ID +
+            '"> EXTERNAL - ' +
+            bike.ID + ' - ' + bike.BRAND + ' ' + bike.MODEL +
+            "</option>"
+            );
         })
         $('#widget-maintenanceManagement-form select[name=velo]').val("");
 
@@ -419,14 +456,43 @@ $('#widget-maintenanceManagement-form input[name=publicFile], #widget-maintenanc
   form.append('name', this.name);
   form.append('ID', $('#widget-maintenanceManagement-form input[name=ID]').val());
   $.ajax({
-      url : "api/maintenances",
-      type: "POST",
-      cache: false,
-      contentType: false,
-      processData: false,
-      data : form,
-      success: function(response){
-        get_maintenance($('#widget-maintenanceManagement-form input[name=ID]').val());
-      }
+    url : "api/maintenances",
+    type: "POST",
+    cache: false,
+    contentType: false,
+    processData: false,
+    data : form,
+    success: function(response){
+      get_maintenance($('#widget-maintenanceManagement-form input[name=ID]').val());
+    }
   });
 });
+
+
+$('body').on('click','.displayToPlan', function(){
+  var table = $('#maintenanceListingSpan').DataTable()
+  .search( "TO_PLAN", true, false )
+  .draw();
+});
+
+
+
+$('body').on('click','.displayInShop', function(){
+  var table = $('#maintenanceListingSpan').DataTable()
+  .search( "IN_SHOP", true, false )
+  .draw();
+});
+
+
+$('body').on('click','.displayInWaitingPieces', function(){
+  var table = $('#maintenanceListingSpan').DataTable()
+  .search( "WAITING_PIECES", true, false )
+  .draw();
+});
+
+/*$('body').on('click','.addCompany', function(){
+  var table = $('#maintenanceListingSpan').DataTable()
+  .search( "pièces", true, false )
+  .draw();
+});*/
+

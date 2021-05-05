@@ -1,157 +1,171 @@
 <div
-  class="modal fade"
-  id="maintenanceManagementItem"
-  tabindex="-1"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="display: none; overflow-y: auto !important"
+class="modal fade"
+id="maintenanceManagementItem"
+tabindex="-1"
+role="modal"
+aria-labelledby="modal-label"
+aria-hidden="true"
+style="display: none; overflow-y: auto !important"
 >
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-hidden="true"
-        >
-          ×
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <h4 class="text-green maintenanceManagementTitle"> Éditer un entretien </h4>
-            <form id="widget-maintenanceManagement-form" action="api/maintenances" role="form" method="post" >
-              <div class="form-group col-sm-12">
-                <div class="col-md-12">
-                  <div class="col-md-4" name="id">
-                    <label for="ID">ID</label>
-                    <input type="int" title="ID" class="form-control required" name="ID" readonly="readonly" />
-                  </div>
-                  <div class="col-md-4">
-                    <label for="utilisateur">Société</label>
-                    <select title="company" class="form-control required form_company" name="company"></select>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="utilisateur">Vélo</label>
-                    <select title="velo" class="form-control required form_velo" name="velo" ></select>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="col-md-4">
-                    <label for="model">Model</label>
-                    <input type="int" title="model" class="form-control required" name="model" readonly="readonly" />
-                  </div>
-                  <div class="col-md-4">
-                    <label for="address">Adresse</label>
-                    <input type="text" title="address" class="form-control" name="address" disabled />
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="col-md-4">
-                    <label for="utilisateur">Status</label>
-                    <select title="status" class="form-control required" name="status" >
-                      <option value="CONFIRMED">CONFIRMED</option>
-                      <option value="AUTOMATICALY_PLANNED">AUTOMATICALY_PLANNED</option>
-                      <option value="MANUALLY_PLANNED">MANUALLY_PLANNED</option>
-                      <option value="DONE">DONE</option>
-                      <option value="CANCELLED">CANCELLED</option>
-                    </select>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="dateMaintenance">Date d'entretien</label>
-                    <input type="date" title="dateMaintenance" name="dateMaintenance" class="form-control required" />
-                  </div>
-                </div>
-                <div class="separator"></div>
-                <h4 class="text-green">Informations pour client</h4>
-                <div class="col-md-12">
-                  <label for="comment">Description</label>
-                  <textarea class="form-control" rows="5" name="comment" ></textarea>
-                </div>
-                <div class='space'></div>
-                <div class="col-md-12" name="images">
-                </div>
-                <div class="col-md-12">
-                  <div name = "file" class="col-sm-6">
-                    <label for="publicFile">Ajouter une photo</label>
-                    <input type="hidden" name="MAX_FILE_SIZE" value="6291456">
-                    <input type="file" size="40" class="form-control" name="publicFile" accept="image/*,.pdf">
-                  </div>
-                </div>
-                <div class="separator"></div>
-                <h4 class="text-green">Informations confidentielles</h4>
-                <div class="col-md-12">
-                  <label for="internalComment">Description</label>
-                  <textarea class="form-control" rows="5" name="internalComment" ></textarea>
-                </div>
-                <div class='space'></div>
-                <div class="col-md-12" name="internalImages">
-                </div>
-                <div class="col-md-12">
-                  <div name = "internalFile" class="col-sm-6">
-                    <label for="internalFile">Ajouter une photo</label>
-                    <input type="file" size="40" class="form-control" name="internalFile" accept="image/*,.pdf">
-                  </div>
-                </div>
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      >
+      ×
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4 class="text-green maintenanceManagementTitle"> Éditer un entretien </h4>
+        <form id="widget-maintenanceManagement-form" action="api/maintenances" role="form" method="post" >
+          <div class="form-group col-sm-12">
+            <div class="col-md-12">
+              <div class="col-md-4" name="id">
+                <label for="ID">ID</label>
+                <input type="int" title="ID" class="form-control required" name="ID" readonly="readonly" />
               </div>
-              <input type="text" name="action" class="form-control hidden" value="edit" />
-              <input type="text" name="user" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>"/>
-              <input type="number" class="hidden" name='external' value="">
+              <div class="col-md-4">
+                <label for="utilisateur">Société</label>
+                <select title="company" class="form-control required form_company" name="company"></select>
+              </div>
+              <div class="col-md-4">
+                <br>
+                <a class="button small green button-3d rounded icon-right addCompany" data-target="#addClient" data-toggle="modal" href="#">
+                  Ajouter un client
+                </a>
+              </div>
+            </div>
+            <div class="col-md-12">
+               <div class="col-md-4">
+                <label for="utilisateur">Vélo</label>
+                <select title="velo" class="form-control required form_velo" name="velo" ></select>
+              </div>
+              <div class="col-md-4">
+                <label for="model">Model</label>
+                <input type="int" title="model" class="form-control required" name="model" readonly="readonly" />
+              </div>
+              <div class="col-md-4">
+                <label for="address">Adresse</label>
+                <input type="text" title="address" class="form-control" name="address" disabled />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-4">
+                <label for="utilisateur">Status</label>
+                <select title="status" class="form-control required" name="status" >
+                  <option value="CONFIRMED">CONFIRMED</option>
+                  <option value="AUTOMATICALY_PLANNED">AUTOMATICALY_PLANNED</option>
+                  <option value="MANUALLY_PLANNED">MANUALLY_PLANNED</option>
+                  <option value="DONE">DONE</option>
+                  <option value="CANCELLED">CANCELLED</option>
+                  <option value="IN_SHOP">IN_SHOP</option>
+                  <option value="TO_PLAN">TO_PLAN</option>
+                  <option value="WAITING_PIECES">WAITING_PIECES</option>
+                  <option value="DELIVERED_TO_CLIENT">DELIVERED_TO_CLIENT</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="dateMaintenance">Date d'entretien</label>
+                <input type="date" title="dateMaintenance" name="dateMaintenance" class="form-control required" />
+              </div>
+              <div class="col-md-4">
+                <label for="dateOutPlanned">Date de sortie planifié</label>
+                <input type="date" title="dateOutPlanned" name="dateOutPlanned" class="form-control required" />
+              </div>
+            </div>
+            <div class="separator"></div>
+            <h4 class="text-green">Informations pour client</h4>
+            <div class="col-md-12">
+              <label for="comment">Description</label>
+              <textarea class="form-control" rows="5" name="comment" ></textarea>
+            </div>
+            <div class='space'></div>
+            <div class="col-md-12" name="images">
+            </div>
+            <div class="col-md-12">
+              <div name = "file" class="col-sm-6">
+                <label for="publicFile">Ajouter une photo</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="6291456">
+                <input type="file" size="40" class="form-control" name="publicFile" accept="image/*,.pdf">
+              </div>
+            </div>
+            <div class="separator"></div>
+            <h4 class="text-green">Informations confidentielles</h4>
+            <div class="col-md-12">
+              <label for="internalComment">Description</label>
+              <textarea class="form-control" rows="5" name="internalComment" ></textarea>
+            </div>
+            <div class='space'></div>
+            <div class="col-md-12" name="internalImages">
+            </div>
+            <div class="col-md-12">
+              <div name = "internalFile" class="col-sm-6">
+                <label for="internalFile">Ajouter une photo</label>
+                <input type="file" size="40" class="form-control" name="internalFile" accept="image/*,.pdf">
+              </div>
+            </div>
+          </div>
+          <input type="text" name="action" class="form-control hidden" value="edit" />
+          <input type="text" name="user" class="form-control hidden" value="<?php echo $user_data['EMAIL']; ?>"/>
+          <input type="number" class="hidden" name='external' value="">
 
-              <div class="col-sm-12">
-                <button class="button small green button-3d rounded icon-left maintenanceManagementSendButton" type="submit">
-                  <i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?>
-                </button>
-                <button class="button small red button-3d rounded icon-left maintenanceManagementDeleteButton" type="button">
-                  <i class="fa fa-paper-plane"></i><?= L::generic_delete; ?>
-                </button>
-              </div>
-            </form>
-            <script type="text/javascript">
-              jQuery("#widget-maintenanceManagement-form").validate({
-                submitHandler: function (form) {
-                  jQuery(form).ajaxSubmit({
-                    success: function (response) {
-                      if (response.response == "success") {
-                        $.notify(
-                          {
-                            message: response.message,
-                          },
-                          {
-                            type: "success",
-                          }
-                        );
-                        $("#maintenanceListingSpan").dataTable().api().ajax.reload();
-                        $("#maintenanceManagementItem").modal("toggle");
-                        document
-                          .getElementById("widget-maintenanceManagement-form")
-                          .reset();
-                      } else {
-                        $.notify(
-                          {
-                            message: response.message,
-                          },
-                          {
-                            type: "danger",
-                          }
-                        );
-                      }
+          <div class="col-sm-12">
+            <button class="button small green button-3d rounded icon-left maintenanceManagementSendButton" type="submit">
+              <i class="fa fa-paper-plane"></i><?= L::generic_confirm; ?>
+            </button>
+            <button class="button small red button-3d rounded icon-left maintenanceManagementDeleteButton" type="button">
+              <i class="fa fa-paper-plane"></i><?= L::generic_delete; ?>
+            </button>
+          </div>
+        </form>
+        <script type="text/javascript">
+          jQuery("#widget-maintenanceManagement-form").validate({
+            submitHandler: function (form) {
+              jQuery(form).ajaxSubmit({
+                success: function (response) {
+                  if (response.response == "success") {
+                    $.notify(
+                    {
+                      message: response.message,
                     },
-                  });
+                    {
+                      type: "success",
+                    }
+                    );
+                    $("#maintenanceListingSpan").dataTable().api().ajax.reload();
+                    $("#maintenanceManagementItem").modal("toggle");
+                    document
+                    .getElementById("widget-maintenanceManagement-form")
+                    .reset();
+                  } else {
+                    $.notify(
+                    {
+                      message: response.message,
+                    },
+                    {
+                      type: "danger",
+                    }
+                    );
+                  }
                 },
               });
-            </script>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">
-          <?= L::generic_close; ?>
-        </button>
+            },
+          });
+        </script>
       </div>
     </div>
   </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-b" data-dismiss="modal">
+      <?= L::generic_close; ?>
+    </button>
+  </div>
+</div>
+</div>
 </div>

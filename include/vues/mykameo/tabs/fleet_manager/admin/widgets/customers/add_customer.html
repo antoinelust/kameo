@@ -5,7 +5,7 @@
   role="modal"
   aria-labelledby="modal-label"
   aria-hidden="true"
-  style="display: none"
+  style="display: none;"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -130,9 +130,10 @@
                 type: "success",
               }
             );
-            $("#companyListingTable").dataTable().api().ajax.reload();
             document.getElementById("widget-addClient-form").reset();
             $("#addClient").modal("toggle");
+            getCompaniesInMaintenances();
+             $("#companyListingTable").dataTable().api().ajax.reload();
           } else {
             $.notify(
               {

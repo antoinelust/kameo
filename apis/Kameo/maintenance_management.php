@@ -28,7 +28,7 @@ if (isset($_GET['action'])) {
     $date_end_string=$date_end->format('Y-m-d');
 
     $response['maintenance'] = execSQL("SELECT * FROM
-      (SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
+      (SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.OUT_DATE_PLANNED AS OUT_DATE_PLANNED, entretiens.STATUS AS status,
          COMMENT AS comment, customer_bikes.FRAME_NUMBER AS frame_number, customer_bikes.COMPANY AS company, MODEL AS model, customer_bikes.ADDRESS as bikeAddress,
          FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id,customer_referential.PHONE AS phone, customer_referential.ADRESS AS street, customer_referential.POSTAL_CODE AS zip_code,
          customer_referential.CITY AS town, customer_bike_access.TYPE AS type, customer_bike_access.EMAIL AS email
@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
          INNER JOIN customer_referential ON customer_referential.EMAIL=customer_bike_access.EMAIL
          WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string' AND entretiens.EXTERNAL_BIKE=0
        UNION
-       SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
+       SELECT entretiens.ID AS id, entretiens.DATE AS date,entretiens.OUT_DATE_PLANNED AS OUT_DATE_PLANNED, entretiens.STATUS AS status,
           COMMENT AS comment, customer_bikes.FRAME_NUMBER AS frame_number, customer_bikes.COMPANY AS company, MODEL AS model, customer_bikes.ADDRESS as bikeAddress,
           FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id, (SELECT PHONE from companies_contact WHERE ID_COMPANY=companies.ID LIMIT 1) AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
           companies.TOWN AS town, 'partage' AS type, 'N/A' AS email
@@ -48,7 +48,7 @@ if (isset($_GET['action'])) {
           INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
           WHERE entretiens.DATE >= '$date_start_string' AND entretiens.DATE <= '$date_end_string' AND NOT EXISTS (SELECT 1 from customer_bike_access WHERE customer_bike_access.BIKE_ID = customer_bikes.ID AND customer_bike_access.TYPE='personnel') and EXTERNAL_BIKE=0
         UNION
-        SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.STATUS AS status,
+        SELECT entretiens.ID AS id, entretiens.DATE AS date,entretiens.OUT_DATE_PLANNED AS OUT_DATE_PLANNED, entretiens.STATUS AS status,
            COMMENT AS comment, 'External Bike' AS frame_number, companies.INTERNAL_REFERENCE AS company, external_bikes.MODEL AS model, '' as bikeAddress,
            external_bikes.FRAME_REFERENCE AS frame_reference, external_bikes.ID AS bike_id, (SELECT PHONE from companies_contact WHERE ID_COMPANY=companies.ID LIMIT 1) AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
            companies.TOWN AS town, 'external' AS type, 'N/A' AS email

@@ -10,15 +10,15 @@ echo '
 <!-- For IE <= 9 -->
 <!--[if IE]>
 <script type="text/javascript">
-    window.location = "navigateur.php";
+window.location = "navigateur.php";
 </script>
 <![endif]-->
 
 <!-- For IE > 9 -->
 <script type="text/javascript">
-    if (window.navigator.msPointerEnabled) {
-        window.location = "navigateur.php";
-    }
+if (window.navigator.msPointerEnabled) {
+  window.location = "navigateur.php";
+}
 </script>
 ';
 $user_ID = isset($_SESSION['ID']) ? $_SESSION['ID'] : NULL; //Used by: notifications.js
@@ -39,23 +39,23 @@ if (constant('ENVIRONMENT') == "production") {
 }
 
 echo '<!-- WRAPPER -->
-	<div class="wrapper">';
+<div class="wrapper">';
 include 'include/topbar.php';
 include 'include/header.php';
 
 echo '<style media="screen">
-    .tableFixed {
-      table-layout: fixed;
-    }
-    .separator-small{
-      padding-top:20px;
-      width:60%;
-      opacity: 0.5;
-    }
+.tableFixed {
+  table-layout: fixed;
+}
+.separator-small{
+  padding-top:20px;
+  width:60%;
+  opacity: 0.5;
+}
 </style>';
 
 echo '<script type="text/javascript" src="js/language2.js">
-  displayLanguage();
+displayLanguage();
 </script>';
 
 // Traduction notifications
@@ -77,9 +77,9 @@ if ($token == NULL) { //Not connected
   $user_data = array_merge($user_data, getCondition()['conditions']);
   echo '
   <script type="text/javascript">
-    const user_ID = "' . $user_ID . '";
-    const user_data = JSON.parse(`' . json_encode($user_data) . '`);
-    var email=user_data["EMAIL"];
+  const user_ID = "' . $user_ID . '";
+  const user_data = JSON.parse(`' . json_encode($user_data) . '`);
+  var email=user_data["EMAIL"];
   </script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
   <!-- <script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
@@ -92,9 +92,9 @@ if ($token == NULL) { //Not connected
   <script type="text/javascript" src="js/addresses.js"></script>
   <script type="text/javascript" src="js/weather.js"></script>
   <script type="text/javascript" src="js/cafetaria.js"></script>
-    <script type="text/javascript">
+  <script type="text/javascript">
 
-      window.addEventListener("DOMContentLoaded", (event) => {';
+  window.addEventListener("DOMContentLoaded", (event) => {';
   if($user_data["personnalBike"]=="TRUE"){
     echo '$("#personnalBike").addClass("active"); ';
     echo '$("#personnalBikeID").addClass("active"); ';
@@ -115,21 +115,21 @@ if ($token == NULL) { //Not connected
   }
 
 
- if (get_user_permissions("admin", $token)) {
+  if (get_user_permissions("admin", $token)) {
    echo 'initializeFields();';
  }
 
 
-  echo '});
-    </script>';
+ echo '});
+ </script>';
 
 
-  $sql = "select * from customer_referential aa, customer_bike_access bb where aa.EMAIL='" . $user_data['EMAIL'] . "' and aa.EMAIL=bb.EMAIL and bb.TYPE='personnel' LIMIT 1";
-  $result = mysqli_query($conn, $sql);
+ $sql = "select * from customer_referential aa, customer_bike_access bb where aa.EMAIL='" . $user_data['EMAIL'] . "' and aa.EMAIL=bb.EMAIL and bb.TYPE='personnel' LIMIT 1";
+ $result = mysqli_query($conn, $sql);
   $company = ($result->num_rows == 0); //Used by: mykameo/main.php
   /** TEST VARIABLE @TODO: REMOVE **/
   //$company = '';
-?>
+  ?>
 
 
 
@@ -150,34 +150,34 @@ if ($token == NULL) { //Not connected
               <div class="col-md-12">
                 <span id="assistanceSpan"></span>
                 <?php if (!$company)
-                  /** CALENDAR **/
-                  include 'include/vues/mykameo/calendar.html';
+                /** CALENDAR **/
+                include 'include/vues/mykameo/calendar.html';
                 include 'include/vues/mykameo/widgets/calendar/main.php'; ?>
               </div>
               <br />
-                <div class="col-md-12">
-                  <div id="tabs-05c" class="tabs color tabs radius">
-                    <ul id="mainTab" class="tabs-navigation">
-                      <?php
+              <div class="col-md-12">
+                <div id="tabs-05c" class="tabs color tabs radius">
+                  <ul id="mainTab" class="tabs-navigation">
+                    <?php
 
-                      if($user_data['personnalBike']=="TRUE"){
-                        echo '<li id="personnalBikeID"><a href="#personnalBike" class="personnalBike"><i class="fa fa-user"></i>' . L::tabs_personnal_title . '</a> </li>';
-                      }else{
-                        if (get_user_permissions("order", $token)) {
-                          if($user_data['CAFETARIA']=='Y'){
-                            echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>' . L::tabs_order_title . '</a></li>';
-                          }
+                    if($user_data['personnalBike']=="TRUE"){
+                      echo '<li id="personnalBikeID"><a href="#personnalBike" class="personnalBike"><i class="fa fa-user"></i>' . L::tabs_personnal_title . '</a> </li>';
+                    }else{
+                      if (get_user_permissions("order", $token)) {
+                        if($user_data['CAFETARIA']=='Y'){
+                          echo '<li class="orderBike" id="orderBikeID"><a href="#orderBike" class="orderBike"><i class="fa fa-user"></i>' . L::tabs_order_title . '</a></li>';
                         }
                       }
+                    }
 
-                      if(get_user_permissions('espaceCollaboratif', $token)){
+                    if(get_user_permissions('espaceCollaboratif', $token)){
                         include 'include/vues/mykameo/tabs/espaceCollaboratif/customers/main.php';  //TAB 4 @TODO: REFACTOR
                         include 'include/vues/mykameo/tabs/espaceCollaboratif/bikes/main.php';  //TAB 4 @TODO: REFACTOR
                       }
 
                       if (get_user_permissions("search", $token)) {
                         echo '<li class="reserver active"><a href="#reserver"><i class="fa fa-calendar-plus-o"></i>' . L::tabs_book_title . '</a> </li>
-                            <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>' . L::tabs_reservations_title . '</a> </li>';
+                        <li><a href="#reservations" class="reservations"><i class="fa fa-check-square-o"></i>' . L::tabs_reservations_title . '</a> </li>';
                       }
                       if (get_user_permissions(["bills", "fleetManager", "admin"], $token)) {
 
@@ -222,149 +222,149 @@ if ($token == NULL) { //Not connected
                   </div>
                   <?php include 'include/vues/mykameo/widgets/future_booking/future_booking.html'; ?>
                 </div>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- END: MAIN CONTENT -->
-        <!-- SIDEBAR -->
-        <div class="col-md-3 sidebar">
-          <div class="widget clearfix widget-blog-articles">
-            <h4 class="widget-title"><?= L::sidebar_title; ?></h4>
-            <ul class="list-posts list-medium">
-              <li><?= L::sidebar_last_name; ?>
+          <!-- END: MAIN CONTENT -->
+          <!-- SIDEBAR -->
+          <div class="col-md-3 sidebar">
+            <div class="widget clearfix widget-blog-articles">
+              <h4 class="widget-title"><?= L::sidebar_title; ?></h4>
+              <ul class="list-posts list-medium">
+                <li><?= L::sidebar_last_name; ?>
                 <small><?= $user_data["NOM"] ?></small>
               </li>
               <?php if ($user_data["PRENOM"]) : ?>
                 <li><?= L::sidebar_first_name; ?>
-                  <small><?= $user_data["PRENOM"] ?></small>
-                </li>
-              <?php endif; ?>
-              <?php if ($user_data["PHONE"]) : ?>
-                <li><?= L::sidebar_phone; ?>
-                  <small class="phone"><?= $user_data["PHONE"] ?></small>
-                </li>
-              <?php endif; ?>
-              <?php if ($user_data["ADRESS"]) : ?>
-                <li><?= L::sidebar_home_address; ?>
-                  <small><?= $user_data['ADRESS'] . ", " . $user_data['POSTAL_CODE'] . ", " . $user_data['CITY'] ?></small>
-                </li>
-              <?php endif; ?>
-              <?php if ($user_data["WORK_ADRESS"]) : ?>
-                <li><?= L::sidebar_work_address; ?>
-                  <small><?= $user_data['WORK_ADRESS'] . ", " . $user_data['WORK_POSTAL_CODE'] . ", " . $user_data['WORK_CITY'] ?></small>
-                </li>
-              <?php endif; ?>
-              <li><?= L::sidebar_password; ?>
-                <small>********</small>
+                <small><?= $user_data["PRENOM"] ?></small>
               </li>
-            </ul>
-            <?php /**@TODO: REMOVE ONCLICK REFACTOR **/ ?>
-            <a class="button small green button-3d rounded icon-left" data-target="#update" data-toggle="modal" href="#" onclick="initializeUpdate()">
-              <span><?= L::sidebar_refresh_button; ?></span>
-            </a>
-            <br>
-            <?php if (false) : ?>
-              <br><br>
-              <h4 class="widget-title">
-                <span><?= L::sidebar_statistics_title; ?> </span>
-                <span id="year"></span>
-              </h4>
-              <ul class="list-posts list-medium">
-                <li> <span> <?= L::sidebar_trips_number; ?></span>
-                  <small id="count_trips"></small>
-                </li>
-                <li> <span> <?= L::sidebar_km_number; ?></span>
-                  <small id="total_trips"></small>
-                </li>
-              </ul>
-              <!-- Statistics calculation -->
-              <script type="text/javascript" src="include/vues/mykameo/statistics.js"></script>
             <?php endif; ?>
-            <br>
-            <?php
-            if ($user_data['COMPANY'] != "Actiris"){
-              echo '<a href="docs/cgvfr.pdf" target="_blank" title="Pdf">' . L::sidebar_terms . '</a><br><br>';
-              echo '<a href="docs/'.L::sidebar_insurance_link.'.pdf" target="_blank" title="Pdf">'.L::sidebar_insurance.'</a><br><br>';
-            }
-
-            if ($user_data['COMPANY'] == "Actiris"){
-              echo '<a href="docs/'.L::sidebar_bike_policy_link_actiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
-            }elseif($user_data['COMPANY'] == "AZZANA"){
-              echo '<a href="docs/'.L::sidebar_bike_policy_link_azzana.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
-            }elseif($user_data['COMPANY'] == "Methanex Corporation"){
-              echo '<a href="docs/'.L::sidebar_bike_policy_link_methanex.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
-            }else{
-              echo '<a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
-            }
-
-            if ($user_data['COMPANY'] == "Actiris"){
-              echo '<a href="docs/'.L::sidebar_manualActiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
-            }else if($user_data['COMPANY'] != "Methanex Corporation"){
-              echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
-            }
-            ?>
-            <a class="button small green button-3d rounded icon-left" data-target="#tellus" data-toggle="modal" href="#" onclick="initializeTellUs()">
-              <span><?= L::sidebar_feedback_button; ?></span>
-            </a><br>
-            <a class="button small red button-3d rounded icon-left" onclick="logout()">
-              <span><?= L::sidebar_disconnect_button; ?></span>
-            </a>
-            <script type="text/javascript" src="js/logout.js"></script>
-          </div>
-        </div>
-        <!-- END: SIDEBAR -->
-      </div>
-    </div>
-  </section>
-  <!-- BOOK TAB RESUME WIDGET -->
-  <?php include 'include/vues/mykameo/tabs/book/widgets/book.html'; ?>
-  <!-- Feedback WIDGET -->
-  <?php include 'include/vues/mykameo/tabs/book/widgets/feedback.html'; ?>
-  <!-- INFORMATIONS WIDGETS -->
-  <?php include 'include/vues/mykameo/widgets/informations/update_informations.html'; ?>
-
-  <?php if ($user_data["personnalBike"]=="TRUE"){
-    include 'include/vues/mykameo/tabs/personnal_bike/widget/rachatBike.html';
-  }?>
-
-  <script type="text/javascript" src="include/vues/mykameo/widgets/informations/update_informations.js"></script>
-  <!-- SUPPORT WIDGET -->
+            <?php if ($user_data["PHONE"]) : ?>
+              <li><?= L::sidebar_phone; ?>
+              <small class="phone"><?= $user_data["PHONE"] ?></small>
+            </li>
+          <?php endif; ?>
+          <?php if ($user_data["ADRESS"]) : ?>
+            <li><?= L::sidebar_home_address; ?>
+            <small><?= $user_data['ADRESS'] . ", " . $user_data['POSTAL_CODE'] . ", " . $user_data['CITY'] ?></small>
+          </li>
+        <?php endif; ?>
+        <?php if ($user_data["WORK_ADRESS"]) : ?>
+          <li><?= L::sidebar_work_address; ?>
+          <small><?= $user_data['WORK_ADRESS'] . ", " . $user_data['WORK_POSTAL_CODE'] . ", " . $user_data['WORK_CITY'] ?></small>
+        </li>
+      <?php endif; ?>
+      <li><?= L::sidebar_password; ?>
+      <small>********</small>
+    </li>
+  </ul>
+  <?php /**@TODO: REMOVE ONCLICK REFACTOR **/ ?>
+  <a class="button small green button-3d rounded icon-left" data-target="#update" data-toggle="modal" href="#" onclick="initializeUpdate()">
+    <span><?= L::sidebar_refresh_button; ?></span>
+  </a>
+  <br>
+  <?php if (false) : ?>
+    <br><br>
+    <h4 class="widget-title">
+      <span><?= L::sidebar_statistics_title; ?> </span>
+      <span id="year"></span>
+    </h4>
+    <ul class="list-posts list-medium">
+      <li> <span> <?= L::sidebar_trips_number; ?></span>
+        <small id="count_trips"></small>
+      </li>
+      <li> <span> <?= L::sidebar_km_number; ?></span>
+        <small id="total_trips"></small>
+      </li>
+    </ul>
+    <!-- Statistics calculation -->
+    <script type="text/javascript" src="include/vues/mykameo/statistics.js"></script>
+  <?php endif; ?>
+  <br>
   <?php
+  if ($user_data['COMPANY'] != "Actiris"){
+    echo '<a href="docs/cgvfr.pdf" target="_blank" title="Pdf">' . L::sidebar_terms . '</a><br><br>';
+    echo '<a href="docs/'.L::sidebar_insurance_link.'.pdf" target="_blank" title="Pdf">'.L::sidebar_insurance.'</a><br><br>';
+  }
+
+  if ($user_data['COMPANY'] == "Actiris"){
+    echo '<a href="docs/'.L::sidebar_bike_policy_link_actiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
+  }elseif($user_data['COMPANY'] == "AZZANA"){
+    echo '<a href="docs/'.L::sidebar_bike_policy_link_azzana.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
+  }elseif($user_data['COMPANY'] == "Methanex Corporation"){
+    echo '<a href="docs/'.L::sidebar_bike_policy_link_methanex.'.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
+  }else{
+    echo '<a href="docs/KAMEO-BikePolicy.pdf" target="_blank" title="Pdf">'.L::sidebar_bike_policy.'</a><br><br>';
+  }
+
+  if ($user_data['COMPANY'] == "Actiris"){
+    echo '<a href="docs/'.L::sidebar_manualActiris.'.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
+  }else if($user_data['COMPANY'] != "Methanex Corporation"){
+    echo '<a href="docs/manueldutilisationmykameo.pdf" target="_blank" title="Pdf">'.L::sidebar_manual.'</a><br><br>';
+  }
+  ?>
+  <a class="button small green button-3d rounded icon-left" data-target="#tellus" data-toggle="modal" href="#" onclick="initializeTellUs()">
+    <span><?= L::sidebar_feedback_button; ?></span>
+  </a><br>
+  <a class="button small red button-3d rounded icon-left" onclick="logout()">
+    <span><?= L::sidebar_disconnect_button; ?></span>
+  </a>
+  <script type="text/javascript" src="js/logout.js"></script>
+</div>
+</div>
+<!-- END: SIDEBAR -->
+</div>
+</div>
+</section>
+<!-- BOOK TAB RESUME WIDGET -->
+<?php include 'include/vues/mykameo/tabs/book/widgets/book.html'; ?>
+<!-- Feedback WIDGET -->
+<?php include 'include/vues/mykameo/tabs/book/widgets/feedback.html'; ?>
+<!-- INFORMATIONS WIDGETS -->
+<?php include 'include/vues/mykameo/widgets/informations/update_informations.html'; ?>
+
+<?php if ($user_data["personnalBike"]=="TRUE"){
+  include 'include/vues/mykameo/tabs/personnal_bike/widget/rachatBike.html';
+}?>
+
+<script type="text/javascript" src="include/vues/mykameo/widgets/informations/update_informations.js"></script>
+<!-- SUPPORT WIDGET -->
+<?php
   //php's $contractNumber var is needed here
-  include 'include/vues/mykameo/widgets/support/support.html';
-  include 'include/vues/mykameo/widgets/support/contact_support.html';
-  /**@TODO: FIX THE API TO SEND MAIL **/
-  ?>
+include 'include/vues/mykameo/widgets/support/support.html';
+include 'include/vues/mykameo/widgets/support/contact_support.html';
+/**@TODO: FIX THE API TO SEND MAIL **/
+?>
 
-  <!-- FEEDBACK WIDGET -->
-  <?php include 'include/vues/mykameo/widgets/feedback/feedback.html';
-  /**@TODO: FIX THE API TO SEND MAIL **/
-  ?>
+<!-- FEEDBACK WIDGET -->
+<?php include 'include/vues/mykameo/widgets/feedback/feedback.html';
+/**@TODO: FIX THE API TO SEND MAIL **/
+?>
 
-  <script type="text/javascript">
-    window.addEventListener("DOMContentLoaded", function(event) {
-      $(".fleetmanager").click(function() {
-        hideResearch();
-        var date = new Date();
-        if ($(".form_date_end_client").length)
-          $(".form_date_end_client").data("datetimepicker").setDate(date);
-        if ($(".form_date_start_client").length) {
-          date.setMonth(date.getMonth() - 6);
-          $(".form_date_start_client").data("datetimepicker").setDate(date);
-        }
-      });
-      $(".reservations").click(function() {
-        hideResearch();
-        getHistoricBookings(email);
-      });
+<script type="text/javascript">
+  window.addEventListener("DOMContentLoaded", function(event) {
+    $(".fleetmanager").click(function() {
+      hideResearch();
       var date = new Date();
-      if ($(".form_date_end").length)
-        $(".form_date_end").data("datetimepicker").setDate(date);
-      if ($(".form_date_start").length) {
-        date.setMonth(date.getMonth() - 1);
-        $(".form_date_start").data("datetimepicker").setDate(date);
+      if ($(".form_date_end_client").length)
+        $(".form_date_end_client").data("datetimepicker").setDate(date);
+      if ($(".form_date_start_client").length) {
+        date.setMonth(date.getMonth() - 6);
+        $(".form_date_start_client").data("datetimepicker").setDate(date);
       }
     });
+    $(".reservations").click(function() {
+      hideResearch();
+      getHistoricBookings(email);
+    });
+    var date = new Date();
+    if ($(".form_date_end").length)
+      $(".form_date_end").data("datetimepicker").setDate(date);
+    if ($(".form_date_start").length) {
+      date.setMonth(date.getMonth() - 1);
+      $(".form_date_start").data("datetimepicker").setDate(date);
+    }
+  });
     <?php //@TODO: REFACTOR 'CAUSE USED IN MULTIPLE PART OF THE CODE'
     ?>
     /** Reservation & fleetManager tabs **/
@@ -506,7 +506,8 @@ if ($token == NULL) { //Not connected
 
   /** ADMIN **/
   if (get_user_permissions("admin", $token)) {
-
+//MAINTENANCES
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
     //CUSTOMERS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/customers/main.php';
     //ORDERS
@@ -530,8 +531,6 @@ if ($token == NULL) { //Not connected
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/chats/main.php';
     //FEEDBACKS
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/feedbacks/main.php';
-    //MAINTENANCES
-    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/maintenances/main.php';
     //BOXES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
     //MAINTENANCE
@@ -556,14 +555,14 @@ if ($token == NULL) { //Not connected
   }
 
   /////////Ajout de stock
-   if (get_user_permissions("stock", $token)) {
+  if (get_user_permissions("stock", $token)) {
     //Stock
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/stock/widgets/main.php';
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/preOrderCSV/widgets/main.php';
   }
   /////////////
 }
-  ?>
+?>
 
 <div class="loader">
   <!-- Place at bottom of page -->

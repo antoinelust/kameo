@@ -80,11 +80,11 @@ function initializeFields() {
       .remove()
       .end();
 
-  $("#widget-maintenanceManagement-form select[name=company]")
+/*  $("#widget-maintenanceManagement-form select[name=company]")
     .find("option")
     .remove()
     .end();
-
+*/
   $("#widget-addBill-form select[name=company]")
     .find("option")
     .remove()
@@ -148,12 +148,12 @@ function initializeFields() {
               response.company[i].companyName +
               "<br>"
           );
-          $("#widget-maintenanceManagement-form select[name=company]").append(
+         /* $("#widget-maintenanceManagement-form select[name=company]").append(
             '<option id= "'+ response.company[i].ID + '" value= "' +
              response.company[i].internalReference +
             '">' +
             response.company[i].companyName +  "<br>"
-            );
+            );*/
           $("#widget-order-form select[name=company]").append(
             '<option value= "' +
             response.company[i].ID +
