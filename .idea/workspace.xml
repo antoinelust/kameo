@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Bills accessories + update clients_orders">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/actionpourgolive" beforeDir="false" afterPath="$PROJECT_DIR$/actionpourgolive" afterDir="false" />
-    </list>
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Bills accessories + update clients_orders" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -90,6 +87,7 @@
       <workItem from="1619013183158" duration="418000" />
       <workItem from="1619083084424" duration="843000" />
       <workItem from="1620025168537" duration="1335000" />
+      <workItem from="1620205504250" duration="387000" />
     </task>
     <task id="LOCAL-00001" summary="Version Test Younes">
       <created>1612442399254</created>
@@ -308,7 +306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620025212890</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Maintenance_Update">
+      <created>1620205726769</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1620205726769</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -354,6 +359,7 @@
     <MESSAGE value="Order Accessories Solve Bug" />
     <MESSAGE value="Scan Add Multiple accessories + bug in order accessories" />
     <MESSAGE value="Bills accessories + update clients_orders" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bills accessories + update clients_orders" />
+    <MESSAGE value="Maintenance_Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Maintenance_Update" />
   </component>
 </project>
