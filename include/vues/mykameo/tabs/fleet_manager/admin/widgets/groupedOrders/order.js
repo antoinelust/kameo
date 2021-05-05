@@ -221,7 +221,8 @@ $('#groupedOrderManagement .bikes .glyphicon-plus').click(function(){
 		})
 	})
 
-	$('#groupedOrderManagement .bikeNumberTable .model select').off();
+	$('#groupedOrderManagement .bikeNumberTable .model select, #groupedOrderManagement .bikeNumberTable .contractType select').off();
+
 	$('#groupedOrderManagement .bikeNumberTable .model select').change(function(){
 		$size=$(this).closest('tr').find('.size select');
 
@@ -240,17 +241,16 @@ $('#groupedOrderManagement .bikes .glyphicon-plus').click(function(){
 			}
 		})
 	})
-
 	$('#groupedOrderManagement .bikeNumberTable .model select, #groupedOrderManagement .bikeNumberTable .contractType select').change(function(){
-		console.log($('#widget_groupedOrderManagement-form input[name=action]').val());
-
 		$amount=$(this).closest('tr').find('.amount input');
 		var retailPrice=$(this).closest('tr').find('.model select').children("option:selected").data('retailprice');
 		var contractType=$(this).closest('tr').find('.contractType select').val();
 		if(contractType=="achat"){
 			$amount.val(retailPrice);
 		}else{
-			$amount.val(retailPrice*2/36);
+			get_leasing_price(retailPrice, $('#groupedOrderManagement select[name=company]').val()).done(function(response){
+				$amount.val(response.leasingPrice);
+			})
 		}
 	})
 })
@@ -305,7 +305,7 @@ $('#groupedOrderManagement .accessories .glyphicon-plus').click(function(){
 		if(contractType=="selling"){
 			$amount.val(Math.round(retailPrice*100)/100);
 		}else{
-			$amount.val(Math.round(retailPrice*1.5/36*100)/100);
+			$amount.val(Math.round((retailPrice*1.25/36)*100)/100);
 		}
 	})
 })
