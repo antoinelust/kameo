@@ -46,16 +46,22 @@ style="display: none; overflow-y: auto !important"
                 <label for="utilisateur">Vélo</label>
                 <select title="velo" class="form-control required form_velo" name="velo" ></select>
               </div>
+              <div class="col-md-4" name="addExternalBikesDiv">
+                <br>
+                <a class="button small green button-3d rounded icon-right addExternalBikes" data-target="#externalBikeManagement" data-action="add" data-toggle="modal" href="#">
+                  Ajouter un Vélo
+                </a>
+              </div>
               <div class="col-md-4">
                 <label for="model">Model</label>
                 <input type="int" title="model" class="form-control required" name="model" readonly="readonly" />
               </div>
-              <div class="col-md-4">
+            </div>
+            <div class="col-md-12">
+               <div class="col-md-4">
                 <label for="address">Adresse</label>
                 <input type="text" title="address" class="form-control" name="address" disabled />
               </div>
-            </div>
-            <div class="col-md-12">
               <div class="col-md-4">
                 <label for="utilisateur">Status</label>
                 <select title="status" class="form-control required" name="status" >
@@ -138,11 +144,11 @@ style="display: none; overflow-y: auto !important"
                       type: "success",
                     }
                     );
-                    $("#maintenanceListingSpan").dataTable().api().ajax.reload();
-                    $("#maintenanceManagementItem").modal("toggle");
                     document
                     .getElementById("widget-maintenanceManagement-form")
                     .reset();
+                    $("#maintenanceListingSpan").dataTable().api().ajax.reload();
+                    $("#maintenanceManagementItem").modal("toggle");
                   } else {
                     $.notify(
                     {

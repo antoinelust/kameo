@@ -17,6 +17,7 @@ $(".fleetmanager").click(function () {
       }
     },
   });
+  $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').hide();
   getCompaniesInMaintenances();
 });
 
@@ -36,7 +37,7 @@ function getCompaniesInMaintenances(){
       .end();
       response.company.forEach(function(company){
        $("#widget-maintenanceManagement-form select[name=company]").append(
-        '<option id= "'+ company.ID + '" value= "' +company.internalReference +'">' +company.companyName +  "<br>"
+        '<option id= "'+ company.ID + '" value= "' +company.internalReference +'" data-idCompany="'+company.ID+'">' +company.companyName +  "<br>"
         );
      })
     }
@@ -374,6 +375,14 @@ function empty_form(){
 }
 
 $('#widget-maintenanceManagement-form select[name=company]').change(function(){
+  getBikesToMaintenance();
+  $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').show();
+ 
+ $('#widget-maintenanceManagement-form a .addExternalBikes').data('idCompany',$(this).val());
+  
+});
+
+function getBikesToMaintenance(){
   $('#widget-maintenanceManagement-form input[name=model]').val("");
   $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", false);
 
@@ -423,7 +432,7 @@ $('#widget-maintenanceManagement-form select[name=company]').change(function(){
       }
     },
   })
-});
+}
 
 $('body').on('change', '.form_velo',function(){
   var res = $('#widget-maintenanceManagement-form select[name=velo] option:selected').text().split(" - ");
@@ -490,9 +499,8 @@ $('body').on('click','.displayInWaitingPieces', function(){
   .draw();
 });
 
-/*$('body').on('click','.addCompany', function(){
-  var table = $('#maintenanceListingSpan').DataTable()
-  .search( "pièces", true, false )
-  .draw();
-});*/
 
+
+
+
+//donner la valeur du company et l'action add pour terminer normalement
