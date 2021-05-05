@@ -113,6 +113,7 @@ $token = getBearerToken();
 
                 $bikeID=$row['ID'];
                 $bikeNumber=$row['FRAME_NUMBER'];
+                $companyBike=$row['COMPANY'];
                 $contractStart=new DateTime($row['CONTRACT_START'], new DateTimeZone('Europe/Brussels'));
 
                 if($row['CONTRACT_TYPE']=='leasing'){
@@ -200,6 +201,8 @@ $token = getBearerToken();
                   if($length == 0){
                       $response['bike']['bill'][$i]['bikeID']=$bikeID;
                       $response['bike']['bill'][$i]['bikeNumber']=$bikeNumber;
+                      $response['bike']['bill'][$i]['company']=$companyBike;
+                      $response['bike']['bill'][$i]['date']=$dateTempString;
                       $response['bike']['bill'][$i]['description']="Facture manquante pour le vélo à la date du $dateTempString";
                       $i++;
                   }

@@ -380,7 +380,7 @@ function execSQL($sql, $params, $close){
     die;
   }
   if($close){
-     $result = $conn->affected_rows;
+     $result = $conn->insert_id;
   } else {
     $meta = $stmt->result_metadata();
 
