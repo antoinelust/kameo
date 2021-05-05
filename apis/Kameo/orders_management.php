@@ -53,7 +53,7 @@ if(isset($_POST['action'])){
 		$stmt = $conn->prepare("INSERT INTO client_orders (HEU_MAJ, USR_MAJ, EMAIL, PORTFOLIO_ID, SIZE, STATUS, TEST_BOOLEAN, TEST_DATE, TEST_ADDRESS, TEST_STATUS, TEST_RESULT, ESTIMATED_DELIVERY_DATE, DELIVERY_ADDRESS, LEASING_PRICE, TYPE,COMMENTS_ADMIN, COMPANY) VALUES(CURRENT_TIMESTAMP, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)");
 		if ($stmt)
 		{
-			$stmt->bind_param("ssisssssssssdsi", $token, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $commentsAdmin,$company );
+			$stmt->bind_param("ssisssssssssdssi", $token, $mail, $portfolioID, $size, $status, $testBoolean, $testDate, $testAddress, $testStatus, $testResult, $deliveryDate, $deliveryAddress, $price, $type, $commentsAdmin,$company );
 			if(!$stmt->execute()){echo json_encode("there was an error....".$conn->error); die;}
 			$orderID=$stmt->insert_id;
 			$stmt->close();

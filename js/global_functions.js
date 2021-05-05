@@ -58,6 +58,20 @@ cmp = function(x, y){
 };
 
 
+//récuperation du prix de leasing en fct du prix HTVA
+function get_leasing_price(retailPrice, companyID=null){
+  return  $.ajax({
+    url: 'apis/Kameo/get_prices.php',
+    method: 'post',
+    data: {'retailPrice' : retailPrice, 'companyID': companyID},
+    success: function(response){
+      if(response.response == 'error') {
+        console.log(response.message);
+      }
+    }
+  });
+}
+
 function initializeFields() {
   $("#widget-bikeManagement-form select[name=company]")
     .find("option")
