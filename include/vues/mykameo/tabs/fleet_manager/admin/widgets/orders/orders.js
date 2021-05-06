@@ -175,13 +175,9 @@ function get_orders_listing() {
 }
 
 $('body').on('click', '.updateCommand',function(){
-  $("#widget-order-form select[name=name]").find("option")
-  .remove()
-  .end();
   $("#widget-order-form select[name=company]").val($(this).data('company'));
   retrieve_command(this.name);
   $("#widget-order-form div[name=ID]").show();
-  $("#widget-order-form select[name=name]").show();
   $(".orderManagementTitle").html("Gestion de la commande client");
   $("#widget-order-form input[name=action]").val("update");
 });
@@ -233,61 +229,10 @@ $('body').on('click', '.testAssignation',function(){
 $('body').on('click', '.addOrder',function(){
   $('#widget-order-form div[name=assignationBikeHide]').addClass("hidden");
   $('#widget-order-form')[0].reset();
-  $("#widget-order-form select[name=name]").find("option")
-  .remove()
-  .end();
   $("#widget-order-form div[name=ID]").hide();
-  $("#widget-order-form select[name=name]").show();
   $(".orderManagementTitle").html("Ajouter une commande");
   $("#widget-order-form input[name=action]").val("add");
   $('.accessoriesNumber').html('');
-  $("#widget-order-form select[name=company]").off();
-  $("#widget-order-form select[name=company]").change(function(){
-    $.ajax({
-      url: 'apis/Kameo/get_users_listing.php',
-      type: 'post',
-      data: { "companyID": $('#widget-order-form select[name=company]').val()},
-      success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          $('#widget-order-form select[name=name]')
-          .find('option')
-          .remove()
-          .end()
-          ;
-
-          var i=0;
-          var toSelect = null;
-          while (i < response.usersNumber){
-            $('#widget-order-form select[name=name]').append("<option value="+i+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
-            i++;
-          }
-          if(response.usersNumber == 0){
-            $('.clientReference').fadeOut();
-          }else{
-            $('.clientReference').fadeIn();
-          }
-          $('#widget-order-form select[name=name]').val("");
-          $('#widget-order-form input[name = mail]').val("");
-          $('#widget-order-form input[name = phone]').val("");
-
-          $("#widget-order-form select[name=name]").off();
-          $("#widget-order-form select[name=name]").change(function(){
-            if(response.users[$(this).children("option:selected").val()].phone=='' ||response.users[$(this).children("option:selected").val()].phone=='/' || response.users[$(this).children("option:selected").val()].phone==null ){
-              var user_phone = 'N/A';
-            }else{
-              var user_phone = response.users[$(this).children("option:selected").val()].phone;
-            }
-            var user_email = response.users[$(this).children("option:selected").val()].email;
-            $('#widget-order-form input[name = mail]').val(user_email);
-            $('#widget-order-form input[name = phone]').val(user_phone);
-          })
-        }
-      }
-    });
-  });
 });
 
 function list_bikes(){
@@ -320,177 +265,116 @@ function list_bikes(){
 function retrieve_command(ID){
   $('.accessoriesNumber').html('');
   $("#ExistingAccessory tbody").html("");
-  $.ajax({
-    url: 'apis/Kameo/get_users_listing.php',
-    type: 'post',
-    data: { "companyID": $('#widget-order-form select[name=company]').val()},
-    success: function(response){
-      if(response.response == 'error') {
-        console.log(response.message);
-      }
-      if(response.response == 'success'){
-        $('#widget-order-form select[name=name]')
-        .find('option')
-        .remove()
-        .end()
-        ;
-
-        var i=0;
-        var toSelect = null;
-        while (i < response.usersNumber){
-          $('#widget-order-form select[name=name]').append("<option value="+i+">"+response.users[i].name+" - "+response.users[i].firstName+"<br>");
-          if(response.users[i].email == email){
-            var toSelect = i;
-          }
-          i++;
-        }
-        if(response.usersNumber == 0){
-          $('.clientReference').fadeOut();
-        }else{
-          $('.clientReference').fadeIn();
-        }
-        if(toSelect != null){
-          $('#widget-order-form select[name=name]').val(toSelect);
-          var user_email = response.users[toSelect].email;
-          if(response.users[toSelect].phone=='' ||response.users[toSelect].phone=='/' || response.users[toSelect].phone==null ){
-            var user_phone = 'N/A';
-          }else{
-            var user_phone = response.users[toSelect].phone;
-          }
-          $('#widget-order-form input[name = mail]').val(user_email);
-          $('#widget-order-form input[name = phone]').val(user_phone);
-
-        }else{
-          $('#widget-order-form select[name=name]').val("");
-          $('#widget-order-form input[name = mail]').val("");
-          $('#widget-order-form input[name = phone]').val("");
-
-        }
-
-        $("#widget-order-form select[name=name]").off();
-        $("#widget-order-form select[name=name]").change(function(){
-          if(response.users[$(this).children("option:selected").val()].phone=='' ||response.users[$(this).children("option:selected").val()].phone=='/' || response.users[$(this).children("option:selected").val()].phone==null ){
-            var user_phone = 'N/A';
-          }else{
-            var user_phone = response.users[$(this).children("option:selected").val()].phone;
-          }
-          var user_email = response.users[$(this).children("option:selected").val()].email;
-          $('#widget-order-form input[name = mail]').val(user_email);
-          $('#widget-order-form input[name = phone]').val(user_phone);
-        })
-      }
-    }
-  }).done(function(response){
     $.ajax({
       url: 'apis/Kameo/orders_management.php',
       type: 'get',
       data: {"action": "retrieve", "ID": ID, "email": email},
       success: function(response){
-        if(response.response == 'error') {
-          console.log(response.message);
-        }
-        if(response.response == 'success'){
-          $('#widget-order-form input[name=ID]').val(ID);
-          $('#widget-order-form select[name=type]').val(response.order.type);
-          $('#widget-order-form input[name=price]').val(response.order.price);
-          $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID).attr('disabled', false);
-          get_bike_listing();
-          $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);
-          $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);
-          $('#widget-order-form select[name=frameType]').val(response.order.frameType).attr('disabled', false);
-          $('#widget-order-form select[name=size]').val(response.order.size).attr('disabled', false);
-          $('#widget-order-form select[name=status]').val(response.order.status).attr('disabled', false);
-          $('#widget-order-form input[name=mail]').val(response.order.email).attr('disabled', false);
-          $('#widget-order-form input[name=phone]').val(response.order.phone).attr('disabled', false);
-          $('#widget-order-form textarea[name=comment]').val(response.order.comment);
-
-          if(response.order.testBoolean=="Y"){
-            $('#widget-order-form input[name=testBoolean]').prop('checked', true);
-            $('#widget-order-form .testAddress').removeClass("hidden");
-            $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
-            $('#widget-order-form .testDate').removeClass("hidden");
-            $('#widget-order-form input[name=testDate]').val(response.order.testDate);
-            $('#widget-order-form .testStatus').removeClass("hidden");
-            $('#widget-order-form select[name=testStatus]').val(response.order.testStatus);
-            $('#widget-order-form .testResult').removeClass("hidden");
-            $('#widget-order-form textarea[name=testResult]').val(response.order.testResult);
-          }else{
-            $('#widget-order-form input[name=testBoolean]').prop('checked', false);
-            $('#widget-order-form .testAddress').addClass("hidden");
-            $('#widget-order-form input[name=testAddress]').val("");
-            $('#widget-order-form .testDate').addClass("hidden");
-            $('#widget-order-form input[name=testDate]').val("");
-            $('#widget-order-form .testStatus').addClass("hidden");
-            $('#widget-order-form select[name=testStatus]').val("");
-            $('#widget-order-form .testResult').addClass("hidden");
-            $('#widget-order-form textarea[name=testResult]').val("");
-          }
-          $('#widget-order-form input[name=testDate]').val(response.order.testDate);
-          $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
-          $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-           $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
-          $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg?date="+Date.now());
-          $('#widget-order-form textarea[name=commentsAdmin]').val(response.order.commentsAdmin);
-
-          if(response.order.accessories){
-            response.order.accessories.forEach(function (accessory, i) {
-              if(accessory.TYPE=="achat"){
-                var currency = "€";
-              }else if(accessory.TYPE='leasing'){
-                var currency = "€/mois";
-              }else if(accessory.TYPE='annualleasing'){
-                var currency = "€/an";
-              }
-              var temp =
-              '<tr><td scope="row" name="categoryAcc" id="categoryAcc">' +
-              accessory.CATEGORY +
-              '</td><td name="accessoryAcc" id="accessoryAcc">' +
-              accessory.MODEL +
-              "</td><td>" +
-              accessory.TYPE +
-              "</td><td>" +
-              accessory.BUYING_PRICE +
-              " €</td><td>" +
-              accessory.PRICE_HTVA + " "+currency+
-              "</td></tr>";
-              $('#orderAccessories tbody').append(temp);
-            })
-          }
-
-          $(".deleteAccessory").click(function () {
-            $.ajax({
-              url: 'apis/Kameo/orders_management.php',
-              type: 'get',
-              data: {"action": "delete", "ID": this.name, "email": email, },
-              success: function(response){
-                if(response.response == 'success'){
-                  $.notify(
-                  {
-                    message: response.message,
-                  },
-                  {
-                    type: "success",
-                  }
-                  );
-                  retrieve_command(ID);
-                  //document.getElementById("ExistingAccessory").reset();
-                }else {
-                  $.notify(
-                  {
-                    message: response.message,
-                  },
-                  {
-                    type: "danger",
-                  }
-                  );
-                }
-              }
-            });
-          });
-        }
+      if(response.response == 'error') {
+        console.log(response.message);
       }
-    });
-  })
+      if(response.response == 'success'){
+        $('#widget-order-form input[name=ID]').val(ID);
+        $('#widget-order-form select[name=type]').val(response.order.type);
+        $('#widget-order-form input[name=deliveryDate]').val(response.order.estimatedDeliveryDate);
+        $('#widget-order-form input[name=price]').val(response.order.price);
+        $('#widget-order-form select[name=portfolioID]').val(response.order.portfolioID).attr('disabled', false);
+        get_bike_listing();
+        $('#widget-order-form input[name=brand]').val(response.order.brand).attr('disabled', false);
+        $('#widget-order-form input[name=model]').val(response.order.model).attr('disabled', false);
+        $('#widget-order-form select[name=frameType]').val(response.order.frameType).attr('disabled', false);
+        $('#widget-order-form select[name=size]').val(response.order.size).attr('disabled', false);
+        $('#widget-order-form select[name=status]').val(response.order.status).attr('disabled', false);
+        $('#widget-order-form input[name=mail]').val(response.order.email);
+        $('#widget-order-form input[name=phone]').val(response.order.phone);
+        $('#widget-order-form textarea[name=comment]').val(response.order.comment);
+
+        if(response.order.testBoolean=="Y"){
+          $('#widget-order-form input[name=testBoolean]').prop('checked', true);
+          $('#widget-order-form .testAddress').removeClass("hidden");
+          $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
+          $('#widget-order-form .testDate').removeClass("hidden");
+          $('#widget-order-form input[name=testDate]').val(response.order.testDate);
+          $('#widget-order-form .testStatus').removeClass("hidden");
+          $('#widget-order-form select[name=testStatus]').val(response.order.testStatus);
+          $('#widget-order-form .testResult').removeClass("hidden");
+          $('#widget-order-form textarea[name=testResult]').val(response.order.testResult);
+        }else{
+          $('#widget-order-form input[name=testBoolean]').prop('checked', false);
+          $('#widget-order-form .testAddress').addClass("hidden");
+          $('#widget-order-form input[name=testAddress]').val("");
+          $('#widget-order-form .testDate').addClass("hidden");
+          $('#widget-order-form input[name=testDate]').val("");
+          $('#widget-order-form .testStatus').addClass("hidden");
+          $('#widget-order-form select[name=testStatus]').val("");
+          $('#widget-order-form .testResult').addClass("hidden");
+          $('#widget-order-form textarea[name=testResult]').val("");
+        }
+        $('#widget-order-form input[name=testDate]').val(response.order.testDate);
+        $('#widget-order-form input[name=testAddress]').val(response.order.testAddress);
+        $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
+         $('#widget-order-form input[name=deliveryAddress]').val(response.order.deliveryAddress);
+        $('#widget-order-form .commandBike').attr('src', "images_bikes/"+response.order.img+".jpg?date="+Date.now());
+        $('#widget-order-form textarea[name=commentsAdmin]').val(response.order.commentsAdmin);
+
+        if(response.order.accessories){
+          response.order.accessories.forEach(function (accessory, i) {
+            if(accessory.TYPE=="achat"){
+              var currency = "€";
+            }else if(accessory.TYPE='leasing'){
+              var currency = "€/mois";
+            }else if(accessory.TYPE='annualleasing'){
+              var currency = "€/an";
+            }
+            var temp =
+            '<tr><td scope="row" name="categoryAcc" id="categoryAcc">' +
+            accessory.CATEGORY +
+            '</td><td name="accessoryAcc" id="accessoryAcc">' +
+            accessory.MODEL +
+            "</td><td>" +
+            accessory.TYPE +
+            "</td><td>" +
+            accessory.BUYING_PRICE +
+            " €</td><td>" +
+            accessory.PRICE_HTVA + " "+currency+
+            "</td></tr>";
+            $('#orderAccessories tbody').append(temp);
+          })
+        }
+
+        $(".deleteAccessory").click(function () {
+          $.ajax({
+            url: 'apis/Kameo/orders_management.php',
+            type: 'get',
+            data: {"action": "delete", "ID": this.name, "email": email, },
+            success: function(response){
+              if(response.response == 'success'){
+                $.notify(
+                {
+                  message: response.message,
+                },
+                {
+                  type: "success",
+                }
+                );
+                retrieve_command(ID);
+                //document.getElementById("ExistingAccessory").reset();
+              }else {
+                $.notify(
+                {
+                  message: response.message,
+                },
+                {
+                  type: "danger",
+                }
+                );
+              }
+            }
+          });
+        });
+      }
+    }
+  });
 }
 
 $('.ordersManagerClick').off();

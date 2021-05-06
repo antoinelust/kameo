@@ -31,7 +31,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			}else
 				error_message('403');
 		}else if($action=="getGraphics"){
-			if(get_user_permissions("admin", $token)){
+			if(get_user_permissions(["bikesStock", "admin"], $token)){
 				include "getGraphics.php";
 			}else
 				error_message('403');

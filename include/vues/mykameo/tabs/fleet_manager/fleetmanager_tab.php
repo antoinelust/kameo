@@ -114,15 +114,15 @@
     }?>
 		</div>
 
-		<?php
-		if(get_user_permissions(['bikesStock', "admin"], $token)){
-			echo '<h4 class="administrationKameo">Administration Kameo</h4>
-			<br/><br/>
-			<div class="row">';
-		}
+				<?php
+				if(get_user_permissions(['bikesStock', "admin"], $token)){
+					echo '<h4 class="administrationKameo">Administration Kameo</h4>
+					<br/><br/>
+					<div class="row">';
+				}
 
 
-    if(get_user_permissions("admin", $token)){
+    		if(get_user_permissions("admin", $token)){
           echo '
 					<div class="col-md-4 " id="orderAccessories" style="height:164px">
 						<div class="icon-box medium fancy">
@@ -267,7 +267,7 @@
             </div>
           </div>';
 				}
-				if(get_user_permissions("admin", $token)){
+				if(get_user_permissions(['bikesStock', "admin"], $token)){
 
 					echo '
 						<div class="col-md-4 " style="height:164px">
@@ -281,33 +281,45 @@
 								<p>Statistiques</p>
 							</div>
 						</div>';
+				}
+				if(get_user_permissions("admin", $token)){
 
-
-				echo '<div class="col-md-4 " id="feedbacksManagement" style="height:164px">
-					<div class="icon-box medium fancy">
-						<div class="icon bold" data-animation="pulse infinite">
-							<a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagerClick">
-								<i style="opacity:0.15" class="fa fa-comments"></i>
-							</a>
+					echo '<div class="col-md-4 " id="feedbacksManagement" style="height:164px">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#feedbacksListing" href="#" class="feedbackManagerClick">
+									<i style="opacity:0.15" class="fa fa-comments"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
+							<p>Vue sur les feedbacks</p>
 						</div>
-						<div class="counter bold" id="counterFeedbacks" style="color:#3cb395"></div>
-						<p>Vue sur les feedbacks</p>
 					</div>
-				</div>';
-			}if(get_user_permissions("dashboard", $token)){
-
-				echo '<div class="col-md-4 " id="dashBoardManagement" style="height:164px">
-					<div class="icon-box medium fancy">
-						<div class="icon bold" data-animation="pulse infinite">
-							<a data-toggle="modal" class="dashboardManagementClick" data-target="#dashboard" href="#" >
-								<i style="opacity:0.15" class="fa fa-dashboard"></i>
-							</a>
+					<div class="col-md-4 " id="tasksManagement" style="height:164px">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" data-target="#tasksListing" href="#" class="tasksManagerClick">
+									<i style="opacity:0.15" class="fa fa-tasks"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="counterTasks" style="color:#3cb395"></div>
+							<p>Gérer les Actions</p>
 						</div>
-						<div class="counter bold" id="errorCounter" style="color:#3cb395"></div>
-						<p>Dashboard</p>
-					</div>
-				</div>';
-    }
+					</div>';
+				}if(get_user_permissions("dashboard", $token)){
+
+					echo '<div class="col-md-4 " id="dashBoardManagement" style="height:164px">
+						<div class="icon-box medium fancy">
+							<div class="icon bold" data-animation="pulse infinite">
+								<a data-toggle="modal" class="dashboardManagementClick" data-target="#dashboard" href="#" >
+									<i style="opacity:0.15" class="fa fa-dashboard"></i>
+								</a>
+							</div>
+							<div class="counter bold" id="errorCounter" style="color:#3cb395"></div>
+							<p>Dashboard</p>
+						</div>
+					</div>';
+	    	}
 
 		if(get_user_permissions(["bikesStock", "admin"], $token)){
 			echo '</div>';

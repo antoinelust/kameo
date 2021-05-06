@@ -83,16 +83,11 @@
                   </div>
                   <div class="col-md-4">
                     <label for="channel">Canal d'acquisition</label>
-                    <select
-                      title="channel"
-                      class="form-control required selectpicker"
-                      name="channel"
-                    >
-                      <option value="telephone" selected>Téléphone</option>
-                      <option value="salon">
-                        Contact après visite sur salon
-                      </option>
-                      <option value="site">Contact sur site internet</option>
+                    <select title="channel" class="form-control required selectpicker" name="channel">
+                    <option value="prospection" selected>Nous les contactons</option>
+                    <option value="telephone">Ils nous appellent</option>
+                      <option value="salon">Contact salon</option>
+                      <option value="site">Mail reçu via le site</option>
                     </select>
                   </div>
                 </div>
@@ -200,7 +195,7 @@
   		  });
   		  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user_data["EMAIL"] ?>');
   		  $('#taskManagement').modal('toggle');
-  		  get_company_details($('#widget-companyDetails-form input[name=ID]').val(), email);
+  		  get_company_details($('#widget-companyDetails-form input[name=ID]').val());
   		  document.getElementById('widget-taskManagement-form').reset();
   		} else {
   		  $.notify({

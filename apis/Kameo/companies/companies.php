@@ -70,7 +70,14 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 		}else if($action === 'listUsers'){
 			if(get_user_permissions("admin", $token)){
-				$response=execSQL("SELECT NOM, PRENOM, EMAIL, PHONE FROM customer_referential WHERE COMPANY = ?", array('s', $_GET['company']), false);
+				if(isset($_GET['company'])){
+					$response=execSQL("SELECT NOM, PRENOM, EMAIL, PHONE FROM customer_referential WHERE COMPANY = ?", array('s', $_GET['company']), false);
+				}else if(isset($_GET['companyID'])){
+					$response=execSQL("SELECT NOM, PRENOM, EMAIL, PHONE FROM customer_referential WHERE COMPANY = (SELECT INTERNAL_REFERENCE FROM companies WHERE ID = ?)", array('s', $_GET['companyID']), false);
+				}
+				if(is_null($response)){
+					$response=array();
+				}
 				echo json_encode($response);
 				die;
 			}else

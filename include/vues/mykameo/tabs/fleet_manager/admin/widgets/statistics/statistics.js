@@ -38,12 +38,13 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
               label: "Commnandes - Leasing",
               borderColor: "rgba(44, 132, 109, 0.5)",
               backgroundColor: "rgba(60, 179, 149, 0.5)",
+              borderWidth: 2,
               data: response.leasingOrders
             },
             {
               label: "Commandes - Ventes",
-              borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.1)",
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(252, 39, 80, 0.5)",
               borderWidth: 2,
               data: response.sellingOrders
             }
@@ -54,11 +55,80 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
             xAxes: [{ stacked: true }],
             yAxes: [{ stacked: true }]
           },
-          plugins: {
-            title: {
-                display: true,
-                text: 'Nombre de commandes'
+          title: {
+              display: true,
+              text: 'Evolution du nombre de commandes'
+          },
+          legend:{
+            display: false
+          }
+        }
+      });
+      myChart.update();
+      var ctx = document.getElementById("ordersMarginStatisticsChart").getContext("2d");
+      ctx.height = 500;
+      var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: response.commandsMonth,
+          datasets: [
+            {
+              label: "Ventes - Coûts",
+              stack: 'Stack 0',
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(252, 39, 80, 0.5)",
+              borderWidth: 2,
+              data: response.sellingCost
+            },
+            {
+              label: "Ventes - Marge",
+              stack: 'Stack 0',
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(252, 39, 80, 0.1)",
+              borderWidth: 2,
+              data: response.sellingMargin
+            },
+            {
+              label: "Leasing - Coûts",
+              stack: 'Stack 1',
+              borderColor: "rgba(44, 132, 109, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0.5)",
+              borderWidth: 2,
+              data: response.leasingCost
+            },
+            {
+              label: "Leasing - Marge",
+              stack: 'Stack 1',
+              borderColor: "rgba(44, 132, 109, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0.1)",
+              borderWidth: 2,
+              data: response.leasingMargin
             }
+          ],
+        },
+        options: {
+          scales: {
+            xAxes: [{ stacked: true }],
+            yAxes: [{
+              stacked: true,
+              ticks: {
+                beginAtZero: true,
+                callback: function(value, index, values) {
+                  if(parseInt(value) >= 1000){
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+                  } else {
+                    return value + " €";
+                  }
+                }
+              }
+            }]
+          },
+          title: {
+              display: true,
+              text: 'Coûts et marges des contrats signés'
+          },
+          legend:{
+            display: false
           }
         }
       });
@@ -152,6 +222,9 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
               display: true,
               text: 'Nombre de vélos arrivant dans le stock'
           },
+          legend:{
+            display: false
+          },
           scales: {
               yAxes: [{
                   ticks: {
@@ -162,6 +235,61 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
         }
       });
       myChart.update();
+
+      var ctx = document.getElementById("currentStockBrands").getContext("2d");
+      ctx.height = 500;
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data:{
+          labels: response.stockByBrandLabel,
+          datasets: [{
+            label: 'My First Dataset',
+            data: response.stockByBrandData,
+            borderColor: "rgba(44, 132, 109, 0.5)",
+            backgroundColor: "rgba(60, 179, 149, 0.5)",
+            hoverOffset: 4
+          }],
+        },
+        options: {
+          title: {
+              display: true,
+              text: 'Vélos dans le stock par marque'
+          },
+          legend:{
+            display: false
+          }
+        }
+      });
+      myChart.update();
+
+      var ctx = document.getElementById("currentStockTypes").getContext("2d");
+      ctx.height = 500;
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data:{
+          labels: response.stockByUtilisationLabel,
+          datasets: [{
+            label: 'My First Dataset',
+            data: response.stockByUtilisationData,
+            borderColor: "rgba(44, 132, 109, 0.5)",
+            backgroundColor: "rgba(60, 179, 149, 0.5)",
+            hoverOffset: 4
+          }],
+        },
+        options: {
+          title: {
+              display: true,
+              text: 'Vélos dans le stock par utilisation'
+          },
+          legend:{
+            display: false
+          }
+        }
+      });
+      myChart.update();
+
+
+
       var ctx = document.getElementById("deliveryChartValue").getContext("2d");
       ctx.height = 500;
       var myChart = new Chart(ctx, {
@@ -171,16 +299,17 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           datasets: [
             {
               label: "Coût d'achat",
-              borderColor: "rgba(44, 132, 109, 0.5)",
               borderWidth: 2,
-              backgroundColor: "rgba(60, 179, 149, 0.1)",
+              borderColor: "rgba(44, 132, 109, 0.5)",
+              backgroundColor: "rgba(60, 179, 149, 0.5)",
               data: response.deliveryCost
             },
             {
-              label: "Valeur Catalogue",
+              label: "Marge potentielle sur vente",
               borderColor: "rgba(44, 132, 109, 0.5)",
-              backgroundColor: "rgba(60, 179, 149, 0.5)",
-              data: response.deliveryRetailPrice
+              backgroundColor: "rgba(60, 179, 149, 0.1)",
+              borderWidth: 2,
+              data: response.retailMargin
             }
           ],
         },
@@ -189,12 +318,24 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
               display: true,
               text: 'Valeur des vélos arrivant dans le stock'
           },
+          legend:{
+            display: false
+          },
           scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero: true
+            xAxes: [{ stacked: true }],
+            yAxes: [{
+              stacked: true,
+              ticks: {
+                beginAtZero: true,
+                callback: function(value, index, values) {
+                  if(parseInt(value) >= 1000){
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+                  } else {
+                    return value + " €";
                   }
-              }]
+                }
+              }
+            }]
           }
         }
       });
@@ -221,40 +362,42 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
               fill: true,
               borderColor: "rgba(44, 132, 109, 0.5)",
               backgroundColor: "rgba(60, 179, 149, 0.5)",
-              data: response.bikeLeasing,
-              tension: 0.4
+              data: response.bikeLeasing
             },
             {
               label: "Vente vélos",
               fill: true,
               borderColor: "rgba(176, 0, 0, 0.5)",
               backgroundColor: "rgba(252, 39, 80, 0.5)",
-              data: response.bikeSelling,
-              tension: 0.4
+              data: response.bikeSelling
             },
             {
               label: "Leasing bornes",
               fill: true,
               borderColor: "rgba(176, 0, 0, 0.5)",
               backgroundColor: "rgba(176, 0, 0, 0.5)",
-              data: response.boxesLeasing,
-              tension: 0.4
+              data: response.boxesLeasing
             },
             {
               label: "Leasing accessoires",
               fill: true,
               borderColor: "rgba(60, 179, 149, 0.5)",
               backgroundColor: "rgba(60, 179, 149, 0.5)",
-              data: response.accessoryLeasing,
-              tension: 0.4
+              data: response.accessoryLeasing
             },
             {
               label: "Ventes accessoires",
               fill: true,
               borderColor: "rgba(176, 0, 0, 0.5)",
               backgroundColor: "rgba(176, 0, 0, 0.5)",
-              data: response.accessorySelling,
-              tension: 0.4
+              data: response.accessorySelling
+            },
+            {
+              label: "Main d'oeuvre",
+              fill: true,
+              borderColor: "rgba(176, 0, 0, 0.5)",
+              backgroundColor: "rgba(176, 0, 0, 0.5)",
+              data: response.maintenance
             }
           ],
           labels: response.arrayDatesCA,
@@ -283,8 +426,18 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
                 stacked: true,
               }],
               yAxes: [{
-                  stacked: true
-              }],
+                stacked: true,
+                ticks: {
+                  beginAtZero: true,
+                  callback: function(value, index, values) {
+                    if(parseInt(value) >= 1000){
+                      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+                    } else {
+                      return value + " €";
+                    }
+                  }
+                }
+              }]
             }
         }
       });

@@ -533,8 +533,13 @@ include 'include/vues/mykameo/widgets/support/contact_support.html';
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/feedbacks/main.php';
     //BOXES
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/boxes/main.php';
+    //TASKS
+    include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/tasks/main.php';
+
     //MAINTENANCE
     include 'include/vues/mykameo/widgets/support/contact_maintenance.html';
+  }
+  if (get_user_permissions(["admin", "bikesStock"], $token)) {
     //Statistics
     include 'include/vues/mykameo/tabs/fleet_manager/admin/widgets/statistics/main.php';
   }

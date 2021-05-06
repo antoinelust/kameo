@@ -46,6 +46,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 		paging : false,
 		searching : true,
 		destroy: true,
+		"scrollX": true,
 		ajax: {
 			url: "apis/Kameo/accessories/accessories.php",
 			contentType: "application/json",
@@ -64,6 +65,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 				},
 			},
 			{ title: "Société", data: "COMPANY_NAME" },
+			{ title: "Assigné à", data: "EMAIL" },
 			{ title: "Type", data: "TYPE" },
 			{ title: "Montant", data: "PRICE_HTVA"},
 			{

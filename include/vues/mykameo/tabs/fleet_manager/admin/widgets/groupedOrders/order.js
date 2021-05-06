@@ -46,18 +46,33 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event) {
 		columns: [
 			{
 				title: "ID",
-				data: "GROUP_ID",
+				data: "ID",
 				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 					$(nTd).html('<a href="#" class="text-green" data-target="#groupedOrderManagement" data-toggle="modal" data-action="retrieve" data-id="'+sData+'">'+sData+'</a>');
 				},
 			},
 			{ title: "Nom de la société", data: "COMPANY_NAME"},
-			{ title: "Nombre de vélos", data: "bikeNumber"},
-			{ title: "Nombre d'accessoires", data: "accessoryNumber"},
-			{ title: "Encore à délivrer", data: "notDelivered"}
+			{ title: "Assigné à", data: "EMAIL"},
+			{ title: "Nombre de vélos", data: "numberBikes"},
+			{ title: "Encore à délivrer", data: "numberBikesNotDelivered"},
+			{ title: "Nombre d'accessoires", data: "numberAccessories"},
+			{ title: "Encore à délivrer", data: "numberAccessoriesNotDelivered"},
+			{
+				title: "Progrès",
+				data: "ID",
+				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html(Math.round(100-(oData.numberBikesNotDelivered+oData.numberAccessoriesNotDelivered)/(oData.numberBikes+oData.numberAccessories)*100)+' %');
+				},
+			},
+			{ title: "",
+				data: "ID",
+				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html('<a href="#" class="text-green" data-target="#groupedOrderManagement" data-toggle="modal" data-action="update" data-id="'+sData+'">Update</a>');
+				},
+			}
 		],
 		order: [
-			[4, "desc"]
+			[7, "desc"]
 		],
 	});
 })
@@ -93,22 +108,40 @@ $("#groupedOrderManagement").on("show.bs.modal", function (event) {
 		$('#groupedOrderManagement .title').text("Consulter une commande");
 		$('#groupedOrderManagement input').attr('disabled', true);
 		$('#groupedOrderManagement select').attr('disabled', true);
+		$('#groupedOrderManagement [type=submit]').addClass("hidden");
 		$('#groupedOrderManagement input[name=ID]').closest('div').removeClass("hidden");
 	}else{
 		$('#groupedOrderManagement input').attr('disabled', false);
 		$('#groupedOrderManagement select').attr('disabled', false);
+		$('#groupedOrderManagement [type=submit]').removeClass("hidden");
+		$('#groupedOrderManagement input[name=ID]').attr('readonly', true);
+
 		if(action=="add"){
 			$('#widget_groupedOrderManagement-form input[name=action]').val("addGroupedOrder");
 			$('#groupedOrderManagement .title').text("Ajouter une commande");
 			$('#groupedOrderManagement input[name=ID]').closest('div').addClass("hidden");
-
 		}else{
 			retrieveGroupedOrder(ID);
+			$('#groupedOrderManagement input[name=action]').val("updateGroupedOrder");
 			$('#groupedOrderManagement .title').text("Modifier une commande");
 			$('#groupedOrderManagement input[name=ID]').closest('div').removeClass("hidden");
-
 		}
 	}
+})
+
+$('#groupedOrderManagement select[name=company]').change(function(){
+	$.ajax({
+		url: 'api/companies',
+		type: 'get',
+		data: { action: "listUsers", 'companyID': $(this).val()},
+		success: function(users){
+			$('#groupedOrderManagement select[name=email]').find('option').remove();
+			users.forEach(function(user){
+				$('#groupedOrderManagement select[name=email]').append('<option value="'+user.EMAIL+'">'+user.PRENOM+' '+user.NOM+'</option>');
+			})
+			$('#groupedOrderManagement select[name=email]').val("");
+		}
+	})
 })
 
 
@@ -138,11 +171,24 @@ function retrieveGroupedOrder(ID){
 					accessory.ESTIMATED_DELIVERY_DATE='N/A';
 				}
 				$('#groupedOrderManagement .accessoriesTable').find('tbody')
-				.append('<tr><td>'+accessory.ID+'</td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td>'+accessory.PRICE_HTVA+' '+units+'</td><td>'+accessory.ESTIMATED_DELIVERY_DATE.shortDate()+'</td><td>'+accessory.STATUS+'</td>');
+				.append('<tr><td>'+accessory.ID+'</td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td>'+Math.round(accessory.PRICE_HTVA*100)/100+' '+units+'</td><td>'+accessory.ESTIMATED_DELIVERY_DATE.shortDate()+'</td><td>'+accessory.STATUS+'</td>');
+			})
+			$('#groupedOrderManagement select[name=company]').val(response.COMPANY_ID);
+			$.ajax({
+				url: 'api/companies',
+				type: 'get',
+				data: { action: "listUsers", 'companyID': response.COMPANY_ID},
+				success: function(users){
+					$('#groupedOrderManagement select[name=email]').find('option').remove();
+					users.forEach(function(user){
+						$('#groupedOrderManagement select[name=email]').append('<option value="'+user.EMAIL+'">'+user.PRENOM+' '+user.NOM+'</option>');
+					})
+					$('#groupedOrderManagement select[name=email]').val(response.EMAIL);
+				}
 			})
 
-			$('#groupedOrderManagement select[name=company]').val(response.COMPANY);
 			$('#groupedOrderManagement .bikesNumber').html(response.bikes.length);
+			$('#groupedOrderManagement .accessoriesNumber').html(response.accessories.length);
 		}
 	})
 }
