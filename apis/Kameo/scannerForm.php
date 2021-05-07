@@ -220,6 +220,7 @@ else if ($action == 'loadAccessoryOrder'){
 else if($action == 'changeContractType'){
 
 	if($type='BIKE'){
+		$frameReference = isset($_GET['frameReference']) ? addslashes($_GET['frameReference']) : NULL;
 		include 'connexion.php';
 		$sql="SELECT * FROM customer_bike_access WHERE BIKE_ID='$id' AND TYPE='personnel'";
 		if ($conn->query($sql) === FALSE) {
@@ -234,12 +235,12 @@ else if($action == 'changeContractType'){
 		//voir si lié ou pas pour savoir si on met stock ou pending_delivery
 
 		if($length==0){
-			$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='stock' WHERE ID='$id'");
+			$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP,CONTRACT_TYPE='stock',FRAME_REFERENCE='$frameReference',DELIVERY_DATE=CURRENT_TIMESTAMP WHERE ID='$id'");
 			$sql->execute();
 			$response['response']='success';
 		}
 		else{
-			$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP, CONTRACT_TYPE='pending_delivery' WHERE ID='$id'");
+			$sql = $conn->prepare("UPDATE customer_bikes SET USR_MAJ='$token', HEU_MAJ=CURRENT_TIMESTAMP, CONTRACT_TYPE='pending_delivery',FRAME_REFERENCE='$frameReference' WHERE ID='$id'");
 			$sql->execute();
 			$response['response']='success';
 		}

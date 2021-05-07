@@ -146,13 +146,11 @@
 			<div  id = "displayAdd" style="display:block ">
 				<div class="col-sm-12">
 					<div id="listOrderDiv" style="display:none ">
-						
-						
-						
 						<div class="col-sm-6" id="listOrderBikeDiv" style="display:none ">
 							<label id="listOrderLabel" for="listOrder">Liste des Article en commande lié  :</label>
 							<select name= "listOrder" id="listOrder" style="max-width:400px">
 							</select>
+							<input hidden name="frameReference" id="frameReference" value="">
 						</div>
 						<div id="listOrderAccessoryDiv" style="display:none ">
 							<label id="listOrderLabel" >Liste des Article en commande lié  :</label>
@@ -170,6 +168,9 @@
 
 				</div>
 				<div class="col-sm-12" id ="bindArticleTooOrder" name ="bindArticleTooOrder">
+					<a class="button small green button-3d rounded icon-right addFrameReference" data-target="#addFrameReferenceModal" id = "addFrameReferenceClick" data-toggle="modal" href="#">
+						Ajouter une réference de cadre
+					</a>
 					<button onclick="bindArticle()" type="button" class="button small green button-3d rounded icon-left">Lier</button>
 				</div>
 			</div>
@@ -264,6 +265,46 @@
 			<button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button>
 		</div>
 	</div>
+</div>
+</div>
+
+<div
+class="modal fade"
+id="addFrameReferenceModal"
+tabindex="-1"
+role="modal"
+aria-labelledby="modal-label"
+aria-hidden="true"
+style="display: none;"
+>
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button
+			type="button"
+			class="close"
+			data-dismiss="modal"
+			aria-hidden="true"
+			>
+			×
+		</button>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-12">
+				<h4 class="text-green">Scanner une Référence de cadre</h4>
+				<div style="display:block ">
+					<video id="videoFrame" width="70%" height="20%" style="border: 1px solid gray"></video>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-b" data-dismiss="modal">
+			Fermer
+		</button>
+	</div>
+</div>
 </div>
 </div>
 </body>
