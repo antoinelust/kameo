@@ -83,20 +83,21 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 		}else if($action === 'listGroupedOrders'){
 			if(get_user_permissions("admin", $token)){
-				$response['orders'] = execSQL("SELECT GROUP_ID, companies.COMPANY_NAME, SUM(CASE WHEN tt.TYPE='bike' THEN 1 ELSE 0 END) as bikeNumber, SUM(CASE WHEN tt.TYPE='accessory' THEN 1 ELSE 0 END) as accessoryNumber, SUM(CASE WHEN tt.STATUS = 'closed' THEN 0 ELSE 1 END) as 'notDelivered' FROM (SELECT GROUP_ID, STATUS, 'bike' as TYPE, client_orders.COMPANY FROM client_orders UNION ALL SELECT ORDER_ID as GROUP_ID, STATUS, 'accessory' as TYPE, COMPANY FROM order_accessories) as tt, companies WHERE companies.ID=tt.COMPANY GROUP BY GROUP_ID", array(), false);
+				$response['orders'] = execSQL("SELECT grouped_orders.ID, COMPANY_ID, EMAIL, COMPANY_NAME, (SELECT COUNT(1) FROM order_accessories WHERE order_accessories.ORDER_ID=grouped_orders.ID) as numberAccessories,  (SELECT COUNT(1) FROM order_accessories WHERE order_accessories.ORDER_ID=grouped_orders.ID AND order_accessories.STATUS!='closed') as numberAccessoriesNotDelivered, (SELECT COUNT(1) FROM client_orders WHERE client_orders.GROUP_ID=grouped_orders.ID) as numberBikes,  (SELECT COUNT(1) FROM client_orders WHERE client_orders.GROUP_ID=grouped_orders.ID AND client_orders.STATUS!='closed') as numberBikesNotDelivered FROM `grouped_orders`, companies WHERE grouped_orders.COMPANY_ID=companies.ID", array(), false);
 				echo json_encode($response);
 				die;
 			}else
 				error_message('403');
 		}else if($action === 'retrieveGroupedOrder'){
 			if(get_user_permissions("admin", $token)){
+				$response = execSQL("SELECT * FROM grouped_orders WHERE ID=?", array('i', $_GET['ID']), false)[0];
 				$response['bikes'] = execSQL("SELECT client_orders.ID, client_orders.STATUS, client_orders.SIZE, client_orders.TYPE, bike_catalog.BRAND, bike_catalog.MODEL, client_orders.LEASING_PRICE, client_orders.ESTIMATED_DELIVERY_DATE FROM client_orders, bike_catalog WHERE GROUP_ID=? AND client_orders.PORTFOLIO_ID=bike_catalog.ID", array('i', $_GET['ID']), false);
 				$response['accessories'] = execSQL("SELECT order_accessories.ID, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.ESTIMATED_DELIVERY_DATE, order_accessories.STATUS FROM order_accessories, accessories_categories, accessories_catalog WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND order_accessories.ORDER_ID=?", array('i', $_GET['ID']), false);
 				if(is_null($response['bikes'])){
-					$response['bikes']==array();
+					$response['bikes']=array();
 				}
 				if(is_null($response['accessories'])){
-					$response['accessories']==array();
+					$response['accessories']=array();
 				}
 				echo json_encode($response);
 				die;
@@ -165,7 +166,6 @@ switch($_SERVER["REQUEST_METHOD"])
 				$groupID=execSQL("SELECT MAX(MaxGroupID) as MaxGroupID FROM (SELECT MAX(GROUP_ID) as MaxGroupID FROM client_orders UNION SELECT MAX(ORDER_ID) as MaxGroupID FROM order_accessories) as tt", array(), false)[0]['MaxGroupID'];
 				$groupID=intval($groupID)+1;
 				$test='N';
-				$email='';
 				$remark='';
 				if(isset($_POST['catalogID'])){
 					foreach ($_POST['catalogID'] as $key => $catalogID) {
@@ -174,8 +174,8 @@ switch($_SERVER["REQUEST_METHOD"])
 						$amount=$_POST['bikeAmount'][$key];
 						$status=$_POST['status'][$key];
 						$estimatedDeliveryDate=$_POST['estimatedDeliveryDate'][$key];
-						execSQL("INSERT INTO client_orders (USR_MAJ, GROUP_ID, COMPANY, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, TEST_BOOLEAN, ESTIMATED_DELIVERY_DATE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
-						array('siisisssdsss', $token, $groupID, $companyID, $email, $catalogID, $size, $remark, $status, $amount, $contractType, $test, $estimatedDeliveryDate), true);
+						execSQL("INSERT INTO client_orders (USR_MAJ, GROUP_ID, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, TEST_BOOLEAN, ESTIMATED_DELIVERY_DATE) VALUES(?,?,?,?,?,?,?,?,?,?)",
+						array('siisssdsss', $token, $groupID, $catalogID, $size, $remark, $status, $amount, $contractType, $test, $estimatedDeliveryDate), true);
 					}
 				}
 				if(isset($_POST['accessoryCatalogID'])){
@@ -184,11 +184,42 @@ switch($_SERVER["REQUEST_METHOD"])
 						$amount=$_POST['accessoryAmount'][$key];
 						$status=$_POST['accessoryStatus'][$key];
 						$estimatedDeliveryDate=$_POST['accessoryEstimatedDeliveryDate'][$key];
-						execSQL("INSERT INTO order_accessories (USR_MAJ, ORDER_ID, COMPANY, EMAIL, BRAND, PRICE_HTVA, TYPE, DESCRIPTION, ESTIMATED_DELIVERY_DATE, STATUS) VALUES(?,?,?,?,?,?,?,?,?,?)",
-						array('siisidssss', $token, $groupID, $companyID, $email, $catalogID, $amount, $contractType, $remark, $estimatedDeliveryDate, $status), true);
+						execSQL("INSERT INTO order_accessories (USR_MAJ, ORDER_ID, BRAND, PRICE_HTVA, TYPE, DESCRIPTION, ESTIMATED_DELIVERY_DATE, STATUS) VALUES(?,?,?,?,?,?,?,?)",
+						array('siidssss', $token, $groupID, $catalogID, $amount, $contractType, $remark, $estimatedDeliveryDate, $status), true);
 					}
 				}
 
+				successMessage("SM0032");
+			}else
+				error_message('403');
+		}else if($action === "updateGroupedOrder"){
+			if(get_user_permissions("admin", $token)){
+				$groupID=$_POST['ID'];
+				execSQL("UPDATE grouped_orders SET COMPANY_ID=?, EMAIL=?, HEU_MAJ=CURRENT_TIMESTAMP WHERE ID=?", array('isi', $_POST['company'], $_POST['email'], $groupID), true);
+				if(isset($_POST['catalogID'])){
+					foreach ($_POST['catalogID'] as $key => $catalogID) {
+						$size=$_POST['size'][$key];
+						$contractType=$_POST['contractType'][$key];
+						$amount=$_POST['bikeAmount'][$key];
+						$status=$_POST['status'][$key];
+						$estimatedDeliveryDate=$_POST['estimatedDeliveryDate'][$key];
+						$test='N';
+						$remark='';
+						execSQL("INSERT INTO client_orders (USR_MAJ, GROUP_ID, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, TEST_BOOLEAN, ESTIMATED_DELIVERY_DATE, COMMENTS_ADMIN) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+						array('siisssdssss', $token, $groupID, $catalogID, $size, $remark, $status, $amount, $contractType, $test, $estimatedDeliveryDate, $remark), true);
+					}
+				}
+				if(isset($_POST['accessoryCatalogID'])){
+					foreach ($_POST['accessoryCatalogID'] as $key => $catalogID) {
+						$contractType=$_POST['accessoryContractType'][$key];
+						$amount=$_POST['accessoryAmount'][$key];
+						$status=$_POST['accessoryStatus'][$key];
+						$estimatedDeliveryDate=$_POST['accessoryEstimatedDeliveryDate'][$key];
+						$remark='';
+						execSQL("INSERT INTO order_accessories (USR_MAJ, ORDER_ID, BRAND, PRICE_HTVA, TYPE, DESCRIPTION, ESTIMATED_DELIVERY_DATE, STATUS) VALUES(?,?,?,?,?,?,?,?)",
+						array('siidssss', $token, $groupID, $catalogID, $amount, $contractType, $remark, $estimatedDeliveryDate, $status), true);
+					}
+				}
 				successMessage("SM0032");
 			}else
 				error_message('403');

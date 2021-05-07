@@ -79,10 +79,10 @@ if(isset($_POST['action'])){
 	else if($action=='update'){
 
 		include 'connexion.php';
-		$stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, EMAIL=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, COMMENTS_ADMIN=?, TEST_STATUS=? WHERE ID=?");
+		$stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, COMMENTS_ADMIN=?, TEST_STATUS=? WHERE ID=?");
 		if ($stmt)
 		{
-			$stmt->bind_param("sssissdsssssi", $token, $mail, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress,$commentsAdmin, $testStatus, $ID);
+			$stmt->bind_param("ssissdsssssi", $token, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress,$commentsAdmin, $testStatus, $ID);
 			if(!$stmt->execute()){echo "there was an error....".$conn->error;}
 			$response['response']="success";
 			$stmt->close();
@@ -200,9 +200,9 @@ if(isset($_POST['action'])){
 			$company=$resultat['COMPANY'];
 
 			if($company=="KAMEO"){
-				$sql= "SELECT co.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL FROM client_orders co, companies, bike_catalog WHERE co.COMPANY=companies.ID and co.PORTFOLIO_ID=bike_catalog.ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
+				$sql= "SELECT grouped_orders.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL FROM client_orders co, companies, bike_catalog, grouped_orders WHERE grouped_orders.COMPANY_ID=companies.ID AND grouped_orders.ID=co.GROUP_ID AND co.PORTFOLIO_ID=bike_catalog.ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
 			}else{
-				$sql="SELECT co.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL FROM client_orders co, companies, bike_catalog WHERE co.COMPANY=companies.ID AND companies.INTERNAL_REFERENCE='$company' AND bike_catalog.ID=co.PORTFOLIO_ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
+				$sql="SELECT grouped_orders.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL FROM client_orders co, companies, bike_catalog, grouped_orders WHERE grouped_orders.COMPANY_ID=companies.ID AND grouped_orders.ID=co.GROUP_ID AND companies.INTERNAL_REFERENCE='$company' AND bike_catalog.ID=co.PORTFOLIO_ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
 			}
 
 			if ($conn->query($sql) === FALSE) {
@@ -288,7 +288,7 @@ if(isset($_POST['action'])){
 		$ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		include 'connexion.php';
-		$sql= "SELECT * FROM client_orders WHERE GROUP_ID='$ID'";
+		$sql= "SELECT client_orders.*, grouped_orders.EMAIL FROM client_orders, grouped_orders WHERE client_orders.ID='$ID' AND client_orders.GROUP_ID=grouped_orders.ID";
 		if ($conn->query($sql) === FALSE) {
 			$response = array ('response'=>'error', 'message'=> $conn->error);
 			echo json_encode($response);
@@ -337,14 +337,7 @@ if(isset($_POST['action'])){
 		$response['order']['frameType']=$resultat['FRAME_TYPE'];
 		$priceHTVA=$resultat['PRICE_HTVA'];
 
-		$sql= "SELECT * FROM customer_referential WHERE EMAIL='$email'";
-		if ($conn->query($sql) === FALSE) {
-			$response = array ('response'=>'error', 'message'=> $conn->error);
-			echo json_encode($response);
-			die;
-		}
-		$result = mysqli_query($conn, $sql);
-		$resultat = mysqli_fetch_assoc($result);
+		$resultat= execSQL("SELECT * FROM customer_referential WHERE TOKEN=?", array('s', $token), false)[0];
 		$company=$resultat['COMPANY'];
 		$response['order']['name']=$resultat['NOM'];
 		$response['order']['firstname']=$resultat['PRENOM'];
@@ -354,7 +347,7 @@ if(isset($_POST['action'])){
 															FROM order_accessories, accessories_categories, accessories_catalog, client_orders
 															WHERE order_accessories.BRAND=accessories_catalog.ID
 															AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES
-															AND order_accessories.ORDER_ID=client_orders.GROUP_ID AND client_orders.GROUP_ID=?", array('i', $ID), false);
+															AND order_accessories.ORDER_ID=client_orders.GROUP_ID AND client_orders.ID=?", array('i', $ID), false);
 
 		if($response['order']['accessories']!=null){
 			$response['accessoryNumber']=count($response['order']['accessories']);

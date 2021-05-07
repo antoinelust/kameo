@@ -37,7 +37,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	}
 	else if ($action === 'listOrderAcessories'){
 		if(get_user_permissions("admin", $token)){
-			$listOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, COMPANY_NAME, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL FROM order_accessories, accessories_catalog, accessories_categories, companies WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND companies.ID=order_accessories.COMPANY", array(), false);
+			$listOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, COMPANY_NAME, grouped_orders.EMAIL, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL FROM order_accessories, accessories_catalog, accessories_categories, companies, grouped_orders WHERE grouped_orders.ID=order_accessories.ORDER_ID AND order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND grouped_orders.COMPANY_ID=companies.ID", array(), false);
 			echo json_encode($listOrderAcessories);
 			die;
 		}

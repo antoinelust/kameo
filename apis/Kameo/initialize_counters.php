@@ -227,6 +227,13 @@ if($company=='KAMEO'){
         echo json_encode($response);
         die;
     }
+    if($type=="tasks"){
+        $response['actionNumberNotDone']=execSQL("select COUNT(1) as somme from company_actions WHERE STATUS='TO-DO'", array(), false)[0]['somme'];
+        $response['response']="success";
+        echo json_encode($response);
+        die;
+    }
+
     if($type=="ordersAccessoryAdmin"){
       $response['response']="success";
       $response['ordersAccessoryNumber']=execSQL("select COUNT(1) as SOMME from order_accessories", array(), false)[0]['SOMME'];
@@ -235,7 +242,7 @@ if($company=='KAMEO'){
     }
     if($type=="groupedOrders"){
       $response['response']="success";
-      $response['ordersNumber']=execSQL("SELECT COUNT(1) as SOMME FROM (SELECT * FROM(SELECT GROUP_ID FROM client_orders WHERE client_orders.STATUS='new'UNION SELECT order_accessories.ORDER_ID as GROUP_ID FROM order_accessories) as tt GROUP BY tt.GROUP_ID) as yy", array(), false)[0]['SOMME'];
+      $response['ordersNumber']=execSQL("SELECT COUNT(1) as SOMME FROM (SELECT * FROM(SELECT GROUP_ID FROM client_orders WHERE client_orders.STATUS != 'closed' UNION SELECT order_accessories.ORDER_ID as GROUP_ID FROM order_accessories WHERE order_accessories.STATUS != 'closed') as tt GROUP BY tt.GROUP_ID) as yy", array(), false)[0]['SOMME'];
       echo json_encode($response);
       die;
     }

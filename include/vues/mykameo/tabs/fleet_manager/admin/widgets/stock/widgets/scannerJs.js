@@ -344,8 +344,9 @@ $('#listOrder').change(function(){
 
 ///////////////Récupere les vélos de contract type 'order'
 function displaySelectToAddStock(type){
+	console.log(type);
 	if(roleButton=='add'){
-		if(type=='BIKE'){
+		if(type=='bike'){
 			typeToBind = 'BIKE';
 			$.ajax({
 				url: 'apis/Kameo/scannerForm.php',
@@ -365,7 +366,7 @@ function displaySelectToAddStock(type){
 							document.getElementById('listOrderDiv').style.display='block';
 							document.getElementById('listOrderBikeDiv').style.display='block';
 							document.getElementById('listOrderAccessoryDiv').style.display='none';
-							
+
 							$('#listOrder').find('option').remove().end();
 							while(i<response.numberBikeOrder){
 								if(i==0){
@@ -390,12 +391,12 @@ function displaySelectToAddStock(type){
 				}
 			});
 		}
-		else if (type='ACCESSORY'){
+		else if (type='accessory'){
 			typeToBind = 'ACCESSORY';
 			document.getElementById('listOrderDiv').style.display='block';
 			document.getElementById('listOrderBikeDiv').style.display='none';
 			document.getElementById('listOrderAccessoryDiv').style.display='block';
-			
+
 			$("#accessoryOrderToAdd").dataTable({
 				destroy: true,
 				ajax: {
@@ -438,7 +439,7 @@ paging : false,
 		$('#widget-stockScanRemove-form div[name=displayPendingDiv]').hide();
 		$('#widget-stockScanRemove-form button[name=sendValueToRemove]').hide();
 		var contract='';
-		if(type=='BIKE'){
+		if(type=='bike'){
 			typeToBind = 'BIKE';
 			$.ajax({
 				url: 'apis/Kameo/scannerForm.php',
@@ -482,7 +483,7 @@ paging : false,
 				}
 			});
 		}
-		else if (type='ACCESSORY'){
+		else if (type='accessory'){
 			typeToBind = 'ACCESSORY';
 			$.ajax({
 				url: 'apis/Kameo/scannerForm.php',

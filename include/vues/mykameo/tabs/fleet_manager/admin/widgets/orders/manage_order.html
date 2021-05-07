@@ -69,30 +69,17 @@ style="display: none; overflow-y: auto !important"
           <h4 class="text-green">Informations sur l'employé</h4>
           <div class="col-sm-12">
             <div class="col-sm-4" name="company">
-              <label for="company">Compagnies</label>
-              <select name="company" class="form-control">
+              <label for="company">Société</label>
+              <select name="company" class="form-control" disabled>
               </select>
             </div>
             <div class="col-md-4">
-              <label for="name" class="fr">Nom</label>
-              <label for="name" class="en">Name</label>
-              <label for="name" class="nl">Achternaam</label>
-              <select name="name" class="form-control">
-              </select>
-            </div>
-          </div>
-          <div class="col-sm-12">
-            <div class="col-md-4">
-              <label for="mail" class="fr">E-mail</label>
-              <label for="mail" class="en">E-mail</label>
-              <label for="mail" class="nl">E-mail</label>
-              <input type="text" name="mail" class="form-control mail">
+              <label for="mail">E-mail</label>
+              <input type="text" name="mail" class="form-control" disabled>
             </div>
             <div class="col-md-4">
-              <label for="phone" class="fr">Numéro de téléphone</label>
-              <label for="phone" class="en">Phone number</label>
-              <label for="phone" class="nl">Phone number</label>
-              <input type="text" name="phone" class="form-control phone">
+              <label for="phone">Numéro de téléphone</label>
+              <input type="text" name="phone" class="form-control" disabled>
             </div>
           </div>
         </div>
@@ -197,7 +184,7 @@ style="display: none; overflow-y: auto !important"
               <input
               type="date"
               name="deliveryDate"
-              class="form-control"
+              class="form-control required"
               />
             </div>
             <div class="col-sm-4">

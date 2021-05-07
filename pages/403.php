@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 	include 'include/head.php';
-	header("HTTP/1.0 403 Forbidden");
-	header_remove("Set-Cookie");
-	header_remove("X-Powered-By");
 ?>
 <body class="wide">
 	<!-- WRAPPER -->
