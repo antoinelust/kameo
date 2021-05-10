@@ -25,10 +25,10 @@ switch($_SERVER["REQUEST_METHOD"])
 				$resultat=execSQL("SELECT substr(client_orders.CREATION_TIME, 1 ,7) as commandsMonth,
 				SUM(CASE WHEN TYPE='leasing' THEN 1 ELSE 0 END) as leasingOrders,
 				SUM(CASE WHEN TYPE='achat' THEN 1 ELSE 0 END) as sellingOrders,
-				SUM(CASE WHEN TYPE='achat' THEN (client_orders.LEASING_PRICE-bike_catalog.BUYING_PRICE) ELSE 0 END) as sellingMargin,
-				SUM(CASE WHEN TYPE='achat' THEN (bike_catalog.BUYING_PRICE) ELSE 0 END) as sellingCost,
-        SUM(CASE WHEN TYPE='leasing' THEN ((client_orders.LEASING_PRICE*36)+0.16*bike_catalog.PRICE_HTVA-bike_catalog.BUYING_PRICE-3*84-4*100) ELSE 0 END) as leasingMargin,
-        SUM(CASE WHEN TYPE='leasing' THEN (bike_catalog.BUYING_PRICE+3*84+4*100) ELSE 0 END) as leasingCost
+				ROUND(SUM(CASE WHEN TYPE='achat' THEN (client_orders.LEASING_PRICE-bike_catalog.BUYING_PRICE) ELSE 0 END)) as sellingMargin,
+				ROUND(SUM(CASE WHEN TYPE='achat' THEN (bike_catalog.BUYING_PRICE) ELSE 0 END)) as sellingCost,
+        ROUND(SUM(CASE WHEN TYPE='leasing' THEN ((client_orders.LEASING_PRICE*36)+0.16*bike_catalog.PRICE_HTVA-bike_catalog.BUYING_PRICE-3*84-4*100) ELSE 0 END)) as leasingMargin,
+        ROUND(SUM(CASE WHEN TYPE='leasing' THEN (bike_catalog.BUYING_PRICE+3*84+4*100) ELSE 0 END)) as leasingCost
        	FROM client_orders, bike_catalog WHERE client_orders.PORTFOLIO_ID = bike_catalog.ID GROUP BY substr(client_orders.CREATION_TIME, 1 ,7)", array(), false);
 				$response['leasingOrders']=array_column($resultat, 'leasingOrders');
 				$response['leasingCost']=array_column($resultat, 'leasingCost');

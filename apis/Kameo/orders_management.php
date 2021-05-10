@@ -78,18 +78,8 @@ if(isset($_POST['action'])){
 
 	else if($action=='update'){
 
-		include 'connexion.php';
-		$stmt = $conn->prepare("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, COMMENTS_ADMIN=?, TEST_STATUS=? WHERE ID=?");
-		if ($stmt)
-		{
-			$stmt->bind_param("ssissdsssssi", $token, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress,$commentsAdmin, $testStatus, $ID);
-			if(!$stmt->execute()){echo "there was an error....".$conn->error;}
-			$response['response']="success";
-			$stmt->close();
-		} else{
-			error_message('500', 'Error occured while changing data');
-		}
-
+		$linkOfferToBike=isset($_POST['linkOfferToBike']) ? $_POST['linkOfferToBike'] : NULL;
+		execSQL("UPDATE client_orders  SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, STATUS=?, PORTFOLIO_ID=?, SIZE=?, DELIVERY_ADDRESS=?, LEASING_PRICE=?, TYPE=?, ESTIMATED_DELIVERY_DATE=?, DELIVERY_ADDRESS=?, COMMENTS_ADMIN=?, TEST_STATUS=?, BIKE_ID=? WHERE ID=?", array("ssissdsssssii", $token, $status, $portfolioID, $size, $deliveryAddress, $price, $type, $deliveryDate, $deliveryAddress,$commentsAdmin, $testStatus, $linkOfferToBike, $ID), true);
 ////////////////////////////////////////////////
 
 		if($testBoolean=="Y"){
@@ -189,22 +179,12 @@ if(isset($_POST['action'])){
 	if($action=='list'){
 		if(get_user_permissions(["admin", "fleetManager"], $token)){
 			include 'connexion.php';
-			$sql="SELECT * FROM customer_referential WHERE TOKEN='$token'";
-			if ($conn->query($sql) === FALSE) {
-				$response = array ('response'=>'error', 'message'=> $conn->error);
-				echo json_encode($response);
-				die;
-			}
-			$result = mysqli_query($conn, $sql);
-			$resultat=mysqli_fetch_assoc($result);
-			$company=$resultat['COMPANY'];
-
+			$company=execSQL("SELECT COMPANY FROM customer_referential WHERE TOKEN=?", array('s', $token), false)[0]['COMPANY'];
 			if($company=="KAMEO"){
-				$sql= "SELECT grouped_orders.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL FROM client_orders co, companies, bike_catalog, grouped_orders WHERE grouped_orders.COMPANY_ID=companies.ID AND grouped_orders.ID=co.GROUP_ID AND co.PORTFOLIO_ID=bike_catalog.ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
+				$sql= "SELECT grouped_orders.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL, co.BIKE_ID FROM client_orders co, companies, bike_catalog, grouped_orders WHERE grouped_orders.COMPANY_ID=companies.ID AND grouped_orders.ID=co.GROUP_ID AND co.PORTFOLIO_ID=bike_catalog.ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
 			}else{
-				$sql="SELECT grouped_orders.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL FROM client_orders co, companies, bike_catalog, grouped_orders WHERE grouped_orders.COMPANY_ID=companies.ID AND grouped_orders.ID=co.GROUP_ID AND companies.INTERNAL_REFERENCE='$company' AND bike_catalog.ID=co.PORTFOLIO_ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
+				$sql="SELECT grouped_orders.EMAIL, co.GROUP_ID, co.STATUS, co.ID, co.SIZE, co.ESTIMATED_DELIVERY_DATE, co.DELIVERY_ADDRESS, co.TEST_STATUS, co.TEST_DATE, co.TEST_BOOLEAN, co.LEASING_PRICE, co.TYPE, companies.ID as companyID, companies.COMPANY_NAME as companyName, (SELECT SUM(PRICE_HTVA) FROM order_accessories WHERE co.GROUP_ID=order_accessories.ORDER_ID AND order_accessories.TYPE=co.TYPE) as sumAccessories, bike_catalog.BRAND, bike_catalog.MODEL, co.BIKE_ID FROM client_orders co, companies, bike_catalog, grouped_orders WHERE grouped_orders.COMPANY_ID=companies.ID AND grouped_orders.ID=co.GROUP_ID AND companies.INTERNAL_REFERENCE='$company' AND bike_catalog.ID=co.PORTFOLIO_ID ORDER BY CASE STATUS WHEN 'new' THEN 1 WHEN 'confirmed' THEN 2 WHEN 'closed' THEN 3 ELSE 5 END, id DESC";
 			}
-
 			if ($conn->query($sql) === FALSE) {
 				$response = array ('response'=>'error', 'message'=> $conn->error);
 				echo json_encode($response);
@@ -235,46 +215,15 @@ if(isset($_POST['action'])){
 				$response['order'][$i]['companyName']=$row['companyName'];
 				$response['order'][$i]['brand']=$row['BRAND'];
 				$response['order'][$i]['model']=$row['MODEL'];
-
-
 				$response['order'][$i]['sumAccessories']=$row['sumAccessories'];
 
 				if(!is_null($row['sumAccessories'])){
 					$response['order'][$i]['price'] = $response['order'][$i]['price']+$row['sumAccessories'];
 				};
 
-				$emailUser=$row['EMAIL'];
-				if($emailUser != ""){
-					include 'connexion.php';
-					$sql= "SELECT * FROM customer_referential WHERE EMAIL='$emailUser'";
-					if ($conn->query($sql) === FALSE) {
-						$response = array ('response'=>'error', 'message'=> $conn->error);
-						echo json_encode($response);
-						die;
-					}
-					$result = mysqli_query($conn, $sql);
-					$resultat=mysqli_fetch_assoc($result);
-					$response['order'][$i]['user']=$resultat['PRENOM']." ".$resultat['NOM'];
-					$response['order'][$i]['email']=$emailUser;
-				}else{
-					$response['order'][$i]['user']="N/A";
-				}
-
-				if($row['STATUS']=='confirmed'){
-					if($emailUser != ''){
-						$sqlStatus = "SELECT BIKE_ID
-						FROM customer_bike_access WHERE EMAIL = '$emailUser'";
-						$resultStatus = mysqli_query($conn, $sqlStatus);
-						$rowStatus = $resultStatus->fetch_assoc();
-						$tempBikeID = $rowStatus['BIKE_ID'];
-						if($tempBikeID!=null){
-							$sqlContrat = "SELECT CONTRACT_TYPE
-							FROM customer_bikes WHERE ID = '$tempBikeID'";
-							$resultContrat = mysqli_query($conn, $sqlContrat);
-							$rowContrat = $resultContrat->fetch_assoc();
-							$response['order'][$i]['contract'] = $rowContrat['CONTRACT_TYPE'];
-						}
-					}
+				$response['order'][$i]['email']=$row['EMAIL'];
+				if($row['BIKE_ID'] != NULL){
+					$response['order'][$i]['contract'] = execSQL("SELECT CONTRACT_TYPE FROM customer_bikes WHERE ID = ?", array('i', $row['BIKE_ID']), false)[0]['CONTRACT_TYPE'];
 				}
 				$i++;
 			}
@@ -287,75 +236,19 @@ if(isset($_POST['action'])){
 
 		$ID=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
-		include 'connexion.php';
-		$sql= "SELECT client_orders.*, grouped_orders.EMAIL FROM client_orders, grouped_orders WHERE client_orders.ID='$ID' AND client_orders.GROUP_ID=grouped_orders.ID";
-		if ($conn->query($sql) === FALSE) {
-			$response = array ('response'=>'error', 'message'=> $conn->error);
-			echo json_encode($response);
-			die;
-		}
-		$result = mysqli_query($conn, $sql);
-		$resultat = mysqli_fetch_assoc($result);
-		$conn->close();
-		$response=array();
-		$email = $resultat['EMAIL'];
 		$response['response']="success";
-		$response['order']['ID']=$resultat['ID'];
-		$response['order']['email']=$email;
-		$response['order']['size']=$resultat['SIZE'];
-		$response['order']['status']=$resultat['STATUS'];
-		$response['order']['estimatedDeliveryDate']=$resultat['ESTIMATED_DELIVERY_DATE'];
-		$response['order']['deliveryAddress']=$resultat['DELIVERY_ADDRESS'];
-		$response['order']['testBoolean']=$resultat['TEST_BOOLEAN'];
-		$response['order']['testDate']=$resultat['TEST_DATE'];
-		$response['order']['testAddress']=$resultat['TEST_ADDRESS'];
-		$response['order']['testStatus']=$resultat['TEST_STATUS'];
-		$response['order']['testResult']=$resultat['TEST_RESULT'];
-		$response['order']['price']=$resultat['LEASING_PRICE'];
-		$response['order']['type']=$resultat['TYPE'];
-		$response['order']['comment']=br2nl($resultat['REMARK']);
-		$response['order']['img']=br2nl($resultat['PORTFOLIO_ID']);
-		$response['order']['commentsAdmin']=br2nl($resultat['COMMENTS_ADMIN']);
-		$email=$resultat['EMAIL'];
+		$response['order']= execSQL("SELECT client_orders.ID, grouped_orders.EMAIL as email, client_orders.SIZE as size, client_orders.STATUS as status, client_orders.ESTIMATED_DELIVERY_DATE as estimatedDeliveryDate, client_orders.DELIVERY_ADDRESS as deliveryAddress,
+		client_orders.TEST_BOOLEAN as testBoolean, client_orders.TEST_DATE as testDate, client_orders.TEST_ADDRESS as testAddress, client_orders.TEST_STATUS as testStatus, client_orders.TEST_RESULT as testResult, client_orders.LEASING_PRICE as price,
+		client_orders.TYPE as type, client_orders.REMARK as comment, client_orders.PORTFOLIO_ID as portfolioID, client_orders.COMMENTS_ADMIN as commentsAdmin, client_orders.BIKE_ID as stockBikeID, bike_catalog.BRAND as brand, bike_catalog.MODEL as model,
+		bike_catalog.FRAME_TYPE as frameType, bike_catalog.PRICE_HTVA as priceHTVA FROM client_orders, grouped_orders, bike_catalog WHERE client_orders.ID=? AND client_orders.GROUP_ID=grouped_orders.ID AND bike_catalog.ID=client_orders.PORTFOLIO_ID", array('i', $ID), false)[0];
 
-		$portfolioID=$resultat['PORTFOLIO_ID'];
-
-
-
-		include 'connexion.php';
-		$sql= "SELECT * FROM bike_catalog WHERE ID='$portfolioID'";
-		if ($conn->query($sql) === FALSE) {
-			$response = array ('response'=>'error', 'message'=> $conn->error);
-			echo json_encode($response);
-			die;
-		}
-		$result = mysqli_query($conn, $sql);
-		$resultat = mysqli_fetch_assoc($result);
-		$response['order']['portfolioID']=$portfolioID;
-		$response['order']['brand']=$resultat['BRAND'];
-		$response['order']['model']=$resultat['MODEL'];
-		$response['order']['frameType']=$resultat['FRAME_TYPE'];
-		$priceHTVA=$resultat['PRICE_HTVA'];
-
-		$resultat= execSQL("SELECT * FROM customer_referential WHERE TOKEN=?", array('s', $token), false)[0];
-		$company=$resultat['COMPANY'];
-		$response['order']['name']=$resultat['NOM'];
-		$response['order']['firstname']=$resultat['PRENOM'];
-		$response['order']['phone']=$resultat['PHONE'];
-		$response['order']['priceHTVA']=$priceHTVA;
+		$resultat= execSQL("SELECT NOM as name, PRENOM as firstname, PHONE as phone FROM customer_referential WHERE TOKEN=?", array('s', $token), false)[0];
+		$response['order']=array_merge ($response['order'], $resultat);
 		$response['order']['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ORDER_ID as orderID
 															FROM order_accessories, accessories_categories, accessories_catalog, client_orders
 															WHERE order_accessories.BRAND=accessories_catalog.ID
 															AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES
 															AND order_accessories.ORDER_ID=client_orders.GROUP_ID AND client_orders.ID=?", array('i', $ID), false);
-
-		if($response['order']['accessories']!=null){
-			$response['accessoryNumber']=count($response['order']['accessories']);
-		}else{
-			$response['order']['accessories']=array();
-			$response['accessoryNumber'] = 0;
-		}
-		$result = mysqli_query($conn, $sql);
 		echo json_encode($response);
 		die;
 	}

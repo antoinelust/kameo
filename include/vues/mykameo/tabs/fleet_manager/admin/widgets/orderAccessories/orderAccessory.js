@@ -43,10 +43,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 
 
 	$("#displayorderAcessory").dataTable({
-		paging : false,
-		searching : true,
-		destroy: true,
-		"scrollX": true,
+		"scrollXInner": true,
 		ajax: {
 			url: "apis/Kameo/accessories/accessories.php",
 			contentType: "application/json",

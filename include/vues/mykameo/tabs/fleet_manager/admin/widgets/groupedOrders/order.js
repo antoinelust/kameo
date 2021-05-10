@@ -18,8 +18,7 @@ $( ".fleetmanager" ).click(function() {
 var categoriesOptions;
 
 
-$("#groupedOrdersListing").on("show.bs.modal", function (event) {
-
+$("#groupedOrdersListing").on("show.bs.modal", function (event){
 	$.ajax({
 		url: 'api/accessories',
 		type: 'get',
@@ -29,7 +28,7 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event) {
 				categoriesOptions+='<option value="'+category.ID+'">'+traduction["accessoryCategories_"+category.CATEGORY]+'</option>';
 			})
 		}
-	})
+	});
 
 	$("#groupedOrdersListingTable").dataTable({
 		destroy: true,
@@ -79,12 +78,6 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event) {
 
 
 $("#groupedOrderManagement").on("show.bs.modal", function (event) {
-
-	$('#widget_groupedOrderManagement-form').trigger("reset");
-	$('#widget_groupedOrderManagement-form .bikeNumberTable tbody').html("");
-	$('#widget_groupedOrderManagement-form .accessoriesTable tbody').html("");
-	$('#widget_groupedOrderManagement-form .bikesNumber').html(0);
-	$('#widget_groupedOrderManagement-form .accessoriesNumber').html(0);
 
 	$.ajax({
 		url: 'api/companies',
@@ -146,6 +139,11 @@ $('#groupedOrderManagement select[name=company]').change(function(){
 
 
 function retrieveGroupedOrder(ID){
+	$('#widget_groupedOrderManagement-form').trigger("reset");
+	$('#widget_groupedOrderManagement-form .bikeNumberTable tbody').html("");
+	$('#widget_groupedOrderManagement-form .accessoriesTable tbody').html("");
+	$('#widget_groupedOrderManagement-form .bikesNumber').html(0);
+	$('#widget_groupedOrderManagement-form .accessoriesNumber').html(0);
 	$('#groupedOrderManagement input[name=ID]').val(ID);
 	$.ajax({
 		url: 'api/orders',
@@ -158,9 +156,35 @@ function retrieveGroupedOrder(ID){
 				}else{
 					var units='€';
 				}
+				if(bike.ESTIMATED_DELIVERY_DATE == null){
+					bike.ESTIMATED_DELIVERY_DATE = "N/A";
+				}else{
+					bike.ESTIMATED_DELIVERY_DATE=bike.ESTIMATED_DELIVERY_DATE.shortDate();
+				}
 				$('#groupedOrderManagement .bikeNumberTable').find('tbody')
-				.append('<tr><td>'+bike.ID+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.SIZE+'</td><td>'+bike.TYPE+'</td><td>'+bike.LEASING_PRICE+' '+units+'</td><td>'+bike.ESTIMATED_DELIVERY_DATE.shortDate()+'</td><td>'+bike.STATUS+'</td>');
+				.append('<tr><td>'+bike.ID+'</td><td>'+bike.BRAND+'</td><td>'+bike.MODEL+'</td><td>'+bike.SIZE+'</td><td>'+bike.TYPE+'</td><td>'+bike.LEASING_PRICE+' '+units+'</td><td>'+bike.ESTIMATED_DELIVERY_DATE+'</td><td>'+bike.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteBikeOrder" type="button" data-id="'+bike.ID+'">-</button></td>');
 			})
+
+			$('.deleteBikeOrder').off();
+			$('.deleteBikeOrder').click(function(){
+				var ID = $(this).data('id');
+				$.ajax({
+					url: 'api/orders',
+					type: 'post',
+					data: { action: "deleteBikeOrder", 'ID': ID},
+					success: function(response){
+						$.notify({
+						 message: "Commande supprimée"
+						}, {
+						 type: 'success'
+						});
+						retrieveGroupedOrder($('#groupedOrderManagement input[name=ID]').val());
+						$("#groupedOrdersListingTable").dataTable().api().ajax.reload();
+					}
+				});
+			});
+
+
 			response.accessories.forEach(function(accessory){
 				if(accessory.TYPE=='leasing'){
 					var units='€/mois';
@@ -171,8 +195,31 @@ function retrieveGroupedOrder(ID){
 					accessory.ESTIMATED_DELIVERY_DATE='N/A';
 				}
 				$('#groupedOrderManagement .accessoriesTable').find('tbody')
-				.append('<tr><td>'+accessory.ID+'</td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td>'+Math.round(accessory.PRICE_HTVA*100)/100+' '+units+'</td><td>'+accessory.ESTIMATED_DELIVERY_DATE.shortDate()+'</td><td>'+accessory.STATUS+'</td>');
+				.append('<tr><td>'+accessory.ID+'</td><td>'+traduction['accessoryCategories_'+accessory.CATEGORY]+'</td><td>'+accessory.BRAND+' '+accessory.MODEL+'</td><td>'+accessory.TYPE+'</td><td>'+Math.round(accessory.PRICE_HTVA*100)/100+' '+units+'</td><td>'+accessory.ESTIMATED_DELIVERY_DATE.shortDate()+'</td><td>'+accessory.STATUS+'</td><td><button class="button small red button-3d rounded icon-right deleteAccessoryOrder" type="button" data-id="'+accessory.ID+'">-</button></td>');
 			})
+
+			$('.deleteAccessoryOrder').off();
+			$('.deleteAccessoryOrder').click(function(){
+				var ID = $(this).data('id');
+				$.ajax({
+					url: 'api/orders',
+					type: 'post',
+					data: { action: "deleteAccessoryOrder", 'ID': ID},
+					success: function(response){
+						$.notify({
+						 message: "Commande supprimée"
+						}, {
+						 type: 'success'
+						});
+						retrieveGroupedOrder($('#groupedOrderManagement input[name=ID]').val());
+						$("#groupedOrdersListingTable").dataTable().api().ajax.reload();
+					}
+				});
+			});
+
+
+
+
 			$('#groupedOrderManagement select[name=company]').val(response.COMPANY_ID);
 			$.ajax({
 				url: 'api/companies',

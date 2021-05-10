@@ -28,7 +28,7 @@ if($modelID != '' && $contractType != '') {
   }
 
   include '../connexion.php';
-/// voir coment ajouyter les id de velo ou bike 
+/// voir coment ajouyter les id de velo ou bike
   if($action=="addStockAccessory"){
     $i=0;
     while($i<$numberToOrder){
@@ -63,10 +63,13 @@ if($modelID != '' && $contractType != '') {
       error_message('500', $conn->error);
     }
     else if($contractType=="stock" || $contractType=="pending_delivery"){
-      $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=12, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=?, DELIVERY_DATE=? WHERE ID=? ");
+      if($contractType=="stock"){
+        $companyID=12;
+      }
+      $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE=?,  BIKE_ID=?, DELIVERY_DATE=? WHERE ID=? ");
      if ($stmt)
      {
-      $stmt->bind_param("ssisisi", $token, $userEMAIL, $modelID, $contractType ,$bikeID,$deliveryDate, $ID);
+      $stmt->bind_param("sisisisi", $token, $companyID, $userEMAIL, $modelID, $contractType ,$bikeID,$deliveryDate, $ID);
       $stmt->execute();
       }else
       error_message('500', $conn->error);

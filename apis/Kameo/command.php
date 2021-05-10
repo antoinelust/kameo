@@ -41,11 +41,9 @@ if(isset($_POST['action'])){
             errorMessage("ES0061");
         }*/
 
+        $groupID=execSQL("INSERT INTO grouped_orders (USR_MAJ, COMPANY_ID, EMAIL) VALUES (?,?,?)", array('sis', $token, $companyID, $email), true);
 
-        $groupID=execSQL("SELECT MAX(MaxGroupID) as MaxGroupID FROM (SELECT MAX(GROUP_ID) as MaxGroupID FROM client_orders UNION SELECT MAX(ORDER_ID) as MaxGroupID FROM order_accessories) as tt", array(), false)[0]['MaxGroupID'];
-				$groupID=intval($groupID)+1;
-
-        execSQL("INSERT INTO client_orders (USR_MAJ, GROUP_ID, EMAIL, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, COMPANY) VALUES(?, ?, ?, ?, ?, ?, 'new', ?, ?, ?)", array("sisissdss", $token, $groupID, $email, $portfolioID, $size, $remark, $order_amount, $leasing_type, $companyID), true);
+        execSQL("INSERT INTO client_orders (USR_MAJ, GROUP_ID, PORTFOLIO_ID, SIZE, REMARK, STATUS, LEASING_PRICE, TYPE, COMMENTS_ADMIN) VALUES(?, ?, ?, ?, ?, 'new', ?, ?, '')", array("siissds", $token, $groupID, $portfolioID, $size, $remark, $order_amount, $leasing_type), true);
 
         if(isset($_POST['accessory'])){
           foreach ($_POST['accessory'] as $index => $accessory){
@@ -54,8 +52,8 @@ if(isset($_POST['action'])){
             $accessoryAmount=$_POST['accessoryAmount'][$index];
             $remark='';
             $status='new';
-            execSQL("INSERT INTO order_accessories (USR_MAJ, ORDER_ID, COMPANY, EMAIL, BRAND, PRICE_HTVA, TYPE, DESCRIPTION, STATUS) VALUES(?,?,?,?,?,?,?,?,?)",
-            array('siisidsss', $token, $groupID, $companyID, $email, $accessoryID, $accessoryAmount, $accessoryBillingType, $remark, $status), true);
+            execSQL("INSERT INTO order_accessories (USR_MAJ, ORDER_ID, BRAND, PRICE_HTVA, TYPE, DESCRIPTION, STATUS) VALUES(?,?,?,?,?,?,?)",
+            array('siidsss', $token, $groupID, $accessoryID, $accessoryAmount, $accessoryBillingType, $remark, $status), true);
           }
         }
 
@@ -197,68 +195,60 @@ if(isset($_POST['action'])){
         successMessage("SM0027");
     }
 }else if(isset($_GET['action'])){
+  $action=isset($_GET['action']) ? $_GET['action'] : NULL;
+  if($action=="list"){
+    $email=isset($_GET['email']) ? $_GET['email'] : NULL;
+    $response=array();
+    $result=execSQL("SELECT client_orders.* FROM client_orders, grouped_orders where grouped_orders.EMAIL=? and status != 'cancelled' AND grouped_orders.ID=client_orders.GROUP_ID", array('s', $email), false);
 
-    $action=isset($_GET['action']) ? $_GET['action'] : NULL;
+    if(is_null($result)){
+      $response['commandNumber']=0;
+    }else{
+      $response['commandNumber']=count($result);
+    }
 
-    if($action=="list"){
+    $response['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ORDER_ID as orderID
+      												FROM order_accessories, accessories_categories, accessories_catalog, customer_referential, grouped_orders
+      												WHERE order_accessories.BRAND=accessories_catalog.ID
+      												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES
+                              AND order_accessories.ORDER_ID=grouped_orders.ID
+                              AND grouped_orders.EMAIL=customer_referential.EMAIL AND customer_referential.TOKEN=?",
+                            array('s',$token), false);
 
-        $email=isset($_GET['email']) ? $_GET['email'] : NULL;
-        $response=array();
+    $i=0;
+
+    if(!is_null($result)){
+      foreach($result as $row){
+        $catalogID=$row['PORTFOLIO_ID'];
         include 'connexion.php';
-        $sql="SELECT * FROM client_orders where EMAIL='$email' and status != 'cancelled'";
-        if ($conn->query($sql) === FALSE) {
+        $sql="SELECT * FROM bike_catalog where ID='$catalogID'";
+        if ($conn->query($sql) === FALSE){
             $response = array ('response'=>'error', 'message'=> $conn->error);
             echo json_encode($response);
             die;
         }
-        $result = mysqli_query($conn, $sql);
+        $result2 = mysqli_query($conn, $sql);
+        $resultat = mysqli_fetch_assoc($result2);
         $conn->close();
-        $length = $result->num_rows;
-
-        $response['commandNumber']=$length;
-
-        $response['accessories']=execSQL("SELECT order_accessories.BRAND as catalogID, order_accessories.PRICE_HTVA, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL, order_accessories.TYPE, order_accessories.ORDER_ID as orderID
-          												FROM order_accessories, accessories_categories, accessories_catalog, customer_referential
-          												WHERE order_accessories.BRAND=accessories_catalog.ID
-          												AND accessories_categories.ID=accessories_catalog.ACCESSORIES_CATEGORIES
-                                  AND order_accessories.EMAIL=customer_referential.EMAIL and customer_referential.TOKEN=?",
-                                array('s',$token), false);
-
-        $i=0;
-
-        while($row = mysqli_fetch_array($result)){
-
-
-            $catalogID=$row['PORTFOLIO_ID'];
-            include 'connexion.php';
-            $sql="SELECT * FROM bike_catalog where ID='$catalogID'";
-            if ($conn->query($sql) === FALSE) {
-                $response = array ('response'=>'error', 'message'=> $conn->error);
-                echo json_encode($response);
-                die;
-            }
-            $result = mysqli_query($conn, $sql);
-            $resultat = mysqli_fetch_assoc($result);
-            $conn->close();
-            $response[$i]['id']=$row['ID'];
-            $response[$i]['catalogID']=$catalogID;
-            $response[$i]['size']=$row['SIZE'];
-            $response[$i]['color']=$row['COLOR'];
-            $response[$i]['remark']=$row['REMARK'];
-            $response[$i]['status']=$row['STATUS'];
-            $response[$i]['brand']=$resultat['BRAND'];
-            $response[$i]['model']=$resultat['MODEL'];
-            $response[$i]['frameType']=$resultat['FRAME_TYPE'];
-            $response[$i]['deliveryDate']=$row['ESTIMATED_DELIVERY_DATE'];
-            $response[$i]['deliveryAddress']=$row['DELIVERY_ADDRESS'];
-            $response[$i]['testDATE']=$row['TEST_DATE'];
-            $response[$i]['testAddress']=$row['TEST_ADDRESS'];
-            $i++;
-        }
-        $response['response']="success";
-        echo json_encode($response);
-        die;
-
+        $response[$i]['id']=$row['ID'];
+        $response[$i]['catalogID']=$catalogID;
+        $response[$i]['size']=$row['SIZE'];
+        $response[$i]['color']=$row['COLOR'];
+        $response[$i]['remark']=$row['REMARK'];
+        $response[$i]['status']=$row['STATUS'];
+        $response[$i]['brand']=$resultat['BRAND'];
+        $response[$i]['model']=$resultat['MODEL'];
+        $response[$i]['frameType']=$resultat['FRAME_TYPE'];
+        $response[$i]['deliveryDate']=$row['ESTIMATED_DELIVERY_DATE'];
+        $response[$i]['deliveryAddress']=$row['DELIVERY_ADDRESS'];
+        $response[$i]['testDATE']=$row['TEST_DATE'];
+        $response[$i]['testAddress']=$row['TEST_ADDRESS'];
+        $i++;
+      }
     }
+    $response['response']="success";
+    echo json_encode($response);
+    die;
+  }
 }
 ?>

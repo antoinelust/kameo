@@ -46,7 +46,7 @@ style="display: none; overflow-y: auto !important"
               <select name="status" class="form-control">
                 <option value="new">Nouvelle demande</option>
                 <option value="confirmed">Confirmée</option>
-                <option value="closed">Terminée</option>
+                <option value="done">Terminée</option>
                 <option value="cancelled">Annulée</option>
               </select>
             </div>
@@ -233,13 +233,15 @@ style="display: none; overflow-y: auto !important"
         </div>
         <div class="form-group col-sm-12" name="assignationBikeHide">
           <h4 class="text-green" >Assignation D'un vélo </h4>
-          <div class="col-sm-12">
-            <div class="col-sm-4" name="commandeVeloDiv">
-              <label name="phraseNonAssignation"></label>
+          <p name="assignation"></p>
+          <div class="row">
+            <div class="col-md-8 ">
+              <label for="linkOfferToBike">Liaison de cette commande à vélo en stock</label>
+              <select name="linkOfferToBike" class="form-control"></select>
             </div>
-            <div class="col-sm-4" name="assignVeloDiv">
-              <button class="testAssignation button small green button-3d" name="commanderVelo" data-target="#bikeManagement" data-toggle ="modal" type="button"> Commander Pour cette commande</button>
-          </div>
+            <!--<div class="col-md-4">
+              <button class="testAssignation button small green button-3d" name="commanderVelo" data-target="#bikeManagement" data-toggle ="modal" type="button">Commander Pour cette commande</button>
+          </div>-->
         </div>
       </div>
       <div class="separator"></div>

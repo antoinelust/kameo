@@ -1,16 +1,1 @@
-CREATE TABLE IF NOT EXISTS `grouped_orders` (
-  `ID` int(11) NOT NULL,
-  `CREATION_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `HEU_MAJ` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `USR_MAJ` text NOT NULL,
-  `COMPANY_ID` int(11) NOT NULL,
-  `EMAIL` varchar(150) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `grouped_orders`
---
-
-COMMIT;
-
-INSERT INTO grouped_orders (ID, USR_MAJ, COMPANY_ID, EMAIL) SELECT client_orders.GROUP_ID, 'antoine lust', client_orders.COMPANY, client_orders.EMAIL FROM client_orders GROUP BY client_orders.GROUP_ID, client_orders.COMPANY, client_orders.EMAIL
+ALTER TABLE `client_orders` ADD `BIKE_ID` INT NULL DEFAULT NULL AFTER `COMMENTS_ADMIN`, ADD UNIQUE `Unique` (`BIKE_ID`);

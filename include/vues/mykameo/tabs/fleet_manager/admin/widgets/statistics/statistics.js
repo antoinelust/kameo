@@ -107,6 +107,16 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           ],
         },
         options: {
+          tooltips: {
+              mode: 'label',
+              callbacks: {
+                  label: function(tooltipItem, data) {
+                      var corporation = data.datasets[tooltipItem.datasetIndex].label;
+                      var valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                      return corporation + " : " + valor.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') +' €';
+                  }
+              }
+          },
           scales: {
             xAxes: [{ stacked: true }],
             yAxes: [{
@@ -243,7 +253,6 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
         data:{
           labels: response.stockByBrandLabel,
           datasets: [{
-            label: 'My First Dataset',
             data: response.stockByBrandData,
             borderColor: "rgba(44, 132, 109, 0.5)",
             backgroundColor: "rgba(60, 179, 149, 0.5)",
@@ -320,6 +329,16 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
           },
           legend:{
             display: false
+          },
+          tooltips: {
+              mode: 'label',
+              callbacks: {
+                  label: function(tooltipItem, data) {
+                      var corporation = data.datasets[tooltipItem.datasetIndex].label;
+                      var valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                      return corporation + " : " + valor.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') +' €';
+                  }
+              }
           },
           scales: {
             xAxes: [{ stacked: true }],

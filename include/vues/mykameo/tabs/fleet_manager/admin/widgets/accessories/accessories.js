@@ -65,7 +65,7 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
      .find('option')
      .remove()
      .end();
-     
+
      if(data.user.length > 0 ){
       $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
       data.user.forEach(function(user, index){
@@ -161,13 +161,11 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
     $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
-    $('#widget-manageStockAccessory-form select[name=company]').val(12);
     $('#widget-manageStockAccessory-form select[name=company]').attr('readonly', true);
     $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeIn();
     $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
     $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
   }
-
 });
 
 $('#widget-manageStockAccessory-form select[name=category]').change(function(){
@@ -638,7 +636,6 @@ function rempDataTable(){
 
     $('#accessoriesBillsTable .updateBillsAccessorylink').off();
     $('#accessoriesBillsTable .updateBillsAccessorylink').click(function(){
-      console.log('ca rentre ici 1 ');
       getListAccessoriesBillsDetails($(this).data('correspondent'));
     })
   })
@@ -741,7 +738,7 @@ order: [
 ],
 paging : false,
 searching : false
-}); 
+});
 
 }
 
