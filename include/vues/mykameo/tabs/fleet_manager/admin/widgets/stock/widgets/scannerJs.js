@@ -20,7 +20,7 @@ var arrayToBills=[];
 
 
 function initializeModal(){
-
+	document.getElementById('frameReference').value = '';
 	getDataForBills();
 
 	let today = new Date();
@@ -317,7 +317,7 @@ function bindArticle(){
 	$.ajax({
 		url: 'apis/Kameo/scannerForm.php',
 		type: 'get',
-		data: {"action": "changeContractType", "id": $('#listOrder').val() , "typeArticle" : typeToBind},
+		data: {"action": "changeContractType", "id": $('#listOrder').val() , "frameReference":document.getElementById('frameReference').value, "typeArticle" : typeToBind},
 		success: function(response){
 			if(response.response == 'error') {
 				console.log('error');
@@ -334,6 +334,7 @@ function bindArticle(){
 			}
 		}
 	});
+	document.getElementById('frameReference').value = '';
 }
 
 $('#listOrder').change(function(){
@@ -808,12 +809,17 @@ window.addEventListener('load', function () {
 		document.getElementById('startButton').addEventListener('click', () => {
 			decodeContiniously(codeReader, selectedDeviceId);
 		})
+		document.getElementById('addFrameReferenceClick').addEventListener('click', () => {
+			decodeContiniouslyToFrame(codeReader, selectedDeviceId);
+		})
 		document.getElementById('stopButton').addEventListener('click', () => {
 			codeReader.reset()
 			document.getElementById('resultName').innerHTML = 'Etat du scan : Recherche de code Barre en cours';
 			hideAllFromRemove();
-
 		})
+		$("#scanBarcodeModal").on("hidden.bs.modal", function () {
+			codeReader.reset();
+		});
 
 	})
 	.catch((err) => {
@@ -921,7 +927,7 @@ function getDataForBills(){
 
 function changeDisplay(type)
 {
-
+	document.getElementById('frameReference').value = '';
 	roleButton = type;
 
 	if(type == 'scan'){
@@ -1149,3 +1155,37 @@ function generateBill(){
 		}
 	});
 }
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+
+
+function decodeContiniouslyToFrame(codeReader, selectedDeviceId){
+	codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'videoFrame', (result, err) => {
+		if (result) {
+			document.getElementById('frameReference').value = result.text;
+			$('#addFrameReferenceModal').modal('hide');
+			codeReader.reset();
+			$.notify(
+			{
+				message:'La référence : '+ result.text + ' a bien été ajouté au vélo',
+			},
+			{
+				type: "success",
+			}
+			);
+			decodeContiniously(codeReader, selectedDeviceId)
+		}if (err) {
+			if (err instanceof ZXing.FormatException) {
+				console.log('A code was found, but it was in a invalid format.')
+			}
+		}
+	})
+}
+
+
