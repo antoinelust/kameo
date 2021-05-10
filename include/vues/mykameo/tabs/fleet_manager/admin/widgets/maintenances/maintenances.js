@@ -1,6 +1,4 @@
 $(".fleetmanager").click(function () {
-  document.getElementsByClassName('maintenanceManagementClick')[0].addEventListener('click', function() { list_maintenances(); getCompaniesInMaintenances();}, false);
-
   $.ajax({
     url: "apis/Kameo/initialize_counters.php",
     type: "post",
@@ -17,32 +15,42 @@ $(".fleetmanager").click(function () {
       }
     },
   });
-  $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').hide();
+});
+
+
+$('#maintenanceListing').on('shown.bs.modal', function(event){
+  list_maintenances();
+});
+
+$('#maintenanceManagementItem').on('shown.bs.modal', function(event){
   getCompaniesInMaintenances();
 });
 
+
 function getCompaniesInMaintenances(){
- $.ajax({
-  url: "apis/Kameo/companies/companies.php",
-  type: "get",
-  data: { action:'listMinimal' },
-  success: function (response) {
-    if (response.response == "error") {
-      console.log(response.message);
-    }
-    if (response.response == "success") {
-      $("#widget-maintenanceManagement-form select[name=company]")
-      .find("option")
-      .remove()
-      .end();
-      response.company.forEach(function(company){
-       $("#widget-maintenanceManagement-form select[name=company]").append(
-        '<option id= "'+ company.ID + '" value= "' +company.internalReference +'" data-idCompany="'+company.ID+'">' +company.companyName +  "<br>"
-        );
-     })
-    }
-  },
-});
+  $.ajax({
+    url: "apis/Kameo/companies/companies.php",
+    type: "get",
+    data: { action:'listMinimal' },
+    success: function (response) {
+      if (response.response == "error") {
+        console.log(response.message);
+      }
+      if (response.response == "success") {
+        $("#widget-maintenanceManagement-form select[name=company]")
+        .find("option")
+        .remove()
+        .end();
+        response.company.forEach(function(company){
+         $("#widget-maintenanceManagement-form select[name=company]").append(
+          '<option id= "'+ company.ID + '" value= "' +company.internalReference +'" data-idCompany="'+company.ID+'">' +company.companyName +  "<br>"
+          );
+        });
+        $("#widget-maintenanceManagement-form select[name=company]").val("");
+        $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').hide();
+      }
+    },
+  });
 }
 
 
@@ -89,7 +97,11 @@ function list_maintenances() {
     { title: "Client", data: "company" },
     { title: "Date de sortie planifié", data: "OUT_DATE_PLANNED",
     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-      $(nTd).html(sData.shortDate());
+      if(sData == null ||sData == '0'){
+        $(nTd).html("N/A");
+      }else{
+        $(nTd).html(sData.shortDate());
+      }
     }
   },
   { title: "Date", data: "date",
@@ -111,7 +123,7 @@ fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
   else if(sData == "DONE"){
     $(nTd).html("<span class='text-green'>Fait</span>");
   }
-  else if(sData == "IN_SHOP"){  
+  else if(sData == "IN_SHOP"){
     $(nTd).html("<span  style =\"color:blue;\">En atelier</span>");
   }
   else if(sData == "TO_PLAN"){
@@ -377,9 +389,7 @@ function empty_form(){
 $('#widget-maintenanceManagement-form select[name=company]').change(function(){
   getBikesToMaintenance();
   $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').show();
- 
- $('#widget-maintenanceManagement-form a .addExternalBikes').data('idCompany',$(this).val());
-  
+  $('#widget-maintenanceManagement-form .addExternalBikes').data('idCompany',$('#widget-maintenanceManagement-form select[name=company]').children("option:selected").data('idcompany'));
 });
 
 function getBikesToMaintenance(){

@@ -101,6 +101,9 @@ function getListOfBikesBill(factureID){
 
 }
 
+$('#externalBikeManagement').on('shown.bs.modal', function(event){
+  var companyID = $(event.relatedTarget).data("idCompany");
+});
 
 
 function fill_link_bikes_to_bills(){
@@ -187,7 +190,7 @@ function fill_link_bikes_to_bills(){
     ],
     paging : false
   });
- 
+
   $("#bikesNotLinkedTable").dataTable({
     destroy: true,
     ajax: {
@@ -1438,14 +1441,12 @@ function list_bikes_admin(){
     if (
       response.bike[i].contractEnd == null &&
       response.bike[i].company != "KAMEO" &&
-      response.bike[i].company != "KAMEO VELOS TEST" &&
       response.bike[i].contractType == "leasing"
       ) {
       end = '<span class="text-red">N/A</span>';
   } else if (
     response.bike[i].contractEnd != null &&
-    response.bike[i].company != "KAMEO" &&
-    response.bike[i].company != "KAMEO VELOS TEST"
+    response.bike[i].company != "KAMEO"
     ) {
     end =
     '<span class="text-green">' +
@@ -1458,15 +1459,13 @@ function list_bikes_admin(){
   } else if (
     response.bike[i].contractEnd == null &&
     (response.bike[i].company == "KAMEO" ||
-      response.bike[i].company == "KAMEO VELOS TEST" ||
       response.bike[i].contractType == "renting" ||
       response.bike[i].contractType == "test")
     ) {
     end = '<span class="text-green">N/A</span>';
   } else if (
     response.bike[i].contractEnd != null &&
-    (response.bike[i].company == "KAMEO" ||
-      response.bike[i].company == "KAMEO VELOS TEST")
+    (response.bike[i].company == "KAMEO")
     ) {
     end =
     '<span class="text-red">' +

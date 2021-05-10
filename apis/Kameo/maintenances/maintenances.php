@@ -28,7 +28,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		if(get_user_permissions("admin", $token)){
 			if(isset($_GET['company'])){
 				$response['internalMaintenances']=execSQL("SELECT entretiens.ID, entretiens.DATE, bike_catalog.BRAND, bike_catalog.MODEL FROM entretiens, customer_bikes, bike_catalog WHERE entretiens.STATUS='DONE' AND BIKE_ID=customer_bikes.ID  AND customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.COMPANY=? ORDER BY entretiens.ID DESC", array('s', $_GET['company']), false);
-				
+
 				$response['externalMaintenances']=execSQL("SELECT entretiens.ID, entretiens.DATE, external_bikes.BRAND, external_bikes.MODEL FROM entretiens, external_bikes WHERE entretiens.STATUS='DONE' AND BIKE_ID=external_bikes.ID  AND external_bikes.COMPANY_ID=(SELECT ID FROM companies WHERE INTERNAL_REFERENCE=?) ORDER BY entretiens.ID DESC", array('s', $_GET['company']), false);
 				if(is_null($response['internalMaintenances'])){
 					$response['internalMaintenances']=array();
@@ -69,7 +69,6 @@ switch($_SERVER["REQUEST_METHOD"])
 			$bike_id = isset($_POST["velo"]) ? $_POST["velo"] : NULL;
 			$external = isset($_POST["external"]) ? $_POST["external"] : NULL;
 			$outDatePlanned = isset($_POST["dateOutPlanned"]) ? $_POST["dateOutPlanned"] : NULL;
-
 			if($status=='DONE'){
 				execSQL("INSERT INTO entretiens (HEU_MAJ,END_DATE_MAINTENANCE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR,OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?)", array('siissssS', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned), true);
 			}

@@ -40,7 +40,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				$resultat=execSQL("SELECT substr(customer_bikes.CONTRACT_START, 1 ,7) as contractStartMonth, COUNT(1) as contractStartSum FROM `customer_bikes` WHERE customer_bikes.STAANN != 'D' AND customer_bikes.CONTRACT_TYPE='leasing' GROUP BY substr(customer_bikes.CONTRACT_START, 1 ,7)", array(), false);
 				$response['contractStartMonth']=array_column($resultat, 'contractStartMonth');
 				$response['contractStartSum']=array_column($resultat, 'contractStartSum');
-				$resultat=execSQL("SELECT substr(customer_bikes.SELLING_DATE, 1 ,7) as soldBikesMonth, COUNT(1) as soldBikesSum FROM `customer_bikes` WHERE customer_bikes.STAANN != 'D' AND customer_bikes.CONTRACT_TYPE='selling' GROUP BY substr(customer_bikes.SELLING_DATE, 1 ,7)", array(), false);
+				$resultat=execSQL("SELECT substr(customer_bikes.SELLING_DATE, 1 ,7) as soldBikesMonth, COUNT(1) as soldBikesSum FROM `customer_bikes` WHERE customer_bikes.STAANN != 'D' AND customer_bikes.CONTRACT_TYPE='selling' AND customer_bikes.SOLD_PRICE != '0' GROUP BY substr(customer_bikes.SELLING_DATE, 1 ,7)", array(), false);
 				$response['soldBikesMonth']=array_column($resultat, 'soldBikesMonth');
 				$response['soldBikesSum']=array_column($resultat, 'soldBikesSum');
 				$resultat=execSQL("SELECT substr(ESTIMATED_DELIVERY_DATE, 1, 7) as month, COUNT(1) as numberOfBike, round(SUM(BIKE_PRICE)) as cost, round(SUM(bike_catalog.PRICE_HTVA - BIKE_PRICE)) as retailMargin  FROM `customer_bikes`, bike_catalog WHERE CONTRACT_TYPE='order' AND customer_bikes.STAANN != 'D' AND customer_bikes.TYPE=bike_catalog.ID GROUP BY substr(ESTIMATED_DELIVERY_DATE, 1, 7)", array(), false);
