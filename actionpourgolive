@@ -1,1 +1,1 @@
-ALTER TABLE `client_orders` ADD `BIKE_ID` INT NULL DEFAULT NULL AFTER `COMMENTS_ADMIN`, ADD UNIQUE `Unique` (`BIKE_ID`);
+UPDATE `factures_details` SET ITEM_TYPE='accessoryCatalog' WHERE ITEM_TYPE='accessory'

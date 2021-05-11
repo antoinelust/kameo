@@ -190,18 +190,17 @@ function create_bill(){
     accessories.forEach((accessory) => {
       var newCategory = true;
       categories.forEach((category) => {
-        if (category.name === accessory.category) {
+        if (category.name === accessory.CATEGORY) {
           newCategory = false;
         }
       });
       if (newCategory === true) {
-        categories.push({'id' : accessory.categoryId, 'name' : accessory.category});
+        categories.push({'id' : accessory.categoryId, 'name' : accessory.CATEGORY});
       }
     });
 
     $('.generateBillAccessories .glyphicon-plus').unbind();
     $('.generateBillAccessories .glyphicon-plus').click(function(){
-      console.log("test");
       //gestion accessoriesNumber
       accessoriesNumber = $("#addBill").find('.accessoriesNumber').html()*1+1;
       $('#addBill').find('.accessoriesNumber').html(accessoriesNumber);
@@ -210,7 +209,7 @@ function create_bill(){
       //ajout des options du select pour les catégories
       var categoriesOption = "<option hidden disabled selected value></option>";
       categories.forEach((category) => {
-        categoriesOption += '<option value="'+category.id+'">'+category.name+'</option>';
+        categoriesOption += '<option value="'+category.id+'">'+traduction['accessoryCategories_'+category.name]+'</option>';
       });
 
       //ajout d'une ligne au tableau des accessoires
@@ -241,17 +240,27 @@ function create_bill(){
       checkMinus('.generateBillAccessories','.accessoriesNumber');
 
       //on change de la catégorie
+      $('.generateBillAccessories').find('.selectCategory').off();
       $('.generateBillAccessories').find('.selectCategory').on("change",function(){
         var that = '#' + $(this).attr('id');
         var categoryId =$(that).val();
         var accessoriesOption = "<option hidden disabled selected value>Veuillez choisir un accesoire</option>";
 
         //ne garde que les accessoires de cette catégorie
+        var presence=false;
         accessories.forEach((accessory) => {
-          if (categoryId == accessory.categoryId) {
-            accessoriesOption += '<option value="'+accessory.id+'">'+accessory.model+'</option>';
+          if (categoryId == accessory.categoryId && (accessory.CONTRACT_TYPE == 'stock' || accessory.CONTRACT_TYPE=='pending_delivery')) {
+            presence=true;
+            accessoriesOption += '<option value="'+accessory.ID+'">'+accessory.COMPANY_NAME+' - '+accessory.CONTRACT_TYPE+' - '+accessory.MODEL+'</option>';
           }
         });
+        if(!presence){
+          $.notify({
+            message: "Pas d'accessoires de ce type en stock ou en attente de livraison"
+          }, {
+            type: 'warning'
+          });
+        }
         //place les accessoires dans le select
         $(that).parents('tr').find('.selectAccessory').html(accessoriesOption);
 
@@ -263,17 +272,17 @@ function create_bill(){
       $('.generateBillAccessories').find('.selectAccessory').on("change",function(){
         var that = '#' + $(this).attr('id');
         var accessoryId =$(that).val();
-
+        console.log(accessoryId);
           //récupère le bon index même si le tableau est désordonné
           accessoryId = getIndex(accessories, accessoryId);
 
-          var buyingPrice = accessories[accessoryId].buyingPrice + '€';
-          var priceHTVA = accessories[accessoryId].priceHTVA + '€';
+          var buyingPrice = accessories[accessoryId].buyingPriceCatalog + '€';
+          var priceHTVA = accessories[accessoryId].sellingPriceCatalog + '€';
 
           $(that).parents('.accessoriesRow').find('.aBuyingPrice').html(buyingPrice);
           $(that).parents('.accessoriesRow').find('.aPriceHTVA').html(priceHTVA);
           $(that).parents('.accessoriesRow').find('.aPriceHTVA').attr('data-orig',priceHTVA);
-          $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].priceHTVA);
+          $(that).parents('.accessoriesRow').find('.accessoryFinalPrice').val(accessories[accessoryId].sellingPriceCatalog);
         });
 
       $('#widget-addBill-form .accessoriesRow .aPriceHTVA ').blur(function(){
@@ -480,7 +489,7 @@ $('#widget-addBill-form select[name=company]').change(function(){
       'company' : $(this).val()
     },
     success: function(response){
-        if(response == null){
+        if(response.length == 0){
           $.notify({
             message: "Pas de vélos en attente de livraison pour ce client"
           }, {
@@ -876,9 +885,9 @@ function get_bills_listing() {
 //liste des Accessoires
 function get_all_accessories() {
   return  $.ajax({
-    url: 'apis/Kameo/get_accessories_catalog.php',
-    type: 'post',
-    data: {},
+    url: 'api/accessories',
+    type: 'get',
+    data: {action: 'listStock'},
     success: function(response){
       if(response.response == 'error') {
         console.log(response.message);

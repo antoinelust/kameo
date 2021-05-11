@@ -247,3 +247,12 @@ function initializeFields() {
     },
   });
 }
+
+
+function getIndex(table, id) {
+  for (var i = 0; i < table.length; i++) {
+    if (table[i].id == id || table[i].ID == id) {
+      return i;
+    }
+  }
+}

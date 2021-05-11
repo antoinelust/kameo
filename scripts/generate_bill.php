@@ -4,6 +4,14 @@ use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 include_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/globalfunctions.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/authentication.php';
+
+
+$token = getBearerToken();
+
+if($token==''){
+  $token='generate_invoices.php';
+}
 
 $company=$_POST['company'];
 $dateStart=$_POST['dateStart'];
@@ -69,6 +77,7 @@ if($length=='0'){
 }
 $resultat = mysqli_fetch_assoc($result);
 $companyName=$resultat['COMPANY_NAME'];
+$companyID=$resultat['ID'];
 $street=$resultat['STREET'];
 $zip=$resultat['ZIP_CODE'];
 $town=$resultat['TOWN'];
@@ -345,7 +354,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                         }
                         $conn->close();
 
-
                         include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
                         $sql="UPDATE customer_bikes SET HEU_MAJ=CURRENT_TIMESTAMP, CONTRACT_TYPE='selling', SELLING_DATE='$contractStartString', SOLD_PRICE='$price', COMPANY='$company' WHERE ID='$ID'";
                         if ($conn->query($sql) === FALSE) {
@@ -358,16 +366,7 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                     }
                 }else if($type=="accessorySell"){
 
-                    include $_SERVER['DOCUMENT_ROOT'].'/apis/Kameo/connexion.php';
-                    $sql2="SELECT * from accessories_catalog where ID='$ID'";
-                    if ($conn->query($sql2) === FALSE) {
-                        echo $conn->error;
-                        die;
-                    }
-                    $result2 = mysqli_query($conn, $sql2);
-                    $resultat2 = mysqli_fetch_assoc($result2);
-                    $conn->close();
-
+                    $resultat2=execSQL("SELECT accessories_catalog.BRAND, accessories_catalog.MODEL from accessories_catalog, accessories_stock where accessories_stock.ID=? AND accessories_stock.CATALOG_ID=accessories_catalog.ID", array('i', $ID), false)[0];
                     $comment='Vente au '.$dateStart->format('d-m-Y');
 
                     $test2.='<tr>
@@ -385,8 +384,12 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
                         <td></td>
                         ';
                     $test2=$test2."<td></td></tr>";
-                }else if($type=="otherAccessorySell"){
 
+                    $sellingDate=$dateStart->format('Y-m-d');
+                    execSQL("INSERT INTO factures_details (USR_MAJ, FACTURE_ID, ITEM_TYPE, ITEM_ID, COMMENTS, DATE_START, DATE_END, AMOUNT_HTVA, AMOUNT_TVAC) VALUES(?, ?, 'accessory', ?, ?, ?, ?, ?, ?)", array('siisssdd', $token, $newID, $ID, $comment, $sellingDate, $sellingDate, $price, $priceTVAC), true);
+                    execSQL("UPDATE accessories_stock SET USR_MAJ=?, HEU_MAJ=CURRENT_TIMESTAMP, COMPANY_ID=?, BIKE_ID=NULL, CONTRACT_TYPE='achat', CONTRACT_START=NULL, CONTRACT_END=NULL, CONTRACT_AMOUNT=NULL, SELLING_DATE=?, SELLING_AMOUNT=? WHERE ID=?", array('sisdi', $token, $companyID, $sellingDate, $price, $ID), true);
+
+                }else if($type=="otherAccessorySell"){
                     $comment='Vente au '.$dateStart->format('d-m-Y');
 
                     $test2.='<tr>

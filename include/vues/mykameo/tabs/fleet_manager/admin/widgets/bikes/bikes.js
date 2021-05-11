@@ -103,6 +103,7 @@ function getListOfBikesBill(factureID){
 
 $('#externalBikeManagement').on('shown.bs.modal', function(event){
   var companyID = $(event.relatedTarget).data("idCompany");
+  $('#externalBikeManagement select[name=company]').val(companyID);
 });
 
 
@@ -752,7 +753,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           $('#widget-bikeManagement-form input[name=gpsID]').val(response.gpsID);
           $('#widget-bikeManagement-form select[name=localisation]').val(response.localisation);
           $('#widget-bikeManagement-form input[name=price]').val(response.bikePrice);
-          $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);
+
           if(response.billingType=="monthly"){
             $('#widget-bikeManagement-form .billingPriceDiv .input-group-addon').html('€/mois');
           }else if(response.billingType=="annual"){
@@ -941,6 +942,7 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
             })
           });
           updateDisplayBikeManagement(response.contractType);
+          $('#widget-bikeManagement-form select[name=billingType]').val(response.billingType);
         }
       }
     }).done(function(response){
@@ -1579,7 +1581,8 @@ function list_bikes_admin(){
     '<td data-sort="0">' + response.bike[i].rentability + "</td>";
   }
 
-  if (response.bike[i].GPS_ID != null && response.bike[i].GPS_ID != '/' && response.bike[i].GPS_ID != '-') {
+  if (response.bike[i].GPS_ID != null && response.bike[i].GPS_ID != '/' && response.bike[i].GPS_ID != '-' && response.bike[i].GPS_ID != 'TBC' && response.bike[i].GPS_ID != '') {
+    console.log(response.bike[i].GPS_ID);
     var GPS = '<a data-target="#bikePositionAdmin" name="' +
     response.bike[i].id +
     '" data-toggle="modal" class="getBikePosition" href="#"><i class="fa fa-map-pin" aria-hidden="true"></i> </a>';
@@ -1956,7 +1959,7 @@ function list_bikes_admin(){
 
   table
   .column(4)
-  .search("test|stock|renting|leasing", true, false)
+  .search("test|renting|leasing", true, false)
   .draw();
   }
   $("#load").addClass('hidden');

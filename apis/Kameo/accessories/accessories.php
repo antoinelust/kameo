@@ -153,7 +153,7 @@ switch($_SERVER["REQUEST_METHOD"])
 	}
 	elseif($action === 'listStock'){
 		if(get_user_permissions("admin", $token)){
-			$stockAccessories['accessories'] = execSQL("SELECT aa.*, bb.BRAND, bb.MODEL, cc.CATEGORY, dd.COMPANY_NAME FROM accessories_stock aa, accessories_catalog bb, accessories_categories cc, companies dd WHERE aa.CATALOG_ID=bb.ID AND bb.ACCESSORIES_CATEGORIES=cc.ID AND aa.COMPANY_ID=dd.ID", array(), false);
+			$stockAccessories['accessories'] = execSQL("SELECT aa.*, bb.BRAND, bb.MODEL, cc.ID as categoryId, cc.CATEGORY, dd.COMPANY_NAME, bb.BUYING_PRICE as buyingPriceCatalog, bb.PRICE_HTVA as sellingPriceCatalog FROM accessories_stock aa, accessories_catalog bb, accessories_categories cc, companies dd WHERE aa.CATALOG_ID=bb.ID AND bb.ACCESSORIES_CATEGORIES=cc.ID AND aa.COMPANY_ID=dd.ID ORDER BY cc.CATEGORY", array(), false);
 			$stockAccessories['response']="success";
 			echo json_encode($stockAccessories);
 			die;

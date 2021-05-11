@@ -45,7 +45,8 @@ if($modelID != '' && $contractType != '') {
     successMessage("SM0028");
   }else if($action=="updateStockAccessory"){
     $ID = isset($_POST["ID"]) ? addslashes($_POST["ID"]) : NULL;
-    if($contractType=="achat"){
+    
+    if($contractType=="selling"){
       $stmt = $conn->prepare("UPDATE accessories_stock set HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, COMPANY_ID=?, USER_EMAIL=?, CATALOG_ID=?, CONTRACT_TYPE='achat', SELLING_DATE=?, SELLING_AMOUNT=?,BIKE_ID=? WHERE ID=? ");
       if ($stmt)
       {

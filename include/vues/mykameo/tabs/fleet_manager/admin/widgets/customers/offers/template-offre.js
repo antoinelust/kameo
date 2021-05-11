@@ -247,7 +247,7 @@ function get_all_boxes() {
 }
 
 //liste des Accessoires
-function get_all_accessories() {
+function get_all_accessories_catalog() {
   return  $.ajax({
     url: 'apis/Kameo/get_accessories_catalog.php',
     type: 'post',
@@ -749,7 +749,7 @@ $('body').on('click','.getTemplate', function(){
 
 
   //Accessoires
-  get_all_accessories().done(function(response){
+  get_all_accessories_catalog().done(function(response){
     //gestion du moins au lancement de la page
     checkMinus('.templateAccessories','.accessoriesNumber');
     //variables
@@ -1314,13 +1314,4 @@ function compare(a, b) {
     comparison = -1;
   }
   return comparison;
-}
-
-//récupère l'index de l'item dont l'id correspond
-function getIndex(table, id){
-  for (var i = 0; i < table.length; i++) {
-    if(table[i].id == id){
-      return i;
-    }
-  }
 }

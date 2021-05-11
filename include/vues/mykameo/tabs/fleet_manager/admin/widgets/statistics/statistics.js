@@ -55,12 +55,14 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
             xAxes: [{ stacked: true }],
             yAxes: [{ stacked: true }]
           },
-          title: {
-              display: true,
-              text: 'Evolution du nombre de commandes'
-          },
-          legend:{
-            display: false
+          plugins: {
+              legend: {
+                  display: false,
+              },
+              title: {
+                  display: true,
+                  text: 'Evolution du nombre de commandes'
+              }
           }
         }
       });
@@ -133,12 +135,14 @@ $("#statisticsListing").on("show.bs.modal", function (event) {
               }
             }]
           },
-          title: {
-              display: true,
-              text: 'Coûts et marges des contrats signés'
-          },
-          legend:{
-            display: false
+          plugins: {
+              legend: {
+                  display: false,
+              },
+              title: {
+                  display: true,
+                  text: 'Evolution du nombre de commandes'
+              }
           }
         }
       });

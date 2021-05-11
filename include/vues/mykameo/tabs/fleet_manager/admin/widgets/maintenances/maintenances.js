@@ -20,14 +20,11 @@ $(".fleetmanager").click(function () {
 
 $('#maintenanceListing').on('shown.bs.modal', function(event){
   list_maintenances();
-});
-
-$('#maintenanceManagementItem').on('shown.bs.modal', function(event){
   getCompaniesInMaintenances();
+
 });
 
-
-function getCompaniesInMaintenances(){
+function getCompaniesInMaintenances(companyName = null){
   $.ajax({
     url: "apis/Kameo/companies/companies.php",
     type: "get",
@@ -46,8 +43,13 @@ function getCompaniesInMaintenances(){
           '<option id= "'+ company.ID + '" value= "' +company.internalReference +'" data-idCompany="'+company.ID+'">' +company.companyName +  "<br>"
           );
         });
-        $("#widget-maintenanceManagement-form select[name=company]").val("");
-        $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').hide();
+        console.log(companyName)
+        if(companyName == null){
+          $("#widget-maintenanceManagement-form select[name=company]").val("");
+          $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').hide();
+        }else{
+          $("#widget-maintenanceManagement-form select[name=company]").val(companyName);
+        }
       }
     },
   });
@@ -74,11 +76,11 @@ function list_maintenances() {
   $("#maintenanceListingSpan").dataTable({
     destroy: true,
     ajax: {
-      url: "apis/Kameo/maintenance_management.php",
+      url: "api/maintenances",
       contentType: "application/json",
       type: "get",
       data: {
-        action : 'list',
+        action : 'listAllMaintenances',
         dateStart: dateStartString,
         dateEnd: dateEndString
       },
@@ -184,25 +186,39 @@ function get_maintenance(ID){
         $('#widget-maintenanceManagement-form .maintenanceManagementDeleteButton').attr('name', response.maintenance.id);
         $('#widget-maintenanceManagement-form select[name=velo]').val(response.maintenance.bike_id);
         $('#widget-maintenanceManagement-form select[name=company]').val(response.maintenance.company);
-        $('#widget-maintenanceManagement-form input[name=model]').val(response.maintenance.model);
         $('#widget-maintenanceManagement-form select[name=status]').val(response.maintenance.status);
         $('#widget-maintenanceManagement-form input[name=dateMaintenance]').val(date[2] + '-' + date[1] + '-' + date[0]);
         $('#widget-maintenanceManagement-form input[name=dateOutPlanned]').val(dateOut[2] + '-' + dateOut[1] + '-' + dateOut[0]);
         $('#widget-maintenanceManagement-form textarea[name=comment]').val(response.maintenance.comment);
         $('#widget-maintenanceManagement-form textarea[name=internalComment]').val(response.maintenance.internalComment);
 
-        $.ajax({
-          url: "api/bikes",
-          method: "get",
-          data: {action: "getAddress", ID: response.maintenance.bike_id },
-          success: function (response){
-            if (response.response == "error") {
-              console.log(response.message);
-            }else{
-              $('#widget-maintenanceManagement-form input[name=address]').val(response);
+        if(response.maintenance.frame_number=="external"){
+          $.ajax({
+            url: "api/companies",
+            method: "get",
+            data: {action: "getAddress", company: $('#widget-maintenanceManagement-form select[name=company]').val() },
+            success: function (response){
+              if (response.response == "error") {
+                console.log(response.message);
+              }else{
+                $('#widget-maintenanceManagement-form input[name=address]').val(response);
+              }
             }
-          }
-        });
+          });
+        }else{
+          $.ajax({
+            url: "api/bikes",
+            method: "get",
+            data: {action: "getAddress", ID: response.maintenance.bike_id },
+            success: function (response){
+              if (response.response == "error") {
+                console.log(response.message);
+              }else{
+                $('#widget-maintenanceManagement-form input[name=address]').val(response);
+              }
+            }
+          });
+        }
 
 
         response.maintenance.publicFiles.forEach(function(file){
@@ -231,6 +247,8 @@ function get_maintenance(ID){
               <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"><i class="fa fa-paper-plane"></i>Supprimer le fichier </a></div>');
 
           }else{
+            console.log(ID);
+            console.log(file);
             $("#widget-maintenanceManagement-form div[name=internalImages]").append('<div class="col-md-4" name="image">\
               <img src="images_entretiens/'+ID+'/internalFile/'+file+'">\
               <a class="button small red button-3d rounded icon-left deleteFile" name="'+ID+'/internalFile/'+file+'"> \
@@ -310,6 +328,7 @@ $('.maintenanceManagementDeleteButton').click(function(){
 
 $('body').on('click', '.editMaintenance',function(){
   get_maintenance(this.name);
+  $('#widget-maintenanceManagement-form .addCompany').hide();
   $("#widget-maintenanceManagement-form input[name=action]").val("update");
   $("#widget-maintenanceManagement-form input").attr("readonly", true);
   $("#widget-maintenanceManagement-form input[name=dateMaintenance]").attr("readonly", false);
@@ -327,6 +346,7 @@ $('body').on('click', '.editMaintenance',function(){
 
 $('body').on('click', '.showMaintenance',function(){
   get_maintenance(this.name);
+  $('#widget-maintenanceManagement-form .addCompany').hide();
   $("#widget-maintenanceManagement-form input").attr("readonly", true);
   $("#widget-maintenanceManagement-form select").attr("disabled", true);
   $("#widget-maintenanceManagement-form textarea").attr("readonly", true);
@@ -339,6 +359,7 @@ $('body').on('click', '.showMaintenance',function(){
 });
 
 $('body').on('click', '.addMaintenance',function(){
+  $('#widget-maintenanceManagement-form .addCompany').show();
   $("#widget-maintenanceManagement-form div[name=image]").remove();
   $("#widget-maintenanceManagement-form div[name=internalImages]").remove();
   empty_form();
@@ -376,7 +397,6 @@ $('body').on('change', '.form_date_end_maintenance',function(){
 function empty_form(){
   $('#widget-maintenanceManagement-form input[name=ID]').val("");
   $('#widget-maintenanceManagement-form select[name=velo]').val("");
-  $('#widget-maintenanceManagement-form input[name=model]').val("");
   $('#widget-maintenanceManagement-form select[name=company]').val("");
   $('#widget-maintenanceManagement-form input[name=address]').val("");
   $('#widget-maintenanceManagement-form select[name=status]').val("MANUALLY_PLANNED");
@@ -392,14 +412,16 @@ $('#widget-maintenanceManagement-form select[name=company]').change(function(){
   $('#widget-maintenanceManagement-form .addExternalBikes').data('idCompany',$('#widget-maintenanceManagement-form select[name=company]').children("option:selected").data('idcompany'));
 });
 
-function getBikesToMaintenance(){
-  $('#widget-maintenanceManagement-form input[name=model]').val("");
+function getBikesToMaintenance(companyName = null){
   $("#widget-maintenanceManagement-form select[name=velo]").attr("disabled", false);
+  if(companyName == null){
+    companyName=$('#widget-maintenanceManagement-form select[name=company]').val();
+  }
 
   $.ajax({
     url: "api/bikes",
     type: "get",
-    data: {company: $('#widget-maintenanceManagement-form select[name=company]').val(), action: 'list' },
+    data: {company: companyName, action: 'list' },
     success: function (response) {
       if (response.response == "error") {
         console.log(response.message);
@@ -433,9 +455,33 @@ function getBikesToMaintenance(){
         $('#widget-maintenanceManagement-form select[name=velo]').change(function(){
           if($(this).children("option:selected").data("external") != undefined){
             $('#widget-maintenanceManagement-form input[name=external]').val(1);
+            $.ajax({
+              url: "api/companies",
+              method: "get",
+              data: {action: "getAddress", company: $('#widget-maintenanceManagement-form select[name=company]').val() },
+              success: function (response){
+                if (response.response == "error") {
+                  console.log(response.message);
+                }else{
+                  $('#widget-maintenanceManagement-form input[name=address]').val(response);
+                }
+              }
+            });
           }else{
             var external = false;
             $('#widget-maintenanceManagement-form input[name=external]').val(0);
+            $.ajax({
+              url: "api/bikes",
+              method: "get",
+              data: {action: "getAddress", ID: $('#widget-maintenanceManagement-form select[name=velo]').val() },
+              success: function (response){
+                if (response.response == "error") {
+                  console.log(response.message);
+                }else{
+                  $('#widget-maintenanceManagement-form input[name=address]').val(response);
+                }
+              }
+            });
           }
         })
 
@@ -443,27 +489,6 @@ function getBikesToMaintenance(){
     },
   })
 }
-
-$('body').on('change', '.form_velo',function(){
-  var res = $('#widget-maintenanceManagement-form select[name=velo] option:selected').text().split(" - ");
-  var model = res[1].split(" : ")[0];
-  $('#widget-maintenanceManagement-form input[name=model]').val(model);
-
-  $.ajax({
-    url: "api/bikes",
-    method: "get",
-    data: {action: "getAddress", ID: $('#widget-maintenanceManagement-form select[name=velo]').val() },
-    success: function (response){
-      if (response.response == "error") {
-        console.log(response.message);
-      }else{
-        $('#widget-maintenanceManagement-form input[name=address]').val(response);
-      }
-    }
-  });
-});
-
-
 
 
 $('#widget-maintenanceManagement-form input[name=publicFile], #widget-maintenanceManagement-form input[name=internalFile]').off();

@@ -253,7 +253,7 @@ $(".stockAccessoriesClick").click(function(){
 
 
 function list_stock_accessories(){
-  $("#stockAccessoriesList").dataTable({
+  $("#stockAccessoriesList").DataTable({
     destroy: true,
     ajax: {
       url: "api/accessories",
@@ -297,6 +297,14 @@ function list_stock_accessories(){
     {
       title: "Type de contrat",
       data: "CONTRACT_TYPE",
+      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+        if (sData == 'achat') $(nTd).html("Vendu");
+        else if (sData == 'leasing') $(nTd).html("Leasing");
+        else if (sData == 'stock') $(nTd).html("En stock");
+        else if (sData == 'pending_delivery') $(nTd).html("En attente de livraison");
+        else if (sData == 'order') $(nTd).html("Commande chez fournisseur");
+        else $(nTd).html(sData);
+      },
     },
     {
       title: "Montant",
@@ -316,29 +324,33 @@ function list_stock_accessories(){
       else {
         $(nTd).html(get_date_string_european(sData));
       }
-      $(nTd).data('sort', new Date(sData).getTime());
+        $(nTd).data('sort', new Date(sData).getTime());
+      },
     },
-  },
-  {
-   title: "Fin contrat",
-   data: "CONTRACT_END",
-   fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-    if(sData==null){
-      $(nTd).html('N/A');
+    {
+     title: "Fin contrat",
+     data: "CONTRACT_END",
+     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+      if(sData==null){
+        $(nTd).html('N/A');
+      }
+      else {
+        $(nTd).html(get_date_string_european(sData));
+      }
+        $(nTd).data('sort', new Date(sData).getTime());
+      },
     }
-    else {
-      $(nTd).html(get_date_string_european(sData));
-    }
-    $(nTd).data('sort', new Date(sData).getTime());
-  },
-}
-],
-order: [
-[0, "desc"]
-],
-paging : true,
-"pageLength": 50
-});
+  ],
+    order: [
+      [0, "desc"]
+    ],
+    paging : true,
+    "pageLength": 50
+  }).column(6).search("leasing", false, true ).draw();
+
+
+
+
   $('#stockAccessoriesList').on( 'draw.dt', function () {
     $('.updateStockAccessorylink').off();
     $('.updateStockAccessorylink').click(function(){
@@ -348,6 +360,37 @@ paging : true,
   })
 }
 
+$('body').on('click','.accessoriesInLeasing', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search( "leasing", true, false )
+  .draw();
+})
+$('body').on('click','.accessoriesInStock', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search( "stock", true, false )
+  .draw();
+})
+$('body').on('click','.accessoriesPendingDelivery', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search( "pending", true, false )
+  .draw();
+})
+
+$('body').on('click','.accessoriesInOrder', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search("order", true, false )
+  .draw();
+})
+$('body').on('click','.soldAccessories', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search("achat", true, false )
+  .draw();
+})
 
 function get_stock_accessory(ID){
   $('#widget-manageStockAccessory-form select[name=contractType]').attr('readonly', false);
