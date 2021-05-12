@@ -1,4 +1,3 @@
-UPDATE `factures_details` SET ITEM_TYPE='accessoryCatalog' WHERE ITEM_TYPE='accessory'
 ALTER TABLE `company_actions`  ADD `COMPANY_ID` INT NOT NULL  AFTER `COMPANY`;
 UPDATE company_actions, companies SET COMPANY_ID=companies.ID WHERE company_actions.COMPANY=companies.INTERNAL_REFERENCE;
 SELECT ID_COMPANY, EMAIL, TYPE, COUNT(1) FROM `companies_contact` GROUP BY ID_COMPANY, EMAIL, TYPE  ORDER BY `COUNT(1)`  DESC
