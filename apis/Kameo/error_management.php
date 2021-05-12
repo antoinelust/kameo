@@ -25,7 +25,7 @@ $token = getBearerToken();
 
             $response=array();
             include 'connexion.php';
-            $sql="SELECT * FROM company_actions aa WHERE not exists (select 1 from companies bb where aa.COMPANY=bb.INTERNAL_REFERENCE)";
+            $sql="SELECT * FROM company_actions aa WHERE not exists (select 1 from companies bb where aa.COMPANY_ID=bb.ID)";
             if ($conn->query($sql) === FALSE) {
                 $response = array ('response'=>'error', 'message'=> $conn->error);
                 echo json_encode($response);

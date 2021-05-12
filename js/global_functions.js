@@ -81,10 +81,6 @@ function initializeFields() {
     .find("option")
     .remove()
     .end();
-  $("#widget-taskManagement-form select[name=company]")
-    .find("option")
-    .remove()
-    .end();
   $("#widget-boxManagement-form select[name=company]")
     .find("option")
     .remove()
@@ -131,15 +127,6 @@ function initializeFields() {
             '<option value="' +
               response.company[i].internalReference +
               '">' +
-              response.company[i].companyName +
-              "<br>"
-          );
-          $("#widget-taskManagement-form select[name=company]").append(
-            '<option value="' +
-              response.company[i].internalReference +
-              '" ' +
-              selected +
-              ">" +
               response.company[i].companyName +
               "<br>"
           );

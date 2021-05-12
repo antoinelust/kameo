@@ -24,6 +24,7 @@
 		$router->map('GET|POST','/api/portfolioBikes[ext]', 'apis/Kameo/portfolioBikes/portfolioBikes.php');
 		$router->map('GET|POST','/api/customerCollab[ext]', 'apis/Kameo/companies_collab/companies.php');
 		$router->map('GET|POST','/api/bikesCollab[ext]', 'apis/Kameo/bikes_collab/bikes.php');
+		$router->map('GET|POST','/api/tasks[ext]', 'apis/Kameo/tasks/tasks.php');
 	}
 	else
 		error_message('401');

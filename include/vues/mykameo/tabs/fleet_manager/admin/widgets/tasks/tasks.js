@@ -1,21 +1,18 @@
 $( ".fleetmanager" ).click(function() {
 
-    $.ajax({
-        url: 'apis/Kameo/initialize_counters.php',
-        type: 'post',
-        data: { "email": email, "type": "tasks"},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-                document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
-            }
-        }
-    })
-
-
-
+  $.ajax({
+    url: 'apis/Kameo/initialize_counters.php',
+    type: 'post',
+    data: { "email": email, "type": "tasks"},
+    success: function(response){
+      if(response.response == 'error') {
+          console.log(response.message);
+      }
+      if(response.response == 'success'){
+          document.getElementById('counterTasks').innerHTML = "<span data-speed=\"1\" data-refresh-interval=\"4\" data-to=\""+response.actionNumberNotDone+"\" data-from=\"0\" data-seperator=\"true\">"+response.actionNumberNotDone+"</span>";
+      }
+    }
+  })
 });
 
 
@@ -24,29 +21,6 @@ $('.tasksManagerClick').click(function(){
     generateTasksGraphic('*', $('.taskOwnerSelection2').val(), $('.numberOfDays').val());
 });
 
-
-
-function add_task(company){
-document.getElementById('widget-taskManagement-form').reset();
-
-    $('#widget-taskManagement-form label[for=channel]').addClass("required");
-    $('#widget-taskManagement-form label[for=channel]').removeClass("hidden");
-    $('#widget-taskManagement-form select[name=channel]').addClass("required");
-    $('#widget-taskManagement-form select[name=channel]').removeClass("hidden");
-    $('#widget-taskManagement-form select[name=company]').val(company);
-    $('#widget-taskManagement-form select[name=type]').val("contact");
-    $('#widget-taskManagement-form input').attr("readonly", false);
-    $('#widget-taskManagement-form textarea').attr("readonly", false);
-    $('#widget-taskManagement-form select').attr("readonly", false);
-    $('.taskManagementTitle').text("Ajouter une action");
-    $('#widget-taskManagement-form select[name=owner]').val(email);
-    $('#widget-taskManagement-form input[name=date]').val(get_date_string());
-}
-
-//FleetManager: Gérer les Actions | List user task on <select> call
-function taskFilter(e){
-  list_tasks('*', $('.taskOwnerSelection').val(),'<?php echo $user_data["EMAIL"] ?>');
-}
 
 //FleetManager: Gérer les Actions | Displays the task graph by calling action_company.php and creating it
 function generateTasksGraphic(company, owner, numberOfDays){
@@ -164,9 +138,9 @@ function list_tasks(status, owner2, email) {
         owner2=email;
     }
     $.ajax({
-        url: 'apis/Kameo/action_company.php',
+        url: 'api/tasks',
         type: 'get',
-        data: { "company": '*', "status": status, "owner":owner2},
+        data: { "company": '*', "status": status, "owner":owner2, 'action': "list"},
         success: function(response){
             if(response.response == 'error') {
                 console.log(response.message);
@@ -174,7 +148,7 @@ function list_tasks(status, owner2, email) {
             if(response.response == 'success'){
                 var i=0;
                 var dest="";
-                var temp="<table data-order='[[ 0, \"desc\" ]]' class=\"table table-condensed\" id=\"task_listing\"><h4 class=\"fr-inline text-green\">Actions :</h4><h4 class=\"en-inline text-green\">Actions:</h4><h4 class=\"nl-inline text-green\">Actions:</h4><br><a class=\"button small green button-3d rounded icon-right addTask\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" href=\"#\" name=\"KAMEO\"><span class=\"fr-inline\"><i class=\"fa fa-plus\"></i> Ajouter une action</span></a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</span></a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</span></a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val())\" href=\"#\"><span class=\"fr-inline\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</span></a><thead><tr><th style=\"width: 2%\">ID</th><th><span class=\"fr-inline\">Société</span></th><th><span class=\"fr-inline\">Date</span></th><th>Type</th><th><span class=\"fr-inline\">Titre</span></th><th><span class=\"fr-inline\">Rappel</span></th><th><span class=\"fr-inline\">Statut</span></th><th>Owner</th><th></th></tr></thead><tbody>";
+                var temp="<table data-order='[[ 0, \"desc\" ]]' class=\"table table-condensed\" id=\"task_listing\"><h4 class=\"text-green\">Actions :</h4><br><a class=\"button small green button-3d rounded icon-right\" data-target=\"#taskManagement\" data-toggle=\"modal\"\" data-action='add' href=\"#\"><i class=\"fa fa-plus\"></i> Ajouter une action</a><br/><a class=\"button small green button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('*', $('.taskOwnerSelection').val())\" href=\"#\"><i class=\"fa\"></i> Toutes les actions ("+response.actionNumberTotal+")</a> <div class=\"seperator seperator-small visible-xs\"></div><a class=\"button small orange button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('TO DO', $('.taskOwnerSelection').val())\" href=\"#\"><i class=\"fa\"></i> TO DO ("+response.actionNumberNotDone+")</a> <a class=\"button small red button-3d rounded icon-right\" data-toggle=\"modal\" onclick=\"list_tasks('LATE', $('.taskOwnerSelection').val())\" href=\"#\"><i class=\"fa\"></i> Actions en retard ("+response.actionNumberLate+")</a><thead><tr><th style=\"width: 2%\">ID</th><th>Société</th><th>Date</th><th>Type</th><th>Titre</th><th>Rappel</th><th>Statut</th><th>Owner</th><th></th></tr></thead><tbody>";
                 dest=dest.concat(temp);
                 while (i < response.actionNumber){
                     if(response.action[i].date_reminder!=null){
@@ -219,7 +193,7 @@ function list_tasks(status, owner2, email) {
                     }
 
 
-                    var temp="<tr><td><a href=\"#\" class=\"retrieveTask\" data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].company+"</td><td data-sort=\""+(new Date(response.action[i].date)).getTime()+"\">"+response.action[i].date.shortDate()+"</td><td>"+type+"<td>"+response.action[i].title+"</td>"+date_reminder+"<td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green updateAction\" data-target=\"#updateAction\" name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></td></tr>";
+                    var temp="<tr><td><a href=\"#\" data-action='retrieve' data-target=\"#taskManagement\" data-toggle=\"modal\" name=\""+response.action[i].id+"\">"+response.action[i].id+"</a></td><td>"+response.action[i].companyName+"</td><td data-sort=\""+(new Date(response.action[i].date)).getTime()+"\">"+response.action[i].date.shortDate()+"</td><td>"+type+"<td>"+response.action[i].title+"</td>"+date_reminder+"<td>"+status+"</td><td>"+ownerSpan+"</td><td><ins><a class=\"text-green\" data-target=\"#taskManagement\" data-action='update' name=\""+response.action[i].id+"\" data-toggle=\"modal\" href=\"#\">Update</a></ins></td></tr>";
                     dest=dest.concat(temp);
                     i++;
 
@@ -228,27 +202,6 @@ function list_tasks(status, owner2, email) {
                 dest=dest.concat(temp);
                 document.getElementById('tasksListingSpan').innerHTML = dest;
 
-
-                $(".retrieveTask").click(function() {
-                    retrieve_task(this.name, "retrieve");
-                    $('.taskManagementSendButton').addClass("hidden");
-
-
-                });
-
-                $(".updateAction").click(function() {
-                    construct_form_for_action_update(this.name);
-                    $('.taskManagementSendButton').removeClass("hidden");
-                    $('.taskManagementSendButton').text("Modifier")
-
-                });
-                $(".addTask").click(function() {
-                    add_task(this.name);
-                    $('.taskManagementSendButton').removeClass("hidden");
-                    $('.taskManagementSendButton').text("Ajouter")
-
-                });
-
                 if(owner2){
                     $('.taskOwnerSelection').val(owner2);
                 }else{
@@ -256,8 +209,6 @@ function list_tasks(status, owner2, email) {
                 }
                 $('.taskOwnerSelection2').val('*');
 
-
-                displayLanguage();
 
                 $('#task_listing').DataTable( {
                     paging: true,
@@ -278,101 +229,96 @@ function list_tasks(status, owner2, email) {
     })
 }
 
-function construct_form_for_action_update(id){
 
-        console.log("call");
+$('#taskManagement').off();
+$('#taskManagement').on('shown.bs.modal', function(event){
+  var action=$(event.relatedTarget).data('action');
+  var ID=$(event.relatedTarget).attr('name');
 
-        $('#widget-updateAction-form select[name=owner]')
-            .find('option')
-            .remove()
-            .end()
-        ;
-
-        $.ajax({
-            url: 'apis/Kameo/get_kameobikes_members.php',
-            type: 'get',
-            success: function(response){
-                if(response.response == 'error') {
-                    console.log(response.message);
-                }
-                if(response.response == 'success'){
-                    var i=0;
-                    while (i < response.membersNumber){
-                        if(response.member[i].staann == 'D'){
-                            $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+" - Supprimé <br>");
-                        }else{
-                            $('#widget-updateAction-form select[name=owner]').append("<option value="+response.member[i].email+">"+response.member[i].firstName+" "+response.member[i].name+"<br>");
-                        }
-                        i++;
-                    }
-                }
-            }
-        }).done(function(){
-            $.ajax({
-                url: 'apis/Kameo/action_company.php',
-                type: 'get',
-                data: { "id": id},
-                success: function(response){
-                    if (response.response == 'error') {
-                        console.log(response.message);
-                    } else{
-                        document.getElementById('widget-updateAction-form').reset();
-                        $('#widget-updateAction-form input[name=id]').val(response.action.id);
-                        $('#widget-updateAction-form select[name=type]').val(response.action.type);
-                        $('#widget-updateAction-form input[name=date]').val(response.action.date.substr(0,10));
-                        $('#widget-updateAction-form textarea[name=description]').val(response.action.description);
-                        $('#widget-updateAction-form input[name=title]').val(response.action.title);
-                        if(response.action.date_reminder != null){
-                            $('#widget-updateAction-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
-                        }
-                        $('#widget-updateAction-form select[name=company]').val(response.action.company);
-                        $('#widget-updateAction-form select[name=status]').val(response.action.status);
-                        $('#widget-updateAction-form select[name=owner]').val(response.action.owner);
-                    }
-
-                }
-            })
-
-        })
-
-}
-
-function retrieve_task(ID, action = "retrieve"){
-    $.ajax({
-        url: 'apis/Kameo/action_company.php',
-        type: 'get',
-        data: {"id": ID, "action": action},
-        success: function(response){
-            if(response.response == 'error') {
-                console.log(response.message);
-            }
-            if(response.response == 'success'){
-                if(action=="retrieve"){
-                    $('#widget-taskManagement-form input').attr("readonly", true);
-                    $('#widget-taskManagement-form textarea').attr("readonly", true);
-                    $('#widget-taskManagement-form select').attr("readonly", true);
-                }else{
-                    $('#widget-taskManagement-form input').attr("readonly", false);
-                    $('#widget-taskManagement-form textarea').attr("readonly", false);
-                    $('#widget-taskManagement-form select').attr("readonly", false);
-                }
-                $('#widget-taskManagement-form input[name=title]').val(response.action.title);
-                $('#widget-taskManagement-form input[name=date]').val(response.action.date.substr(0,10));
-                $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
-                $('#widget-taskManagement-form select[name=status]').val(response.action.status);
-                $('#widget-taskManagement-form select[name=company]').val(response.action.company);
-                $('#widget-taskManagement-form textarea[name=description]').val(response.action.description);
-                $('#widget-taskManagement-form select[name=type]').val(response.action.type);
-                $('#widget-offerTask-form select[name=company]').val(response.action.company);
-                if(response.action.date_reminder != null){
-                    $('#widget-taskManagement-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
-                }else{
-                    $('#widget-taskManagement-form input[name=date_reminder]').val("");
-                }
-                $('.taskManagementTitle').text("Informations sur l'action");
-                $('.taskManagementSendButton').addClass("hidden");
-            }
+  $("#widget-taskManagement-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
+  $.ajax({
+    url: "api/companies",
+    type: "get",
+    data: { type: "*", action: 'listMinimal' },
+    success: function (response) {
+      if (response.response == "success") {
+        response.company.forEach(function(company){
+          $("#widget-taskManagement-form select[name=company]").append(
+            '<option value="' +
+              company.ID +
+              '">' +
+              company.companyName +
+              "</option>"
+          );
+        });
+        if(action=="retrieve"){
+          $('#widget-taskManagement-form input').attr("readonly", true);
+          $('#widget-taskManagement-form textarea').attr("readonly", true);
+          $('#widget-taskManagement-form select').attr("readonly", true);
+          $('.taskManagementTitle').text("Informations sur l'action");
+          $('#widget-taskManagement-form input[name=ID]').parent().addClass("hidden");
+          $('.taskManagementSendButton').addClass("hidden");
+          retrieveTask(ID);
+        }else{
+          $('#widget-taskManagement-form input').attr("readonly", false);
+          $('#widget-taskManagement-form textarea').attr("readonly", false);
+          $('#widget-taskManagement-form select').attr("readonly", false);
+          $('.taskManagementSendButton').removeClass("hidden");
+          if(action=="add"){
+            $('#widget-taskManagement-form input[name=date]').val(get_date_string());
+            $('.taskManagementTitle').text("Ajouter une action");
+            $('#widget-taskManagement-form input[name=ID]').parent().addClass("hidden");
+            $('#widget-taskManagement-form').trigger('reset');
+            $('#widget-taskManagement-form input[name=action]').val('add');
+            $('#widget-taskManagement-form select[name=company]').val(12);
+            $('#widget-taskManagement-form select[name=owner]').val(user_data.EMAIL);
+            $('#widget-taskManagement-form input[name=date]').val(get_date_string());
+          }else{
+            $('.taskManagementTitle').text("Mettre à jour l'action");
+            $('#widget-taskManagement-form input[name=action]').val('update');
+            $('#widget-taskManagement-form input[name=ID]').parent().removeClass("hidden");
+            $('#widget-taskManagement-form input[name=ID]').attr('readonly', true);
+            retrieveTask(ID);
+          }
         }
-    })
+      }
+    }
+  });
+});
 
+function retrieveTask(ID){
+  $.ajax({
+    url: 'api/tasks',
+    type: 'get',
+    data: {"id": ID, 'action': "retrieve"},
+    success: function(response){
+      if(response.response == 'error') {
+          console.log(response.message);
+      }
+      if(response.response == 'success'){
+        $('#widget-taskManagement-form input[name=ID]').val(response.action.id);
+        $('#widget-taskManagement-form input[name=title]').val(response.action.title);
+        $('#widget-taskManagement-form input[name=date]').val(response.action.date.substr(0,10));
+        $('#widget-taskManagement-form select[name=owner]').val(response.action.owner);
+        $('#widget-taskManagement-form select[name=status]').val(response.action.status);
+        $('#widget-taskManagement-form select[name=company]').val(response.action.company);
+        $('#widget-taskManagement-form textarea[name=description]').val(response.action.description);
+        $('#widget-taskManagement-form select[name=type]').val(response.action.type);
+        $('#widget-taskManagement-form select[name=company]').val(response.action.companyID);
+        $('#widget-taskManagement-form select[name=channel]').val(response.action.channel);
+        if(response.action.date_reminder != null){
+            $('#widget-taskManagement-form input[name=date_reminder]').val(response.action.date_reminder.substr(0,10));
+        }else{
+            $('#widget-taskManagement-form input[name=date_reminder]').val("");
+        }
+      }
+    }
+  });
 }
+
+$('#tasksListing select[name=taskOwnerSelection]').change(function(){
+  list_tasks('*', $(this).val());
+})

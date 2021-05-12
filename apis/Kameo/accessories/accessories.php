@@ -27,7 +27,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		$id=isset($_GET['ID']) ? $_GET['ID'] : NULL;
 
 		if(get_user_permissions("admin", $token)){
-			$retrieveOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, order_accessories.DESCRIPTION, order_accessories.COMPANY, accessories_categories.CATEGORY, accessories_catalog.BRAND, accessories_catalog.MODEL FROM order_accessories, accessories_catalog, accessories_categories, companies WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND order_accessories.ID=?", array('i', $id), false)[0];
+			$retrieveOrderAcessories= execSQL("SELECT order_accessories.ID, order_accessories.TYPE, order_accessories.PRICE_HTVA, order_accessories.STATUS, order_accessories.DESCRIPTION, grouped_orders.COMPANY_ID, grouped_orders.EMAIL, grouped_orders.ID as GROUP_ID,  accessories_categories.ID as categoryID, accessories_categories.CATEGORY, order_accessories.BRAND as catalogID, accessories_catalog.BRAND, accessories_catalog.MODEL FROM order_accessories, accessories_catalog, accessories_categories, grouped_orders WHERE order_accessories.BRAND=accessories_catalog.ID AND accessories_catalog.ACCESSORIES_CATEGORIES=accessories_categories.ID AND order_accessories.ID=? AND order_accessories.ORDER_ID=grouped_orders.ID", array('i', $id), false)[0];
 			echo json_encode($retrieveOrderAcessories);
 			die;
 		}
@@ -65,20 +65,6 @@ switch($_SERVER["REQUEST_METHOD"])
 			}
 			$response['status']=$status;
 			echo json_encode($response);
-			die;
-		}
-		else{
-			error_message('403');
-		}
-	}
-	else if ($action === 'getContractFromAccessory'){
-		$id=isset($_GET['OrderId']) ? $_GET['OrderId'] : NULL;
-
-		if(get_user_permissions("admin", $token)){
-			$retrieveOrderAcessories['orderAccessory']= execSQL("SELECT aa.*, bb.BRAND,bb.MODEL FROM accessories_stock aa, 	accessories_catalog bb WHERE aa.ORDER_ID='$id' AND aa.CATALOG_ID=bb.ID", array(), false);
-			$retrieveOrderAcessories['response']="success";
-
-			echo json_encode($retrieveOrderAcessories);
 			die;
 		}
 		else{

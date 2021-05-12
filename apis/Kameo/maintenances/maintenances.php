@@ -90,7 +90,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		}
 	}else if($action === 'listServices'){
 		if(get_user_permissions("admin", $token)){
-			echo json_encode(execSQL("SELECT * FROM services_entretiens WHERE CATEGORY = ?", array('s', $_GET['category']), false));
+			echo json_encode(execSQL("SELECT * FROM services_entretiens WHERE CATEGORY = ? ORDER BY DESCRIPTION", array('s', $_GET['category']), false));
 			die;
 		}
 	}else if($action === 'listCategories'){
@@ -115,7 +115,7 @@ switch($_SERVER["REQUEST_METHOD"])
 			$external = isset($_POST["external"]) ? $_POST["external"] : NULL;
 			$outDatePlanned = isset($_POST["dateOutPlanned"]) ? $_POST["dateOutPlanned"] : NULL;
 			if($status=='DONE'){
-				execSQL("INSERT INTO entretiens (HEU_MAJ,END_DATE_MAINTENANCE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR,OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?)", array('siissssS', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned), true);
+				execSQL("INSERT INTO entretiens (HEU_MAJ,END_DATE_MAINTENANCE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR,OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1, ?)", array('siisssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned), true);
 			}
 			else if($status=='DELIVERED_TO_CLIENT'){
 				execSQL("INSERT INTO entretiens (HEU_MAJ,OUT_DATE, USR_MAJ, BIKE_ID, EXTERNAL_BIKE, DATE, STATUS, COMMENT, INTERNAL_COMMENT, NR_ENTR, OUT_DATE_PLANNED ) VALUES (CURRENT_TIMESTAMP,CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, 1,? )", array('siisssss', $user, $bike_id, $external, $date, $status, $comment, $internalComment,$outDatePlanned), true);

@@ -25,8 +25,7 @@ $length = strlen($phone);
 if ($length<8 or $length>12) {
 	errorMessage("ES0004");
 }
-
-if($captcha == 0){
+if($captcha == 0 && constant('ENVIRONMENT') != 'local'){
     errorMessage("ES0020");
 }
 
@@ -34,20 +33,16 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
  if($email != '') {
 
-
     $mail->IsHTML(true);                                    // Set email format to HTML
     $mail->CharSet = 'UTF-8';
 
-
-    if(substr($_SERVER['REQUEST_URI'], 1, 4) != "test" && substr($_SERVER['HTTP_HOST'], 0, 9)!="localhost"){
+		if(constant('ENVIRONMENT') == "production"){
         $mail->AddCC('julien@kameobikes.com', 'Julien Jamar');
         $mail->AddCC('antoine@kameobikes.com', 'Antoine Lust');
         $mail->AddAddress('info@kameobikes.com', 'Information Kameo Bikes');
-    }else{
+    }else if(constant('ENVIRONMENT') == "test"){
         $mail->AddAddress('antoine@kameobikes.com', 'Antoine Lust');
     }
-
-
 
 
     $mail->From = $email;
@@ -610,16 +605,16 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 <h3>Nouveau mail reçu !&nbsp;</h3>
 
-    <p>Vous avez reçu un nouveau mail, veuillez le trouver ci-dessous:<br>
-    <br>
-    <strong>$firstName $name ($phone):</strong><br>
-    Type: $type<br>
-    Nom d'entreprise : $entreprise<br>";
+															    <p>Vous avez reçu un nouveau mail, veuillez le trouver ci-dessous:<br>
+															    <br>
+															    <strong>$firstName $name ($phone):</strong><br>
+															    Type: $type<br>
+															    Nom d'entreprise : $entreprise<br>";
 
-		if($companySize){
-			$body.="Taille de l'entreprise : ".$companySize."<br>";
-		}
-    $body.="Message : $message<br></p>
+																	if($companySize){
+																		$body.="Taille de l'entreprise : ".$companySize."<br>";
+																	}
+															    $body.="Message : $message<br></p>
 
                             </td>
                         </tr>
@@ -926,21 +921,36 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $mail->Body = $body;
 
+		if($entreprise != 'N/A'){
+			execSQL("INSERT IGNORE  INTO companies (USR_MAJ, COMPANY_NAME, BILLING_GROUP, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AQUISITION, AUTOMATIC_STATISTICS, BILLS_SENDING, STAANN, AUDIENCE) VALUES ('contact_form.php', ?, '1', '/', '/', '/', '/',?, 'prospect', 'KAMEO', 'N', 'N', '', 'B2B')", array('ss', $entreprise, $entreprise), true);
+			$companyID=execSQL("SELECT ID FROM companies WHERE INTERNAL_REFERENCE=?", array('s', $entreprise), false)[0]['ID'];
 
-    if(!$mail->Send()) {
-       $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
+		}else{
+			$companyName=$firstName.' '.$name;
+			execSQL("INSERT INTO companies (USR_MAJ, COMPANY_NAME, BILLING_GROUP, STREET, ZIP_CODE, TOWN, VAT_NUMBER, INTERNAL_REFERENCE, TYPE, AQUISITION, AUTOMATIC_STATISTICS, BILLS_SENDING, STAANN, AUDIENCE) VALUES ('contact_form.php', ?, '1', '/', '/', '/', '/',?, 'prospect', 'KAMEO', 'N', 'N', '', 'B2C')", array('ss', $companyName, $companyName), true);
+			$companyID=execSQL("SELECT ID FROM companies WHERE INTERNAL_REFERENCE=?", array('s', $companyName), false)[0]['ID'];
+		}
 
-    }else {
-       $response = array ('response'=>'success');
-    }
+		execSQL("INSERT IGNORE INTO companies_contact (USR_MAJ, NOM, PRENOM, EMAIL, PHONE, ID_COMPANY, FUNCTION, TYPE, BIKES_STATS) VALUES('contact_form.php', ?, ?, ?, ?, ?, 'TBC', 'contact', 'N')", array('ssssi', $name, $firstName, $email, $phone, $companyID), true);
+		execSQL("INSERT INTO company_actions (USR_MAJ, TYPE, CHANNEL, COMPANY_ID, DATE, DATE_REMINDER, TITLE, DESCRIPTION, STATUS, OWNER) VALUES('contact_form.php', 'contact', 'site', ?, CURRENT_TIMESTAMP, NULL, 'Prise de contact via le site', 'Mail envoyé depuis la page de contact', 'TO DO', 'antoine@kameobikes.com')", array('i', $companyID), true);
+
+		if(constant('ENVIRONMENT') == "production" || constant('ENVIRONMENT') == "test")
+		{
+			if(!$mail->Send()) {
+				 $response = array ('response'=>'error', 'message'=> $mail->ErrorInfo);
+			}else{
+				 $response = array ('response'=>'success');
+			}
+		}else{
+			$response = array ('response'=>'success');
+		}
     echo json_encode($response);
     die;
 
-} else {
-	$response = array ('response'=>'error');
-	echo json_encode($response);
-    die;
-}
-
+	} else {
+		$response = array ('response'=>'error');
+		echo json_encode($response);
+	    die;
+	}
 }
 ?>

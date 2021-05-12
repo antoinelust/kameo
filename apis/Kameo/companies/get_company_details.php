@@ -24,10 +24,16 @@ if(is_null($resultat['contacts'])){
   $resultat['contacts']=array();
 }
 
-$resultat=execSQL("SELECT * FROM conditions dd where COMPANY=? AND NAME='generic'", array('s', $company), false)[0];
-$response['booking']=$resultat['BOOKING'];
-$response['assistance']=$resultat['ASSISTANCE'];
-$response['locking']=$resultat['LOCKING'];
+$resultat=execSQL("SELECT * FROM conditions dd where COMPANY=? AND NAME='generic'", array('s', $company), false);
+if(count($resultat)==0){
+  $response['booking']="N";
+  $response['assistance']="N";
+  $response['locking']="N";
+}else{
+  $response['booking']=$resultat[0]['BOOKING'];
+  $response['assistance']=$resultat[0]['ASSISTANCE'];
+  $response['locking']=$resultat[0]['LOCKING'];
+}
 
 $response['bike']=execSQL("SELECT * FROM customer_bikes where COMPANY=? AND STAANN != 'D'", array('s', $company), false);
 if(is_null($response['bike'])){

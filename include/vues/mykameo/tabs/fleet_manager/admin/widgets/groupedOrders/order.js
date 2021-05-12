@@ -47,7 +47,7 @@ $("#groupedOrdersListing").on("show.bs.modal", function (event){
 				title: "ID",
 				data: "ID",
 				fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-					$(nTd).html('<a href="#" class="text-green" data-target="#groupedOrderManagement" data-toggle="modal" data-action="retrieve" data-id="'+sData+'">'+sData+'</a>');
+					$(nTd).html('<a href="#" class="text-green" data-target="#groupedOrderManagement" data-toggle="modal" data-action="update" data-id="'+sData+'">'+sData+'</a>');
 				},
 			},
 			{ title: "Nom de la société", data: "COMPANY_NAME"},

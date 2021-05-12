@@ -22,37 +22,57 @@
 			<hr>
 			<div class="table-responsive">
 				<form  name = "widget-orderAcessory-form" id="widget-orderAcessory-form" role="form" method="get" action="apis/Kameo/accessories/accessories.php">
-					<div class="col-sm-12">
+					<div class="col-md-12">
 						<input class="form-control" type="hidden" name="action" value="updateOrderDetailAcessory" />
-						<input class="form-control" type="hidden" name="id" />
-						<div class="col-sm-4">
+						<div class="col-md-4">
+							<label for="id">ID :</label>
+							<input type="number" class="form-control required" name="id">
+						</div>
+						<div class="col-md-4">
+							<label for="grouped_id">ID Groupé :</label>
+							<input type="number" class="form-control required" name="grouped_id">
+						</div>
+						<div class="col-md-4">
 							<label for="company">Société :</label>
 							<select class="form-control" name="company">
 							</select>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-md-4">
 							<label for="emailUser">Email :</label>
 							<input class="form-control" type="text" name="emailUser" readonly/>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-md-4">
 							<label for="contractType">Type de contrat :</label>
 							<select class="form-control" name="contractType">
 								<option value='leasing'>Leasing</option>
 								<option value='achat'>Vente</option>
 							</select>
 						</div>
+						<div class="col-md-4">
+							<label for="contractType">Statut :</label>
+							<select class="form-control required" name="status">
+								<option value='new'>Nouvelle Commande</option>
+								<option value='confirmed'>Commande confirmée</option>
+								<option value='waiting_delivery'>En attente de livraison</option>
+								<option value='done'>Terminée</option>
+							</select>
+						</div>
 					</div>
-					<div class="col-sm-12">
-						<div class="col-sm-4">
+					<div class="col-md-12">
+						<div class="col-md-4">
+						<label for="description">Catégorie :</label>
+							<select class="form-control" name="category"></select>
+						</div>
+						<div class="col-md-4">
+						<label for="description">Modèle :</label>
+							<select class="form-control" name="model"></select>
+						</div>
+						<div class="col-md-4">
 							<label for="priceHTVA">Prix  :</label>
 							<input class="form-control" type="text" name="priceHTVA" readonly/>
 						</div>
 					</div>
-					<div class="col-sm-12">
-						<label for="description">Description :</label>
-						<textarea class="form-control required" rows="5" name="description" readonly></textarea>
-					</div>
-					<div class="col-sm-12" >
+					<div class="col-md-12" >
 						<button class="button small green button-3d rounded icon-left" type="submit" name="submitBtn"><i class="fa fa-plus"></i>Modifier</button>
 					</div>
 				</form>
@@ -81,7 +101,6 @@
 						}
 						);
 						document.getElementById("widget-orderAcessory-form").reset();
-						$("#confirmOrderAccessory").modal("toggle");
 						$("#displayorderAcessory").dataTable().api().ajax.reload();
 					} else {
 						$.notify(

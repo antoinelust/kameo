@@ -157,7 +157,7 @@ fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 },
 }
 ],
-order: [[0, "asc"]],
+order: [[5, "asc"]],
 paging : false
 });
 }
