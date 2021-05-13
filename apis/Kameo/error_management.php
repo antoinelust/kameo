@@ -268,22 +268,7 @@ $token = getBearerToken();
             }
             $conn->close();
 
-            $response['bike']['insuranceOmnium']=execSQL("SELECT COMPANY,
-              IF (SELECT 1 = 1 FROM customer_bike_access, customer_bikes WHERE customer_bikes.ID=customer_bike_access.BIKE_ID AND customer_bike_access.TYPE='personnel') THEN
-                BEGIN
-                    SELECT EMAIL FROM customer_bikes_access WHERE customer_bikes.ID=customer_bikes_access.BIKE_ID AND customer_bikes_access.TYPE='personnel';
-                END;
-                ELSE
-                BEGIN
-                    INSERT INTO Table (FieldValue) VALUES('');
-                    SELECT LAST_INSERT_ID() AS TableID;
-                END;
-                END IF;
- FROM customer_bikes WHERE CONTRACT_TYPE='leasing' AND INSURANCE='N'"
-
-
             $response['contract']=$errorArrayLeasingDuration;
-
             include 'connexion.php';
             $sql="SELECT * FROM boxes aa WHERE COMPANY != 'KAMEO' AND START is NOT NULL and STAANN != 'D'";
             if ($conn->query($sql) === FALSE) {
