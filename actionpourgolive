@@ -1,8 +1,1 @@
-ALTER TABLE `company_actions`  ADD `COMPANY_ID` INT NOT NULL  AFTER `COMPANY`;
-UPDATE company_actions, companies SET COMPANY_ID=companies.ID WHERE company_actions.COMPANY=companies.INTERNAL_REFERENCE;
-SELECT ID_COMPANY, EMAIL, TYPE, COUNT(1) FROM `companies_contact` GROUP BY ID_COMPANY, EMAIL, TYPE  ORDER BY `COUNT(1)`  DESC
-DELETE FROM companies_contact WHERE EMAIL='';
-DELETE FROM companies_contact WHERE EMAIL IN (SELECT tt.EMAIL FROM (SELECT ID_COMPANY, EMAIL, TYPE, COUNT(1) as SOMME FROM `companies_contact` GROUP BY ID_COMPANY, EMAIL, TYPE) as tt WHERE tt.SOMME>1);
-Créer index unique sur companies_contact;
-Créer relation externe pour companies_contact;
-Créer index unique sur company_actions;
+ALTER TABLE `customer_bikes`  ADD `INSURANCE_INDIVIDUAL` BOOLEAN NOT NULL  AFTER `INSURANCE`;

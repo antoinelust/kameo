@@ -53,7 +53,7 @@ $(".fleetmanager").click(function () {
     if($('#insuranceBikeCheck').is(":checked")){
       $('#widget-bikeManagement-form label[for=contractEnd]').html("Date de fin d'assurance");
       $('#widget-bikeManagement-form .contractEndBloc').fadeIn();
-    } else{
+    }else{
       $('#widget-bikeManagement-form .contractEndBloc').fadeOut();
     }
   });
@@ -853,6 +853,11 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
           }else{
             $('#widget-bikeManagement-form input[name=insurance]').prop("checked", false);
           }
+          if(response.insuranceIndividual){
+            $('#widget-bikeManagement-form input[name=insuranceIndividual]').prop("checked", true);
+          }else{
+            $('#widget-bikeManagement-form input[name=insuranceIndividual]').prop("checked", false);
+          }
 
           $('#widget-bikeManagement-form input[name=billingPrice]').val(response.leasingPrice);
 
@@ -877,48 +882,6 @@ function construct_form_for_bike_status_updateAdmin(bikeID){
             $('#bikeUserAccessAdmin').addClass('hidden');
             $('#bikeBuildingAccessAdmin').addClass('hidden');
           }
-
-          i=0;
-          var dest="";
-          if(response.building.length==0){
-            temp="<div class=\"col-sm-12\"><p><trong>Pas de bâtiments</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite y assigner ce vélo</p></div>";
-            temp=temp.concat("<div class=\"col-sm-12 nl\"><p><strong>Nos building</strong> defined for that company, please first create one and then you will be able to link that building and the bike</p></div>");
-            dest=dest.concat(temp);
-
-          }else{
-            response.building.forEach(function(building){
-              if(building.access=='true'){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"buildingAccess[]\" value=\""+building.buildingCode+"\">"+building.descriptionFR+"</div>";
-              }
-              else{
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"buildingAccess[]\" value=\""+building.buildingCode+"\">"+building.descriptionFR+"</div>";
-              }
-              dest=dest.concat(temp);
-            })
-          }
-
-          document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
-
-          i=0;
-          var dest="";
-
-          if(response.user.length==0){
-            temp="<div class=\"col-sm-12\"><p><trong>Pas d'utilitisateurs</strong> définis pour cette société, commencez par en créer un et vous pourrez ensuite luis donner accès à ce vélo </p></div>";
-            dest=dest.concat(temp);
-
-          }else{
-            response.user.forEach(function(user){
-              if(user.access=='true'){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" checked name=\"userAccess[]\" value=\""+user.email+"\">"+user.name+" "+user.firstName+"</div>";
-              }
-              else if(user.access=='false'){
-                temp="<div class=\"col-sm-3\"><input type=\"checkbox\" name=\"userAccess[]\" value=\""+user.email+"\">"+user.name+" "+user.firstName+"</div>";
-              }
-              dest=dest.concat(temp);
-            })
-          }
-          document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
-
 
           $('#widget-bikeManagement-form select[name=company]').val(company);
           $('#widget-bikeManagement-form select[name=company]').change(function(){
@@ -1110,7 +1073,6 @@ function construct_form_for_bike_access_updateAdmin(company){
           }
           dest2=dest2.concat("</select>");
           document.getElementById('addBike_firstBuilding').innerHTML = dest2;
-          console.log(dest);
 
           document.getElementById('bikeBuildingAccessAdmin').innerHTML = dest;
           i=0;
@@ -1124,7 +1086,6 @@ function construct_form_for_bike_access_updateAdmin(company){
               dest=dest.concat(temp);
             })
           }
-          console.log(dest);
           document.getElementById('bikeUserAccessAdmin').innerHTML = dest;
           displayLanguage();
 
@@ -1582,7 +1543,6 @@ function list_bikes_admin(){
   }
 
   if (response.bike[i].GPS_ID != null && response.bike[i].GPS_ID != '/' && response.bike[i].GPS_ID != '-' && response.bike[i].GPS_ID != 'TBC' && response.bike[i].GPS_ID != '') {
-    console.log(response.bike[i].GPS_ID);
     var GPS = '<a data-target="#bikePositionAdmin" name="' +
     response.bike[i].id +
     '" data-toggle="modal" class="getBikePosition" href="#"><i class="fa fa-map-pin" aria-hidden="true"></i> </a>';

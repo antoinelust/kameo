@@ -146,10 +146,7 @@ style="display: none; z-index: 2000"
             <div class="col-md-12">
               <div class="col-md-4">
                 <label for="contractType">Type de contrat</label>
-                <select
-                name="contractType"
-                class="form-control required"
-                ></select>
+                <select name="contractType" class="form-control required"></select>
               </div>
             </div>
             <div class="separator buyingInfos" style="display: none"></div>
@@ -159,11 +156,7 @@ style="display: none; z-index: 2000"
                 <label for="price">Prix d'achat</label>
                 <div class="input-group">
                   <span class="input-group-addon">€/</span>
-                  <input
-                  type="float"
-                  name="price"
-                  class="form-control required"
-                  />
+                  <input type="float" name="price" class="form-control required">
                 </div>
               </div>
             </div>
@@ -172,97 +165,54 @@ style="display: none; z-index: 2000"
               <h4 class="text-green">Informations relatives au contrat</h4>
               <div class="col-md-4 contractStartBloc">
                 <label for="contractStart">Début de contrat</label>
-                <input
-                type="date"
-                name="contractStart"
-                class="form-control"
-                />
+                <input type="date" name="contractStart" class="form-control">
               </div>
               <div class="col-md-4 contractEndBloc">
                 <label for="contractEnd">Fin de contrat</label>
-                <input
-                type="date"
-                name="contractEnd"
-                class="form-control"
-                />
+                <input type="date" name="contractEnd" class="form-control">
               </div>
               <div class="col-md-12">
                 <div class="col-md-4 insurance">
                   <label for="insurance">Assurance ?</label>
-                  <input
-                  type="checkbox"
-                  name="insurance"
-                  id="insuranceBikeCheck"
-                  class="form-control"
-                  />Oui
+                  <input type="checkbox" name="insurance" id="insuranceBikeCheck" class="form-control">Oui
+                </div>
+                <div class="col-md-4">
+                  <label for="insuranceIndividual">Assurance individuelle ?</label>
+                  <input type="checkbox" name="insuranceIndividual" class="form-control">Oui
                 </div>
                 <div class="col-md-4 soldPrice" style="display: none">
-                  <label for="insurance">Prix de vente du vélo</label>
-                  <input
-                  type="number"
-                  min="0"
-                  value="0"
-                  name="bikeSoldPrice"
-                  id="bikeSoldPrice"
-                  class="form-control"
-                  disabled
-                  />
+                  <label for="bikeSoldPrice">Prix de vente du vélo</label>
+                  <input type="number" min="0" value="0" name="bikeSoldPrice" id="bikeSoldPrice" class="form-control" disabled>
                 </div>
               </div>
             </div>
             <div class="separator orderInfos" style="display: none"></div>
             <div class="col-md-12 orderInfos" style="display: none">
-              <h4 class="text-green">
-                Informations relatives à la commande
-              </h4>
+              <h4 class="text-green">Informations relatives à la commande</h4>
               <div class="col-md-4">
                 <label for="orderingDate">Date de la commande</label>
-                <input
-                type="date"
-                name="orderingDate"
-                class="form-control required"
-                id="today"
-                />
+                <input type="date" name="orderingDate" class="form-control required" id="today">
               </div>
               <div class="col-md-4 estimatedDeliveryDate">
                 <label for="estimatedDeliveryDate">Date estimée d'arrivée</label>
-                <input
-                type="date"
-                name="estimatedDeliveryDate"
-                class="form-control"
-                />
+                <input type="date" name="estimatedDeliveryDate" class="form-control">
               </div>
               <div class="col-md-4 deliveryDate">
                 <label for="deliveryDate">Date d'arrivée</label>
-                <input
-                type="date"
-                name="deliveryDate"
-                class="form-control required"
-                />
+                <input type="date" name="deliveryDate" class="form-control required">
               </div>
               <div class="col-md-4">
                 <label for="orderNumber">Numéro de commande</label>
-                <input
-                type="text"
-                name="orderNumber"
-                class="form-control"
-                />
+                <input type="text" name="orderNumber" class="form-control">
               </div>
               <div class="col-md-4 offer">
-                <label for="offerReference" class="offerReference"
-                >Offre liée</label
-                >
-                <select
-                name="offerReference"
-                class="form-control offerReference"
-                ></select>
+                <label for="offerReference" class="offerReference">Offre liée</label>
+                <select name="offerReference" class="form-control offerReference"></select>
               </div>
             </div>
             <div class="separator billingInfos" style="display: none"></div>
             <div class="col-md-12 billingInfos" style="display: none">
-              <h4 class="text-green">
-                Informations relatives à la facturation
-              </h4>
+              <h4 class="text-green">Informations relatives à la facturation</h4>
               <div class="col-md-4">
                 <label for="billingType">Type de facturation</label>
                 <select name="billingType" class="form-control">
@@ -275,31 +225,17 @@ style="display: none; z-index: 2000"
                 <label for="billingPrice">Montant de facturation</label>
                 <div class="input-group">
                   <span class="input-group-addon">€/mois</span>
-                  <input
-                  type="float"
-                  name="billingPrice"
-                  class="form-control"
-                  />
+                  <input type="float" name="billingPrice" class="form-control">
                 </div>
               </div>
               <div class="col-md-4 billingGroupDiv">
                 <label for="billingGroup">Groupe de facturation</label>
-                <input
-                type="text"
-                name="billingGroup"
-                class="form-control required"
-                />
+                <input type="text" name="billingGroup" class="form-control required">
               </div>
               <div class="col-md-12 billingDiv">
                 <div class="col-md-4">
                   <label for="billing">Facturation automatique ?</label>
-                  <label
-                  ><input
-                  type="checkbox"
-                  name="billing"
-                  class="form-control"
-                  />Oui</label
-                  >
+                  <label><input type="checkbox" name="billing" class="form-control">Oui</label>
                 </div>
               </div>
             </div>
@@ -320,11 +256,7 @@ style="display: none; z-index: 2000"
             value="<?php echo $user_data['EMAIL']; ?>"
             />
             <input type="text" name="action" class="form-control hidden" />
-            <div
-            class="col-md-12"
-            id="bikeBuildingAccessAdminDiv"
-            style="display: none"
-            >
+            <div class="col-md-12" id="bikeBuildingAccessAdminDiv" style="display: none">
             <h4>Accès aux bâtiments de ce vélo</h4>
           </div>
           <div
