@@ -69,22 +69,12 @@ $( document ).ready(function() {
         }
 
         $("#widget-offerManagement-form input[name=title]").val(response.TITRE);
-        $("#widget-offerManagement-form textarea[name=description]").val(
-          response.DESCRIPTION
-        );
+        $("#widget-offerManagement-form textarea[name=description]").val(response.DESCRIPTION);
         $("#widget-offerManagement-form select[name=type]").val(response.TYPE);
-        $("#widget-offerManagement-form select[name=status]").val(
-          response.STATUS
-        );
-        $("#widget-offerManagement-form input[name=margin]").val(
-          response.MARGIN
-        );
-        $("#widget-offerManagement-form input[name=probability]").val(
-          response.PROBABILITY
-        );
-        $("#widget-offerManagement-form input[name=company]").val(
-          response.COMPANY
-        );
+        $("#widget-offerManagement-form select[name=status]").val(response.STATUS);
+        $("#widget-offerManagement-form input[name=margin]").val(response.MARGIN);
+        $("#widget-offerManagement-form input[name=probability]").val(response.PROBABILITY);
+        $("#widget-offerManagement-form input[name=company]").val(response.COMPANY);
         $("#widget-offerManagement-form input[name=action]").val(action);
         $("#widget-offerManagement-form input[name=ID]").val(ID);
 
@@ -93,122 +83,59 @@ $( document ).ready(function() {
         if (response.item.length > 0) {
           response.item.forEach(function(item) {
             if (item.ITEM_TYPE == "box") {
-              $("#offerManagementDetails").append(
-                "<li>1 borne " +
-                  item.model +
-                  " au prix de " +
-                  item.ITEM_LOCATION_PRICE +
-                  " €/mois et un coût d'installation de " +
-                  item.ITEM_INSTALLATION_PRICE +
-                  " €</a></li>"
-              );
+              $("#offerManagementDetails").append("<li>1 borne " +item.model +" au prix de " +item.ITEM_LOCATION_PRICE +" €/mois et un coût d'installation de " +item.ITEM_INSTALLATION_PRICE +" €</a></li>");
             } else if (item.ITEM_TYPE=='bike') {
               if(item.ITEM_LOCATION_PRICE == '0'){
-                $("#offerManagementDetails").append(
-                  "<li>Achat de vélo " +
-                    item.brand +
-                    " " +
-                    item.model +
-                    " au prix de " +
-                    item.ITEM_INSTALLATION_PRICE +
-                    " €</a></li>"
-                );
+                $("#offerManagementDetails").append("<li>Achat de vélo " +item.brand +" " +item.model +" au prix de " +item.ITEM_INSTALLATION_PRICE +" €</a></li>");
               }else{
-                $("#offerManagementDetails").append(
-                  "<li>Location de vélo " +
-                    item.brand +
-                    " " +
-                    item.model +
-                    " au prix de " +
-                    item.ITEM_LOCATION_PRICE +
-                    " €/mois</a></li>"
-                );
+                $("#offerManagementDetails").append("<li>Location de vélo " +item.brand +" " +item.model +" au prix de " +item.ITEM_LOCATION_PRICE +" €/mois</a></li>");
               }
             } else if (item.ITEM_TYPE='accessory') {
               if(item.ITEM_LOCATION_PRICE == '0'){
-                $("#offerManagementDetails").append(
-                  "<li>Achat d'accessoire " +
-                    item.brand +
-                    " " +
-                    item.model +
-                    " au prix de " +
-                    item.ITEM_INSTALLATION_PRICE +
-                    " €</a></li>"
-                );
+                $("#offerManagementDetails").append("<li>Achat d'accessoire " +item.brand +" " +item.model +" au prix de " +item.ITEM_INSTALLATION_PRICE +" €</a></li>");
               }else{
-                $("#offerManagementDetails").append(
-                  "<li>Location d'accessoire   " +
-                    item.brand +
-                    " " +
-                    item.model +
-                    " au prix de " +
-                    item.ITEM_LOCATION_PRICE +
-                    " €/mois</a></li>"
-                );
+                $("#offerManagementDetails").append("<li>Location d'accessoire   " +item.brand +" " +item.model +" au prix de " +item.ITEM_LOCATION_PRICE +" €/mois</a></li>");
               }
             }
           })
         }
 
-        if (
-          $("#widget-offerManagement-form select[name=type]").val() == "achat"
-        ) {
-          $("#widget-offerManagement-form input[name=start]").attr(
-            "readonly",
-            true
-          );
-          $("#widget-offerManagement-form input[name=end]").attr(
-            "readonly",
-            true
-          );
+        if ($("#widget-offerManagement-form select[name=type]").val() == "achat") {
+          if (response.DATE) {
+            $("#widget-offerManagement-form input[name=date]").val(response.DATE.substring(0, 10));
+          } else {
+            $("#widget-offerManagement-form input[name=date]").val("");
+          }
+          $("#widget-offerManagement-form input[name=start]").attr("readonly",true);
+          $("#widget-offerManagement-form input[name=end]").attr("readonly",true);
           $("#widget-offerManagement-form input[name=start]").val("");
           $("#widget-offerManagement-form input[name=end]").val("");
         } else {
-          if (action != "retrieve") {
-            $("#widget-offerManagement-form input[name=start]").attr(
-              "readonly",
-              false
-            );
-            $("#widget-offerManagement-form input[name=end]").attr(
-              "readonly",
-              false
-            );
-          }
-
           if (response.DATE) {
-            $("#widget-offerManagement-form input[name=date]").val(
-              response.DATE.substring(0, 10)
-            );
+            $("#widget-offerManagement-form input[name=date]").val(response.DATE.substring(0, 10));
           } else {
             $("#widget-offerManagement-form input[name=date]").val("");
           }
           if (response.START) {
-            $("#widget-offerManagement-form input[name=start]").val(
-              response.START.substring(0, 10)
-            );
+            $("#widget-offerManagement-form input[name=start]").val(response.START.substring(0, 10));
           } else {
             $("#widget-offerManagement-form input[name=start]").val("");
           }
           if (response.END) {
-            $("#widget-offerManagement-form input[name=end]").val(
-              response.END.substring(0, 10)
-            );
+            $("#widget-offerManagement-form input[name=end]").val(response.END.substring(0, 10));
           } else {
             $("#widget-offerManagement-form input[name=end]").val("");
           }
         }
-
         if (response.AMOUNT) {
-          $("#widget-offerManagement-form input[name=amount]").val(
-            response.AMOUNT
-          );
+          $("#widget-offerManagement-form input[name=amount]").val(response.AMOUNT);
         }
         if (response.FILE_NAME != null && response.FILE_NAME != "") {
           $(".offerManagementPDF").removeClass("hidden");
-          $("#offerManagementPDF").attr(
-            "data",
-            "offres/" + response.FILE_NAME + ".pdf"
-          );
+          var new_url = "offres/" + response.FILE_NAME + ".pdf";
+          $("#offerManagementPDF").attr("data", new_url);
+          $('#offerManagementPDF').load(new_url);
+
         } else {
           $(".offerManagementPDF").addClass("hidden");
           $("#offerManagementPDF").attr("data", "");

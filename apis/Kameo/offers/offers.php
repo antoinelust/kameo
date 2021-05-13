@@ -24,7 +24,7 @@ switch($_SERVER["REQUEST_METHOD"])
 		$action=isset($_POST['action']) ? $_POST['action'] : NULL;
 		if($action=="update"){
 			execSQL("UPDATE offers SET HEU_MAJ=CURRENT_TIMESTAMP, USR_MAJ=?, TITRE=?, TYPE=?, DESCRIPTION=?, STATUS=?, PROBABILITY=?, MARGIN=?, AMOUNT=?, DATE=?, START=?, END=? WHERE ID=?",
-			array('sssssiidsssi', $token, $_POST['title'], $_POST['type'], $_POST['description'], $_POST['status'], $_POST['probability'], $_POST['margin'], $_POST['amount'], $_POST['date'], $_POST['start'], $_POST['end'], $_POST['ID']), true);
+			array('sssssiidsssi', $token, $_POST['title'], $_POST['type'], $_POST['description'], $_POST['status'], $_POST['probability'], $_POST['margin'], $_POST['amount'], $_POST['date'], ($_POST['start'] != '') ? $_POST['start'] : NULL, $_POST['end'], $_POST['ID']), true);
 			successMessage("SM0020");
 		}
 		error_message('405');

@@ -91,75 +91,80 @@ function list_maintenances() {
       title: "ID",
       data: "id",
       fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-        $(nTd).html('<a  data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal" class="showMaintenance" href="#">'+sData+'</a>');
+        $(nTd).html('<a  data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal" class="showMaintenance text-green" href="#">'+sData+'</a>');
+        $(nTd).css('padding-right', '10px')
       },
     },
     { title: "Vélo", data: "frame_number" },
     { title: "Modèle", data: "model" },
     { title: "Client", data: "company" },
     { title: "Date de sortie planifié", data: "OUT_DATE_PLANNED",
-    fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-      if(sData == null ||sData == '0'){
-        $(nTd).html("N/A");
-      }else{
-        $(nTd).html(sData.shortDate());
+      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+        if(sData == null ||sData == '0'){
+          $(nTd).html("N/A");
+        }else{
+          $(nTd).html(sData.shortDate());
+        }
       }
+    },
+    { title: "Date", data: "date",
+    fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+      $(nTd).html(sData.shortDate());
     }
   },
-  { title: "Date", data: "date",
+  {title: "Statut", data: "status",
+    fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+      if(sData == "AUTOMATICALY_PLANNED"){
+        $(nTd).html("<span class='text-red'>Automatique</span>");
+
+      }else if(sData == "MANUALLY_PLANNED"){
+        $(nTd).html("<span class='text-red'>Manuelle</span>");
+
+      }else if(sData == "CONFIRMED"){
+        $(nTd).html("<span class='text-green'>Confirmé</span>");
+      }
+      else if(sData == "DONE"){
+        $(nTd).html("<span class='text-green'>Fait</span>");
+      }
+      else if(sData == "IN_SHOP"){
+        $(nTd).html("<span  style =\"color:blue;\">En atelier</span>");
+      }
+      else if(sData == "TO_PLAN"){
+        $(nTd).html("<span  style =\"color:yellow;\">A planifier</span>");
+      }
+      else if(sData == "WAITING_PIECES"){
+        $(nTd).html("<span  style =\"color:blue;\">En attente de pièces</span>");
+      }
+      else{
+        $(nTd).html("<span  style =\"color:black;\">Récupéré par le client</span>");
+      }
+    },
+  },
+  { title: "Type", data: "type" },
+  { title: "Adresse", data: "bikeAddress",
   fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-    $(nTd).html(sData.shortDate());
+    if(sData != null){
+      $(nTd).html(sData);
+    }else{
+      $(nTd).html(oData.street+" "+oData.zip_code+" "+oData.town);
+    }
+    $(nTd).data('sort', new Date(sData).getTime());
+  },
+  },
+  { title: "N° téléphone", data: "phone"},
+  { title: "", data: "id",
+    fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+      $(nTd).html('<a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal">Modifier</a>');
+    },
   }
-},
-{title: "Statut", data: "status",
-fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-  if(sData == "AUTOMATICALY_PLANNED"){
-    $(nTd).html("<span class='text-red'>Automatique</span>");
+  ],
+  order: [[5, "asc"]],
+  paging : false,
+  "columnDefs": [
+    { "width": "10%", "targets": 4}
+  ]
 
-  }else if(sData == "MANUALLY_PLANNED"){
-    $(nTd).html("<span class='text-red'>Manuelle</span>");
-
-  }else if(sData == "CONFIRMED"){
-    $(nTd).html("<span class='text-green'>Confirmé</span>");
-  }
-  else if(sData == "DONE"){
-    $(nTd).html("<span class='text-green'>Fait</span>");
-  }
-  else if(sData == "IN_SHOP"){
-    $(nTd).html("<span  style =\"color:blue;\">En atelier</span>");
-  }
-  else if(sData == "TO_PLAN"){
-    $(nTd).html("<span  style =\"color:yellow;\">A planifier</span>");
-  }
-  else if(sData == "WAITING_PIECES"){
-    $(nTd).html("<span  style =\"color:blue;\">En attente de pièces</span>");
-  }
-  else{
-    $(nTd).html("<span  style =\"color:black;\">Récupéré par le client</span>");
-  }
-},
-},
-{ title: "Type", data: "type" },
-{ title: "Adresse", data: "bikeAddress",
-fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-  if(sData != null){
-    $(nTd).html(sData);
-  }else{
-    $(nTd).html(oData.street+" "+oData.zip_code+" "+oData.town);
-  }
-  $(nTd).data('sort', new Date(sData).getTime());
-},
-},
-{ title: "N° téléphone", data: "phone"},
-{ title: "", data: "id",
-fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-  $(nTd).html('<a href="#" class="text-green editMaintenance" data-target="#maintenanceManagementItem" name="'+sData+'" data-toggle="modal">Modifier</a>');
-},
-}
-],
-order: [[5, "asc"]],
-paging : false
-});
+  });
 }
 
 function get_maintenance(ID){

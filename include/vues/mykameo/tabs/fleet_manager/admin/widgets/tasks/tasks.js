@@ -25,9 +25,9 @@ $('.tasksManagerClick').click(function(){
 //FleetManager: Gérer les Actions | Displays the task graph by calling action_company.php and creating it
 function generateTasksGraphic(company, owner, numberOfDays){
   $.ajax({
-    url: 'apis/Kameo/action_company.php',
+    url: 'api/tasks',
     type: 'get',
-    data: { "action": "graphic", "company": company, "owner": owner, "numberOfDays": numberOfDays},
+    data: { "action": "getGraphic", "company": company, "owner": owner, "numberOfDays": numberOfDays},
     success: function(response){
       if (response.response == 'error') {
 		  console.log(response.message);
@@ -38,7 +38,7 @@ function generateTasksGraphic(company, owner, numberOfDays){
           myChart4.destroy();
 
         myChart4 = new Chart(ctx, {
-          type: 'line',
+          type: 'bar',
           data: {
             datasets: [{
               label: 'Actions totales',
@@ -46,17 +46,20 @@ function generateTasksGraphic(company, owner, numberOfDays){
               strokeColor: "rgba(151,187,205,1)",
               highlightFill: "rgba(151,187,205,1)",
               highlightStroke: "rgba(151,187,205,1)",
+              stack: 'Stack 0',
               data: response.arrayTotalTasks
             },{
               label: 'Prises de contact',
               borderColor: 'rgba(60, 137, 207, 255)',
               backgroundColor:'rgba(145, 145, 145, 0)',
+              stack: 'Stack 0',
               data: response.arrayContacts,
               hidden:true
             },{
               label: 'Rappels',
               borderColor: 'rgba(223, 109, 130, 2)',
-              backgroundColor:'rgba(60, 179, 149, 0)',
+              backgroundColor: 'rgba(60, 179, 149, 0)',
+              stack: 'Stack 0',
               data: response.arrayReminder,
               hidden: true
             },{
@@ -64,48 +67,55 @@ function generateTasksGraphic(company, owner, numberOfDays){
               borderColor: 'rgba(175, 223, 223, 2)',
               backgroundColor:'rgba(176, 0, 0, 0)',
               data: response.arrayRDVPlan,
+              stack: 'Stack 0',
               hidden: true
             },{
               label: 'Rendez-vous',
               borderColor: 'rgba(120, 91, 232, 2)',
-              backgroundColor:'rgba(60, 179, 149, 0)',
+              backgroundColor: 'rgba(60, 179, 149, 0)',
               data: response.arrayRDV,
+              stack: 'Stack 0',
               hidden: true
             },{
               label: 'Offres',
               borderColor: 'rgba(226, 211, 139, 2)',
               backgroundColor:'rgba(60, 179, 149, 0)',
-              data: response.arrayOffers,
+              stack: 'Stack 0',
               hidden: true
             },{
               label: 'Signature de contrat',
               borderColor: 'rgba(226, 211, 139, 2)',
-              backgroundColor:'rgba(60, 179, 149, 0)',
+              backgroundColor: 'rgba(60, 179, 149, 0)',
               data: response.arrayOffersSigned,
+              stack: 'Stack 0',
               hidden: true
             },{
               label: 'Livraisons vélo',
               borderColor: 'rgba(235, 149, 97, 2)',
-              backgroundColor:'rgba(60, 179, 149, 0)',
+              backgroundColor: 'rgba(60, 179, 149, 0)',
               data: response.arrayDelivery,
+              stack: 'Stack 0',
               hidden: true
             },{
               label: 'Autre',
               borderColor: 'rgba(60, 179, 149, 2)',
-              backgroundColor:'rgba(60, 179, 149, 0)',
+              backgroundColor: 'rgba(60, 179, 149, 0)',
               data: response.arrayOther,
+              stack: 'Stack 0',
               hidden: true
             }],
             labels: response.arrayDates
           },
           options: {
             scales: {
-              yAxes: [{
-                ticks: { beginAtZero: true, stacked: true }
-              }]
+              xAxes: [{ stacked: true }],
+              yAxes: [{ stacked: true }]
             },
-            elements: {
-              line: { tension: 0 }
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Evolution du nombre de tâches'
+                },
             }
           }
         });

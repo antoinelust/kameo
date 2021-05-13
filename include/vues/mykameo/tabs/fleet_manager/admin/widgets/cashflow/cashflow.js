@@ -408,7 +408,7 @@ function list_contracts_offers(company) {
 
           if (offer.TYPE == "leasing") {
             var type = "Leasing";
-          } else if (offer.type == "achat") {
+          } else if (offer.TYPE == "achat") {
             var type = "Achat";
           }
 
