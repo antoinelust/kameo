@@ -103,6 +103,10 @@ function initializeFields() {
     .find("option")
     .remove()
     .end();
+     $("#widget-addDevis-form select[name=company]")
+    .find("option")
+    .remove()
+    .end();
 
   $("#widget-manageStockAccessory-form select[name=company]")
     .find("option")
@@ -181,6 +185,14 @@ function initializeFields() {
             response.company[i].companyName +  "<br>"
           );
           $("#widget-addBill-form select[name=company]").val("");
+
+           $("#widget-addDevis-form select[name=company]").append(
+            '<option value= "' +
+            response.company[i].internalReference +
+            '">' +
+            response.company[i].companyName +  "<br>"
+          );
+          $("#widget-addDevis-form select[name=company]").val("");
 
           $("#widget-manageStockAccessory-form select[name=company]").append(
             '<option value= "' +

@@ -434,9 +434,6 @@ $test1='<page backtop="10mm" backbottom="10mm" backleft="20mm" backright="20mm">
     </div>
     <br><br>
     <p>Par ce paiement, vous adhérez à nos conditions générales de vente.</p>
-
-
-
 </page>';
 
 $sql= "INSERT INTO factures (ID, ID_OUT_BILL, USR_MAJ, COMPANY, BILLING_GROUP, BENEFICIARY_COMPANY, DATE, AMOUNT_HTVA, AMOUNT_TVAINC, COMMUNICATION_STRUCTUREE, FILE_NAME, FACTURE_SENT, FACTURE_PAID, FACTURE_LIMIT_PAID_DATE, TYPE, FACTURE_SENT_DATE) VALUES ('$newID', '$newIDOUT', 'facture.php', '$company', '$billingGroup', 'KAMEO', '$today', round($total,2), round($totalTVAIncluded,2), '$reference', '$fileName', '0', '0', '$date1monthAfterString','leasing', NULL)";

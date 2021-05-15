@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Maintenance_Add-External-Bike-Bugs" />
+    <list default="true" id="514f4f1c-4c8f-4b77-9ab9-aee0a7532f67" name="Default Changelist" comment="Add Scan Frame Reference">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,6 +91,7 @@
       <workItem from="1620025168537" duration="1335000" />
       <workItem from="1620205504250" duration="451000" />
       <workItem from="1620219665242" duration="601000" />
+      <workItem from="1620371022844" duration="355000" />
     </task>
     <task id="LOCAL-00001" summary="Version Test Younes">
       <created>1612442399254</created>
@@ -328,7 +331,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620219811408</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Add Scan Frame Reference">
+      <created>1620371320793</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1620371320793</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -350,7 +360,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Version Final Test Younes" />
     <MESSAGE value="Bug Bike Societe, mail,num" />
     <MESSAGE value="Assign Bike To Client Order" />
     <MESSAGE value="Bug AddOrder on the Order Widget" />
@@ -375,6 +384,7 @@
     <MESSAGE value="Bills accessories + update clients_orders" />
     <MESSAGE value="Maintenance_Update" />
     <MESSAGE value="Maintenance_Add-External-Bike-Bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Maintenance_Add-External-Bike-Bugs" />
+    <MESSAGE value="Add Scan Frame Reference" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Scan Frame Reference" />
   </component>
 </project>

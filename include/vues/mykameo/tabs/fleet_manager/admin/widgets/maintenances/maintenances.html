@@ -1,97 +1,141 @@
 <div
-  class="modal fade"
-  id="maintenanceListing"
-  tabindex="9"
-  role="modal"
-  aria-labelledby="modal-label"
-  aria-hidden="true"
-  style="display: none; overflow-y: auto !important"
+class="modal fade"
+id="maintenanceListing"
+tabindex="9"
+role="modal"
+aria-labelledby="modal-label"
+aria-hidden="true"
+style="display: none; overflow-y: auto !important"
 >
-  <div class="modal-dialog modal-lg" style="width: 1350px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-hidden="true"
+<div class="modal-dialog modal-lg" style="width: 1350px">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      >
+      ×
+    </button>
+  </div>
+  <h4 class="fr-inline text-green" style="display: inline;">Entretiens:</h4><br>
+  <a class="button small green button-3d rounded icon-right addMaintenance" data-target="#maintenanceManagementItem" data-toggle="modal" href="#"> <i class="fa fa-plus"></i> Ajouter un entretien
+  </a>
+  <a class="button small green button-3d rounded icon-right displayToPlan" href="#">
+    Afficher les entretiens à planifier
+  </a>
+  <a class="button small green button-3d rounded icon-right displayInShop" href="#">
+   Afficher les entretiens à l'atelier
+ </a>
+ <a class="button small green button-3d rounded icon-right displayInWaitingPieces" href="#">
+  Afficher les entretiens en attente d epièces
+</a>
+<a class="button small green button-3d rounded icon-right devisMaintenance" data-target="#maintenanceDevis" data-toggle="modal" href="#">Consulter les devis
+</a>
+<br>
+<div data-example-id="contextual-table" class="bs-example">
+  <div class="col-sm-3">
+    <div class="form-group">
+      <label for="dtp_input3" class="control-label">Date de début</label>
+      <div
+      class="input-group date form_date_start_maintenance col-md-12"
+      data-date=""
+      data-date-format="dd/mm/yyyy"
+      data-link-field="dtp_input3"
+      data-link-format="yyyy-mm-dd"
+      >
+      <input
+      class="form-control startDate"
+      size="16"
+      type="text"
+      value=""
+      readonly
+      />
+      <span class="input-group-addon"
+      ><span class="glyphicon glyphicon-remove"></span
+        ></span>
+        <span class="input-group-addon"
+        ><span class="glyphicon glyphicon-calendar"></span
+          ></span>
+        </div>
+        <input type="hidden" id="dtp_input3" value="" /><br />
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label for="dtp_input4" class="control-label">Date de fin</label>
+        <div
+        class="input-group date form_date_end_maintenance col-md-12"
+        data-date=""
+        data-date-format="dd/mm/yyyy"
+        data-link-field="dtp_input4"
+        data-link-format="yyyy-mm-dd"
         >
-          ×
-        </button>
-      </div>
-      <h4 class="fr-inline text-green" style="display: inline;">Entretiens:</h4><br>
-      <a class="button small green button-3d rounded icon-right addMaintenance" data-target="#maintenanceManagementItem" data-toggle="modal" href="#"> <i class="fa fa-plus"></i> Ajouter un entretien
-      </a>
-      <a class="button small green button-3d rounded icon-right displayToPlan" href="#">
-        Afficher les entretiens à planifier
-      </a>
-      <a class="button small green button-3d rounded icon-right displayInShop" href="#">
-       Afficher les entretiens à l'atelier
-      </a>
-      <a class="button small green button-3d rounded icon-right displayInWaitingPieces" href="#">
-        Afficher les entretiens en attente d epièces
-      </a>
-      <br>
-      <div data-example-id="contextual-table" class="bs-example">
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label for="dtp_input3" class="control-label">Date de début</label>
-            <div
-              class="input-group date form_date_start_maintenance col-md-12"
-              data-date=""
-              data-date-format="dd/mm/yyyy"
-              data-link-field="dtp_input3"
-              data-link-format="yyyy-mm-dd"
-            >
-              <input
-                class="form-control startDate"
-                size="16"
-                type="text"
-                value=""
-                readonly
-              />
-              <span class="input-group-addon"
-                ><span class="glyphicon glyphicon-remove"></span
-              ></span>
-              <span class="input-group-addon"
-                ><span class="glyphicon glyphicon-calendar"></span
-              ></span>
-            </div>
-            <input type="hidden" id="dtp_input3" value="" /><br />
+        <input class="form-control endDate" size="16" type="text" value="" readonly>
+        <span class="input-group-addon"
+        ><span class="glyphicon glyphicon-remove"></span
+          ></span>
+          <span class="input-group-addon"
+          ><span class="glyphicon glyphicon-calendar"></span
+            ></span>
           </div>
+          <input type="hidden" id="dtp_input4" value="" /><br />
         </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label for="dtp_input4" class="control-label">Date de fin</label>
-            <div
-              class="input-group date form_date_end_maintenance col-md-12"
-              data-date=""
-              data-date-format="dd/mm/yyyy"
-              data-link-field="dtp_input4"
-              data-link-format="yyyy-mm-dd"
-            >
-              <input class="form-control endDate" size="16" type="text" value="" readonly>
-              <span class="input-group-addon"
-                ><span class="glyphicon glyphicon-remove"></span
-              ></span>
-              <span class="input-group-addon"
-                ><span class="glyphicon glyphicon-calendar"></span
-              ></span>
-            </div>
-            <input type="hidden" id="dtp_input4" value="" /><br />
-          </div>
-        </div>
-        <table id="maintenanceListingSpan" class="row-border" style="width:100%"></table>
       </div>
-      <div class="separator"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-b" data-dismiss="modal">
-          Fermer
-        </button>
-      </div>
+      <table id="maintenanceListingSpan" class="row-border" style="width:100%"></table>
+    </div>
+    <div class="separator"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-b" data-dismiss="modal">
+        Fermer
+      </button>
     </div>
   </div>
 </div>
+</div>
+
+<div
+class="modal fade"
+id="maintenanceDevis"
+tabindex="9"
+role="modal"
+aria-labelledby="modal-label"
+aria-hidden="true"
+style="display: none; overflow-y: auto !important"
+>
+<div class="modal-dialog modal-lg" style="width: 1350px">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      >
+      ×
+    </button>
+  </div>
+  <h4 class="fr-inline text-green" style="display: inline;">Devis:</h4>
+  <br>
+  <a class="button small green button-3d rounded icon-right addDevisMaintenance" data-target="#addDevis" data-toggle="modal" href="#"> <i class="fa fa-plus"></i> Ajouter un devis
+  </a>
+  <div class="separator"></div>
+  <h3 class="fr-inline text-green" style="display: inline;">Liste des devis a traité :</h3>
+  <table id="listDevisNone" class="row-border" style="width:100%"></table>
+  <div class="separator"></div>
+  <h3 class="fr-inline text-green" style="display: inline;">Liste devis traité :</h3>
+  <table id="listDevisDone" class="row-border" style="width:100%"></table>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-b" data-dismiss="modal">
+      Fermer
+    </button>
+  </div>
+</div>
+</div>
+</div>
+
+
 <script type="text/javascript">
 
   $(".form_date_start_maintenance").datetimepicker({

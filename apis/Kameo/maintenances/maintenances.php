@@ -24,6 +24,18 @@ switch($_SERVER["REQUEST_METHOD"])
 		if(get_user_permissions("admin", $token)){
 			include 'retrieveMaintenance.php';
 		}
+	}
+	else if ($action==='listNoneDevis'){
+		if(get_user_permissions("admin", $token)){
+			echo json_encode(execSQL("SELECT * FROM devis_entretien WHERE STATUS='NONE'", array(), false));
+			die;
+		}
+	}
+	else if ($action==='listDoneDevis'){
+		if(get_user_permissions("admin", $token)){
+			echo json_encode(execSQL("SELECT * FROM devis_entretien WHERE STATUS='DONE'", array(), false));
+			die;
+		}
 	}else if($action === 'list'){
 		if(get_user_permissions("admin", $token)){
 			if(isset($_GET['company'])){
