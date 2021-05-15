@@ -287,14 +287,6 @@ function get_company_listing() {
         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
           $(nTd).html((sData == "OK") ? '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>' : '<i class="fa fa-close" style="color:red" aria-hidden="true"></i>');
         },
-      },
-      {
-        title: "Date mise à jour",
-        data: "HEU_MAJ",
-        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-          $(nTd).html(sData.shortDate());
-          $(nTd).data('sort', new Date(sData).getTime());
-        },
       }
     ],
     order: [
@@ -322,6 +314,7 @@ function get_company_listing() {
 
 function get_company_details(ID) {
   var internalReference;
+  var companyID=ID;
   $.ajax({
     url: "apis/Kameo/companies/companies.php",
     type: "get",
@@ -936,9 +929,9 @@ function get_company_details(ID) {
     },
   }).done(function () {
     $.ajax({
-      url: "apis/Kameo/action_company.php",
+      url: "api/tasks",
       type: "get",
-      data: { company: internalReference},
+      data: { company: companyID, 'action': 'list'},
       success: function (response) {
         if (response.response == "error") {
           console.log(response.message);
@@ -946,7 +939,7 @@ function get_company_details(ID) {
           var dest =
             '<a href="#" data-target="#taskManagement" name="' +
             internalReference +
-            '" data-toggle="modal" class="button small green button-3d rounded icon-right addTask"><i class="fa fa-plus"></i> Ajouter une action</a>';
+            '" data-toggle="modal" data-action="add" class="button small green button-3d rounded icon-right"><i class="fa fa-plus"></i> Ajouter une action</a>';
 
           if (response.actionNumber > 0) {
             var i = 0;
@@ -963,7 +956,7 @@ function get_company_details(ID) {
                 );
               }
               var temp =
-                '<tr><td><a href="#" class="retrieveTask" data-target="#taskManagement" data-toggle="modal" name="' +
+                '<tr><td><a href="#" data-target="#taskManagement" data-action="retrieve" data-toggle="modal" name="' +
                 response.action[i].id +
                 '">' +
                 response.action[i].id +
@@ -979,7 +972,7 @@ function get_company_details(ID) {
                 response.action[i].ownerName +
                 "</td><td>" +
                 response.action[i].status +
-                '</td><td><ins><a class="text-green updateAction" data-target="#updateAction" name="' +
+                '</td><td><ins><a class="text-green" data-target="#taskManagement" data-action="update" name="' +
                 response.action[i].id +
                 '" data-toggle="modal" href="#">Mettre à jour</a></ins></td></tr>';
               dest = dest.concat(temp);
@@ -987,33 +980,7 @@ function get_company_details(ID) {
             }
             dest = dest.concat("</tbody></table>");
           }
-
           $("#action_company_log").html(dest);
-
-          $(".retrieveTask").click(function () {
-            retrieve_task(this.name, "retrieve");
-            $(".taskManagementSendButton").addClass("hidden");
-          });
-
-          $(".updateTask").click(function () {
-            update_task(this.name, "update");
-          });
-          $(".addTask").click(function () {
-            add_task(this.name);
-            $(".taskManagementSendButton").removeClass("hidden");
-            $(".taskManagementSendButton").text("Ajouter");
-          });
-
-          var classname = document.getElementsByClassName("updateAction");
-          for (var i = 0; i < classname.length; i++) {
-            classname[i].addEventListener(
-              "click",
-              function () {
-                construct_form_for_action_update(this.name);
-              },
-              false
-            );
-          }
         }
       },
     });

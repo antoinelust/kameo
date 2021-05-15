@@ -215,12 +215,3 @@ function checkMinus(select, valueLocation) {
     $(select).find(".hideAt0").show();
   }
 }
-
-//récupère l'index de l'item dont l'id correspond
-function getIndex(table, id) {
-  for (var i = 0; i < table.length; i++) {
-    if (table[i].id == id) {
-      return i;
-    }
-  }
-}

@@ -44,7 +44,7 @@ var traduction = '.json_encode(get_class_consts("L")).';
 	<link rel="shortcut icon" href="https://www.kameobikes.com/images/favicon.png">
 
 	<!-- TITLE -->
-	<title>Leasing vélo pour entreprise - Kameo Bikes</title>
+	<title><?=L::header_tabTitle; ?></title>
 
 	<!-- Bootstrap Core CSS -->
 	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

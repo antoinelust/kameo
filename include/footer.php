@@ -7,7 +7,7 @@
 			<div class="copyright-text col-md-4">
 				<h3 class="text-green text-bold text-small text-center"><?= L::footer_plan; ?></h3>
 					<div class="col-md-6 text-center">
-						<a href="https://www.kameobikes.com/"><?= L::footer_accueil; ?></a><br>
+						<a href="https://www.kameobikes.com/"><?= L::footer_acceuil; ?></a><br>
 						<a href="https://www.kameobikes.com/gestion-flotte"><?= L::footer_fleetManagement; ?></a><br>
 						<a href="https://www.kameobikes.com/cash4bike">Cash For Bike</a><br>
 						<a href="https://www.kameobikes.com/contact">Contact</a>

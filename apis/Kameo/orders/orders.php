@@ -21,7 +21,6 @@ switch($_SERVER["REQUEST_METHOD"])
 	case 'GET':
 		$action=isset($_GET['action']) ? $_GET['action'] : NULL;
 		if($action === 'listOrderable'){
-
 			if(get_user_permissions("admin", $token) && isset($_GET['company'])){
 				$stmt = $conn->prepare("SELECT co.BIKE_ID FROM bike_catalog bc, companies_orderable co, companies c WHERE co.INTERNAL_REFERENCE = c.INTERNAL_REFERENCE AND co.BIKE_ID = bc.ID AND c.COMPANY_NAME = ? ");
 				$company = urldecode($_GET['company']);
@@ -83,7 +82,7 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 		}else if($action === 'listGroupedOrders'){
 			if(get_user_permissions("admin", $token)){
-				$response['orders'] = execSQL("SELECT grouped_orders.ID, COMPANY_ID, EMAIL, COMPANY_NAME, (SELECT COUNT(1) FROM order_accessories WHERE order_accessories.ORDER_ID=grouped_orders.ID) as numberAccessories,  (SELECT COUNT(1) FROM order_accessories WHERE order_accessories.ORDER_ID=grouped_orders.ID AND order_accessories.STATUS!='closed') as numberAccessoriesNotDelivered, (SELECT COUNT(1) FROM client_orders WHERE client_orders.GROUP_ID=grouped_orders.ID) as numberBikes,  (SELECT COUNT(1) FROM client_orders WHERE client_orders.GROUP_ID=grouped_orders.ID AND client_orders.STATUS!='closed') as numberBikesNotDelivered FROM `grouped_orders`, companies WHERE grouped_orders.COMPANY_ID=companies.ID", array(), false);
+				$response['orders'] = execSQL("SELECT grouped_orders.ID, COMPANY_ID, EMAIL, COMPANY_NAME, (SELECT COUNT(1) FROM order_accessories WHERE order_accessories.ORDER_ID=grouped_orders.ID) as numberAccessories,  (SELECT COUNT(1) FROM order_accessories WHERE order_accessories.ORDER_ID=grouped_orders.ID AND order_accessories.STATUS!='done') as numberAccessoriesNotDelivered, (SELECT COUNT(1) FROM client_orders WHERE client_orders.GROUP_ID=grouped_orders.ID) as numberBikes,  (SELECT COUNT(1) FROM client_orders WHERE client_orders.GROUP_ID=grouped_orders.ID AND client_orders.STATUS!='done') as numberBikesNotDelivered FROM `grouped_orders`, companies WHERE grouped_orders.COMPANY_ID=companies.ID", array(), false);
 				echo json_encode($response);
 				die;
 			}else
@@ -163,8 +162,9 @@ switch($_SERVER["REQUEST_METHOD"])
 		}else if($action === "addGroupedOrder"){
 			if(get_user_permissions("admin", $token)){
 				$companyID=$_POST['company'];
-				$groupID=execSQL("SELECT MAX(MaxGroupID) as MaxGroupID FROM (SELECT MAX(GROUP_ID) as MaxGroupID FROM client_orders UNION SELECT MAX(ORDER_ID) as MaxGroupID FROM order_accessories) as tt", array(), false)[0]['MaxGroupID'];
-				$groupID=intval($groupID)+1;
+				$email=isset($_POST['email']) ? $_POST['email'] : '';
+				$groupID=execSQL("INSERT INTO grouped_orders (USR_MAJ, COMPANY_ID, EMAIL) VALUES (?,?,?)", array('sis', $token, $companyID, $email), true);
+
 				$test='N';
 				$remark='';
 				if(isset($_POST['catalogID'])){
@@ -192,10 +192,22 @@ switch($_SERVER["REQUEST_METHOD"])
 				successMessage("SM0032");
 			}else
 				error_message('403');
+		}else if($action === "deleteBikeOrder"){
+			execSQL("DELETE FROM client_orders WHERE ID=?", array('i', $_POST['ID']), true);
+			$response['response']="success";
+			echo json_encode($response);
+			die;
+		}else if($action === "deleteAccessoryOrder"){
+			execSQL("DELETE FROM order_accessories WHERE ID=?", array('i', $_POST['ID']), true);
+			$response['response']="success";
+			echo json_encode($response);
+			die;
 		}else if($action === "updateGroupedOrder"){
 			if(get_user_permissions("admin", $token)){
 				$groupID=$_POST['ID'];
-				execSQL("UPDATE grouped_orders SET COMPANY_ID=?, EMAIL=?, HEU_MAJ=CURRENT_TIMESTAMP WHERE ID=?", array('isi', $_POST['company'], $_POST['email'], $groupID), true);
+				$email=isset($_POST['email']) ? $_POST['email'] : '';
+
+				execSQL("UPDATE grouped_orders SET COMPANY_ID=?, EMAIL=?, HEU_MAJ=CURRENT_TIMESTAMP WHERE ID=?", array('isi', $_POST['company'], $email, $groupID), true);
 				if(isset($_POST['catalogID'])){
 					foreach ($_POST['catalogID'] as $key => $catalogID) {
 						$size=$_POST['size'][$key];

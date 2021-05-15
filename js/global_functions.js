@@ -81,10 +81,6 @@ function initializeFields() {
     .find("option")
     .remove()
     .end();
-  $("#widget-taskManagement-form select[name=company]")
-    .find("option")
-    .remove()
-    .end();
   $("#widget-boxManagement-form select[name=company]")
     .find("option")
     .remove()
@@ -94,11 +90,6 @@ function initializeFields() {
       .remove()
       .end();
 
-/*  $("#widget-maintenanceManagement-form select[name=company]")
-    .find("option")
-    .remove()
-    .end();
-*/
   $("#widget-addBill-form select[name=company]")
     .find("option")
     .remove()
@@ -143,15 +134,6 @@ function initializeFields() {
               response.company[i].companyName +
               "<br>"
           );
-          $("#widget-taskManagement-form select[name=company]").append(
-            '<option value="' +
-              response.company[i].internalReference +
-              '" ' +
-              selected +
-              ">" +
-              response.company[i].companyName +
-              "<br>"
-          );
           $("#widget-boxManagement-form select[name=company]").append(
             '<option value="' +
               response.company[i].internalReference +
@@ -166,12 +148,6 @@ function initializeFields() {
               response.company[i].companyName +
               "<br>"
           );
-         /* $("#widget-maintenanceManagement-form select[name=company]").append(
-            '<option id= "'+ response.company[i].ID + '" value= "' +
-             response.company[i].internalReference +
-            '">' +
-            response.company[i].companyName +  "<br>"
-            );*/
           $("#widget-order-form select[name=company]").append(
             '<option value= "' +
             response.company[i].ID +
@@ -269,4 +245,13 @@ function initializeFields() {
       }
     },
   });
+}
+
+
+function getIndex(table, id) {
+  for (var i = 0; i < table.length; i++) {
+    if (table[i].id == id || table[i].ID == id) {
+      return i;
+    }
+  }
 }

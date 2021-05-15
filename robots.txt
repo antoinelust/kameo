@@ -5,6 +5,6 @@ Disallow: /docs/
 Disallow: /images/
 Disallow: /include/
 Disallow: /langcache/
-Disallow : automatic_mail_factures.php
+Disallow : /automatic_mail_factures.php
 
 Sitemap: https://kameobikes.com/sitemap.xml

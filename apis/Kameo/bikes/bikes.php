@@ -39,6 +39,10 @@ switch($_SERVER["REQUEST_METHOD"])
 				error_message('403');
 		}else if($action=="getPersonnalBikeActions"){
 			include 'getPersonnalBikeActions.php';
+		}else if($action=="listBikesNotLinkedToOrder"){
+			$response=execSQL("SELECT bike_catalog.BRAND, bike_catalog.MODEL, customer_bikes.CONTRACT_TYPE, customer_bikes.ID, customer_bikes.COMPANY FROM bike_catalog, customer_bikes WHERE customer_bikes.STAANN != 'D' AND NOT EXISTS (SELECT 1 FROM client_orders WHERE BIKE_ID = customer_bikes.ID) AND customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.TYPE=?", array('i', $_GET['catalogID']), false);
+			echo json_encode($response);
+			die;
 		}else if($action=="list"){
 			$admin = isset($_GET['admin']) ? $_GET['admin'] : NULL;
 			if ($admin != "Y") {

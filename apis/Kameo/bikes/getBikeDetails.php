@@ -24,6 +24,7 @@ $response['size']=$row['SIZE'];
 $response['color']=$row['COLOR'];
 $response['leasing']=$row['AUTOMATIC_BILLING'];
 $response['insurance']=$row['INSURANCE'];
+$response['insuranceIndividual']=$row['INSURANCE_INDIVIDUAL'];
 $response['leasingPrice']=$row['LEASING_PRICE'];
 $response['bikePrice']=$row['BIKE_PRICE'];
 $response['buyingDate']=$row['BIKE_BUYING_DATE'];
@@ -82,10 +83,10 @@ foreach($users as $arr) {
 
 
 
-$emailOwner=execSQL("SELECT EMAIL FROM customer_bike_access WHERE TYPE='personnel' AND TYPE!='D' AND BIKE_ID=?", array('i', $id), false)[0]['EMAIL'];
-if(!is_null($emailOwner)){
+$emailOwner=execSQL("SELECT EMAIL FROM customer_bike_access WHERE TYPE='personnel' AND TYPE!='D' AND BIKE_ID=?", array('i', $id), false);
+if(count($emailOwner)!=0){
   $response['biketype']='personnel';
-  $response['bikeOwner']=$emailOwner;
+  $response['bikeOwner']=$emailOwner[0]['EMAIL'];
   $response['deliveryDateOrder']=execSQL("SELECT ESTIMATED_DELIVERY_DATE FROM client_orders WHERE EMAIL=?", array('s', $emailOwner), false)[0]['ESTIMATED_DELIVERY_DATE'];
   if(is_null($response['deliveryDate'])){
     $response['deliveryDateOrder']='';

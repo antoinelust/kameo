@@ -1,38 +1,34 @@
-<div
-class="modal fade"
-id="stockAccessoriesListing"
-tabindex="9"
-role="modal"
-aria-labelledby="modal-label"
-aria-hidden="true"
-style="display: none; overflow-y: auto !important"
->
-<div class="modal-dialog modal-lg" style="width: 1250px">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button
-      type="button"
-      class="close"
-      data-dismiss="modal"
-      aria-hidden="true"
-      >
-      ×
-    </button>
+<div class="modal fade" id="stockAccessoriesListing" tabindex="9" role="modal" aria-labelledby="modal-label" aria-hidden="true" style="display: none; overflow-y: auto !important">
+  <div class="modal-dialog modal-lg" style="width: 1250px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        >
+        ×
+      </button>
+    </div>
+    <h4 class="text-green">Stock d'accessoires</h4>
+    <div data-example-id="contextual-table" class="bs-example">
+      <a class="button small green button-3d rounded icon-right addStockAccessoryButton" data-target="#manageStockAccessory" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::accessories_add_accessory; ?></a>
+      <a class="button small green button-3d rounded icon-right accessoriesInLeasing" href="#">En leasing</a>
+      <a class="button small green button-3d rounded icon-right accessoriesInStock" href="#">En stock</a>
+      <a class="button small green button-3d rounded icon-right accessoriesPendingDelivery" href="#">En attente de livraison</a>
+      <a class="button small green button-3d rounded icon-right accessoriesInOrder" href="#">En commande fournisseur</a>
+      <a class="button small red button-3d rounded icon-right soldAccessories" href="#">Vendus</a>
+      <a class="button small green button-3d rounded icon-right bindBillToAccessory" data-target="#accessoriesBills" onclick="rempDataTable()"data-toggle="modal" href="#">Liaison Factures-Accessoires</a>
+      <table id="stockAccessoriesList" class="table" style='width: 100%;'></table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-b" data-dismiss="modal">
+        <?= L::generic_close; ?>
+      </button>
+    </div>
   </div>
-  <h4 class="text-green">Stock d'accessoires</h4>
-  <div data-example-id="contextual-table" class="bs-example">
-    <a class="button small green button-3d rounded icon-right addStockAccessoryButton" data-target="#manageStockAccessory" data-toggle="modal" href="#"><i class="fa fa-plus"></i><?= L::accessories_add_accessory; ?></a>
-
-    <a class="button small green button-3d rounded icon-right bindBillToAccessory" data-target="#accessoriesBills" onclick="rempDataTable()"data-toggle="modal" href="#">Liaison Factures-Accessoires</a>
-    <table id="stockAccessoriesList" class="table" style='width: 100%;'></table>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-b" data-dismiss="modal">
-      <?= L::generic_close; ?>
-    </button>
-  </div>
-</div>
-</div>
 </div>
 
 
@@ -367,4 +363,3 @@ style="display: none; overflow-y: auto !important"
     }
   });
 </script>
-

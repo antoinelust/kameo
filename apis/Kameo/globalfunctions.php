@@ -400,7 +400,7 @@ function execSQL($sql, $params, $close){
     if(isset($results)){
       $result = $results;
     }else{
-      $result = NULL;
+      $result = array();
     }
   }
 

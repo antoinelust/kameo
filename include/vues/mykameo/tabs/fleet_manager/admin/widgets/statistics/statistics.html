@@ -7,48 +7,55 @@
       </div>
       <h4 class="text-green">Statistiques - Commandes</h4>
       <div class="row">
-        <div class='col-md-6'>
-          <canvas id="ordersStatisticsChart" width="100%"></canvas>
+        <div class="col-md-6">
+          <strong>Nombre de commandes depuis le 1er Janvier : </strong><br>
+          <ul>
+            <li>Leasing : <span name='ordersStatisticsTotalLeasing'></span></li>
+            <li>Vente : <span name='ordersStatisticsTotalSelling'></span></li>
+          </ul>
         </div>
-        <div class='col-md-6'>
-          <canvas id="ordersMarginStatisticsChart" width="100%"></canvas>
+        <div class="col-md-6">
+          <strong>Marge des commandes depuis le 1er Janvier : </strong><br>
+          <ul>
+            <li>Leasing : <span name='ordersStatisticsTotalLeasingValue'></span></li>
+            <li>Vente : <span name='ordersStatisticsTotalSellingValue'></span></li>
+          </ul>
+        </div>
+        <div class='col-md-6 ordersStatisticsChart'>
+        </div>
+        <div class='col-md-6 ordersMarginStatisticsChart'>
         </div>
       </div>
       <div class="separator"></div>
       <h4 class="text-green">Statistiques - Sortie de stock</h4>
       <div class="row">
-        <div class='col-md-6'>
-          <canvas id="contractStartStatisticsChart" width="100%"></canvas>
-        </div>
-        <div class='col-md-6'>
-          <canvas id="soldBikeStatisticsChart" width="100%"></canvas>
+        <div class='col-md-12 contractStartStatisticsChart'>
         </div>
       </div>
       <div class="separator"></div>
       <h4 class="text-green">Statistiques - Entrée de stock</h4>
       <div class="row">
-        <div class='col-md-6'>
-          <canvas id="deliveryChartNumber" width="100%"></canvas>
+        <div class="col-md-12">
+          <strong>Nombre de vélos : </strong><span name='deliveryChartTotal'></span><br>
+          <strong>Valeur d'achat des vélos : </strong><span name='deliveryChartTotalValue'></span><br>
         </div>
-        <div class='col-md-6'>
-          <canvas id="deliveryChartValue" width="100%"></canvas>
+        <div class='col-md-6 deliveryChartNumber'>
+        </div>
+        <div class='col-md-6 deliveryChartValue'>
         </div>
       </div>
       <div class="separator"></div>
       <h4 class="text-green">Composition du stock actuel</h4>
       <div class="row">
-        <div class='col-md-6'>
-          <canvas id="currentStockBrands" width="100%"></canvas>
+        <div class='col-md-6 currentStockBrands'>
         </div>
-        <div class='col-md-6'>
-          <canvas id="currentStockTypes" width="100%"></canvas>
+        <div class='col-md-6 currentStockTypes'>
         </div>
       </div>
       <div class="separator"></div>
       <h4 class="text-green">Statistiques - Chiffre d'affaire</h4>
-      <div class="col-sm-12">
+      <div class="col-sm-12 myChartCA">
         <strong>Chiffre d'affaire depuis le 1<sup>er</sup> Janvier : </strong><span name='totalCA'></span><br><br>
-        <canvas id="myChartCA" width="100%"></canvas>
       </div>
       <div class="modal-footer"><button type="button" class="btn btn-b" data-dismiss="modal"><?= L::generic_close; ?></button></div>
     </div>

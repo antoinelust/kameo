@@ -52,7 +52,7 @@ if(constant('ENVIRONMENT')=='production' || constant('ENVIRONMENT')=='test'){
   }
   if(isset($_POST['ccs'])){
     foreach($_POST['ccs'] as $cc){
-      $mail->AddAddress($cc['email'], $cc['firstName']." ".$cc['name']);
+      $mail->AddCC($cc['email'], $cc['firstName']." ".$cc['name']);
     }
   }
 }else{

@@ -42,6 +42,15 @@ switch($_SERVER["REQUEST_METHOD"])
 		}else{
 			error_message('403');
 		}
+  }else if($action === 'getAddress'){
+		if(get_user_permissions("admin", $token)){
+			$resultat=execSQL("SELECT STREET, ZIP_CODE, TOWN FROM companies WHERE INTERNAL_REFERENCE=?", array('s', $_GET['company']), false)[0];
+			$response=$resultat['STREET'].", ".$resultat['ZIP_CODE']." ".$resultat['TOWN'];
+			echo json_encode($response);
+			die;
+		}else{
+			error_message('403');
+		}
   }else if($action === 'list'){
 		if(get_user_permissions("admin", $token)){
 			include 'list_companies.php';

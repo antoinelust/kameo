@@ -132,8 +132,31 @@
             );
             document.getElementById("widget-addClient-form").reset();
             $("#addClient").modal("toggle");
-            getCompaniesInMaintenances();
-             $("#companyListingTable").dataTable().api().ajax.reload();
+            getCompaniesInMaintenances(response.companyName);
+            //$("#companyListingTable").dataTable().api().ajax.reload();
+            $("#widget-externalBikeManagement-form select[name=company]")
+              .find("option")
+              .remove()
+              .end();
+            $.ajax({
+              url: "api/companies",
+              type: "get",
+              data: { type: "*", action: 'listMinimal' },
+              success: function (response) {
+                for (var i = 0; i < response.company.length; i++) {
+                  $("#widget-externalBikeManagement-form select[name=company]").append(
+                    '<option value= "' +
+                    response.company[i].ID +
+                    '">' +
+                    response.company[i].companyName +  "<br>"
+                  );
+                  getBikesToMaintenance(response.companyName);
+                  $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').show();
+                  $('#widget-maintenanceManagement-form .addExternalBikes').data('idCompany',response.companyID);
+                }
+              }
+            })
+
           } else {
             $.notify(
               {

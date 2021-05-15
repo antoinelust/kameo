@@ -137,25 +137,25 @@ class i18n {
 					$this->appliedLang = $langcode;
 					break 2;
 				}
-        }        
-        
+        }
+
         if ($this->appliedLang == NULL) {
             throw new RuntimeException('No language file was found.');
         }
 
         // search for cache file
         $this->cacheFilePath = $this->cachePath . '/php_i18n_' . md5_file(__FILE__) . '_' . $this->prefix . '_' . $this->appliedLang . '.cache.php';
-		
+
 		$newest = NULL;
 		foreach($this->langFilePath as $path)
 			if (filemtime($path)>$newest || $newest === NULL)
 				$newest = filemtime($path);
-			
+
 		$newest_fallback = NULL;
 		foreach($this->getConfigFilename($this->fallbackLang) as $path)
 			if (filemtime($path)>$newest_fallback || $newest_fallback === NULL)
 				$newest_fallback = filemtime($path);
-		
+
         // whether we need to create a new cache file
         $outdated = !file_exists($this->cacheFilePath) ||
             filemtime($this->cacheFilePath) < $newest || // the language config was updated
@@ -231,7 +231,7 @@ class i18n {
     }
 
     public function setForcedLang($forcedLang) {
-        $this->fail_after_init();        
+        $this->fail_after_init();
         $this->forcedLang = $forcedLang;
     }
 
@@ -268,16 +268,16 @@ class i18n {
         /*if ($this->forcedLang != NULL) {
             $userLangs[] = $this->forcedLang;
         }*/
-        
+
         // 2nd highest priority: GET parameter 'lang'
         if (isset($_GET['langue']) && is_string($_GET['langue'])) {
             $userLangs[] = $_GET['langue'];
-        }        
+        }
 
         // 3rd highest priority: SESSION parameter 'lang'
         if (isset($_SESSION['langue']) && is_string($_SESSION['langue'])) {
             $userLangs[] = $_SESSION['langue'];
-        }        
+        }
 
         // 4th highest priority: HTTP_ACCEPT_LANGUAGE
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -369,7 +369,7 @@ class i18n {
             throw new BadMethodCallException('This ' . __CLASS__ . ' object is already initalized, so you can not change any settings.');
         }
     }
-	
+
 	protected function convert_multi_array($array) {
 	  $out = implode("\n",array_map(function($a) {return implode("\n",$a);},$array));
 	  return $out;

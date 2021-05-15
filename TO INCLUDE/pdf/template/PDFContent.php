@@ -246,10 +246,8 @@ h2{
   <div>
     <h1>Introduction</h1>
     <p>
-      <span class="bold">KAMEO BIKES</span> est une entreprise active dans la mobilité qui propose,
-      aux entreprises, des solutions complètes de mobilité basées sur le vélo.
-      Nous sommes convaincus que le vélo est le mode de transport de demain mais,
-      surtout d’aujourd’hui, et nous travaillons tous les jours pour le démontrer à nos clients.
+      <span class="bold">KAMEO BIKES a pour mission de rendre plus agréable, économique et durable les déplacements quotidiens des organisations et des individus.</span>
+      Dans ce cadre, nous sommes convaincus que le vélo est le mode de transport urbain de demain mais, surtout d’aujourd’hui, et nous travaillons tous les jours pour le démontrer à nos clients.
     </p>
     <p>
       <span class="bold">NOS SOLUTIONS</span> s’appuient sur 3 PÔLES interdépendants que sont des CYCLES DE QUALITÉ,

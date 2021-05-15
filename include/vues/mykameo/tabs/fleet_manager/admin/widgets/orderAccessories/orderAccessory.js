@@ -43,10 +43,7 @@ $( ".orderAccessoriesClick" ).click(function() {
 
 
 	$("#displayorderAcessory").dataTable({
-		paging : false,
-		searching : true,
-		destroy: true,
-		"scrollX": true,
+		"scrollXInner": true,
 		ajax: {
 			url: "apis/Kameo/accessories/accessories.php",
 			contentType: "application/json",
@@ -88,76 +85,74 @@ $( ".orderAccessoriesClick" ).click(function() {
 	});
 });
 
-$('#displayorderAcessory').on( 'draw.dt', function () {
-	$('#displayorderAcessory .confirmOrderAccessory').off();
-	$('#displayorderAcessory .confirmOrderAccessory').click(function(){
-		getOrderDetailAcessory($(this).data('correspondent'));
-	})
-})
+$("#accessoryOrderManagement").on("show.bs.modal", function (event) {
+	var ID = $(event.relatedTarget).data("id");
+	var action = $(event.relatedTarget).data("action");
+	if(action == 'retrieve'){
+		getOrderDetailAcessory(ID);
+		$('#accessoryOrderManagement .title').text("Consulter une commande");
+		$('#accessoryOrderManagement input').attr('disabled', true);
+		$('#accessoryOrderManagement select').attr('disabled', true);
+		$('#accessoryOrderManagement [type=submit]').addClass("hidden");
+		$('#accessoryOrderManagement input[name=ID]').closest('div').removeClass("hidden");
+	}else{
+		$('#accessoryOrderManagement input').attr('disabled', false);
+		$('#accessoryOrderManagement select').attr('disabled', false);
+		$('#accessoryOrderManagement [type=submit]').removeClass("hidden");
+		$('#accessoryOrderManagement input[name=ID]').attr('readonly', true);
+		getOrderDetailAcessory(ID);
+		$('#accessoryOrderManagement input[name=action]').val("update");
+		$('#accessoryOrderManagement .title').text("Modifier une commande");
+		$('#accessoryOrderManagement input[name=ID]').closest('div').removeClass("hidden");
+	}
+});
+
+
 function getOrderDetailAcessory(ID){
 	$.ajax({
-		url: 'apis/Kameo/accessories/accessories.php',
+		url: 'api/accessories',
 		type: 'get',
 		data: {"action": "getOrderDetailAcessory", "ID":ID},
 		success: function(response){
-			if(response.response == 'error') {
-				console.log('error');
-			}
-			if(response.response == 'success'){
-				$("#widget-orderAcessory-form [name=company]").val(response[0].COMPANY_NAME);
-				$("#widget-orderAcessory-form [name=emailUser]").val(response[0].EMAIL);
-				$("#widget-orderAcessory-form [name=contractType]").val(response[0].TYPE);
-				$("#widget-orderAcessory-form [name=priceHTVA]").val(response[0].PRICE_HTVA);
-				$("#widget-orderAcessory-form [name=description]").val(response[0].DESCRIPTION);
-				$("#widget-orderAcessory-form [name=bike]").val(response[0].BRAND + ' - ' +response[0].MODEL);
-				$("#widget-orderAcessory-form [name=id]").val(ID);
-			}
-		}
-	});
-	$.ajax({
-		url: 'apis/Kameo/accessories/accessories.php',
-		type: 'get',
-		data: {"action": "getContractFromAccessory", "OrderId":ID},
-		success: function(response){
-			if(response.response == 'error') {
-				console.log('error');
-			}
-			if(response.response == 'success'){
-				if(response.orderAccessory!=null){
-					$("#widget-orderAcessory-form [name=accessory]").find('option')
-					.remove()
-					.end();
-					$("#widget-orderAcessory-form [name=accessory]").append('<option value="'+response.orderAccessory[0].ID+'">'+response.orderAccessory[0].ID+' : '+response.orderAccessory[0].BRAND +' - '+response.orderAccessory[0].MODEL+'</option>');
-					$("#widget-orderAcessory-form [name=accessory]").attr("readonly",true);
-					$("#widget-orderAcessory-form [name=submitBtn]").parent().fadeOut();
-				}
-				else{
+			$("#widget-orderAcessory-form [name=company]").val(response.COMPANY_ID);
+			$("#widget-orderAcessory-form [name=emailUser]").val(response.EMAIL);
+			$("#widget-orderAcessory-form [name=contractType]").val(response.TYPE);
+			$("#widget-orderAcessory-form [name=priceHTVA]").val(response.PRICE_HTVA);
+			$("#widget-orderAcessory-form [name=description]").val(response.DESCRIPTION);
+			$("#widget-orderAcessory-form [name=id]").val(ID);
+			$("#widget-orderAcessory-form [name=grouped_id]").val(response.GROUP_ID);
+			$("#widget-orderAcessory-form select[name=status]").val(response.STATUS);
+
+			var categoryID=response.categoryID;
+			var catalogID=response.catalogID;
+
+			$.ajax({
+				url: 'api/accessories',
+				type: 'get',
+				data: {"action": "listCategories"},
+				success: function(response){
+					$('#widget-orderAcessory-form select[name=category]').find('option').remove();
+					response.categories.forEach(function(category){
+						$('#widget-orderAcessory-form select[name=category]').append("<option value='"+category.ID+"'>"+traduction['accessoryCategories_'+category.CATEGORY]+"</option>");
+					});
+					$('#widget-orderAcessory-form select[name=category]').val(categoryID);
+
 					$.ajax({
-						url: 'apis/Kameo/accessories/accessories.php',
+						url: 'api/accessories',
 						type: 'get',
-						data: {"action": "getOrderAccessory", "ID":ID},
+						data: {"action": "getModelsCategory", 'category': categoryID},
 						success: function(response){
-							$("#widget-orderAcessory-form [name=accessory]").find('option')
-							.remove()
-							.end();
-							if(response.response == 'error') {
-								console.log('error');
-							}
-							if(response.response == 'success'){
-								var i=0;
-
-								response.orderAccessory.forEach(function(bike, index){
-									$("#widget-orderAcessory-form [name=accessory]").append('<option value="'+bike['ID']+'">'+bike['ID']+' : '+bike['BRAND'] +' - '+bike['MODEL']+'</option>');
-								});
-
-								$("#widget-orderAcessory-form [name=accessory]").attr("readonly",false);
-								$("#widget-orderAcessory-form [name=submitBtn]").parent().fadeIn();
-							}
+							$('#widget-orderAcessory-form select[name=model]').find('option').remove();
+							response.models.forEach(function(model){
+								$('#widget-orderAcessory-form select[name=model]').append("<option value='"+model.ID+"'>"+model.BRAND+" - "+model.MODEL+"</option>");
+							});
+							$('#widget-orderAcessory-form select[name=model]').val(catalogID);
 						}
 					});
 				}
-			}
+			});
+
+
 		}
 	});
-
 }

@@ -93,8 +93,13 @@ if($internalReference != NULL && $description){
       echo json_encode($response);
       die;
   }
-  successMessage("SM0008");
-
+  $response=array();
+  $response['response']="success";
+  $response['message']="Société ajoutée";
+  $response['companyID']=$compID;
+  $response['companyName']=$internalReference;
+  echo json_encode($response);
+  die;
 }else{
     errorMessage("ES0025");
 }

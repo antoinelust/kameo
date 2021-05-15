@@ -19,7 +19,6 @@ $(".fleetmanager").click(function () {
   });
   $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').hide();
   getCompaniesInMaintenances();
-  getCategoriesFromBillsToDevis();
 });
 
 function getCompaniesInMaintenances(){
@@ -378,8 +377,8 @@ function empty_form(){
 $('#widget-maintenanceManagement-form select[name=company]').change(function(){
   getBikesToMaintenance();
   $('#widget-maintenanceManagement-form div[name=addExternalBikesDiv]').show();
-
-  $('#widget-maintenanceManagement-form a .addExternalBikes').data('idCompany',$(this).val());
+ 
+ $('#widget-maintenanceManagement-form a .addExternalBikes').data('idCompany',$(this).val());
   
 });
 

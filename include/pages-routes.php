@@ -14,6 +14,7 @@
 	/** CATALOGUE **/
 	$router->map('GET','/catalogue_overview[ext]', 'pages/catalogue/catalogue_overview.php');
 	$router->map('GET','/catalogue[ext]', 'pages/catalogue/catalogue.php');
+	$router->map('GET','/accessoires[ext]', 'pages/catalogue/accessoires.php');
 	$router->map('GET','/catalogue_accessoires_overview[ext]', 'pages/catalogue/catalogue_accessoires_overview.php');
 	$router->map('GET','/catalogue_accessoires[ext]', 'pages/catalogue/catalogue_accessoires.php');
 	$router->map('GET','/bons-plans[ext]', 'pages/catalogue/bons-plans.php');

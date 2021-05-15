@@ -12,7 +12,7 @@
 
 	<div class="container">
 		<div class="row">
-				<h1 class="text-green">Politique de confidentialité</h1>
+				<h1 class="text-green">Privacy policy</h1>
 				<br>
 				<p class="text-justify text-dark" style="font-size: 18px;">
                 </br>

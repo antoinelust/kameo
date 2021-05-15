@@ -65,7 +65,7 @@ $('#widget-manageStockAccessory-form select[name=company]').change(function(){
      .find('option')
      .remove()
      .end();
-     
+
      if(data.user.length > 0 ){
       $("#widget-manageStockAccessory-form select[name=user]").parent().fadeIn();
       data.user.forEach(function(user, index){
@@ -161,13 +161,11 @@ $('#widget-manageStockAccessory-form select[name=contractType]').change(function
     $("#widget-manageStockAccessory-form input[name=leasingAmount]").parent().parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingDate]").parent().fadeOut();
     $("#widget-manageStockAccessory-form input[name=sellingAmount]").parent().parent().fadeOut();
-    $('#widget-manageStockAccessory-form select[name=company]').val(12);
     $('#widget-manageStockAccessory-form select[name=company]').attr('readonly', true);
     $("#widget-manageStockAccessory-form input[name=deliveryDate]").parent().fadeIn();
     $("#widget-manageStockAccessory-form input[name=estimateDeliveryDate]").parent().fadeOut();
     $("#widget-manageStockAccessory-form select[name=user]").parent().fadeOut();
   }
-
 });
 
 $('#widget-manageStockAccessory-form select[name=category]').change(function(){
@@ -255,7 +253,7 @@ $(".stockAccessoriesClick").click(function(){
 
 
 function list_stock_accessories(){
-  $("#stockAccessoriesList").dataTable({
+  $("#stockAccessoriesList").DataTable({
     destroy: true,
     ajax: {
       url: "api/accessories",
@@ -299,6 +297,14 @@ function list_stock_accessories(){
     {
       title: "Type de contrat",
       data: "CONTRACT_TYPE",
+      fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+        if (sData == 'achat') $(nTd).html("Vendu");
+        else if (sData == 'leasing') $(nTd).html("Leasing");
+        else if (sData == 'stock') $(nTd).html("En stock");
+        else if (sData == 'pending_delivery') $(nTd).html("En attente de livraison");
+        else if (sData == 'order') $(nTd).html("Commande chez fournisseur");
+        else $(nTd).html(sData);
+      },
     },
     {
       title: "Montant",
@@ -318,29 +324,33 @@ function list_stock_accessories(){
       else {
         $(nTd).html(get_date_string_european(sData));
       }
-      $(nTd).data('sort', new Date(sData).getTime());
+        $(nTd).data('sort', new Date(sData).getTime());
+      },
     },
-  },
-  {
-   title: "Fin contrat",
-   data: "CONTRACT_END",
-   fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-    if(sData==null){
-      $(nTd).html('N/A');
+    {
+     title: "Fin contrat",
+     data: "CONTRACT_END",
+     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+      if(sData==null){
+        $(nTd).html('N/A');
+      }
+      else {
+        $(nTd).html(get_date_string_european(sData));
+      }
+        $(nTd).data('sort', new Date(sData).getTime());
+      },
     }
-    else {
-      $(nTd).html(get_date_string_european(sData));
-    }
-    $(nTd).data('sort', new Date(sData).getTime());
-  },
-}
-],
-order: [
-[0, "desc"]
-],
-paging : true,
-"pageLength": 50
-});
+  ],
+    order: [
+      [0, "desc"]
+    ],
+    paging : true,
+    "pageLength": 50
+  }).column(6).search("leasing", false, true ).draw();
+
+
+
+
   $('#stockAccessoriesList').on( 'draw.dt', function () {
     $('.updateStockAccessorylink').off();
     $('.updateStockAccessorylink').click(function(){
@@ -350,6 +360,37 @@ paging : true,
   })
 }
 
+$('body').on('click','.accessoriesInLeasing', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search( "leasing", true, false )
+  .draw();
+})
+$('body').on('click','.accessoriesInStock', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search( "stock", true, false )
+  .draw();
+})
+$('body').on('click','.accessoriesPendingDelivery', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search( "pending", true, false )
+  .draw();
+})
+
+$('body').on('click','.accessoriesInOrder', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search("order", true, false )
+  .draw();
+})
+$('body').on('click','.soldAccessories', function(){
+  var table = $('#stockAccessoriesList').DataTable()
+  .column(6)
+  .search("achat", true, false )
+  .draw();
+})
 
 function get_stock_accessory(ID){
   $('#widget-manageStockAccessory-form select[name=contractType]').attr('readonly', false);
@@ -638,7 +679,6 @@ function rempDataTable(){
 
     $('#accessoriesBillsTable .updateBillsAccessorylink').off();
     $('#accessoriesBillsTable .updateBillsAccessorylink').click(function(){
-      console.log('ca rentre ici 1 ');
       getListAccessoriesBillsDetails($(this).data('correspondent'));
     })
   })
@@ -741,7 +781,7 @@ order: [
 ],
 paging : false,
 searching : false
-}); 
+});
 
 }
 

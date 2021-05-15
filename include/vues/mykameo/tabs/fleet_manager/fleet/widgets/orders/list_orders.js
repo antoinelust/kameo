@@ -136,13 +136,13 @@ function get_orders_fleet_listing() {
 							link.setAttribute("data-toggle", "modal");
 							link.setAttribute("href", "#");
 							link.setAttribute("name", response.order[i].groupID);
-							var newContent = document.createTextNode(response.order[i].groupID);
+							var newContent = document.createTextNode(response.order[i].ID);
 							link.appendChild(newContent);
 							column.appendChild(link);
 							ligne.appendChild(column);
 
 							var column=document.createElement("td");
-							var newContent = document.createTextNode(response.order[i].user);
+							var newContent = document.createTextNode(response.order[i].email);
 							column.appendChild(newContent);
 							ligne.appendChild(column);
 							var column=document.createElement("td");

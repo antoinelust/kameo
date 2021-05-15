@@ -24,7 +24,7 @@
 
         $date_start_string=$date_start->format('Y-m-d');
 
-        $stmt = $conn->prepare("SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<=? AND TYPE = 'contact' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND( bb.TYPE='offre' OR bb.TYPE='offreSigned' OR bb.TYPE='delivery'))");
+        $stmt = $conn->prepare("SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<=? AND TYPE = 'contact' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY_ID=bb.COMPANY_ID AND( bb.TYPE='offre' OR bb.TYPE='offreSigned' OR bb.TYPE='delivery'))");
         $stmt->bind_param("s", $date_start_string);
 
         $stmt->execute();
@@ -33,14 +33,14 @@
         $stmt->close();
         array_push($companiesContact, $somme);
 
-        $stmt = $conn->prepare("SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<=? AND TYPE = 'offre' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND( bb.TYPE='offreSigned' OR bb.TYPE='delivery'))");
+        $stmt = $conn->prepare("SELECT COUNT(1) AS 'SUM' FROM company_actions aa WHERE DATE<=? AND TYPE = 'offre' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY_ID=bb.COMPANY_ID AND( bb.TYPE='offreSigned' OR bb.TYPE='delivery'))");
         $stmt->bind_param("s", $date_start_string);
         $stmt->bind_result($somme);
         $stmt->fetch();
         $stmt->close();
         array_push($companiesOffer, $somme);
 
-        $stmt = $conn->prepare("SELECT COUNT(1) AS 'SUM' FROM company_actions aa, companies bb WHERE bb.INTERNAL_REFERENCE=aa.COMPANY AND DATE<=? AND aa.TYPE = 'offreSigned' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY=bb.COMPANY AND bb.TYPE='delivery')");
+        $stmt = $conn->prepare("SELECT COUNT(1) AS 'SUM' FROM company_actions aa, companies bb WHERE bb.ID=aa.COMPANY_ID AND DATE<=? AND aa.TYPE = 'offreSigned' AND NOT EXISTS (select 1 from company_actions bb where aa.COMPANY_ID=bb.COMPANY_ID AND bb.TYPE='delivery')");
         $stmt->bind_param("s", $date_start_string);
         $stmt->bind_result($somme);
         $stmt->fetch();

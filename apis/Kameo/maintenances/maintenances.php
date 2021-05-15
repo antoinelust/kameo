@@ -36,7 +36,52 @@ switch($_SERVER["REQUEST_METHOD"])
 			echo json_encode(execSQL("SELECT * FROM devis_entretien WHERE STATUS='DONE'", array(), false));
 			die;
 		}
-	}else if($action === 'list'){
+	}else if ($action == "listAllMaintenances") {
+    $response = array ();
+    $date_start = new DateTime($_GET['dateStart']);
+    $date_start_string=$date_start->format('Y-m-d');
+
+    $date_end = new DateTime($_GET['dateEnd']);
+    $date_end_string=$date_end->format('Y-m-d');
+
+    $response['maintenance'] = execSQL("SELECT * FROM
+      (SELECT entretiens.ID AS id, entretiens.DATE AS date, entretiens.OUT_DATE_PLANNED AS OUT_DATE_PLANNED, entretiens.STATUS AS status,
+         COMMENT AS comment, customer_bikes.FRAME_NUMBER AS frame_number, customer_bikes.COMPANY AS company, MODEL AS model, (CASE WHEN customer_bikes.ADDRESS != '' THEN customer_bikes.ADDRESS ELSE companies.STREET END) as bikeAddress,
+         FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id,customer_referential.PHONE AS phone, customer_referential.ADRESS AS street, customer_referential.POSTAL_CODE AS zip_code,
+         customer_referential.CITY AS town, customer_bike_access.TYPE AS type, customer_bike_access.EMAIL AS email
+         FROM entretiens
+         INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+         INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
+         INNER JOIN customer_bike_access ON customer_bike_access.BIKE_ID = customer_bikes.ID AND customer_bike_access.TYPE='personnel'
+         INNER JOIN customer_referential ON customer_referential.EMAIL=customer_bike_access.EMAIL
+         WHERE entretiens.DATE >= ? AND entretiens.DATE <= ? AND entretiens.EXTERNAL_BIKE=0
+       UNION
+       SELECT entretiens.ID AS id, entretiens.DATE AS date,entretiens.OUT_DATE_PLANNED AS OUT_DATE_PLANNED, entretiens.STATUS AS status,
+          COMMENT AS comment, customer_bikes.FRAME_NUMBER AS frame_number, customer_bikes.COMPANY AS company, MODEL AS model, (CASE WHEN customer_bikes.ADDRESS != '' THEN customer_bikes.ADDRESS ELSE companies.STREET END) as bikeAddress,
+          FRAME_REFERENCE AS frame_reference, customer_bikes.ID AS bike_id, (SELECT PHONE from companies_contact WHERE ID_COMPANY=companies.ID  AND TYPE='contact' LIMIT 1) AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
+          companies.TOWN AS town, 'partage' AS type, 'N/A' AS email
+          FROM entretiens
+          INNER JOIN customer_bikes ON customer_bikes.ID = entretiens.BIKE_ID
+          INNER JOIN companies ON companies.INTERNAL_REFERENCE = customer_bikes.COMPANY
+          WHERE entretiens.DATE >= ? AND entretiens.DATE <= ? AND NOT EXISTS (SELECT 1 from customer_bike_access WHERE customer_bike_access.BIKE_ID = customer_bikes.ID AND customer_bike_access.TYPE='personnel') and EXTERNAL_BIKE=0
+        UNION
+        SELECT entretiens.ID AS id, entretiens.DATE AS date,entretiens.OUT_DATE_PLANNED AS OUT_DATE_PLANNED, entretiens.STATUS AS status,
+           COMMENT AS comment, 'External Bike' AS frame_number, companies.INTERNAL_REFERENCE AS company, external_bikes.MODEL AS model, CONCAT(companies.STREET, ', ', companies.ZIP_CODE, ' ', companies.TOWN) as bikeAddress,
+           external_bikes.FRAME_REFERENCE AS frame_reference, external_bikes.ID AS bike_id, (SELECT PHONE from companies_contact WHERE ID_COMPANY=companies.ID AND TYPE='contact' LIMIT 1) AS phone, companies.STREET AS street, companies.ZIP_CODE AS zip_code,
+           companies.TOWN AS town, 'external' AS type, 'N/A' AS email
+           FROM entretiens
+           INNER JOIN external_bikes ON external_bikes.ID = entretiens.BIKE_ID
+           INNER JOIN companies ON companies.ID = external_bikes.COMPANY_ID
+           WHERE entretiens.DATE >= ? AND entretiens.DATE <= ? AND EXTERNAL_BIKE=1
+      ) as tt
+      GROUP BY id
+      ORDER BY date", array('ssssss', $date_start_string, $date_end_string, $date_start_string, $date_end_string, $date_start_string, $date_end_string), false);
+    $response['response'] = 'success';
+
+
+    echo json_encode($response);
+    die;
+  }else if($action === 'list'){
 		if(get_user_permissions("admin", $token)){
 			if(isset($_GET['company'])){
 				$response['internalMaintenances']=execSQL("SELECT entretiens.ID, entretiens.DATE, bike_catalog.BRAND, bike_catalog.MODEL FROM entretiens, customer_bikes, bike_catalog WHERE entretiens.STATUS='DONE' AND BIKE_ID=customer_bikes.ID  AND customer_bikes.TYPE=bike_catalog.ID AND customer_bikes.COMPANY=? ORDER BY entretiens.ID DESC", array('s', $_GET['company']), false);
